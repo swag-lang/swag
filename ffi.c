@@ -642,7 +642,7 @@ ffi_prep_incoming_args(char *stack, void **rvalue, void **avalue,
 #endif
     }
 
-  return (size_t)argp - (size_t)stack;
+  return (int) ((size_t)argp - (size_t)stack);
 }
 
 #define FFI_INIT_TRAMPOLINE_WIN64(TRAMP,FUN,CTX,MASK) \
