@@ -2,6 +2,7 @@
 #include "SourceFile.h"
 #include "ThreadManager.h"
 #include "LoadingThread.h"
+#include "Global.h"
 
 
 SourceFile::SourceFile(const fs::path& path, int bufferSize) : m_path{path}, m_bufferSize{bufferSize}
@@ -79,7 +80,7 @@ void SourceFile::notifyLoad()
 
 void SourceFile::validateRequest(int reqNum)
 {
-	auto loadingTh = ThreadManager::m_instance->m_loadingThread;
+	auto loadingTh = g_ThreadMgr.m_loadingThread;
 	auto req = m_requests[reqNum];
 
 	m_buffersSize[reqNum] = req->loadedSize;
@@ -94,7 +95,7 @@ void SourceFile::validateRequest(int reqNum)
 
 void SourceFile::buildRequest(int reqNum)
 {
-	auto loadingTh = ThreadManager::m_instance->m_loadingThread;
+	auto loadingTh = g_ThreadMgr.m_loadingThread;
 	auto req = loadingTh->newRequest();
 
 	req->file = this;
@@ -114,7 +115,7 @@ char SourceFile::getPrivateChar()
 		if (m_doneLoading)
 			return 0;
 
-		auto loadingTh = ThreadManager::m_instance->m_loadingThread;
+		auto loadingTh = g_ThreadMgr.m_loadingThread;
 		auto nextBufIndex = (m_bufferCurIndex + 1) % 2;
 
 		if (!m_requests[nextBufIndex])

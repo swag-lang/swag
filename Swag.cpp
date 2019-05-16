@@ -29,16 +29,14 @@ int main()
 	float result = 0;
 	ffi_call(&cif, FFI_FN(toto), &result, values);
 
-	ThreadManager thm(4);
-	extern atomic<int> cptChars;
-
 	int cpt = 0;
 	typedef chrono::high_resolution_clock Clock;
 	auto t1 = Clock::now();
 
 	auto job = new ParseFolderJob("c:\\boulot\\sdb\\blade");
-	ThreadManager::m_instance->addJob(job);
-	ThreadManager::m_instance->waitEndJobs();
+	g_ThreadMgr.init();
+	g_ThreadMgr.addJob(job);
+	g_ThreadMgr.waitEndJobs();
 
 	auto t2 = Clock::now();
 	chrono::duration<double> diff = t2 - t1;

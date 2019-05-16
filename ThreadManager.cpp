@@ -2,13 +2,14 @@
 #include "ThreadManager.h"
 #include "LoadingThread.h"
 #include "JobThread.h"
+#include "Global.h"
 
-ThreadManager* ThreadManager::m_instance = nullptr;
-
-ThreadManager::ThreadManager(int numWorkers)
+void ThreadManager::init()
 {
 	m_loadingThread = new LoadingThread();
-	m_instance = this;
+
+	int numWorkers = g_Global.numCores - 2;
+	numWorkers = max(1, numWorkers);
 	for(int i = 0; i < numWorkers; i++)
 		m_workers.push_back(new JobThread());
 }

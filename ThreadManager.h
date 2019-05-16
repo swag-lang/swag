@@ -8,12 +8,11 @@ public:
 class ThreadManager
 {
 public:
-	ThreadManager(int numWorkers);
 	~ThreadManager();
 
 	class LoadingThread* m_loadingThread = nullptr;
-	static ThreadManager* m_instance;
 
+	void init();
 	void addJob(Job* job);
 	Job* getJob(class JobThread* thread);
 

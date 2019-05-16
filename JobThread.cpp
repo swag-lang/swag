@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "JobThread.h"
 #include "ThreadManager.h"
+#include "Global.h"
 
 
 JobThread::JobThread()
@@ -30,8 +31,7 @@ void JobThread::loop()
 {
 	while (!m_requestEnd)
 	{
-		auto thMgr = ThreadManager::m_instance;
-		auto job = thMgr->getJob(this);
+		auto job = g_ThreadMgr.getJob(this);
 		if (job == nullptr)
 		{
 			if (m_requestEnd)
@@ -41,6 +41,6 @@ void JobThread::loop()
 
 		job->execute();
 		delete job;
-		thMgr->jobHasEnded();
+		g_ThreadMgr.jobHasEnded();
 	}
 }

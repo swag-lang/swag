@@ -23,7 +23,7 @@ class SourceFile
 	friend class LoadingThread;
 
 public:
-	SourceFile(const fs::path& path, int bufferSize = 2048);
+	SourceFile(const fs::path& path, int bufferSize = 4096);
 	~SourceFile();
 
 	unsigned getChar();

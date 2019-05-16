@@ -2,6 +2,7 @@
 #include "ParseFolderJob.h"
 #include "SourceFile.h"
 #include "ReadFileJob.h"
+#include "Global.h"
 
 ParseFolderJob::ParseFolderJob(const fs::path& path) : m_path{path}
 {
@@ -14,7 +15,7 @@ void ParseFolderJob::execute()
 		if (p.path().extension() == ".cpp")
 		{
 			auto job = new ReadFileJob(new SourceFile(p.path()));
-			ThreadManager::m_instance->addJob(job);
+			g_ThreadMgr.addJob(job);
 		}
 	}
 }
