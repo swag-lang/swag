@@ -1,0 +1,136 @@
+#include "pch.h"
+#include "Tokenizer.h"
+#include "SourceFile.h"
+
+atomic<int> cptChars;
+atomic<int> cptLines;
+
+void Tokenizer::setFile(class SourceFile* file)
+{
+	m_sourceFile = file;
+}
+
+inline unsigned Tokenizer::getChar()
+{
+	// One character is already there, no need to read
+	if (m_cacheChar)
+	{
+		auto c = m_cacheChar;
+		m_cacheChar = 0;
+		return c;
+	}
+
+	auto c = m_sourceFile->getChar();
+	if (!c)
+		return 0;
+
+	cptChars++;
+	m_location.seek++;
+
+	if (c == '\n')
+	{
+		cptLines++;
+		m_location.column = 0;
+		m_location.line++;
+	}
+
+	return c;
+}
+
+void Tokenizer::ZapCComment()
+{
+	int countEmb = 1;
+	while (true)
+	{
+		auto nc = getChar();
+		while (nc && nc != '*' && nc != '/') nc = getChar();
+
+		if (!nc)
+			return;
+
+		if (nc == '*')
+		{
+			nc = getChar();
+			if (nc == '/')
+			{
+				countEmb--;
+				if (countEmb == 0)
+					return;
+			}
+
+			continue;
+		}
+
+		if (nc == '/')
+		{
+			nc = getChar();
+			if (nc == '*')
+			{
+				countEmb++;
+				continue;
+			}
+		}
+	}
+}
+
+void Tokenizer::GetIdentifier(Token& token)
+{
+	auto c = getChar();
+	while ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')
+	{
+		token.text += c;
+		c = getChar();
+	}
+
+	m_cacheChar = c;
+	token.id = TokenId::Identifier;
+}
+
+bool Tokenizer::getToken(Token& token)
+{
+	while (true)
+	{
+		auto c = getChar();
+		if (c == 0)
+			return false;
+
+		// Blank
+		if (c == '\n' || c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
+			continue;
+
+		token.location = m_location;
+
+		if (c == '/')
+		{
+			auto nc = getChar();
+
+			// C++ comment //
+			if (nc == '/')
+			{
+				nc = getChar();
+				while (nc && nc != '\n') nc = getChar();
+				continue;
+			}
+
+			// C comment /*
+			if (nc == '*')
+			{
+				ZapCComment();
+				continue;
+			}
+
+			token.id = TokenId::SymSlash;
+			return true;
+		}
+
+		// Identifier
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
+		{
+			token.text = c;
+			GetIdentifier(token);
+			return true;
+		}
+	}
+
+	return true;
+}
