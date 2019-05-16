@@ -221,9 +221,9 @@ ml64.exe /c /Cx /Fo $(Configuration)/win64.obj win64_plain.asm
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 cl.exe /EP win64.S &gt; win64_plain.asm
 
-ml64.exe /c /Cx /Fo $(Configuration)/win64.obj win64_plain.asm
+ml64.exe /c /Cx /Fo $(Platform)/$(Configuration)/win64.obj win64_plain.asm
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)/win64.obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)/$(Configuration)/win64.obj</Outputs>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
