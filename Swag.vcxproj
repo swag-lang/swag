@@ -166,6 +166,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="ReadFileJob.h" />
     <ClInclude Include="SourceFile.h" />
+    <ClInclude Include="Stats.h" />
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="Tokenizer.h" />
   </ItemGroup>

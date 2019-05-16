@@ -7,12 +7,6 @@
     <ClCompile Include="LoadingThread.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
-    <ClCompile Include="ParseFolderJob.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadFileJob.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
@@ -55,18 +49,18 @@
     <ClCompile Include="types.c">
       <Filter>FFI</Filter>
     </ClCompile>
+    <ClCompile Include="ParseFolderJob.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadFileJob.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
       <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="LoadingThread.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="ParseFolderJob.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadFileJob.h">
       <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="ThreadManager.h">
@@ -103,6 +97,15 @@
       <Filter>Lexer</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadFileJob.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="ParseFolderJob.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="Stats.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

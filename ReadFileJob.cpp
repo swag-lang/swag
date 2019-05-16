@@ -2,8 +2,8 @@
 #include "ReadFileJob.h"
 #include "SourceFile.h"
 #include "Tokenizer.h"
-
-atomic<int> cptToParse;
+#include "Global.h"
+#include "Stats.h"
 
 ReadFileJob::ReadFileJob(SourceFile* file) : m_file{file}
 {
@@ -11,6 +11,8 @@ ReadFileJob::ReadFileJob(SourceFile* file) : m_file{file}
 
 void ReadFileJob::execute()
 {
+	g_Stats.numFiles++;
+
 	Tokenizer tokenizer;
 	tokenizer.setFile(m_file);
 
@@ -18,6 +20,4 @@ void ReadFileJob::execute()
 	while (tokenizer.getToken(token))
 	{
 	}
-
-	cptToParse++;
 }

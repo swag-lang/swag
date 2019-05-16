@@ -5,6 +5,8 @@
 #include "ReadFileJob.h"
 #include "ParseFolderJob.h"
 #include "ffi.h"
+#include "global.h"
+#include "stats.h"
 
 float toto(float a)
 {
@@ -29,8 +31,6 @@ int main()
 
 	ThreadManager thm(4);
 	extern atomic<int> cptChars;
-	extern atomic<int> cptLines;
-	extern atomic<int> cptToParse;
 
 	int cpt = 0;
 	typedef chrono::high_resolution_clock Clock;
@@ -43,7 +43,6 @@ int main()
 	auto t2 = Clock::now();
 	chrono::duration<double> diff = t2 - t1;
 	cout << diff.count() << "s\n";
-	cout << cptChars << " characters\n";
-	cout << cptLines << " lines\n";
-	cout << cptToParse << " files\n";
+	cout << g_Stats.numLines << " lines\n";
+	cout << g_Stats.numFiles << " files\n";
 }

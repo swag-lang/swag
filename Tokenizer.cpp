@@ -1,9 +1,8 @@
 #include "pch.h"
 #include "Tokenizer.h"
 #include "SourceFile.h"
-
-atomic<int> cptChars;
-atomic<int> cptLines;
+#include "Global.h"
+#include "Stats.h"
 
 void Tokenizer::setFile(class SourceFile* file)
 {
@@ -24,12 +23,11 @@ inline unsigned Tokenizer::getChar()
 	if (!c)
 		return 0;
 
-	cptChars++;
 	m_location.seek++;
 
 	if (c == '\n')
 	{
-		cptLines++;
+		g_Stats.numLines++;
 		m_location.column = 0;
 		m_location.line++;
 	}
