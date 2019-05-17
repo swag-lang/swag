@@ -17,7 +17,10 @@ void ReadFileJob::execute()
 	tokenizer.setFile(m_file);
 
 	Token token;
-	while (tokenizer.getToken(token))
+	while(true)
 	{
+		auto result = tokenizer.getToken(token);
+		if (result != TokenizerResult::Pending)
+			break;
 	}
 }

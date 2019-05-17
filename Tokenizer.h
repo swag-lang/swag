@@ -1,6 +1,5 @@
 #pragma once
 #include "SourceFile.h"
-
 enum class TokenId
 {
 	Unknown,
@@ -16,12 +15,19 @@ struct Token
 	string  text;
 };
 
+enum class TokenizerResult
+{
+	Pending,
+	EndOfFile,
+	Error,
+};
+
 class Tokenizer
 {
 public:
 	void setFile(SourceFile* file);
-	bool getToken(Token& token);
-	
+	TokenizerResult getToken(Token& token);
+
 private:
 	unsigned getChar();
 	void ZapCComment();
@@ -32,4 +38,3 @@ private:
 	unsigned m_cacheChar = 0;
 	SourceLocation m_location;
 };
-

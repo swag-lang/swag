@@ -84,13 +84,13 @@ void Tokenizer::GetIdentifier(Token& token)
 	token.id = TokenId::Identifier;
 }
 
-bool Tokenizer::getToken(Token& token)
+TokenizerResult Tokenizer::getToken(Token& token)
 {
 	while (true)
 	{
 		auto c = getChar();
 		if (c == 0)
-			return false;
+			return TokenizerResult::EndOfFile;
 
 		// Blank
 		if (c == '\n' || c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
@@ -118,7 +118,7 @@ bool Tokenizer::getToken(Token& token)
 			}
 
 			token.id = TokenId::SymSlash;
-			return true;
+			return TokenizerResult::Pending;
 		}
 
 		// Identifier
@@ -126,9 +126,9 @@ bool Tokenizer::getToken(Token& token)
 		{
 			token.text = c;
 			GetIdentifier(token);
-			return true;
+			return TokenizerResult::Pending;
 		}
 	}
 
-	return true;
+	return TokenizerResult::Pending;
 }
