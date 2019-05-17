@@ -55,6 +55,9 @@
     <ClCompile Include="ReadFileJob.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="LanguageSpec.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="Stats.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="LanguageSpec.h">
+      <Filter>Lexer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

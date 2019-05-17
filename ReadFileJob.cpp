@@ -12,15 +12,20 @@ ReadFileJob::ReadFileJob(SourceFile* file) : m_file{file}
 void ReadFileJob::execute()
 {
 	g_Stats.numFiles++;
+	m_tokenizer.setFile(m_file);
 
-	Tokenizer tokenizer;
-	tokenizer.setFile(m_file);
-
-	Token token;
+	bool canLex = true;
 	while(true)
 	{
-		auto result = tokenizer.getToken(token);
+		auto result = m_tokenizer.getToken(m_token);
 		if (result != TokenizerResult::Pending)
 			break;
+
+		// Top level
+		switch (m_token.id)
+		{
+		case TokenId::CompilerPass:
+			break;
+		}
 	}
 }

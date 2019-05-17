@@ -160,6 +160,7 @@
     <ClInclude Include="ffi_common.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="JobThread.h" />
+    <ClInclude Include="LanguageSpec.h" />
     <ClInclude Include="LoadingThread.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="ParseFolderJob.h" />
@@ -187,6 +188,7 @@
     </ClCompile>
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="JobThread.cpp" />
+    <ClCompile Include="LanguageSpec.cpp" />
     <ClCompile Include="LoadingThread.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="ParseFolderJob.cpp" />

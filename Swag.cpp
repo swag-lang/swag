@@ -33,7 +33,7 @@ int main()
 	typedef chrono::high_resolution_clock Clock;
 	auto t1 = Clock::now();
 
-	auto job = new ParseFolderJob("c:\\boulot\\sdb\\blade");
+	auto job = new ParseFolderJob("c:\\boulot\\swag\\unittest");
 	g_ThreadMgr.init();
 	g_ThreadMgr.addJob(job);
 	g_ThreadMgr.waitEndJobs();

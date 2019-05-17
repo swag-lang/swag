@@ -12,7 +12,7 @@ void ParseFolderJob::execute()
 {
 	for (auto& p : fs::recursive_directory_iterator(m_path))
 	{
-		if (p.path().extension() == ".cpp")
+		if (p.path().extension() == ".swg")
 		{
 			auto job = new ReadFileJob(new SourceFile(p.path()));
 			g_ThreadMgr.addJob(job);

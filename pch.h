@@ -3,6 +3,7 @@
 
 #include "windows.h"
 #include <vector>
+#include <map>
 #include <assert.h>
 #include <experimental/filesystem>
 #include <mutex>

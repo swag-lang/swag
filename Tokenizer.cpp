@@ -3,9 +3,15 @@
 #include "SourceFile.h"
 #include "Global.h"
 #include "Stats.h"
+#include "LanguageSpec.h"
 
 void Tokenizer::setFile(class SourceFile* file)
 {
+	m_location.seek = 0;
+	m_location.column = 0;
+	m_location.line = 0;
+	m_endReached = false;
+	m_cacheChar = 0;
 	m_sourceFile = file;
 }
 
@@ -21,7 +27,15 @@ inline unsigned Tokenizer::getChar()
 
 	auto c = m_sourceFile->getChar();
 	if (!c)
+	{
+		if (!m_endReached)
+		{
+			m_endReached = true;
+			g_Stats.numLines++;
+		}
+
 		return 0;
+	}
 
 	m_location.seek++;
 
@@ -81,7 +95,12 @@ void Tokenizer::GetIdentifier(Token& token)
 	}
 
 	m_cacheChar = c;
-	token.id = TokenId::Identifier;
+
+	auto it = g_LangSpec.m_keywords.find(token.text);
+	if (it != g_LangSpec.m_keywords.end())
+		token.id = it->second;
+	else
+		token.id = TokenId::Identifier;
 }
 
 TokenizerResult Tokenizer::getToken(Token& token)
@@ -122,7 +141,7 @@ TokenizerResult Tokenizer::getToken(Token& token)
 		}
 
 		// Identifier
-		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
+		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '#')
 		{
 			token.text = c;
 			GetIdentifier(token);

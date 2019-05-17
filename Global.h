@@ -14,3 +14,4 @@ extern class Log			g_Log;
 extern class Error			g_Error;
 extern struct Stats			g_Stats;
 extern class ThreadManager  g_ThreadMgr;
+extern class LanguageSpec   g_LangSpec;

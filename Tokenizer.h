@@ -5,6 +5,7 @@ enum class TokenId
 	Unknown,
 	SymSlash,
 	Identifier,
+	CompilerPass,
 	EndOfFile,
 };
 
@@ -37,4 +38,5 @@ private:
 	SourceFile* m_sourceFile = nullptr;
 	unsigned m_cacheChar = 0;
 	SourceLocation m_location;
+	bool m_endReached = false;
 };
