@@ -108,7 +108,8 @@ bool Tokenizer::getToken(Token& token)
 {
     while (true)
     {
-        auto c = getChar();
+        token.location = m_location;
+        auto c         = getChar();
         if (c == 0)
         {
             token.id = TokenId::EndOfFile;
@@ -118,8 +119,6 @@ bool Tokenizer::getToken(Token& token)
         // Blank
         if (c == '\n' || c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
             continue;
-
-        token.location = m_location;
 
         if (c == '/')
         {
