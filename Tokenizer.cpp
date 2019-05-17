@@ -7,147 +7,155 @@
 
 void Tokenizer::setFile(class SourceFile* file)
 {
-	m_location.seek = 0;
-	m_location.column = 0;
-	m_location.line = 0;
-	m_endReached = false;
-	m_cacheChar = 0;
-	m_sourceFile = file;
+    m_location.seek   = 0;
+    m_location.column = 0;
+    m_location.line   = 0;
+    m_endReached      = false;
+    m_cacheChar       = 0;
+    m_sourceFile      = file;
 }
 
 inline unsigned Tokenizer::getChar()
 {
-	// One character is already there, no need to read
-	if (m_cacheChar)
-	{
-		auto c = m_cacheChar;
-		m_cacheChar = 0;
-		return c;
-	}
+    // One character is already there, no need to read
+    if (m_cacheChar)
+    {
+        auto c      = m_cacheChar;
+        m_cacheChar = 0;
+        return c;
+    }
 
-	auto c = m_sourceFile->getChar();
-	if (!c)
-	{
-		if (!m_endReached)
-		{
-			m_endReached = true;
-			g_Stats.numLines++;
-		}
+    auto c = m_sourceFile->getChar();
+    if (!c)
+    {
+        if (!m_endReached)
+        {
+            m_endReached = true;
+            g_Stats.numLines++;
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	m_location.seek++;
+    m_location.seek++;
 
-	if (c == '\n')
-	{
-		g_Stats.numLines++;
-		m_location.column = 0;
-		m_location.line++;
-	}
+    if (c == '\n')
+    {
+        g_Stats.numLines++;
+        m_location.column = 0;
+        m_location.line++;
+    }
 
-	return c;
+    return c;
 }
 
 void Tokenizer::ZapCComment()
 {
-	int countEmb = 1;
-	while (true)
-	{
-		auto nc = getChar();
-		while (nc && nc != '*' && nc != '/') nc = getChar();
+    int countEmb = 1;
+    while (true)
+    {
+        auto nc = getChar();
+        while (nc && nc != '*' && nc != '/')
+            nc = getChar();
 
-		if (!nc)
-			return;
+        if (!nc)
+            return;
 
-		if (nc == '*')
-		{
-			nc = getChar();
-			if (nc == '/')
-			{
-				countEmb--;
-				if (countEmb == 0)
-					return;
-			}
+        if (nc == '*')
+        {
+            nc = getChar();
+            if (nc == '/')
+            {
+                countEmb--;
+                if (countEmb == 0)
+                    return;
+            }
 
-			continue;
-		}
+            continue;
+        }
 
-		if (nc == '/')
-		{
-			nc = getChar();
-			if (nc == '*')
-			{
-				countEmb++;
-				continue;
-			}
-		}
-	}
+        if (nc == '/')
+        {
+            nc = getChar();
+            if (nc == '*')
+            {
+                countEmb++;
+                continue;
+            }
+        }
+    }
 }
 
 void Tokenizer::GetIdentifier(Token& token)
 {
-	auto c = getChar();
-	while ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')
-	{
-		token.text += c;
-		c = getChar();
-	}
+    auto c = getChar();
+    while ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')
+    {
+        token.text += c;
+        c = getChar();
+    }
 
-	m_cacheChar = c;
+    m_cacheChar = c;
 
-	auto it = g_LangSpec.m_keywords.find(token.text);
-	if (it != g_LangSpec.m_keywords.end())
-		token.id = it->second;
-	else
-		token.id = TokenId::Identifier;
+    auto it = g_LangSpec.m_keywords.find(token.text);
+    if (it != g_LangSpec.m_keywords.end())
+        token.id = it->second;
+    else
+        token.id = TokenId::Identifier;
 }
 
-TokenizerResult Tokenizer::getToken(Token& token)
+bool Tokenizer::getToken(Token& token)
 {
-	while (true)
-	{
-		auto c = getChar();
-		if (c == 0)
-			return TokenizerResult::EndOfFile;
+    while (true)
+    {
+        auto c = getChar();
+        if (c == 0)
+        {
+            token.id = TokenId::EndOfFile;
+            return true;
+        }
 
-		// Blank
-		if (c == '\n' || c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
-			continue;
+        // Blank
+        if (c == '\n' || c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
+            continue;
 
-		token.location = m_location;
+        token.location = m_location;
 
-		if (c == '/')
-		{
-			auto nc = getChar();
+        if (c == '/')
+        {
+            auto nc = getChar();
 
-			// C++ comment //
-			if (nc == '/')
-			{
-				nc = getChar();
-				while (nc && nc != '\n') nc = getChar();
-				continue;
-			}
+            // C++ comment //
+            if (nc == '/')
+            {
+                nc = getChar();
+                while (nc && nc != '\n')
+                    nc = getChar();
+                continue;
+            }
 
-			// C comment /*
-			if (nc == '*')
-			{
-				ZapCComment();
-				continue;
-			}
+            // C comment /*
+            if (nc == '*')
+            {
+                ZapCComment();
+                continue;
+            }
 
-			token.id = TokenId::SymSlash;
-			return TokenizerResult::Pending;
-		}
+            token.id = TokenId::SymSlash;
+            return true;
+        }
 
-		// Identifier
-		if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '#')
-		{
-			token.text = c;
-			GetIdentifier(token);
-			return TokenizerResult::Pending;
-		}
-	}
+        // Identifier
+        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '#')
+        {
+            token.text = c;
+            GetIdentifier(token);
+            return true;
+        }
 
-	return TokenizerResult::Pending;
+		token.id = TokenId::Invalid;
+        return true;
+    }
+
+    return true;
 }

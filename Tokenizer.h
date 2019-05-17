@@ -2,41 +2,35 @@
 #include "SourceFile.h"
 enum class TokenId
 {
-	Unknown,
-	SymSlash,
-	Identifier,
-	CompilerPass,
-	EndOfFile,
+    Unknown,
+    SymSlash,
+    Identifier,
+    CompilerPass,
+	Invalid,
+    EndOfFile,
 };
 
 struct Token
 {
-	TokenId id;
-	SourceLocation location;
-	string  text;
-};
-
-enum class TokenizerResult
-{
-	Pending,
-	EndOfFile,
-	Error,
+    TokenId        id;
+    SourceLocation location;
+    string         text;
 };
 
 class Tokenizer
 {
 public:
-	void setFile(SourceFile* file);
-	TokenizerResult getToken(Token& token);
+    void setFile(SourceFile* file);
+    bool getToken(Token& token);
 
 private:
-	unsigned getChar();
-	void ZapCComment();
-	void GetIdentifier(Token& token);
+    unsigned getChar();
+    void     ZapCComment();
+    void     GetIdentifier(Token& token);
 
 private:
-	SourceFile* m_sourceFile = nullptr;
-	unsigned m_cacheChar = 0;
-	SourceLocation m_location;
-	bool m_endReached = false;
+    SourceFile*    m_sourceFile = nullptr;
+    unsigned       m_cacheChar  = 0;
+    SourceLocation m_location;
+    bool           m_endReached = false;
 };

@@ -13,8 +13,9 @@ void ReadFileJob::execute()
     bool canLex = true;
     while (true)
     {
-        auto result = m_tokenizer.getToken(m_token);
-        if (result != TokenizerResult::Pending)
+        if (!m_tokenizer.getToken(m_token))
+            return;
+        if (m_token.id == TokenId::EndOfFile)
             break;
 
         // Top level
