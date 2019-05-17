@@ -2,4 +2,3 @@
 class Error
 {
 };
-

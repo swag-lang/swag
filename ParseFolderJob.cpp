@@ -6,25 +6,24 @@
 #include "JobThread.h"
 #include "ThreadManager.h"
 
-ParseFolderJob::ParseFolderJob(const fs::path& path) : m_path{path}
+ParseFolderJob::ParseFolderJob(const fs::path& path)
+    : m_path{path}
 {
 }
 
 void ParseFolderJob::execute()
 {
-	for (auto& p : fs::recursive_directory_iterator(m_path))
-	{
-		if (p.path().extension() == ".swg" || p.path().extension() == ".cpp")
-		{
-			g_ThreadMgr.m_pool.m_mutex.lock();
-			auto job = g_ThreadMgr.m_pool.m_readFileJob.alloc();
-			auto file = g_ThreadMgr.m_pool.m_sourceFile.alloc();
-			g_ThreadMgr.m_pool.m_mutex.unlock();
+    for (auto& p : fs::recursive_directory_iterator(m_path))
+    {
+        if (p.path().extension() == ".swg" || p.path().extension() == ".cpp")
+        {
+            auto job  = g_Pool.m_readFileJob.alloc();
+            auto file = g_Pool.m_sourceFile.alloc();
 
-			job->setFile(file);
-			file->setPath(p.path());
+            job->setFile(file);
+            file->setPath(p.path());
 
-			g_ThreadMgr.addJob(job);
-		}
-	}
+            g_ThreadMgr.addJob(job);
+        }
+    }
 }

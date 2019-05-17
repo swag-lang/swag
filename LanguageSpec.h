@@ -4,9 +4,8 @@
 class LanguageSpec
 {
 public:
-	LanguageSpec();
+    LanguageSpec();
 
 public:
-	map<string, TokenId> m_keywords;
+    map<string, TokenId> m_keywords;
 };
-

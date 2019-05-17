@@ -10,39 +10,39 @@
 
 float toto(float a)
 {
-	return a / 3;
+    return a / 3;
 }
 
 int main()
 {
-	ffi_cif cif;
-	ffi_type *args[10];
-	void *values[10];
-	float f;
+    ffi_cif   cif;
+    ffi_type* args[10];
+    void*     values[10];
+    float     f;
 
-	args[0] = &ffi_type_float;
-	values[0] = &f;
+    args[0]   = &ffi_type_float;
+    values[0] = &f;
 
-	/* Initialize the cif */
-	ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 1, &ffi_type_double, args);
-	f = 666;
-	float result = 0;
-	ffi_call(&cif, FFI_FN(toto), &result, values);
+    /* Initialize the cif */
+    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 1, &ffi_type_double, args);
+    f            = 666;
+    float result = 0;
+    ffi_call(&cif, FFI_FN(toto), &result, values);
 
-	int cpt = 0;
-	typedef chrono::high_resolution_clock Clock;
-	auto t1 = Clock::now();
+    int                                   cpt = 0;
+    typedef chrono::high_resolution_clock Clock;
+    auto                                  t1 = Clock::now();
 
-	auto job1 = new ParseFolderJob("c:\\boulot\\sdb\\blade");
-	//auto job2 = new ParseFolderJob("c:\\boulot\\swag\\unittest");
-	g_ThreadMgr.init();
-	g_ThreadMgr.addJob(job1);
-	//g_ThreadMgr.addJob(job2);
-	g_ThreadMgr.waitEndJobs();
+    auto job1 = new ParseFolderJob("c:\\boulot\\sdb\\blade");
+    //auto job2 = new ParseFolderJob("c:\\boulot\\swag\\unittest");
+    g_ThreadMgr.init();
+    g_ThreadMgr.addJob(job1);
+    //g_ThreadMgr.addJob(job2);
+    g_ThreadMgr.waitEndJobs();
 
-	auto t2 = Clock::now();
-	chrono::duration<double> diff = t2 - t1;
-	cout << diff.count() << "s\n";
-	cout << g_Stats.numLines << " lines\n";
-	cout << g_Stats.numFiles << " files\n";
+    auto                     t2   = Clock::now();
+    chrono::duration<double> diff = t2 - t1;
+    cout << diff.count() << "s\n";
+    cout << g_Stats.numLines << " lines\n";
+    cout << g_Stats.numFiles << " files\n";
 }

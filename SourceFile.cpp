@@ -6,204 +6,204 @@
 
 void SourceFile::construct()
 {
-	const auto BUF_SIZE = 2048;
-	m_bufferSize = BUF_SIZE;
-	m_buffers[0] = new char[m_bufferSize];
-	m_buffers[1] = new char[m_bufferSize];
-	m_requests[0] = nullptr;
-	m_requests[1] = nullptr;
-	m_buffersSize[0] = 0;
-	m_buffersSize[1] = 0;
+    const auto BUF_SIZE = 2048;
+    m_bufferSize        = BUF_SIZE;
+    m_buffers[0]        = new char[m_bufferSize];
+    m_buffers[1]        = new char[m_bufferSize];
+    m_requests[0]       = nullptr;
+    m_requests[1]       = nullptr;
+    m_buffersSize[0]    = 0;
+    m_buffersSize[1]    = 0;
 }
 
 void SourceFile::reset()
 {
-	assert(false);
+    assert(false);
 }
 
 SourceFile::~SourceFile()
 {
-	delete m_buffers[0];
-	delete m_buffers[1];
+    delete m_buffers[0];
+    delete m_buffers[1];
 }
 
 void SourceFile::open()
 {
-	if (m_file != nullptr)
-		return;
+    if (m_file != nullptr)
+        return;
 
-	auto err = _wfopen_s(&m_file, m_path.c_str(), L"rb");
-	if (m_file == nullptr)
-	{
-		char buf[256];
-		strerror_s(buf, err);
-		return;
-	}
-	
-	setvbuf(m_file, nullptr, _IONBF, 0);
+    auto err = _wfopen_s(&m_file, m_path.c_str(), L"rb");
+    if (m_file == nullptr)
+    {
+        char buf[256];
+        strerror_s(buf, err);
+        return;
+    }
 
-	// Read header
-	auto c1 = fgetc(m_file);
-	auto c2 = fgetc(m_file);
-	auto c3 = fgetc(m_file);
-	auto c4 = fgetc(m_file);
+    setvbuf(m_file, nullptr, _IONBF, 0);
 
-	if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
-	{
-		m_textFormat = TextFormat::UTF8;
-		fseek(m_file, 3, SEEK_SET);
-	}
+    // Read header
+    auto c1 = fgetc(m_file);
+    auto c2 = fgetc(m_file);
+    auto c3 = fgetc(m_file);
+    auto c4 = fgetc(m_file);
+
+    if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
+    {
+        m_textFormat = TextFormat::UTF8;
+        fseek(m_file, 3, SEEK_SET);
+    }
 }
 
 void SourceFile::close()
 {
-	fclose(m_file);
-	m_file = nullptr;
+    fclose(m_file);
+    m_file = nullptr;
 }
 
 void SourceFile::seekTo(long seek)
 {
-	fseek(m_file, seek, SEEK_SET);
+    fseek(m_file, seek, SEEK_SET);
 }
 
 long SourceFile::readTo(char* buffer)
 {
-	return (long) fread(buffer, 1, m_bufferSize, m_file);
+    return (long) fread(buffer, 1, m_bufferSize, m_file);
 }
 
 void SourceFile::waitRequest(int reqNum)
 {
-	std::unique_lock<std::mutex> lk(m_mutexNotify);
-	if (!m_requests[reqNum]->done)
-		m_Cv.wait(lk);
+    std::unique_lock<std::mutex> lk(m_mutexNotify);
+    if (!m_requests[reqNum]->done)
+        m_Cv.wait(lk);
 }
 
 void SourceFile::notifyLoad()
 {
-	std::unique_lock<std::mutex> lk(m_mutexNotify);
-	m_Cv.notify_one();
+    std::unique_lock<std::mutex> lk(m_mutexNotify);
+    m_Cv.notify_one();
 }
 
 void SourceFile::validateRequest(int reqNum)
 {
-	auto loadingTh = g_ThreadMgr.m_loadingThread;
-	auto req = m_requests[reqNum];
+    auto loadingTh = g_ThreadMgr.m_loadingThread;
+    auto req       = m_requests[reqNum];
 
-	m_buffersSize[reqNum] = req->loadedSize;
-	m_doneLoading = req->loadedSize != m_bufferSize ? true : false;
-	m_totalRead += req->loadedSize;
+    m_buffersSize[reqNum] = req->loadedSize;
+    m_doneLoading         = req->loadedSize != m_bufferSize ? true : false;
+    m_totalRead += req->loadedSize;
 
-	loadingTh->releaseRequest(req);
-	m_requests[reqNum] = nullptr;
-	if (m_doneLoading)
-		close();
+    loadingTh->releaseRequest(req);
+    m_requests[reqNum] = nullptr;
+    if (m_doneLoading)
+        close();
 }
 
 void SourceFile::buildRequest(int reqNum)
 {
-	auto loadingTh = g_ThreadMgr.m_loadingThread;
-	auto req = loadingTh->newRequest();
+    auto loadingTh = g_ThreadMgr.m_loadingThread;
+    auto req       = loadingTh->newRequest();
 
-	req->file = this;
-	req->seek = m_fileSeek;
-	req->buffer = m_buffers[reqNum];
-	m_requests[reqNum] = req;
+    req->file          = this;
+    req->seek          = m_fileSeek;
+    req->buffer        = m_buffers[reqNum];
+    m_requests[reqNum] = req;
 
-	loadingTh->addRequest(req);
-	m_fileSeek += m_bufferSize;
+    loadingTh->addRequest(req);
+    m_fileSeek += m_bufferSize;
 }
 
 char SourceFile::getPrivateChar()
-{	
-	if (m_bufferCurSeek >= m_buffersSize[m_bufferCurIndex])
-	{
-		// Done
-		if (m_doneLoading)
-			return 0;
+{
+    if (m_bufferCurSeek >= m_buffersSize[m_bufferCurIndex])
+    {
+        // Done
+        if (m_doneLoading)
+            return 0;
 
-		auto loadingTh = g_ThreadMgr.m_loadingThread;
-		auto nextBufIndex = (m_bufferCurIndex + 1) % 2;
+        auto loadingTh    = g_ThreadMgr.m_loadingThread;
+        auto nextBufIndex = (m_bufferCurIndex + 1) % 2;
 
-		if (!m_requests[nextBufIndex])
-			buildRequest(nextBufIndex);
-		waitRequest(nextBufIndex);
-		validateRequest(nextBufIndex);
-	
-		m_bufferCurIndex = (m_bufferCurIndex + 1) % 2;
-		m_bufferCurSeek = 0;
+        if (!m_requests[nextBufIndex])
+            buildRequest(nextBufIndex);
+        waitRequest(nextBufIndex);
+        validateRequest(nextBufIndex);
 
-		// Make an async request to read the next buffer
-		if (!m_doneLoading)
-		{
-			nextBufIndex = (m_bufferCurIndex + 1) % 2;
-			buildRequest(nextBufIndex);
-		}
-	}
+        m_bufferCurIndex = (m_bufferCurIndex + 1) % 2;
+        m_bufferCurSeek  = 0;
 
-	char c = m_buffers[m_bufferCurIndex][m_bufferCurSeek++];
-	return c;
+        // Make an async request to read the next buffer
+        if (!m_doneLoading)
+        {
+            nextBufIndex = (m_bufferCurIndex + 1) % 2;
+            buildRequest(nextBufIndex);
+        }
+    }
+
+    char c = m_buffers[m_bufferCurIndex][m_bufferCurSeek++];
+    return c;
 }
 
 unsigned SourceFile::getChar()
 {
-	char c = getPrivateChar();
+    char c = getPrivateChar();
 
-	// Ascii
-	if (m_textFormat == TextFormat::Ascii)
-		return c;
+    // Ascii
+    if (m_textFormat == TextFormat::Ascii)
+        return c;
 
-	// utf8
-	if (m_textFormat == TextFormat::UTF8)
-	{
-		unsigned wc;
-		if ((c & 0x80) == 0)
-			return c;
+    // utf8
+    if (m_textFormat == TextFormat::UTF8)
+    {
+        unsigned wc;
+        if ((c & 0x80) == 0)
+            return c;
 
-		if ((c & 0xE0) == 0xC0)
-		{
-			wc = (c & 0x1F) << 6;
-			wc |= (getPrivateChar() & 0x3F);
-			return wc;
-		}
+        if ((c & 0xE0) == 0xC0)
+        {
+            wc = (c & 0x1F) << 6;
+            wc |= (getPrivateChar() & 0x3F);
+            return wc;
+        }
 
-		if ((c & 0xF0) == 0xE0)
-		{
-			wc = (c & 0xF) << 12;
-			wc |= (getPrivateChar() & 0x3F) << 6;
-			wc |= (getPrivateChar() & 0x3F);
-			return wc;
-		}
+        if ((c & 0xF0) == 0xE0)
+        {
+            wc = (c & 0xF) << 12;
+            wc |= (getPrivateChar() & 0x3F) << 6;
+            wc |= (getPrivateChar() & 0x3F);
+            return wc;
+        }
 
-		if ((c & 0xF8) == 0xF0)
-		{
-			wc = (c & 0x7) << 18;
-			wc |= (getPrivateChar() & 0x3F) << 12;
-			wc |= (getPrivateChar() & 0x3F) << 6;
-			wc |= (getPrivateChar() & 0x3F);
-			return wc;
-		}
+        if ((c & 0xF8) == 0xF0)
+        {
+            wc = (c & 0x7) << 18;
+            wc |= (getPrivateChar() & 0x3F) << 12;
+            wc |= (getPrivateChar() & 0x3F) << 6;
+            wc |= (getPrivateChar() & 0x3F);
+            return wc;
+        }
 
-		if ((c & 0xFC) == 0xF8)
-		{
-			wc = (c & 0x3) << 24;
-			wc |= (c & 0x3F) << 18;
-			wc |= (c & 0x3F) << 12;
-			wc |= (c & 0x3F) << 6;
-			wc |= (c & 0x3F);
-			return wc;
-		}
+        if ((c & 0xFC) == 0xF8)
+        {
+            wc = (c & 0x3) << 24;
+            wc |= (c & 0x3F) << 18;
+            wc |= (c & 0x3F) << 12;
+            wc |= (c & 0x3F) << 6;
+            wc |= (c & 0x3F);
+            return wc;
+        }
 
-		if ((c & 0xFE) == 0xFC)
-		{
-			wc = (c & 0x1) << 30;
-			wc |= (c & 0x3F) << 24;
-			wc |= (c & 0x3F) << 18;
-			wc |= (c & 0x3F) << 12;
-			wc |= (c & 0x3F) << 6;
-			wc |= (c & 0x3F);
-			return wc;
-		}
-	}
+        if ((c & 0xFE) == 0xFC)
+        {
+            wc = (c & 0x1) << 30;
+            wc |= (c & 0x3F) << 24;
+            wc |= (c & 0x3F) << 18;
+            wc |= (c & 0x3F) << 12;
+            wc |= (c & 0x3F) << 6;
+            wc |= (c & 0x3F);
+            return wc;
+        }
+    }
 
-	return '?';
+    return '?';
 }

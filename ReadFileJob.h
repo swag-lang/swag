@@ -5,14 +5,17 @@
 class ReadFileJob : public Job
 {
 public:
-	void execute() override;
-	void reset() override {};
-	void construct() override {};
-	void setFile(class SourceFile* file) { m_file = file; }
+    void execute() override;
+    void reset() override{};
+    void construct() override{};
+
+    void setFile(class SourceFile* file)
+    {
+        m_file = file;
+    }
 
 private:
-	class SourceFile* m_file = nullptr;
-	Tokenizer m_tokenizer;
-	Token m_token;
+    class SourceFile* m_file = nullptr;
+    Tokenizer         m_tokenizer;
+    Token             m_token;
 };
-

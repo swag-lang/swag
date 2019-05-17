@@ -4,7 +4,6 @@
 
 struct PoolFactory
 {
-	mutex m_mutex;
-	Pool<SourceFile>  m_sourceFile;
-	Pool<ReadFileJob> m_readFileJob;
+    Pool<SourceFile>  m_sourceFile;
+    Pool<ReadFileJob> m_readFileJob;
 };

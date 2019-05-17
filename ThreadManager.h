@@ -1,5 +1,4 @@
 #pragma once
-#include "PoolFactory.h"
 
 class Job;
 class JobThread;
@@ -7,31 +6,27 @@ class JobThread;
 class ThreadManager
 {
 public:
-	~ThreadManager();
+    ~ThreadManager();
 
-	class LoadingThread* m_loadingThread = nullptr;
+    class LoadingThread* m_loadingThread = nullptr;
 
-	void init();
-	void addJob(Job* job);
-	Job* getJob(class JobThread* thread);
+    void init();
+    void addJob(Job* job);
+    Job* getJob(class JobThread* thread);
 
-	void jobHasEnded();
-	void waitEndJobs();
-
-private:
-	Job* getJob();
+    void jobHasEnded();
+    void waitEndJobs();
 
 private:
-	vector<Job*> m_jobQueue;
-	vector<JobThread*> m_availableThreads;
-	vector<JobThread*> m_workers;
-	mutex m_mutexAdd;
-	condition_variable m_Cv;
-	mutex m_mutexDone;
-	condition_variable m_CvDone;
-	atomic<int> m_pendingJobs;
+    Job* getJob();
 
-public:
-	PoolFactory m_pool;
+private:
+    vector<Job*>       m_jobQueue;
+    vector<JobThread*> m_availableThreads;
+    vector<JobThread*> m_workers;
+    mutex              m_mutexAdd;
+    condition_variable m_Cv;
+    mutex              m_mutexDone;
+    condition_variable m_CvDone;
+    atomic<int>        m_pendingJobs;
 };
-

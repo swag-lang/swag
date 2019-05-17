@@ -58,9 +58,6 @@
     <ClCompile Include="LanguageSpec.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="Pool.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -142,8 +139,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="win64.S">
-      <Filter>FFI</Filter>
+    <None Include=".clang-format">
+      <Filter>Main</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="win64.S" />
   </ItemGroup>
 </Project>

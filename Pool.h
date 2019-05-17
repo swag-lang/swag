@@ -29,10 +29,12 @@ private:
 	PoolSlot<T, S>*	m_rootSlot = nullptr;
 	PoolSlot<T, S>*	m_lastSlot = nullptr;
 	PoolElement* m_firstFree   = nullptr;
+	mutex m_mutex;
 
 public:
 	T* alloc()
 	{
+		lock_guard<mutex> lg(m_mutex);
 		if (m_firstFree)
 		{
 			auto cur = m_firstFree;
@@ -68,6 +70,7 @@ public:
 
 	void free(void* addr)
 	{
+		lock_guard<mutex> lg(m_mutex);
 		((T*) addr)->nextFree = m_firstFree;
 		m_firstFree = ((T*)addr);
 	}
