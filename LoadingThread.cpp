@@ -14,13 +14,13 @@ LoadingThread::~LoadingThread()
 
 void LoadingThread::releaseRequest(LoadingThreadRequest* request)
 {
-    unique_lock<mutex> lk(m_mutexNew);
+    lock_guard<mutex> lk(m_mutexNew);
     m_freeRequests.push_back(request);
 }
 
 LoadingThreadRequest* LoadingThread::newRequest()
 {
-    unique_lock<mutex> lk(m_mutexNew);
+    lock_guard<mutex> lk(m_mutexNew);
     if (!m_freeRequests.empty())
     {
         auto req = m_freeRequests.back();
@@ -37,14 +37,14 @@ LoadingThreadRequest* LoadingThread::newRequest()
 
 void LoadingThread::addRequest(LoadingThreadRequest* request)
 {
-    unique_lock<mutex> lk(m_mutexAdd);
+    lock_guard<mutex> lk(m_mutexAdd);
     m_queue.push_back(request);
     m_Cv.notify_one();
 }
 
 LoadingThreadRequest* LoadingThread::getRequest()
 {
-    unique_lock<mutex> lk(m_mutexAdd);
+    lock_guard<mutex> lk(m_mutexAdd);
     if (m_queue.empty())
         return nullptr;
     auto req = m_queue.back();

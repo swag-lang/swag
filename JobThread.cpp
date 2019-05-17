@@ -15,7 +15,7 @@ JobThread::~JobThread()
 
 void JobThread::notifyJob()
 {
-    unique_lock<mutex> lk(m_mutexNotify);
+    lock_guard<mutex> lk(m_mutexNotify);
     m_Cv.notify_one();
 }
 
