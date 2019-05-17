@@ -5,10 +5,6 @@
 #include "Global.h"
 #include "Stats.h"
 
-ReadFileJob::ReadFileJob(SourceFile* file) : m_file{file}
-{
-}
-
 void ReadFileJob::execute()
 {
 	g_Stats.numFiles++;

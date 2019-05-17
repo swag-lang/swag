@@ -40,7 +40,7 @@ void JobThread::loop()
 		}
 
 		job->execute();
-		delete job;
+		job->release();
 		g_ThreadMgr.jobHasEnded();
 	}
 }

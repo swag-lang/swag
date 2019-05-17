@@ -1,7 +1,9 @@
 #pragma once
+#include "PoolFactory.h"
+
 class JobThread
 {
-	friend class ThreadManager;
+	friend class ThreadManager;	
 
 public:
 	JobThread();
@@ -18,4 +20,3 @@ private:
 	mutex m_mutexNotify;
 	condition_variable m_Cv;
 };
-

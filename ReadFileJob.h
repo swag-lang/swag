@@ -1,13 +1,16 @@
 #pragma once
-#include "ThreadManager.h"
 #include "Tokenizer.h"
+#include "Job.h"
 
 class ReadFileJob : public Job
 {
 public:
-	ReadFileJob(class SourceFile* file);
 	void execute() override;
+	void reset() override {};
+	void construct() override {};
+	void setFile(class SourceFile* file) { m_file = file; }
 
+private:
 	class SourceFile* m_file = nullptr;
 	Tokenizer m_tokenizer;
 	Token m_token;

@@ -58,6 +58,9 @@
     <ClCompile Include="LanguageSpec.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="Pool.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -113,6 +116,15 @@
     </ClInclude>
     <ClInclude Include="LanguageSpec.h">
       <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="Pool.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="PoolFactory.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Job.h">
+      <Filter>Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

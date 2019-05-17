@@ -4,15 +4,21 @@
 #include "LoadingThread.h"
 #include "Global.h"
 
-
-SourceFile::SourceFile(const fs::path& path, int bufferSize) : m_path{path}, m_bufferSize{bufferSize}
+void SourceFile::construct()
 {
-	m_buffers[0] = new char[bufferSize];
-	m_buffers[1] = new char[bufferSize];
+	const auto BUF_SIZE = 2048;
+	m_bufferSize = BUF_SIZE;
+	m_buffers[0] = new char[m_bufferSize];
+	m_buffers[1] = new char[m_bufferSize];
 	m_requests[0] = nullptr;
 	m_requests[1] = nullptr;
 	m_buffersSize[0] = 0;
 	m_buffersSize[1] = 0;
+}
+
+void SourceFile::reset()
+{
+	assert(false);
 }
 
 SourceFile::~SourceFile()

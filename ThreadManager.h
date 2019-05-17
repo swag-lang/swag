@@ -1,9 +1,8 @@
 #pragma once
-class Job
-{
-public:
-	virtual void execute() = 0;
-};
+#include "PoolFactory.h"
+
+class Job;
+class JobThread;
 
 class ThreadManager
 {
@@ -31,5 +30,8 @@ private:
 	mutex m_mutexDone;
 	condition_variable m_CvDone;
 	atomic<int> m_pendingJobs;
+
+public:
+	PoolFactory m_pool;
 };
 

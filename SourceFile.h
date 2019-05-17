@@ -1,4 +1,6 @@
 #pragma once
+#include "Pool.h"
+
 enum ErrorIO
 {
 	Ok,
@@ -18,14 +20,16 @@ struct SourceLocation
 	int seek;
 };
 
-class SourceFile
+class SourceFile : public PoolElement
 {
 	friend class LoadingThread;
 
 public:
-	SourceFile(const fs::path& path, int bufferSize = 4096);
 	~SourceFile();
+	void construct() override;
+	void reset() override;
 
+	void setPath(const fs::path& path) { m_path = path; }
 	unsigned getChar();
 
 private:

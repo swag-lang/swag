@@ -1,8 +1,16 @@
 #pragma once
+struct IPool
+{
+	virtual void free(void *addr) = 0;
+};
+
 struct PoolElement
 {
-	PoolElement* nextFree;
+	PoolElement* nextFree = nullptr;
+	IPool* m_pool = nullptr;
+	void release() { if(m_pool) m_pool->free(this); }
 	virtual void reset() = 0;
+	virtual void construct() = 0;
 };
 
 template<typename T, int S>
@@ -13,8 +21,9 @@ struct PoolSlot
 	PoolSlot*	nextSlot = nullptr;
 };
 
+
 template<typename T, int S = 512>
-class Pool
+class Pool : public IPool
 {
 private:
 	PoolSlot<T, S>*	m_rootSlot = nullptr;
@@ -35,23 +44,31 @@ public:
 		if (!m_rootSlot)
 		{
 			m_rootSlot = m_lastSlot = new PoolSlot<T, S>();
-			return &m_rootSlot->buffer[0];
+			auto elem = &m_lastSlot->buffer[0];
+			elem->construct();
+			elem->m_pool = this;
+			return elem;
 		}
 
 		if (m_lastSlot->maxUsed == S)
 		{
 			m_lastSlot->nextSlot = new PoolSlot<T, S>();
 			m_lastSlot = m_lastSlot->nextSlot;
-			return &m_lastSlot->buffer[0];
+			auto elem = &m_lastSlot->buffer[0];
+			elem->m_pool = this;
+			elem->construct();
+			return elem;
 		}
 
-		return &m_lastSlot->buffer[m_lastSlot->maxUsed++];
+		auto elem = &m_lastSlot->buffer[m_lastSlot->maxUsed++];
+		elem->m_pool = this;
+		elem->construct();
+		return elem;
 	}
 
-	void free(T* addr)
+	void free(void* addr)
 	{
-		addr->nextFree = m_firstFree;
-		m_firstFree = addr;
+		((T*) addr)->nextFree = m_firstFree;
+		m_firstFree = ((T*)addr);
 	}
 };
-
