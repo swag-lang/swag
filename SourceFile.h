@@ -26,7 +26,9 @@ class SourceFile : public PoolElement
 
 public:
     fs::path m_path;
-	int m_unittestError = 0;
+
+    int  m_unittestError = 0;
+    bool m_doLex        = true;
 
 public:
     ~SourceFile();
@@ -37,16 +39,16 @@ public:
     void     report(const class Diagnostic& diag);
 
 private:
-    void    open();
-    void    cleanCache();
-    void    seekTo(long seek);
-    long    readTo(char* buffer);
-    void    notifyLoad();
-    void    close();
-    void    waitRequest(int reqNum);
-    void    validateRequest(int reqNum);
-    void    buildRequest(int reqNum);
-    char    getPrivateChar();
+    void open();
+    void cleanCache();
+    void seekTo(long seek);
+    long readTo(char* buffer);
+    void notifyLoad();
+    void close();
+    void waitRequest(int reqNum);
+    void validateRequest(int reqNum);
+    void buildRequest(int reqNum);
+    char getPrivateChar();
 
 private:
     ErrorIO                      m_errorIO    = ErrorIO::Ok;
