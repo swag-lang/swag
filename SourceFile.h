@@ -9,7 +9,6 @@ enum ErrorIO
 
 enum TextFormat
 {
-    Ascii,
     UTF8,
 };
 
@@ -51,7 +50,7 @@ private:
 
 private:
     ErrorIO                      m_errorIO    = ErrorIO::Ok;
-    TextFormat                   m_textFormat = TextFormat::Ascii;
+    TextFormat                   m_textFormat = TextFormat::UTF8;
     int                          m_bufferSize;
     FILE*                        m_file;
     long                         m_fileSeek       = 0;

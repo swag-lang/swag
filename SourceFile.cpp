@@ -164,17 +164,13 @@ unsigned SourceFile::getChar()
 {
     char c = getPrivateChar();
 
-    // Ascii
-    if (m_textFormat == TextFormat::Ascii)
-        return c;
-
     // utf8
     if (m_textFormat == TextFormat::UTF8)
     {
-        unsigned wc;
         if ((c & 0x80) == 0)
             return c;
 
+		unsigned wc;
         if ((c & 0xE0) == 0xC0)
         {
             wc = (c & 0x1F) << 6;
