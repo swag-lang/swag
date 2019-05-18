@@ -18,6 +18,7 @@ struct SourceLocation
     int line;
     int column;
     int seek;
+    int seekStartLine;
 };
 
 class SourceFile : public PoolElement
@@ -25,33 +26,32 @@ class SourceFile : public PoolElement
     friend class LoadingThread;
 
 public:
+    fs::path m_path;
+
+public:
     ~SourceFile();
-    void construct() override;
-    void reset() override;
-
-    void setPath(const fs::path& path)
-    {
-        m_path = path;
-    }
-
+    void     construct() override;
+    void     reset() override;
     unsigned getChar();
+    wstring  getLine(long seek);
+    void     report(class Diagnostic& diag);
 
 private:
-    void open();
-    void seekTo(long seek);
-    long readTo(char* buffer);
-    void notifyLoad();
-    void close();
-    void waitRequest(int reqNum);
-    void validateRequest(int reqNum);
-    void buildRequest(int reqNum);
-    char getPrivateChar();
+    void    open();
+    void    cleanCache();
+    void    seekTo(long seek);
+    long    readTo(char* buffer);
+    void    notifyLoad();
+    void    close();
+    void    waitRequest(int reqNum);
+    void    validateRequest(int reqNum);
+    void    buildRequest(int reqNum);
+    char    getPrivateChar();
 
 private:
     ErrorIO                      m_errorIO    = ErrorIO::Ok;
     TextFormat                   m_textFormat = TextFormat::Ascii;
     int                          m_bufferSize;
-    fs::path                     m_path;
     FILE*                        m_file;
     long                         m_fileSeek       = 0;
     long                         m_bufferCurSeek  = 0;

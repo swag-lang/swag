@@ -1,10 +1,21 @@
 #include "pch.h"
 #include "Log.h"
 #ifdef WIN32
+#include <fcntl.h>
+#include <io.h>
 
 Log::Log()
 {
     consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    CONSOLE_SCREEN_BUFFER_INFO info;
+    GetConsoleScreenBufferInfo(consoleHandle, &info);
+    defaultAttributes = info.wAttributes;
+}
+
+void Log::setDefaultColor()
+{
+    ::SetConsoleTextAttribute(consoleHandle, defaultAttributes);
 }
 
 void Log::setColor(LogColor color)
@@ -59,7 +70,8 @@ void Log::setColor(LogColor color)
         break;
     }
 
-    ::SetConsoleTextAttribute(consoleHandle, attributes);
+	WORD back = defaultAttributes & (BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+    ::SetConsoleTextAttribute(consoleHandle, attributes | back);
 }
 
 #endif // WIN32

@@ -4,5 +4,5 @@
 
 LanguageSpec::LanguageSpec()
 {
-	m_keywords["#pass"] = TokenId::CompilerPass;
+	m_keywords[L"#pass"] = TokenId::CompilerPass;
 }

@@ -4,6 +4,8 @@
 #include "Global.h"
 #include "Stats.h"
 #include "LanguageSpec.h"
+#include "Diagnostic.h"
+#include "CommandLine.h"
 
 void Tokenizer::setFile(class SourceFile* file)
 {
@@ -18,14 +20,15 @@ void Tokenizer::setFile(class SourceFile* file)
 inline unsigned Tokenizer::getChar()
 {
     // One character is already there, no need to read
+    unsigned c = 0;
     if (m_cacheChar)
     {
-        auto c      = m_cacheChar;
+        c           = m_cacheChar;
         m_cacheChar = 0;
-        return c;
     }
+    else
+        c = m_sourceFile->getChar();
 
-    auto c = m_sourceFile->getChar();
     if (!c)
     {
         if (!m_endReached)
@@ -37,19 +40,29 @@ inline unsigned Tokenizer::getChar()
         return 0;
     }
 
+    m_location.column++;
     m_location.seek++;
 
-    if (c == '\n')
+    // Align tabulations
+    if (c == '\t')
+    {
+        while (m_location.column % g_CommandLine.tabSize)
+            m_location.column++;
+    }
+
+    // End of line
+    else if (c == '\n')
     {
         g_Stats.numLines++;
         m_location.column = 0;
         m_location.line++;
+        m_location.seekStartLine = m_location.seek;
     }
 
     return c;
 }
 
-void Tokenizer::ZapCComment()
+bool Tokenizer::ZapCComment(Token& token)
 {
     int countEmb = 1;
     while (true)
@@ -59,7 +72,13 @@ void Tokenizer::ZapCComment()
             nc = getChar();
 
         if (!nc)
-            return;
+        {
+            token.endLocation = token.startLocation;
+            token.endLocation.column += 2;
+            Diagnostic diag(m_sourceFile, token.startLocation, token.endLocation, L"unexpected end of file found in comment");
+            m_sourceFile->report(diag);
+            return false;
+        }
 
         if (nc == '*')
         {
@@ -68,7 +87,7 @@ void Tokenizer::ZapCComment()
             {
                 countEmb--;
                 if (countEmb == 0)
-                    return;
+                    return true;
             }
 
             continue;
@@ -108,8 +127,8 @@ bool Tokenizer::getToken(Token& token)
 {
     while (true)
     {
-        token.location = m_location;
-        auto c         = getChar();
+        token.startLocation = m_location;
+        auto c              = getChar();
         if (c == 0)
         {
             token.id = TokenId::EndOfFile;
@@ -136,11 +155,13 @@ bool Tokenizer::getToken(Token& token)
             // C comment /*
             if (nc == '*')
             {
-                ZapCComment();
+                if (!ZapCComment(token))
+                    return false;
                 continue;
             }
 
-            token.id = TokenId::SymSlash;
+            token.endLocation = m_location;
+            token.id          = TokenId::SymSlash;
             return true;
         }
 
@@ -149,11 +170,16 @@ bool Tokenizer::getToken(Token& token)
         {
             token.text = c;
             GetIdentifier(token);
+            token.endLocation = m_location;
             return true;
         }
 
-		token.id = TokenId::Invalid;
-        return true;
+        token.text        = c;
+        token.id          = TokenId::Invalid;
+        token.endLocation = m_location;
+        Diagnostic diag(m_sourceFile, token.startLocation, token.endLocation, format(L"invalid character '%s'", token.text.c_str()), DiagnosticLevel::Error);
+        m_sourceFile->report(diag);
+        return false;
     }
 
     return true;

@@ -23,6 +23,7 @@ class Log
     mutex access;
 #ifdef WIN32
     HANDLE consoleHandle = NULL;
+    WORD   defaultAttributes = 0;
 #endif
 
 public:
@@ -39,29 +40,15 @@ public:
     }
 
     void setColor(LogColor color);
+    void setDefaultColor();
 
-    void print(const char* message)
+    void print(const wstring& message)
     {
-        printf(message);
-    }
-
-    void print(string message)
-    {
-        print(message.c_str());
-    }
-
-    void print(const wchar_t* message)
-    {
-        wprintf(message);
-    }
-
-    void print(wstring message)
-    {
-        print(message.c_str());
+        wcout << message;
     }
 
     void eol()
     {
-        print(L"\n");
+        wcout << L'\n';
     }
 };

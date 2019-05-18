@@ -2,7 +2,10 @@
 #include "SourceFile.h"
 #include "ThreadManager.h"
 #include "LoadingThread.h"
+#include "CommandLine.h"
 #include "Global.h"
+#include "Log.h"
+#include "Diagnostic.h"
 
 void SourceFile::construct()
 {
@@ -10,10 +13,19 @@ void SourceFile::construct()
     m_bufferSize        = BUF_SIZE;
     m_buffers[0]        = new char[m_bufferSize];
     m_buffers[1]        = new char[m_bufferSize];
-    m_requests[0]       = nullptr;
-    m_requests[1]       = nullptr;
-    m_buffersSize[0]    = 0;
-    m_buffersSize[1]    = 0;
+    cleanCache();
+}
+
+void SourceFile::cleanCache()
+{
+    m_requests[0]    = nullptr;
+    m_requests[1]    = nullptr;
+    m_buffersSize[0] = 0;
+    m_buffersSize[1] = 0;
+    m_bufferCurSeek  = 0;
+    m_bufferCurIndex = 0;
+    m_fileSeek       = 0;
+    m_doneLoading    = false;
 }
 
 void SourceFile::reset()
@@ -57,8 +69,11 @@ void SourceFile::open()
 
 void SourceFile::close()
 {
-    fclose(m_file);
-    m_file = nullptr;
+    if (m_file)
+    {
+        fclose(m_file);
+        m_file = nullptr;
+    }
 }
 
 void SourceFile::seekTo(long seek)
@@ -206,4 +221,42 @@ unsigned SourceFile::getChar()
     }
 
     return '?';
+}
+
+wstring SourceFile::getLine(long seek)
+{
+    open();
+    cleanCache();
+    seekTo(seek);
+
+    wstring line;
+    int     column = 0;
+    while (true)
+    {
+        auto c = getChar();
+        if (!c || c == '\n')
+            break;
+        if (c == '\t')
+        {
+            column++;
+            line += L" ";
+            while (column % g_CommandLine.tabSize)
+            {
+                column++;
+                line += L" ";
+            }
+        }
+        else
+			line += c;
+    }
+
+    close();
+    return line;
+}
+
+void SourceFile::report(Diagnostic& diag)
+{
+    g_Log.lock();
+    diag.report();
+    g_Log.unlock();
 }

@@ -21,7 +21,7 @@ void ParseFolderJob::execute()
             auto file = g_Pool.m_sourceFile.alloc();
 
             job->setFile(file);
-            file->setPath(p.path());
+            file->m_path = p.path();
 
             g_ThreadMgr.addJob(job);
         }

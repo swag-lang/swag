@@ -7,5 +7,5 @@ public:
     LanguageSpec();
 
 public:
-    map<string, TokenId> m_keywords;
+    map<wstring, TokenId> m_keywords;
 };

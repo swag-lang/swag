@@ -24,7 +24,7 @@ int main()
     values[0] = &f;
 
     /* Initialize the cif */
-    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 1, &ffi_type_double, args);
+    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 1, &ffi_type_float, args);
     f            = 666;
     float result = 0;
     ffi_call(&cif, FFI_FN(toto), &result, values);
@@ -33,16 +33,16 @@ int main()
     typedef chrono::high_resolution_clock Clock;
     auto                                  t1 = Clock::now();
 
-    auto job1 = new ParseFolderJob("c:\\boulot\\sdb\\blade");
-    //auto job2 = new ParseFolderJob("c:\\boulot\\swag\\unittest");
+    //auto job1 = new ParseFolderJob("c:\\boulot\\sdb\\blade");
+    auto job2 = new ParseFolderJob("c:\\boulot\\swag\\unittest");
     g_ThreadMgr.init();
-    g_ThreadMgr.addJob(job1);
-    //g_ThreadMgr.addJob(job2);
+    //g_ThreadMgr.addJob(job1);
+    g_ThreadMgr.addJob(job2);
     g_ThreadMgr.waitEndJobs();
 
     auto                     t2   = Clock::now();
     chrono::duration<double> diff = t2 - t1;
-    cout << diff.count() << "s\n";
-    cout << g_Stats.numLines << " lines\n";
-    cout << g_Stats.numFiles << " files\n";
+    wcout << diff.count() << "s\n";
+    wcout << g_Stats.numLines << " lines\n";
+    wcout << g_Stats.numFiles << " files\n";
 }

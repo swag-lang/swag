@@ -6,15 +6,16 @@ enum class TokenId
     SymSlash,
     Identifier,
     CompilerPass,
-	Invalid,
+    Invalid,
     EndOfFile,
 };
 
 struct Token
 {
     TokenId        id;
-    SourceLocation location;
-    string         text;
+    SourceLocation startLocation;
+    SourceLocation endLocation;
+    wstring        text;
 };
 
 class Tokenizer
@@ -25,7 +26,7 @@ public:
 
 private:
     unsigned getChar();
-    void     ZapCComment();
+    bool     ZapCComment(Token& token);
     void     GetIdentifier(Token& token);
 
 private:

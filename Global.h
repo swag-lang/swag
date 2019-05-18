@@ -16,3 +16,5 @@ extern struct Stats        g_Stats;
 extern class ThreadManager g_ThreadMgr;
 extern class LanguageSpec  g_LangSpec;
 extern struct PoolFactory  g_Pool;
+
+extern wstring format(const wchar_t* format, ...);
