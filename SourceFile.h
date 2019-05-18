@@ -27,6 +27,7 @@ class SourceFile : public PoolElement
 
 public:
     fs::path m_path;
+	int m_unittestError = 0;
 
 public:
     ~SourceFile();
@@ -34,7 +35,7 @@ public:
     void     reset() override;
     unsigned getChar();
     wstring  getLine(long seek);
-    void     report(class Diagnostic& diag);
+    void     report(const class Diagnostic& diag);
 
 private:
     void    open();

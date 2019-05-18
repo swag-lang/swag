@@ -5,7 +5,7 @@
 class ReadFileJob : public Job
 {
 public:
-    void execute() override;
+    bool execute() override;
     void reset() override{};
     void construct() override{};
 
@@ -15,7 +15,11 @@ public:
     }
 
 private:
+	bool doCompilerUnitTest();
+
+private:
     class SourceFile* m_file = nullptr;
     Tokenizer         m_tokenizer;
     Token             m_token;
 };
+

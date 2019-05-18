@@ -79,6 +79,7 @@ void SourceFile::close()
 void SourceFile::seekTo(long seek)
 {
     fseek(m_file, seek, SEEK_SET);
+	m_fileSeek = seek;
 }
 
 long SourceFile::readTo(char* buffer)
@@ -247,15 +248,28 @@ wstring SourceFile::getLine(long seek)
             }
         }
         else
-			line += c;
+            line += c;
     }
 
     close();
     return line;
 }
 
-void SourceFile::report(Diagnostic& diag)
+void SourceFile::report(const Diagnostic& diag)
 {
+    if (m_unittestError && diag.m_level == DiagnosticLevel::Error)
+    {
+        m_unittestError--;
+        if (g_CommandLine.verbose)
+        {
+            g_Log.lock();
+            diag.report(true);
+            g_Log.unlock();
+        }
+
+        return;
+    }
+
     g_Log.lock();
     diag.report();
     g_Log.unlock();

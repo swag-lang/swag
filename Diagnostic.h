@@ -1,5 +1,6 @@
 #pragma once
 #include "SourceFile.h"
+#include "Tokenizer.h"
 
 enum DiagnosticLevel
 {
@@ -37,15 +38,28 @@ public:
     {
     }
 
+    Diagnostic(SourceFile* file, const Token& token, const wstring& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : m_file{file}
+        , m_startLocation{token.startLocation}
+        , m_endLocation{token.endLocation}
+        , m_msg{msg}
+        , m_level{level}
+        , m_hasFile{true}
+        , m_hasLocation{true}
+        , m_hasRangeLocation{true}
+        , m_printSource{true}
+    {
+    }
+
     SourceFile*     m_file = nullptr;
     SourceLocation  m_startLocation;
     SourceLocation  m_endLocation;
     wstring         m_msg;
     DiagnosticLevel m_level;
-    bool            m_hasFile = false;
-    bool            m_hasLocation = false;
+    bool            m_hasFile          = false;
+    bool            m_hasLocation      = false;
     bool            m_hasRangeLocation = false;
-    bool            m_printSource = false;
+    bool            m_printSource      = false;
 
-    void report(bool verboseMode = false);
+    void report(bool verboseMode = false) const;
 };

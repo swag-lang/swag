@@ -5,7 +5,7 @@ enum class TokenId
     Unknown,
     SymSlash,
     Identifier,
-    CompilerPass,
+    CompilerUnitTest,
     Invalid,
     EndOfFile,
 };
@@ -25,9 +25,10 @@ public:
     bool getToken(Token& token);
 
 private:
-    unsigned getChar();
+    unsigned getChar(bool seek = true);
     bool     ZapCComment(Token& token);
     void     GetIdentifier(Token& token);
+    void     treatChar(unsigned c);
 
 private:
     SourceFile*    m_sourceFile = nullptr;

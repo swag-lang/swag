@@ -6,7 +6,7 @@ class Job : public PoolElement
     friend class ThreadManager;
 
 public:
-    virtual void execute() = 0;
+    virtual bool execute() = 0;
     void         reset() override{};
 
 protected:

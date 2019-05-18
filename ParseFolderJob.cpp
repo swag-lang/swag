@@ -11,7 +11,7 @@ ParseFolderJob::ParseFolderJob(const fs::path& path)
 {
 }
 
-void ParseFolderJob::execute()
+bool ParseFolderJob::execute()
 {
     for (auto& p : fs::recursive_directory_iterator(m_path))
     {
@@ -26,4 +26,6 @@ void ParseFolderJob::execute()
             g_ThreadMgr.addJob(job);
         }
     }
+
+	return true;
 }

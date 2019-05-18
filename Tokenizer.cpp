@@ -17,33 +17,15 @@ void Tokenizer::setFile(class SourceFile* file)
     m_sourceFile      = file;
 }
 
-inline unsigned Tokenizer::getChar()
+inline void Tokenizer::treatChar(unsigned c)
 {
-    // One character is already there, no need to read
-    unsigned c = 0;
-    if (m_cacheChar)
-    {
-        c           = m_cacheChar;
-        m_cacheChar = 0;
-    }
-    else
-        c = m_sourceFile->getChar();
+	if (!c)
+		return;
 
-    if (!c)
-    {
-        if (!m_endReached)
-        {
-            m_endReached = true;
-            g_Stats.numLines++;
-        }
-
-        return 0;
-    }
-
-    m_location.column++;
     m_location.seek++;
+    m_location.column++;
 
-    // Align tabulations
+	// Align tabulations
     if (c == '\t')
     {
         while (m_location.column % g_CommandLine.tabSize)
@@ -58,7 +40,35 @@ inline unsigned Tokenizer::getChar()
         m_location.line++;
         m_location.seekStartLine = m_location.seek;
     }
+}
 
+inline unsigned Tokenizer::getChar(bool seek)
+{
+    // One character is already there, no need to read
+    unsigned c = 0;
+    if (m_cacheChar)
+    {
+        c           = m_cacheChar;
+        m_cacheChar = 0;
+    }
+    else
+    {
+        c = m_sourceFile->getChar();
+    }
+
+    if (!c)
+    {
+        if (!m_endReached)
+        {
+            m_endReached = true;
+            g_Stats.numLines++;
+        }
+
+        return 0;
+    }
+
+	if (seek)
+		treatChar(c);
     return c;
 }
 
@@ -75,8 +85,7 @@ bool Tokenizer::ZapCComment(Token& token)
         {
             token.endLocation = token.startLocation;
             token.endLocation.column += 2;
-            Diagnostic diag(m_sourceFile, token.startLocation, token.endLocation, L"unexpected end of file found in comment");
-            m_sourceFile->report(diag);
+            m_sourceFile->report({m_sourceFile, token, L"unexpected end of file found in comment"});
             return false;
         }
 
@@ -107,11 +116,12 @@ bool Tokenizer::ZapCComment(Token& token)
 
 void Tokenizer::GetIdentifier(Token& token)
 {
-    auto c = getChar();
+    auto c = getChar(false);
     while ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')
     {
         token.text += c;
-        c = getChar();
+		treatChar(c);
+        c = getChar(false);
     }
 
     m_cacheChar = c;
@@ -155,8 +165,7 @@ bool Tokenizer::getToken(Token& token)
             // C comment /*
             if (nc == '*')
             {
-                if (!ZapCComment(token))
-                    return false;
+                SWAG_CHECK(ZapCComment(token));
                 continue;
             }
 

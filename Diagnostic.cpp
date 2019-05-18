@@ -4,10 +4,12 @@
 #include "SourceFile.h"
 #include "Log.h"
 
-void Diagnostic::report(bool verboseMode)
+void Diagnostic::report(bool verboseMode) const
 {
-    if (verboseMode)
-        g_Log.setColor(LogColor::DarkCyan);
+	if (verboseMode)
+		g_Log.setColor(LogColor::DarkCyan);
+	else
+		g_Log.setDefaultColor();
 
     // Source file and location
     if (m_hasFile)
@@ -62,15 +64,17 @@ void Diagnostic::report(bool verboseMode)
         for (int i = 0; i < m_startLocation.column - offset; i++)
             g_Log.print(L" ");
 
-		int endColumn;
+		int range = 1;
         if (!m_hasRangeLocation)
-            endColumn = m_startLocation.column - offset + 1;
+			range = 1;
         else if (m_endLocation.line == m_startLocation.line)
-            endColumn = m_endLocation.column - offset;
+            range = m_endLocation.column - m_startLocation.column;
         else
-            endColumn = (int) line.length() - m_startLocation.column - offset;
-        for (int i = m_startLocation.column - offset; i < endColumn; i++)
+			range = (int) line.length() - m_startLocation.column - offset;
+        for (int i = 0; i < range; i++)
             g_Log.print(L"^");
         g_Log.eol();
     }
+
+	g_Log.setDefaultColor();
 }
