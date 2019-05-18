@@ -53,6 +53,66 @@ bool Tokenizer::doNumberSuffix(Token& token)
 
         break;
     }
+
+    return true;
+}
+
+bool Tokenizer::doBinLiteral(Token& token)
+{
+    token.numValue.u64 = 0;
+    int rank           = 0;
+
+    bool     acceptSep = false;
+    unsigned offset;
+    auto     c = getCharNoSeek(offset);
+    while (c == '0' || c == '1' || SWAG_IS_NUMSEP(c))
+    {
+        token.text += c;
+        treatChar(c, offset);
+
+        // Digit separator
+        if (SWAG_IS_NUMSEP(c))
+        {
+            if (!acceptSep)
+            {
+                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, L"a digit separator can't start a literal number"));
+                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, L"forbidden consecutive digit separators"));
+            }
+
+            acceptSep = false;
+            c         = getCharNoSeek(offset);
+            continue;
+        }
+
+        acceptSep = true;
+        token.numValue.u64 <<= 1;
+        rank++;
+        SWAG_VERIFY(rank != 65, error(token, L"literal number is too big"));
+
+        token.numValue.u64 += (c - '0');
+
+        c = getCharNoSeek(offset);
+    }
+
+    // Be sure we don't have 0x without nothing
+    if (rank == 0)
+        SWAG_CHECK(errorNumberSyntax(token, L"missing at least one digit"));
+    // Be sure we don't have a number with a separator at its end
+    if (!acceptSep)
+        SWAG_CHECK(errorNumberSyntax(token, L"a digit separator can't end a literal number"));
+
+    // Suffix
+    token.id      = TokenId::LiteralNumber;
+    token.numType = TokenNumType::IntX;
+    if (c == '\'')
+    {
+        treatChar(c, offset);
+        SWAG_CHECK(doNumberSuffix(token));
+        SWAG_VERIFY(token.numType != TokenNumType::Bool, error(token, L"can't convert a binary literal number to 'bool'"));
+        SWAG_VERIFY(token.numType != TokenNumType::Float32, error(token, L"can't convert a binary literal number to 'f32'"));
+        SWAG_VERIFY(token.numType != TokenNumType::Float64, error(token, L"can't convert a binary literal number to 'f64'"));
+    }
+
     return true;
 }
 
@@ -130,6 +190,13 @@ bool Tokenizer::doNumberLiteral(unsigned c, Token& token)
         {
             token.text += c;
             SWAG_CHECK(doHexLiteral(token));
+            return true;
+        }
+
+		if (c == 'b' || c == 'B')
+        {
+            token.text += c;
+            SWAG_CHECK(doBinLiteral(token));
             return true;
         }
     }

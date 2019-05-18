@@ -55,6 +55,7 @@ private:
     void     treatChar(unsigned c, unsigned offset);
     bool     doNumberLiteral(unsigned c, Token& token);
     bool     doHexLiteral(Token& token);
+	bool     doBinLiteral(Token& token);
     bool     doNumberSuffix(Token& token);
     bool     error(Token& token, const wstring& msg);
     bool     errorNumberSyntax(Token& token, const wstring& msg);
