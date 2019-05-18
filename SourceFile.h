@@ -28,7 +28,7 @@ public:
     fs::path m_path;
 
     int  m_unittestError = 0;
-    bool m_doLex        = true;
+    bool m_doLex         = true;
 
 public:
     ~SourceFile();
@@ -49,6 +49,7 @@ private:
     void validateRequest(int reqNum);
     void buildRequest(int reqNum);
     char getPrivateChar();
+	void waitEndRequests();
 
 private:
     ErrorIO                      m_errorIO    = ErrorIO::Ok;
@@ -62,7 +63,8 @@ private:
     struct LoadingThreadRequest* m_requests[2];
     long                         m_buffersSize[2];
     mutex                        m_mutexNotify;
-    bool                         m_doneLoading = false;
-    int                          m_totalRead   = 0;
+    bool                         m_doneLoading          = false;
+    bool                         m_canPrepareNextBuffer = true;
+    int                          m_totalRead            = 0;
     condition_variable           m_Cv;
 };

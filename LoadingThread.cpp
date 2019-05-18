@@ -37,7 +37,7 @@ LoadingThreadRequest* LoadingThread::newRequest()
 
 void LoadingThread::addRequest(LoadingThreadRequest* request)
 {
-    lock_guard<mutex> lk(m_mutexAdd);
+	lock_guard<mutex> lk(m_mutexAdd);
     m_queue.push_back(request);
     m_Cv.notify_one();
 }

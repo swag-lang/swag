@@ -79,7 +79,6 @@ void SourceFile::close()
 void SourceFile::seekTo(long seek)
 {
     fseek(m_file, seek, SEEK_SET);
-	m_fileSeek = seek;
 }
 
 long SourceFile::readTo(char* buffer)
@@ -123,6 +122,7 @@ void SourceFile::buildRequest(int reqNum)
     req->file          = this;
     req->seek          = m_fileSeek;
     req->buffer        = m_buffers[reqNum];
+    req->buffer[0]     = 0;
     m_requests[reqNum] = req;
 
     loadingTh->addRequest(req);
@@ -149,7 +149,7 @@ char SourceFile::getPrivateChar()
         m_bufferCurSeek  = 0;
 
         // Make an async request to read the next buffer
-        if (!m_doneLoading)
+        if (!m_doneLoading && m_canPrepareNextBuffer)
         {
             nextBufIndex = (m_bufferCurIndex + 1) % 2;
             buildRequest(nextBufIndex);
@@ -170,7 +170,7 @@ unsigned SourceFile::getChar()
         if ((c & 0x80) == 0)
             return c;
 
-		unsigned wc;
+        unsigned wc;
         if ((c & 0xE0) == 0xC0)
         {
             wc = (c & 0x1F) << 6;
@@ -220,11 +220,24 @@ unsigned SourceFile::getChar()
     return '?';
 }
 
+void SourceFile::waitEndRequests()
+{
+	while (m_requests[m_bufferCurIndex] && !m_requests[m_bufferCurIndex]->done);
+	while (m_requests[(m_bufferCurIndex + 1) % 2] && !m_requests[(m_bufferCurIndex + 1) % 2]->done);
+}
+
 wstring SourceFile::getLine(long seek)
 {
+    // Be sure there's no pending requests
+    waitEndRequests();
+
     open();
     cleanCache();
     seekTo(seek);
+    m_fileSeek = seek;
+
+    // Do not prepare the next reading, as we just want one line
+    m_canPrepareNextBuffer = false;
 
     wstring line;
     int     column = 0;
@@ -247,13 +260,16 @@ wstring SourceFile::getLine(long seek)
             line += c;
     }
 
+    // Be sure there's no pending requests
+    waitEndRequests();
+
     close();
     return line;
 }
 
 void SourceFile::report(const Diagnostic& diag)
 {
-	// Do not raise an error if we are waiting for one, during tests
+    // Do not raise an error if we are waiting for one, during tests
     if (m_unittestError && diag.m_level == DiagnosticLevel::Error)
     {
         m_unittestError--;
@@ -267,7 +283,7 @@ void SourceFile::report(const Diagnostic& diag)
         return;
     }
 
-	// Raise error
+    // Raise error
     g_Log.lock();
     diag.report();
     g_Log.unlock();
