@@ -126,6 +126,9 @@
     <ClInclude Include="LexerJob.h">
       <Filter>Lexer</Filter>
     </ClInclude>
+    <ClInclude Include="Register.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

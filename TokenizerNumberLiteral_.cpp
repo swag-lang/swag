@@ -10,53 +10,112 @@ bool Tokenizer::errorNumberSyntax(Token& token, const wstring& msg)
     return false;
 }
 
+bool Tokenizer::doNumberSuffix(Token& token)
+{
+    Token tokenType;
+    tokenType.startLocation = m_location;
+    getIdentifier(tokenType);
+    SWAG_CHECK(tokenType.id == TokenId::NativeType || error(tokenType, format(L"invalid literal number suffix '%s'", tokenType.text.c_str())));
+
+    switch (token.numType)
+    {
+    case TokenNumType::IntX:
+        switch (tokenType.numType)
+        {
+        case TokenNumType::UInt8:
+            if (token.numValue.u64 > UINT8_MAX)
+                return error(token, format(L"can't convert literal number '%I64u' to 'u8'", token.numValue.u64));
+            break;
+        case TokenNumType::UInt16:
+            if (token.numValue.u64 > UINT16_MAX)
+                return error(token, format(L"can't convert literal number '%I64u' to 'u16'", token.numValue.u64));
+            break;
+        case TokenNumType::UInt32:
+            if (token.numValue.u64 > UINT32_MAX)
+                return error(token, format(L"can't convert literal number '%I64u' to 'u32'", token.numValue.u64));
+            break;
+        case TokenNumType::Int8:
+            if (token.numValue.u64 > UINT8_MAX)
+                return error(token, format(L"can't convert literal number '%I64u' to 's8'", token.numValue.u64));
+            break;
+        case TokenNumType::Int16:
+            if (token.numValue.u64 > UINT16_MAX)
+                return error(token, format(L"can't convert literal number '%I64u' to 's16'", token.numValue.u64));
+            break;
+        case TokenNumType::Int32:
+            if (token.numValue.u64 > UINT32_MAX)
+                return error(token, format(L"can't convert literal number '%I64u' to 's32'", token.numValue.u64));
+            break;
+        default:
+            token.numType = tokenType.numType;
+            break;
+        }
+
+        break;
+    }
+    return true;
+}
+
 bool Tokenizer::doHexLiteral(Token& token)
 {
-    uint64_t value = 0;
-    int      rank  = 0;
+    token.numValue.u64 = 0;
+    int rank           = 0;
 
-    bool acceptSep = false;
-    auto c         = getChar(false);
+    bool     acceptSep = false;
+    unsigned offset;
+    auto     c = getCharNoSeek(offset);
     while (SWAG_IS_HEX(c) || SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         token.text += c;
-        treatChar(c);
+        treatChar(c, offset);
 
-		// Digit separator
+        // Digit separator
         if (SWAG_IS_NUMSEP(c))
         {
-			if (!acceptSep)
-			{
-				SWAG_CHECK(rank != 0 || errorNumberSyntax(token, L"a digit separator can't start a literal number"));
-				SWAG_CHECK(rank == 0 || errorNumberSyntax(token, L"forbidden consecutive digit separators"));
-			}
+            if (!acceptSep)
+            {
+                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, L"a digit separator can't start a literal number"));
+                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, L"forbidden consecutive digit separators"));
+            }
 
             acceptSep = false;
-            c         = getChar(false);
+            c         = getCharNoSeek(offset);
             continue;
         }
 
         acceptSep = true;
-        value <<= 4;
+        token.numValue.u64 <<= 4;
         rank++;
-		SWAG_CHECK(rank != 17 || error(token, L"literal number is too big"));
+        SWAG_CHECK(rank != 17 || error(token, L"literal number is too big"));
 
         if (SWAG_IS_DIGIT(c))
-            value += (c - '0');
+            token.numValue.u64 += (c - '0');
         else if (c >= 'a' && c <= 'f')
-            value += (10 + (c - 'a'));
+            token.numValue.u64 += (10 + (c - 'a'));
         else
-            value += (10 + (c - 'A'));
+            token.numValue.u64 += (10 + (c - 'A'));
 
-        c = getChar(false);
+        c = getCharNoSeek(offset);
     }
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
         SWAG_CHECK(errorNumberSyntax(token, L"missing at least one digit"));
-	// Be sure we don't have a number with a separator at its end
+    // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
         SWAG_CHECK(errorNumberSyntax(token, L"a digit separator can't end a literal number"));
+
+    // Suffix
+    token.id      = TokenId::LiteralNumber;
+    token.numType = TokenNumType::IntX;
+    if (c == '\'')
+    {
+        treatChar(c, offset);
+        SWAG_CHECK(doNumberSuffix(token));
+        SWAG_VERIFY(token.numType != TokenNumType::Bool, error(token, L"can't convert an hexadecimal literal number to 'bool'"));
+        SWAG_VERIFY(token.numType != TokenNumType::Float32, error(token, L"can't convert an hexadecimal literal number to 'f32'"));
+        SWAG_VERIFY(token.numType != TokenNumType::Float64, error(token, L"can't convert an hexadecimal literal number to 'f64'"));
+    }
 
     return true;
 }

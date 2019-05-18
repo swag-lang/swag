@@ -71,6 +71,7 @@ void Diagnostic::report(bool verboseMode) const
             range = m_endLocation.column - m_startLocation.column;
         else
 			range = (int) line.length() - m_startLocation.column - offset;
+		range = max(1, range);
         for (int i = 0; i < range; i++)
             g_Log.print(L"^");
         g_Log.eol();

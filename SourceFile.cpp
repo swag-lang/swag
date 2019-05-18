@@ -131,6 +131,12 @@ void SourceFile::buildRequest(int reqNum)
 
 char SourceFile::getPrivateChar()
 {
+    if (m_directMode)
+    {
+        auto c = fgetc(m_file);
+        return c == EOF ? 0 : c;
+    }
+
     if (m_bufferCurSeek >= m_buffersSize[m_bufferCurIndex])
     {
         // Done
@@ -149,7 +155,7 @@ char SourceFile::getPrivateChar()
         m_bufferCurSeek  = 0;
 
         // Make an async request to read the next buffer
-        if (!m_doneLoading && m_canPrepareNextBuffer)
+        if (!m_doneLoading)
         {
             nextBufIndex = (m_bufferCurIndex + 1) % 2;
             buildRequest(nextBufIndex);
@@ -160,9 +166,10 @@ char SourceFile::getPrivateChar()
     return c;
 }
 
-unsigned SourceFile::getChar()
+unsigned SourceFile::getChar(unsigned& offset)
 {
     char c = getPrivateChar();
+    offset = 1;
 
     // utf8
     if (m_textFormat == TextFormat::UTF8)
@@ -175,6 +182,7 @@ unsigned SourceFile::getChar()
         {
             wc = (c & 0x1F) << 6;
             wc |= (getPrivateChar() & 0x3F);
+            offset += 1;
             return wc;
         }
 
@@ -183,6 +191,7 @@ unsigned SourceFile::getChar()
             wc = (c & 0xF) << 12;
             wc |= (getPrivateChar() & 0x3F) << 6;
             wc |= (getPrivateChar() & 0x3F);
+            offset += 2;
             return wc;
         }
 
@@ -192,6 +201,7 @@ unsigned SourceFile::getChar()
             wc |= (getPrivateChar() & 0x3F) << 12;
             wc |= (getPrivateChar() & 0x3F) << 6;
             wc |= (getPrivateChar() & 0x3F);
+            offset += 3;
             return wc;
         }
 
@@ -222,8 +232,10 @@ unsigned SourceFile::getChar()
 
 void SourceFile::waitEndRequests()
 {
-	while (m_requests[m_bufferCurIndex] && !m_requests[m_bufferCurIndex]->done);
-	while (m_requests[(m_bufferCurIndex + 1) % 2] && !m_requests[(m_bufferCurIndex + 1) % 2]->done);
+    while (m_requests[m_bufferCurIndex] && !m_requests[m_bufferCurIndex]->done)
+        ;
+    while (m_requests[(m_bufferCurIndex + 1) % 2] && !m_requests[(m_bufferCurIndex + 1) % 2]->done)
+        ;
 }
 
 wstring SourceFile::getLine(long seek)
@@ -232,18 +244,15 @@ wstring SourceFile::getLine(long seek)
     waitEndRequests();
 
     open();
-    cleanCache();
     seekTo(seek);
-    m_fileSeek = seek;
-
-    // Do not prepare the next reading, as we just want one line
-    m_canPrepareNextBuffer = false;
+    m_directMode = true;
 
     wstring line;
     int     column = 0;
     while (true)
     {
-        auto c = getChar();
+        unsigned offset = 0;
+        auto     c      = getChar(offset);
         if (!c || c == '\n')
             break;
         if (c == '\t')
@@ -260,9 +269,7 @@ wstring SourceFile::getLine(long seek)
             line += c;
     }
 
-    // Be sure there's no pending requests
-    waitEndRequests();
-
+    m_directMode = false;
     close();
     return line;
 }

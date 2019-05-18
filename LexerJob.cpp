@@ -10,16 +10,16 @@
 bool LexerJob::doCompilerUnitTest()
 {
     SWAG_CHECK(m_tokenizer.getToken(m_token));
-	if (m_token.text == L"error")
-	{
-		if(g_CommandLine.test)
-			m_file->m_unittestError++;
-	}
-	else if (m_token.text == L"tokenizer")
-	{
-		if (g_CommandLine.test)
-			m_file->m_doLex = false;
-	}
+    if (m_token.text == L"error")
+    {
+        if (g_CommandLine.test)
+            m_file->m_unittestError++;
+    }
+    else if (m_token.text == L"tokenizer")
+    {
+        if (g_CommandLine.test)
+            m_file->m_doLex = false;
+    }
     else
     {
         m_file->report({m_file, m_token, format(L"unknown #unittest parameter '%s'", m_token.text.c_str())});
@@ -35,9 +35,25 @@ bool LexerJob::execute()
     m_tokenizer.setFile(m_file);
 
     bool canLex = true;
+    bool result = true;
     while (true)
     {
-        SWAG_CHECK(m_tokenizer.getToken(m_token));
+        // During tests, we can cumulate more than one error during parsing
+        if (!m_tokenizer.getToken(m_token))
+        {
+            if (!g_CommandLine.test)
+                return false;
+            result = false;
+            while (true)
+            {
+                m_tokenizer.getToken(m_token);
+                if (m_token.id == TokenId::CompilerUnitTest)
+                    break;
+                if (m_token.id == TokenId::EndOfFile)
+                    return false;
+            }
+        }
+
         if (m_token.id == TokenId::EndOfFile)
             break;
 
@@ -54,5 +70,5 @@ bool LexerJob::execute()
             continue;
     }
 
-    return true;
+    return result;
 }

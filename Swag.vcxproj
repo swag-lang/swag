@@ -159,6 +159,7 @@
     <ClInclude Include="ffitarget.h" />
     <ClInclude Include="ffi_common.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Register.h" />
     <ClInclude Include="Job.h" />
     <ClInclude Include="JobThread.h" />
     <ClInclude Include="LanguageSpec.h" />

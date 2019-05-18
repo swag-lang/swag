@@ -17,13 +17,13 @@ void Tokenizer::setFile(class SourceFile* file)
     m_sourceFile      = file;
 }
 
-inline void Tokenizer::treatChar(unsigned c)
+inline void Tokenizer::treatChar(unsigned c, unsigned offset)
 {
     if (!c)
         return;
 
-	m_cacheChar = 0;
-    m_location.seek++;
+    m_cacheChar = 0;
+    m_location.seek += offset;
     m_location.column++;
 
     // Align tabulations
@@ -43,18 +43,34 @@ inline void Tokenizer::treatChar(unsigned c)
     }
 }
 
-inline unsigned Tokenizer::getChar(bool seek)
+inline unsigned Tokenizer::getChar()
 {
+	unsigned offset;
+	return getChar(offset, true);
+}
+
+inline unsigned Tokenizer::getCharNoSeek(unsigned& offset)
+{
+    return getChar(offset, false);
+}
+
+inline unsigned Tokenizer::getChar(unsigned& offset, bool seek)
+{
+    if (m_endReached)
+        return 0;
+
     // One character is already there, no need to read
     unsigned c = 0;
+    offset     = 1;
     if (m_cacheChar)
     {
         c           = m_cacheChar;
+        offset      = m_cacheOffset;
         m_cacheChar = 0;
     }
     else
     {
-        c = m_sourceFile->getChar();
+        c = m_sourceFile->getChar(offset);
     }
 
     if (!c)
@@ -69,9 +85,13 @@ inline unsigned Tokenizer::getChar(bool seek)
     }
 
     if (seek)
-        treatChar(c);
-	else
-		m_cacheChar = c;
+        treatChar(c, offset);
+    else
+    {
+        m_cacheChar   = c;
+        m_cacheOffset = offset;
+    }
+
     return c;
 }
 
@@ -117,21 +137,27 @@ bool Tokenizer::ZapCComment(Token& token)
     }
 }
 
-void Tokenizer::GetIdentifier(Token& token)
+void Tokenizer::getIdentifier(Token& token)
 {
-    auto c = getChar(false);
+	unsigned offset;
+    auto c = getCharNoSeek(offset);
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {
         token.text += c;
-        treatChar(c);
-        c = getChar(false);
+        treatChar(c, offset);
+        c = getCharNoSeek(offset);
     }
 
+    // Keyword
     auto it = g_LangSpec.m_keywords.find(token.text);
     if (it != g_LangSpec.m_keywords.end())
         token.id = it->second;
     else
         token.id = TokenId::Identifier;
+
+    // Type
+    if (token.id == TokenId::NativeType)
+        token.numType = g_LangSpec.m_nativeTypes[token.text];
 }
 
 bool Tokenizer::error(Token& token, const wstring& msg)
@@ -186,7 +212,7 @@ bool Tokenizer::getToken(Token& token)
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#')
         {
             token.text = c;
-            GetIdentifier(token);
+            getIdentifier(token);
             token.endLocation = m_location;
             if (token.id == TokenId::Identifier && token.text[0] == '#')
             {
@@ -197,12 +223,12 @@ bool Tokenizer::getToken(Token& token)
             return true;
         }
 
-		// Number literal
-		if (SWAG_IS_DIGIT(c))
-		{
-			SWAG_CHECK(doNumberLiteral(c, token));
-			return true;
-		}
+        // Number literal
+        if (SWAG_IS_DIGIT(c))
+        {
+            SWAG_CHECK(doNumberLiteral(c, token));
+            return true;
+        }
 
         token.text        = c;
         token.id          = TokenId::Invalid;

@@ -7,7 +7,8 @@ public:
     LanguageSpec();
 
 public:
-    map<wstring, TokenId> m_keywords;
+    map<wstring, TokenId>      m_keywords;
+    map<wstring, TokenNumType> m_nativeTypes;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')

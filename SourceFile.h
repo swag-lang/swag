@@ -34,7 +34,7 @@ public:
     ~SourceFile();
     void     construct() override;
     void     reset() override;
-    unsigned getChar();
+    unsigned getChar(unsigned& offset);
     wstring  getLine(long seek);
     void     report(const class Diagnostic& diag);
 
@@ -49,7 +49,7 @@ private:
     void validateRequest(int reqNum);
     void buildRequest(int reqNum);
     char getPrivateChar();
-	void waitEndRequests();
+    void waitEndRequests();
 
 private:
     ErrorIO                      m_errorIO    = ErrorIO::Ok;
@@ -63,8 +63,8 @@ private:
     struct LoadingThreadRequest* m_requests[2];
     long                         m_buffersSize[2];
     mutex                        m_mutexNotify;
-    bool                         m_doneLoading          = false;
-    bool                         m_canPrepareNextBuffer = true;
-    int                          m_totalRead            = 0;
+    bool                         m_doneLoading = false;
+    bool                         m_directMode  = false;
+    int                          m_totalRead   = 0;
     condition_variable           m_Cv;
 };
