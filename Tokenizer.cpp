@@ -22,6 +22,7 @@ inline void Tokenizer::treatChar(unsigned c)
     if (!c)
         return;
 
+	m_cacheChar = 0;
     m_location.seek++;
     m_location.column++;
 
@@ -69,6 +70,8 @@ inline unsigned Tokenizer::getChar(bool seek)
 
     if (seek)
         treatChar(c);
+	else
+		m_cacheChar = c;
     return c;
 }
 
@@ -117,20 +120,25 @@ bool Tokenizer::ZapCComment(Token& token)
 void Tokenizer::GetIdentifier(Token& token)
 {
     auto c = getChar(false);
-    while ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')
+    while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {
         token.text += c;
         treatChar(c);
         c = getChar(false);
     }
 
-    m_cacheChar = c;
-
     auto it = g_LangSpec.m_keywords.find(token.text);
     if (it != g_LangSpec.m_keywords.end())
         token.id = it->second;
     else
         token.id = TokenId::Identifier;
+}
+
+bool Tokenizer::error(Token& token, const wstring& msg)
+{
+    token.endLocation = m_location;
+    m_sourceFile->report({m_sourceFile, token, msg});
+    return false;
 }
 
 bool Tokenizer::getToken(Token& token)
@@ -175,7 +183,7 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Identifier
-        if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_' || c == '#')
+        if (SWAG_IS_ALPHA(c) || c == '_' || c == '#')
         {
             token.text = c;
             GetIdentifier(token);
@@ -188,6 +196,13 @@ bool Tokenizer::getToken(Token& token)
 
             return true;
         }
+
+		// Number literal
+		if (SWAG_IS_DIGIT(c))
+		{
+			SWAG_CHECK(doNumberLiteral(c, token));
+			return true;
+		}
 
         token.text        = c;
         token.id          = TokenId::Invalid;

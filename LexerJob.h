@@ -2,7 +2,7 @@
 #include "Tokenizer.h"
 #include "Job.h"
 
-class ReadFileJob : public Job
+class LexerJob : public Job
 {
 public:
     bool execute() override;
@@ -15,11 +15,10 @@ public:
     }
 
 private:
-	bool doCompilerUnitTest();
+    bool doCompilerUnitTest();
 
 private:
     class SourceFile* m_file = nullptr;
     Tokenizer         m_tokenizer;
     Token             m_token;
 };
-

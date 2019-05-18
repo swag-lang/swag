@@ -168,7 +168,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pool.h" />
     <ClInclude Include="PoolFactory.h" />
-    <ClInclude Include="ReadFileJob.h" />
+    <ClInclude Include="LexerJob.h" />
     <ClInclude Include="SourceFile.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="ThreadManager.h" />
@@ -192,6 +192,7 @@
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="JobThread.cpp" />
     <ClCompile Include="LanguageSpec.cpp" />
+    <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="ParseFolderJob.cpp" />
@@ -205,7 +206,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ReadFileJob.cpp" />
+    <ClCompile Include="LexerJob.cpp" />
     <ClCompile Include="SourceFile.cpp" />
     <ClCompile Include="Swag.cpp" />
     <ClCompile Include="ThreadManager.cpp" />

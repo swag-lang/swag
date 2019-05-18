@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ReadFileJob.h"
+#include "LexerJob.h"
 #include "SourceFile.h"
 #include "Tokenizer.h"
 #include "Diagnostic.h"
@@ -7,7 +7,7 @@
 #include "CommandLine.h"
 #include "Stats.h"
 
-bool ReadFileJob::doCompilerUnitTest()
+bool LexerJob::doCompilerUnitTest()
 {
     SWAG_CHECK(m_tokenizer.getToken(m_token));
 	if (m_token.text == L"error")
@@ -29,7 +29,7 @@ bool ReadFileJob::doCompilerUnitTest()
     return true;
 }
 
-bool ReadFileJob::execute()
+bool LexerJob::execute()
 {
     g_Stats.numFiles++;
     m_tokenizer.setFile(m_file);

@@ -2,7 +2,7 @@
 #include "ThreadManager.h"
 #include "LoadingThread.h"
 #include "SourceFile.h"
-#include "ReadFileJob.h"
+#include "LexerJob.h"
 #include "ParseFolderJob.h"
 #include "ffi.h"
 #include "global.h"
@@ -33,8 +33,8 @@ int main()
     typedef chrono::high_resolution_clock Clock;
     auto                                  t1 = Clock::now();
 
-    auto job = new ParseFolderJob("c:\\boulot\\sdb\\blade");
-    //auto job = new ParseFolderJob("c:\\boulot\\swag\\unittest");
+    //auto job = new ParseFolderJob("c:\\boulot\\sdb\\blade");
+    auto job = new ParseFolderJob("c:\\boulot\\swag\\unittest");
     g_ThreadMgr.init();
     g_ThreadMgr.addJob(job);
     g_ThreadMgr.waitEndJobs();

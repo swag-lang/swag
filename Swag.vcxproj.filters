@@ -49,14 +49,17 @@
     <ClCompile Include="ParseFolderJob.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="ReadFileJob.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="LanguageSpec.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="Diagnostic.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="LexerJob.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="TokenizerNumberLiteral_.cpp">
+      <Filter>Lexer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,9 +102,6 @@
     <ClInclude Include="Log.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="ReadFileJob.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="ParseFolderJob.h">
       <Filter>Lexer</Filter>
     </ClInclude>
@@ -122,6 +122,9 @@
     </ClInclude>
     <ClInclude Include="Diagnostic.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="LexerJob.h">
+      <Filter>Lexer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

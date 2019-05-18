@@ -29,6 +29,10 @@ private:
     bool     ZapCComment(Token& token);
     void     GetIdentifier(Token& token);
     void     treatChar(unsigned c);
+    bool     doNumberLiteral(unsigned c, Token& token);
+    bool     doHexLiteral(Token& token);
+	bool     error(Token& token, const wstring& msg);
+    bool     errorNumberSyntax(Token& token, const wstring& msg);
 
 private:
     SourceFile*    m_sourceFile = nullptr;

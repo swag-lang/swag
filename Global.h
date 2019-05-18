@@ -19,4 +19,4 @@ extern struct PoolFactory  g_Pool;
 
 extern wstring format(const wchar_t* format, ...);
 
-#define SWAG_CHECK(__expr) if (!(__expr)) return false;
+#define SWAG_CHECK(__expr) { if (!(__expr)) return false; }
