@@ -19,13 +19,13 @@ void Tokenizer::setFile(class SourceFile* file)
 
 inline void Tokenizer::treatChar(unsigned c)
 {
-	if (!c)
-		return;
+    if (!c)
+        return;
 
     m_location.seek++;
     m_location.column++;
 
-	// Align tabulations
+    // Align tabulations
     if (c == '\t')
     {
         while (m_location.column % g_CommandLine.tabSize)
@@ -67,8 +67,8 @@ inline unsigned Tokenizer::getChar(bool seek)
         return 0;
     }
 
-	if (seek)
-		treatChar(c);
+    if (seek)
+        treatChar(c);
     return c;
 }
 
@@ -120,7 +120,7 @@ void Tokenizer::GetIdentifier(Token& token)
     while ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_')
     {
         token.text += c;
-		treatChar(c);
+        treatChar(c);
         c = getChar(false);
     }
 
@@ -180,14 +180,19 @@ bool Tokenizer::getToken(Token& token)
             token.text = c;
             GetIdentifier(token);
             token.endLocation = m_location;
+            if (token.id == TokenId::Identifier && token.text[0] == '#')
+            {
+                m_sourceFile->report({m_sourceFile, token, format(L"invalid compiler command '%s'", token.text.c_str())});
+                return false;
+            }
+
             return true;
         }
 
         token.text        = c;
         token.id          = TokenId::Invalid;
         token.endLocation = m_location;
-        Diagnostic diag(m_sourceFile, token.startLocation, token.endLocation, format(L"invalid character '%s'", token.text.c_str()), DiagnosticLevel::Error);
-        m_sourceFile->report(diag);
+        m_sourceFile->report({m_sourceFile, token, format(L"invalid character '%s'", token.text.c_str())});
         return false;
     }
 
