@@ -1,6 +1,5 @@
 ﻿#unittest error
 È
-#unittest lexer
 
 #unittest error
 1_.00_00_1

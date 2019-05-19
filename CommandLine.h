@@ -2,7 +2,7 @@
 struct CommandLine
 {
     bool   test       = true;
-	bool   verbose = true;
+	bool   verbose = false;
     int    tabSize    = 4;
 	string fileFilter;// = "18.swg";
 
