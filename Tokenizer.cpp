@@ -37,7 +37,8 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
     // End of line
     else if (c == '\n')
     {
-        g_Stats.numLines++;
+        if (g_CommandLine.stats)
+            g_Stats.numLines++;
         m_location.column = 0;
         m_location.line++;
         m_location.seekStartLine = m_location.seek;
@@ -79,7 +80,8 @@ inline char32_t Tokenizer::getChar(unsigned& offset, bool seek)
         if (!m_endReached)
         {
             m_endReached = true;
-            g_Stats.numLines++;
+            if (g_CommandLine.stats)
+                g_Stats.numLines++;
         }
 
         return 0;
@@ -115,11 +117,11 @@ bool Tokenizer::eatCComment(Token& token)
 
         if (nc == '*')
         {
-			unsigned offset;
+            unsigned offset;
             nc = getCharNoSeek(offset);
             if (nc == '/')
             {
-				treatChar(nc, offset);
+                treatChar(nc, offset);
                 countEmb--;
                 if (countEmb == 0)
                     return true;
@@ -245,7 +247,7 @@ bool Tokenizer::getToken(Token& token)
             return true;
         }
 
-		if (c == '\'')
+        if (c == '\'')
         {
             SWAG_CHECK(doCharLiteral(token));
             return true;

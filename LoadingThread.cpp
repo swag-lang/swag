@@ -37,7 +37,7 @@ LoadingThreadRequest* LoadingThread::newRequest()
 
 void LoadingThread::addRequest(LoadingThreadRequest* request)
 {
-	lock_guard<mutex> lk(m_mutexAdd);
+    lock_guard<mutex> lk(m_mutexAdd);
     m_queue.push_back(request);
     m_Cv.notify_one();
 }
@@ -71,10 +71,15 @@ void LoadingThread::loop()
             continue;
         }
 
-        req->file->open();
-        req->file->seekTo(req->seek);
-        req->loadedSize = req->file->readTo(req->buffer);
-        req->done       = true;
+		req->loadedSize = 0;
+        if (req->file->ensureOpen())
+        {
+            req->file->seekTo(req->seek);
+            req->loadedSize = req->file->readTo(req->buffer);
+            req->file->close();
+        }
+
+        req->done = true;
         req->file->notifyLoad();
     }
 }

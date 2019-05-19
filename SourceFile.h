@@ -41,7 +41,8 @@ public:
     void     report(const class Diagnostic& diag);
 
 private:
-    void open();
+    bool open();
+    bool ensureOpen();
     void cleanCache();
     void seekTo(long seek);
     long readTo(char* buffer);

@@ -5,7 +5,7 @@ LanguageSpec::LanguageSpec()
 {
     m_keywords["#unittest"] = TokenId::CompilerUnitTest;
 
-#if 0
+#ifdef SWAG_TEST_CPP
 m_keywords["#include"] = TokenId::Invalid;
 m_keywords["#pragma"] = TokenId::Invalid;
 m_keywords["#ifdef"] = TokenId::Invalid;

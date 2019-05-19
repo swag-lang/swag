@@ -31,7 +31,8 @@ bool SyntaxJob::doCompilerUnitTest()
 
 bool SyntaxJob::execute()
 {
-    g_Stats.numFiles++;
+    if (g_CommandLine.stats)
+        g_Stats.numFiles++;
     m_tokenizer.setFile(m_file);
 
     bool canLex = true;
@@ -46,14 +47,14 @@ bool SyntaxJob::execute()
             result = false;
             while (true)
             {
-				m_file->m_silent++;
-				if (!m_tokenizer.getToken(m_token))
-				{
-					m_file->m_silent--;
-					return false;
-				}
+                m_file->m_silent++;
+                if (!m_tokenizer.getToken(m_token))
+                {
+                    m_file->m_silent--;
+                    return false;
+                }
 
-				m_file->m_silent--;
+                m_file->m_silent--;
                 if (m_token.id == TokenId::CompilerUnitTest)
                     break;
                 if (m_token.id == TokenId::EndOfFile)

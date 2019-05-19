@@ -18,14 +18,15 @@ bool ParseFolderJob::execute()
     WIN32_FIND_DATAA file;
     vector<string>   directories;
 
-    directories.emplace_back(m_path.string());
-    string tmp, tmp1;
+    directories.push_back(m_path.string());
+    string     tmp, tmp1;
+    const bool filterIsEmpty = g_CommandLine.fileFilter.empty();
     while (directories.size())
     {
         tmp = move(directories.back());
         directories.pop_back();
 
-		tmp1 = tmp +"\\*";
+        tmp1     = tmp + "\\*";
         HANDLE h = ::FindFirstFileA(tmp1.c_str(), &file);
         if (h == INVALID_HANDLE_VALUE)
             continue;
@@ -41,20 +42,24 @@ bool ParseFolderJob::execute()
             }
             else
             {
-				auto pz = strrchr(file.cFileName, '.');
+                auto pz = strrchr(file.cFileName, '.');
+#ifdef SWAG_TEST_CPP
+                if (pz && !_strcmpi(pz, ".cpp"))
+#else
                 if (pz && !_strcmpi(pz, ".swg"))
+#endif
                 {
                     // File filtering by name
-					if (g_CommandLine.fileFilter.empty() || strstr(tmp1.c_str(), g_CommandLine.fileFilter.c_str()))
-					{
-						auto job = g_Pool.m_readFileJob.alloc();
-						auto file = g_Pool.m_sourceFile.alloc();
+                    if (filterIsEmpty || strstr(tmp1.c_str(), g_CommandLine.fileFilter.c_str()))
+                    {
+                        auto job  = g_Pool.m_readFileJob.alloc();
+                        auto file = g_Pool.m_sourceFile.alloc();
 
-						job->setFile(file);
-						file->m_path = move(tmp1);
+                        job->setFile(file);
+                        file->m_path = move(tmp1);
 
-						g_ThreadMgr.addJob(job);
-					}
+                        g_ThreadMgr.addJob(job);
+                    }
                 }
             }
         } while (::FindNextFileA(h, &file));
@@ -62,5 +67,5 @@ bool ParseFolderJob::execute()
         ::FindClose(h);
     }
 
-	return true;
+    return true;
 }

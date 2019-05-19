@@ -9,7 +9,7 @@
 
 void SourceFile::construct()
 {
-    const auto BUF_SIZE = 2048;
+    const auto BUF_SIZE = 4096;
     m_bufferSize        = BUF_SIZE;
     m_buffers[0]        = new char[m_bufferSize];
     m_buffers[1]        = new char[m_bufferSize];
@@ -39,20 +39,37 @@ SourceFile::~SourceFile()
     delete m_buffers[1];
 }
 
-void SourceFile::open()
+bool SourceFile::open()
 {
     if (m_file != nullptr)
-        return;
+        return true;
 
     auto err = _wfopen_s(&m_file, m_path.c_str(), L"rb");
     if (m_file == nullptr)
     {
         char buf[256];
         strerror_s(buf, err);
-        return;
+        report({this, format("error reading file: '%s'", buf)});
+        return false;
     }
 
     setvbuf(m_file, nullptr, _IONBF, 0);
+    return true;
+}
+
+bool SourceFile::ensureOpen()
+{
+    if (!m_file && !m_openedOnce)
+    {
+        m_openedOnce = true;
+        if (!open())
+            return false;
+        if (!checkFormat())
+            return false;
+    }
+    else if (!m_file)
+        open();
+    return true;
 }
 
 bool SourceFile::checkFormat()
@@ -75,15 +92,15 @@ bool SourceFile::checkFormat()
         || (c1 == 0xFF && c2 == 0xFE)                             // UTF-16 LittleEndian
         || (c1 == 0x00 && c2 == 0x00 && c3 == 0xFE && c4 == 0xFF) // UTF-32 BigEndian
         || (c1 == 0xFF && c2 == 0xFE && c3 == 0x00 && c4 == 0x00) // UTF-32 BigEndian
-		|| (c1 == 0x0E && c2 == 0xFE && c3 == 0xFF)               // SCSU
-		|| (c1 == 0xDD && c2 == 0x73 && c3 == 0x66 && c4 == 0x73) // UTF-EBCDIC
-		|| (c1 == 0x2B && c2 == 0x2F && c3 == 0x76 && c4 == 0x38) // UTF-7
-		|| (c1 == 0x2B && c2 == 0x2F && c3 == 0x76 && c4 == 0x39) // UTF-7
-		|| (c1 == 0x2B && c2 == 0x2F && c3 == 0x76 && c4 == 0x2B) // UTF-7
-		|| (c1 == 0x2B && c2 == 0x2F && c3 == 0x76 && c4 == 0x2F) // UTF-7
-		|| (c1 == 0xFB && c2 == 0xEE && c3 == 0x28)               // BOCU-1
+        || (c1 == 0x0E && c2 == 0xFE && c3 == 0xFF)               // SCSU
+        || (c1 == 0xDD && c2 == 0x73 && c3 == 0x66 && c4 == 0x73) // UTF-EBCDIC
+        || (c1 == 0x2B && c2 == 0x2F && c3 == 0x76 && c4 == 0x38) // UTF-7
+        || (c1 == 0x2B && c2 == 0x2F && c3 == 0x76 && c4 == 0x39) // UTF-7
+        || (c1 == 0x2B && c2 == 0x2F && c3 == 0x76 && c4 == 0x2B) // UTF-7
+        || (c1 == 0x2B && c2 == 0x2F && c3 == 0x76 && c4 == 0x2F) // UTF-7
+        || (c1 == 0xFB && c2 == 0xEE && c3 == 0x28)               // BOCU-1
         || (c1 == 0xF7 && c2 == 0x64 && c3 == 0x4C)               // UTF-1 BigEndian
-		|| (c1 == 0x84 && c2 == 0x31 && c3 == 0x95 && c4 == 0x33) // GB-18030
+        || (c1 == 0x84 && c2 == 0x31 && c3 == 0x95 && c4 == 0x33) // GB-18030
     )
     {
         report({this, "invalid file format, should be ascii, utf-8 or utf-8-bom"});
@@ -157,30 +174,25 @@ void SourceFile::buildRequest(int reqNum)
 
 char SourceFile::getPrivateChar()
 {
-    if (!m_file && !m_openedOnce)
-    {
-		m_openedOnce = false;
-        open();
-        if (!checkFormat())
-            return 0;
-    }
-
     if (m_directMode)
     {
-		if (!m_file)
-			return 0;
+        if (!m_file)
+            return 0;
         auto c = fgetc(m_file);
         return c == EOF ? 0 : c;
     }
 
     if (m_bufferCurSeek >= m_buffersSize[m_bufferCurIndex])
     {
+        if (!m_openedOnce && !ensureOpen())
+            return 0;
+
         // Done
-		if (m_doneLoading)
-		{
-			close();
-			return 0;
-		}
+        if (m_doneLoading)
+        {
+            close();
+            return 0;
+        }
 
         auto loadingTh    = g_ThreadMgr.m_loadingThread;
         auto nextBufIndex = (m_bufferCurIndex + 1) % 2;
@@ -315,8 +327,8 @@ utf8 SourceFile::getLine(long seek)
 
 void SourceFile::report(const Diagnostic& diag)
 {
-	if (m_silent > 0)
-		return;
+    if (m_silent > 0)
+        return;
 
     // Do not raise an error if we are waiting for one, during tests
     if (m_unittestError && diag.m_level == DiagnosticLevel::Error)
