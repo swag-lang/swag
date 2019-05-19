@@ -45,8 +45,8 @@ inline void Tokenizer::treatChar(unsigned c, unsigned offset)
 
 inline unsigned Tokenizer::getChar()
 {
-	unsigned offset;
-	return getChar(offset, true);
+    unsigned offset;
+    return getChar(offset, true);
 }
 
 inline unsigned Tokenizer::getCharNoSeek(unsigned& offset)
@@ -139,8 +139,8 @@ bool Tokenizer::ZapCComment(Token& token)
 
 void Tokenizer::getIdentifier(Token& token)
 {
-	unsigned offset;
-    auto c = getCharNoSeek(offset);
+    unsigned offset;
+    auto     c = getCharNoSeek(offset);
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {
         token.text += c;
@@ -208,6 +208,14 @@ bool Tokenizer::getToken(Token& token)
             return true;
         }
 
+        token.endLocation = m_location;
+        switch (c)
+        {
+        case '.':
+            token.id = TokenId::SymDot;
+            return true;
+        }
+
         // Identifier
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#')
         {
@@ -230,6 +238,7 @@ bool Tokenizer::getToken(Token& token)
             return true;
         }
 
+        // Unknown character
         token.text        = c;
         token.id          = TokenId::Invalid;
         token.endLocation = m_location;
