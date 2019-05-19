@@ -442,7 +442,7 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
             return true;
         }
 
-        if (c != '.' && c != 'e' && c != 'E' && !SWAG_IS_DIGIT(c))
+        if (SWAG_IS_ALPHA(c))
         {
             token.startLocation = m_location;
             treatChar(c, offset);

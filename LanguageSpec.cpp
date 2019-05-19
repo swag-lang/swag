@@ -4,6 +4,13 @@
 LanguageSpec::LanguageSpec()
 {
     m_keywords["#unittest"] = TokenId::CompilerUnitTest;
+
+m_keywords["#include"] = TokenId::Invalid;
+m_keywords["#pragma"] = TokenId::Invalid;
+m_keywords["#ifdef"] = TokenId::Invalid;
+m_keywords["#ifndef"] = TokenId::Invalid;
+m_keywords["#endif"] = TokenId::Invalid;
+
     m_keywords["u64"]       = TokenId::NativeType;
     m_keywords["u32"]       = TokenId::NativeType;
     m_keywords["u16"]       = TokenId::NativeType;
@@ -26,5 +33,6 @@ LanguageSpec::LanguageSpec()
     m_nativeTypes["s8"]  = TokenNumType::Int8;
     m_nativeTypes["f32"] = TokenNumType::Float32;
     m_nativeTypes["f64"] = TokenNumType::Float64;
-    m_nativeTypes["boo"] = TokenNumType::Bool;
+    m_nativeTypes["bool"] = TokenNumType::Bool;
+	m_nativeTypes["char"] = TokenNumType::Char;
 }

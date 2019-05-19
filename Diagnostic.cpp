@@ -4,17 +4,22 @@
 #include "SourceFile.h"
 #include "Log.h"
 
-void Diagnostic::report(bool verboseMode) const
+void Diagnostic::defaultColor(bool verboseMode) const
 {
     if (verboseMode)
         g_Log.setColor(LogColor::DarkCyan);
     else
-        g_Log.setDefaultColor();
+        g_Log.setColor(LogColor::White);
+}
+
+void Diagnostic::report(bool verboseMode) const
+{
+	defaultColor(verboseMode);
 
     // Source file and location
     if (m_hasFile)
     {
-		g_Log.print(m_file->m_path.filename().string().c_str());
+        g_Log.print(m_file->m_path.filename().string().c_str());
         if (m_hasLocation)
             g_Log.print(format(":%d:%d: ", m_startLocation.line + 1, m_startLocation.column + 1));
         else
@@ -28,20 +33,17 @@ void Diagnostic::report(bool verboseMode) const
         if (!verboseMode)
             g_Log.setColor(LogColor::Red);
         g_Log.print("error: ");
-        if (!verboseMode)
-            g_Log.setDefaultColor();
-        break;
+		break;
     case DiagnosticLevel::Warning:
         if (!verboseMode)
             g_Log.setColor(LogColor::Magenta);
         g_Log.print("warning: ");
-        if (!verboseMode)
-            g_Log.setDefaultColor();
         break;
     }
 
     // User message
-    g_Log.print(m_msg);
+	defaultColor(verboseMode);
+	g_Log.print(m_msg);
     g_Log.eol();
 
     // Source code
@@ -62,6 +64,8 @@ void Diagnostic::report(bool verboseMode) const
         line += buf;
         offset -= 2;
 
+		if (!verboseMode)
+			g_Log.setColor(LogColor::Gray);
         g_Log.print(line);
         g_Log.eol();
 
@@ -76,6 +80,8 @@ void Diagnostic::report(bool verboseMode) const
         else
             range = (int) line.length() - m_startLocation.column - offset;
         range = max(1, range);
+        if (!verboseMode)
+            g_Log.setColor(LogColor::Green);
         for (int i = 0; i < range; i++)
             g_Log.print("^");
         g_Log.eol();

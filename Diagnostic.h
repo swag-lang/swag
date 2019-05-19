@@ -71,4 +71,5 @@ public:
     bool            m_printSource      = false;
 
     void report(bool verboseMode = false) const;
+	void defaultColor(bool verboseMode) const;
 };

@@ -36,14 +36,27 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
     case ';':
         token.id = TokenId::SymSemiColon;
         return true;
+    case ',':
+        token.id = TokenId::SymComma;
+        return true;
     case '?':
         token.id = TokenId::SymQuestion;
         return true;
     case '@':
         token.id = TokenId::SymAt;
         return true;
+        return true;
 
-	case '~':
+	case '!':
+        token.id = TokenId::SymExclam;
+        c        = getCharNoSeek(offset);
+        if (c == '=')
+        {
+            token.id = TokenId::SymExclamEqual;
+            treatChar(c, offset);
+        }
+        return true;
+    case '~':
         token.id = TokenId::SymTilde;
         c        = getCharNoSeek(offset);
         if (c == '=')

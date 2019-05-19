@@ -44,6 +44,9 @@ enum class TokenId
     SymCircumflexEqual,
     SymPercent,
     SymPercentEqual,
+	SymComma,
+	SymExclam,
+	SymExclamEqual,
 
     CompilerUnitTest,
 
@@ -72,6 +75,7 @@ enum class TokenNumType
     Float32,
     Float64,
     Bool,
+	Char,
 };
 
 struct Token
