@@ -23,6 +23,9 @@ bool Tokenizer::isEscape(char32_t& c, Token& token, unsigned offset)
     c                   = getChar();
     switch (c)
     {
+    case '0':
+        c = '\0';
+        return true;
     case 'a':
         c = '\a';
         return true;

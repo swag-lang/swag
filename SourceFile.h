@@ -29,6 +29,7 @@ public:
     fs::path m_path;
 
     int  m_unittestError = 0;
+    int  m_silent        = 0;
     bool m_doSyntax      = true;
 
 public:

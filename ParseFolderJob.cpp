@@ -14,13 +14,16 @@ ParseFolderJob::ParseFolderJob(const fs::path& path)
 
 bool ParseFolderJob::execute()
 {
-    for (auto& p : fs::recursive_directory_iterator(m_path))
+    string extension;
+    auto   rec = fs::recursive_directory_iterator(m_path);
+    for (auto& p : rec)
     {
-        if (p.path().extension() == ".cpp" || p.path().extension() == ".swg")
+        extension = p.path().extension().string();
+        if (extension == ".cpp1" || extension == ".swg")
         {
-			// File filtering by name
-			if (!g_CommandLine.fileFilter.empty() && p.path().string().find(g_CommandLine.fileFilter) == string::npos)
-				continue;
+            // File filtering by name
+            if (!g_CommandLine.fileFilter.empty() && p.path().string().find(g_CommandLine.fileFilter) == string::npos)
+                continue;
 
             auto job  = g_Pool.m_readFileJob.alloc();
             auto file = g_Pool.m_sourceFile.alloc();
@@ -32,5 +35,5 @@ bool ParseFolderJob::execute()
         }
     }
 
-	return true;
+    return true;
 }

@@ -315,6 +315,9 @@ utf8 SourceFile::getLine(long seek)
 
 void SourceFile::report(const Diagnostic& diag)
 {
+	if (m_silent > 0)
+		return;
+
     // Do not raise an error if we are waiting for one, during tests
     if (m_unittestError && diag.m_level == DiagnosticLevel::Error)
     {

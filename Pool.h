@@ -22,7 +22,7 @@ struct PoolSlot
 };
 
 
-template<typename T, int S = 512>
+template<typename T, int S = 1024>
 class Pool : public IPool
 {
 private:
