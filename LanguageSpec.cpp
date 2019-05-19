@@ -10,6 +10,10 @@ m_keywords["#pragma"] = TokenId::Invalid;
 m_keywords["#ifdef"] = TokenId::Invalid;
 m_keywords["#ifndef"] = TokenId::Invalid;
 m_keywords["#endif"] = TokenId::Invalid;
+m_keywords["#elif"] = TokenId::Invalid;
+m_keywords["#else"] = TokenId::Invalid;
+m_keywords["#if"] = TokenId::Invalid;
+m_keywords["#define"] = TokenId::Invalid;
 
     m_keywords["u64"]       = TokenId::NativeType;
     m_keywords["u32"]       = TokenId::NativeType;

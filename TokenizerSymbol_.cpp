@@ -9,6 +9,9 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
     unsigned offset;
     switch (c)
     {
+    case '\\':
+        token.id = TokenId::SymBackSlash;
+        return true;
     case '$':
         token.id = TokenId::SymDollar;
         return true;

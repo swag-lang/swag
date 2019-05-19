@@ -115,9 +115,11 @@ bool Tokenizer::eatCComment(Token& token)
 
         if (nc == '*')
         {
-            nc = getChar();
+			unsigned offset;
+            nc = getCharNoSeek(offset);
             if (nc == '/')
             {
+				treatChar(nc, offset);
                 countEmb--;
                 if (countEmb == 0)
                     return true;

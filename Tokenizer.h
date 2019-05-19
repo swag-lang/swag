@@ -47,6 +47,7 @@ enum class TokenId
 	SymComma,
 	SymExclam,
 	SymExclamEqual,
+	SymBackSlash,
 
     CompilerUnitTest,
 

@@ -16,7 +16,7 @@ bool ParseFolderJob::execute()
 {
     for (auto& p : fs::recursive_directory_iterator(m_path))
     {
-        if (p.path().extension() == ".swg")
+        if (p.path().extension() == ".cpp" || p.path().extension() == ".swg")
         {
 			// File filtering by name
 			if (!g_CommandLine.fileFilter.empty() && p.path().string().find(g_CommandLine.fileFilter) == string::npos)

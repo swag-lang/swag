@@ -157,8 +157,9 @@ void SourceFile::buildRequest(int reqNum)
 
 char SourceFile::getPrivateChar()
 {
-    if (!m_file)
+    if (!m_file && !m_openedOnce)
     {
+		m_openedOnce = false;
         open();
         if (!checkFormat())
             return 0;
@@ -166,6 +167,8 @@ char SourceFile::getPrivateChar()
 
     if (m_directMode)
     {
+		if (!m_file)
+			return 0;
         auto c = fgetc(m_file);
         return c == EOF ? 0 : c;
     }
@@ -173,8 +176,11 @@ char SourceFile::getPrivateChar()
     if (m_bufferCurSeek >= m_buffersSize[m_bufferCurIndex])
     {
         // Done
-        if (m_doneLoading)
-            return 0;
+		if (m_doneLoading)
+		{
+			close();
+			return 0;
+		}
 
         auto loadingTh    = g_ThreadMgr.m_loadingThread;
         auto nextBufIndex = (m_bufferCurIndex + 1) % 2;

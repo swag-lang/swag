@@ -68,6 +68,8 @@ private:
     mutex                        m_mutexNotify;
     bool                         m_doneLoading = false;
     bool                         m_directMode  = false;
+    bool                         m_openedOnce  = false;
     int                          m_totalRead   = 0;
-    condition_variable           m_Cv;
+
+    condition_variable m_Cv;
 };
