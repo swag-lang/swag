@@ -2,7 +2,7 @@
 #include "ThreadManager.h"
 #include "LoadingThread.h"
 #include "SourceFile.h"
-#include "LexerJob.h"
+#include "SyntaxJob.h"
 #include "ParseFolderJob.h"
 #include "ffi.h"
 #include "global.h"

@@ -1,9 +1,9 @@
 #pragma once
 #include "Pool.h"
-#include "LexerJob.h"
+#include "SyntaxJob.h"
 
 struct PoolFactory
 {
     Pool<SourceFile>  m_sourceFile;
-    Pool<LexerJob> m_readFileJob;
+    Pool<SyntaxJob> m_readFileJob;
 };

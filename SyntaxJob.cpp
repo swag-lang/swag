@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "LexerJob.h"
+#include "SyntaxJob.h"
 #include "SourceFile.h"
 #include "Tokenizer.h"
 #include "Diagnostic.h"
@@ -7,7 +7,7 @@
 #include "CommandLine.h"
 #include "Stats.h"
 
-bool LexerJob::doCompilerUnitTest()
+bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_CHECK(m_tokenizer.getToken(m_token));
     if (m_token.text == L"error")
@@ -15,10 +15,10 @@ bool LexerJob::doCompilerUnitTest()
         if (g_CommandLine.test)
             m_file->m_unittestError++;
     }
-    else if (m_token.text == L"tokenizer")
+    else if (m_token.text == L"lexer")
     {
         if (g_CommandLine.test)
-            m_file->m_doLex = false;
+            m_file->m_doSyntax = false;
     }
     else
     {
@@ -29,7 +29,7 @@ bool LexerJob::doCompilerUnitTest()
     return true;
 }
 
-bool LexerJob::execute()
+bool SyntaxJob::execute()
 {
     g_Stats.numFiles++;
     m_tokenizer.setFile(m_file);
@@ -66,7 +66,7 @@ bool LexerJob::execute()
         }
 
         // Ask for tokenizer only
-        if (!m_file->m_doLex)
+        if (!m_file->m_doSyntax)
             continue;
     }
 

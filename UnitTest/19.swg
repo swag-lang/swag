@@ -1,4 +1,4 @@
-#unittest tokenizer
+#unittest lexer
 
 .
 .1

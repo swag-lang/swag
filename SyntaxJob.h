@@ -2,7 +2,7 @@
 #include "Tokenizer.h"
 #include "Job.h"
 
-class LexerJob : public Job
+class SyntaxJob : public Job
 {
 public:
     bool execute() override;

@@ -169,7 +169,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pool.h" />
     <ClInclude Include="PoolFactory.h" />
-    <ClInclude Include="LexerJob.h" />
+    <ClInclude Include="SyntaxJob.h" />
     <ClInclude Include="SourceFile.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="ThreadManager.h" />
@@ -207,7 +207,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="LexerJob.cpp" />
+    <ClCompile Include="SyntaxJob.cpp" />
     <ClCompile Include="SourceFile.cpp" />
     <ClCompile Include="Swag.cpp" />
     <ClCompile Include="ThreadManager.cpp" />

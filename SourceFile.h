@@ -28,7 +28,7 @@ public:
     fs::path m_path;
 
     int  m_unittestError = 0;
-    bool m_doLex         = true;
+    bool m_doSyntax         = true;
 
 public:
     ~SourceFile();

@@ -55,10 +55,10 @@
     <ClCompile Include="Diagnostic.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="LexerJob.cpp">
+    <ClCompile Include="TokenizerNumberLiteral_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="TokenizerNumberLiteral_.cpp">
+    <ClCompile Include="SyntaxJob.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
   </ItemGroup>
@@ -123,11 +123,11 @@
     <ClInclude Include="Diagnostic.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="LexerJob.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="Register.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="SyntaxJob.h">
+      <Filter>Lexer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

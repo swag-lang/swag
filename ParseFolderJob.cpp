@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ParseFolderJob.h"
 #include "SourceFile.h"
-#include "LexerJob.h"
+#include "SyntaxJob.h"
 #include "Global.h"
 #include "JobThread.h"
 #include "ThreadManager.h"
