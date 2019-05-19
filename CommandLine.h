@@ -2,9 +2,9 @@
 struct CommandLine
 {
     bool   test       = true;
-	bool   verbose = false;
+	bool   verbose = true;
     int    tabSize    = 4;
-	string fileFilter = "21.swg";
+	string fileFilter;// = "18.swg";
 
     void process(int argc, const char* argv[]);
 };

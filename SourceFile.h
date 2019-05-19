@@ -57,6 +57,7 @@ private:
     ErrorIO                      m_errorIO    = ErrorIO::Ok;
     TextFormat                   m_textFormat = TextFormat::UTF8;
     int                          m_bufferSize;
+    int                          m_headerSize = 0;
     FILE*                        m_file;
     long                         m_fileSeek       = 0;
     long                         m_bufferCurSeek  = 0;

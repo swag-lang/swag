@@ -31,13 +31,13 @@ public:
 
     void operator=(char32_t c)
     {
+        clear();
         if (!(c & 0xFFFFFF80))
         {
-            (string)* this = (char) c;
+			append(1, (char) c);
             return;
         }
 
-		clear();
         append(toutf8.to_bytes(c));
     }
 

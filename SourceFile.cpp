@@ -66,6 +66,7 @@ bool SourceFile::checkFormat()
     {
         m_textFormat = TextFormat::UTF8;
         m_fileSeek   = 3;
+		m_headerSize = 3;
         return true;
     }
 
@@ -262,7 +263,7 @@ utf8 SourceFile::getLine(long seek)
     waitEndRequests();
 
     open();
-    seekTo(seek);
+    seekTo(seek + m_headerSize);
     m_directMode = true;
 
     utf8 line;

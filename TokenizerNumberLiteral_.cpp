@@ -6,8 +6,8 @@
 
 bool Tokenizer::errorNumberSyntax(Token& token, const utf8& msg)
 {
-	utf8 text = "invalid number syntax, ";
-	text += msg;
+    utf8 text = "invalid number syntax, ";
+    text += msg;
     error(token, text);
     return false;
 }
@@ -446,7 +446,8 @@ bool Tokenizer::doNumberLiteral(unsigned c, Token& token)
         {
             token.startLocation = m_location;
             treatChar(c, offset);
-            return error(token, format("invalid literal number prefix '%c'", c));
+            token.text = c;
+            return error(token, format("invalid literal number prefix '%s'", token.text.c_str()));
         }
     }
     else if (c == '.')
