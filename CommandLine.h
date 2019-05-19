@@ -4,7 +4,7 @@ struct CommandLine
     bool   test       = true;
 	bool   verbose = false;
     int    tabSize    = 4;
-	string fileFilter;// = "UnitTest.cpp";
+	string fileFilter = "29.swg";
 
     void process(int argc, const char* argv[]);
 };
