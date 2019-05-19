@@ -4,9 +4,11 @@
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 
-bool Tokenizer::errorNumberSyntax(Token& token, const wstring& msg)
+bool Tokenizer::errorNumberSyntax(Token& token, const utf8& msg)
 {
-    error(token, L"invalid number syntax, " + msg);
+	utf8 text = "invalid number syntax, ";
+	text += msg;
+    error(token, text);
     return false;
 }
 
@@ -15,7 +17,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
     Token tokenType;
     tokenType.startLocation = m_location;
     getIdentifier(tokenType);
-    SWAG_CHECK(tokenType.id == TokenId::NativeType || error(tokenType, format(L"invalid literal number suffix '%s'", tokenType.text.c_str())));
+    SWAG_CHECK(tokenType.id == TokenId::NativeType || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
 
     switch (token.numType)
     {
@@ -23,23 +25,23 @@ bool Tokenizer::doNumberSuffix(Token& token)
         switch (tokenType.numType)
         {
         case TokenNumType::UInt8:
-            return error(token, format(L"can't convert floating point number '%Lf' to 'u8'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 'u8'", token.numValue.f64));
         case TokenNumType::UInt16:
-            return error(token, format(L"can't convert floating point number '%Lf' to 'u16'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 'u16'", token.numValue.f64));
         case TokenNumType::UInt32:
-            return error(token, format(L"can't convert floating point number '%Lf' to 'u32'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 'u32'", token.numValue.f64));
         case TokenNumType::UInt64:
-            return error(token, format(L"can't convert floating point number '%Lf' to 'u64'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 'u64'", token.numValue.f64));
         case TokenNumType::Int8:
-            return error(token, format(L"can't convert floating point number '%Lf' to 's8'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 's8'", token.numValue.f64));
         case TokenNumType::Int16:
-            return error(token, format(L"can't convert floating point number '%Lf' to 's16'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 's16'", token.numValue.f64));
         case TokenNumType::Int32:
-            return error(token, format(L"can't convert floating point number '%Lf' to 's32'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 's32'", token.numValue.f64));
         case TokenNumType::Int64:
-            return error(token, format(L"can't convert floating point number '%Lf' to 's64'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 's64'", token.numValue.f64));
         case TokenNumType::Bool:
-            return error(token, format(L"can't convert floating point number '%Lf' to 'bool'", token.numValue.f64));
+            return error(token, format("can't convert floating point number '%Lf' to 'bool'", token.numValue.f64));
         case TokenNumType::Float32:
         case TokenNumType::Float64:
             token.numType = tokenType.numType;
@@ -55,31 +57,31 @@ bool Tokenizer::doNumberSuffix(Token& token)
         {
         case TokenNumType::UInt8:
             if (token.numValue.u64 > UINT8_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 'u8'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 'u8'", token.numValue.u64));
             break;
         case TokenNumType::UInt16:
             if (token.numValue.u64 > UINT16_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 'u16'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 'u16'", token.numValue.u64));
             break;
         case TokenNumType::UInt32:
             if (token.numValue.u64 > UINT32_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 'u32'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 'u32'", token.numValue.u64));
             break;
         case TokenNumType::Int8:
             if (token.numValue.s64 < INT8_MIN || token.numValue.s64 > INT8_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 's8'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 's8'", token.numValue.u64));
             break;
         case TokenNumType::Int16:
             if (token.numValue.s64 < INT16_MIN || token.numValue.s64 > INT16_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 's16'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 's16'", token.numValue.u64));
             break;
         case TokenNumType::Int32:
             if (token.numValue.s64 < INT32_MIN || token.numValue.s64 > INT32_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 's32'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 's32'", token.numValue.u64));
             break;
         case TokenNumType::Int64:
             if (token.numValue.s64 < INT64_MIN || token.numValue.s64 > INT64_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 's64'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 's64'", token.numValue.u64));
             break;
         case TokenNumType::Float32:
             token.numValue.f32 = static_cast<float>(token.numValue.s64);
@@ -90,7 +92,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
             token.numType      = tokenType.numType;
             break;
         case TokenNumType::Bool:
-            return error(token, format(L"can't convert literal number '%I64u' to 'bool'", token.numValue.u64));
+            return error(token, format("can't convert literal number '%I64u' to 'bool'", token.numValue.u64));
         default:
             token.numType = tokenType.numType;
             break;
@@ -101,29 +103,29 @@ bool Tokenizer::doNumberSuffix(Token& token)
         {
         case TokenNumType::UInt8:
             if (token.numValue.u64 > UINT8_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 'u8'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 'u8'", token.numValue.u64));
             break;
         case TokenNumType::UInt16:
             if (token.numValue.u64 > UINT16_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 'u16'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 'u16'", token.numValue.u64));
             break;
         case TokenNumType::UInt32:
             if (token.numValue.u64 > UINT32_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 'u32'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 'u32'", token.numValue.u64));
             break;
             if (token.numValue.u64 > UINT8_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 's8'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 's8'", token.numValue.u64));
             break;
         case TokenNumType::Int16:
             if (token.numValue.u64 > UINT16_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 's16'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 's16'", token.numValue.u64));
             break;
         case TokenNumType::Int32:
             if (token.numValue.u64 > UINT32_MAX)
-                return error(token, format(L"literal number '%I64u' is not in the range of 's32'", token.numValue.u64));
+                return error(token, format("literal number '%I64u' is not in the range of 's32'", token.numValue.u64));
             break;
         case TokenNumType::Bool:
-            return error(token, format(L"can't convert literal number '%I64u' to 'bool'", token.numValue.u64));
+            return error(token, format("can't convert literal number '%I64u' to 'bool'", token.numValue.u64));
         default:
             token.numType = tokenType.numType;
             break;
@@ -153,8 +155,8 @@ bool Tokenizer::doBinLiteral(Token& token)
         {
             if (!acceptSep)
             {
-                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, L"a digit separator can't start a literal number"));
-                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, L"forbidden consecutive digit separators"));
+                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, "a digit separator can't start a literal number"));
+                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, "forbidden consecutive digit separators"));
             }
 
             acceptSep = false;
@@ -163,8 +165,8 @@ bool Tokenizer::doBinLiteral(Token& token)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(token.numValue.u64 & 0x80000000'00000000), error(token, L"literal number is too big"));
-        SWAG_VERIFY(rank != 64, error(token, L"too many digits in literal number"));
+        SWAG_VERIFY(!(token.numValue.u64 & 0x80000000'00000000), error(token, "literal number is too big"));
+        SWAG_VERIFY(rank != 64, error(token, "too many digits in literal number"));
         token.numValue.u64 <<= 1;
         rank++;
 
@@ -175,10 +177,10 @@ bool Tokenizer::doBinLiteral(Token& token)
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        SWAG_CHECK(errorNumberSyntax(token, L"missing at least one digit"));
+        SWAG_CHECK(errorNumberSyntax(token, "missing at least one digit"));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(errorNumberSyntax(token, L"a digit separator can't end a literal number"));
+        SWAG_CHECK(errorNumberSyntax(token, "a digit separator can't end a literal number"));
 
     // Suffix
     token.id      = TokenId::LiteralNumber;
@@ -187,8 +189,8 @@ bool Tokenizer::doBinLiteral(Token& token)
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.numType != TokenNumType::Float32, error(token, L"can't convert a binary literal number to 'f32'"));
-        SWAG_VERIFY(token.numType != TokenNumType::Float64, error(token, L"can't convert a binary literal number to 'f64'"));
+        SWAG_VERIFY(token.numType != TokenNumType::Float32, error(token, "can't convert a binary literal number to 'f32'"));
+        SWAG_VERIFY(token.numType != TokenNumType::Float64, error(token, "can't convert a binary literal number to 'f64'"));
     }
 
     return true;
@@ -212,8 +214,8 @@ bool Tokenizer::doHexLiteral(Token& token)
         {
             if (!acceptSep)
             {
-                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, L"a digit separator can't start a literal number"));
-                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, L"forbidden consecutive digit separators"));
+                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, "a digit separator can't start a literal number"));
+                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, "forbidden consecutive digit separators"));
             }
 
             acceptSep = false;
@@ -222,8 +224,8 @@ bool Tokenizer::doHexLiteral(Token& token)
         }
 
         acceptSep = true;
-        SWAG_VERIFY(!(token.numValue.u64 & 0xF0000000'00000000), error(token, L"literal number is too big"));
-        SWAG_VERIFY(rank != 16, error(token, L"too many digits in literal number"));
+        SWAG_VERIFY(!(token.numValue.u64 & 0xF0000000'00000000), error(token, "literal number is too big"));
+        SWAG_VERIFY(rank != 16, error(token, "too many digits in literal number"));
         token.numValue.u64 <<= 4;
         rank++;
 
@@ -239,10 +241,10 @@ bool Tokenizer::doHexLiteral(Token& token)
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        SWAG_CHECK(errorNumberSyntax(token, L"missing at least one digit"));
+        SWAG_CHECK(errorNumberSyntax(token, "missing at least one digit"));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(errorNumberSyntax(token, L"a digit separator can't end a literal number"));
+        SWAG_CHECK(errorNumberSyntax(token, "a digit separator can't end a literal number"));
 
     // Suffix
     token.id      = TokenId::LiteralNumber;
@@ -251,8 +253,8 @@ bool Tokenizer::doHexLiteral(Token& token)
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.numType != TokenNumType::Float32, error(token, L"can't convert an hexadecimal literal number to 'f32'"));
-        SWAG_VERIFY(token.numType != TokenNumType::Float64, error(token, L"can't convert an hexadecimal literal number to 'f64'"));
+        SWAG_VERIFY(token.numType != TokenNumType::Float32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
+        SWAG_VERIFY(token.numType != TokenNumType::Float64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
     }
 
     return true;
@@ -280,8 +282,8 @@ bool Tokenizer::doIntLiteral(unsigned c, Token& token, unsigned& fractPart)
         {
             if (!acceptSep)
             {
-                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, L"a digit separator can't start a literal number"));
-                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, L"forbidden consecutive digit separators"));
+                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, "a digit separator can't start a literal number"));
+                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, "forbidden consecutive digit separators"));
             }
 
             acceptSep = false;
@@ -295,7 +297,7 @@ bool Tokenizer::doIntLiteral(unsigned c, Token& token, unsigned& fractPart)
         rank++;
 
         auto val = (c - '0');
-        SWAG_VERIFY(token.numValue.u64 <= 18446744073709551615 - val, error(token, L"literal number is too big"));
+        SWAG_VERIFY(token.numValue.u64 <= 18446744073709551615 - val, error(token, "literal number is too big"));
         token.numValue.u64 += val;
 
         c = getCharNoSeek(offset);
@@ -303,7 +305,7 @@ bool Tokenizer::doIntLiteral(unsigned c, Token& token, unsigned& fractPart)
 
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(errorNumberSyntax(token, L"a digit separator can't end a literal number"));
+        SWAG_CHECK(errorNumberSyntax(token, "a digit separator can't end a literal number"));
 
     return true;
 }
@@ -342,7 +344,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, unsigned c, Token& token)
         // Fraction part
         tokenFrac.startLocation = m_location;
         c                       = getCharNoSeek(offset);
-        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenFrac, L"a digit separator can't start a fractional part"));
+        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenFrac, "a digit separator can't start a fractional part"));
         if (SWAG_IS_DIGIT(c))
         {
             if (!startsWithDot)
@@ -382,8 +384,8 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, unsigned c, Token& token)
         }
 
         tokenExponent.startLocation = m_location;
-        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenExponent, L"a digit separator can't start an exponent part"));
-        SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, L"floating point number exponent must has at least one digit"));
+        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenExponent, "a digit separator can't start an exponent part"));
+        SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, "floating point number exponent must has at least one digit"));
         unsigned exponentPart;
         treatChar(c, offset);
         SWAG_CHECK(doIntLiteral(c, tokenExponent, exponentPart));
@@ -444,7 +446,7 @@ bool Tokenizer::doNumberLiteral(unsigned c, Token& token)
         {
             token.startLocation = m_location;
             treatChar(c, offset);
-            return error(token, format(L"invalid literal number prefix '%c'", c));
+            return error(token, format("invalid literal number prefix '%c'", c));
         }
     }
     else if (c == '.')

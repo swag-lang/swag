@@ -1,4 +1,6 @@
 #pragma once
+#include "Utf8.h"
+
 enum class LogColor
 {
     Black,
@@ -22,12 +24,14 @@ class Log
 {
     mutex access;
 #ifdef WIN32
-    HANDLE consoleHandle = NULL;
+    HANDLE consoleHandle     = NULL;
     WORD   defaultAttributes = 0;
 #endif
 
 public:
     Log();
+    void setColor(LogColor color);
+    void setDefaultColor();
 
     void lock()
     {
@@ -39,12 +43,15 @@ public:
         access.unlock();
     }
 
-    void setColor(LogColor color);
-    void setDefaultColor();
-
-    void print(const wstring& message)
+	void print(const char* message)
     {
         wcout << message;
+    }
+
+    void print(const utf8& message)
+    {
+        wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convert;
+        wcout << convert.from_bytes(message);
     }
 
     void eol()

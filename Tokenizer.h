@@ -4,8 +4,6 @@
 
 enum class TokenId
 {
-    Unknown,
-
     SymDot,
     SymLeftParen,
     SymRightParen,
@@ -35,17 +33,17 @@ enum class TokenId
     SymGreaterEqual,
     SymGreaterGreater,
     SymGreaterGreaterEqual,
-	SymAmpersand,
-	SymAmpersandEqual,
+    SymAmpersand,
+    SymAmpersandEqual,
     SymVertical,
     SymVerticalEqual,
-	SymDollar,
-	SymTilde,
-	SymTildeEqual,
-	SymCircumflex,
-	SymCircumflexEqual,
-	SymPercent,
-	SymPercentEqual,
+    SymDollar,
+    SymTilde,
+    SymTildeEqual,
+    SymCircumflex,
+    SymCircumflexEqual,
+    SymPercent,
+    SymPercentEqual,
 
     CompilerUnitTest,
 
@@ -79,7 +77,7 @@ struct Token
     TokenId        id;
     SourceLocation startLocation;
     SourceLocation endLocation;
-    wstring        text;
+    utf8           text;
     TokenNumType   numType;
     Register       numValue;
 };
@@ -103,9 +101,10 @@ private:
     bool     doNumberSuffix(Token& token);
     bool     doIntFloatLiteral(bool hasIntegralPart, unsigned c, Token& token);
     bool     doIntLiteral(unsigned c, Token& token, unsigned& fractPart);
-    bool     error(Token& token, const wstring& msg);
-    bool     errorNumberSyntax(Token& token, const wstring& msg);
+    bool     error(Token& token, const utf8& msg);
+    bool     errorNumberSyntax(Token& token, const utf8& msg);
     bool     doSymbol(unsigned c, Token& token);
+    bool     doStringLiteral(Token& token);
 
 private:
     SourceFile*    m_sourceFile  = nullptr;

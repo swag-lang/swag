@@ -1,5 +1,6 @@
 #pragma once
 #include "Tokenizer.h"
+#include "Utf8.h"
 
 class LanguageSpec
 {
@@ -7,8 +8,8 @@ public:
     LanguageSpec();
 
 public:
-    map<wstring, TokenId>      m_keywords;
-    map<wstring, TokenNumType> m_nativeTypes;
+    map<utf8, TokenId>      m_keywords;
+    map<utf8, TokenNumType> m_nativeTypes;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')

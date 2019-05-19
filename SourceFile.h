@@ -1,5 +1,6 @@
 #pragma once
 #include "Pool.h"
+#include "Utf8.h"
 
 enum ErrorIO
 {
@@ -28,14 +29,14 @@ public:
     fs::path m_path;
 
     int  m_unittestError = 0;
-    bool m_doSyntax         = true;
+    bool m_doSyntax      = true;
 
 public:
     ~SourceFile();
     void     construct() override;
     void     reset() override;
-    unsigned getChar(unsigned& offset);
-    wstring  getLine(long seek);
+    char32_t getChar(unsigned& offset);
+    utf8     getLine(long seek);
     void     report(const class Diagnostic& diag);
 
 private:
@@ -50,7 +51,7 @@ private:
     void buildRequest(int reqNum);
     char getPrivateChar();
     void waitEndRequests();
-	bool checkFormat();
+    bool checkFormat();
 
 private:
     ErrorIO                      m_errorIO    = ErrorIO::Ok;

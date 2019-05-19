@@ -13,7 +13,7 @@ enum DiagnosticLevel
 class Diagnostic
 {
 public:
-    Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const wstring& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+    Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : m_file{file}
         , m_startLocation{start}
         , m_endLocation{end}
@@ -26,7 +26,7 @@ public:
     {
     }
 
-    Diagnostic(SourceFile* file, const SourceLocation& start, const wstring& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+    Diagnostic(SourceFile* file, const SourceLocation& start, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : m_file{file}
         , m_startLocation{start}
         , m_msg{msg}
@@ -38,7 +38,7 @@ public:
     {
     }
 
-    Diagnostic(SourceFile* file, const Token& token, const wstring& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+    Diagnostic(SourceFile* file, const Token& token, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : m_file{file}
         , m_startLocation{token.startLocation}
         , m_endLocation{token.endLocation}
@@ -51,7 +51,7 @@ public:
     {
     }
 
-	Diagnostic(SourceFile* file, const wstring& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+	Diagnostic(SourceFile* file, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : m_file{file}
         , m_msg{msg}
         , m_level{level}
@@ -63,7 +63,7 @@ public:
     SourceFile*     m_file = nullptr;
     SourceLocation  m_startLocation;
     SourceLocation  m_endLocation;
-    wstring         m_msg;
+	utf8			m_msg;
     DiagnosticLevel m_level;
     bool            m_hasFile          = false;
     bool            m_hasLocation      = false;

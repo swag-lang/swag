@@ -10,19 +10,19 @@
 bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_CHECK(m_tokenizer.getToken(m_token));
-    if (m_token.text == L"error")
+    if (m_token.text == "error")
     {
         if (g_CommandLine.test)
             m_file->m_unittestError++;
     }
-    else if (m_token.text == L"lexer")
+    else if (m_token.text == "lexer")
     {
         if (g_CommandLine.test)
             m_file->m_doSyntax = false;
     }
     else
     {
-        m_file->report({m_file, m_token, format(L"unknown #unittest parameter '%s'", m_token.text.c_str())});
+        m_file->report({m_file, m_token, format("unknown #unittest parameter '%s'", m_token.text.c_str())});
         return false;
     }
 

@@ -9,6 +9,9 @@
 #include <mutex>
 #include <iostream>
 #include <atomic>
+#include <locale>
+#include <codecvt>
+
 using namespace std;
 namespace fs = std::experimental::filesystem;
 

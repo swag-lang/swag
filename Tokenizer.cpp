@@ -109,7 +109,7 @@ bool Tokenizer::eatCComment(Token& token)
         {
             token.endLocation = token.startLocation;
             token.endLocation.column += 2;
-            m_sourceFile->report({m_sourceFile, token, L"unexpected end of file found in comment"});
+            m_sourceFile->report({m_sourceFile, token, "unexpected end of file found in comment"});
             return false;
         }
 
@@ -161,7 +161,7 @@ void Tokenizer::getIdentifier(Token& token)
         token.numType = g_LangSpec.m_nativeTypes[token.text];
 }
 
-bool Tokenizer::error(Token& token, const wstring& msg)
+bool Tokenizer::error(Token& token, const utf8& msg)
 {
     token.endLocation = m_location;
     m_sourceFile->report({m_sourceFile, token, msg});
@@ -216,7 +216,7 @@ bool Tokenizer::getToken(Token& token)
             token.endLocation = m_location;
             if (token.id == TokenId::Identifier && token.text[0] == '#')
             {
-                m_sourceFile->report({m_sourceFile, token, format(L"invalid compiler command '%s'", token.text.c_str())});
+                m_sourceFile->report({m_sourceFile, token, format("invalid compiler command '%s'", token.text.c_str())});
                 return false;
             }
 
@@ -239,7 +239,7 @@ bool Tokenizer::getToken(Token& token)
         token.text        = c;
         token.id          = TokenId::Invalid;
         token.endLocation = m_location;
-        m_sourceFile->report({m_sourceFile, token, format(L"invalid character '%s'", token.text.c_str())});
+        m_sourceFile->report({m_sourceFile, token, format("invalid character '%s'", token.text.c_str())});
         return false;
     }
 

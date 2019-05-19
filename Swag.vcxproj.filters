@@ -64,6 +64,12 @@
     <ClCompile Include="TokenizerSymbol_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="TokenizerStringLiteral_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="Utf8.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -131,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="SyntaxJob.h">
       <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="Utf8.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

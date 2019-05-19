@@ -66,16 +66,16 @@ bool SourceFile::checkFormat()
     {
         m_textFormat = TextFormat::UTF8;
         m_fileSeek   = 3;
-		return true;
+        return true;
     }
 
     if ((c1 & 0x80) || (c1 == 0) || (c1 == 0x0E && c2 == 0xFE))
     {
-        report({this, L"invalid file format, should be ascii, utf-8 or utf-8-bom"});
-		return false;
+        report({this, "invalid file format, should be ascii, utf-8 or utf-8-bom"});
+        return false;
     }
 
-	return true;
+    return true;
 }
 
 void SourceFile::close()
@@ -142,12 +142,12 @@ void SourceFile::buildRequest(int reqNum)
 
 char SourceFile::getPrivateChar()
 {
-	if (!m_file)
-	{
-		open();
-		if (!checkFormat())
-			return 0;
-	}
+    if (!m_file)
+    {
+        open();
+        if (!checkFormat())
+            return 0;
+    }
 
     if (m_directMode)
     {
@@ -184,7 +184,7 @@ char SourceFile::getPrivateChar()
     return c;
 }
 
-unsigned SourceFile::getChar(unsigned& offset)
+char32_t SourceFile::getChar(unsigned& offset)
 {
     char c = getPrivateChar();
     offset = 1;
@@ -195,7 +195,7 @@ unsigned SourceFile::getChar(unsigned& offset)
         if ((c & 0x80) == 0)
             return c;
 
-        unsigned wc;
+        char32_t wc;
         if ((c & 0xE0) == 0xC0)
         {
             wc = (c & 0x1F) << 6;
@@ -256,7 +256,7 @@ void SourceFile::waitEndRequests()
         ;
 }
 
-wstring SourceFile::getLine(long seek)
+utf8 SourceFile::getLine(long seek)
 {
     // Be sure there's no pending requests
     waitEndRequests();
@@ -265,8 +265,8 @@ wstring SourceFile::getLine(long seek)
     seekTo(seek);
     m_directMode = true;
 
-    wstring line;
-    int     column = 0;
+    utf8 line;
+    int  column = 0;
     while (true)
     {
         unsigned offset = 0;
@@ -276,11 +276,11 @@ wstring SourceFile::getLine(long seek)
         if (c == '\t')
         {
             column++;
-            line += L" ";
+            line += " ";
             while (column % g_CommandLine.tabSize)
             {
                 column++;
-                line += L" ";
+                line += " ";
             }
         }
         else
