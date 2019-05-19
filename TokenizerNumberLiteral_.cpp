@@ -41,8 +41,6 @@ bool Tokenizer::doNumberSuffix(Token& token)
         case TokenNumType::Bool:
             return error(token, format(L"can't convert floating point number '%Lf' to 'bool'", token.numValue.f64));
         case TokenNumType::Float32:
-            token.numValue.f32 = static_cast<float>(token.numValue.f64);
-            break;
         case TokenNumType::Float64:
             token.numType = tokenType.numType;
             break;
@@ -85,11 +83,11 @@ bool Tokenizer::doNumberSuffix(Token& token)
             break;
         case TokenNumType::Float32:
             token.numValue.f32 = static_cast<float>(token.numValue.s64);
-			token.numType = tokenType.numType;
+            token.numType      = tokenType.numType;
             break;
         case TokenNumType::Float64:
             token.numValue.f64 = static_cast<float>(token.numValue.s64);
-			token.numType = tokenType.numType;
+            token.numType      = tokenType.numType;
             break;
         case TokenNumType::Bool:
             return error(token, format(L"can't convert literal number '%I64u' to 'bool'", token.numValue.u64));
@@ -303,7 +301,7 @@ bool Tokenizer::doIntLiteral(unsigned c, Token& token, unsigned& fractPart)
         c = getCharNoSeek(offset);
     }
 
-	// Be sure we don't have a number with a separator at its end
+    // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
         SWAG_CHECK(errorNumberSyntax(token, L"a digit separator can't end a literal number"));
 
@@ -314,7 +312,9 @@ bool Tokenizer::doIntFloatLiteral(unsigned c, Token& token)
 {
     unsigned fractPart = 1;
     Token    tokenFrac;
-    tokenFrac.numValue.u64 = 0;
+    Token    tokenExponent;
+    tokenFrac.numValue.u64     = 0;
+    tokenExponent.numValue.u64 = 0;
 
     // Integer part
     token.numType = TokenNumType::IntX;
@@ -327,17 +327,20 @@ bool Tokenizer::doIntFloatLiteral(unsigned c, Token& token)
     if (c == '.')
     {
         token.numType = TokenNumType::Float32;
+        token.text += c;
         treatChar(c, offset);
         tokenFrac.startLocation = m_location;
 
         // Fraction part
         c = getCharNoSeek(offset);
-		SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenFrac, L"a digit separator can't start a fractional part"));
+        SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenFrac, L"a digit separator can't start a fractional part"));
         if (SWAG_IS_DIGIT(c))
         {
+            token.text += c;
             tokenFrac.text = c;
             treatChar(c, offset);
             SWAG_CHECK(doIntLiteral(c, tokenFrac, fractPart));
+            token.text += tokenFrac.text;
             c = getCharNoSeek(offset);
         }
     }
@@ -345,12 +348,48 @@ bool Tokenizer::doIntFloatLiteral(unsigned c, Token& token)
     // If there's an exponent, then this is a floating point number
     if (c == 'e' || c == 'E')
     {
-        // TODO
+        token.numType = TokenNumType::Float32;
+        token.text += c;
+        treatChar(c, offset);
+        tokenExponent.startLocation = m_location;
+
+        bool minus = false;
+        c          = getCharNoSeek(offset);
+
+        if (c == '-')
+        {
+            token.text += c;
+            minus = true;
+            treatChar(c, offset);
+            c = getCharNoSeek(offset);
+        }
+        else if (c == '+')
+        {
+            token.text += c;
+            minus = false;
+            treatChar(c, offset);
+            c = getCharNoSeek(offset);
+        }
+
+		tokenExponent.startLocation = m_location;
+		SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenExponent, L"a digit separator can't start an exponent part"));
+		SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, L"floating point number exponent must has at least one digit"));
+        unsigned exponentPart;
+		treatChar(c, offset);
+        SWAG_CHECK(doIntLiteral(c, tokenExponent, exponentPart));
+        token.text += tokenExponent.text;
+        c = getCharNoSeek(offset);
+
+		if (minus)
+			tokenExponent.numValue.s64 = -tokenExponent.numValue.s64;
     }
 
+	// Really compute the floating point value, with as much precision as we can
     if (token.numType == TokenNumType::Float32)
     {
         token.numValue.f64 = (double) (token.numValue.u64) + (tokenFrac.numValue.u64 / (double) fractPart);
+		if(tokenExponent.numValue.s64)
+			token.numValue.f64 *= std::pow(10, tokenExponent.numValue.s64);
     }
 
     if (c == '\'')
@@ -359,10 +398,8 @@ bool Tokenizer::doIntFloatLiteral(unsigned c, Token& token)
         SWAG_CHECK(doNumberSuffix(token));
     }
 
-    // By default, floating point numbers are f32, not f64!
-    else if (token.numType == TokenNumType::Float32)
-        token.numValue.f32 = static_cast<float>(token.numValue.f64);
-
+	// Note: even for a float32 type, the value is stored in f64 in order to keep the maximum precision
+	// as much as we can for possible later computations.
     return true;
 }
 
@@ -371,33 +408,33 @@ bool Tokenizer::doNumberLiteral(unsigned c, Token& token)
     token.text = c;
     if (c == '0')
     {
-		unsigned offset;
+        unsigned offset;
         c = getCharNoSeek(offset);
 
-		// Hexadecimal
+        // Hexadecimal
         if (c == 'x' || c == 'X')
         {
-			treatChar(c, offset);
+            treatChar(c, offset);
             token.text += c;
             SWAG_CHECK(doHexLiteral(token));
             return true;
         }
 
-		// Binary
+        // Binary
         if (c == 'b' || c == 'B')
         {
-			treatChar(c, offset);
+            treatChar(c, offset);
             token.text += c;
             SWAG_CHECK(doBinLiteral(token));
             return true;
         }
 
-		if (c != '.' && c != 'e' && c != 'E' && !SWAG_IS_DIGIT(c))
-		{
+        if (c != '.' && c != 'e' && c != 'E' && !SWAG_IS_DIGIT(c))
+        {
             token.startLocation = m_location;
-			treatChar(c, offset);
-			return error(token, format(L"invalid literal number prefix '%c'", c));
-		}
+            treatChar(c, offset);
+            return error(token, format(L"invalid literal number prefix '%c'", c));
+        }
     }
 
     SWAG_CHECK(doIntFloatLiteral(c, token));
