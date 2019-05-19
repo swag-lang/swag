@@ -7,7 +7,7 @@
 #include "Diagnostic.h"
 #include "CommandLine.h"
 
-void Tokenizer::setFile(class SourceFile* file)
+void Tokenizer::setFile(SourceFile* file)
 {
     m_location.seek          = 0;
     m_location.column        = 0;
@@ -96,7 +96,7 @@ inline unsigned Tokenizer::getChar(unsigned& offset, bool seek)
     return c;
 }
 
-bool Tokenizer::ZapCComment(Token& token)
+bool Tokenizer::eatCComment(Token& token)
 {
     int countEmb = 1;
     while (true)
@@ -170,6 +170,7 @@ bool Tokenizer::error(Token& token, const wstring& msg)
 
 bool Tokenizer::getToken(Token& token)
 {
+	unsigned offset;
     while (true)
     {
         token.startLocation = m_location;
@@ -186,11 +187,12 @@ bool Tokenizer::getToken(Token& token)
 
         if (c == '/')
         {
-            auto nc = getChar();
+            auto nc = getCharNoSeek(offset);
 
             // C++ comment //
             if (nc == '/')
             {
+				treatChar(c, offset);
                 nc = getChar();
                 while (nc && nc != '\n')
                     nc = getChar();
@@ -200,13 +202,10 @@ bool Tokenizer::getToken(Token& token)
             // C comment /*
             if (nc == '*')
             {
-                SWAG_CHECK(ZapCComment(token));
+				treatChar(c, offset);
+                SWAG_CHECK(eatCComment(token));
                 continue;
             }
-
-            token.endLocation = m_location;
-            token.id          = TokenId::SymSlash;
-            return true;
         }
 
         // Identifier
@@ -233,6 +232,8 @@ bool Tokenizer::getToken(Token& token)
 
         // Symbols
         token.endLocation = m_location;
+        if (doSymbol(c, token))
+            return true;
 
         // Unknown character
         token.text        = c;

@@ -61,6 +61,9 @@
     <ClCompile Include="SyntaxJob.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="TokenizerSymbol_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

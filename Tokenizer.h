@@ -5,12 +5,54 @@
 enum class TokenId
 {
     Unknown,
+
+    SymDot,
+    SymLeftParen,
+    SymRightParen,
+    SymLeftSquare,
+    SymRightSquare,
+    SymLeftCurly,
+    SymRightCurly,
+    SymColon,
+    SymSemiColon,
+    SymQuestion,
+    SymAt,
+    SymEqual,
+    SymEqualEqual,
+    SymMinus,
+    SymMinusEqual,
+    SymPlus,
+    SymPlusEqual,
+    SymAsterisk,
+    SymAsteriskEqual,
     SymSlash,
-	SymDot,
-    Identifier,
+    SymSlashEqual,
+    SymLower,
+    SymLowerEqual,
+    SymLowerLower,
+    SymLowerLowerEqual,
+    SymGreater,
+    SymGreaterEqual,
+    SymGreaterGreater,
+    SymGreaterGreaterEqual,
+	SymAmpersand,
+	SymAmpersandEqual,
+    SymVertical,
+    SymVerticalEqual,
+	SymDollar,
+	SymTilde,
+	SymTildeEqual,
+	SymCircumflex,
+	SymCircumflexEqual,
+	SymPercent,
+	SymPercentEqual,
+
     CompilerUnitTest,
+
+    Identifier,
     LiteralNumber,
     NativeType,
+
     Invalid,
     EndOfFile,
 };
@@ -18,7 +60,7 @@ enum class TokenId
 enum class TokenNumType
 {
     IntX,
-	UIntX,
+    UIntX,
     Int8,
     Int16,
     Int32,
@@ -52,7 +94,7 @@ private:
     unsigned getChar();
     unsigned getCharNoSeek(unsigned& offset);
     unsigned getChar(unsigned& offset, bool seek);
-    bool     ZapCComment(Token& token);
+    bool     eatCComment(Token& token);
     void     getIdentifier(Token& token);
     void     treatChar(unsigned c, unsigned offset);
     bool     doNumberLiteral(unsigned c, Token& token);
@@ -63,6 +105,7 @@ private:
     bool     doIntLiteral(unsigned c, Token& token, unsigned& fractPart);
     bool     error(Token& token, const wstring& msg);
     bool     errorNumberSyntax(Token& token, const wstring& msg);
+    bool     doSymbol(unsigned c, Token& token);
 
 private:
     SourceFile*    m_sourceFile  = nullptr;
