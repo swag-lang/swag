@@ -109,6 +109,7 @@ private:
     bool     doStringLiteral(Token& token, bool raw);
     bool     isEscape(char32_t& c, Token& token, unsigned offset);
     bool     getDigitHexa(Token& token, int& result);
+	bool     doCharLiteral(Token& token);
 
 private:
     SourceFile*    m_sourceFile  = nullptr;

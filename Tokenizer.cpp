@@ -243,6 +243,12 @@ bool Tokenizer::getToken(Token& token)
             return true;
         }
 
+		if (c == '\'')
+        {
+            SWAG_CHECK(doCharLiteral(token));
+            return true;
+        }
+
         // Symbols
         token.endLocation = m_location;
         if (doSymbol(c, token))

@@ -55,11 +55,11 @@ bool Tokenizer::isEscape(char32_t& c, Token& token, unsigned offset)
         return true;
     case 'x':
     {
-		int c1, c2;
+        int c1, c2;
         SWAG_CHECK(getDigitHexa(token, c1));
-		SWAG_CHECK(getDigitHexa(token, c2));
-		c = (c1 << 4) + c2;
-		return true;
+        SWAG_CHECK(getDigitHexa(token, c2));
+        c = (c1 << 4) + c2;
+        return true;
     }
     case 'u':
     {
@@ -138,5 +138,61 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         token.text += c;
     }
 
+    return result;
+}
+
+bool Tokenizer::doCharLiteral(Token& token)
+{
+    bool     result = true;
+    unsigned offset;
+    token.id = TokenId::LiteralCharacter;
+
+    auto c              = getCharNoSeek(offset);
+    token.startLocation = m_location;
+
+    // Can't have a newline inside a character
+    if (c == '\n')
+    {
+        token.startLocation = m_location;
+        token.endLocation   = token.startLocation;
+        m_sourceFile->report({m_sourceFile, token, "unexpected end of line found in character literal"});
+        return false;
+    }
+
+    // End of file
+    if (!c)
+    {
+        token.endLocation = token.startLocation;
+        m_sourceFile->report({m_sourceFile, token, "unexpected end of file found in character literal"});
+        return false;
+    }
+
+    // Escape sequence
+    if (c == '\\')
+    {
+        treatChar(c, offset);
+        result     = result && isEscape(c, token, offset);
+        token.text = c;
+    }
+    else
+    {
+        treatChar(c, offset);
+        token.text = c;
+    }
+
+    token.startLocation = m_location;
+    c                   = getCharNoSeek(offset);
+    if (c != '\'')
+    {
+		result = false;
+        error(token, "missing character literal last '\''");
+        while (c != '\'' && c && c != '\n')
+        {
+            treatChar(c, offset);
+            c = getCharNoSeek(offset);
+        }
+    }
+
+    treatChar(c, offset);
     return result;
 }
