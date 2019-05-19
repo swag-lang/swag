@@ -1,4 +1,4 @@
-#unittest tokenizer
+#unittest lexer
 
 #unittest error
 0b11111111_1'u8
@@ -21,7 +21,7 @@
 #unittest error
 0b1'f64
 
-#unittest tokenizer
+#unittest lexer
 0b11's8
 0b11111111_11111111's16
 0b11111111_11111111_11111111_11111111's32

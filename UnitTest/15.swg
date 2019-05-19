@@ -1,4 +1,4 @@
-#unittest tokenizer
+#unittest lexer
 
 #unittest error
 0xFFFFFFFF'u8
@@ -21,7 +21,7 @@
 #unittest error
 0xFFFFFFFFF'f64
 
-#unittest tokenizer
+#unittest lexer
 0x7F's8
 0x00000007F's8
 0xFFFF's16

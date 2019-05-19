@@ -9,12 +9,13 @@
 
 void Tokenizer::setFile(class SourceFile* file)
 {
-    m_location.seek   = 0;
-    m_location.column = 0;
-    m_location.line   = 0;
-    m_endReached      = false;
-    m_cacheChar       = 0;
-    m_sourceFile      = file;
+    m_location.seek          = 0;
+    m_location.column        = 0;
+    m_location.line          = 0;
+    m_location.seekStartLine = 0;
+    m_endReached             = false;
+    m_cacheChar              = 0;
+    m_sourceFile             = file;
 }
 
 inline void Tokenizer::treatChar(unsigned c, unsigned offset)
@@ -230,8 +231,8 @@ bool Tokenizer::getToken(Token& token)
             return true;
         }
 
-		// Symbols
-		token.endLocation = m_location;
+        // Symbols
+        token.endLocation = m_location;
 
         // Unknown character
         token.text        = c;
