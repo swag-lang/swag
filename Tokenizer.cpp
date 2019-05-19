@@ -208,14 +208,6 @@ bool Tokenizer::getToken(Token& token)
             return true;
         }
 
-        token.endLocation = m_location;
-        switch (c)
-        {
-        case '.':
-            token.id = TokenId::SymDot;
-            return true;
-        }
-
         // Identifier
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#')
         {
@@ -232,11 +224,14 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Number literal
-        if (SWAG_IS_DIGIT(c))
+        if (SWAG_IS_DIGIT(c) || c == '.')
         {
             SWAG_CHECK(doNumberLiteral(c, token));
             return true;
         }
+
+		// Symbols
+		token.endLocation = m_location;
 
         // Unknown character
         token.text        = c;

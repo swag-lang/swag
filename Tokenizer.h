@@ -59,7 +59,7 @@ private:
     bool     doHexLiteral(Token& token);
     bool     doBinLiteral(Token& token);
     bool     doNumberSuffix(Token& token);
-    bool     doIntFloatLiteral(unsigned c, Token& token);
+    bool     doIntFloatLiteral(bool hasIntegralPart, unsigned c, Token& token);
     bool     doIntLiteral(unsigned c, Token& token, unsigned& fractPart);
     bool     error(Token& token, const wstring& msg);
     bool     errorNumberSyntax(Token& token, const wstring& msg);
