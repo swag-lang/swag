@@ -5,6 +5,7 @@ LanguageSpec::LanguageSpec()
 {
     m_keywords["#unittest"] = TokenId::CompilerUnitTest;
 
+#if 0
 m_keywords["#include"] = TokenId::Invalid;
 m_keywords["#pragma"] = TokenId::Invalid;
 m_keywords["#ifdef"] = TokenId::Invalid;
@@ -27,6 +28,7 @@ m_keywords["#_FCT"] = TokenId::Invalid;
 m_keywords["#Oper"] = TokenId::Invalid;
 m_keywords["#__a"] = TokenId::Invalid;
 m_keywords["#a"] = TokenId::Invalid;
+#endif
 
     m_keywords["u64"]       = TokenId::NativeType;
     m_keywords["u32"]       = TokenId::NativeType;

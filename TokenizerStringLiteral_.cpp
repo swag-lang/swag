@@ -90,6 +90,7 @@ bool Tokenizer::isEscape(char32_t& c, Token& token, unsigned offset)
     }
     }
 
+	if (c < 32) c = '?';
     token.text = c;
     error(token, format("unrecognized character escape sequence '\\%s'", token.text.c_str()));
     return false;

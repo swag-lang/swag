@@ -19,7 +19,8 @@ bool ParseFolderJob::execute()
     for (auto& p : rec)
     {
         extension = p.path().extension().string();
-        if (extension == ".cpp1" || extension == ".swg")
+        //if (extension == ".cpp")
+		if (extension == ".swg")
         {
             // File filtering by name
             if (!g_CommandLine.fileFilter.empty() && p.path().string().find(g_CommandLine.fileFilter) == string::npos)
