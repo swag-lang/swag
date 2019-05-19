@@ -51,6 +51,15 @@ public:
     {
     }
 
+	Diagnostic(SourceFile* file, const wstring& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : m_file{file}
+        , m_msg{msg}
+        , m_level{level}
+        , m_hasFile{true}
+        , m_hasLocation{false}
+    {
+    }
+
     SourceFile*     m_file = nullptr;
     SourceLocation  m_startLocation;
     SourceLocation  m_endLocation;

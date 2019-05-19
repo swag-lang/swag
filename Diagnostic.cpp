@@ -15,8 +15,10 @@ void Diagnostic::report(bool verboseMode) const
     if (m_hasFile)
     {
         g_Log.print(m_file->m_path.filename());
-        if (m_hasLocation)
-            g_Log.print(format(L":%d:%d: ", m_startLocation.line + 1, m_startLocation.column + 1));
+		if (m_hasLocation)
+			g_Log.print(format(L":%d:%d: ", m_startLocation.line + 1, m_startLocation.column + 1));
+		else
+			g_Log.print(L": ");
     }
 
     // Message level

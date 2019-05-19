@@ -50,6 +50,7 @@ private:
     void buildRequest(int reqNum);
     char getPrivateChar();
     void waitEndRequests();
+	bool checkFormat();
 
 private:
     ErrorIO                      m_errorIO    = ErrorIO::Ok;

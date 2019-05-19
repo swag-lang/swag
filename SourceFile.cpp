@@ -53,18 +53,29 @@ void SourceFile::open()
     }
 
     setvbuf(m_file, nullptr, _IONBF, 0);
+}
 
+bool SourceFile::checkFormat()
+{
     // Read header
     auto c1 = fgetc(m_file);
     auto c2 = fgetc(m_file);
     auto c3 = fgetc(m_file);
-    auto c4 = fgetc(m_file);
 
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
     {
         m_textFormat = TextFormat::UTF8;
-        fseek(m_file, 3, SEEK_SET);
+        m_fileSeek   = 3;
+		return true;
     }
+
+    if ((c1 & 0x80) || (c1 == 0) || (c1 == 0x0E && c2 == 0xFE))
+    {
+        report({this, L"invalid file format, should be ascii, utf-8 or utf-8-bom"});
+		return false;
+    }
+
+	return true;
 }
 
 void SourceFile::close()
@@ -131,6 +142,13 @@ void SourceFile::buildRequest(int reqNum)
 
 char SourceFile::getPrivateChar()
 {
+	if (!m_file)
+	{
+		open();
+		if (!checkFormat())
+			return 0;
+	}
+
     if (m_directMode)
     {
         auto c = fgetc(m_file);
