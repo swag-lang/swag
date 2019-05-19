@@ -43,15 +43,22 @@ public:
         access.unlock();
     }
 
-	void print(const char* message)
+    void print(const char* message)
     {
         wcout << message;
     }
 
     void print(const utf8& message)
     {
-        wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convert;
-        wcout << convert.from_bytes(message);
+        try
+        {
+            wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convert;
+            wcout << convert.from_bytes(message);
+        }
+        catch (...)
+        {
+            wcout << "?";
+        }
     }
 
     void eol()

@@ -18,7 +18,7 @@ void Tokenizer::setFile(SourceFile* file)
     m_sourceFile             = file;
 }
 
-inline void Tokenizer::treatChar(unsigned c, unsigned offset)
+inline void Tokenizer::treatChar(char32_t c, unsigned offset)
 {
     if (!c)
         return;
@@ -44,24 +44,24 @@ inline void Tokenizer::treatChar(unsigned c, unsigned offset)
     }
 }
 
-inline unsigned Tokenizer::getChar()
+inline char32_t Tokenizer::getChar()
 {
     unsigned offset;
     return getChar(offset, true);
 }
 
-inline unsigned Tokenizer::getCharNoSeek(unsigned& offset)
+inline char32_t Tokenizer::getCharNoSeek(unsigned& offset)
 {
     return getChar(offset, false);
 }
 
-inline unsigned Tokenizer::getChar(unsigned& offset, bool seek)
+inline char32_t Tokenizer::getChar(unsigned& offset, bool seek)
 {
     if (m_endReached)
         return 0;
 
     // One character is already there, no need to read
-    unsigned c = 0;
+    char32_t c = 0;
     offset     = 1;
     if (m_cacheChar)
     {
@@ -170,7 +170,7 @@ bool Tokenizer::error(Token& token, const utf8& msg)
 
 bool Tokenizer::getToken(Token& token)
 {
-	unsigned offset;
+    unsigned offset;
     while (true)
     {
         token.startLocation = m_location;
@@ -192,7 +192,7 @@ bool Tokenizer::getToken(Token& token)
             // C++ comment //
             if (nc == '/')
             {
-				treatChar(c, offset);
+                treatChar(c, offset);
                 nc = getChar();
                 while (nc && nc != '\n')
                     nc = getChar();
@@ -202,7 +202,7 @@ bool Tokenizer::getToken(Token& token)
             // C comment /*
             if (nc == '*')
             {
-				treatChar(c, offset);
+                treatChar(c, offset);
                 SWAG_CHECK(eatCComment(token));
                 continue;
             }
@@ -227,6 +227,19 @@ bool Tokenizer::getToken(Token& token)
         if (SWAG_IS_DIGIT(c) || c == '.')
         {
             SWAG_CHECK(doNumberLiteral(c, token));
+            return true;
+        }
+
+        // String literal
+        if (c == '"')
+        {
+            SWAG_CHECK(doStringLiteral(token, false));
+            return true;
+        }
+
+        if (c == '`')
+        {
+            SWAG_CHECK(doStringLiteral(token, true));
             return true;
         }
 

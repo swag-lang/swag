@@ -34,11 +34,18 @@ public:
         clear();
         if (!(c & 0xFFFFFF80))
         {
-			append(1, (char) c);
+            append(1, (char) c);
             return;
         }
 
-        append(toutf8.to_bytes(c));
+		try
+        {
+            append(toutf8.to_bytes(c));
+        }
+        catch (...)
+        {
+            append("?");
+        }
     }
 
     void operator+=(char32_t c)
@@ -49,6 +56,13 @@ public:
             return;
         }
 
-        append(toutf8.to_bytes(c));
+        try
+        {
+            append(toutf8.to_bytes(c));
+        }
+        catch(...)
+        {
+			append("?");
+        }
     }
 };

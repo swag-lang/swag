@@ -204,7 +204,7 @@ bool Tokenizer::doHexLiteral(Token& token)
     bool     acceptSep = false;
     unsigned offset;
     auto     c = getCharNoSeek(offset);
-    while (SWAG_IS_HEX(c) || SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
+    while (SWAG_IS_ALPHAHEX(c) || SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
     {
         token.text += c;
         treatChar(c, offset);
@@ -260,7 +260,7 @@ bool Tokenizer::doHexLiteral(Token& token)
     return true;
 }
 
-bool Tokenizer::doIntLiteral(unsigned c, Token& token, unsigned& fractPart)
+bool Tokenizer::doIntLiteral(char32_t c, Token& token, unsigned& fractPart)
 {
     token.numValue.u64 = 0;
     int rank           = 0;
@@ -310,7 +310,7 @@ bool Tokenizer::doIntLiteral(unsigned c, Token& token, unsigned& fractPart)
     return true;
 }
 
-bool Tokenizer::doIntFloatLiteral(bool startsWithDot, unsigned c, Token& token)
+bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
 {
     unsigned fractPart = 1;
     unsigned offset    = 1;
@@ -415,7 +415,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, unsigned c, Token& token)
     return true;
 }
 
-bool Tokenizer::doNumberLiteral(unsigned c, Token& token)
+bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
 {
     bool startsWithDot = false;
     token.text         = c;

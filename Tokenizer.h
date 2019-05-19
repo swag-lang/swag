@@ -49,6 +49,8 @@ enum class TokenId
 
     Identifier,
     LiteralNumber,
+    LiteralString,
+    LiteralCharacter,
     NativeType,
 
     Invalid,
@@ -89,26 +91,28 @@ public:
     bool getToken(Token& token);
 
 private:
-    unsigned getChar();
-    unsigned getCharNoSeek(unsigned& offset);
-    unsigned getChar(unsigned& offset, bool seek);
+    char32_t getChar();
+    char32_t getCharNoSeek(unsigned& offset);
+    char32_t getChar(unsigned& offset, bool seek);
     bool     eatCComment(Token& token);
     void     getIdentifier(Token& token);
-    void     treatChar(unsigned c, unsigned offset);
-    bool     doNumberLiteral(unsigned c, Token& token);
+    void     treatChar(char32_t c, unsigned offset);
+    bool     doNumberLiteral(char32_t c, Token& token);
     bool     doHexLiteral(Token& token);
     bool     doBinLiteral(Token& token);
     bool     doNumberSuffix(Token& token);
-    bool     doIntFloatLiteral(bool hasIntegralPart, unsigned c, Token& token);
-    bool     doIntLiteral(unsigned c, Token& token, unsigned& fractPart);
+    bool     doIntFloatLiteral(bool hasIntegralPart, char32_t c, Token& token);
+    bool     doIntLiteral(char32_t c, Token& token, unsigned& fractPart);
     bool     error(Token& token, const utf8& msg);
     bool     errorNumberSyntax(Token& token, const utf8& msg);
-    bool     doSymbol(unsigned c, Token& token);
-    bool     doStringLiteral(Token& token);
+    bool     doSymbol(char32_t c, Token& token);
+    bool     doStringLiteral(Token& token, bool raw);
+    bool     isEscape(char32_t& c, Token& token, unsigned offset);
+    bool     getDigitHexa(Token& token, int& result);
 
 private:
     SourceFile*    m_sourceFile  = nullptr;
-    unsigned       m_cacheChar   = 0;
+    char32_t       m_cacheChar   = 0;
     unsigned       m_cacheOffset = 0;
     SourceLocation m_location;
     bool           m_endReached = false;

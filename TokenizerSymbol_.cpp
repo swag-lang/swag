@@ -4,7 +4,7 @@
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 
-bool Tokenizer::doSymbol(unsigned c, Token& token)
+bool Tokenizer::doSymbol(char32_t c, Token& token)
 {
     unsigned offset;
     switch (c)
