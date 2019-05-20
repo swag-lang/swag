@@ -1,4 +1,4 @@
-#unittest lexer
+#unittest pass lexer
 
 0,
 0;

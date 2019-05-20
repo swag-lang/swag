@@ -1,4 +1,4 @@
-#unittest lexer
+#unittest pass lexer
 
 'A'
 '0' '\n''\r'

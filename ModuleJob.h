@@ -5,7 +5,8 @@
 struct ModuleJob : public Job
 {
     Module* module = nullptr;
-    bool          execute()
+
+    bool execute()
     {
         return module->semantic();
     }

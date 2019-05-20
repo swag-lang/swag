@@ -38,6 +38,8 @@ bool Module::semantic()
     m_astRoot = Ast::newNode(&g_Pool, AstNodeType::RootModule);
 	for (auto file : m_files)
 	{
+		if (file->m_buildPass < BuildPass::Semantic)
+			continue;
 		Ast::addChild(m_astRoot, file->m_astRoot, false);
 		semanticNode(file, file->m_astRoot);
 	}

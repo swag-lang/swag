@@ -2,13 +2,15 @@
 #include "Pool.h"
 #include "Utf8.h"
 
-enum ErrorIO
+enum class BuildPass
 {
-    Ok,
-    BadFormat,
+    Lexer,
+    Syntax,
+    Semantic,
+    Full,
 };
 
-enum TextFormat
+enum class TextFormat
 {
     UTF8,
 };
@@ -28,9 +30,9 @@ class SourceFile : public PoolElement
 public:
     fs::path m_path;
 
+    BuildPass           m_buildPass     = BuildPass::Full;
     int                 m_unittestError = 0;
     int                 m_silent        = 0;
-    bool                m_doSyntax      = true;
     class Module*       m_module        = nullptr;
     struct AstNode*     m_astRoot       = nullptr;
     struct PoolFactory* m_poolFactory   = nullptr;
@@ -58,7 +60,6 @@ private:
     bool checkFormat();
 
 private:
-    ErrorIO                      m_errorIO    = ErrorIO::Ok;
     TextFormat                   m_textFormat = TextFormat::UTF8;
     int                          m_bufferSize;
     int                          m_headerSize = 0;

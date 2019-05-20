@@ -22,10 +22,30 @@ bool SyntaxJob::doCompilerUnitTest()
         if (g_CommandLine.test)
             m_file->m_unittestError++;
     }
-    else if (m_token.text == "lexer")
+    else if (m_token.text == "pass")
     {
-        if (g_CommandLine.test)
-            m_file->m_doSyntax = false;
+        SWAG_CHECK(m_tokenizer.getTokenOrEOL(m_token));
+        SWAG_VERIFY(m_token.id != TokenId::EndOfLine, m_file->report({m_file, m_token, "missing pass name"}));
+        if (m_token.text == "lexer")
+        {
+            if (g_CommandLine.test)
+                m_file->m_buildPass = BuildPass::Lexer;
+        }
+        else if (m_token.text == "syntax")
+        {
+            if (g_CommandLine.test)
+                m_file->m_buildPass = BuildPass::Syntax;
+        }
+        else if (m_token.text == "semantic")
+        {
+            if (g_CommandLine.test)
+                m_file->m_buildPass = BuildPass::Semantic;
+        }
+        else
+        {
+            m_file->report({m_file, m_token, format("invalid pass name '%s'", m_token.text.c_str())});
+            return false;
+        }
     }
     else if (m_token.text == "module")
     {
@@ -96,12 +116,10 @@ bool SyntaxJob::execute()
             break;
         }
 
-        // Ask for tokenizer only
-        if (!m_file->m_doSyntax)
+        // Ask for lexer only
+        if (m_file->m_buildPass < BuildPass::Syntax)
             continue;
     }
 
-    if (!result)
-        return false;
     return result;
 }

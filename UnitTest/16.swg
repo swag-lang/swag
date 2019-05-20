@@ -1,4 +1,4 @@
-#unittest lexer
+#unittest pass lexer
 
 #unittest error
 0b11111111_1'u8
