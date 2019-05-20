@@ -19,8 +19,8 @@ Module* Workspace::createOrUseModule(const fs::path& path)
 
     auto module = new Module(path);
     m_modules.push_back(module);
-	if (g_CommandLine.stats)
-		g_Stats.numModules++;
+    if (g_CommandLine.stats)
+        g_Stats.numModules++;
     return module;
 }
 
@@ -71,9 +71,8 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                         auto file = g_Pool.m_sourceFile.alloc();
 
                         job->setFile(file);
-						module->addFile(file);
-                        file->m_module = module;
-                        file->m_path   = move(tmp1);
+                        module->addFile(file);
+                        file->m_path = move(tmp1);
 
                         g_ThreadMgr.addJob(job);
                     }
