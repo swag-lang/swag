@@ -19,7 +19,7 @@ bool Tokenizer::getDigitHexa(Token& token, int& result)
 
 bool Tokenizer::isEscape(char32_t& c, Token& token)
 {
-    token.startLocation = m_location;
+    token.startLocation = location;
     c                   = getChar();
     switch (c)
     {
@@ -108,9 +108,9 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         // Can't have a newline inside a normal string (but this is legit in raw string literals)
         if (!raw && c == '\n')
         {
-            token.startLocation = m_location;
+            token.startLocation = location;
             token.endLocation   = token.startLocation;
-            m_sourceFile->report({m_sourceFile, token, "unexpected end of line found in string literal"});
+            sourceFile->report({sourceFile, token, "unexpected end of line found in string literal"});
             return false;
         }
 
@@ -118,7 +118,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         if (!c)
         {
             token.endLocation = token.startLocation;
-            m_sourceFile->report({m_sourceFile, token, "unexpected end of file found in string literal"});
+            sourceFile->report({sourceFile, token, "unexpected end of file found in string literal"});
             return false;
         }
 
@@ -152,14 +152,14 @@ bool Tokenizer::doCharLiteral(Token& token)
     token.id = TokenId::LiteralCharacter;
 
     auto c              = getCharNoSeek(offset);
-    token.startLocation = m_location;
+    token.startLocation = location;
 
     // Can't have a newline inside a character
     if (c == '\n')
     {
-        token.startLocation = m_location;
+        token.startLocation = location;
         token.endLocation   = token.startLocation;
-        m_sourceFile->report({m_sourceFile, token, "unexpected end of line found in character literal"});
+        sourceFile->report({sourceFile, token, "unexpected end of line found in character literal"});
         return false;
     }
 
@@ -167,7 +167,7 @@ bool Tokenizer::doCharLiteral(Token& token)
     if (!c)
     {
         token.endLocation = token.startLocation;
-        m_sourceFile->report({m_sourceFile, token, "unexpected end of file found in character literal"});
+        sourceFile->report({sourceFile, token, "unexpected end of file found in character literal"});
         return false;
     }
 
@@ -184,7 +184,7 @@ bool Tokenizer::doCharLiteral(Token& token)
         token.text = c;
     }
 
-    token.startLocation = m_location;
+    token.startLocation = location;
     c                   = getCharNoSeek(offset);
     if (c != '\'')
     {

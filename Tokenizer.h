@@ -51,7 +51,7 @@ enum class TokenId
 
     CompilerUnitTest,
 
-	KwdVar,
+    KwdVar,
 
     Identifier,
     LiteralNumber,
@@ -92,18 +92,11 @@ struct Token
     Register       numValue;
 };
 
-class Tokenizer
+struct Tokenizer
 {
-public:
     void setFile(SourceFile* file);
     bool getToken(Token& token, bool skipEOL = true);
 
-    bool getTokenOrEOL(Token& token)
-    {
-        return getToken(token, false);
-    }
-
-private:
     char32_t getChar();
     char32_t getCharNoSeek(unsigned& offset);
     char32_t getChar(unsigned& offset, bool seek);
@@ -124,10 +117,14 @@ private:
     bool     getDigitHexa(Token& token, int& result);
     bool     doCharLiteral(Token& token);
 
-private:
-    SourceFile*    m_sourceFile  = nullptr;
-    char32_t       m_cacheChar   = 0;
-    unsigned       m_cacheOffset = 0;
-    SourceLocation m_location;
-    bool           m_endReached = false;
+    bool getTokenOrEOL(Token& token)
+    {
+        return getToken(token, false);
+    }
+
+    SourceFile*    sourceFile      = nullptr;
+    char32_t       cacheChar       = 0;
+    unsigned       cacheCharOffset = 0;
+    SourceLocation location;
+    bool           endReached = false;
 };

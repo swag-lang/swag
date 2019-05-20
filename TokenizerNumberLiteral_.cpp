@@ -15,7 +15,7 @@ bool Tokenizer::errorNumberSyntax(Token& token, const utf8& msg)
 bool Tokenizer::doNumberSuffix(Token& token)
 {
     Token tokenType;
-    tokenType.startLocation = m_location;
+    tokenType.startLocation = location;
     getIdentifier(tokenType);
     SWAG_CHECK(tokenType.id == TokenId::NativeType || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
 
@@ -179,7 +179,7 @@ bool Tokenizer::doBinLiteral(Token& token)
 	// Be sure what follows is valid
 	if (SWAG_IS_DIGIT(c) || SWAG_IS_ALPHA(c))
 	{
-		token.startLocation = m_location;
+		token.startLocation = location;
 		token.text = c;
 		SWAG_CHECK(error(token, format("invalid binary digit '%s'", token.text.c_str())));
 	}
@@ -251,7 +251,7 @@ bool Tokenizer::doHexLiteral(Token& token)
 	// Be sure what follows is valid
     if (SWAG_IS_ALPHA(c))
     {
-        token.startLocation = m_location;
+        token.startLocation = location;
         token.text          = c;
         SWAG_CHECK(error(token, format("invalid hexadecimal digit '%s'", token.text.c_str())));
     }
@@ -359,7 +359,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
         }
 
         // Fraction part
-        tokenFrac.startLocation = m_location;
+        tokenFrac.startLocation = location;
         c                       = getCharNoSeek(offset);
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenFrac, "a digit separator can't start a fractional part"));
         if (SWAG_IS_DIGIT(c))
@@ -380,7 +380,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
         token.numType = TokenNumType::Float32;
         token.text += c;
         treatChar(c, offset);
-        tokenExponent.startLocation = m_location;
+        tokenExponent.startLocation = location;
 
         bool minus = false;
         c          = getCharNoSeek(offset);
@@ -400,7 +400,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
             c = getCharNoSeek(offset);
         }
 
-        tokenExponent.startLocation = m_location;
+        tokenExponent.startLocation = location;
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenExponent, "a digit separator can't start an exponent part"));
         SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, "floating point number exponent must has at least one digit"));
         unsigned exponentPart;
@@ -447,7 +447,7 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
             treatChar(c, offset);
             token.text += c;
             SWAG_CHECK(doHexLiteral(token));
-			token.endLocation = m_location;
+			token.endLocation = location;
             return true;
         }
 
@@ -457,13 +457,13 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
             treatChar(c, offset);
             token.text += c;
             SWAG_CHECK(doBinLiteral(token));
-			token.endLocation = m_location;
+			token.endLocation = location;
             return true;
         }
 
         if (SWAG_IS_ALPHA(c))
         {
-            token.startLocation = m_location;
+            token.startLocation = location;
             treatChar(c, offset);
             token.text = c;
             return error(token, format("invalid literal number prefix '%s'", token.text.c_str()));
@@ -476,14 +476,14 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
         c             = getCharNoSeek(offset);
         if (!SWAG_IS_DIGIT(c))
         {
-			token.endLocation = m_location;
+			token.endLocation = location;
             token.id = TokenId::SymDot;
             return true;
         }
     }
 
     SWAG_CHECK(doIntFloatLiteral(startsWithDot, c, token));
-	token.endLocation = m_location;
+	token.endLocation = location;
 
     return true;
 }

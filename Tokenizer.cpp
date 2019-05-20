@@ -9,13 +9,13 @@
 
 void Tokenizer::setFile(SourceFile* file)
 {
-    m_location.seek          = 0;
-    m_location.column        = 0;
-    m_location.line          = 0;
-    m_location.seekStartLine = 0;
-    m_endReached             = false;
-    m_cacheChar              = 0;
-    m_sourceFile             = file;
+    location.seek          = 0;
+    location.column        = 0;
+    location.line          = 0;
+    location.seekStartLine = 0;
+    endReached             = false;
+    cacheChar              = 0;
+    sourceFile             = file;
 }
 
 inline void Tokenizer::treatChar(char32_t c, unsigned offset)
@@ -23,15 +23,15 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
     if (!c)
         return;
 
-    m_cacheChar = 0;
-    m_location.seek += offset;
-    m_location.column++;
+    cacheChar = 0;
+    location.seek += offset;
+    location.column++;
 
     // Align tabulations
     if (c == '\t')
     {
-        while (m_location.column % g_CommandLine.tabSize)
-            m_location.column++;
+        while (location.column % g_CommandLine.tabSize)
+            location.column++;
     }
 
     // End of line
@@ -39,9 +39,9 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
     {
         if (g_CommandLine.stats)
             g_Stats.numLines++;
-        m_location.column = 0;
-        m_location.line++;
-        m_location.seekStartLine = m_location.seek;
+        location.column = 0;
+        location.line++;
+        location.seekStartLine = location.seek;
     }
 }
 
@@ -58,28 +58,28 @@ inline char32_t Tokenizer::getCharNoSeek(unsigned& offset)
 
 inline char32_t Tokenizer::getChar(unsigned& offset, bool seek)
 {
-    if (m_endReached)
+    if (endReached)
         return 0;
 
     // One character is already there, no need to read
     char32_t c = 0;
     offset     = 1;
-    if (m_cacheChar)
+    if (cacheChar)
     {
-        c           = m_cacheChar;
-        offset      = m_cacheOffset;
-        m_cacheChar = 0;
+        c           = cacheChar;
+        offset      = cacheCharOffset;
+        cacheChar = 0;
     }
     else
     {
-        c = m_sourceFile->getChar(offset);
+        c = sourceFile->getChar(offset);
     }
 
     if (!c)
     {
-        if (!m_endReached)
+        if (!endReached)
         {
-            m_endReached = true;
+            endReached = true;
             if (g_CommandLine.stats)
                 g_Stats.numLines++;
         }
@@ -91,8 +91,8 @@ inline char32_t Tokenizer::getChar(unsigned& offset, bool seek)
         treatChar(c, offset);
     else
     {
-        m_cacheChar   = c;
-        m_cacheOffset = offset;
+        cacheChar   = c;
+        cacheCharOffset = offset;
     }
 
     return c;
@@ -111,7 +111,7 @@ bool Tokenizer::eatCComment(Token& token)
         {
             token.endLocation = token.startLocation;
             token.endLocation.column += 2;
-            m_sourceFile->report({m_sourceFile, token, "unexpected end of file found in comment"});
+            sourceFile->report({sourceFile, token, "unexpected end of file found in comment"});
             return false;
         }
 
@@ -167,8 +167,8 @@ void Tokenizer::getIdentifier(Token& token)
 
 bool Tokenizer::error(Token& token, const utf8& msg)
 {
-    token.endLocation = m_location;
-    m_sourceFile->report({m_sourceFile, token, msg});
+    token.endLocation = location;
+    sourceFile->report({sourceFile, token, msg});
     return false;
 }
 
@@ -177,7 +177,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
     unsigned offset;
     while (true)
     {
-        token.startLocation = m_location;
+        token.startLocation = location;
         auto c              = getChar();
         if (c == 0)
         {
@@ -228,10 +228,10 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         {
             token.text = c;
             getIdentifier(token);
-            token.endLocation = m_location;
+            token.endLocation = location;
             if (token.id == TokenId::Identifier && token.text[0] == '#')
             {
-                m_sourceFile->report({m_sourceFile, token, format("invalid compiler command '%s'", token.text.c_str())});
+                sourceFile->report({sourceFile, token, format("invalid compiler command '%s'", token.text.c_str())});
                 return false;
             }
 
@@ -265,15 +265,15 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         }
 
         // Symbols
-        token.endLocation = m_location;
+        token.endLocation = location;
         if (doSymbol(c, token))
             return true;
 
         // Unknown character
         token.text        = c;
         token.id          = TokenId::Invalid;
-        token.endLocation = m_location;
-        m_sourceFile->report({m_sourceFile, token, format("invalid character '%s'", token.text.c_str())});
+        token.endLocation = location;
+        sourceFile->report({sourceFile, token, format("invalid character '%s'", token.text.c_str())});
         return false;
     }
 
