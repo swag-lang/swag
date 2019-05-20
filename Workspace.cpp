@@ -70,7 +70,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                         auto job  = g_Pool.syntaxJob.alloc();
                         auto file = g_Pool.sourceFile.alloc();
 
-                        job->setFile(file);
+                        job->sourceFile = file;
                         module->addFile(file);
                         file->path = move(tmp1);
 
@@ -100,20 +100,20 @@ bool Workspace::build()
     // Ask for a syntax pass on all files of all modules
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
-	if (g_Workspace.numErrors > 0)
-		return false;
-	if(g_CommandLine.syntaxOnly)
-		return true;
+    if (g_Workspace.numErrors > 0)
+        return false;
+    if (g_CommandLine.syntaxOnly)
+        return true;
 
-	// Build each module
-	for (auto module : modules)
-	{
-        auto job = g_Pool.moduleJob.alloc();
-		job->module = module;
-		g_ThreadMgr.addJob(job);
-	}
+    // Build each module
+    for (auto module : modules)
+    {
+        auto job    = g_Pool.moduleJob.alloc();
+        job->module = module;
+        g_ThreadMgr.addJob(job);
+    }
 
-	g_ThreadMgr.waitEndJobs();
+    g_ThreadMgr.waitEndJobs();
 
     return true;
 }
