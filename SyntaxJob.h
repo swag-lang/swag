@@ -21,4 +21,5 @@ private:
     class SourceFile* m_file = nullptr;
     Tokenizer         m_tokenizer;
     Token             m_token;
+    bool              m_moduleSpecified = false;
 };
