@@ -90,9 +90,13 @@ bool Tokenizer::isEscape(char32_t& c, Token& token)
     }
     }
 
-	if (c < 32) c = '?';
-    token.text = c;
-    error(token, format("unrecognized character escape sequence '\\%s'", token.text.c_str()));
+    if (c == '\n')
+        token.text = "<eol>";
+    else if (c < 32)
+        token.text = "<blank>";
+    else
+        token.text = c;
+    error(token, format("unrecognized character escape sequence '%s'", token.text.c_str()));
     return false;
 }
 
@@ -188,7 +192,7 @@ bool Tokenizer::doCharLiteral(Token& token)
     c                   = getCharNoSeek(offset);
     if (c != '\'')
     {
-		result = false;
+        result = false;
         error(token, "missing character literal last '\''");
         while (c != '\'' && c && c != '\n')
         {

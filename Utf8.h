@@ -15,7 +15,8 @@ struct utf8 : public string
 
     void operator=(const char* txt)
     {
-        (string)* this = txt;
+		clear();
+		append(txt);
     }
 
     void operator+=(const utf8& txt)

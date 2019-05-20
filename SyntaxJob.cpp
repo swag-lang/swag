@@ -63,7 +63,7 @@ bool SyntaxJob::execute()
 
     sourceFile->astRoot = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::RootFile);
     sourceFile->astRoot->flags |= AST_IS_TOPLEVEL;
-	currentScope = sourceFile->module;
+    currentScope = sourceFile->module;
 
     bool result = true;
     bool ok     = true;
@@ -99,9 +99,13 @@ bool SyntaxJob::execute()
         // Ask for lexer only
         if (sourceFile->buildPass < BuildPass::Syntax)
             continue;
+#ifdef SWAG_TEST_CPP
+        sourceFile->buildPass = BuildPass::Syntax;
+        continue;
+#endif
 
-		canChangeModule = false;
-        ok = doTopLevel(sourceFile->astRoot);
+        canChangeModule = false;
+        ok              = doTopLevel(sourceFile->astRoot);
     }
 
     return result;
