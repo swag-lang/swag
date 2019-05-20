@@ -22,7 +22,7 @@ struct TypeInfo
 {
 };
 
-struct NativeTypeInfo
+struct NativeTypeInfo : public TypeInfo
 {
     NativeTypeInfo(NativeType type)
         : type{type} {};

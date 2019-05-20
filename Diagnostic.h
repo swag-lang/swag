@@ -10,9 +10,8 @@ enum DiagnosticLevel
     Message,
 };
 
-class Diagnostic
+struct Diagnostic
 {
-public:
     Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{file}
         , startLocation{start}

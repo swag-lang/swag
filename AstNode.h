@@ -29,6 +29,7 @@ struct AstNode : public PoolElement
         semanticState = AstNodeSemanticState::Enter;
         parent        = nullptr;
         semanticFct   = nullptr;
+        typeInfo      = nullptr;
         flags         = 0;
         childs.clear();
     }
@@ -43,6 +44,7 @@ struct AstNode : public PoolElement
         mutex.unlock();
     }
 
+    TypeInfo*            typeInfo;
     Token                token;
     SemanticFct          semanticFct;
     AstNodeType          type;

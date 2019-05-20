@@ -1,24 +1,41 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Ast.h"
+#include "AstNode.h"
+#include "Utf8.h"
 #include "Global.h"
+#include "TypeInfo.h"
+#include "Diagnostic.h"
+#include "SourceFile.h"
 
 bool SemanticJob::resolveType(SemanticContext* context)
 {
+    auto node = static_cast<AstType*>(context->node);
+    SWAG_VERIFY(node->token.literalType, context->job->error(context, "invalid type"));
+    node->typeInfo  = node->token.literalType;
     context->result = SemanticResult::Done;
     return true;
 }
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
+    auto node       = static_cast<AstVarDecl*>(context->node);
+	node->typeInfo = node->astType->typeInfo;
     context->result = SemanticResult::Done;
     return true;
+}
+
+bool SemanticJob::error(SemanticContext* context, const utf8& msg)
+{
+    context->sourceFile->report({context->sourceFile, context->node->token, msg});
+    return false;
 }
 
 bool SemanticJob::execute()
 {
     SemanticContext context;
-	context.job = this;
+    context.job        = this;
+    context.sourceFile = sourceFile;
 
     while (!nodes.empty())
     {
@@ -34,7 +51,7 @@ bool SemanticJob::execute()
             }
 
         case AstNodeSemanticState::ProcessingChilds:
-			context.node = node;
+            context.node = node;
             SWAG_CHECK(node->semanticFct(&context));
             if (context.result == SemanticResult::Pending)
                 break;

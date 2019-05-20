@@ -4,6 +4,7 @@
 struct Module;
 struct AstNode;
 struct PoolFactory;
+struct Diagnostic;
 
 enum class BuildPass
 {
@@ -31,7 +32,7 @@ struct SourceFile : public PoolElement
     SourceFile();
     char32_t getChar(unsigned& offset);
     utf8     getLine(long seek);
-    void     report(const class Diagnostic& diag);
+    void     report(const Diagnostic& diag);
 
     bool open();
     bool ensureOpen();

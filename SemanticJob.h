@@ -1,5 +1,6 @@
 #pragma once
 #include "Job.h"
+#include "Utf8.h"
 struct AstNode;
 struct Module;
 struct SourceFile;
@@ -13,6 +14,7 @@ enum class SemanticResult
 
 struct SemanticContext
 {
+    SourceFile*    sourceFile;
     SemanticJob*   job;
     AstNode*       node;
     SemanticResult result;
@@ -21,6 +23,7 @@ struct SemanticContext
 struct SemanticJob : public Job
 {
     bool execute() override;
+    bool error(SemanticContext* context, const utf8& msg);
 
     void reset() override
     {
