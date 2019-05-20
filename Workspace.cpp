@@ -71,6 +71,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                         auto file = g_Pool.m_sourceFile.alloc();
 
                         job->setFile(file);
+						module->addFile(file);
                         file->m_module = module;
                         file->m_path   = move(tmp1);
 

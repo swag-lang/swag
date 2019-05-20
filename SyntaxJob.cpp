@@ -7,6 +7,8 @@
 #include "CommandLine.h"
 #include "Workspace.h"
 #include "Stats.h"
+#include "SourceFile.h"
+#include "Module.h"
 
 bool SyntaxJob::doCompilerUnitTest()
 {
@@ -31,7 +33,11 @@ bool SyntaxJob::doCompilerUnitTest()
         SWAG_VERIFY(m_token.id == TokenId::Identifier, m_file->report({m_file, m_token, format("invalid module name '%s'", m_token.text.c_str())}));
 		m_moduleSpecified = true;
 		if (g_CommandLine.test)
-			m_file->m_module = g_Workspace.createOrUseModule(m_token.text);
+		{
+			auto newModule = g_Workspace.createOrUseModule(m_token.text);
+			m_file->m_module->removeFile(m_file);
+			newModule->addFile(m_file);
+		}
     }
     else
     {
