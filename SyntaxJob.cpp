@@ -10,7 +10,32 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Pool.h"
+#include "Global.h"
 #include "PoolFactory.h"
+#include "LanguageSpec.h"
+
+bool SyntaxJob::syntaxError(const string& msg)
+{
+	string full = format("syntax error '%s'", m_token.text.c_str());
+	if (!msg.empty())
+		full += ", " + msg;
+    error(full);
+    return false;
+}
+
+bool SyntaxJob::error(const string& msg)
+{
+    m_file->report({m_file, m_token, msg.c_str()});
+    return false;
+}
+
+bool SyntaxJob::eatToken(TokenId id)
+{
+    SWAG_CHECK(m_tokenizer.getToken(m_token));
+    if (m_token.id != id)
+        SWAG_CHECK(syntaxError(format("expected '%s'", g_LangSpec.tokenToName(id).c_str())));
+    return true;
+}
 
 bool SyntaxJob::doCompilerUnitTest()
 {
@@ -70,55 +95,66 @@ bool SyntaxJob::doCompilerUnitTest()
     return true;
 }
 
+bool SyntaxJob::recoverError()
+{
+    while (true)
+    {
+        m_file->m_silent++;
+        if (!m_tokenizer.getToken(m_token))
+        {
+            m_file->m_silent--;
+            return false;
+        }
+
+        m_file->m_silent--;
+        if (m_token.id == TokenId::CompilerUnitTest)
+            break;
+        if (m_token.id == TokenId::SymSemiColon)
+            break;
+        if (m_token.id == TokenId::EndOfFile)
+            return false;
+	}
+
+	return true;
+}
+
 bool SyntaxJob::execute()
 {
     if (g_CommandLine.stats)
         g_Stats.numFiles++;
     m_tokenizer.setFile(m_file);
 
-    m_file->m_astRoot = Ast::newNode(m_file->m_poolFactory, AstNodeType::RootFile);
+    m_file->m_astRoot = Ast::newNode(&m_file->m_poolFactory->m_astNode, AstNodeType::RootFile);
 
     bool canLex = true;
     bool result = true;
+    bool ok     = true;
     while (true)
     {
         // During tests, we can cumulate more than one error during parsing
-        if (!m_tokenizer.getToken(m_token))
+        if (!ok || !m_tokenizer.getToken(m_token))
         {
-            if (!g_CommandLine.test)
-                return false;
+			if (!recoverError())
+				return false;
             result = false;
-            while (true)
-            {
-                m_file->m_silent++;
-                if (!m_tokenizer.getToken(m_token))
-                {
-                    m_file->m_silent--;
-                    return false;
-                }
-
-                m_file->m_silent--;
-                if (m_token.id == TokenId::CompilerUnitTest)
-                    break;
-                if (m_token.id == TokenId::EndOfFile)
-                    return false;
-            }
         }
 
         if (m_token.id == TokenId::EndOfFile)
             break;
+        ok = true;
 
         // Top level
-        switch (m_token.id)
+        if (m_token.id == TokenId::CompilerUnitTest)
         {
-        case TokenId::CompilerUnitTest:
-            SWAG_CHECK(doCompilerUnitTest());
-            break;
+            ok = doCompilerUnitTest();
+            continue;
         }
 
         // Ask for lexer only
         if (m_file->m_buildPass < BuildPass::Syntax)
             continue;
+
+        ok = doTopLevel(m_file->m_astRoot);
     }
 
     return result;

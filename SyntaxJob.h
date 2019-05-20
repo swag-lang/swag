@@ -2,6 +2,11 @@
 #include "Tokenizer.h"
 #include "Job.h"
 
+struct SyntaxContext
+{
+	AstNode* parent = nullptr;
+};
+
 class SyntaxJob : public Job
 {
 public:
@@ -15,7 +20,14 @@ public:
     }
 
 private:
+	bool error(const string& msg);
+	bool syntaxError(const string& msg);
+	bool eatToken(TokenId id);
+	bool recoverError();
+
     bool doCompilerUnitTest();
+	bool doTopLevel(AstNode* parent);
+	bool doVarDecl(AstNode* parent);
 
 private:
     class SourceFile* m_file = nullptr;

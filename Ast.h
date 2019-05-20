@@ -6,6 +6,7 @@ enum class AstNodeType
 {
     RootModule,
     RootFile,
+    VarDecl,
 };
 
 struct AstNode : public PoolElement
@@ -32,9 +33,32 @@ struct AstNode : public PoolElement
     }
 };
 
+struct AstVarDecl : public AstNode
+{
+	string name;
+};
+
 struct PoolFactory;
 namespace Ast
 {
-    extern AstNode* newNode(PoolFactory* factory, AstNodeType type, AstNode* parent = nullptr, bool lockParent = true);
-    extern void     addChild(AstNode* parent, AstNode* child, bool lockParent = true);
-};
+    template<typename T>
+    T* newNode(Pool<T>* pool, AstNodeType type, AstNode* parent = nullptr, bool lockParent = true)
+    {
+        auto node    = pool->alloc();
+        node->type   = type;
+        node->parent = parent;
+
+        if (parent)
+        {
+            if (lockParent)
+                parent->lock();
+            parent->childs.push_back(node);
+            if (lockParent)
+                parent->unlock();
+        }
+
+        return node;
+    }
+
+    extern void addChild(AstNode* parent, AstNode* child, bool lockParent = true);
+}; // namespace Ast

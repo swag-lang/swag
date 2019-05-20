@@ -35,7 +35,7 @@ bool Module::semanticNode(SourceFile* file, AstNode* node)
 bool Module::semantic()
 {
     // One ast root to rule them all
-    m_astRoot = Ast::newNode(&g_Pool, AstNodeType::RootModule);
+    m_astRoot = Ast::newNode(&g_Pool.m_astNode, AstNodeType::RootModule);
 	for (auto file : m_files)
 	{
 		if (file->m_buildPass < BuildPass::Semantic)

@@ -2,14 +2,13 @@
 #include "Tokenizer.h"
 #include "Utf8.h"
 
-class LanguageSpec
+struct LanguageSpec
 {
-public:
-    LanguageSpec();
-
-public:
     map<utf8, TokenId>      m_keywords;
     map<utf8, TokenNumType> m_nativeTypes;
+
+    LanguageSpec();
+	string tokenToName(TokenId id);
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')

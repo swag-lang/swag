@@ -51,6 +51,8 @@ enum class TokenId
 
     CompilerUnitTest,
 
+	KwdVar,
+
     Identifier,
     LiteralNumber,
     LiteralString,

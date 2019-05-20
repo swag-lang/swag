@@ -8,6 +8,7 @@ struct PoolFactory
 {
     Pool<SourceFile> m_sourceFile;
     Pool<SyntaxJob>  m_syntaxJob;
-    Pool<AstNode>    m_astNode;
     Pool<ModuleJob>  m_moduleJob;
+    Pool<AstNode>    m_astNode;
+    Pool<AstVarDecl> m_astVarDecl;
 };

@@ -7,7 +7,7 @@ struct CommandLine
     bool syntaxOnly = false;
 
     int    tabSize = 4;
-    string fileFilter; // = "30.swg";
+	string fileFilter;// = "35.swg";
 
     bool process(int argc, const char* argv[]);
 };

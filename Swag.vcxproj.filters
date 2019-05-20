@@ -76,6 +76,9 @@
     <ClCompile Include="Ast.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxDeclaration_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
