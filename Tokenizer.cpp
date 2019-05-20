@@ -162,7 +162,7 @@ void Tokenizer::getIdentifier(Token& token)
 
     // Type
     if (token.id == TokenId::NativeType)
-        token.numType = g_LangSpec.nativeTypes[token.text];
+        token.literalType = g_LangSpec.nativeTypes[token.text];
 }
 
 bool Tokenizer::error(Token& token, const utf8& msg)

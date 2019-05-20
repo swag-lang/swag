@@ -71,7 +71,7 @@ struct Token
     SourceLocation startLocation;
     SourceLocation endLocation;
     utf8           text;
-    NativeType     numType;
+    NativeType     literalType;
     Register       numValue;
 };
 
