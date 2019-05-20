@@ -10,7 +10,6 @@
 
 Module::Module(const fs::path& path)
     : path{path}
-    , symTable{new SymTable}
 {
 }
 

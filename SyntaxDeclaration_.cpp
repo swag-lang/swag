@@ -44,7 +44,10 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 
 	// A top level symbol must be registered in order to be found by the semantic solving of identifiers
 	if (parent->flags & AST_IS_TOPLEVEL)
-		sourceFile->module->symTable->registerSyntaxSymbol(sourceFile->poolFactory->symName, node->name, SymbolType::Variable);
+	{
+		currentScope->allocateSymTable();
+		currentScope->symTable->registerSyntaxSymbol(sourceFile->poolFactory, node->name, SymbolType::Variable);
+	}
 
     return true;
 }

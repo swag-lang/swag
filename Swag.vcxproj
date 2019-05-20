@@ -208,6 +208,7 @@
     <ClCompile Include="ModuleSemanticJob.cpp" />
     <ClCompile Include="SemanticJob.cpp" />
     <ClCompile Include="SymTable.cpp" />
+    <ClCompile Include="SyntaxCompiler_.cpp" />
     <ClCompile Include="SyntaxDeclaration_.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />

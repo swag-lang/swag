@@ -88,6 +88,9 @@
     <ClCompile Include="SymTable.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxCompiler_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

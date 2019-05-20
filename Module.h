@@ -1,6 +1,6 @@
 #pragma once
 struct SourceFile;
-struct AstNode;
+struct AstScopeNode;
 struct SymTable;
 
 struct Module
@@ -13,6 +13,5 @@ struct Module
     string              name;
     vector<SourceFile*> files;
     atomic<int>         numErrors;
-    SymTable*           symTable = nullptr;
-    AstNode*            astRoot  = nullptr;
+    AstScopeNode*       astRoot = nullptr;
 };

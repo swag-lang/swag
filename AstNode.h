@@ -1,5 +1,6 @@
 #pragma once
 #include "SpinLock.h"
+#include "SymTable.h"
 struct SemanticContext;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
@@ -48,6 +49,18 @@ struct AstNode : public PoolElement
     uint64_t             flags;
     vector<AstNode*>     childs;
     SpinLock             mutex;
+};
+
+struct AstScopeNode : public AstNode
+{
+	SymTable* symTable = nullptr;
+
+	void allocateSymTable()
+	{
+		if (symTable)
+			return;
+		symTable = new SymTable();
+	}
 };
 
 struct AstVarDecl : public AstNode

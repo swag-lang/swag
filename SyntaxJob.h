@@ -4,11 +4,8 @@
 struct SourceFile;
 struct AstType;
 struct AstVarDecl;
-
-struct SyntaxContext
-{
-    AstNode* parent = nullptr;
-};
+struct AstNode;
+struct AstScopeNode;
 
 struct SyntaxJob : public Job
 {
@@ -26,8 +23,9 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
     bool doType(AstNode* parent, AstType** result = nullptr);
 
-    SourceFile* sourceFile = nullptr;
-    Tokenizer   tokenizer;
-    Token       token;
-    bool        moduleSpecified = false;
+    AstScopeNode* currentScope = nullptr;
+    SourceFile*   sourceFile   = nullptr;
+    Tokenizer     tokenizer;
+    Token         token;
+    bool          moduleSpecified = false;
 };

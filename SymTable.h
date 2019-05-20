@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "SpinLock.h"
+struct PoolFactory;
 
 struct SymbolOverload : public PoolElement
 {
@@ -28,7 +29,7 @@ struct SymbolName : public PoolElement
 
 struct SymTable
 {
-    SymbolName* registerSyntaxSymbol(Pool<SymbolName>& pool, const string& name, SymbolType type);
+    SymbolName* registerSyntaxSymbol(PoolFactory* factory, const string& name, SymbolType type);
     SymbolName* find(const string& name);
 
     SpinLock                 mutex;

@@ -14,6 +14,7 @@ struct PoolFactory
     Pool<SemanticJob>       semanticJob;
     Pool<AstNode>           astNode;
     Pool<AstVarDecl>        astVarDecl;
+	Pool<AstScopeNode>      astScope;
     Pool<AstType>           astType;
     Pool<SymbolName>        symName;
 };

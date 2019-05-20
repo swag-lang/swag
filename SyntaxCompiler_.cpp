@@ -1,0 +1,65 @@
+#include "pch.h"
+#include "SyntaxJob.h"
+#include "Diagnostic.h"
+#include "Global.h"
+#include "CommandLine.h"
+#include "Workspace.h"
+#include "Module.h"
+
+bool SyntaxJob::doCompilerUnitTest()
+{
+    SWAG_CHECK(tokenizer.getTokenOrEOL(token));
+    SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #unittest parameter"}));
+
+    if (token.text == "error")
+    {
+        if (g_CommandLine.test)
+            sourceFile->unittestError++;
+    }
+    else if (token.text == "pass")
+    {
+        SWAG_CHECK(tokenizer.getTokenOrEOL(token));
+        SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing pass name"}));
+        if (token.text == "lexer")
+        {
+            if (g_CommandLine.test)
+                sourceFile->buildPass = BuildPass::Lexer;
+        }
+        else if (token.text == "syntax")
+        {
+            if (g_CommandLine.test)
+                sourceFile->buildPass = BuildPass::Syntax;
+        }
+        else if (token.text == "semantic")
+        {
+            if (g_CommandLine.test)
+                sourceFile->buildPass = BuildPass::Semantic;
+        }
+        else
+        {
+            sourceFile->report({sourceFile, token, format("invalid pass name '%s'", token.text.c_str())});
+            return false;
+        }
+    }
+    else if (token.text == "module")
+    {
+        SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#unittest module can only be specified once"}));
+        SWAG_CHECK(tokenizer.getTokenOrEOL(token));
+        SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing module name"}));
+        SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
+        moduleSpecified = true;
+        if (g_CommandLine.test)
+        {
+            auto newModule = g_Workspace.createOrUseModule(token.text);
+            sourceFile->module->removeFile(sourceFile);
+            newModule->addFile(sourceFile);
+        }
+    }
+    else
+    {
+        sourceFile->report({sourceFile, token, format("unknown #unittest parameter '%s'", token.text.c_str())});
+        return false;
+    }
+
+    return true;
+}

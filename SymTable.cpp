@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SymTable.h"
+#include "PoolFactory.h"
 
 SymbolName* SymTable::find(const string& name)
 {
@@ -11,12 +12,12 @@ SymbolName* SymTable::find(const string& name)
     return result;
 }
 
-SymbolName* SymTable::registerSyntaxSymbol(Pool<SymbolName>& pool, const string& name, SymbolType type)
+SymbolName* SymTable::registerSyntaxSymbol(PoolFactory* factory, const string& name, SymbolType type)
 {
     auto symbol = find(name);
     if (!symbol)
     {
-        symbol       = pool.alloc();
+        symbol       = factory->symName.alloc();
         symbol->name = name;
         symbol->type = type;
         mutex.lock();

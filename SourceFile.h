@@ -2,7 +2,7 @@
 #include "Pool.h"
 #include "Utf8.h"
 struct Module;
-struct AstNode;
+struct AstScopeNode;
 struct PoolFactory;
 
 enum class BuildPass
@@ -47,13 +47,13 @@ struct SourceFile : public PoolElement
     void waitEndRequests();
     bool checkFormat();
 
-    fs::path     path;
-    BuildPass    buildPass     = BuildPass::Full;
-    int          unittestError = 0;
-    int          silent        = 0;
-    Module*      module        = nullptr;
-    AstNode*     astRoot       = nullptr;
-    PoolFactory* poolFactory   = nullptr;
+    fs::path      path;
+    BuildPass     buildPass     = BuildPass::Full;
+    int           unittestError = 0;
+    int           silent        = 0;
+    Module*       module        = nullptr;
+    AstScopeNode* astRoot       = nullptr;
+    PoolFactory*  poolFactory   = nullptr;
 
     TextFormat                   textFormat = TextFormat::UTF8;
     int                          bufferSize;
