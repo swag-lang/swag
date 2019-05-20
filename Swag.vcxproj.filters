@@ -73,6 +73,9 @@
     <ClCompile Include="Module.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Ast.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -146,6 +149,12 @@
     </ClInclude>
     <ClInclude Include="Module.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Ast.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="SpinLock.h">
+      <Filter>Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

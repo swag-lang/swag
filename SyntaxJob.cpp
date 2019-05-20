@@ -9,11 +9,13 @@
 #include "Stats.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Pool.h"
+#include "PoolFactory.h"
 
 bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_CHECK(m_tokenizer.getTokenOrEOL(m_token));
-	SWAG_VERIFY(m_token.id != TokenId::EndOfLine, m_file->report({ m_file, m_token, "missing #unittest parameter" }));
+    SWAG_VERIFY(m_token.id != TokenId::EndOfLine, m_file->report({m_file, m_token, "missing #unittest parameter"}));
 
     if (m_token.text == "error")
     {
@@ -31,13 +33,13 @@ bool SyntaxJob::doCompilerUnitTest()
         SWAG_CHECK(m_tokenizer.getTokenOrEOL(m_token));
         SWAG_VERIFY(m_token.id != TokenId::EndOfLine, m_file->report({m_file, m_token, "missing module name"}));
         SWAG_VERIFY(m_token.id == TokenId::Identifier, m_file->report({m_file, m_token, format("invalid module name '%s'", m_token.text.c_str())}));
-		m_moduleSpecified = true;
-		if (g_CommandLine.test)
-		{
-			auto newModule = g_Workspace.createOrUseModule(m_token.text);
-			m_file->m_module->removeFile(m_file);
-			newModule->addFile(m_file);
-		}
+        m_moduleSpecified = true;
+        if (g_CommandLine.test)
+        {
+            auto newModule = g_Workspace.createOrUseModule(m_token.text);
+            m_file->m_module->removeFile(m_file);
+            newModule->addFile(m_file);
+        }
     }
     else
     {
@@ -53,6 +55,8 @@ bool SyntaxJob::execute()
     if (g_CommandLine.stats)
         g_Stats.numFiles++;
     m_tokenizer.setFile(m_file);
+
+    m_file->m_astRoot = Ast::newNode(m_file->m_poolFactory, AstNodeType::RootFile, nullptr);
 
     bool canLex = true;
     bool result = true;
@@ -97,7 +101,7 @@ bool SyntaxJob::execute()
             continue;
     }
 
-	if (!result)
-		return false;
+    if (!result)
+        return false;
     return result;
 }

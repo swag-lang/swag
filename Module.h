@@ -19,4 +19,7 @@ public:
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     bool build();
+
+private:
+    struct AstNode* m_astRoot = nullptr;
 };

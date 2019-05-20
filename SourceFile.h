@@ -28,14 +28,15 @@ class SourceFile : public PoolElement
 public:
     fs::path m_path;
 
-    int           m_unittestError = 0;
-    int           m_silent        = 0;
-    bool          m_doSyntax      = true;
-    class Module* m_module        = nullptr;
+    int                 m_unittestError = 0;
+    int                 m_silent        = 0;
+    bool                m_doSyntax      = true;
+    class Module*       m_module        = nullptr;
+    struct AstNode*     m_astRoot       = nullptr;
+    struct PoolFactory* m_poolFactory   = nullptr;
 
 public:
-    ~SourceFile();
-    void     construct() override;
+    SourceFile();
     void     reset() override;
     char32_t getChar(unsigned& offset);
     utf8     getLine(long seek);

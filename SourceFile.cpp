@@ -9,13 +9,17 @@
 #include "Diagnostic.h"
 #include "Module.h"
 #include "Workspace.h"
+#include "PoolFactory.h"
 
-void SourceFile::construct()
+SourceFile::SourceFile()
 {
+    m_poolFactory = new PoolFactory;
+
     const auto BUF_SIZE = 4096;
     m_bufferSize        = BUF_SIZE;
     m_buffers[0]        = new char[m_bufferSize];
     m_buffers[1]        = new char[m_bufferSize];
+
     cleanCache();
 }
 
@@ -34,12 +38,6 @@ void SourceFile::cleanCache()
 void SourceFile::reset()
 {
     assert(false);
-}
-
-SourceFile::~SourceFile()
-{
-    delete m_buffers[0];
-    delete m_buffers[1];
 }
 
 bool SourceFile::open()
@@ -286,10 +284,8 @@ char32_t SourceFile::getChar(unsigned& offset)
 
 void SourceFile::waitEndRequests()
 {
-    while (m_requests[m_bufferCurIndex] && !m_requests[m_bufferCurIndex]->done)
-        ;
-    while (m_requests[(m_bufferCurIndex + 1) % 2] && !m_requests[(m_bufferCurIndex + 1) % 2]->done)
-        ;
+    while (m_requests[m_bufferCurIndex] && !m_requests[m_bufferCurIndex]->done) {}
+    while (m_requests[(m_bufferCurIndex + 1) % 2] && !m_requests[(m_bufferCurIndex + 1) % 2]->done) {}
 }
 
 utf8 SourceFile::getLine(long seek)
@@ -349,7 +345,7 @@ void SourceFile::report(const Diagnostic& diag)
 
     // Raise error
     g_Workspace.numErrors++;
-	m_module->numErrors++;
+    m_module->numErrors++;
     g_Log.lock();
     diag.report();
     g_Log.unlock();

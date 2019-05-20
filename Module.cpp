@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Module.h"
 #include "SourceFile.h"
+#include "Pool.h"
+#include "PoolFactory.h"
+#include "Global.h"
 
 void Module::addFile(SourceFile* file)
 {
@@ -26,5 +29,12 @@ void Module::removeFile(SourceFile* file)
 
 bool Module::build()
 {
+	// One ast root to rule them all
+	m_astRoot = Ast::newNode(&g_Pool, AstNodeType::RootModule, nullptr);
+	for (auto file : m_files)
+	{
+		m_astRoot->childs.push_back(file->m_astRoot);
+	}
+
 	return true;
 }
