@@ -9,18 +9,18 @@
 
 void Module::addFile(SourceFile* file)
 {
-    file->m_module = this;
+    file->module = this;
     files.push_back(file);
 }
 
 void Module::removeFile(SourceFile* file)
 {
-    assert(file->m_module == this);
+    assert(file->module == this);
     for (auto it = files.begin(); it != files.end(); ++it)
     {
         if (*it == file)
         {
-            file->m_module = nullptr;
+            file->module = nullptr;
             files.erase(it);
             return;
         }

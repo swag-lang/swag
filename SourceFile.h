@@ -1,6 +1,9 @@
 #pragma once
 #include "Pool.h"
 #include "Utf8.h"
+struct Module;
+struct AstNode;
+struct PoolFactory;
 
 enum class BuildPass
 {
@@ -44,28 +47,28 @@ struct SourceFile : public PoolElement
     void waitEndRequests();
     bool checkFormat();
 
-    fs::path            m_path;
-    BuildPass           m_buildPass     = BuildPass::Full;
-    int                 m_unittestError = 0;
-    int                 m_silent        = 0;
-    struct Module*      m_module        = nullptr;
-    struct AstNode*     m_astRoot       = nullptr;
+    fs::path            path;
+    BuildPass           buildPass     = BuildPass::Full;
+    int                 unittestError = 0;
+    int                 silent        = 0;
+    struct Module*      module        = nullptr;
+    struct AstNode*     astRoot       = nullptr;
     struct PoolFactory* poolFactory   = nullptr;
 
-    TextFormat                   m_textFormat = TextFormat::UTF8;
-    int                          m_bufferSize;
-    int                          m_headerSize = 0;
-    FILE*                        m_file;
-    long                         m_fileSeek       = 0;
-    long                         m_bufferCurSeek  = 0;
-    int                          m_bufferCurIndex = 0;
-    char*                        m_buffers[2];
-    struct LoadingThreadRequest* m_requests[2];
-    long                         m_buffersSize[2];
-    mutex                        m_mutexNotify;
-    bool                         m_doneLoading = false;
-    bool                         m_directMode  = false;
-    bool                         m_openedOnce  = false;
-    int                          m_totalRead   = 0;
-    condition_variable           m_Cv;
+    TextFormat                   textFormat = TextFormat::UTF8;
+    int                          bufferSize;
+    int                          headerSize = 0;
+    FILE*                        fileHandle;
+    long                         fileSeek       = 0;
+    long                         bufferCurSeek  = 0;
+    int                          bufferCurIndex = 0;
+    char*                        buffers[2];
+    struct LoadingThreadRequest* requests[2];
+    long                         buffersSize[2];
+    mutex                        mutexNotify;
+    bool                         doneLoading = false;
+    bool                         directMode  = false;
+    bool                         openedOnce  = false;
+    int                          totalRead   = 0;
+    condition_variable           condVar;
 };

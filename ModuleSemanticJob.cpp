@@ -47,10 +47,10 @@ bool ModuleSemanticJob::execute()
     module->astRoot = Ast::newNode(&g_Pool.astNode, AstNodeType::RootModule);
     for (auto file : module->files)
     {
-        if (file->m_buildPass < BuildPass::Semantic)
+        if (file->buildPass < BuildPass::Semantic)
             continue;
-        Ast::addChild(module->astRoot, file->m_astRoot, false);
-        semanticNode(file, file->m_astRoot);
+        Ast::addChild(module->astRoot, file->astRoot, false);
+        semanticNode(file, file->astRoot);
     }
 
     return true;

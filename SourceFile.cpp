@@ -16,32 +16,32 @@ SourceFile::SourceFile()
     poolFactory = new PoolFactory;
 
     const auto BUF_SIZE = 4096;
-    m_bufferSize        = BUF_SIZE;
-    m_buffers[0]        = new char[m_bufferSize];
-    m_buffers[1]        = new char[m_bufferSize];
+    bufferSize        = BUF_SIZE;
+    buffers[0]        = new char[bufferSize];
+    buffers[1]        = new char[bufferSize];
 
     cleanCache();
 }
 
 void SourceFile::cleanCache()
 {
-    m_requests[0]    = nullptr;
-    m_requests[1]    = nullptr;
-    m_buffersSize[0] = 0;
-    m_buffersSize[1] = 0;
-    m_bufferCurSeek  = 0;
-    m_bufferCurIndex = 0;
-    m_fileSeek       = 0;
-    m_doneLoading    = false;
+    requests[0]    = nullptr;
+    requests[1]    = nullptr;
+    buffersSize[0] = 0;
+    buffersSize[1] = 0;
+    bufferCurSeek  = 0;
+    bufferCurIndex = 0;
+    fileSeek       = 0;
+    doneLoading    = false;
 }
 
 bool SourceFile::open()
 {
-    if (m_file != nullptr)
+    if (fileHandle != nullptr)
         return true;
 
-    auto err = _wfopen_s(&m_file, m_path.c_str(), L"rb");
-    if (m_file == nullptr)
+    auto err = _wfopen_s(&fileHandle, path.c_str(), L"rb");
+    if (fileHandle == nullptr)
     {
         char buf[256];
         strerror_s(buf, err);
@@ -49,21 +49,21 @@ bool SourceFile::open()
         return false;
     }
 
-    setvbuf(m_file, nullptr, _IONBF, 0);
+    setvbuf(fileHandle, nullptr, _IONBF, 0);
     return true;
 }
 
 bool SourceFile::ensureOpen()
 {
-    if (!m_file && !m_openedOnce)
+    if (!fileHandle && !openedOnce)
     {
-        m_openedOnce = true;
+        openedOnce = true;
         if (!open())
             return false;
         if (!checkFormat())
             return false;
     }
-    else if (!m_file)
+    else if (!fileHandle)
         open();
     return true;
 }
@@ -71,16 +71,16 @@ bool SourceFile::ensureOpen()
 bool SourceFile::checkFormat()
 {
     // Read header
-    auto c1 = fgetc(m_file);
-    auto c2 = fgetc(m_file);
-    auto c3 = fgetc(m_file);
-    auto c4 = fgetc(m_file);
+    auto c1 = fgetc(fileHandle);
+    auto c2 = fgetc(fileHandle);
+    auto c3 = fgetc(fileHandle);
+    auto c4 = fgetc(fileHandle);
 
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
     {
-        m_textFormat = TextFormat::UTF8;
-        m_fileSeek   = 3;
-        m_headerSize = 3;
+        textFormat = TextFormat::UTF8;
+        fileSeek   = 3;
+        headerSize = 3;
         return true;
     }
 
@@ -108,48 +108,48 @@ bool SourceFile::checkFormat()
 
 void SourceFile::close()
 {
-    if (m_file)
+    if (fileHandle)
     {
-        fclose(m_file);
-        m_file = nullptr;
+        fclose(fileHandle);
+        fileHandle = nullptr;
     }
 }
 
 void SourceFile::seekTo(long seek)
 {
-    fseek(m_file, seek, SEEK_SET);
+    fseek(fileHandle, seek, SEEK_SET);
 }
 
 long SourceFile::readTo(char* buffer)
 {
-    return (long) fread(buffer, 1, m_bufferSize, m_file);
+    return (long) fread(buffer, 1, bufferSize, fileHandle);
 }
 
 void SourceFile::waitRequest(int reqNum)
 {
-    std::unique_lock<std::mutex> lk(m_mutexNotify);
-    if (!m_requests[reqNum]->done)
-        m_Cv.wait(lk);
+    std::unique_lock<std::mutex> lk(mutexNotify);
+    if (!requests[reqNum]->done)
+        condVar.wait(lk);
 }
 
 void SourceFile::notifyLoad()
 {
-    std::unique_lock<std::mutex> lk(m_mutexNotify);
-    m_Cv.notify_one();
+    std::unique_lock<std::mutex> lk(mutexNotify);
+    condVar.notify_one();
 }
 
 void SourceFile::validateRequest(int reqNum)
 {
     auto loadingTh = g_ThreadMgr.loadingThread;
-    auto req       = m_requests[reqNum];
+    auto req       = requests[reqNum];
 
-    m_buffersSize[reqNum] = req->loadedSize;
-    m_doneLoading         = req->loadedSize != m_bufferSize ? true : false;
-    m_totalRead += req->loadedSize;
+    buffersSize[reqNum] = req->loadedSize;
+    doneLoading         = req->loadedSize != bufferSize ? true : false;
+    totalRead += req->loadedSize;
 
     loadingTh->releaseRequest(req);
-    m_requests[reqNum] = nullptr;
-    if (m_doneLoading)
+    requests[reqNum] = nullptr;
+    if (doneLoading)
         close();
 }
 
@@ -159,56 +159,56 @@ void SourceFile::buildRequest(int reqNum)
     auto req       = loadingTh->newRequest();
 
     req->file          = this;
-    req->seek          = m_fileSeek;
-    req->buffer        = m_buffers[reqNum];
+    req->seek          = fileSeek;
+    req->buffer        = buffers[reqNum];
     req->buffer[0]     = 0;
-    m_requests[reqNum] = req;
+    requests[reqNum] = req;
 
     loadingTh->addRequest(req);
-    m_fileSeek += m_bufferSize;
+    fileSeek += bufferSize;
 }
 
 char SourceFile::getPrivateChar()
 {
-    if (m_directMode)
+    if (directMode)
     {
-        if (!m_file)
+        if (!fileHandle)
             return 0;
-        auto c = fgetc(m_file);
+        auto c = fgetc(fileHandle);
         return c == EOF ? 0 : (char) c;
     }
 
-    if (m_bufferCurSeek >= m_buffersSize[m_bufferCurIndex])
+    if (bufferCurSeek >= buffersSize[bufferCurIndex])
     {
-        if (!m_openedOnce && !ensureOpen())
+        if (!openedOnce && !ensureOpen())
             return 0;
 
         // Done
-        if (m_doneLoading)
+        if (doneLoading)
         {
             close();
             return 0;
         }
 
-        auto nextBufIndex = (m_bufferCurIndex + 1) % 2;
+        auto nextBufIndex = (bufferCurIndex + 1) % 2;
 
-        if (!m_requests[nextBufIndex])
+        if (!requests[nextBufIndex])
             buildRequest(nextBufIndex);
         waitRequest(nextBufIndex);
         validateRequest(nextBufIndex);
 
-        m_bufferCurIndex = (m_bufferCurIndex + 1) % 2;
-        m_bufferCurSeek  = 0;
+        bufferCurIndex = (bufferCurIndex + 1) % 2;
+        bufferCurSeek  = 0;
 
         // Make an async request to read the next buffer
-        if (!m_doneLoading)
+        if (!doneLoading)
         {
-            nextBufIndex = (m_bufferCurIndex + 1) % 2;
+            nextBufIndex = (bufferCurIndex + 1) % 2;
             buildRequest(nextBufIndex);
         }
     }
 
-    char c = m_buffers[m_bufferCurIndex][m_bufferCurSeek++];
+    char c = buffers[bufferCurIndex][bufferCurSeek++];
     return c;
 }
 
@@ -218,7 +218,7 @@ char32_t SourceFile::getChar(unsigned& offset)
     offset = 1;
 
     // utf8
-    if (m_textFormat == TextFormat::UTF8)
+    if (textFormat == TextFormat::UTF8)
     {
         if ((c & 0x80) == 0)
             return c;
@@ -278,8 +278,8 @@ char32_t SourceFile::getChar(unsigned& offset)
 
 void SourceFile::waitEndRequests()
 {
-    while (m_requests[m_bufferCurIndex] && !m_requests[m_bufferCurIndex]->done) {}
-    while (m_requests[(m_bufferCurIndex + 1) % 2] && !m_requests[(m_bufferCurIndex + 1) % 2]->done) {}
+    while (requests[bufferCurIndex] && !requests[bufferCurIndex]->done) {}
+    while (requests[(bufferCurIndex + 1) % 2] && !requests[(bufferCurIndex + 1) % 2]->done) {}
 }
 
 utf8 SourceFile::getLine(long seek)
@@ -288,8 +288,8 @@ utf8 SourceFile::getLine(long seek)
     waitEndRequests();
 
     open();
-    seekTo(seek + m_headerSize);
-    m_directMode = true;
+    seekTo(seek + headerSize);
+    directMode = true;
 
     utf8 line;
     int  column = 0;
@@ -313,20 +313,20 @@ utf8 SourceFile::getLine(long seek)
             line += c;
     }
 
-    m_directMode = false;
+    directMode = false;
     close();
     return line;
 }
 
 void SourceFile::report(const Diagnostic& diag)
 {
-    if (m_silent > 0)
+    if (silent > 0)
         return;
 
     // Do not raise an error if we are waiting for one, during tests
-    if (m_unittestError && diag.errorLevel == DiagnosticLevel::Error)
+    if (unittestError && diag.errorLevel == DiagnosticLevel::Error)
     {
-        m_unittestError--;
+        unittestError--;
         if (g_CommandLine.verbose)
         {
             g_Log.lock();
@@ -339,7 +339,7 @@ void SourceFile::report(const Diagnostic& diag)
 
     // Raise error
     g_Workspace.numErrors++;
-    m_module->numErrors++;
+    module->numErrors++;
     g_Log.lock();
     diag.report();
     g_Log.unlock();

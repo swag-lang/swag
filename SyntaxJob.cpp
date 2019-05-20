@@ -45,7 +45,7 @@ bool SyntaxJob::doCompilerUnitTest()
     if (m_token.text == "error")
     {
         if (g_CommandLine.test)
-            m_file->m_unittestError++;
+            m_file->unittestError++;
     }
     else if (m_token.text == "pass")
     {
@@ -54,17 +54,17 @@ bool SyntaxJob::doCompilerUnitTest()
         if (m_token.text == "lexer")
         {
             if (g_CommandLine.test)
-                m_file->m_buildPass = BuildPass::Lexer;
+                m_file->buildPass = BuildPass::Lexer;
         }
         else if (m_token.text == "syntax")
         {
             if (g_CommandLine.test)
-                m_file->m_buildPass = BuildPass::Syntax;
+                m_file->buildPass = BuildPass::Syntax;
         }
         else if (m_token.text == "semantic")
         {
             if (g_CommandLine.test)
-                m_file->m_buildPass = BuildPass::Semantic;
+                m_file->buildPass = BuildPass::Semantic;
         }
         else
         {
@@ -82,7 +82,7 @@ bool SyntaxJob::doCompilerUnitTest()
         if (g_CommandLine.test)
         {
             auto newModule = g_Workspace.createOrUseModule(m_token.text);
-            m_file->m_module->removeFile(m_file);
+            m_file->module->removeFile(m_file);
             newModule->addFile(m_file);
         }
     }
@@ -106,14 +106,14 @@ bool SyntaxJob::recoverError()
         if (m_token.id == TokenId::EndOfFile)
             return false;
 
-        m_file->m_silent++;
+        m_file->silent++;
         if (!m_tokenizer.getToken(m_token))
         {
-            m_file->m_silent--;
+            m_file->silent--;
             return false;
         }
 
-        m_file->m_silent--;
+        m_file->silent--;
 	}
 
 	return true;
@@ -125,7 +125,7 @@ bool SyntaxJob::execute()
         g_Stats.numFiles++;
     m_tokenizer.setFile(m_file);
 
-    m_file->m_astRoot = Ast::newNode(&m_file->poolFactory->astNode, AstNodeType::RootFile);
+    m_file->astRoot = Ast::newNode(&m_file->poolFactory->astNode, AstNodeType::RootFile);
 
     bool result = true;
     bool ok     = true;
@@ -135,7 +135,7 @@ bool SyntaxJob::execute()
         if (!ok)
         {
 			// If there's an error, then we must stop at syntax pass
-			m_file->m_buildPass = min(m_file->m_buildPass, BuildPass::Syntax);
+			m_file->buildPass = min(m_file->buildPass, BuildPass::Syntax);
 			if (!recoverError())
 				return false;
             result = false;
@@ -159,10 +159,10 @@ bool SyntaxJob::execute()
         }
 
         // Ask for lexer only
-        if (m_file->m_buildPass < BuildPass::Syntax)
+        if (m_file->buildPass < BuildPass::Syntax)
             continue;
 
-        ok = doTopLevel(m_file->m_astRoot);
+        ok = doTopLevel(m_file->astRoot);
     }
 
     return result;

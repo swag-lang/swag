@@ -72,7 +72,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
 
                         job->setFile(file);
                         module->addFile(file);
-                        file->m_path = move(tmp1);
+                        file->path = move(tmp1);
 
                         g_ThreadMgr.addJob(job);
                     }
