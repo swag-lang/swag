@@ -168,7 +168,6 @@
     <ClInclude Include="LanguageSpec.h" />
     <ClInclude Include="LoadingThread.h" />
     <ClInclude Include="Log.h" />
-    <ClInclude Include="ParseFolderJob.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pool.h" />
     <ClInclude Include="PoolFactory.h" />
@@ -202,7 +201,6 @@
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="ParseFolderJob.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

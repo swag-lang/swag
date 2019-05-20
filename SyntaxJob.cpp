@@ -20,6 +20,14 @@ bool SyntaxJob::doCompilerUnitTest()
         if (g_CommandLine.test)
             m_file->m_doSyntax = false;
     }
+    else if (m_token.text == "module")
+    {
+		if (g_CommandLine.test)
+		{
+			SWAG_CHECK(m_tokenizer.getToken(m_token));
+			SWAG_VERIFY(m_token.id == TokenId::Identifier, m_file->report({ m_file, m_token, format("invalid module name '%s'", m_token.text.c_str()) }));
+		}
+    }
     else
     {
         m_file->report({m_file, m_token, format("unknown #unittest parameter '%s'", m_token.text.c_str())});

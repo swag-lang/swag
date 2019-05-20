@@ -430,6 +430,7 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
             treatChar(c, offset);
             token.text += c;
             SWAG_CHECK(doHexLiteral(token));
+			token.endLocation = m_location;
             return true;
         }
 
@@ -439,6 +440,7 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
             treatChar(c, offset);
             token.text += c;
             SWAG_CHECK(doBinLiteral(token));
+			token.endLocation = m_location;
             return true;
         }
 
@@ -457,11 +459,14 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
         c             = getCharNoSeek(offset);
         if (!SWAG_IS_DIGIT(c))
         {
+			token.endLocation = m_location;
             token.id = TokenId::SymDot;
             return true;
         }
     }
 
     SWAG_CHECK(doIntFloatLiteral(startsWithDot, c, token));
+	token.endLocation = m_location;
+
     return true;
 }

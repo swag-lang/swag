@@ -2,7 +2,6 @@
 #include "Workspace.h"
 #include "Global.h"
 #include "ThreadManager.h"
-#include "ParseFolderJob.h"
 #include "CommandLine.h"
 #include "Global.h"
 #include "Pool.h"
@@ -53,7 +52,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                     // File filtering by name
                     if (filterIsEmpty || strstr(tmp1.c_str(), g_CommandLine.fileFilter.c_str()))
                     {
-                        auto job  = g_Pool.m_readFileJob.alloc();
+                        auto job  = g_Pool.m_syntaxJob.alloc();
                         auto file = g_Pool.m_sourceFile.alloc();
 
                         job->setFile(file);

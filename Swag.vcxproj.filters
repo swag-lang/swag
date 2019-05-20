@@ -46,9 +46,6 @@
     <ClCompile Include="types.c">
       <Filter>FFI</Filter>
     </ClCompile>
-    <ClCompile Include="ParseFolderJob.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="LanguageSpec.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
@@ -116,9 +113,6 @@
     </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="ParseFolderJob.h">
-      <Filter>Lexer</Filter>
     </ClInclude>
     <ClInclude Include="Stats.h">
       <Filter>Main</Filter>

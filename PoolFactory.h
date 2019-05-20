@@ -4,6 +4,6 @@
 
 struct PoolFactory
 {
-    Pool<SourceFile>  m_sourceFile;
-    Pool<SyntaxJob> m_readFileJob;
+    Pool<SourceFile> m_sourceFile;
+    Pool<SyntaxJob>  m_syntaxJob;
 };

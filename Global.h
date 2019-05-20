@@ -30,5 +30,8 @@ extern utf8 format(const char* format, ...);
 #define SWAG_VERIFY(__expr, __err) \
     {                              \
         if (!(__expr))             \
-            return __err;          \
+        {                          \
+            __err;                 \
+            return false;          \
+        }                          \
     }
