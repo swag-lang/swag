@@ -30,6 +30,7 @@ bool ModuleSemanticJob::semanticNode(SourceFile* file, AstNode* node)
     case AstNodeType::VarDecl:
     {
         auto job = newSemanticJob(file, node);
+		job->fct = &SemanticJob::resolveVarDecl;
         g_ThreadMgr.addJob(job);
     }
     break;
