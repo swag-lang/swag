@@ -7,32 +7,40 @@
 
 void Module::addFile(SourceFile* file)
 {
-	file->m_module = this;
+    file->m_module = this;
     m_files.push_back(file);
 }
 
 void Module::removeFile(SourceFile* file)
 {
-	assert(file->m_module == this);
-	for (auto it = m_files.begin(); it != m_files.end(); ++it)
-	{
-		if (*it == file)
-		{
-			file->m_module = nullptr;
-			m_files.erase(it);
-			return;
-		}
-	}
+    assert(file->m_module == this);
+    for (auto it = m_files.begin(); it != m_files.end(); ++it)
+    {
+        if (*it == file)
+        {
+            file->m_module = nullptr;
+            m_files.erase(it);
+            return;
+        }
+    }
 
-	assert(false);
+    assert(false);
 }
 
-bool Module::build()
+bool Module::semanticNode(SourceFile* file, AstNode* node)
 {
-	// One ast root to rule them all
-	m_astRoot = Ast::newNode(&g_Pool, AstNodeType::RootModule);
+	return true;
+}
+
+bool Module::semantic()
+{
+    // One ast root to rule them all
+    m_astRoot = Ast::newNode(&g_Pool, AstNodeType::RootModule);
 	for (auto file : m_files)
+	{
 		Ast::addChild(m_astRoot, file->m_astRoot, false);
+		semanticNode(file, file->m_astRoot);
+	}
 
 	return true;
 }

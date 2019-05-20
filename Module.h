@@ -1,5 +1,6 @@
 #pragma once
 class SourceFile;
+struct AstNode;
 
 class Module
 {
@@ -18,8 +19,11 @@ public:
 
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
-    bool build();
+    bool semantic();
 
 private:
-    struct AstNode* m_astRoot = nullptr;
+    bool semanticNode(SourceFile* file, AstNode* node);
+
+private:
+    AstNode* m_astRoot = nullptr;
 };

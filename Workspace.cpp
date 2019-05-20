@@ -105,8 +105,13 @@ bool Workspace::build()
 
 	// Build each module
 	for (auto module : m_modules)
-		module->build();
-	//g_ThreadMgr.waitEndJobs();
+	{
+        auto job = g_Pool.m_moduleJob.alloc();
+		job->module = module;
+		g_ThreadMgr.addJob(job);
+	}
+
+	g_ThreadMgr.waitEndJobs();
 
     return true;
 }

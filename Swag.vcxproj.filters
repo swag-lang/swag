@@ -156,6 +156,9 @@
     <ClInclude Include="SpinLock.h">
       <Filter>Threading</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleJob.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
@@ -169,6 +172,9 @@
     </Filter>
     <Filter Include="Lexer">
       <UniqueIdentifier>{2ec0b045-bdd6-4a7a-a120-2c91b7025073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Semantic">
+      <UniqueIdentifier>{5f62a50f-54d2-4ca7-be2f-7fba0994f861}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
