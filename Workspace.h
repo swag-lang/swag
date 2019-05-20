@@ -4,6 +4,9 @@ class Module;
 class Workspace
 {
 public:
+    atomic<int> numErrors;
+
+public:
     bool    build();
     Module* createOrUseModule(const fs::path& path);
 

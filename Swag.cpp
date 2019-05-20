@@ -42,10 +42,10 @@ void printStats(chrono::duration<double>& elapsedTime)
 	wcout << "lines ............. " << g_Stats.numLines << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
 	wcout << "modules ........... " << g_Stats.numModules << "\n";
-    if (g_Stats.numErrors)
+    if (g_Workspace.numErrors)
     {
         g_Log.setColor(LogColor::Red);
-        wcout << "errors ............ " << g_Stats.numErrors << "\n";
+        wcout << "errors ............ " << g_Workspace.numErrors << "\n";
     }
 
     g_Log.setDefaultColor();
@@ -64,5 +64,5 @@ int main(int argc, const char* argv[])
     chrono::duration<double> diff      = timeAfter - timeBefore;
     printStats(diff);
 
-    return g_Stats.numErrors > 0 ? -1 : 0;
+    return g_Workspace.numErrors > 0 ? -1 : 0;
 }

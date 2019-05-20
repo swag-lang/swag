@@ -23,3 +23,8 @@ void Module::removeFile(SourceFile* file)
 
 	assert(false);
 }
+
+bool Module::build()
+{
+	return true;
+}

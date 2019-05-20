@@ -7,6 +7,8 @@
 #include "Stats.h"
 #include "Log.h"
 #include "Diagnostic.h"
+#include "Module.h"
+#include "Workspace.h"
 
 void SourceFile::construct()
 {
@@ -346,8 +348,9 @@ void SourceFile::report(const Diagnostic& diag)
     }
 
     // Raise error
+    g_Workspace.numErrors++;
+	m_module->numErrors++;
     g_Log.lock();
-	g_Stats.numErrors++;
     diag.report();
     g_Log.unlock();
 }

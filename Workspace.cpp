@@ -100,6 +100,13 @@ bool Workspace::build()
     // Ask for a syntax pass on all files of all modules
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
+	if (g_Workspace.numErrors > 0)
+		return false;
+
+	// Build each module
+	for (auto module : m_modules)
+		module->build();
+	//g_ThreadMgr.waitEndJobs();
 
     return true;
 }
