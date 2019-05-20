@@ -102,6 +102,8 @@ bool Workspace::build()
     g_ThreadMgr.waitEndJobs();
 	if (g_Workspace.numErrors > 0)
 		return false;
+	if(g_CommandLine.syntaxOnly)
+		return true;
 
 	// Build each module
 	for (auto module : m_modules)
