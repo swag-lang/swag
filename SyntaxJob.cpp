@@ -8,16 +8,20 @@
 #include "PoolFactory.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::syntaxError(const string& msg)
+bool SyntaxJob::syntaxError(const utf8& msg)
 {
-    string full = "syntax error";
+    utf8 full = "syntax error";
     if (!msg.empty())
-        full += ", " + msg;
+    {
+        full += ", ";
+        full += msg;
+    }
+
     error(full);
     return false;
 }
 
-bool SyntaxJob::error(const string& msg)
+bool SyntaxJob::error(const utf8& msg)
 {
     sourceFile->report({sourceFile, token, msg.c_str()});
     return false;

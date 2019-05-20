@@ -20,7 +20,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto node       = static_cast<AstVarDecl*>(context->node);
-	node->typeInfo = node->astType->typeInfo;
+    node->typeInfo  = node->astType->typeInfo;
     context->result = SemanticResult::Done;
     return true;
 }

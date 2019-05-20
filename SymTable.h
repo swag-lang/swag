@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "SpinLock.h"
+#include "Utf8.h"
 struct PoolFactory;
 
 struct SymbolOverload : public PoolElement
@@ -14,7 +15,7 @@ enum class SymbolType
 
 struct SymbolName : public PoolElement
 {
-    string                  name;
+    utf8                    name;
     SymbolType              type;
     atomic<int>             cptOverloads;
     vector<SymbolOverload*> overloads;
@@ -29,9 +30,9 @@ struct SymbolName : public PoolElement
 
 struct SymTable
 {
-    SymbolName* registerSyntaxSymbol(PoolFactory* factory, const string& name, SymbolType type);
-    SymbolName* find(const string& name);
+    SymbolName* registerSyntaxSymbol(PoolFactory* factory, const utf8& name, SymbolType type);
+    SymbolName* find(const utf8& name);
 
-    SpinLock                 mutex;
-    map<string, SymbolName*> mapNames;
+    SpinLock               mutex;
+    map<utf8, SymbolName*> mapNames;
 };

@@ -2,7 +2,7 @@
 #include "SymTable.h"
 #include "PoolFactory.h"
 
-SymbolName* SymTable::find(const string& name)
+SymbolName* SymTable::find(const utf8& name)
 {
     scoped_lock<SpinLock> sl(mutex);
     if (mapNames.empty())
@@ -12,7 +12,7 @@ SymbolName* SymTable::find(const string& name)
     return result;
 }
 
-SymbolName* SymTable::registerSyntaxSymbol(PoolFactory* factory, const string& name, SymbolType type)
+SymbolName* SymTable::registerSyntaxSymbol(PoolFactory* factory, const utf8& name, SymbolType type)
 {
     auto symbol = find(name);
     if (!symbol)

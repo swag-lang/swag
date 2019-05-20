@@ -6,6 +6,7 @@ struct AstType;
 struct AstVarDecl;
 struct AstNode;
 struct AstScopeNode;
+struct utf8;
 
 struct SyntaxJob : public Job
 {
@@ -13,8 +14,8 @@ struct SyntaxJob : public Job
     void reset() override{};
     void construct() override{};
 
-    bool error(const string& msg);
-    bool syntaxError(const string& msg);
+    bool error(const utf8& msg);
+    bool syntaxError(const utf8& msg);
     bool eatToken(TokenId id);
     bool recoverError();
 
