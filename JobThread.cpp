@@ -5,34 +5,34 @@
 
 JobThread::JobThread()
 {
-    m_thread = new std::thread(&JobThread::loop, this);
+    thread = new std::thread(&JobThread::loop, this);
 }
 
 JobThread::~JobThread()
 {
-    delete m_thread;
+    delete thread;
 }
 
 void JobThread::notifyJob()
 {
-    lock_guard<mutex> lk(m_mutexNotify);
-    m_Cv.notify_one();
+    lock_guard<mutex> lk(mutexNotify);
+    condVar.notify_one();
 }
 
 void JobThread::waitJob()
 {
-    unique_lock<mutex> lk(m_mutexNotify);
-    m_Cv.wait(lk);
+    unique_lock<mutex> lk(mutexNotify);
+    condVar.wait(lk);
 }
 
 void JobThread::loop()
 {
-    while (!m_requestEnd)
+    while (!requestEnd)
     {
         auto job = g_ThreadMgr.getJob(this);
         if (job == nullptr)
         {
-            if (m_requestEnd)
+            if (requestEnd)
                 break;
             continue;
         }

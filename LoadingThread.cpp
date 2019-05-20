@@ -4,7 +4,7 @@
 
 LoadingThread::LoadingThread()
 {
-    m_thread = new std::thread(&LoadingThread::loop, this);
+    thread = new std::thread(&LoadingThread::loop, this);
 }
 
 LoadingThread::~LoadingThread()
@@ -14,17 +14,17 @@ LoadingThread::~LoadingThread()
 
 void LoadingThread::releaseRequest(LoadingThreadRequest* request)
 {
-    lock_guard<mutex> lk(m_mutexNew);
-    m_freeRequests.push_back(request);
+    lock_guard<mutex> lk(mutexNew);
+    freeRequests.push_back(request);
 }
 
 LoadingThreadRequest* LoadingThread::newRequest()
 {
-    lock_guard<mutex> lk(m_mutexNew);
-    if (!m_freeRequests.empty())
+    lock_guard<mutex> lk(mutexNew);
+    if (!freeRequests.empty())
     {
-        auto req = m_freeRequests.back();
-        m_freeRequests.pop_back();
+        auto req = freeRequests.back();
+        freeRequests.pop_back();
         req->buffer     = nullptr;
         req->loadedSize = 0;
         req->done       = false;
@@ -37,35 +37,35 @@ LoadingThreadRequest* LoadingThread::newRequest()
 
 void LoadingThread::addRequest(LoadingThreadRequest* request)
 {
-    lock_guard<mutex> lk(m_mutexAdd);
-    m_queue.push_back(request);
-    m_Cv.notify_one();
+    lock_guard<mutex> lk(mutexAdd);
+    queueRequests.push_back(request);
+    condVar.notify_one();
 }
 
 LoadingThreadRequest* LoadingThread::getRequest()
 {
-    lock_guard<mutex> lk(m_mutexAdd);
-    if (m_queue.empty())
+    lock_guard<mutex> lk(mutexAdd);
+    if (queueRequests.empty())
         return nullptr;
-    auto req = m_queue.back();
-    m_queue.pop_back();
+    auto req = queueRequests.back();
+    queueRequests.pop_back();
     return req;
 }
 
 void LoadingThread::waitRequest()
 {
-    unique_lock<mutex> lk(m_mutexAdd);
-    m_Cv.wait(lk);
+    unique_lock<mutex> lk(mutexAdd);
+    condVar.wait(lk);
 }
 
 void LoadingThread::loop()
 {
-    while (!m_requestEnd)
+    while (!requestEnd)
     {
         auto req = getRequest();
         if (req == nullptr)
         {
-            if (m_requestEnd)
+            if (requestEnd)
                 break;
             waitRequest();
             continue;

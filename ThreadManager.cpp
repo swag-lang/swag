@@ -78,6 +78,6 @@ Job* ThreadManager::getJob(JobThread* thread)
         return nullptr;
     }
 
-    job->m_thread = thread;
+    job->thread = thread;
     return job;
 }

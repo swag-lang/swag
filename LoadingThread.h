@@ -22,11 +22,11 @@ struct LoadingThread
     LoadingThreadRequest* getRequest();
     void                  waitRequest();
 
-    thread*                       m_thread     = nullptr;
-    bool                          m_requestEnd = false;
-    vector<LoadingThreadRequest*> m_queue;
-    vector<LoadingThreadRequest*> m_freeRequests;
-    mutex                         m_mutexAdd;
-    mutex                         m_mutexNew;
-    condition_variable            m_Cv;
+    thread*                       thread     = nullptr;
+    bool                          requestEnd = false;
+    vector<LoadingThreadRequest*> queueRequests;
+    vector<LoadingThreadRequest*> freeRequests;
+    mutex                         mutexAdd;
+    mutex                         mutexNew;
+    condition_variable            condVar;
 };
