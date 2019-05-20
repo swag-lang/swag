@@ -10,5 +10,5 @@ struct Workspace
     void enumerateModules();
 
     atomic<int>     numErrors;
-    vector<Module*> m_modules;
+    vector<Module*> modules;
 };

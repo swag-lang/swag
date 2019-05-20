@@ -11,14 +11,14 @@
 
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
-    for (const auto& module : m_modules)
+    for (const auto& module : modules)
     {
         if (module->path == path)
             return module;
     }
 
     auto module = new Module(path);
-    m_modules.push_back(module);
+    modules.push_back(module);
     if (g_CommandLine.stats)
         g_Stats.numModules++;
     return module;
@@ -106,7 +106,7 @@ bool Workspace::build()
 		return true;
 
 	// Build each module
-	for (auto module : m_modules)
+	for (auto module : modules)
 	{
         auto job = g_Pool.moduleJob.alloc();
 		job->module = module;

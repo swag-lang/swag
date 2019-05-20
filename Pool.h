@@ -6,13 +6,10 @@ struct IPool
 
 struct PoolElement
 {
-    PoolElement* nextFree = nullptr;
-    IPool*       m_pool   = nullptr;
-
     void release()
     {
-        if (m_pool)
-            m_pool->free(this);
+        if (ownerPool)
+            ownerPool->free(this);
     }
 
     virtual void reset()
@@ -23,6 +20,9 @@ struct PoolElement
     {
         reset();
     }
+
+    PoolElement* nextFree  = nullptr;
+    IPool*       ownerPool = nullptr;
 };
 
 template<typename T, int S>
@@ -34,55 +34,53 @@ struct PoolSlot
 };
 
 template<typename T, int S = 512>
-class Pool : public IPool
+struct Pool : public IPool
 {
-private:
-    PoolSlot<T, S>* m_rootSlot  = nullptr;
-    PoolSlot<T, S>* m_lastSlot  = nullptr;
-    PoolElement*    m_firstFree = nullptr;
-    mutex           m_mutex;
-
-public:
     T* alloc()
     {
-        lock_guard<mutex> lg(m_mutex);
-        if (m_firstFree)
+        lock_guard<mutex> lg(mutexBucket);
+        if (firstFreeElem)
         {
-            auto cur    = m_firstFree;
-            m_firstFree = m_firstFree->nextFree;
+            auto cur      = firstFreeElem;
+            firstFreeElem = firstFreeElem->nextFree;
             cur->reset();
             return static_cast<T*>(cur);
         }
 
-        if (!m_rootSlot)
+        if (!rootBucket)
         {
-            m_rootSlot = m_lastSlot = new PoolSlot<T, S>();
-            auto elem               = &m_lastSlot->buffer[0];
+            rootBucket = lastBucket = new PoolSlot<T, S>();
+            auto elem               = &lastBucket->buffer[0];
             elem->construct();
-            elem->m_pool = this;
+            elem->ownerPool = this;
             return elem;
         }
 
-        if (m_lastSlot->maxUsed == S)
+        if (lastBucket->maxUsed == S)
         {
-            m_lastSlot->nextSlot = new PoolSlot<T, S>();
-            m_lastSlot           = m_lastSlot->nextSlot;
-            auto elem            = &m_lastSlot->buffer[0];
-            elem->m_pool         = this;
+            lastBucket->nextSlot = new PoolSlot<T, S>();
+            lastBucket           = lastBucket->nextSlot;
+            auto elem            = &lastBucket->buffer[0];
+            elem->ownerPool      = this;
             elem->construct();
             return elem;
         }
 
-        auto elem    = &m_lastSlot->buffer[m_lastSlot->maxUsed++];
-        elem->m_pool = this;
+        auto elem       = &lastBucket->buffer[lastBucket->maxUsed++];
+        elem->ownerPool = this;
         elem->construct();
         return elem;
     }
 
     void free(void* addr)
     {
-        lock_guard<mutex> lg(m_mutex);
-        ((T*) addr)->nextFree = m_firstFree;
-        m_firstFree           = ((T*) addr);
+        lock_guard<mutex> lg(mutexBucket);
+        ((T*) addr)->nextFree = firstFreeElem;
+        firstFreeElem         = ((T*) addr);
     }
+
+    PoolSlot<T, S>* rootBucket    = nullptr;
+    PoolSlot<T, S>* lastBucket    = nullptr;
+    PoolElement*    firstFreeElem = nullptr;
+    mutex           mutexBucket;
 };

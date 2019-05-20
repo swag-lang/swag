@@ -1,9 +1,8 @@
 #pragma once
 extern wstring_convert<codecvt_utf8<int32_t>, int32_t> toutf8;
 
-class utf8 : public string
+struct utf8 : public string
 {
-public:
     utf8()
         : string()
     {
@@ -38,7 +37,7 @@ public:
             return;
         }
 
-		try
+        try
         {
             append(toutf8.to_bytes(c));
         }
@@ -60,9 +59,9 @@ public:
         {
             append(toutf8.to_bytes(c));
         }
-        catch(...)
+        catch (...)
         {
-			append("?");
+            append("?");
         }
     }
 };
