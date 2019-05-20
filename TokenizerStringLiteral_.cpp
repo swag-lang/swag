@@ -17,7 +17,7 @@ bool Tokenizer::getDigitHexa(Token& token, int& result)
     return true;
 }
 
-bool Tokenizer::isEscape(char32_t& c, Token& token, unsigned offset)
+bool Tokenizer::isEscape(char32_t& c, Token& token)
 {
     token.startLocation = m_location;
     c                   = getChar();
@@ -126,7 +126,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         if (!raw && c == '\\')
         {
             treatChar(c, offset);
-            result = result && isEscape(c, token, offset);
+            result = result && isEscape(c, token);
             token.text += c;
             continue;
         }
@@ -175,7 +175,7 @@ bool Tokenizer::doCharLiteral(Token& token)
     if (c == '\\')
     {
         treatChar(c, offset);
-        result     = result && isEscape(c, token, offset);
+        result     = result && isEscape(c, token);
         token.text = c;
     }
     else

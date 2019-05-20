@@ -60,5 +60,10 @@ LanguageSpec::LanguageSpec()
 
 string LanguageSpec::tokenToName(TokenId id)
 {
-	return "toto";
+	switch (id)
+	{
+	case TokenId::SymColon: return ":";
+	}
+
+	return "???";
 }

@@ -16,7 +16,7 @@
 
 bool SyntaxJob::syntaxError(const string& msg)
 {
-	string full = format("syntax error '%s'", m_token.text.c_str());
+	string full = "syntax error";
 	if (!msg.empty())
 		full += ", " + msg;
     error(full);
@@ -33,7 +33,7 @@ bool SyntaxJob::eatToken(TokenId id)
 {
     SWAG_CHECK(m_tokenizer.getToken(m_token));
     if (m_token.id != id)
-        SWAG_CHECK(syntaxError(format("expected '%s'", g_LangSpec.tokenToName(id).c_str())));
+        SWAG_CHECK(syntaxError(format("'%s' expected instead of '%s'", g_LangSpec.tokenToName(id).c_str(), m_token.text.c_str())));
     return true;
 }
 
@@ -99,6 +99,13 @@ bool SyntaxJob::recoverError()
 {
     while (true)
     {
+        if (m_token.id == TokenId::CompilerUnitTest)
+            break;
+        if (m_token.id == TokenId::SymSemiColon)
+            break;
+        if (m_token.id == TokenId::EndOfFile)
+            return false;
+
         m_file->m_silent++;
         if (!m_tokenizer.getToken(m_token))
         {
@@ -107,12 +114,6 @@ bool SyntaxJob::recoverError()
         }
 
         m_file->m_silent--;
-        if (m_token.id == TokenId::CompilerUnitTest)
-            break;
-        if (m_token.id == TokenId::SymSemiColon)
-            break;
-        if (m_token.id == TokenId::EndOfFile)
-            return false;
 	}
 
 	return true;
@@ -126,22 +127,27 @@ bool SyntaxJob::execute()
 
     m_file->m_astRoot = Ast::newNode(&m_file->m_poolFactory->m_astNode, AstNodeType::RootFile);
 
-    bool canLex = true;
     bool result = true;
     bool ok     = true;
     while (true)
     {
-        // During tests, we can cumulate more than one error during parsing
-        if (!ok || !m_tokenizer.getToken(m_token))
+        // Recover from last syntax error
+        if (!ok)
         {
 			if (!recoverError())
 				return false;
             result = false;
+			ok = true;
         }
+		else
+		{
+			ok = m_tokenizer.getToken(m_token);
+			if (!ok)
+				continue;
+		}
 
         if (m_token.id == TokenId::EndOfFile)
             break;
-        ok = true;
 
         // Top level
         if (m_token.id == TokenId::CompilerUnitTest)

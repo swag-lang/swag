@@ -1,3 +1,4 @@
+#pragma warning(disable : 4100)
 /* -----------------------------------------------------------------------
    prep_cif.c - Copyright (c) 2011, 2012  Anthony Green
                 Copyright (c) 1996, 1998, 2007  Red Hat, Inc.

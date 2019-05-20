@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CommandLine.h"
 
-bool CommandLine::process(int argc, const char *argv[])
+bool CommandLine::process(int argc, const char *[])
 {
 	for (int i = 0; i < argc; i++)
 	{

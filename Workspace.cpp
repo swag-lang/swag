@@ -30,7 +30,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
     auto module = createOrUseModule(path);
 
     // Scan source folder
-    WIN32_FIND_DATAA file;
+    WIN32_FIND_DATAA findfile;
     vector<string>   directories;
 
     directories.push_back(path.string());
@@ -42,22 +42,22 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
         directories.pop_back();
 
         tmp1     = tmp + "\\*";
-        HANDLE h = ::FindFirstFileA(tmp1.c_str(), &file);
+        HANDLE h = ::FindFirstFileA(tmp1.c_str(), &findfile);
         if (h == INVALID_HANDLE_VALUE)
             continue;
 
         do
         {
-            tmp1 = tmp + "\\" + file.cFileName;
-            if (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            tmp1 = tmp + "\\" + findfile.cFileName;
+            if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
-                if ((file.cFileName[0] == '.') && (!file.cFileName[1] || (file.cFileName[1] == '.' && !file.cFileName[2])))
+                if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
                     continue;
                 directories.emplace_back(move(tmp1));
             }
             else
             {
-                auto pz = strrchr(file.cFileName, '.');
+                auto pz = strrchr(findfile.cFileName, '.');
 #ifdef SWAG_TEST_CPP
                 if (pz && !_strcmpi(pz, ".cpp"))
 #else
@@ -78,7 +78,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                     }
                 }
             }
-        } while (::FindNextFileA(h, &file));
+        } while (::FindNextFileA(h, &findfile));
 
         ::FindClose(h);
     }

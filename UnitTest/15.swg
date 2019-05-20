@@ -21,7 +21,7 @@
 #unittest error
 0xFFFFFFFFF'f64
 
-#unittest lexer
+#unittest pass lexer
 0x7F's8
 0x00000007F's8
 0xFFFF's16

@@ -27,7 +27,7 @@ void Module::removeFile(SourceFile* file)
     assert(false);
 }
 
-bool Module::semanticNode(SourceFile* file, AstNode* node)
+bool Module::semanticNode(SourceFile*, AstNode*)
 {
 	return true;
 }

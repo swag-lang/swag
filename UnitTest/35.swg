@@ -1,6 +1,8 @@
 ﻿#unittest pass syntax
 #unittest error
 var 1: s32;
-
-#unittest pass syntax
+#unittest error
 var a;
+
+var a: s32;
+

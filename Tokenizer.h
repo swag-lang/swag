@@ -120,7 +120,7 @@ private:
     bool     errorNumberSyntax(Token& token, const utf8& msg);
     bool     doSymbol(char32_t c, Token& token);
     bool     doStringLiteral(Token& token, bool raw);
-    bool     isEscape(char32_t& c, Token& token, unsigned offset);
+    bool     isEscape(char32_t& c, Token& token);
     bool     getDigitHexa(Token& token, int& result);
     bool     doCharLiteral(Token& token);
 

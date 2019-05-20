@@ -180,7 +180,7 @@ char SourceFile::getPrivateChar()
         if (!m_file)
             return 0;
         auto c = fgetc(m_file);
-        return c == EOF ? 0 : c;
+        return c == EOF ? 0 : (char) c;
     }
 
     if (m_bufferCurSeek >= m_buffersSize[m_bufferCurIndex])
@@ -195,7 +195,6 @@ char SourceFile::getPrivateChar()
             return 0;
         }
 
-        auto loadingTh    = g_ThreadMgr.m_loadingThread;
         auto nextBufIndex = (m_bufferCurIndex + 1) % 2;
 
         if (!m_requests[nextBufIndex])

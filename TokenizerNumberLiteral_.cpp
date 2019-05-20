@@ -113,6 +113,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
             if (token.numValue.u64 > UINT32_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'u32'", token.numValue.u64));
             break;
+        case TokenNumType::Int8:
             if (token.numValue.u64 > UINT8_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 's8'", token.numValue.u64));
             break;
