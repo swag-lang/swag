@@ -67,12 +67,12 @@ enum class TokenId
 
 struct Token
 {
-    TokenId        id;
+    utf8           text;
     SourceLocation startLocation;
     SourceLocation endLocation;
-    utf8           text;
+    Register       literalValue;
+    TokenId        id;
     NativeType     literalType;
-    Register       numValue;
 };
 
 struct Tokenizer

@@ -22,6 +22,8 @@ bool SyntaxJob::doType(AstNode* parent, AstType** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::NativeType, syntaxError(format("invalid type name '%s'", token.text.c_str())));
+    node->token = move(token);
+
     return true;
 }
 
@@ -34,7 +36,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(format("invalid variable name '%s'", token.text.c_str())));
-    node->name = token.text;
+    node->token = move(token);
 
     SWAG_CHECK(eatToken(TokenId::SymColon));
     SWAG_CHECK(doType(node, &node->astType));
@@ -45,7 +47,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
     // A top level symbol must be registered in order to be found by the semantic solving of identifiers
     if (parent->flags & AST_IS_TOPLEVEL)
     {
-        sourceFile->module->symTable->registerSyntaxSymbol(sourceFile->poolFactory, node->name, SymbolType::Variable);
+        sourceFile->module->symTable->registerSyntaxSymbol(sourceFile->poolFactory, node->token.text, SymbolType::Variable);
     }
 
     return true;

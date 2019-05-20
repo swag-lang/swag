@@ -1,6 +1,7 @@
 #pragma once
 #include "SpinLock.h"
 #include "SymTable.h"
+#include "Tokenizer.h"
 struct SemanticContext;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
@@ -42,6 +43,7 @@ struct AstNode : public PoolElement
         mutex.unlock();
     }
 
+    Token                token;
     SemanticFct          semanticFct;
     AstNodeType          type;
     AstNodeSemanticState semanticState;
@@ -53,25 +55,23 @@ struct AstNode : public PoolElement
 
 struct AstScopeNode : public AstNode
 {
-	SymTable* symTable = nullptr;
+    SymTable* symTable = nullptr;
 
-	void allocateSymTable()
-	{
-		if (symTable)
-			return;
-		symTable = new SymTable();
-	}
+    void allocateSymTable()
+    {
+        if (symTable)
+            return;
+        symTable = new SymTable();
+    }
 };
 
 struct AstVarDecl : public AstNode
 {
     void reset() override
     {
-        name.clear();
         astType = nullptr;
     }
 
-    string          name;
     struct AstType* astType;
 };
 
