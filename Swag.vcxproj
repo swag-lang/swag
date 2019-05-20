@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ast.h" />
+    <ClInclude Include="AstNode.h" />
     <ClInclude Include="CommandLine.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="ffi.h" />

@@ -4,7 +4,7 @@
 
 struct SyntaxContext
 {
-	AstNode* parent = nullptr;
+    AstNode* parent = nullptr;
 };
 
 class SyntaxJob : public Job
@@ -20,14 +20,15 @@ public:
     }
 
 private:
-	bool error(const string& msg);
-	bool syntaxError(const string& msg);
-	bool eatToken(TokenId id);
-	bool recoverError();
+    bool error(const string& msg);
+    bool syntaxError(const string& msg);
+    bool eatToken(TokenId id);
+    bool recoverError();
 
     bool doCompilerUnitTest();
-	bool doTopLevel(AstNode* parent);
-	bool doVarDecl(AstNode* parent);
+    bool doTopLevel(AstNode* parent);
+    bool doVarDecl(AstNode* parent, struct AstVarDecl** result = nullptr);
+    bool doType(AstNode* parent, struct AstType** result = nullptr);
 
 private:
     class SourceFile* m_file = nullptr;

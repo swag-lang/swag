@@ -42,7 +42,7 @@ LanguageSpec::LanguageSpec()
     m_keywords["f32"]  = TokenId::NativeType;
     m_keywords["f64"]  = TokenId::NativeType;
     m_keywords["bool"] = TokenId::NativeType;
-	m_keywords["char"] = TokenId::NativeType;
+    m_keywords["char"] = TokenId::NativeType;
 
     m_nativeTypes["u64"]  = TokenNumType::UInt64;
     m_nativeTypes["u32"]  = TokenNumType::UInt32;
@@ -60,10 +60,13 @@ LanguageSpec::LanguageSpec()
 
 string LanguageSpec::tokenToName(TokenId id)
 {
-	switch (id)
-	{
-	case TokenId::SymColon: return ":";
-	}
+    switch (id)
+    {
+    case TokenId::SymColon:
+        return ":";
+    case TokenId::SymSemiColon:
+        return ";";
+    }
 
-	return "???";
+    return "???";
 }

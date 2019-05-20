@@ -1,42 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "SpinLock.h"
-
-enum class AstNodeType
-{
-    RootModule,
-    RootFile,
-    VarDecl,
-};
-
-struct AstNode : public PoolElement
-{
-    AstNodeType      type;
-    AstNode*         parent = nullptr;
-    vector<AstNode*> childs;
-    SpinLock         mutex;
-
-    void reset() override
-    {
-        parent = nullptr;
-        childs.clear();
-    }
-
-    void lock()
-    {
-        mutex.lock();
-    }
-
-    void unlock()
-    {
-        mutex.unlock();
-    }
-};
-
-struct AstVarDecl : public AstNode
-{
-	string name;
-};
+#include "AstNode.h"
 
 struct PoolFactory;
 namespace Ast

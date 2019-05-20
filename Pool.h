@@ -15,8 +15,14 @@ struct PoolElement
             m_pool->free(this);
     }
 
-    virtual void reset(){};
-    virtual void construct(){};
+    virtual void reset()
+    {
+    }
+
+    virtual void construct()
+    {
+        reset();
+    }
 };
 
 template<typename T, int S>

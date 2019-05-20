@@ -11,4 +11,5 @@ struct PoolFactory
     Pool<ModuleJob>  m_moduleJob;
     Pool<AstNode>    m_astNode;
     Pool<AstVarDecl> m_astVarDecl;
+    Pool<AstType>    m_astType;
 };
