@@ -36,4 +36,5 @@ struct PoolFactory;
 namespace Ast
 {
     extern AstNode* newNode(PoolFactory* factory, AstNodeType type, AstNode* parent = nullptr, bool lockParent = true);
+    extern void     addChild(AstNode* parent, AstNode* child, bool lockParent = true);
 };

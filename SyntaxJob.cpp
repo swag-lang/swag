@@ -56,7 +56,7 @@ bool SyntaxJob::execute()
         g_Stats.numFiles++;
     m_tokenizer.setFile(m_file);
 
-    m_file->m_astRoot = Ast::newNode(m_file->m_poolFactory, AstNodeType::RootFile, nullptr);
+    m_file->m_astRoot = Ast::newNode(m_file->m_poolFactory, AstNodeType::RootFile);
 
     bool canLex = true;
     bool result = true;

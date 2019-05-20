@@ -30,11 +30,9 @@ void Module::removeFile(SourceFile* file)
 bool Module::build()
 {
 	// One ast root to rule them all
-	m_astRoot = Ast::newNode(&g_Pool, AstNodeType::RootModule, nullptr);
+	m_astRoot = Ast::newNode(&g_Pool, AstNodeType::RootModule);
 	for (auto file : m_files)
-	{
-		m_astRoot->childs.push_back(file->m_astRoot);
-	}
+		Ast::addChild(m_astRoot, file->m_astRoot, false);
 
 	return true;
 }
