@@ -44,6 +44,7 @@ bool SyntaxJob::doCompilerUnitTest()
     else if (token.text == "module")
     {
         SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#unittest module can only be specified once"}));
+		SWAG_VERIFY(canChangeModule, sourceFile->report({ sourceFile, token, "#unittest module instruction must be done before any code" }));
         SWAG_CHECK(tokenizer.getTokenOrEOL(token));
         SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing module name"}));
         SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));

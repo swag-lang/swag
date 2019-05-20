@@ -100,6 +100,7 @@ bool SyntaxJob::execute()
         if (sourceFile->buildPass < BuildPass::Syntax)
             continue;
 
+		canChangeModule = false;
         ok = doTopLevel(sourceFile->astRoot);
     }
 

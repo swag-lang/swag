@@ -27,5 +27,6 @@ struct SyntaxJob : public Job
     SourceFile*   sourceFile   = nullptr;
     Tokenizer     tokenizer;
     Token         token;
+    bool          canChangeModule = true;
     bool          moduleSpecified = false;
 };
