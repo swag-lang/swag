@@ -17,16 +17,10 @@ enum class AstNodeType
 
 struct AstNode : public PoolElement
 {
-    AstNodeType          type;
-    AstNodeSemanticState semanticState = AstNodeSemanticState::Enter;
-    AstNode*             parent        = nullptr;
-    vector<AstNode*>     childs;
-    SpinLock             mutex;
-
     void reset() override
     {
-		semanticState = AstNodeSemanticState::Enter;
-        parent = nullptr;
+        semanticState = AstNodeSemanticState::Enter;
+        parent        = nullptr;
         childs.clear();
     }
 
@@ -39,18 +33,24 @@ struct AstNode : public PoolElement
     {
         mutex.unlock();
     }
+
+    AstNodeType          type;
+    AstNodeSemanticState semanticState = AstNodeSemanticState::Enter;
+    AstNode*             parent        = nullptr;
+    vector<AstNode*>     childs;
+    SpinLock             mutex;
 };
 
 struct AstVarDecl : public AstNode
 {
-    string          name;
-    struct AstType* astType;
-
     void reset() override
     {
         name.clear();
         astType = nullptr;
     }
+
+    string          name;
+    struct AstType* astType;
 };
 
 struct AstType : public AstNode

@@ -66,8 +66,8 @@ inline char32_t Tokenizer::getChar(unsigned& offset, bool seek)
     offset     = 1;
     if (cacheChar)
     {
-        c           = cacheChar;
-        offset      = cacheCharOffset;
+        c         = cacheChar;
+        offset    = cacheCharOffset;
         cacheChar = 0;
     }
     else
@@ -91,7 +91,7 @@ inline char32_t Tokenizer::getChar(unsigned& offset, bool seek)
         treatChar(c, offset);
     else
     {
-        cacheChar   = c;
+        cacheChar       = c;
         cacheCharOffset = offset;
     }
 
@@ -154,15 +154,15 @@ void Tokenizer::getIdentifier(Token& token)
     }
 
     // Keyword
-    auto it = g_LangSpec.m_keywords.find(token.text);
-    if (it != g_LangSpec.m_keywords.end())
+    auto it = g_LangSpec.keywords.find(token.text);
+    if (it != g_LangSpec.keywords.end())
         token.id = it->second;
     else
         token.id = TokenId::Identifier;
 
     // Type
     if (token.id == TokenId::NativeType)
-        token.numType = g_LangSpec.m_nativeTypes[token.text];
+        token.numType = g_LangSpec.nativeTypes[token.text];
 }
 
 bool Tokenizer::error(Token& token, const utf8& msg)
@@ -186,16 +186,16 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         }
 
         // Blank
-		if (c == '\n')
-		{
-			if (!skipEOL)
-			{
-				token.id = TokenId::EndOfLine;
-				return true;
-			}
+        if (c == '\n')
+        {
+            if (!skipEOL)
+            {
+                token.id = TokenId::EndOfLine;
+                return true;
+            }
 
-			continue;
-		}
+            continue;
+        }
 
         if (c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
             continue;
