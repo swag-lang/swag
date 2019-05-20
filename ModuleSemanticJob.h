@@ -2,7 +2,7 @@
 #include "Job.h"
 #include "Module.h"
 
-struct ModuleJob : public Job
+struct ModuleSemanticJob : public Job
 {
     bool execute() override;
     bool semanticNode(struct SourceFile* file, struct AstNode* node);

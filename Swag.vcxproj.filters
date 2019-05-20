@@ -82,7 +82,7 @@
     <ClCompile Include="SemanticJob.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleJob.cpp">
+    <ClCompile Include="ModuleSemanticJob.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -162,9 +162,6 @@
     <ClInclude Include="SpinLock.h">
       <Filter>Threading</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleJob.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
     <ClInclude Include="AstNode.h">
       <Filter>Lexer</Filter>
     </ClInclude>
@@ -172,6 +169,9 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="SemanticJob.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleSemanticJob.h">
       <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>

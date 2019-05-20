@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Job.h"
 #include "Module.h"
-#include "ModuleJob.h"
+#include "ModuleSemanticJob.h"
 #include "Ast.h"
 #include "ThreadManager.h"
 #include "Global.h"
 #include "PoolFactory.h"
 #include "SourceFile.h"
 
-bool ModuleJob::semanticNode(SourceFile* file, AstNode* node)
+bool ModuleSemanticJob::semanticNode(SourceFile* file, AstNode* node)
 {
     switch (node->type)
     {
@@ -33,7 +33,7 @@ bool ModuleJob::semanticNode(SourceFile* file, AstNode* node)
     return true;
 }
 
-bool ModuleJob::execute()
+bool ModuleSemanticJob::execute()
 {
     // One ast root to rule them all
     module->m_astRoot = Ast::newNode(&g_Pool.m_astNode, AstNodeType::RootModule);
