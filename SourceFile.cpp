@@ -324,7 +324,7 @@ void SourceFile::report(const Diagnostic& diag)
         return;
 
     // Do not raise an error if we are waiting for one, during tests
-    if (m_unittestError && diag.m_level == DiagnosticLevel::Error)
+    if (m_unittestError && diag.errorLevel == DiagnosticLevel::Error)
     {
         m_unittestError--;
         if (g_CommandLine.verbose)

@@ -28,12 +28,12 @@ struct Log
 
     void lock()
     {
-        access.lock();
+        mutexAccess.lock();
     }
 
     void unlock()
     {
-        access.unlock();
+        mutexAccess.unlock();
     }
 
     void print(const char* message)
@@ -59,7 +59,7 @@ struct Log
         wcout << L'\n';
     }
 
-    mutex access;
+    mutex mutexAccess;
 #ifdef WIN32
     HANDLE consoleHandle     = NULL;
     WORD   defaultAttributes = 0;

@@ -17,17 +17,17 @@ void Diagnostic::report(bool verboseMode) const
 	defaultColor(verboseMode);
 
     // Source file and location
-    if (m_hasFile)
+    if (hasFile)
     {
-        g_Log.print(m_file->m_path.filename().string().c_str());
-        if (m_hasLocation)
-            g_Log.print(format(":%d:%d: ", m_startLocation.line + 1, m_startLocation.column + 1));
+        g_Log.print(sourceFile->m_path.filename().string().c_str());
+        if (hasLocation)
+            g_Log.print(format(":%d:%d: ", startLocation.line + 1, startLocation.column + 1));
         else
             g_Log.print(": ");
     }
 
     // Message level
-    switch (m_level)
+    switch (errorLevel)
     {
     case DiagnosticLevel::Error:
         if (!verboseMode)
@@ -43,14 +43,14 @@ void Diagnostic::report(bool verboseMode) const
 
     // User message
 	defaultColor(verboseMode);
-	g_Log.print(m_msg);
+	g_Log.print(textMsg);
     g_Log.eol();
 
     // Source code
-    if (m_hasFile && m_hasLocation && m_printSource)
+    if (hasFile && hasLocation && printSource)
     {
         // Remove blanks at the start of the source line
-        auto        tmpLine = m_file->getLine(m_startLocation.seekStartLine);
+        auto        tmpLine = sourceFile->getLine(startLocation.seekStartLine);
         int         offset  = 0;
         const char* buf     = tmpLine.c_str();
         while (*buf == ' ')
@@ -69,16 +69,16 @@ void Diagnostic::report(bool verboseMode) const
         g_Log.print(line);
         g_Log.eol();
 
-        for (int i = 0; i < m_startLocation.column - offset; i++)
+        for (int i = 0; i < startLocation.column - offset; i++)
             g_Log.print(" ");
 
         int range = 1;
-        if (!m_hasRangeLocation)
+        if (!hasRangeLocation)
             range = 1;
-        else if (m_endLocation.line == m_startLocation.line)
-            range = m_endLocation.column - m_startLocation.column;
+        else if (endLocation.line == startLocation.line)
+            range = endLocation.column - startLocation.column;
         else
-            range = (int) line.length() - m_startLocation.column - offset;
+            range = (int) line.length() - startLocation.column - offset;
         range = max(1, range);
         if (!verboseMode)
             g_Log.setColor(LogColor::Green);

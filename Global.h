@@ -3,10 +3,10 @@
 
 struct Global
 {
+    Global();
+
     fs::path exePath;
     int      numCores = 0;
-
-    Global();
 };
 
 extern struct Global        g_Global;
