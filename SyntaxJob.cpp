@@ -126,6 +126,7 @@ bool SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     sourceFile->astRoot = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::RootFile);
+	sourceFile->astRoot->flags |= AST_IS_TOPLEVEL;
 
     bool result = true;
     bool ok     = true;

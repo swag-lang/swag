@@ -10,15 +10,17 @@
 #include "Module.h"
 #include "Workspace.h"
 #include "PoolFactory.h"
+#include "SymTable.h"
 
 SourceFile::SourceFile()
 {
     poolFactory = new PoolFactory;
+    symTable    = new SymTable;
 
     const auto BUF_SIZE = 4096;
-    bufferSize        = BUF_SIZE;
-    buffers[0]        = new char[bufferSize];
-    buffers[1]        = new char[bufferSize];
+    bufferSize          = BUF_SIZE;
+    buffers[0]          = new char[bufferSize];
+    buffers[1]          = new char[bufferSize];
 
     cleanCache();
 }
@@ -158,10 +160,10 @@ void SourceFile::buildRequest(int reqNum)
     auto loadingTh = g_ThreadMgr.loadingThread;
     auto req       = loadingTh->newRequest();
 
-    req->file          = this;
-    req->seek          = fileSeek;
-    req->buffer        = buffers[reqNum];
-    req->buffer[0]     = 0;
+    req->file        = this;
+    req->seek        = fileSeek;
+    req->buffer      = buffers[reqNum];
+    req->buffer[0]   = 0;
     requests[reqNum] = req;
 
     loadingTh->addRequest(req);

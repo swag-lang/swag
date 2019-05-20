@@ -3,14 +3,23 @@
 #include "Ast.h"
 #include "Global.h"
 
-bool SemanticJob::resolveVarDecl(SemanticJob*, AstNode*, SemanticResult& result)
+bool SemanticJob::resolveType(SemanticContext* context)
 {
-    result = SemanticResult::Done;
+    context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveVarDecl(SemanticContext* context)
+{
+    context->result = SemanticResult::Done;
     return true;
 }
 
 bool SemanticJob::execute()
 {
+    SemanticContext context;
+	context.job = this;
+
     while (!nodes.empty())
     {
         auto node = nodes.back();
@@ -25,10 +34,10 @@ bool SemanticJob::execute()
             }
 
         case AstNodeSemanticState::ProcessingChilds:
-			SemanticResult result;
-            SWAG_CHECK(fct(this, node, result));
-			if (result == SemanticResult::Pending)
-				break;
+			context.node = node;
+            SWAG_CHECK(node->semanticFct(&context));
+            if (context.result == SemanticResult::Pending)
+                break;
             nodes.pop_back();
             break;
         }

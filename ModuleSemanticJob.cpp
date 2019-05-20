@@ -30,7 +30,6 @@ bool ModuleSemanticJob::semanticNode(SourceFile* file, AstNode* node)
     case AstNodeType::VarDecl:
     {
         auto job = newSemanticJob(file, node);
-		job->fct = &SemanticJob::resolveVarDecl;
         g_ThreadMgr.addJob(job);
     }
     break;
@@ -46,6 +45,8 @@ bool ModuleSemanticJob::execute()
 {
     // One ast root to rule them all
     module->astRoot = Ast::newNode(&g_Pool.astNode, AstNodeType::RootModule);
+    module->astRoot->flags |= AST_IS_TOPLEVEL;
+
     for (auto file : module->files)
     {
         if (file->buildPass < BuildPass::Semantic)

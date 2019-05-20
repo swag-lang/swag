@@ -4,6 +4,7 @@
 struct Module;
 struct AstNode;
 struct PoolFactory;
+struct SymTable;
 
 enum class BuildPass
 {
@@ -47,13 +48,14 @@ struct SourceFile : public PoolElement
     void waitEndRequests();
     bool checkFormat();
 
-    fs::path            path;
-    BuildPass           buildPass     = BuildPass::Full;
-    int                 unittestError = 0;
-    int                 silent        = 0;
-    struct Module*      module        = nullptr;
-    struct AstNode*     astRoot       = nullptr;
-    struct PoolFactory* poolFactory   = nullptr;
+    fs::path     path;
+    BuildPass    buildPass     = BuildPass::Full;
+    int          unittestError = 0;
+    int          silent        = 0;
+    Module*      module        = nullptr;
+    AstNode*     astRoot       = nullptr;
+    PoolFactory* poolFactory   = nullptr;
+    SymTable*    symTable      = nullptr;
 
     TextFormat                   textFormat = TextFormat::UTF8;
     int                          bufferSize;

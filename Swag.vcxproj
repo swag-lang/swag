@@ -176,6 +176,7 @@
     <ClInclude Include="PoolFactory.h" />
     <ClInclude Include="SemanticJob.h" />
     <ClInclude Include="SpinLock.h" />
+    <ClInclude Include="SymTable.h" />
     <ClInclude Include="SyntaxJob.h" />
     <ClInclude Include="SourceFile.h" />
     <ClInclude Include="Stats.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
     <ClCompile Include="SemanticJob.cpp" />
+    <ClCompile Include="SymTable.cpp" />
     <ClCompile Include="SyntaxDeclaration_.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />

@@ -11,7 +11,12 @@ enum class SemanticResult
     Pending,
 };
 
-typedef bool (*resolveFct)(SemanticJob* job, AstNode* node, SemanticResult& result);
+struct SemanticContext
+{
+    SemanticJob*   job;
+    AstNode*       node;
+    SemanticResult result;
+};
 
 struct SemanticJob : public Job
 {
@@ -22,9 +27,9 @@ struct SemanticJob : public Job
         nodes.clear();
     }
 
-    static bool resolveVarDecl(SemanticJob* job, AstNode* node, SemanticResult& result);
+    static bool resolveType(SemanticContext* context);
+    static bool resolveVarDecl(SemanticContext* context);
 
-    resolveFct       fct;
     Module*          module;
     SourceFile*      sourceFile;
     AstNode*         astRoot;

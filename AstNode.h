@@ -1,5 +1,8 @@
 #pragma once
 #include "SpinLock.h"
+struct SemanticContext;
+
+typedef bool (*SemanticFct)(SemanticContext* context);
 
 enum class AstNodeSemanticState
 {
@@ -15,12 +18,16 @@ enum class AstNodeType
     Type,
 };
 
+const uint64_t AST_IS_TOPLEVEL = 0x00000000'00000001;
+
 struct AstNode : public PoolElement
 {
     void reset() override
     {
         semanticState = AstNodeSemanticState::Enter;
         parent        = nullptr;
+        semanticFct   = nullptr;
+        flags         = 0;
         childs.clear();
     }
 
@@ -34,9 +41,11 @@ struct AstNode : public PoolElement
         mutex.unlock();
     }
 
+    SemanticFct          semanticFct;
     AstNodeType          type;
-    AstNodeSemanticState semanticState = AstNodeSemanticState::Enter;
-    AstNode*             parent        = nullptr;
+    AstNodeSemanticState semanticState;
+    AstNode*             parent;
+    uint64_t             flags;
     vector<AstNode*>     childs;
     SpinLock             mutex;
 };

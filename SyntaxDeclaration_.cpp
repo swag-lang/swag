@@ -11,10 +11,12 @@
 #include "Module.h"
 #include "Pool.h"
 #include "PoolFactory.h"
+#include "SymTable.h"
 
 bool SyntaxJob::doType(AstNode* parent, AstType** result)
 {
     auto node = Ast::newNode(&sourceFile->poolFactory->astType, AstNodeType::Type, parent, false);
+	node->semanticFct = &SemanticJob::resolveType;
 	if (result)
 		*result = node;
 
@@ -26,6 +28,7 @@ bool SyntaxJob::doType(AstNode* parent, AstType** result)
 bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 {
     auto node = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeType::VarDecl, parent, false);
+    node->semanticFct = &SemanticJob::resolveVarDecl;
 	if (result)
 		*result = node;
 
@@ -38,6 +41,11 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
     SWAG_CHECK(node->astType);
 
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+
+	// A top level symbol must be registered in order to be found by the semantic solving of identifiers
+	if (parent->flags & AST_IS_TOPLEVEL)
+		sourceFile->symTable->registerSyntaxSymbol(sourceFile->poolFactory->symName, node->name);
+
     return true;
 }
 
