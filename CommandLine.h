@@ -5,6 +5,7 @@ struct CommandLine
 
     bool test       = true;
     bool verbose    = false;
+    bool silent     = false;
     bool stats      = true;
     bool syntaxOnly = false;
 

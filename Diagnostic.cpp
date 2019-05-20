@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Diagnostic.h"
 #include "Global.h"
-#include "SourceFile.h"
 #include "Log.h"
+#include "CommandLine.h"
 
 void Diagnostic::defaultColor(bool verboseMode) const
 {

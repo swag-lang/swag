@@ -340,6 +340,8 @@ void SourceFile::report(const Diagnostic& diag)
     // Raise error
     g_Workspace.numErrors++;
     module->numErrors++;
+
+	// Print error
     g_Log.lock();
     diag.report();
     g_Log.unlock();

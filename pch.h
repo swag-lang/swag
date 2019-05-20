@@ -16,6 +16,6 @@
 using namespace std;
 namespace fs = std::experimental::filesystem;
 
-#define SWAG_TEST_CPP
+//#define SWAG_TEST_CPP
 
 #endif

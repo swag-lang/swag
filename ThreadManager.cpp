@@ -21,7 +21,7 @@ ThreadManager::~ThreadManager()
 
 void ThreadManager::addJob(Job* job)
 {
-    lock_guard<mutex> lk(mutexAdd);
+	scoped_lock<mutex> lk(mutexAdd);
     queueJobs.push_back(job);
     if (availableThreads.empty())
         return;
@@ -32,7 +32,7 @@ void ThreadManager::addJob(Job* job)
 
 Job* ThreadManager::getJob()
 {
-    lock_guard<mutex> lk(mutexAdd);
+	scoped_lock<mutex> lk(mutexAdd);
     if (queueJobs.empty())
         return nullptr;
     auto job = queueJobs.back();
@@ -41,28 +41,33 @@ Job* ThreadManager::getJob()
     return job;
 }
 
+bool ThreadManager::doneWithJobs()
+{
+    return queueJobs.empty() && pendingJobs == 0;
+}
+
 void ThreadManager::jobHasEnded()
 {
-    lock_guard<mutex> lk(mutexAdd);
+    scoped_lock<mutex> lk(mutexAdd);
     pendingJobs--;
-    if (queueJobs.empty() && pendingJobs == 0)
+    if (doneWithJobs())
+    {
+        unique_lock<mutex> lk1(mutexDone);
         condVarDone.notify_all();
+    }
 }
 
 void ThreadManager::waitEndJobs()
 {
     while (true)
     {
+        unique_lock<mutex> lk1(mutexDone);
         {
-            unique_lock<mutex> lk(mutexDone);
-            condVarDone.wait(lk);
-        }
-
-        {
-            lock_guard<mutex> lk(mutexAdd);
-            if (queueJobs.empty())
+            scoped_lock<mutex> lk(mutexAdd);
+            if (doneWithJobs())
                 break;
         }
+        condVarDone.wait(lk1);
     }
 }
 

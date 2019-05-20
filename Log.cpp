@@ -15,11 +15,17 @@ Log::Log()
 
 void Log::setDefaultColor()
 {
+	if (g_CommandLine.silent)
+		return;
+
     ::SetConsoleTextAttribute(consoleHandle, defaultAttributes);
 }
 
 void Log::setColor(LogColor color)
 {
+    if (g_CommandLine.silent)
+        return;
+
     WORD attributes{};
     switch (color)
     {

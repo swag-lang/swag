@@ -1,5 +1,7 @@
 #pragma once
 #include "Utf8.h"
+#include "CommandLine.h"
+#include "Global.h"
 
 enum class LogColor
 {
@@ -28,21 +30,29 @@ struct Log
 
     void lock()
     {
+		if (g_CommandLine.silent)
+			return;
         mutexAccess.lock();
     }
 
     void unlock()
     {
+        if (g_CommandLine.silent)
+            return;
         mutexAccess.unlock();
     }
 
     void print(const char* message)
     {
+        if (g_CommandLine.silent)
+            return;
         wcout << message;
     }
 
     void print(const utf8& message)
     {
+        if (g_CommandLine.silent)
+            return;
         try
         {
             wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convert;
@@ -56,6 +66,8 @@ struct Log
 
     void eol()
     {
+        if (g_CommandLine.silent)
+            return;
         wcout << L'\n';
     }
 
