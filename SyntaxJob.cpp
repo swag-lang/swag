@@ -78,5 +78,7 @@ bool SyntaxJob::execute()
             continue;
     }
 
+	if (!result)
+		return false;
     return result;
 }
