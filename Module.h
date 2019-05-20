@@ -5,17 +5,17 @@ struct AstNode;
 struct Module
 {
     Module(const fs::path& path)
-        : m_path{path}
+        : path{path}
     {
-        m_name = path.filename().string();
+        name = path.filename().string();
     }
 
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
 
-    fs::path            m_path;
-    string              m_name;
-    vector<SourceFile*> m_files;
+    fs::path            path;
+    string              name;
+    vector<SourceFile*> files;
     atomic<int>         numErrors;
     AstNode*            astRoot = nullptr;
 };

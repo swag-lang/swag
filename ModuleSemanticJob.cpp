@@ -45,7 +45,7 @@ bool ModuleSemanticJob::execute()
 {
     // One ast root to rule them all
     module->astRoot = Ast::newNode(&g_Pool.astNode, AstNodeType::RootModule);
-    for (auto file : module->m_files)
+    for (auto file : module->files)
     {
         if (file->m_buildPass < BuildPass::Semantic)
             continue;

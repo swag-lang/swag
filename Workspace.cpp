@@ -13,7 +13,7 @@ Module* Workspace::createOrUseModule(const fs::path& path)
 {
     for (const auto& module : m_modules)
     {
-        if (module->m_path == path)
+        if (module->path == path)
             return module;
     }
 
