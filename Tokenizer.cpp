@@ -172,7 +172,7 @@ bool Tokenizer::error(Token& token, const utf8& msg)
     return false;
 }
 
-bool Tokenizer::getToken(Token& token)
+bool Tokenizer::getToken(Token& token, bool skipEOL)
 {
     unsigned offset;
     while (true)
@@ -186,7 +186,18 @@ bool Tokenizer::getToken(Token& token)
         }
 
         // Blank
-        if (c == '\n' || c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
+		if (c == '\n')
+		{
+			if (!skipEOL)
+			{
+				token.id = TokenId::EndOfLine;
+				return true;
+			}
+
+			continue;
+		}
+
+        if (c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
             continue;
 
         if (c == '/')

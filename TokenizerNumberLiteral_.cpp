@@ -175,7 +175,15 @@ bool Tokenizer::doBinLiteral(Token& token)
         c = getCharNoSeek(offset);
     }
 
-    // Be sure we don't have 0x without nothing
+	// Be sure what follows is valid
+	if (SWAG_IS_DIGIT(c) || SWAG_IS_ALPHA(c))
+	{
+		token.startLocation = m_location;
+		token.text = c;
+		SWAG_CHECK(error(token, format("invalid binary digit '%s'", token.text.c_str())));
+	}
+
+	// Be sure we don't have 0x without nothing
     if (rank == 0)
         SWAG_CHECK(errorNumberSyntax(token, "missing at least one digit"));
     // Be sure we don't have a number with a separator at its end
@@ -237,6 +245,14 @@ bool Tokenizer::doHexLiteral(Token& token)
             token.numValue.u64 += (10 + (c - 'A'));
 
         c = getCharNoSeek(offset);
+    }
+
+	// Be sure what follows is valid
+    if (SWAG_IS_ALPHA(c))
+    {
+        token.startLocation = m_location;
+        token.text          = c;
+        SWAG_CHECK(error(token, format("invalid hexadecimal digit '%s'", token.text.c_str())));
     }
 
     // Be sure we don't have 0x without nothing

@@ -58,6 +58,7 @@ enum class TokenId
     NativeType,
 
     Invalid,
+	EndOfLine,
     EndOfFile,
 };
 
@@ -93,7 +94,7 @@ class Tokenizer
 {
 public:
     void setFile(SourceFile* file);
-    bool getToken(Token& token);
+    bool getToken(Token& token, bool skipEOL = true);
 
 private:
     char32_t getChar();

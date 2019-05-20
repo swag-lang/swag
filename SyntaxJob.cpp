@@ -9,7 +9,9 @@
 
 bool SyntaxJob::doCompilerUnitTest()
 {
-    SWAG_CHECK(m_tokenizer.getToken(m_token));
+    SWAG_CHECK(m_tokenizer.getToken(m_token, false));
+	SWAG_VERIFY(m_token.id != TokenId::EndOfLine, m_file->report({ m_file, m_token, "missing #unittest parameter" }));
+
     if (m_token.text == "error")
     {
         if (g_CommandLine.test)
@@ -24,7 +26,8 @@ bool SyntaxJob::doCompilerUnitTest()
     {
 		if (g_CommandLine.test)
 		{
-			SWAG_CHECK(m_tokenizer.getToken(m_token));
+			SWAG_CHECK(m_tokenizer.getToken(m_token, false));
+			SWAG_VERIFY(m_token.id != TokenId::EndOfLine, m_file->report({ m_file, m_token, "missing module name"}));
 			SWAG_VERIFY(m_token.id == TokenId::Identifier, m_file->report({ m_file, m_token, format("invalid module name '%s'", m_token.text.c_str()) }));
 		}
     }

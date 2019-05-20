@@ -5,7 +5,7 @@ struct CommandLine
     bool   verbose = false;
     bool   stats   = true;
     int    tabSize = 4;
-	string fileFilter;// = "AMFImporter_Geometry.cpp";
+	string fileFilter;// = "30.swg";
 
     bool process(int argc, const char* argv[]);
 };
