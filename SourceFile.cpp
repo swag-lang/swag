@@ -140,7 +140,7 @@ void SourceFile::notifyLoad()
 
 void SourceFile::validateRequest(int reqNum)
 {
-    auto loadingTh = g_ThreadMgr.m_loadingThread;
+    auto loadingTh = g_ThreadMgr.loadingThread;
     auto req       = m_requests[reqNum];
 
     m_buffersSize[reqNum] = req->loadedSize;
@@ -155,7 +155,7 @@ void SourceFile::validateRequest(int reqNum)
 
 void SourceFile::buildRequest(int reqNum)
 {
-    auto loadingTh = g_ThreadMgr.m_loadingThread;
+    auto loadingTh = g_ThreadMgr.loadingThread;
     auto req       = loadingTh->newRequest();
 
     req->file          = this;

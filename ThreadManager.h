@@ -1,7 +1,7 @@
 #pragma once
-
 struct Job;
 struct JobThread;
+struct LoadingThread;
 
 struct ThreadManager
 {
@@ -15,14 +15,13 @@ struct ThreadManager
 
     Job* getJob();
 
-    struct LoadingThread* m_loadingThread = nullptr;
-
-    vector<Job*>       m_jobQueue;
-    vector<JobThread*> m_availableThreads;
-    vector<JobThread*> m_workers;
-    mutex              m_mutexAdd;
-    condition_variable m_Cv;
-    mutex              m_mutexDone;
-    condition_variable m_CvDone;
-    atomic<int>        m_pendingJobs;
+    LoadingThread*     loadingThread = nullptr;
+    vector<Job*>       queueJobs;
+    vector<JobThread*> availableThreads;
+    vector<JobThread*> workerThreads;
+    mutex              mutexAdd;
+    condition_variable condVar;
+    mutex              mutexDone;
+    condition_variable condVarDone;
+    atomic<int>        pendingJobs;
 };

@@ -6,47 +6,47 @@
 
 void ThreadManager::init()
 {
-    m_loadingThread = new LoadingThread();
+    loadingThread = new LoadingThread();
 
     int numWorkers = g_Global.numCores - 2;
     numWorkers     = max(1, numWorkers);
     for (int i = 0; i < numWorkers; i++)
-        m_workers.push_back(new JobThread());
+        workerThreads.push_back(new JobThread());
 }
 
 ThreadManager::~ThreadManager()
 {
-    delete m_loadingThread;
+    delete loadingThread;
 }
 
 void ThreadManager::addJob(Job* job)
 {
-    lock_guard<mutex> lk(m_mutexAdd);
-    m_jobQueue.push_back(job);
-    if (m_availableThreads.empty())
+    lock_guard<mutex> lk(mutexAdd);
+    queueJobs.push_back(job);
+    if (availableThreads.empty())
         return;
-    auto thread = m_availableThreads.back();
-    m_availableThreads.pop_back();
+    auto thread = availableThreads.back();
+    availableThreads.pop_back();
     thread->notifyJob();
 }
 
 Job* ThreadManager::getJob()
 {
-    lock_guard<mutex> lk(m_mutexAdd);
-    if (m_jobQueue.empty())
+    lock_guard<mutex> lk(mutexAdd);
+    if (queueJobs.empty())
         return nullptr;
-    auto job = m_jobQueue.back();
-    m_jobQueue.pop_back();
-    m_pendingJobs++;
+    auto job = queueJobs.back();
+    queueJobs.pop_back();
+    pendingJobs++;
     return job;
 }
 
 void ThreadManager::jobHasEnded()
 {
-    lock_guard<mutex> lk(m_mutexAdd);
-    m_pendingJobs--;
-    if (m_jobQueue.empty() && m_pendingJobs == 0)
-        m_CvDone.notify_all();
+    lock_guard<mutex> lk(mutexAdd);
+    pendingJobs--;
+    if (queueJobs.empty() && pendingJobs == 0)
+        condVarDone.notify_all();
 }
 
 void ThreadManager::waitEndJobs()
@@ -54,13 +54,13 @@ void ThreadManager::waitEndJobs()
     while (true)
     {
         {
-            unique_lock<mutex> lk(m_mutexDone);
-            m_CvDone.wait(lk);
+            unique_lock<mutex> lk(mutexDone);
+            condVarDone.wait(lk);
         }
 
         {
-            lock_guard<mutex> lk(m_mutexAdd);
-            if (m_jobQueue.empty())
+            lock_guard<mutex> lk(mutexAdd);
+            if (queueJobs.empty())
                 break;
         }
     }
@@ -71,9 +71,9 @@ Job* ThreadManager::getJob(JobThread* thread)
     auto job = getJob();
     if (job == nullptr)
     {
-        m_mutexAdd.lock();
-        m_availableThreads.push_back(thread);
-        m_mutexAdd.unlock();
+        mutexAdd.lock();
+        availableThreads.push_back(thread);
+        mutexAdd.unlock();
         thread->waitJob();
         return nullptr;
     }
