@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Module.h"
 #include "SyntaxJob.h"
 #include "Diagnostic.h"
 #include "Global.h"
@@ -60,9 +61,9 @@ bool SyntaxJob::execute()
         g_Stats.numFiles++;
     tokenizer.setFile(sourceFile);
 
-    sourceFile->astRoot = Ast::newNode(&sourceFile->poolFactory->astScope, AstNodeType::RootFile);
+    sourceFile->astRoot = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::RootFile);
     sourceFile->astRoot->flags |= AST_IS_TOPLEVEL;
-	currentScope = sourceFile->astRoot;
+	currentScope = sourceFile->module;
 
     bool result = true;
     bool ok     = true;

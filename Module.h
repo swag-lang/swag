@@ -1,9 +1,9 @@
 #pragma once
+#include "AstNode.h"
 struct SourceFile;
-struct AstScopeNode;
 struct SymTable;
 
-struct Module
+struct Module : public AstScopeNode
 {
     Module(const fs::path& path);
     void addFile(SourceFile* file);
@@ -13,5 +13,4 @@ struct Module
     string              name;
     vector<SourceFile*> files;
     atomic<int>         numErrors;
-    AstScopeNode*       astRoot = nullptr;
 };

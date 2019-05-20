@@ -11,6 +11,9 @@
 Module::Module(const fs::path& path)
     : path{path}
 {
+	AstNode::type = AstNodeType::RootModule;
+    AstNode::flags |= AST_IS_TOPLEVEL;
+    allocateSymTable();
 }
 
 void Module::addFile(SourceFile* file)

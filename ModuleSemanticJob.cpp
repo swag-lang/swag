@@ -43,16 +43,11 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
 
 bool ModuleSemanticJob::execute()
 {
-    // One ast root to rule them all
-    module->astRoot = Ast::newNode(&g_Pool.astScope, AstNodeType::RootModule);
-	module->astRoot->allocateSymTable();
-    module->astRoot->flags |= AST_IS_TOPLEVEL;
-
     for (auto file : module->files)
     {
         if (file->buildPass < BuildPass::Semantic)
             continue;
-        Ast::addChild(module->astRoot, file->astRoot, false);
+        Ast::addChild(module, file->astRoot, false);
         doSemanticNode(file, file->astRoot);
     }
 
