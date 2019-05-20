@@ -44,10 +44,10 @@ enum class TokenId
     SymCircumflexEqual,
     SymPercent,
     SymPercentEqual,
-	SymComma,
-	SymExclam,
-	SymExclamEqual,
-	SymBackSlash,
+    SymComma,
+    SymExclam,
+    SymExclamEqual,
+    SymBackSlash,
 
     CompilerUnitTest,
 
@@ -58,7 +58,7 @@ enum class TokenId
     NativeType,
 
     Invalid,
-	EndOfLine,
+    EndOfLine,
     EndOfFile,
 };
 
@@ -77,7 +77,7 @@ enum class TokenNumType
     Float32,
     Float64,
     Bool,
-	Char,
+    Char,
 };
 
 struct Token
@@ -95,6 +95,11 @@ class Tokenizer
 public:
     void setFile(SourceFile* file);
     bool getToken(Token& token, bool skipEOL = true);
+
+    bool getTokenOrEOL(Token& token)
+    {
+        return getToken(token, false);
+    }
 
 private:
     char32_t getChar();
@@ -115,7 +120,7 @@ private:
     bool     doStringLiteral(Token& token, bool raw);
     bool     isEscape(char32_t& c, Token& token, unsigned offset);
     bool     getDigitHexa(Token& token, int& result);
-	bool     doCharLiteral(Token& token);
+    bool     doCharLiteral(Token& token);
 
 private:
     SourceFile*    m_sourceFile  = nullptr;
