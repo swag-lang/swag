@@ -14,7 +14,7 @@ public:
     void reset() override{};
     void construct() override{};
 
-    void setFile(class SourceFile* file)
+    void setFile(struct SourceFile* file)
     {
         m_file = file;
     }
@@ -31,8 +31,8 @@ private:
     bool doType(AstNode* parent, struct AstType** result = nullptr);
 
 private:
-    class SourceFile* m_file = nullptr;
-    Tokenizer         m_tokenizer;
-    Token             m_token;
-    bool              m_moduleSpecified = false;
+    struct SourceFile* m_file = nullptr;
+    Tokenizer          m_tokenizer;
+    Token              m_token;
+    bool               m_moduleSpecified = false;
 };

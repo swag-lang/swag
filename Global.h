@@ -1,24 +1,23 @@
 #pragma once
 #include "Utf8.h"
 
-class Global
+struct Global
 {
-public:
     fs::path exePath;
     int      numCores = 0;
 
     Global();
 };
 
-extern class Global        g_Global;
-extern struct CommandLine  g_CommandLine;
-extern class Log           g_Log;
-extern class Error         g_Error;
-extern struct Stats        g_Stats;
-extern class ThreadManager g_ThreadMgr;
-extern struct LanguageSpec g_LangSpec;
-extern struct PoolFactory  g_Pool;
-extern class Workspace     g_Workspace;
+extern struct Global        g_Global;
+extern struct CommandLine   g_CommandLine;
+extern struct Log           g_Log;
+extern struct Error         g_Error;
+extern struct Stats         g_Stats;
+extern struct ThreadManager g_ThreadMgr;
+extern struct LanguageSpec  g_LangSpec;
+extern struct PoolFactory   g_Pool;
+extern struct Workspace     g_Workspace;
 
 extern utf8 format(const char* format, ...);
 

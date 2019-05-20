@@ -1,16 +1,9 @@
 #pragma once
-class SourceFile;
+struct SourceFile;
 struct AstNode;
 
-class Module
+struct Module
 {
-public:
-    fs::path            m_path;
-    string              m_name;
-    vector<SourceFile*> m_files;
-    atomic<int>         numErrors;
-
-public:
     Module(const fs::path& path)
         : m_path{path}
     {
@@ -19,11 +12,10 @@ public:
 
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
-    bool semantic();
 
-private:
-    bool semanticNode(SourceFile* file, AstNode* node);
-
-private:
-    AstNode* m_astRoot = nullptr;
+    fs::path            m_path;
+    string              m_name;
+    vector<SourceFile*> m_files;
+    atomic<int>         numErrors;
+    AstNode*            m_astRoot = nullptr;
 };

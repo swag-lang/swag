@@ -1,26 +1,22 @@
 #pragma once
 
-class Job;
-class JobThread;
+struct Job;
+struct JobThread;
 
-class ThreadManager
+struct ThreadManager
 {
-public:
     ~ThreadManager();
-
-    class LoadingThread* m_loadingThread = nullptr;
 
     void init();
     void addJob(Job* job);
-    Job* getJob(class JobThread* thread);
-
+    Job* getJob(JobThread* thread);
     void jobHasEnded();
     void waitEndJobs();
 
-private:
     Job* getJob();
 
-private:
+    struct LoadingThread* m_loadingThread = nullptr;
+
     vector<Job*>       m_jobQueue;
     vector<JobThread*> m_availableThreads;
     vector<JobThread*> m_workers;

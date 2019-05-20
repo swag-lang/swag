@@ -4,10 +4,8 @@
 
 struct ModuleJob : public Job
 {
-    Module* module = nullptr;
+    bool execute() override;
+    bool semanticNode(struct SourceFile* file, struct AstNode* node);
 
-    bool execute()
-    {
-        return module->semantic();
-    }
+    Module* module = nullptr;
 };

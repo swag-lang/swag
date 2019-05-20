@@ -1,5 +1,5 @@
 #pragma once
-class SourceFile;
+struct SourceFile;
 
 struct LoadingThreadRequest
 {
@@ -10,21 +10,18 @@ struct LoadingThreadRequest
     long        loadedSize = 0;
 };
 
-class LoadingThread
+struct LoadingThread
 {
-public:
     LoadingThread();
     ~LoadingThread();
     void                  addRequest(LoadingThreadRequest* request);
     void                  releaseRequest(LoadingThreadRequest* request);
     LoadingThreadRequest* newRequest();
 
-private:
     void                  loop();
     LoadingThreadRequest* getRequest();
     void                  waitRequest();
 
-private:
     thread*                       m_thread     = nullptr;
     bool                          m_requestEnd = false;
     vector<LoadingThreadRequest*> m_queue;

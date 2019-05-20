@@ -1,23 +1,31 @@
 #pragma once
 #include "SpinLock.h"
 
+enum class AstNodeSemanticState
+{
+    Enter,
+    ProcessingChilds,
+};
+
 enum class AstNodeType
 {
     RootModule,
     RootFile,
     VarDecl,
-	Type,
+    Type,
 };
 
 struct AstNode : public PoolElement
 {
-    AstNodeType      type;
-    AstNode*         parent = nullptr;
-    vector<AstNode*> childs;
-    SpinLock         mutex;
+    AstNodeType          type;
+    AstNodeSemanticState semanticState = AstNodeSemanticState::Enter;
+    AstNode*             parent        = nullptr;
+    vector<AstNode*>     childs;
+    SpinLock             mutex;
 
     void reset() override
     {
+		semanticState = AstNodeSemanticState::Enter;
         parent = nullptr;
         childs.clear();
     }
@@ -41,7 +49,7 @@ struct AstVarDecl : public AstNode
     void reset() override
     {
         name.clear();
-		astType = nullptr;
+        astType = nullptr;
     }
 };
 

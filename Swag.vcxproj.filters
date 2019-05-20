@@ -79,6 +79,12 @@
     <ClCompile Include="Module.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticJob.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleJob.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -163,6 +169,9 @@
       <Filter>Lexer</Filter>
     </ClInclude>
     <ClInclude Include="Module.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="SemanticJob.h">
       <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>

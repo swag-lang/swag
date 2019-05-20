@@ -23,27 +23,13 @@ struct SourceLocation
     int seekStartLine;
 };
 
-class SourceFile : public PoolElement
+struct SourceFile : public PoolElement
 {
-    friend class LoadingThread;
-
-public:
-    fs::path m_path;
-
-    BuildPass           m_buildPass     = BuildPass::Full;
-    int                 m_unittestError = 0;
-    int                 m_silent        = 0;
-    class Module*       m_module        = nullptr;
-    struct AstNode*     m_astRoot       = nullptr;
-    struct PoolFactory* m_poolFactory   = nullptr;
-
-public:
     SourceFile();
     char32_t getChar(unsigned& offset);
     utf8     getLine(long seek);
     void     report(const class Diagnostic& diag);
 
-private:
     bool open();
     bool ensureOpen();
     void cleanCache();
@@ -58,7 +44,14 @@ private:
     void waitEndRequests();
     bool checkFormat();
 
-private:
+    fs::path            m_path;
+    BuildPass           m_buildPass     = BuildPass::Full;
+    int                 m_unittestError = 0;
+    int                 m_silent        = 0;
+    struct Module*      m_module        = nullptr;
+    struct AstNode*     m_astRoot       = nullptr;
+    struct PoolFactory* m_poolFactory   = nullptr;
+
     TextFormat                   m_textFormat = TextFormat::UTF8;
     int                          m_bufferSize;
     int                          m_headerSize = 0;
@@ -74,6 +67,5 @@ private:
     bool                         m_directMode  = false;
     bool                         m_openedOnce  = false;
     int                          m_totalRead   = 0;
-
-    condition_variable m_Cv;
+    condition_variable           m_Cv;
 };

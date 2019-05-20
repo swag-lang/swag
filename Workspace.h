@@ -1,19 +1,14 @@
 #pragma once
-class Module;
+struct Module;
 
-class Workspace
+struct Workspace
 {
-public:
-    atomic<int> numErrors;
-
-public:
     bool    build();
     Module* createOrUseModule(const fs::path& path);
 
-private:
     void enumerateFilesInModule(const fs::path& path);
     void enumerateModules();
 
-private:
+    atomic<int>     numErrors;
     vector<Module*> m_modules;
 };

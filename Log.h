@@ -20,15 +20,8 @@ enum class LogColor
     DarkMagenta,
 };
 
-class Log
+struct Log
 {
-    mutex access;
-#ifdef WIN32
-    HANDLE consoleHandle     = NULL;
-    WORD   defaultAttributes = 0;
-#endif
-
-public:
     Log();
     void setColor(LogColor color);
     void setDefaultColor();
@@ -65,4 +58,10 @@ public:
     {
         wcout << L'\n';
     }
+
+    mutex access;
+#ifdef WIN32
+    HANDLE consoleHandle     = NULL;
+    WORD   defaultAttributes = 0;
+#endif
 };
