@@ -6,15 +6,30 @@
 #include "Global.h"
 #include "Pool.h"
 #include "Module.h"
+#include "Stats.h"
 #include "PoolFactory.h"
+
+Module* Workspace::createOrUseModule(const fs::path& path)
+{
+    for (const auto& module : m_modules)
+    {
+        if (module->m_path == path)
+            return module;
+    }
+
+    auto module = new Module(path);
+    m_modules.push_back(module);
+	if (g_CommandLine.stats)
+		g_Stats.numModules++;
+    return module;
+}
 
 void Workspace::enumerateFilesInModule(const fs::path& path)
 {
-	// Create a module
-	auto module = new Module(path);
-	m_modules.push_back(module);
-	
-	// Scan source folder
+    // Create a module
+    auto module = createOrUseModule(path);
+
+    // Scan source folder
     WIN32_FIND_DATAA file;
     vector<string>   directories;
 
@@ -56,8 +71,8 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                         auto file = g_Pool.m_sourceFile.alloc();
 
                         job->setFile(file);
-						file->m_module = module;
-                        file->m_path = move(tmp1);
+                        file->m_module = module;
+                        file->m_path   = move(tmp1);
 
                         g_ThreadMgr.addJob(job);
                     }
@@ -75,15 +90,15 @@ void Workspace::enumerateModules()
     enumerateFilesInModule("c:\\boulot\\sdb\\");
 #else
     enumerateFilesInModule("c:\\boulot\\swag\\unittest");
-#endif 
+#endif
 }
 
 bool Workspace::build()
 {
     g_ThreadMgr.init();
 
-	// Ask for a syntax pass on all files of all modules
-	enumerateModules();
+    // Ask for a syntax pass on all files of all modules
+    enumerateModules();
     g_ThreadMgr.waitEndJobs();
 
     return true;

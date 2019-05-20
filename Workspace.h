@@ -1,13 +1,16 @@
 #pragma once
+class Module;
+
 class Workspace
 {
 public:
-    bool build();
+    bool    build();
+    Module* createOrUseModule(const fs::path& path);
 
 private:
     void enumerateFilesInModule(const fs::path& path);
-	void enumerateModules();
+    void enumerateModules();
 
 private:
-	vector<class Module*> m_modules;
+    vector<Module*> m_modules;
 };

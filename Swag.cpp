@@ -38,13 +38,14 @@ void printStats(chrono::duration<double>& elapsedTime)
         return;
 
     g_Log.setColor(LogColor::White);
-    wcout << elapsedTime.count() << "s\n";
-    wcout << g_Stats.numLines << (g_Stats.numLines == 1 ? " line\n" : " lines\n");
-    wcout << g_Stats.numFiles << (g_Stats.numFiles == 1 ? " file\n" : " files\n");
+    wcout << "elapsed time ...... " << elapsedTime.count() << "s\n";
+	wcout << "lines ............. " << g_Stats.numLines << "\n";
+    wcout << "files ............. " << g_Stats.numFiles << "\n";
+	wcout << "modules ........... " << g_Stats.numModules << "\n";
     if (g_Stats.numErrors)
     {
         g_Log.setColor(LogColor::Red);
-		wcout << g_Stats.numErrors << (g_Stats.numErrors == 1 ? " error\n" : " errors\n");
+        wcout << "errors ............ " << g_Stats.numErrors << "\n";
     }
 
     g_Log.setDefaultColor();

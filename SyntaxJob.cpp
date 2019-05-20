@@ -5,6 +5,7 @@
 #include "Diagnostic.h"
 #include "Global.h"
 #include "CommandLine.h"
+#include "Workspace.h"
 #include "Stats.h"
 
 bool SyntaxJob::doCompilerUnitTest()
@@ -24,12 +25,11 @@ bool SyntaxJob::doCompilerUnitTest()
     }
     else if (m_token.text == "module")
     {
+        SWAG_CHECK(m_tokenizer.getToken(m_token, false));
+        SWAG_VERIFY(m_token.id != TokenId::EndOfLine, m_file->report({m_file, m_token, "missing module name"}));
+        SWAG_VERIFY(m_token.id == TokenId::Identifier, m_file->report({m_file, m_token, format("invalid module name '%s'", m_token.text.c_str())}));
 		if (g_CommandLine.test)
-		{
-			SWAG_CHECK(m_tokenizer.getToken(m_token, false));
-			SWAG_VERIFY(m_token.id != TokenId::EndOfLine, m_file->report({ m_file, m_token, "missing module name"}));
-			SWAG_VERIFY(m_token.id == TokenId::Identifier, m_file->report({ m_file, m_token, format("invalid module name '%s'", m_token.text.c_str()) }));
-		}
+			m_file->m_module = g_Workspace.createOrUseModule(m_token.text);
     }
     else
     {
