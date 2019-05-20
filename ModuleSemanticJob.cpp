@@ -8,6 +8,16 @@
 #include "PoolFactory.h"
 #include "SourceFile.h"
 
+SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* file, AstNode* node)
+{
+    auto job          = file->m_poolFactory->m_semanticJob.alloc();
+    job->m_astRoot    = node;
+    job->m_Module     = module;
+    job->m_SourceFile = file;
+    job->m_nodes.push_back(node);
+    return job;
+}
+
 bool ModuleSemanticJob::semanticNode(SourceFile* file, AstNode* node)
 {
     switch (node->type)
@@ -19,9 +29,7 @@ bool ModuleSemanticJob::semanticNode(SourceFile* file, AstNode* node)
 
     case AstNodeType::VarDecl:
     {
-        auto job = file->m_poolFactory->m_semanticJob.alloc();
-        job->nodes.clear();
-        job->nodes.push_back(node);
+        auto job = newSemanticJob(file, node);
         g_ThreadMgr.addJob(job);
     }
     break;
