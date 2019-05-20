@@ -125,7 +125,7 @@ bool SyntaxJob::execute()
         g_Stats.numFiles++;
     m_tokenizer.setFile(m_file);
 
-    m_file->m_astRoot = Ast::newNode(&m_file->m_poolFactory->m_astNode, AstNodeType::RootFile);
+    m_file->m_astRoot = Ast::newNode(&m_file->poolFactory->astNode, AstNodeType::RootFile);
 
     bool result = true;
     bool ok     = true;

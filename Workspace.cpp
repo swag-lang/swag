@@ -67,8 +67,8 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                     // File filtering by name
                     if (filterIsEmpty || strstr(tmp1.c_str(), g_CommandLine.fileFilter.c_str()))
                     {
-                        auto job  = g_Pool.m_syntaxJob.alloc();
-                        auto file = g_Pool.m_sourceFile.alloc();
+                        auto job  = g_Pool.syntaxJob.alloc();
+                        auto file = g_Pool.sourceFile.alloc();
 
                         job->setFile(file);
                         module->addFile(file);
@@ -108,7 +108,7 @@ bool Workspace::build()
 	// Build each module
 	for (auto module : m_modules)
 	{
-        auto job = g_Pool.m_moduleJob.alloc();
+        auto job = g_Pool.moduleJob.alloc();
 		job->module = module;
 		g_ThreadMgr.addJob(job);
 	}

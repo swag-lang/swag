@@ -13,7 +13,7 @@
 
 SourceFile::SourceFile()
 {
-    m_poolFactory = new PoolFactory;
+    poolFactory = new PoolFactory;
 
     const auto BUF_SIZE = 4096;
     m_bufferSize        = BUF_SIZE;

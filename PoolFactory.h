@@ -7,11 +7,11 @@
 
 struct PoolFactory
 {
-    Pool<SourceFile>  m_sourceFile;
-    Pool<SyntaxJob>   m_syntaxJob;
-    Pool<ModuleSemanticJob>   m_moduleJob;
-    Pool<SemanticJob> m_semanticJob;
-    Pool<AstNode>     m_astNode;
-    Pool<AstVarDecl>  m_astVarDecl;
-    Pool<AstType>     m_astType;
+    Pool<SourceFile>        sourceFile;
+    Pool<SyntaxJob>         syntaxJob;
+    Pool<ModuleSemanticJob> moduleJob;
+    Pool<SemanticJob>       semanticJob;
+    Pool<AstNode>           astNode;
+    Pool<AstVarDecl>        astVarDecl;
+    Pool<AstType>           astType;
 };

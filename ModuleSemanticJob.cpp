@@ -10,11 +10,11 @@
 
 SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* file, AstNode* node)
 {
-    auto job          = file->m_poolFactory->m_semanticJob.alloc();
-    job->m_astRoot    = node;
-    job->m_Module     = module;
-    job->m_SourceFile = file;
-    job->m_nodes.push_back(node);
+    auto job        = file->poolFactory->semanticJob.alloc();
+    job->astRoot    = node;
+    job->module     = module;
+    job->sourceFile = file;
+    job->nodes.push_back(node);
     return job;
 }
 
@@ -44,12 +44,12 @@ bool ModuleSemanticJob::semanticNode(SourceFile* file, AstNode* node)
 bool ModuleSemanticJob::execute()
 {
     // One ast root to rule them all
-    module->m_astRoot = Ast::newNode(&g_Pool.m_astNode, AstNodeType::RootModule);
+    module->astRoot = Ast::newNode(&g_Pool.astNode, AstNodeType::RootModule);
     for (auto file : module->m_files)
     {
         if (file->m_buildPass < BuildPass::Semantic)
             continue;
-        Ast::addChild(module->m_astRoot, file->m_astRoot, false);
+        Ast::addChild(module->astRoot, file->m_astRoot, false);
         semanticNode(file, file->m_astRoot);
     }
 

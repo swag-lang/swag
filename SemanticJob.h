@@ -10,11 +10,11 @@ struct SemanticJob : public Job
 
     void reset() override
     {
-        m_nodes.clear();
+        nodes.clear();
     }
 
-    Module*          m_Module;
-    SourceFile*      m_SourceFile;
-    AstNode*         m_astRoot;
-    vector<AstNode*> m_nodes;
+    Module*          module;
+    SourceFile*      sourceFile;
+    AstNode*         astRoot;
+    vector<AstNode*> nodes;
 };

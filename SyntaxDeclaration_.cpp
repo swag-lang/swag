@@ -14,7 +14,7 @@
 
 bool SyntaxJob::doType(AstNode* parent, AstType** result)
 {
-    auto node = Ast::newNode(&m_file->m_poolFactory->m_astType, AstNodeType::Type, parent, false);
+    auto node = Ast::newNode(&m_file->poolFactory->astType, AstNodeType::Type, parent, false);
 	if (result)
 		*result = node;
 
@@ -25,7 +25,7 @@ bool SyntaxJob::doType(AstNode* parent, AstType** result)
 
 bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 {
-    auto node = Ast::newNode(&m_file->m_poolFactory->m_astVarDecl, AstNodeType::VarDecl, parent, false);
+    auto node = Ast::newNode(&m_file->poolFactory->astVarDecl, AstNodeType::VarDecl, parent, false);
 	if (result)
 		*result = node;
 

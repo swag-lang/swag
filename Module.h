@@ -17,5 +17,5 @@ struct Module
     string              m_name;
     vector<SourceFile*> m_files;
     atomic<int>         numErrors;
-    AstNode*            m_astRoot = nullptr;
+    AstNode*            astRoot = nullptr;
 };

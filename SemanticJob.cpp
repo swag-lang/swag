@@ -4,21 +4,21 @@
 
 bool SemanticJob::execute()
 {
-    while (!m_nodes.empty())
+    while (!nodes.empty())
     {
-        auto node = m_nodes.back();
+        auto node = nodes.back();
         switch (node->semanticState)
         {
         case AstNodeSemanticState::Enter:
             node->semanticState = AstNodeSemanticState::ProcessingChilds;
 			if (!node->childs.empty())
 			{
-				m_nodes.insert(m_nodes.end(), node->childs.begin(), node->childs.end());
+				nodes.insert(nodes.end(), node->childs.begin(), node->childs.end());
 				break;
 			}
 
 		case AstNodeSemanticState::ProcessingChilds:
-            m_nodes.pop_back();
+            nodes.pop_back();
             break;
         }
     }

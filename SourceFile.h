@@ -50,7 +50,7 @@ struct SourceFile : public PoolElement
     int                 m_silent        = 0;
     struct Module*      m_module        = nullptr;
     struct AstNode*     m_astRoot       = nullptr;
-    struct PoolFactory* m_poolFactory   = nullptr;
+    struct PoolFactory* poolFactory   = nullptr;
 
     TextFormat                   m_textFormat = TextFormat::UTF8;
     int                          m_bufferSize;
