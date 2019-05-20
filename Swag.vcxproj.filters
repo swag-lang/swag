@@ -70,14 +70,14 @@
     <ClCompile Include="Workspace.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Module.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="Ast.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="SyntaxDeclaration_.cpp">
       <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="Module.cpp">
+      <Filter>Semantic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -150,9 +150,6 @@
     <ClInclude Include="Workspace.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="Ast.h">
       <Filter>Lexer</Filter>
     </ClInclude>
@@ -164,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="AstNode.h">
       <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

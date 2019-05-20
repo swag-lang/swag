@@ -39,7 +39,6 @@ public:
 
 public:
     SourceFile();
-    void     reset() override;
     char32_t getChar(unsigned& offset);
     utf8     getLine(long seek);
     void     report(const class Diagnostic& diag);

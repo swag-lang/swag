@@ -35,11 +35,6 @@ void SourceFile::cleanCache()
     m_doneLoading    = false;
 }
 
-void SourceFile::reset()
-{
-    assert(false);
-}
-
 bool SourceFile::open()
 {
     if (m_file != nullptr)

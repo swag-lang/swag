@@ -134,6 +134,8 @@ bool SyntaxJob::execute()
         // Recover from last syntax error
         if (!ok)
         {
+			// If there's an error, then we must stop at syntax pass
+			m_file->m_buildPass = min(m_file->m_buildPass, BuildPass::Syntax);
 			if (!recoverError())
 				return false;
             result = false;

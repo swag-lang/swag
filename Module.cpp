@@ -27,22 +27,33 @@ void Module::removeFile(SourceFile* file)
     assert(false);
 }
 
-bool Module::semanticNode(SourceFile*, AstNode*)
+bool Module::semanticNode(SourceFile*, AstNode* node)
 {
-	return true;
+    switch (node->type)
+    {
+    case AstNodeType::RootFile:
+        for (auto child : node->childs)
+        {
+        }
+        break;
+	default:
+		assert(false);
+    }
+
+    return true;
 }
 
 bool Module::semantic()
 {
     // One ast root to rule them all
     m_astRoot = Ast::newNode(&g_Pool.m_astNode, AstNodeType::RootModule);
-	for (auto file : m_files)
-	{
-		if (file->m_buildPass < BuildPass::Semantic)
-			continue;
-		Ast::addChild(m_astRoot, file->m_astRoot, false);
-		semanticNode(file, file->m_astRoot);
-	}
+    for (auto file : m_files)
+    {
+        if (file->m_buildPass < BuildPass::Semantic)
+            continue;
+        Ast::addChild(m_astRoot, file->m_astRoot, false);
+        semanticNode(file, file->m_astRoot);
+    }
 
-	return true;
+    return true;
 }
