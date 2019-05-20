@@ -1,6 +1,7 @@
 #pragma once
 #include "SourceFile.h"
 #include "Register.h"
+#include "TypeInfo.h"
 
 enum class TokenId
 {
@@ -64,31 +65,13 @@ enum class TokenId
     EndOfFile,
 };
 
-enum class TokenNumType
-{
-    IntX,
-    UIntX,
-    Int8,
-    Int16,
-    Int32,
-    Int64,
-    UInt8,
-    UInt16,
-    UInt32,
-    UInt64,
-    Float32,
-    Float64,
-    Bool,
-    Char,
-};
-
 struct Token
 {
     TokenId        id;
     SourceLocation startLocation;
     SourceLocation endLocation;
     utf8           text;
-    TokenNumType   numType;
+    NativeType     numType;
     Register       numValue;
 };
 

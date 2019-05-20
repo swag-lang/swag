@@ -163,6 +163,7 @@
     <ClInclude Include="ffitarget.h" />
     <ClInclude Include="ffi_common.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleSemanticJob.h" />
     <ClInclude Include="Register.h" />

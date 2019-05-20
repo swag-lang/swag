@@ -181,6 +181,9 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TypeInfo.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
