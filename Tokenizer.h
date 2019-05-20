@@ -2,6 +2,7 @@
 #include "SourceFile.h"
 #include "Register.h"
 #include "TypeInfo.h"
+struct NativeTypeInfo;
 
 enum class TokenId
 {
@@ -67,12 +68,12 @@ enum class TokenId
 
 struct Token
 {
-    utf8           text;
-    SourceLocation startLocation;
-    SourceLocation endLocation;
-    Register       literalValue;
-    TokenId        id;
-    NativeType     literalType;
+    utf8            text;
+    SourceLocation  startLocation;
+    SourceLocation  endLocation;
+    Register        literalValue;
+    TokenId         id;
+    NativeTypeInfo* literalType;
 };
 
 struct Tokenizer

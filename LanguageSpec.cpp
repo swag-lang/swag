@@ -44,19 +44,19 @@ LanguageSpec::LanguageSpec()
     keywords["bool"] = TokenId::NativeType;
     keywords["char"] = TokenId::NativeType;
 
-    nativeTypes["u64"]  = NativeType::UInt64;
-    nativeTypes["u32"]  = NativeType::UInt32;
-    nativeTypes["u16"]  = NativeType::UInt16;
-    nativeTypes["u8"]   = NativeType::UInt8;
-    nativeTypes["s64"]  = NativeType::Int64;
-    nativeTypes["s32"]  = NativeType::Int32;
-    nativeTypes["s16"]  = NativeType::Int16;
-    nativeTypes["s8"]   = NativeType::Int8;
-    nativeTypes["f32"]  = NativeType::Float32;
-    nativeTypes["f64"]  = NativeType::Float64;
-    nativeTypes["bool"] = NativeType::Bool;
-    nativeTypes["char"] = NativeType::Char;
-	nativeTypes["string"] = NativeType::String;
+    nativeTypes["u64"]  = &g_TypeInfoU64;
+    nativeTypes["u32"]  = &g_TypeInfoU32;
+    nativeTypes["u16"]  = &g_TypeInfoU16;
+    nativeTypes["u8"]   = &g_TypeInfoU8;
+    nativeTypes["s64"]  = &g_TypeInfoS64;
+    nativeTypes["s32"]  = &g_TypeInfoS32;
+    nativeTypes["s16"]  = &g_TypeInfoS16;
+    nativeTypes["s8"]   = &g_TypeInfoS8;
+    nativeTypes["f32"]  = &g_TypeInfoF32;
+    nativeTypes["f64"]  = &g_TypeInfoF64;
+    nativeTypes["bool"] = &g_TypeInfoBool;
+    nativeTypes["char"] = &g_TypeInfoChar;
+	nativeTypes["string"] = &g_TypeInfoString;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

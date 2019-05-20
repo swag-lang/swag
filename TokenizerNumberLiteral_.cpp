@@ -18,13 +18,13 @@ bool Tokenizer::doNumberSuffix(Token& token)
     tokenType.startLocation = location;
     getIdentifier(tokenType);
     SWAG_CHECK(tokenType.id == TokenId::NativeType || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
-	SWAG_CHECK(tokenType.literalType != NativeType::Bool || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
-	SWAG_CHECK(tokenType.literalType != NativeType::String || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
+	SWAG_CHECK(tokenType.literalType->type != NativeType::Bool || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
+	SWAG_CHECK(tokenType.literalType->type != NativeType::String || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
 
-    switch (token.literalType)
+    switch (token.literalType->type)
     {
     case NativeType::Float32:
-        switch (tokenType.literalType)
+        switch (tokenType.literalType->type)
         {
         case NativeType::UInt8:
             return error(token, format("can't convert floating point number '%Lf' to 'u8'", token.literalValue.f64));
@@ -53,7 +53,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
         break;
 
     case NativeType::IntX:
-        switch (tokenType.literalType)
+        switch (tokenType.literalType->type)
         {
         case NativeType::UInt8:
             if (token.literalValue.u64 > UINT8_MAX)
@@ -102,7 +102,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
         }
 
     case NativeType::UIntX:
-        switch (tokenType.literalType)
+        switch (tokenType.literalType->type)
         {
         case NativeType::UInt8:
             if (token.literalValue.u64 > UINT8_MAX)
@@ -202,13 +202,13 @@ bool Tokenizer::doBinLiteral(Token& token)
 
     // Suffix
     token.id      = TokenId::LiteralNumber;
-    token.literalType = NativeType::UIntX;
+    token.literalType = &g_TypeInfoUX;
     if (c == '\'')
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.literalType != NativeType::Float32, error(token, "can't convert a binary literal number to 'f32'"));
-        SWAG_VERIFY(token.literalType != NativeType::Float64, error(token, "can't convert a binary literal number to 'f64'"));
+        SWAG_VERIFY(token.literalType->type != NativeType::Float32, error(token, "can't convert a binary literal number to 'f32'"));
+        SWAG_VERIFY(token.literalType->type != NativeType::Float64, error(token, "can't convert a binary literal number to 'f64'"));
     }
 
     return true;
@@ -274,13 +274,13 @@ bool Tokenizer::doHexLiteral(Token& token)
 
     // Suffix
     token.id      = TokenId::LiteralNumber;
-    token.literalType = NativeType::UIntX;
+    token.literalType = &g_TypeInfoUX;
     if (c == '\'')
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.literalType != NativeType::Float32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
-        SWAG_VERIFY(token.literalType != NativeType::Float64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
+        SWAG_VERIFY(token.literalType->type != NativeType::Float32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
+        SWAG_VERIFY(token.literalType->type != NativeType::Float64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
     }
 
     return true;
@@ -345,7 +345,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     tokenFrac.literalValue.u64     = 0;
     tokenExponent.literalValue.u64 = 0;
 
-    token.literalType = NativeType::IntX;
+    token.literalType = &g_TypeInfoSX;
     token.id      = TokenId::LiteralNumber;
 
     // Integer part
@@ -360,7 +360,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     // If there's a dot, then this is a floating point number
     if (c == '.' || startsWithDot)
     {
-        token.literalType = NativeType::Float32;
+        token.literalType = &g_TypeInfoF32;
         if (!startsWithDot)
         {
             token.text += c;
@@ -386,7 +386,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     // If there's an exponent, then this is a floating point number
     if (c == 'e' || c == 'E')
     {
-        token.literalType = NativeType::Float32;
+        token.literalType = &g_TypeInfoF32;
         token.text += c;
         treatChar(c, offset);
         tokenExponent.startLocation = location;
@@ -423,7 +423,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     }
 
     // Really compute the floating point value, with as much precision as we can
-    if (token.literalType == NativeType::Float32)
+    if (token.literalType->type == NativeType::Float32)
     {
         token.literalValue.f64 = (double) (token.literalValue.u64) + (tokenFrac.literalValue.u64 / (double) fractPart);
         if (tokenExponent.literalValue.s64)

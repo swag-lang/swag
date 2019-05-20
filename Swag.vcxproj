@@ -231,6 +231,7 @@
     <ClCompile Include="Tokenizer.cpp" />
     <ClCompile Include="TokenizerStringLiteral_.cpp" />
     <ClCompile Include="TokenizerSymbol_.cpp" />
+    <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="types.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
