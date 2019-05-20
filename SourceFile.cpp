@@ -12,16 +12,16 @@
 #include "PoolFactory.h"
 #include "SymTable.h"
 
+const auto BUF_SIZE = 4096;
+
 SourceFile::SourceFile()
+    : poolFactory{new PoolFactory}
+    , symTable{new SymTable}
+    , bufferSize{BUF_SIZE}
 {
-    poolFactory = new PoolFactory;
-    symTable    = new SymTable;
 
-    const auto BUF_SIZE = 4096;
-    bufferSize          = BUF_SIZE;
-    buffers[0]          = new char[bufferSize];
-    buffers[1]          = new char[bufferSize];
-
+    buffers[0] = new char[bufferSize];
+    buffers[1] = new char[bufferSize];
     cleanCache();
 }
 

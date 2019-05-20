@@ -1,15 +1,11 @@
 #pragma once
 struct SourceFile;
 struct AstNode;
+struct SymTable;
 
 struct Module
 {
-    Module(const fs::path& path)
-        : path{path}
-    {
-        name = path.filename().string();
-    }
-
+    Module(const fs::path& path);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
 
@@ -17,5 +13,6 @@ struct Module
     string              name;
     vector<SourceFile*> files;
     atomic<int>         numErrors;
-    AstNode*            astRoot = nullptr;
+    SymTable*           symTable = nullptr;
+    AstNode*            astRoot  = nullptr;
 };

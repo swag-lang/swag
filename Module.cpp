@@ -6,6 +6,13 @@
 #include "Global.h"
 #include "SemanticJob.h"
 #include "ThreadManager.h"
+#include "SymTable.h"
+
+Module::Module(const fs::path& path)
+    : path{path}
+    , symTable{new SymTable}
+{
+}
 
 void Module::addFile(SourceFile* file)
 {
