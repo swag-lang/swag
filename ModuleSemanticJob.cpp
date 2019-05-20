@@ -18,13 +18,13 @@ SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* file, AstNode* node)
     return job;
 }
 
-bool ModuleSemanticJob::semanticNode(SourceFile* file, AstNode* node)
+bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
 {
     switch (node->type)
     {
     case AstNodeType::RootFile:
         for (auto child : node->childs)
-            semanticNode(file, child);
+            doSemanticNode(file, child);
         break;
 
     case AstNodeType::VarDecl:
@@ -52,7 +52,7 @@ bool ModuleSemanticJob::execute()
         if (file->buildPass < BuildPass::Semantic)
             continue;
         Ast::addChild(module->astRoot, file->astRoot, false);
-        semanticNode(file, file->astRoot);
+        doSemanticNode(file, file->astRoot);
     }
 
     return true;

@@ -8,7 +8,7 @@ struct Module;
 struct ModuleSemanticJob : public Job
 {
     bool         execute() override;
-    bool         semanticNode(SourceFile* file, AstNode* node);
+    bool         doSemanticNode(SourceFile* file, AstNode* node);
     SemanticJob* newSemanticJob(SourceFile* file, AstNode* node);
 
     Module* module = nullptr;

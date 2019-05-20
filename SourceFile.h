@@ -4,7 +4,6 @@
 struct Module;
 struct AstNode;
 struct PoolFactory;
-struct SymTable;
 
 enum class BuildPass
 {
@@ -55,7 +54,6 @@ struct SourceFile : public PoolElement
     Module*      module        = nullptr;
     AstNode*     astRoot       = nullptr;
     PoolFactory* poolFactory   = nullptr;
-    SymTable*    symTable      = nullptr;
 
     TextFormat                   textFormat = TextFormat::UTF8;
     int                          bufferSize;

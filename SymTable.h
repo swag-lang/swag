@@ -28,7 +28,7 @@ struct SymbolName : public PoolElement
 
 struct SymTable
 {
-    SymbolName* registerSyntaxSymbol(Pool<SymbolName>& pool, const string& name);
+    SymbolName* registerSyntaxSymbol(Pool<SymbolName>& pool, const string& name, SymbolType type);
     SymbolName* find(const string& name);
 
     SpinLock                 mutex;

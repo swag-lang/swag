@@ -3,22 +3,25 @@
 
 SymbolName* SymTable::find(const string& name)
 {
-    mutex.lock();
-	if (mapNames.empty())
-		return nullptr;
+    scoped_lock<SpinLock> sl(mutex);
+    if (mapNames.empty())
+        return nullptr;
     auto it     = mapNames.find(name);
     auto result = it == mapNames.end() ? it->second : nullptr;
-    mutex.unlock();
     return result;
 }
 
-SymbolName* SymTable::registerSyntaxSymbol(Pool<SymbolName>& pool, const string& name)
+SymbolName* SymTable::registerSyntaxSymbol(Pool<SymbolName>& pool, const string& name, SymbolType type)
 {
     auto symbol = find(name);
     if (!symbol)
     {
         symbol       = pool.alloc();
         symbol->name = name;
+        symbol->type = type;
+        mutex.lock();
+        mapNames[name] = symbol;
+        mutex.unlock();
     }
 
     symbol->cptOverloads++;
