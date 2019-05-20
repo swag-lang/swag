@@ -3,12 +3,12 @@
 #include "LoadingThread.h"
 #include "SourceFile.h"
 #include "SyntaxJob.h"
-#include "ParseFolderJob.h"
 #include "ffi.h"
 #include "Global.h"
 #include "Stats.h"
 #include "Log.h"
 #include "CommandLine.h"
+#include "Workspace.h"
 
 float toto(float a)
 {
@@ -56,14 +56,7 @@ int main(int argc, const char* argv[])
 	if (!g_CommandLine.process(argc, argv))
 		return -2;
 
-#ifdef SWAG_TEST_CPP
-    auto job = new ParseFolderJob("c:\\boulot\\sdb\\");
-#else
-    auto job = new ParseFolderJob("c:\\boulot\\swag\\unittest");
-#endif
-    g_ThreadMgr.init();
-    g_ThreadMgr.addJob(job);
-    g_ThreadMgr.waitEndJobs();
+	g_Workspace.build();
 
 	// Prints stats, then exit
     auto                     timeAfter = chrono::high_resolution_clock::now();

@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include "Utf8.h"
 
 class Global
@@ -18,8 +18,17 @@ extern struct Stats        g_Stats;
 extern class ThreadManager g_ThreadMgr;
 extern class LanguageSpec  g_LangSpec;
 extern struct PoolFactory  g_Pool;
+extern class Workspace     g_Workspace;
 
 extern utf8 format(const char* format, ...);
 
-#define SWAG_CHECK(__expr) { if (!(__expr)) return false; }
-#define SWAG_VERIFY(__expr, __err) { if (!(__expr)) return __err; }
+#define SWAG_CHECK(__expr) \
+    {                      \
+        if (!(__expr))     \
+            return false;  \
+    }
+#define SWAG_VERIFY(__expr, __err) \
+    {                              \
+        if (!(__expr))             \
+            return __err;          \
+    }

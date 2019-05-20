@@ -70,6 +70,12 @@
     <ClCompile Include="Utf8.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Workspace.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Module.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -141,6 +147,12 @@
     <ClInclude Include="Utf8.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="Workspace.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
@@ -162,6 +174,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="win64.S" />
+    <CustomBuild Include="win64.S">
+      <Filter>FFI</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

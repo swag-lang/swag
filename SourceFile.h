@@ -28,9 +28,10 @@ class SourceFile : public PoolElement
 public:
     fs::path m_path;
 
-    int  m_unittestError = 0;
-    int  m_silent        = 0;
-    bool m_doSyntax      = true;
+    int           m_unittestError = 0;
+    int           m_silent        = 0;
+    bool          m_doSyntax      = true;
+    class Module* m_module        = nullptr;
 
 public:
     ~SourceFile();

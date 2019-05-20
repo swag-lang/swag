@@ -161,6 +161,7 @@
     <ClInclude Include="ffitarget.h" />
     <ClInclude Include="ffi_common.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Module.h" />
     <ClInclude Include="Register.h" />
     <ClInclude Include="Job.h" />
     <ClInclude Include="JobThread.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="Utf8.h" />
+    <ClInclude Include="Workspace.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="closures.c">
@@ -196,6 +198,7 @@
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="JobThread.cpp" />
     <ClCompile Include="LanguageSpec.cpp" />
+    <ClCompile Include="Module.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -222,6 +225,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Utf8.cpp" />
+    <ClCompile Include="Workspace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="win64.S">
