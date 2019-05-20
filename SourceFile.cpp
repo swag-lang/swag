@@ -4,6 +4,7 @@
 #include "LoadingThread.h"
 #include "CommandLine.h"
 #include "Global.h"
+#include "Stats.h"
 #include "Log.h"
 #include "Diagnostic.h"
 
@@ -346,6 +347,7 @@ void SourceFile::report(const Diagnostic& diag)
 
     // Raise error
     g_Log.lock();
+	g_Stats.numErrors++;
     diag.report();
     g_Log.unlock();
 }

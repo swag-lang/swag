@@ -5,15 +5,17 @@
 #include "SyntaxJob.h"
 #include "ParseFolderJob.h"
 #include "ffi.h"
-#include "global.h"
-#include "stats.h"
+#include "Global.h"
+#include "Stats.h"
+#include "Log.h"
+#include "CommandLine.h"
 
 float toto(float a)
 {
     return a / 3;
 }
 
-int main()
+void testffi()
 {
     ffi_cif   cif;
     ffi_type* args[10];
@@ -28,13 +30,34 @@ int main()
     f            = 666;
     float result = 0;
     ffi_call(&cif, FFI_FN(toto), &result, values);
+}
 
-    int                                   cpt = 0;
-    typedef chrono::high_resolution_clock Clock;
-    auto                                  t1 = Clock::now();
+void printStats(chrono::duration<double>& elapsedTime)
+{
+    if (!g_CommandLine.stats)
+        return;
+
+    g_Log.setColor(LogColor::White);
+    wcout << elapsedTime.count() << "s\n";
+    wcout << g_Stats.numLines << (g_Stats.numLines == 1 ? " line\n" : " lines\n");
+    wcout << g_Stats.numFiles << (g_Stats.numFiles == 1 ? " file\n" : " files\n");
+    if (g_Stats.numErrors)
+    {
+        g_Log.setColor(LogColor::Red);
+		wcout << g_Stats.numErrors << (g_Stats.numErrors == 1 ? " error\n" : " errors\n");
+    }
+
+    g_Log.setDefaultColor();
+}
+
+int main(int argc, const char* argv[])
+{
+    auto timeBefore = chrono::high_resolution_clock::now();
+	if (!g_CommandLine.process(argc, argv))
+		return -2;
 
 #ifdef SWAG_TEST_CPP
-	auto job = new ParseFolderJob("c:\\boulot\\sdb\\");
+    auto job = new ParseFolderJob("c:\\boulot\\sdb\\");
 #else
     auto job = new ParseFolderJob("c:\\boulot\\swag\\unittest");
 #endif
@@ -42,9 +65,10 @@ int main()
     g_ThreadMgr.addJob(job);
     g_ThreadMgr.waitEndJobs();
 
-    auto                     t2   = Clock::now();
-    chrono::duration<double> diff = t2 - t1;
-    wcout << diff.count() << "s\n";
-    wcout << g_Stats.numLines << " lines\n";
-    wcout << g_Stats.numFiles << " files\n";
+	// Prints stats, then exit
+    auto                     timeAfter = chrono::high_resolution_clock::now();
+    chrono::duration<double> diff      = timeAfter - timeBefore;
+    printStats(diff);
+
+    return g_Stats.numErrors > 0 ? -1 : 0;
 }

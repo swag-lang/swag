@@ -7,5 +7,5 @@ struct CommandLine
     int    tabSize = 4;
 	string fileFilter;// = "AMFImporter_Geometry.cpp";
 
-    void process(int argc, const char* argv[]);
+    bool process(int argc, const char* argv[]);
 };
