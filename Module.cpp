@@ -11,21 +11,24 @@
 Module::Module(const fs::path& path)
     : path{path}
 {
-    AstNode::type = AstNodeType::RootModule;
+	AstScope::type = AstNodeType::RootModule;
+	AstScope::name = "";
+	AstScope::fullname = "";
+
     reset();
     allocateSymTable();
 }
 
 void Module::addFile(SourceFile* file)
 {
-    scoped_lock lk(spinLock);
+    scoped_lock lk(mutexFile);
     file->module = this;
     files.push_back(file);
 }
 
 void Module::removeFile(SourceFile* file)
 {
-    scoped_lock lk(spinLock);
+    scoped_lock lk(mutexFile);
     assert(file->module == this);
     for (auto it = files.begin(); it != files.end(); ++it)
     {
@@ -38,4 +41,20 @@ void Module::removeFile(SourceFile* file)
     }
 
     assert(false);
+}
+
+AstScope* Module::newNamespace(AstScope* parentNp, const utf8crc& nameNp)
+{
+	auto fullnameNp = parentNp->fullname + "." + nameNp;
+	scoped_lock lk(mutexNamespace);
+	auto it = namespaces.find(fullnameNp);
+	if (it != namespaces.end())
+		return it->second;
+	auto np = poolFactory.astScope.alloc();
+	namespaces[fullnameNp] = np;
+	np->type = AstNodeType::Namespace;
+	np->parentScope = this;
+	np->name = nameNp;
+	np->fullname = fullnameNp;
+	return np;
 }

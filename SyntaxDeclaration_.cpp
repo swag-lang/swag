@@ -26,13 +26,15 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstScope** result)
     node->name.computeCrc();
     node->token = move(token);
 
+    auto newScope = sourceFile->module->newNamespace(currentScope, node->name);
+
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
     auto curly = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        currentScope = node;
+        currentScope = newScope;
         auto ok      = doTopLevel(node);
         currentScope = node->parentScope;
         SWAG_CHECK(ok && tokenizer.getToken(token));

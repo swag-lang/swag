@@ -12,6 +12,11 @@ struct utf8crc : public utf8
     {
     }
 
+    utf8crc(const char* from)
+        : utf8(from)
+    {
+    }
+
     void computeCrc()
     {
         crc = static_cast<uint32_t>(hash<string>{}(*this));

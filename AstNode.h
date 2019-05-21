@@ -60,6 +60,7 @@ struct AstScope : public AstNode
     AstScope* parentScope = nullptr;
     SymTable* symTable    = nullptr;
     utf8crc   name;
+	utf8crc   fullname;
 
     void allocateSymTable()
     {
