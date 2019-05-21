@@ -8,6 +8,7 @@ enum DiagnosticLevel
     Warning,
     Verbose,
     Message,
+	Note,
 };
 
 struct Diagnostic

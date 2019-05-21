@@ -8,6 +8,11 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 
+SymTable::SymTable()
+{
+    memset(mapNames, 0, sizeof(mapNames));
+}
+
 bool SemanticJob::resolveType(SemanticContext* context)
 {
     auto node = static_cast<AstType*>(context->node);
@@ -19,8 +24,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
-    auto node       = static_cast<AstVarDecl*>(context->node);
-    node->typeInfo  = node->astType->typeInfo;
+    auto node      = static_cast<AstVarDecl*>(context->node);
+    node->typeInfo = node->astType->typeInfo;
+    assert(node->typeInfo);
+    assert(node->scope);
+
+    node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable);
+
     context->result = SemanticResult::Done;
     return true;
 }

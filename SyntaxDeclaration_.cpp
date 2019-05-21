@@ -77,7 +77,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 
     node->scope = currentScope;
     currentScope->allocateSymTable();
-    currentScope->symTable->registerSyntaxSymbol(sourceFile->poolFactory, node->token.text, SymbolType::Variable);
+    currentScope->symTable->registerSymbolName(sourceFile->poolFactory, node->name, SymbolType::Variable);
 
     return true;
 }

@@ -318,7 +318,7 @@ utf8 SourceFile::getLine(long seek)
     return line;
 }
 
-void SourceFile::report(const Diagnostic& diag)
+void SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
 {
     if (silent > 0)
         return;
@@ -331,6 +331,8 @@ void SourceFile::report(const Diagnostic& diag)
         {
             g_Log.lock();
             diag.report(true);
+            if (note)
+                note->report();
             g_Log.unlock();
         }
 
@@ -341,8 +343,10 @@ void SourceFile::report(const Diagnostic& diag)
     g_Workspace.numErrors++;
     module->numErrors++;
 
-	// Print error
+    // Print error
     g_Log.lock();
     diag.report();
+    if (note)
+        note->report();
     g_Log.unlock();
 }

@@ -39,6 +39,11 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.setColor(LogColor::Magenta);
         g_Log.print("warning: ");
         break;
+    case DiagnosticLevel::Note:
+        if (!verboseMode)
+            g_Log.setColor(LogColor::White);
+        g_Log.print("note: ");
+        break;
     }
 
     // User message

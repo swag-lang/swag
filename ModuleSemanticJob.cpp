@@ -23,6 +23,7 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
     switch (node->type)
     {
     case AstNodeType::RootFile:
+    case AstNodeType::Namespace:
         for (auto child : node->childs)
             doSemanticNode(file, child);
         break;
