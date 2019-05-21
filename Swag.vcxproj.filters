@@ -185,6 +185,9 @@
     <ClInclude Include="TypeInfo.h">
       <Filter>Semantic</Filter>
     </ClInclude>
+    <ClInclude Include="Utf8Crc.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

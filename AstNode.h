@@ -2,6 +2,7 @@
 #include "SpinLock.h"
 #include "SymTable.h"
 #include "Tokenizer.h"
+#include "Utf8Crc.h"
 struct SemanticContext;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
@@ -18,9 +19,11 @@ enum class AstNodeType
     RootFile,
     VarDecl,
     Type,
+    Namespace,
 };
 
 const uint64_t AST_IS_TOPLEVEL = 0x00000000'00000001;
+const uint64_t AST_IS_NAMED    = 0x00000000'00000002;
 
 struct AstNode : public PoolElement
 {
@@ -55,9 +58,11 @@ struct AstNode : public PoolElement
     SpinLock             mutex;
 };
 
-struct AstScopeNode : public AstNode
+struct AstScope : public AstNode
 {
-    SymTable* symTable = nullptr;
+    AstScope* parentScope = nullptr;
+    SymTable* symTable    = nullptr;
+    utf8crc   name;
 
     void allocateSymTable()
     {
@@ -74,6 +79,7 @@ struct AstVarDecl : public AstNode
         astType = nullptr;
     }
 
+    utf8crc         name;
     struct AstType* astType;
 };
 

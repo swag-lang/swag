@@ -5,6 +5,7 @@ LanguageSpec::LanguageSpec()
 {
     keywords["#unittest"] = TokenId::CompilerUnitTest;
     keywords["var"]       = TokenId::KwdVar;
+    keywords["namespace"] = TokenId::KwdNamespace;
 
 #ifdef SWAG_TEST_CPP
     keywords["#include"] = TokenId::Invalid;
@@ -44,19 +45,19 @@ LanguageSpec::LanguageSpec()
     keywords["bool"] = TokenId::NativeType;
     keywords["char"] = TokenId::NativeType;
 
-    nativeTypes["u64"]  = &g_TypeInfoU64;
-    nativeTypes["u32"]  = &g_TypeInfoU32;
-    nativeTypes["u16"]  = &g_TypeInfoU16;
-    nativeTypes["u8"]   = &g_TypeInfoU8;
-    nativeTypes["s64"]  = &g_TypeInfoS64;
-    nativeTypes["s32"]  = &g_TypeInfoS32;
-    nativeTypes["s16"]  = &g_TypeInfoS16;
-    nativeTypes["s8"]   = &g_TypeInfoS8;
-    nativeTypes["f32"]  = &g_TypeInfoF32;
-    nativeTypes["f64"]  = &g_TypeInfoF64;
-    nativeTypes["bool"] = &g_TypeInfoBool;
-    nativeTypes["char"] = &g_TypeInfoChar;
-	nativeTypes["string"] = &g_TypeInfoString;
+    nativeTypes["u64"]    = &g_TypeInfoU64;
+    nativeTypes["u32"]    = &g_TypeInfoU32;
+    nativeTypes["u16"]    = &g_TypeInfoU16;
+    nativeTypes["u8"]     = &g_TypeInfoU8;
+    nativeTypes["s64"]    = &g_TypeInfoS64;
+    nativeTypes["s32"]    = &g_TypeInfoS32;
+    nativeTypes["s16"]    = &g_TypeInfoS16;
+    nativeTypes["s8"]     = &g_TypeInfoS8;
+    nativeTypes["f32"]    = &g_TypeInfoF32;
+    nativeTypes["f64"]    = &g_TypeInfoF64;
+    nativeTypes["bool"]   = &g_TypeInfoBool;
+    nativeTypes["char"]   = &g_TypeInfoChar;
+    nativeTypes["string"] = &g_TypeInfoString;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

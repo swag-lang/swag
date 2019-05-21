@@ -8,7 +8,7 @@
 #include "PoolFactory.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::syntaxError(const utf8& msg)
+bool SyntaxJob::syntaxError(const Token& tk, const utf8& msg)
 {
     utf8 full = "syntax error";
     if (!msg.empty())
@@ -17,13 +17,13 @@ bool SyntaxJob::syntaxError(const utf8& msg)
         full += msg;
     }
 
-    error(full);
+    error(tk, full);
     return false;
 }
 
-bool SyntaxJob::error(const utf8& msg)
+bool SyntaxJob::error(const Token& tk, const utf8& msg)
 {
-    sourceFile->report({sourceFile, token, msg.c_str()});
+    sourceFile->report({sourceFile, tk, msg.c_str()});
     return false;
 }
 
@@ -31,7 +31,7 @@ bool SyntaxJob::eatToken(TokenId id)
 {
     SWAG_CHECK(tokenizer.getToken(token));
     if (token.id != id)
-        SWAG_CHECK(syntaxError(format("'%s' expected instead of '%s'", g_LangSpec.tokenToName(id).c_str(), token.text.c_str())));
+        SWAG_CHECK(syntaxError(token, format("'%s' expected instead of '%s'", g_LangSpec.tokenToName(id).c_str(), token.text.c_str())));
     return true;
 }
 

@@ -5,7 +5,7 @@ struct SourceFile;
 struct AstType;
 struct AstVarDecl;
 struct AstNode;
-struct AstScopeNode;
+struct AstScope;
 struct utf8;
 
 struct SyntaxJob : public Job
@@ -14,8 +14,8 @@ struct SyntaxJob : public Job
     void reset() override{};
     void construct() override{};
 
-    bool error(const utf8& msg);
-    bool syntaxError(const utf8& msg);
+    bool error(const Token& tk, const utf8& msg);
+    bool syntaxError(const Token& tk, const utf8& msg);
     bool eatToken(TokenId id);
     bool recoverError();
 
@@ -23,8 +23,9 @@ struct SyntaxJob : public Job
     bool doTopLevel(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
     bool doType(AstNode* parent, AstType** result = nullptr);
+    bool doNamespace(AstNode* parent, AstScope** result = nullptr);
 
-    AstScopeNode* currentScope = nullptr;
+    AstScope* currentScope = nullptr;
     SourceFile*   sourceFile   = nullptr;
     Tokenizer     tokenizer;
     Token         token;

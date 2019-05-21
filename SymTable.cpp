@@ -8,7 +8,7 @@ SymbolName* SymTable::find(const utf8& name)
     if (mapNames.empty())
         return nullptr;
     auto it     = mapNames.find(name);
-    auto result = it == mapNames.end() ? it->second : nullptr;
+    auto result = it != mapNames.end() ? it->second : nullptr;
     return result;
 }
 

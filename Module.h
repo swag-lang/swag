@@ -3,7 +3,7 @@
 struct SourceFile;
 struct SymTable;
 
-struct Module : public AstScopeNode
+struct Module : public AstScope
 {
     Module(const fs::path& path);
     void addFile(SourceFile* file);

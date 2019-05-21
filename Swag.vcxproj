@@ -184,6 +184,7 @@
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="Utf8.h" />
+    <ClInclude Include="Utf8Crc.h" />
     <ClInclude Include="Workspace.h" />
   </ItemGroup>
   <ItemGroup>

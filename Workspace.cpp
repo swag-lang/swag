@@ -89,7 +89,7 @@ void Workspace::enumerateModules()
 #ifdef SWAG_TEST_CPP
     enumerateFilesInModule("c:\\boulot\\sdb\\");
 #else
-    enumerateFilesInModule("c:\\boulot\\swag\\unittest");
+    enumerateFilesInModule("f:\\swag\\unittest");
 #endif
 }
 

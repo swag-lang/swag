@@ -13,6 +13,11 @@ struct utf8 : public string
     {
     }
 
+    utf8(const string& from)
+        : string(from)
+    {
+    }
+
     void operator=(const char* txt)
     {
 		clear();
