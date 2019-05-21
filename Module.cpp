@@ -11,19 +11,21 @@
 Module::Module(const fs::path& path)
     : path{path}
 {
-	AstNode::type = AstNodeType::RootModule;
-    AstNode::flags |= AST_IS_TOPLEVEL;
+    AstNode::type = AstNodeType::RootModule;
+    reset();
     allocateSymTable();
 }
 
 void Module::addFile(SourceFile* file)
 {
+    scoped_lock lk(spinLock);
     file->module = this;
     files.push_back(file);
 }
 
 void Module::removeFile(SourceFile* file)
 {
+    scoped_lock lk(spinLock);
     assert(file->module == this);
     for (auto it = files.begin(); it != files.end(); ++it)
     {

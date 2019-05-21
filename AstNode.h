@@ -22,9 +22,6 @@ enum class AstNodeType
     Namespace,
 };
 
-const uint64_t AST_IS_TOPLEVEL = 0x00000000'00000001;
-const uint64_t AST_IS_NAMED    = 0x00000000'00000002;
-
 struct AstNode : public PoolElement
 {
     void reset() override
@@ -76,9 +73,11 @@ struct AstVarDecl : public AstNode
 {
     void reset() override
     {
+        scope   = nullptr;
         astType = nullptr;
     }
 
+    AstScope*       scope;
     utf8crc         name;
     struct AstType* astType;
 };

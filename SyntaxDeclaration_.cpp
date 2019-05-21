@@ -17,7 +17,6 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstScope** result)
 {
     auto node         = Ast::newNode(&sourceFile->poolFactory->astScope, AstNodeType::Namespace, parent, false);
     node->parentScope = currentScope;
-    node->flags       = AST_IS_TOPLEVEL | AST_IS_NAMED;
     if (result)
         *result = node;
 
@@ -76,12 +75,9 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
-    // A top level symbol must be registered in order to be found by the semantic solving of identifiers
-    if (parent->flags & AST_IS_TOPLEVEL)
-    {
-        currentScope->allocateSymTable();
-        currentScope->symTable->registerSyntaxSymbol(sourceFile->poolFactory, node->token.text, SymbolType::Variable);
-    }
+    node->scope = currentScope;
+    currentScope->allocateSymTable();
+    currentScope->symTable->registerSyntaxSymbol(sourceFile->poolFactory, node->token.text, SymbolType::Variable);
 
     return true;
 }

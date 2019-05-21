@@ -9,6 +9,7 @@ struct Module : public AstScope
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
 
+    SpinLock            spinLock;
     fs::path            path;
     string              name;
     vector<SourceFile*> files;
