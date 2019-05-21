@@ -1,7 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "SpinLock.h"
-#include "Utf8.h"
+#include "Utf8crc.h"
 #include "SourceFile.h"
 
 struct PoolFactory;
@@ -25,7 +25,7 @@ enum class SymbolType
 struct SymbolName : public PoolElement
 {
     SpinLock                mutex;
-    utf8                    name;
+    utf8crc                 name;
     SymbolType              type;
     atomic<int>             cptOverloads;
     vector<SymbolOverload*> overloads;

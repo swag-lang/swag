@@ -39,13 +39,6 @@ bool SyntaxJob::recoverError()
 {
     while (true)
     {
-        if (token.id == TokenId::CompilerUnitTest)
-            break;
-        if (token.id == TokenId::SymSemiColon)
-            break;
-        if (token.id == TokenId::EndOfFile)
-            return false;
-
         sourceFile->silent++;
         if (!tokenizer.getToken(token))
         {
@@ -54,6 +47,12 @@ bool SyntaxJob::recoverError()
         }
 
         sourceFile->silent--;
+        if (token.id == TokenId::CompilerUnitTest)
+            break;
+        if (token.id == TokenId::SymSemiColon)
+            break;
+        if (token.id == TokenId::EndOfFile)
+            return false;
     }
 
     return true;

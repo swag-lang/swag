@@ -29,7 +29,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     assert(node->typeInfo);
     assert(node->scope);
 
-    node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable);
+    SWAG_CHECK(node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable));
 
     context->result = SemanticResult::Done;
     return true;

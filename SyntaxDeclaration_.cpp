@@ -94,6 +94,9 @@ bool SyntaxJob::doTopLevel(AstNode* parent)
     case TokenId::KwdNamespace:
         SWAG_CHECK(doNamespace(parent));
         break;
+    case TokenId::CompilerUnitTest:
+        SWAG_CHECK(doCompilerUnitTest());
+        break;
     default:
         syntaxError(token, format("invalid token '%s'", token.text.c_str()));
         return false;

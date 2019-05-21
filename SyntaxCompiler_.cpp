@@ -8,6 +8,7 @@
 
 bool SyntaxJob::doCompilerUnitTest()
 {
+    SWAG_VERIFY(currentScope->type == AstNodeType::RootModule, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getTokenOrEOL(token));
     SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #unittest parameter"}));
 
@@ -54,6 +55,7 @@ bool SyntaxJob::doCompilerUnitTest()
             auto newModule = g_Workspace.createOrUseModule(token.text);
             sourceFile->module->removeFile(sourceFile);
             newModule->addFile(sourceFile);
+			currentScope = newModule;
         }
     }
     else

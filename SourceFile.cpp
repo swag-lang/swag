@@ -332,7 +332,7 @@ void SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
             g_Log.lock();
             diag.report(true);
             if (note)
-                note->report();
+                note->report(true);
             g_Log.unlock();
         }
 

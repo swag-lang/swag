@@ -10,5 +10,5 @@ struct CommandLine
     bool syntaxOnly = false;
 
     int    tabSize = 4;
-    string fileFilter = "42.swg";
+	string fileFilter;// = "44.swg";
 };
