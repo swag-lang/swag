@@ -55,9 +55,12 @@ struct SymTable
 {
     SymTable();
 
-    SymbolName* registerSymbolName(PoolFactory* factory, const utf8crc& name, SymbolType type);
+    SymbolName* registerSymbolNameNoLock(PoolFactory* factory, const utf8crc& name, SymbolType type);
     bool        addSymbol(SourceFile* sourceFile, const Token& token, const utf8crc& name, TypeInfo* typeInfo, SymbolType type);
+    bool        checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const utf8crc& name, TypeInfo* typeInfo, SymbolType type);
+	bool        checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const utf8crc& name, TypeInfo* typeInfo, SymbolType type, SymbolName* symbol);
     SymbolName* find(const utf8crc& name);
+	SymbolName* findNoLock(const utf8crc& name);
 
     static const int           HASH_SIZE = 512;
     SpinLock                   mutex;

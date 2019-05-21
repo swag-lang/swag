@@ -30,6 +30,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     assert(node->scope);
 
     SWAG_CHECK(node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable));
+	
+	// We need to check the scope hierarchy for symbol ghosting
+	auto scope = node->scope->parentScope;
+	while (scope)
+	{
+		SWAG_CHECK(scope->symTable->checkHiddenSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable));
+		scope = scope->parentScope;
+	}
 
     context->result = SemanticResult::Done;
     return true;
