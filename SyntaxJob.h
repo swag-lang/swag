@@ -11,8 +11,13 @@ struct utf8;
 struct SyntaxJob : public Job
 {
     bool execute() override;
-    void reset() override{};
-    void construct() override{};
+
+    void reset() override
+    {
+        currentScope    = nullptr;
+        canChangeModule = true;
+        moduleSpecified = false;
+    }
 
     bool error(const Token& tk, const utf8& msg);
     bool syntaxError(const Token& tk, const utf8& msg);
@@ -25,10 +30,10 @@ struct SyntaxJob : public Job
     bool doType(AstNode* parent, AstType** result = nullptr);
     bool doNamespace(AstNode* parent, AstScope** result = nullptr);
 
-    AstScope* currentScope = nullptr;
-    SourceFile*   sourceFile   = nullptr;
-    Tokenizer     tokenizer;
-    Token         token;
-    bool          canChangeModule = true;
-    bool          moduleSpecified = false;
+    Tokenizer   tokenizer;
+    Token       token;
+    SourceFile* sourceFile = nullptr;
+    AstScope*   currentScope;
+    bool        canChangeModule;
+    bool        moduleSpecified;
 };
