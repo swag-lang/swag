@@ -68,6 +68,10 @@ string LanguageSpec::tokenToName(TokenId id)
         return ":";
     case TokenId::SymSemiColon:
         return ";";
+    case TokenId::SymLeftCurly:
+        return "{";
+    case TokenId::SymRightCurly:
+        return "}";
     }
 
     return "???";
