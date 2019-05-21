@@ -1,19 +1,19 @@
 #pragma once
 #include "Utf8.h"
 
-struct utf8crc : public utf8
+struct Utf8Crc : public Utf8
 {
-    utf8crc()
+    Utf8Crc()
     {
     }
 
-    utf8crc(const string& from)
-        : utf8(from)
+    Utf8Crc(const string& from)
+        : Utf8(from)
     {
     }
 
-    utf8crc(const char* from)
-        : utf8(from)
+    Utf8Crc(const char* from)
+        : Utf8(from)
     {
     }
 

@@ -6,7 +6,7 @@ struct AstType;
 struct AstVarDecl;
 struct AstNode;
 struct Scope;
-struct utf8;
+struct Utf8;
 
 struct SyntaxJob : public Job
 {
@@ -19,8 +19,8 @@ struct SyntaxJob : public Job
         moduleSpecified = false;
     }
 
-    bool error(const Token& tk, const utf8& msg);
-    bool syntaxError(const Token& tk, const utf8& msg);
+    bool error(const Token& tk, const Utf8& msg);
+    bool syntaxError(const Token& tk, const Utf8& msg);
     bool eatToken(TokenId id);
     bool recoverError();
 

@@ -1,19 +1,19 @@
 #pragma once
-extern wstring_convert<codecvt_utf8<int32_t>, int32_t> toutf8;
+extern wstring_convert<codecvt_utf8<int32_t>, int32_t> toUtf8;
 
-struct utf8 : public string
+struct Utf8 : public string
 {
-    utf8()
+    Utf8()
         : string()
     {
     }
 
-    utf8(const char* txt)
+    Utf8(const char* txt)
         : string(txt)
     {
     }
 
-    utf8(const string& from)
+    Utf8(const string& from)
         : string(from)
     {
     }
@@ -24,7 +24,7 @@ struct utf8 : public string
 		append(txt);
     }
 
-    void operator+=(const utf8& txt)
+    void operator+=(const Utf8& txt)
     {
         append(txt.c_str());
     }
@@ -45,7 +45,7 @@ struct utf8 : public string
 
         try
         {
-            append(toutf8.to_bytes(c));
+            append(toUtf8.to_bytes(c));
         }
         catch (...)
         {
@@ -63,7 +63,7 @@ struct utf8 : public string
 
         try
         {
-            append(toutf8.to_bytes(c));
+            append(toUtf8.to_bytes(c));
         }
         catch (...)
         {

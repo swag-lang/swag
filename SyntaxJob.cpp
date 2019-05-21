@@ -8,9 +8,9 @@
 #include "PoolFactory.h"
 #include "LanguageSpec.h"
 
-bool SyntaxJob::syntaxError(const Token& tk, const utf8& msg)
+bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 {
-    utf8 full = "syntax error";
+    Utf8 full = "syntax error";
     if (!msg.empty())
     {
         full += ", ";
@@ -21,7 +21,7 @@ bool SyntaxJob::syntaxError(const Token& tk, const utf8& msg)
     return false;
 }
 
-bool SyntaxJob::error(const Token& tk, const utf8& msg)
+bool SyntaxJob::error(const Token& tk, const Utf8& msg)
 {
     sourceFile->report({sourceFile, tk, msg.c_str()});
     return false;

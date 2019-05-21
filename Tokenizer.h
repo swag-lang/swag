@@ -69,7 +69,7 @@ enum class TokenId
 
 struct Token
 {
-    utf8            text;
+    Utf8            text;
     SourceLocation  startLocation;
     SourceLocation  endLocation;
     Register        literalValue;
@@ -94,8 +94,8 @@ struct Tokenizer
     bool     doNumberSuffix(Token& token);
     bool     doIntFloatLiteral(bool hasIntegralPart, char32_t c, Token& token);
     bool     doIntLiteral(char32_t c, Token& token, unsigned& fractPart);
-    bool     error(Token& token, const utf8& msg);
-    bool     errorNumberSyntax(Token& token, const utf8& msg);
+    bool     error(Token& token, const Utf8& msg);
+    bool     errorNumberSyntax(Token& token, const Utf8& msg);
     bool     doSymbol(char32_t c, Token& token);
     bool     doStringLiteral(Token& token, bool raw);
     bool     isEscape(char32_t& c, Token& token);

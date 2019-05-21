@@ -4,9 +4,9 @@
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 
-bool Tokenizer::errorNumberSyntax(Token& token, const utf8& msg)
+bool Tokenizer::errorNumberSyntax(Token& token, const Utf8& msg)
 {
-    utf8 text = "invalid number syntax, ";
+    Utf8 text = "invalid number syntax, ";
     text += msg;
     error(token, text);
     return false;

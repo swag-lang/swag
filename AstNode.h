@@ -65,7 +65,7 @@ struct AstVarDecl : public AstNode
     }
 
     Scope*          scope;
-    utf8crc         name;
+    Utf8Crc         name;
     struct AstType* astType;
 };
 

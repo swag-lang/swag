@@ -22,7 +22,7 @@ Global::Global()
     numCores = std::thread::hardware_concurrency();
 }
 
-utf8 format(const char* format, ...)
+Utf8 format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);

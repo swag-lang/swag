@@ -45,7 +45,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::error(SemanticContext* context, const utf8& msg)
+bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {
     context->sourceFile->report({context->sourceFile, context->node->token, msg});
     return false;

@@ -282,7 +282,7 @@ void SourceFile::waitEndRequests()
     while (requests[(bufferCurIndex + 1) % 2] && !requests[(bufferCurIndex + 1) % 2]->done) {}
 }
 
-utf8 SourceFile::getLine(long seek)
+Utf8 SourceFile::getLine(long seek)
 {
     // Be sure there's no pending requests
     waitEndRequests();
@@ -291,7 +291,7 @@ utf8 SourceFile::getLine(long seek)
     seekTo(seek + headerSize);
     directMode = true;
 
-    utf8 line;
+    Utf8 line;
     int  column = 0;
     while (true)
     {

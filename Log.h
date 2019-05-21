@@ -49,7 +49,7 @@ struct Log
         wcout << message;
     }
 
-    void print(const utf8& message)
+    void print(const Utf8& message)
     {
         if (g_CommandLine.silent)
             return;

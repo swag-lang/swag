@@ -19,7 +19,7 @@ extern struct LanguageSpec  g_LangSpec;
 extern struct PoolFactory   g_Pool;
 extern struct Workspace     g_Workspace;
 
-extern utf8 format(const char* format, ...);
+extern Utf8 format(const char* format, ...);
 
 #define SWAG_CHECK(__expr) \
     {                      \

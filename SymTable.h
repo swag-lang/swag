@@ -7,7 +7,7 @@
 struct PoolFactory;
 struct Token;
 struct TypeInfo;
-struct utf8crc;
+struct Utf8Crc;
 
 struct SymbolOverload : public PoolElement
 {
@@ -25,7 +25,7 @@ enum class SymbolType
 struct SymbolName : public PoolElement
 {
     SpinLock                mutex;
-    utf8crc                 name;
+    Utf8Crc                 name;
     SymbolType              type;
     atomic<int>             cptOverloads;
     vector<SymbolOverload*> overloads;
@@ -55,14 +55,14 @@ struct SymTable
 {
     SymTable();
 
-    SymbolName* registerSymbolNameNoLock(PoolFactory* factory, const utf8crc& name, SymbolType type);
-    bool        addSymbol(SourceFile* sourceFile, const Token& token, const utf8crc& name, TypeInfo* typeInfo, SymbolType type);
-    bool        checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const utf8crc& name, TypeInfo* typeInfo, SymbolType type);
-	bool        checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const utf8crc& name, TypeInfo* typeInfo, SymbolType type, SymbolName* symbol);
-    SymbolName* find(const utf8crc& name);
-	SymbolName* findNoLock(const utf8crc& name);
+    SymbolName* registerSymbolNameNoLock(PoolFactory* factory, const Utf8Crc& name, SymbolType type);
+    bool        addSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type);
+    bool        checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type);
+	bool        checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type, SymbolName* symbol);
+    SymbolName* find(const Utf8Crc& name);
+	SymbolName* findNoLock(const Utf8Crc& name);
 
     static const int           HASH_SIZE = 512;
     SpinLock                   mutex;
-    map<utf8crc, SymbolName*>* mapNames[HASH_SIZE];
+    map<Utf8Crc, SymbolName*>* mapNames[HASH_SIZE];
 };

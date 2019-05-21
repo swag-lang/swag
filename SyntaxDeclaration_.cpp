@@ -24,7 +24,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     node->token = move(token);
 
 	// Add/Get namespace
-	utf8crc name = token.text;
+	Utf8Crc name = token.text;
 	name.computeCrc();
     auto newScope = sourceFile->module->newNamespace(currentScope, name);
 

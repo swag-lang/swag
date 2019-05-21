@@ -23,7 +23,7 @@ struct SemanticContext
 struct SemanticJob : public Job
 {
     bool execute() override;
-    bool error(SemanticContext* context, const utf8& msg);
+    bool error(SemanticContext* context, const Utf8& msg);
 
     void reset() override
     {

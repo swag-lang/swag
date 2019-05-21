@@ -65,7 +65,7 @@ void Diagnostic::report(bool verboseMode) const
         }
 
         // Indent
-        utf8 line = "  ";
+        Utf8 line = "  ";
         line += buf;
         offset -= 2;
 

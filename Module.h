@@ -3,14 +3,14 @@
 #include "PoolFactory.h"
 struct SourceFile;
 struct SymTable;
-struct utf8crc;
+struct Utf8Crc;
 
 struct Module : public PoolElement
 {
     Module(const fs::path& path);
     void      addFile(SourceFile* file);
     void      removeFile(SourceFile* file);
-    Scope* newNamespace(Scope* parentScope, const utf8crc& npName);
+    Scope* newNamespace(Scope* parentScope, const Utf8Crc& npName);
 
     fs::path                path;
     string                  name;
@@ -18,7 +18,7 @@ struct Module : public PoolElement
     SpinLock                mutexFile;
     vector<SourceFile*>     files;
     SpinLock                mutexNamespace;
-    map<utf8crc, Scope*> namespaces;
+    map<Utf8Crc, Scope*> namespaces;
     AstNode*                astRoot;
     Scope*               scopeRoot;
     PoolFactory             poolFactory;

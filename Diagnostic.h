@@ -13,7 +13,7 @@ enum DiagnosticLevel
 
 struct Diagnostic
 {
-    Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+    Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{file}
         , startLocation{start}
         , endLocation{end}
@@ -26,7 +26,7 @@ struct Diagnostic
     {
     }
 
-    Diagnostic(SourceFile* file, const SourceLocation& start, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+    Diagnostic(SourceFile* file, const SourceLocation& start, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{file}
         , startLocation{start}
         , textMsg{msg}
@@ -38,7 +38,7 @@ struct Diagnostic
     {
     }
 
-    Diagnostic(SourceFile* file, const Token& token, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+    Diagnostic(SourceFile* file, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{file}
         , startLocation{token.startLocation}
         , endLocation{token.endLocation}
@@ -51,7 +51,7 @@ struct Diagnostic
     {
     }
 
-    Diagnostic(SourceFile* file, const utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+    Diagnostic(SourceFile* file, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{file}
         , textMsg{msg}
         , errorLevel{level}
@@ -66,7 +66,7 @@ struct Diagnostic
     SourceFile*     sourceFile = nullptr;
     SourceLocation  startLocation;
     SourceLocation  endLocation;
-    utf8            textMsg;
+    Utf8            textMsg;
     DiagnosticLevel errorLevel;
     bool            hasFile          = false;
     bool            hasLocation      = false;

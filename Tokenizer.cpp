@@ -165,7 +165,7 @@ void Tokenizer::getIdentifier(Token& token)
         token.literalType = g_LangSpec.nativeTypes[token.text];
 }
 
-bool Tokenizer::error(Token& token, const utf8& msg)
+bool Tokenizer::error(Token& token, const Utf8& msg)
 {
     token.endLocation = location;
     sourceFile->report({sourceFile, token, msg});

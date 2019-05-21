@@ -15,8 +15,8 @@ struct Scope : public PoolElement
     ScopeType type;
     Scope*    parentScope;
     SymTable* symTable;
-    utf8crc   name;
-    utf8crc   fullname;
+    Utf8Crc   name;
+    Utf8Crc   fullname;
 
     void reset() override
     {

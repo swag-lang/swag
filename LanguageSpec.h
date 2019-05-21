@@ -9,8 +9,8 @@ struct LanguageSpec
     LanguageSpec();
     string tokenToName(TokenId id);
 
-    map<utf8, TokenId>         keywords;
-    map<utf8, NativeTypeInfo*> nativeTypes;
+    map<Utf8, TokenId>         keywords;
+    map<Utf8, NativeTypeInfo*> nativeTypes;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
