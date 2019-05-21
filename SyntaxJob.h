@@ -5,7 +5,7 @@ struct SourceFile;
 struct AstType;
 struct AstVarDecl;
 struct AstNode;
-struct AstScope;
+struct Scope;
 struct utf8;
 
 struct SyntaxJob : public Job
@@ -28,12 +28,12 @@ struct SyntaxJob : public Job
     bool doTopLevel(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
     bool doType(AstNode* parent, AstType** result = nullptr);
-    bool doNamespace(AstNode* parent, AstScope** result = nullptr);
+    bool doNamespace(AstNode* parent, AstNode** result = nullptr);
 
     Tokenizer   tokenizer;
     Token       token;
     SourceFile* sourceFile = nullptr;
-    AstScope*   currentScope;
+    Scope*   currentScope;
     bool        canChangeModule;
     bool        moduleSpecified;
 };

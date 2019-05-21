@@ -13,20 +13,20 @@
 #include "PoolFactory.h"
 #include "SymTable.h"
 
-bool SyntaxJob::doNamespace(AstNode* parent, AstScope** result)
+bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astScope, AstNodeType::Namespace, parent, false);
-    node->parentScope = currentScope;
+    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::Namespace, parent, false);
     if (result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
-    node->name = token.text;
-    node->name.computeCrc();
     node->token = move(token);
 
-    auto newScope = sourceFile->module->newNamespace(currentScope, node->name);
+	// Add/Get namespace
+	utf8crc name = token.text;
+	name.computeCrc();
+    auto newScope = sourceFile->module->newNamespace(currentScope, name);
 
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
     auto curly = move(token);
@@ -34,9 +34,10 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstScope** result)
     SWAG_CHECK(tokenizer.getToken(token));
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
+		auto savedScope = currentScope;
         currentScope = newScope;
         auto ok      = doTopLevel(node);
-        currentScope = node->parentScope;
+        currentScope = savedScope;
         SWAG_CHECK(ok && tokenizer.getToken(token));
     }
 

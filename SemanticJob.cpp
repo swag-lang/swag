@@ -7,6 +7,7 @@
 #include "TypeInfo.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
+#include "Scope.h"
 
 SymTable::SymTable()
 {

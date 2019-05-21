@@ -1,13 +1,10 @@
 #include "pch.h"
 #include "Workspace.h"
-#include "Global.h"
 #include "ThreadManager.h"
-#include "CommandLine.h"
-#include "Global.h"
-#include "Pool.h"
 #include "Module.h"
 #include "Stats.h"
-#include "PoolFactory.h"
+#include "Global.h"
+#include "CommandLine.h"
 
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
@@ -114,6 +111,5 @@ bool Workspace::build()
     }
 
     g_ThreadMgr.waitEndJobs();
-
     return true;
 }

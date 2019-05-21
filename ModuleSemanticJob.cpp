@@ -22,7 +22,7 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
 {
     switch (node->type)
     {
-    case AstNodeType::RootFile:
+    case AstNodeType::File:
     case AstNodeType::Namespace:
         for (auto child : node->childs)
             doSemanticNode(file, child);
@@ -48,7 +48,6 @@ bool ModuleSemanticJob::execute()
     {
         if (file->buildPass < BuildPass::Semantic)
             continue;
-        Ast::addChild(module, file->astRoot, false);
         doSemanticNode(file, file->astRoot);
     }
 

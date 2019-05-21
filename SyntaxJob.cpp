@@ -64,8 +64,11 @@ bool SyntaxJob::execute()
         g_Stats.numFiles++;
     tokenizer.setFile(sourceFile);
 
-    sourceFile->astRoot = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::RootFile);
-    currentScope = sourceFile->module;
+    // Setup root ast for file
+    sourceFile->astRoot = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::File, sourceFile->module->astRoot);
+
+    // Setup current scope as being the module root one
+    currentScope = sourceFile->module->scopeRoot;
 
     bool result = true;
     bool ok     = true;

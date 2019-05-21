@@ -4,6 +4,7 @@
 #include "Tokenizer.h"
 #include "Utf8Crc.h"
 struct SemanticContext;
+struct Scope;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 
@@ -15,8 +16,8 @@ enum class AstNodeSemanticState
 
 enum class AstNodeType
 {
-    RootModule,
-    RootFile,
+    Module,
+    File,
     VarDecl,
     Type,
     Namespace,
@@ -55,21 +56,6 @@ struct AstNode : public PoolElement
     SpinLock             mutex;
 };
 
-struct AstScope : public AstNode
-{
-    AstScope* parentScope = nullptr;
-    SymTable* symTable    = nullptr;
-    utf8crc   name;
-	utf8crc   fullname;
-
-    void allocateSymTable()
-    {
-        if (symTable)
-            return;
-        symTable = new SymTable();
-    }
-};
-
 struct AstVarDecl : public AstNode
 {
     void reset() override
@@ -78,7 +64,7 @@ struct AstVarDecl : public AstNode
         astType = nullptr;
     }
 
-    AstScope*       scope;
+    Scope*          scope;
     utf8crc         name;
     struct AstType* astType;
 };

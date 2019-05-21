@@ -11,12 +11,13 @@
 Module::Module(const fs::path& path)
     : path{path}
 {
-	AstScope::type = AstNodeType::RootModule;
-	AstScope::name = "";
-	AstScope::fullname = "";
-
     reset();
-    allocateSymTable();
+
+	scopeRoot = poolFactory.scope.alloc();
+	scopeRoot->type = ScopeType::Module;
+	scopeRoot->allocateSymTable();
+
+	astRoot = Ast::newNode(&poolFactory.astNode, AstNodeType::Module);
 }
 
 void Module::addFile(SourceFile* file)
@@ -43,17 +44,17 @@ void Module::removeFile(SourceFile* file)
     assert(false);
 }
 
-AstScope* Module::newNamespace(AstScope* parentNp, const utf8crc& nameNp)
+Scope* Module::newNamespace(Scope* parentNp, const utf8crc& nameNp)
 {
 	auto fullnameNp = parentNp->fullname + "." + nameNp;
 	scoped_lock lk(mutexNamespace);
 	auto it = namespaces.find(fullnameNp);
 	if (it != namespaces.end())
 		return it->second;
-	auto np = poolFactory.astScope.alloc();
+	auto np = poolFactory.scope.alloc();
 	namespaces[fullnameNp] = np;
-	np->type = AstNodeType::Namespace;
-	np->parentScope = this;
+	np->type = ScopeType::Namespace;
+	np->parentScope = scopeRoot;
 	np->name = nameNp;
 	np->fullname = fullnameNp;
 	return np;

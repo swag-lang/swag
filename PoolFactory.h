@@ -5,6 +5,7 @@
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "SymTable.h"
+#include "Scope.h"
 
 struct PoolFactory
 {
@@ -14,7 +15,7 @@ struct PoolFactory
     Pool<SemanticJob>       semanticJob;
     Pool<AstNode>           astNode;
     Pool<AstVarDecl>        astVarDecl;
-    Pool<AstScope>          astScope;
+    Pool<Scope>             scope;
     Pool<AstType>           astType;
     Pool<SymbolName>        symName;
     Pool<SymbolOverload>    symOverload;

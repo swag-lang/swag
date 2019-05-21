@@ -188,6 +188,9 @@
     <ClInclude Include="Utf8Crc.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="Scope.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
