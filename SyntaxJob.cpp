@@ -21,6 +21,12 @@ bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
     return false;
 }
 
+bool SyntaxJob::notSupportedError(const Token& tk)
+{
+    error(tk, "not supported (yet) !");
+    return false;
+}
+
 bool SyntaxJob::error(const Token& tk, const Utf8& msg)
 {
     sourceFile->report({sourceFile, tk, msg.c_str()});
@@ -29,9 +35,9 @@ bool SyntaxJob::error(const Token& tk, const Utf8& msg)
 
 bool SyntaxJob::eatToken(TokenId id)
 {
-    SWAG_CHECK(tokenizer.getToken(token));
     if (token.id != id)
         SWAG_CHECK(syntaxError(token, format("'%s' expected instead of '%s'", g_LangSpec.tokenToName(id).c_str(), token.text.c_str())));
+    SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
 
@@ -71,7 +77,7 @@ bool SyntaxJob::execute()
     currentScope = sourceFile->module->scopeRoot;
 
     bool result = true;
-    bool ok     = true;
+    bool ok     = tokenizer.getToken(token);
     while (true)
     {
         // Recover from last syntax error
@@ -83,12 +89,6 @@ bool SyntaxJob::execute()
                 return false;
             result = false;
             ok     = true;
-        }
-        else
-        {
-            ok = tokenizer.getToken(token);
-            if (!ok)
-                continue;
         }
 
         if (token.id == TokenId::EndOfFile)
@@ -103,7 +103,11 @@ bool SyntaxJob::execute()
 
         // Ask for lexer only
         if (sourceFile->buildPass < BuildPass::Syntax)
+        {
+            ok = tokenizer.getToken(token);
             continue;
+        }
+
 #ifdef SWAG_TEST_CPP
         sourceFile->buildPass = BuildPass::Syntax;
         continue;

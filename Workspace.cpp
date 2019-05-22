@@ -8,6 +8,8 @@
 
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
+    scoped_lock lk(mutexModules);
+
     for (const auto& module : modules)
     {
         if (module->path == path)

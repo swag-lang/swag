@@ -1,4 +1,5 @@
 #pragma once
+#include "SpinLock.h"
 struct Module;
 
 struct Workspace
@@ -9,6 +10,7 @@ struct Workspace
     void enumerateFilesInModule(const fs::path& path);
     void enumerateModules();
 
+    SpinLock        mutexModules;
     atomic<int>     numErrors;
     vector<Module*> modules;
 };

@@ -64,5 +64,6 @@ bool SyntaxJob::doCompilerUnitTest()
         return false;
     }
 
+	SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }

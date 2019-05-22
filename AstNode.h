@@ -21,7 +21,10 @@ enum class AstNodeType
     VarDecl,
     Type,
     Namespace,
+    Literal,
 };
+
+static const uint64_t AST_CONST_EXPR = 0x00000000'00000001;
 
 struct AstNode : public PoolElement
 {
@@ -67,6 +70,7 @@ struct AstVarDecl : public AstNode
     Scope*          scope;
     Utf8Crc         name;
     struct AstType* astType;
+    struct AstNode* astAssignment;
 };
 
 struct AstType : public AstNode

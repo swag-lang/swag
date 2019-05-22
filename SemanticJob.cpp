@@ -8,6 +8,7 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "Scope.h"
+#include "TypeManager.h"
 
 SymTable::SymTable()
 {
@@ -30,7 +31,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     assert(node->typeInfo);
     assert(node->scope);
 
-	// Register symbol with its name
+	SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->astType, node->astAssignment));
+
+	// Register symbol with its type
     SWAG_CHECK(node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable));
 	
 	// We need to check the scope hierarchy for symbol ghosting

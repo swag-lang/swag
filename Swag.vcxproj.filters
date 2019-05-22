@@ -92,6 +92,15 @@
     <ClCompile Include="TypeInfo.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxExpression_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticExpression_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="TypeManager.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -190,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="Scope.h">
       <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeManager.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

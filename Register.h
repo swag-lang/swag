@@ -10,4 +10,5 @@ union Register {
     int8_t   s8;
     float    f32;
     double   f64;
+    bool     b;
 };

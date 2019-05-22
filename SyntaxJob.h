@@ -21,6 +21,7 @@ struct SyntaxJob : public Job
 
     bool error(const Token& tk, const Utf8& msg);
     bool syntaxError(const Token& tk, const Utf8& msg);
+    bool notSupportedError(const Token& tk);
     bool eatToken(TokenId id);
     bool recoverError();
 
@@ -29,11 +30,13 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
     bool doType(AstNode* parent, AstType** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
+    bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doLiteral(AstNode* parent, AstNode** result = nullptr);
 
     Tokenizer   tokenizer;
     Token       token;
     SourceFile* sourceFile = nullptr;
-    Scope*   currentScope;
+    Scope*      currentScope;
     bool        canChangeModule;
     bool        moduleSpecified;
 };

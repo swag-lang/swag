@@ -153,6 +153,23 @@ void Tokenizer::getIdentifier(Token& token)
         c = getCharNoSeek(offset);
     }
 
+    // Special keywords
+    if (token.text == "true")
+    {
+        token.id = TokenId::LiteralNumber;
+        token.literalType = &g_TypeInfoBool;
+        token.literalValue.b = true;
+        return;
+    }
+
+    if (token.text == "false")
+    {
+        token.id             = TokenId::LiteralNumber;
+        token.literalType    = &g_TypeInfoBool;
+        token.literalValue.b = false;
+        return;
+    }
+
     // Keyword
     auto it = g_LangSpec.keywords.find(token.text);
     if (it != g_LangSpec.keywords.end())
