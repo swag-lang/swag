@@ -8,6 +8,7 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "Scope.h"
+#include "TypeManager.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -34,7 +35,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
     case NativeType::S64:
         break;
     default:
-        sourceFile->report({sourceFile, op->token, "minus operation not available on that type"});
+        sourceFile->report({sourceFile, op->token, format("minus operation not available on type '%s'", TypeManager::nativeTypeName(op->typeInfo->nativeType).c_str())});
         break;
     }
 
