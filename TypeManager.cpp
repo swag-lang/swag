@@ -324,3 +324,38 @@ TypeInfo* TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* requeste
 
     return false;
 }
+
+string TypeManager::nativeTypeName(NativeType nativeType)
+{
+    switch (nativeType)
+    {
+    case NativeType::Bool:
+        return "bool";
+    case NativeType::Char:
+        return "char";
+    case NativeType::String:
+        return "string";
+    case NativeType::F32:
+        return "f32";
+    case NativeType::F64:
+        return "f64";
+    case NativeType::S8:
+        return "s8";
+    case NativeType::S16:
+        return "s16";
+    case NativeType::S32:
+        return "s32";
+    case NativeType::S64:
+        return "s64";
+    case NativeType::U8:
+        return "u8";
+    case NativeType::U16:
+        return "u16";
+    case NativeType::U32:
+        return "u32";
+    case NativeType::U64:
+        return "u64";
+    }
+
+	return "???";
+}
