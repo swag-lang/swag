@@ -12,7 +12,7 @@
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
     auto node = static_cast<AstNode*>(context->node);
-    node->flags |= AST_CONST_EXPR;
+    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     node->typeInfo  = node->token.literalType;
     context->result = SemanticResult::Done;
     return true;

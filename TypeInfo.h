@@ -18,16 +18,21 @@ enum class NativeType
     String,
 };
 
+static const uint64_t TYPEINFO_NATIVE = 0x00000000'00000001;
+
 struct TypeInfo
 {
+    uint32_t   flags;
+    NativeType nativeType;
 };
 
 struct NativeTypeInfo : public TypeInfo
 {
     NativeTypeInfo(NativeType type)
-        : type{type} {};
-
-    NativeType type;
+    {
+		nativeType = type;
+        flags = TYPEINFO_NATIVE;
+    }
 };
 
 extern NativeTypeInfo g_TypeInfoSX;

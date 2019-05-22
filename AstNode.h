@@ -24,7 +24,8 @@ enum class AstNodeType
     Literal,
 };
 
-static const uint64_t AST_CONST_EXPR = 0x00000000'00000001;
+static const uint64_t AST_CONST_EXPR     = 0x00000000'00000001;
+static const uint64_t AST_VALUE_COMPUTED = 0x00000000'00000002;
 
 struct AstNode : public PoolElement
 {
