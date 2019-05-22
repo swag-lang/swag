@@ -15,39 +15,6 @@ SymTable::SymTable()
     memset(mapNames, 0, sizeof(mapNames));
 }
 
-bool SemanticJob::resolveType(SemanticContext* context)
-{
-    auto node = static_cast<AstType*>(context->node);
-    SWAG_VERIFY(node->token.literalType, context->job->error(context, "invalid type"));
-    node->typeInfo  = node->token.literalType;
-    context->result = SemanticResult::Done;
-    return true;
-}
-
-bool SemanticJob::resolveVarDecl(SemanticContext* context)
-{
-    auto node      = static_cast<AstVarDecl*>(context->node);
-    node->typeInfo = node->astType->typeInfo;
-    assert(node->typeInfo);
-    assert(node->scope);
-
-	SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->astType, node->astAssignment));
-
-	// Register symbol with its type
-    SWAG_CHECK(node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable));
-	
-	// We need to check the scope hierarchy for symbol ghosting
-	auto scope = node->scope->parentScope;
-	while (scope)
-	{
-		SWAG_CHECK(scope->symTable->checkHiddenSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable));
-		scope = scope->parentScope;
-	}
-
-    context->result = SemanticResult::Done;
-    return true;
-}
-
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {
     context->sourceFile->report({context->sourceFile, context->node->token, msg});

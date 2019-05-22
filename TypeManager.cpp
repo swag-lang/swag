@@ -3,13 +3,15 @@
 #include "TypeManager.h"
 #include "Diagnostic.h"
 
-bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* sourceNode, AstNode* fromNode)
+TypeInfo *TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* requestedTypeNode, AstNode* fromNode)
 {
-    if (!sourceNode || !fromNode)
-        return true;
-    if (sourceNode->typeInfo == fromNode->typeInfo)
-        return true;
+    if (!requestedTypeNode)
+        return fromNode->typeInfo;
+    if (!fromNode)
+        return requestedTypeNode->typeInfo;
+    if (requestedTypeNode->typeInfo == fromNode->typeInfo)
+        return requestedTypeNode->typeInfo;
 
-	sourceFile->report({sourceFile, sourceNode->token, "incompatible types"});
+	sourceFile->report({sourceFile, requestedTypeNode->token, "incompatible types"});
 	return false;
 }

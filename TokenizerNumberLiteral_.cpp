@@ -14,17 +14,17 @@ bool Tokenizer::errorNumberSyntax(Token& token, const Utf8& msg)
 
 bool Tokenizer::doNumberSuffix(Token& token)
 {
-    Token tokenType;
-    tokenType.startLocation = location;
-    getIdentifier(tokenType);
-    SWAG_CHECK(tokenType.id == TokenId::NativeType || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
-	SWAG_CHECK(tokenType.literalType->type != NativeType::Bool || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
-	SWAG_CHECK(tokenType.literalType->type != NativeType::String || error(tokenType, format("invalid literal number suffix '%s'", tokenType.text.c_str())));
+    Token tokenSuffix;
+    tokenSuffix.startLocation = location;
+    getIdentifier(tokenSuffix);
+    SWAG_CHECK(tokenSuffix.id == TokenId::NativeType || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
+	SWAG_CHECK(tokenSuffix.literalType->type != NativeType::Bool || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
+	SWAG_CHECK(tokenSuffix.literalType->type != NativeType::String || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
 
     switch (token.literalType->type)
     {
     case NativeType::F32:
-        switch (tokenType.literalType->type)
+        switch (tokenSuffix.literalType->type)
         {
         case NativeType::U8:
             return error(token, format("can't convert floating point number '%Lf' to 'u8'", token.literalValue.f64));
@@ -33,6 +33,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
         case NativeType::U32:
             return error(token, format("can't convert floating point number '%Lf' to 'u32'", token.literalValue.f64));
         case NativeType::U64:
+        case NativeType::UX:
             return error(token, format("can't convert floating point number '%Lf' to 'u64'", token.literalValue.f64));
         case NativeType::S8:
             return error(token, format("can't convert floating point number '%Lf' to 's8'", token.literalValue.f64));
@@ -41,6 +42,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
         case NativeType::S32:
             return error(token, format("can't convert floating point number '%Lf' to 's32'", token.literalValue.f64));
         case NativeType::S64:
+        case NativeType::SX:
             return error(token, format("can't convert floating point number '%Lf' to 's64'", token.literalValue.f64));
         case NativeType::Bool:
             return error(token, format("can't convert floating point number '%Lf' to 'bool'", token.literalValue.f64));
@@ -48,12 +50,12 @@ bool Tokenizer::doNumberSuffix(Token& token)
         case NativeType::F64:
             break;
         default:
-			return error(token, format("invalid literal number conversion of '%I64u'", token.literalValue.u64));
+			return error(token, format("invalid literal number conversion of '%f'", token.literalValue.f32));
         }
         break;
 
     case NativeType::SX:
-        switch (tokenType.literalType->type)
+        switch (tokenSuffix.literalType->type)
         {
         case NativeType::U8:
             if (token.literalValue.u64 > UINT8_MAX)
@@ -87,11 +89,11 @@ bool Tokenizer::doNumberSuffix(Token& token)
             break;
         case NativeType::F32:
             token.literalValue.f32 = static_cast<float>(token.literalValue.s64);
-            token.literalType      = tokenType.literalType;
+            token.literalType      = tokenSuffix.literalType;
             break;
         case NativeType::F64:
             token.literalValue.f64 = static_cast<float>(token.literalValue.s64);
-            token.literalType      = tokenType.literalType;
+            token.literalType      = tokenSuffix.literalType;
             break;
         case NativeType::Char:
             if (token.literalValue.u64 > UINT32_MAX)
@@ -101,8 +103,10 @@ bool Tokenizer::doNumberSuffix(Token& token)
 			return error(token, format("invalid literal number conversion of '%I64u'", token.literalValue.u64));
         }
 
+        break;
+
     case NativeType::UX:
-        switch (tokenType.literalType->type)
+        switch (tokenSuffix.literalType->type)
         {
         case NativeType::U8:
             if (token.literalValue.u64 > UINT8_MAX)
@@ -143,7 +147,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
         break;
     }
 
-	token.literalType = tokenType.literalType;
+	token.literalType = tokenSuffix.literalType;
     return true;
 }
 

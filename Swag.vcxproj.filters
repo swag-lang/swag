@@ -101,6 +101,9 @@
     <ClCompile Include="TypeManager.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticDeclaration_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
