@@ -185,6 +185,80 @@ castResult TypeManager::castToNativeS64(SourceFile* sourceFile, AstNode* fromNod
     return castResult::FailWithError;
 }
 
+castResult TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* fromNode, uint32_t castFlags, TypeInfo** result)
+{
+    switch (fromNode->typeInfo->nativeType)
+    {
+    case NativeType::SX:
+    {
+        float   tmpF = static_cast<float>(fromNode->token.literalValue.s64);
+        int64_t tmpI = static_cast<int64_t>(tmpF);
+        if (tmpI != fromNode->token.literalValue.s64)
+        {
+            if (!(castFlags & CASTFLAG_NOERROR))
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is truncated in 'f32'", fromNode->token.literalValue.s64)});
+            return castResult::FailWithoutError;
+        }
+        *result = &g_TypeInfoF32;
+        return castResult::Ok;
+    }
+
+    case NativeType::UX:
+    {
+        float    tmpF = static_cast<float>(fromNode->token.literalValue.u64);
+        uint64_t tmpI = static_cast<uint64_t>(tmpF);
+        if (tmpI != fromNode->token.literalValue.u64)
+        {
+            if (!(castFlags & CASTFLAG_NOERROR))
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->token.literalValue.u64)});
+            return castResult::FailWithoutError;
+        }
+        *result = &g_TypeInfoF32;
+        return castResult::Ok;
+    }
+    }
+
+    return castResult::FailWithError;
+}
+
+castResult TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* fromNode, uint32_t castFlags, TypeInfo** result)
+{
+    switch (fromNode->typeInfo->nativeType)
+    {
+    case NativeType::SX:
+    {
+        double  tmpF = static_cast<double>(fromNode->token.literalValue.s64);
+        int64_t tmpI = static_cast<int64_t>(tmpF);
+        if (tmpI != fromNode->token.literalValue.s64)
+        {
+            if (!(castFlags & CASTFLAG_NOERROR))
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is truncated in 'f64'", fromNode->token.literalValue.s64)});
+            return castResult::FailWithoutError;
+        }
+
+        *result = &g_TypeInfoF64;
+        return castResult::Ok;
+    }
+
+    case NativeType::UX:
+    {
+        double   tmpF = static_cast<double>(fromNode->token.literalValue.u64);
+        uint64_t tmpI = static_cast<uint64_t>(tmpF);
+        if (tmpI != fromNode->token.literalValue.u64)
+        {
+            if (!(castFlags & CASTFLAG_NOERROR))
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->token.literalValue.u64)});
+            return castResult::FailWithoutError;
+        }
+
+        *result = &g_TypeInfoF64;
+        return castResult::Ok;
+    }
+    }
+
+    return castResult::FailWithError;
+}
+
 castResult TypeManager::castToNative(SourceFile* sourceFile, AstNode* requestedTypeNode, AstNode* fromNode, uint32_t castFlags, TypeInfo** result)
 {
     auto fromNodeInfo = fromNode->typeInfo;
@@ -213,6 +287,8 @@ castResult TypeManager::castToNative(SourceFile* sourceFile, AstNode* requestedT
         return castToNativeS32(sourceFile, fromNode, castFlags, result);
     case NativeType::S64:
         return castToNativeS64(sourceFile, fromNode, castFlags, result);
+    case NativeType::F32:
+        return castToNativeF32(sourceFile, fromNode, castFlags, result);
     }
 
     return castResult::FailWithError;
@@ -239,7 +315,8 @@ TypeInfo* TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* requeste
         assert(resultType);
         return resultType;
     }
-    else if (ok == castResult::FailWithError)
+
+    if (ok == castResult::FailWithError)
     {
         if (!(castFlags & CASTFLAG_NOERROR))
             sourceFile->report({sourceFile, requestedTypeNode->token, "incompatible types"});
