@@ -10,5 +10,12 @@ union Register {
     int8_t   s8;
     float    f32;
     double   f64;
-    bool     b;
+    char32_t ch;
+    bool b;
+};
+
+struct ComputedValue
+{
+    Register variant;
+    Utf8     text;
 };

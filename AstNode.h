@@ -22,6 +22,7 @@ enum class AstNodeType
     Type,
     Namespace,
     Literal,
+    SingleOp,
 };
 
 static const uint64_t AST_CONST_EXPR     = 0x00000000'00000001;
@@ -49,6 +50,13 @@ struct AstNode : public PoolElement
         mutex.unlock();
     }
 
+    void inherhitComputedValue(AstNode* from)
+    {
+        flags |= (from->flags & AST_VALUE_COMPUTED);
+        if (flags & AST_VALUE_COMPUTED)
+            computedValue = move(from->computedValue);
+    }
+
     TypeInfo*            typeInfo;
     Token                token;
     SemanticFct          semanticFct;
@@ -58,6 +66,7 @@ struct AstNode : public PoolElement
     uint64_t             flags;
     vector<AstNode*>     childs;
     SpinLock             mutex;
+    ComputedValue        computedValue;
 };
 
 struct AstVarDecl : public AstNode

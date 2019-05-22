@@ -9,18 +9,18 @@ castResult TypeManager::castToNativeU8(SourceFile* sourceFile, AstNode* fromNode
     switch (fromNode->typeInfo->nativeType)
     {
     case NativeType::SX:
-        if (fromNode->token.literalValue.s64 < 0)
+        if (fromNode->computedValue.variant.s64 < 0)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is negative and not in the range of 'u8'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is negative and not in the range of 'u8'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
     case NativeType::UX:
-        if (fromNode->token.literalValue.u64 > UINT8_MAX)
+        if (fromNode->computedValue.variant.u64 > UINT8_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is not in the range of 'u8'", fromNode->token.literalValue.u64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is not in the range of 'u8'", fromNode->computedValue.variant.u64)});
             return castResult::FailWithoutError;
         }
 
@@ -36,18 +36,18 @@ castResult TypeManager::castToNativeU16(SourceFile* sourceFile, AstNode* fromNod
     switch (fromNode->typeInfo->nativeType)
     {
     case NativeType::SX:
-        if (fromNode->token.literalValue.s64 < 0)
+        if (fromNode->computedValue.variant.s64 < 0)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is negative and not in the range of 'u16'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is negative and not in the range of 'u16'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
     case NativeType::UX:
-        if (fromNode->token.literalValue.u64 > UINT16_MAX)
+        if (fromNode->computedValue.variant.u64 > UINT16_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is not in the range of 'u16'", fromNode->token.literalValue.u64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is not in the range of 'u16'", fromNode->computedValue.variant.u64)});
             return castResult::FailWithoutError;
         }
 
@@ -63,18 +63,18 @@ castResult TypeManager::castToNativeU32(SourceFile* sourceFile, AstNode* fromNod
     switch (fromNode->typeInfo->nativeType)
     {
     case NativeType::SX:
-        if (fromNode->token.literalValue.s64 < 0)
+        if (fromNode->computedValue.variant.s64 < 0)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is negative and not in the range of 'u32'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is negative and not in the range of 'u32'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
     case NativeType::UX:
-        if (fromNode->token.literalValue.u64 > UINT32_MAX)
+        if (fromNode->computedValue.variant.u64 > UINT32_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is not in the range of 'u32'", fromNode->token.literalValue.u64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is not in the range of 'u32'", fromNode->computedValue.variant.u64)});
             return castResult::FailWithoutError;
         }
 
@@ -90,10 +90,10 @@ castResult TypeManager::castToNativeU64(SourceFile* sourceFile, AstNode* fromNod
     switch (fromNode->typeInfo->nativeType)
     {
     case NativeType::SX:
-        if (fromNode->token.literalValue.s64 < 0)
+        if (fromNode->computedValue.variant.s64 < 0)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is negative and not in the range of 'u64'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is negative and not in the range of 'u64'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
@@ -111,10 +111,10 @@ castResult TypeManager::castToNativeS8(SourceFile* sourceFile, AstNode* fromNode
     {
     case NativeType::SX:
     case NativeType::UX:
-        if (fromNode->token.literalValue.s64 < INT8_MIN || fromNode->token.literalValue.s64 > INT8_MAX)
+        if (fromNode->computedValue.variant.s64 < INT8_MIN || fromNode->computedValue.variant.s64 > INT8_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is not in the range of 's8'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is not in the range of 's8'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
@@ -131,10 +131,10 @@ castResult TypeManager::castToNativeS16(SourceFile* sourceFile, AstNode* fromNod
     {
     case NativeType::SX:
     case NativeType::UX:
-        if (fromNode->token.literalValue.s64 < INT16_MIN || fromNode->token.literalValue.s64 > INT16_MAX)
+        if (fromNode->computedValue.variant.s64 < INT16_MIN || fromNode->computedValue.variant.s64 > INT16_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is not in the range of 's16'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is not in the range of 's16'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
@@ -151,10 +151,10 @@ castResult TypeManager::castToNativeS32(SourceFile* sourceFile, AstNode* fromNod
     {
     case NativeType::SX:
     case NativeType::UX:
-        if (fromNode->token.literalValue.s64 < INT32_MIN || fromNode->token.literalValue.s64 > INT32_MAX)
+        if (fromNode->computedValue.variant.s64 < INT32_MIN || fromNode->computedValue.variant.s64 > INT32_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is not in the range of 's32'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is not in the range of 's32'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
@@ -171,10 +171,10 @@ castResult TypeManager::castToNativeS64(SourceFile* sourceFile, AstNode* fromNod
     {
     case NativeType::SX:
     case NativeType::UX:
-        if (fromNode->token.literalValue.s64 < INT64_MIN || fromNode->token.literalValue.s64 > INT64_MAX)
+        if (fromNode->computedValue.variant.s64 < INT64_MIN || fromNode->computedValue.variant.s64 > INT64_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is not in the range of 's64'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is not in the range of 's64'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
@@ -191,12 +191,12 @@ castResult TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* fromNod
     {
     case NativeType::SX:
     {
-        float   tmpF = static_cast<float>(fromNode->token.literalValue.s64);
+        float   tmpF = static_cast<float>(fromNode->computedValue.variant.s64);
         int64_t tmpI = static_cast<int64_t>(tmpF);
-        if (tmpI != fromNode->token.literalValue.s64)
+        if (tmpI != fromNode->computedValue.variant.s64)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is truncated in 'f32'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is truncated in 'f32'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
         *result = &g_TypeInfoF32;
@@ -205,12 +205,12 @@ castResult TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* fromNod
 
     case NativeType::UX:
     {
-        float    tmpF = static_cast<float>(fromNode->token.literalValue.u64);
+        float    tmpF = static_cast<float>(fromNode->computedValue.variant.u64);
         uint64_t tmpI = static_cast<uint64_t>(tmpF);
-        if (tmpI != fromNode->token.literalValue.u64)
+        if (tmpI != fromNode->computedValue.variant.u64)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->token.literalValue.u64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->computedValue.variant.u64)});
             return castResult::FailWithoutError;
         }
         *result = &g_TypeInfoF32;
@@ -227,12 +227,12 @@ castResult TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* fromNod
     {
     case NativeType::SX:
     {
-        double  tmpF = static_cast<double>(fromNode->token.literalValue.s64);
+        double  tmpF = static_cast<double>(fromNode->computedValue.variant.s64);
         int64_t tmpI = static_cast<int64_t>(tmpF);
-        if (tmpI != fromNode->token.literalValue.s64)
+        if (tmpI != fromNode->computedValue.variant.s64)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is truncated in 'f64'", fromNode->token.literalValue.s64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64d' is truncated in 'f64'", fromNode->computedValue.variant.s64)});
             return castResult::FailWithoutError;
         }
 
@@ -242,12 +242,12 @@ castResult TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* fromNod
 
     case NativeType::UX:
     {
-        double   tmpF = static_cast<double>(fromNode->token.literalValue.u64);
+        double   tmpF = static_cast<double>(fromNode->computedValue.variant.u64);
         uint64_t tmpI = static_cast<uint64_t>(tmpF);
-        if (tmpI != fromNode->token.literalValue.u64)
+        if (tmpI != fromNode->computedValue.variant.u64)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->token.literalValue.u64)});
+                sourceFile->report({sourceFile, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->computedValue.variant.u64)});
             return castResult::FailWithoutError;
         }
 
@@ -319,7 +319,7 @@ TypeInfo* TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* requeste
     if (ok == castResult::FailWithError)
     {
         if (!(castFlags & CASTFLAG_NOERROR))
-            sourceFile->report({sourceFile, requestedTypeNode->token, "incompatible types"});
+            sourceFile->report({sourceFile, requestedTypeNode->token, "unsupported cast"});
     }
 
     return false;

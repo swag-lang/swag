@@ -11,9 +11,71 @@
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
-    auto node = static_cast<AstNode*>(context->node);
+    auto node = context->node;
     node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-    node->typeInfo  = node->token.literalType;
+    node->typeInfo              = node->token.literalType;
+    node->computedValue.variant = node->token.literalValue;
+    node->computedValue.text    = node->token.text;
+    context->result             = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
+{
+    auto sourceFile = context->sourceFile;
+
+    SWAG_VERIFY(op->typeInfo->flags & TYPEINFO_NATIVE, sourceFile->report({sourceFile, op->token, "minus operation not available on that type"}));
+    switch (op->typeInfo->nativeType)
+    {
+    case NativeType::SX:
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+        break;
+    default:
+        sourceFile->report({sourceFile, op->token, "minus operation not available on that type"});
+        break;
+    }
+
+    if (op->flags & AST_VALUE_COMPUTED)
+    {
+        switch (op->typeInfo->nativeType)
+        {
+        case NativeType::S8:
+            op->computedValue.variant.s8 = -op->computedValue.variant.s8;
+            break;
+        case NativeType::S16:
+            op->computedValue.variant.s16 = -op->computedValue.variant.s16;
+            break;
+        case NativeType::S32:
+            op->computedValue.variant.s32 = -op->computedValue.variant.s32;
+            break;
+        case NativeType::SX:
+            op->computedValue.variant.s64 = -op->computedValue.variant.s64;
+            break;
+        }
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveSingleOp(SemanticContext* context)
+{
+    auto node = context->node;
+    auto op   = node->childs[0];
+
+    switch (node->token.id)
+    {
+    case TokenId::SymMinus:
+        SWAG_CHECK(resolveSingleOpMinus(context, op));
+        break;
+    }
+
+    node->typeInfo = op->typeInfo;
+    node->flags |= op->flags & AST_CONST_EXPR;
+    node->inherhitComputedValue(op);
+
     context->result = SemanticResult::Done;
     return true;
 }
