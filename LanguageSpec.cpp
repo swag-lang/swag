@@ -5,6 +5,7 @@ LanguageSpec::LanguageSpec()
 {
     keywords["#unittest"] = TokenId::CompilerUnitTest;
     keywords["#assert"] = TokenId::CompilerAssert;
+	keywords["#print"] = TokenId::CompilerPrint;
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
 

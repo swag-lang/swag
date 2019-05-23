@@ -1,4 +1,4 @@
 ﻿#unittest module module62
 #unittest pass semantic
 
-#assert 1 + 2 > 0
+#print 1.0 + 4.5

@@ -7,6 +7,7 @@
 #include "Global.h"
 #include "PoolFactory.h"
 #include "SourceFile.h"
+#include "Diagnostic.h"
 
 SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* file, AstNode* node)
 {
@@ -30,6 +31,7 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
 
     case AstNodeType::VarDecl:
     case AstNodeType::CompilerAssert:
+    case AstNodeType::CompilerPrint:
     {
         auto job = newSemanticJob(file, node);
         g_ThreadMgr.addJob(job);
@@ -37,7 +39,8 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
     break;
 
     default:
-        assert(false);
+        file->report({file, node->token, "not yet implemented ! (doSemanticNode)"});
+		return false;
     }
 
     return true;

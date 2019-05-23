@@ -20,6 +20,20 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
     return true;
 }
 
+bool SyntaxJob::doCompilerPrint(AstNode* parent)
+{
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::CompilerPrint, parent, false);
+    node->semanticFct = &SemanticJob::resolveCompilerPrint;
+    node->token       = move(token);
+
+    SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
+    SWAG_CHECK(tokenizer.getTokenOrEOL(token));
+    SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #print expression"}));
+    SWAG_CHECK(doExpression(node));
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));

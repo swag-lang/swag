@@ -26,6 +26,7 @@ struct SyntaxJob : public Job
     bool recoverError();
 
 	bool doCompilerAssert(AstNode* parent);
+	bool doCompilerPrint(AstNode* parent);
     bool doCompilerUnitTest();
     bool doTopLevel(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);

@@ -55,6 +55,7 @@ enum class TokenId
 
     CompilerUnitTest,
     CompilerAssert,
+	CompilerPrint,
 
     KwdVar,
 	KwdNamespace,

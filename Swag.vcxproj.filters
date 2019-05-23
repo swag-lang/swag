@@ -110,6 +110,9 @@
     <ClCompile Include="SemanticBinaryExpression_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticCompiler_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

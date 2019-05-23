@@ -1,13 +1,8 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Ast.h"
-#include "AstNode.h"
-#include "Utf8.h"
 #include "Global.h"
-#include "TypeInfo.h"
 #include "Diagnostic.h"
-#include "SourceFile.h"
-#include "Scope.h"
 #include "TypeManager.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
@@ -23,29 +18,36 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         switch (left->typeInfo->nativeType)
         {
         case NativeType::S8:
+            node->computedValue.variant.s8 = left->computedValue.variant.s8 + right->computedValue.variant.s8;
             break;
         case NativeType::S16:
+            node->computedValue.variant.s16 = left->computedValue.variant.s16 + right->computedValue.variant.s16;
             break;
         case NativeType::S32:
+            node->computedValue.variant.s32 = left->computedValue.variant.s32 + right->computedValue.variant.s32;
             break;
         case NativeType::S64:
-            break;
         case NativeType::SX:
-			node->computedValue.variant.s64 = left->computedValue.variant.s64 + right->computedValue.variant.s64;
+            node->computedValue.variant.s64 = left->computedValue.variant.s64 + right->computedValue.variant.s64;
             break;
         case NativeType::U8:
+            node->computedValue.variant.u8 = left->computedValue.variant.u8 + right->computedValue.variant.u8;
             break;
         case NativeType::U16:
+            node->computedValue.variant.u16 = left->computedValue.variant.u16 + right->computedValue.variant.u16;
             break;
         case NativeType::U32:
+            node->computedValue.variant.u32 = left->computedValue.variant.u32 + right->computedValue.variant.u32;
             break;
         case NativeType::U64:
-            break;
         case NativeType::UX:
+            node->computedValue.variant.u64 = left->computedValue.variant.u64 + right->computedValue.variant.u64;
             break;
         case NativeType::F32:
+            node->computedValue.variant.f32 = left->computedValue.variant.f32 + right->computedValue.variant.f32;
             break;
         case NativeType::F64:
+            node->computedValue.variant.f64 = left->computedValue.variant.f64 + right->computedValue.variant.f64;
             break;
         }
     }

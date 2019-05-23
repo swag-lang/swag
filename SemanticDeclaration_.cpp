@@ -10,19 +10,6 @@
 #include "Scope.h"
 #include "TypeManager.h"
 
-bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
-{
-    auto node       = context->node;
-    auto expr       = context->node->childs[0];
-    auto sourceFile = context->sourceFile;
-
-    node->inherhitComputedValue(expr);
-    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
-    SWAG_VERIFY(node->computedValue.variant.b, sourceFile->report({sourceFile, node->token, "compiler assertion failed"}));
-    context->result = SemanticResult::Done;
-    return true;
-}
-
 bool SemanticJob::resolveType(SemanticContext* context)
 {
     auto node = static_cast<AstType*>(context->node);

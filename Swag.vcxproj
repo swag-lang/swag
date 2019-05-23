@@ -211,6 +211,7 @@
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
     <ClCompile Include="SemanticBinaryExpression_.cpp" />
+    <ClCompile Include="SemanticCompiler_.cpp" />
     <ClCompile Include="SemanticDeclaration_.cpp" />
     <ClCompile Include="SemanticExpression_.cpp" />
     <ClCompile Include="SemanticJob.cpp" />
