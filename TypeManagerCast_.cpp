@@ -334,6 +334,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* requestedType
 {
     if (nodeToCast->typeInfo == requestedTypeNode->typeInfo)
         return true;
+
     return castError(sourceFile, requestedTypeNode->typeInfo, nodeToCast, castFlags);
 }
 
