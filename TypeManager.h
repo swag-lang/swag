@@ -2,7 +2,6 @@
 struct AstNode;
 
 static const uint32_t CASTFLAG_NOERROR = 0x00000001;
-static const uint32_t CASTFLAG_DBLSIDE = 0x00000002;
 
 struct TypeManager
 {

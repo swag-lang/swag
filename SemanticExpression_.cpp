@@ -56,6 +56,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
             op->computedValue.variant.s32 = -op->computedValue.variant.s32;
             break;
         case NativeType::SX:
+		case NativeType::S64:
             op->computedValue.variant.s64 = -op->computedValue.variant.s64;
             break;
         case NativeType::F32:

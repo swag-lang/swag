@@ -119,7 +119,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     node->typeInfo = &g_TypeInfoBool;
     TypeManager::promote(left, right);
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left->typeInfo, right, CASTFLAG_DBLSIDE));
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
 
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
 
@@ -159,7 +159,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto right = node->childs[1];
 
 	TypeManager::promote(left, right);
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right, CASTFLAG_DBLSIDE));
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
     node->typeInfo = left->typeInfo;
 
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
