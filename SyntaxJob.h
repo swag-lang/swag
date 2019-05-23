@@ -25,6 +25,7 @@ struct SyntaxJob : public Job
     bool eatToken(TokenId id);
     bool recoverError();
 
+	bool doCompilerAssert(AstNode* parent);
     bool doCompilerUnitTest();
     bool doTopLevel(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);

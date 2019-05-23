@@ -112,6 +112,9 @@ bool SyntaxJob::doTopLevel(AstNode* parent)
     case TokenId::CompilerUnitTest:
         SWAG_CHECK(doCompilerUnitTest());
         break;
+    case TokenId::CompilerAssert:
+        SWAG_CHECK(doCompilerAssert(parent));
+        break;
     default:
         syntaxError(token, format("invalid token '%s'", token.text.c_str()));
         return false;

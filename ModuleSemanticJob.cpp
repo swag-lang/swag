@@ -29,6 +29,7 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
         break;
 
     case AstNodeType::VarDecl:
+    case AstNodeType::CompilerAssert:
     {
         auto job = newSemanticJob(file, node);
         g_ThreadMgr.addJob(job);

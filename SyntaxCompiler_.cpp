@@ -6,6 +6,20 @@
 #include "Workspace.h"
 #include "Module.h"
 
+bool SyntaxJob::doCompilerAssert(AstNode* parent)
+{
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::CompilerAssert, parent, false);
+    node->semanticFct = &SemanticJob::resolveCompilerAssert;
+    node->token       = move(token);
+
+    SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
+    SWAG_CHECK(tokenizer.getTokenOrEOL(token));
+    SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #assert expression"}));
+    SWAG_CHECK(doAssignmentExpression(node));
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
@@ -45,7 +59,7 @@ bool SyntaxJob::doCompilerUnitTest()
     else if (token.text == "module")
     {
         SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#unittest module can only be specified once"}));
-		SWAG_VERIFY(canChangeModule, sourceFile->report({ sourceFile, token, "#unittest module instruction must be done before any code" }));
+        SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#unittest module instruction must be done before any code"}));
         SWAG_CHECK(tokenizer.getTokenOrEOL(token));
         SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing module name"}));
         SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
@@ -55,7 +69,7 @@ bool SyntaxJob::doCompilerUnitTest()
             auto newModule = g_Workspace.createOrUseModule(token.text);
             sourceFile->module->removeFile(sourceFile);
             newModule->addFile(sourceFile);
-			currentScope = newModule->scopeRoot;
+            currentScope = newModule->scopeRoot;
         }
     }
     else
@@ -64,6 +78,6 @@ bool SyntaxJob::doCompilerUnitTest()
         return false;
     }
 
-	SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }

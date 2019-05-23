@@ -146,6 +146,21 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         case TokenId::SymEqualEqual:
             CMP_OP(==);
             break;
+        case TokenId::SymExclamEqual:
+            CMP_OP(!=);
+            break;
+        case TokenId::SymLower:
+            CMP_OP(<);
+            break;
+        case TokenId::SymGreater:
+            CMP_OP(>);
+            break;
+        case TokenId::SymLowerEqual:
+            CMP_OP(<=);
+            break;
+        case TokenId::SymGreaterEqual:
+            CMP_OP(>=);
+            break;
         }
     }
 

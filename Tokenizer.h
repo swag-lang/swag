@@ -54,6 +54,7 @@ enum class TokenId
     SymBackSlash,
 
     CompilerUnitTest,
+    CompilerAssert,
 
     KwdVar,
 	KwdNamespace,

@@ -37,6 +37,7 @@ struct SemanticJob : public Job
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
+    static bool resolveCompilerAssert(SemanticContext* context);
 
     Module*          module;
     SourceFile*      sourceFile;
