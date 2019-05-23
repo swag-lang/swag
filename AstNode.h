@@ -23,6 +23,7 @@ enum class AstNodeType
     Namespace,
     Literal,
     SingleOp,
+    BinaryOp,
 };
 
 static const uint64_t AST_CONST_EXPR     = 0x00000000'00000001;
@@ -50,9 +51,20 @@ struct AstNode : public PoolElement
         mutex.unlock();
     }
 
+    void inheritAndFlag(AstNode* op, uint64_t flag)
+    {
+        flags |= op->flags & flag;
+    }
+
+    void inheritAndFlag(AstNode* left, AstNode* right, uint64_t flag)
+    {
+        if ((left->flags & flag) && (right->flags & flag))
+            flags |= flag;
+    }
+
     void inherhitComputedValue(AstNode* from)
     {
-        flags |= (from->flags & AST_VALUE_COMPUTED);
+        inheritAndFlag(from, AST_VALUE_COMPUTED);
         if (flags & AST_VALUE_COMPUTED)
             computedValue = move(from->computedValue);
     }

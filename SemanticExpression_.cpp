@@ -35,7 +35,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
     case NativeType::S64:
         break;
     default:
-        sourceFile->report({sourceFile, op->token, format("minus operation not available on type '%s'", TypeManager::nativeTypeName(op->typeInfo->nativeType).c_str())});
+        sourceFile->report({sourceFile, op->token, format("minus operation not available on type '%s'", TypeManager::nativeTypeName(op->typeInfo).c_str())});
         break;
     }
 
@@ -74,9 +74,37 @@ bool SemanticJob::resolveSingleOp(SemanticContext* context)
     }
 
     node->typeInfo = op->typeInfo;
-    node->flags |= op->flags & AST_CONST_EXPR;
+    node->inheritAndFlag(op, AST_CONST_EXPR);
     node->inherhitComputedValue(op);
 
     context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveBoolExpression(SemanticContext* context)
+{
+    auto node          = context->node;
+    auto leftNode      = node->childs[0];
+    auto rightNode     = node->childs[1];
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, &g_TypeInfoBool, leftNode));
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, &g_TypeInfoBool, rightNode));
+
+    node->inheritAndFlag(leftNode, rightNode, AST_CONST_EXPR);
+
+    if ((leftNode->flags & AST_VALUE_COMPUTED) && (rightNode->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+        switch (node->token.id)
+        {
+        case TokenId::SymAmpersandAmpersand:
+            node->computedValue.variant.b = leftNode->computedValue.variant.b && rightNode->computedValue.variant.b;
+            break;
+
+        case TokenId::SymVerticalVertical:
+            node->computedValue.variant.b = leftNode->computedValue.variant.b || rightNode->computedValue.variant.b;
+            break;
+        }
+    }
+
     return true;
 }

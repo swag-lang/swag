@@ -136,6 +136,12 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
             token.text += c;
             treatChar(c, offset);
         }
+        else if (c == '&')
+        {
+            token.id = TokenId::SymAmpersandAmpersand;
+            token.text += c;
+            treatChar(c, offset);
+        }
         return true;
 
     case '|':
@@ -144,6 +150,12 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
         if (c == '=')
         {
             token.id = TokenId::SymVerticalEqual;
+            token.text += c;
+            treatChar(c, offset);
+        }
+        else if (c == '|')
+        {
+            token.id = TokenId::SymVerticalVertical;
             token.text += c;
             treatChar(c, offset);
         }

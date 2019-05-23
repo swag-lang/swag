@@ -104,6 +104,9 @@
     <ClCompile Include="SyntaxExpression_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="TypeManagerCast_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

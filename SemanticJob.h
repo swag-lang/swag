@@ -30,11 +30,12 @@ struct SemanticJob : public Job
         nodes.clear();
     }
 
-	static bool resolveSingleOpMinus(SemanticContext* context, AstNode* op);
-	static bool resolveSingleOp(SemanticContext* context);
+    static bool resolveSingleOpMinus(SemanticContext* context, AstNode* op);
+    static bool resolveSingleOp(SemanticContext* context);
     static bool resolveType(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
+    static bool resolveBoolExpression(SemanticContext* context);
 
     Module*          module;
     SourceFile*      sourceFile;

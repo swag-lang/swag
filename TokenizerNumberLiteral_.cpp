@@ -32,7 +32,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
         case NativeType::F64:
             break;
         default:
-            return error(token, format("can't convert floating point number '%Lf' to '%s'", token.literalValue.f64, TypeManager::nativeTypeName(tokenSuffix.literalType->nativeType).c_str()));
+            return error(token, format("can't convert floating point number '%Lf' to '%s'", token.literalValue.f64, TypeManager::nativeTypeName(tokenSuffix.literalType).c_str()));
         }
         break;
 

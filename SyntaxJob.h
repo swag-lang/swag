@@ -32,8 +32,11 @@ struct SyntaxJob : public Job
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
-	bool doPrimaryExpression(AstNode* parent, AstNode** result = nullptr);
-	bool doUnaryExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doPrimaryExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doUnaryExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doFactorExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
 
     Tokenizer   tokenizer;
     Token       token;

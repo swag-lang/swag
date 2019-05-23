@@ -21,13 +21,20 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
-    auto node      = static_cast<AstVarDecl*>(context->node);
-    node->typeInfo = node->astType->typeInfo;
-    assert(node->typeInfo);
-    assert(node->scope);
-
-    node->typeInfo = TypeManager::makeCompatibles(context->sourceFile, node->astType, node->astAssignment);
-    SWAG_CHECK(node->typeInfo);
+    auto node = static_cast<AstVarDecl*>(context->node);
+    if (node->astType && node->astAssignment)
+    {
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->astType, node->astAssignment));
+        node->typeInfo = node->astType->typeInfo;
+    }
+    else if (node->astAssignment)
+    {
+        node->typeInfo = node->astAssignment->typeInfo;
+    }
+    else
+    {
+        node->typeInfo = node->astType->typeInfo;
+    }
 
     // Register symbol with its type
     SWAG_CHECK(node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::Variable));
