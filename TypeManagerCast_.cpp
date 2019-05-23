@@ -330,18 +330,13 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* requestedTyp
     return false;
 }
 
-bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* requestedTypeNode, AstNode* nodeToCast, uint32_t castFlags)
-{
-    if (nodeToCast->typeInfo == requestedTypeNode->typeInfo)
-        return true;
-
-    return castError(sourceFile, requestedTypeNode->typeInfo, nodeToCast, castFlags);
-}
-
 void TypeManager::promote(AstNode* left, AstNode* right)
 {
     if (left->typeInfo == right->typeInfo)
         return;
+
+	TypeManager::promoteInteger(left);
+    TypeManager::promoteInteger(right);
 
     if (left->typeInfo == &g_TypeInfoS64 && right->typeInfo == &g_TypeInfoS32)
         right->typeInfo = &g_TypeInfoS64;

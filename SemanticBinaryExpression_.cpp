@@ -97,36 +97,37 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     return true;
 }
 
-#define CMP_OP(__OP)                                                                                                   \
-    switch (leftNode->typeInfo->nativeType)                                                                            \
-    {                                                                                                                  \
-    case NativeType::Bool:                                                                                             \
-        node->computedValue.variant.b = leftNode->computedValue.variant.b __OP rightNode->computedValue.variant.b;     \
-        break;                                                                                                         \
-    case NativeType::F32:                                                                                              \
-        node->computedValue.variant.b = leftNode->computedValue.variant.f32 __OP rightNode->computedValue.variant.f32; \
-        break;                                                                                                         \
-    case NativeType::F64:                                                                                              \
-    case NativeType::FX:                                                                                               \
-        node->computedValue.variant.b = leftNode->computedValue.variant.f64 __OP rightNode->computedValue.variant.f64; \
-        break;                                                                                                         \
-    default:                                                                                                           \
-        node->computedValue.variant.b = leftNode->computedValue.variant.s64 __OP rightNode->computedValue.variant.s64; \
-        break;                                                                                                         \
+#define CMP_OP(__OP)                                                                                           \
+    switch (left->typeInfo->nativeType)                                                                        \
+    {                                                                                                          \
+    case NativeType::Bool:                                                                                     \
+        node->computedValue.variant.b = left->computedValue.variant.b __OP right->computedValue.variant.b;     \
+        break;                                                                                                 \
+    case NativeType::F32:                                                                                      \
+        node->computedValue.variant.b = left->computedValue.variant.f32 __OP right->computedValue.variant.f32; \
+        break;                                                                                                 \
+    case NativeType::F64:                                                                                      \
+    case NativeType::FX:                                                                                       \
+        node->computedValue.variant.b = left->computedValue.variant.f64 __OP right->computedValue.variant.f64; \
+        break;                                                                                                 \
+    default:                                                                                                   \
+        node->computedValue.variant.b = left->computedValue.variant.s64 __OP right->computedValue.variant.s64; \
+        break;                                                                                                 \
     }
 
 bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 {
-    auto node      = context->node;
-    auto leftNode  = node->childs[0];
-    auto rightNode = node->childs[1];
+    auto node  = context->node;
+    auto left  = node->childs[0];
+    auto right = node->childs[1];
 
     node->typeInfo = &g_TypeInfoBool;
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftNode, rightNode, CASTFLAG_DBLSIDE));
+    TypeManager::promote(left, right);
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left->typeInfo, right, CASTFLAG_DBLSIDE));
 
-    node->inheritAndFlag(leftNode, rightNode, AST_CONST_EXPR);
+    node->inheritAndFlag(left, right, AST_CONST_EXPR);
 
-    if ((leftNode->flags & AST_VALUE_COMPUTED) && (rightNode->flags & AST_VALUE_COMPUTED))
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
         switch (node->token.id)
@@ -161,10 +162,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
-	TypeManager::promoteInteger(left);
-	TypeManager::promoteInteger(right);
-	TypeManager::promote(left, right);
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right, CASTFLAG_DBLSIDE));
+    TypeManager::promote(left, right);
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left->typeInfo, right, CASTFLAG_DBLSIDE));
     node->typeInfo = left->typeInfo;
 
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
