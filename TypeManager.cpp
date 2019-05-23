@@ -25,6 +25,7 @@ string TypeManager::nativeTypeName(TypeInfo* type)
     case NativeType::S32:
         return "s32";
     case NativeType::S64:
+    case NativeType::SX:
         return "s64";
     case NativeType::U8:
         return "u8";
@@ -33,6 +34,7 @@ string TypeManager::nativeTypeName(TypeInfo* type)
     case NativeType::U32:
         return "u32";
     case NativeType::U64:
+    case NativeType::UX:
         return "u64";
     }
 

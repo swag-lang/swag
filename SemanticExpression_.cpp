@@ -83,9 +83,11 @@ bool SemanticJob::resolveSingleOp(SemanticContext* context)
 
 bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 {
-    auto node          = context->node;
-    auto leftNode      = node->childs[0];
-    auto rightNode     = node->childs[1];
+    auto node      = context->node;
+    auto leftNode  = node->childs[0];
+    auto rightNode = node->childs[1];
+
+    node->typeInfo = &g_TypeInfoBool;
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, &g_TypeInfoBool, leftNode));
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, &g_TypeInfoBool, rightNode));
 
@@ -99,7 +101,6 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         case TokenId::SymAmpersandAmpersand:
             node->computedValue.variant.b = leftNode->computedValue.variant.b && rightNode->computedValue.variant.b;
             break;
-
         case TokenId::SymVerticalVertical:
             node->computedValue.variant.b = leftNode->computedValue.variant.b || rightNode->computedValue.variant.b;
             break;
