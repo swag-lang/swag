@@ -35,6 +35,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
     case NativeType::S64:
     case NativeType::F32:
     case NativeType::F64:
+	case NativeType::FX:
         break;
     default:
         sourceFile->report({sourceFile, op->token, format("minus operation not available on type '%s'", TypeManager::nativeTypeName(op->typeInfo).c_str())});
@@ -61,6 +62,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
             op->computedValue.variant.f32 = -op->computedValue.variant.f32;
             break;
         case NativeType::F64:
+		case NativeType::FX:
             op->computedValue.variant.f64 = -op->computedValue.variant.f64;
             break;
         }

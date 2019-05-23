@@ -17,6 +17,7 @@ string TypeManager::nativeTypeName(TypeInfo* type)
     case NativeType::F32:
         return "f32";
     case NativeType::F64:
+	case NativeType::FX:
         return "f64";
     case NativeType::S8:
         return "s8";

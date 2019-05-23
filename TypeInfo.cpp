@@ -14,5 +14,6 @@ NativeTypeInfo g_TypeInfoU64(NativeType::U64);
 NativeTypeInfo g_TypeInfoBool(NativeType::Bool);
 NativeTypeInfo g_TypeInfoF32(NativeType::F32);
 NativeTypeInfo g_TypeInfoF64(NativeType::F64);
+NativeTypeInfo g_TypeInfoFX(NativeType::FX);
 NativeTypeInfo g_TypeInfoChar(NativeType::Char);
 NativeTypeInfo g_TypeInfoString(NativeType::String);

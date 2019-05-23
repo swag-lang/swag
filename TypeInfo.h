@@ -13,6 +13,7 @@ enum class NativeType
     U64,
     F32,
     F64,
+	FX,
     Bool,
     Char,
     String,
@@ -48,5 +49,6 @@ extern NativeTypeInfo g_TypeInfoU64;
 extern NativeTypeInfo g_TypeInfoBool;
 extern NativeTypeInfo g_TypeInfoF32;
 extern NativeTypeInfo g_TypeInfoF64;
+extern NativeTypeInfo g_TypeInfoFX;
 extern NativeTypeInfo g_TypeInfoChar;
 extern NativeTypeInfo g_TypeInfoString;
