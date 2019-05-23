@@ -5,6 +5,21 @@
 #include "Diagnostic.h"
 #include "Log.h"
 
+bool SemanticJob::resolveCompilerRun(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto expr       = context->node->childs[0];
+    auto sourceFile = context->sourceFile;
+
+    node->typeInfo = expr->typeInfo;
+    node->inheritAndFlag(expr, AST_CONST_EXPR);
+    node->inherhitComputedValue(expr);
+
+    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
+    context->result = SemanticResult::Done;
+    return true;
+}
+
 bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 {
     auto node       = context->node;

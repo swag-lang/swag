@@ -32,7 +32,7 @@ struct SourceFile : public PoolElement
     SourceFile();
     char32_t getChar(unsigned& offset);
     Utf8     getLine(long seek);
-    void     report(const Diagnostic& diag, const Diagnostic* note = nullptr);
+    bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr);
 
     bool open();
     bool ensureOpen();

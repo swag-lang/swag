@@ -45,6 +45,7 @@ struct SemanticJob : public Job
     static bool resolveFactorExpression(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
 	static bool resolveCompilerPrint(SemanticContext* context);
+	static bool resolveCompilerRun(SemanticContext* context);
 
     Module*          module;
     SourceFile*      sourceFile;

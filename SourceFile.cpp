@@ -318,10 +318,10 @@ Utf8 SourceFile::getLine(long seek)
     return line;
 }
 
-void SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
+bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
 {
     if (silent > 0)
-        return;
+        return false;
 
     // Do not raise an error if we are waiting for one, during tests
     if (unittestError && diag.errorLevel == DiagnosticLevel::Error)
@@ -336,7 +336,7 @@ void SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
             g_Log.unlock();
         }
 
-        return;
+        return false;
     }
 
     // Raise error
@@ -349,4 +349,5 @@ void SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
     if (note)
         note->report();
     g_Log.unlock();
+	return false;
 }

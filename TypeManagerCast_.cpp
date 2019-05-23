@@ -336,3 +336,39 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* requestedType
         return true;
     return castError(sourceFile, requestedTypeNode->typeInfo, nodeToCast, castFlags);
 }
+
+void TypeManager::promote(AstNode* left, AstNode* right)
+{
+    if (left->typeInfo == right->typeInfo)
+        return;
+
+    if (left->typeInfo == &g_TypeInfoS64 && right->typeInfo == &g_TypeInfoS32)
+        right->typeInfo = &g_TypeInfoS64;
+    else if (left->typeInfo == &g_TypeInfoS32 && right->typeInfo == &g_TypeInfoS64)
+        left->typeInfo = &g_TypeInfoS64;
+
+    else if (left->typeInfo == &g_TypeInfoU64 && right->typeInfo == &g_TypeInfoU32)
+        right->typeInfo = &g_TypeInfoU64;
+    else if (left->typeInfo == &g_TypeInfoU32 && right->typeInfo == &g_TypeInfoU64)
+        left->typeInfo = &g_TypeInfoU64;
+
+    else if (left->typeInfo == &g_TypeInfoF64 && right->typeInfo == &g_TypeInfoF32)
+        right->typeInfo = &g_TypeInfoF64;
+    else if (left->typeInfo == &g_TypeInfoF32 && right->typeInfo == &g_TypeInfoF64)
+        left->typeInfo = &g_TypeInfoF64;
+}
+
+void TypeManager::promoteInteger(AstNode* node)
+{
+    if (node->typeInfo == &g_TypeInfoU8 || node->typeInfo == &g_TypeInfoU16)
+    {
+        node->typeInfo = &g_TypeInfoU32;
+        return;
+    }
+
+    if (node->typeInfo == &g_TypeInfoS8 || node->typeInfo == &g_TypeInfoS16)
+    {
+        node->typeInfo = &g_TypeInfoS32;
+        return;
+    }
+}

@@ -24,6 +24,8 @@ struct TypeManager
 
     static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* requestedType, AstNode* nodeToCast, uint32_t castFlags = 0);
     static bool makeCompatibles(SourceFile* sourceFile, AstNode* requestedTypeNode, AstNode* nodeToCast, uint32_t castFlags = 0);
+    static void promote(AstNode* left, AstNode* right);
+    static void promoteInteger(AstNode* node);
 
     static string nativeTypeName(TypeInfo* type);
 };

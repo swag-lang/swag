@@ -17,24 +17,12 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
         switch (left->typeInfo->nativeType)
         {
-        case NativeType::S8:
-            node->computedValue.variant.s8 = left->computedValue.variant.s8 + right->computedValue.variant.s8;
-            break;
-        case NativeType::S16:
-            node->computedValue.variant.s16 = left->computedValue.variant.s16 + right->computedValue.variant.s16;
-            break;
         case NativeType::S32:
             node->computedValue.variant.s32 = left->computedValue.variant.s32 + right->computedValue.variant.s32;
             break;
         case NativeType::S64:
         case NativeType::SX:
             node->computedValue.variant.s64 = left->computedValue.variant.s64 + right->computedValue.variant.s64;
-            break;
-        case NativeType::U8:
-            node->computedValue.variant.u8 = left->computedValue.variant.u8 + right->computedValue.variant.u8;
-            break;
-        case NativeType::U16:
-            node->computedValue.variant.u16 = left->computedValue.variant.u16 + right->computedValue.variant.u16;
             break;
         case NativeType::U32:
             node->computedValue.variant.u32 = left->computedValue.variant.u32 + right->computedValue.variant.u32;
@@ -173,6 +161,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
+	TypeManager::promoteInteger(left);
+	TypeManager::promoteInteger(right);
+	TypeManager::promote(left, right);
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right, CASTFLAG_DBLSIDE));
     node->typeInfo = left->typeInfo;
 
