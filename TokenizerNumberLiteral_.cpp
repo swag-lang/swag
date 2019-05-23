@@ -26,12 +26,12 @@ bool Tokenizer::doNumberSuffix(Token& token)
     {
     case NativeType::F32:
     case NativeType::F64:
-	case NativeType::FX:
+    case NativeType::FX:
         switch (tokenSuffix.literalType->nativeType)
         {
         case NativeType::F32:
         case NativeType::F64:
-		case NativeType::FX:
+        case NativeType::FX:
             break;
         default:
             return error(token, format("can't convert floating point number '%Lf' to '%s'", token.literalValue.f64, TypeManager::nativeTypeName(tokenSuffix.literalType).c_str()));
@@ -84,11 +84,11 @@ bool Tokenizer::doNumberSuffix(Token& token)
             int64_t tmp  = static_cast<int64_t>(tmpF);
             if (tmp != token.literalValue.s64)
                 return error(token, format("literal number '%I64d' is truncated in 'f32'", token.literalValue.s64));
-            token.literalValue.f32 = tmpF;
+            token.literalValue.f64 = tmpF;
             break;
         }
         case NativeType::F64:
-		case NativeType::FX:
+        case NativeType::FX:
         {
             double  tmpF = static_cast<double>(token.literalValue.s64);
             int64_t tmp  = static_cast<int64_t>(tmpF);
@@ -215,7 +215,7 @@ bool Tokenizer::doBinLiteral(Token& token)
         SWAG_CHECK(doNumberSuffix(token));
         SWAG_VERIFY(token.literalType->nativeType != NativeType::F32, error(token, "can't convert a binary literal number to 'f32'"));
         SWAG_VERIFY(token.literalType->nativeType != NativeType::F64, error(token, "can't convert a binary literal number to 'f64'"));
-		SWAG_VERIFY(token.literalType->nativeType != NativeType::FX, error(token, "can't convert a binary literal number to 'f64'"));
+        SWAG_VERIFY(token.literalType->nativeType != NativeType::FX, error(token, "can't convert a binary literal number to 'f64'"));
     }
 
     return true;
@@ -288,7 +288,7 @@ bool Tokenizer::doHexLiteral(Token& token)
         SWAG_CHECK(doNumberSuffix(token));
         SWAG_VERIFY(token.literalType->nativeType != NativeType::F32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
         SWAG_VERIFY(token.literalType->nativeType != NativeType::F64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
-		SWAG_VERIFY(token.literalType->nativeType != NativeType::FX, error(token, "can't convert an hexadecimal literal number to 'f64'"));
+        SWAG_VERIFY(token.literalType->nativeType != NativeType::FX, error(token, "can't convert an hexadecimal literal number to 'f64'"));
     }
 
     return true;

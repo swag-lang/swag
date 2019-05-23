@@ -70,8 +70,6 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         g_Log.print(to_string(node->computedValue.variant.u64));
         break;
     case NativeType::F32:
-        g_Log.print(to_string(node->computedValue.variant.f32));
-        break;
     case NativeType::F64:
 	case NativeType::FX:
         g_Log.print(to_string(node->computedValue.variant.f64));

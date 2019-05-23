@@ -8,10 +8,9 @@ union Register {
     int16_t  s16;
     uint8_t  u8;
     int8_t   s8;
-    float    f32;
     double   f64;
     char32_t ch;
-    bool b;
+    bool     b;
 };
 
 struct ComputedValue

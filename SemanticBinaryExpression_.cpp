@@ -32,8 +32,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->computedValue.variant.u64 = left->computedValue.variant.u64 + right->computedValue.variant.u64;
             break;
         case NativeType::F32:
-            node->computedValue.variant.f32 = left->computedValue.variant.f32 + right->computedValue.variant.f32;
-            break;
         case NativeType::F64:
         case NativeType::FX:
             node->computedValue.variant.f64 = left->computedValue.variant.f64 + right->computedValue.variant.f64;
@@ -104,8 +102,6 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         node->computedValue.variant.b = left->computedValue.variant.b __OP right->computedValue.variant.b;     \
         break;                                                                                                 \
     case NativeType::F32:                                                                                      \
-        node->computedValue.variant.b = left->computedValue.variant.f32 __OP right->computedValue.variant.f32; \
-        break;                                                                                                 \
     case NativeType::F64:                                                                                      \
     case NativeType::FX:                                                                                       \
         node->computedValue.variant.b = left->computedValue.variant.f64 __OP right->computedValue.variant.f64; \
