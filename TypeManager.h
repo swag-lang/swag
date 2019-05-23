@@ -23,6 +23,7 @@ struct TypeManager
     static bool castToNative(SourceFile* sourceFile, TypeInfo* requestedType, AstNode* nodeToCast, uint32_t castFlags);
 
     static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* requestedType, AstNode* nodeToCast, uint32_t castFlags = 0);
+    static bool makeCompatibles(SourceFile* sourceFile, AstNode* requestedTypeNode, AstNode* nodeToCast, uint32_t castFlags = 0);
 
     static string nativeTypeName(TypeInfo* type);
 };

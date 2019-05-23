@@ -314,13 +314,13 @@ bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode
         return castToNativeF64(sourceFile, nodeToCast, castFlags);
     }
 
-    return false;
+    return castError(sourceFile, toType, nodeToCast, castFlags);
 }
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* requestedType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (nodeToCast->typeInfo == requestedType)
-        return requestedType;
+        return true;
 
     if (requestedType->flags & TYPEINFO_NATIVE)
     {
@@ -328,4 +328,11 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* requestedTyp
     }
 
     return false;
+}
+
+bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* requestedTypeNode, AstNode* nodeToCast, uint32_t castFlags)
+{
+    if (nodeToCast->typeInfo == requestedTypeNode->typeInfo)
+        return true;
+    return castError(sourceFile, requestedTypeNode->typeInfo, nodeToCast, castFlags);
 }
