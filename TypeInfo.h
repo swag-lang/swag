@@ -13,26 +13,29 @@ enum class NativeType
     U64,
     F32,
     F64,
-	FX,
+    FX,
     Bool,
     Char,
     String,
 };
 
-static const uint64_t TYPEINFO_NATIVE = 0x00000000'00000001;
+static const uint64_t TYPEINFO_NATIVE       = 0x00000000'00000001;
+static const uint64_t TYPEINFO_INT_SIGNED   = 0x00000000'00000002;
+static const uint64_t TYPEINFO_INT_UNSIGNED = 0x00000000'00000004;
+static const uint64_t TYPEINFO_FLOAT        = 0x00000000'00000008;
 
 struct TypeInfo
 {
-    uint32_t   flags;
+    uint64_t   flags;
     NativeType nativeType;
 };
 
 struct NativeTypeInfo : public TypeInfo
 {
-    NativeTypeInfo(NativeType type)
+    NativeTypeInfo(NativeType type, uint64_t tflags)
     {
-		nativeType = type;
-        flags = TYPEINFO_NATIVE;
+        nativeType = type;
+        flags      = tflags | TYPEINFO_NATIVE;
     }
 };
 

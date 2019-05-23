@@ -208,6 +208,10 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
     case NativeType::SX:
     {
         float   tmpF = static_cast<float>(nodeToCast->computedValue.variant.s64);
@@ -220,9 +224,15 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
         }
 
         nodeToCast->typeInfo = &g_TypeInfoF32;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->computedValue.variant.f64 = static_cast<float>(nodeToCast->computedValue.variant.s64);
         return true;
     }
 
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
     case NativeType::UX:
     {
         float    tmpF = static_cast<float>(nodeToCast->computedValue.variant.u64);
@@ -235,6 +245,23 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
         }
 
         nodeToCast->typeInfo = &g_TypeInfoF32;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->computedValue.variant.f64 = static_cast<float>(nodeToCast->computedValue.variant.u64);
+        return true;
+    }
+
+    case NativeType::FX:
+    case NativeType::F64:
+    {
+        float  tmpF = static_cast<float>(nodeToCast->computedValue.variant.f64);
+        double tmpD = static_cast<double>(tmpF);
+        if (tmpD != nodeToCast->computedValue.variant.f64)
+        {
+            if (!(castFlags & CASTFLAG_NOERROR))
+                sourceFile->report({sourceFile, nodeToCast->token, format("value '%Lf' is truncated in 'f32'", nodeToCast->computedValue.variant.f64)});
+            return false;
+        }
+        nodeToCast->typeInfo = &g_TypeInfoF32;
         return true;
     }
     }
@@ -246,6 +273,10 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
     case NativeType::SX:
     {
         double  tmpF = static_cast<double>(nodeToCast->computedValue.variant.s64);
@@ -258,9 +289,15 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
         }
 
         nodeToCast->typeInfo = &g_TypeInfoF64;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->computedValue.variant.f64 = static_cast<double>(nodeToCast->computedValue.variant.s64);
         return true;
     }
 
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
     case NativeType::UX:
     {
         double   tmpF = static_cast<double>(nodeToCast->computedValue.variant.u64);
@@ -273,8 +310,15 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
         }
 
         nodeToCast->typeInfo = &g_TypeInfoF64;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->computedValue.variant.f64 = static_cast<double>(nodeToCast->computedValue.variant.u64);
         return true;
     }
+
+    case NativeType::FX:
+	case NativeType::F32:
+        nodeToCast->typeInfo = &g_TypeInfoF64;
+        return true;
     }
 
     return castError(sourceFile, &g_TypeInfoF64, nodeToCast, castFlags);
@@ -317,17 +361,31 @@ bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode
     return castError(sourceFile, toType, nodeToCast, castFlags);
 }
 
-bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* requestedType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (nodeToCast->typeInfo == requestedType)
+    if (nodeToCast->typeInfo == toType)
         return true;
 
-    if (requestedType->flags & TYPEINFO_NATIVE)
+    if (toType->flags & TYPEINFO_NATIVE)
     {
-        return castToNative(sourceFile, requestedType, nodeToCast, castFlags);
+        return castToNative(sourceFile, toType, nodeToCast, castFlags);
     }
 
-    return false;
+    return castError(sourceFile, toType, nodeToCast, castFlags);
+}
+
+bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
+{
+    if (leftNode->typeInfo == rightNode->typeInfo)
+        return true;
+
+    auto leftType  = leftNode->typeInfo;
+    auto rightType = rightNode->typeInfo;
+
+    if ((leftType->flags & TYPEINFO_INT_SIGNED) && (rightType->flags & TYPEINFO_FLOAT))
+        return castToNative(sourceFile, rightType, leftNode, castFlags);
+
+    return castToNative(sourceFile, leftType, rightNode, castFlags);
 }
 
 void TypeManager::promote(AstNode* left, AstNode* right)
@@ -335,23 +393,44 @@ void TypeManager::promote(AstNode* left, AstNode* right)
     if (left->typeInfo == right->typeInfo)
         return;
 
-	promoteInteger(left);
+    promoteInteger(left);
     promoteInteger(right);
 
     if (left->typeInfo == &g_TypeInfoS64 && right->typeInfo == &g_TypeInfoS32)
+    {
         right->typeInfo = &g_TypeInfoS64;
-    else if (left->typeInfo == &g_TypeInfoS32 && right->typeInfo == &g_TypeInfoS64)
+        return;
+    }
+
+    if (left->typeInfo == &g_TypeInfoS32 && right->typeInfo == &g_TypeInfoS64)
+    {
         left->typeInfo = &g_TypeInfoS64;
+        return;
+    }
 
-    else if (left->typeInfo == &g_TypeInfoU64 && right->typeInfo == &g_TypeInfoU32)
+    if (left->typeInfo == &g_TypeInfoU64 && right->typeInfo == &g_TypeInfoU32)
+    {
         right->typeInfo = &g_TypeInfoU64;
-    else if (left->typeInfo == &g_TypeInfoU32 && right->typeInfo == &g_TypeInfoU64)
-        left->typeInfo = &g_TypeInfoU64;
+        return;
+    }
 
-    else if (left->typeInfo == &g_TypeInfoF64 && right->typeInfo == &g_TypeInfoF32)
+    if (left->typeInfo == &g_TypeInfoU32 && right->typeInfo == &g_TypeInfoU64)
+    {
+        left->typeInfo = &g_TypeInfoU64;
+        return;
+    }
+
+    if (left->typeInfo == &g_TypeInfoF64 && right->typeInfo == &g_TypeInfoF32)
+    {
         right->typeInfo = &g_TypeInfoF64;
-    else if (left->typeInfo == &g_TypeInfoF32 && right->typeInfo == &g_TypeInfoF64)
+        return;
+    }
+
+    if (left->typeInfo == &g_TypeInfoF32 && right->typeInfo == &g_TypeInfoF64)
+    {
         left->typeInfo = &g_TypeInfoF64;
+        return;
+    }
 }
 
 void TypeManager::promoteInteger(AstNode* node)
