@@ -30,6 +30,11 @@ struct SemanticJob : public Job
         nodes.clear();
     }
 
+    static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveSingleOpExclam(SemanticContext* context, AstNode* op);
     static bool resolveSingleOpMinus(SemanticContext* context, AstNode* op);
     static bool resolveSingleOp(SemanticContext* context);
     static bool resolveType(SemanticContext* context);
@@ -37,6 +42,7 @@ struct SemanticJob : public Job
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
+    static bool resolveFactorExpression(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
 
     Module*          module;

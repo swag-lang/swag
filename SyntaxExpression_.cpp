@@ -16,15 +16,28 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(token.id == TokenId::LiteralNumber || token.id == TokenId::LiteralCharacter, notSupportedError(token));
-    return doLiteral(parent, result);
+    switch (token.id)
+    {
+    case TokenId::SymLeftParen:
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doExpression(parent, result));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        return true;
+
+    case TokenId::LiteralNumber:
+    case TokenId::LiteralCharacter:
+        return doLiteral(parent, result);
+
+    default:
+        return notSupportedError(token);
+    }
 }
 
 bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
 {
-    if (token.id == TokenId::SymMinus)
+    if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam)
     {
         auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::SingleOp, parent, false);
         node->semanticFct = &SemanticJob::resolveSingleOp;
@@ -33,15 +46,40 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
         if (result)
             *result = node;
         SWAG_CHECK(tokenizer.getToken(token));
-        return doPrimaryExpression(node);
+        return doSinglePrimaryExpression(node);
     }
 
-    return doPrimaryExpression(parent, result);
+    return doSinglePrimaryExpression(parent, result);
 }
 
 bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
 {
-    return doUnaryExpression(parent, result);
+    AstNode* leftNode;
+    SWAG_CHECK(doUnaryExpression(nullptr, &leftNode));
+
+    bool isBinary = false;
+    while ((token.id == TokenId::SymPlus) ||
+           (token.id == TokenId::SymMinus) ||
+           (token.id == TokenId::SymAsterisk) ||
+           (token.id == TokenId::SymSlash))
+    {
+        auto binaryNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::BinaryOp, parent, false);
+        binaryNode->semanticFct = &SemanticJob::resolveFactorExpression;
+        binaryNode->token       = move(token);
+
+        Ast::addChild(binaryNode, leftNode, false);
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doUnaryExpression(binaryNode));
+        leftNode = binaryNode;
+        isBinary = true;
+    }
+
+    if (!isBinary)
+        Ast::addChild(parent, leftNode, false);
+    if (result)
+        *result = leftNode;
+
+    return true;
 }
 
 bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
@@ -101,6 +139,11 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
         *result = leftNode;
 
     return true;
+}
+
+bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
+{
+    return doBoolExpression(parent, result);
 }
 
 bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)

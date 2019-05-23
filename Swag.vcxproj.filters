@@ -107,6 +107,9 @@
     <ClCompile Include="TypeManagerCast_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticBinaryExpression_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

@@ -15,7 +15,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
     SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getTokenOrEOL(token));
     SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #assert expression"}));
-    SWAG_CHECK(doAssignmentExpression(node));
+    SWAG_CHECK(doExpression(node));
 
     return true;
 }
