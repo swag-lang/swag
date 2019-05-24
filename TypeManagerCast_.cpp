@@ -392,49 +392,72 @@ void TypeManager::promote(AstNode* left, AstNode* right)
 {
     if (left->typeInfo == right->typeInfo)
         return;
+    if (!(left->typeInfo->flags & TYPEINFO_NATIVE) || !(right->typeInfo->flags & TYPEINFO_NATIVE))
+        return;
 
     promoteInteger(left);
     promoteInteger(right);
 
-    if (left->typeInfo == &g_TypeInfoS64 && right->typeInfo == &g_TypeInfoS32)
+    if (left->typeInfo->nativeType == NativeType::S64 && right->typeInfo->nativeType == NativeType::S32)
     {
         right->typeInfo = &g_TypeInfoS64;
         return;
     }
 
-    if (left->typeInfo == &g_TypeInfoS32 && right->typeInfo == &g_TypeInfoS64)
+    if (left->typeInfo->nativeType == NativeType::S32 && right->typeInfo->nativeType == NativeType::S64)
     {
         left->typeInfo = &g_TypeInfoS64;
         return;
     }
 
-    if (left->typeInfo == &g_TypeInfoU64 && right->typeInfo == &g_TypeInfoU32)
+    if (left->typeInfo->nativeType == NativeType::U64 && right->typeInfo->nativeType == NativeType::U32)
     {
         right->typeInfo = &g_TypeInfoU64;
         return;
     }
 
-    if (left->typeInfo == &g_TypeInfoU32 && right->typeInfo == &g_TypeInfoU64)
+    if (left->typeInfo->nativeType == NativeType::U32 && right->typeInfo->nativeType == NativeType::U64)
     {
         left->typeInfo = &g_TypeInfoU64;
         return;
     }
 
-    if (left->typeInfo == &g_TypeInfoF64 && right->typeInfo == &g_TypeInfoF32)
+    if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::F32)
     {
         right->typeInfo = &g_TypeInfoF64;
         return;
     }
 
-    if (left->typeInfo == &g_TypeInfoF32 && right->typeInfo == &g_TypeInfoF64)
+    if (left->typeInfo->nativeType == NativeType::F32 && right->typeInfo->nativeType == NativeType::F64)
     {
         left->typeInfo = &g_TypeInfoF64;
+        return;
+    }
+
+    if (left->typeInfo->nativeType == NativeType::FX && right->typeInfo->nativeType == NativeType::F32)
+    {
+        left->typeInfo = &g_TypeInfoF32;
+        return;
+    }
+
+	if (left->typeInfo->nativeType == NativeType::FX && right->typeInfo->nativeType == NativeType::F64)
+    {
+            left->typeInfo = &g_TypeInfoF64;
+        return;
+    }
+
+	if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::FX)
+    {
+        right->typeInfo = &g_TypeInfoF64;
         return;
     }
 }
 
 void TypeManager::promoteInteger(AstNode* node)
 {
+    if (!(node->flags & TYPEINFO_NATIVE))
+        return;
+
     if (node->typeInfo == &g_TypeInfoU8 || node->typeInfo == &g_TypeInfoU16)
     {
         node->typeInfo = &g_TypeInfoU32;
