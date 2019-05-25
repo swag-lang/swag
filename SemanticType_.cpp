@@ -18,7 +18,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     else if (!node->childs.empty())
         node->typeInfo = node->childs[0]->typeInfo;
     else
-        context->job->error(context, "invalid type yet !");
+        context->job->error(context, "invalid type (yet) !");
     context->result = SemanticResult::Done;
     return true;
 }
