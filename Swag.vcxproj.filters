@@ -31,9 +31,6 @@
     <ClCompile Include="CommandLine.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFile.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -119,6 +116,9 @@
     <ClCompile Include="SemanticType_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SourceFile.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -150,9 +150,6 @@
     </ClInclude>
     <ClInclude Include="CommandLine.h">
       <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFile.h">
-      <Filter>Lexer</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Main</Filter>
@@ -220,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="TypeManager.h">
       <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="SourceFile.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

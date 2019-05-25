@@ -44,7 +44,7 @@ void Module::removeFile(SourceFile* file)
     assert(false);
 }
 
-Scope* Module::newNamespace(Scope* parentNp, const Utf8Crc& nameNp)
+Scope* Module::newNamespace(Scope* parentNp, Utf8Crc& nameNp)
 {
 	auto fullnameNp = parentNp->fullname + "." + nameNp;
 	scoped_lock lk(mutexNamespace);
@@ -55,7 +55,7 @@ Scope* Module::newNamespace(Scope* parentNp, const Utf8Crc& nameNp)
 	namespaces[fullnameNp] = np;
 	np->type = ScopeType::Namespace;
 	np->parentScope = scopeRoot;
-	np->name = nameNp;
+	np->name = move(nameNp);
 	np->fullname = fullnameNp;
 	return np;
 }

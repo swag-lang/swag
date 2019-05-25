@@ -10,7 +10,7 @@ struct Module : public PoolElement
     Module(const fs::path& path);
     void      addFile(SourceFile* file);
     void      removeFile(SourceFile* file);
-    Scope* newNamespace(Scope* parentScope, const Utf8Crc& npName);
+    Scope* newNamespace(Scope* parentScope, Utf8Crc& npName);
 
     fs::path                path;
     string                  name;

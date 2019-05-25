@@ -8,7 +8,7 @@ void ThreadManager::init()
 {
     loadingThread = new LoadingThread();
 
-    int numWorkers = g_Global.numCores - 2;
+	int numWorkers = g_Global.numCores - 2;
     numWorkers     = max(1, numWorkers);
     for (int i = 0; i < numWorkers; i++)
         workerThreads.push_back(new JobThread());

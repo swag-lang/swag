@@ -12,7 +12,7 @@
 #include "PoolFactory.h"
 #include "SymTable.h"
 
-const auto BUF_SIZE = 4096;
+const auto BUF_SIZE = 512;
 
 SourceFile::SourceFile()
     : poolFactory{new PoolFactory}
