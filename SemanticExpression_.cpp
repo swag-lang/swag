@@ -22,7 +22,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto node       = static_cast<AstIdentifier*>(context->node);
     auto sourceFile = context->sourceFile;
 
-    auto scope = node->scope;
+	// If node->matchScope is defined, no need to rescan the scope hiearchy, as it is already
+	// the scope where we have found the symbol in the first place (if it is defined, it means
+	// that we come from a symbol wakeup)
+    auto scope = node->matchScope ? node->matchScope : node->scope;
+
     while (scope)
     {
         auto symTable = scope->symTable;
@@ -31,6 +35,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             auto        name = symTable->findNoLock(node->name);
             if (name)
             {
+				node->matchScope = scope;
                 if (!name->overloads.empty())
                 {
                     // Be sure the found symbol is of the correct kind
@@ -58,6 +63,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     return true;
                 }
 
+				// Need to wait for the symbol to be resolved
                 name->dependentJobs.push_back(context->job);
                 context->result = SemanticResult::Pending;
                 return true;

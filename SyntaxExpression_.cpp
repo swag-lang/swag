@@ -28,6 +28,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 
     case TokenId::LiteralNumber:
     case TokenId::LiteralCharacter:
+	case TokenId::LiteralString:
         return doLiteral(parent, result);
 
     default:

@@ -4,12 +4,12 @@
 LanguageSpec::LanguageSpec()
 {
     keywords["#unittest"] = TokenId::CompilerUnitTest;
-    keywords["#assert"] = TokenId::CompilerAssert;
-	keywords["#print"] = TokenId::CompilerPrint;
-	keywords["#run"] = TokenId::CompilerRun;
+    keywords["#assert"]   = TokenId::CompilerAssert;
+    keywords["#print"]    = TokenId::CompilerPrint;
+    keywords["#run"]      = TokenId::CompilerRun;
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
-	keywords["type"] = TokenId::KwdType;
+    keywords["type"]      = TokenId::KwdType;
 
 #ifdef SWAG_TEST_CPP
     keywords["#include"] = TokenId::Invalid;
@@ -36,18 +36,19 @@ LanguageSpec::LanguageSpec()
     keywords["#a"]       = TokenId::Invalid;
 #endif
 
-    keywords["u64"]  = TokenId::NativeType;
-    keywords["u32"]  = TokenId::NativeType;
-    keywords["u16"]  = TokenId::NativeType;
-    keywords["u8"]   = TokenId::NativeType;
-    keywords["s64"]  = TokenId::NativeType;
-    keywords["s32"]  = TokenId::NativeType;
-    keywords["s16"]  = TokenId::NativeType;
-    keywords["s8"]   = TokenId::NativeType;
-    keywords["f32"]  = TokenId::NativeType;
-    keywords["f64"]  = TokenId::NativeType;
-    keywords["bool"] = TokenId::NativeType;
-    keywords["char"] = TokenId::NativeType;
+    keywords["u64"]    = TokenId::NativeType;
+    keywords["u32"]    = TokenId::NativeType;
+    keywords["u16"]    = TokenId::NativeType;
+    keywords["u8"]     = TokenId::NativeType;
+    keywords["s64"]    = TokenId::NativeType;
+    keywords["s32"]    = TokenId::NativeType;
+    keywords["s16"]    = TokenId::NativeType;
+    keywords["s8"]     = TokenId::NativeType;
+    keywords["f32"]    = TokenId::NativeType;
+    keywords["f64"]    = TokenId::NativeType;
+    keywords["bool"]   = TokenId::NativeType;
+    keywords["char"]   = TokenId::NativeType;
+    keywords["string"] = TokenId::NativeType;
 
     nativeTypes["u64"]    = &g_TypeInfoU64;
     nativeTypes["u32"]    = &g_TypeInfoU32;

@@ -103,5 +103,11 @@ struct AstVarDecl : public AstNode
 
 struct AstIdentifier : public AstNode
 {
-	SymbolKind symbolKind;
+    void reset() override
+    {
+        matchScope = nullptr;
+    }
+
+    Scope*     matchScope;
+    SymbolKind symbolKind;
 };
