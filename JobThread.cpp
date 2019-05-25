@@ -37,8 +37,9 @@ void JobThread::loop()
             continue;
         }
 
-        job->execute();
-        job->release();
+        auto result = job->execute();
+        if (result == JobResult::ReleaseJob)
+            job->release();
         g_ThreadMgr.jobHasEnded();
     }
 }

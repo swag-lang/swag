@@ -2,10 +2,16 @@
 #include "Pool.h"
 struct JobThread;
 
+enum class JobResult
+{
+    ReleaseJob,
+    KeepJobAlive,
+};
+
 struct Job : public PoolElement
 {
-    virtual bool execute() = 0;
-    void         reset() override{};
+    virtual JobResult execute() = 0;
+    void              reset() override{};
 
     JobThread* thread = nullptr;
 };

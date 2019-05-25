@@ -7,7 +7,7 @@ struct Module;
 
 struct ModuleSemanticJob : public Job
 {
-    bool         execute() override;
+    JobResult    execute() override;
     bool         doSemanticNode(SourceFile* file, AstNode* node);
     SemanticJob* newSemanticJob(SourceFile* file, AstNode* node);
 

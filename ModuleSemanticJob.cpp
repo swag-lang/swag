@@ -48,7 +48,7 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
     return true;
 }
 
-bool ModuleSemanticJob::execute()
+JobResult ModuleSemanticJob::execute()
 {
     for (auto file : module->files)
     {
@@ -57,5 +57,5 @@ bool ModuleSemanticJob::execute()
         doSemanticNode(file, file->astRoot);
     }
 
-    return true;
+    return JobResult::ReleaseJob;
 }
