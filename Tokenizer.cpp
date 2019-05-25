@@ -156,8 +156,8 @@ void Tokenizer::getIdentifier(Token& token)
     // Special keywords
     if (token.text == "true")
     {
-        token.id = TokenId::LiteralNumber;
-        token.literalType = &g_TypeInfoBool;
+        token.id             = TokenId::LiteralNumber;
+        token.literalType    = &g_TypeInfoBool;
         token.literalValue.b = true;
         return;
     }
@@ -195,7 +195,9 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
     while (true)
     {
         token.startLocation = location;
-        auto c              = getChar();
+        token.literalType   = nullptr;
+
+        auto c = getChar();
         if (c == 0)
         {
             token.id = TokenId::EndOfFile;

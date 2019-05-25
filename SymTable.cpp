@@ -3,6 +3,7 @@
 #include "PoolFactory.h"
 #include "Diagnostic.h"
 #include "Global.h"
+#include "ThreadManager.h"
 
 SymbolName* SymTable::find(const Utf8Crc& name)
 {
@@ -54,6 +55,12 @@ bool SymTable::addSymbol(SourceFile* sourceFile, const Token& token, const Utf8C
     // One less overload. When this reached zero, this means we known every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
     symbol->cptOverloads--;
+    if (symbol->cptOverloads == 0)
+    {
+		for (auto job : symbol->dependentJobs)
+			g_ThreadMgr.addJob(job);
+    }
+
     return true;
 }
 
@@ -83,7 +90,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     }
 
     // Overloads are not allowed on certain types
-    if (type == SymbolType::Variable && !symbol->overloads.empty())
+    if ((type == SymbolType::Variable || type == SymbolType::TypeDecl) && !symbol->overloads.empty())
     {
         auto       firstOverload = symbol->overloads[0];
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());

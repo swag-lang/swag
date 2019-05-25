@@ -21,7 +21,7 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
     return false;
 }
 
-bool SemanticJob::execute()
+JobResult SemanticJob::execute()
 {
     SemanticContext context;
     context.job        = this;
@@ -42,13 +42,14 @@ bool SemanticJob::execute()
 
         case AstNodeSemanticState::ProcessingChilds:
             context.node = node;
-            SWAG_CHECK(node->semanticFct(&context));
+            if (!node->semanticFct(&context))
+                return JobResult::ReleaseJob;
             if (context.result == SemanticResult::Pending)
-                break;
+                return JobResult::KeepJobAlive;
             nodes.pop_back();
             break;
         }
     }
 
-    return true;
+    return JobResult::ReleaseJob;
 }

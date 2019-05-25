@@ -1,17 +1,6 @@
 #include "pch.h"
-#include "SyntaxJob.h"
-#include "SourceFile.h"
-#include "Tokenizer.h"
-#include "Diagnostic.h"
 #include "Global.h"
-#include "CommandLine.h"
-#include "Workspace.h"
-#include "Stats.h"
-#include "SourceFile.h"
 #include "Module.h"
-#include "Pool.h"
-#include "PoolFactory.h"
-#include "SymTable.h"
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
@@ -46,20 +35,6 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doType(AstNode* parent, AstType** result)
-{
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astType, AstNodeType::Type, currentScope, parent, false);
-    node->semanticFct = &SemanticJob::resolveType;
-    if (result)
-        *result = node;
-
-    SWAG_VERIFY(token.id == TokenId::NativeType, notSupportedError(token));
-    node->token = move(token);
-    SWAG_CHECK(tokenizer.getToken(token));
-
-    return true;
-}
-
 bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 {
     auto node         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeType::VarDecl, currentScope, parent, false);
@@ -77,7 +52,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doType(node, &node->astType));
+        SWAG_CHECK(doTypeExpression(node, &node->astType));
         SWAG_CHECK(node->astType);
     }
 
@@ -92,30 +67,6 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
     node->scope = currentScope;
     currentScope->allocateSymTable();
     currentScope->symTable->registerSymbolNameNoLock(sourceFile->poolFactory, node->name, SymbolType::Variable);
-
-    return true;
-}
-
-bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
-{
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::TypeDecl, currentScope, parent, false);
-    node->semanticFct = &SemanticJob::resolveTypeDecl;
-    if (result)
-        *result = node;
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid type name '%s'", token.text.c_str())));
-    node->name = token.text;
-    node->name.computeCrc();
-    node->token = move(token);
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymColon));
-    SWAG_CHECK(doType(node));
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
-
-    currentScope->allocateSymTable();
-    currentScope->symTable->registerSymbolNameNoLock(sourceFile->poolFactory, node->name, SymbolType::TypeDecl);
 
     return true;
 }

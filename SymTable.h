@@ -8,6 +8,7 @@ struct PoolFactory;
 struct Token;
 struct TypeInfo;
 struct Utf8Crc;
+struct Job;
 
 struct SymbolOverload : public PoolElement
 {
@@ -20,7 +21,7 @@ struct SymbolOverload : public PoolElement
 enum class SymbolType
 {
     Variable,
-	TypeDecl,
+    TypeDecl,
 };
 
 struct SymbolName : public PoolElement
@@ -30,6 +31,7 @@ struct SymbolName : public PoolElement
     SymbolType              type;
     atomic<int>             cptOverloads;
     vector<SymbolOverload*> overloads;
+    vector<Job*>            dependentJobs;
 
     void reset() override
     {
@@ -59,9 +61,9 @@ struct SymTable
     SymbolName* registerSymbolNameNoLock(PoolFactory* factory, const Utf8Crc& name, SymbolType type);
     bool        addSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type);
     bool        checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type);
-	bool        checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type, SymbolName* symbol);
+    bool        checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type, SymbolName* symbol);
     SymbolName* find(const Utf8Crc& name);
-	SymbolName* findNoLock(const Utf8Crc& name);
+    SymbolName* findNoLock(const Utf8Crc& name);
 
     static const int           HASH_SIZE = 512;
     SpinLock                   mutex;

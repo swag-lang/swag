@@ -22,8 +22,8 @@ struct SemanticContext
 
 struct SemanticJob : public Job
 {
-    bool execute() override;
-    bool error(SemanticContext* context, const Utf8& msg);
+    JobResult execute() override;
+    bool      error(SemanticContext* context, const Utf8& msg);
 
     void reset() override
     {
@@ -37,9 +37,9 @@ struct SemanticJob : public Job
     static bool resolveSingleOpExclam(SemanticContext* context, AstNode* op);
     static bool resolveSingleOpMinus(SemanticContext* context, AstNode* op);
     static bool resolveSingleOp(SemanticContext* context);
-    static bool resolveType(SemanticContext* context);
+    static bool resolveTypeExpression(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
-	static bool resolveTypeDecl(SemanticContext* context);
+    static bool resolveTypeDecl(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
@@ -50,6 +50,7 @@ struct SemanticJob : public Job
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveIdentifier(SemanticContext* context);
 
     Module*          module;
     SourceFile*      sourceFile;

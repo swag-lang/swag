@@ -20,6 +20,7 @@ enum class AstNodeType
     File,
     VarDecl,
     TypeDecl,
+	Identifier,
     Type,
     Namespace,
     Literal,

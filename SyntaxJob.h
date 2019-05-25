@@ -10,7 +10,7 @@ struct Utf8;
 
 struct SyntaxJob : public Job
 {
-    bool execute() override;
+    JobResult execute() override;
 
     void reset() override
     {
@@ -32,7 +32,7 @@ struct SyntaxJob : public Job
     bool doTopLevel(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
-    bool doType(AstNode* parent, AstType** result = nullptr);
+    bool doTypeExpression(AstNode* parent, AstType** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);

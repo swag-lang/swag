@@ -1,14 +1,10 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Ast.h"
-#include "AstNode.h"
-#include "Utf8.h"
 #include "Global.h"
-#include "TypeInfo.h"
 #include "Diagnostic.h"
-#include "SourceFile.h"
-#include "Scope.h"
 #include "TypeManager.h"
+#include "Scope.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -19,6 +15,39 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     node->computedValue.text    = node->token.text;
     context->result             = SemanticResult::Done;
     return true;
+}
+
+bool SemanticJob::resolveIdentifier(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+
+    auto scope = node->scope;
+    while (scope)
+    {
+        auto symTable = scope->symTable;
+        {
+            scoped_lock lk(symTable->mutex);
+            auto        name = symTable->findNoLock(node->name);
+            if (name)
+            {
+                if (!name->overloads.empty())
+                {
+                    node->typeInfo  = name->overloads[0]->typeInfo;
+                    context->result = SemanticResult::Done;
+                    return true;
+                }
+
+                name->dependentJobs.push_back(context->job);
+                context->result = SemanticResult::Pending;
+                return true;
+            }
+        }
+
+        scope = scope->parentScope;
+    }
+
+    return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
 }
 
 bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
@@ -35,7 +64,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
     case NativeType::S64:
     case NativeType::F32:
     case NativeType::F64:
-	case NativeType::FX:
+    case NativeType::FX:
         break;
     default:
         return sourceFile->report({sourceFile, op->token, format("minus operation not available on type '%s'", TypeManager::nativeTypeName(op->typeInfo).c_str())});
@@ -55,12 +84,12 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
             op->computedValue.variant.s32 = -op->computedValue.variant.s32;
             break;
         case NativeType::SX:
-		case NativeType::S64:
+        case NativeType::S64:
             op->computedValue.variant.s64 = -op->computedValue.variant.s64;
             break;
         case NativeType::F32:
         case NativeType::F64:
-		case NativeType::FX:
+        case NativeType::FX:
             op->computedValue.variant.f64 = -op->computedValue.variant.f64;
             break;
         }

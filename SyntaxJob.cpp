@@ -23,7 +23,7 @@ bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 
 bool SyntaxJob::notSupportedError(const Token& tk)
 {
-    error(tk, "not supported (yet) !");
+    error(tk, "not supported (yet) ! (syntax)");
     return false;
 }
 
@@ -64,7 +64,7 @@ bool SyntaxJob::recoverError()
     return true;
 }
 
-bool SyntaxJob::execute()
+JobResult SyntaxJob::execute()
 {
     if (g_CommandLine.stats)
         g_Stats.numFiles++;
@@ -86,7 +86,7 @@ bool SyntaxJob::execute()
             // If there's an error, then we must stop at syntax pass
             sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
             if (!recoverError())
-                return false;
+                return JobResult::ReleaseJob;
             result = false;
             ok     = true;
         }
@@ -117,5 +117,5 @@ bool SyntaxJob::execute()
         ok              = doTopLevel(sourceFile->astRoot);
     }
 
-    return result;
+    return JobResult::ReleaseJob;
 }

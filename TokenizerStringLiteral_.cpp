@@ -104,7 +104,9 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
 {
     bool     result = true;
     unsigned offset;
-    token.id = TokenId::LiteralString;
+    token.id          = TokenId::LiteralString;
+    token.literalType = &g_TypeInfoString;
+
     while (true)
     {
         auto c = getCharNoSeek(offset);
@@ -157,6 +159,7 @@ bool Tokenizer::doCharLiteral(Token& token)
 
     auto c              = getCharNoSeek(offset);
     token.startLocation = location;
+    token.literalType   = &g_TypeInfoChar;
 
     // Can't have a newline inside a character
     if (c == '\n')
@@ -188,9 +191,9 @@ bool Tokenizer::doCharLiteral(Token& token)
         token.text = c;
     }
 
-	token.literalValue.ch = c;
-    token.startLocation = location;
-    c                   = getCharNoSeek(offset);
+    token.literalValue.ch = c;
+    token.startLocation   = location;
+    c                     = getCharNoSeek(offset);
     if (c != '\'')
     {
         result = false;

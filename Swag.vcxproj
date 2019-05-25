@@ -215,10 +215,12 @@
     <ClCompile Include="SemanticDeclaration_.cpp" />
     <ClCompile Include="SemanticExpression_.cpp" />
     <ClCompile Include="SemanticJob.cpp" />
+    <ClCompile Include="SemanticType_.cpp" />
     <ClCompile Include="SymTable.cpp" />
     <ClCompile Include="SyntaxCompiler_.cpp" />
     <ClCompile Include="SyntaxDeclaration_.cpp" />
     <ClCompile Include="SyntaxExpression_.cpp" />
+    <ClCompile Include="SyntaxType_.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />
     <ClCompile Include="Log.cpp" />
