@@ -1,6 +1,6 @@
 #unittest pass lexer
-#unittest error
-"tototo\oθθθθ"
+//#unittest error
+//"tototo\oθθθθ"
 
 "totototoθθθθ"
 "tototo\ntoθθθθ"

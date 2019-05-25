@@ -18,3 +18,5 @@ struct LanguageSpec
 #define SWAG_IS_HEX(__c) (SWAG_IS_ALPHAHEX(__c) || SWAG_IS_DIGIT(__c))
 #define SWAG_IS_ALPHA(__c) ((__c >= 'a' && __c <= 'z') || (__c >= 'A' && __c <= 'Z'))
 #define SWAG_IS_NUMSEP(__c) (__c == '_')
+#define SWAG_IS_BLANK(__c) (__c == ' ' || __c == '\t' || __c == '\v' || __c == '\f' || __c == '\r')
+#define SWAG_IS_EOL(__c) (__c == '\n')

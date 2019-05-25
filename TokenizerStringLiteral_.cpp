@@ -109,43 +109,67 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
 
     while (true)
     {
+        while (true)
+        {
+            auto c = getCharNoSeek(offset);
+
+            // Can't have a newline inside a normal string (but this is legit in raw string literals)
+            if (!raw && SWAG_IS_EOL(c))
+            {
+                token.startLocation = location;
+                token.endLocation   = token.startLocation;
+                sourceFile->report({sourceFile, token, "unexpected end of line found in string literal"});
+                return false;
+            }
+
+            // End of file
+            if (!c)
+            {
+                token.endLocation = token.startLocation;
+                sourceFile->report({sourceFile, token, "unexpected end of file found in string literal"});
+                return false;
+            }
+
+            // Escape sequence
+            if (!raw && c == '\\')
+            {
+                treatChar(c, offset);
+                result = result && isEscape(c, token);
+                token.text += c;
+                continue;
+            }
+
+            treatChar(c, offset);
+
+            // End marker
+            if (!raw && c == '"')
+                break;
+            if (raw && c == '`')
+                break;
+
+            token.text += c;
+        }
+
         auto c = getCharNoSeek(offset);
-
-        // Can't have a newline inside a normal string (but this is legit in raw string literals)
-        if (!raw && c == '\n')
-        {
-            token.startLocation = location;
-            token.endLocation   = token.startLocation;
-            sourceFile->report({sourceFile, token, "unexpected end of line found in string literal"});
-            return false;
-        }
-
-        // End of file
-        if (!c)
-        {
-            token.endLocation = token.startLocation;
-            sourceFile->report({sourceFile, token, "unexpected end of file found in string literal"});
-            return false;
-        }
-
-        // Escape sequence
-        if (!raw && c == '\\')
+        while (SWAG_IS_BLANK(c) || SWAG_IS_EOL(c))
         {
             treatChar(c, offset);
-            result = result && isEscape(c, token);
-            token.text += c;
-            continue;
+            c = getCharNoSeek(offset);
         }
 
-        treatChar(c, offset);
+		if (!raw && c == '"')
+		{
+			treatChar(c, offset);
+			continue;
+		}
 
-        // End marker
-        if (!raw && c == '"')
-            break;
-        if (raw && c == '`')
-            break;
+		if (raw && c == '`')
+		{
+			treatChar(c, offset);
+			continue;
+		}
 
-        token.text += c;
+		break;
     }
 
     return result;

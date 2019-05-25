@@ -196,6 +196,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
     {
         token.startLocation = location;
         token.literalType   = nullptr;
+		token.text.clear();
 
         auto c = getChar();
         if (c == 0)
@@ -205,7 +206,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         }
 
         // Blank
-        if (c == '\n')
+        if (SWAG_IS_EOL(c))
         {
             if (!skipEOL)
             {
@@ -216,7 +217,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
             continue;
         }
 
-        if (c == ' ' || c == '\t' || c == '\v' || c == '\f' || c == '\r')
+        if (SWAG_IS_BLANK(c))
             continue;
 
         if (c == '/')
