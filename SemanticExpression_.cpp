@@ -19,7 +19,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
-    auto node       = context->node;
+    auto node       = static_cast<AstIdentifier*>(context->node);
     auto sourceFile = context->sourceFile;
 
     auto scope = node->scope;
@@ -33,6 +33,26 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (!name->overloads.empty())
                 {
+                    // Be sure the found symbol is of the correct kind
+                    if (name->kind != node->symbolKind)
+                    {
+                        switch (node->symbolKind)
+                        {
+                        case SymbolKind::TypeDecl:
+                        {
+                            Diagnostic diag{sourceFile, node->token, format("symbol '%s' is not a type", node->name.c_str())};
+                            Diagnostic note{name->overloads[0]->sourceFile, name->overloads[0]->startLocation, name->overloads[0]->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                            return sourceFile->report(diag, &note);
+                        }
+                        default:
+                        {
+                            Diagnostic diag{sourceFile, node->token, format("invalid usage of symbol '%s'", node->name.c_str())};
+                            Diagnostic note{name->overloads[0]->sourceFile, name->overloads[0]->startLocation, name->overloads[0]->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                            return sourceFile->report(diag, &note);
+                        }
+                        }
+                    }
+
                     node->typeInfo  = name->overloads[0]->typeInfo;
                     context->result = SemanticResult::Done;
                     return true;

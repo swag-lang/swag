@@ -16,7 +16,7 @@ struct PoolFactory
     Pool<AstNode>           astNode;
     Pool<AstVarDecl>        astVarDecl;
     Pool<Scope>             scope;
-    Pool<AstType>           astType;
+    Pool<AstIdentifier>     astIdentifier;
     Pool<SymbolName>        symName;
     Pool<SymbolOverload>    symOverload;
 };

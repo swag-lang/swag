@@ -21,14 +21,14 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
     currentScope->allocateSymTable();
-    currentScope->symTable->registerSymbolNameNoLock(sourceFile->poolFactory, node->name, SymbolType::TypeDecl);
+    currentScope->symTable->registerSymbolNameNoLock(sourceFile->poolFactory, node->name, SymbolKind::TypeDecl);
 
     return true;
 }
 
-bool SyntaxJob::doTypeExpression(AstNode* parent, AstType** result)
+bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astType, AstNodeType::Type, currentScope, parent, false);
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::Type, currentScope, parent, false);
     node->semanticFct = &SemanticJob::resolveTypeExpression;
     if (result)
         *result = node;
@@ -42,7 +42,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstType** result)
 
     if (token.id == TokenId::Identifier)
     {
-        auto identifier         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::Identifier, currentScope, node, false);
+        auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeType::Identifier, currentScope, node, false);
+        identifier->symbolKind  = SymbolKind::TypeDecl;
         identifier->semanticFct = &SemanticJob::resolveIdentifier;
         identifier->token       = move(token);
         identifier->name        = identifier->token.text;

@@ -18,7 +18,7 @@ struct SymbolOverload : public PoolElement
     SourceLocation endLocation;
 };
 
-enum class SymbolType
+enum class SymbolKind
 {
     Variable,
     TypeDecl,
@@ -28,7 +28,7 @@ struct SymbolName : public PoolElement
 {
     SpinLock                mutex;
     Utf8Crc                 name;
-    SymbolType              type;
+    SymbolKind              kind;
     atomic<int>             cptOverloads;
     vector<SymbolOverload*> overloads;
     vector<Job*>            dependentJobs;
@@ -58,10 +58,10 @@ struct SymTable
 {
     SymTable();
 
-    SymbolName* registerSymbolNameNoLock(PoolFactory* factory, const Utf8Crc& name, SymbolType type);
-    bool        addSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type);
-    bool        checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type);
-    bool        checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type, SymbolName* symbol);
+    SymbolName* registerSymbolNameNoLock(PoolFactory* factory, const Utf8Crc& name, SymbolKind type);
+    bool        addSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type);
+    bool        checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type);
+    bool        checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type, SymbolName* symbol);
     SymbolName* find(const Utf8Crc& name);
     SymbolName* findNoLock(const Utf8Crc& name);
 

@@ -20,7 +20,7 @@ enum class AstNodeType
     File,
     VarDecl,
     TypeDecl,
-	Identifier,
+    Identifier,
     Type,
     Namespace,
     Literal,
@@ -97,10 +97,11 @@ struct AstVarDecl : public AstNode
         astType = nullptr;
     }
 
-    struct AstType* astType;
+    struct AstNode* astType;
     struct AstNode* astAssignment;
 };
 
-struct AstType : public AstNode
+struct AstIdentifier : public AstNode
 {
+	SymbolKind symbolKind;
 };

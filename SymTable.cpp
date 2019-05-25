@@ -21,14 +21,14 @@ SymbolName* SymTable::findNoLock(const Utf8Crc& name)
     return result;
 }
 
-SymbolName* SymTable::registerSymbolNameNoLock(PoolFactory* factory, const Utf8Crc& name, SymbolType type)
+SymbolName* SymTable::registerSymbolNameNoLock(PoolFactory* factory, const Utf8Crc& name, SymbolKind type)
 {
     auto symbol = findNoLock(name);
     if (!symbol)
     {
         symbol           = factory->symName.alloc();
         symbol->name     = name;
-        symbol->type     = type;
+        symbol->kind     = type;
         int indexInTable = name.crc % HASH_SIZE;
         if (!mapNames[indexInTable])
             mapNames[indexInTable] = new map<Utf8Crc, SymbolName*>();
@@ -39,7 +39,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(PoolFactory* factory, const Utf8C
     return symbol;
 }
 
-bool SymTable::addSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type)
+bool SymTable::addSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
 {
     scoped_lock lk(mutex);
 
@@ -64,13 +64,13 @@ bool SymTable::addSymbol(SourceFile* sourceFile, const Token& token, const Utf8C
     return true;
 }
 
-bool SymTable::checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type)
+bool SymTable::checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
 {
     scoped_lock lk(mutex);
     return checkHiddenSymbolNoLock(sourceFile, token, name, typeInfo, type, nullptr);
 }
 
-bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolType type, SymbolName* symbol)
+bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type, SymbolName* symbol)
 {
     if (!symbol)
         symbol = findNoLock(name);
@@ -78,7 +78,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
         return false;
 
     // A symbol with a different type already exists
-    if (symbol->type != type)
+    if (symbol->kind != type)
     {
         auto       firstOverload = symbol->overloads[0];
         Utf8       msg           = format("symbol '%s' already defined with a different type in an accessible scope", symbol->name.c_str());
@@ -90,7 +90,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     }
 
     // Overloads are not allowed on certain types
-    if ((type == SymbolType::Variable || type == SymbolType::TypeDecl) && !symbol->overloads.empty())
+    if ((type == SymbolKind::Variable || type == SymbolKind::TypeDecl) && !symbol->overloads.empty())
     {
         auto       firstOverload = symbol->overloads[0];
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
