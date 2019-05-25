@@ -25,12 +25,13 @@ struct SyntaxJob : public Job
     bool eatToken(TokenId id);
     bool recoverError();
 
-	bool doCompilerAssert(AstNode* parent);
-	bool doCompilerPrint(AstNode* parent);
-	bool doCompilerRun(AstNode* parent);
+    bool doCompilerAssert(AstNode* parent);
+    bool doCompilerPrint(AstNode* parent);
+    bool doCompilerRun(AstNode* parent);
     bool doCompilerUnitTest();
     bool doTopLevel(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
+    bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doType(AstNode* parent, AstType** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
@@ -40,7 +41,7 @@ struct SyntaxJob : public Job
     bool doFactorExpression(AstNode* parent, AstNode** result = nullptr);
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
-	bool doExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doExpression(AstNode* parent, AstNode** result = nullptr);
 
     Tokenizer   tokenizer;
     Token       token;

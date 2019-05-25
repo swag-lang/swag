@@ -7,11 +7,12 @@ struct PoolFactory;
 namespace Ast
 {
     template<typename T>
-    T* newNode(Pool<T>* pool, AstNodeType type, AstNode* parent = nullptr, bool lockParent = true)
+    T* newNode(Pool<T>* pool, AstNodeType type, Scope* scope, AstNode* parent = nullptr, bool lockParent = true)
     {
         auto node    = pool->alloc();
         node->type   = type;
         node->parent = parent;
+        node->scope  = scope;
 
         if (parent)
         {

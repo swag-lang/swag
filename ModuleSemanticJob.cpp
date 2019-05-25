@@ -30,6 +30,7 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
         break;
 
     case AstNodeType::VarDecl:
+	case AstNodeType::TypeDecl:
     case AstNodeType::CompilerAssert:
     case AstNodeType::CompilerPrint:
 	case AstNodeType::CompilerRun:

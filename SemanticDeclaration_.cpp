@@ -19,6 +19,26 @@ bool SemanticJob::resolveType(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveTypeDecl(SemanticContext* context)
+{
+    auto node = context->node;
+	node->typeInfo = node->childs[0]->typeInfo;
+
+    // Register symbol with its type
+    SWAG_CHECK(node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::TypeDecl));
+
+	// We need to check the scope hierarchy for symbol ghosting
+    auto scope = node->scope->parentScope;
+    while (scope)
+    {
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolType::TypeDecl));
+        scope = scope->parentScope;
+    }
+
+	context->result = SemanticResult::Done;
+    return true;
+}
+
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto node = static_cast<AstVarDecl*>(context->node);

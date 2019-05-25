@@ -20,6 +20,7 @@ struct SymbolOverload : public PoolElement
 enum class SymbolType
 {
     Variable,
+	TypeDecl,
 };
 
 struct SymbolName : public PoolElement

@@ -19,14 +19,15 @@ enum class AstNodeType
     Module,
     File,
     VarDecl,
+    TypeDecl,
     Type,
     Namespace,
     Literal,
     SingleOp,
     BinaryOp,
-	CompilerAssert,
-	CompilerPrint,
-	CompilerRun,
+    CompilerAssert,
+    CompilerPrint,
+    CompilerRun,
 };
 
 static const uint64_t AST_CONST_EXPR     = 0x00000000'00000001;
@@ -37,6 +38,7 @@ struct AstNode : public PoolElement
     void reset() override
     {
         semanticState = AstNodeSemanticState::Enter;
+        scope         = nullptr;
         parent        = nullptr;
         semanticFct   = nullptr;
         typeInfo      = nullptr;
@@ -72,6 +74,7 @@ struct AstNode : public PoolElement
             computedValue = move(from->computedValue);
     }
 
+    Scope*               scope;
     TypeInfo*            typeInfo;
     Token                token;
     SemanticFct          semanticFct;
@@ -82,6 +85,7 @@ struct AstNode : public PoolElement
     vector<AstNode*>     childs;
     SpinLock             mutex;
     ComputedValue        computedValue;
+    Utf8Crc              name;
 };
 
 struct AstVarDecl : public AstNode
@@ -92,8 +96,6 @@ struct AstVarDecl : public AstNode
         astType = nullptr;
     }
 
-    Scope*          scope;
-    Utf8Crc         name;
     struct AstType* astType;
     struct AstNode* astAssignment;
 };

@@ -9,6 +9,7 @@ LanguageSpec::LanguageSpec()
 	keywords["#run"] = TokenId::CompilerRun;
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
+	keywords["type"] = TokenId::KwdType;
 
 #ifdef SWAG_TEST_CPP
     keywords["#include"] = TokenId::Invalid;
