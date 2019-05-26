@@ -20,6 +20,7 @@ enum class AstNodeType
     File,
     VarDecl,
     TypeDecl,
+    IdentifierRef,
     Identifier,
     Type,
     Namespace,
@@ -101,13 +102,26 @@ struct AstVarDecl : public AstNode
     struct AstNode* astAssignment;
 };
 
+struct AstIdentifierRef : public AstNode
+{
+    void reset() override
+    {
+        startScope = nullptr;
+    }
+
+    SymbolKind symbolKind;
+    Scope*     startScope;
+};
+
 struct AstIdentifier : public AstNode
 {
     void reset() override
     {
-        matchScope = nullptr;
+        resolvedSymbolName = nullptr;
+        matchScope         = nullptr;
     }
 
-    Scope*     matchScope;
-    SymbolKind symbolKind;
+    SymbolName*     resolvedSymbolName;
+    SymbolOverload* resolvedSymbolOverload;
+    Scope*          matchScope;
 };

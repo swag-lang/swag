@@ -214,6 +214,7 @@
     <ClCompile Include="SemanticCompiler_.cpp" />
     <ClCompile Include="SemanticDeclaration_.cpp" />
     <ClCompile Include="SemanticExpression_.cpp" />
+    <ClCompile Include="SemanticIdentifier_.cpp" />
     <ClCompile Include="SemanticJob.cpp" />
     <ClCompile Include="SemanticType_.cpp" />
     <ClCompile Include="SymTable.cpp" />

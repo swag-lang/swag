@@ -5,6 +5,7 @@ struct SourceFile;
 struct AstVarDecl;
 struct AstNode;
 struct AstIdentifier;
+struct AstIdentifierRef;
 struct Scope;
 struct Utf8;
 
@@ -33,7 +34,8 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
-	bool doIdentifier(AstNode* parent, AstIdentifier** result = nullptr);
+    bool doIdentifier(AstNode* parent, AstIdentifier** result = nullptr);
+	bool doIdentifierRef(AstNode* parent, AstIdentifierRef** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);

@@ -1,9 +1,6 @@
 #unittest module module85
-#unittest pass semantic
+#unittest pass syntax
 
-namespace A
-{
-	type myType: u32;
-}
-//var a: A.myType;
+var a: A.myType;
+var b: A.B.C;
 

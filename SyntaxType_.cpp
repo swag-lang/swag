@@ -26,19 +26,6 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doIdentifier(AstNode* parent, AstIdentifier** result)
-{
-    auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeType::Identifier, currentScope, parent, false);
-    identifier->semanticFct = &SemanticJob::resolveIdentifier;
-    identifier->token       = move(token);
-    identifier->name        = identifier->token.text;
-    identifier->name.computeCrc();
-	if (result)
-		*result = identifier;
-    SWAG_CHECK(tokenizer.getToken(token));
-    return true;
-}
-
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::Type, currentScope, parent, false);
@@ -55,8 +42,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::Identifier)
     {
-        AstIdentifier* identifier;
-        SWAG_CHECK(doIdentifier(node, &identifier));
+        AstIdentifierRef* identifier;
+        SWAG_CHECK(doIdentifierRef(node, &identifier));
         identifier->symbolKind = SymbolKind::TypeDecl;
         return true;
     }

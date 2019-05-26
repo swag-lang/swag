@@ -16,6 +16,36 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doIdentifier(AstNode* parent, AstIdentifier** result)
+{
+    auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeType::Identifier, currentScope, parent, false);
+    identifier->semanticFct = &SemanticJob::resolveIdentifier;
+    identifier->token       = move(token);
+    identifier->name        = identifier->token.text;
+    identifier->name.computeCrc();
+    if (result)
+        *result = identifier;
+    SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}
+
+bool SyntaxJob::doIdentifierRef(AstNode* parent, AstIdentifierRef** result)
+{
+    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeType::IdentifierRef, currentScope, parent, false);
+    identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
+    if (result)
+        *result = identifierRef;
+
+    SWAG_CHECK(doIdentifier(identifierRef));
+    while (token.id == TokenId::SymDot)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymDot));
+        SWAG_CHECK(doIdentifier(identifierRef));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 {
     switch (token.id)
@@ -28,7 +58,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 
     case TokenId::LiteralNumber:
     case TokenId::LiteralCharacter:
-	case TokenId::LiteralString:
+    case TokenId::LiteralString:
         return doLiteral(parent, result);
 
     default:

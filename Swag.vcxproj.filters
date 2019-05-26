@@ -119,6 +119,9 @@
     <ClCompile Include="SourceFile.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticIdentifier_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
