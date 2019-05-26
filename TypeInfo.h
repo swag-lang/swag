@@ -43,8 +43,8 @@ struct TypeInfoNative : public TypeInfo
 {
     TypeInfoNative(NativeType type, uint64_t tflags)
     {
-        nativeType = type;
         kind       = TypeInfoKind::NativeType;
+        nativeType = type;
         flags      = tflags;
     }
 };
