@@ -8,7 +8,6 @@
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
-    auto           sourceFile    = context->sourceFile;
     auto           node          = static_cast<AstIdentifierRef*>(context->node);
     AstIdentifier* identifier    = static_cast<AstIdentifier*>(node->childs.back());
     node->resolvedSymbolName     = identifier->resolvedSymbolName;
@@ -16,6 +15,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->typeInfo               = identifier->typeInfo;
     node->token.startLocation    = node->childs.front()->token.startLocation;
     node->token.endLocation      = node->childs.back()->token.startLocation;
+    node->name                   = move(identifier->name);
     return true;
 }
 

@@ -8,3 +8,4 @@ enum A
 }
 
 var a: A;
+

@@ -21,11 +21,11 @@ struct SymbolOverload : public PoolElement
 enum class SymbolKind
 {
     Variable,
-    TypeDecl,
+    Type,
     Namespace,
-	Enum,
-	EnumValue,
-	Function,
+    Enum,
+    EnumValue,
+    Function,
 };
 
 struct SymbolName : public PoolElement

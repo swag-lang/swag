@@ -34,9 +34,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     {
         auto symName = child->resolvedSymbolName;
         auto symOver = child->resolvedSymbolOverload;
-        if (symName->kind != SymbolKind::Enum && symName->kind != SymbolKind::TypeDecl)
+        if (symName->kind != SymbolKind::Enum && symName->kind != SymbolKind::Type)
         {
-            Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, format("expression is not a type", child->name.c_str())};
+            Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type", child->name.c_str())};
             Diagnostic note{symOver->sourceFile, symOver->startLocation, symOver->endLocation, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
             return context->sourceFile->report(diag, &note);
         }
@@ -52,13 +52,13 @@ bool SemanticJob::resolveTypeDecl(SemanticContext* context)
     node->typeInfo = node->childs[0]->typeInfo;
 
     // Register symbol with its type
-    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::TypeDecl));
+    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Type));
 
     // We need to check the scope hierarchy for symbol ghosting
     auto scope = node->scope->parentScope;
     while (scope)
     {
-        SWAG_CHECK(scope->symTable->checkHiddenSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::TypeDecl));
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Type));
         scope = scope->parentScope;
     }
 
