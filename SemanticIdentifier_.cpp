@@ -61,13 +61,21 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             auto        name = symTable->findNoLock(node->name);
             if (name)
             {
+                scoped_lock lkn(name->mutex);
                 node->matchScope = scope;
                 if (!name->overloads.empty())
                 {
                     node->resolvedSymbolName     = name;
                     node->resolvedSymbolOverload = name->overloads[0];
                     node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
-                    context->result              = SemanticResult::Done;
+                    switch (node->typeInfo->kind)
+                    {
+                    case TypeInfoKind::Namespace:
+                        parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
+                        break;
+                    }
+
+                    context->result = SemanticResult::Done;
                     return true;
                 }
 

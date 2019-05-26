@@ -2,6 +2,12 @@
 #include "Pool.h"
 struct Scope;
 
+enum class TypeInfoKind
+{
+    NativeType,
+    Namespace,
+};
+
 enum class NativeType
 {
     SX,
@@ -29,8 +35,9 @@ static const uint64_t TYPEINFO_FLOAT        = 0x00000000'00000008;
 
 struct TypeInfo : public PoolElement
 {
-    uint64_t   flags;
-    NativeType nativeType;
+    uint64_t     flags;
+    TypeInfoKind kind;
+    NativeType   nativeType;
 };
 
 struct TypeInfoNative : public TypeInfo
@@ -38,6 +45,7 @@ struct TypeInfoNative : public TypeInfo
     TypeInfoNative(NativeType type, uint64_t tflags)
     {
         nativeType = type;
+        kind       = TypeInfoKind::NativeType;
         flags      = tflags | TYPEINFO_NATIVE;
     }
 };
@@ -45,6 +53,11 @@ struct TypeInfoNative : public TypeInfo
 struct TypeInfoNamespace : public TypeInfo
 {
     Scope* scope;
+
+    TypeInfoNamespace()
+    {
+        kind = TypeInfoKind::Namespace;
+    }
 };
 
 extern TypeInfoNative g_TypeInfoSX;

@@ -98,7 +98,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     // Overloads are not allowed on certain types
     if (type != SymbolKind::Function && !symbol->overloads.empty())
     {
-        auto       firstOverload = &symbol->defaultOverload;
+        auto       firstOverload = symbol->overloads[0];
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
