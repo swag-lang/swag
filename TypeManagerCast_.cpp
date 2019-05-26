@@ -316,7 +316,7 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
     }
 
     case NativeType::FX:
-	case NativeType::F32:
+    case NativeType::F32:
         nodeToCast->typeInfo = &g_TypeInfoF64;
         return true;
     }
@@ -327,7 +327,7 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
 bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
     // Cast from native only for now
-    if (!(toType->flags & TYPEINFO_NATIVE))
+    if (toType->kind != TypeInfoKind::NativeType)
         return false;
     if (!(nodeToCast->flags & AST_VALUE_COMPUTED))
         return false;
@@ -366,7 +366,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
     if (nodeToCast->typeInfo == toType)
         return true;
 
-    if (toType->flags & TYPEINFO_NATIVE)
+    if (toType->kind == TypeInfoKind::NativeType)
     {
         return castToNative(sourceFile, toType, nodeToCast, castFlags);
     }
@@ -392,7 +392,7 @@ void TypeManager::promote(AstNode* left, AstNode* right)
 {
     if (left->typeInfo == right->typeInfo)
         return;
-    if (!(left->typeInfo->flags & TYPEINFO_NATIVE) || !(right->typeInfo->flags & TYPEINFO_NATIVE))
+    if ((left->typeInfo->kind != TypeInfoKind::NativeType) || (right->typeInfo->kind != TypeInfoKind::NativeType))
         return;
 
     promoteInteger(left);
@@ -440,13 +440,13 @@ void TypeManager::promote(AstNode* left, AstNode* right)
         return;
     }
 
-	if (left->typeInfo->nativeType == NativeType::FX && right->typeInfo->nativeType == NativeType::F64)
+    if (left->typeInfo->nativeType == NativeType::FX && right->typeInfo->nativeType == NativeType::F64)
     {
-            left->typeInfo = &g_TypeInfoF64;
+        left->typeInfo = &g_TypeInfoF64;
         return;
     }
 
-	if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::FX)
+    if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::FX)
     {
         right->typeInfo = &g_TypeInfoF64;
         return;
@@ -455,16 +455,16 @@ void TypeManager::promote(AstNode* left, AstNode* right)
 
 void TypeManager::promoteInteger(AstNode* node)
 {
-    if (!(node->flags & TYPEINFO_NATIVE))
+    if (node->typeInfo->kind != TypeInfoKind::NativeType)
         return;
 
-    if (node->typeInfo == &g_TypeInfoU8 || node->typeInfo == &g_TypeInfoU16)
+    if (node->typeInfo->nativeType == NativeType::U8 || node->typeInfo->nativeType == NativeType::U16)
     {
         node->typeInfo = &g_TypeInfoU32;
         return;
     }
 
-    if (node->typeInfo == &g_TypeInfoS8 || node->typeInfo == &g_TypeInfoS16)
+    if (node->typeInfo->nativeType == NativeType::S8 || node->typeInfo->nativeType == NativeType::S16)
     {
         node->typeInfo = &g_TypeInfoS32;
         return;

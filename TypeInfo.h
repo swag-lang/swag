@@ -28,10 +28,9 @@ enum class NativeType
     String,
 };
 
-static const uint64_t TYPEINFO_NATIVE       = 0x00000000'00000001;
-static const uint64_t TYPEINFO_INT_SIGNED   = 0x00000000'00000002;
-static const uint64_t TYPEINFO_INT_UNSIGNED = 0x00000000'00000004;
-static const uint64_t TYPEINFO_FLOAT        = 0x00000000'00000008;
+static const uint64_t TYPEINFO_INT_SIGNED   = 0x00000000'00000001;
+static const uint64_t TYPEINFO_INT_UNSIGNED = 0x00000000'00000002;
+static const uint64_t TYPEINFO_FLOAT        = 0x00000000'00000004;
 
 struct TypeInfo : public PoolElement
 {
@@ -46,7 +45,7 @@ struct TypeInfoNative : public TypeInfo
     {
         nativeType = type;
         kind       = TypeInfoKind::NativeType;
-        flags      = tflags | TYPEINFO_NATIVE;
+        flags      = tflags;
     }
 };
 
