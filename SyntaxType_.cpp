@@ -42,8 +42,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::Identifier)
     {
-        AstIdentifierRef* identifier;
-        SWAG_CHECK(doIdentifierRef(node, &identifier));
+        SWAG_CHECK(doIdentifierRef(node));
         return true;
     }
 

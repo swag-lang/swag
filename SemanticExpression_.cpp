@@ -34,7 +34,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
     case NativeType::FX:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("minus operation not available on type '%s'", TypeManager::nativeTypeName(op->typeInfo).c_str())});
+        return sourceFile->report({sourceFile, op->token, format("minus operation not available on type '%s'", op->typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
@@ -75,7 +75,7 @@ bool SemanticJob::resolveSingleOpExclam(SemanticContext* context, AstNode* op)
     case NativeType::Bool:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("boolean inversion not available on type '%s'", TypeManager::nativeTypeName(op->typeInfo).c_str())});
+        return sourceFile->report({sourceFile, op->token, format("boolean inversion not available on type '%s'", op->typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)

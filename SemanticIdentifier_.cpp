@@ -54,6 +54,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     case TypeInfoKind::Namespace:
                         parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
                         break;
+					case TypeInfoKind::Enum:
+                        parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
+                        break;
                     }
 
                     context->result = SemanticResult::Done;

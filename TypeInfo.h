@@ -1,5 +1,6 @@
 #pragma once
 #include "Pool.h"
+#include "Utf8.h"
 struct Scope;
 
 enum class TypeInfoKind
@@ -38,14 +39,16 @@ struct TypeInfo : public PoolElement
     uint64_t     flags;
     TypeInfoKind kind;
     NativeType   nativeType;
+    Utf8         name;
 };
 
 struct TypeInfoNative : public TypeInfo
 {
-    TypeInfoNative(NativeType type, uint64_t tflags)
+    TypeInfoNative(NativeType type, const char* tname, uint64_t tflags)
     {
         kind       = TypeInfoKind::NativeType;
         nativeType = type;
+        name       = tname;
         flags      = tflags;
     }
 };

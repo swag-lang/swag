@@ -50,6 +50,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     typeInfo->rawType = rawTypeInfo;
     SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode->token, enumNode->name, enumNode->typeInfo, SymbolKind::Enum));
 
+	context->result = SemanticResult::Done;
     return true;
 }
 
@@ -59,6 +60,8 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     auto enumNode = valNode->parent;
     auto typeEnum = static_cast<TypeInfoEnum*>(enumNode->typeInfo);
 
-    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode->token, valNode->name, typeEnum->rawType, SymbolKind::EnumValue));
+    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode->token, valNode->name, typeEnum, SymbolKind::EnumValue));
+
+	context->result = SemanticResult::Done;
     return true;
 }

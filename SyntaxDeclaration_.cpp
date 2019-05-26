@@ -24,6 +24,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
         if (!symbol)
         {
             auto typeInfo           = sourceFile->poolFactory->typeInfoNamespace.alloc();
+            typeInfo->name          = "namespace " + namespaceNode->name;
             newScope                = Ast::newScope(sourceFile, namespaceNode->name, ScopeKind::Namespace, currentScope);
             typeInfo->scope         = newScope;
             namespaceNode->typeInfo = typeInfo;
@@ -79,8 +80,10 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         auto        symbol = currentScope->symTable->findNoLock(enumNode->name);
         if (!symbol)
         {
-            auto typeInfo      = sourceFile->poolFactory->typeInfoEnum.alloc();
-            newScope           = Ast::newScope(sourceFile, enumNode->name, ScopeKind::Enum, currentScope);
+            auto typeInfo = sourceFile->poolFactory->typeInfoEnum.alloc();
+            newScope      = Ast::newScope(sourceFile, enumNode->name, ScopeKind::Enum, currentScope);
+            newScope->allocateSymTable();
+            typeInfo->name     = "enum " + enumNode->name;
             typeInfo->scope    = newScope;
             enumNode->typeInfo = typeInfo;
             currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode->token, newScope->name, SymbolKind::Enum);

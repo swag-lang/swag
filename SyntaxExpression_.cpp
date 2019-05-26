@@ -16,7 +16,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doIdentifier(AstNode* parent, AstIdentifier** result)
+bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 {
     auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeType::Identifier, currentScope, parent, false);
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
@@ -29,7 +29,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstIdentifier** result)
     return true;
 }
 
-bool SyntaxJob::doIdentifierRef(AstNode* parent, AstIdentifierRef** result)
+bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
     auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeType::IdentifierRef, currentScope, parent, false);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
@@ -60,6 +60,9 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::LiteralCharacter:
     case TokenId::LiteralString:
         return doLiteral(parent, result);
+
+	case TokenId::Identifier:
+		return doIdentifierRef(parent, result);
 
     default:
         return notSupportedError(token);

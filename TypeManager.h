@@ -26,6 +26,4 @@ struct TypeManager
 
     static void promote(AstNode* left, AstNode* right);
     static void promoteInteger(AstNode* node);
-
-    static string nativeTypeName(TypeInfo* type);
 };

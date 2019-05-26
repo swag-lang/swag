@@ -8,9 +8,7 @@ bool TypeManager::castError(SourceFile* sourceFile, TypeInfo* requestedType, Ast
 {
     if (!(castFlags & CASTFLAG_NOERROR))
     {
-        sourceFile->report({sourceFile,
-                            nodeToCast->token,
-                            format("can't cast from '%s' to '%s'", TypeManager::nativeTypeName(nodeToCast->typeInfo).c_str(), TypeManager::nativeTypeName(requestedType).c_str()).c_str()});
+        sourceFile->report({sourceFile, nodeToCast->token, format("can't cast from '%s' to '%s'", nodeToCast->typeInfo->name.c_str(), requestedType->name.c_str()).c_str()});
     }
 
     return false;
