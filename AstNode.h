@@ -24,6 +24,7 @@ enum class AstNodeType
     Identifier,
     Type,
     Namespace,
+	Enum,
     Literal,
     SingleOp,
     BinaryOp,

@@ -12,7 +12,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
     node->semanticFct = &SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
-    SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getTokenOrEOL(token));
     SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #assert expression"}));
     SWAG_CHECK(doExpression(node));
@@ -26,7 +26,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
     node->semanticFct = &SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
-    SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getTokenOrEOL(token));
     SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #print expression"}));
     SWAG_CHECK(doExpression(node));
@@ -40,7 +40,7 @@ bool SyntaxJob::doCompilerRun(AstNode* parent)
     node->semanticFct = &SemanticJob::resolveCompilerRun;
     node->token       = move(token);
 
-    SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getTokenOrEOL(token));
     SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #run expression"}));
     SWAG_CHECK(doExpression(node));
@@ -50,7 +50,7 @@ bool SyntaxJob::doCompilerRun(AstNode* parent)
 
 bool SyntaxJob::doCompilerUnitTest()
 {
-    SWAG_VERIFY(currentScope->type == ScopeType::Module, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getTokenOrEOL(token));
     SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #unittest parameter"}));
 

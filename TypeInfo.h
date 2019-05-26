@@ -6,6 +6,7 @@ enum class TypeInfoKind
 {
     NativeType,
     Namespace,
+	Enum,
 };
 
 enum class NativeType
@@ -56,6 +57,16 @@ struct TypeInfoNamespace : public TypeInfo
     TypeInfoNamespace()
     {
         kind = TypeInfoKind::Namespace;
+    }
+};
+
+struct TypeInfoEnum : public TypeInfo
+{
+    Scope* scope;
+
+	TypeInfoEnum()
+    {
+        kind = TypeInfoKind::Enum;
     }
 };
 

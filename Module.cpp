@@ -14,7 +14,7 @@ Module::Module(const fs::path& path)
     reset();
 
 	scopeRoot = poolFactory.scope.alloc();
-	scopeRoot->type = ScopeType::Module;
+	scopeRoot->kind = ScopeKind::Module;
 	scopeRoot->allocateSymTable();
 
 	astRoot = Ast::newNode(&poolFactory.astNode, AstNodeType::Module, nullptr);

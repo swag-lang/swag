@@ -61,6 +61,7 @@ enum class TokenId
     KwdVar,
 	KwdNamespace,
 	KwdType,
+	KwdEnum,
 
     Identifier,
     LiteralNumber,

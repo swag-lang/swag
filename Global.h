@@ -18,6 +18,7 @@ extern struct ThreadManager g_ThreadMgr;
 extern struct LanguageSpec  g_LangSpec;
 extern struct PoolFactory   g_Pool;
 extern struct Workspace     g_Workspace;
+extern struct TypeManager   g_TypeMgr;
 
 extern Utf8 format(const char* format, ...);
 

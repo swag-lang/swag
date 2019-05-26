@@ -23,6 +23,7 @@ enum class SymbolKind
     Variable,
     TypeDecl,
     Namespace,
+	Enum,
 	Function,
 };
 

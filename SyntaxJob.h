@@ -37,6 +37,7 @@ struct SyntaxJob : public Job
     bool doIdentifier(AstNode* parent, AstIdentifier** result = nullptr);
 	bool doIdentifierRef(AstNode* parent, AstIdentifierRef** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
+	bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);

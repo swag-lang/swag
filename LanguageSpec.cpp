@@ -10,6 +10,7 @@ LanguageSpec::LanguageSpec()
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
     keywords["type"]      = TokenId::KwdType;
+    keywords["enum"]      = TokenId::KwdEnum;
 
 #ifdef SWAG_TEST_CPP
     keywords["#include"] = TokenId::Invalid;

@@ -4,15 +4,16 @@
 struct Scope;
 struct SymTable;
 
-enum class ScopeType
+enum class ScopeKind
 {
     Module,
     Namespace,
+    Enum,
 };
 
 struct Scope : public PoolElement
 {
-    ScopeType type;
+    ScopeKind kind;
     Scope*    parentScope;
     SymTable* symTable;
     Utf8Crc   name;
@@ -29,5 +30,10 @@ struct Scope : public PoolElement
         if (symTable)
             return;
         symTable = new SymTable();
+    }
+
+    bool isGlobal()
+    {
+        return kind == ScopeKind::Module || kind == ScopeKind::Namespace;
     }
 };

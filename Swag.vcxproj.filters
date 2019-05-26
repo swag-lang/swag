@@ -215,14 +215,14 @@
     <ClInclude Include="Utf8Crc.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Scope.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="TypeManager.h">
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="SourceFile.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Scope.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

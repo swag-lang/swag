@@ -26,4 +26,5 @@ struct PoolFactory
     Pool<SymbolOverload> symOverload;
 
     Pool<TypeInfoNamespace> typeInfoNamespace;
+    Pool<TypeInfoEnum>      typeInfoEnum;
 };
