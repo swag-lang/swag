@@ -41,11 +41,15 @@ JobResult SemanticJob::execute()
             }
 
         case AstNodeSemanticState::ProcessingChilds:
-            context.node = node;
-            if (!node->semanticFct(&context))
-                return JobResult::ReleaseJob;
-            if (context.result == SemanticResult::Pending)
-                return JobResult::KeepJobAlive;
+            if (node->semanticFct)
+            {
+                context.node = node;
+                if (!node->semanticFct(&context))
+                    return JobResult::ReleaseJob;
+                if (context.result == SemanticResult::Pending)
+                    return JobResult::KeepJobAlive;
+            }
+
             nodes.pop_back();
             break;
         }

@@ -27,6 +27,13 @@ namespace Ast
         return node;
     }
 
+	inline void assignToken(AstNode* node, Token& token)
+	{
+		node->name = move(token.text);
+		node->name.computeCrc();
+		node->token = move(token);
+	}
+
     extern Scope* newScope(SourceFile* sourceFile, Utf8Crc& name, ScopeKind kind, Scope* parentScope);
     extern void   addChild(AstNode* parent, AstNode* child, bool lockParent = true);
 }; // namespace Ast

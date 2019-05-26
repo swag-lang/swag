@@ -44,7 +44,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     {
         AstIdentifierRef* identifier;
         SWAG_CHECK(doIdentifierRef(node, &identifier));
-        identifier->symbolKind = SymbolKind::TypeDecl;
         return true;
     }
 

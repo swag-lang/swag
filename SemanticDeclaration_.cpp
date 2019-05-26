@@ -37,3 +37,28 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     context->result = SemanticResult::Done;
     return true;
 }
+
+bool SemanticJob::resolveEnumType(SemanticContext* context)
+{
+    auto enumNode = context->node->parent;
+
+    // Enum type
+    auto rawTypeInfo = &g_TypeInfoS32;
+
+    // Register symbol with its type
+    auto typeInfo     = static_cast<TypeInfoEnum*>(enumNode->typeInfo);
+    typeInfo->rawType = rawTypeInfo;
+    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode->token, enumNode->name, enumNode->typeInfo, SymbolKind::Enum));
+
+    return true;
+}
+
+bool SemanticJob::resolveEnumValue(SemanticContext* context)
+{
+    auto valNode  = context->node;
+    auto enumNode = valNode->parent;
+    auto typeEnum = static_cast<TypeInfoEnum*>(enumNode->typeInfo);
+
+    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode->token, valNode->name, typeEnum->rawType, SymbolKind::EnumValue));
+    return true;
+}

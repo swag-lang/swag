@@ -24,6 +24,7 @@ enum class SymbolKind
     TypeDecl,
     Namespace,
 	Enum,
+	EnumValue,
 	Function,
 };
 

@@ -8,33 +8,14 @@
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
-    auto           sourceFile = context->sourceFile;
-    auto           node       = static_cast<AstIdentifierRef*>(context->node);
-    AstIdentifier* identifier = static_cast<AstIdentifier*>(node->childs.back());
-
-    // Be sure the found symbol is of the correct kind
-    auto symName = identifier->resolvedSymbolName;
-    auto symOver = identifier->resolvedSymbolOverload;
-    if (symName->kind != node->symbolKind)
-    {
-        switch (node->symbolKind)
-        {
-        case SymbolKind::TypeDecl:
-        {
-            Diagnostic diag{sourceFile, identifier->token, format("symbol '%s' is not a type", identifier->name.c_str())};
-            Diagnostic note{symOver->sourceFile, symOver->startLocation, symOver->endLocation, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
-            return sourceFile->report(diag, &note);
-        }
-        default:
-        {
-            Diagnostic diag{sourceFile, node->token, format("invalid usage of symbol '%s'", identifier->name.c_str())};
-            Diagnostic note{symOver->sourceFile, symOver->startLocation, symOver->endLocation, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
-            return sourceFile->report(diag, &note);
-        }
-        }
-    }
-
-    node->typeInfo = identifier->typeInfo;
+    auto           sourceFile    = context->sourceFile;
+    auto           node          = static_cast<AstIdentifierRef*>(context->node);
+    AstIdentifier* identifier    = static_cast<AstIdentifier*>(node->childs.back());
+    node->resolvedSymbolName     = identifier->resolvedSymbolName;
+    node->resolvedSymbolOverload = identifier->resolvedSymbolOverload;
+    node->typeInfo               = identifier->typeInfo;
+    node->token.startLocation    = node->childs.front()->token.startLocation;
+    node->token.endLocation      = node->childs.back()->token.startLocation;
     return true;
 }
 

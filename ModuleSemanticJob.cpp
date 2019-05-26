@@ -51,6 +51,7 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* sourceFile, AstNode* node)
 
     case AstNodeType::VarDecl:
     case AstNodeType::TypeDecl:
+    case AstNodeType::EnumDecl:
     case AstNodeType::CompilerAssert:
     case AstNodeType::CompilerPrint:
     case AstNodeType::CompilerRun:

@@ -13,12 +13,35 @@
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
     auto node = context->node;
+
     if (node->token.literalType)
-        node->typeInfo = node->token.literalType;
-    else if (!node->childs.empty())
-        node->typeInfo = node->childs[0]->typeInfo;
-    else
-        context->job->error(context, "invalid type (yet) !");
+    {
+        node->typeInfo  = node->token.literalType;
+        context->result = SemanticResult::Done;
+        return true;
+    }
+
+    if (node->childs.empty())
+    {
+        return context->job->error(context, "invalid type (yet) !");
+    }
+
+    auto child     = node->childs[0];
+    node->typeInfo = child->typeInfo;
+
+    // If type comes from an identifier, be sure it's a type
+    if (child->resolvedSymbolName)
+    {
+        auto symName = child->resolvedSymbolName;
+        auto symOver = child->resolvedSymbolOverload;
+        if (symName->kind != SymbolKind::Enum && symName->kind != SymbolKind::TypeDecl)
+        {
+            Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, format("expression is not a type", child->name.c_str())};
+            Diagnostic note{symOver->sourceFile, symOver->startLocation, symOver->endLocation, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
+            return context->sourceFile->report(diag, &note);
+        }
+    }
+
     context->result = SemanticResult::Done;
     return true;
 }

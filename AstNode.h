@@ -24,7 +24,9 @@ enum class AstNodeType
     Identifier,
     Type,
     Namespace,
-	Enum,
+    EnumDecl,
+    EnumType,
+    EnumValue,
     Literal,
     SingleOp,
     BinaryOp,
@@ -40,12 +42,13 @@ struct AstNode : public PoolElement
 {
     void reset() override
     {
-        semanticState = AstNodeSemanticState::Enter;
-        scope         = nullptr;
-        parent        = nullptr;
-        semanticFct   = nullptr;
-        typeInfo      = nullptr;
-        flags         = 0;
+        semanticState      = AstNodeSemanticState::Enter;
+        scope              = nullptr;
+        parent             = nullptr;
+        semanticFct        = nullptr;
+        typeInfo           = nullptr;
+        resolvedSymbolName = nullptr;
+        flags              = 0;
         childs.clear();
     }
 
@@ -77,13 +80,16 @@ struct AstNode : public PoolElement
             computedValue = move(from->computedValue);
     }
 
-    Scope*               scope;
-    TypeInfo*            typeInfo;
+    Scope*          scope;
+    TypeInfo*       typeInfo;
+    SymbolName*     resolvedSymbolName;
+    SymbolOverload* resolvedSymbolOverload;
+
+    AstNode*             parent;
     Token                token;
     SemanticFct          semanticFct;
     AstNodeType          type;
     AstNodeSemanticState semanticState;
-    AstNode*             parent;
     uint64_t             flags;
     vector<AstNode*>     childs;
     SpinLock             mutex;
@@ -110,8 +116,7 @@ struct AstIdentifierRef : public AstNode
         startScope = nullptr;
     }
 
-    SymbolKind symbolKind;
-    Scope*     startScope;
+    Scope* startScope;
 };
 
 struct AstIdentifier : public AstNode
@@ -122,7 +127,5 @@ struct AstIdentifier : public AstNode
         matchScope         = nullptr;
     }
 
-    SymbolName*     resolvedSymbolName;
-    SymbolOverload* resolvedSymbolOverload;
-    Scope*          matchScope;
+    Scope* matchScope;
 };

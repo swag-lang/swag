@@ -7,31 +7,27 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobal(), error(token, "a namespace definition must appear either at file scope or immediately within another namespace definition"));
 
-    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::Namespace, currentScope, parent, false);
+    auto namespaceNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::Namespace, currentScope, parent, false);
     if (result)
-        *result = node;
+        *result = namespaceNode;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
-    node->token = move(token);
-
-    Utf8Crc name = node->token.text;
-    name.computeCrc();
-    node->name = name;
+    Ast::assignToken(namespaceNode, token);
 
     // Add/Get namespace
     Scope* newScope = nullptr;
     currentScope->allocateSymTable();
     {
         scoped_lock lk(currentScope->symTable->mutex);
-        auto        symbol = currentScope->symTable->findNoLock(name);
+        auto        symbol = currentScope->symTable->findNoLock(namespaceNode->name);
         if (!symbol)
         {
-            auto typeInfo   = sourceFile->poolFactory->typeInfoNamespace.alloc();
-            newScope        = Ast::newScope(sourceFile, name, ScopeKind::Namespace, currentScope);
-            typeInfo->scope = newScope;
-            node->typeInfo  = typeInfo;
-            currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, node->token, newScope->name, typeInfo, SymbolKind::Namespace);
+            auto typeInfo           = sourceFile->poolFactory->typeInfoNamespace.alloc();
+            newScope                = Ast::newScope(sourceFile, namespaceNode->name, ScopeKind::Namespace, currentScope);
+            typeInfo->scope         = newScope;
+            namespaceNode->typeInfo = typeInfo;
+            currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, namespaceNode->token, newScope->name, typeInfo, SymbolKind::Namespace);
         }
         else if (symbol->kind != SymbolKind::Namespace)
         {
@@ -47,17 +43,18 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
     auto curly = move(token);
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
+    // Content of namespace is toplevel
+    auto savedScope = currentScope;
+    currentScope    = newScope;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        auto savedScope = currentScope;
-        currentScope    = newScope;
-        auto ok         = doTopLevel(node);
-        currentScope    = savedScope;
-        SWAG_CHECK(ok);
+        SWAG_CHECK(doTopLevel(namespaceNode));
     }
+
+    currentScope = savedScope;
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
@@ -66,31 +63,27 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::Enum, currentScope, parent, false);
+    auto enumNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::EnumDecl, currentScope, parent, false);
     if (result)
-        *result = node;
+        *result = enumNode;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid enum name '%s'", token.text.c_str())));
-    node->token = move(token);
-
-    Utf8Crc name = node->token.text;
-    name.computeCrc();
-    node->name = name;
+    Ast::assignToken(enumNode, token);
 
     // Add/Get namespace
     Scope* newScope = nullptr;
     currentScope->allocateSymTable();
     {
         scoped_lock lk(currentScope->symTable->mutex);
-        auto        symbol = currentScope->symTable->findNoLock(name);
+        auto        symbol = currentScope->symTable->findNoLock(enumNode->name);
         if (!symbol)
         {
-            auto typeInfo   = sourceFile->poolFactory->typeInfoNamespace.alloc();
-            newScope        = Ast::newScope(sourceFile, name, ScopeKind::Enum, currentScope);
-            typeInfo->scope = newScope;
-            node->typeInfo  = typeInfo;
-            currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, node->token, newScope->name, typeInfo, SymbolKind::Enum);
+            auto typeInfo      = sourceFile->poolFactory->typeInfoEnum.alloc();
+            newScope           = Ast::newScope(sourceFile, enumNode->name, ScopeKind::Enum, currentScope);
+            typeInfo->scope    = newScope;
+            enumNode->typeInfo = typeInfo;
+            currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode->token, newScope->name, SymbolKind::Enum);
         }
         else
         {
@@ -104,17 +97,28 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-    auto curly = move(token);
 
+    // Raw type
+    auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::EnumType, nullptr, enumNode, false);
+    typeNode->semanticFct = &SemanticJob::resolveEnumType;
+
+    // Content of enum
+    auto curly = move(token);
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    auto savedScope = currentScope;
+    currentScope    = newScope;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        auto savedScope = currentScope;
-        currentScope    = newScope;
-        auto ok         = doTopLevel(node);
-        currentScope    = savedScope;
-        SWAG_CHECK(ok);
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
+        auto enumValue         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::EnumDecl, currentScope, enumNode, false);
+        enumValue->semanticFct = &SemanticJob::resolveEnumValue;
+        Ast::assignToken(enumValue, token);
+
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     }
+
+    currentScope = savedScope;
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));

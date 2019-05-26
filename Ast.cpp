@@ -25,7 +25,7 @@ namespace Ast
         auto newScope         = sourceFile->poolFactory->scope.alloc();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
-        newScope->name        = move(name);
+        newScope->name        = name;
         newScope->fullname    = move(fullname);
         return newScope;
     }
