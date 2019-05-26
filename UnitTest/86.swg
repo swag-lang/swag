@@ -1,10 +1,10 @@
 #unittest module module86
 #unittest pass semantic
 
+#unittest error
 namespace A
 {
-	type myType: bool;
+	namespace A
+	{
+	}
 }
-
-var a: A.myType;
-

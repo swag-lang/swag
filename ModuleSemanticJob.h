@@ -7,9 +7,10 @@ struct Module;
 
 struct ModuleSemanticJob : public Job
 {
-    JobResult    execute() override;
-    bool         doSemanticNode(SourceFile* file, AstNode* node);
-    SemanticJob* newSemanticJob(SourceFile* file, AstNode* node);
+    JobResult           execute() override;
+    static bool         doSemanticNamespace(SourceFile* sourceFile, AstNode* node);
+    static bool         doSemanticNode(SourceFile* sourceFile, AstNode* node);
+    static SemanticJob* newSemanticJob(SourceFile* sourceFile, AstNode* node);
 
     Module* module = nullptr;
 };

@@ -21,15 +21,18 @@ SymbolName* SymTable::findNoLock(const Utf8Crc& name)
     return result;
 }
 
-SymbolName* SymTable::registerSymbolNameNoLock(PoolFactory* factory, const Utf8Crc& name, SymbolKind type)
+SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, SymbolKind type)
 {
     auto symbol = findNoLock(name);
     if (!symbol)
     {
-        symbol           = factory->symName.alloc();
-        symbol->name     = name;
-        symbol->kind     = type;
-        int indexInTable = name.crc % HASH_SIZE;
+        symbol                                = sourceFile->poolFactory->symName.alloc();
+        symbol->name                          = name;
+        symbol->kind                          = type;
+        symbol->defaultOverload.sourceFile    = sourceFile;
+        symbol->defaultOverload.startLocation = token.startLocation;
+        symbol->defaultOverload.endLocation   = token.endLocation;
+        int indexInTable                      = name.crc % HASH_SIZE;
         if (!mapNames[indexInTable])
             mapNames[indexInTable] = new map<Utf8Crc, SymbolName*>();
         (*mapNames[indexInTable])[name] = symbol;
@@ -39,26 +42,29 @@ SymbolName* SymTable::registerSymbolNameNoLock(PoolFactory* factory, const Utf8C
     return symbol;
 }
 
-bool SymTable::addSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
+bool SymTable::addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
 {
     scoped_lock lk(mutex);
+    return addSymbolTypeInfoNoLock(sourceFile, token, name, typeInfo, type);
+}
 
-    PoolFactory* factory = sourceFile->poolFactory;
-    auto         symbol  = findNoLock(name);
+bool SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
+{
+    auto symbol = findNoLock(name);
     if (!symbol)
-        symbol = registerSymbolNameNoLock(factory, name, type);
+        symbol = registerSymbolNameNoLock(sourceFile, token, name, type);
 
     if (!checkHiddenSymbolNoLock(sourceFile, token, name, typeInfo, type, symbol))
         return false;
-    symbol->addOverload(sourceFile, token, typeInfo);
+    symbol->addOverloadNoLock(sourceFile, token, typeInfo);
 
     // One less overload. When this reached zero, this means we known every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
     symbol->cptOverloads--;
     if (symbol->cptOverloads == 0)
     {
-		for (auto job : symbol->dependentJobs)
-			g_ThreadMgr.addJob(job);
+        for (auto job : symbol->dependentJobs)
+            g_ThreadMgr.addJob(job);
     }
 
     return true;
@@ -80,7 +86,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     // A symbol with a different type already exists
     if (symbol->kind != type)
     {
-        auto       firstOverload = symbol->overloads[0];
+        auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined with a different type in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
@@ -90,9 +96,9 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     }
 
     // Overloads are not allowed on certain types
-    if ((type == SymbolKind::Variable || type == SymbolKind::TypeDecl) && !symbol->overloads.empty())
+    if (type != SymbolKind::Function && !symbol->overloads.empty())
     {
-        auto       firstOverload = symbol->overloads[0];
+        auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
@@ -105,7 +111,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
-        auto       firstOverload = symbol->overloads[0];
+        auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined with the same type in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
@@ -117,7 +123,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     return true;
 }
 
-void SymbolName::addOverload(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo)
+void SymbolName::addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo)
 {
     auto overload           = sourceFile->poolFactory->symOverload.alloc();
     overload->typeInfo      = typeInfo;

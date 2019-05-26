@@ -1,4 +1,7 @@
 #pragma once
+#include "Pool.h"
+struct Scope;
+
 enum class NativeType
 {
     SX,
@@ -24,34 +27,39 @@ static const uint64_t TYPEINFO_INT_SIGNED   = 0x00000000'00000002;
 static const uint64_t TYPEINFO_INT_UNSIGNED = 0x00000000'00000004;
 static const uint64_t TYPEINFO_FLOAT        = 0x00000000'00000008;
 
-struct TypeInfo
+struct TypeInfo : public PoolElement
 {
     uint64_t   flags;
     NativeType nativeType;
 };
 
-struct NativeTypeInfo : public TypeInfo
+struct TypeInfoNative : public TypeInfo
 {
-    NativeTypeInfo(NativeType type, uint64_t tflags)
+    TypeInfoNative(NativeType type, uint64_t tflags)
     {
         nativeType = type;
         flags      = tflags | TYPEINFO_NATIVE;
     }
 };
 
-extern NativeTypeInfo g_TypeInfoSX;
-extern NativeTypeInfo g_TypeInfoS8;
-extern NativeTypeInfo g_TypeInfoS16;
-extern NativeTypeInfo g_TypeInfoS32;
-extern NativeTypeInfo g_TypeInfoS64;
-extern NativeTypeInfo g_TypeInfoUX;
-extern NativeTypeInfo g_TypeInfoU8;
-extern NativeTypeInfo g_TypeInfoU16;
-extern NativeTypeInfo g_TypeInfoU32;
-extern NativeTypeInfo g_TypeInfoU64;
-extern NativeTypeInfo g_TypeInfoBool;
-extern NativeTypeInfo g_TypeInfoF32;
-extern NativeTypeInfo g_TypeInfoF64;
-extern NativeTypeInfo g_TypeInfoFX;
-extern NativeTypeInfo g_TypeInfoChar;
-extern NativeTypeInfo g_TypeInfoString;
+struct TypeInfoNamespace : public TypeInfo
+{
+    Scope* scope;
+};
+
+extern TypeInfoNative g_TypeInfoSX;
+extern TypeInfoNative g_TypeInfoS8;
+extern TypeInfoNative g_TypeInfoS16;
+extern TypeInfoNative g_TypeInfoS32;
+extern TypeInfoNative g_TypeInfoS64;
+extern TypeInfoNative g_TypeInfoUX;
+extern TypeInfoNative g_TypeInfoU8;
+extern TypeInfoNative g_TypeInfoU16;
+extern TypeInfoNative g_TypeInfoU32;
+extern TypeInfoNative g_TypeInfoU64;
+extern TypeInfoNative g_TypeInfoBool;
+extern TypeInfoNative g_TypeInfoF32;
+extern TypeInfoNative g_TypeInfoF64;
+extern TypeInfoNative g_TypeInfoFX;
+extern TypeInfoNative g_TypeInfoChar;
+extern TypeInfoNative g_TypeInfoString;

@@ -2,7 +2,7 @@
 #include "SourceFile.h"
 #include "Register.h"
 #include "TypeInfo.h"
-struct NativeTypeInfo;
+struct TypeInfoNative;
 
 enum class TokenId
 {
@@ -80,7 +80,7 @@ struct Token
     SourceLocation  endLocation;
     Register        literalValue;
     TokenId         id;
-    NativeTypeInfo* literalType;
+    TypeInfoNative* literalType;
 };
 
 struct Tokenizer

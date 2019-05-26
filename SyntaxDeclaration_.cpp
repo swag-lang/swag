@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Global.h"
 #include "Module.h"
+#include "Diagnostic.h"
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
@@ -12,10 +13,41 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
     node->token = move(token);
 
-    // Add/Get namespace
     Utf8Crc name = node->token.text;
     name.computeCrc();
-    auto newScope = sourceFile->module->newNamespace(currentScope, name);
+	node->name = name;
+
+    // Add/Get namespace
+    Scope* newScope = nullptr;
+    currentScope->allocateSymTable();
+    {
+        scoped_lock lk(currentScope->symTable->mutex);
+        auto        symbol = currentScope->symTable->findNoLock(name);
+        if (!symbol)
+        {
+            auto typeInfo         = sourceFile->poolFactory->typeInfoNamespace.alloc();
+            auto fullname         = currentScope->fullname + "." + name;
+            newScope              = sourceFile->poolFactory->scope.alloc();
+            newScope->type        = ScopeType::Namespace;
+            newScope->parentScope = currentScope;
+            newScope->name        = move(name);
+            newScope->fullname    = move(fullname);
+            typeInfo->scope       = newScope;
+            node->typeInfo        = typeInfo;
+            currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, node->token, newScope->name, typeInfo, SymbolKind::Namespace);
+        }
+        else if (symbol->kind != SymbolKind::Namespace)
+        {
+            auto       firstOverload = &symbol->defaultOverload;
+            Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
+            Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
+            Utf8       note = "this is the other definition";
+            Diagnostic diagNote{firstOverload->sourceFile, firstOverload->startLocation, firstOverload->endLocation, note, DiagnosticLevel::Note};
+            return sourceFile->report(diag, &diagNote);
+        }
+        else
+            newScope = static_cast<TypeInfoNamespace*>(symbol->overloads[0]->typeInfo)->scope;
+    }
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
@@ -66,7 +98,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 
     node->scope = currentScope;
     currentScope->allocateSymTable();
-    currentScope->symTable->registerSymbolNameNoLock(sourceFile->poolFactory, node->name, SymbolKind::Variable);
+    currentScope->symTable->registerSymbolNameNoLock(sourceFile, node->token, node->name, SymbolKind::Variable);
 
     return true;
 }

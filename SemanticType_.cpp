@@ -29,7 +29,7 @@ bool SemanticJob::resolveTypeDecl(SemanticContext* context)
     node->typeInfo = node->childs[0]->typeInfo;
 
     // Register symbol with its type
-    SWAG_CHECK(node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::TypeDecl));
+    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::TypeDecl));
 
     // We need to check the scope hierarchy for symbol ghosting
     auto scope = node->scope->parentScope;

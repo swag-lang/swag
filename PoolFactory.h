@@ -6,18 +6,24 @@
 #include "Ast.h"
 #include "SymTable.h"
 #include "Scope.h"
+#include "TypeInfo.h"
 
 struct PoolFactory
 {
-    Pool<SourceFile>        sourceFile;
+    Pool<SourceFile> sourceFile;
+    Pool<Scope>      scope;
+
     Pool<SyntaxJob>         syntaxJob;
     Pool<ModuleSemanticJob> moduleJob;
     Pool<SemanticJob>       semanticJob;
-    Pool<AstNode>           astNode;
-    Pool<AstVarDecl>        astVarDecl;
-    Pool<Scope>             scope;
-    Pool<AstIdentifierRef>  astIdentifierRef;
-    Pool<AstIdentifier>     astIdentifier;
-    Pool<SymbolName>        symName;
-    Pool<SymbolOverload>    symOverload;
+
+    Pool<AstNode>          astNode;
+    Pool<AstVarDecl>       astVarDecl;
+    Pool<AstIdentifierRef> astIdentifierRef;
+    Pool<AstIdentifier>    astIdentifier;
+
+    Pool<SymbolName>     symName;
+    Pool<SymbolOverload> symOverload;
+
+    Pool<TypeInfoNamespace> typeInfoNamespace;
 };

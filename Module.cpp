@@ -43,19 +43,3 @@ void Module::removeFile(SourceFile* file)
 
     assert(false);
 }
-
-Scope* Module::newNamespace(Scope* parentNp, Utf8Crc& nameNp)
-{
-	auto fullnameNp = parentNp->fullname + "." + nameNp;
-	scoped_lock lk(mutexNamespace);
-	auto it = namespaces.find(fullnameNp);
-	if (it != namespaces.end())
-		return it->second;
-	auto np = poolFactory.scope.alloc();
-	namespaces[fullnameNp] = np;
-	np->type = ScopeType::Namespace;
-	np->parentScope = scopeRoot;
-	np->name = move(nameNp);
-	np->fullname = fullnameNp;
-	return np;
-}

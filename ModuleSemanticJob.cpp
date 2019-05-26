@@ -9,40 +9,60 @@
 #include "SourceFile.h"
 #include "Diagnostic.h"
 
-SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* file, AstNode* node)
+SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* sourceFile, AstNode* node)
 {
-    auto job        = file->poolFactory->semanticJob.alloc();
+    auto job        = sourceFile->poolFactory->semanticJob.alloc();
     job->astRoot    = node;
-    job->module     = module;
-    job->sourceFile = file;
+    job->module     = sourceFile->module;
+    job->sourceFile = sourceFile;
     job->nodes.push_back(node);
     return job;
 }
 
-bool ModuleSemanticJob::doSemanticNode(SourceFile* file, AstNode* node)
+bool ModuleSemanticJob::doSemanticNamespace(SourceFile* sourceFile, AstNode* node)
+{
+    // We need to check that the namespace name is not defined in the scope hierarchy, to avoid
+    // symbol hidding
+    auto scope = node->scope->parentScope;
+    while (scope)
+    {
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Namespace));
+        scope = scope->parentScope;
+    }
+
+    for (auto child : node->childs)
+        doSemanticNode(sourceFile, child);
+
+    return true;
+}
+
+bool ModuleSemanticJob::doSemanticNode(SourceFile* sourceFile, AstNode* node)
 {
     switch (node->type)
     {
     case AstNodeType::File:
-    case AstNodeType::Namespace:
         for (auto child : node->childs)
-            doSemanticNode(file, child);
+            doSemanticNode(sourceFile, child);
+        break;
+
+    case AstNodeType::Namespace:
+        SWAG_CHECK(doSemanticNamespace(sourceFile, node));
         break;
 
     case AstNodeType::VarDecl:
-	case AstNodeType::TypeDecl:
+    case AstNodeType::TypeDecl:
     case AstNodeType::CompilerAssert:
     case AstNodeType::CompilerPrint:
-	case AstNodeType::CompilerRun:
+    case AstNodeType::CompilerRun:
     {
-        auto job = newSemanticJob(file, node);
+        auto job = newSemanticJob(sourceFile, node);
         g_ThreadMgr.addJob(job);
     }
     break;
 
     default:
-        file->report({file, node->token, "not yet implemented ! (doSemanticNode)"});
-		return false;
+        sourceFile->report({sourceFile, node->token, "not yet implemented ! (doSemanticNode)"});
+        return false;
     }
 
     return true;

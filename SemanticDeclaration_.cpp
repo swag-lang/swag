@@ -1,14 +1,10 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Ast.h"
-#include "AstNode.h"
-#include "Utf8.h"
 #include "Global.h"
-#include "TypeInfo.h"
-#include "Diagnostic.h"
-#include "SourceFile.h"
 #include "Scope.h"
 #include "TypeManager.h"
+#include "ModuleSemanticJob.h"
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
@@ -28,7 +24,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Register symbol with its type
-    SWAG_CHECK(node->scope->symTable->addSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Variable));
+    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Variable));
 
     // We need to check the scope hierarchy for symbol ghosting
     auto scope = node->scope->parentScope;

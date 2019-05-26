@@ -2,7 +2,7 @@
 #include "TypeInfo.h"
 #include "Tokenizer.h"
 #include "Utf8.h"
-struct NativeTypeInfo;
+struct TypeInfoNative;
 
 struct LanguageSpec
 {
@@ -10,7 +10,7 @@ struct LanguageSpec
     string tokenToName(TokenId id);
 
     map<Utf8, TokenId>         keywords;
-    map<Utf8, NativeTypeInfo*> nativeTypes;
+    map<Utf8, TypeInfoNative*> nativeTypes;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
