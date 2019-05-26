@@ -27,15 +27,10 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
         auto        symbol = currentScope->symTable->findNoLock(name);
         if (!symbol)
         {
-            auto typeInfo         = sourceFile->poolFactory->typeInfoNamespace.alloc();
-            auto fullname         = currentScope->fullname + "." + name;
-            newScope              = sourceFile->poolFactory->scope.alloc();
-            newScope->kind        = ScopeKind::Namespace;
-            newScope->parentScope = currentScope;
-            newScope->name        = move(name);
-            newScope->fullname    = move(fullname);
-            typeInfo->scope       = newScope;
-            node->typeInfo        = typeInfo;
+            auto typeInfo   = sourceFile->poolFactory->typeInfoNamespace.alloc();
+            newScope        = Ast::newScope(sourceFile, name, ScopeKind::Namespace, currentScope);
+            typeInfo->scope = newScope;
+            node->typeInfo  = typeInfo;
             currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, node->token, newScope->name, typeInfo, SymbolKind::Namespace);
         }
         else if (symbol->kind != SymbolKind::Namespace)
@@ -91,15 +86,10 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         auto        symbol = currentScope->symTable->findNoLock(name);
         if (!symbol)
         {
-            auto typeInfo         = sourceFile->poolFactory->typeInfoNamespace.alloc();
-            auto fullname         = currentScope->fullname + "." + name;
-            newScope              = sourceFile->poolFactory->scope.alloc();
-            newScope->kind        = ScopeKind::Enum;
-            newScope->parentScope = currentScope;
-            newScope->name        = move(name);
-            newScope->fullname    = move(fullname);
-            typeInfo->scope       = newScope;
-            node->typeInfo        = typeInfo;
+            auto typeInfo   = sourceFile->poolFactory->typeInfoNamespace.alloc();
+            newScope        = Ast::newScope(sourceFile, name, ScopeKind::Enum, currentScope);
+            typeInfo->scope = newScope;
+            node->typeInfo  = typeInfo;
             currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, node->token, newScope->name, typeInfo, SymbolKind::Enum);
         }
         else

@@ -2,6 +2,7 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "AstNode.h"
+#include "Scope.h"
 
 struct PoolFactory;
 namespace Ast
@@ -26,5 +27,6 @@ namespace Ast
         return node;
     }
 
-    extern void addChild(AstNode* parent, AstNode* child, bool lockParent = true);
+    extern Scope* newScope(SourceFile* sourceFile, Utf8Crc& name, ScopeKind kind, Scope* parentScope);
+    extern void   addChild(AstNode* parent, AstNode* child, bool lockParent = true);
 }; // namespace Ast

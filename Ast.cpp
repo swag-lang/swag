@@ -18,4 +18,16 @@ namespace Ast
 
         child->parent = parent;
     }
+
+    Scope* newScope(SourceFile* sourceFile, Utf8Crc& name, ScopeKind kind, Scope* parentScope)
+    {
+        auto fullname         = parentScope->fullname + "." + name;
+        auto newScope         = sourceFile->poolFactory->scope.alloc();
+        newScope->kind        = kind;
+        newScope->parentScope = parentScope;
+        newScope->name        = move(name);
+        newScope->fullname    = move(fullname);
+        return newScope;
+    }
+
 }; // namespace Ast
