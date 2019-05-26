@@ -1,0 +1,13 @@
+#unittest module module93
+#unittest pass semantic
+
+namespace A
+{
+	namespace B
+	{
+		var tt1: bool;
+	}
+}
+
+#unittest error
+var a: A.B.tt1 = true;

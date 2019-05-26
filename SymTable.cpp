@@ -81,7 +81,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     if (!symbol)
         symbol = findNoLock(name);
     if (!symbol)
-        return false;
+        return true;
 
     // A symbol with a different type already exists
     if (symbol->kind != type)
