@@ -18,7 +18,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     // Register symbol with its type
     auto typeInfo     = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     typeInfo->rawType = rawTypeInfo;
-    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode->token, enumNode->name, enumNode->typeInfo, SymbolKind::Enum));
+    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode->token, enumNode->name, typeInfo, SymbolKind::Enum));
 
     context->result = SemanticResult::Done;
     return true;

@@ -32,10 +32,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
     // Register symbol with its type
-    auto typeInfo = CastTypeInfo<TypeInfoFunc>(funcNode->typeInfo, TypeInfoKind::Function);
-
+    auto typeInfo        = CastTypeInfo<TypeInfoFunc>(funcNode->typeInfo, TypeInfoKind::Function);
     typeInfo->returnType = typeNode->typeInfo;
-    SWAG_CHECK(typeNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode->token, funcNode->name, funcNode->typeInfo, SymbolKind::Function));
+    SWAG_CHECK(typeNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode->token, funcNode->name, typeInfo, SymbolKind::Function));
 
     context->result = SemanticResult::Done;
     return true;
