@@ -57,6 +57,8 @@ enum class TokenId
     CompilerAssert,
 	CompilerPrint,
 	CompilerRun,
+	CompilerFile,
+	CompilerLine,
 
     KwdVar,
 	KwdNamespace,
@@ -68,6 +70,8 @@ enum class TokenId
     LiteralString,
     LiteralCharacter,
     NativeType,
+	KwdTrue,
+	KwdFalse,
 
     Invalid,
     EndOfLine,

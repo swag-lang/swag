@@ -153,23 +153,6 @@ void Tokenizer::getIdentifier(Token& token)
         c = getCharNoSeek(offset);
     }
 
-    // Special keywords
-    if (token.text == "true")
-    {
-        token.id             = TokenId::LiteralNumber;
-        token.literalType    = &g_TypeInfoBool;
-        token.literalValue.b = true;
-        return;
-    }
-
-    if (token.text == "false")
-    {
-        token.id             = TokenId::LiteralNumber;
-        token.literalType    = &g_TypeInfoBool;
-        token.literalValue.b = false;
-        return;
-    }
-
     // Keyword
     auto it = g_LangSpec.keywords.find(token.text);
     if (it != g_LangSpec.keywords.end())
@@ -177,9 +160,33 @@ void Tokenizer::getIdentifier(Token& token)
     else
         token.id = TokenId::Identifier;
 
-    // Type
-    if (token.id == TokenId::NativeType)
+    // Special keywords
+    switch (token.id)
+    {
+    case TokenId::KwdTrue:
+        token.id             = TokenId::LiteralNumber;
+        token.literalType    = &g_TypeInfoBool;
+        token.literalValue.b = true;
+        return;
+    case TokenId::KwdFalse:
+        token.id             = TokenId::LiteralNumber;
+        token.literalType    = &g_TypeInfoBool;
+        token.literalValue.b = false;
+        return;
+    case TokenId::CompilerFile:
+        token.id          = TokenId::LiteralString;
+        token.literalType = &g_TypeInfoString;
+        token.text        = sourceFile->path.string();
+        return;
+    case TokenId::CompilerLine:
+        token.id               = TokenId::LiteralNumber;
+        token.literalType      = &g_TypeInfoS64;
+        token.literalValue.s64 = location.line + 1;
+        return;
+    case TokenId::NativeType:
         token.literalType = g_LangSpec.nativeTypes[token.text];
+        return;
+    }
 }
 
 bool Tokenizer::error(Token& token, const Utf8& msg)
@@ -196,7 +203,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
     {
         token.startLocation = location;
         token.literalType   = nullptr;
-		token.text.clear();
+        token.text.clear();
 
         auto c = getChar();
         if (c == 0)

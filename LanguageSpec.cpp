@@ -7,10 +7,14 @@ LanguageSpec::LanguageSpec()
     keywords["#assert"]   = TokenId::CompilerAssert;
     keywords["#print"]    = TokenId::CompilerPrint;
     keywords["#run"]      = TokenId::CompilerRun;
+    keywords["#file"]     = TokenId::CompilerFile;
+    keywords["#line"]     = TokenId::CompilerLine;
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
     keywords["type"]      = TokenId::KwdType;
     keywords["enum"]      = TokenId::KwdEnum;
+    keywords["true"]      = TokenId::KwdTrue;
+    keywords["false"]     = TokenId::KwdFalse;
 
 #ifdef SWAG_TEST_CPP
     keywords["#include"] = TokenId::Invalid;
