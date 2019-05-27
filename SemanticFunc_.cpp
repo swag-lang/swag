@@ -10,7 +10,7 @@
 bool SemanticJob::resolveFuncDeclParameters(SemanticContext* context)
 {
     auto node      = context->node;
-    node->typeInfo = &g_TypeInfoVoid;
+    node->typeInfo = g_TypeMgr.typeInfoVoid;
 
     context->result = SemanticResult::Done;
     return true;
@@ -29,7 +29,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (!typeNode->childs.empty())
         typeNode->typeInfo = typeNode->childs[0]->typeInfo;
     else
-        typeNode->typeInfo = &g_TypeInfoVoid;
+        typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
     // Register symbol with its type
     auto typeInfo        = static_cast<TypeInfoFunc*>(typeNode->typeInfo);

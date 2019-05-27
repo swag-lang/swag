@@ -32,7 +32,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     node->inheritComputedValue(expr);
 
     SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
-    SWAG_VERIFY(node->typeInfo == &g_TypeInfoBool, sourceFile->report({sourceFile, node->childs[0]->token, "expression should be 'bool'"}));
+    SWAG_VERIFY(node->typeInfo == g_TypeMgr.typeInfoBool, sourceFile->report({sourceFile, node->childs[0]->token, "expression should be 'bool'"}));
     SWAG_VERIFY(node->computedValue.variant.b, sourceFile->report({sourceFile, node->token, "compiler assertion failed"}));
     context->result = SemanticResult::Done;
     return true;

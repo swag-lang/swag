@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "Stats.h"
 #include "ThreadManager.h"
+#include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "PoolFactory.h"
 #include "Workspace.h"
@@ -13,13 +14,18 @@ Global        g_Global;
 CommandLine   g_CommandLine;
 Stats         g_Stats;
 ThreadManager g_ThreadMgr;
+TypeManager   g_TypeMgr;
 LanguageSpec  g_LangSpec;
 PoolFactory   g_Pool;
 Workspace     g_Workspace;
 
-Global::Global()
+void Global::setup()
 {
     numCores = std::thread::hardware_concurrency();
+
+	g_Log.setup();
+	g_TypeMgr.setup();
+	g_LangSpec.setup();
 }
 
 Utf8 format(const char* format, ...)
@@ -30,7 +36,7 @@ Utf8 format(const char* format, ...)
     va_end(args);
     vector<char> vec(len + 1);
     va_start(args, format);
-	vsnprintf(&vec[0], len + 1, format, args);
+    vsnprintf(&vec[0], len + 1, format, args);
     va_end(args);
     return &vec[0];
 }

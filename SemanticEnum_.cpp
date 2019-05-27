@@ -13,7 +13,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     auto enumNode = context->node->parent;
 
     // Enum raw type
-    auto rawTypeInfo = typeNode->childs.empty() ? &g_TypeInfoS32 : typeNode->childs[0]->typeInfo;
+    auto rawTypeInfo = typeNode->childs.empty() ? g_TypeMgr.typeInfoS32 : typeNode->childs[0]->typeInfo;
 
     // Register symbol with its type
     auto typeInfo     = static_cast<TypeInfoEnum*>(enumNode->typeInfo);

@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "LanguageSpec.h"
+#include "Global.h"
+#include "TypeManager.h"
 
-LanguageSpec::LanguageSpec()
+void LanguageSpec::setup()
 {
     keywords["#unittest"] = TokenId::CompilerUnitTest;
     keywords["#assert"]   = TokenId::CompilerAssert;
@@ -56,19 +58,19 @@ LanguageSpec::LanguageSpec()
     keywords["char"]   = TokenId::NativeType;
     keywords["string"] = TokenId::NativeType;
 
-    nativeTypes["u64"]    = &g_TypeInfoU64;
-    nativeTypes["u32"]    = &g_TypeInfoU32;
-    nativeTypes["u16"]    = &g_TypeInfoU16;
-    nativeTypes["u8"]     = &g_TypeInfoU8;
-    nativeTypes["s64"]    = &g_TypeInfoS64;
-    nativeTypes["s32"]    = &g_TypeInfoS32;
-    nativeTypes["s16"]    = &g_TypeInfoS16;
-    nativeTypes["s8"]     = &g_TypeInfoS8;
-    nativeTypes["f32"]    = &g_TypeInfoF32;
-    nativeTypes["f64"]    = &g_TypeInfoF64;
-    nativeTypes["bool"]   = &g_TypeInfoBool;
-    nativeTypes["char"]   = &g_TypeInfoChar;
-    nativeTypes["string"] = &g_TypeInfoString;
+    nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
+    nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;
+    nativeTypes["u16"]    = g_TypeMgr.typeInfoU16;
+    nativeTypes["u8"]     = g_TypeMgr.typeInfoU8;
+    nativeTypes["s64"]    = g_TypeMgr.typeInfoS64;
+    nativeTypes["s32"]    = g_TypeMgr.typeInfoS32;
+    nativeTypes["s16"]    = g_TypeMgr.typeInfoS16;
+    nativeTypes["s8"]     = g_TypeMgr.typeInfoS8;
+    nativeTypes["f32"]    = g_TypeMgr.typeInfoF32;
+    nativeTypes["f64"]    = g_TypeMgr.typeInfoF64;
+    nativeTypes["bool"]   = g_TypeMgr.typeInfoBool;
+    nativeTypes["char"]   = g_TypeMgr.typeInfoChar;
+    nativeTypes["string"] = g_TypeMgr.typeInfoString;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

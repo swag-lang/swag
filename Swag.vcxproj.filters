@@ -86,9 +86,6 @@
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="TypeInfo.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="TypeManager.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>

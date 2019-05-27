@@ -6,7 +6,7 @@ struct TypeInfoNative;
 
 struct LanguageSpec
 {
-    LanguageSpec();
+    void setup();
     string tokenToName(TokenId id);
 
     map<Utf8, TokenId>         keywords;

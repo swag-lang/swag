@@ -24,14 +24,14 @@ enum class LogColor
 
 struct Log
 {
-    Log();
+    void setup();
     void setColor(LogColor color);
     void setDefaultColor();
 
     void lock()
     {
-		if (g_CommandLine.silent)
-			return;
+        if (g_CommandLine.silent)
+            return;
         mutexAccess.lock();
     }
 

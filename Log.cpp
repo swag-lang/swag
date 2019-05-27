@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <io.h>
 
-Log::Log()
+void Log::setup()
 {
     consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);
     _setmode(_fileno(stdout), _O_U16TEXT);

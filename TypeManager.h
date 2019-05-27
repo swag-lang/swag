@@ -2,11 +2,14 @@
 struct AstNode;
 struct SourceFile;
 struct TypeInfo;
+struct TypeInfoNative;
 
 static const uint32_t CASTFLAG_NOERROR = 0x00000001;
 
 struct TypeManager
 {
+    void setup();
+
     static bool castError(SourceFile* sourceFile, TypeInfo* requestedType, AstNode* nodeToCast, uint32_t castFlags);
 
     static bool castToNativeBool(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
@@ -29,4 +32,22 @@ struct TypeManager
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteInteger(AstNode* node);
     static TypeInfo* flattenType(TypeInfo* typeInfo);
+
+    TypeInfoNative* typeInfoSX;
+    TypeInfoNative* typeInfoS8;
+    TypeInfoNative* typeInfoS16;
+    TypeInfoNative* typeInfoS32;
+    TypeInfoNative* typeInfoS64;
+    TypeInfoNative* typeInfoUX;
+    TypeInfoNative* typeInfoU8;
+    TypeInfoNative* typeInfoU16;
+    TypeInfoNative* typeInfoU32;
+    TypeInfoNative* typeInfoU64;
+    TypeInfoNative* typeInfoBool;
+    TypeInfoNative* typeInfoF32;
+    TypeInfoNative* typeInfoF64;
+    TypeInfoNative* typeInfoFX;
+    TypeInfoNative* typeInfoChar;
+    TypeInfoNative* typeInfoString;
+    TypeInfoNative* typeInfoVoid;
 };

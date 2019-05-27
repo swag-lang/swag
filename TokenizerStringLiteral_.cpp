@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Tokenizer.h"
 #include "Global.h"
+#include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 
@@ -105,7 +106,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
     bool     result = true;
     unsigned offset;
     token.id          = TokenId::LiteralString;
-    token.literalType = &g_TypeInfoString;
+    token.literalType = g_TypeMgr.typeInfoString;
 
     while (true)
     {
@@ -183,7 +184,7 @@ bool Tokenizer::doCharLiteral(Token& token)
 
     auto c              = getCharNoSeek(offset);
     token.startLocation = location;
-    token.literalType   = &g_TypeInfoChar;
+    token.literalType   = g_TypeMgr.typeInfoChar;
 
     // Can't have a newline inside a character
     if (c == '\n')

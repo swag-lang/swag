@@ -3,7 +3,7 @@
 
 struct Global
 {
-    Global();
+    void setup();
 
     fs::path exePath;
     int      numCores = 0;

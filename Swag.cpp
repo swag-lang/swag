@@ -1,13 +1,7 @@
 #include "pch.h"
-#include "ThreadManager.h"
-#include "LoadingThread.h"
-#include "SourceFile.h"
-#include "SyntaxJob.h"
 #include "ffi.h"
-#include "Global.h"
 #include "Stats.h"
 #include "Log.h"
-#include "CommandLine.h"
 #include "Workspace.h"
 
 float toto(float a)
@@ -39,9 +33,9 @@ void printStats(chrono::duration<double>& elapsedTime)
 
     g_Log.setColor(LogColor::White);
     wcout << "elapsed time ...... " << elapsedTime.count() << "s\n";
-	wcout << "lines ............. " << g_Stats.numLines << "\n";
+    wcout << "lines ............. " << g_Stats.numLines << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
-	wcout << "modules ........... " << g_Stats.numModules << "\n";
+    wcout << "modules ........... " << g_Stats.numModules << "\n";
     if (g_Workspace.numErrors)
     {
         g_Log.setColor(LogColor::Red);
@@ -54,12 +48,13 @@ void printStats(chrono::duration<double>& elapsedTime)
 int main(int argc, const char* argv[])
 {
     auto timeBefore = chrono::high_resolution_clock::now();
-	if (!g_CommandLine.process(argc, argv))
-		return -2;
+    if (!g_CommandLine.process(argc, argv))
+        return -2;
 
-	g_Workspace.build();
+	g_Global.setup();
+    g_Workspace.build();
 
-	// Prints stats, then exit
+    // Prints stats, then exit
     auto                     timeAfter = chrono::high_resolution_clock::now();
     chrono::duration<double> diff      = timeAfter - timeBefore;
     printStats(diff);

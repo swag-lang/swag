@@ -259,9 +259,9 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     auto leftNode  = node->childs[0];
     auto rightNode = node->childs[1];
 
-    node->typeInfo = &g_TypeInfoBool;
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, &g_TypeInfoBool, leftNode));
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, &g_TypeInfoBool, rightNode));
+    node->typeInfo = g_TypeMgr.typeInfoBool;
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, leftNode));
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, rightNode));
 
     node->inheritAndFlag(leftNode, rightNode, AST_CONST_EXPR);
 
@@ -427,7 +427,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
-    node->typeInfo = &g_TypeInfoBool;
+    node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
 

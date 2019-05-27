@@ -109,21 +109,3 @@ struct TypeInfoFunc : public TypeInfo
     vector<TypeInfo*> parameters;
     TypeInfo*         returnType;
 };
-
-extern TypeInfoNative g_TypeInfoSX;
-extern TypeInfoNative g_TypeInfoS8;
-extern TypeInfoNative g_TypeInfoS16;
-extern TypeInfoNative g_TypeInfoS32;
-extern TypeInfoNative g_TypeInfoS64;
-extern TypeInfoNative g_TypeInfoUX;
-extern TypeInfoNative g_TypeInfoU8;
-extern TypeInfoNative g_TypeInfoU16;
-extern TypeInfoNative g_TypeInfoU32;
-extern TypeInfoNative g_TypeInfoU64;
-extern TypeInfoNative g_TypeInfoBool;
-extern TypeInfoNative g_TypeInfoF32;
-extern TypeInfoNative g_TypeInfoF64;
-extern TypeInfoNative g_TypeInfoFX;
-extern TypeInfoNative g_TypeInfoChar;
-extern TypeInfoNative g_TypeInfoString;
-extern TypeInfoNative g_TypeInfoVoid;

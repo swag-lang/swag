@@ -2,6 +2,7 @@
 #include "Tokenizer.h"
 #include "SourceFile.h"
 #include "Global.h"
+#include "TypeManager.h"
 #include "Stats.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
@@ -165,22 +166,22 @@ void Tokenizer::getIdentifier(Token& token)
     {
     case TokenId::KwdTrue:
         token.id             = TokenId::LiteralNumber;
-        token.literalType    = &g_TypeInfoBool;
+        token.literalType    = g_TypeMgr.typeInfoBool;
         token.literalValue.b = true;
         return;
     case TokenId::KwdFalse:
         token.id             = TokenId::LiteralNumber;
-        token.literalType    = &g_TypeInfoBool;
+        token.literalType    = g_TypeMgr.typeInfoBool;
         token.literalValue.b = false;
         return;
     case TokenId::CompilerFile:
         token.id          = TokenId::LiteralString;
-        token.literalType = &g_TypeInfoString;
+        token.literalType = g_TypeMgr.typeInfoString;
         token.text        = sourceFile->path.string();
         return;
     case TokenId::CompilerLine:
         token.id               = TokenId::LiteralNumber;
-        token.literalType      = &g_TypeInfoS64;
+        token.literalType      = g_TypeMgr.typeInfoS64;
         token.literalValue.s64 = location.line + 1;
         return;
     case TokenId::NativeType:

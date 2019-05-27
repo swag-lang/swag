@@ -208,7 +208,7 @@ bool Tokenizer::doBinLiteral(Token& token)
 
     // Suffix
     token.id          = TokenId::LiteralNumber;
-    token.literalType = &g_TypeInfoUX;
+    token.literalType = g_TypeMgr.typeInfoUX;
     if (c == '\'')
     {
         treatChar(c, offset);
@@ -281,7 +281,7 @@ bool Tokenizer::doHexLiteral(Token& token)
 
     // Suffix
     token.id          = TokenId::LiteralNumber;
-    token.literalType = &g_TypeInfoUX;
+    token.literalType = g_TypeMgr.typeInfoUX;
     if (c == '\'')
     {
         treatChar(c, offset);
@@ -353,7 +353,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     tokenFrac.literalValue.u64     = 0;
     tokenExponent.literalValue.u64 = 0;
 
-    token.literalType = &g_TypeInfoSX;
+    token.literalType = g_TypeMgr.typeInfoSX;
     token.id          = TokenId::LiteralNumber;
 
     // Integer part
@@ -368,7 +368,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     // If there's a dot, then this is a floating point number
     if (c == '.' || startsWithDot)
     {
-        token.literalType = &g_TypeInfoFX;
+        token.literalType = g_TypeMgr.typeInfoFX;
         if (!startsWithDot)
         {
             token.text += c;
@@ -394,7 +394,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     // If there's an exponent, then this is a floating point number
     if (c == 'e' || c == 'E')
     {
-        token.literalType = &g_TypeInfoFX;
+        token.literalType = g_TypeMgr.typeInfoFX;
         token.text += c;
         treatChar(c, offset);
         tokenExponent.startLocation = location;

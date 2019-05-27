@@ -16,9 +16,9 @@ bool TypeManager::castError(SourceFile* sourceFile, TypeInfo* requestedType, Ast
 
 bool TypeManager::castToNativeBool(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (nodeToCast->typeInfo == &g_TypeInfoBool)
+    if (nodeToCast->typeInfo == g_TypeMgr.typeInfoBool)
         return true;
-    return castError(sourceFile, &g_TypeInfoBool, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoBool, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeU8(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -41,11 +41,11 @@ bool TypeManager::castToNativeU8(SourceFile* sourceFile, AstNode* nodeToCast, ui
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoU8;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoU8;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoU8, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoU8, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeU16(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -68,11 +68,11 @@ bool TypeManager::castToNativeU16(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoU16;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoU16;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoU16, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoU16, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeU32(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -95,11 +95,11 @@ bool TypeManager::castToNativeU32(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoU32;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoU32, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoU32, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeU64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -115,11 +115,11 @@ bool TypeManager::castToNativeU64(SourceFile* sourceFile, AstNode* nodeToCast, u
         }
 
     case NativeType::UX:
-        nodeToCast->typeInfo = &g_TypeInfoU64;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoU64;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoU64, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoU64, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeS8(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -135,11 +135,11 @@ bool TypeManager::castToNativeS8(SourceFile* sourceFile, AstNode* nodeToCast, ui
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoS8;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoS8;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoS8, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoS8, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeS16(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -155,11 +155,11 @@ bool TypeManager::castToNativeS16(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoS16;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoS16;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoS16, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoS16, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeS32(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -175,11 +175,11 @@ bool TypeManager::castToNativeS32(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoS32;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoS32;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoS32, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoS32, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeS64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -195,11 +195,11 @@ bool TypeManager::castToNativeS64(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoS64;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoS64;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoS64, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoS64, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -221,7 +221,7 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoF32;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoF32;
         if (nodeToCast->flags & AST_VALUE_COMPUTED)
             nodeToCast->computedValue.variant.f64 = static_cast<float>(nodeToCast->computedValue.variant.s64);
         return true;
@@ -242,7 +242,7 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoF32;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoF32;
         if (nodeToCast->flags & AST_VALUE_COMPUTED)
             nodeToCast->computedValue.variant.f64 = static_cast<float>(nodeToCast->computedValue.variant.u64);
         return true;
@@ -259,12 +259,12 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
                 sourceFile->report({sourceFile, nodeToCast->token, format("value '%Lf' is truncated in 'f32'", nodeToCast->computedValue.variant.f64)});
             return false;
         }
-        nodeToCast->typeInfo = &g_TypeInfoF32;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoF32;
         return true;
     }
     }
 
-    return castError(sourceFile, &g_TypeInfoF32, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoF32, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
@@ -286,7 +286,7 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoF64;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
         if (nodeToCast->flags & AST_VALUE_COMPUTED)
             nodeToCast->computedValue.variant.f64 = static_cast<double>(nodeToCast->computedValue.variant.s64);
         return true;
@@ -307,7 +307,7 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-        nodeToCast->typeInfo = &g_TypeInfoF64;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
         if (nodeToCast->flags & AST_VALUE_COMPUTED)
             nodeToCast->computedValue.variant.f64 = static_cast<double>(nodeToCast->computedValue.variant.u64);
         return true;
@@ -315,11 +315,11 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
 
     case NativeType::FX:
     case NativeType::F32:
-        nodeToCast->typeInfo = &g_TypeInfoF64;
+        nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
         return true;
     }
 
-    return castError(sourceFile, &g_TypeInfoF64, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoF64, nodeToCast, castFlags);
 }
 
 bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
@@ -398,55 +398,55 @@ void TypeManager::promote(AstNode* left, AstNode* right)
 
     if (left->typeInfo->nativeType == NativeType::S64 && right->typeInfo->nativeType == NativeType::S32)
     {
-        right->typeInfo = &g_TypeInfoS64;
+        right->typeInfo = g_TypeMgr.typeInfoS64;
         return;
     }
 
     if (left->typeInfo->nativeType == NativeType::S32 && right->typeInfo->nativeType == NativeType::S64)
     {
-        left->typeInfo = &g_TypeInfoS64;
+        left->typeInfo = g_TypeMgr.typeInfoS64;
         return;
     }
 
     if (left->typeInfo->nativeType == NativeType::U64 && right->typeInfo->nativeType == NativeType::U32)
     {
-        right->typeInfo = &g_TypeInfoU64;
+        right->typeInfo = g_TypeMgr.typeInfoU64;
         return;
     }
 
     if (left->typeInfo->nativeType == NativeType::U32 && right->typeInfo->nativeType == NativeType::U64)
     {
-        left->typeInfo = &g_TypeInfoU64;
+        left->typeInfo = g_TypeMgr.typeInfoU64;
         return;
     }
 
     if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::F32)
     {
-        right->typeInfo = &g_TypeInfoF64;
+        right->typeInfo = g_TypeMgr.typeInfoF64;
         return;
     }
 
     if (left->typeInfo->nativeType == NativeType::F32 && right->typeInfo->nativeType == NativeType::F64)
     {
-        left->typeInfo = &g_TypeInfoF64;
+        left->typeInfo = g_TypeMgr.typeInfoF64;
         return;
     }
 
     if (left->typeInfo->nativeType == NativeType::FX && right->typeInfo->nativeType == NativeType::F32)
     {
-        left->typeInfo = &g_TypeInfoF32;
+        left->typeInfo = g_TypeMgr.typeInfoF32;
         return;
     }
 
     if (left->typeInfo->nativeType == NativeType::FX && right->typeInfo->nativeType == NativeType::F64)
     {
-        left->typeInfo = &g_TypeInfoF64;
+        left->typeInfo = g_TypeMgr.typeInfoF64;
         return;
     }
 
     if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::FX)
     {
-        right->typeInfo = &g_TypeInfoF64;
+        right->typeInfo = g_TypeMgr.typeInfoF64;
         return;
     }
 }
@@ -458,13 +458,13 @@ void TypeManager::promoteInteger(AstNode* node)
 
     if (node->typeInfo->nativeType == NativeType::U8 || node->typeInfo->nativeType == NativeType::U16)
     {
-        node->typeInfo = &g_TypeInfoU32;
+        node->typeInfo = g_TypeMgr.typeInfoU32;
         return;
     }
 
     if (node->typeInfo->nativeType == NativeType::S8 || node->typeInfo->nativeType == NativeType::S16)
     {
-        node->typeInfo = &g_TypeInfoS32;
+        node->typeInfo = g_TypeMgr.typeInfoS32;
         return;
     }
 }
