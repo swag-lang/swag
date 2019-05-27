@@ -2,19 +2,23 @@
 #include "Pool.h"
 #include "SyntaxJob.h"
 #include "ModuleSemanticJob.h"
+#include "ModuleOutputJob.h"
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "SymTable.h"
 #include "Scope.h"
 #include "TypeInfo.h"
+#include "ConcatBucket.h"
 
 struct PoolFactory
 {
-    Pool<SourceFile> sourceFile;
-    Pool<Scope>      scope;
+    Pool<SourceFile>   sourceFile;
+    Pool<Scope>        scope;
+    Pool<ConcatBucket> concatBucket;
 
     Pool<SyntaxJob>         syntaxJob;
-    Pool<ModuleSemanticJob> moduleJob;
+    Pool<ModuleSemanticJob> moduleSemanticJob;
+    Pool<ModuleOutputJob>   moduleOutputJob;
     Pool<SemanticJob>       semanticJob;
 
     Pool<AstNode>          astNode;

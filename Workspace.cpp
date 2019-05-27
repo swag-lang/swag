@@ -99,19 +99,32 @@ bool Workspace::build()
     // Ask for a syntax pass on all files of all modules
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
-    if (g_Workspace.numErrors > 0)
-        return false;
     if (g_CommandLine.syntaxOnly)
         return true;
 
-    // Build each module
+    // Semantic pass on all modules
     for (auto module : modules)
     {
-        auto job    = g_Pool.moduleJob.alloc();
+        if (module->numErrors > 0)
+            continue;
+        auto job    = g_Pool.moduleSemanticJob.alloc();
         job->module = module;
         g_ThreadMgr.addJob(job);
     }
 
     g_ThreadMgr.waitEndJobs();
+    if (g_CommandLine.output == false)
+        return true;
+
+	// Output pass on all modules
+    for (auto module : modules)
+    {
+        if (module->numErrors > 0)
+            continue;
+        auto job    = g_Pool.moduleOutputJob.alloc();
+        job->module = module;
+        g_ThreadMgr.addJob(job);
+    }
+
     return true;
 }

@@ -8,7 +8,8 @@ struct CommandLine
     bool silent     = false;
     bool stats      = true;
     bool syntaxOnly = false;
+    bool output     = true;
 
     int    tabSize = 4;
-	string fileFilter;// = "99";
+    string fileFilter; // = "99";
 };

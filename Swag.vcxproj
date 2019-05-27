@@ -156,13 +156,17 @@
   <ItemGroup>
     <ClInclude Include="Ast.h" />
     <ClInclude Include="AstNode.h" />
+    <ClInclude Include="BackendC.h" />
     <ClInclude Include="CommandLine.h" />
+    <ClInclude Include="Concat.h" />
+    <ClInclude Include="ConcatBucket.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="ffi.h" />
     <ClInclude Include="fficonfig.h" />
     <ClInclude Include="ffitarget.h" />
     <ClInclude Include="ffi_common.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Module.h" />
@@ -191,11 +195,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ast.cpp" />
+    <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CommandLine.cpp" />
+    <ClCompile Include="Concat.cpp" />
     <ClCompile Include="Diagnostic.cpp" />
     <ClCompile Include="ffi.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -209,6 +215,7 @@
     <ClCompile Include="JobThread.cpp" />
     <ClCompile Include="LanguageSpec.cpp" />
     <ClCompile Include="Module.cpp" />
+    <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
     <ClCompile Include="SemanticBinaryExpression_.cpp" />
     <ClCompile Include="SemanticCompiler_.cpp" />

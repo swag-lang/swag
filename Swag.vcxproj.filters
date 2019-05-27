@@ -122,6 +122,15 @@
     <ClCompile Include="SemanticIdentifier_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="Concat.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleOutputJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendC.cpp">
+      <Filter>Backend\C</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -224,6 +233,18 @@
     <ClInclude Include="Scope.h">
       <Filter>Semantic</Filter>
     </ClInclude>
+    <ClInclude Include="Concat.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ConcatBucket.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleOutputJob.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendC.h">
+      <Filter>Backend\C</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
@@ -240,6 +261,12 @@
     </Filter>
     <Filter Include="Semantic">
       <UniqueIdentifier>{5f62a50f-54d2-4ca7-be2f-7fba0994f861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend">
+      <UniqueIdentifier>{7fe556f7-f7f6-4fd4-b6f3-8b9e91dc51de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\C">
+      <UniqueIdentifier>{0129fe1f-951c-4d5a-bb02-ba779f5a07db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
