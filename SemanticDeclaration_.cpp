@@ -37,39 +37,3 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     context->result = SemanticResult::Done;
     return true;
 }
-
-bool SemanticJob::resolveEnumType(SemanticContext* context)
-{
-    auto enumNode = context->node->parent;
-
-    // Enum type
-    auto rawTypeInfo = &g_TypeInfoS32;
-
-    // Register symbol with its type
-    auto typeInfo     = static_cast<TypeInfoEnum*>(enumNode->typeInfo);
-    typeInfo->rawType = rawTypeInfo;
-    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode->token, enumNode->name, enumNode->typeInfo, SymbolKind::Enum));
-
-	context->result = SemanticResult::Done;
-    return true;
-}
-
-bool SemanticJob::resolveEnumValue(SemanticContext* context)
-{
-    auto valNode  = context->node;
-    auto enumNode = valNode->parent;
-    auto typeEnum = static_cast<TypeInfoEnum*>(enumNode->typeInfo);
-
-    SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode->token, valNode->name, typeEnum, SymbolKind::EnumValue, &enumNode->computedValue));
-
-	auto rawType = static_cast<TypeInfoNamespace*>(typeEnum->rawType);
-	switch (rawType->nativeType)
-	{
-	case NativeType::S32:
-		enumNode->computedValue.variant.s32++;
-		break;
-	}
-
-	context->result = SemanticResult::Done;
-    return true;
-}

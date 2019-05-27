@@ -131,6 +131,12 @@
     <ClCompile Include="BackendC.cpp">
       <Filter>Backend\C</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxEnum_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticEnum_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
