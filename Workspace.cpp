@@ -9,18 +9,23 @@
 
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
-    scoped_lock lk(mutexModules);
+    Module* module;
 
-    for (const auto& module : modules)
     {
-        if (module->path == path)
-            return module;
+        scoped_lock lk(mutexModules);
+
+        auto it = mapModules.find(path);
+        if (it != mapModules.end())
+            return it->second;
+
+        module = new Module(path);
+        modules.push_back(module);
+        mapModules[path] = module;
     }
 
-    auto module = new Module(path);
-    modules.push_back(module);
     if (g_CommandLine.stats)
         g_Stats.numModules++;
+
     return module;
 }
 
@@ -124,8 +129,8 @@ bool Workspace::build()
         {
             auto semanticJob = static_cast<SemanticJob*>(job);
             auto node        = semanticJob->nodes.back();
-			auto sourceFile = semanticJob->sourceFile;
-			sourceFile->report({sourceFile , node->token, format("cannot resolve identifier '%s', this is cyclic", node->name.c_str())});
+            auto sourceFile  = semanticJob->sourceFile;
+            sourceFile->report({sourceFile, node->token, format("cannot resolve identifier '%s', this is cyclic", node->name.c_str())});
         }
     }
 

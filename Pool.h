@@ -33,7 +33,7 @@ struct PoolSlot
     PoolSlot* nextSlot = nullptr;
 };
 
-template<typename T, int S = 512>
+template<typename T, int S = 4>
 struct Pool : public IPool
 {
     T* alloc()
