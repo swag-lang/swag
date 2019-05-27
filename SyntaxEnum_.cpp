@@ -45,11 +45,11 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     // Raw type
     auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::EnumType, nullptr, enumNode, false);
     typeNode->semanticFct = &SemanticJob::resolveEnumType;
-	if (token.id == TokenId::SymColon)
-	{
-		SWAG_CHECK(eatToken(TokenId::SymColon));
-		SWAG_CHECK(doTypeExpression(typeNode));
-	}
+    if (token.id == TokenId::SymColon)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(doTypeExpression(typeNode));
+    }
 
     // Content of enum
     auto curly = move(token);
@@ -65,6 +65,12 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue->token, enumValue->name, SymbolKind::EnumValue);
 
         SWAG_CHECK(tokenizer.getToken(token));
+        if (token.id == TokenId::SymEqual)
+        {
+			SWAG_CHECK(eatToken(TokenId::SymEqual));
+			SWAG_CHECK(doExpression(enumValue));
+        }
+
         SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     }
 
