@@ -1,5 +1,7 @@
 #pragma once
 struct AstNode;
+struct SourceFile;
+struct TypeInfo;
 
 static const uint32_t CASTFLAG_NOERROR = 0x00000001;
 
@@ -24,6 +26,7 @@ struct TypeManager
     static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags = 0);
     static bool makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
 
-    static void promote(AstNode* left, AstNode* right);
-    static void promoteInteger(AstNode* node);
+    static void      promote(AstNode* left, AstNode* right);
+    static void      promoteInteger(AstNode* node);
+    static TypeInfo* flattenType(TypeInfo* typeInfo);
 };

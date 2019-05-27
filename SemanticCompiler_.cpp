@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Global.h"
 #include "Diagnostic.h"
+#include "TypeManager.h"
 #include "Log.h"
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
@@ -48,9 +49,10 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
     node->inherhitComputedValue(expr);
 
     SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
+	auto typeInfo = TypeManager::flattenType(node->typeInfo);
 
     g_Log.lock();
-    switch (node->typeInfo->nativeType)
+    switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
         g_Log.print(node->computedValue.variant.b ? "true" : "false");

@@ -11,5 +11,5 @@ struct CommandLine
     bool output     = true;
 
     int    tabSize = 4;
-	string fileFilter;// = "104";
+	string fileFilter;// = "106";
 };
