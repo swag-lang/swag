@@ -117,7 +117,7 @@ bool Workspace::build()
     if (g_CommandLine.output == false)
         return true;
 
-    // If we have some pending jobs, that means we don't have succeded to resolve everything
+    // If we have some pending jobs, that means we don't have succeeded to resolve everything
     if (g_ThreadMgr.pendingJobs.size() > 0)
     {
         for (auto job : g_ThreadMgr.pendingJobs)
@@ -127,8 +127,6 @@ bool Workspace::build()
 			auto sourceFile = semanticJob->sourceFile;
 			sourceFile->report({sourceFile , node->token, format("cannot resolve identifier '%s', this is cyclic", node->name.c_str())});
         }
-
-        return false;
     }
 
     // Output pass on all modules
