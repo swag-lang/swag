@@ -12,7 +12,7 @@ bool SyntaxJob::doFunctionDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
 {
-    auto funcNode         = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeType::FuncDecl, currentScope, parent, false);
+    auto funcNode         = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::FuncDecl, currentScope, parent, false);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
@@ -23,14 +23,14 @@ bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
 
     // Parameters
     SWAG_CHECK(tokenizer.getToken(token));
-    auto paramsNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::FuncDeclParams, currentScope, funcNode, false);
+    auto paramsNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclParams, currentScope, funcNode, false);
     funcNode->parameters    = paramsNode;
     paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParameters;
     SWAG_CHECK(eatToken(TokenId::SymColon));
     SWAG_CHECK(doFunctionDeclParameters(paramsNode));
 
     // Return type
-    auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::FuncDeclType, currentScope, funcNode, false);
+    auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclType, currentScope, funcNode, false);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)

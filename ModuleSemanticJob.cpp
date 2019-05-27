@@ -38,24 +38,24 @@ bool ModuleSemanticJob::doSemanticNamespace(SourceFile* sourceFile, AstNode* nod
 
 bool ModuleSemanticJob::doSemanticNode(SourceFile* sourceFile, AstNode* node)
 {
-    switch (node->type)
+    switch (node->kind)
     {
-    case AstNodeType::File:
+    case AstNodeKind::File:
         for (auto child : node->childs)
             doSemanticNode(sourceFile, child);
         break;
 
-    case AstNodeType::Namespace:
+    case AstNodeKind::Namespace:
         SWAG_CHECK(doSemanticNamespace(sourceFile, node));
         break;
 
-    case AstNodeType::VarDecl:
-    case AstNodeType::TypeDecl:
-    case AstNodeType::EnumDecl:
-	case AstNodeType::FuncDecl:
-    case AstNodeType::CompilerAssert:
-    case AstNodeType::CompilerPrint:
-    case AstNodeType::CompilerRun:
+    case AstNodeKind::VarDecl:
+    case AstNodeKind::TypeDecl:
+    case AstNodeKind::EnumDecl:
+	case AstNodeKind::FuncDecl:
+    case AstNodeKind::CompilerAssert:
+    case AstNodeKind::CompilerPrint:
+    case AstNodeKind::CompilerRun:
     {
         auto job = newSemanticJob(sourceFile, node);
         g_ThreadMgr.addJob(job);

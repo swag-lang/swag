@@ -16,7 +16,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     auto rawTypeInfo = typeNode->childs.empty() ? g_TypeMgr.typeInfoS32 : typeNode->childs[0]->typeInfo;
 
     // Register symbol with its type
-    auto typeInfo     = static_cast<TypeInfoEnum*>(enumNode->typeInfo);
+    auto typeInfo     = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     typeInfo->rawType = rawTypeInfo;
     SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode->token, enumNode->name, enumNode->typeInfo, SymbolKind::Enum));
 
@@ -29,10 +29,10 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto valNode    = context->node;
     auto enumNode   = valNode->parent;
-    auto typeEnum   = static_cast<TypeInfoEnum*>(enumNode->typeInfo);
+    auto typeEnum   = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     auto assignNode = valNode->childs.empty() ? nullptr : valNode->childs[0];
 
-    auto rawType = static_cast<TypeInfoNamespace*>(typeEnum->rawType);
+    auto rawType = CastTypeInfo<TypeInfoNative>(typeEnum->rawType, TypeInfoKind::Native);
     if (assignNode)
     {
         SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, valNode->token, "expression cannot be evaluated at compile time"}));

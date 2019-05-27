@@ -9,7 +9,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 {
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
@@ -79,8 +79,8 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 {
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
-    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
@@ -150,8 +150,8 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 {
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
-    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
@@ -221,8 +221,8 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 {
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
-    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {

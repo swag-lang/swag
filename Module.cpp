@@ -17,7 +17,7 @@ Module::Module(const fs::path& path)
 	scopeRoot->kind = ScopeKind::Module;
 	scopeRoot->allocateSymTable();
 
-	astRoot = Ast::newNode(&poolFactory.astNode, AstNodeType::Module, nullptr);
+	astRoot = Ast::newNode(&poolFactory.astNode, AstNodeKind::Module, nullptr);
 }
 
 void Module::addFile(SourceFile* file)

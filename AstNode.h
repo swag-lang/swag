@@ -14,7 +14,7 @@ enum class AstNodeSemanticState
     ProcessingChilds,
 };
 
-enum class AstNodeType
+enum class AstNodeKind
 {
     Module,
     File,
@@ -97,7 +97,7 @@ struct AstNode : public PoolElement
     AstNode*             parent;
     Token                token;
     SemanticFct          semanticFct;
-    AstNodeType          type;
+    AstNodeKind          kind;
     AstNodeSemanticState semanticState;
     uint64_t             flags;
     vector<AstNode*>     childs;

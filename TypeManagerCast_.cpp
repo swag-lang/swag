@@ -325,7 +325,7 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
 bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
     // Cast from native only for now
-    if (toType->kind != TypeInfoKind::NativeType)
+    if (toType->kind != TypeInfoKind::Native)
         return false;
     if (!(nodeToCast->flags & AST_VALUE_COMPUTED))
         return false;
@@ -364,7 +364,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
     if (nodeToCast->typeInfo == toType)
         return true;
 
-    if (toType->kind == TypeInfoKind::NativeType)
+    if (toType->kind == TypeInfoKind::Native)
     {
         return castToNative(sourceFile, toType, nodeToCast, castFlags);
     }
@@ -390,7 +390,7 @@ void TypeManager::promote(AstNode* left, AstNode* right)
 {
     if (left->typeInfo == right->typeInfo)
         return;
-    if ((left->typeInfo->kind != TypeInfoKind::NativeType) || (right->typeInfo->kind != TypeInfoKind::NativeType))
+    if ((left->typeInfo->kind != TypeInfoKind::Native) || (right->typeInfo->kind != TypeInfoKind::Native))
         return;
 
     promoteInteger(left);
@@ -453,7 +453,7 @@ void TypeManager::promote(AstNode* left, AstNode* right)
 
 void TypeManager::promoteInteger(AstNode* node)
 {
-    if (node->typeInfo->kind != TypeInfoKind::NativeType)
+    if (node->typeInfo->kind != TypeInfoKind::Native)
         return;
 
     if (node->typeInfo->nativeType == NativeType::U8 || node->typeInfo->nativeType == NativeType::U16)

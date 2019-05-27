@@ -6,7 +6,7 @@
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::Literal, currentScope, parent, false);
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Literal, currentScope, parent, false);
     node->semanticFct = &SemanticJob::resolveLiteral;
     node->token       = move(token);
 
@@ -18,7 +18,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 {
-    auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeType::Identifier, currentScope, parent, false);
+    auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, currentScope, parent, false);
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->token       = move(token);
     identifier->name        = identifier->token.text;
@@ -31,7 +31,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
-    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeType::IdentifierRef, currentScope, parent, false);
+    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, currentScope, parent, false);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     if (result)
         *result = identifierRef;
@@ -74,7 +74,7 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam)
     {
-        auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::SingleOp, currentScope, parent, false);
+        auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::SingleOp, currentScope, parent, false);
         node->semanticFct = &SemanticJob::resolveSingleOp;
         node->token       = move(token);
 
@@ -98,7 +98,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
            (token.id == TokenId::SymAsterisk) ||
            (token.id == TokenId::SymSlash))
     {
-        auto binaryNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::BinaryOp, currentScope, parent, false);
+        auto binaryNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::BinaryOp, currentScope, parent, false);
         binaryNode->semanticFct = &SemanticJob::resolveFactorExpression;
         binaryNode->token       = move(token);
 
@@ -130,7 +130,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
            (token.id == TokenId::SymLower) ||
            (token.id == TokenId::SymGreater))
     {
-        auto binaryNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::BinaryOp, currentScope, parent, false);
+        auto binaryNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::BinaryOp, currentScope, parent, false);
         binaryNode->semanticFct = &SemanticJob::resolveCompareExpression;
         binaryNode->token       = move(token);
 
@@ -157,7 +157,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     bool isBinary = false;
     while ((token.id == TokenId::SymVerticalVertical) || (token.id == TokenId::SymAmpersandAmpersand))
     {
-        auto binaryNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::BinaryOp, currentScope, parent, false);
+        auto binaryNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::BinaryOp, currentScope, parent, false);
         binaryNode->semanticFct = &SemanticJob::resolveBoolExpression;
         binaryNode->token       = move(token);
 

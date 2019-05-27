@@ -8,10 +8,10 @@ struct PoolFactory;
 namespace Ast
 {
     template<typename T>
-    T* newNode(Pool<T>* pool, AstNodeType type, Scope* scope, AstNode* parent = nullptr, bool lockParent = true)
+    T* newNode(Pool<T>* pool, AstNodeKind kind, Scope* scope, AstNode* parent = nullptr, bool lockParent = true)
     {
         auto node    = pool->alloc();
-        node->type   = type;
+        node->kind   = kind;
         node->parent = parent;
         node->scope  = scope;
 
@@ -27,13 +27,21 @@ namespace Ast
         return node;
     }
 
-	inline void assignToken(AstNode* node, Token& token)
-	{
-		node->name = move(token.text);
-		node->name.computeCrc();
-		node->token = move(token);
-	}
+    inline void assignToken(AstNode* node, Token& token)
+    {
+        node->name = move(token.text);
+        node->name.computeCrc();
+        node->token = move(token);
+    }
 
     extern Scope* newScope(SourceFile* sourceFile, Utf8Crc& name, ScopeKind kind, Scope* parentScope);
     extern void   addChild(AstNode* parent, AstNode* child, bool lockParent = true);
 }; // namespace Ast
+
+template<typename T>
+inline T* CastAst(AstNode* ptr, AstNodeKind kind)
+{
+    T* casted = static_cast<T*>(ptr);
+    assert(casted->kind == kind);
+    return casted;
+}

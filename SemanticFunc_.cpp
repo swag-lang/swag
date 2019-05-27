@@ -25,14 +25,15 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 {
     auto typeNode = context->node;
-    auto funcNode = static_cast<AstFuncDecl*>(typeNode->parent);
+    auto funcNode = CastAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
     if (!typeNode->childs.empty())
         typeNode->typeInfo = typeNode->childs[0]->typeInfo;
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
     // Register symbol with its type
-    auto typeInfo        = static_cast<TypeInfoFunc*>(typeNode->typeInfo);
+    auto typeInfo = CastTypeInfo<TypeInfoFunc>(funcNode->typeInfo, TypeInfoKind::Function);
+
     typeInfo->returnType = typeNode->typeInfo;
     SWAG_CHECK(typeNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode->token, funcNode->name, funcNode->typeInfo, SymbolKind::Function));
 

@@ -20,7 +20,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
 {
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(op->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, op->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(op->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op->token, "operation not yet available on that type"}));
 
     switch (op->typeInfo->nativeType)
     {
@@ -69,7 +69,7 @@ bool SemanticJob::resolveSingleOpExclam(SemanticContext* context, AstNode* op)
 {
     auto sourceFile = context->sourceFile;
 
-    SWAG_VERIFY(op->typeInfo->kind == TypeInfoKind::NativeType, sourceFile->report({sourceFile, op->token, "boolean inversion not available on that type"}));
+    SWAG_VERIFY(op->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op->token, "boolean inversion not available on that type"}));
     switch (op->typeInfo->nativeType)
     {
     case NativeType::Bool:

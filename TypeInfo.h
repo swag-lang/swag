@@ -5,7 +5,7 @@ struct Scope;
 
 enum class TypeInfoKind
 {
-    NativeType,
+    Native,
     Namespace,
     Enum,
     Function,
@@ -53,7 +53,7 @@ struct TypeInfoNative : public TypeInfo
 {
     TypeInfoNative(NativeType type, const char* tname, uint64_t tflags)
     {
-        kind       = TypeInfoKind::NativeType;
+        kind       = TypeInfoKind::Native;
         nativeType = type;
         name       = tname;
         flags      = tflags;
@@ -109,3 +109,11 @@ struct TypeInfoFunc : public TypeInfo
     vector<TypeInfo*> parameters;
     TypeInfo*         returnType;
 };
+
+template<typename T>
+inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
+{
+    T* casted = static_cast<T*>(ptr);
+    assert(casted->kind == kind);
+    return casted;
+}

@@ -15,6 +15,7 @@
 
 using namespace std;
 namespace fs = std::experimental::filesystem;
+#pragma warning(disable: 4100)
 
 //#define SWAG_TEST_CPP
 
