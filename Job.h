@@ -11,7 +11,12 @@ enum class JobResult
 struct Job : public PoolElement
 {
     virtual JobResult execute() = 0;
-    void              reset() override{};
 
-    JobThread* thread = nullptr;
+    void reset() override
+    {
+        pendingIndex = -1;
+    }
+
+    JobThread* thread       = nullptr;
+    int        pendingIndex = -1;
 };

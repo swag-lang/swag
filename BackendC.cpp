@@ -10,6 +10,6 @@
 #include "Diagnostic.h"
 #include "BackendC.h"
 
-void BackendC::generate(Module* module)
+void BackendC::generate(Module*)
 {
 }

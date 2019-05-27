@@ -5,6 +5,7 @@
 #include "Stats.h"
 #include "Global.h"
 #include "CommandLine.h"
+#include "Diagnostic.h"
 
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
@@ -116,7 +117,21 @@ bool Workspace::build()
     if (g_CommandLine.output == false)
         return true;
 
-	// Output pass on all modules
+    // If we have some pending jobs, that means we don't have succeded to resolve everything
+    if (g_ThreadMgr.pendingJobs.size() > 0)
+    {
+        for (auto job : g_ThreadMgr.pendingJobs)
+        {
+            auto semanticJob = static_cast<SemanticJob*>(job);
+            auto node        = semanticJob->nodes.back();
+			auto sourceFile = semanticJob->sourceFile;
+			sourceFile->report({sourceFile , node->token, format("cannot resolve identifier '%s', this is cyclic", node->name.c_str())});
+        }
+
+        return false;
+    }
+
+    // Output pass on all modules
     for (auto module : modules)
     {
         if (module->numErrors > 0)

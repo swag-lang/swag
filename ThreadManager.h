@@ -10,9 +10,10 @@ struct ThreadManager
     void init();
     void addJob(Job* job);
     Job* getJob(JobThread* thread);
-	bool doneWithJobs();
+    bool doneWithJobs();
     void jobHasEnded();
     void waitEndJobs();
+	void addPendingJob(Job* job);
 
     Job* getJob();
 
@@ -24,5 +25,6 @@ struct ThreadManager
     condition_variable condVar;
     mutex              mutexDone;
     condition_variable condVarDone;
-    atomic<int>        pendingJobs;
+    vector<Job*>       pendingJobs;
+    atomic<int>        processingJobs;
 };

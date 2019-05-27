@@ -8,7 +8,7 @@ void ThreadManager::init()
 {
     loadingThread = new LoadingThread();
 
-	int numWorkers = g_Global.numCores - 2;
+    int numWorkers = g_Global.numCores - 2;
     numWorkers     = max(1, numWorkers);
     for (int i = 0; i < numWorkers; i++)
         workerThreads.push_back(new JobThread());
@@ -21,7 +21,17 @@ ThreadManager::~ThreadManager()
 
 void ThreadManager::addJob(Job* job)
 {
-	scoped_lock<mutex> lk(mutexAdd);
+    scoped_lock<mutex> lk(mutexAdd);
+
+    // Remove from pending list
+    if (job->pendingIndex != -1)
+    {
+        pendingJobs[job->pendingIndex]               = pendingJobs.back();
+        pendingJobs[job->pendingIndex]->pendingIndex = job->pendingIndex;
+        pendingJobs.pop_back();
+        job->pendingIndex = -1;
+    }
+
     queueJobs.push_back(job);
     if (availableThreads.empty())
         return;
@@ -32,24 +42,24 @@ void ThreadManager::addJob(Job* job)
 
 Job* ThreadManager::getJob()
 {
-	scoped_lock<mutex> lk(mutexAdd);
+    scoped_lock<mutex> lk(mutexAdd);
     if (queueJobs.empty())
         return nullptr;
     auto job = queueJobs.back();
     queueJobs.pop_back();
-    pendingJobs++;
+    processingJobs++;
     return job;
 }
 
 bool ThreadManager::doneWithJobs()
 {
-    return queueJobs.empty() && pendingJobs == 0;
+    return queueJobs.empty() && processingJobs == 0;
 }
 
 void ThreadManager::jobHasEnded()
 {
     scoped_lock<mutex> lk(mutexAdd);
-    pendingJobs--;
+    processingJobs--;
     if (doneWithJobs())
     {
         unique_lock<mutex> lk1(mutexDone);
@@ -85,4 +95,11 @@ Job* ThreadManager::getJob(JobThread* thread)
 
     job->thread = thread;
     return job;
+}
+
+void ThreadManager::addPendingJob(Job* job)
+{
+    scoped_lock<mutex> lk(mutexAdd);
+    pendingJobs.push_back(job);
+    job->pendingIndex = (int) pendingJobs.size() - 1;
 }
