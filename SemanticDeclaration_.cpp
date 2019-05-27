@@ -60,7 +60,15 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     auto enumNode = valNode->parent;
     auto typeEnum = static_cast<TypeInfoEnum*>(enumNode->typeInfo);
 
-    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode->token, valNode->name, typeEnum, SymbolKind::EnumValue));
+    SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode->token, valNode->name, typeEnum, SymbolKind::EnumValue, &enumNode->computedValue));
+
+	auto rawType = static_cast<TypeInfoNamespace*>(typeEnum->rawType);
+	switch (rawType->nativeType)
+	{
+	case NativeType::S32:
+		enumNode->computedValue.variant.s32++;
+		break;
+	}
 
 	context->result = SemanticResult::Done;
     return true;

@@ -42,13 +42,13 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, const Tok
     return symbol;
 }
 
-bool SymTable::addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
+bool SymTable::addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type, ComputedValue* computedValue)
 {
     scoped_lock lk(mutex);
-    return addSymbolTypeInfoNoLock(sourceFile, token, name, typeInfo, type);
+    return addSymbolTypeInfoNoLock(sourceFile, token, name, typeInfo, type, computedValue);
 }
 
-bool SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
+bool SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type, ComputedValue* computedValue)
 {
     auto symbol = findNoLock(name);
     if (!symbol)
@@ -56,7 +56,7 @@ bool SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& toke
 
     if (!checkHiddenSymbolNoLock(sourceFile, token, name, typeInfo, type, symbol))
         return false;
-    symbol->addOverloadNoLock(sourceFile, token, typeInfo);
+    symbol->addOverloadNoLock(sourceFile, token, typeInfo, computedValue);
 
     // One less overload. When this reached zero, this means we known every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
@@ -123,12 +123,14 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     return true;
 }
 
-void SymbolName::addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo)
+void SymbolName::addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
     auto overload           = sourceFile->poolFactory->symOverload.alloc();
     overload->typeInfo      = typeInfo;
     overload->sourceFile    = sourceFile;
     overload->startLocation = token.startLocation;
     overload->endLocation   = token.endLocation;
+    if (computedValue)
+        overload->computedValue = *computedValue;
     overloads.push_back(overload);
 }

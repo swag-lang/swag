@@ -16,6 +16,13 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->token.startLocation    = node->childs.front()->token.startLocation;
     node->token.endLocation      = node->childs.back()->token.startLocation;
     node->name                   = move(identifier->name);
+
+    if (node->resolvedSymbolName->kind == SymbolKind::EnumValue)
+    {
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+		node->computedValue = node->resolvedSymbolOverload->computedValue;
+    }
+
     return true;
 }
 
@@ -54,7 +61,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     case TypeInfoKind::Namespace:
                         parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
                         break;
-					case TypeInfoKind::Enum:
+                    case TypeInfoKind::Enum:
                         parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
                         break;
                     }

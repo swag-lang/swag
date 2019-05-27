@@ -3,6 +3,7 @@
 #include "SpinLock.h"
 #include "Utf8crc.h"
 #include "SourceFile.h"
+#include "Register.h"
 
 struct PoolFactory;
 struct Token;
@@ -16,6 +17,7 @@ struct SymbolOverload : public PoolElement
     SourceFile*    sourceFile;
     SourceLocation startLocation;
     SourceLocation endLocation;
+    ComputedValue  computedValue;
 };
 
 enum class SymbolKind
@@ -45,7 +47,7 @@ struct SymbolName : public PoolElement
         overloads.clear();
     }
 
-    void addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo);
+    void addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo, ComputedValue* computedValue);
 
     SymbolOverload* findOverload(TypeInfo* typeInfo)
     {
@@ -64,8 +66,8 @@ struct SymTable
     SymTable();
 
     SymbolName* registerSymbolNameNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, SymbolKind type);
-    bool        addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type);
-    bool        addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type);
+    bool        addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type, ComputedValue* computedValue = nullptr);
+    bool        addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type, ComputedValue* computedValue = nullptr);
     bool        checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type);
     bool        checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type, SymbolName* symbol);
     SymbolName* find(const Utf8Crc& name);
