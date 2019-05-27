@@ -219,9 +219,10 @@
     <ClCompile Include="ModuleSemanticJob.cpp" />
     <ClCompile Include="SemanticBinaryExpression_.cpp" />
     <ClCompile Include="SemanticCompiler_.cpp" />
-    <ClCompile Include="SemanticDeclaration_.cpp" />
+    <ClCompile Include="SemanticVar_.cpp" />
     <ClCompile Include="SemanticEnum_.cpp" />
     <ClCompile Include="SemanticExpression_.cpp" />
+    <ClCompile Include="SemanticFunc_.cpp" />
     <ClCompile Include="SemanticIdentifier_.cpp" />
     <ClCompile Include="SemanticJob.cpp" />
     <ClCompile Include="SemanticType_.cpp" />
@@ -230,6 +231,7 @@
     <ClCompile Include="SyntaxDeclaration_.cpp" />
     <ClCompile Include="SyntaxEnum_.cpp" />
     <ClCompile Include="SyntaxExpression_.cpp" />
+    <ClCompile Include="SyntaxFunction_.cpp" />
     <ClCompile Include="SyntaxType_.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />

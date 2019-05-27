@@ -1,0 +1,41 @@
+#include "pch.h"
+#include "SemanticJob.h"
+#include "Ast.h"
+#include "Global.h"
+#include "Scope.h"
+#include "TypeManager.h"
+#include "ModuleSemanticJob.h"
+#include "Diagnostic.h"
+
+bool SemanticJob::resolveFuncDeclParameters(SemanticContext* context)
+{
+    auto node      = context->node;
+    node->typeInfo = &g_TypeInfoVoid;
+
+    context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveFuncDecl(SemanticContext* context)
+{
+    context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
+{
+    auto typeNode = context->node;
+    auto funcNode = static_cast<AstFuncDecl*>(typeNode->parent);
+    if (!typeNode->childs.empty())
+        typeNode->typeInfo = typeNode->childs[0]->typeInfo;
+    else
+        typeNode->typeInfo = &g_TypeInfoVoid;
+
+    // Register symbol with its type
+    auto typeInfo        = static_cast<TypeInfoFunc*>(typeNode->typeInfo);
+    typeInfo->returnType = typeNode->typeInfo;
+    SWAG_CHECK(typeNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode->token, funcNode->name, funcNode->typeInfo, SymbolKind::Function));
+
+    context->result = SemanticResult::Done;
+    return true;
+}

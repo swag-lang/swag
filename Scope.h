@@ -6,9 +6,10 @@ struct SymTable;
 
 enum class ScopeKind
 {
-    Module,
-    Namespace,
-    Enum,
+	Module,
+	Namespace,
+	Enum,
+	Function,
 };
 
 struct Scope : public PoolElement

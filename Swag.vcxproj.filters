@@ -95,9 +95,6 @@
     <ClCompile Include="SemanticExpression_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="SemanticDeclaration_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="SyntaxExpression_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
@@ -135,6 +132,15 @@
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="SemanticEnum_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxFunction_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticFunc_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticVar_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
   </ItemGroup>

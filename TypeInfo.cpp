@@ -17,3 +17,4 @@ TypeInfoNative g_TypeInfoF64(NativeType::F64, "f64", TYPEINFO_FLOAT);
 TypeInfoNative g_TypeInfoFX(NativeType::FX, "f64", TYPEINFO_FLOAT);
 TypeInfoNative g_TypeInfoChar(NativeType::Char, "char", 0);
 TypeInfoNative g_TypeInfoString(NativeType::String, "string", 0);
+TypeInfoNative g_TypeInfoVoid(NativeType::Void, "void", 0);

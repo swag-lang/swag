@@ -40,9 +40,8 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(tokenizer.getToken(token));
-
     // Raw type
+    SWAG_CHECK(tokenizer.getToken(token));
     auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::EnumType, nullptr, enumNode, false);
     typeNode->semanticFct = &SemanticJob::resolveEnumType;
     if (token.id == TokenId::SymColon)
@@ -67,8 +66,8 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.id == TokenId::SymEqual)
         {
-			SWAG_CHECK(eatToken(TokenId::SymEqual));
-			SWAG_CHECK(doExpression(enumValue));
+            SWAG_CHECK(eatToken(TokenId::SymEqual));
+            SWAG_CHECK(doExpression(enumValue));
         }
 
         SWAG_CHECK(eatToken(TokenId::SymSemiColon));

@@ -7,7 +7,7 @@
 bool Tokenizer::doSymbol(char32_t c, Token& token)
 {
     unsigned offset;
-	token.text = c;
+    token.text = c;
     switch (c)
     {
     case '\\':
@@ -50,7 +50,7 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
         token.id = TokenId::SymAt;
         return true;
 
-	case '!':
+    case '!':
         token.id = TokenId::SymExclam;
         c        = getCharNoSeek(offset);
         if (c == '=')
@@ -89,6 +89,12 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
         if (c == '=')
         {
             token.id = TokenId::SymMinusEqual;
+            token.text += c;
+            treatChar(c, offset);
+        }
+        else if (c == '>')
+        {
+            token.id = TokenId::SymMinusGreat;
             token.text += c;
             treatChar(c, offset);
         }

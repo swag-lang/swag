@@ -54,6 +54,9 @@ struct SemanticJob : public Job
     static bool resolveIdentifierRef(SemanticContext* context);
 	static bool resolveEnumType(SemanticContext* context);
 	static bool resolveEnumValue(SemanticContext* context);
+	static bool resolveFuncDecl(SemanticContext* context);
+	static bool resolveFuncDeclParameters(SemanticContext* context);
+	static bool resolveFuncDeclType(SemanticContext* context);
 
     Module*          module;
     SourceFile*      sourceFile;

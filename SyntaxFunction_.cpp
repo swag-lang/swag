@@ -1,0 +1,67 @@
+#include "pch.h"
+#include "Global.h"
+#include "Module.h"
+#include "Diagnostic.h"
+
+bool SyntaxJob::doFunctionDeclParameters(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    return true;
+}
+
+bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
+{
+    auto funcNode         = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeType::FuncDecl, currentScope, parent, false);
+    funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
+    if (result)
+        *result = funcNode;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
+    Ast::assignToken(funcNode, token);
+
+    // Parameters
+    SWAG_CHECK(tokenizer.getToken(token));
+    auto paramsNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::FuncDeclParams, currentScope, funcNode, false);
+    funcNode->parameters    = paramsNode;
+    paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParameters;
+    SWAG_CHECK(eatToken(TokenId::SymColon));
+    SWAG_CHECK(doFunctionDeclParameters(paramsNode));
+
+    // Return type
+    auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeType::FuncDeclType, currentScope, funcNode, false);
+    funcNode->returnType  = typeNode;
+    typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
+    if (token.id == TokenId::SymMinusGreat)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
+        SWAG_CHECK(doTypeExpression(typeNode));
+    }
+
+    // Add function name and scope
+    Scope* newScope = nullptr;
+    currentScope->allocateSymTable();
+    {
+        scoped_lock lk(currentScope->symTable->mutex);
+        auto        typeInfo = sourceFile->poolFactory->typeInfoFunc.alloc();
+        newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
+        newScope->allocateSymTable();
+        typeInfo->name     = "func " + funcNode->name;
+        typeInfo->scope    = newScope;
+        funcNode->typeInfo = typeInfo;
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode->token, newScope->name, SymbolKind::Function);
+    }
+
+    // Content of function
+    auto curly = move(token);
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    auto savedScope = currentScope;
+    currentScope    = newScope;
+
+    currentScope = savedScope;
+
+    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
+    SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}

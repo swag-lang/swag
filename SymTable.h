@@ -4,6 +4,7 @@
 #include "Utf8crc.h"
 #include "SourceFile.h"
 #include "Register.h"
+#include "TypeInfo.h"
 
 struct PoolFactory;
 struct Token;
@@ -54,6 +55,8 @@ struct SymbolName : public PoolElement
         for (auto it : overloads)
         {
             if (it->typeInfo == typeInfo)
+                return it;
+            if (it->typeInfo->isSame(typeInfo))
                 return it;
         }
 

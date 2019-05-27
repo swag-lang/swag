@@ -8,6 +8,7 @@ enum class TypeInfoKind
     NativeType,
     Namespace,
     Enum,
+    Function,
 };
 
 enum class NativeType
@@ -28,6 +29,7 @@ enum class NativeType
     Bool,
     Char,
     String,
+    Void,
 };
 
 static const uint64_t TYPEINFO_INT_SIGNED   = 0x00000000'00000001;
@@ -36,6 +38,11 @@ static const uint64_t TYPEINFO_FLOAT        = 0x00000000'00000004;
 
 struct TypeInfo : public PoolElement
 {
+    virtual bool isSame(TypeInfo* from)
+    {
+        return kind == from->kind;
+    }
+
     uint64_t     flags;
     TypeInfoKind kind;
     NativeType   nativeType;
@@ -74,6 +81,35 @@ struct TypeInfoEnum : public TypeInfo
     }
 };
 
+struct TypeInfoFunc : public TypeInfo
+{
+    TypeInfoFunc()
+    {
+        kind = TypeInfoKind::Function;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (kind != from->kind)
+            return false;
+
+        auto fromFunc = static_cast<TypeInfoFunc*>(from);
+        if (parameters.size() != fromFunc->parameters.size())
+            return false;
+        for (int i = 0; i < parameters.size(); i++)
+        {
+            if (!parameters[i]->isSame(fromFunc->parameters[i]))
+                return false;
+        }
+
+        return true;
+    }
+
+    Scope*            scope;
+    vector<TypeInfo*> parameters;
+    TypeInfo*         returnType;
+};
+
 extern TypeInfoNative g_TypeInfoSX;
 extern TypeInfoNative g_TypeInfoS8;
 extern TypeInfoNative g_TypeInfoS16;
@@ -90,3 +126,4 @@ extern TypeInfoNative g_TypeInfoF64;
 extern TypeInfoNative g_TypeInfoFX;
 extern TypeInfoNative g_TypeInfoChar;
 extern TypeInfoNative g_TypeInfoString;
+extern TypeInfoNative g_TypeInfoVoid;

@@ -25,10 +25,12 @@ struct PoolFactory
     Pool<AstVarDecl>       astVarDecl;
     Pool<AstIdentifierRef> astIdentifierRef;
     Pool<AstIdentifier>    astIdentifier;
+    Pool<AstFuncDecl>      astFuncDecl;
 
     Pool<SymbolName>     symName;
     Pool<SymbolOverload> symOverload;
 
     Pool<TypeInfoNamespace> typeInfoNamespace;
     Pool<TypeInfoEnum>      typeInfoEnum;
+	Pool<TypeInfoFunc>      typeInfoFunc;
 };

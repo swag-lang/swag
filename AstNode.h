@@ -25,6 +25,9 @@ enum class AstNodeType
     Type,
     Namespace,
     EnumDecl,
+    FuncDecl,
+	FuncDeclParams,
+	FuncDeclType,
     EnumType,
     EnumValue,
     Literal,
@@ -134,4 +137,18 @@ struct AstIdentifier : public AstNode
     }
 
     Scope* matchScope;
+};
+
+struct AstFuncDecl : public AstNode
+{
+    void reset() override
+    {
+        parameters = nullptr;
+        returnType = nullptr;
+        content    = nullptr;
+    }
+
+    AstNode* parameters;
+    AstNode* returnType;
+    AstNode* content;
 };

@@ -13,6 +13,7 @@ LanguageSpec::LanguageSpec()
     keywords["namespace"] = TokenId::KwdNamespace;
     keywords["type"]      = TokenId::KwdType;
     keywords["enum"]      = TokenId::KwdEnum;
+    keywords["func"]      = TokenId::KwdFunc;
     keywords["true"]      = TokenId::KwdTrue;
     keywords["false"]     = TokenId::KwdFalse;
 
@@ -82,6 +83,10 @@ string LanguageSpec::tokenToName(TokenId id)
         return "{";
     case TokenId::SymRightCurly:
         return "}";
+    case TokenId::SymLeftParen:
+        return "(";
+    case TokenId::SymRightParen:
+        return ")";
     }
 
     return "???";

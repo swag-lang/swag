@@ -111,7 +111,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
-        auto       firstOverload = &symbol->defaultOverload;
+        auto       firstOverload = overload;
         Utf8       msg           = format("symbol '%s' already defined with the same type in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";

@@ -21,6 +21,7 @@ enum class TokenId
     SymEqualEqual,
     SymMinus,
     SymMinusEqual,
+	SymMinusGreat,
     SymPlus,
     SymPlusEqual,
     SymAsterisk,
@@ -64,6 +65,7 @@ enum class TokenId
 	KwdNamespace,
 	KwdType,
 	KwdEnum,
+	KwdFunc,
 
     Identifier,
     LiteralNumber,
