@@ -43,6 +43,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifier(identifierRef));
     }
 
+    identifierRef->inheritLocation();
     return true;
 }
 
@@ -61,8 +62,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::LiteralString:
         return doLiteral(parent, result);
 
-	case TokenId::Identifier:
-		return doIdentifierRef(parent, result);
+    case TokenId::Identifier:
+        return doIdentifierRef(parent, result);
 
     default:
         return notSupportedError(token);

@@ -1,0 +1,17 @@
+#unittest module module108
+#unittest pass semantic
+
+#unittest error
+enum A : u8
+{
+	Red = B.Red;
+	Green;
+	Blue;
+}
+
+enum B : s32
+{
+	Red = 256;
+	Green;
+	Blue;
+}

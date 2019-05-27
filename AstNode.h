@@ -73,11 +73,17 @@ struct AstNode : public PoolElement
             flags |= flag;
     }
 
-    void inherhitComputedValue(AstNode* from)
+    void inheritComputedValue(AstNode* from)
     {
         inheritAndFlag(from, AST_VALUE_COMPUTED);
         if (flags & AST_VALUE_COMPUTED)
             computedValue = move(from->computedValue);
+    }
+
+    void inheritLocation()
+    {
+        token.startLocation = childs.front()->token.startLocation;
+        token.endLocation   = childs.back()->token.endLocation;
     }
 
     Scope*          scope;

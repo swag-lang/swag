@@ -108,7 +108,7 @@ bool SemanticJob::resolveSingleOp(SemanticContext* context)
 
     node->typeInfo = op->typeInfo;
     node->inheritAndFlag(op, AST_CONST_EXPR);
-    node->inherhitComputedValue(op);
+    node->inheritComputedValue(op);
 
     context->result = SemanticResult::Done;
     return true;
