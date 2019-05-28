@@ -140,6 +140,21 @@
     <ClCompile Include="SemanticVar_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxIdentifier_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGen.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeRun.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCode.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenLiteral_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -254,6 +269,18 @@
     <ClInclude Include="BackendC.h">
       <Filter>Backend\C</Filter>
     </ClInclude>
+    <ClInclude Include="ByteCodeGen.h">
+      <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCodeRun.h">
+      <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCode.h">
+      <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCodeNodeId.h">
+      <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
@@ -276,6 +303,9 @@
     </Filter>
     <Filter Include="Backend\C">
       <UniqueIdentifier>{0129fe1f-951c-4d5a-bb02-ba779f5a07db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\ByteCode">
+      <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

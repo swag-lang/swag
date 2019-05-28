@@ -25,7 +25,7 @@ bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     auto paramsNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclParams, currentScope, funcNode, false);
     funcNode->parameters    = paramsNode;
-    paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParameters;
+    paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
     SWAG_CHECK(eatToken(TokenId::SymColon));
     SWAG_CHECK(doFunctionDeclParameters(paramsNode));
 

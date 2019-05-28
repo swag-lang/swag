@@ -157,6 +157,10 @@
     <ClInclude Include="Ast.h" />
     <ClInclude Include="AstNode.h" />
     <ClInclude Include="BackendC.h" />
+    <ClInclude Include="ByteCode.h" />
+    <ClInclude Include="ByteCodeGen.h" />
+    <ClInclude Include="ByteCodeNodeId.h" />
+    <ClInclude Include="ByteCodeRun.h" />
     <ClInclude Include="CommandLine.h" />
     <ClInclude Include="Concat.h" />
     <ClInclude Include="ConcatBucket.h" />
@@ -196,6 +200,10 @@
   <ItemGroup>
     <ClCompile Include="Ast.cpp" />
     <ClCompile Include="BackendC.cpp" />
+    <ClCompile Include="ByteCode.cpp" />
+    <ClCompile Include="ByteCodeGen.cpp" />
+    <ClCompile Include="ByteCodeGenLiteral_.cpp" />
+    <ClCompile Include="ByteCodeRun.cpp" />
     <ClCompile Include="closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -232,6 +240,7 @@
     <ClCompile Include="SyntaxEnum_.cpp" />
     <ClCompile Include="SyntaxExpression_.cpp" />
     <ClCompile Include="SyntaxFunction_.cpp" />
+    <ClCompile Include="SyntaxIdentifier_.cpp" />
     <ClCompile Include="SyntaxType_.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />

@@ -52,11 +52,12 @@ struct SemanticJob : public Job
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
-	static bool resolveEnumType(SemanticContext* context);
-	static bool resolveEnumValue(SemanticContext* context);
-	static bool resolveFuncDecl(SemanticContext* context);
-	static bool resolveFuncDeclParameters(SemanticContext* context);
-	static bool resolveFuncDeclType(SemanticContext* context);
+    static bool resolveEnumType(SemanticContext* context);
+    static bool resolveEnumValue(SemanticContext* context);
+    static bool resolveFuncDecl(SemanticContext* context);
+    static bool resolveFuncDeclParams(SemanticContext* context);
+    static bool resolveFuncDeclType(SemanticContext* context);
+    static bool resolveFuncCallParams(SemanticContext* context);
 
     Module*          module;
     SourceFile*      sourceFile;

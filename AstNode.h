@@ -28,6 +28,7 @@ enum class AstNodeKind
     FuncDecl,
 	FuncDeclParams,
 	FuncDeclType,
+	FuncCallParams,
     EnumType,
     EnumValue,
     Literal,

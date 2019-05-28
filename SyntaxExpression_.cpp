@@ -16,37 +16,6 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
-{
-    auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, currentScope, parent, false);
-    identifier->semanticFct = &SemanticJob::resolveIdentifier;
-    identifier->token       = move(token);
-    identifier->name        = identifier->token.text;
-    identifier->name.computeCrc();
-    if (result)
-        *result = identifier;
-    SWAG_CHECK(tokenizer.getToken(token));
-    return true;
-}
-
-bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
-{
-    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, currentScope, parent, false);
-    identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
-    if (result)
-        *result = identifierRef;
-
-    SWAG_CHECK(doIdentifier(identifierRef));
-    while (token.id == TokenId::SymDot)
-    {
-        SWAG_CHECK(eatToken(TokenId::SymDot));
-        SWAG_CHECK(doIdentifier(identifierRef));
-    }
-
-    identifierRef->inheritLocation();
-    return true;
-}
-
 bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 {
     switch (token.id)

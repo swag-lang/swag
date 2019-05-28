@@ -7,11 +7,10 @@
 #include "ModuleSemanticJob.h"
 #include "Diagnostic.h"
 
-bool SemanticJob::resolveFuncDeclParameters(SemanticContext* context)
+bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 {
-    auto node      = context->node;
-    node->typeInfo = g_TypeMgr.typeInfoVoid;
-
+    auto node       = context->node;
+    node->typeInfo  = g_TypeMgr.typeInfoVoid;
     context->result = SemanticResult::Done;
     return true;
 }
@@ -36,6 +35,14 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     typeInfo->returnType = typeNode->typeInfo;
     SWAG_CHECK(typeNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode->token, funcNode->name, typeInfo, SymbolKind::Function));
 
+    context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
+{
+    auto node      = context->node;
+    node->typeInfo = g_TypeMgr.typeInfoVoid;
     context->result = SemanticResult::Done;
     return true;
 }
