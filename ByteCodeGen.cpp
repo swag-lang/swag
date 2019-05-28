@@ -40,5 +40,5 @@ bool ByteCodeGen::internalError(ByteCodeGenContext* context, AstNode* node)
 
 void ByteCodeGen::addInstruction(ByteCodeGenContext* context, ByteCodeNodeId id)
 {
-	context->bc.out.addU16((uint16_t) id);
+	context->bc->out.addU16((uint16_t) id);
 }

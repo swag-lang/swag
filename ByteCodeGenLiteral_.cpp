@@ -6,7 +6,7 @@
 bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node)
 {
     auto  typeInfo = node->typeInfo;
-    auto& out      = context->bc.out;
+    auto& out      = context->bc->out;
 
     if (typeInfo->kind == TypeInfoKind::Native)
     {

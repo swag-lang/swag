@@ -2,12 +2,12 @@
 #include "ByteCode.h"
 #include "ByteCodeNodeId.h"
 struct SemanticContext;
-struct AstNode;
+struct ByteCode;
 
 struct ByteCodeGenContext
 {
     SemanticContext* semantic;
-    ByteCode         bc;
+    ByteCode*        bc;
 };
 
 struct ByteCodeGen

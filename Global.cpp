@@ -7,6 +7,8 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "PoolFactory.h"
+#include "PoolFactory.h"
+#include "ByteCodeRun.h"
 #include "Workspace.h"
 
 Log           g_Log;
@@ -18,14 +20,16 @@ TypeManager   g_TypeMgr;
 LanguageSpec  g_LangSpec;
 PoolFactory   g_Pool;
 Workspace     g_Workspace;
+ByteCodeRun   g_Run;
 
 void Global::setup()
 {
     numCores = std::thread::hardware_concurrency();
 
-	g_Log.setup();
-	g_TypeMgr.setup();
-	g_LangSpec.setup();
+    g_Log.setup();
+	g_Run.setup();
+    g_TypeMgr.setup();
+    g_LangSpec.setup();
 }
 
 Utf8 format(const char* format, ...)

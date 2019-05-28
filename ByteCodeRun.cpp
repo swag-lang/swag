@@ -2,46 +2,42 @@
 #include "Global.h"
 #include "ByteCodeGen.h"
 #include "ByteCodeRun.h"
+#include "ByteCodeRunContext.h"
 #include "ConcatBucket.h"
 
-bool ByteCodeRun::executeNode(SemanticContext* context, AstNode* node)
+void ByteCodeRun::setup()
+{
+    mapNodes[ByteCodeNodeId::PushS32] = runPushS32;
+}
+
+bool ByteCodeRun::executeNode(ByteCodeRunContext* runContext, SemanticContext* context, AstNode* node)
 {
     // First we need to generate byte code
     ByteCodeGenContext genContext;
     genContext.semantic = context;
-    ByteCodeGen gen;
-    SWAG_CHECK(gen.emitNode(&genContext, node));
+    genContext.bc       = &runContext->bc;
+    SWAG_CHECK(ByteCodeGen::emitNode(&genContext, node));
 
     // Then we execute the resulting bytecode
-    ByteCodeRunContext runContext;
-    runContext.bc              = &genContext.bc;
-    runContext.executionOffset = 0;
-    runContext.executionBucket = runContext.bc->out.firstBucket;
-    run(&runContext);
+    runContext->bc.out.rewind();
+    runContext->stack.resize(1024);
+    runContext->sp = 0;
+
+    run(runContext);
 
     return true;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
 {
-    uint8_t* ep = context->executionBucket->datas + context->executionOffset;
+    context->ep = context->bc.out.currentSP;
     while (true)
     {
-        ByteCodeNodeId id = (ByteCodeNodeId) * (uint16_t*) ep;
+        ByteCodeNodeId id = (ByteCodeNodeId)(*(uint16_t*) context->ep);
         if (id == ByteCodeNodeId::End)
             break;
-
-        int incEP = 6;
-
-        context->executionOffset += incEP;
-        ep += incEP;
-
-        if (context->executionOffset >= context->executionBucket->count)
-        {
-            context->executionOffset = 0;
-            context->executionBucket = context->executionBucket->nextBucket;
-            ep                       = context->executionBucket->datas;
-        }
+        context->ep = context->bc.out.seek(2);
+        context->ep = mapNodes[id](context);
     }
 
     return true;

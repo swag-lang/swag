@@ -6,6 +6,7 @@
 #include "TypeManager.h"
 #include "Log.h"
 #include "ByteCodeRun.h"
+#include "ByteCodeRunContext.h"
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
@@ -16,9 +17,6 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     node->typeInfo = expr->typeInfo;
     node->inheritAndFlag(expr, AST_CONST_EXPR);
     node->inheritComputedValue(expr);
-
-    ByteCodeRun run;
-    run.executeNode(context, expr);
 
     SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
     context->result = SemanticResult::Done;
@@ -52,7 +50,13 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
     node->inheritAndFlag(expr, AST_CONST_EXPR);
     node->inheritComputedValue(expr);
 
-    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
+    //if (!(node->flags & AST_VALUE_COMPUTED))
+    {
+        ByteCodeRunContext runContext;
+        g_Run.executeNode(&runContext, context, expr);
+		node->computedValue.variant = runContext.stack[runContext.sp - 1].reg;
+    }
+
     auto typeInfo = TypeManager::flattenType(node->typeInfo);
 
     g_Log.lock();

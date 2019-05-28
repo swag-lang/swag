@@ -1,3 +1,3 @@
 #unittest pass semantic
 
-#run 6's32
+#print 6's32

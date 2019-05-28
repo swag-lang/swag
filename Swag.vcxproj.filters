@@ -155,6 +155,9 @@
     <ClCompile Include="ByteCodeGenLiteral_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeRunStack_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -279,6 +282,9 @@
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
     <ClInclude Include="ByteCodeNodeId.h">
+      <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCodeRunContext.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
   </ItemGroup>

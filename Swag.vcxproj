@@ -161,6 +161,7 @@
     <ClInclude Include="ByteCodeGen.h" />
     <ClInclude Include="ByteCodeNodeId.h" />
     <ClInclude Include="ByteCodeRun.h" />
+    <ClInclude Include="ByteCodeRunContext.h" />
     <ClInclude Include="CommandLine.h" />
     <ClInclude Include="Concat.h" />
     <ClInclude Include="ConcatBucket.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="ByteCodeGen.cpp" />
     <ClCompile Include="ByteCodeGenLiteral_.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
+    <ClCompile Include="ByteCodeRunStack_.cpp" />
     <ClCompile Include="closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

@@ -19,6 +19,7 @@ extern struct LanguageSpec  g_LangSpec;
 extern struct PoolFactory   g_Pool;
 extern struct Workspace     g_Workspace;
 extern struct TypeManager   g_TypeMgr;
+extern struct ByteCodeRun   g_Run;
 
 extern Utf8 format(const char* format, ...);
 
