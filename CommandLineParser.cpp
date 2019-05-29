@@ -3,14 +3,6 @@
 #include "CommandLineParser.h"
 #include "Log.h"
 
-void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address)
-{
-    if (longName)
-        longNameArgs[longName] = new CommandLineArgument{type, address};
-    if (shortName)
-        shortNameArgs[shortName] = new CommandLineArgument{type, address};
-}
-
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
@@ -21,10 +13,18 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
 }
 
+void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address)
+{
+    if (longName)
+        longNameArgs[longName] = new CommandLineArgument{type, address};
+    if (shortName)
+        shortNameArgs[shortName] = new CommandLineArgument{type, address};
+}
+
 bool CommandLineParser::process(int argc, const char* argv[])
 {
     bool result = true;
-    for (int i = 0; i < argc; i++)
+    for (int i = 1; i < argc; i++)
     {
         auto it = longNameArgs.find(argv[i]);
         if (it == longNameArgs.end())

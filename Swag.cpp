@@ -53,12 +53,13 @@ int main(int argc, const char* argv[])
 
     g_Log.setup();
 
-	CommandLineParser cmdParser;
+    CommandLineParser cmdParser;
+    g_CommandLine.exePath = argv[0];
     cmdParser.setup(&g_CommandLine);
     if (!cmdParser.process(argc, argv))
         return -2;
 
-	g_Global.setup();
+    g_Global.setup();
     g_Workspace.build();
 
     // Prints stats, then exit
