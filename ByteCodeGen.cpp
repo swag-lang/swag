@@ -30,8 +30,9 @@ bool ByteCodeGen::emitRawNode(ByteCodeGenContext* context, AstNode* node)
 
 bool ByteCodeGen::emitNode(ByteCodeGenContext* context, AstNode* node)
 {
+    context->bc->hasDebugInfos = context->debugInfos;
     SWAG_CHECK(emitRawNode(context, node));
-	emitInstruction(context, ByteCodeNodeId::End);
+    emitInstruction(context, nullptr, ByteCodeNodeId::End);
     return true;
 }
 
@@ -41,7 +42,19 @@ bool ByteCodeGen::internalError(ByteCodeGenContext* context, AstNode* node)
     return false;
 }
 
-void ByteCodeGen::emitInstruction(ByteCodeGenContext* context, ByteCodeNodeId id)
+void ByteCodeGen::emitInstruction(ByteCodeGenContext* context, AstNode* node, ByteCodeNodeId id)
 {
-	context->bc->out.addU16((uint16_t) id);
+    if (context->debugInfos && node && node->sourceFileIdx != UINT32_MAX)
+    {
+        context->bc->out.addU16((uint16_t) ByteCodeNodeId::DebugInfos);
+        context->bc->out.addU32(node->sourceFileIdx);
+        context->bc->out.addU32(node->token.startLocation.line);
+        context->bc->out.addU32(node->token.startLocation.column);
+		context->bc->out.addU32(node->token.startLocation.seekStartLine);
+        context->bc->out.addU32(node->token.endLocation.line);
+        context->bc->out.addU32(node->token.endLocation.column);
+		context->bc->out.addU32(node->token.endLocation.seekStartLine);
+    }
+
+    context->bc->out.addU16((uint16_t) id);
 }

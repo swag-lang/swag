@@ -23,7 +23,6 @@ struct SourceLocation
 {
     int line;
     int column;
-    int seek;
     int seekStartLine;
 };
 
@@ -55,6 +54,7 @@ struct SourceFile : public PoolElement
     Module*      module        = nullptr;
     AstNode*     astRoot       = nullptr;
     PoolFactory* poolFactory   = nullptr;
+    uint32_t     indexInModule = UINT32_MAX;
 
     TextFormat                   textFormat = TextFormat::UTF8;
     int                          bufferSize;

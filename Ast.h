@@ -8,12 +8,13 @@ struct PoolFactory;
 namespace Ast
 {
     template<typename T>
-    T* newNode(Pool<T>* pool, AstNodeKind kind, Scope* scope, AstNode* parent = nullptr, bool lockParent = true)
+    T* newNode(Pool<T>* pool, AstNodeKind kind, Scope* scope, uint32_t sourceFileIdx, AstNode* parent = nullptr, bool lockParent = true)
     {
-        auto node    = pool->alloc();
-        node->kind   = kind;
-        node->parent = parent;
-        node->scope  = scope;
+        auto node           = pool->alloc();
+        node->kind          = kind;
+        node->parent        = parent;
+        node->scope         = scope;
+        node->sourceFileIdx = sourceFileIdx;
 
         if (parent)
         {

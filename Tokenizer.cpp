@@ -10,7 +10,7 @@
 
 void Tokenizer::setFile(SourceFile* file)
 {
-    location.seek          = 0;
+    seek                   = 0;
     location.column        = 0;
     location.line          = 0;
     location.seekStartLine = 0;
@@ -25,7 +25,7 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
         return;
 
     cacheChar = 0;
-    location.seek += offset;
+    seek += offset;
     location.column++;
 
     // Align tabulations
@@ -42,7 +42,7 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
             g_Stats.numLines++;
         location.column = 0;
         location.line++;
-        location.seekStartLine = location.seek;
+        location.seekStartLine = seek;
     }
 }
 
@@ -57,7 +57,7 @@ inline char32_t Tokenizer::getCharNoSeek(unsigned& offset)
     return getChar(offset, false);
 }
 
-inline char32_t Tokenizer::getChar(unsigned& offset, bool seek)
+inline char32_t Tokenizer::getChar(unsigned& offset, bool seekMove)
 {
     if (endReached)
         return 0;
@@ -88,7 +88,7 @@ inline char32_t Tokenizer::getChar(unsigned& offset, bool seek)
         return 0;
     }
 
-    if (seek)
+    if (seekMove)
         treatChar(c, offset);
     else
     {

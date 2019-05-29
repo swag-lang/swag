@@ -71,7 +71,7 @@ JobResult SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     // Setup root ast for file
-    sourceFile->astRoot = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::File, currentScope, sourceFile->module->astRoot);
+    sourceFile->astRoot = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::File, currentScope, sourceFile->indexInModule, sourceFile->module->astRoot);
 
     // Setup current scope as being the module root one
     currentScope = sourceFile->module->scopeRoot;

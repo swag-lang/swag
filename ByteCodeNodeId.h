@@ -3,6 +3,8 @@ enum class ByteCodeNodeId : uint16_t
 {
     End = 0,
 
+	DebugInfos,
+
     PushBool,
     PushS8,
     PushS16,
@@ -35,4 +37,7 @@ enum class ByteCodeNodeId : uint16_t
     BinOpMulU64,
     BinOpMulF32,
     BinOpMulF64,
+
+	BinOpDivF32,
+	BinOpDivF64,
 };

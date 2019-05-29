@@ -8,7 +8,7 @@
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::CompilerAssert, currentScope, parent, false);
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::CompilerAssert, currentScope, sourceFile->indexInModule, parent, false);
     node->semanticFct = &SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
@@ -22,7 +22,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
 
 bool SyntaxJob::doCompilerPrint(AstNode* parent)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::CompilerPrint, currentScope, parent, false);
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::CompilerPrint, currentScope, sourceFile->indexInModule, parent, false);
     node->semanticFct = &SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
@@ -36,7 +36,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 
 bool SyntaxJob::doCompilerRun(AstNode* parent)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::CompilerRun, currentScope, parent, false);
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::CompilerRun, currentScope, sourceFile->indexInModule, parent, false);
     node->semanticFct = &SemanticJob::resolveCompilerRun;
     node->token       = move(token);
 

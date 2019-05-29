@@ -6,7 +6,7 @@
 
 bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 {
-    auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, currentScope, parent, false);
+    auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, currentScope, sourceFile->indexInModule, parent, false);
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->token       = move(token);
     identifier->name        = identifier->token.text;
@@ -17,7 +17,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymLeftParen)
     {
-        auto callParams         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncCallParams, currentScope, identifier, false);
+        auto callParams         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncCallParams, currentScope, sourceFile->indexInModule, identifier, false);
         callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
         callParams->token       = move(token);
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
@@ -29,7 +29,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
-    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, currentScope, parent, false);
+    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, currentScope, sourceFile->indexInModule, parent, false);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     if (result)
         *result = identifierRef;

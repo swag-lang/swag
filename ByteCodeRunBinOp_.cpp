@@ -148,3 +148,31 @@ uint8_t* ByteCodeRun::runBinOpMulF64(ByteCodeRunContext* context)
     context->push(val2 * val1);
     return context->ep;
 }
+
+uint8_t* ByteCodeRun::runBinOpDivF32(ByteCodeRunContext* context)
+{
+    auto val1 = context->popF32();
+    auto val2 = context->popF32();
+    if (val1 == 0.0f)
+    {
+        context->error("division by zero");
+        return context->ep;
+    }
+
+    context->push(val2 / val1);
+    return context->ep;
+}
+
+uint8_t* ByteCodeRun::runBinOpDivF64(ByteCodeRunContext* context)
+{
+    auto val1 = context->popF64();
+    auto val2 = context->popF64();
+    if (val1 == 0.0f)
+    {
+        context->error("division by zero");
+        return context->ep;
+    }
+
+    context->push(val2 / val1);
+    return context->ep;
+}

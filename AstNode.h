@@ -26,9 +26,9 @@ enum class AstNodeKind
     Namespace,
     EnumDecl,
     FuncDecl,
-	FuncDeclParams,
-	FuncDeclType,
-	FuncCallParams,
+    FuncDeclParams,
+    FuncDeclType,
+    FuncCallParams,
     EnumType,
     EnumValue,
     Literal,
@@ -52,6 +52,7 @@ struct AstNode : public PoolElement
         semanticFct        = nullptr;
         typeInfo           = nullptr;
         resolvedSymbolName = nullptr;
+        sourceFileIdx      = UINT32_MAX;
         flags              = 0;
         childs.clear();
     }
@@ -105,6 +106,7 @@ struct AstNode : public PoolElement
     SpinLock             mutex;
     ComputedValue        computedValue;
     Utf8Crc              name;
+    uint32_t             sourceFileIdx;
 };
 
 struct AstVarDecl : public AstNode

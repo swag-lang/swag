@@ -21,7 +21,7 @@ enum class TokenId
     SymEqualEqual,
     SymMinus,
     SymMinusEqual,
-	SymMinusGreat,
+    SymMinusGreat,
     SymPlus,
     SymPlusEqual,
     SymAsterisk,
@@ -56,24 +56,24 @@ enum class TokenId
 
     CompilerUnitTest,
     CompilerAssert,
-	CompilerPrint,
-	CompilerRun,
-	CompilerFile,
-	CompilerLine,
+    CompilerPrint,
+    CompilerRun,
+    CompilerFile,
+    CompilerLine,
 
     KwdVar,
-	KwdNamespace,
-	KwdType,
-	KwdEnum,
-	KwdFunc,
+    KwdNamespace,
+    KwdType,
+    KwdEnum,
+    KwdFunc,
 
     Identifier,
     LiteralNumber,
     LiteralString,
     LiteralCharacter,
     NativeType,
-	KwdTrue,
-	KwdFalse,
+    KwdTrue,
+    KwdFalse,
 
     Invalid,
     EndOfLine,
@@ -123,6 +123,7 @@ struct Tokenizer
     SourceFile*    sourceFile      = nullptr;
     char32_t       cacheChar       = 0;
     unsigned       cacheCharOffset = 0;
+    int            seek            = 0;
     SourceLocation location;
     bool           endReached = false;
 };

@@ -4,5 +4,6 @@
 struct ByteCode
 {
 	Concat out;
+    bool   hasDebugInfos = true;
 };
 

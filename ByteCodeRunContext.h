@@ -19,6 +19,14 @@ struct ByteCodeRunContext
     uint8_t*           ep;
     SourceFile*        sourceFile;
     AstNode*           node;
+    bool               hasError = false;
+    string             errorMsg;
+
+    void error(const string& msg)
+    {
+        hasError = true;
+        errorMsg = msg;
+    }
 
     int32_t popS32()
     {
