@@ -24,9 +24,6 @@ ByteCodeRun   g_Run;
 
 void Global::setup()
 {
-    numCores = std::thread::hardware_concurrency();
-
-    g_Log.setup();
 	g_Run.setup();
     g_TypeMgr.setup();
     g_LangSpec.setup();

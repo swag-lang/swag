@@ -3,12 +3,16 @@
 #include "LoadingThread.h"
 #include "JobThread.h"
 #include "Global.h"
+#include "CommandLine.h"
 
 void ThreadManager::init()
 {
     loadingThread = new LoadingThread();
 
-    int numWorkers = g_Global.numCores - 2;
+    int numCores = std::thread::hardware_concurrency();
+    if (g_CommandLine.numCores == 0)
+        g_CommandLine.numCores = numCores - 2;
+    int numWorkers = g_CommandLine.numCores;
     numWorkers     = max(1, numWorkers);
     for (int i = 0; i < numWorkers; i++)
         workerThreads.push_back(new JobThread());

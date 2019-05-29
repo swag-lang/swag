@@ -23,6 +23,7 @@ struct TypeManager
     static bool castToNativeS64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeFX(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
 
     static bool castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags);
 

@@ -4,9 +4,6 @@
 struct Global
 {
     void setup();
-
-    fs::path exePath;
-    int      numCores = 0;
 };
 
 extern struct Global        g_Global;

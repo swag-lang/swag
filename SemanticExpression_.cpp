@@ -11,7 +11,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     auto node = context->node;
     node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     node->typeInfo              = node->token.literalType;
-    node->computedValue.variant = node->token.literalValue;
+    node->computedValue.reg = node->token.literalValue;
     node->computedValue.text    = node->token.text;
     context->result             = SemanticResult::Done;
     return true;
@@ -42,22 +42,22 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
         switch (op->typeInfo->nativeType)
         {
         case NativeType::S8:
-            op->computedValue.variant.s8 = -op->computedValue.variant.s8;
+            op->computedValue.reg.s8 = -op->computedValue.reg.s8;
             break;
         case NativeType::S16:
-            op->computedValue.variant.s16 = -op->computedValue.variant.s16;
+            op->computedValue.reg.s16 = -op->computedValue.reg.s16;
             break;
         case NativeType::S32:
-            op->computedValue.variant.s32 = -op->computedValue.variant.s32;
+            op->computedValue.reg.s32 = -op->computedValue.reg.s32;
             break;
         case NativeType::SX:
         case NativeType::S64:
-            op->computedValue.variant.s64 = -op->computedValue.variant.s64;
+            op->computedValue.reg.s64 = -op->computedValue.reg.s64;
             break;
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
-            op->computedValue.variant.f64 = -op->computedValue.variant.f64;
+            op->computedValue.reg.f64 = -op->computedValue.reg.f64;
             break;
         }
     }
@@ -83,7 +83,7 @@ bool SemanticJob::resolveSingleOpExclam(SemanticContext* context, AstNode* op)
         switch (op->typeInfo->nativeType)
         {
         case NativeType::Bool:
-            op->computedValue.variant.b = !op->computedValue.variant.b;
+            op->computedValue.reg.b = !op->computedValue.reg.b;
             break;
         }
     }

@@ -15,6 +15,6 @@ union Register {
 
 struct ComputedValue
 {
-    Register variant;
+    Register reg;
     Utf8     text;
 };

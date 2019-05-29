@@ -19,55 +19,55 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         {
         case NativeType::S8:
         {
-            auto result = left->computedValue.variant.s8 + right->computedValue.variant.s8;
+            auto result = left->computedValue.reg.s8 + right->computedValue.reg.s8;
             if (result < INT8_MIN || result > INT8_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's8'"});
-            node->computedValue.variant.s8 = left->computedValue.variant.s8 + right->computedValue.variant.s8;
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 + right->computedValue.reg.s8;
         }
         break;
         case NativeType::S16:
         {
-            auto result = left->computedValue.variant.s16 + right->computedValue.variant.s16;
+            auto result = left->computedValue.reg.s16 + right->computedValue.reg.s16;
             if (result < INT16_MIN || result > INT16_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's16'"});
-            node->computedValue.variant.s16 = left->computedValue.variant.s16 + right->computedValue.variant.s16;
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 + right->computedValue.reg.s16;
         }
         break;
         case NativeType::S32:
         {
-            auto result = left->computedValue.variant.s32 + right->computedValue.variant.s32;
+            auto result = left->computedValue.reg.s32 + right->computedValue.reg.s32;
             if (result < INT32_MIN || result > INT32_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's32'"});
-            node->computedValue.variant.s32 = left->computedValue.variant.s32 + right->computedValue.variant.s32;
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 + right->computedValue.reg.s32;
         }
         break;
         case NativeType::S64:
         case NativeType::SX:
-            node->computedValue.variant.s64 = left->computedValue.variant.s64 + right->computedValue.variant.s64;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 + right->computedValue.reg.s64;
             break;
         case NativeType::U8:
-            if (left->computedValue.variant.u64 + right->computedValue.variant.u64 > UINT8_MAX)
+            if (left->computedValue.reg.u64 + right->computedValue.reg.u64 > UINT8_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u8'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 + right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
         case NativeType::U16:
-            if (left->computedValue.variant.u64 + right->computedValue.variant.u64 > UINT16_MAX)
+            if (left->computedValue.reg.u64 + right->computedValue.reg.u64 > UINT16_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u16'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 + right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
         case NativeType::U32:
-            if (left->computedValue.variant.u64 + right->computedValue.variant.u64 > UINT32_MAX)
+            if (left->computedValue.reg.u64 + right->computedValue.reg.u64 > UINT32_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 + right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
         case NativeType::U64:
         case NativeType::UX:
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 + right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
-            node->computedValue.variant.f64 = left->computedValue.variant.f64 + right->computedValue.variant.f64;
+            node->computedValue.reg.f64 = left->computedValue.reg.f64 + right->computedValue.reg.f64;
             break;
         }
     }
@@ -90,55 +90,55 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         {
         case NativeType::S8:
         {
-            auto result = left->computedValue.variant.s8 - right->computedValue.variant.s8;
+            auto result = left->computedValue.reg.s8 - right->computedValue.reg.s8;
             if (result < INT8_MIN || result > INT8_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's8'"});
-            node->computedValue.variant.s8 = left->computedValue.variant.s8 - right->computedValue.variant.s8;
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 - right->computedValue.reg.s8;
         }
         break;
         case NativeType::S16:
         {
-            auto result = left->computedValue.variant.s16 - right->computedValue.variant.s16;
+            auto result = left->computedValue.reg.s16 - right->computedValue.reg.s16;
             if (result < INT16_MIN || result > INT16_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's16'"});
-            node->computedValue.variant.s16 = left->computedValue.variant.s16 - right->computedValue.variant.s16;
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 - right->computedValue.reg.s16;
         }
         break;
         case NativeType::S32:
         {
-            auto result = left->computedValue.variant.s32 - right->computedValue.variant.s32;
+            auto result = left->computedValue.reg.s32 - right->computedValue.reg.s32;
             if (result < INT32_MIN || result > INT32_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's32'"});
-            node->computedValue.variant.s32 = left->computedValue.variant.s32 - right->computedValue.variant.s32;
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 - right->computedValue.reg.s32;
         }
         break;
         case NativeType::S64:
         case NativeType::SX:
-            node->computedValue.variant.s64 = left->computedValue.variant.s64 - right->computedValue.variant.s64;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 - right->computedValue.reg.s64;
             break;
         case NativeType::U8:
-            if (left->computedValue.variant.u64 - right->computedValue.variant.u64 > UINT8_MAX)
+            if (left->computedValue.reg.u64 - right->computedValue.reg.u64 > UINT8_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u8'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 - right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
         case NativeType::U16:
-            if (left->computedValue.variant.u64 - right->computedValue.variant.u64 > UINT16_MAX)
+            if (left->computedValue.reg.u64 - right->computedValue.reg.u64 > UINT16_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u16'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 - right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
         case NativeType::U32:
-            if (left->computedValue.variant.u64 - right->computedValue.variant.u64 > UINT32_MAX)
+            if (left->computedValue.reg.u64 - right->computedValue.reg.u64 > UINT32_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 - right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
         case NativeType::U64:
         case NativeType::UX:
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 - right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
-            node->computedValue.variant.f64 = left->computedValue.variant.f64 - right->computedValue.variant.f64;
+            node->computedValue.reg.f64 = left->computedValue.reg.f64 - right->computedValue.reg.f64;
             break;
         }
     }
@@ -161,55 +161,55 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         {
         case NativeType::S8:
         {
-            auto result = left->computedValue.variant.s8 * right->computedValue.variant.s8;
+            auto result = left->computedValue.reg.s8 * right->computedValue.reg.s8;
             if (result < INT8_MIN || result > INT8_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's8'"});
-            node->computedValue.variant.s8 = left->computedValue.variant.s8 * right->computedValue.variant.s8;
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 * right->computedValue.reg.s8;
         }
         break;
         case NativeType::S16:
         {
-            auto result = left->computedValue.variant.s16 * right->computedValue.variant.s16;
+            auto result = left->computedValue.reg.s16 * right->computedValue.reg.s16;
             if (result < INT16_MIN || result > INT16_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's16'"});
-            node->computedValue.variant.s16 = left->computedValue.variant.s16 * right->computedValue.variant.s16;
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 * right->computedValue.reg.s16;
         }
         break;
         case NativeType::S32:
         {
-            auto result = left->computedValue.variant.s32 * right->computedValue.variant.s32;
+            auto result = left->computedValue.reg.s32 * right->computedValue.reg.s32;
             if (result < INT32_MIN || result > INT32_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's32'"});
-            node->computedValue.variant.s32 = left->computedValue.variant.s32 * right->computedValue.variant.s32;
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 * right->computedValue.reg.s32;
         }
         break;
         case NativeType::S64:
         case NativeType::SX:
-            node->computedValue.variant.s64 = left->computedValue.variant.s64 * right->computedValue.variant.s64;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 * right->computedValue.reg.s64;
             break;
         case NativeType::U8:
-            if (left->computedValue.variant.u64 * right->computedValue.variant.u64 > UINT8_MAX)
+            if (left->computedValue.reg.u64 * right->computedValue.reg.u64 > UINT8_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u8'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 * right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
         case NativeType::U16:
-            if (left->computedValue.variant.u64 * right->computedValue.variant.u64 > UINT16_MAX)
+            if (left->computedValue.reg.u64 * right->computedValue.reg.u64 > UINT16_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u16'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 * right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
         case NativeType::U32:
-            if (left->computedValue.variant.u64 * right->computedValue.variant.u64 > UINT32_MAX)
+            if (left->computedValue.reg.u64 * right->computedValue.reg.u64 > UINT32_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 * right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
         case NativeType::U64:
         case NativeType::UX:
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 * right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
-            node->computedValue.variant.f64 = left->computedValue.variant.f64 * right->computedValue.variant.f64;
+            node->computedValue.reg.f64 = left->computedValue.reg.f64 * right->computedValue.reg.f64;
             break;
         }
     }
@@ -243,9 +243,9 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
-            if (right->computedValue.variant.f64 == 0)
+            if (right->computedValue.reg.f64 == 0)
                 return sourceFile->report({sourceFile, right->token, "division by zero"});
-            node->computedValue.variant.f64 = left->computedValue.variant.f64 / right->computedValue.variant.f64;
+            node->computedValue.reg.f64 = left->computedValue.reg.f64 / right->computedValue.reg.f64;
             break;
         }
     }
@@ -271,10 +271,10 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         switch (node->token.id)
         {
         case TokenId::SymAmpersandAmpersand:
-            node->computedValue.variant.b = leftNode->computedValue.variant.b && rightNode->computedValue.variant.b;
+            node->computedValue.reg.b = leftNode->computedValue.reg.b && rightNode->computedValue.reg.b;
             break;
         case TokenId::SymVerticalVertical:
-            node->computedValue.variant.b = leftNode->computedValue.variant.b || rightNode->computedValue.variant.b;
+            node->computedValue.reg.b = leftNode->computedValue.reg.b || rightNode->computedValue.reg.b;
             break;
         }
     }
@@ -321,19 +321,19 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         switch (left->typeInfo->nativeType)
         {
         case NativeType::Bool:
-            node->computedValue.variant.b = left->computedValue.variant.b == right->computedValue.variant.b;
+            node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
             break;
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
-            node->computedValue.variant.b = left->computedValue.variant.f64 == right->computedValue.variant.f64;
+            node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
             break;
         case NativeType::S8:
         case NativeType::S16:
         case NativeType::S32:
         case NativeType::S64:
         case NativeType::SX:
-            node->computedValue.variant.b = left->computedValue.variant.s64 == right->computedValue.variant.s64;
+            node->computedValue.reg.b = left->computedValue.reg.s64 == right->computedValue.reg.s64;
             break;
         case NativeType::U8:
         case NativeType::U16:
@@ -341,7 +341,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         case NativeType::Char:
         case NativeType::U64:
         case NativeType::UX:
-            node->computedValue.variant.b = left->computedValue.variant.u64 == right->computedValue.variant.u64;
+            node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
             break;
         }
     }
@@ -357,19 +357,19 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
         switch (left->typeInfo->nativeType)
         {
         case NativeType::Bool:
-            node->computedValue.variant.b = left->computedValue.variant.b < right->computedValue.variant.b;
+            node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
             break;
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
-            node->computedValue.variant.b = left->computedValue.variant.f64 < right->computedValue.variant.f64;
+            node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
             break;
         case NativeType::S8:
         case NativeType::S16:
         case NativeType::S32:
         case NativeType::S64:
         case NativeType::SX:
-            node->computedValue.variant.s64 = left->computedValue.variant.s64 < right->computedValue.variant.s64;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 < right->computedValue.reg.s64;
             break;
         case NativeType::U8:
         case NativeType::U16:
@@ -377,7 +377,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
         case NativeType::Char:
         case NativeType::U64:
         case NativeType::UX:
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 < right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
             break;
         }
     }
@@ -393,19 +393,19 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
         switch (left->typeInfo->nativeType)
         {
         case NativeType::Bool:
-            node->computedValue.variant.b = left->computedValue.variant.b > right->computedValue.variant.b;
+            node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
             break;
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
-            node->computedValue.variant.b = left->computedValue.variant.f64 > right->computedValue.variant.f64;
+            node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
             break;
         case NativeType::S8:
         case NativeType::S16:
         case NativeType::S32:
         case NativeType::S64:
         case NativeType::SX:
-            node->computedValue.variant.s64 = left->computedValue.variant.s64 > right->computedValue.variant.s64;
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 > right->computedValue.reg.s64;
             break;
         case NativeType::U8:
         case NativeType::U16:
@@ -413,7 +413,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
         case NativeType::Char:
         case NativeType::U64:
         case NativeType::UX:
-            node->computedValue.variant.u64 = left->computedValue.variant.u64 > right->computedValue.variant.u64;
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
             break;
         }
     }
@@ -443,7 +443,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             break;
         case TokenId::SymExclamEqual:
             SWAG_CHECK(resolveCompOpEqual(context, left, right));
-            node->computedValue.variant.b = !node->computedValue.variant.b;
+            node->computedValue.reg.b = !node->computedValue.reg.b;
             break;
         case TokenId::SymLower:
             SWAG_CHECK(resolveCompOpLower(context, left, right));
@@ -453,11 +453,11 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             break;
         case TokenId::SymLowerEqual:
             SWAG_CHECK(resolveCompOpGreater(context, left, right));
-            node->computedValue.variant.b = !node->computedValue.variant.b;
+            node->computedValue.reg.b = !node->computedValue.reg.b;
             break;
         case TokenId::SymGreaterEqual:
             SWAG_CHECK(resolveCompOpLower(context, left, right));
-            node->computedValue.variant.b = !node->computedValue.variant.b;
+            node->computedValue.reg.b = !node->computedValue.reg.b;
             break;
         }
     }

@@ -163,6 +163,7 @@
     <ClInclude Include="ByteCodeRun.h" />
     <ClInclude Include="ByteCodeRunContext.h" />
     <ClInclude Include="CommandLine.h" />
+    <ClInclude Include="CommandLineParser.h" />
     <ClInclude Include="Concat.h" />
     <ClInclude Include="ConcatBucket.h" />
     <ClInclude Include="Diagnostic.h" />
@@ -203,14 +204,17 @@
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGen.cpp" />
+    <ClCompile Include="ByteCodeGenBinOp_.cpp" />
     <ClCompile Include="ByteCodeGenLiteral_.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
+    <ClCompile Include="ByteCodeRunBinOp_.cpp" />
     <ClCompile Include="ByteCodeRunStack_.cpp" />
     <ClCompile Include="closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CommandLine.cpp" />
+    <ClCompile Include="CommandLineParser.cpp" />
     <ClCompile Include="Concat.cpp" />
     <ClCompile Include="Diagnostic.cpp" />
     <ClCompile Include="ffi.c">

@@ -158,6 +158,15 @@
     <ClCompile Include="ByteCodeRunStack_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeRunBinOp_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenBinOp_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandLineParser.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -287,6 +296,9 @@
     <ClInclude Include="ByteCodeRunContext.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
+    <ClInclude Include="CommandLineParser.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
@@ -315,13 +327,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include=".clang-format">
-      <Filter>Main</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="win64.S">
       <Filter>FFI</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".clang-format" />
   </ItemGroup>
 </Project>

@@ -10,7 +10,15 @@ struct Concat
 
     void addU8(uint8_t v);
     void addU16(uint16_t v);
+    void addU32(uint32_t v);
+    void addU64(uint64_t v);
+    void addS8(int8_t v);
+    void addS16(int16_t v);
     void addS32(int32_t v);
+    void addS64(int64_t v);
+    void addF32(float v);
+    void addF64(double v);
+    void addBool(bool v);
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;
@@ -41,6 +49,6 @@ struct Concat
             currentSP += offset;
         }
 
-		return currentSP;
+        return currentSP;
     }
 };

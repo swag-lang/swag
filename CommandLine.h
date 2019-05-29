@@ -1,8 +1,6 @@
 #pragma once
 struct CommandLine
 {
-    bool process(int argc, const char* argv[]);
-
     bool test       = true;
     bool verbose    = false;
     bool silent     = false;
@@ -10,6 +8,11 @@ struct CommandLine
     bool syntaxOnly = false;
     bool output     = true;
 
-    int    tabSize = 4;
-	string fileFilter = "119";
+    int    numCores   = 0;
+    int    tabSize    = 4;
+    string fileFilter = "119";
+
+    fs::path exePath;
+
+    void setup();
 };

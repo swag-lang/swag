@@ -2,13 +2,7 @@
 #include "CommandLine.h"
 #include "Global.h"
 
-bool CommandLine::process(int argc, const char *argv[])
+void CommandLine::setup()
 {
-	for (int i = 0; i < argc; i++)
-	{
-		if (!strcmp(argv[i], "--verbose"))
-			g_CommandLine.verbose = true;
-	}
-
-	return true;
+    numCores = std::thread::hardware_concurrency();
 }

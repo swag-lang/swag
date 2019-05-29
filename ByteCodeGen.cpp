@@ -13,6 +13,9 @@ bool ByteCodeGen::emitRawNode(ByteCodeGenContext* context, AstNode* node)
     case AstNodeKind::Literal:
         SWAG_CHECK(emitLiteral(context, node));
         break;
+    case AstNodeKind::BinaryOp:
+        SWAG_CHECK(emitBinaryOp(context, node));
+        break;
 
     default:
         for (auto child : node->childs)
@@ -28,7 +31,7 @@ bool ByteCodeGen::emitRawNode(ByteCodeGenContext* context, AstNode* node)
 bool ByteCodeGen::emitNode(ByteCodeGenContext* context, AstNode* node)
 {
     SWAG_CHECK(emitRawNode(context, node));
-	addInstruction(context, ByteCodeNodeId::End);
+	emitInstruction(context, ByteCodeNodeId::End);
     return true;
 }
 
@@ -38,7 +41,7 @@ bool ByteCodeGen::internalError(ByteCodeGenContext* context, AstNode* node)
     return false;
 }
 
-void ByteCodeGen::addInstruction(ByteCodeGenContext* context, ByteCodeNodeId id)
+void ByteCodeGen::emitInstruction(ByteCodeGenContext* context, ByteCodeNodeId id)
 {
 	context->bc->out.addU16((uint16_t) id);
 }

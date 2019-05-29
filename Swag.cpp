@@ -3,6 +3,7 @@
 #include "Stats.h"
 #include "Log.h"
 #include "Workspace.h"
+#include "CommandLineParser.h"
 
 float toto(float a)
 {
@@ -48,7 +49,13 @@ void printStats(chrono::duration<double>& elapsedTime)
 int main(int argc, const char* argv[])
 {
     auto timeBefore = chrono::high_resolution_clock::now();
-    if (!g_CommandLine.process(argc, argv))
+
+    g_Log.setup();
+    g_CommandLine.setup();
+
+	CommandLineParser cmdParser;
+    cmdParser.setup(&g_CommandLine);
+    if (!cmdParser.process(argc, argv))
         return -2;
 
 	g_Global.setup();
