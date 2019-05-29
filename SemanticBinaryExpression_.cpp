@@ -239,7 +239,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         case NativeType::U32:
         case NativeType::U64:
         case NativeType::UX:
-            return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "division of an integer is not allowed"});
+            return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer division is not allowed"});
         case NativeType::F32:
         case NativeType::F64:
         case NativeType::FX:
