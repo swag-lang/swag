@@ -34,6 +34,7 @@ void printStats(chrono::duration<double>& elapsedTime)
 
     g_Log.setColor(LogColor::White);
     wcout << "elapsed time ...... " << elapsedTime.count() << "s\n";
+    wcout << "workers ........... " << g_Stats.numWorkers << "\n";
     wcout << "lines ............. " << g_Stats.numLines << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
     wcout << "modules ........... " << g_Stats.numModules << "\n";

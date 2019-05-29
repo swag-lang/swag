@@ -14,7 +14,11 @@ void CommandLineParser::addArg(const char* longName, const char* shortName, Comm
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
+    addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
+    addArg("--syntax-only", nullptr, CommandLineType::Bool, &cmdLine->syntaxOnly);
+
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
+    addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
 }
 
 bool CommandLineParser::process(int argc, const char* argv[])

@@ -4,13 +4,13 @@ struct CommandLine
     bool test       = true;
     bool verbose    = false;
     bool silent     = false;
-    bool stats      = true;
+    bool stats      = false;
     bool syntaxOnly = false;
     bool output     = true;
 
-    int    numCores   = 0;
-    int    tabSize    = 4;
-	string fileFilter;// = "119";
+    int    numCores = 0;
+    int    tabSize  = 4;
+    string fileFilter; // = "119";
 
     fs::path exePath;
 

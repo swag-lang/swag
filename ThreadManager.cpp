@@ -4,6 +4,7 @@
 #include "JobThread.h"
 #include "Global.h"
 #include "CommandLine.h"
+#include "Stats.h"
 
 void ThreadManager::init()
 {
@@ -12,8 +13,11 @@ void ThreadManager::init()
     int numCores = std::thread::hardware_concurrency();
     if (g_CommandLine.numCores == 0)
         g_CommandLine.numCores = numCores - 2;
-    int numWorkers = g_CommandLine.numCores;
-    numWorkers     = max(1, numWorkers);
+    int numWorkers     = g_CommandLine.numCores;
+    numWorkers         = max(1, numWorkers);
+    numWorkers         = min(numWorkers, numCores);
+    g_Stats.numWorkers = numWorkers;
+
     for (int i = 0; i < numWorkers; i++)
         workerThreads.push_back(new JobThread());
 }
