@@ -13,6 +13,4 @@ struct CommandLine
     string fileFilter; // = "119";
 
     fs::path exePath;
-
-    void setup();
 };

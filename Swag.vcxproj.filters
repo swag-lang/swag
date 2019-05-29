@@ -28,9 +28,6 @@
     <ClCompile Include="Tokenizer.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="CommandLine.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Main</Filter>
     </ClCompile>

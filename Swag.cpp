@@ -52,7 +52,6 @@ int main(int argc, const char* argv[])
     auto timeBefore = chrono::high_resolution_clock::now();
 
     g_Log.setup();
-    g_CommandLine.setup();
 
 	CommandLineParser cmdParser;
     cmdParser.setup(&g_CommandLine);
