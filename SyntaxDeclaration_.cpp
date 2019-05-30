@@ -13,6 +13,11 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
+
+	// Be sure this is not the swag namespace, except for a runtime file
+    if (!sourceFile->externalBuffer)
+        SWAG_VERIFY(token.text != "swag", syntaxError(token, "the 'swag' namespace is reserved by the compiler"));
+
     Ast::assignToken(namespaceNode, token);
 
     // Add/Get namespace
