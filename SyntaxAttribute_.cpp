@@ -57,25 +57,33 @@ bool SyntaxJob::doAttributeDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAttributeUse(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(tokenizer.getToken(token));
-    while (token.id == TokenId::Identifier)
+    auto attrBlockNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrBlockUse, currentScope, sourceFile->indexInModule, parent, false);
+	if (result)
+		*result = attrBlockNode;
+
+    while (token.id == TokenId::SymAttrStart)
     {
-        auto attrNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrUse, currentScope, sourceFile->indexInModule, parent, false);
-        Ast::assignToken(attrNode, token);
-
         SWAG_CHECK(tokenizer.getToken(token));
-        if (token.id == TokenId::SymLeftParen)
+        while (token.id == TokenId::Identifier)
         {
-            SWAG_CHECK(doFunctionCall(attrNode));
+            auto attrNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrUse, currentScope, sourceFile->indexInModule, attrBlockNode, false);
+            Ast::assignToken(attrNode, token);
+
+            SWAG_CHECK(tokenizer.getToken(token));
+            if (token.id == TokenId::SymLeftParen)
+            {
+                SWAG_CHECK(doFunctionCall(attrNode));
+            }
+
+            if (token.id != TokenId::SymRightSquare)
+            {
+                SWAG_CHECK(eatToken(TokenId::SymComma));
+                SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
+            }
         }
 
-        if (token.id != TokenId::SymRightSquare)
-        {
-            SWAG_CHECK(eatToken(TokenId::SymComma));
-			SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
-        }
+        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
     return true;
 }

@@ -29,6 +29,7 @@ enum class AstNodeKind
     FuncDecl,
 	FuncCall,
     AttrDecl,
+	AttrBlockUse,
     AttrUse,
     FuncDeclParams,
     FuncDeclType,
