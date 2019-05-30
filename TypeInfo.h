@@ -9,6 +9,7 @@ enum class TypeInfoKind
     Namespace,
     Enum,
     Function,
+    Attribute,
 };
 
 enum class NativeType
@@ -32,9 +33,11 @@ enum class NativeType
     Void,
 };
 
-static const uint64_t TYPEINFO_INT_SIGNED   = 0x00000000'00000001;
-static const uint64_t TYPEINFO_INT_UNSIGNED = 0x00000000'00000002;
-static const uint64_t TYPEINFO_FLOAT        = 0x00000000'00000004;
+static const uint64_t TYPEINFO_INT_SIGNED     = 0x00000000'00000001;
+static const uint64_t TYPEINFO_INT_UNSIGNED   = 0x00000000'00000002;
+static const uint64_t TYPEINFO_FLOAT          = 0x00000000'00000004;
+static const uint32_t TYPEINFO_ATTRIBUTE_FUNC = 0x00000000'00000008;
+static const uint32_t TYPEINFO_ATTRIBUTE_VAR  = 0x00000000'00000010;
 
 struct TypeInfo : public PoolElement
 {
@@ -108,6 +111,16 @@ struct TypeInfoFunc : public TypeInfo
     Scope*            scope;
     vector<TypeInfo*> parameters;
     TypeInfo*         returnType;
+};
+
+struct TypeInfoAttribute : TypeInfoFunc
+{
+    uint32_t flags;
+
+    TypeInfoAttribute()
+    {
+        kind = TypeInfoKind::Function;
+    }
 };
 
 template<typename T>

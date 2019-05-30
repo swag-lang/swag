@@ -305,9 +305,6 @@
     <ClInclude Include="Runtime.h">
       <Filter>Lexer</Filter>
     </ClInclude>
-    <ClInclude Include="Attribute.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

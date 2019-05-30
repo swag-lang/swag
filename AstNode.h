@@ -166,10 +166,8 @@ struct AstAttribute : public AstNode
     {
         parameters = nullptr;
         type       = nullptr;
-        attribute  = nullptr;
     }
 
-    Attribute* attribute;
     AstNode*   parameters;
     AstNode*   type;
 };

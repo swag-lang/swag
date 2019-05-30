@@ -5,7 +5,8 @@
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
-    auto attrNode = Ast::newNode(&sourceFile->poolFactory->astAttrDecl, AstNodeKind::AttrDecl, currentScope, sourceFile->indexInModule, parent, false);
+    auto attrNode = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::AttrDecl, currentScope, sourceFile->indexInModule, parent, false);
+	attrNode->semanticFct = &SemanticJob::resolveAttrDecl;
     if (result)
         *result = attrNode;
 
@@ -13,9 +14,9 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
     Ast::assignToken(attrNode, token);
 
-    attrNode->attribute        = sourceFile->poolFactory->attribute.alloc();
-    attrNode->attribute->name  = attrNode->name;
-    attrNode->attribute->flags = 0;
+    attrNode->typeInfo        = sourceFile->poolFactory->typeInfoFunc.alloc();
+    attrNode->typeInfo->name  = attrNode->name;
+    attrNode->typeInfo->flags = 0;
 
     // Parameters
     SWAG_CHECK(tokenizer.getToken(token));
@@ -32,12 +33,12 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         switch (token.id)
         {
         case TokenId::KwdFunc:
-            SWAG_VERIFY((attrNode->attribute->flags & ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute type 'func' already defined"));
-            attrNode->attribute->flags |= ATTRIBUTE_FUNC;
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute type 'func' already defined"));
+            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_FUNC;
             break;
         case TokenId::KwdVar:
-            SWAG_VERIFY((attrNode->attribute->flags & ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute type 'var' already defined"));
-            attrNode->attribute->flags |= ATTRIBUTE_VAR;
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute type 'var' already defined"));
+            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_VAR;
             break;
         default:
             return error(token, format("invalid attribute type '%s'", token.text.c_str()));
@@ -51,13 +52,13 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_VERIFY(attrNode->attribute->flags, syntaxError(token, "missing attribute type"));
+    SWAG_VERIFY(attrNode->typeInfo->flags, syntaxError(token, "missing attribute type"));
 
-	// Register attribute
+    // Register attribute
     currentScope->allocateSymTable();
     {
         scoped_lock lk(currentScope->symTable->mutex);
-        currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, attrNode->token, attrNode->name, g_TypeMgr.typeInfoVoid, SymbolKind::Attribute);
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode->token, attrNode->name, SymbolKind::Attribute);
     }
 
     return true;
@@ -65,10 +66,10 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 {
-    auto attrBlockNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrUse, currentScope, sourceFile->indexInModule, parent, false);
-	attrBlockNode->semanticFct = &SemanticJob::resolveAttrUse;
-	if (result)
-		*result = attrBlockNode;
+    auto attrBlockNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrUse, currentScope, sourceFile->indexInModule, parent, false);
+    attrBlockNode->semanticFct = &SemanticJob::resolveAttrUse;
+    if (result)
+        *result = attrBlockNode;
 
     while (token.id == TokenId::SymAttrStart)
     {
