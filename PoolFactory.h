@@ -28,7 +28,7 @@ struct PoolFactory
     Pool<AstIdentifierRef> astIdentifierRef;
     Pool<AstIdentifier>    astIdentifier;
     Pool<AstFuncDecl>      astFuncDecl;
-    Pool<AstAttribute>     astAttribute;
+    Pool<AstAttribute>     astAttrDecl;
 
     Pool<SymbolName>     symName;
     Pool<SymbolOverload> symOverload;

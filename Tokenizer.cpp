@@ -143,10 +143,8 @@ bool Tokenizer::eatCComment(Token& token)
     }
 }
 
-void Tokenizer::getIdentifier(Token& token)
+void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
 {
-    unsigned offset;
-    auto     c = getCharNoSeek(offset);
     while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
     {
         token.text += c;
@@ -255,7 +253,17 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#')
         {
             token.text = c;
-            getIdentifier(token);
+            auto nc    = getCharNoSeek(offset);
+            if (c == '#' && nc == '[')
+            {
+                treatChar(nc, offset);
+				token.text += nc;
+				token.endLocation = location;
+				token.id = TokenId::SymAttrStart;
+				return true;
+            }
+
+            getIdentifier(token, nc, offset);
             token.endLocation = location;
             if (token.id == TokenId::Identifier && token.text[0] == '#')
             {

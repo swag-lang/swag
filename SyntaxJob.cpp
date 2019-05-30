@@ -66,8 +66,9 @@ bool SyntaxJob::recoverError()
 
 JobResult SyntaxJob::execute()
 {
-    if (g_CommandLine.stats)
+    if (g_CommandLine.stats && !sourceFile->externalBuffer)
         g_Stats.numFiles++;
+
     tokenizer.setFile(sourceFile);
 
     // Setup root ast for file

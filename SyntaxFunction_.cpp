@@ -65,3 +65,14 @@ bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
+
+bool SyntaxJob::doFunctionCall(AstNode* parent, AstNode** result)
+{
+    auto funcNode = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::FuncCall, currentScope, sourceFile->indexInModule, parent, false);
+    if (result)
+        *result = funcNode;
+
+	SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    return true;
+}

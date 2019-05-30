@@ -53,6 +53,7 @@ enum class TokenId
     SymExclam,
     SymExclamEqual,
     SymBackSlash,
+	SymAttrStart,
 
     CompilerUnitTest,
     CompilerAssert,
@@ -100,7 +101,7 @@ struct Tokenizer
     char32_t getCharNoSeek(unsigned& offset);
     char32_t getChar(unsigned& offset, bool seek);
     bool     eatCComment(Token& token);
-    void     getIdentifier(Token& token);
+    void     getIdentifier(Token& token, char32_t c, unsigned offset);
     void     treatChar(char32_t c, unsigned offset);
     bool     doNumberLiteral(char32_t c, Token& token);
     bool     doHexLiteral(Token& token);

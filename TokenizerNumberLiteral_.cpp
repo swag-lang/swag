@@ -17,7 +17,11 @@ bool Tokenizer::doNumberSuffix(Token& token)
 {
     Token tokenSuffix;
     tokenSuffix.startLocation = location;
-    getIdentifier(tokenSuffix);
+
+    unsigned offset;
+    auto     c = getCharNoSeek(offset);
+    getIdentifier(tokenSuffix, c, offset);
+
     SWAG_CHECK(tokenSuffix.id == TokenId::NativeType || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
     SWAG_CHECK(tokenSuffix.literalType->nativeType != NativeType::Bool || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
     SWAG_CHECK(tokenSuffix.literalType->nativeType != NativeType::String || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));

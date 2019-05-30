@@ -5,7 +5,7 @@
 
 bool SyntaxJob::doAttributeDecl(AstNode* parent, AstNode** result)
 {
-    auto attrNode = Ast::newNode(&sourceFile->poolFactory->astAttribute, AstNodeKind::AttributeDecl, currentScope, sourceFile->indexInModule, parent, false);
+    auto attrNode = Ast::newNode(&sourceFile->poolFactory->astAttrDecl, AstNodeKind::AttrDecl, currentScope, sourceFile->indexInModule, parent, false);
     if (result)
         *result = attrNode;
 
@@ -32,7 +32,7 @@ bool SyntaxJob::doAttributeDecl(AstNode* parent, AstNode** result)
         switch (token.id)
         {
         case TokenId::KwdFunc:
-			SWAG_VERIFY((attrNode->attribute->flags & ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute type 'func' already defined"));
+            SWAG_VERIFY((attrNode->attribute->flags & ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute type 'func' already defined"));
             attrNode->attribute->flags |= ATTRIBUTE_FUNC;
             break;
         case TokenId::KwdVar:
@@ -46,11 +46,36 @@ bool SyntaxJob::doAttributeDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.id != TokenId::SymSemiColon)
         {
-			SWAG_CHECK(eatToken(TokenId::SymComma));
-			SWAG_VERIFY(token.id != TokenId::SymSemiColon, syntaxError(token, "missing attribute type"));
+            SWAG_CHECK(eatToken(TokenId::SymComma));
+            SWAG_VERIFY(token.id != TokenId::SymSemiColon, syntaxError(token, "missing attribute type"));
         }
     }
 
     SWAG_VERIFY(attrNode->attribute->flags, syntaxError(token, "missing attribute type"));
+    return true;
+}
+
+bool SyntaxJob::doAttributeUse(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(tokenizer.getToken(token));
+    while (token.id == TokenId::Identifier)
+    {
+        auto attrNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrUse, currentScope, sourceFile->indexInModule, parent, false);
+        Ast::assignToken(attrNode, token);
+
+        SWAG_CHECK(tokenizer.getToken(token));
+        if (token.id == TokenId::SymLeftParen)
+        {
+            SWAG_CHECK(doFunctionCall(attrNode));
+        }
+
+        if (token.id != TokenId::SymRightSquare)
+        {
+            SWAG_CHECK(eatToken(TokenId::SymComma));
+			SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
+        }
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
     return true;
 }
