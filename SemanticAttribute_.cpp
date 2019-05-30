@@ -19,8 +19,14 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
-    auto node          = context->node;
-    auto nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
+    auto        node          = context->node;
+    auto        nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
+    AstNodeKind kind          = nextStatement ? nextStatement->kind : AstNodeKind::Module;
+
+    for (auto child : node->childs)
+    {
+        SWAG_CHECK(checkAttribute(context, child, kind));
+    }
 
     if (nextStatement)
     {
@@ -31,21 +37,27 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, vector<TypeInfoAttr*>& result, AstNode* attributes, AstNodeKind kind)
+bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNodeKind kind)
 {
-    auto sourceFile = context->sourceFile;
-    auto curAttr    = attributes;
+    auto          sourceFile = context->sourceFile;
+    TypeInfoAttr* typeInfo   = CastTypeInfo<TypeInfoAttr>(oneAttribute->typeInfo, TypeInfoKind::Attribute);
+    if (!(typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind == AstNodeKind::FuncDecl)
+        return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' can't be applied to a function declaration", oneAttribute->name.c_str())});
+    if (!(typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind == AstNodeKind::VarDecl)
+        return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' can't be applied to a variable declaration", oneAttribute->name.c_str())});
+    return true;
+}
+
+bool SemanticJob::collectAttributes(SemanticContext* context, vector<TypeInfoAttr*>& result, AstNode* attrUse, AstNodeKind kind)
+{
+    auto curAttr = attrUse;
     while (curAttr)
     {
         // Check that the attribute matches the following declaration
         for (auto child : curAttr->childs)
         {
+            SWAG_CHECK(checkAttribute(context, child, kind));
             TypeInfoAttr* typeInfo = CastTypeInfo<TypeInfoAttr>(child->typeInfo, TypeInfoKind::Attribute);
-            if (!(typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind == AstNodeKind::FuncDecl)
-                return sourceFile->report({sourceFile, child->token, format("attribute '%s' can only be applied to a function declaration", child->name.c_str())});
-            if (!(typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind == AstNodeKind::VarDecl)
-                return sourceFile->report({sourceFile, child->token, format("attribute '%s' can only be applied to a variable declaration", child->name.c_str())});
-
             result.push_back(typeInfo);
         }
 
