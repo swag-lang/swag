@@ -5,7 +5,27 @@
 
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 {
+    auto paramsNode = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::FuncDeclParams, currentScope, sourceFile->indexInModule, parent, false);
+    if (result)
+        *result = paramsNode;
+
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    while (token.id != TokenId::SymRightParen)
+    {
+        auto node = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, currentScope, sourceFile->indexInModule, paramsNode, false);
+        Ast::assignToken(node, token);
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(doTypeExpression(node));
+
+        if (token.id == TokenId::SymComma)
+        {
+			SWAG_CHECK(eatToken(TokenId::SymComma));
+			SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+        }
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
