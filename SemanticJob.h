@@ -67,6 +67,5 @@ struct SemanticJob : public Job
 
     Module*          module;
     SourceFile*      sourceFile;
-    AstNode*         astRoot;
     vector<AstNode*> nodes;
 };

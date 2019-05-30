@@ -9,13 +9,11 @@
 #include "SourceFile.h"
 #include "Diagnostic.h"
 
-SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* sourceFile, AstNode* node)
+SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* sourceFile)
 {
     auto job        = sourceFile->poolFactory->semanticJob.alloc();
-    job->astRoot    = node;
     job->module     = sourceFile->module;
     job->sourceFile = sourceFile;
-    job->nodes.push_back(node);
     return job;
 }
 
@@ -30,43 +28,64 @@ bool ModuleSemanticJob::doSemanticNamespace(SourceFile* sourceFile, AstNode* nod
         scope = scope->parentScope;
     }
 
-    for (auto child : node->childs)
-        doSemanticNode(sourceFile, child);
-
     return true;
 }
 
 bool ModuleSemanticJob::doSemanticNode(SourceFile* sourceFile, AstNode* node)
 {
-    switch (node->kind)
+    vector<AstNode*> nodes;
+    for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+        nodes.push_back(node->childs[i]);
+
+    while (!nodes.empty())
     {
-    case AstNodeKind::File:
-        for (auto child : node->childs)
-            doSemanticNode(sourceFile, child);
+        node = nodes.back();
+        nodes.pop_back();
+
+        switch (node->kind)
+        {
+        case AstNodeKind::Namespace:
+            SWAG_CHECK(doSemanticNamespace(sourceFile, node));
+            for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+                nodes.push_back(node->childs[i]);
+            break;
+
+        case AstNodeKind::AttrUse:
+        {
+            auto job = newSemanticJob(sourceFile);
+
+            // Will deal with the next node too, as we want to stitch the attributes and the next declaration
+			// if necessary
+            if (!nodes.empty())
+            {
+                job->nodes.push_back(nodes.back());
+                nodes.pop_back();
+            }
+
+			job->nodes.push_back(node);
+            g_ThreadMgr.addJob(job);
+        }
         break;
 
-    case AstNodeKind::Namespace:
-        SWAG_CHECK(doSemanticNamespace(sourceFile, node));
+        case AstNodeKind::VarDecl:
+        case AstNodeKind::TypeDecl:
+        case AstNodeKind::EnumDecl:
+        case AstNodeKind::FuncDecl:
+        case AstNodeKind::CompilerAssert:
+        case AstNodeKind::CompilerPrint:
+        case AstNodeKind::CompilerRun:
+        case AstNodeKind::AttrDecl:
+        {
+            auto job = newSemanticJob(sourceFile);
+            job->nodes.push_back(node);
+            g_ThreadMgr.addJob(job);
+        }
         break;
 
-    case AstNodeKind::VarDecl:
-    case AstNodeKind::TypeDecl:
-    case AstNodeKind::EnumDecl:
-	case AstNodeKind::FuncDecl:
-    case AstNodeKind::CompilerAssert:
-    case AstNodeKind::CompilerPrint:
-    case AstNodeKind::CompilerRun:
-    case AstNodeKind::AttrDecl:
-    case AstNodeKind::AttrUse:
-    {
-        auto job = newSemanticJob(sourceFile, node);
-        g_ThreadMgr.addJob(job);
-    }
-    break;
-
-    default:
-        sourceFile->report({sourceFile, node->token, "not yet implemented ! (doSemanticNode)"});
-        return false;
+        default:
+            sourceFile->report({sourceFile, node->token, "not yet implemented ! (doSemanticNode)"});
+            return false;
+        }
     }
 
     return true;

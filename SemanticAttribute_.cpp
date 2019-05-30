@@ -42,9 +42,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, vector<TypeInfoAtt
         {
             TypeInfoAttr* typeInfo = CastTypeInfo<TypeInfoAttr>(child->typeInfo, TypeInfoKind::Attribute);
             if (!(typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind == AstNodeKind::FuncDecl)
-                return sourceFile->report({sourceFile, child->token, format("attribute '%s' must be followed by a function declaration", child->name.c_str())});
+                return sourceFile->report({sourceFile, child->token, format("attribute '%s' can only be applied to a function declaration", child->name.c_str())});
             if (!(typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind == AstNodeKind::VarDecl)
-                return sourceFile->report({sourceFile, child->token, format("attribute '%s' must be followed by a variable declaration", child->name.c_str())});
+                return sourceFile->report({sourceFile, child->token, format("attribute '%s' can only be applied to a variable declaration", child->name.c_str())});
 
             result.push_back(typeInfo);
         }
