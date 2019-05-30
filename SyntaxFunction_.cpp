@@ -47,8 +47,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         auto        typeInfo = sourceFile->poolFactory->typeInfoFunc.alloc();
         newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
         newScope->allocateSymTable();
-        typeInfo->name     = "func " + funcNode->name;
-        typeInfo->scope    = newScope;
+        typeInfo->name     = funcNode->name;
         funcNode->typeInfo = typeInfo;
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode->token, newScope->name, SymbolKind::Function);
     }

@@ -5,8 +5,8 @@
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
-    auto attrNode = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::AttrDecl, currentScope, sourceFile->indexInModule, parent, false);
-	attrNode->semanticFct = &SemanticJob::resolveAttrDecl;
+    auto attrNode         = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::AttrDecl, currentScope, sourceFile->indexInModule, parent, false);
+    attrNode->semanticFct = &SemanticJob::resolveAttrDecl;
     if (result)
         *result = attrNode;
 
@@ -14,9 +14,8 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
     Ast::assignToken(attrNode, token);
 
-    attrNode->typeInfo        = sourceFile->poolFactory->typeInfoFunc.alloc();
-    attrNode->typeInfo->name  = attrNode->name;
-    attrNode->typeInfo->flags = 0;
+    attrNode->typeInfo       = sourceFile->poolFactory->typeInfoAttr.alloc();
+    attrNode->typeInfo->name = attrNode->name;
 
     // Parameters
     SWAG_CHECK(tokenizer.getToken(token));

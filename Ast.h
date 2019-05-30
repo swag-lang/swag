@@ -20,6 +20,7 @@ namespace Ast
         {
             if (lockParent)
                 parent->lock();
+			node->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(node);
             if (lockParent)
                 parent->unlock();

@@ -1,7 +1,9 @@
 #pragma once
 #include "Pool.h"
 #include "Utf8.h"
+#include "TypeManager.h"
 struct Scope;
+struct TypeInfo;
 
 enum class TypeInfoKind
 {
@@ -32,6 +34,14 @@ enum class NativeType
     String,
     Void,
 };
+
+template<typename T>
+inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
+{
+    T* casted = static_cast<T*>(ptr);
+    assert(casted->kind == kind);
+    return casted;
+}
 
 static const uint64_t TYPEINFO_INT_SIGNED     = 0x00000000'00000001;
 static const uint64_t TYPEINFO_INT_UNSIGNED   = 0x00000000'00000002;
@@ -84,6 +94,24 @@ struct TypeInfoEnum : public TypeInfo
     }
 };
 
+struct TypeInfoAttr : public TypeInfo
+{
+    TypeInfoAttr()
+    {
+        kind = TypeInfoKind::Attribute;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (kind != from->kind)
+            return false;
+        auto fromFunc = CastTypeInfo<TypeInfoAttr>(from, TypeInfoKind::Attribute);
+        return TypeManager::match(parameters, fromFunc->parameters);
+    }
+
+    vector<TypeInfo*> parameters;
+};
+
 struct TypeInfoFunc : public TypeInfo
 {
     TypeInfoFunc()
@@ -95,38 +123,11 @@ struct TypeInfoFunc : public TypeInfo
     {
         if (kind != from->kind)
             return false;
-
-        auto fromFunc = static_cast<TypeInfoFunc*>(from);
-        if (parameters.size() != fromFunc->parameters.size())
-            return false;
-        for (int i = 0; i < parameters.size(); i++)
-        {
-            if (!parameters[i]->isSame(fromFunc->parameters[i]))
-                return false;
-        }
-
-        return true;
+        auto fromFunc = CastTypeInfo<TypeInfoFunc>(from, TypeInfoKind::Function);
+        return TypeManager::match(parameters, fromFunc->parameters);
     }
 
-    Scope*            scope;
-    vector<TypeInfo*> parameters;
-    TypeInfo*         returnType;
+    vector<TypeInfo*>     parameters;
+    TypeInfo*             returnType;
+    vector<TypeInfoAttr*> attributes;
 };
-
-struct TypeInfoAttribute : TypeInfoFunc
-{
-    uint32_t flags;
-
-    TypeInfoAttribute()
-    {
-        kind = TypeInfoKind::Function;
-    }
-};
-
-template<typename T>
-inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
-{
-    T* casted = static_cast<T*>(ptr);
-    assert(casted->kind == kind);
-    return casted;
-}

@@ -5,6 +5,8 @@ struct AstNode;
 struct Module;
 struct SourceFile;
 struct SemanticJob;
+struct TypeInfoAttr;
+enum class AstNodeKind;
 
 enum class SemanticResult
 {
@@ -29,6 +31,8 @@ struct SemanticJob : public Job
     {
         nodes.clear();
     }
+
+    static bool collectAttributes(SemanticContext* context, vector<TypeInfoAttr*>& result, AstNode* attributes, AstNodeKind kind);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -58,8 +62,8 @@ struct SemanticJob : public Job
     static bool resolveFuncDeclParams(SemanticContext* context);
     static bool resolveFuncDeclType(SemanticContext* context);
     static bool resolveFuncCallParams(SemanticContext* context);
-	static bool resolveAttrDecl(SemanticContext* context);
-	static bool resolveAttrUse(SemanticContext* context);
+    static bool resolveAttrDecl(SemanticContext* context);
+    static bool resolveAttrUse(SemanticContext* context);
 
     Module*          module;
     SourceFile*      sourceFile;

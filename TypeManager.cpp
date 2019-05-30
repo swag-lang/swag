@@ -29,3 +29,16 @@ TypeInfo* TypeManager::flattenType(TypeInfo* typeInfo)
         return typeInfo;
     return static_cast<TypeInfoEnum*>(typeInfo)->rawType;
 }
+
+bool TypeManager::match(vector<TypeInfo*>& one, vector<TypeInfo*>& two)
+{
+    if (one.size() != two.size())
+        return false;
+    for (int i = 0; i < one.size(); i++)
+    {
+        if (!one[i]->isSame(two[i]))
+            return false;
+    }
+
+	return true;
+}

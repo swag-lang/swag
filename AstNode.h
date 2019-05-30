@@ -27,9 +27,9 @@ enum class AstNodeKind
     Namespace,
     EnumDecl,
     FuncDecl,
-	FuncCall,
+    FuncCall,
     AttrDecl,
-	AttrUse,
+    AttrUse,
     FuncDeclParams,
     FuncDeclType,
     FuncCallParams,
@@ -56,6 +56,7 @@ struct AstNode : public PoolElement
         semanticFct        = nullptr;
         typeInfo           = nullptr;
         resolvedSymbolName = nullptr;
+        attributes         = nullptr;
         sourceFileIdx      = UINT32_MAX;
         flags              = 0;
         childs.clear();
@@ -101,6 +102,7 @@ struct AstNode : public PoolElement
     SymbolOverload* resolvedSymbolOverload;
 
     AstNode*             parent;
+    AstNode*             attributes;
     Token                token;
     SemanticFct          semanticFct;
     AstNodeKind          kind;
@@ -111,6 +113,7 @@ struct AstNode : public PoolElement
     ComputedValue        computedValue;
     Utf8Crc              name;
     uint32_t             sourceFileIdx;
+    uint32_t             childParentIdx;
 };
 
 struct AstVarDecl : public AstNode
@@ -160,7 +163,7 @@ struct AstFuncDecl : public AstNode
     AstNode* content;
 };
 
-struct AstAttribute : public AstNode
+struct AstAttrDecl : public AstNode
 {
     void reset() override
     {
@@ -168,6 +171,6 @@ struct AstAttribute : public AstNode
         type       = nullptr;
     }
 
-    AstNode*   parameters;
-    AstNode*   type;
+    AstNode* parameters;
+    AstNode* type;
 };

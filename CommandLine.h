@@ -10,7 +10,7 @@ struct CommandLine
 
     int    numCores = 0;
     int    tabSize  = 4;
-	string fileFilter;// = "125";
+	string fileFilter;
 
     fs::path exePath;
 };

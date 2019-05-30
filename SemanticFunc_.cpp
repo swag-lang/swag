@@ -17,6 +17,12 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
+    if (context->node->attributes)
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoFunc>(context->node->typeInfo, TypeInfoKind::Function);
+        collectAttributes(context, typeInfo->attributes, context->node->attributes, AstNodeKind::FuncDecl);
+    }
+
     context->result = SemanticResult::Done;
     return true;
 }
@@ -41,8 +47,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
-    auto node      = context->node;
-    node->typeInfo = g_TypeMgr.typeInfoVoid;
+    auto node       = context->node;
+    node->typeInfo  = g_TypeMgr.typeInfoVoid;
     context->result = SemanticResult::Done;
     return true;
 }
