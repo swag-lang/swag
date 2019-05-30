@@ -27,8 +27,8 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
-    auto node       = static_cast<AstIdentifier*>(context->node);
-    auto parent     = static_cast<AstIdentifierRef*>(node->parent);
+    auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    auto parent     = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
     auto sourceFile = context->sourceFile;
 
     // If node->matchScope is defined, no need to rescan the scope hiearchy, as it is already
@@ -71,7 +71,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
                 // Need to wait for the symbol to be resolved
                 name->dependentJobs.push_back(context->job);
-				g_ThreadMgr.addPendingJob(context->job);
+                g_ThreadMgr.addPendingJob(context->job);
                 context->result = SemanticResult::Pending;
                 return true;
             }

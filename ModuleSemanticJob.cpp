@@ -56,6 +56,8 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* sourceFile, AstNode* node)
     case AstNodeKind::CompilerAssert:
     case AstNodeKind::CompilerPrint:
     case AstNodeKind::CompilerRun:
+    case AstNodeKind::AttrDecl:
+    case AstNodeKind::AttrUse:
     {
         auto job = newSemanticJob(sourceFile, node);
         g_ThreadMgr.addJob(job);

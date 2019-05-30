@@ -46,11 +46,10 @@ struct SyntaxJob : public Job
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doFunctionDecl(AstNode* parent, AstNode** result = nullptr);
-    bool doFunctionDeclParameters(AstNode* parent, AstNode** result = nullptr);
-	bool doFunctionCall(AstNode* parent, AstNode** result = nullptr);
-    bool doAttributeDecl(AstNode* parent, AstNode** result = nullptr);
-	bool doAttributeUse(AstNode* parent, AstNode** result = nullptr);
+    bool doFuncDecl(AstNode* parent, AstNode** result = nullptr);
+    bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
+	bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
 	
     Tokenizer   tokenizer;
     Token       token;

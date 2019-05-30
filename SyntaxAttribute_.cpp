@@ -3,7 +3,7 @@
 #include "Module.h"
 #include "Diagnostic.h"
 
-bool SyntaxJob::doAttributeDecl(AstNode* parent, AstNode** result)
+bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
     auto attrNode = Ast::newNode(&sourceFile->poolFactory->astAttrDecl, AstNodeKind::AttrDecl, currentScope, sourceFile->indexInModule, parent, false);
     if (result)
@@ -23,7 +23,7 @@ bool SyntaxJob::doAttributeDecl(AstNode* parent, AstNode** result)
     attrNode->parameters    = paramsNode;
     paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
     SWAG_CHECK(eatToken(TokenId::SymColon));
-    SWAG_CHECK(doFunctionDeclParameters(paramsNode));
+    SWAG_CHECK(doFuncDeclParameters(paramsNode));
 
     // Return type
     SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
@@ -52,12 +52,21 @@ bool SyntaxJob::doAttributeDecl(AstNode* parent, AstNode** result)
     }
 
     SWAG_VERIFY(attrNode->attribute->flags, syntaxError(token, "missing attribute type"));
+
+	// Register attribute
+    currentScope->allocateSymTable();
+    {
+        scoped_lock lk(currentScope->symTable->mutex);
+        currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, attrNode->token, attrNode->name, g_TypeMgr.typeInfoVoid, SymbolKind::Attribute);
+    }
+
     return true;
 }
 
-bool SyntaxJob::doAttributeUse(AstNode* parent, AstNode** result)
+bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 {
-    auto attrBlockNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrBlockUse, currentScope, sourceFile->indexInModule, parent, false);
+    auto attrBlockNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrUse, currentScope, sourceFile->indexInModule, parent, false);
+	attrBlockNode->semanticFct = &SemanticJob::resolveAttrUse;
 	if (result)
 		*result = attrBlockNode;
 
@@ -66,15 +75,7 @@ bool SyntaxJob::doAttributeUse(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         while (token.id == TokenId::Identifier)
         {
-            auto attrNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::AttrUse, currentScope, sourceFile->indexInModule, attrBlockNode, false);
-            Ast::assignToken(attrNode, token);
-
-            SWAG_CHECK(tokenizer.getToken(token));
-            if (token.id == TokenId::SymLeftParen)
-            {
-                SWAG_CHECK(doFunctionCall(attrNode));
-            }
-
+            SWAG_CHECK(doIdentifierRef(attrBlockNode));
             if (token.id != TokenId::SymRightSquare)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma));

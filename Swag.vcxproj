@@ -232,6 +232,7 @@
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
+    <ClCompile Include="SemanticAttribute_.cpp" />
     <ClCompile Include="SemanticBinaryExpression_.cpp" />
     <ClCompile Include="SemanticCompiler_.cpp" />
     <ClCompile Include="SemanticVar_.cpp" />

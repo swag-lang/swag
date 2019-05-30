@@ -3,14 +3,14 @@
 #include "Module.h"
 #include "Diagnostic.h"
 
-bool SyntaxJob::doFunctionDeclParameters(AstNode* parent, AstNode** result)
+bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
 
-bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
+bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 {
     auto funcNode         = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::FuncDecl, currentScope, sourceFile->indexInModule, parent, false);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
@@ -27,7 +27,7 @@ bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
     funcNode->parameters    = paramsNode;
     paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
     SWAG_CHECK(eatToken(TokenId::SymColon));
-    SWAG_CHECK(doFunctionDeclParameters(paramsNode));
+    SWAG_CHECK(doFuncDeclParameters(paramsNode));
 
     // Return type
     auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclType, currentScope, sourceFile->indexInModule, funcNode, false);
@@ -39,7 +39,7 @@ bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-    // Add function name and scope
+    // Register function name
     Scope* newScope = nullptr;
     currentScope->allocateSymTable();
     {
@@ -63,16 +63,5 @@ bool SyntaxJob::doFunctionDecl(AstNode* parent, AstNode** result)
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
-    return true;
-}
-
-bool SyntaxJob::doFunctionCall(AstNode* parent, AstNode** result)
-{
-    auto funcNode = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::FuncCall, currentScope, sourceFile->indexInModule, parent, false);
-    if (result)
-        *result = funcNode;
-
-	SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }

@@ -122,13 +122,13 @@ bool SyntaxJob::doTopLevel(AstNode* parent)
         SWAG_CHECK(doEnum(parent));
         break;
     case TokenId::KwdAttr:
-        SWAG_CHECK(doAttributeDecl(parent));
+        SWAG_CHECK(doAttrDecl(parent));
         break;
     case TokenId::SymAttrStart:
-        SWAG_CHECK(doAttributeUse(parent));
+        SWAG_CHECK(doAttrUse(parent));
         break;
     case TokenId::KwdFunc:
-        SWAG_CHECK(doFunctionDecl(parent));
+        SWAG_CHECK(doFuncDecl(parent));
         break;
     case TokenId::CompilerUnitTest:
         SWAG_CHECK(doCompilerUnitTest());
