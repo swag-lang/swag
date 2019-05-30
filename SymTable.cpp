@@ -73,10 +73,10 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const 
 bool SymTable::checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
 {
     scoped_lock lk(mutex);
-    return checkHiddenSymbolNoLock(sourceFile, token, name, typeInfo, type, nullptr);
+    return checkHiddenSymbolNoLock(sourceFile, token, name, typeInfo, type, nullptr, true);
 }
 
-bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol)
+bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
 {
     if (!symbol)
         symbol = findNoLock(name);
@@ -99,6 +99,18 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     if (kind != SymbolKind::Function && !symbol->overloads.empty())
     {
         auto       firstOverload = symbol->overloads[0];
+        Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
+        Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
+        Utf8       note = "this is the other definition";
+        Diagnostic diagNote{firstOverload->sourceFile, firstOverload->startLocation, firstOverload->endLocation, note, DiagnosticLevel::Note};
+        sourceFile->report(diag, &diagNote);
+        return false;
+    }
+
+	// Overloads are not allowed on certain types
+    if (checkSameName && kind != SymbolKind::Function)
+    {
+        auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";

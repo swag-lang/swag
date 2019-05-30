@@ -13,6 +13,15 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
 
     SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Attribute));
+
+	// We need to check the scope hierarchy for symbol ghosting
+    auto scope = node->scope->parentScope;
+    while (scope)
+    {
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Attribute));
+        scope = scope->parentScope;
+    }
+
     context->result = SemanticResult::Done;
     return true;
 }
