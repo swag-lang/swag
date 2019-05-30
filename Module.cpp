@@ -7,17 +7,27 @@
 #include "SemanticJob.h"
 #include "ThreadManager.h"
 #include "SymTable.h"
+#include "Workspace.h"
 
-Module::Module(const fs::path& path)
+Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
     : path{path}
+    , workspace{workspace}
 {
     reset();
 
-    scopeRoot       = poolFactory.scope.alloc();
-    scopeRoot->kind = ScopeKind::Module;
-    scopeRoot->allocateSymTable();
+    if (runtime)
+    {
+        scopeRoot = workspace->scopeRoot;
+    }
+    else
+    {
+        scopeRoot       = poolFactory.scope.alloc();
+        scopeRoot->kind = ScopeKind::Module;
+        scopeRoot->allocateSymTable();
+        scopeRoot->parentScope = workspace->scopeRoot;
+    }
 
-    astRoot = Ast::newNode(&poolFactory.astNode, AstNodeKind::Module, nullptr, UINT32_MAX);
+    astRoot = Ast::newNode(&poolFactory.astNode, AstNodeKind::Module, workspace->scopeRoot, UINT32_MAX);
 }
 
 void Module::addFile(SourceFile* file)

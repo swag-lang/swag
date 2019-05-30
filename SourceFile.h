@@ -56,6 +56,9 @@ struct SourceFile : public PoolElement
     PoolFactory* poolFactory   = nullptr;
     uint32_t     indexInModule = UINT32_MAX;
 
+    const char* externalBuffer = nullptr;
+    int         seekExternal   = 0;
+
     TextFormat                   textFormat = TextFormat::UTF8;
     int                          bufferSize;
     int                          headerSize = 0;

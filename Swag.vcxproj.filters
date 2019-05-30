@@ -67,9 +67,6 @@
     <ClCompile Include="SyntaxDeclaration_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="Module.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="SemanticJob.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -164,6 +161,9 @@
     <ClCompile Include="CommandLineParser.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Module.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -238,9 +238,6 @@
     <ClInclude Include="AstNode.h">
       <Filter>Lexer</Filter>
     </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
     <ClInclude Include="SemanticJob.h">
       <Filter>Semantic</Filter>
     </ClInclude>
@@ -295,6 +292,12 @@
     </ClInclude>
     <ClInclude Include="CommandLineParser.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Runtime.h">
+      <Filter>Lexer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

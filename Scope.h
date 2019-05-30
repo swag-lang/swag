@@ -6,6 +6,7 @@ struct SymTable;
 
 enum class ScopeKind
 {
+	Workspace,
 	Module,
 	Namespace,
 	Enum,
@@ -35,6 +36,6 @@ struct Scope : public PoolElement
 
     bool isGlobal()
     {
-        return kind == ScopeKind::Module || kind == ScopeKind::Namespace;
+        return kind == ScopeKind::Workspace || kind == ScopeKind::Module || kind == ScopeKind::Namespace;
     }
 };

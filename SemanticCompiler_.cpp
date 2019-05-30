@@ -10,15 +10,20 @@
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto expr       = context->node->childs[0];
-    auto sourceFile = context->sourceFile;
+    auto node = context->node;
+    auto expr = context->node->childs[0];
 
     node->typeInfo = expr->typeInfo;
     node->inheritAndFlag(expr, AST_CONST_EXPR);
     node->inheritComputedValue(expr);
 
-    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
+    if (!(node->flags & AST_VALUE_COMPUTED))
+    {
+        ByteCodeRunContext runContext;
+        SWAG_CHECK(g_Run.executeNode(&runContext, context, expr));
+        node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;
+    }
+
     context->result = SemanticResult::Done;
     return true;
 }
@@ -44,17 +49,13 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
     auto node       = context->node;
     auto expr       = context->node->childs[0];
+    auto sourceFile = context->sourceFile;
 
     node->typeInfo = expr->typeInfo;
     node->inheritAndFlag(expr, AST_CONST_EXPR);
     node->inheritComputedValue(expr);
 
-    //if (!(node->flags & AST_VALUE_COMPUTED))
-    {
-        ByteCodeRunContext runContext;
-        SWAG_CHECK(g_Run.executeNode(&runContext, context, expr));
-		node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;
-    }
+    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
 
     auto typeInfo = TypeManager::flattenType(node->typeInfo);
 

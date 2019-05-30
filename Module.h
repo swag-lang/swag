@@ -5,10 +5,11 @@
 struct SourceFile;
 struct SymTable;
 struct Utf8Crc;
+struct Workspace;
 
 struct Module : public PoolElement
 {
-    Module(const fs::path& path);
+    Module(Workspace* workspace, const fs::path& path, bool runtime = false);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
 
@@ -21,4 +22,5 @@ struct Module : public PoolElement
     Scope*              scopeRoot;
     PoolFactory         poolFactory;
     TypeManager         typeMgr;
+    Workspace*          workspace;
 };

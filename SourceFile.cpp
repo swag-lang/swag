@@ -170,6 +170,9 @@ void SourceFile::buildRequest(int reqNum)
 
 char SourceFile::getPrivateChar()
 {
+    if (externalBuffer)
+        return externalBuffer[seekExternal++];
+
     if (directMode)
     {
         if (!fileHandle)
@@ -284,12 +287,17 @@ void SourceFile::waitEndRequests()
 
 Utf8 SourceFile::getLine(long seek)
 {
-    // Be sure there's no pending requests
-    waitEndRequests();
-
-    open();
-    seekTo(seek + headerSize);
-    directMode = true;
+    if (!externalBuffer)
+    {
+        waitEndRequests(); // Be sure there's no pending requests
+        open();
+        seekTo(seek + headerSize);
+        directMode = true;
+    }
+	else
+	{
+		seekExternal = seek;
+	}
 
     Utf8 line;
     int  column = 0;
@@ -349,5 +357,5 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
     if (note)
         note->report();
     g_Log.unlock();
-	return false;
+    return false;
 }

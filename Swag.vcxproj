@@ -173,6 +173,7 @@
     <ClInclude Include="ffi_common.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="ModuleOutputJob.h" />
+    <ClInclude Include="Runtime.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Module.h" />

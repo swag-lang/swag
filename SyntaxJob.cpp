@@ -108,11 +108,6 @@ JobResult SyntaxJob::execute()
             continue;
         }
 
-#ifdef SWAG_TEST_CPP
-        sourceFile->buildPass = BuildPass::Syntax;
-        continue;
-#endif
-
         canChangeModule = false;
         ok              = doTopLevel(sourceFile->astRoot);
     }
