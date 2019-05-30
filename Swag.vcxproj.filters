@@ -170,6 +170,9 @@
     <ClCompile Include="SemanticAttribute_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxVar_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

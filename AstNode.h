@@ -25,6 +25,7 @@ enum class AstNodeKind
     Identifier,
     Type,
     Namespace,
+	Statement,
     EnumDecl,
     FuncDecl,
     FuncCall,

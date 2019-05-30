@@ -30,7 +30,7 @@ struct SyntaxJob : public Job
     bool doCompilerPrint(AstNode* parent);
     bool doCompilerRun(AstNode* parent);
     bool doCompilerUnitTest();
-    bool doTopLevel(AstNode* parent);
+    bool doTopLevelInstruction(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
@@ -50,7 +50,9 @@ struct SyntaxJob : public Job
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
 	bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
-	
+	bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
+    bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr);
+
     Tokenizer   tokenizer;
     Token       token;
     SourceFile* sourceFile = nullptr;

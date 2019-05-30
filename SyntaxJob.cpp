@@ -110,7 +110,7 @@ JobResult SyntaxJob::execute()
         }
 
         canChangeModule = false;
-        ok              = doTopLevel(sourceFile->astRoot);
+        ok              = doTopLevelInstruction(sourceFile->astRoot);
     }
 
     return JobResult::ReleaseJob;

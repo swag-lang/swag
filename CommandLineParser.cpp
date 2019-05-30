@@ -12,7 +12,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
 
-	//cmdLine->fileFilter = "126";
+	cmdLine->stats = true;
+	cmdLine->fileFilter = "129";
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address)

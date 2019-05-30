@@ -36,7 +36,13 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeSemanticState::ProcessingChilds;
             if (!node->childs.empty())
             {
-                nodes.insert(nodes.end(), node->childs.rbegin(), node->childs.rend());
+                for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+                {
+                    auto child = node->childs[i];
+					child->attributes = node->attributes;
+                    nodes.push_back(child);
+                }
+
                 break;
             }
 

@@ -57,7 +57,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     currentScope    = newScope;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        SWAG_CHECK(doTopLevel(namespaceNode));
+        SWAG_CHECK(doTopLevelInstruction(namespaceNode));
     }
 
     currentScope = savedScope;
@@ -67,45 +67,41 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
+bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, currentScope, sourceFile->indexInModule, parent, false);
-    node->semanticFct = &SemanticJob::resolveVarDecl;
+    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Statement, currentScope, sourceFile->indexInModule, parent, false);
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
-    node->name = token.text;
-    node->name.computeCrc();
-    node->token = move(token);
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    if (token.id == TokenId::SymColon)
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doTypeExpression(node, &node->astType));
-        SWAG_CHECK(node->astType);
+		if (currentScope->isGlobal())
+		{
+			SWAG_CHECK(doTopLevelInstruction(node));
+		}
+		else
+		{
+			SWAG_CHECK(doEmbeddedInstruction(node));
+		}
     }
 
-    if (token.id == TokenId::SymEqual)
-    {
-        SWAG_CHECK(eatToken(TokenId::SymEqual));
-        SWAG_CHECK(doAssignmentExpression(node, &node->astAssignment));
-    }
-
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
-
-    currentScope->allocateSymTable();
-    currentScope->symTable->registerSymbolNameNoLock(sourceFile, node->token, node->name, SymbolKind::Variable);
-
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
 
-bool SyntaxJob::doTopLevel(AstNode* parent)
+bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
+{
+    return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+}
+
+bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
 {
     switch (token.id)
     {
+    case TokenId::SymLeftCurly:
+        SWAG_CHECK(doCurlyStatement(parent));
+        break;
     case TokenId::SymSemiColon:
         SWAG_CHECK(tokenizer.getToken(token));
         break;
