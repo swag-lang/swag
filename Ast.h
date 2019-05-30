@@ -20,7 +20,7 @@ namespace Ast
         {
             if (lockParent)
                 parent->lock();
-			node->childParentIdx = (uint32_t) parent->childs.size();
+            node->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(node);
             if (lockParent)
                 parent->unlock();
@@ -36,8 +36,9 @@ namespace Ast
         node->token = move(token);
     }
 
-    extern Scope* newScope(SourceFile* sourceFile, Utf8Crc& name, ScopeKind kind, Scope* parentScope);
-    extern void   addChild(AstNode* parent, AstNode* child, bool lockParent = true);
+    extern Scope*      newScope(SourceFile* sourceFile, Utf8Crc& name, ScopeKind kind, Scope* parentScope);
+    extern void        addChild(AstNode* parent, AstNode* child, bool lockParent = true);
+    extern const char* getKindName(AstNode* node);
 }; // namespace Ast
 
 template<typename T>

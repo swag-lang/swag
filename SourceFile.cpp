@@ -294,10 +294,10 @@ Utf8 SourceFile::getLine(long seek)
         seekTo(seek + headerSize);
         directMode = true;
     }
-	else
-	{
-		seekExternal = seek;
-	}
+    else
+    {
+        seekExternal = seek;
+    }
 
     Utf8 line;
     int  column = 0;
@@ -326,7 +326,7 @@ Utf8 SourceFile::getLine(long seek)
     return line;
 }
 
-bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
+bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
 {
     if (silent > 0)
         return false;
@@ -341,6 +341,8 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
             diag.report(true);
             if (note)
                 note->report(true);
+            if (note1)
+                note1->report(true);
             g_Log.unlock();
         }
 
@@ -356,6 +358,8 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note)
     diag.report();
     if (note)
         note->report();
+    if (note1)
+        note1->report();
     g_Log.unlock();
     return false;
 }

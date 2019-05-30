@@ -127,7 +127,7 @@ struct TypeInfoFunc : public TypeInfo
         return TypeManager::match(parameters, fromFunc->parameters);
     }
 
-    vector<TypeInfo*>     parameters;
-    TypeInfo*             returnType;
-    vector<TypeInfoAttr*> attributes;
+    vector<TypeInfo*>  parameters;
+    TypeInfo*          returnType;
+    set<TypeInfoAttr*> attributes;
 };

@@ -9,6 +9,8 @@
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto node = static_cast<AstVarDecl*>(context->node);
+
+	// Find type
     if (node->astType && node->astAssignment)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->astType->typeInfo, node->astAssignment));
@@ -24,7 +26,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Register symbol with its type
-    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Variable));
+    auto overload = node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Variable);
+	SWAG_CHECK(overload);
 
     // We need to check the scope hierarchy for symbol ghosting
     auto scope = node->scope->parentScope;
@@ -32,6 +35,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_CHECK(scope->symTable->checkHiddenSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Variable));
         scope = scope->parentScope;
+    }
+
+    // Attributes
+    if (context->node->attributes)
+    {
+        collectAttributes(context, overload->attributes, context->node->attributes, AstNodeKind::VarDecl);
     }
 
     context->result = SemanticResult::Done;

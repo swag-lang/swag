@@ -1,12 +1,13 @@
-#unittest module module129
+#unittest module module130
 #unittest pass semantic
 
 attr toto: () -> var;
-attr toto1: () -> func;
 
 #unittest error
-#[toto1]
+#[toto]
 {
 	#[toto]
-	var b: bool;
+	{
+		var b: bool;
+	}
 }

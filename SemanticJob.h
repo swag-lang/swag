@@ -33,7 +33,7 @@ struct SemanticJob : public Job
     }
 
 	static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
-    static bool collectAttributes(SemanticContext* context, vector<TypeInfoAttr*>& result, AstNode* attrUse, AstNodeKind kind);
+    static bool collectAttributes(SemanticContext* context, set<TypeInfoAttr*>& result, AstNode* attrUse, AstNodeKind kind);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

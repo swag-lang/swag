@@ -42,21 +42,21 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, const Tok
     return symbol;
 }
 
-bool SymTable::addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue)
+SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue)
 {
     scoped_lock lk(mutex);
     return addSymbolTypeInfoNoLock(sourceFile, token, name, typeInfo, kind, computedValue);
 }
 
-bool SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue)
+SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue)
 {
     auto symbol = findNoLock(name);
     if (!symbol)
         symbol = registerSymbolNameNoLock(sourceFile, token, name, kind);
 
     if (!checkHiddenSymbolNoLock(sourceFile, token, name, typeInfo, kind, symbol))
-        return false;
-    symbol->addOverloadNoLock(sourceFile, token, typeInfo, computedValue);
+        return nullptr;
+    auto result = symbol->addOverloadNoLock(sourceFile, token, typeInfo, computedValue);
 
     // One less overload. When this reached zero, this means we known every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
@@ -67,7 +67,7 @@ bool SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& toke
             g_ThreadMgr.addJob(job);
     }
 
-    return true;
+    return result;
 }
 
 bool SymTable::checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
@@ -87,7 +87,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     if (symbol->kind != kind)
     {
         auto       firstOverload = &symbol->defaultOverload;
-        Utf8       msg           = format("symbol '%s' already defined as something else in an accessible scope", symbol->name.c_str());
+        Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getKindName(symbol->kind));
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->sourceFile, firstOverload->startLocation, firstOverload->endLocation, note, DiagnosticLevel::Note};
@@ -123,7 +123,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     return true;
 }
 
-void SymbolName::addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo, ComputedValue* computedValue)
+SymbolOverload* SymbolName::addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
     auto overload           = sourceFile->poolFactory->symOverload.alloc();
     overload->typeInfo      = typeInfo;
@@ -133,4 +133,27 @@ void SymbolName::addOverloadNoLock(SourceFile* sourceFile, const Token& token, T
     if (computedValue)
         overload->computedValue = *computedValue;
     overloads.push_back(overload);
+    return overload;
+}
+
+const char* SymTable::getKindName(SymbolKind kind)
+{
+    switch (kind)
+    {
+    case SymbolKind::Attribute:
+        return "an attribute";
+    case SymbolKind::Enum:
+        return "an enum";
+    case SymbolKind::EnumValue:
+        return "an enum value";
+    case SymbolKind::Function:
+        return "a function";
+    case SymbolKind::Namespace:
+        return "a namespace";
+    case SymbolKind::Type:
+        return "a type";
+    case SymbolKind::Variable:
+        return "a variable";
+    }
+	return "something else";
 }

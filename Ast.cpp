@@ -30,4 +30,25 @@ namespace Ast
         return newScope;
     }
 
+    const char* getKindName(AstNode* node)
+    {
+        switch (node->kind)
+        {
+        case AstNodeKind::VarDecl:
+            return "a variable";
+        case AstNodeKind::FuncDecl:
+            return "a function";
+        case AstNodeKind::EnumDecl:
+            return "an enum";
+        case AstNodeKind::EnumValue:
+            return "an enum value";
+        case AstNodeKind::Namespace:
+            return "a namespace";
+        case AstNodeKind::TypeDecl:
+            return "a type";
+        }
+
+		return "something else";
+    }
+
 }; // namespace Ast

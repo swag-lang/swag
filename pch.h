@@ -12,6 +12,7 @@
 #include <atomic>
 #include <locale>
 #include <codecvt>
+#include <set>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;

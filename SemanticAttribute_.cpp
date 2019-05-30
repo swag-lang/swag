@@ -44,24 +44,27 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind != AstNodeKind::FuncDecl && kind != AstNodeKind::Statement)
     {
-        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a function declaration", oneAttribute->name.c_str())};
-        Diagnostic note{sourceFile, checkNode->token, "this is not a function", DiagnosticLevel::Note};
-        return sourceFile->report(diag, &note);
+        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a function definition", oneAttribute->name.c_str())};
+        Diagnostic note{sourceFile, checkNode->token, format("this is %s", Ast::getKindName(checkNode)), DiagnosticLevel::Note};
+        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->startLocation, oneAttribute->resolvedSymbolOverload->endLocation, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        return sourceFile->report(diag, &note, &note1);
     }
 
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind != AstNodeKind::VarDecl && kind != AstNodeKind::Statement)
     {
-        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a variable declaration", oneAttribute->name.c_str())};
-		Diagnostic note{ sourceFile, checkNode->token, "this is not a variable", DiagnosticLevel::Note };
-        return sourceFile->report(diag, &note);
+        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a variable definition", oneAttribute->name.c_str())};
+        Diagnostic note{sourceFile, checkNode->token, format("this is %s", Ast::getKindName(checkNode)), DiagnosticLevel::Note};
+        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->startLocation, oneAttribute->resolvedSymbolOverload->endLocation, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        return sourceFile->report(diag, &note, &note1);
     }
 
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, vector<TypeInfoAttr*>& result, AstNode* attrUse, AstNodeKind kind)
+bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoAttr*>& result, AstNode* attrUse, AstNodeKind kind)
 {
-    auto curAttr = attrUse;
+    auto sourceFile = context->sourceFile;
+    auto curAttr    = attrUse;
     while (curAttr)
     {
         // Check that the attribute matches the following declaration
@@ -69,7 +72,15 @@ bool SemanticJob::collectAttributes(SemanticContext* context, vector<TypeInfoAtt
         {
             SWAG_CHECK(checkAttribute(context, child, context->node, kind));
             TypeInfoAttr* typeInfo = CastTypeInfo<TypeInfoAttr>(child->typeInfo, TypeInfoKind::Attribute);
-            result.push_back(typeInfo);
+
+            if (result.find(typeInfo) != result.end())
+            {
+                Diagnostic diag{sourceFile, context->node->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), context->node->name.c_str())};
+                Diagnostic note{sourceFile, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+
+            result.insert(typeInfo);
         }
 
         curAttr = curAttr->attributes;
