@@ -5,6 +5,7 @@
 #include "Utf8Crc.h"
 struct SemanticContext;
 struct Scope;
+struct Attribute;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 
@@ -26,6 +27,7 @@ enum class AstNodeKind
     Namespace,
     EnumDecl,
     FuncDecl,
+    AttributeDecl,
     FuncDeclParams,
     FuncDeclType,
     FuncCallParams,
@@ -154,4 +156,18 @@ struct AstFuncDecl : public AstNode
     AstNode* parameters;
     AstNode* returnType;
     AstNode* content;
+};
+
+struct AstAttribute : public AstNode
+{
+    void reset() override
+    {
+        parameters = nullptr;
+        type       = nullptr;
+        attribute  = nullptr;
+    }
+
+    Attribute* attribute;
+    AstNode*   parameters;
+    AstNode*   type;
 };

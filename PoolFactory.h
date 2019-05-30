@@ -9,12 +9,14 @@
 #include "Scope.h"
 #include "TypeInfo.h"
 #include "ConcatBucket.h"
+#include "Attribute.h"
 
 struct PoolFactory
 {
     Pool<SourceFile>   sourceFile;
     Pool<Scope>        scope;
     Pool<ConcatBucket> concatBucket;
+    Pool<Attribute>    attribute;
 
     Pool<SyntaxJob>         syntaxJob;
     Pool<ModuleSemanticJob> moduleSemanticJob;
@@ -26,11 +28,12 @@ struct PoolFactory
     Pool<AstIdentifierRef> astIdentifierRef;
     Pool<AstIdentifier>    astIdentifier;
     Pool<AstFuncDecl>      astFuncDecl;
+    Pool<AstAttribute>     astAttribute;
 
     Pool<SymbolName>     symName;
     Pool<SymbolOverload> symOverload;
 
     Pool<TypeInfoNamespace> typeInfoNamespace;
     Pool<TypeInfoEnum>      typeInfoEnum;
-	Pool<TypeInfoFunc>      typeInfoFunc;
+    Pool<TypeInfoFunc>      typeInfoFunc;
 };

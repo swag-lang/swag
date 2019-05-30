@@ -11,6 +11,7 @@ void LanguageSpec::setup()
     keywords["#run"]      = TokenId::CompilerRun;
     keywords["#file"]     = TokenId::CompilerFile;
     keywords["#line"]     = TokenId::CompilerLine;
+
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
     keywords["type"]      = TokenId::KwdType;
@@ -18,6 +19,7 @@ void LanguageSpec::setup()
     keywords["func"]      = TokenId::KwdFunc;
     keywords["true"]      = TokenId::KwdTrue;
     keywords["false"]     = TokenId::KwdFalse;
+    keywords["attr"]      = TokenId::KwdAttr;
 
     keywords["u64"]    = TokenId::NativeType;
     keywords["u32"]    = TokenId::NativeType;

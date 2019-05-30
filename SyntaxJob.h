@@ -35,9 +35,9 @@ struct SyntaxJob : public Job
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, AstNode** result = nullptr);
-	bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
+    bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
-	bool doEnum(AstNode* parent, AstNode** result = nullptr);
+    bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);
@@ -46,8 +46,9 @@ struct SyntaxJob : public Job
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
-	bool doFunctionDecl(AstNode* parent, AstNode** result = nullptr);
-	bool doFunctionDeclParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doFunctionDecl(AstNode* parent, AstNode** result = nullptr);
+    bool doFunctionDeclParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doAttributeDecl(AstNode* parent, AstNode** result = nullptr);
 
     Tokenizer   tokenizer;
     Token       token;

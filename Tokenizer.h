@@ -66,14 +66,15 @@ enum class TokenId
     KwdType,
     KwdEnum,
     KwdFunc,
+	KwdAttr,
+    KwdTrue,
+    KwdFalse,
 
     Identifier,
     LiteralNumber,
     LiteralString,
     LiteralCharacter,
     NativeType,
-    KwdTrue,
-    KwdFalse,
 
     Invalid,
     EndOfLine,

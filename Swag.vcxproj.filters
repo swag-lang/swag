@@ -164,6 +164,9 @@
     <ClCompile Include="Module.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxAttribute_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -298,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="Runtime.h">
       <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="Attribute.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
