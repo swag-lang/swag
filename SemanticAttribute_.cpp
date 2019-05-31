@@ -3,40 +3,6 @@
 #include "Diagnostic.h"
 #include "PoolFactory.h"
 
-bool SemanticJob::resolveAttrDecl(SemanticContext* context)
-{
-    auto node       = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
-
-    SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, node->parameters));
-    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Attribute));
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->scope->parentScope, node, SymbolKind::Attribute));
-
-    context->result = SemanticResult::Done;
-    return true;
-}
-
-bool SemanticJob::resolveAttrUse(SemanticContext* context)
-{
-    auto        node          = context->node;
-    auto        nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
-    AstNodeKind kind          = nextStatement ? nextStatement->kind : AstNodeKind::Module;
-
-    for (auto child : node->childs)
-    {
-        SWAG_CHECK(checkAttribute(context, child, nextStatement, kind));
-    }
-
-    if (nextStatement)
-    {
-        nextStatement->attributes = node;
-    }
-
-    context->result = SemanticResult::Done;
-    return true;
-}
-
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
     auto sourceFile = context->sourceFile;
@@ -73,8 +39,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
 bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNodeKind kind)
 {
-	if (!attrUse)
-		return true;
+    if (!attrUse)
+        return true;
 
     auto sourceFile = context->sourceFile;
     auto curAttr    = attrUse;
@@ -99,5 +65,39 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
         curAttr = curAttr->attributes;
     }
 
+    return true;
+}
+
+bool SemanticJob::resolveAttrDecl(SemanticContext* context)
+{
+    auto node       = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
+
+    SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, node->parameters));
+    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Attribute));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->scope->parentScope, node, SymbolKind::Attribute));
+
+    context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveAttrUse(SemanticContext* context)
+{
+    auto        node          = context->node;
+    auto        nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
+    AstNodeKind kind          = nextStatement ? nextStatement->kind : AstNodeKind::Module;
+
+    for (auto child : node->childs)
+    {
+        SWAG_CHECK(checkAttribute(context, child, nextStatement, kind));
+    }
+
+    if (nextStatement)
+    {
+        nextStatement->attributes = node;
+    }
+
+    context->result = SemanticResult::Done;
     return true;
 }

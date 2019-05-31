@@ -22,8 +22,6 @@ bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAt
 
 bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 {
-    auto node       = context->node;
-    node->typeInfo  = g_TypeMgr.typeInfoVoid;
     context->result = SemanticResult::Done;
     return true;
 }
@@ -52,6 +50,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, typeInfo->attributes, context->node->attributes, AstNodeKind::FuncDecl));
     typeInfo->returnType = typeNode->typeInfo;
     SWAG_CHECK(typeNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode->token, funcNode->name, typeInfo, SymbolKind::Function));
+	SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, funcNode->scope->parentScope, funcNode, SymbolKind::Function));
 
     context->result = SemanticResult::Done;
     return true;

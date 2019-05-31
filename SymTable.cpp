@@ -99,7 +99,8 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     }
 
     // Overloads are not allowed on certain types
-    if (kind != SymbolKind::Function && !symbol->overloads.empty())
+	bool canOverload = kind == SymbolKind::Function || kind != SymbolKind::Attribute;
+	if (!canOverload && !symbol->overloads.empty())
     {
         auto       firstOverload = symbol->overloads[0];
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
@@ -111,7 +112,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     }
 
     // Overloads are not allowed on certain types
-    if (checkSameName && kind != SymbolKind::Function)
+    if (!canOverload && checkSameName)
     {
         auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
