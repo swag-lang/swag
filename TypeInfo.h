@@ -52,7 +52,7 @@ struct TypeInfo : public PoolElement
 {
     virtual bool isSame(TypeInfo* from)
     {
-        return kind == from->kind;
+        return this == from;
     }
 
     uint64_t     flags;

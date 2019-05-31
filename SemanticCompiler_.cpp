@@ -17,12 +17,13 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     node->inheritAndFlag(expr, AST_CONST_EXPR);
     node->inheritComputedValue(expr);
 
-    if (!(node->flags & AST_VALUE_COMPUTED))
+    /*if (!(node->flags & AST_VALUE_COMPUTED))
     {
         ByteCodeRunContext runContext;
         SWAG_CHECK(g_Run.executeNode(&runContext, context, expr));
-        node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;
-    }
+		if(runContext.sp)
+			node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;
+    }*/
 
     context->result = SemanticResult::Done;
     return true;

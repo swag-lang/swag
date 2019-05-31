@@ -26,7 +26,10 @@ static const uint32_t MATCH_ERROR_NOT_ENOUGH_PARAMETERS = 0x00000004;
 
 struct SymbolMatchContext
 {
-    uint32_t                      result = 0;
+    int                           badSignatureParameterIdx  = 0;
+    TypeInfo*                     basSignatureRequestedType = nullptr;
+    TypeInfo*                     basSignatureGivenType     = nullptr;
+    uint32_t                      result                    = 0;
     vector<SymbolMatchParameter*> parameters;
 
     ~SymbolMatchContext()
@@ -91,7 +94,7 @@ struct SymTable
     SymbolName*     findNoLock(const Utf8Crc& name);
 
     static const char* getArticleKindName(SymbolKind kind);
-	static const char* getNakedKindName(SymbolKind kind);
+    static const char* getNakedKindName(SymbolKind kind);
 
     static const int           HASH_SIZE = 512;
     SpinLock                   mutex;

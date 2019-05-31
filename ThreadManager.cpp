@@ -5,6 +5,7 @@
 #include "Global.h"
 #include "CommandLine.h"
 #include "Stats.h"
+#include "Log.h"
 
 void ThreadManager::init()
 {
@@ -85,6 +86,7 @@ void ThreadManager::waitEndJobs()
             if (doneWithJobs())
                 break;
         }
+
         condVarDone.wait(lk1);
     }
 }

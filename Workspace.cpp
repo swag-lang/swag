@@ -136,6 +136,7 @@ bool Workspace::build()
     }
 
     g_ThreadMgr.waitEndJobs();
+
     if (g_CommandLine.output == false)
         return true;
 

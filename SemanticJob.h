@@ -44,6 +44,7 @@ struct SemanticJob : public Job
     static void collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope);
 	static void setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
 	static bool checkSymbolGhosting(SourceFile* sourceFile, Scope* startScope, AstNode* node, SymbolKind kind);
+	static bool setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

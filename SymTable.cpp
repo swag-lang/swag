@@ -4,6 +4,7 @@
 #include "Diagnostic.h"
 #include "Global.h"
 #include "ThreadManager.h"
+#include "Log.h"
 
 SymbolName* SymTable::find(const Utf8Crc& name)
 {
@@ -64,8 +65,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const 
     symbol->cptOverloads--;
     if (symbol->cptOverloads == 0)
     {
-        for (auto job : symbol->dependentJobs)
-            g_ThreadMgr.addJob(job);
+		for (auto job : symbol->dependentJobs)
+			g_ThreadMgr.addJob(job);
     }
 
     symbol->mutex.unlock();

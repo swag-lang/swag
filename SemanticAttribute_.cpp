@@ -9,19 +9,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
 
-    // Set parameters
-    if (node->parameters)
-    {
-        typeInfo->parameters.reserve(node->parameters->childs.size());
-        for (auto param : node->parameters->childs)
-        {
-            auto funcParam      = sourceFile->poolFactory->typeInfoFuncAttrParam.alloc();
-            funcParam->name     = param->name;
-            funcParam->typeInfo = param->typeInfo;
-            typeInfo->parameters.push_back(funcParam);
-        }
-    }
-
+    SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, node->parameters));
     SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Attribute));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->scope->parentScope, node, SymbolKind::Attribute));
 
@@ -60,8 +48,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
         if (typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR)
             return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
-		assert(false);
-		return false;
+        assert(false);
+        return false;
     }
 
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind != AstNodeKind::FuncDecl && kind != AstNodeKind::Statement)
@@ -85,6 +73,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
 bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNodeKind kind)
 {
+	if (!attrUse)
+		return true;
+
     auto sourceFile = context->sourceFile;
     auto curAttr    = attrUse;
     while (curAttr)

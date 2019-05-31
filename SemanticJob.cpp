@@ -38,8 +38,8 @@ JobResult SemanticJob::execute()
             {
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
-                    auto child = node->childs[i];
-					child->attributes = node->attributes;
+                    auto child        = node->childs[i];
+                    child->attributes = node->attributes;
                     nodes.push_back(child);
                 }
 
@@ -52,6 +52,7 @@ JobResult SemanticJob::execute()
                 context.node = node;
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
+
                 if (context.result == SemanticResult::Pending)
                     return JobResult::KeepJobAlive;
             }

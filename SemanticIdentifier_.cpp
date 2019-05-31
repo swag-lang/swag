@@ -1,11 +1,7 @@
 #include "pch.h"
-#include "SemanticJob.h"
-#include "Ast.h"
 #include "Global.h"
 #include "Diagnostic.h"
-#include "TypeManager.h"
 #include "ThreadManager.h"
-#include "Scope.h"
 #include "PoolFactory.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
@@ -118,6 +114,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
+	context->result = SemanticResult::Done;
+
     // Fill specified parameters
     SymbolMatchContext symMatch;
     if (node->callParameters)
@@ -154,12 +152,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     vector<SymbolOverload*> matches;
     uint32_t                accumulateResults = 0;
-    int                     cptOverloads      = 0;
+    int                     numOverloads      = 0;
     for (auto symbol : dependentSymbols)
     {
         for (auto overload : symbol->overloads)
         {
-            cptOverloads++;
+            numOverloads++;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
             typeInfo->match(symMatch);
@@ -173,16 +171,40 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (matches.size() == 0)
     {
         auto symbol = dependentSymbols[0];
-        if (cptOverloads == 1)
+        if (numOverloads == 1)
         {
-			auto overload = symbol->overloads[0];
+            auto overload = symbol->overloads[0];
             switch (accumulateResults)
             {
             case MATCH_ERROR_NOT_ENOUGH_PARAMETERS:
-                Diagnostic diag{sourceFile, node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+            {
+                Diagnostic diag{sourceFile, node->callParameters ? node->callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
+            case MATCH_ERROR_TOO_MANY_PARAMETERS:
+            {
+                Diagnostic diag{sourceFile, node->callParameters, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            case MATCH_ERROR_BAD_SIGNATURE:
+            {
+                Diagnostic diag{sourceFile,
+                                node->callParameters,
+                                format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
+                                       symMatch.badSignatureParameterIdx,
+                                       SymTable::getNakedKindName(symbol->kind),
+                                       symbol->name.c_str(),
+                                       symMatch.basSignatureRequestedType->name.c_str(),
+                                       symMatch.basSignatureGivenType->name.c_str())};
+                Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            }
+        }
+        else
+        {
         }
     }
 
