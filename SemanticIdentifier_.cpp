@@ -34,6 +34,27 @@ void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope
     }
 }
 
+void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
+{
+    node->resolvedSymbolName     = symbol;
+    node->resolvedSymbolOverload = symbol->overloads[0];
+    node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+    switch (node->typeInfo->kind)
+    {
+    case TypeInfoKind::Namespace:
+        parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
+        break;
+    case TypeInfoKind::Enum:
+        parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
+        break;
+    }
+
+    // Clear cache for the next symbol resolution
+	context->job->scopeHierarchy.clear();
+	context->job->dependentSymbols.clear();
+    context->result = SemanticResult::Done;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto  job              = context->job;
@@ -63,14 +84,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     break;
             }
         }
-    }
 
-    // Fill the search type
-    TypeInfoFuncAttr searchType;
-    if (node->callParameters)
-    {
-        for (auto param : node->callParameters->childs)
-            searchType.parameters.push_back(param->typeInfo);
+		if (job->dependentSymbols.empty())
+			return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait
@@ -86,37 +102,21 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    for (auto symbol : dependentSymbols)
+    // Fill the search type
+    TypeInfoFuncAttr searchType;
+    if (node->callParameters)
     {
-        scoped_lock lkn(symbol->mutex);
-        if (!symbol->overloads.empty())
-        {
-            node->resolvedSymbolName     = symbol;
-            node->resolvedSymbolOverload = symbol->overloads[0];
-            node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
-            switch (node->typeInfo->kind)
-            {
-            case TypeInfoKind::Namespace:
-                parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
-                break;
-            case TypeInfoKind::Enum:
-                parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
-                break;
-            }
-
-            // Clear cache for the next symbol resolution
-            scopeHierarchy.clear();
-            dependentSymbols.clear();
-            context->result = SemanticResult::Done;
-            return true;
-        }
-
-        // Need to wait for the symbol to be resolved
-        symbol->dependentJobs.push_back(context->job);
-        g_ThreadMgr.addPendingJob(context->job);
-        context->result = SemanticResult::Pending;
-        return true;
+        for (auto param : node->callParameters->childs)
+            searchType.parameters.push_back(param->typeInfo);
     }
 
-    return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
+    for (auto symbol : dependentSymbols)
+    {
+        for (auto overload : symbol->overloads)
+        {
+        }
+    }
+
+	setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]);
+	return true;
 }
