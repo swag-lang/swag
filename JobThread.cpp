@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "JobThread.h"
+#include "SourceFile.h"
 #include "ThreadManager.h"
 #include "Global.h"
 

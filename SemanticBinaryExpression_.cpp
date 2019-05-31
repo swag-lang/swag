@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Ast.h"
 #include "Global.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
+#include "TypeInfo.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {

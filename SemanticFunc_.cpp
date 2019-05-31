@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "TypeManager.h"
 #include "PoolFactory.h"
+#include "SourceFile.h"
 
 bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
 {

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "PoolFactory.h"
+#include "SourceFile.h"
 
 namespace Ast
 {

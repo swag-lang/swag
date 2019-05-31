@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "Global.h"
 #include "PoolFactory.h"
+#include "Ast.h"
+#include "AstNode.h"
+#include "SourceFile.h"
+#include "TypeInfo.h"
 
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 {

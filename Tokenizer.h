@@ -1,7 +1,7 @@
 #pragma once
-#include "SourceFile.h"
 #include "Register.h"
-#include "TypeInfo.h"
+#include "SourceLocation.h"
+struct SourceFile;
 struct TypeInfoNative;
 
 enum class TokenId
@@ -53,7 +53,7 @@ enum class TokenId
     SymExclam,
     SymExclamEqual,
     SymBackSlash,
-	SymAttrStart,
+    SymAttrStart,
 
     CompilerUnitTest,
     CompilerAssert,
@@ -67,7 +67,7 @@ enum class TokenId
     KwdType,
     KwdEnum,
     KwdFunc,
-	KwdAttr,
+    KwdAttr,
     KwdTrue,
     KwdFalse,
 

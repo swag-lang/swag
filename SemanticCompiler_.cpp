@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Ast.h"
-#include "Global.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
 #include "Log.h"
-#include "ByteCodeRun.h"
-#include "ByteCodeRunContext.h"
+#include "TypeInfo.h"
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {

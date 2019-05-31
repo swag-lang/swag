@@ -5,7 +5,7 @@
 #include "Global.h"
 #include "CommandLine.h"
 #include "Stats.h"
-#include "Log.h"
+#include "SourceFile.h"
 
 void ThreadManager::init()
 {

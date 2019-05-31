@@ -1,5 +1,7 @@
 #include "pch.h"
-#include "PoolFactory.h"
+#include "SourceFile.h"
+#include "TypeInfo.h"
+#include "SymTable.h"
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {

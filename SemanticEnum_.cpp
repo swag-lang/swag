@@ -6,6 +6,7 @@
 #include "TypeManager.h"
 #include "ModuleSemanticJob.h"
 #include "Diagnostic.h"
+#include "TypeInfo.h"
 
 bool SemanticJob::resolveEnumType(SemanticContext* context)
 {

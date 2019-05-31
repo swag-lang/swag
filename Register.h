@@ -1,4 +1,6 @@
 #pragma once
+#include "Utf8.h"
+
 union Register {
     uint64_t u64;
     int64_t  s64;

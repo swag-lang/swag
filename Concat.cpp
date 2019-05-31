@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Concat.h"
+#include "SourceFile.h"
 #include "PoolFactory.h"
 
 Concat::Concat()

@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "AstNode.h"
 #include "ByteCodeGen.h"
+#include "TypeInfo.h"
 
 bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, AstNode* node)
 {

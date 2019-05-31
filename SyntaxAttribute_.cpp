@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Global.h"
 #include "PoolFactory.h"
+#include "TypeInfo.h"
+#include "SourceFile.h"
+#include "SourceLocation.h"
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {

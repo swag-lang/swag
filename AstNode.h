@@ -3,6 +3,8 @@
 #include "SymTable.h"
 #include "Tokenizer.h"
 #include "Utf8Crc.h"
+#include "SourceLocation.h"
+#include "Tokenizer.h"
 struct SemanticContext;
 struct Scope;
 struct Attribute;
