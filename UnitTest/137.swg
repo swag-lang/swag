@@ -1,9 +1,5 @@
 #unittest module module137
 #unittest pass semantic
-
-attr toto: (b: bool) -> func;
-
-#[toto]
-func main: ()
-{
-}
+#unittest error
+type b: bool;
+var a: b();

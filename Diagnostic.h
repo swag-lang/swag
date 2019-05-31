@@ -1,6 +1,7 @@
 #pragma once
 #include "SourceFile.h"
 #include "Tokenizer.h"
+#include "AstNode.h"
 
 enum DiagnosticLevel
 {
@@ -8,7 +9,7 @@ enum DiagnosticLevel
     Warning,
     Verbose,
     Message,
-	Note,
+    Note,
 };
 
 struct Diagnostic
@@ -49,6 +50,20 @@ struct Diagnostic
         , hasRangeLocation{true}
         , printSource{true}
     {
+    }
+
+    Diagnostic(SourceFile* file, AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : sourceFile{file}
+        , textMsg{msg}
+        , errorLevel{level}
+        , hasFile{true}
+        , hasLocation{true}
+        , hasRangeLocation{true}
+        , printSource{true}
+    {
+        node->inheritLocation();
+        startLocation = node->token.startLocation;
+        endLocation   = node->token.endLocation;
     }
 
     Diagnostic(SourceFile* file, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)

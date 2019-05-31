@@ -34,6 +34,21 @@ void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope
     }
 }
 
+bool SemanticJob::checkSymbolGhosting(SourceFile* sourceFile, Scope* startScope, AstNode* node, SymbolKind kind)
+{
+    // We need to check that the namespace name is not defined in the scope hierarchy, to avoid
+    // symbol ghosting
+    vector<Scope*> scopes;
+    SemanticJob::collectScopeHiearchy(scopes, startScope);
+    for (auto scope : scopes)
+    {
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
+        scope = scope->parentScope;
+    }
+
+    return true;
+}
+
 void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
     node->resolvedSymbolName     = symbol;
@@ -50,8 +65,8 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Clear cache for the next symbol resolution
-	context->job->scopeHierarchy.clear();
-	context->job->dependentSymbols.clear();
+    context->job->scopeHierarchy.clear();
+    context->job->dependentSymbols.clear();
     context->result = SemanticResult::Done;
 }
 
@@ -85,8 +100,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
         }
 
-		if (job->dependentSymbols.empty())
-			return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
+        if (job->dependentSymbols.empty())
+            return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait
@@ -102,12 +117,25 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    // Fill the search type
-    TypeInfoFuncAttr searchType;
+    // Fill specified parameters
+    SymbolMatchContext symMatch;
     if (node->callParameters)
     {
+        auto symbol = dependentSymbols[0];
+        if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
+        {
+            Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getKindName(symbol->kind))};
+            Diagnostic note{sourceFile, symbol->defaultOverload.startLocation, symbol->defaultOverload.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+            return sourceFile->report(diag, &note);
+        }
+
         for (auto param : node->callParameters->childs)
-            searchType.parameters.push_back(param->typeInfo);
+        {
+            SymbolMatchParameter matchParam;
+            matchParam.name     = param->name;
+            matchParam.typeInfo = param->typeInfo;
+            symMatch.parameters.emplace_back(move(matchParam));
+        }
     }
 
     for (auto symbol : dependentSymbols)
@@ -117,6 +145,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-	setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]);
-	return true;
+    setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]);
+    return true;
 }

@@ -19,15 +19,7 @@ SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* sourceFile)
 
 bool ModuleSemanticJob::doSemanticNamespace(SourceFile* sourceFile, AstNode* node)
 {
-    // We need to check that the namespace name is not defined in the scope hierarchy, to avoid
-    // symbol hidding
-    auto scope = node->scope->parentScope;
-    while (scope)
-    {
-        SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Namespace));
-        scope = scope->parentScope;
-    }
-
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(sourceFile, node->scope->parentScope, node, SymbolKind::Namespace));
     return true;
 }
 
@@ -55,14 +47,14 @@ bool ModuleSemanticJob::doSemanticNode(SourceFile* sourceFile, AstNode* node)
             auto job = newSemanticJob(sourceFile);
 
             // Will deal with the next node too, as we want to stitch the attributes and the next declaration
-			// if necessary
+            // if necessary
             if (!nodes.empty())
             {
                 job->nodes.push_back(nodes.back());
                 nodes.pop_back();
             }
 
-			job->nodes.push_back(node);
+            job->nodes.push_back(node);
             g_ThreadMgr.addJob(job);
         }
         break;

@@ -12,6 +12,17 @@ struct TypeInfo;
 struct Utf8Crc;
 struct Job;
 
+struct SymbolMatchParameter
+{
+    Utf8      name;
+    TypeInfo* typeInfo;
+};
+
+struct SymbolMatchContext
+{
+    vector<SymbolMatchParameter> parameters;
+};
+
 struct SymbolOverload : public PoolElement
 {
     TypeInfo*              typeInfo;
@@ -20,6 +31,8 @@ struct SymbolOverload : public PoolElement
     SourceLocation         endLocation;
     ComputedValue          computedValue;
     set<TypeInfoFuncAttr*> attributes;
+
+    void match(SymbolMatchContext& context);
 };
 
 enum class SymbolKind

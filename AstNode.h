@@ -93,6 +93,8 @@ struct AstNode : public PoolElement
 
     void inheritLocation()
     {
+		if (childs.empty())
+			return;
         token.startLocation = childs.front()->token.startLocation;
         token.endLocation   = childs.back()->token.endLocation;
     }

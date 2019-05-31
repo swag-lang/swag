@@ -171,3 +171,7 @@ const char* SymTable::getKindName(SymbolKind kind)
     }
     return "something else";
 }
+
+void SymbolOverload::match(SymbolMatchContext& context)
+{
+}

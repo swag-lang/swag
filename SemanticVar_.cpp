@@ -28,14 +28,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Register symbol with its type
     auto overload = node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Variable);
 	SWAG_CHECK(overload);
-
-    // We need to check the scope hierarchy for symbol ghosting
-    auto scope = node->scope->parentScope;
-    while (scope)
-    {
-        SWAG_CHECK(scope->symTable->checkHiddenSymbol(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Variable));
-        scope = scope->parentScope;
-    }
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->scope->parentScope, node, SymbolKind::Variable));
 
     // Attributes
     if (context->node->attributes)
