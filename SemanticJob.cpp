@@ -1,14 +1,8 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Ast.h"
-#include "AstNode.h"
-#include "Utf8.h"
-#include "Global.h"
-#include "TypeInfo.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
-#include "Scope.h"
-#include "TypeManager.h"
+#include "SymTable.h"
 
 SymTable::SymTable(Scope* scope) : scope{scope}
 {

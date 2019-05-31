@@ -5,6 +5,7 @@
 #include "Scope.h"
 #include "TypeManager.h"
 #include "ModuleSemanticJob.h"
+#include "SymTable.h"
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include "SpinLock.h"
-#include "SymTable.h"
+#include "Pool.h"
 #include "Tokenizer.h"
 #include "Utf8Crc.h"
 #include "SourceLocation.h"
@@ -8,6 +8,9 @@
 struct SemanticContext;
 struct Scope;
 struct Attribute;
+struct TypeInfo;
+struct SymbolOverload;
+struct SymbolName;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 
