@@ -143,12 +143,10 @@ struct AstIdentifier : public AstNode
 {
     void reset() override
     {
-        matchScope = nullptr;
 		callParameters = nullptr;
     }
 
 	AstNode* callParameters;
-    Scope*   matchScope;
 };
 
 struct AstFuncDecl : public AstNode

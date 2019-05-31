@@ -6,6 +6,8 @@ struct Module;
 struct SourceFile;
 struct SemanticJob;
 struct TypeInfoFuncAttr;
+struct SymbolName;
+struct Scope;
 enum class AstNodeKind;
 
 enum class SemanticResult
@@ -30,10 +32,13 @@ struct SemanticJob : public Job
     void reset() override
     {
         nodes.clear();
+        dependencies.clear();
+		scopeHierarchy.clear();
     }
 
-	static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
+    static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNodeKind kind);
+    static void collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -66,7 +71,9 @@ struct SemanticJob : public Job
     static bool resolveAttrDecl(SemanticContext* context);
     static bool resolveAttrUse(SemanticContext* context);
 
-    Module*          module;
-    SourceFile*      sourceFile;
-    vector<AstNode*> nodes;
+    Module*             module;
+    SourceFile*         sourceFile;
+    vector<AstNode*>    nodes;
+    vector<SymbolName*> dependencies;
+    vector<Scope*>      scopeHierarchy;
 };

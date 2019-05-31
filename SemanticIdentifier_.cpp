@@ -25,20 +25,45 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
+void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope)
+{
+    while (startScope)
+    {
+        scopes.push_back(startScope);
+        startScope = startScope->parentScope;
+    }
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
-    auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-    auto parent     = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
-    auto sourceFile = context->sourceFile;
+    auto  job            = context->job;
+    auto& scopeHierarchy = job->scopeHierarchy;
+    auto& dependencies   = job->dependencies;
+    auto  node           = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    auto  parent         = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+    auto  sourceFile     = context->sourceFile;
 
-    // If node->matchScope is defined, no need to rescan the scope hiearchy, as it is already
-    // the scope where we have found the symbol in the first place (if it is defined, it means
-    // that we come from a symbol wakeup)
-    auto scope = node->matchScope;
-    if (!scope)
-        scope = parent->startScope;
-    if (!scope)
-        scope = node->scope;
+    // Compute dependencies if not already done
+    if (job->dependencies.empty())
+    {
+        auto startScope = parent->startScope;
+        if (!startScope)
+            startScope = node->scope;
+        scopeHierarchy.clear();
+        dependencies.clear();
+        collectScopeHiearchy(scopeHierarchy, startScope);
+        for (auto scope : scopeHierarchy)
+        {
+            scoped_lock lk(scope->symTable->mutex);
+            auto        symbol = scope->symTable->findNoLock(node->name);
+            if (symbol)
+            {
+                dependencies.push_back(symbol);
+                if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Attribute)
+                    break;
+            }
+        }
+    }
 
     // Fill the search type
     TypeInfoFuncAttr searchType;
@@ -48,47 +73,38 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             searchType.parameters.push_back(param->typeInfo);
     }
 
-    while (scope)
+    for (auto symbol : dependencies)
     {
-        auto symTable = scope->symTable;
+        scoped_lock lkn(symbol->mutex);
+        if (!symbol->overloads.empty())
         {
-            scoped_lock lk(symTable->mutex);
-            auto        symbol = symTable->findNoLock(node->name);
-            if (symbol)
+            auto overload = symbol->findOverload(&searchType);
+
+            node->resolvedSymbolName     = symbol;
+            node->resolvedSymbolOverload = symbol->overloads[0];
+            node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+            switch (node->typeInfo->kind)
             {
-                scoped_lock lkn(symbol->mutex);
-
-                node->matchScope = scope;
-                if (!symbol->overloads.empty())
-                {
-                    auto overload = symbol->findOverload(&searchType);
-
-                    node->resolvedSymbolName     = symbol;
-                    node->resolvedSymbolOverload = symbol->overloads[0];
-                    node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
-                    switch (node->typeInfo->kind)
-                    {
-                    case TypeInfoKind::Namespace:
-                        parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
-                        break;
-                    case TypeInfoKind::Enum:
-                        parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
-                        break;
-                    }
-
-                    context->result = SemanticResult::Done;
-                    return true;
-                }
-
-                // Need to wait for the symbol to be resolved
-                symbol->dependentJobs.push_back(context->job);
-                g_ThreadMgr.addPendingJob(context->job);
-                context->result = SemanticResult::Pending;
-                return true;
+            case TypeInfoKind::Namespace:
+                parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
+                break;
+            case TypeInfoKind::Enum:
+                parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
+                break;
             }
+
+			// Clear cache for the next symbol resolution
+			scopeHierarchy.clear();
+            dependencies.clear();
+            context->result = SemanticResult::Done;
+            return true;
         }
 
-        scope = scope->parentScope;
+        // Need to wait for the symbol to be resolved
+        symbol->dependentJobs.push_back(context->job);
+        g_ThreadMgr.addPendingJob(context->job);
+        context->result = SemanticResult::Pending;
+        return true;
     }
 
     return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
