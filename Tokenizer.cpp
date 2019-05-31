@@ -6,6 +6,7 @@
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 #include "CommandLine.h"
+#include "SourceFile.h"
 
 void Tokenizer::setFile(SourceFile* file)
 {

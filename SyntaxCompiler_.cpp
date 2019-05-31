@@ -5,6 +5,7 @@
 #include "Workspace.h"
 #include "Module.h"
 #include "PoolFactory.h"
+#include "SourceFile.h"
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {

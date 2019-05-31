@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Diagnostic.h"
 #include "PoolFactory.h"
+#include "SourceFile.h"
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {

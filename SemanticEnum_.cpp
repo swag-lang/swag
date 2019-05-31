@@ -2,11 +2,10 @@
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "Global.h"
-#include "Scope.h"
 #include "TypeManager.h"
-#include "ModuleSemanticJob.h"
 #include "Diagnostic.h"
 #include "TypeInfo.h"
+#include "SourceFile.h"
 
 bool SemanticJob::resolveEnumType(SemanticContext* context)
 {

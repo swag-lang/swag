@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "Global.h"
 #include "TypeInfo.h"
+#include "SourceFile.h"
 
 bool TypeManager::castError(SourceFile* sourceFile, TypeInfo* requestedType, AstNode* nodeToCast, uint32_t castFlags)
 {

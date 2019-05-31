@@ -4,6 +4,7 @@
 #include "Diagnostic.h"
 #include "TypeManager.h"
 #include "TypeInfo.h"
+#include "SourceFile.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {

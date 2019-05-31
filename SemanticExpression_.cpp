@@ -3,6 +3,7 @@
 #include "Global.h"
 #include "Diagnostic.h"
 #include "TypeInfo.h"
+#include "SourceFile.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {

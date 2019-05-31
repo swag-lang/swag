@@ -5,6 +5,7 @@
 #include "ByteCodeRunContext.h"
 #include "Diagnostic.h"
 #include "SemanticJob.h"
+#include "SourceFile.h"
 
 void ByteCodeRun::setup()
 {

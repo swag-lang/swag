@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "ThreadManager.h"
 #include "PoolFactory.h"
+#include "SourceFile.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {

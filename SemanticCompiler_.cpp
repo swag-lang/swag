@@ -4,6 +4,7 @@
 #include "TypeManager.h"
 #include "Log.h"
 #include "TypeInfo.h"
+#include "SourceFile.h"
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {

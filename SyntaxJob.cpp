@@ -7,6 +7,7 @@
 #include "Stats.h"
 #include "PoolFactory.h"
 #include "LanguageSpec.h"
+#include "SourceFile.h"
 
 bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 {

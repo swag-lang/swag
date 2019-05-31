@@ -4,7 +4,7 @@
 #include "Diagnostic.h"
 #include "Global.h"
 #include "ThreadManager.h"
-#include "Log.h"
+#include "SourceFile.h"
 
 SymbolName* SymTable::find(const Utf8Crc& name)
 {

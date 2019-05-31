@@ -1,11 +1,13 @@
 #pragma once
-#include "AstNode.h"
-#include "TypeManager.h"
+#include "Pool.h"
+#include "SpinLock.h"
 struct SourceFile;
 struct SymTable;
 struct Utf8Crc;
 struct PoolFactory;
 struct Workspace;
+struct AstNode;
+struct Scope;
 
 struct Module : public PoolElement
 {
@@ -21,6 +23,5 @@ struct Module : public PoolElement
     AstNode*            astRoot;
     Scope*              scopeRoot;
     PoolFactory*        poolFactory;
-    TypeManager         typeMgr;
     Workspace*          workspace;
 };

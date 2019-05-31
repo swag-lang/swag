@@ -3,6 +3,7 @@
 #include "SourceFile.h"
 #include "ThreadManager.h"
 #include "Global.h"
+#include "Job.h"
 
 JobThread::JobThread()
 {

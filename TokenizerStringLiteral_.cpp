@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Tokenizer.h"
 #include "Global.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
+#include "SourceFile.h"
 
 bool Tokenizer::getDigitHexa(Token& token, int& result)
 {

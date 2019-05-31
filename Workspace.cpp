@@ -8,6 +8,7 @@
 #include "Diagnostic.h"
 #include "Runtime.h"
 #include "PoolFactory.h"
+#include "SourceFile.h"
 
 Workspace::Workspace()
 {

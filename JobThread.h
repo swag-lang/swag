@@ -1,5 +1,4 @@
 #pragma once
-#include "PoolFactory.h"
 
 struct JobThread
 {

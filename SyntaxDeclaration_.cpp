@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "Scoped.h"
 #include "PoolFactory.h"
+#include "SourceFile.h"
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {

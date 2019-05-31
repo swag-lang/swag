@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "Diagnostic.h"
 #include "PoolFactory.h"
+#include "SourceFile.h"
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {

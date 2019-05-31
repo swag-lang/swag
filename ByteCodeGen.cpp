@@ -3,6 +3,7 @@
 #include "ByteCodeGen.h"
 #include "SemanticJob.h"
 #include "Diagnostic.h"
+#include "SourceFile.h"
 
 bool ByteCodeGen::emitRawNode(ByteCodeGenContext* context, AstNode* node)
 {
