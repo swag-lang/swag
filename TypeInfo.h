@@ -110,6 +110,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     bool isSame(TypeInfoFuncAttr* from);
     bool isSame(TypeInfo* from) override;
 
+    int                            firstDefaultValueIdx = -1;
     vector<TypeInfoFuncAttrParam*> parameters;
     TypeInfo*                      returnType;
     set<TypeInfoFuncAttr*>         attributes;

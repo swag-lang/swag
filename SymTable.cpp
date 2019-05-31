@@ -89,7 +89,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     if (symbol->kind != kind)
     {
         auto       firstOverload = &symbol->defaultOverload;
-        Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getKindName(symbol->kind));
+        Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->sourceFile, firstOverload->startLocation, firstOverload->endLocation, note, DiagnosticLevel::Note};
@@ -150,7 +150,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(SourceFile* sourceFile, const Toke
     return overload;
 }
 
-const char* SymTable::getKindName(SymbolKind kind)
+const char* SymTable::getArticleKindName(SymbolKind kind)
 {
     switch (kind)
     {
@@ -169,7 +169,31 @@ const char* SymTable::getKindName(SymbolKind kind)
     case SymbolKind::Variable:
         return "a variable";
     }
+
     return "something else";
+}
+
+const char* SymTable::getNakedKindName(SymbolKind kind)
+{
+    switch (kind)
+    {
+    case SymbolKind::Attribute:
+        return "attribute";
+    case SymbolKind::Enum:
+        return "enum";
+    case SymbolKind::EnumValue:
+        return "enum value";
+    case SymbolKind::Function:
+        return "function";
+    case SymbolKind::Namespace:
+        return "namespace";
+    case SymbolKind::Type:
+        return "type";
+    case SymbolKind::Variable:
+        return "variable";
+    }
+
+    return "???";
 }
 
 SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
@@ -183,29 +207,4 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
     }
 
     return nullptr;
-}
-
-bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
-{
-    if (parameters.size() != other->parameters.size())
-        return false;
-    for (int i = 0; i < parameters.size(); i++)
-    {
-        if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo))
-            return false;
-    }
-
-    return true;
-}
-
-bool TypeInfoFuncAttr::isSame(TypeInfo* from)
-{
-    if (kind != from->kind)
-        return false;
-    auto fromFunc = CastTypeInfo<TypeInfoFuncAttr>(from, TypeInfoKind::FunctionAttribute);
-    return isSame(fromFunc);
-}
-
-void TypeInfoFuncAttr::match(SymbolMatchContext& context)
-{
 }

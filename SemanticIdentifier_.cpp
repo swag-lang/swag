@@ -125,7 +125,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         auto symbol = dependentSymbols[0];
         if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
         {
-            Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getKindName(symbol->kind))};
+            Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
             Diagnostic note{sourceFile, symbol->defaultOverload.startLocation, symbol->defaultOverload.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
@@ -152,15 +152,44 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
+    vector<SymbolOverload*> matches;
+    uint32_t                accumulateResults = 0;
+    int                     cptOverloads      = 0;
     for (auto symbol : dependentSymbols)
     {
         for (auto overload : symbol->overloads)
         {
-			auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
-			typeInfo->match(symMatch);
+            cptOverloads++;
+
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
+            typeInfo->match(symMatch);
+
+            accumulateResults |= symMatch.result;
+            if (symMatch.result == MATCH_OK)
+                matches.push_back(overload);
         }
     }
 
-    setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]);
+    if (matches.size() == 0)
+    {
+        auto symbol = dependentSymbols[0];
+        if (cptOverloads == 1)
+        {
+			auto overload = symbol->overloads[0];
+            switch (accumulateResults)
+            {
+            case MATCH_ERROR_NOT_ENOUGH_PARAMETERS:
+                Diagnostic diag{sourceFile, node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+        }
+    }
+
+    if (matches.size() > 0)
+    {
+    }
+
+    setSymbolMatch(context, parent, node, dependentSymbols[0], matches[0]);
     return true;
 }

@@ -12,7 +12,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     // Set parameters
     if (node->parameters)
     {
-		typeInfo->parameters.reserve(node->parameters->childs.size());
+        typeInfo->parameters.reserve(node->parameters->childs.size());
         for (auto param : node->parameters->childs)
         {
             auto funcParam      = sourceFile->poolFactory->typeInfoFuncAttrParam.alloc();
@@ -53,6 +53,16 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 {
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FunctionAttribute);
+
+    if (!checkNode)
+    {
+        if (typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC)
+            return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
+        if (typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR)
+            return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
+		assert(false);
+		return false;
+    }
 
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind != AstNodeKind::FuncDecl && kind != AstNodeKind::Statement)
     {

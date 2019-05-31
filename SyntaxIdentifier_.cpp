@@ -22,6 +22,17 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
         callParams->semanticFct    = &SemanticJob::resolveFuncCallParams;
         callParams->token          = move(token);
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+        while (token.id != TokenId::SymRightParen)
+        {
+			while(true)
+			{
+				SWAG_CHECK(doExpression(callParams));
+				if (token.id != TokenId::SymComma)
+					break;
+                SWAG_CHECK(eatToken(TokenId::SymComma));
+            }
+        }
+
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 

@@ -1,7 +1,8 @@
 #unittest module module138
-#unittest pass semantic
+#unittest pass syntax
 
-attr toto: (b: bool) -> var;
+#[toto(true)]
+#[toto(true, 1 + 5)]
+#[toto(true, (coucou * 2) + 3)]
 
-#[toto]
-var c: bool;
+

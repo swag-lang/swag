@@ -19,14 +19,20 @@ struct SymbolMatchParameter : public PoolElement
     TypeInfo* typeInfo;
 };
 
+static const uint32_t MATCH_OK                          = 0x00000000;
+static const uint32_t MATCH_ERROR_TOO_MANY_PARAMETERS   = 0x00000001;
+static const uint32_t MATCH_ERROR_BAD_SIGNATURE         = 0x00000002;
+static const uint32_t MATCH_ERROR_NOT_ENOUGH_PARAMETERS = 0x00000004;
+
 struct SymbolMatchContext
 {
+    uint32_t                      result = 0;
     vector<SymbolMatchParameter*> parameters;
 
     ~SymbolMatchContext()
     {
-		for (auto param : parameters)
-			param->release();
+        for (auto param : parameters)
+            param->release();
     }
 };
 
@@ -84,7 +90,8 @@ struct SymTable
     SymbolName*     find(const Utf8Crc& name);
     SymbolName*     findNoLock(const Utf8Crc& name);
 
-    static const char* getKindName(SymbolKind kind);
+    static const char* getArticleKindName(SymbolKind kind);
+	static const char* getNakedKindName(SymbolKind kind);
 
     static const int           HASH_SIZE = 512;
     SpinLock                   mutex;
