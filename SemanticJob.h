@@ -32,7 +32,7 @@ struct SemanticJob : public Job
     void reset() override
     {
         nodes.clear();
-        dependencies.clear();
+        dependentSymbols.clear();
 		scopeHierarchy.clear();
     }
 
@@ -74,6 +74,6 @@ struct SemanticJob : public Job
     Module*             module;
     SourceFile*         sourceFile;
     vector<AstNode*>    nodes;
-    vector<SymbolName*> dependencies;
+    vector<SymbolName*> dependentSymbols;
     vector<Scope*>      scopeHierarchy;
 };

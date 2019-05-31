@@ -60,6 +60,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const 
 
     // One less overload. When this reached zero, this means we known every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
+    symbol->mutex.lock();
     symbol->cptOverloads--;
     if (symbol->cptOverloads == 0)
     {
@@ -67,6 +68,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, const 
             g_ThreadMgr.addJob(job);
     }
 
+    symbol->mutex.unlock();
     return result;
 }
 
@@ -107,7 +109,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
         return false;
     }
 
-	// Overloads are not allowed on certain types
+    // Overloads are not allowed on certain types
     if (checkSameName && kind != SymbolKind::Function)
     {
         auto       firstOverload = &symbol->defaultOverload;
@@ -167,5 +169,5 @@ const char* SymTable::getKindName(SymbolKind kind)
     case SymbolKind::Variable:
         return "a variable";
     }
-	return "something else";
+    return "something else";
 }

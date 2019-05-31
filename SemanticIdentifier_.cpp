@@ -36,21 +36,21 @@ void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
-    auto  job            = context->job;
-    auto& scopeHierarchy = job->scopeHierarchy;
-    auto& dependencies   = job->dependencies;
-    auto  node           = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-    auto  parent         = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
-    auto  sourceFile     = context->sourceFile;
+    auto  job              = context->job;
+    auto& scopeHierarchy   = job->scopeHierarchy;
+    auto& dependentSymbols = job->dependentSymbols;
+    auto  node             = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    auto  parent           = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+    auto  sourceFile       = context->sourceFile;
 
     // Compute dependencies if not already done
-    if (job->dependencies.empty())
+    if (job->dependentSymbols.empty())
     {
         auto startScope = parent->startScope;
         if (!startScope)
             startScope = node->scope;
         scopeHierarchy.clear();
-        dependencies.clear();
+        dependentSymbols.clear();
         collectScopeHiearchy(scopeHierarchy, startScope);
         for (auto scope : scopeHierarchy)
         {
@@ -58,7 +58,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             auto        symbol = scope->symTable->findNoLock(node->name);
             if (symbol)
             {
-                dependencies.push_back(symbol);
+                dependentSymbols.push_back(symbol);
                 if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Attribute)
                     break;
             }
@@ -73,13 +73,24 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             searchType.parameters.push_back(param->typeInfo);
     }
 
-    for (auto symbol : dependencies)
+    // If one of my dependent symbol is not fully solved, we need to wait
+    for (auto symbol : dependentSymbols)
+    {
+        scoped_lock lkn(symbol->mutex);
+        if (symbol->cptOverloads)
+        {
+            symbol->dependentJobs.push_back(context->job);
+            g_ThreadMgr.addPendingJob(context->job);
+            context->result = SemanticResult::Pending;
+            return true;
+        }
+    }
+
+    for (auto symbol : dependentSymbols)
     {
         scoped_lock lkn(symbol->mutex);
         if (!symbol->overloads.empty())
         {
-            auto overload = symbol->findOverload(&searchType);
-
             node->resolvedSymbolName     = symbol;
             node->resolvedSymbolOverload = symbol->overloads[0];
             node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
@@ -93,9 +104,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 break;
             }
 
-			// Clear cache for the next symbol resolution
-			scopeHierarchy.clear();
-            dependencies.clear();
+            // Clear cache for the next symbol resolution
+            scopeHierarchy.clear();
+            dependentSymbols.clear();
             context->result = SemanticResult::Done;
             return true;
         }

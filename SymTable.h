@@ -39,7 +39,7 @@ struct SymbolName : public PoolElement
     Utf8Crc                 name;
     SymbolOverload          defaultOverload;
     SymbolKind              kind;
-    atomic<int>             cptOverloads;
+    int                     cptOverloads;
     vector<SymbolOverload*> overloads;
     vector<Job*>            dependentJobs;
 
