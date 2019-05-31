@@ -37,7 +37,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNodeKind kind)
+bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNode* forNode, AstNodeKind kind)
 {
     if (!attrUse)
         return true;
@@ -49,12 +49,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
         // Check that the attribute matches the following declaration
         for (auto child : curAttr->childs)
         {
-            SWAG_CHECK(checkAttribute(context, child, context->node, kind));
+            SWAG_CHECK(checkAttribute(context, child, forNode, kind));
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FunctionAttribute);
 
             if (result.find(typeInfo) != result.end())
             {
-                Diagnostic diag{sourceFile, context->node->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), context->node->name.c_str())};
+                Diagnostic diag{sourceFile, forNode->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), forNode->name.c_str())};
                 Diagnostic note{sourceFile, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }

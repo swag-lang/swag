@@ -40,7 +40,7 @@ struct SemanticJob : public Job
     }
 
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
-    static bool collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNodeKind kind);
+    static bool collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNode* forNode, AstNodeKind kind);
     static void collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope);
 	static void setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
 	static bool checkSymbolGhosting(SourceFile* sourceFile, Scope* startScope, AstNode* node, SymbolKind kind);

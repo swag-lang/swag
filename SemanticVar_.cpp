@@ -33,7 +33,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Attributes
     if (context->node->attributes)
     {
-        collectAttributes(context, overload->attributes, context->node->attributes, AstNodeKind::VarDecl);
+        collectAttributes(context, overload->attributes, context->node->attributes, context->node, AstNodeKind::VarDecl);
     }
 
     context->result = SemanticResult::Done;

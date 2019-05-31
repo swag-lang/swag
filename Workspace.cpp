@@ -148,7 +148,7 @@ bool Workspace::build()
             auto semanticJob = static_cast<SemanticJob*>(job);
             auto node        = semanticJob->nodes.back();
             auto sourceFile  = semanticJob->sourceFile;
-            sourceFile->report({sourceFile, node->token, format("cannot resolve type of identifier '%s'", node->name.c_str())});
+            sourceFile->report({sourceFile, node->token, format("can't resolve type of identifier '%s'", node->name.c_str())});
         }
     }
 
