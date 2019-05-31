@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "AstNode.h"
 #include "Ast.h"
 #include "PoolFactory.h"
 #include "SourceFile.h"

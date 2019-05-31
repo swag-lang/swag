@@ -6,6 +6,7 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "SymTable.h"
+#include "Scope.h"
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {

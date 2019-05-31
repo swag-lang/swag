@@ -10,6 +10,7 @@
 #include "TypeInfo.h"
 #include "ConcatBucket.h"
 #include "SymTable.h"
+#include "AstNode.h"
 
 struct PoolFactory
 {

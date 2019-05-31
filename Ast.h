@@ -2,7 +2,8 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "AstNode.h"
-#include "Scope.h"
+struct Scope;
+enum class ScopeKind;
 
 struct PoolFactory;
 namespace Ast
