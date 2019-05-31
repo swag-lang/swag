@@ -9,6 +9,7 @@
 #include "Scope.h"
 #include "TypeInfo.h"
 #include "ConcatBucket.h"
+#include "SymTable.h"
 
 struct PoolFactory
 {
@@ -35,4 +36,5 @@ struct PoolFactory
     Pool<TypeInfoEnum>          typeInfoEnum;
     Pool<TypeInfoFuncAttr>      typeInfoFuncAttr;
     Pool<TypeInfoFuncAttrParam> typeInfoFuncAttrParam;
+    Pool<SymbolMatchParameter>  symbolMatchParameter;
 };

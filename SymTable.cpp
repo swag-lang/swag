@@ -172,6 +172,19 @@ const char* SymTable::getKindName(SymbolKind kind)
     return "something else";
 }
 
+SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
+{
+    for (auto it : overloads)
+    {
+        if (it->typeInfo == typeInfo)
+            return it;
+        if (it->typeInfo->isSame(typeInfo))
+            return it;
+    }
+
+    return nullptr;
+}
+
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
     if (parameters.size() != other->parameters.size())
@@ -185,6 +198,14 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
     return true;
 }
 
-void SymbolOverload::match(SymbolMatchContext& context)
+bool TypeInfoFuncAttr::isSame(TypeInfo* from)
+{
+    if (kind != from->kind)
+        return false;
+    auto fromFunc = CastTypeInfo<TypeInfoFuncAttr>(from, TypeInfoKind::FunctionAttribute);
+    return isSame(fromFunc);
+}
+
+void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 {
 }

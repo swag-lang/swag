@@ -2,17 +2,18 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "Utf8crc.h"
-#include "SourceFile.h"
 #include "Register.h"
-#include "TypeInfo.h"
+#include "SourceLocation.h"
 
+struct SourceFile;
 struct PoolFactory;
 struct Token;
 struct TypeInfo;
 struct Utf8Crc;
 struct Job;
+struct TypeInfoFuncAttr;
 
-struct SymbolMatchParameter
+struct SymbolMatchParameter : public PoolElement
 {
     Utf8      name;
     TypeInfo* typeInfo;
@@ -20,7 +21,13 @@ struct SymbolMatchParameter
 
 struct SymbolMatchContext
 {
-    vector<SymbolMatchParameter> parameters;
+    vector<SymbolMatchParameter*> parameters;
+
+    ~SymbolMatchContext()
+    {
+		for (auto param : parameters)
+			param->release();
+    }
 };
 
 struct SymbolOverload : public PoolElement
@@ -31,8 +38,6 @@ struct SymbolOverload : public PoolElement
     SourceLocation         endLocation;
     ComputedValue          computedValue;
     set<TypeInfoFuncAttr*> attributes;
-
-    void match(SymbolMatchContext& context);
 };
 
 enum class SymbolKind
@@ -64,19 +69,7 @@ struct SymbolName : public PoolElement
     }
 
     SymbolOverload* addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo, ComputedValue* computedValue);
-
-    SymbolOverload* findOverload(TypeInfo* typeInfo)
-    {
-        for (auto it : overloads)
-        {
-            if (it->typeInfo == typeInfo)
-                return it;
-            if (it->typeInfo->isSame(typeInfo))
-                return it;
-        }
-
-        return nullptr;
-    }
+    SymbolOverload* findOverload(TypeInfo* typeInfo);
 };
 
 struct SymTable

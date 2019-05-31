@@ -1,9 +1,9 @@
 #pragma once
 #include "Pool.h"
 #include "Utf8.h"
-#include "TypeManager.h"
 struct Scope;
 struct TypeInfo;
+struct SymbolMatchContext;
 
 enum class TypeInfoKind
 {
@@ -106,15 +106,9 @@ struct TypeInfoFuncAttr : public TypeInfo
         kind = TypeInfoKind::FunctionAttribute;
     }
 
-	bool isSame(TypeInfoFuncAttr* from);
-
-    bool isSame(TypeInfo* from) override
-    {
-        if (kind != from->kind)
-            return false;
-        auto fromFunc = CastTypeInfo<TypeInfoFuncAttr>(from, TypeInfoKind::FunctionAttribute);
-        return isSame(fromFunc);
-    }
+    void match(SymbolMatchContext& context);
+    bool isSame(TypeInfoFuncAttr* from);
+    bool isSame(TypeInfo* from) override;
 
     vector<TypeInfoFuncAttrParam*> parameters;
     TypeInfo*                      returnType;

@@ -6,21 +6,15 @@ struct SymTable;
 
 enum class ScopeKind
 {
-	Workspace,
-	Module,
-	Namespace,
-	Enum,
-	Function,
+    Workspace,
+    Module,
+    Namespace,
+    Enum,
+    Function,
 };
 
 struct Scope : public PoolElement
 {
-    ScopeKind kind;
-    Scope*    parentScope;
-    SymTable* symTable;
-    Utf8Crc   name;
-    Utf8Crc   fullname;
-
     void reset() override
     {
         parentScope = nullptr;
@@ -38,4 +32,10 @@ struct Scope : public PoolElement
     {
         return kind == ScopeKind::Workspace || kind == ScopeKind::Module || kind == ScopeKind::Namespace;
     }
+
+    ScopeKind kind;
+    Scope*    parentScope;
+    SymTable* symTable;
+    Utf8Crc   name;
+    Utf8Crc   fullname;
 };

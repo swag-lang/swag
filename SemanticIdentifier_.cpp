@@ -6,6 +6,7 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "Scope.h"
+#include "PoolFactory.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -131,21 +132,21 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         for (auto param : node->callParameters->childs)
         {
-            SymbolMatchParameter matchParam;
-            matchParam.name     = param->name;
-            matchParam.typeInfo = param->typeInfo;
-            symMatch.parameters.emplace_back(move(matchParam));
+            auto matchParam      = sourceFile->poolFactory->symbolMatchParameter.alloc();
+            matchParam->name     = param->name;
+            matchParam->typeInfo = param->typeInfo;
+            symMatch.parameters.push_back(matchParam);
         }
     }
     else
     {
-		// For everything except functions and attributes (which have overloads), this is
-		// a match
+        // For everything except functions and attributes (which have overloads), this is
+        // a match
         auto symbol = dependentSymbols[0];
         if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
         {
-			assert(dependentSymbols.size() == 1);
-			assert(symbol->overloads.size() == 1);
+            assert(dependentSymbols.size() == 1);
+            assert(symbol->overloads.size() == 1);
             setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]);
             return true;
         }
@@ -155,7 +156,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     {
         for (auto overload : symbol->overloads)
         {
-			overload->match(symMatch);
+			auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
+			typeInfo->match(symMatch);
         }
     }
 

@@ -175,6 +175,7 @@
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="Runtime.h" />
     <ClInclude Include="Scope.h" />
+    <ClInclude Include="SourceLocation.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleSemanticJob.h" />

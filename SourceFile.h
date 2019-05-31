@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "Utf8.h"
+#include "SourceLocation.h"
 struct Module;
 struct AstNode;
 struct PoolFactory;
@@ -17,13 +18,6 @@ enum class BuildPass
 enum class TextFormat
 {
     UTF8,
-};
-
-struct SourceLocation
-{
-    int line;
-    int column;
-    int seekStartLine;
 };
 
 struct SourceFile : public PoolElement

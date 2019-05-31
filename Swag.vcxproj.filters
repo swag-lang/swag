@@ -308,6 +308,9 @@
     <ClInclude Include="Runtime.h">
       <Filter>Lexer</Filter>
     </ClInclude>
+    <ClInclude Include="SourceLocation.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
