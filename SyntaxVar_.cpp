@@ -10,7 +10,6 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
     if (result)
         *result = node;
 
-    SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
     node->name = token.text;
     node->name.computeCrc();

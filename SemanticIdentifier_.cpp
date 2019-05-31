@@ -40,20 +40,31 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (!scope)
         scope = node->scope;
 
+    // Fill the search type
+    TypeInfoFuncAttr searchType;
+    if (node->callParameters)
+    {
+        for (auto param : node->callParameters->childs)
+            searchType.parameters.push_back(param->typeInfo);
+    }
+
     while (scope)
     {
         auto symTable = scope->symTable;
         {
             scoped_lock lk(symTable->mutex);
-            auto        name = symTable->findNoLock(node->name);
-            if (name)
+            auto        symbol = symTable->findNoLock(node->name);
+            if (symbol)
             {
-                scoped_lock lkn(name->mutex);
+                scoped_lock lkn(symbol->mutex);
+
                 node->matchScope = scope;
-                if (!name->overloads.empty())
+                if (!symbol->overloads.empty())
                 {
-                    node->resolvedSymbolName     = name;
-                    node->resolvedSymbolOverload = name->overloads[0];
+                    auto overload = symbol->findOverload(&searchType);
+
+                    node->resolvedSymbolName     = symbol;
+                    node->resolvedSymbolOverload = symbol->overloads[0];
                     node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
                     switch (node->typeInfo->kind)
                     {
@@ -70,7 +81,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 }
 
                 // Need to wait for the symbol to be resolved
-                name->dependentJobs.push_back(context->job);
+                symbol->dependentJobs.push_back(context->job);
                 g_ThreadMgr.addPendingJob(context->job);
                 context->result = SemanticResult::Pending;
                 return true;

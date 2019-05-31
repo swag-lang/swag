@@ -2,7 +2,7 @@ const char* g_Runtime = R"(
 
 namespace swag {
 
-attr foreign: () -> func;
+//attr foreign: () -> func;
 
 }
 )";

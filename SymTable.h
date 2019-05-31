@@ -14,12 +14,12 @@ struct Job;
 
 struct SymbolOverload : public PoolElement
 {
-    TypeInfo*          typeInfo;
-    SourceFile*        sourceFile;
-    SourceLocation     startLocation;
-    SourceLocation     endLocation;
-    ComputedValue      computedValue;
-    set<TypeInfoAttr*> attributes;
+    TypeInfo*              typeInfo;
+    SourceFile*            sourceFile;
+    SourceLocation         startLocation;
+    SourceLocation         endLocation;
+    ComputedValue          computedValue;
+    set<TypeInfoFuncAttr*> attributes;
 };
 
 enum class SymbolKind

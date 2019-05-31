@@ -17,9 +17,10 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymLeftParen)
     {
-        auto callParams         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncCallParams, currentScope, sourceFile->indexInModule, identifier, false);
-        callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
-        callParams->token       = move(token);
+        auto callParams            = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncCallParams, currentScope, sourceFile->indexInModule, identifier, false);
+        identifier->callParameters = callParams;
+        callParams->semanticFct    = &SemanticJob::resolveFuncCallParams;
+        callParams->token          = move(token);
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }

@@ -46,6 +46,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
-    SWAG_CHECK(notSupportedError(token));
+    SWAG_CHECK(syntaxError(token, format("invalid type declaration '%s'", token.text.c_str())));
     return true;
 }

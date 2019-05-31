@@ -9,12 +9,22 @@
 
 bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 {
-    auto node       = context->node;
+    auto node       = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
     auto sourceFile = context->sourceFile;
+    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
+
+    // Set parameters
+    if (node->parameters)
+    {
+        for (auto param : node->parameters->childs)
+        {
+            typeInfo->parameters.push_back(param->typeInfo);
+        }
+    }
 
     SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Attribute));
 
-	// We need to check the scope hierarchy for symbol ghosting
+    // We need to check the scope hierarchy for symbol ghosting
     auto scope = node->scope->parentScope;
     while (scope)
     {
@@ -48,8 +58,8 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
-    auto          sourceFile = context->sourceFile;
-    TypeInfoAttr* typeInfo   = CastTypeInfo<TypeInfoAttr>(oneAttribute->typeInfo, TypeInfoKind::Attribute);
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FunctionAttribute);
 
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind != AstNodeKind::FuncDecl && kind != AstNodeKind::Statement)
     {
@@ -70,7 +80,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoAttr*>& result, AstNode* attrUse, AstNodeKind kind)
+bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNodeKind kind)
 {
     auto sourceFile = context->sourceFile;
     auto curAttr    = attrUse;
@@ -80,7 +90,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoAttr*>
         for (auto child : curAttr->childs)
         {
             SWAG_CHECK(checkAttribute(context, child, context->node, kind));
-            TypeInfoAttr* typeInfo = CastTypeInfo<TypeInfoAttr>(child->typeInfo, TypeInfoKind::Attribute);
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FunctionAttribute);
 
             if (result.find(typeInfo) != result.end())
             {

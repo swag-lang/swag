@@ -33,6 +33,5 @@ struct PoolFactory
 
     Pool<TypeInfoNamespace> typeInfoNamespace;
     Pool<TypeInfoEnum>      typeInfoEnum;
-    Pool<TypeInfoFunc>      typeInfoFunc;
-    Pool<TypeInfoAttr>      typeInfoAttr;
+    Pool<TypeInfoFuncAttr>  typeInfoFuncAttr;
 };

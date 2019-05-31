@@ -10,8 +10,7 @@ enum class TypeInfoKind
     Native,
     Namespace,
     Enum,
-    Function,
-    Attribute,
+    FunctionAttribute,
 };
 
 enum class NativeType
@@ -94,40 +93,22 @@ struct TypeInfoEnum : public TypeInfo
     }
 };
 
-struct TypeInfoAttr : public TypeInfo
+struct TypeInfoFuncAttr : public TypeInfo
 {
-    TypeInfoAttr()
+    TypeInfoFuncAttr()
     {
-        kind = TypeInfoKind::Attribute;
+        kind = TypeInfoKind::FunctionAttribute;
     }
 
     bool isSame(TypeInfo* from) override
     {
         if (kind != from->kind)
             return false;
-        auto fromFunc = CastTypeInfo<TypeInfoAttr>(from, TypeInfoKind::Attribute);
+        auto fromFunc = CastTypeInfo<TypeInfoFuncAttr>(from, TypeInfoKind::FunctionAttribute);
         return TypeManager::match(parameters, fromFunc->parameters);
     }
 
-    vector<TypeInfo*> parameters;
-};
-
-struct TypeInfoFunc : public TypeInfo
-{
-    TypeInfoFunc()
-    {
-        kind = TypeInfoKind::Function;
-    }
-
-    bool isSame(TypeInfo* from) override
-    {
-        if (kind != from->kind)
-            return false;
-        auto fromFunc = CastTypeInfo<TypeInfoFunc>(from, TypeInfoKind::Function);
-        return TypeManager::match(parameters, fromFunc->parameters);
-    }
-
-    vector<TypeInfo*>  parameters;
-    TypeInfo*          returnType;
-    set<TypeInfoAttr*> attributes;
+    vector<TypeInfo*>      parameters;
+    TypeInfo*              returnType;
+    set<TypeInfoFuncAttr*> attributes;
 };

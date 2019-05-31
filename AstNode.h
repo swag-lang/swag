@@ -25,7 +25,7 @@ enum class AstNodeKind
     Identifier,
     Type,
     Namespace,
-	Statement,
+    Statement,
     EnumDecl,
     FuncDecl,
     FuncCall,
@@ -143,11 +143,12 @@ struct AstIdentifier : public AstNode
 {
     void reset() override
     {
-        resolvedSymbolName = nullptr;
-        matchScope         = nullptr;
+        matchScope = nullptr;
+		callParameters = nullptr;
     }
 
-    Scope* matchScope;
+	AstNode* callParameters;
+    Scope*   matchScope;
 };
 
 struct AstFuncDecl : public AstNode
@@ -169,9 +170,7 @@ struct AstAttrDecl : public AstNode
     void reset() override
     {
         parameters = nullptr;
-        type       = nullptr;
     }
 
     AstNode* parameters;
-    AstNode* type;
 };

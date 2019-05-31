@@ -5,24 +5,45 @@
 
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 {
-    auto paramsNode = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::FuncDeclParams, currentScope, sourceFile->indexInModule, parent, false);
-    if (result)
-        *result = paramsNode;
-
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    while (token.id != TokenId::SymRightParen)
+    if (token.id != TokenId::SymRightParen)
     {
-        auto node = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, currentScope, sourceFile->indexInModule, paramsNode, false);
-        Ast::assignToken(node, token);
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doTypeExpression(node));
+        auto paramsNode         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::FuncDeclParams, currentScope, sourceFile->indexInModule, parent, false);
+        paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
+        if (result)
+            *result = paramsNode;
 
-        if (token.id == TokenId::SymComma)
+        while (token.id != TokenId::SymRightParen)
         {
-			SWAG_CHECK(eatToken(TokenId::SymComma));
-			SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+            auto node         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, currentScope, sourceFile->indexInModule, paramsNode, false);
+            node->semanticFct = &SemanticJob::resolveVarDecl;
+            if (result)
+                *result = node;
+
+            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+            node->name = token.text;
+            node->name.computeCrc();
+            node->token = move(token);
+
+            SWAG_CHECK(tokenizer.getToken(token));
+            if (token.id == TokenId::SymColon)
+            {
+                SWAG_CHECK(eatToken(TokenId::SymColon));
+                SWAG_CHECK(doTypeExpression(node, &node->astType));
+                SWAG_CHECK(node->astType);
+            }
+
+            if (token.id == TokenId::SymEqual)
+            {
+                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_CHECK(doAssignmentExpression(node, &node->astAssignment));
+            }
+
+            if (token.id == TokenId::SymComma)
+            {
+                SWAG_CHECK(eatToken(TokenId::SymComma));
+                SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+            }
         }
     }
 
@@ -43,11 +64,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
     // Parameters
     SWAG_CHECK(tokenizer.getToken(token));
-    auto paramsNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclParams, currentScope, sourceFile->indexInModule, funcNode, false);
-    funcNode->parameters    = paramsNode;
-    paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
     SWAG_CHECK(eatToken(TokenId::SymColon));
-    SWAG_CHECK(doFuncDeclParameters(paramsNode));
+    SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
 
     // Return type
     auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclType, currentScope, sourceFile->indexInModule, funcNode, false);
@@ -64,7 +82,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     currentScope->allocateSymTable();
     {
         scoped_lock lk(currentScope->symTable->mutex);
-        auto        typeInfo = sourceFile->poolFactory->typeInfoFunc.alloc();
+        auto        typeInfo = sourceFile->poolFactory->typeInfoFuncAttr.alloc();
         newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
         newScope->allocateSymTable();
         typeInfo->name     = funcNode->name;
