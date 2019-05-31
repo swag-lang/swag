@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Global.h"
 #include "Diagnostic.h"
+#include "Scoped.h"
 #include "PoolFactory.h"
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)

@@ -8,6 +8,7 @@
 #include "PoolFactory.h"
 #include "SourceFile.h"
 #include "Diagnostic.h"
+#include "SyntaxJob.h"
 
 SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* sourceFile)
 {

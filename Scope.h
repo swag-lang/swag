@@ -1,6 +1,7 @@
 #pragma once
 #include "Utf8Crc.h"
-#include "SyntaxJob.h"
+#include "Pool.h"
+struct SyntaxJob;
 struct Scope;
 struct SymTable;
 
@@ -33,22 +34,4 @@ struct Scope : public PoolElement
     SymTable* symTable;
     Utf8Crc   name;
     Utf8Crc   fullname;
-};
-
-struct Scoped
-{
-    Scoped(SyntaxJob* job, Scope* newScope)
-    {
-        savedJob          = job;
-        savedScope        = job->currentScope;
-        job->currentScope = newScope;
-    }
-
-    ~Scoped()
-    {
-        savedJob->currentScope = savedScope;
-    }
-
-    SyntaxJob* savedJob;
-    Scope*     savedScope;
 };

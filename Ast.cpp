@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "PoolFactory.h"
 #include "SourceFile.h"
+#include "SyntaxJob.h"
 
 namespace Ast
 {

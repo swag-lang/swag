@@ -317,6 +317,9 @@
     <ClInclude Include="SourceLocation.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="Scoped.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
