@@ -1,11 +1,7 @@
 #include "pch.h"
-#include "SemanticJob.h"
-#include "Ast.h"
 #include "Global.h"
 #include "Diagnostic.h"
-#include "TypeManager.h"
-#include "ThreadManager.h"
-#include "Scope.h"
+#include "PoolFactory.h"
 
 bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 {
@@ -16,9 +12,13 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     // Set parameters
     if (node->parameters)
     {
+		typeInfo->parameters.reserve(node->parameters->childs.size());
         for (auto param : node->parameters->childs)
         {
-            typeInfo->parameters.push_back(param->typeInfo);
+            auto funcParam      = sourceFile->poolFactory->typeInfoFuncAttrParam.alloc();
+            funcParam->name     = param->name;
+            funcParam->typeInfo = param->typeInfo;
+            typeInfo->parameters.push_back(funcParam);
         }
     }
 

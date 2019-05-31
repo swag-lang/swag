@@ -34,8 +34,6 @@ struct TypeManager
     static void      promoteInteger(AstNode* node);
     static TypeInfo* flattenType(TypeInfo* typeInfo);
 
-    static bool match(vector<TypeInfo*>& one, vector<TypeInfo*>& two);
-
     TypeInfoNative* typeInfoSX;
     TypeInfoNative* typeInfoS8;
     TypeInfoNative* typeInfoS16;

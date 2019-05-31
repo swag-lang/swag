@@ -137,11 +137,25 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             symMatch.parameters.emplace_back(move(matchParam));
         }
     }
+    else
+    {
+		// For everything except functions and attributes (which have overloads), this is
+		// a match
+        auto symbol = dependentSymbols[0];
+        if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
+        {
+			assert(dependentSymbols.size() == 1);
+			assert(symbol->overloads.size() == 1);
+            setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]);
+            return true;
+        }
+    }
 
     for (auto symbol : dependentSymbols)
     {
         for (auto overload : symbol->overloads)
         {
+			overload->match(symMatch);
         }
     }
 

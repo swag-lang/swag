@@ -172,6 +172,19 @@ const char* SymTable::getKindName(SymbolKind kind)
     return "something else";
 }
 
+bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
+{
+    if (parameters.size() != other->parameters.size())
+        return false;
+    for (int i = 0; i < parameters.size(); i++)
+    {
+        if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo))
+            return false;
+    }
+
+    return true;
+}
+
 void SymbolOverload::match(SymbolMatchContext& context)
 {
 }

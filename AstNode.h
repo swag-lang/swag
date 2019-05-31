@@ -93,10 +93,17 @@ struct AstNode : public PoolElement
 
     void inheritLocation()
     {
-		if (childs.empty())
-			return;
+        if (childs.empty())
+            return;
         token.startLocation = childs.front()->token.startLocation;
         token.endLocation   = childs.back()->token.endLocation;
+    }
+
+    void inheritToken(Token& tkn)
+    {
+        name = move(tkn.text);
+        name.computeCrc();
+        token = move(tkn);
     }
 
     Scope*          scope;
@@ -145,10 +152,10 @@ struct AstIdentifier : public AstNode
 {
     void reset() override
     {
-		callParameters = nullptr;
+        callParameters = nullptr;
     }
 
-	AstNode* callParameters;
+    AstNode* callParameters;
 };
 
 struct AstFuncDecl : public AstNode

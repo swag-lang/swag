@@ -8,35 +8,31 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto paramsNode         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::FuncDeclParams, currentScope, sourceFile->indexInModule, parent, false);
-        paramsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
+        auto allParamsNode         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::FuncDeclParams, currentScope, sourceFile->indexInModule, parent, false);
+        allParamsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
         if (result)
-            *result = paramsNode;
+            *result = allParamsNode;
 
         while (token.id != TokenId::SymRightParen)
         {
-            auto node         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, currentScope, sourceFile->indexInModule, paramsNode, false);
-            node->semanticFct = &SemanticJob::resolveVarDecl;
-            if (result)
-                *result = node;
+            auto paramNode         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, currentScope, sourceFile->indexInModule, allParamsNode, false);
+            paramNode->semanticFct = &SemanticJob::resolveVarDecl;
 
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
-            node->name = token.text;
-            node->name.computeCrc();
-            node->token = move(token);
+            paramNode->inheritToken(token);
 
             SWAG_CHECK(tokenizer.getToken(token));
             if (token.id == TokenId::SymColon)
             {
                 SWAG_CHECK(eatToken(TokenId::SymColon));
-                SWAG_CHECK(doTypeExpression(node, &node->astType));
-                SWAG_CHECK(node->astType);
+                SWAG_CHECK(doTypeExpression(paramNode, &paramNode->astType));
+                SWAG_CHECK(paramNode->astType);
             }
 
             if (token.id == TokenId::SymEqual)
             {
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
-                SWAG_CHECK(doAssignmentExpression(node, &node->astAssignment));
+                SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->astAssignment));
             }
 
             if (token.id == TokenId::SymComma)

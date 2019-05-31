@@ -31,7 +31,8 @@ struct PoolFactory
     Pool<SymbolName>     symName;
     Pool<SymbolOverload> symOverload;
 
-    Pool<TypeInfoNamespace> typeInfoNamespace;
-    Pool<TypeInfoEnum>      typeInfoEnum;
-    Pool<TypeInfoFuncAttr>  typeInfoFuncAttr;
+    Pool<TypeInfoNamespace>     typeInfoNamespace;
+    Pool<TypeInfoEnum>          typeInfoEnum;
+    Pool<TypeInfoFuncAttr>      typeInfoFuncAttr;
+    Pool<TypeInfoFuncAttrParam> typeInfoFuncAttrParam;
 };

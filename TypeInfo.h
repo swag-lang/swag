@@ -93,6 +93,12 @@ struct TypeInfoEnum : public TypeInfo
     }
 };
 
+struct TypeInfoFuncAttrParam : public PoolElement
+{
+    Utf8      name;
+    TypeInfo* typeInfo;
+};
+
 struct TypeInfoFuncAttr : public TypeInfo
 {
     TypeInfoFuncAttr()
@@ -100,15 +106,17 @@ struct TypeInfoFuncAttr : public TypeInfo
         kind = TypeInfoKind::FunctionAttribute;
     }
 
+	bool isSame(TypeInfoFuncAttr* from);
+
     bool isSame(TypeInfo* from) override
     {
         if (kind != from->kind)
             return false;
         auto fromFunc = CastTypeInfo<TypeInfoFuncAttr>(from, TypeInfoKind::FunctionAttribute);
-        return TypeManager::match(parameters, fromFunc->parameters);
+        return isSame(fromFunc);
     }
 
-    vector<TypeInfo*>      parameters;
-    TypeInfo*              returnType;
-    set<TypeInfoFuncAttr*> attributes;
+    vector<TypeInfoFuncAttrParam*> parameters;
+    TypeInfo*                      returnType;
+    set<TypeInfoFuncAttr*>         attributes;
 };

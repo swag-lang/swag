@@ -10,7 +10,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto node = static_cast<AstVarDecl*>(context->node);
 
-	// Find type
+    // Find type
     if (node->astType && node->astAssignment)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->astType->typeInfo, node->astAssignment));
@@ -27,7 +27,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Register symbol with its type
     auto overload = node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Variable);
-	SWAG_CHECK(overload);
+    SWAG_CHECK(overload);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->scope->parentScope, node, SymbolKind::Variable));
 
     // Attributes
