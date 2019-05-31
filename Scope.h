@@ -1,6 +1,7 @@
 #pragma once
 #include "Utf8Crc.h"
 #include "SymTable.h"
+#include "SyntaxJob.h"
 struct Scope;
 struct SymTable;
 
@@ -25,7 +26,7 @@ struct Scope : public PoolElement
     {
         if (symTable)
             return;
-        symTable = new SymTable();
+        symTable = new SymTable(this);
     }
 
     bool isGlobal()
@@ -38,4 +39,22 @@ struct Scope : public PoolElement
     SymTable* symTable;
     Utf8Crc   name;
     Utf8Crc   fullname;
+};
+
+struct Scoped
+{
+    Scoped(SyntaxJob* job, Scope* newScope)
+    {
+        savedJob          = job;
+        savedScope        = job->currentScope;
+        job->currentScope = newScope;
+    }
+
+    ~Scoped()
+    {
+        savedJob->currentScope = savedScope;
+    }
+
+    SyntaxJob* savedJob;
+    Scope*     savedScope;
 };

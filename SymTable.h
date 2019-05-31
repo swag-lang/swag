@@ -5,6 +5,7 @@
 #include "Register.h"
 #include "SourceLocation.h"
 
+struct Scope;
 struct SourceFile;
 struct PoolFactory;
 struct Token;
@@ -83,7 +84,7 @@ struct SymbolName : public PoolElement
 
 struct SymTable
 {
-    SymTable();
+    SymTable(Scope* scope);
 
     SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, SymbolKind kind);
     SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr);
@@ -98,5 +99,6 @@ struct SymTable
 
     static const int           HASH_SIZE = 512;
     SpinLock                   mutex;
+    Scope*                     scope;
     map<Utf8Crc, SymbolName*>* mapNames[HASH_SIZE];
 };

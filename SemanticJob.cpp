@@ -10,7 +10,7 @@
 #include "Scope.h"
 #include "TypeManager.h"
 
-SymTable::SymTable()
+SymTable::SymTable(Scope* scope) : scope{scope}
 {
     memset(mapNames, 0, sizeof(mapNames));
 }

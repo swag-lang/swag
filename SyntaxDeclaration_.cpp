@@ -29,7 +29,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
         if (!symbol)
         {
             auto typeInfo           = sourceFile->poolFactory->typeInfoNamespace.alloc();
-            typeInfo->name          = "namespace " + namespaceNode->name;
+            typeInfo->name          = namespaceNode->name;
             newScope                = Ast::newScope(sourceFile, namespaceNode->name, ScopeKind::Namespace, currentScope);
             typeInfo->scope         = newScope;
             namespaceNode->typeInfo = typeInfo;
@@ -53,14 +53,13 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Content of namespace is toplevel
-    auto savedScope = currentScope;
-    currentScope    = newScope;
-    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        SWAG_CHECK(doTopLevelInstruction(namespaceNode));
+        Scoped scoped(this, newScope);
+        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+        {
+            SWAG_CHECK(doTopLevelInstruction(namespaceNode));
+        }
     }
-
-    currentScope = savedScope;
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
@@ -76,14 +75,14 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-		if (currentScope->isGlobal())
-		{
-			SWAG_CHECK(doTopLevelInstruction(node));
-		}
-		else
-		{
-			SWAG_CHECK(doEmbeddedInstruction(node));
-		}
+        if (currentScope->isGlobal())
+        {
+            SWAG_CHECK(doTopLevelInstruction(node));
+        }
+        else
+        {
+            SWAG_CHECK(doEmbeddedInstruction(node));
+        }
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
@@ -106,7 +105,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     case TokenId::KwdVar:
-		SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doVarDecl(parent));
         break;
     case TokenId::KwdType:

@@ -87,13 +87,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         collectScopeHiearchy(scopeHierarchy, startScope);
         for (auto scope : scopeHierarchy)
         {
-            scoped_lock lk(scope->symTable->mutex);
-            auto        symbol = scope->symTable->findNoLock(node->name);
-            if (symbol)
+            if (scope->symTable)
             {
-                dependentSymbols.push_back(symbol);
-                if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Attribute)
-                    break;
+                scoped_lock lk(scope->symTable->mutex);
+                auto        symbol = scope->symTable->findNoLock(node->name);
+                if (symbol)
+                {
+                    dependentSymbols.push_back(symbol);
+                    if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Attribute)
+                        break;
+                }
             }
         }
 
@@ -114,7 +117,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-	context->result = SemanticResult::Done;
+    context->result = SemanticResult::Done;
 
     // Fill specified parameters
     SymbolMatchContext symMatch;

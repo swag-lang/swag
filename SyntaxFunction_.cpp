@@ -58,21 +58,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
     Ast::assignToken(funcNode, token);
 
-    // Parameters
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymColon));
-    SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
-
-    // Return type
-    auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclType, currentScope, sourceFile->indexInModule, funcNode, false);
-    funcNode->returnType  = typeNode;
-    typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
-    if (token.id == TokenId::SymMinusGreat)
-    {
-        SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
-        SWAG_CHECK(doTypeExpression(typeNode));
-    }
-
     // Register function name
     Scope* newScope = nullptr;
     currentScope->allocateSymTable();
@@ -86,15 +71,30 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode->token, newScope->name, SymbolKind::Function);
     }
 
+	// Parameters
+    {
+        Scoped scoped(this, newScope);
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
+    }
+
+    // Return type
+    auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclType, currentScope, sourceFile->indexInModule, funcNode, false);
+    funcNode->returnType  = typeNode;
+    typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
+    if (token.id == TokenId::SymMinusGreat)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
+        SWAG_CHECK(doTypeExpression(typeNode));
+    }
+
     // Content of function
     auto curly = move(token);
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-    auto savedScope = currentScope;
-    currentScope    = newScope;
-
-    currentScope = savedScope;
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
+
     return true;
 }
