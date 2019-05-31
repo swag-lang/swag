@@ -1,6 +1,5 @@
 #pragma once
 #include "Utf8Crc.h"
-#include "SymTable.h"
 #include "SyntaxJob.h"
 struct Scope;
 struct SymTable;
@@ -22,12 +21,7 @@ struct Scope : public PoolElement
         symTable    = nullptr;
     }
 
-    void allocateSymTable()
-    {
-        if (symTable)
-            return;
-        symTable = new SymTable(this);
-    }
+    void allocateSymTable();
 
     bool isGlobal()
     {

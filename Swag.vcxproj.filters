@@ -176,6 +176,9 @@
     <ClCompile Include="TypeInfo.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="Scope.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

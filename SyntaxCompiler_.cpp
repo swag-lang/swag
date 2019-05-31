@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "SyntaxJob.h"
 #include "Diagnostic.h"
 #include "Global.h"
 #include "CommandLine.h"
 #include "Workspace.h"
 #include "Module.h"
+#include "PoolFactory.h"
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {

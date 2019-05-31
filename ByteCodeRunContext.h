@@ -1,9 +1,11 @@
 #pragma once
 #include "ByteCode.h"
+#include "Register.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
 struct ConcatBucket;
+struct SourceFile;
 
 struct StackValue
 {

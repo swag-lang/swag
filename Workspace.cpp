@@ -7,6 +7,12 @@
 #include "CommandLine.h"
 #include "Diagnostic.h"
 #include "Runtime.h"
+#include "PoolFactory.h"
+
+Workspace::Workspace()
+{
+	poolFactory = new PoolFactory();
+}
 
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
@@ -88,7 +94,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
 
 void Workspace::buildRuntime()
 {
-    scopeRoot       = poolFactory.scope.alloc();
+    scopeRoot       = poolFactory->scope.alloc();
     scopeRoot->kind = ScopeKind::Workspace;
     scopeRoot->allocateSymTable();
 

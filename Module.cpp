@@ -14,6 +14,7 @@ Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
     , workspace{workspace}
 {
     reset();
+	poolFactory = new PoolFactory();
 
     if (runtime)
     {
@@ -21,13 +22,13 @@ Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
     }
     else
     {
-        scopeRoot       = poolFactory.scope.alloc();
+        scopeRoot       = poolFactory->scope.alloc();
         scopeRoot->kind = ScopeKind::Module;
         scopeRoot->allocateSymTable();
         scopeRoot->parentScope = workspace->scopeRoot;
     }
 
-    astRoot = Ast::newNode(&poolFactory.astNode, AstNodeKind::Module, workspace->scopeRoot, UINT32_MAX);
+    astRoot = Ast::newNode(&poolFactory->astNode, AstNodeKind::Module, workspace->scopeRoot, UINT32_MAX);
 }
 
 void Module::addFile(SourceFile* file)

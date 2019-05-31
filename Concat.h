@@ -1,7 +1,7 @@
 #pragma once
 #include "Pool.h"
-#include "PoolFactory.h"
-struct ConcatBucket;
+#include "ConcatBucket.h"
+struct PoolFactory;
 
 struct Concat
 {
@@ -22,7 +22,7 @@ struct Concat
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;
-    PoolFactory   poolFactory;
+    PoolFactory*  poolFactory = nullptr;
 
     uint8_t*      currentSP  = nullptr;
     ConcatBucket* currentSPB = nullptr;

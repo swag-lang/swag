@@ -3,6 +3,7 @@
 #include "ByteCodeNodeId.h"
 struct SemanticContext;
 struct ByteCode;
+struct AstNode;
 
 struct ByteCodeGenContext
 {

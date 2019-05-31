@@ -1,10 +1,10 @@
 #pragma once
 #include "AstNode.h"
-#include "PoolFactory.h"
 #include "TypeManager.h"
 struct SourceFile;
 struct SymTable;
 struct Utf8Crc;
+struct PoolFactory;
 struct Workspace;
 
 struct Module : public PoolElement
@@ -20,7 +20,7 @@ struct Module : public PoolElement
     vector<SourceFile*> files;
     AstNode*            astRoot;
     Scope*              scopeRoot;
-    PoolFactory         poolFactory;
+    PoolFactory*        poolFactory;
     TypeManager         typeMgr;
     Workspace*          workspace;
 };

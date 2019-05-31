@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Global.h"
-#include "Module.h"
 #include "Diagnostic.h"
+#include "PoolFactory.h"
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Global.h"
-#include "Module.h"
+#include "PoolFactory.h"
 
 bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 {

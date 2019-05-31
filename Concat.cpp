@@ -1,9 +1,10 @@
 #include "pch.h"
-#include "Module.h"
 #include "Concat.h"
+#include "PoolFactory.h"
 
 Concat::Concat()
 {
+	poolFactory = new PoolFactory();
     checkCount(1);
 }
 
@@ -15,7 +16,7 @@ void Concat::checkCount(int offset)
         return;
     }
 
-    lastBucket = poolFactory.concatBucket.alloc();
+    lastBucket = poolFactory->concatBucket.alloc();
     if (!firstBucket)
         firstBucket = lastBucket;
     currentSP         = lastBucket->datas;

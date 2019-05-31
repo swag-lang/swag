@@ -3,8 +3,8 @@
 #include "ByteCodeGen.h"
 #include "ByteCodeRun.h"
 #include "ByteCodeRunContext.h"
-#include "ConcatBucket.h"
 #include "Diagnostic.h"
+#include "SemanticJob.h"
 
 void ByteCodeRun::setup()
 {
