@@ -6,7 +6,8 @@
 
 bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 {
-    auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, currentScope, sourceFile->indexInModule, parent, false);
+    auto identifier = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent, false);
+    identifier->inheritOwners(this);
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
     identifier->token       = move(token);
@@ -18,18 +19,20 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymLeftParen)
     {
-        auto callParams            = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncCallParams, currentScope, sourceFile->indexInModule, identifier, false);
+        auto callParams = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, identifier, false);
+        callParams->inheritOwners(this);
         identifier->callParameters = callParams;
         callParams->semanticFct    = &SemanticJob::resolveFuncCallParams;
         callParams->token          = move(token);
+
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
         while (token.id != TokenId::SymRightParen)
         {
-			while(true)
-			{
-				SWAG_CHECK(doExpression(callParams));
-				if (token.id != TokenId::SymComma)
-					break;
+            while (true)
+            {
+                SWAG_CHECK(doExpression(callParams));
+                if (token.id != TokenId::SymComma)
+                    break;
                 SWAG_CHECK(eatToken(TokenId::SymComma));
             }
         }
@@ -42,7 +45,8 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
-    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, currentScope, sourceFile->indexInModule, parent, false);
+    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent, false);
+    identifierRef->inheritOwners(this);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     if (result)
         *result = identifierRef;

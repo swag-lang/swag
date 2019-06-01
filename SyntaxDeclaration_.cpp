@@ -9,7 +9,8 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobal(), error(token, "a namespace definition must appear either at file scope or immediately within another namespace definition"));
 
-    auto namespaceNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, currentScope, sourceFile->indexInModule, parent, false);
+    auto namespaceNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+    namespaceNode->inheritOwners(this);
     if (result)
         *result = namespaceNode;
 
@@ -70,7 +71,8 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Statement, currentScope, sourceFile->indexInModule, parent, false);
+    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent, false);
+    node->inheritOwners(this);
     if (result)
         *result = node;
 

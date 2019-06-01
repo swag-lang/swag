@@ -2,6 +2,7 @@
 #include "SyntaxJob.h"
 struct SyntaxJob;
 struct Scope;
+struct AstFuncDecl;
 
 struct Scoped
 {
@@ -19,4 +20,22 @@ struct Scoped
 
     SyntaxJob* savedJob;
     Scope*     savedScope;
+};
+
+struct ScopedFct
+{
+    ScopedFct(SyntaxJob* job, AstFuncDecl* newFct)
+    {
+        savedJob        = job;
+        savedFct        = job->currentFct;
+        job->currentFct = newFct;
+    }
+
+    ~ScopedFct()
+    {
+        savedJob->currentFct = savedFct;
+    }
+
+    SyntaxJob*   savedJob;
+    AstFuncDecl* savedFct;
 };

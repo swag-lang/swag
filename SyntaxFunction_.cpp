@@ -10,14 +10,16 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto allParamsNode         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::FuncDeclParams, currentScope, sourceFile->indexInModule, parent, false);
+        auto allParamsNode = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent, false);
+        allParamsNode->inheritOwners(this);
         allParamsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
         if (result)
             *result = allParamsNode;
 
         while (token.id != TokenId::SymRightParen)
         {
-            auto paramNode         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, currentScope, sourceFile->indexInModule, allParamsNode, false);
+            auto paramNode = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, allParamsNode, false);
+            paramNode->inheritOwners(this);
             paramNode->semanticFct = &SemanticJob::resolveVarDecl;
 
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
@@ -51,7 +53,8 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 {
-    auto funcNode         = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::FuncDecl, currentScope, sourceFile->indexInModule, parent, false);
+    auto funcNode = Ast::newNode(&sourceFile->poolFactory->astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent, false);
+    funcNode->inheritOwners(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
@@ -82,7 +85,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
 
     // Return type
-    auto typeNode         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclType, currentScope, sourceFile->indexInModule, funcNode, false);
+    auto typeNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode, false);
+    typeNode->inheritOwners(this);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)
@@ -97,9 +101,11 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
     if (token.id != TokenId::SymRightCurly)
     {
-        Scoped scoped(this, newScope);
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
 
-        auto stmtNode     = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncContent, currentScope, sourceFile->indexInModule, funcNode, false);
+        auto stmtNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncContent, sourceFile->indexInModule, funcNode, false);
+        stmtNode->inheritOwners(this);
         funcNode->content = stmtNode;
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
@@ -115,11 +121,19 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Return, currentScope, sourceFile->indexInModule, parent, false);
+    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Return, sourceFile->indexInModule, parent, false);
+    node->inheritOwners(this);
     if (result)
         *result = node;
     node->byteCodeFct = &ByteCodeGenJob::emitReturn;
     SWAG_CHECK(tokenizer.getToken(token));
+
+    // Return value
+    if (token.id != TokenId::SymSemiColon)
+    {
+        SWAG_CHECK(doExpression(node));
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     return true;
 }

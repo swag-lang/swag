@@ -11,8 +11,6 @@
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
-    AstNode* node       = context->node;
-    auto     sourceFile = context->sourceFile;
     emitInstruction(context, ByteCodeNodeId::Ret);
     return true;
 }

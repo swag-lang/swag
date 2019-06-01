@@ -3,6 +3,7 @@
 #include "Pool.h"
 #include "Utf8Crc.h"
 #include "Tokenizer.h"
+#include "SyntaxJob.h"
 struct SemanticContext;
 struct ByteCodeGenContext;
 struct Scope;
@@ -13,6 +14,7 @@ struct SymbolName;
 struct ByteCodeGenJob;
 struct ByteCode;
 struct Job;
+struct AstFuncDecl;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -65,7 +67,8 @@ struct AstNode : public PoolElement
     {
         semanticState      = AstNodeResolveState::Enter;
         bytecodeState      = AstNodeResolveState::Enter;
-        scope              = nullptr;
+        ownerScope         = nullptr;
+        ownerFct           = nullptr;
         parent             = nullptr;
         semanticFct        = nullptr;
         typeInfo           = nullptr;
@@ -121,7 +124,15 @@ struct AstNode : public PoolElement
         token = move(tkn);
     }
 
-    Scope*          scope;
+    void inheritOwners(SyntaxJob* job)
+    {
+        ownerScope = job->currentScope;
+        ownerFct   = job->currentFct;
+    }
+
+    Scope*       ownerScope;
+    AstFuncDecl* ownerFct;
+
     TypeInfo*       typeInfo;
     SymbolName*     resolvedSymbolName;
     SymbolOverload* resolvedSymbolOverload;
@@ -149,8 +160,9 @@ struct AstVarDecl : public AstNode
 {
     void reset() override
     {
-        scope   = nullptr;
-        astType = nullptr;
+        astType       = nullptr;
+        astAssignment = nullptr;
+        AstNode::reset();
     }
 
     struct AstNode* astType;
@@ -162,6 +174,7 @@ struct AstIdentifierRef : public AstNode
     void reset() override
     {
         startScope = nullptr;
+        AstNode::reset();
     }
 
     Scope* startScope;
@@ -172,6 +185,7 @@ struct AstIdentifier : public AstNode
     void reset() override
     {
         callParameters = nullptr;
+        AstNode::reset();
     }
 
     AstNode* callParameters;
@@ -184,6 +198,8 @@ struct AstFuncDecl : public AstNode
         parameters = nullptr;
         returnType = nullptr;
         content    = nullptr;
+        dependentJobs.clear();
+        AstNode::reset();
     }
 
     AstNode*     parameters;
@@ -197,6 +213,7 @@ struct AstAttrDecl : public AstNode
     void reset() override
     {
         parameters = nullptr;
+        AstNode::reset();
     }
 
     AstNode* parameters;

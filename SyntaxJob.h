@@ -8,6 +8,7 @@ struct AstIdentifier;
 struct AstIdentifierRef;
 struct Scope;
 struct Utf8;
+struct AstFuncDecl;
 
 struct SyntaxJob : public Job
 {
@@ -16,6 +17,7 @@ struct SyntaxJob : public Job
     void reset() override
     {
         currentScope    = nullptr;
+        currentFct      = nullptr;
         canChangeModule = true;
         moduleSpecified = false;
     }
@@ -57,7 +59,9 @@ struct SyntaxJob : public Job
     Tokenizer   tokenizer;
     Token       token;
     SourceFile* sourceFile = nullptr;
-    Scope*      currentScope;
     bool        canChangeModule;
     bool        moduleSpecified;
+
+    Scope*       currentScope;
+    AstFuncDecl* currentFct;
 };

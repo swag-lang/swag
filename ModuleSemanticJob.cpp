@@ -20,7 +20,7 @@ SemanticJob* ModuleSemanticJob::newSemanticJob(SourceFile* sourceFile)
 
 bool ModuleSemanticJob::doSemanticNamespace(SourceFile* sourceFile, AstNode* node)
 {
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(sourceFile, node->scope->parentScope, node, SymbolKind::Namespace));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(sourceFile, node->ownerScope->parentScope, node, SymbolKind::Namespace));
     return true;
 }
 

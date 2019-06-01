@@ -5,7 +5,8 @@
 
 bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::TypeDecl, currentScope, sourceFile->indexInModule, parent, false);
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::TypeDecl, sourceFile->indexInModule, parent, false);
+    node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveTypeDecl;
     if (result)
         *result = node;
@@ -29,7 +30,8 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Type, currentScope, sourceFile->indexInModule, parent, false);
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Type, sourceFile->indexInModule, parent, false);
+    node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveTypeExpression;
     if (result)
         *result = node;

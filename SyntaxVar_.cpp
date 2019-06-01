@@ -5,7 +5,8 @@
 
 bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, currentScope, sourceFile->indexInModule, parent, false);
+    auto node = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
+    node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveVarDecl;
     if (result)
         *result = node;

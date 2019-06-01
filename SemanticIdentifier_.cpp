@@ -91,7 +91,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     {
         auto startScope = parent->startScope;
         if (!startScope)
-            startScope = node->scope;
+            startScope = node->ownerScope;
         scopeHierarchy.clear();
         dependentSymbols.clear();
         collectScopeHiearchy(scopeHierarchy, startScope);

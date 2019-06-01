@@ -28,7 +28,8 @@ Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
         scopeRoot->parentScope = workspace->scopeRoot;
     }
 
-    astRoot = Ast::newNode(&poolFactory->astNode, AstNodeKind::Module, workspace->scopeRoot, UINT32_MAX);
+    astRoot             = Ast::newNode(&poolFactory->astNode, AstNodeKind::Module, UINT32_MAX);
+    astRoot->ownerScope = workspace->scopeRoot;
 }
 
 void Module::addFile(SourceFile* file)

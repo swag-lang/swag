@@ -76,8 +76,8 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
 
     SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, node->parameters));
-    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(sourceFile, node, node->typeInfo, SymbolKind::Attribute));
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->scope->parentScope, node, SymbolKind::Attribute));
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(sourceFile, node, node->typeInfo, SymbolKind::Attribute));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->ownerScope->parentScope, node, SymbolKind::Attribute));
 
     context->result = SemanticResult::Done;
     return true;
