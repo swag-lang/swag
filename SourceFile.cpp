@@ -71,10 +71,18 @@ bool SourceFile::ensureOpen()
 bool SourceFile::checkFormat()
 {
     // Read header
-    auto c1 = fgetc(fileHandle);
-    auto c2 = fgetc(fileHandle);
-    auto c3 = fgetc(fileHandle);
-    auto c4 = fgetc(fileHandle);
+    uint8_t buf[4]  = {0, 0, 0, 0};
+    int     numRead = (int) fread(buf, sizeof(uint8_t), 4, fileHandle);
+    if (numRead == 0)
+    {
+        report({this, "invalid file format"});
+        return false;
+    }
+
+    auto c1 = buf[0];
+    auto c2 = buf[1];
+    auto c3 = buf[2];
+    auto c4 = buf[3];
 
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
     {
