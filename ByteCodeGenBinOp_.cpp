@@ -1,148 +1,152 @@
 #include "pch.h"
 #include "Global.h"
 #include "AstNode.h"
-#include "ByteCodeGen.h"
+#include "ByteCodeNodeId.h"
+#include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
 
-bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, AstNode* node)
+bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context)
 {
-    auto typeInfo = node->typeInfo;
+    AstNode* node     = context->node;
+    auto     typeInfo = node->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, node);
+        return internalError(context);
 
     switch (typeInfo->nativeType)
     {
     case NativeType::S32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpPlusS32);
+        emitInstruction(context, ByteCodeNodeId::BinOpPlusS32);
         return true;
     case NativeType::S64:
-	case NativeType::SX:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpPlusS64);
+    case NativeType::SX:
+        emitInstruction(context, ByteCodeNodeId::BinOpPlusS64);
         return true;
     case NativeType::U32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpPlusU32);
+        emitInstruction(context, ByteCodeNodeId::BinOpPlusU32);
         return true;
     case NativeType::U64:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpPlusU64);
+        emitInstruction(context, ByteCodeNodeId::BinOpPlusU64);
         return true;
     case NativeType::F32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpPlusF32);
+        emitInstruction(context, ByteCodeNodeId::BinOpPlusF32);
         return true;
     case NativeType::F64:
-	case NativeType::FX:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpPlusF64);
+    case NativeType::FX:
+        emitInstruction(context, ByteCodeNodeId::BinOpPlusF64);
         return true;
     default:
-        return internalError(context, node);
+        return internalError(context);
     }
 }
 
-bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, AstNode* node)
+bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context)
 {
-    auto typeInfo = node->typeInfo;
+    AstNode* node     = context->node;
+    auto     typeInfo = node->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, node);
+        return internalError(context);
 
     switch (typeInfo->nativeType)
     {
     case NativeType::S32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMinusS32);
+        emitInstruction(context, ByteCodeNodeId::BinOpMinusS32);
         return true;
     case NativeType::S64:
-	case NativeType::SX:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMinusS64);
+    case NativeType::SX:
+        emitInstruction(context, ByteCodeNodeId::BinOpMinusS64);
         return true;
     case NativeType::U32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMinusU32);
+        emitInstruction(context, ByteCodeNodeId::BinOpMinusU32);
         return true;
     case NativeType::U64:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMinusU64);
+        emitInstruction(context, ByteCodeNodeId::BinOpMinusU64);
         return true;
     case NativeType::F32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMinusF32);
+        emitInstruction(context, ByteCodeNodeId::BinOpMinusF32);
         return true;
     case NativeType::F64:
-	case NativeType::FX:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMinusF64);
+    case NativeType::FX:
+        emitInstruction(context, ByteCodeNodeId::BinOpMinusF64);
         return true;
     default:
-        return internalError(context, node);
+        return internalError(context);
     }
 }
 
-bool ByteCodeGen::emitBinaryOpMul(ByteCodeGenContext* context, AstNode* node)
+bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context)
 {
-    auto typeInfo = node->typeInfo;
+    AstNode* node     = context->node;
+    auto     typeInfo = node->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, node);
+        return internalError(context);
 
     switch (typeInfo->nativeType)
     {
     case NativeType::S32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMulS32);
+        emitInstruction(context, ByteCodeNodeId::BinOpMulS32);
         return true;
     case NativeType::S64:
-	case NativeType::SX:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMulS64);
+    case NativeType::SX:
+        emitInstruction(context, ByteCodeNodeId::BinOpMulS64);
         return true;
     case NativeType::U32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMulU32);
+        emitInstruction(context, ByteCodeNodeId::BinOpMulU32);
         return true;
     case NativeType::U64:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMulU64);
+        emitInstruction(context, ByteCodeNodeId::BinOpMulU64);
         return true;
     case NativeType::F32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMulF32);
+        emitInstruction(context, ByteCodeNodeId::BinOpMulF32);
         return true;
     case NativeType::F64:
-	case NativeType::FX:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpMulF64);
+    case NativeType::FX:
+        emitInstruction(context, ByteCodeNodeId::BinOpMulF64);
         return true;
     default:
-        return internalError(context, node);
+        return internalError(context);
     }
 }
 
-bool ByteCodeGen::emitBinaryOpDiv(ByteCodeGenContext* context, AstNode* node)
+bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context)
 {
-    auto typeInfo = node->typeInfo;
+    AstNode* node     = context->node;
+    auto     typeInfo = node->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, node);
+        return internalError(context);
 
     switch (typeInfo->nativeType)
     {
     case NativeType::F32:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpDivF32);
+        emitInstruction(context, ByteCodeNodeId::BinOpDivF32);
         return true;
     case NativeType::F64:
-	case NativeType::FX:
-        emitInstruction(context, node, ByteCodeNodeId::BinOpDivF64);
+    case NativeType::FX:
+        emitInstruction(context, ByteCodeNodeId::BinOpDivF64);
         return true;
     default:
-        return internalError(context, node);
+        return internalError(context);
     }
 }
 
-bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context, AstNode* node)
+bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
-    SWAG_CHECK(emitRawNode(context, node->childs[0]));
-    SWAG_CHECK(emitRawNode(context, node->childs[1]));
+    AstNode* node = context->node;
 
     switch (node->token.id)
     {
     case TokenId::SymPlus:
-        SWAG_CHECK(emitBinaryOpPlus(context, node));
+        SWAG_CHECK(emitBinaryOpPlus(context));
         return true;
     case TokenId::SymMinus:
-        SWAG_CHECK(emitBinaryOpMinus(context, node));
+        SWAG_CHECK(emitBinaryOpMinus(context));
         return true;
     case TokenId::SymAsterisk:
-        SWAG_CHECK(emitBinaryOpMul(context, node));
+        SWAG_CHECK(emitBinaryOpMul(context));
         return true;
     case TokenId::SymSlash:
-        SWAG_CHECK(emitBinaryOpDiv(context, node));
+        SWAG_CHECK(emitBinaryOpDiv(context));
         return true;
     default:
-        return internalError(context, node);
+        return internalError(context);
     }
 }

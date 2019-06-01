@@ -160,7 +160,7 @@
     <ClInclude Include="AstNode.h" />
     <ClInclude Include="BackendC.h" />
     <ClInclude Include="ByteCode.h" />
-    <ClInclude Include="ByteCodeGen.h" />
+    <ClInclude Include="ByteCodeGenJob.h" />
     <ClInclude Include="ByteCodeNodeId.h" />
     <ClInclude Include="ByteCodeRun.h" />
     <ClInclude Include="ByteCodeRunContext.h" />
@@ -208,10 +208,10 @@
     <ClCompile Include="Ast.cpp" />
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="ByteCode.cpp" />
-    <ClCompile Include="ByteCodeGen.cpp" />
     <ClCompile Include="ByteCodeGenBinOp_.cpp" />
     <ClCompile Include="ByteCodeGenIdentifier_.cpp" />
     <ClCompile Include="ByteCodeGenLiteral_.cpp" />
+    <ClCompile Include="ByteCodeGenJob.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
     <ClCompile Include="ByteCodeRunBinOp_.cpp" />
     <ClCompile Include="ByteCodeRunStack_.cpp" />

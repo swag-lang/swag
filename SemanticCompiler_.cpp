@@ -5,13 +5,45 @@
 #include "Log.h"
 #include "TypeInfo.h"
 #include "SourceFile.h"
+#include "PoolFactory.h"
 #include "ByteCodeRun.h"
 #include "ByteCodeRunContext.h"
+#include "ThreadManager.h"
+
+#if 0
+bool ByteCodeRun::executeNode(ByteCodeRunContext* runContext, SemanticContext* semanticContext, AstNode* node)
+{
+    // First we need to generate byte code
+    ByteCodeGenContext genContext;
+    genContext.semantic   = semanticContext;
+    genContext.bc         = &runContext->bc;
+    genContext.debugInfos = true;
+    SWAG_CHECK(ByteCodeGen::emitNode(&genContext, node));
+
+    // Then we execute the resulting bytecode
+    runContext->node       = node;
+    runContext->sourceFile = semanticContext->sourceFile;
+    runContext->bc.out.rewind();
+    runContext->stack.resize(1024);
+    runContext->sp = 0;
+
+    run(runContext);
+
+    return true;
+}
+
+        /*ByteCodeRunContext runContext;
+        SWAG_CHECK(g_Run.executeNode(&runContext, context, expr));
+        if (runContext.sp)
+            node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;*/
+
+#endif
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
-    auto node = context->node;
-    auto expr = context->node->childs[0];
+    auto node       = context->node;
+    auto expr       = context->node->childs[0];
+    auto sourceFile = context->sourceFile;
 
     node->typeInfo = expr->typeInfo;
     node->inheritAndFlag(expr, AST_CONST_EXPR);
@@ -19,10 +51,23 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
     if (!(node->flags & AST_VALUE_COMPUTED))
     {
-        ByteCodeRunContext runContext;
-        SWAG_CHECK(g_Run.executeNode(&runContext, context, expr));
-		if(runContext.sp)
-			node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;
+        scoped_lock lk(node->mutex);
+        // Need to generate bytecode, if not already done or running
+        if (!(node->flags & AST_BYTECODE_GENERATED))
+        {
+            if (!node->byteCodeJob)
+            {
+                node->byteCodeJob               = sourceFile->poolFactory->bytecodeJob.alloc();
+                node->byteCodeJob->sourceFile   = sourceFile;
+                node->byteCodeJob->originalNode = node;
+                node->byteCodeJob->nodes.push_back(node);
+                node->byteCodeJob->dependentJobs.push_back(context->job);
+                g_ThreadMgr.addJob(node->byteCodeJob);
+            }
+
+            context->result = SemanticResult::Pending;
+            return true;
+        }
     }
 
     context->result = SemanticResult::Done;

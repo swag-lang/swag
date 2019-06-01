@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Global.h"
-#include "ByteCodeGen.h"
+#include "ByteCodeGenJob.h"
 #include "ByteCodeRun.h"
 #include "ByteCodeRunContext.h"
 #include "Diagnostic.h"
@@ -108,25 +108,4 @@ bool ByteCodeRun::internalError(ByteCodeRunContext* context)
 {
     context->sourceFile->report({context->sourceFile, context->node->token, "internal compiler error during bytecode execution"});
     return false;
-}
-
-bool ByteCodeRun::executeNode(ByteCodeRunContext* runContext, SemanticContext* semanticContext, AstNode* node)
-{
-    // First we need to generate byte code
-    ByteCodeGenContext genContext;
-    genContext.semantic   = semanticContext;
-    genContext.bc         = &runContext->bc;
-    genContext.debugInfos = true;
-    SWAG_CHECK(ByteCodeGen::emitNode(&genContext, node));
-
-    // Then we execute the resulting bytecode
-    runContext->node       = node;
-    runContext->sourceFile = semanticContext->sourceFile;
-    runContext->bc.out.rewind();
-    runContext->stack.resize(1024);
-    runContext->sp = 0;
-
-    run(runContext);
-
-    return true;
 }

@@ -32,7 +32,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstVarDecl** result)
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
     currentScope->allocateSymTable();
-    currentScope->symTable->registerSymbolNameNoLock(sourceFile, node->token, node->name, SymbolKind::Variable);
+    currentScope->symTable->registerSymbolNameNoLock(sourceFile, node, SymbolKind::Variable);
 
     return true;
 }

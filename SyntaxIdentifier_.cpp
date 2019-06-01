@@ -8,6 +8,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 {
     auto identifier         = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, currentScope, sourceFile->indexInModule, parent, false);
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
+    identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
     identifier->token       = move(token);
     identifier->name        = identifier->token.text;
     identifier->name.computeCrc();

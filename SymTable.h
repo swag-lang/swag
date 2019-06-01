@@ -13,15 +13,19 @@ struct TypeInfo;
 struct Utf8Crc;
 struct Job;
 struct TypeInfoFuncAttr;
+struct ByteCodeGenJob;
+struct AstNode;
+
+static const uint32_t OVERLOAD_BYTECODE_GENERATED = 0x00000001;
 
 struct SymbolOverload : public PoolElement
 {
     TypeInfo*              typeInfo;
     SourceFile*            sourceFile;
-    SourceLocation         startLocation;
-    SourceLocation         endLocation;
     ComputedValue          computedValue;
     set<TypeInfoFuncAttr*> attributes;
+    uint32_t               flags;
+    AstNode*               node;
 };
 
 enum class SymbolKind
@@ -52,7 +56,7 @@ struct SymbolName : public PoolElement
         overloads.clear();
     }
 
-    SymbolOverload* addOverloadNoLock(SourceFile* sourceFile, const Token& token, TypeInfo* typeInfo, ComputedValue* computedValue);
+    SymbolOverload* addOverloadNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue);
     SymbolOverload* findOverload(TypeInfo* typeInfo);
 };
 
@@ -60,9 +64,9 @@ struct SymTable
 {
     SymTable(Scope* scope);
 
-    SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, SymbolKind kind);
-    SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr);
-    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr);
+    SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind);
+    SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr);
+    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr);
     bool            checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind);
     bool            checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8Crc& name);

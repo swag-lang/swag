@@ -23,7 +23,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     {
         Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a function definition", oneAttribute->name.c_str())};
         Diagnostic note{sourceFile, checkNode->token, format("this is %s", Ast::getKindName(checkNode)), DiagnosticLevel::Note};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->startLocation, oneAttribute->resolvedSymbolOverload->endLocation, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note, &note1);
     }
 
@@ -31,7 +31,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     {
         Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a variable definition", oneAttribute->name.c_str())};
         Diagnostic note{sourceFile, checkNode->token, format("this is %s", Ast::getKindName(checkNode)), DiagnosticLevel::Note};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->startLocation, oneAttribute->resolvedSymbolOverload->endLocation, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note, &note1);
     }
 
@@ -76,7 +76,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
 
     SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, node->parameters));
-    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Attribute));
+    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(sourceFile, node, node->typeInfo, SymbolKind::Attribute));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->scope->parentScope, node, SymbolKind::Attribute));
 
     context->result = SemanticResult::Done;

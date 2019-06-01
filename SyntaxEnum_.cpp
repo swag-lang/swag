@@ -28,7 +28,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             typeInfo->name     = "enum " + enumNode->name;
             typeInfo->scope    = newScope;
             enumNode->typeInfo = typeInfo;
-            currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode->token, newScope->name, SymbolKind::Enum);
+            currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode, SymbolKind::Enum);
         }
         else
         {
@@ -36,7 +36,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
             Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
             Utf8       note = "this is the other definition";
-            Diagnostic diagNote{firstOverload->sourceFile, firstOverload->startLocation, firstOverload->endLocation, note, DiagnosticLevel::Note};
+            Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
             return sourceFile->report(diag, &diagNote);
         }
     }
@@ -62,7 +62,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         auto enumValue         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::EnumDecl, currentScope, sourceFile->indexInModule, enumNode, false);
         enumValue->semanticFct = &SemanticJob::resolveEnumValue;
         Ast::assignToken(enumValue, token);
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue->token, enumValue->name, SymbolKind::EnumValue);
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue, SymbolKind::EnumValue);
 
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.id == TokenId::SymEqual)

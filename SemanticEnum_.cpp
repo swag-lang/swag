@@ -20,7 +20,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     // Register symbol with its type
     auto typeInfo     = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     typeInfo->rawType = rawTypeInfo;
-    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode->token, enumNode->name, typeInfo, SymbolKind::Enum));
+    SWAG_CHECK(enumNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode, typeInfo, SymbolKind::Enum));
 
     context->result = SemanticResult::Done;
     return true;
@@ -95,7 +95,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode->token, valNode->name, typeEnum, SymbolKind::EnumValue, &enumNode->computedValue));
+    SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode, typeEnum, SymbolKind::EnumValue, &enumNode->computedValue));
     context->result = SemanticResult::Done;
     return true;
 }

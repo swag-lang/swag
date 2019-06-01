@@ -11,7 +11,6 @@ typedef uint8_t* (*RunNodeFct)(ByteCodeRunContext* context);
 struct ByteCodeRun
 {
     void setup();
-    bool executeNode(ByteCodeRunContext* runContext, SemanticContext* semanticContext, AstNode* node);
     bool internalError(ByteCodeRunContext* context);
 
     bool run(ByteCodeRunContext* context);

@@ -69,7 +69,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         newScope->allocateSymTable();
         typeInfo->name     = funcNode->name;
         funcNode->typeInfo = typeInfo;
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode->token, newScope->name, SymbolKind::Function);
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 
 	// Parameters

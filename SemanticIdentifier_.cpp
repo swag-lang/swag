@@ -128,7 +128,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
         {
             Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-            Diagnostic note{sourceFile, symbol->defaultOverload.startLocation, symbol->defaultOverload.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
 
@@ -183,13 +183,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             case MatchResult::NotEnoughParameters:
             {
                 Diagnostic diag{sourceFile, node->callParameters ? node->callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-                Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
             case MatchResult::TooManyParameters:
             {
                 Diagnostic diag{sourceFile, node->callParameters, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-                Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
             case MatchResult::BadSignature:
@@ -202,7 +202,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                                        symbol->name.c_str(),
                                        symMatch.basSignatureRequestedType->name.c_str(),
                                        symMatch.basSignatureGivenType->name.c_str())};
-                Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
             }
@@ -218,7 +218,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 vector<const Diagnostic*> notes;
                 for (auto overload : badSignature)
                 {
-                    auto note = new Diagnostic{sourceFile, overload->startLocation, overload->endLocation, "could be", DiagnosticLevel::Note};
+                    auto note = new Diagnostic{sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
 
@@ -246,7 +246,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         vector<const Diagnostic*> notes;
         for (auto overload : matches)
         {
-            auto note = new Diagnostic{sourceFile, overload->startLocation, overload->endLocation, "could be", DiagnosticLevel::Note};
+            auto note = new Diagnostic{sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
             notes.push_back(note);
         }
 

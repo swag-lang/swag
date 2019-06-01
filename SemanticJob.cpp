@@ -4,11 +4,6 @@
 #include "SourceFile.h"
 #include "SymTable.h"
 
-SymTable::SymTable(Scope* scope) : scope{scope}
-{
-    memset(mapNames, 0, sizeof(mapNames));
-}
-
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {
     context->sourceFile->report({context->sourceFile, context->node->token, msg});
@@ -26,8 +21,8 @@ JobResult SemanticJob::execute()
         auto node = nodes.back();
         switch (node->semanticState)
         {
-        case AstNodeSemanticState::Enter:
-            node->semanticState = AstNodeSemanticState::ProcessingChilds;
+        case AstNodeResolveState::Enter:
+            node->semanticState = AstNodeResolveState::ProcessingChilds;
             if (!node->childs.empty())
             {
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
@@ -40,7 +35,7 @@ JobResult SemanticJob::execute()
                 break;
             }
 
-        case AstNodeSemanticState::ProcessingChilds:
+        case AstNodeResolveState::ProcessingChilds:
             if (node->semanticFct)
             {
                 context.node = node;

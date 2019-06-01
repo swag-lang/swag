@@ -56,7 +56,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     currentScope->allocateSymTable();
     {
         scoped_lock lk(currentScope->symTable->mutex);
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode->token, attrNode->name, SymbolKind::Attribute);
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode, SymbolKind::Attribute);
     }
 
     return true;

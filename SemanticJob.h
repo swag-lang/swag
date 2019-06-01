@@ -12,6 +12,7 @@ struct AstIdentifierRef;
 struct SymbolOverload;
 enum class AstNodeKind;
 enum class SymbolKind;
+struct ByteCodeGenJob;
 
 enum class SemanticResult
 {
@@ -21,9 +22,9 @@ enum class SemanticResult
 
 struct SemanticContext
 {
-    SourceFile*    sourceFile;
-    SemanticJob*   job;
-    AstNode*       node;
+    SourceFile*    sourceFile = nullptr;
+    SemanticJob*   job        = nullptr;
+    AstNode*       node       = nullptr;
     SemanticResult result;
 };
 

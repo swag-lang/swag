@@ -35,7 +35,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         if (symName->kind != SymbolKind::Enum && symName->kind != SymbolKind::Type)
         {
             Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type", child->name.c_str())};
-            Diagnostic note{symOver->sourceFile, symOver->startLocation, symOver->endLocation, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic note{symOver->sourceFile, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
             return context->sourceFile->report(diag, &note);
         }
     }
@@ -50,7 +50,7 @@ bool SemanticJob::resolveTypeDecl(SemanticContext* context)
     node->typeInfo = node->childs[0]->typeInfo;
 
     // Register symbol with its type
-    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node->token, node->name, node->typeInfo, SymbolKind::Type));
+    SWAG_CHECK(node->scope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Type));
 	SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, node->scope->parentScope, node, SymbolKind::Type));
 
     context->result = SemanticResult::Done;

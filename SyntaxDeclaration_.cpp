@@ -35,7 +35,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
             newScope                = Ast::newScope(sourceFile, namespaceNode->name, ScopeKind::Namespace, currentScope);
             typeInfo->scope         = newScope;
             namespaceNode->typeInfo = typeInfo;
-            currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, namespaceNode->token, newScope->name, typeInfo, SymbolKind::Namespace);
+            currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, namespaceNode, typeInfo, SymbolKind::Namespace);
         }
         else if (symbol->kind != SymbolKind::Namespace)
         {
@@ -43,7 +43,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
             Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
             Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
             Utf8       note = "this is the other definition";
-            Diagnostic diagNote{firstOverload->sourceFile, firstOverload->startLocation, firstOverload->endLocation, note, DiagnosticLevel::Note};
+            Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
             return sourceFile->report(diag, &diagNote);
         }
         else

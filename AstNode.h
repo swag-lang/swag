@@ -4,15 +4,19 @@
 #include "Utf8Crc.h"
 #include "Tokenizer.h"
 struct SemanticContext;
+struct ByteCodeGenContext;
 struct Scope;
 struct Attribute;
 struct TypeInfo;
 struct SymbolOverload;
 struct SymbolName;
+struct ByteCodeGenJob;
+struct ByteCode;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
+typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
 
-enum class AstNodeSemanticState
+enum class AstNodeResolveState
 {
     Enter,
     ProcessingChilds,
@@ -47,22 +51,26 @@ enum class AstNodeKind
     CompilerRun,
 };
 
-static const uint64_t AST_CONST_EXPR     = 0x00000000'00000001;
-static const uint64_t AST_VALUE_COMPUTED = 0x00000000'00000002;
+static const uint64_t AST_CONST_EXPR         = 0x00000000'00000001;
+static const uint64_t AST_VALUE_COMPUTED     = 0x00000000'00000002;
+static const uint64_t AST_BYTECODE_GENERATED = 0x00000000'00000004;
 
 struct AstNode : public PoolElement
 {
     void reset() override
     {
-        semanticState      = AstNodeSemanticState::Enter;
+        semanticState      = AstNodeResolveState::Enter;
+        bytecodeState      = AstNodeResolveState::Enter;
         scope              = nullptr;
         parent             = nullptr;
         semanticFct        = nullptr;
         typeInfo           = nullptr;
         resolvedSymbolName = nullptr;
         attributes         = nullptr;
+        bc                 = nullptr;
         sourceFileIdx      = UINT32_MAX;
         flags              = 0;
+        byteCodeJob        = nullptr;
         childs.clear();
     }
 
@@ -113,20 +121,24 @@ struct AstNode : public PoolElement
     TypeInfo*       typeInfo;
     SymbolName*     resolvedSymbolName;
     SymbolOverload* resolvedSymbolOverload;
+    ByteCodeGenJob* byteCodeJob;
 
-    AstNode*             parent;
-    AstNode*             attributes;
-    Token                token;
-    SemanticFct          semanticFct;
-    AstNodeKind          kind;
-    AstNodeSemanticState semanticState;
-    uint64_t             flags;
-    vector<AstNode*>     childs;
-    SpinLock             mutex;
-    ComputedValue        computedValue;
-    Utf8Crc              name;
-    uint32_t             sourceFileIdx;
-    uint32_t             childParentIdx;
+    AstNode*            parent;
+    AstNode*            attributes;
+    Token               token;
+    SemanticFct         semanticFct;
+    ByteCodeFct         byteCodeFct;
+    AstNodeKind         kind;
+    AstNodeResolveState semanticState;
+    AstNodeResolveState bytecodeState;
+    uint64_t            flags;
+    vector<AstNode*>    childs;
+    SpinLock            mutex;
+    ComputedValue       computedValue;
+    Utf8Crc             name;
+    uint32_t            sourceFileIdx;
+    uint32_t            childParentIdx;
+    ByteCode*           bc;
 };
 
 struct AstVarDecl : public AstNode

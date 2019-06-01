@@ -22,7 +22,7 @@ namespace Ast
         child->parent = parent;
     }
 
-    Scope* newScope(SourceFile* sourceFile, Utf8Crc& name, ScopeKind kind, Scope* parentScope)
+    Scope* newScope(SourceFile* sourceFile, const Utf8Crc& name, ScopeKind kind, Scope* parentScope)
     {
         auto fullname         = parentScope->fullname + "." + name;
         auto newScope         = sourceFile->poolFactory->scope.alloc();

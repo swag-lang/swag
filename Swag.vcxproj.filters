@@ -137,9 +137,6 @@
     <ClCompile Include="SyntaxIdentifier_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeGen.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="ByteCodeRun.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
@@ -180,6 +177,9 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="ByteCodeGenIdentifier_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJob.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
   </ItemGroup>
@@ -293,9 +293,6 @@
     <ClInclude Include="BackendC.h">
       <Filter>Backend\C</Filter>
     </ClInclude>
-    <ClInclude Include="ByteCodeGen.h">
-      <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
     <ClInclude Include="ByteCodeRun.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
@@ -322,6 +319,9 @@
     </ClInclude>
     <ClInclude Include="Scoped.h">
       <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCodeGenJob.h">
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

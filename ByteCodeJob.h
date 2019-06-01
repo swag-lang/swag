@@ -1,19 +1,38 @@
 #pragma once
-#include "ByteCode.h"
-#include "ByteCodeNodeId.h"
+#include "Job.h"
+struct AstNode;
+struct SourceFile;
 struct SemanticContext;
 struct ByteCode;
 struct AstNode;
+struct ByteCodeJob;
+
+enum class ByteCodeResult
+{
+    Done,
+    Pending,
+};
 
 struct ByteCodeGenContext
 {
     SemanticContext* semantic;
     ByteCode*        bc;
+    ByteCodeJob*     job;
+    AstNode*         node;
+    ByteCodeResult   result;
     bool             debugInfos = true;
+    SourceFile*      sourceFile = nullptr;
 };
 
-struct ByteCodeGen
+struct ByteCodeGenJob : public Job
 {
+    JobResult execute() override;
+
+    void reset() override
+    {
+        nodes.clear();
+    }
+
     static bool internalError(ByteCodeGenContext* context, AstNode* node);
     static void emitInstruction(ByteCodeGenContext* context, AstNode* node, ByteCodeNodeId id);
 
@@ -26,4 +45,7 @@ struct ByteCodeGen
     static bool emitBinaryOpDiv(ByteCodeGenContext* context, AstNode* node);
     static bool emitBinaryOp(ByteCodeGenContext* context, AstNode* node);
     static bool emitIdentifier(ByteCodeGenContext* context, AstNode* node);
+
+    SourceFile*      sourceFile;
+    vector<AstNode*> nodes;
 };

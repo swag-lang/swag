@@ -3,6 +3,7 @@
 #include "SyntaxJob.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
+#include "ByteCodeGenJob.h"
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "SymTable.h"
@@ -10,6 +11,7 @@
 #include "TypeInfo.h"
 #include "ConcatBucket.h"
 #include "SymTable.h"
+#include "ByteCode.h"
 #include "AstNode.h"
 
 struct PoolFactory
@@ -17,11 +19,13 @@ struct PoolFactory
     Pool<SourceFile>   sourceFile;
     Pool<Scope>        scope;
     Pool<ConcatBucket> concatBucket;
+    Pool<ByteCode>     byteCode;
 
     Pool<SyntaxJob>         syntaxJob;
     Pool<ModuleSemanticJob> moduleSemanticJob;
     Pool<ModuleOutputJob>   moduleOutputJob;
     Pool<SemanticJob>       semanticJob;
+    Pool<ByteCodeGenJob>    bytecodeJob;
 
     Pool<AstNode>          astNode;
     Pool<AstVarDecl>       astVarDecl;
