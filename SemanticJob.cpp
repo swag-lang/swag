@@ -18,7 +18,9 @@ JobResult SemanticJob::execute()
 
     while (!nodes.empty())
     {
-        auto node = nodes.back();
+        auto node    = nodes.back();
+        context.node = node;
+
         switch (node->semanticState)
         {
         case AstNodeResolveState::Enter:
@@ -38,7 +40,6 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::ProcessingChilds:
             if (node->semanticFct)
             {
-                context.node = node;
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
 

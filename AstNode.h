@@ -12,6 +12,7 @@ struct SymbolOverload;
 struct SymbolName;
 struct ByteCodeGenJob;
 struct ByteCode;
+struct Job;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -54,6 +55,7 @@ enum class AstNodeKind
 static const uint64_t AST_CONST_EXPR         = 0x00000000'00000001;
 static const uint64_t AST_VALUE_COMPUTED     = 0x00000000'00000002;
 static const uint64_t AST_BYTECODE_GENERATED = 0x00000000'00000004;
+static const uint64_t AST_FULL_RESOLVE       = 0x00000000'00000008;
 
 struct AstNode : public PoolElement
 {
@@ -182,9 +184,10 @@ struct AstFuncDecl : public AstNode
         content    = nullptr;
     }
 
-    AstNode* parameters;
-    AstNode* returnType;
-    AstNode* content;
+    AstNode*     parameters;
+    AstNode*     returnType;
+    AstNode*     content;
+    vector<Job*> dependentJobs;
 };
 
 struct AstAttrDecl : public AstNode

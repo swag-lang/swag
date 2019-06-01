@@ -46,7 +46,9 @@ JobResult ByteCodeGenJob::execute()
 
     while (!nodes.empty())
     {
-        auto node = nodes.back();
+        auto node    = nodes.back();
+        context.node = node;
+
         switch (node->bytecodeState)
         {
         case AstNodeResolveState::Enter:
@@ -55,8 +57,7 @@ JobResult ByteCodeGenJob::execute()
             {
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
-                    auto child        = node->childs[i];
-                    child->attributes = node->attributes;
+                    auto child = node->childs[i];
                     nodes.push_back(child);
                 }
 

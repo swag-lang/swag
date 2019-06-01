@@ -3,6 +3,7 @@
 #include "TypeManager.h"
 #include "PoolFactory.h"
 #include "SourceFile.h"
+#include "ThreadManager.h"
 
 bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
 {
@@ -29,7 +30,15 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
+    auto        node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+
+	// Now the full fonction has been solved, so we wakeup jobs depending on that
+    scoped_lock lk(node->mutex);
+    node->flags |= AST_FULL_RESOLVE;
+    for (auto job : node->dependentJobs)
+        g_ThreadMgr.addJob(job);
     context->result = SemanticResult::Done;
+
     return true;
 }
 
@@ -51,7 +60,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, typeInfo->attributes, context->node->attributes, funcNode, AstNodeKind::FuncDecl));
     typeInfo->returnType = typeNode->typeInfo;
     SWAG_CHECK(typeNode->scope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function));
-	SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, funcNode->scope->parentScope, funcNode, SymbolKind::Function));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, funcNode->scope->parentScope, funcNode, SymbolKind::Function));
 
     context->result = SemanticResult::Done;
     return true;
