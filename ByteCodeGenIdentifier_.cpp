@@ -19,8 +19,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         auto overload = node->resolvedSymbolOverload;
         {
-            scoped_lock lk(overload->node->mutex);
             auto        overnode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+            scoped_lock lk(overnode->mutex);
 
             // Need to wait for function full semantic resolve
             if (!(overnode->flags & AST_FULL_RESOLVE))
@@ -39,10 +39,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                     overnode->byteCodeJob->sourceFile   = sourceFile;
                     overnode->byteCodeJob->originalNode = overnode;
                     overnode->byteCodeJob->nodes.push_back(overnode);
-                    overnode->byteCodeJob->dependentJobs.push_back(context->job);
                     g_ThreadMgr.addJob(overnode->byteCodeJob);
                 }
 
+                overnode->byteCodeJob->dependentJobs.push_back(context->job);
                 context->result = ByteCodeResult::Pending;
                 return true;
             }

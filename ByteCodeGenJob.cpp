@@ -82,7 +82,7 @@ JobResult ByteCodeGenJob::execute()
 
     emitInstruction(&context, ByteCodeNodeId::End);
 
-    // Inform dependencies
+    // Inform dependencies that this node has bytecode
     {
         scoped_lock lk(originalNode->mutex);
         originalNode->byteCodeJob = nullptr;
