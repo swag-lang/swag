@@ -60,6 +60,8 @@ static const uint64_t AST_CONST_EXPR         = 0x00000000'00000001;
 static const uint64_t AST_VALUE_COMPUTED     = 0x00000000'00000002;
 static const uint64_t AST_BYTECODE_GENERATED = 0x00000000'00000004;
 static const uint64_t AST_FULL_RESOLVE       = 0x00000000'00000008;
+static const uint64_t AST_SCOPE_HAS_RETURN   = 0x00000000'00000010;
+static const uint64_t AST_FCT_HAS_RETURN     = 0x00000000'00000020;
 
 struct AstNode : public PoolElement
 {

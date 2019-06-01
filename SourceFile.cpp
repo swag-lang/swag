@@ -341,8 +341,11 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         {
             g_Log.lock();
             diag.report(true);
-            for (auto note: notes)
-                note->report(true);
+            if (g_CommandLine.errorNoteOut)
+            {
+                for (auto note : notes)
+                    note->report(true);
+            }
             g_Log.unlock();
         }
 
@@ -356,8 +359,11 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     // Print error
     g_Log.lock();
     diag.report();
-    for (auto note : notes)
-        note->report();
+    if (g_CommandLine.errorNoteOut)
+    {
+        for (auto note : notes)
+            note->report();
+    }
     g_Log.unlock();
     return false;
 }
@@ -367,9 +373,9 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
     if (silent > 0)
         return false;
 
-	vector<const Diagnostic*> notes;
+    vector<const Diagnostic*> notes;
     if (note)
-		notes.push_back(note);
+        notes.push_back(note);
     if (note1)
         notes.push_back(note1);
 

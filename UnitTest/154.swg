@@ -1,8 +1,8 @@
-#unittest module module152
+#unittest module module154
 #unittest pass semantic
 
 #unittest error
-func main: () 
+func main: () -> bool
 { 
 	return 1; 
 }

@@ -8,12 +8,14 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
     addArg("--syntax-only", nullptr, CommandLineType::Bool, &cmdLine->syntaxOnly);
+    addArg("--error-source-out", "-eso", CommandLineType::Bool, &cmdLine->errorSourceOut);
+    addArg("--error-note-out", "-eno", CommandLineType::Bool, &cmdLine->errorNoteOut);
 
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
 
-	cmdLine->stats = true;
-	//cmdLine->fileFilter = "150";
+    cmdLine->stats = true;
+    //cmdLine->fileFilter = "150";
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address)
@@ -29,10 +31,22 @@ bool CommandLineParser::process(int argc, const char* argv[])
     bool result = true;
     for (int i = 1; i < argc; i++)
     {
-        auto it = longNameArgs.find(argv[i]);
+        // Split in half, with the ':' delimiter
+        string      command;
+        string      argument;
+        const char* pz = argv[i];
+        while (*pz && *pz != ':')
+            command += *pz++;
+        if (*pz)
+            pz++;
+        while (*pz)
+            argument += *pz++;
+
+        // Find command
+        auto it = longNameArgs.find(command);
         if (it == longNameArgs.end())
         {
-            it = shortNameArgs.find(argv[i]);
+            it = shortNameArgs.find(command);
             if (it == shortNameArgs.end())
                 continue;
         }
@@ -41,31 +55,31 @@ bool CommandLineParser::process(int argc, const char* argv[])
         switch (arg->type)
         {
         case CommandLineType::Bool:
-            *(bool*) arg->buffer = true;
-            break;
-
-        case CommandLineType::Int:
-        {
-            if (i == argc - 1)
+            if (argument == "true" || argument.empty())
+                *(bool*) arg->buffer = true;
+            else if (argument == "false")
+                *(bool*) arg->buffer = false;
+            else
             {
                 g_Log.setColor(LogColor::Red);
                 g_Log.print("command line error: ");
                 g_Log.setDefaultColor();
-                g_Log.print(format("argument '%s' must be followed by an integer value", it->first.c_str()));
+                g_Log.print(format("argument '%s' must be followed by 'true' or 'false' ('%s')", it->first.c_str(), argument.c_str()));
+                g_Log.eol();
                 result = false;
                 continue;
             }
+            break;
 
-            const char* pz          = argv[i + 1];
-            bool        thisIsAnInt = true;
+        case CommandLineType::Int:
+        {
+            pz               = argument.c_str();
+            bool thisIsAnInt = argument.empty() ? false : true;
+
             while (*pz)
             {
                 if (!isdigit(*pz))
                 {
-                    g_Log.setColor(LogColor::Red);
-                    g_Log.print("command line error: ");
-                    g_Log.setDefaultColor();
-                    g_Log.print(format("argument '%s' must be followed by an integer value ('%s')", it->first.c_str(), argv[i + 1]));
                     thisIsAnInt = false;
                     break;
                 }
@@ -74,27 +88,21 @@ bool CommandLineParser::process(int argc, const char* argv[])
             }
 
             if (!thisIsAnInt)
-                continue;
-
-            *(int*) arg->buffer = atoi(argv[i + 1]);
-            i++;
-            break;
-        }
-
-        case CommandLineType::String:
-            if (i == argc - 1)
             {
                 g_Log.setColor(LogColor::Red);
                 g_Log.print("command line error: ");
                 g_Log.setDefaultColor();
-                g_Log.print(format("argument '%s' must be followed by a string", it->first.c_str()));
-                result = false;
+                if (argument.empty())
+                    g_Log.print(format("argument '%s' must be followed by an integer value", it->first.c_str()));
+                else
+                    g_Log.print(format("argument '%s' must be followed by an integer value ('%s')", it->first.c_str(), argument.c_str()));
+                g_Log.eol();
                 continue;
             }
 
-            *(string*) arg->buffer = argv[i + 1];
-            i++;
+            *(int*) arg->buffer = atoi(argument.c_str());
             break;
+        }
         }
     }
 

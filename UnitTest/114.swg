@@ -2,10 +2,10 @@
 #unittest pass semantic
 
 #unittest error
-func main: () -> u32
+func main: ()
 {
 }
 
-func main: () -> u32
+func main: ()
 {
 }

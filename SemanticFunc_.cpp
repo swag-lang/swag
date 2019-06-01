@@ -4,6 +4,7 @@
 #include "PoolFactory.h"
 #include "SourceFile.h"
 #include "ThreadManager.h"
+#include "Diagnostic.h"
 
 bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
 {
@@ -30,7 +31,19 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
-    auto node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+
+    // Do we have a return value
+    if (node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
+    {
+        if (!(node->flags & AST_SCOPE_HAS_RETURN))
+        {
+            if (node->flags & AST_FCT_HAS_RETURN)
+				return sourceFile->report({sourceFile, node->content->token.endLocation, node->content->token.endLocation, format("not all control paths of function '%s' return a value", node->name.c_str())});
+            return sourceFile->report({sourceFile, node->content->token.endLocation, node->content->token.endLocation, format("function '%s' must return a value", node->name.c_str())});
+        }
+    }
 
     // Now the full fonction has been solved, so we wakeup jobs depending on that
     scoped_lock lk(node->mutex);
@@ -75,5 +88,48 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 bool SemanticJob::resolveFuncCall(SemanticContext* context)
 {
     context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveReturn(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto funcNode   = node->ownerFct;
+    auto sourceFile = context->sourceFile;
+
+    // Check return type
+    if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
+    {
+        Diagnostic diag{sourceFile, node->childs[0], format("function '%s' does not have a return type", funcNode->name.c_str())};
+        Diagnostic note{sourceFile, funcNode->token, format("this is the definition of '%s'", funcNode->name.c_str()), DiagnosticLevel::Note};
+        return sourceFile->report(diag, &note);
+    }
+
+    // Nothing to return
+    if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
+    {
+        context->result = SemanticResult::Done;
+        return true;
+    }
+
+    // Check types
+    auto returnType = funcNode->returnType->typeInfo;
+    SWAG_CHECK(g_TypeMgr.makeCompatibles(sourceFile, returnType, node->childs[0]));
+    context->result = SemanticResult::Done;
+
+    // Propagate return
+    auto scanNode = node->parent;
+    while (scanNode && scanNode != node->ownerFct->parent)
+    {
+        scanNode->flags |= AST_SCOPE_HAS_RETURN;
+        scanNode = scanNode->parent;
+    }
+
+    while (scanNode && scanNode != node->ownerFct->parent)
+    {
+        scanNode->flags |= AST_FCT_HAS_RETURN;
+        scanNode = scanNode->parent;
+    }
+
     return true;
 }

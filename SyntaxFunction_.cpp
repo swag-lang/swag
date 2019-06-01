@@ -99,18 +99,20 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     auto curly = move(token);
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
-    if (token.id != TokenId::SymRightCurly)
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
 
         auto stmtNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncContent, sourceFile->indexInModule, funcNode, false);
         stmtNode->inheritOwners(this);
+        stmtNode->inheritToken(token);
         funcNode->content = stmtNode;
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doEmbeddedInstruction(stmtNode));
         }
+
+		stmtNode->token.endLocation = token.startLocation;
     }
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
@@ -123,12 +125,13 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Return, sourceFile->indexInModule, parent, false);
     node->inheritOwners(this);
+    node->semanticFct = &SemanticJob::resolveReturn;
+    node->byteCodeFct = &ByteCodeGenJob::emitReturn;
     if (result)
         *result = node;
-    node->byteCodeFct = &ByteCodeGenJob::emitReturn;
-    SWAG_CHECK(tokenizer.getToken(token));
 
     // Return value
+    SWAG_CHECK(tokenizer.getToken(token));
     if (token.id != TokenId::SymSemiColon)
     {
         SWAG_CHECK(doExpression(node));

@@ -78,6 +78,7 @@ struct SemanticJob : public Job
     static bool resolveFuncCall(SemanticContext* context);
     static bool resolveAttrDecl(SemanticContext* context);
     static bool resolveAttrUse(SemanticContext* context);
+    static bool resolveReturn(SemanticContext* context);
 
     Module*             module;
     SourceFile*         sourceFile;

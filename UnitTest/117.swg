@@ -3,14 +3,14 @@
 
 namespace A 
 {
-	func main: () -> u32
+	func main: ()
 	{
 	}
 }
 
 namespace B 
 {
-	func main: () -> u32
+	func main: ()
 	{
 	}
 }

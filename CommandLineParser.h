@@ -4,7 +4,6 @@ enum CommandLineType
 {
 	Bool,
 	Int,
-	String,
 };
 
 struct CommandLineArgument

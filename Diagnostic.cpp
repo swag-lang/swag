@@ -51,7 +51,7 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.eol();
 
     // Source code
-    if (hasFile && hasLocation && printSource)
+    if (hasFile && hasLocation && printSource && g_CommandLine.errorSourceOut)
     {
         // Remove blanks at the start of the source line
         auto        tmpLine = sourceFile->getLine(startLocation.seekStartLine);
