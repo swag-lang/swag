@@ -209,11 +209,13 @@
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGenBinOp_.cpp" />
+    <ClCompile Include="ByteCodeGenFunc_.cpp" />
     <ClCompile Include="ByteCodeGenIdentifier_.cpp" />
     <ClCompile Include="ByteCodeGenLiteral_.cpp" />
     <ClCompile Include="ByteCodeGenJob.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
     <ClCompile Include="ByteCodeRunBinOp_.cpp" />
+    <ClCompile Include="ByteCodeRunFunc_.cpp" />
     <ClCompile Include="ByteCodeRunStack_.cpp" />
     <ClCompile Include="closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

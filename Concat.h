@@ -19,6 +19,7 @@ struct Concat
     void addF32(float v);
     void addF64(double v);
     void addBool(bool v);
+    void addPointer(void* v);
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;

@@ -5,6 +5,9 @@ enum class ByteCodeNodeId : uint16_t
 
 	DebugInfos,
 
+	LocalFuncCall,
+    Ret,
+
     PushBool,
     PushS8,
     PushS16,

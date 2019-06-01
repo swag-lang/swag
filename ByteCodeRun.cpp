@@ -6,6 +6,7 @@
 #include "Diagnostic.h"
 #include "SemanticJob.h"
 #include "SourceFile.h"
+#include "ByteCode.h"
 
 void ByteCodeRun::setup()
 {
@@ -44,12 +45,15 @@ void ByteCodeRun::setup()
 
     mapNodes[ByteCodeNodeId::BinOpDivF32] = runBinOpDivF32;
     mapNodes[ByteCodeNodeId::BinOpDivF64] = runBinOpDivF64;
+
+    mapNodes[ByteCodeNodeId::LocalFuncCall] = runLocalFuncCall;
+    mapNodes[ByteCodeNodeId::Ret]           = runRet;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
 {
-    auto& out   = context->bc.out;
-    context->ep = context->bc.out.currentSP;
+    auto& out   = context->bc->out;
+    context->ep = context->bc->out.currentSP;
 
     uint32_t       nodeSourceFileIdx = UINT32_MAX;
     SourceLocation startNodeLocation;

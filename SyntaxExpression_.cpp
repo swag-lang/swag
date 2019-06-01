@@ -35,7 +35,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         return doIdentifierRef(parent, result);
 
     default:
-		return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+        return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
     }
 }
 

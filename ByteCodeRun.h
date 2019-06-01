@@ -51,5 +51,8 @@ struct ByteCodeRun
     static uint8_t* runBinOpDivF32(ByteCodeRunContext* context);
     static uint8_t* runBinOpDivF64(ByteCodeRunContext* context);
 
+    static uint8_t* runRet(ByteCodeRunContext* context);
+    static uint8_t* runLocalFuncCall(ByteCodeRunContext* context);
+
     map<ByteCodeNodeId, RunNodeFct> mapNodes;
 };

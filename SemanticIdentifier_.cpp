@@ -62,6 +62,15 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
     }
 
+    switch (symbol->kind)
+    {
+    case SymbolKind::Function:
+        node->kind        = AstNodeKind::FuncCall;
+        node->semanticFct = &SemanticJob::resolveFuncCall;
+        node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncCall;
+        break;
+    }
+
     // Clear cache for the next symbol resolution
     context->job->scopeHierarchy.clear();
     context->job->dependentSymbols.clear();

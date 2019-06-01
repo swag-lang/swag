@@ -74,10 +74,12 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
+    bool isGlobal = currentScope->isGlobal();
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        if (currentScope->isGlobal())
+        if (isGlobal)
         {
             SWAG_CHECK(doTopLevelInstruction(node));
         }
@@ -93,7 +95,16 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
-    return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+    switch (token.id)
+    {
+    case TokenId::KwdReturn:
+        SWAG_CHECK(doReturn(parent));
+        break;
+    default:
+        return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+    }
+
+    return true;
 }
 
 bool SyntaxJob::doTopLevelInstruction(AstNode* parent)

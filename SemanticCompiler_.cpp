@@ -10,35 +10,6 @@
 #include "ByteCodeRunContext.h"
 #include "ThreadManager.h"
 
-#if 0
-bool ByteCodeRun::executeNode(ByteCodeRunContext* runContext, SemanticContext* semanticContext, AstNode* node)
-{
-    // First we need to generate byte code
-    ByteCodeGenContext genContext;
-    genContext.semantic   = semanticContext;
-    genContext.bc         = &runContext->bc;
-    genContext.debugInfos = true;
-    SWAG_CHECK(ByteCodeGen::emitNode(&genContext, node));
-
-    // Then we execute the resulting bytecode
-    runContext->node       = node;
-    runContext->sourceFile = semanticContext->sourceFile;
-    runContext->bc.out.rewind();
-    runContext->stack.resize(1024);
-    runContext->sp = 0;
-
-    run(runContext);
-
-    return true;
-}
-
-        /*ByteCodeRunContext runContext;
-        SWAG_CHECK(g_Run.executeNode(&runContext, context, expr));
-        if (runContext.sp)
-            node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;*/
-
-#endif
-
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
     auto node       = context->node;
@@ -49,7 +20,13 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     node->inheritAndFlag(expr, AST_CONST_EXPR);
     node->inheritComputedValue(expr);
 
-    if (!(node->flags & AST_VALUE_COMPUTED))
+	// No need to run, this is already baked
+    if (node->flags & AST_VALUE_COMPUTED)
+    {
+        context->result = SemanticResult::Done;
+        return true;
+    }
+
     {
         scoped_lock lk(node->mutex);
         // Need to generate bytecode, if not already done or running
@@ -69,6 +46,17 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
             return true;
         }
     }
+
+    ByteCodeRunContext runContext;
+    runContext.node       = expr;
+    runContext.sourceFile = sourceFile;
+    runContext.bc         = node->bc;
+    runContext.bc->out.rewind();
+    runContext.stack.resize(1024);
+    runContext.sp = 0;
+    SWAG_CHECK(g_Run.run(&runContext));
+    if (runContext.sp)
+        node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;
 
     context->result = SemanticResult::Done;
     return true;

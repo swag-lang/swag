@@ -44,8 +44,10 @@ struct ByteCodeGenJob : public Job
     static bool emitBinaryOpDiv(ByteCodeGenContext* context);
     static bool emitBinaryOp(ByteCodeGenContext* context);
     static bool emitIdentifier(ByteCodeGenContext* context);
+    static bool emitLocalFuncCall(ByteCodeGenContext* context);
+    static bool emitReturn(ByteCodeGenContext* context);
 
-	AstNode*         originalNode;
+    AstNode*         originalNode;
     SourceFile*      sourceFile;
     vector<AstNode*> nodes;
     vector<Job*>     dependentJobs;

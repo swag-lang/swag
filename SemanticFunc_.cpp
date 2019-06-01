@@ -30,9 +30,9 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
-    auto        node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
 
-	// Now the full fonction has been solved, so we wakeup jobs depending on that
+    // Now the full fonction has been solved, so we wakeup jobs depending on that
     scoped_lock lk(node->mutex);
     node->flags |= AST_FULL_RESOLVE;
     for (auto job : node->dependentJobs)
@@ -68,8 +68,12 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
-    auto node       = context->node;
-    node->typeInfo  = g_TypeMgr.typeInfoVoid;
+    context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveFuncCall(SemanticContext* context)
+{
     context->result = SemanticResult::Done;
     return true;
 }

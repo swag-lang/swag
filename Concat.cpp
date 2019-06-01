@@ -5,7 +5,7 @@
 
 Concat::Concat()
 {
-	poolFactory = new PoolFactory();
+    poolFactory = new PoolFactory();
     checkCount(1);
 }
 
@@ -99,4 +99,11 @@ void Concat::addF64(double v)
     checkCount(sizeof(double));
     *(double*) currentSP = v;
     currentSP += sizeof(double);
+}
+
+void Concat::addPointer(void* v)
+{
+    checkCount(sizeof(void*));
+    *(void**) currentSP = v;
+    currentSP += sizeof(void*);
 }

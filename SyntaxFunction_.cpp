@@ -3,6 +3,7 @@
 #include "PoolFactory.h"
 #include "SourceFile.h"
 #include "Scoped.h"
+#include "ByteCodeGenJob.h"
 
 bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 {
@@ -72,7 +73,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 
-	// Parameters
+    // Parameters
     {
         Scoped scoped(this, newScope);
         SWAG_CHECK(tokenizer.getToken(token));
@@ -94,8 +95,31 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     auto curly = move(token);
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
+    if (token.id != TokenId::SymRightCurly)
+    {
+        Scoped scoped(this, newScope);
+
+        auto stmtNode     = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncContent, currentScope, sourceFile->indexInModule, funcNode, false);
+        funcNode->content = stmtNode;
+        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+        {
+            SWAG_CHECK(doEmbeddedInstruction(stmtNode));
+        }
+    }
+
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
 
+    return true;
+}
+
+bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Return, currentScope, sourceFile->indexInModule, parent, false);
+    if (result)
+        *result = node;
+    node->byteCodeFct = &ByteCodeGenJob::emitReturn;
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     return true;
 }
