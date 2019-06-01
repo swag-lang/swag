@@ -52,7 +52,6 @@ void ByteCodeRun::setup()
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
 {
-    auto& out   = context->bc->out;
     context->ep = context->bc->out.currentSP;
 
     uint32_t       nodeSourceFileIdx = UINT32_MAX;
@@ -67,6 +66,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* context)
             break;
 
         // Debug informations
+        auto& out = context->bc->out;
         if (id == ByteCodeNodeId::DebugInfos)
         {
             context->ep = out.seek(sizeof(uint16_t));

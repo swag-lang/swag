@@ -15,14 +15,18 @@ struct StackValue
 
 struct ByteCodeRunContext
 {
-    ByteCode*          bc;
-    vector<StackValue> stack;
-    int                sp;
-    uint8_t*           ep;
-    SourceFile*        sourceFile;
-    AstNode*           node;
-    bool               hasError = false;
-    string             errorMsg;
+    ByteCode*          bc = nullptr; // Current executed bytecode
+    vector<ByteCode*>  stack_bc;
+    vector<uint8_t*>   stack_ep;
+    vector<StackValue> stack_storage;
+    int                sp   = 0;
+    uint8_t*           ep   = nullptr; // Execution pointer inside current bytecode
+    int                epbc = 0;       // Execution pointer on bytecode array
+
+    SourceFile* sourceFile;
+    AstNode*    node;
+    bool        hasError = false;
+    string      errorMsg;
 
     void error(const string& msg)
     {
@@ -32,85 +36,85 @@ struct ByteCodeRunContext
 
     int32_t popS32()
     {
-        auto& ref = stack[--sp];
-        return ref.addr ? *(int32_t*) ref.addr : ref.reg.s32;
+        auto& ref = stack_storage[--sp];
+        return *(int32_t*) ref.addr;
     }
 
     int64_t popS64()
     {
-        auto& ref = stack[--sp];
-        return ref.addr ? *(int64_t*) ref.addr : ref.reg.s64;
+        auto& ref = stack_storage[--sp];
+        return *(int64_t*) ref.addr;
     }
 
     uint32_t popU32()
     {
-        auto& ref = stack[--sp];
-        return ref.addr ? *(uint32_t*) ref.addr : ref.reg.u32;
+        auto& ref = stack_storage[--sp];
+        return *(uint32_t*) ref.addr;
     }
 
     uint64_t popU64()
     {
-        auto& ref = stack[--sp];
-        return ref.addr ? *(uint64_t*) ref.addr : ref.reg.u64;
+        auto& ref = stack_storage[--sp];
+        return *(uint64_t*) ref.addr;
     }
 
     float popF32()
     {
-        auto& ref = stack[--sp];
-        return ref.addr ? *(float*) ref.addr : (float) ref.reg.f64;
+        auto& ref = stack_storage[--sp];
+        return *(float*) ref.addr;
     }
 
     double popF64()
     {
-        auto& ref = stack[--sp];
-        return ref.addr ? *(double*) ref.addr : ref.reg.f64;
+        auto& ref = stack_storage[--sp];
+        return *(double*) ref.addr;
     }
 
     void push(int32_t val)
     {
-        assert(sp != stack.size());
-        auto& ref   = stack[sp++];
+        assert(sp != stack_storage.size());
+        auto& ref   = stack_storage[sp++];
         ref.reg.s32 = val;
-        ref.addr    = nullptr;
+        ref.addr    = &ref.reg.s32;
     }
 
     void push(int64_t val)
     {
-        assert(sp != stack.size());
-        auto& ref   = stack[sp++];
+        assert(sp != stack_storage.size());
+        auto& ref   = stack_storage[sp++];
         ref.reg.s64 = val;
-        ref.addr    = nullptr;
+        ref.addr    = &ref.reg.s64;
     }
 
     void push(uint32_t val)
     {
-        assert(sp != stack.size());
-        auto& ref   = stack[sp++];
+        assert(sp != stack_storage.size());
+        auto& ref   = stack_storage[sp++];
         ref.reg.u32 = val;
-        ref.addr    = nullptr;
+        ref.addr    = &ref.reg.u32;
     }
 
     void push(uint64_t val)
     {
-        assert(sp != stack.size());
-        auto& ref   = stack[sp++];
+        assert(sp != stack_storage.size());
+        auto& ref   = stack_storage[sp++];
         ref.reg.u64 = val;
-        ref.addr    = nullptr;
+        ref.addr    = &ref.reg.u64;
     }
 
     void push(float val)
     {
-        assert(sp != stack.size());
-        auto& ref   = stack[sp++];
+        assert(sp != stack_storage.size());
+        auto& ref   = stack_storage[sp++];
         ref.reg.f64 = val;
-        ref.addr    = nullptr;
+        ref.addr    = &ref.reg.f64;
     }
 
     void push(double val)
     {
-        assert(sp != stack.size());
-        auto& ref   = stack[sp++];
+        assert(sp != stack_storage.size());
+        auto& ref   = stack_storage[sp++];
         ref.reg.f64 = val;
-        ref.addr    = nullptr;
+        ref.addr    = &ref.reg.f64;
     }
 };

@@ -52,11 +52,12 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     runContext.sourceFile = sourceFile;
     runContext.bc         = node->bc;
     runContext.bc->out.rewind();
-    runContext.stack.resize(1024);
-    runContext.sp = 0;
+    runContext.stack_bc.resize(1024);
+    runContext.stack_ep.resize(1024);
+    runContext.stack_storage.resize(1024);
     SWAG_CHECK(g_Run.run(&runContext));
     if (runContext.sp)
-        node->computedValue.reg = runContext.stack[runContext.sp - 1].reg;
+        node->computedValue.reg = runContext.stack_storage[runContext.sp - 1].reg;
 
     context->result = SemanticResult::Done;
     return true;
