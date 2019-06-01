@@ -71,14 +71,8 @@ bool SourceFile::ensureOpen()
 bool SourceFile::checkFormat()
 {
     // Read header
-    uint8_t buf[4]  = {0, 0, 0, 0};
-    int     numRead = (int) fread(buf, sizeof(uint8_t), 4, fileHandle);
-    if (numRead == 0)
-    {
-        report({this, "invalid file format"});
-        return false;
-    }
-
+    uint8_t buf[4] = {0, 0, 0, 0};
+    fread(buf, sizeof(uint8_t), 4, fileHandle);
     auto c1 = buf[0];
     auto c2 = buf[1];
     auto c3 = buf[2];
