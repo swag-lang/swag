@@ -2,6 +2,8 @@
 #include "SourceFile.h"
 #include "TypeInfo.h"
 #include "SymTable.h"
+#include "ThreadManager.h"
+#include "Global.h"
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
@@ -26,8 +28,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* from)
 
 void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 {
-    int firstUserNamed = 0;
-    int cptResolved    = 0;
+    int  firstUserNamed = 0;
+    int  cptResolved    = 0;
     bool badSignature   = false;
 
     // First we solve unnamed parameters

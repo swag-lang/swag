@@ -1,9 +1,11 @@
 #pragma once
 #include "Pool.h"
 #include "Utf8.h"
+#include "SpinLock.h"
 struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;
+struct Job;
 
 enum class TypeInfoKind
 {
@@ -45,8 +47,8 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 static const uint64_t TYPEINFO_INT_SIGNED     = 0x00000000'00000001;
 static const uint64_t TYPEINFO_INT_UNSIGNED   = 0x00000000'00000002;
 static const uint64_t TYPEINFO_FLOAT          = 0x00000000'00000004;
-static const uint32_t TYPEINFO_ATTRIBUTE_FUNC = 0x00000000'00000008;
-static const uint32_t TYPEINFO_ATTRIBUTE_VAR  = 0x00000000'00000010;
+static const uint64_t TYPEINFO_ATTRIBUTE_FUNC = 0x00000000'00000008;
+static const uint64_t TYPEINFO_ATTRIBUTE_VAR  = 0x00000000'00000010;
 
 struct TypeInfo : public PoolElement
 {

@@ -3,6 +3,7 @@
 #include "AstNode.h"
 #include "ByteCodeGen.h"
 #include "TypeInfo.h"
+#include "SymTable.h"
 
 bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context, AstNode* node)
 {
