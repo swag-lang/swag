@@ -20,10 +20,10 @@ struct ByteCodeGen
     static bool emitLiteral(ByteCodeGenContext* context, AstNode* node);
     static bool emitRawNode(ByteCodeGenContext* context, AstNode* node);
     static bool emitNode(ByteCodeGenContext* context, AstNode* node);
-
     static bool emitBinaryOpPlus(ByteCodeGenContext* context, AstNode* node);
     static bool emitBinaryOpMinus(ByteCodeGenContext* context, AstNode* node);
     static bool emitBinaryOpMul(ByteCodeGenContext* context, AstNode* node);
     static bool emitBinaryOpDiv(ByteCodeGenContext* context, AstNode* node);
     static bool emitBinaryOp(ByteCodeGenContext* context, AstNode* node);
+    static bool emitIdentifier(ByteCodeGenContext* context, AstNode* node);
 };

@@ -26,6 +26,7 @@ struct SourceFile : public PoolElement
     char32_t getChar(unsigned& offset);
     Utf8     getLine(long seek);
     bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
+    bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
 
     bool open();
     bool ensureOpen();

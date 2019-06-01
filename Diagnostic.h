@@ -87,4 +87,5 @@ struct Diagnostic
     bool            hasLocation      = false;
     bool            hasRangeLocation = false;
     bool            printSource      = false;
+    bool            showRange        = true;
 };

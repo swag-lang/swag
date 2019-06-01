@@ -179,6 +179,9 @@
     <ClCompile Include="Scope.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeGenIdentifier_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

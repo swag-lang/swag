@@ -14,32 +14,6 @@ struct Utf8Crc;
 struct Job;
 struct TypeInfoFuncAttr;
 
-struct SymbolMatchParameter : public PoolElement
-{
-    Utf8      name;
-    TypeInfo* typeInfo;
-};
-
-static const uint32_t MATCH_OK                          = 0x00000000;
-static const uint32_t MATCH_ERROR_TOO_MANY_PARAMETERS   = 0x00000001;
-static const uint32_t MATCH_ERROR_BAD_SIGNATURE         = 0x00000002;
-static const uint32_t MATCH_ERROR_NOT_ENOUGH_PARAMETERS = 0x00000004;
-
-struct SymbolMatchContext
-{
-    int                           badSignatureParameterIdx  = 0;
-    TypeInfo*                     basSignatureRequestedType = nullptr;
-    TypeInfo*                     basSignatureGivenType     = nullptr;
-    uint32_t                      result                    = 0;
-    vector<SymbolMatchParameter*> parameters;
-
-    ~SymbolMatchContext()
-    {
-        for (auto param : parameters)
-            param->release();
-    }
-};
-
 struct SymbolOverload : public PoolElement
 {
     TypeInfo*              typeInfo;

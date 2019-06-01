@@ -155,8 +155,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     vector<SymbolOverload*> matches;
-    uint32_t                accumulateResults = 0;
-    int                     numOverloads      = 0;
+    vector<SymbolOverload*> badSignature;
+    int                     numOverloads = 0;
     for (auto symbol : dependentSymbols)
     {
         for (auto overload : symbol->overloads)
@@ -165,10 +165,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
             typeInfo->match(symMatch);
-
-            accumulateResults |= symMatch.result;
-            if (symMatch.result == MATCH_OK)
+            if (symMatch.result == MatchResult::Ok)
                 matches.push_back(overload);
+            else if (symMatch.result == MatchResult::BadSignature)
+                badSignature.push_back(overload);
         }
     }
 
@@ -178,21 +178,21 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (numOverloads == 1)
         {
             auto overload = symbol->overloads[0];
-            switch (accumulateResults)
+            switch (symMatch.result)
             {
-            case MATCH_ERROR_NOT_ENOUGH_PARAMETERS:
+            case MatchResult::NotEnoughParameters:
             {
                 Diagnostic diag{sourceFile, node->callParameters ? node->callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
-            case MATCH_ERROR_TOO_MANY_PARAMETERS:
+            case MatchResult::TooManyParameters:
             {
                 Diagnostic diag{sourceFile, node->callParameters, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{sourceFile, overload->startLocation, overload->endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
-            case MATCH_ERROR_BAD_SIGNATURE:
+            case MatchResult::BadSignature:
             {
                 Diagnostic diag{sourceFile,
                                 node->callParameters,
@@ -209,11 +209,49 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
         else
         {
+            if (badSignature.size())
+            {
+                Diagnostic diag{sourceFile,
+                                node->callParameters ? node->callParameters : node,
+                                format("none of the %d overloads could convert all the parameters types", numOverloads)};
+
+                vector<const Diagnostic*> notes;
+                for (auto overload : badSignature)
+                {
+                    auto note = new Diagnostic{sourceFile, overload->startLocation, overload->endLocation, "could be", DiagnosticLevel::Note};
+                    notes.push_back(note);
+                }
+
+                return sourceFile->report(diag, notes);
+            }
+            else
+            {
+                int         numParams = node->callParameters ? (int) node->callParameters->childs.size() : 0;
+                const char* args      = numParams == 1 ? "parameter" : "parameters";
+                Diagnostic  diag{sourceFile,
+                                node->callParameters ? node->callParameters : node,
+                                format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
+                return sourceFile->report(diag);
+            }
         }
     }
 
-    if (matches.size() > 0)
+    if (matches.size() > 1)
     {
+        auto       symbol = dependentSymbols[0];
+        Diagnostic diag{sourceFile,
+                        node->callParameters ? node->callParameters : node,
+                        format("ambiguous call to overloaded %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+
+        vector<const Diagnostic*> notes;
+        for (auto overload : matches)
+        {
+            auto note = new Diagnostic{sourceFile, overload->startLocation, overload->endLocation, "could be", DiagnosticLevel::Note};
+            notes.push_back(note);
+        }
+
+        sourceFile->report(diag, notes);
+        return false;
     }
 
     setSymbolMatch(context, parent, node, dependentSymbols[0], matches[0]);

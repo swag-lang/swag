@@ -15,6 +15,9 @@ bool ByteCodeGen::emitRawNode(ByteCodeGenContext* context, AstNode* node)
     case AstNodeKind::BinaryOp:
         SWAG_CHECK(emitBinaryOp(context, node));
         break;
+    case AstNodeKind::Identifier:
+        SWAG_CHECK(emitIdentifier(context, node));
+        break;
 
     default:
         for (auto child : node->childs)
@@ -49,10 +52,10 @@ void ByteCodeGen::emitInstruction(ByteCodeGenContext* context, AstNode* node, By
         context->bc->out.addU32(node->sourceFileIdx);
         context->bc->out.addU32(node->token.startLocation.line);
         context->bc->out.addU32(node->token.startLocation.column);
-		context->bc->out.addU32(node->token.startLocation.seekStartLine);
+        context->bc->out.addU32(node->token.startLocation.seekStartLine);
         context->bc->out.addU32(node->token.endLocation.line);
         context->bc->out.addU32(node->token.endLocation.column);
-		context->bc->out.addU32(node->token.endLocation.seekStartLine);
+        context->bc->out.addU32(node->token.endLocation.seekStartLine);
     }
 
     context->bc->out.addU16((uint16_t) id);

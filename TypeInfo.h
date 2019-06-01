@@ -99,6 +99,35 @@ struct TypeInfoFuncAttrParam : public PoolElement
     TypeInfo* typeInfo;
 };
 
+enum MatchResult
+{
+    Ok,
+    TooManyParameters,
+    NotEnoughParameters,
+    BadSignature
+};
+
+struct SymbolMatchParameter : public PoolElement
+{
+    Utf8      name;
+    TypeInfo* typeInfo;
+};
+
+struct SymbolMatchContext
+{
+    int                           badSignatureParameterIdx  = 0;
+    TypeInfo*                     basSignatureRequestedType = nullptr;
+    TypeInfo*                     basSignatureGivenType     = nullptr;
+    MatchResult                   result                    = MatchResult::Ok;
+    vector<SymbolMatchParameter*> parameters;
+
+    ~SymbolMatchContext()
+    {
+        for (auto param : parameters)
+            param->release();
+    }
+};
+
 struct TypeInfoFuncAttr : public TypeInfo
 {
     TypeInfoFuncAttr()

@@ -210,6 +210,7 @@
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGen.cpp" />
     <ClCompile Include="ByteCodeGenBinOp_.cpp" />
+    <ClCompile Include="ByteCodeGenIdentifier_.cpp" />
     <ClCompile Include="ByteCodeGenLiteral_.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
     <ClCompile Include="ByteCodeRunBinOp_.cpp" />

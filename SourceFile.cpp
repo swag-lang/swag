@@ -328,7 +328,7 @@ Utf8 SourceFile::getLine(long seek)
     return line;
 }
 
-bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
+bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     if (silent > 0)
         return false;
@@ -341,10 +341,8 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
         {
             g_Log.lock();
             diag.report(true);
-            if (note)
+            for (auto note: notes)
                 note->report(true);
-            if (note1)
-                note1->report(true);
             g_Log.unlock();
         }
 
@@ -358,10 +356,22 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
     // Print error
     g_Log.lock();
     diag.report();
-    if (note)
+    for (auto note : notes)
         note->report();
-    if (note1)
-        note1->report();
     g_Log.unlock();
     return false;
+}
+
+bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
+{
+    if (silent > 0)
+        return false;
+
+	vector<const Diagnostic*> notes;
+    if (note)
+		notes.push_back(note);
+    if (note1)
+        notes.push_back(note1);
+
+    return report(diag, notes);
 }

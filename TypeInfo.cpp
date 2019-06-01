@@ -28,6 +28,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 {
     int firstUserNamed = 0;
     int cptResolved    = 0;
+    bool badSignature   = false;
 
     // First we solve unnamed parameters
     for (int i = 0; i < context.parameters.size(); i++)
@@ -41,7 +42,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
         if (i >= parameters.size())
         {
-            context.result = MATCH_ERROR_TOO_MANY_PARAMETERS;
+            context.result = MatchResult::TooManyParameters;
             return;
         }
 
@@ -50,8 +51,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             context.badSignatureParameterIdx  = i;
             context.basSignatureRequestedType = parameters[i]->typeInfo;
             context.basSignatureGivenType     = context.parameters[i]->typeInfo;
-            context.result                    = MATCH_ERROR_BAD_SIGNATURE;
-            return;
+            badSignature                      = true;
         }
 
         cptResolved++;
@@ -65,9 +65,9 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         firstDefault = (int) parameters.size();
     if (cptResolved < firstDefault)
     {
-        context.result = MATCH_ERROR_NOT_ENOUGH_PARAMETERS;
+        context.result = MatchResult::NotEnoughParameters;
         return;
     }
 
-    context.result = MATCH_OK;
+    context.result = badSignature ? MatchResult::BadSignature : MatchResult::Ok;
 }
