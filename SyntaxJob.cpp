@@ -34,6 +34,12 @@ bool SyntaxJob::error(const Token& tk, const Utf8& msg)
     return false;
 }
 
+bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg)
+{
+    sourceFile->report({sourceFile, startLocation, endLocation, msg.c_str()});
+    return false;
+}
+
 bool SyntaxJob::eatToken(TokenId id)
 {
     if (token.id != id)

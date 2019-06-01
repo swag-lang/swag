@@ -34,9 +34,6 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
     case '}':
         token.id = TokenId::SymRightCurly;
         return true;
-    case ':':
-        token.id = TokenId::SymColon;
-        return true;
     case ';':
         token.id = TokenId::SymSemiColon;
         return true;
@@ -48,6 +45,17 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
         return true;
     case '@':
         token.id = TokenId::SymAt;
+        return true;
+
+    case ':':
+        token.id = TokenId::SymColon;
+        c        = getCharNoSeek(offset);
+        if (c == '=')
+        {
+            token.id = TokenId::SymColonEqual;
+            token.text += c;
+            treatChar(c, offset);
+        }
         return true;
 
     case '!':

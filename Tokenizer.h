@@ -14,6 +14,7 @@ enum class TokenId
     SymLeftCurly,
     SymRightCurly,
     SymColon,
+    SymColonEqual,
     SymSemiColon,
     SymQuestion,
     SymAt,

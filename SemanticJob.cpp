@@ -30,7 +30,7 @@ JobResult SemanticJob::execute()
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
                     auto child        = node->childs[i];
-                    child->attributes = node->attributes;
+                    child->attributes = node->attributes; // Inherit attributes
                     nodes.push_back(child);
                 }
 
@@ -38,15 +38,21 @@ JobResult SemanticJob::execute()
             }
 
         case AstNodeResolveState::ProcessingChilds:
-            if (node->semanticFct)
+            // The same node can be shared by multiple parents, so we need to be sure
+            // that the semantic has not already been done
+            if (!(node->flags & AST_SEMANTIC_DONE))
             {
-                if (!node->semanticFct(&context))
-                    return JobResult::ReleaseJob;
+                if (node->semanticFct)
+                {
+                    if (!node->semanticFct(&context))
+                        return JobResult::ReleaseJob;
 
-                if (context.result == SemanticResult::Pending)
-                    return JobResult::KeepJobAlive;
+                    if (context.result == SemanticResult::Pending)
+                        return JobResult::KeepJobAlive;
+                }
             }
 
+            node->flags |= AST_SEMANTIC_DONE;
             nodes.pop_back();
             break;
         }

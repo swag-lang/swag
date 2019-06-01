@@ -23,6 +23,7 @@ struct SyntaxJob : public Job
     }
 
     bool error(const Token& tk, const Utf8& msg);
+    bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg);
     bool syntaxError(const Token& tk, const Utf8& msg);
     bool notSupportedError(const Token& tk);
     bool eatToken(TokenId id);
@@ -33,7 +34,7 @@ struct SyntaxJob : public Job
     bool doCompilerRun(AstNode* parent);
     bool doCompilerUnitTest();
     bool doTopLevelInstruction(AstNode* parent);
-    bool doVarDecl(AstNode* parent, AstVarDecl** result = nullptr);
+    bool doVarDecl(AstNode* parent);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, AstNode** result = nullptr);

@@ -421,6 +421,8 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
 {
     if (nodeToCast->typeInfo == toType)
         return true;
+    if (nodeToCast->typeInfo->isSame(toType))
+        return true;
 
     if (toType->kind == TypeInfoKind::Native)
     {
@@ -433,6 +435,8 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
     if (leftNode->typeInfo == rightNode->typeInfo)
+        return true;
+    if (leftNode->typeInfo->isSame(rightNode->typeInfo))
         return true;
 
     auto leftType  = leftNode->typeInfo;
