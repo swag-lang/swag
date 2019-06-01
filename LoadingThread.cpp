@@ -76,7 +76,6 @@ void LoadingThread::loop()
         {
             req->file->seekTo(req->seek);
             req->loadedSize = req->file->readTo(req->buffer);
-            req->file->close();
         }
 
         req->done = true;
