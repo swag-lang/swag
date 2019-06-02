@@ -197,6 +197,9 @@
     <ClCompile Include="SyntaxJobVar_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="FileSemanticJob.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -337,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="ByteCodeGenJob.h">
       <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSemanticJob.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

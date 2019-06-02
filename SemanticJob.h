@@ -79,6 +79,7 @@ struct SemanticJob : public Job
     static bool resolveAttrDecl(SemanticContext* context);
     static bool resolveAttrUse(SemanticContext* context);
     static bool resolveReturn(SemanticContext* context);
+    static bool resolveNamespace(SemanticContext* context);
     static bool resolveUsing(SemanticContext* context);
 
     Module*             module;

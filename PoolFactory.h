@@ -2,6 +2,7 @@
 #include "Pool.h"
 #include "SyntaxJob.h"
 #include "ModuleSemanticJob.h"
+#include "FileSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "ByteCodeGenJob.h"
 #include "SemanticJob.h"
@@ -23,6 +24,7 @@ struct PoolFactory
 
     Pool<SyntaxJob>         syntaxJob;
     Pool<ModuleSemanticJob> moduleSemanticJob;
+    Pool<FileSemanticJob>   fileSemanticJob;
     Pool<ModuleOutputJob>   moduleOutputJob;
     Pool<SemanticJob>       semanticJob;
     Pool<ByteCodeGenJob>    bytecodeJob;

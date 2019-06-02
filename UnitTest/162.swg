@@ -1,7 +1,7 @@
 #unittest module module162
 #unittest pass semantic
 
-using swag;
+//using swag;
 
 /*
 #run swag.@print(666's64)

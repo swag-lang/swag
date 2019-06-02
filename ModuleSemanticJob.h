@@ -1,16 +1,13 @@
 #pragma once
 #include "Job.h"
-struct SourceFile;
-struct SemanticJob;
-struct AstNode;
 struct Module;
+struct PoolFactory;
 
 struct ModuleSemanticJob : public Job
 {
-    JobResult           execute() override;
-    static bool         doSemanticNamespace(SourceFile* sourceFile, AstNode* node);
-    static bool         doSemanticNode(SourceFile* sourceFile, AstNode* node);
-    static SemanticJob* newSemanticJob(SourceFile* sourceFile);
+    ModuleSemanticJob();
+    JobResult execute() override;
 
-    Module* module = nullptr;
+    Module*      module      = nullptr;
+    PoolFactory* poolFactory = nullptr;
 };
