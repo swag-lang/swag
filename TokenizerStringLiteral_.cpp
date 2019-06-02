@@ -7,8 +7,15 @@
 
 bool Tokenizer::getDigitHexa(Token& token, int& result)
 {
-    auto c = getChar();
-    SWAG_VERIFY(SWAG_IS_HEX(c), error(token, "invalid hexadecimal digit"));
+    auto locationBefore = location;
+    auto c              = getChar();
+    if (!SWAG_IS_HEX(c))
+    {
+        token.startLocation = locationBefore;
+        token.text          = c;
+        return error(token, format("invalid hexadecimal digit '%s'", token.text.c_str()));
+    }
+
     if (c >= 'a' && c <= 'z')
         result = 10 + (c - 'a');
     else if (c >= 'A' && c <= 'Z')
@@ -20,7 +27,7 @@ bool Tokenizer::getDigitHexa(Token& token, int& result)
 
 bool Tokenizer::isEscape(char32_t& c, Token& token)
 {
-    token.startLocation = location;
+    auto locationBefore = location;
     c                   = getChar();
     switch (c)
     {
@@ -97,16 +104,18 @@ bool Tokenizer::isEscape(char32_t& c, Token& token)
         token.text = "<blank>";
     else
         token.text = c;
+
+    token.startLocation = locationBefore;
     error(token, format("unrecognized character escape sequence '%s'", token.text.c_str()));
     return false;
 }
 
 bool Tokenizer::doStringLiteral(Token& token, bool raw)
 {
-    bool     result = true;
     unsigned offset;
-    token.id          = TokenId::LiteralString;
-    token.literalType = g_TypeMgr.typeInfoString;
+    token.id            = TokenId::LiteralString;
+    token.literalType   = g_TypeMgr.typeInfoString;
+    token.startLocation = location;
 
     while (true)
     {
@@ -135,7 +144,8 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (!raw && c == '\\')
             {
                 treatChar(c, offset);
-                result = result && isEscape(c, token);
+                SWAG_CHECK(isEscape(c, token));
+                token.endLocation = location;
                 token.text += c;
                 continue;
             }
@@ -148,6 +158,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (raw && c == '`')
                 break;
 
+            token.endLocation = location;
             token.text += c;
         }
 
@@ -158,22 +169,22 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             c = getCharNoSeek(offset);
         }
 
-		if (!raw && c == '"')
-		{
-			treatChar(c, offset);
-			continue;
-		}
+        if (!raw && c == '"')
+        {
+            treatChar(c, offset);
+            continue;
+        }
 
-		if (raw && c == '`')
-		{
-			treatChar(c, offset);
-			continue;
-		}
+        if (raw && c == '`')
+        {
+            treatChar(c, offset);
+            continue;
+        }
 
-		break;
+        break;
     }
 
-    return result;
+    return true;
 }
 
 bool Tokenizer::doCharLiteral(Token& token)
