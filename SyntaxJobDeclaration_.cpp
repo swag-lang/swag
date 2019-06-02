@@ -24,6 +24,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
     SWAG_VERIFY(currentScope->isGlobal(), error(token, "a namespace definition must appear either at file scope or immediately within another namespace definition"));
 
     auto namespaceNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+    namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
     namespaceNode->inheritOwners(this);
     if (result)
         *result = namespaceNode;

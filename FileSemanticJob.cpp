@@ -30,11 +30,6 @@ JobResult FileSemanticJob::execute()
         case AstNodeResolveState::Enter:
             switch (node->kind)
             {
-            case AstNodeKind::Namespace:
-                if (!resolveNamespace(&context))
-                    return JobResult::ReleaseJob;
-                break;
-
             case AstNodeKind::AttrUse:
             {
                 auto job = newSemanticJob(sourceFile);

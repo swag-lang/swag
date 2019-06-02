@@ -29,9 +29,10 @@ struct Scope : public PoolElement
         return kind == ScopeKind::Workspace || kind == ScopeKind::Module || kind == ScopeKind::Namespace;
     }
 
-    ScopeKind kind;
-    Scope*    parentScope;
-    SymTable* symTable;
-    Utf8Crc   name;
-    Utf8Crc   fullname;
+    ScopeKind      kind;
+    Scope*         parentScope;
+    SymTable*      symTable;
+    Utf8Crc        name;
+    Utf8Crc        fullname;
+    vector<Scope*> alternativeScopes;
 };

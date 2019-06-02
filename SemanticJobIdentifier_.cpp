@@ -29,6 +29,8 @@ void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope
     while (startScope)
     {
         scopes.push_back(startScope);
+        if (!startScope->alternativeScopes.empty())
+			scopes.insert(scopes.end(), startScope->alternativeScopes.begin(), startScope->alternativeScopes.end());
         startScope = startScope->parentScope;
     }
 }
