@@ -242,6 +242,7 @@
     <ClCompile Include="SemanticAttribute_.cpp" />
     <ClCompile Include="SemanticBinaryExpression_.cpp" />
     <ClCompile Include="SemanticCompiler_.cpp" />
+    <ClCompile Include="SemanticUnaryExpression_.cpp" />
     <ClCompile Include="SemanticVar_.cpp" />
     <ClCompile Include="SemanticEnum_.cpp" />
     <ClCompile Include="SemanticExpression_.cpp" />

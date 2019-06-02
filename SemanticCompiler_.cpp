@@ -104,19 +104,16 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
-    case NativeType::SX:
         g_Log.print(to_string(node->computedValue.reg.s64));
         break;
     case NativeType::U8:
     case NativeType::U16:
     case NativeType::U32:
     case NativeType::U64:
-    case NativeType::UX:
         g_Log.print(to_string(node->computedValue.reg.u64));
         break;
     case NativeType::F32:
     case NativeType::F64:
-    case NativeType::FX:
         g_Log.print(to_string(node->computedValue.reg.f64));
         break;
     case NativeType::Char:

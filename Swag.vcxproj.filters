@@ -191,6 +191,9 @@
     <ClCompile Include="TokenizerIdentifier_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticUnaryExpression_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

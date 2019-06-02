@@ -23,7 +23,6 @@ struct TypeManager
     static bool castToNativeS64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeFX(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags);
 
     static bool castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags);
 
@@ -34,12 +33,10 @@ struct TypeManager
     static void      promoteInteger(AstNode* node);
     static TypeInfo* flattenType(TypeInfo* typeInfo);
 
-    TypeInfoNative* typeInfoSX;
     TypeInfoNative* typeInfoS8;
     TypeInfoNative* typeInfoS16;
     TypeInfoNative* typeInfoS32;
     TypeInfoNative* typeInfoS64;
-    TypeInfoNative* typeInfoUX;
     TypeInfoNative* typeInfoU8;
     TypeInfoNative* typeInfoU16;
     TypeInfoNative* typeInfoU32;
@@ -47,7 +44,6 @@ struct TypeManager
     TypeInfoNative* typeInfoBool;
     TypeInfoNative* typeInfoF32;
     TypeInfoNative* typeInfoF64;
-    TypeInfoNative* typeInfoFX;
     TypeInfoNative* typeInfoChar;
     TypeInfoNative* typeInfoString;
     TypeInfoNative* typeInfoVoid;

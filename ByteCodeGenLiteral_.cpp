@@ -50,7 +50,6 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         out.addS32(node->computedValue.reg.s32);
         return true;
     case NativeType::S64:
-    case NativeType::SX:
         emitInstruction(context, ByteCodeNodeId::PushS64);
         out.addS64(node->computedValue.reg.s64);
         return true;
@@ -59,7 +58,6 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         out.addF32((float) node->computedValue.reg.f64);
         return true;
     case NativeType::F64:
-    case NativeType::FX:
         emitInstruction(context, ByteCodeNodeId::PushF64);
         out.addF64(node->computedValue.reg.f64);
         return true;

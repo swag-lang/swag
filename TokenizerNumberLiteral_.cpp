@@ -30,19 +30,18 @@ bool Tokenizer::doNumberSuffix(Token& token)
     {
     case NativeType::F32:
     case NativeType::F64:
-    case NativeType::FX:
         switch (tokenSuffix.literalType->nativeType)
         {
         case NativeType::F32:
         case NativeType::F64:
-        case NativeType::FX:
             break;
         default:
             return error(token, format("can't convert floating point number '%Lf' to '%s'", token.literalValue.f64, tokenSuffix.literalType->name.c_str()));
         }
         break;
 
-    case NativeType::SX:
+    case NativeType::S32:
+    case NativeType::S64:
         switch (tokenSuffix.literalType->nativeType)
         {
         case NativeType::U8:
@@ -92,7 +91,6 @@ bool Tokenizer::doNumberSuffix(Token& token)
             break;
         }
         case NativeType::F64:
-        case NativeType::FX:
         {
             double  tmpF = static_cast<double>(token.literalValue.s64);
             int64_t tmp  = static_cast<int64_t>(tmpF);
@@ -108,7 +106,8 @@ bool Tokenizer::doNumberSuffix(Token& token)
 
         break;
 
-    case NativeType::UX:
+    case NativeType::U32:
+    case NativeType::U64:
         switch (tokenSuffix.literalType->nativeType)
         {
         case NativeType::U8:
@@ -211,15 +210,17 @@ bool Tokenizer::doBinLiteral(Token& token)
         SWAG_CHECK(errorNumberSyntax(token, "a digit separator can't end a literal number"));
 
     // Suffix
-    token.id          = TokenId::LiteralNumber;
-    token.literalType = g_TypeMgr.typeInfoUX;
+    token.id = TokenId::LiteralNumber;
+    if (token.literalValue.u64 <= UINT32_MAX)
+        token.literalType = g_TypeMgr.typeInfoU32;
+    else
+        token.literalType = g_TypeMgr.typeInfoU64;
     if (c == '\'')
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
         SWAG_VERIFY(token.literalType->nativeType != NativeType::F32, error(token, "can't convert a binary literal number to 'f32'"));
         SWAG_VERIFY(token.literalType->nativeType != NativeType::F64, error(token, "can't convert a binary literal number to 'f64'"));
-        SWAG_VERIFY(token.literalType->nativeType != NativeType::FX, error(token, "can't convert a binary literal number to 'f64'"));
     }
 
     return true;
@@ -284,15 +285,17 @@ bool Tokenizer::doHexLiteral(Token& token)
         SWAG_CHECK(errorNumberSyntax(token, "a digit separator can't end a literal number"));
 
     // Suffix
-    token.id          = TokenId::LiteralNumber;
-    token.literalType = g_TypeMgr.typeInfoUX;
+    token.id = TokenId::LiteralNumber;
+    if (token.literalValue.u64 <= UINT32_MAX)
+        token.literalType = g_TypeMgr.typeInfoU32;
+    else
+        token.literalType = g_TypeMgr.typeInfoU64;
     if (c == '\'')
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
         SWAG_VERIFY(token.literalType->nativeType != NativeType::F32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
         SWAG_VERIFY(token.literalType->nativeType != NativeType::F64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
-        SWAG_VERIFY(token.literalType->nativeType != NativeType::FX, error(token, "can't convert an hexadecimal literal number to 'f64'"));
     }
 
     return true;
@@ -357,7 +360,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     tokenFrac.literalValue.u64     = 0;
     tokenExponent.literalValue.u64 = 0;
 
-    token.literalType = g_TypeMgr.typeInfoSX;
+    token.literalType = g_TypeMgr.typeInfoS32;
     token.id          = TokenId::LiteralNumber;
 
     // Integer part
@@ -372,7 +375,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     // If there's a dot, then this is a floating point number
     if (c == '.' || startsWithDot)
     {
-        token.literalType = g_TypeMgr.typeInfoFX;
+        token.literalType = g_TypeMgr.typeInfoF32;
         if (!startsWithDot)
         {
             token.text += c;
@@ -398,7 +401,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     // If there's an exponent, then this is a floating point number
     if (c == 'e' || c == 'E')
     {
-        token.literalType = g_TypeMgr.typeInfoFX;
+        token.literalType = g_TypeMgr.typeInfoF32;
         token.text += c;
         treatChar(c, offset);
         tokenExponent.startLocation = location;
@@ -435,11 +438,15 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     }
 
     // Really compute the floating point value, with as much precision as we can
-    if (token.literalType->nativeType == NativeType::FX)
+    if (token.literalType->nativeType == NativeType::F32 || token.literalType->nativeType == NativeType::F64)
     {
         token.literalValue.f64 = (double) (token.literalValue.u64) + (tokenFrac.literalValue.u64 / (double) fractPart);
         if (tokenExponent.literalValue.s64)
             token.literalValue.f64 *= std::pow(10, tokenExponent.literalValue.s64);
+    }
+    else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
+    {
+        token.literalType = g_TypeMgr.typeInfoS64;
     }
 
     if (c == '\'')
@@ -455,8 +462,8 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
 
 bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
 {
-    bool startsWithDot = false;
-    token.text         = c;
+    bool startsWithDot  = false;
+    token.text          = c;
     if (c == '0')
     {
         unsigned offset;

@@ -26,7 +26,10 @@ bool TypeManager::castToNativeU8(SourceFile* sourceFile, AstNode* nodeToCast, ui
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
-    case NativeType::SX:
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
         if (nodeToCast->computedValue.reg.s64 < 0)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -34,7 +37,9 @@ bool TypeManager::castToNativeU8(SourceFile* sourceFile, AstNode* nodeToCast, ui
             return false;
         }
 
-    case NativeType::UX:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
         if (nodeToCast->computedValue.reg.u64 > UINT8_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -53,7 +58,10 @@ bool TypeManager::castToNativeU16(SourceFile* sourceFile, AstNode* nodeToCast, u
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
-    case NativeType::SX:
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
         if (nodeToCast->computedValue.reg.s64 < 0)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -61,7 +69,9 @@ bool TypeManager::castToNativeU16(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-    case NativeType::UX:
+    case NativeType::U8:
+    case NativeType::U32:
+    case NativeType::U64:
         if (nodeToCast->computedValue.reg.u64 > UINT16_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -80,7 +90,10 @@ bool TypeManager::castToNativeU32(SourceFile* sourceFile, AstNode* nodeToCast, u
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
-    case NativeType::SX:
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
         if (nodeToCast->computedValue.reg.s64 < 0)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -88,7 +101,9 @@ bool TypeManager::castToNativeU32(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-    case NativeType::UX:
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U64:
         if (nodeToCast->computedValue.reg.u64 > UINT32_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -107,7 +122,10 @@ bool TypeManager::castToNativeU64(SourceFile* sourceFile, AstNode* nodeToCast, u
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
-    case NativeType::SX:
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
         if (nodeToCast->computedValue.reg.s64 < 0)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -115,7 +133,9 @@ bool TypeManager::castToNativeU64(SourceFile* sourceFile, AstNode* nodeToCast, u
             return false;
         }
 
-    case NativeType::UX:
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
         nodeToCast->typeInfo = g_TypeMgr.typeInfoU64;
         return true;
     }
@@ -127,8 +147,9 @@ bool TypeManager::castToNativeS8(SourceFile* sourceFile, AstNode* nodeToCast, ui
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
-    case NativeType::SX:
-    case NativeType::UX:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
         if (nodeToCast->computedValue.reg.s64 < INT8_MIN || nodeToCast->computedValue.reg.s64 > INT8_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -147,8 +168,9 @@ bool TypeManager::castToNativeS16(SourceFile* sourceFile, AstNode* nodeToCast, u
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
-    case NativeType::SX:
-    case NativeType::UX:
+    case NativeType::S8:
+    case NativeType::S32:
+    case NativeType::S64:
         if (nodeToCast->computedValue.reg.s64 < INT16_MIN || nodeToCast->computedValue.reg.s64 > INT16_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -167,8 +189,9 @@ bool TypeManager::castToNativeS32(SourceFile* sourceFile, AstNode* nodeToCast, u
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
-    case NativeType::SX:
-    case NativeType::UX:
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S64:
         if (nodeToCast->computedValue.reg.s64 < INT32_MIN || nodeToCast->computedValue.reg.s64 > INT32_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -187,8 +210,9 @@ bool TypeManager::castToNativeS64(SourceFile* sourceFile, AstNode* nodeToCast, u
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
-    case NativeType::SX:
-    case NativeType::UX:
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
         if (nodeToCast->computedValue.reg.s64 < INT64_MIN || nodeToCast->computedValue.reg.s64 > INT64_MAX)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
@@ -211,7 +235,6 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
-    case NativeType::SX:
     {
         float   tmpF = static_cast<float>(nodeToCast->computedValue.reg.s64);
         int64_t tmpI = static_cast<int64_t>(tmpF);
@@ -232,7 +255,6 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::U16:
     case NativeType::U32:
     case NativeType::U64:
-    case NativeType::UX:
     {
         float    tmpF = static_cast<float>(nodeToCast->computedValue.reg.u64);
         uint64_t tmpI = static_cast<uint64_t>(tmpF);
@@ -249,7 +271,6 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    case NativeType::FX:
     case NativeType::F64:
     {
         float  tmpF = static_cast<float>(nodeToCast->computedValue.reg.f64);
@@ -268,61 +289,6 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
     return castError(sourceFile, g_TypeMgr.typeInfoF32, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeFX(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
-{
-    switch (nodeToCast->typeInfo->nativeType)
-    {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::SX:
-    {
-        double  tmpF = static_cast<double>(nodeToCast->computedValue.reg.s64);
-        int64_t tmpI = static_cast<int64_t>(tmpF);
-        if (tmpI != nodeToCast->computedValue.reg.s64)
-        {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f64'", nodeToCast->computedValue.reg.s64)});
-            return false;
-        }
-
-        nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.s64);
-        return true;
-    }
-
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
-    case NativeType::UX:
-    {
-        double   tmpF = static_cast<double>(nodeToCast->computedValue.reg.u64);
-        uint64_t tmpI = static_cast<uint64_t>(tmpF);
-        if (tmpI != nodeToCast->computedValue.reg.u64)
-        {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
-            return false;
-        }
-
-        nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.u64);
-        return true;
-    }
-
-    case NativeType::FX:
-    case NativeType::F32:
-        nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
-        return true;
-    }
-
-    return castError(sourceFile, g_TypeMgr.typeInfoF64, nodeToCast, castFlags);
-}
-
 bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
 {
     switch (nodeToCast->typeInfo->nativeType)
@@ -331,7 +297,6 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
-    case NativeType::SX:
     {
         double  tmpF = static_cast<double>(nodeToCast->computedValue.reg.s64);
         int64_t tmpI = static_cast<int64_t>(tmpF);
@@ -352,7 +317,6 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::U16:
     case NativeType::U32:
     case NativeType::U64:
-    case NativeType::UX:
     {
         double   tmpF = static_cast<double>(nodeToCast->computedValue.reg.u64);
         uint64_t tmpI = static_cast<uint64_t>(tmpF);
@@ -369,7 +333,6 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    case NativeType::FX:
     case NativeType::F32:
         nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
         return true;
@@ -410,8 +373,6 @@ bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode
         return castToNativeF32(sourceFile, nodeToCast, castFlags);
     case NativeType::F64:
         return castToNativeF64(sourceFile, nodeToCast, castFlags);
-    case NativeType::FX:
-        return castToNativeFX(sourceFile, nodeToCast, castFlags);
     }
 
     return castError(sourceFile, toType, nodeToCast, castFlags);
@@ -491,24 +452,6 @@ void TypeManager::promote(AstNode* left, AstNode* right)
     if (left->typeInfo->nativeType == NativeType::F32 && right->typeInfo->nativeType == NativeType::F64)
     {
         left->typeInfo = g_TypeMgr.typeInfoF64;
-        return;
-    }
-
-    if (left->typeInfo->nativeType == NativeType::FX && right->typeInfo->nativeType == NativeType::F32)
-    {
-        left->typeInfo = g_TypeMgr.typeInfoF32;
-        return;
-    }
-
-    if (left->typeInfo->nativeType == NativeType::FX && right->typeInfo->nativeType == NativeType::F64)
-    {
-        left->typeInfo = g_TypeMgr.typeInfoF64;
-        return;
-    }
-
-    if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::FX)
-    {
-        right->typeInfo = g_TypeMgr.typeInfoF64;
         return;
     }
 }

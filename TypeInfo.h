@@ -17,8 +17,6 @@ enum class TypeInfoKind
 
 enum class NativeType
 {
-    SX,
-    UX,
     S8,
     S16,
     S32,
@@ -29,7 +27,6 @@ enum class NativeType
     U64,
     F32,
     F64,
-    FX,
     Bool,
     Char,
     String,

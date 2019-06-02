@@ -18,7 +18,6 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeNodeId::BinOpPlusS32);
         return true;
     case NativeType::S64:
-    case NativeType::SX:
         emitInstruction(context, ByteCodeNodeId::BinOpPlusS64);
         return true;
     case NativeType::U32:
@@ -31,7 +30,6 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeNodeId::BinOpPlusF32);
         return true;
     case NativeType::F64:
-    case NativeType::FX:
         emitInstruction(context, ByteCodeNodeId::BinOpPlusF64);
         return true;
     default:
@@ -52,7 +50,6 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeNodeId::BinOpMinusS32);
         return true;
     case NativeType::S64:
-    case NativeType::SX:
         emitInstruction(context, ByteCodeNodeId::BinOpMinusS64);
         return true;
     case NativeType::U32:
@@ -65,7 +62,6 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeNodeId::BinOpMinusF32);
         return true;
     case NativeType::F64:
-    case NativeType::FX:
         emitInstruction(context, ByteCodeNodeId::BinOpMinusF64);
         return true;
     default:
@@ -86,7 +82,6 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeNodeId::BinOpMulS32);
         return true;
     case NativeType::S64:
-    case NativeType::SX:
         emitInstruction(context, ByteCodeNodeId::BinOpMulS64);
         return true;
     case NativeType::U32:
@@ -99,7 +94,6 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeNodeId::BinOpMulF32);
         return true;
     case NativeType::F64:
-    case NativeType::FX:
         emitInstruction(context, ByteCodeNodeId::BinOpMulF64);
         return true;
     default:
@@ -120,7 +114,6 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeNodeId::BinOpDivF32);
         return true;
     case NativeType::F64:
-    case NativeType::FX:
         emitInstruction(context, ByteCodeNodeId::BinOpDivF64);
         return true;
     default:
