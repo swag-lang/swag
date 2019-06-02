@@ -66,7 +66,12 @@ bool SyntaxJob::recoverError()
         if (token.id == TokenId::CompilerUnitTest)
             break;
         if (token.id == TokenId::SymSemiColon)
+        {
+            while (token.id == TokenId::SymSemiColon || token.id == TokenId::SymRightCurly)
+                tokenizer.getToken(token);
             break;
+        }
+
         if (token.id == TokenId::EndOfFile)
             return false;
     }

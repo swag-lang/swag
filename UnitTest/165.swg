@@ -2,4 +2,8 @@
 #unittest pass semantic
 using swag;
 
-#run @print("coucpp");
+func main: ()
+{
+}
+
+#run main

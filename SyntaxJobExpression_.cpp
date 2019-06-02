@@ -161,3 +161,8 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
 {
     return doBoolExpression(parent, result);
 }
+
+bool SyntaxJob::doAffectExpression(AstNode* parent)
+{
+    return doBoolExpression(parent);
+}

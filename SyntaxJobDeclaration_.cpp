@@ -131,8 +131,18 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
+    case TokenId::SymLeftCurly:
+        SWAG_CHECK(doCurlyStatement(parent));
+        break;
+    case TokenId::SymSemiColon:
+        SWAG_CHECK(tokenizer.getToken(token));
+        break;
     case TokenId::KwdReturn:
         SWAG_CHECK(doReturn(parent));
+        break;
+    case TokenId::Identifier:
+    case TokenId::Intrisic:
+        SWAG_CHECK(doAffectExpression(parent));
         break;
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
