@@ -13,7 +13,7 @@ struct ThreadManager
     bool doneWithJobs();
     void jobHasEnded();
     void waitEndJobs();
-	void addPendingJob(Job* job);
+    void addPendingJob(Job* job);
 
     Job* getJob();
 
@@ -26,5 +26,5 @@ struct ThreadManager
     mutex              mutexDone;
     condition_variable condVarDone;
     vector<Job*>       pendingJobs;
-    atomic<int>        processingJobs;
+    atomic<int>        processingJobs = 0;
 };

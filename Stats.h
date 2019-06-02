@@ -1,8 +1,8 @@
 #pragma once
 struct Stats
 {
-    atomic<int> numFiles;
-    atomic<int> numLines;
-    atomic<int> numModules;
-    int         numWorkers;
+    atomic<int> numFiles   = 0;
+    atomic<int> numLines   = 0;
+    atomic<int> numModules = 0;
+    int         numWorkers = 0;
 };

@@ -134,8 +134,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             if (scope->symTable)
             {
-                scoped_lock lk(scope->symTable->mutex);
-                auto        symbol = scope->symTable->findNoLock(node->name);
+                auto symbol = scope->symTable->find(node->name);
                 if (symbol)
                 {
                     dependentSymbols.push_back(symbol);

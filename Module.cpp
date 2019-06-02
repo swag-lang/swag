@@ -13,7 +13,6 @@ Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
     : path{path}
     , workspace{workspace}
 {
-    reset();
     poolFactory = new PoolFactory();
 
     if (runtime)

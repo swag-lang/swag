@@ -6,7 +6,7 @@ struct PoolFactory;
 
 struct Workspace
 {
-	Workspace();
+    Workspace();
 
     bool    build();
     Module* createOrUseModule(const fs::path& path);
@@ -16,7 +16,7 @@ struct Workspace
     void enumerateModules();
 
     SpinLock               mutexModules;
-    atomic<int>            numErrors;
+    atomic<int>            numErrors = 0;
     vector<Module*>        modules;
     map<fs::path, Module*> mapModules;
     PoolFactory*           poolFactory;

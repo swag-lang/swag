@@ -12,7 +12,7 @@
 
 Workspace::Workspace()
 {
-	poolFactory = new PoolFactory();
+    poolFactory = new PoolFactory();
 }
 
 Module* Workspace::createOrUseModule(const fs::path& path)
@@ -101,7 +101,8 @@ void Workspace::buildRuntime()
 
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    auto runtimeModule = new Module(this, "", true);
+    auto runtimeModule       = new Module(this, "", true);
+    runtimeModule->isRuntime = true;
     modules.push_back(runtimeModule);
 
     auto file = g_Pool.sourceFile.alloc();
