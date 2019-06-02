@@ -192,13 +192,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             case MatchResult::NotEnoughParameters:
             {
                 Diagnostic diag{sourceFile, node->callParameters ? node->callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-                Diagnostic note{sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
             case MatchResult::TooManyParameters:
             {
                 Diagnostic diag{sourceFile, node->callParameters, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-                Diagnostic note{sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
             case MatchResult::BadSignature:
@@ -211,7 +211,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                                        symbol->name.c_str(),
                                        symMatch.basSignatureRequestedType->name.c_str(),
                                        symMatch.basSignatureGivenType->name.c_str())};
-                Diagnostic note{sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
             }

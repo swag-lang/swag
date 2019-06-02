@@ -63,6 +63,8 @@ enum class TokenId
     CompilerFile,
     CompilerLine,
 
+	Intrisic,
+
     KwdVar,
     KwdNamespace,
     KwdType,

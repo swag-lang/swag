@@ -12,6 +12,8 @@ void LanguageSpec::setup()
     keywords["#file"]     = TokenId::CompilerFile;
     keywords["#line"]     = TokenId::CompilerLine;
 
+    keywords["@print"] = TokenId::Intrisic;
+
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
     keywords["type"]      = TokenId::KwdType;

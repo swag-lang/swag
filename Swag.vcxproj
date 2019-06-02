@@ -259,6 +259,7 @@
     <ClCompile Include="SyntaxIdentifier_.cpp" />
     <ClCompile Include="SyntaxType_.cpp" />
     <ClCompile Include="SyntaxVar_.cpp" />
+    <ClCompile Include="TokenizerIdentifier_.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
     <ClCompile Include="LoadingThread.cpp" />
     <ClCompile Include="Log.cpp" />

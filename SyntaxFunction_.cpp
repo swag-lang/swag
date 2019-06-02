@@ -97,8 +97,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         *result = funcNode;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::Intrisic, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
     Ast::assignToken(funcNode, token);
+
+    bool isIntrinsic = token.id == TokenId::Intrisic;
 
     // Register function name
     Scope* newScope = nullptr;
@@ -133,27 +135,35 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
 
     // Content of function
-    auto curly = move(token);
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-
+    if (isIntrinsic)
     {
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    }
+    else
+    {
 
-        auto stmtNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncContent, sourceFile->indexInModule, funcNode, false);
-        stmtNode->inheritOwners(this);
-        stmtNode->inheritToken(token);
-        funcNode->content = stmtNode;
-        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+        auto curly = move(token);
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+
         {
-            SWAG_CHECK(doEmbeddedInstruction(stmtNode));
+            Scoped    scoped(this, newScope);
+            ScopedFct scopedFct(this, funcNode);
+
+            auto stmtNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncContent, sourceFile->indexInModule, funcNode, false);
+            stmtNode->inheritOwners(this);
+            stmtNode->inheritToken(token);
+            funcNode->content = stmtNode;
+            while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+            {
+                SWAG_CHECK(doEmbeddedInstruction(stmtNode));
+            }
+
+            stmtNode->token.endLocation = token.startLocation;
         }
 
-        stmtNode->token.endLocation = token.startLocation;
+        SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
+        SWAG_CHECK(tokenizer.getToken(token));
     }
-
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
-    SWAG_CHECK(tokenizer.getToken(token));
 
     return true;
 }

@@ -33,6 +33,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         return doLiteral(parent, result);
 
     case TokenId::Identifier:
+    case TokenId::Intrisic:
         return doIdentifierRef(parent, result);
 
     default:
