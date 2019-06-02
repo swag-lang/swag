@@ -1,19 +1,14 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Diagnostic.h"
-#include "SourceFile.h"
 #include "SymTable.h"
 #include "Global.h"
-#include "AstNode.h"
 #include "Scope.h"
 #include "Ast.h"
-#include "AstNode.h"
 #include "TypeInfo.h"
 
 bool SemanticJob::resolveNamespace(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
+    auto node = context->node;
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope->parentScope, node, SymbolKind::Namespace));
     return true;
 }

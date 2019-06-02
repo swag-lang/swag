@@ -24,8 +24,12 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope)
+void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope)
 {
+    auto  job  = context->job;
+    auto& here = job->scopesHere;
+
+    here.clear();
     scopes.clear();
     if (!startScope)
         return;
@@ -34,9 +38,26 @@ void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope
     {
         auto scope = scopes[i];
         if (scope->parentScope)
-            scopes.push_back(scope->parentScope);
+        {
+            if (here.find(scope->parentScope) == here.end())
+            {
+                scopes.push_back(scope->parentScope);
+                here.insert(scope->parentScope);
+            }
+        }
+
         if (!scope->alternativeScopes.empty())
-            scopes.insert(scopes.end(), scope->alternativeScopes.begin(), scope->alternativeScopes.end());
+        {
+            for (int j = 0; j < scope->alternativeScopes.size(); j++)
+            {
+                auto altScope = scope->alternativeScopes[j];
+                if (here.find(altScope) == here.end())
+                {
+                    scopes.push_back(altScope);
+                    here.insert(altScope);
+                }
+            }
+        }
     }
 }
 
@@ -45,10 +66,11 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     auto sourceFile = context->sourceFile;
     auto job        = context->job;
 
-    SemanticJob::collectScopeHiearchy(job->scopeHierarchy, startScope);
+    SemanticJob::collectScopeHiearchy(context, job->scopeHierarchy, startScope);
     for (auto scope : job->scopeHierarchy)
     {
-        SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
+        if (scope->symTable)
+            SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
         scope = scope->parentScope;
     }
 
@@ -107,7 +129,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (!startScope)
             startScope = node->ownerScope;
         dependentSymbols.clear();
-        collectScopeHiearchy(scopeHierarchy, startScope);
+        collectScopeHiearchy(context, scopeHierarchy, startScope);
         for (auto scope : scopeHierarchy)
         {
             if (scope->symTable)
