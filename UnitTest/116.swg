@@ -4,6 +4,6 @@
 #unittest error
 var main: bool;
 
-func main: () -> u32
+func main: ()
 {
 }

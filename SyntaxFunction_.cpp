@@ -25,7 +25,22 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
             paramNode->inheritToken(token);
 
+            vector<AstVarDecl*> allVars;
             SWAG_CHECK(tokenizer.getToken(token));
+            while (token.id == TokenId::SymComma)
+            {
+                SWAG_CHECK(eatToken(TokenId::SymComma));
+                SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid parameter name '%s'", token.text.c_str())));
+
+                auto node         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
+                node->semanticFct = &SemanticJob::resolveVarDecl;
+                node->inheritOwners(this);
+                node->inheritToken(token);
+                allVars.push_back(node);
+
+                SWAG_CHECK(tokenizer.getToken(token));
+            }
+
             if (token.id == TokenId::SymColon)
             {
                 SWAG_CHECK(eatToken(TokenId::SymColon));
@@ -37,6 +52,22 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
             {
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
                 SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->astAssignment));
+            }
+
+            // Be sure we will be able to have a type
+            if (!paramNode->astType && !paramNode->astAssignment)
+            {
+                if (allVars.size() == 0)
+                    return error(paramNode->token, "parameter must be initialized because no type is specified");
+                return error(paramNode->token.startLocation, allVars.back()->token.endLocation, "parameters must be initialized because no type is specified");
+            }
+
+            // All additionnal vars will point to the same type and assignment. We do not put them as childs, this way
+			// we're sure nodes won't be evaluated twice
+            for (auto var : allVars)
+            {
+                var->astType       = paramNode->astType;
+                var->astAssignment = paramNode->astAssignment;
             }
 
             if (token.id == TokenId::SymComma)
@@ -112,7 +143,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(doEmbeddedInstruction(stmtNode));
         }
 
-		stmtNode->token.endLocation = token.startLocation;
+        stmtNode->token.endLocation = token.startLocation;
     }
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));

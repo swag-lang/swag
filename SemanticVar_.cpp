@@ -29,7 +29,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->astType->typeInfo;
     }
 
-    SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node, format("unable to deduce type of variable '%s'", node->name.c_str())}));
+    SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
     // Register symbol with its type
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Variable);

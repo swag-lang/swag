@@ -38,21 +38,15 @@ JobResult SemanticJob::execute()
             }
 
         case AstNodeResolveState::ProcessingChilds:
-            // The same node can be shared by multiple parents, so we need to be sure
-            // that the semantic has not already been done
-            if (!(node->flags & AST_SEMANTIC_DONE))
+            if (node->semanticFct)
             {
-                if (node->semanticFct)
-                {
-                    if (!node->semanticFct(&context))
-                        return JobResult::ReleaseJob;
+                if (!node->semanticFct(&context))
+                    return JobResult::ReleaseJob;
 
-                    if (context.result == SemanticResult::Pending)
-                        return JobResult::KeepJobAlive;
-                }
+                if (context.result == SemanticResult::Pending)
+                    return JobResult::KeepJobAlive;
             }
 
-            node->flags |= AST_SEMANTIC_DONE;
             nodes.pop_back();
             break;
         }

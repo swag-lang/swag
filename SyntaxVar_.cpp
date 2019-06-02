@@ -6,46 +6,63 @@
 bool SyntaxJob::doVarDecl(AstNode* parent)
 {
     vector<AstVarDecl*> allVars;
-    while (true)
+
+    // First variable
+    AstVarDecl* firstVar = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
+    firstVar->inheritOwners(this);
+    firstVar->semanticFct = &SemanticJob::resolveVarDecl;
+    allVars.push_back(firstVar);
+
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+    firstVar->inheritToken(token);
+
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    // All othervariables with same type and initialization
+    // Evaluation of type and assignment is for the first variable only
+    // Other variables will be affected with the first one
+    // a, b: bool = x is compiled as a: bool = x; b = a;
+    while (token.id == TokenId::SymComma)
     {
-        auto node = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
-        node->inheritOwners(this);
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+
+        auto node         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
         node->semanticFct = &SemanticJob::resolveVarDecl;
+        node->inheritOwners(this);
+        node->inheritToken(token);
         allVars.push_back(node);
 
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
-        node->name = token.text;
-        node->name.computeCrc();
-        node->token = move(token);
+        auto idRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, node, false);
+        idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
+        idRef->inheritOwners(this);
+        node->astAssignment = idRef;
+
+        auto id             = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef, false);
+        id->semanticFct     = &SemanticJob::resolveIdentifier;
+        id->inheritOwners(this);
+        id->name = firstVar->name;
+        id->token = firstVar->token;
 
         SWAG_CHECK(tokenizer.getToken(token));
-        if (token.id == TokenId::SymComma)
-        {
-            SWAG_CHECK(eatToken(TokenId::SymComma));
-            continue;
-        }
-
-        break;
     }
 
-    AstNode* type = nullptr;
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doTypeExpression(nullptr, &type));
+        SWAG_CHECK(doTypeExpression(firstVar, &firstVar->astType));
     }
 
-    AstNode* assignment = nullptr;
     if (token.id == TokenId::SymEqual)
     {
         SWAG_CHECK(eatToken(TokenId::SymEqual));
-        SWAG_CHECK(doAssignmentExpression(nullptr, &assignment));
+        SWAG_CHECK(doAssignmentExpression(firstVar, &firstVar->astAssignment));
     }
 
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
-	// Be sure we will be able to have a type
-    if (!type && !assignment)
+    // Be sure we will be able to have a type
+    if (!firstVar->astType && !firstVar->astAssignment)
     {
         if (allVars.size() == 1)
             return error(allVars.front()->token, "variable must be initialized because no type is specified");
@@ -54,17 +71,11 @@ bool SyntaxJob::doVarDecl(AstNode* parent)
 
     currentScope->allocateSymTable();
 
-    auto front = allVars.front();
-    if (type)
-        Ast::addChild(front, type);
-    if (assignment)
-        Ast::addChild(front, assignment);
-
-    for (auto var : allVars)
+    // Register all symbols
+    for (int i = 0; i < allVars.size() - 1; i++)
     {
-        var->astType       = type;
-        var->astAssignment = assignment;
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, var, SymbolKind::Variable);
+        auto var = allVars[i];
+        SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, var, SymbolKind::Variable));
     }
 
     return true;
