@@ -36,6 +36,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         case NativeType::Char:
             emitInstruction(context, ByteCodeNodeId::IntrinsicPrintChar);
             break;
+        case NativeType::String:
+            emitInstruction(context, ByteCodeNodeId::IntrinsicPrintString);
+            break;
         }
         break;
     default:

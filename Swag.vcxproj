@@ -209,10 +209,10 @@
     <ClCompile Include="Ast.cpp" />
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="ByteCode.cpp" />
-    <ClCompile Include="ByteCodeGenBinOp_.cpp" />
-    <ClCompile Include="ByteCodeGenFunc_.cpp" />
-    <ClCompile Include="ByteCodeGenIdentifier_.cpp" />
-    <ClCompile Include="ByteCodeGenLiteral_.cpp" />
+    <ClCompile Include="ByteCodeGenJobBinOp_.cpp" />
+    <ClCompile Include="ByteCodeGenJobFunc_.cpp" />
+    <ClCompile Include="ByteCodeGenJobIdentifier_.cpp" />
+    <ClCompile Include="ByteCodeGenJobLiteral_.cpp" />
     <ClCompile Include="ByteCodeGenJob.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
     <ClCompile Include="ByteCodeRunBinOp_.cpp" />

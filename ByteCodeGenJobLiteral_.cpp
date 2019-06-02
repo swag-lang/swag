@@ -65,6 +65,11 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeNodeId::PushU32);
         out.addU32(node->computedValue.reg.u32);
         return true;
+    case NativeType::String:
+        emitInstruction(context, ByteCodeNodeId::PushString);
+        out.addU32((uint32_t) context->bc->strBuffer.size());
+        context->bc->strBuffer.push_back(node->computedValue.text);
+        return true;
 
     default:
         return internalError(context);

@@ -21,6 +21,7 @@ void ByteCodeRun::setup()
     mapNodes[ByteCodeNodeId::PushU64]  = runPushU64;
     mapNodes[ByteCodeNodeId::PushF32]  = runPushF32;
     mapNodes[ByteCodeNodeId::PushF64]  = runPushF64;
+    mapNodes[ByteCodeNodeId::PushString]  = runPushString;
 
     mapNodes[ByteCodeNodeId::BinOpPlusS32] = runBinOpPlusS32;
     mapNodes[ByteCodeNodeId::BinOpPlusS64] = runBinOpPlusS64;
@@ -51,6 +52,7 @@ void ByteCodeRun::setup()
     mapNodes[ByteCodeNodeId::IntrinsicPrintS64]  = runIntrinsicPrintS64;
     mapNodes[ByteCodeNodeId::IntrinsicPrintF64]  = runIntrinsicPrintF64;
     mapNodes[ByteCodeNodeId::IntrinsicPrintChar] = runIntrinsicPrintChar;
+    mapNodes[ByteCodeNodeId::IntrinsicPrintString] = runIntrinsicPrintString;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)

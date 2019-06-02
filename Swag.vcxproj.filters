@@ -98,16 +98,10 @@
     <ClCompile Include="ByteCode.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeGenLiteral_.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="ByteCodeRunStack_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="ByteCodeRunBinOp_.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteCodeGenBinOp_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="CommandLineParser.cpp">
@@ -122,13 +116,7 @@
     <ClCompile Include="Scope.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeGenIdentifier_.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="ByteCodeGenJob.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteCodeGenFunc_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="ByteCodeRunFunc_.cpp">
@@ -199,6 +187,18 @@
     </ClCompile>
     <ClCompile Include="FileSemanticJob.cpp">
       <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobLiteral_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobIdentifier_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobFunc_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobBinOp_.cpp">
+      <Filter>Backend\ByteCode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

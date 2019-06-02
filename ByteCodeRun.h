@@ -26,6 +26,7 @@ struct ByteCodeRun
     static uint8_t* runPushU64(ByteCodeRunContext* context);
     static uint8_t* runPushF32(ByteCodeRunContext* context);
     static uint8_t* runPushF64(ByteCodeRunContext* context);
+    static uint8_t* runPushString(ByteCodeRunContext* context);
 
     static uint8_t* runBinOpPlusS32(ByteCodeRunContext* context);
     static uint8_t* runBinOpPlusS64(ByteCodeRunContext* context);
@@ -56,6 +57,7 @@ struct ByteCodeRun
     static uint8_t* runIntrinsicPrintS64(ByteCodeRunContext* context);
     static uint8_t* runIntrinsicPrintF64(ByteCodeRunContext* context);
     static uint8_t* runIntrinsicPrintChar(ByteCodeRunContext* context);
+    static uint8_t* runIntrinsicPrintString(ByteCodeRunContext* context);
 
     map<ByteCodeNodeId, RunNodeFct> mapNodes;
 };

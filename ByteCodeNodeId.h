@@ -10,6 +10,7 @@ enum class ByteCodeNodeId : uint16_t
 	IntrinsicPrintS64,
     IntrinsicPrintF64,
     IntrinsicPrintChar,
+    IntrinsicPrintString,
 
     PushBool,
     PushS8,
@@ -22,6 +23,7 @@ enum class ByteCodeNodeId : uint16_t
     PushU64,
     PushF32,
     PushF64,
+	PushString,
 
     BinOpPlusS32,
     BinOpPlusS64,

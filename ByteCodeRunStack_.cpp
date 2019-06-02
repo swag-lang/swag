@@ -81,3 +81,10 @@ uint8_t* ByteCodeRun::runPushF64(ByteCodeRunContext* context)
     context->push(val);
     return context->bc->out.seek(sizeof(double));
 }
+
+uint8_t* ByteCodeRun::runPushString(ByteCodeRunContext* context)
+{
+    uint32_t val = *(uint32_t*) context->ep;
+    context->push(val);
+    return context->bc->out.seek(sizeof(uint32_t));
+}

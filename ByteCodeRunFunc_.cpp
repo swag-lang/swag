@@ -56,3 +56,13 @@ uint8_t* ByteCodeRun::runIntrinsicPrintChar(ByteCodeRunContext* context)
     g_Log.unlock();
     return context->ep;
 }
+
+uint8_t* ByteCodeRun::runIntrinsicPrintString(ByteCodeRunContext* context)
+{
+    auto val = context->popU32();
+    assert(val < context->bc->strBuffer.size());
+    g_Log.lock();
+    g_Log.print(context->bc->strBuffer[val]);
+    g_Log.unlock();
+    return context->ep;
+}
