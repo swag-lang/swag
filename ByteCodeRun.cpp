@@ -46,8 +46,10 @@ void ByteCodeRun::setup()
     mapNodes[ByteCodeNodeId::BinOpDivF32] = runBinOpDivF32;
     mapNodes[ByteCodeNodeId::BinOpDivF64] = runBinOpDivF64;
 
-    mapNodes[ByteCodeNodeId::LocalFuncCall] = runLocalFuncCall;
-    mapNodes[ByteCodeNodeId::Ret]           = runRet;
+    mapNodes[ByteCodeNodeId::LocalFuncCall]      = runLocalFuncCall;
+    mapNodes[ByteCodeNodeId::Ret]                = runRet;
+    mapNodes[ByteCodeNodeId::IntrinsicPrintS64]  = runIntrinsicPrintS64;
+    mapNodes[ByteCodeNodeId::IntrinsicPrintChar] = runIntrinsicPrintChar;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)

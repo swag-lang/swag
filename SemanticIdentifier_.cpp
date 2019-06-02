@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "ThreadManager.h"
 #include "PoolFactory.h"
+#include "LanguageSpec.h"
 #include "SourceFile.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
@@ -65,10 +66,16 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     switch (symbol->kind)
     {
     case SymbolKind::Function:
+    {
+        auto typeFunc     = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
         node->kind        = AstNodeKind::FuncCall;
         node->semanticFct = &SemanticJob::resolveFuncCall;
-        node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncCall;
+        if (typeFunc->intrinsic != Intrisic::None)
+			node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+        else
+            node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncCall;
         break;
+    }
     }
 
     // Clear cache for the next symbol resolution

@@ -3,6 +3,7 @@
 #include "SourceLocation.h"
 struct SourceFile;
 struct TypeInfoNative;
+enum class Intrisic;
 
 enum class TokenId
 {
@@ -63,7 +64,7 @@ enum class TokenId
     CompilerFile,
     CompilerLine,
 
-	Intrisic,
+    Intrisic,
 
     KwdVar,
     KwdNamespace,
@@ -73,7 +74,7 @@ enum class TokenId
     KwdAttr,
     KwdTrue,
     KwdFalse,
-	KwdReturn,
+    KwdReturn,
 
     Identifier,
     LiteralNumber,
@@ -88,12 +89,15 @@ enum class TokenId
 
 struct Token
 {
-    Utf8            text;
-    SourceLocation  startLocation;
-    SourceLocation  endLocation;
-    Register        literalValue;
-    TokenId         id;
-    TypeInfoNative* literalType;
+    Utf8           text;
+    SourceLocation startLocation;
+    SourceLocation endLocation;
+    Register       literalValue;
+    TokenId        id;
+    union {
+        TypeInfoNative* literalType;
+        Intrisic        intrisic;
+    };
 };
 
 struct Tokenizer

@@ -6,6 +6,7 @@ struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;
 struct Job;
+enum class Intrisic;
 
 enum class TypeInfoKind
 {
@@ -142,4 +143,5 @@ struct TypeInfoFuncAttr : public TypeInfo
     vector<TypeInfoFuncAttrParam*> parameters;
     TypeInfo*                      returnType;
     set<TypeInfoFuncAttr*>         attributes;
+    Intrisic                       intrinsic;
 };

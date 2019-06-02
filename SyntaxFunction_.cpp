@@ -3,6 +3,7 @@
 #include "PoolFactory.h"
 #include "SourceFile.h"
 #include "Scoped.h"
+#include "LanguageSpec.h"
 #include "ByteCodeGenJob.h"
 
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
@@ -110,8 +111,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         auto        typeInfo = sourceFile->poolFactory->typeInfoFuncAttr.alloc();
         newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
         newScope->allocateSymTable();
-        typeInfo->name     = funcNode->name;
-        funcNode->typeInfo = typeInfo;
+        typeInfo->name      = funcNode->name;
+        typeInfo->intrinsic = isIntrinsic ? token.intrisic : Intrisic::None;
+        funcNode->typeInfo  = typeInfo;
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 

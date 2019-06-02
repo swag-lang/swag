@@ -50,5 +50,8 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
     case TokenId::NativeType:
         token.literalType = g_LangSpec.nativeTypes[token.text];
         return;
+    case TokenId::Intrisic:
+        token.intrisic = g_LangSpec.intrinsics[token.text];
+        return;
     }
 }

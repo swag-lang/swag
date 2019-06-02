@@ -8,10 +8,37 @@
 #include "SourceFile.h"
 #include "PoolFactory.h"
 #include "ThreadManager.h"
+#include "LanguageSpec.h"
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
     emitInstruction(context, ByteCodeNodeId::Ret);
+    return true;
+}
+
+bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
+{
+    AstNode* node       = context->node;
+    auto     overload   = node->resolvedSymbolOverload;
+    auto     typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
+    auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
+    switch (typeInfo->intrinsic)
+    {
+    case Intrisic::Print:
+        switch (callParams->childs[0]->typeInfo->nativeType)
+        {
+        case NativeType::S64:
+            emitInstruction(context, ByteCodeNodeId::IntrinsicPrintS64);
+            break;
+        case NativeType::Char:
+            emitInstruction(context, ByteCodeNodeId::IntrinsicPrintChar);
+            break;
+        }
+        break;
+    default:
+        assert(false);
+    }
+
     return true;
 }
 

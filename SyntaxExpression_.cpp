@@ -9,6 +9,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Literal, sourceFile->indexInModule, parent, false);
     node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveLiteral;
+    node->byteCodeFct = &ByteCodeGenJob::emitLiteral;
     node->token       = move(token);
 
     if (result)

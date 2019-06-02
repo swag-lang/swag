@@ -51,6 +51,8 @@ void LanguageSpec::setup()
     nativeTypes["bool"]   = g_TypeMgr.typeInfoBool;
     nativeTypes["char"]   = g_TypeMgr.typeInfoChar;
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
+
+    intrinsics["@print"] = Intrisic::Print;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

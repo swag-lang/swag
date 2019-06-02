@@ -45,6 +45,7 @@ struct ByteCodeGenJob : public Job
     static bool emitBinaryOp(ByteCodeGenContext* context);
     static bool emitIdentifier(ByteCodeGenContext* context);
     static bool emitLocalFuncCall(ByteCodeGenContext* context);
+    static bool emitIntrinsic(ByteCodeGenContext* context);
     static bool emitReturn(ByteCodeGenContext* context);
 
     AstNode*         originalNode;
