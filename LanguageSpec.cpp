@@ -23,6 +23,7 @@ void LanguageSpec::setup()
     keywords["false"]     = TokenId::KwdFalse;
     keywords["attr"]      = TokenId::KwdAttr;
     keywords["return"]    = TokenId::KwdReturn;
+    keywords["using"]     = TokenId::KwdUsing;
 
     keywords["u64"]    = TokenId::NativeType;
     keywords["u32"]    = TokenId::NativeType;

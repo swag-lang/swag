@@ -5,6 +5,20 @@
 #include "PoolFactory.h"
 #include "SourceFile.h"
 
+bool SyntaxJob::doUsing(AstNode* parent)
+{
+    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+    node->semanticFct = &SemanticJob::resolveUsing;
+    node->inheritOwners(this);
+    node->inheritToken(token);
+    
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doIdentifierRef(node));
+
+	SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    return true;
+}
+
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobal(), error(token, "a namespace definition must appear either at file scope or immediately within another namespace definition"));
@@ -134,6 +148,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         break;
     case TokenId::KwdAttr:
         SWAG_CHECK(doAttrDecl(parent));
+        break;
+    case TokenId::KwdUsing:
+        SWAG_CHECK(doUsing(parent));
         break;
     case TokenId::SymAttrStart:
         SWAG_CHECK(doAttrUse(parent));

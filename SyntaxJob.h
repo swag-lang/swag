@@ -57,6 +57,7 @@ struct SyntaxJob : public Job
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
+    bool doUsing(AstNode* parent);
 
     Tokenizer   tokenizer;
     Token       token;

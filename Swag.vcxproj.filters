@@ -64,9 +64,6 @@
     <ClCompile Include="Ast.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="SyntaxDeclaration_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="SemanticJob.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -76,39 +73,15 @@
     <ClCompile Include="SymTable.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="SyntaxCompiler_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="TypeManager.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="SemanticExpression_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="SyntaxExpression_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="TypeManagerCast_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="SemanticBinaryExpression_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="SemanticCompiler_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="SyntaxType_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="SemanticType_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="SourceFile.cpp">
       <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="SemanticIdentifier_.cpp">
-      <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="Concat.cpp">
       <Filter>Backend</Filter>
@@ -118,24 +91,6 @@
     </ClCompile>
     <ClCompile Include="BackendC.cpp">
       <Filter>Backend\C</Filter>
-    </ClCompile>
-    <ClCompile Include="SyntaxEnum_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="SemanticEnum_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="SyntaxFunction_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="SemanticFunc_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="SemanticVar_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="SyntaxIdentifier_.cpp">
-      <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="ByteCodeRun.cpp">
       <Filter>Backend\ByteCode</Filter>
@@ -161,15 +116,6 @@
     <ClCompile Include="Module.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="SyntaxAttribute_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="SemanticAttribute_.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="SyntaxVar_.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="TypeInfo.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -191,8 +137,65 @@
     <ClCompile Include="TokenizerIdentifier_.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="SemanticUnaryExpression_.cpp">
+    <ClCompile Include="SemanticJobDeclaration_.cpp">
       <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobType_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobUnaryExpression_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobVar_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobIdentifier_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobFunc_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobExpression_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobEnum_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobCompiler_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobBinaryExpression_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobAttribute_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobIdentifier_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobFunction_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobExpression_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobEnum_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobDeclaration_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobCompiler_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobAttribute_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobType_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SyntaxJobVar_.cpp">
+      <Filter>Lexer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
