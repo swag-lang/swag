@@ -8,6 +8,7 @@ enum class ByteCodeNodeId : uint16_t
 	LocalFuncCall,
     Ret,
 	IntrinsicPrintS64,
+    IntrinsicPrintF64,
     IntrinsicPrintChar,
 
     PushBool,

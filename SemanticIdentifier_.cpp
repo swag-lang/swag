@@ -71,7 +71,7 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         node->kind        = AstNodeKind::FuncCall;
         node->semanticFct = &SemanticJob::resolveFuncCall;
         if (typeFunc->intrinsic != Intrisic::None)
-			node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+            node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
         else
             node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncCall;
         break;
@@ -234,7 +234,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 vector<const Diagnostic*> notes;
                 for (auto overload : badSignature)
                 {
-                    auto note = new Diagnostic{sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+                    auto note = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
 
@@ -262,7 +262,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         vector<const Diagnostic*> notes;
         for (auto overload : matches)
         {
-            auto note = new Diagnostic{sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+            auto note = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
             notes.push_back(note);
         }
 

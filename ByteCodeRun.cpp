@@ -49,6 +49,7 @@ void ByteCodeRun::setup()
     mapNodes[ByteCodeNodeId::LocalFuncCall]      = runLocalFuncCall;
     mapNodes[ByteCodeNodeId::Ret]                = runRet;
     mapNodes[ByteCodeNodeId::IntrinsicPrintS64]  = runIntrinsicPrintS64;
+    mapNodes[ByteCodeNodeId::IntrinsicPrintF64]  = runIntrinsicPrintF64;
     mapNodes[ByteCodeNodeId::IntrinsicPrintChar] = runIntrinsicPrintChar;
 }
 

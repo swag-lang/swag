@@ -30,6 +30,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         case NativeType::S64:
             emitInstruction(context, ByteCodeNodeId::IntrinsicPrintS64);
             break;
+        case NativeType::F64:
+            emitInstruction(context, ByteCodeNodeId::IntrinsicPrintF64);
+            break;
         case NativeType::Char:
             emitInstruction(context, ByteCodeNodeId::IntrinsicPrintChar);
             break;

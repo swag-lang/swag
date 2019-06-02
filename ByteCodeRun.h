@@ -54,6 +54,7 @@ struct ByteCodeRun
     static uint8_t* runRet(ByteCodeRunContext* context);
     static uint8_t* runLocalFuncCall(ByteCodeRunContext* context);
     static uint8_t* runIntrinsicPrintS64(ByteCodeRunContext* context);
+    static uint8_t* runIntrinsicPrintF64(ByteCodeRunContext* context);
     static uint8_t* runIntrinsicPrintChar(ByteCodeRunContext* context);
 
     map<ByteCodeNodeId, RunNodeFct> mapNodes;

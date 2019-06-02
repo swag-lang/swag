@@ -28,6 +28,15 @@ uint8_t* ByteCodeRun::runLocalFuncCall(ByteCodeRunContext* context)
     return context->ep;
 }
 
+uint8_t* ByteCodeRun::runIntrinsicPrintF64(ByteCodeRunContext* context)
+{
+    auto val = context->popF64();
+    g_Log.lock();
+    g_Log.print(to_string(val));
+    g_Log.unlock();
+    return context->ep;
+}
+
 uint8_t* ByteCodeRun::runIntrinsicPrintS64(ByteCodeRunContext* context)
 {
     auto val = context->popS64();
