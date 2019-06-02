@@ -39,6 +39,7 @@ bool SourceFile::open()
 {
     if (fileHandle != nullptr)
         return true;
+    openedOnce = true;
 
     auto err = _wfopen_s(&fileHandle, path.c_str(), L"rb");
     if (fileHandle == nullptr)
@@ -53,36 +54,19 @@ bool SourceFile::open()
     return true;
 }
 
-bool SourceFile::ensureOpen()
-{
-    if (!fileHandle && !openedOnce)
-    {
-        openedOnce = true;
-        if (!open())
-            return false;
-        if (!checkFormat())
-            return false;
-    }
-    else if (!fileHandle)
-        open();
-    return true;
-}
-
-bool SourceFile::checkFormat()
+bool SourceFile::checkFormat(int bufferIndex)
 {
     // Read header
-    uint8_t buf[4] = {0, 0, 0, 0};
-    fread(buf, sizeof(uint8_t), 4, fileHandle);
-    auto c1 = buf[0];
-    auto c2 = buf[1];
-    auto c3 = buf[2];
-    auto c4 = buf[3];
+    uint8_t c1 = buffers[bufferIndex][0];
+    uint8_t c2 = buffers[bufferIndex][1];
+    uint8_t c3 = buffers[bufferIndex][2];
+    uint8_t c4 = buffers[bufferIndex][3];
 
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
     {
-        textFormat = TextFormat::UTF8;
-        fileSeek   = 3;
-        headerSize = 3;
+        textFormat    = TextFormat::UTF8;
+        bufferCurSeek = 3;
+        headerSize    = 3;
         return true;
     }
 
@@ -185,9 +169,6 @@ char SourceFile::getPrivateChar()
 
     if (bufferCurSeek >= buffersSize[bufferCurIndex])
     {
-        if (!openedOnce && !ensureOpen())
-            return 0;
-
         // Done
         if (doneLoading)
         {
@@ -197,13 +178,27 @@ char SourceFile::getPrivateChar()
 
         auto nextBufIndex = (bufferCurIndex + 1) % 2;
 
-        if (!requests[nextBufIndex])
-            buildRequest(nextBufIndex);
-        waitRequest(nextBufIndex);
-        validateRequest(nextBufIndex);
+		// First time, open and read in sync. This is faster to open files in jobs that letting
+		// the loading thread open files one by one
+        if (!openedOnce)
+        {
+            if (!open())
+                return 0;
+            buffersSize[nextBufIndex] = readTo(buffers[nextBufIndex]);
+            if (!checkFormat(nextBufIndex))
+                return false;
+            fileSeek = BUF_SIZE;
+        }
+        else
+        {
+            if (!requests[nextBufIndex])
+                buildRequest(nextBufIndex);
+            waitRequest(nextBufIndex);
+            validateRequest(nextBufIndex);
+            bufferCurSeek = 0;
+        }
 
         bufferCurIndex = (bufferCurIndex + 1) % 2;
-        bufferCurSeek  = 0;
 
         // Make an async request to read the next buffer
         if (!doneLoading)

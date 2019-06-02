@@ -72,7 +72,7 @@ void LoadingThread::loop()
         }
 
 		req->loadedSize = 0;
-        if (req->file->ensureOpen())
+        if (req->file->open())
         {
             req->file->seekTo(req->seek);
             req->loadedSize = req->file->readTo(req->buffer);

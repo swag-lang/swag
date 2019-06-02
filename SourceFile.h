@@ -30,7 +30,6 @@ struct SourceFile : public PoolElement
     bool     report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
 
     bool open();
-    bool ensureOpen();
     void cleanCache();
     void seekTo(long seek);
     long readTo(char* buffer);
@@ -41,7 +40,7 @@ struct SourceFile : public PoolElement
     void buildRequest(int reqNum);
     char getPrivateChar();
     void waitEndRequests();
-    bool checkFormat();
+    bool checkFormat(int bufferIndex);
 
     fs::path     path;
     BuildPass    buildPass     = BuildPass::Full;
@@ -69,6 +68,7 @@ struct SourceFile : public PoolElement
     bool                         doneLoading = false;
     bool                         directMode  = false;
     bool                         openedOnce  = false;
+    bool                         formatDone  = false;
     int                          totalRead   = 0;
     condition_variable           condVar;
 };
