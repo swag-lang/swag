@@ -51,7 +51,7 @@ bool SemanticJob::resolveTypeDecl(SemanticContext* context)
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Type));
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope->parentScope, node, SymbolKind::Type));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Type));
 
     context->result = SemanticResult::Done;
     return true;

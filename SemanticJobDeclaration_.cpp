@@ -9,7 +9,7 @@
 bool SemanticJob::resolveNamespace(SemanticContext* context)
 {
     auto node = context->node;
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope->parentScope, node, SymbolKind::Namespace));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Namespace));
     return true;
 }
 

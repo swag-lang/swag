@@ -66,10 +66,10 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     auto sourceFile = context->sourceFile;
     auto job        = context->job;
 
-    SemanticJob::collectScopeHiearchy(context, job->scopeHierarchy, startScope);
+    SemanticJob::collectScopeHiearchy(context, job->scopeHierarchy, startScope->parentScope);
     for (auto scope : job->scopeHierarchy)
     {
-        if (scope->symTable)
+        if (scope->symTable && scope != startScope)
             SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
         scope = scope->parentScope;
     }
