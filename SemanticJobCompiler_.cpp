@@ -20,7 +20,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     node->inheritAndFlag(expr, AST_CONST_EXPR);
     node->inheritComputedValue(expr);
 
-	// No need to run, this is already baked
+    // No need to run, this is already baked
     if (node->flags & AST_VALUE_COMPUTED)
     {
         context->result = SemanticResult::Done;
@@ -47,17 +47,22 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         }
     }
 
-    ByteCodeRunContext runContext;
-    runContext.node       = expr;
-    runContext.sourceFile = sourceFile;
-    runContext.bc         = node->bc;
-    runContext.bc->out.rewind();
-    runContext.stack_bc.resize(1024);
-    runContext.stack_ep.resize(1024);
-    runContext.stack_storage.resize(1024);
-    SWAG_CHECK(g_Run.run(&runContext));
-    if (runContext.sp)
-        node->computedValue.reg = runContext.stack_storage[runContext.sp - 1].reg;
+    // Only one run at a time !
+    static SpinLock mutex;
+    {
+        scoped_lock        lk(mutex);
+        ByteCodeRunContext runContext;
+        runContext.node       = expr;
+        runContext.sourceFile = sourceFile;
+        runContext.bc         = node->bc;
+        runContext.bc->out.rewind();
+        runContext.stack_bc.resize(1024);
+        runContext.stack_ep.resize(1024);
+        runContext.stack_storage.resize(1024);
+        SWAG_CHECK(g_Run.run(&runContext));
+        if (runContext.sp)
+            node->computedValue.reg = runContext.stack_storage[runContext.sp - 1].reg;
+    }
 
     context->result = SemanticResult::Done;
     return true;

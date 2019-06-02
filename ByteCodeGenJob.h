@@ -32,6 +32,7 @@ struct ByteCodeGenJob : public Job
     void reset() override
     {
         nodes.clear();
+        dependentJobs.clear();
     }
 
     static bool internalError(ByteCodeGenContext* context);
