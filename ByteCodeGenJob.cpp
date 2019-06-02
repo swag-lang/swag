@@ -53,7 +53,7 @@ JobResult ByteCodeGenJob::execute()
         {
         case AstNodeResolveState::Enter:
             node->bytecodeState = AstNodeResolveState::ProcessingChilds;
-            if (!node->childs.empty())
+            if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
             {
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
@@ -65,12 +65,17 @@ JobResult ByteCodeGenJob::execute()
             }
 
         case AstNodeResolveState::ProcessingChilds:
-            if (node->byteCodeFct)
+            if (node->flags & AST_VALUE_COMPUTED)
+            {
+                context.node = node;
+                if (!emitLiteral(&context))
+                    return JobResult::ReleaseJob;
+            }
+            else if (node->byteCodeFct)
             {
                 context.node = node;
                 if (!node->byteCodeFct(&context))
                     return JobResult::ReleaseJob;
-
                 if (context.result == ByteCodeResult::Pending)
                     return JobResult::KeepJobAlive;
             }
