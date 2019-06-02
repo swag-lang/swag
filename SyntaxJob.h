@@ -37,7 +37,7 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doIdentifier(AstNode* parent, AstNode** result = nullptr);
+    bool doIdentifier(AstNode* parent);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);

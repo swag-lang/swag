@@ -32,7 +32,16 @@ bool SyntaxJob::doNamespace(AstNode* parent)
         namespaceNode              = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
         namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
         namespaceNode->inheritOwners(this);
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
+
+        switch (token.id)
+        {
+        case TokenId::Identifier:
+            break;
+        case TokenId::SymLeftCurly:
+            return syntaxError(token, "missing namespace name before '{'");
+        default:
+            return syntaxError(token, format("invalid namespace name '%s'", token.text.c_str()));
+        }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->externalBuffer)

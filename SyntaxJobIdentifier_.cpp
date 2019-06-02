@@ -4,17 +4,13 @@
 #include "Pool.h"
 #include "PoolFactory.h"
 
-bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
+bool SyntaxJob::doIdentifier(AstNode* parent)
 {
     auto identifier = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent, false);
     identifier->inheritOwners(this);
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
-    identifier->token       = move(token);
-    identifier->name        = identifier->token.text;
-    identifier->name.computeCrc();
-    if (result)
-        *result = identifier;
+    identifier->inheritToken(token);
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymLeftParen)
@@ -45,7 +41,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
-    auto identifierRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent, false);
+    auto identifierRef = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent, false);
     identifierRef->inheritOwners(this);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     if (result)

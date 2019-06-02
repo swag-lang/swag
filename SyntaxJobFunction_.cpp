@@ -153,7 +153,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
             auto stmtNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncContent, sourceFile->indexInModule, funcNode, false);
             stmtNode->inheritOwners(this);
-            stmtNode->inheritToken(token);
+            stmtNode->inheritLocation();
             funcNode->content = stmtNode;
             while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
             {

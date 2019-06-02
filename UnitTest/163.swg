@@ -7,7 +7,7 @@ namespace A.B
 {
 	func main: ()
 	{
-	}	
+	}
 }
 
 #run main
