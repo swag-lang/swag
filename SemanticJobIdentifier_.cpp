@@ -26,22 +26,27 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
 void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope)
 {
-    while (startScope)
+    if (!startScope)
+        return;
+    scopes.push_back(startScope);
+    for (int i = 0; i < scopes.size(); i++)
     {
-        scopes.push_back(startScope);
-        if (!startScope->alternativeScopes.empty())
-			scopes.insert(scopes.end(), startScope->alternativeScopes.begin(), startScope->alternativeScopes.end());
-        startScope = startScope->parentScope;
+        auto scope = scopes[i];
+        if (scope->parentScope)
+            scopes.push_back(scope->parentScope);
+        if (!scope->alternativeScopes.empty())
+            scopes.insert(scopes.end(), scope->alternativeScopes.begin(), scope->alternativeScopes.end());
     }
 }
 
-bool SemanticJob::checkSymbolGhosting(SourceFile* sourceFile, Scope* startScope, AstNode* node, SymbolKind kind)
+bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind)
 {
-    // We need to check that the namespace name is not defined in the scope hierarchy, to avoid
-    // symbol ghosting
-    vector<Scope*> scopes;
-    SemanticJob::collectScopeHiearchy(scopes, startScope);
-    for (auto scope : scopes)
+    auto sourceFile = context->sourceFile;
+    auto job        = context->job;
+
+    job->scopeHierarchy.clear();
+    SemanticJob::collectScopeHiearchy(job->scopeHierarchy, startScope);
+    for (auto scope : job->scopeHierarchy)
     {
         SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
         scope = scope->parentScope;

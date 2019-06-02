@@ -6,6 +6,7 @@ struct Module;
 struct AstNode;
 struct PoolFactory;
 struct Diagnostic;
+struct Scope;
 
 enum class BuildPass
 {

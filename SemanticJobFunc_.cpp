@@ -73,7 +73,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, typeInfo->attributes, context->node->attributes, funcNode, AstNodeKind::FuncDecl));
     typeInfo->returnType = typeNode->typeInfo;
     SWAG_CHECK(typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function));
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context->sourceFile, funcNode->ownerScope->parentScope, funcNode, SymbolKind::Function));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope->parentScope, funcNode, SymbolKind::Function));
 
     context->result = SemanticResult::Done;
     return true;
