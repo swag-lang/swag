@@ -58,6 +58,7 @@ struct ByteCodeRun
     static uint8_t* runIntrinsicPrintF64(ByteCodeRunContext* context);
     static uint8_t* runIntrinsicPrintChar(ByteCodeRunContext* context);
     static uint8_t* runIntrinsicPrintString(ByteCodeRunContext* context);
+    static uint8_t* runIntrinsicAssert(ByteCodeRunContext* context);
 
     map<ByteCodeNodeId, RunNodeFct> mapNodes;
 };

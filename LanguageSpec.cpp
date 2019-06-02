@@ -13,6 +13,7 @@ void LanguageSpec::setup()
     keywords["#line"]     = TokenId::CompilerLine;
 
     keywords["@print"] = TokenId::Intrisic;
+    keywords["@assert"] = TokenId::Intrisic;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
@@ -54,6 +55,7 @@ void LanguageSpec::setup()
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
 
     intrinsics["@print"] = Intrisic::Print;
+    intrinsics["@assert"] = Intrisic::Assert;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

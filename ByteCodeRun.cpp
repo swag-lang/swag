@@ -10,18 +10,18 @@
 
 void ByteCodeRun::setup()
 {
-    mapNodes[ByteCodeNodeId::PushBool] = runPushBool;
-    mapNodes[ByteCodeNodeId::PushS8]   = runPushS8;
-    mapNodes[ByteCodeNodeId::PushS16]  = runPushS16;
-    mapNodes[ByteCodeNodeId::PushS32]  = runPushS32;
-    mapNodes[ByteCodeNodeId::PushS64]  = runPushS64;
-    mapNodes[ByteCodeNodeId::PushU8]   = runPushU8;
-    mapNodes[ByteCodeNodeId::PushU16]  = runPushU16;
-    mapNodes[ByteCodeNodeId::PushU32]  = runPushU32;
-    mapNodes[ByteCodeNodeId::PushU64]  = runPushU64;
-    mapNodes[ByteCodeNodeId::PushF32]  = runPushF32;
-    mapNodes[ByteCodeNodeId::PushF64]  = runPushF64;
-    mapNodes[ByteCodeNodeId::PushString]  = runPushString;
+    mapNodes[ByteCodeNodeId::PushBool]   = runPushBool;
+    mapNodes[ByteCodeNodeId::PushS8]     = runPushS8;
+    mapNodes[ByteCodeNodeId::PushS16]    = runPushS16;
+    mapNodes[ByteCodeNodeId::PushS32]    = runPushS32;
+    mapNodes[ByteCodeNodeId::PushS64]    = runPushS64;
+    mapNodes[ByteCodeNodeId::PushU8]     = runPushU8;
+    mapNodes[ByteCodeNodeId::PushU16]    = runPushU16;
+    mapNodes[ByteCodeNodeId::PushU32]    = runPushU32;
+    mapNodes[ByteCodeNodeId::PushU64]    = runPushU64;
+    mapNodes[ByteCodeNodeId::PushF32]    = runPushF32;
+    mapNodes[ByteCodeNodeId::PushF64]    = runPushF64;
+    mapNodes[ByteCodeNodeId::PushString] = runPushString;
 
     mapNodes[ByteCodeNodeId::BinOpPlusS32] = runBinOpPlusS32;
     mapNodes[ByteCodeNodeId::BinOpPlusS64] = runBinOpPlusS64;
@@ -47,12 +47,14 @@ void ByteCodeRun::setup()
     mapNodes[ByteCodeNodeId::BinOpDivF32] = runBinOpDivF32;
     mapNodes[ByteCodeNodeId::BinOpDivF64] = runBinOpDivF64;
 
-    mapNodes[ByteCodeNodeId::LocalFuncCall]      = runLocalFuncCall;
-    mapNodes[ByteCodeNodeId::Ret]                = runRet;
-    mapNodes[ByteCodeNodeId::IntrinsicPrintS64]  = runIntrinsicPrintS64;
-    mapNodes[ByteCodeNodeId::IntrinsicPrintF64]  = runIntrinsicPrintF64;
-    mapNodes[ByteCodeNodeId::IntrinsicPrintChar] = runIntrinsicPrintChar;
+    mapNodes[ByteCodeNodeId::LocalFuncCall] = runLocalFuncCall;
+    mapNodes[ByteCodeNodeId::Ret]           = runRet;
+
+    mapNodes[ByteCodeNodeId::IntrinsicPrintS64]    = runIntrinsicPrintS64;
+    mapNodes[ByteCodeNodeId::IntrinsicPrintF64]    = runIntrinsicPrintF64;
+    mapNodes[ByteCodeNodeId::IntrinsicPrintChar]   = runIntrinsicPrintChar;
     mapNodes[ByteCodeNodeId::IntrinsicPrintString] = runIntrinsicPrintString;
+    mapNodes[ByteCodeNodeId::IntrinsicAssert]      = runIntrinsicAssert;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)

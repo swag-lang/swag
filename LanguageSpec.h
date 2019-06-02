@@ -8,6 +8,7 @@ enum class Intrisic
 {
     None = 0,
     Print,
+    Assert,
 };
 
 struct LanguageSpec

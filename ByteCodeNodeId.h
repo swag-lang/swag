@@ -11,6 +11,7 @@ enum class ByteCodeNodeId : uint16_t
     IntrinsicPrintF64,
     IntrinsicPrintChar,
     IntrinsicPrintString,
+    IntrinsicAssert,
 
     PushBool,
     PushS8,

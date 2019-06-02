@@ -34,6 +34,12 @@ struct ByteCodeRunContext
         errorMsg = msg;
     }
 
+    bool popBool()
+    {
+        auto& ref = stack_storage[--sp];
+        return *(bool*) ref.addr;
+    }
+
     int32_t popS32()
     {
         auto& ref = stack_storage[--sp];
@@ -68,6 +74,14 @@ struct ByteCodeRunContext
     {
         auto& ref = stack_storage[--sp];
         return *(double*) ref.addr;
+    }
+
+    void push(bool val)
+    {
+        assert(sp != stack_storage.size());
+        auto& ref = stack_storage[sp++];
+        ref.reg.b = val;
+        ref.addr  = &ref.reg.b;
     }
 
     void push(int32_t val)

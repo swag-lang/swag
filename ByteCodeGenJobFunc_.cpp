@@ -41,6 +41,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             break;
         }
         break;
+    case Intrisic::Assert:
+        emitInstruction(context, ByteCodeNodeId::IntrinsicAssert);
+        break;
     default:
         assert(false);
     }

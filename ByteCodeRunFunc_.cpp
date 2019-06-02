@@ -51,7 +51,7 @@ uint8_t* ByteCodeRun::runIntrinsicPrintChar(ByteCodeRunContext* context)
     auto val = context->popU32();
     g_Log.lock();
     Utf8 msg;
-	msg += (char32_t) val;
+    msg += (char32_t) val;
     g_Log.print(msg);
     g_Log.unlock();
     return context->ep;
@@ -64,5 +64,17 @@ uint8_t* ByteCodeRun::runIntrinsicPrintString(ByteCodeRunContext* context)
     g_Log.lock();
     g_Log.print(context->bc->strBuffer[val]);
     g_Log.unlock();
+    return context->ep;
+}
+
+uint8_t* ByteCodeRun::runIntrinsicAssert(ByteCodeRunContext* context)
+{
+    auto val = context->popBool();
+    if (!val)
+    {
+        context->error("intrisic @assert failed");
+        return context->ep;
+    }
+
     return context->ep;
 }
