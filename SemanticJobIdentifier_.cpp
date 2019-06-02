@@ -26,6 +26,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
 void SemanticJob::collectScopeHiearchy(vector<Scope*>& scopes, Scope* startScope)
 {
+    scopes.clear();
     if (!startScope)
         return;
     scopes.push_back(startScope);
@@ -44,7 +45,6 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     auto sourceFile = context->sourceFile;
     auto job        = context->job;
 
-    job->scopeHierarchy.clear();
     SemanticJob::collectScopeHiearchy(job->scopeHierarchy, startScope);
     for (auto scope : job->scopeHierarchy)
     {
@@ -106,7 +106,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         auto startScope = parent->startScope;
         if (!startScope)
             startScope = node->ownerScope;
-        scopeHierarchy.clear();
         dependentSymbols.clear();
         collectScopeHiearchy(scopeHierarchy, startScope);
         for (auto scope : scopeHierarchy)
