@@ -462,8 +462,8 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
 
 bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
 {
-    bool startsWithDot  = false;
-    token.text          = c;
+    bool startsWithDot = false;
+    token.text         = c;
     if (c == '0')
     {
         unsigned offset;
@@ -505,6 +505,7 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
         if (!SWAG_IS_DIGIT(c))
         {
             token.endLocation = location;
+            token.text        = ".";
             token.id          = TokenId::SymDot;
             return true;
         }

@@ -43,7 +43,10 @@ bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation&
 bool SyntaxJob::eatToken(TokenId id)
 {
     if (token.id != id)
+    {
         SWAG_CHECK(syntaxError(token, format("'%s' expected instead of '%s'", g_LangSpec.tokenToName(id).c_str(), token.text.c_str())));
+    }
+
     SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }

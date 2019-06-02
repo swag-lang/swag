@@ -7,67 +7,75 @@
 
 bool SyntaxJob::doUsing(AstNode* parent)
 {
-    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
     node->semanticFct = &SemanticJob::resolveUsing;
     node->inheritOwners(this);
     node->inheritToken(token);
-    
+
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doIdentifierRef(node));
 
-	SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     return true;
 }
 
-bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
+bool SyntaxJob::doNamespace(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->isGlobal(), error(token, "a namespace definition must appear either at file scope or immediately within another namespace definition"));
-
-    auto namespaceNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
-    namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
-    namespaceNode->inheritOwners(this);
-    if (result)
-        *result = namespaceNode;
-
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
 
-    // Be sure this is not the swag namespace, except for a runtime file
-    if (!sourceFile->externalBuffer)
-        SWAG_VERIFY(token.text != "swag", syntaxError(token, "the 'swag' namespace is reserved by the compiler"));
-
-    Ast::assignToken(namespaceNode, token);
-
-    // Add/Get namespace
-    Scope* newScope = nullptr;
-    currentScope->allocateSymTable();
+    AstNode* namespaceNode;
+    Scope*   oldScope = currentScope;
+    Scope*   newScope = nullptr;
+    while (true)
     {
-        scoped_lock lk(currentScope->symTable->mutex);
-        auto        symbol = currentScope->symTable->findNoLock(namespaceNode->name);
-        if (!symbol)
+        namespaceNode              = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+        namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
+        namespaceNode->inheritOwners(this);
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid namespace name '%s'", token.text.c_str())));
+
+        // Be sure this is not the swag namespace, except for a runtime file
+        if (!sourceFile->externalBuffer)
+            SWAG_VERIFY(token.text != "swag", syntaxError(token, "the 'swag' namespace is reserved by the compiler"));
+        Ast::assignToken(namespaceNode, token);
+
+        // Add/Get namespace
+        currentScope->allocateSymTable();
         {
-            auto typeInfo           = sourceFile->poolFactory->typeInfoNamespace.alloc();
-            typeInfo->name          = namespaceNode->name;
-            newScope                = Ast::newScope(sourceFile, namespaceNode->name, ScopeKind::Namespace, currentScope);
-            typeInfo->scope         = newScope;
-            namespaceNode->typeInfo = typeInfo;
-            currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, namespaceNode, typeInfo, SymbolKind::Namespace);
+            scoped_lock lk(currentScope->symTable->mutex);
+            auto        symbol = currentScope->symTable->findNoLock(namespaceNode->name);
+            if (!symbol)
+            {
+                auto typeInfo           = sourceFile->poolFactory->typeInfoNamespace.alloc();
+                typeInfo->name          = namespaceNode->name;
+                newScope                = Ast::newScope(sourceFile, namespaceNode->name, ScopeKind::Namespace, currentScope);
+                typeInfo->scope         = newScope;
+                namespaceNode->typeInfo = typeInfo;
+                currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, namespaceNode, typeInfo, SymbolKind::Namespace);
+            }
+            else if (symbol->kind != SymbolKind::Namespace)
+            {
+                auto       firstOverload = &symbol->defaultOverload;
+                Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
+                Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
+                Utf8       note = "this is the other definition";
+                Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
+                return sourceFile->report(diag, &diagNote);
+            }
+            else
+                newScope = static_cast<TypeInfoNamespace*>(symbol->overloads[0]->typeInfo)->scope;
         }
-        else if (symbol->kind != SymbolKind::Namespace)
-        {
-            auto       firstOverload = &symbol->defaultOverload;
-            Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
-            Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-            Utf8       note = "this is the other definition";
-            Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
-            return sourceFile->report(diag, &diagNote);
-        }
-        else
-            newScope = static_cast<TypeInfoNamespace*>(symbol->overloads[0]->typeInfo)->scope;
+
+        SWAG_CHECK(tokenizer.getToken(token));
+        if (token.id != TokenId::SymDot)
+            break;
+        SWAG_CHECK(eatToken(TokenId::SymDot));
+        parent       = namespaceNode;
+        currentScope = newScope;
     }
 
-    SWAG_CHECK(tokenizer.getToken(token));
-    auto curly = move(token);
+    currentScope = oldScope;
+    auto curly   = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Content of namespace is toplevel

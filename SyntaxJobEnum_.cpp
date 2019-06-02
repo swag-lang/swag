@@ -54,7 +54,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     }
 
     // Content of enum
-    auto curly = move(token);
+    auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
     auto savedScope = currentScope;
     currentScope    = newScope;

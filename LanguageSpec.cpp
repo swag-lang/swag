@@ -76,6 +76,8 @@ string LanguageSpec::tokenToName(TokenId id)
         return "[";
     case TokenId::SymRightSquare:
         return "]";
+    case TokenId::SymDot:
+        return ".";
     }
 
     return "???";

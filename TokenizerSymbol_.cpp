@@ -13,6 +13,9 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
     case '\\':
         token.id = TokenId::SymBackSlash;
         return true;
+    case '.':
+        token.id = TokenId::SymDot;
+        return true;
     case '$':
         token.id = TokenId::SymDollar;
         return true;

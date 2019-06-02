@@ -144,7 +144,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     else
     {
 
-        auto curly = move(token);
+        auto curly = token;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
         {
