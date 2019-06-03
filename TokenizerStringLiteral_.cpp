@@ -228,8 +228,8 @@ bool Tokenizer::doCharLiteral(Token& token)
     }
 
     token.literalValue.ch = c;
-    token.startLocation   = location;
-    c                     = getCharNoSeek(offset);
+    token.endLocation   = location;
+    c = getCharNoSeek(offset);
     if (c != '\'')
     {
         result = false;

@@ -8,5 +8,5 @@ enum T : s16
 	Y;
 }
 
-#assert T.X == -30
+#assert T.X == -2
 #assert T.Y == -1
