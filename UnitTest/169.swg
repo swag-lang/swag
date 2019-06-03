@@ -5,8 +5,8 @@ using swag;
 #[constexpr]
 func main:() -> s32
 {
-	@print("toto\n");
+	//@print("toto\n");
 	return 666;
 }
 
-//#print main()
+#run main()

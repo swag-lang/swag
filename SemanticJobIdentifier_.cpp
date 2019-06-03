@@ -8,22 +8,25 @@
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
-    auto           node          = static_cast<AstIdentifierRef*>(context->node);
-    AstIdentifier* identifier    = static_cast<AstIdentifier*>(node->childs.back());
+    auto           node       = static_cast<AstIdentifierRef*>(context->node);
+    AstIdentifier* identifier = static_cast<AstIdentifier*>(node->childs.back());
+
     node->resolvedSymbolName     = identifier->resolvedSymbolName;
     node->resolvedSymbolOverload = identifier->resolvedSymbolOverload;
     node->typeInfo               = identifier->typeInfo;
     node->name                   = move(identifier->name);
+    node->inheritComputedValue(identifier);
 
-    switch (node->resolvedSymbolName->kind)
+    // Flag inheritance
+    bool isConstExpr = true;
+    for (auto child : node->childs)
     {
-    case SymbolKind::EnumValue:
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-        node->computedValue = node->resolvedSymbolOverload->computedValue;
-        break;
-    case SymbolKind::Function:
-        break;
+        if (!(child->flags & AST_CONST_EXPR))
+            isConstExpr = false;
     }
+
+    if (isConstExpr)
+        node->flags |= AST_CONST_EXPR;
 
     return true;
 }
@@ -97,6 +100,10 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
         node->flags |= AST_CONST_EXPR;
         break;
+    case SymbolKind::EnumValue:
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        node->computedValue = node->resolvedSymbolOverload->computedValue;
+        break;
     case SymbolKind::Function:
     {
         auto typeFunc     = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
@@ -114,7 +121,6 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // Clear cache for the next symbol resolution
     context->job->scopeHierarchy.clear();
     context->job->dependentSymbols.clear();
-    context->result = SemanticResult::Done;
 }
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
