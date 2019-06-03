@@ -23,7 +23,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("minus operation not allowed on type '%s'", op->typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, op->token, format("minus operation not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
@@ -57,7 +57,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
     case NativeType::Bool:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("boolean inversion not allowed on type '%s'", op->typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, op->token, format("boolean inversion not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
