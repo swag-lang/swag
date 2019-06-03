@@ -190,6 +190,27 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::CompareOp8:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u8 == registersRC[ip->b.u32].u8;
+        break;
+    }
+    case ByteCodeOp::CompareOp16:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u16 == registersRC[ip->b.u32].u16;
+        break;
+    }
+    case ByteCodeOp::CompareOp32:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 == registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::CompareOp64:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u64 == registersRC[ip->b.u32].u64;
+        break;
+    }
+
     default:
         context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;

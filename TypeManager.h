@@ -32,6 +32,7 @@ struct TypeManager
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteInteger(AstNode* node);
     static TypeInfo* flattenType(TypeInfo* typeInfo);
+    static TypeInfo* concreteType(TypeInfo* typeInfo);
 
     TypeInfoNative* typeInfoS8;
     TypeInfoNative* typeInfoS16;

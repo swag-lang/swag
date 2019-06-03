@@ -249,7 +249,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     auto leftNode  = node->childs[0];
     auto rightNode = node->childs[1];
 
-	node->inheritLocation();
+    node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, leftNode));
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, rightNode));
@@ -279,7 +279,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
-	node->inheritLocation();
+    node->inheritLocation();
     TypeManager::promote(left, right);
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
     node->typeInfo = left->typeInfo;
@@ -411,13 +411,14 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
-	node->inheritLocation();
+    node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);
-    left->typeInfo = TypeManager::flattenType(left->typeInfo);
+    left->typeInfo  = TypeManager::flattenType(left->typeInfo);
     right->typeInfo = TypeManager::flattenType(right->typeInfo);
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
 
+    node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))

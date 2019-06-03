@@ -26,3 +26,18 @@ TypeInfo* TypeManager::flattenType(TypeInfo* typeInfo)
         return typeInfo;
     return static_cast<TypeInfoEnum*>(typeInfo)->rawType;
 }
+
+TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo)
+{
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Native:
+        return typeInfo;
+    case TypeInfoKind::FunctionAttribute:
+        return concreteType(static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType);
+    case TypeInfoKind::Enum:
+        return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType);
+    }
+
+	return typeInfo;
+}

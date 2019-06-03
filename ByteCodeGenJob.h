@@ -44,6 +44,8 @@ struct ByteCodeGenJob : public Job
     static bool emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOp(ByteCodeGenContext* context);
+    static bool emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
+    static bool emitCompareOp(ByteCodeGenContext* context);
     static bool emitIdentifier(ByteCodeGenContext* context);
     static bool emitLocalFuncCall(ByteCodeGenContext* context);
     static bool emitIntrinsic(ByteCodeGenContext* context);
