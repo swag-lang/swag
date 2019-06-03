@@ -2,12 +2,11 @@
 #unittest pass semantic
 using swag;
 
+#[constexpr]
 func main:() -> s32
 {
 	@print("toto\n");
 	return 666;
 }
 
-#run main()
-//#print "toto"
-//#assert false
+//#print main()

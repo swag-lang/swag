@@ -31,8 +31,8 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto sourceFile   = context->sourceFile;
+    auto node         = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncDecl;
 
     // Do we have a return value
@@ -41,7 +41,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (!(node->flags & AST_SCOPE_HAS_RETURN))
         {
             if (node->flags & AST_FCT_HAS_RETURN)
-				return sourceFile->report({sourceFile, node->content->token.endLocation, node->content->token.endLocation, format("not all control paths of function '%s' return a value", node->name.c_str())});
+                return sourceFile->report({sourceFile, node->content->token.endLocation, node->content->token.endLocation, format("not all control paths of function '%s' return a value", node->name.c_str())});
             return sourceFile->report({sourceFile, node->content->token.endLocation, node->content->token.endLocation, format("function '%s' must return a value", node->name.c_str())});
         }
     }
@@ -70,8 +70,14 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // Register symbol with its type
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FunctionAttribute);
+
     SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, funcNode->parameters));
-    SWAG_CHECK(collectAttributes(context, typeInfo->attributes, context->node->attributes, funcNode, AstNodeKind::FuncDecl));
+
+	// Collect function attributes
+    SWAG_CHECK(collectAttributes(context, typeInfo->attributes, funcNode->attributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
+    if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
+        funcNode->flags |= AST_CONST_EXPR;
+
     typeInfo->returnType = typeNode->typeInfo;
     SWAG_CHECK(typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));

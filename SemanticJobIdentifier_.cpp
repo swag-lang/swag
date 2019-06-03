@@ -15,10 +15,14 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->typeInfo               = identifier->typeInfo;
     node->name                   = move(identifier->name);
 
-    if (node->resolvedSymbolName->kind == SymbolKind::EnumValue)
+    switch (node->resolvedSymbolName->kind)
     {
+    case SymbolKind::EnumValue:
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         node->computedValue = node->resolvedSymbolOverload->computedValue;
+        break;
+    case SymbolKind::Function:
+        break;
     }
 
     return true;
@@ -82,23 +86,23 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     node->resolvedSymbolName     = symbol;
     node->resolvedSymbolOverload = symbol->overloads[0];
     node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
-    switch (node->typeInfo->kind)
-    {
-    case TypeInfoKind::Namespace:
-        parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
-        break;
-    case TypeInfoKind::Enum:
-        parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
-        break;
-    }
 
     switch (symbol->kind)
     {
+    case SymbolKind::Namespace:
+        parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
+        node->flags |= AST_CONST_EXPR;
+        break;
+    case SymbolKind::Enum:
+        parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
+        node->flags |= AST_CONST_EXPR;
+        break;
     case SymbolKind::Function:
     {
         auto typeFunc     = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
         node->kind        = AstNodeKind::FuncCall;
         node->semanticFct = &SemanticJob::resolveFuncCall;
+        node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
         if (typeFunc->intrinsic != Intrisic::None)
             node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
         else

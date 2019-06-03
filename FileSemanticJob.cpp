@@ -33,18 +33,19 @@ JobResult FileSemanticJob::execute()
             case AstNodeKind::AttrUse:
             {
                 auto job = newSemanticJob(sourceFile);
+                nodes.pop_back();
 
                 // Will deal with the next node too, as we want to stitch the attributes and the next declaration
                 // if necessary
                 if (!nodes.empty())
                 {
-                    job->nodes.push_back(nodes.back());
+                    auto nextNode = nodes.back();
+                    job->nodes.push_back(nextNode);
                     nodes.pop_back();
                 }
 
                 job->nodes.push_back(node);
                 g_ThreadMgr.addJob(job);
-                nodes.pop_back();
                 continue;
             }
             break;

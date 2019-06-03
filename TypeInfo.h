@@ -128,6 +128,8 @@ struct SymbolMatchContext
     }
 };
 
+static const uint64_t ATTRIBUTE_CONSTEXPR = 0x00000000'00000001;
+
 struct TypeInfoFuncAttr : public TypeInfo
 {
     TypeInfoFuncAttr()

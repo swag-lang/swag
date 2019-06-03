@@ -7,13 +7,18 @@
 #include "Module.h"
 #include "ThreadManager.h"
 
-bool SemanticJob::executeNode(SemanticContext* context, AstNode* node)
+bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
     auto sourceFile = context->sourceFile;
 
     // No need to run, this is already baked
     if (node->flags & AST_VALUE_COMPUTED)
         return true;
+
+    if (onlyconstExpr)
+    {
+        SWAG_VERIFY(node->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "can't evaluate expression at compile time"}));
+    }
 
     {
         // Need to generate bytecode, if not already done or running
@@ -42,7 +47,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node)
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
     auto expr = context->node->childs[0];
-    SWAG_CHECK(executeNode(context, expr));
+    SWAG_CHECK(executeNode(context, expr, false));
     return true;
 }
 
@@ -50,20 +55,20 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 {
     auto expr       = context->node->childs[0];
     auto sourceFile = context->sourceFile;
-
-    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, expr->token, "can't evaluate expression at compile time"}));
     SWAG_VERIFY(expr->typeInfo == g_TypeMgr.typeInfoBool, sourceFile->report({sourceFile, expr->token, "expression should be 'bool'"}));
+
+    SWAG_CHECK(executeNode(context, expr, true));
+    if (context->result == SemanticResult::Pending)
+        return true;
     SWAG_VERIFY(expr->computedValue.reg.b, sourceFile->report({sourceFile, expr, "compiler assertion failed"}));
     return true;
 }
 
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
-    auto expr       = context->node->childs[0];
-    auto sourceFile = context->sourceFile;
+    auto expr = context->node->childs[0];
 
-    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, expr->token, "can't evaluate expression at compile time"}));
-    SWAG_CHECK(executeNode(context, expr));
+    SWAG_CHECK(executeNode(context, expr, true));
     if (context->result == SemanticResult::Pending)
         return true;
 

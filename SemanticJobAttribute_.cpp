@@ -38,7 +38,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNode* forNode, AstNodeKind kind)
+bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags)
 {
     if (!attrUse)
         return true;
@@ -59,6 +59,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
                 Diagnostic note{sourceFile, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
+
+			// Predefined attributes will mark some flags
+			if (typeInfo->name == "constexpr")
+                flags |= ATTRIBUTE_CONSTEXPR;
 
             result.insert(typeInfo);
         }

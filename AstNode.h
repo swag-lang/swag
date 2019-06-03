@@ -78,9 +78,10 @@ struct AstNode : public PoolElement
         attributes         = nullptr;
         bc                 = nullptr;
         sourceFileIdx      = UINT32_MAX;
+        attributeFlags     = 0;
         flags              = 0;
         byteCodeJob        = nullptr;
-        resultRegisterRC     = UINT32_MAX;
+        resultRegisterRC   = UINT32_MAX;
         childs.clear();
     }
 
@@ -143,6 +144,7 @@ struct AstNode : public PoolElement
 
     AstNode*            parent;
     AstNode*            attributes;
+    uint64_t            attributeFlags;
     Token               token;
     SemanticFct         semanticFct;
     ByteCodeFct         byteCodeFct;

@@ -41,12 +41,12 @@ struct SemanticJob : public Job
     }
 
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
-    static bool collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNode* forNode, AstNodeKind kind);
+    static bool collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
     static void collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope);
     static void setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
-    static bool executeNode(SemanticContext* context, AstNode* node);
+    static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
