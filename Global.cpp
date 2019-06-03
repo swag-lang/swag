@@ -23,7 +23,6 @@ ByteCodeRun   g_Run;
 
 void Global::setup()
 {
-	g_Run.setup();
     g_TypeMgr.setup();
     g_LangSpec.setup();
 }

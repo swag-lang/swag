@@ -87,9 +87,6 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
         }
     }
 
-    auto& out = context->bc->out;
-    emitInstruction(context, ByteCodeOp::LocalFuncCall);
-    out.addPointer(overnode->bc);
-
+    emitInstruction(context, ByteCodeOp::LocalFuncCall)->r0.pointer = overnode->bc;
     return true;
 }

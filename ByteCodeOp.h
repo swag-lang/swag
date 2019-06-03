@@ -3,8 +3,6 @@ enum class ByteCodeOp : uint16_t
 {
     End = 0,
 
-	DebugInfos,
-
 	LocalFuncCall,
     Ret,
 	IntrinsicPrintS64,

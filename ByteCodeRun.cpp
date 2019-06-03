@@ -7,109 +7,289 @@
 #include "SemanticJob.h"
 #include "SourceFile.h"
 #include "ByteCode.h"
+#include "Log.h"
 
-void ByteCodeRun::setup()
+inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    mapNodes[ByteCodeOp::PushBool]   = runPushBool;
-    mapNodes[ByteCodeOp::PushS8]     = runPushS8;
-    mapNodes[ByteCodeOp::PushS16]    = runPushS16;
-    mapNodes[ByteCodeOp::PushS32]    = runPushS32;
-    mapNodes[ByteCodeOp::PushS64]    = runPushS64;
-    mapNodes[ByteCodeOp::PushU8]     = runPushU8;
-    mapNodes[ByteCodeOp::PushU16]    = runPushU16;
-    mapNodes[ByteCodeOp::PushU32]    = runPushU32;
-    mapNodes[ByteCodeOp::PushU64]    = runPushU64;
-    mapNodes[ByteCodeOp::PushF32]    = runPushF32;
-    mapNodes[ByteCodeOp::PushF64]    = runPushF64;
-    mapNodes[ByteCodeOp::PushString] = runPushString;
+    switch (ip->op)
+    {
+    case ByteCodeOp::PushBool:
+        context->push(ip->r0.b);
+        break;
+    case ByteCodeOp::PushS8:
+        context->push(ip->r0.s8);
+        break;
+    case ByteCodeOp::PushS16:
+        context->push(ip->r0.s16);
+        break;
+    case ByteCodeOp::PushS32:
+        context->push(ip->r0.s32);
+        break;
+    case ByteCodeOp::PushS64:
+        context->push(ip->r0.s64);
+        break;
+    case ByteCodeOp::PushU8:
+        context->push(ip->r0.u8);
+        break;
+    case ByteCodeOp::PushU16:
+        context->push(ip->r0.u16);
+        break;
+    case ByteCodeOp::PushU32:
+        context->push(ip->r0.u32);
+        break;
+    case ByteCodeOp::PushU64:
+        context->push(ip->r0.u64);
+        break;
+    case ByteCodeOp::PushF32:
+        context->push((float) ip->r0.f64);
+        break;
+    case ByteCodeOp::PushF64:
+        context->push(ip->r0.f64);
+        break;
+    case ByteCodeOp::PushString:
+        context->push(ip->r0.u32);
+        break;
 
-    mapNodes[ByteCodeOp::BinOpPlusS32] = runBinOpPlusS32;
-    mapNodes[ByteCodeOp::BinOpPlusS64] = runBinOpPlusS64;
-    mapNodes[ByteCodeOp::BinOpPlusU32] = runBinOpPlusU32;
-    mapNodes[ByteCodeOp::BinOpPlusU64] = runBinOpPlusU64;
-    mapNodes[ByteCodeOp::BinOpPlusF32] = runBinOpPlusF32;
-    mapNodes[ByteCodeOp::BinOpPlusF64] = runBinOpPlusF64;
+    case ByteCodeOp::BinOpPlusS32:
+    {
+        auto val1 = context->popS32();
+        auto val2 = context->popS32();
+        context->push(val2 + val1);
+        break;
+    }
+    case ByteCodeOp::BinOpPlusS64:
+    {
+        auto val1 = context->popS64();
+        auto val2 = context->popS64();
+        context->push(val2 + val1);
+        break;
+    }
+    case ByteCodeOp::BinOpPlusU32:
+    {
+        auto val1 = context->popU32();
+        auto val2 = context->popU32();
+        context->push(val2 + val1);
+        break;
+    }
+    case ByteCodeOp::BinOpPlusU64:
+    {
+        auto val1 = context->popU64();
+        auto val2 = context->popU64();
+        context->push(val2 + val1);
+        break;
+    }
+    case ByteCodeOp::BinOpPlusF32:
+    {
+        auto val1 = context->popF32();
+        auto val2 = context->popF32();
+        context->push(val2 + val1);
+        break;
+    }
+    case ByteCodeOp::BinOpPlusF64:
+    {
+        auto val1 = context->popU64();
+        auto val2 = context->popU64();
+        context->push(val2 + val1);
+        break;
+    }
 
-    mapNodes[ByteCodeOp::BinOpMinusS32] = runBinOpMinusS32;
-    mapNodes[ByteCodeOp::BinOpMinusS64] = runBinOpMinusS64;
-    mapNodes[ByteCodeOp::BinOpMinusU32] = runBinOpMinusU32;
-    mapNodes[ByteCodeOp::BinOpMinusU64] = runBinOpMinusU64;
-    mapNodes[ByteCodeOp::BinOpMinusF32] = runBinOpMinusF32;
-    mapNodes[ByteCodeOp::BinOpMinusF64] = runBinOpMinusF64;
+    case ByteCodeOp::BinOpMinusS32:
+    {
+        auto val1 = context->popS32();
+        auto val2 = context->popS32();
+        context->push(val2 - val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMinusS64:
+    {
+        auto val1 = context->popS64();
+        auto val2 = context->popS64();
+        context->push(val2 - val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMinusU32:
+    {
+        auto val1 = context->popU32();
+        auto val2 = context->popU32();
+        context->push(val2 - val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMinusU64:
+    {
+        auto val1 = context->popU64();
+        auto val2 = context->popU64();
+        context->push(val2 - val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMinusF32:
+    {
+        auto val1 = context->popF32();
+        auto val2 = context->popF32();
+        context->push(val2 - val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMinusF64:
+    {
+        auto val1 = context->popU64();
+        auto val2 = context->popU64();
+        context->push(val2 - val1);
+        break;
+    }
 
-    mapNodes[ByteCodeOp::BinOpMulS32] = runBinOpMulS32;
-    mapNodes[ByteCodeOp::BinOpMulS64] = runBinOpMulS64;
-    mapNodes[ByteCodeOp::BinOpMulU32] = runBinOpMulU32;
-    mapNodes[ByteCodeOp::BinOpMulU64] = runBinOpMulU64;
-    mapNodes[ByteCodeOp::BinOpMulF32] = runBinOpMulF32;
-    mapNodes[ByteCodeOp::BinOpMulF64] = runBinOpMulF64;
+    case ByteCodeOp::BinOpMulS32:
+    {
+        auto val1 = context->popS32();
+        auto val2 = context->popS32();
+        context->push(val2 * val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMulS64:
+    {
+        auto val1 = context->popS64();
+        auto val2 = context->popS64();
+        context->push(val2 * val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMulU32:
+    {
+        auto val1 = context->popU32();
+        auto val2 = context->popU32();
+        context->push(val2 * val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMulU64:
+    {
+        auto val1 = context->popU64();
+        auto val2 = context->popU64();
+        context->push(val2 * val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMulF32:
+    {
+        auto val1 = context->popF32();
+        auto val2 = context->popF32();
+        context->push(val2 * val1);
+        break;
+    }
+    case ByteCodeOp::BinOpMulF64:
+    {
+        auto val1 = context->popU64();
+        auto val2 = context->popU64();
+        context->push(val2 * val1);
+        break;
+    }
 
-    mapNodes[ByteCodeOp::BinOpDivF32] = runBinOpDivF32;
-    mapNodes[ByteCodeOp::BinOpDivF64] = runBinOpDivF64;
+    case ByteCodeOp::BinOpDivF32:
+    {
+        auto val1 = context->popF32();
+        auto val2 = context->popF32();
+        if (val1 == 0.0f)
+            context->error("division by zero");
+        else
+            context->push(val2 / val1);
+        break;
+    }
+    case ByteCodeOp::BinOpDivF64:
+    {
+        auto val1 = context->popU64();
+        auto val2 = context->popU64();
+        if (val1 == 0.0f)
+            context->error("division by zero");
+        else
+            context->push(val2 / val1);
+        break;
+    }
 
-    mapNodes[ByteCodeOp::LocalFuncCall] = runLocalFuncCall;
-    mapNodes[ByteCodeOp::Ret]           = runRet;
+    case ByteCodeOp::Ret:
+    {
+        context->epbc--;
+        context->bc = context->stack_bc[context->epbc];
+        context->ip = context->stack_ip[context->epbc];
+        break;
+    }
+    case ByteCodeOp::LocalFuncCall:
+    {
+        context->stack_bc[context->epbc] = context->bc;
+        context->stack_ip[context->epbc] = context->ip;
+        context->epbc++;
+        context->bc = (ByteCode*) ip->r0.pointer;
+        context->ip = context->bc->out;
+        break;
+    }
 
-    mapNodes[ByteCodeOp::IntrinsicPrintS64]    = runIntrinsicPrintS64;
-    mapNodes[ByteCodeOp::IntrinsicPrintF64]    = runIntrinsicPrintF64;
-    mapNodes[ByteCodeOp::IntrinsicPrintChar]   = runIntrinsicPrintChar;
-    mapNodes[ByteCodeOp::IntrinsicPrintString] = runIntrinsicPrintString;
-    mapNodes[ByteCodeOp::IntrinsicAssert]      = runIntrinsicAssert;
+    case ByteCodeOp::IntrinsicAssert:
+    {
+        auto val = context->popBool();
+        if (!val)
+            context->error("intrisic @assert failed");
+        break;
+    }
+
+    case ByteCodeOp::IntrinsicPrintF64:
+    {
+        auto val = context->popF64();
+        g_Log.lock();
+        g_Log.print(to_string(val));
+        g_Log.unlock();
+        break;
+    }
+    case ByteCodeOp::IntrinsicPrintS64:
+    {
+        auto val = context->popS64();
+        g_Log.lock();
+        g_Log.print(to_string(val));
+        g_Log.unlock();
+        break;
+    }
+    case ByteCodeOp::IntrinsicPrintChar:
+    {
+        auto val = context->popU32();
+        g_Log.lock();
+        Utf8 msg;
+        msg += (char32_t) val;
+        g_Log.print(msg);
+        g_Log.unlock();
+        break;
+    }
+    case ByteCodeOp::IntrinsicPrintString:
+    {
+        auto val = context->popU32();
+        assert(val < context->bc->strBuffer.size());
+        g_Log.lock();
+        g_Log.print(context->bc->strBuffer[val]);
+        g_Log.unlock();
+        break;
+    }
+    }
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
 {
-    context->ep = context->bc->out.currentSP;
-
     uint32_t       nodeSourceFileIdx = UINT32_MAX;
-    SourceLocation startNodeLocation;
-    SourceLocation endNodeLocation;
+    SourceLocation nodeStartLocation;
+    SourceLocation nodeEndLocation;
 
+    context->ip = context->bc->out;
     while (true)
     {
         // Get instruction
-        ByteCodeOp id = (ByteCodeOp)(*(uint16_t*) context->ep);
-        if (id == ByteCodeOp::End)
+        auto ip = context->ip++;
+        if (ip->op == ByteCodeOp::End)
             break;
 
         // Debug informations
-        auto& out = context->bc->out;
-        if (id == ByteCodeOp::DebugInfos)
+        if (ip->sourceFileIdx != UINT32_MAX)
         {
-            context->ep = out.seek(sizeof(uint16_t));
-
-            nodeSourceFileIdx = (*(uint32_t*) context->ep);
-            context->ep       = out.seek(sizeof(uint32_t));
-
-            startNodeLocation.line          = (*(uint32_t*) context->ep);
-            context->ep                     = out.seek(sizeof(uint32_t));
-            startNodeLocation.column        = (*(uint32_t*) context->ep);
-            context->ep                     = out.seek(sizeof(uint32_t));
-            startNodeLocation.seekStartLine = (*(uint32_t*) context->ep);
-            context->ep                     = out.seek(sizeof(uint32_t));
-
-            endNodeLocation.line          = (*(uint32_t*) context->ep);
-            context->ep                   = out.seek(sizeof(uint32_t));
-            endNodeLocation.column        = (*(uint32_t*) context->ep);
-            context->ep                   = out.seek(sizeof(uint32_t));
-            endNodeLocation.seekStartLine = (*(uint32_t*) context->ep);
-            context->ep                   = out.seek(sizeof(uint32_t));
-            continue;
+            nodeSourceFileIdx = ip->sourceFileIdx;
+            nodeStartLocation = ip->startLocation;
+            nodeEndLocation   = ip->endLocation;
         }
 
-        context->ep = out.seek(sizeof(uint16_t));
-        auto it     = mapNodes.find(id);
-        if (it == mapNodes.end())
-            return internalError(context);
-
-        // Execute instruction
-        context->ep = it->second(context);
+		runNode(context, ip);
 
         // Error ?
         if (context->hasError)
-        {
-            return context->sourceFile->report({context->sourceFile, startNodeLocation, endNodeLocation, context->errorMsg});
-        }
+            return context->sourceFile->report({context->sourceFile, nodeStartLocation, nodeEndLocation, context->errorMsg});
     }
 
     return true;

@@ -6,6 +6,7 @@ struct ByteCodeRunContext;
 struct ConcatBucket;
 struct SourceFile;
 struct ByteCode;
+struct ByteCodeInstruction;
 
 struct StackValue
 {
@@ -15,13 +16,13 @@ struct StackValue
 
 struct ByteCodeRunContext
 {
-    ByteCode*          bc = nullptr; // Current executed bytecode
-    vector<ByteCode*>  stack_bc;
-    vector<uint8_t*>   stack_ep;
-    vector<StackValue> stack_storage;
-    int                sp   = 0;
-    uint8_t*           ep   = nullptr; // Execution pointer inside current bytecode
-    int                epbc = 0;       // Execution pointer on bytecode array
+    ByteCode*                    bc = nullptr; // Current executed bytecode
+    vector<ByteCode*>            stack_bc;
+    vector<ByteCodeInstruction*> stack_ip;
+    vector<StackValue>           stack_storage;
+    int                          sp   = 0;
+    ByteCodeInstruction*         ip   = nullptr; // Execution pointer inside current bytecode
+    int                          epbc = 0;       // Execution pointer on bytecode array
 
     SourceFile* sourceFile;
     AstNode*    node;

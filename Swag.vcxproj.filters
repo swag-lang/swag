@@ -98,12 +98,6 @@
     <ClCompile Include="ByteCode.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeRunStack_.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteCodeRunBinOp_.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="CommandLineParser.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -117,9 +111,6 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="ByteCodeGenJob.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteCodeRunFunc_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="TokenizerIdentifier_.cpp">

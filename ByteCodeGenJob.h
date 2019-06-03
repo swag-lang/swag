@@ -7,6 +7,7 @@ struct SemanticContext;
 struct ByteCode;
 struct AstNode;
 struct ByteCodeGenJob;
+struct ByteCodeInstruction;
 
 enum class ByteCodeResult
 {
@@ -21,7 +22,6 @@ struct ByteCodeGenContext
     ByteCodeGenJob*  job;
     AstNode*         node;
     ByteCodeResult   result;
-    bool             debugInfos = true;
     SourceFile*      sourceFile = nullptr;
 };
 
@@ -35,8 +35,8 @@ struct ByteCodeGenJob : public Job
         dependentJobs.clear();
     }
 
-    static bool internalError(ByteCodeGenContext* context);
-    static void emitInstruction(ByteCodeGenContext* context, ByteCodeOp id);
+    static bool                 internalError(ByteCodeGenContext* context);
+    static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
 
     static bool emitLiteral(ByteCodeGenContext* context);
     static bool emitBinaryOpPlus(ByteCodeGenContext* context);

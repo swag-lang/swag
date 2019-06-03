@@ -215,9 +215,6 @@
     <ClCompile Include="ByteCodeGenJobLiteral_.cpp" />
     <ClCompile Include="ByteCodeGenJob.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
-    <ClCompile Include="ByteCodeRunBinOp_.cpp" />
-    <ClCompile Include="ByteCodeRunFunc_.cpp" />
-    <ClCompile Include="ByteCodeRunStack_.cpp" />
     <ClCompile Include="closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

@@ -2,23 +2,25 @@
 #include "Pool.h"
 #include "Concat.h"
 #include "Utf8.h"
+#include "SourceLocation.h"
 #include "Register.h"
 enum class ByteCodeOp : uint16_t;
 
 struct ByteCodeInstruction
 {
-    ByteCodeOp op;
-    uint32_t   r0;
-    uint32_t   r1;
-    union {
-        uint32_t r2;
-        Register value;
-    };
+    Register       r0;
+    Register       r1;
+    Register       r2;
+    uint32_t       sourceFileIdx;
+    SourceLocation startLocation;
+    SourceLocation endLocation;
+    ByteCodeOp     op;
 };
 
 struct ByteCode : public PoolElement
 {
-    Concat       out;
-    bool         hasDebugInfos = true;
-    vector<Utf8> strBuffer;
+    ByteCodeInstruction* out             = nullptr;
+    uint32_t             numInstructions = 0;
+    uint32_t             maxInstructions = 0;
+    vector<Utf8>         strBuffer;
 };

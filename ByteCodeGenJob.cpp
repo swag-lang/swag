@@ -1,10 +1,7 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
 #include "SourceFile.h"
-#include "AstNode.h"
 #include "Global.h"
-#include "ByteCode.h"
-#include "SourceFile.h"
 #include "PoolFactory.h"
 #include "Diagnostic.h"
 #include "ThreadManager.h"
@@ -16,22 +13,30 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context)
     return false;
 }
 
-void ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp id)
+ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node = context->node;
-    if (context->debugInfos && node && node->sourceFileIdx != UINT32_MAX)
+    auto     bc   = context->bc;
+
+    if (bc->numInstructions == bc->maxInstructions)
     {
-        context->bc->out.addU16((uint16_t) ByteCodeOp::DebugInfos);
-        context->bc->out.addU32(node->sourceFileIdx);
-        context->bc->out.addU32(node->token.startLocation.line);
-        context->bc->out.addU32(node->token.startLocation.column);
-        context->bc->out.addU32(node->token.startLocation.seekStartLine);
-        context->bc->out.addU32(node->token.endLocation.line);
-        context->bc->out.addU32(node->token.endLocation.column);
-        context->bc->out.addU32(node->token.endLocation.seekStartLine);
+        bc->maxInstructions = bc->maxInstructions * 2;
+        bc->maxInstructions = max(bc->maxInstructions, 32);
+        auto newInstuctions = (ByteCodeInstruction*) malloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
+        memcpy(newInstuctions, bc->out, bc->numInstructions * sizeof(ByteCodeInstruction));
+        free(bc->out);
+        bc->out = newInstuctions;
     }
 
-    context->bc->out.addU16((uint16_t) id);
+    ByteCodeInstruction& ins = bc->out[bc->numInstructions++];
+    ins.op                   = op;
+    ins.r0.u32               = r0;
+    ins.r1.u32               = r1;
+    ins.r2.u32               = r2;
+    ins.sourceFileIdx        = node->sourceFileIdx;
+    ins.startLocation        = node->token.startLocation;
+    ins.endLocation          = node->token.endLocation;
+    return &ins;
 }
 
 JobResult ByteCodeGenJob::execute()
@@ -42,7 +47,6 @@ JobResult ByteCodeGenJob::execute()
     context.bc         = originalNode->bc;
     if (!context.bc)
         originalNode->bc = context.bc = sourceFile->poolFactory->byteCode.alloc();
-    context.bc->hasDebugInfos = context.debugInfos;
 
     while (!nodes.empty())
     {

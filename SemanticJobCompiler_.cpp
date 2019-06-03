@@ -55,9 +55,8 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         runContext.node       = expr;
         runContext.sourceFile = sourceFile;
         runContext.bc         = node->bc;
-        runContext.bc->out.rewind();
         runContext.stack_bc.resize(1024);
-        runContext.stack_ep.resize(1024);
+        runContext.stack_ip.resize(1024);
         runContext.stack_storage.resize(1024);
         SWAG_CHECK(g_Run.run(&runContext));
         if (runContext.sp)
