@@ -52,9 +52,9 @@ struct SemanticJob : public Job
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right);
-    static bool resolveSingleOpExclam(SemanticContext* context, AstNode* op);
-    static bool resolveSingleOpMinus(SemanticContext* context, AstNode* op);
-    static bool resolveSingleOp(SemanticContext* context);
+    static bool resolveUnaryOpExclam(SemanticContext* context, AstNode* op);
+    static bool resolveUnaryOpMinus(SemanticContext* context, AstNode* op);
+    static bool resolveUnaryOp(SemanticContext* context);
     static bool resolveTypeExpression(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeDecl(SemanticContext* context);

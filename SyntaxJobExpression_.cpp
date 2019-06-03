@@ -48,7 +48,7 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
     {
         auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::SingleOp, sourceFile->indexInModule, parent, false);
         node->inheritOwners(this);
-        node->semanticFct = &SemanticJob::resolveSingleOp;
+        node->semanticFct = &SemanticJob::resolveUnaryOp;
         node->token       = move(token);
 
         if (result)

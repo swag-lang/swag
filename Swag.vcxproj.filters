@@ -188,10 +188,13 @@
     <ClCompile Include="ByteCodeGenJobFunc_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeGenJobBinOp_.cpp">
+    <ClCompile Include="ByteCodeRunContext.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeRunContext.cpp">
+    <ClCompile Include="ByteCodeGenJobUnaryOp_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
   </ItemGroup>

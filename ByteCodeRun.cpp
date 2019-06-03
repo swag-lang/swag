@@ -290,9 +290,29 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-    case ByteCodeOp::Neg:
+    case ByteCodeOp::NegBool:
     {
         registersRC[ip->a.u32].b = !registersRC[ip->a.u32].b;
+        break;
+    }
+    case ByteCodeOp::NegS32:
+    {
+        registersRC[ip->a.u32].s32 = -registersRC[ip->a.u32].s32;
+        break;
+    }
+    case ByteCodeOp::NegS64:
+    {
+        registersRC[ip->a.u32].s32 = -registersRC[ip->a.u32].s32;
+        break;
+    }
+    case ByteCodeOp::NegF32:
+    {
+        registersRC[ip->a.u32].f32 = -registersRC[ip->a.u32].f32;
+        break;
+    }
+    case ByteCodeOp::NegF64:
+    {
+        registersRC[ip->a.u32].f64 = -registersRC[ip->a.u32].f64;
         break;
     }
 

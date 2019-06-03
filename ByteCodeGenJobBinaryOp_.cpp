@@ -206,6 +206,8 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
         return true;
     case NativeType::F32:
+        emitInstruction(context, ByteCodeOp::CompareOpLowerF32, r0, r1, r2);
+        return true;
     case NativeType::F64:
         emitInstruction(context, ByteCodeOp::CompareOpLowerF64, r0, r1, r2);
         return true;
@@ -237,6 +239,8 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
         emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
         return true;
     case NativeType::F32:
+        emitInstruction(context, ByteCodeOp::CompareOpGreaterF32, r0, r1, r2);
+        return true;
     case NativeType::F64:
         emitInstruction(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
         return true;
@@ -264,7 +268,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         return true;
     case TokenId::SymExclamEqual:
         SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
-        emitInstruction(context, ByteCodeOp::Neg, r2);
+        emitInstruction(context, ByteCodeOp::NegBool, r2);
         return true;
     case TokenId::SymLower:
         SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
@@ -274,11 +278,11 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         return true;
     case TokenId::SymLowerEqual:
         SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
-        emitInstruction(context, ByteCodeOp::Neg, r2);
+        emitInstruction(context, ByteCodeOp::NegBool, r2);
         return true;
     case TokenId::SymGreaterEqual:
         SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
-        emitInstruction(context, ByteCodeOp::Neg, r2);
+        emitInstruction(context, ByteCodeOp::NegBool, r2);
         return true;
     default:
         return internalError(context);

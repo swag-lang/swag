@@ -4,13 +4,16 @@
 #include "Diagnostic.h"
 #include "TypeInfo.h"
 #include "SourceFile.h"
+#include "ByteCodeGenJob.h"
+#include "TypeManager.h"
 
-bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
+bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 {
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(op->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op->token, "operation not yet available on that type"}));
+    auto typeInfo   = TypeManager::concreteType(op->typeInfo);
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op->token, "operation not yet available on that type"}));
 
-    switch (op->typeInfo->nativeType)
+    switch (typeInfo->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -25,7 +28,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
 
     if (op->flags & AST_VALUE_COMPUTED)
     {
-        switch (op->typeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeType::S8:
         case NativeType::S16:
@@ -43,7 +46,7 @@ bool SemanticJob::resolveSingleOpMinus(SemanticContext* context, AstNode* op)
     return true;
 }
 
-bool SemanticJob::resolveSingleOpExclam(SemanticContext* context, AstNode* op)
+bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 {
     auto sourceFile = context->sourceFile;
 
@@ -69,26 +72,26 @@ bool SemanticJob::resolveSingleOpExclam(SemanticContext* context, AstNode* op)
     return true;
 }
 
-bool SemanticJob::resolveSingleOp(SemanticContext* context)
+bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 {
     auto node = context->node;
     auto op   = node->childs[0];
+
     node->inheritLocation();
+    node->typeInfo = op->typeInfo;
+    node->inheritAndFlag(op, AST_CONST_EXPR);
+    node->byteCodeFct = &ByteCodeGenJob::emitUnaryOp;
 
     switch (node->token.id)
     {
     case TokenId::SymExclam:
-        SWAG_CHECK(resolveSingleOpExclam(context, op));
+        SWAG_CHECK(resolveUnaryOpExclam(context, op));
         break;
     case TokenId::SymMinus:
-        SWAG_CHECK(resolveSingleOpMinus(context, op));
+        SWAG_CHECK(resolveUnaryOpMinus(context, op));
         break;
     }
 
-    node->typeInfo = op->typeInfo;
-    node->inheritAndFlag(op, AST_CONST_EXPR);
     node->inheritComputedValue(op);
-
-    context->result = SemanticResult::Done;
     return true;
 }
