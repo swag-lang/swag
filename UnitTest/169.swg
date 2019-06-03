@@ -7,4 +7,5 @@ func main:() -> s32
 	return 666;
 }
 
-#run main
+#print main()
+//#print "toto"

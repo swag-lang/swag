@@ -16,8 +16,8 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node)
         return true;
 
     {
-        scoped_lock lk(node->mutex);
         // Need to generate bytecode, if not already done or running
+        scoped_lock lk(node->mutex);
         if (!(node->flags & AST_BYTECODE_GENERATED))
         {
             if (!node->byteCodeJob)
@@ -35,7 +35,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node)
         }
     }
 
-	SWAG_CHECK(sourceFile->module->executeNode(sourceFile, node));
+    SWAG_CHECK(sourceFile->module->executeNode(sourceFile, node));
     return true;
 }
 
@@ -70,45 +70,59 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
-    auto node       = context->node;
     auto expr       = context->node->childs[0];
     auto sourceFile = context->sourceFile;
 
-    node->typeInfo = expr->typeInfo;
-    node->inheritAndFlag(expr, AST_CONST_EXPR);
-    node->inheritComputedValue(expr);
+    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, expr->token, "can't evaluate expression at compile time"}));
+    SWAG_CHECK(executeNode(context, expr));
+    if (context->result == SemanticResult::Pending)
+        return true;
 
-    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
-
-    auto typeInfo = TypeManager::flattenType(node->typeInfo);
+    TypeInfo* typeInfo = expr->typeInfo;
+    if (typeInfo->kind == TypeInfoKind::FunctionAttribute)
+        typeInfo = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FunctionAttribute)->returnType;
+    else
+        typeInfo = TypeManager::flattenType(expr->typeInfo);
 
     g_Log.lock();
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
-        g_Log.print(node->computedValue.reg.b ? "true" : "false");
+        g_Log.print(expr->computedValue.reg.b ? "true" : "false");
         break;
     case NativeType::S8:
+        g_Log.print(to_string(expr->computedValue.reg.s8));
+        break;
     case NativeType::S16:
+        g_Log.print(to_string(expr->computedValue.reg.s16));
+        break;
     case NativeType::S32:
+        g_Log.print(to_string(expr->computedValue.reg.s32));
+        break;
     case NativeType::S64:
-        g_Log.print(to_string(node->computedValue.reg.s64));
+        g_Log.print(to_string(expr->computedValue.reg.s64));
         break;
     case NativeType::U8:
+        g_Log.print(to_string(expr->computedValue.reg.u8));
+        break;
     case NativeType::U16:
+        g_Log.print(to_string(expr->computedValue.reg.u16));
+        break;
     case NativeType::U32:
+        g_Log.print(to_string(expr->computedValue.reg.u32));
+        break;
     case NativeType::U64:
-        g_Log.print(to_string(node->computedValue.reg.u64));
+        g_Log.print(to_string(expr->computedValue.reg.u64));
         break;
     case NativeType::F32:
     case NativeType::F64:
-        g_Log.print(to_string(node->computedValue.reg.f64));
+        g_Log.print(to_string(expr->computedValue.reg.f64));
         break;
     case NativeType::Char:
-        g_Log.print(to_string(node->computedValue.reg.ch));
+        g_Log.print(to_string(expr->computedValue.reg.ch));
         break;
     case NativeType::String:
-        g_Log.print(node->computedValue.text);
+        g_Log.print(expr->computedValue.text);
         break;
     default:
         assert(false);
