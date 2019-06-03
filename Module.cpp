@@ -86,12 +86,11 @@ void Module::freeRegisterRC(uint32_t reg)
 
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 {
-    auto runContext = &workspace->runContext;
-
     // Only one run at a time !
     static SpinLock mutex;
     {
         scoped_lock lk(mutex);
+        auto        runContext = &workspace->runContext;
         runContext->setup(sourceFile, node, maxReservedRegisterRC, maxReservedRegisterRR, 1024);
         SWAG_CHECK(g_Run.run(runContext));
 
