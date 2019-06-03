@@ -40,6 +40,7 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::ProcessingChilds:
             if (node->semanticFct)
             {
+                context.result = SemanticResult::Done;
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
 

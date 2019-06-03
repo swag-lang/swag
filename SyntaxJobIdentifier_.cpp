@@ -44,6 +44,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
     auto identifierRef = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent, false);
     identifierRef->inheritOwners(this);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
+    identifierRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
     if (result)
         *result = identifierRef;
 

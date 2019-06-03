@@ -80,7 +80,7 @@ struct AstNode : public PoolElement
         sourceFileIdx      = UINT32_MAX;
         flags              = 0;
         byteCodeJob        = nullptr;
-        resultRegister     = UINT32_MAX;
+        resultRegisterRC     = UINT32_MAX;
         childs.clear();
     }
 
@@ -157,7 +157,7 @@ struct AstNode : public PoolElement
     uint32_t            sourceFileIdx;
     uint32_t            childParentIdx;
     ByteCode*           bc;
-    uint32_t            resultRegister;
+    uint32_t            resultRegisterRC;
 };
 
 struct AstVarDecl : public AstNode

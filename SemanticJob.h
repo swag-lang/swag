@@ -46,6 +46,7 @@ struct SemanticJob : public Job
     static void setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
+    static bool executeNode(SemanticContext* context, AstNode* node);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
