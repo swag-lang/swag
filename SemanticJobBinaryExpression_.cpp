@@ -411,6 +411,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);
+    left->typeInfo = TypeManager::flattenType(left->typeInfo);
+    right->typeInfo = TypeManager::flattenType(right->typeInfo);
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
 
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
