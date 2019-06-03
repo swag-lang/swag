@@ -190,24 +190,79 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-    case ByteCodeOp::CompareOp8:
+    case ByteCodeOp::CompareOpEqualBool:
     {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u8 == registersRC[ip->b.u32].u8;
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].b == registersRC[ip->b.u32].b;
         break;
     }
-    case ByteCodeOp::CompareOp16:
-    {
-        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u16 == registersRC[ip->b.u32].u16;
-        break;
-    }
-    case ByteCodeOp::CompareOp32:
+    case ByteCodeOp::CompareOpEqual32:
     {
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 == registersRC[ip->b.u32].u32;
         break;
     }
-    case ByteCodeOp::CompareOp64:
+    case ByteCodeOp::CompareOpEqual64:
     {
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].u64 == registersRC[ip->b.u32].u64;
+        break;
+    }
+
+    case ByteCodeOp::CompareOpLowerS32:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].s32 < registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerS64:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].s64 < registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerU32:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 < registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerU64:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u64 < registersRC[ip->b.u32].u64;
+        break;
+    }
+    case ByteCodeOp::CompareOpLowerF32:
+    case ByteCodeOp::CompareOpLowerF64:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].f64 < registersRC[ip->b.u32].f64;
+        break;
+    }
+
+    case ByteCodeOp::CompareOpGreaterS32:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].s32 > registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterS64:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].s64 > registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterU32:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 > registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterU64:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u64 > registersRC[ip->b.u32].u64;
+        break;
+    }
+    case ByteCodeOp::CompareOpGreaterF32:
+    case ByteCodeOp::CompareOpGreaterF64:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].f64 > registersRC[ip->b.u32].f64;
+        break;
+    }
+
+    case ByteCodeOp::Neg:
+    {
+        registersRC[ip->a.u32].b = !registersRC[ip->a.u32].b;
         break;
     }
 

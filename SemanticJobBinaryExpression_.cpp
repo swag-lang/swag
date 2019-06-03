@@ -309,31 +309,28 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    switch (left->typeInfo->nativeType)
     {
-        switch (left->typeInfo->nativeType)
-        {
-        case NativeType::Bool:
-            node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
-            break;
-        case NativeType::F32:
-        case NativeType::F64:
-            node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
-            break;
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-            node->computedValue.reg.b = left->computedValue.reg.s64 == right->computedValue.reg.s64;
-            break;
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::Char:
-        case NativeType::U64:
-            node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
-            break;
-        }
+    case NativeType::Bool:
+        node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
+        break;
+    case NativeType::F32:
+    case NativeType::F64:
+        node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
+        break;
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+        node->computedValue.reg.b = left->computedValue.reg.s64 == right->computedValue.reg.s64;
+        break;
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::Char:
+    case NativeType::U64:
+        node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
+        break;
     }
 
     return true;
@@ -342,31 +339,28 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    switch (left->typeInfo->nativeType)
     {
-        switch (left->typeInfo->nativeType)
-        {
-        case NativeType::Bool:
-            node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
-            break;
-        case NativeType::F32:
-        case NativeType::F64:
-            node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
-            break;
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 < right->computedValue.reg.s64;
-            break;
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::Char:
-        case NativeType::U64:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
-            break;
-        }
+    case NativeType::Bool:
+        node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
+        break;
+    case NativeType::F32:
+    case NativeType::F64:
+        node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
+        break;
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+        node->computedValue.reg.s64 = left->computedValue.reg.s64 < right->computedValue.reg.s64;
+        break;
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::Char:
+    case NativeType::U64:
+        node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
+        break;
     }
 
     return true;
@@ -375,31 +369,28 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    switch (left->typeInfo->nativeType)
     {
-        switch (left->typeInfo->nativeType)
-        {
-        case NativeType::Bool:
-            node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
-            break;
-        case NativeType::F32:
-        case NativeType::F64:
-            node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
-            break;
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-            node->computedValue.reg.s64 = left->computedValue.reg.s64 > right->computedValue.reg.s64;
-            break;
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::Char:
-        case NativeType::U64:
-            node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
-            break;
-        }
+    case NativeType::Bool:
+        node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
+        break;
+    case NativeType::F32:
+    case NativeType::F64:
+        node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
+        break;
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+        node->computedValue.reg.s64 = left->computedValue.reg.s64 > right->computedValue.reg.s64;
+        break;
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::Char:
+    case NativeType::U64:
+        node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
+        break;
     }
 
     return true;
