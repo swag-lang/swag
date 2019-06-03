@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "ByteCodeRunContext.h"
+#include "ByteCode.h"
+#include "AstNode.h"
 
-void ByteCodeRunContext::setup(uint32_t numRC, uint32_t numRR, uint32_t stackS)
+void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t numRC, uint32_t numRR, uint32_t stackS)
 {
     if (numRegistersRC < numRC)
     {
@@ -23,4 +25,17 @@ void ByteCodeRunContext::setup(uint32_t numRC, uint32_t numRR, uint32_t stackS)
 
     bp = stack + stackSize;
     sp = bp;
+
+    assert(node->bc);
+    assert(node->bc->out);
+    node       = nd;
+    sourceFile = sf;
+    bc         = node->bc;
+    ip         = bc->out;
+}
+
+void ByteCodeRunContext::error(const string& msg)
+{
+    hasError = true;
+    errorMsg = msg;
 }

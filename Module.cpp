@@ -7,6 +7,7 @@
 #include "SemanticJob.h"
 #include "ThreadManager.h"
 #include "SymTable.h"
+#include "ByteCodeRun.h"
 #include "Workspace.h"
 
 Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
@@ -81,4 +82,23 @@ void Module::freeRegisterRC(uint32_t reg)
 {
     scoped_lock lk(mutexRegisterRC);
     availableRegistersRC.push_back(reg);
+}
+
+bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
+{
+    // Only one run at a time !
+    static SpinLock mutex;
+    {
+        scoped_lock lk(mutex);
+        runContext.setup(sourceFile, node, maxReservedRegisterRC, maxReservedRegisterRR, 1024);
+        SWAG_CHECK(g_Run.run(&runContext));
+
+        if (node->resultRegisterRC != UINT32_MAX)
+        {
+            node->computedValue.reg = runContext.registersRC[node->resultRegisterRC];
+            node->flags |= AST_VALUE_COMPUTED;
+        }
+    }
+
+    return true;
 }

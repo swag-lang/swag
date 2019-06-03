@@ -33,13 +33,8 @@ struct ByteCodeRunContext
     bool        hasError   = false;
     string      errorMsg;
 
-    void setup(uint32_t numRC, uint32_t numRR, uint32_t stackS);
-
-    void error(const string& msg)
-    {
-        hasError = true;
-        errorMsg = msg;
-    }
+    void setup(SourceFile* sf, AstNode* node, uint32_t numRC, uint32_t numRR, uint32_t stackS);
+    void error(const string& msg);
 
     template<typename T>
     T pop()

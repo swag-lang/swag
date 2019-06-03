@@ -1,13 +1,9 @@
 #include "pch.h"
-#include "SemanticJob.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
 #include "Log.h"
-#include "TypeInfo.h"
 #include "SourceFile.h"
 #include "PoolFactory.h"
-#include "ByteCodeRun.h"
-#include "ByteCodeRunContext.h"
 #include "Module.h"
 #include "ThreadManager.h"
 
@@ -39,25 +35,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node)
         }
     }
 
-    // Only one run at a time !
-    static SpinLock mutex;
-    {
-        scoped_lock        lk(mutex);
-        ByteCodeRunContext runContext;
-        runContext.setup(sourceFile->module->maxReservedRegisterRC, sourceFile->module->maxReservedRegisterRR, 1024);
-        runContext.node       = node;
-        runContext.sourceFile = sourceFile;
-        runContext.bc         = node->bc;
-        runContext.ip         = runContext.bc->out;
-        SWAG_CHECK(g_Run.run(&runContext));
-
-        if (node->resultRegisterRC != UINT32_MAX)
-        {
-            node->computedValue.reg = runContext.registersRC[node->resultRegisterRC];
-            node->flags |= AST_VALUE_COMPUTED;
-        }
-    }
-
+	SWAG_CHECK(sourceFile->module->executeNode(sourceFile, node));
     return true;
 }
 

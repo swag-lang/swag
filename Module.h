@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "SpinLock.h"
+#include "ByteCodeRunContext.h"
 struct SourceFile;
 struct SymTable;
 struct Utf8Crc;
@@ -29,10 +30,12 @@ struct Module : public PoolElement
     uint32_t reserveRegisterRC();
     void     freeRegisterRC(uint32_t reg);
     void     reserveRegisterRR(uint32_t count);
+    bool     executeNode(SourceFile* sourceFile, AstNode* node);
 
-    SpinLock         mutexRegisterRC;
-    SpinLock         mutexRegisterRR;
-    uint32_t         maxReservedRegisterRC = 0;
-    vector<uint32_t> availableRegistersRC;
-    uint32_t         maxReservedRegisterRR = 0;
+    ByteCodeRunContext runContext;
+    SpinLock           mutexRegisterRC;
+    SpinLock           mutexRegisterRR;
+    uint32_t           maxReservedRegisterRC = 0;
+    vector<uint32_t>   availableRegistersRC;
+    uint32_t           maxReservedRegisterRR = 0;
 };
