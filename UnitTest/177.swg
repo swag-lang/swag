@@ -1,9 +1,11 @@
 #unittest module module177
 #unittest pass semantic
 
-enum A : f32
-{
-	B = 1.0;
-}
+namespace A{}
 
-#run A / A
+#unittest error
+#run A + A
+#unittest error
+#run !A
+#unittest error
+#run -A

@@ -73,3 +73,18 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
     context.result = badSignature ? MatchResult::BadSignature : MatchResult::Ok;
 }
+
+const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
+{
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Namespace:
+        return "namespace";
+    case TypeInfoKind::Enum:
+        return "enum";
+    case TypeInfoKind::EnumValue:
+        return "enum value";
+    }
+
+    return "???";
+}

@@ -51,7 +51,28 @@ namespace Ast
             return "a type";
         }
 
-		return "something else";
+        return "something else";
+    }
+
+    const char* getNakedName(AstNode* node)
+    {
+        switch (node->kind)
+        {
+        case AstNodeKind::VarDecl:
+            return "variable";
+        case AstNodeKind::FuncDecl:
+            return "function";
+        case AstNodeKind::EnumDecl:
+            return "enum";
+        case AstNodeKind::EnumValue:
+            return "enum value";
+        case AstNodeKind::Namespace:
+            return "namespace";
+        case AstNodeKind::TypeDecl:
+            return "type";
+        }
+
+        return "something else";
     }
 
 }; // namespace Ast

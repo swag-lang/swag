@@ -13,6 +13,7 @@ enum class TypeInfoKind
     Native,
     Namespace,
     Enum,
+	EnumValue,
     FunctionAttribute,
 };
 
@@ -55,6 +56,8 @@ struct TypeInfo : public PoolElement
         return this == from;
     }
 
+	static const char* getNakedName(TypeInfo* typeInfo);
+
     uint64_t     flags;
     TypeInfoKind kind;
     NativeType   nativeType;
@@ -74,12 +77,12 @@ struct TypeInfoNative : public TypeInfo
 
 struct TypeInfoNamespace : public TypeInfo
 {
-    Scope* scope;
-
     TypeInfoNamespace()
     {
         kind = TypeInfoKind::Namespace;
     }
+
+    Scope* scope;
 };
 
 struct TypeInfoEnum : public TypeInfo
@@ -91,6 +94,17 @@ struct TypeInfoEnum : public TypeInfo
     {
         kind = TypeInfoKind::Enum;
     }
+};
+
+struct TypeInfoEnumValue : public TypeInfo
+{
+    TypeInfoEnumValue()
+    {
+        kind = TypeInfoKind::EnumValue;
+    }
+
+    Scope*        scope;
+    TypeInfoEnum* enumOwner = nullptr;
 };
 
 struct TypeInfoFuncAttrParam : public PoolElement

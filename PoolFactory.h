@@ -41,6 +41,7 @@ struct PoolFactory
 
     Pool<TypeInfoNamespace>     typeInfoNamespace;
     Pool<TypeInfoEnum>          typeInfoEnum;
+    Pool<TypeInfoEnumValue>     typeInfoEnumValue;
     Pool<TypeInfoFuncAttr>      typeInfoFuncAttr;
     Pool<TypeInfoFuncAttrParam> typeInfoFuncAttrParam;
     Pool<SymbolMatchParameter>  symbolMatchParameter;

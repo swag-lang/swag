@@ -41,6 +41,7 @@ namespace Ast
     extern Scope*      newScope(SourceFile* sourceFile, const Utf8Crc& name, ScopeKind kind, Scope* parentScope);
     extern void        addChild(AstNode* parent, AstNode* child, bool lockParent = true);
     extern const char* getKindName(AstNode* node);
+    extern const char* getNakedName(AstNode* node);
 }; // namespace Ast
 
 template<typename T>

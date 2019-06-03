@@ -11,7 +11,8 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 {
     auto sourceFile = context->sourceFile;
     auto typeInfo   = TypeManager::concreteType(op->typeInfo);
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op->token, "operation not yet available on that type"}));
+
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op, format("minus operation not allowed on %s '%s'", TypeInfo::getNakedName(typeInfo), typeInfo->name.c_str())}));
 
     switch (typeInfo->nativeType)
     {
@@ -50,7 +51,8 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 {
     auto sourceFile = context->sourceFile;
     auto typeInfo   = TypeManager::concreteType(op->typeInfo);
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op->token, "boolean inversion not available on that type"}));
+
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op, format("boolean inversion not allowed on %s '%s'", TypeInfo::getNakedName(typeInfo), typeInfo->name.c_str())}));
 
     switch (typeInfo->nativeType)
     {
