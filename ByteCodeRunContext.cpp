@@ -26,12 +26,15 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t numRC, uint
     bp = stack + stackSize;
     sp = bp;
 
-    assert(node->bc);
-    assert(node->bc->out);
-    node       = nd;
     sourceFile = sf;
+    node       = nd;
     bc         = node->bc;
-    ip         = bc->out;
+    assert(bc);
+    ip = bc->out;
+    assert(ip);
+
+    hasError = false;
+    errorMsg.clear();
 }
 
 void ByteCodeRunContext::error(const string& msg)

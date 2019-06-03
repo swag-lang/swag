@@ -1,5 +1,6 @@
 #pragma once
 #include "SpinLock.h"
+#include "ByteCodeRunContext.h"
 struct Module;
 struct Scope;
 struct PoolFactory;
@@ -21,4 +22,5 @@ struct Workspace
     map<fs::path, Module*> mapModules;
     PoolFactory*           poolFactory;
     Scope*                 scopeRoot;
+    ByteCodeRunContext     runContext;
 };
