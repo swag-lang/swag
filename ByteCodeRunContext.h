@@ -25,13 +25,15 @@ struct ByteCodeRunContext
     uint8_t*             sp        = nullptr;
     uint8_t*             bp        = nullptr;
     ByteCode*            bc        = nullptr;
-    int                  stackSize = 0;
+    uint32_t             stackSize = 0;
     ByteCodeInstruction* ip        = nullptr;
 
     SourceFile* sourceFile = nullptr;
     AstNode*    node       = nullptr;
     bool        hasError   = false;
     string      errorMsg;
+
+    void setup(uint32_t numRC, uint32_t numRR, uint32_t stackS);
 
     void error(const string& msg)
     {

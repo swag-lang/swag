@@ -10,6 +10,21 @@
 #include "ThreadManager.h"
 #include "LanguageSpec.h"
 #include "Module.h"
+#include "TypeManager.h"
+
+bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
+{
+    auto node     = context->node;
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
+
+    // Reserve one RR register for each return value
+    if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        context->sourceFile->module->reserveRegisterRR(1);
+    }
+
+    return true;
+}
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
@@ -73,7 +88,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
-    AstNode* node = context->node;
+    AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;
     return true;
 }
@@ -83,42 +98,46 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     AstNode* node       = context->node;
     auto     sourceFile = context->sourceFile;
     auto     overload   = node->resolvedSymbolOverload;
-    auto     overnode   = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    auto     funcNode   = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
     {
-        scoped_lock lk(overnode->mutex);
+        scoped_lock lk(funcNode->mutex);
 
         // Need to wait for function full semantic resolve
-        if (!(overnode->flags & AST_FULL_RESOLVE))
+        if (!(funcNode->flags & AST_FULL_RESOLVE))
         {
-            overnode->dependentJobs.push_back(context->job);
+            funcNode->dependentJobs.push_back(context->job);
             context->result = ByteCodeResult::Pending;
             return true;
         }
 
         // Need to generate bytecode, if not already done or running
-        if (!(overnode->flags & AST_BYTECODE_GENERATED))
+        if (!(funcNode->flags & AST_BYTECODE_GENERATED))
         {
-            if (!overnode->byteCodeJob)
+            if (!funcNode->byteCodeJob)
             {
-                overnode->byteCodeJob               = sourceFile->poolFactory->bytecodeJob.alloc();
-                overnode->byteCodeJob->sourceFile   = sourceFile;
-                overnode->byteCodeJob->originalNode = overnode;
-                overnode->byteCodeJob->nodes.push_back(overnode);
-                g_ThreadMgr.addJob(overnode->byteCodeJob);
+                funcNode->byteCodeJob               = sourceFile->poolFactory->bytecodeJob.alloc();
+                funcNode->byteCodeJob->sourceFile   = sourceFile;
+                funcNode->byteCodeJob->originalNode = funcNode;
+                funcNode->byteCodeJob->nodes.push_back(funcNode);
+                g_ThreadMgr.addJob(funcNode->byteCodeJob);
             }
 
-            overnode->byteCodeJob->dependentJobs.push_back(context->job);
+            funcNode->byteCodeJob->dependentJobs.push_back(context->job);
             context->result = ByteCodeResult::Pending;
             return true;
         }
     }
 
-    emitInstruction(context, ByteCodeOp::LocalFuncCall)->a.pointer = overnode->bc;
+    emitInstruction(context, ByteCodeOp::LocalFuncCall)->a.pointer = funcNode->bc;
 
-	// Copy result in a computing register
-	node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
-    emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
+    // Copy result in a computing register
+    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FunctionAttribute);
+    if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
+        emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
+    }
 
     return true;
 }

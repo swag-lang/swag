@@ -44,18 +44,11 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node)
     {
         scoped_lock        lk(mutex);
         ByteCodeRunContext runContext;
-        runContext.numRegistersRC = sourceFile->module->maxReservedRegisterRC;
-        runContext.registersRC    = (Register*) malloc(runContext.numRegistersRC * sizeof(Register));
-        runContext.numRegistersRR = sourceFile->module->maxReservedRegisterRR;
-        runContext.registersRR    = (Register*) malloc(runContext.numRegistersRR * sizeof(Register));
-        runContext.node           = node;
-        runContext.sourceFile     = sourceFile;
-        runContext.bc             = node->bc;
-        runContext.ip             = runContext.bc->out;
-        runContext.stackSize      = 1024;
-        runContext.stack          = (uint8_t*) malloc(runContext.stackSize);
-        runContext.bp             = runContext.stack + runContext.stackSize;
-        runContext.sp             = runContext.bp;
+        runContext.setup(sourceFile->module->maxReservedRegisterRC, sourceFile->module->maxReservedRegisterRR, 1024);
+        runContext.node       = node;
+        runContext.sourceFile = sourceFile;
+        runContext.bc         = node->bc;
+        runContext.ip         = runContext.bc->out;
         SWAG_CHECK(g_Run.run(&runContext));
 
         if (node->resultRegisterRC != UINT32_MAX)
