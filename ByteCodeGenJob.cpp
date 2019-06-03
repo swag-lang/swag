@@ -6,10 +6,10 @@
 #include "Diagnostic.h"
 #include "ThreadManager.h"
 
-bool ByteCodeGenJob::internalError(ByteCodeGenContext* context)
+bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg)
 {
     AstNode* node = context->node;
-    context->sourceFile->report({context->sourceFile, node->token, "internal compiler error during bytecode generation"});
+    context->sourceFile->report({context->sourceFile, node->token, format("internal compiler error during bytecode generation (%s)", msg)});
     return false;
 }
 

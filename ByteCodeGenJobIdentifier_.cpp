@@ -18,5 +18,5 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    return internalError(context);
+    return internalError(context, "emitIdentifier");
 }

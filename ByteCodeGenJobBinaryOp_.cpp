@@ -13,7 +13,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, 
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitBinaryOpPlus, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -36,7 +36,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, 
         emitInstruction(context, ByteCodeOp::BinOpPlusF64, r0, r1, r2);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitBinaryOpPlus, type not supported");
     }
 }
 
@@ -45,7 +45,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0,
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitBinaryOpMinus, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -68,7 +68,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0,
         emitInstruction(context, ByteCodeOp::BinOpMinusF64, r0, r1, r2);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitBinaryOpMinus, type not supported");
     }
 }
 
@@ -77,7 +77,7 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, u
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitBinaryOpMul, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -100,7 +100,7 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, u
         emitInstruction(context, ByteCodeOp::BinOpMulF64, r0, r1, r2);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitBinaryOpMul, type not supported");
     }
 }
 
@@ -109,7 +109,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, u
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitBinaryOpDiv, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -120,7 +120,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, u
         emitInstruction(context, ByteCodeOp::BinOpDivF64, r0, r1, r2);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitBinaryOpDiv, type not supported");
     }
 }
 
@@ -151,7 +151,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         SWAG_CHECK(emitBinaryOpDiv(context, r0, r1, r2));
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitBinaryOp, invalid token op");
     }
 }
 
@@ -160,7 +160,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitCompareOpEqual, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -179,7 +179,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitCompareOpEqual, type not supported");
     }
 }
 
@@ -188,7 +188,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitCompareOpLower, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -212,7 +212,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
         emitInstruction(context, ByteCodeOp::CompareOpLowerF64, r0, r1, r2);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitCompareOpLower, type not supported");
     }
 }
 
@@ -221,7 +221,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitCompareOpGreater, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -245,7 +245,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
         emitInstruction(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitCompareOpGreater, type not supported");
     }
 }
 
@@ -285,6 +285,6 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::NegBool, r2);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitCompareOpGreater, invalid token op");
     }
 }

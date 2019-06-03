@@ -12,7 +12,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     auto     typeInfo = node->typeInfo;
 
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitLiteral, type not native");
 
 	auto r1 = node->resultRegisterRC = context->sourceFile->module->reserveRegisterRC();
     switch (typeInfo->nativeType)
@@ -59,6 +59,6 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         return true;
 
     default:
-        return internalError(context);
+        return internalError(context, "emitLiteral, type not supported");
     }
 }

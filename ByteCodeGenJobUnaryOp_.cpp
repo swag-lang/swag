@@ -12,7 +12,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context);
+        return internalError(context, "emitUnaryOpMinus, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -29,7 +29,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
         emitInstruction(context, ByteCodeOp::NegF64, r0);
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitUnaryOpMinus, type not supported");
     }
 }
 bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
@@ -47,6 +47,6 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
         SWAG_CHECK(emitUnaryOpMinus(context, r0));
         return true;
     default:
-        return internalError(context);
+        return internalError(context, "emitUnaryOp, invalid token op");
     }
 }
