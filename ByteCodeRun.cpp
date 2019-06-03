@@ -63,6 +63,10 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::BinOpPlusF32:
+    {
+        registersRC[ip->c.u32].f32 = registersRC[ip->a.u32].f32 + registersRC[ip->b.u32].f32;
+        break;
+    }
     case ByteCodeOp::BinOpPlusF64:
     {
         registersRC[ip->c.u32].f64 = registersRC[ip->a.u32].f64 + registersRC[ip->b.u32].f64;
@@ -90,6 +94,10 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::BinOpMinusF32:
+    {
+        registersRC[ip->c.u32].f32 = registersRC[ip->a.u32].f32 - registersRC[ip->b.u32].f32;
+        break;
+    }
     case ByteCodeOp::BinOpMinusF64:
     {
         registersRC[ip->c.u32].f64 = registersRC[ip->a.u32].f64 - registersRC[ip->b.u32].f64;
@@ -117,6 +125,10 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::BinOpMulF32:
+    {
+        registersRC[ip->c.u32].f32 = registersRC[ip->a.u32].f32 * registersRC[ip->b.u32].f32;
+        break;
+    }
     case ByteCodeOp::BinOpMulF64:
     {
         registersRC[ip->c.u32].f64 = registersRC[ip->a.u32].f64 * registersRC[ip->b.u32].f64;
@@ -124,11 +136,21 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
 
     case ByteCodeOp::BinOpDivF32:
+    {
+        auto val1 = registersRC[ip->a.u32].f32;
+        auto val2 = registersRC[ip->b.u32].f32;
+        if (val2 == 0.0f)
+            context->error("division by zero");
+        else
+            registersRC[ip->c.u32].f32 = val1 / val2;
+        break;
+    }
+
     case ByteCodeOp::BinOpDivF64:
     {
         auto val1 = registersRC[ip->a.u32].f64;
         auto val2 = registersRC[ip->b.u32].f64;
-        if (val2 == 0.0f)
+        if (val2 == 0.0)
             context->error("division by zero");
         else
             registersRC[ip->c.u32].f64 = val1 / val2;
@@ -227,6 +249,10 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::CompareOpLowerF32:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].f32 < registersRC[ip->b.u32].f32;
+        break;
+    }
     case ByteCodeOp::CompareOpLowerF64:
     {
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].f64 < registersRC[ip->b.u32].f64;
@@ -254,6 +280,10 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::CompareOpGreaterF32:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].f32 > registersRC[ip->b.u32].f32;
+        break;
+    }
     case ByteCodeOp::CompareOpGreaterF64:
     {
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].f64 > registersRC[ip->b.u32].f64;
