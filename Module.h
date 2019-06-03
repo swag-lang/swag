@@ -26,10 +26,13 @@ struct Module : public PoolElement
     Workspace*          workspace;
     bool                isRuntime = false;
 
-    uint32_t reserveRegister();
-    void     freeRegister(uint32_t reg);
+    uint32_t reserveRegisterRC();
+    void     freeRegisterRC(uint32_t reg);
+    void     reserveRegisterRR(uint32_t count);
 
-    uint32_t         maxReservedRegister = 0;
-    SpinLock         mutexRegister;
-    vector<uint32_t> availableRegisters;
+    SpinLock         mutexRegisterRC;
+    SpinLock         mutexRegisterRR;
+    uint32_t         maxReservedRegisterRC = 0;
+    vector<uint32_t> availableRegistersRC;
+    uint32_t         maxReservedRegisterRR = 0;
 };

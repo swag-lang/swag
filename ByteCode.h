@@ -8,9 +8,9 @@ enum class ByteCodeOp : uint16_t;
 
 struct ByteCodeInstruction
 {
-    Register       r0;
-    Register       r1;
-    Register       r2;
+    Register       a;
+    Register       b;
+    Register       c;
     uint32_t       sourceFileIdx;
     SourceLocation startLocation;
     SourceLocation endLocation;

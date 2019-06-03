@@ -16,8 +16,10 @@ struct StackValue
 
 struct ByteCodeRunContext
 {
-    Register* registers    = nullptr;
-    uint32_t  numRegisters = 0;
+    Register* registersRC    = nullptr;
+    uint32_t  numRegistersRC = 0;
+    Register* registersRR    = nullptr;
+    uint32_t  numRegistersRR = 0;
 
     uint8_t*             stack     = nullptr;
     uint8_t*             sp        = nullptr;

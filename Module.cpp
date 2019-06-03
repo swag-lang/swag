@@ -57,22 +57,28 @@ void Module::removeFile(SourceFile* file)
     assert(false);
 }
 
-uint32_t Module::reserveRegister()
+void Module::reserveRegisterRR(uint32_t count)
 {
-    scoped_lock lk(mutexRegister);
-    if (!availableRegisters.empty())
+    scoped_lock lk(mutexRegisterRR);
+    maxReservedRegisterRR = max(maxReservedRegisterRR, count);
+}
+
+uint32_t Module::reserveRegisterRC()
+{
+    scoped_lock lk(mutexRegisterRC);
+    if (!availableRegistersRC.empty())
     {
-        auto result = availableRegisters.back();
-        availableRegisters.pop_back();
+        auto result = availableRegistersRC.back();
+        availableRegistersRC.pop_back();
         return result;
     }
 
-	auto result = maxReservedRegister++;
+    auto result = maxReservedRegisterRC++;
     return result;
 }
 
-void Module::freeRegister(uint32_t reg)
+void Module::freeRegisterRC(uint32_t reg)
 {
-    scoped_lock lk(mutexRegister);
-    availableRegisters.push_back(reg);
+    scoped_lock lk(mutexRegisterRC);
+    availableRegistersRC.push_back(reg);
 }

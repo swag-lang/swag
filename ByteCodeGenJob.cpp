@@ -30,9 +30,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 
     ByteCodeInstruction& ins = bc->out[bc->numInstructions++];
     ins.op                   = op;
-    ins.r0.u32               = r0;
-    ins.r1.u32               = r1;
-    ins.r2.u32               = r2;
+    ins.a.u32               = r0;
+    ins.b.u32               = r1;
+    ins.c.u32               = r2;
     ins.sourceFileIdx        = node->sourceFileIdx;
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
@@ -78,6 +78,7 @@ JobResult ByteCodeGenJob::execute()
             else if (node->byteCodeFct)
             {
                 context.node = node;
+                context.result = ByteCodeResult::Done;
                 if (!node->byteCodeFct(&context))
                     return JobResult::ReleaseJob;
                 if (context.result == ByteCodeResult::Pending)

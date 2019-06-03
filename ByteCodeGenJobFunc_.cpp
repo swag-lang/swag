@@ -13,6 +13,16 @@
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
+    AstNode* node = context->node;
+
+    // Copy result to RR0... registers
+    if (!node->childs.empty())
+    {
+        auto child = node->childs[0];
+        assert(child->typeInfo->kind == TypeInfoKind::Native);
+        emitInstruction(context, ByteCodeOp::CopyRRxRCx, 0, child->resultRegisterRC);
+    }
+
     emitInstruction(context, ByteCodeOp::Ret);
     return true;
 }
@@ -29,20 +39,20 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case Intrisic::Print:
     {
         auto child0 = callParams->childs[0];
-        context->sourceFile->module->freeRegister(child0->resultRegister);
+        context->sourceFile->module->freeRegisterRC(child0->resultRegisterRC);
         switch (child0->typeInfo->nativeType)
         {
         case NativeType::S64:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintS64, child0->resultRegister);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintS64, child0->resultRegisterRC);
             break;
         case NativeType::F64:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegister);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegisterRC);
             break;
         case NativeType::Char:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintChar, child0->resultRegister);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintChar, child0->resultRegisterRC);
             break;
         case NativeType::String:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegister);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC);
             break;
         }
         break;
@@ -50,14 +60,21 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case Intrisic::Assert:
     {
         auto child0 = callParams->childs[0];
-        context->sourceFile->module->freeRegister(child0->resultRegister);
-        emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegister);
+        context->sourceFile->module->freeRegisterRC(child0->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
         break;
     }
     default:
         assert(false);
     }
 
+    return true;
+}
+
+bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
+{
+    AstNode* node = context->node;
+    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
     return true;
 }
 
@@ -97,6 +114,11 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
         }
     }
 
-    emitInstruction(context, ByteCodeOp::LocalFuncCall)->r0.pointer = overnode->bc;
+    emitInstruction(context, ByteCodeOp::LocalFuncCall)->a.pointer = overnode->bc;
+
+	// Copy result in a computing register
+	node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
+    emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
+
     return true;
 }

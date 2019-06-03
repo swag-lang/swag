@@ -127,12 +127,12 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    auto r0 = node->childs[0]->resultRegister;
-    auto r1 = node->childs[1]->resultRegister;
-    auto r2 = context->sourceFile->module->reserveRegister();
-    context->sourceFile->module->freeRegister(r0);
-    context->sourceFile->module->freeRegister(r1);
-    node->resultRegister = r2;
+    auto r0 = node->childs[0]->resultRegisterRC;
+    auto r1 = node->childs[1]->resultRegisterRC;
+    auto r2 = context->sourceFile->module->reserveRegisterRC();
+    context->sourceFile->module->freeRegisterRC(r0);
+    context->sourceFile->module->freeRegisterRC(r1);
+    node->resultRegisterRC = r2;
 
     switch (node->token.id)
     {

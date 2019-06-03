@@ -11,22 +11,13 @@
 #include "Module.h"
 #include "ThreadManager.h"
 
-bool SemanticJob::resolveCompilerRun(SemanticContext* context)
+bool SemanticJob::executeNode(SemanticContext* context, AstNode* node)
 {
-    auto node       = context->node;
-    auto expr       = context->node->childs[0];
     auto sourceFile = context->sourceFile;
-
-    node->typeInfo = expr->typeInfo;
-    node->inheritAndFlag(expr, AST_CONST_EXPR);
-    node->inheritComputedValue(expr);
 
     // No need to run, this is already baked
     if (node->flags & AST_VALUE_COMPUTED)
-    {
-        context->result = SemanticResult::Done;
         return true;
-    }
 
     {
         scoped_lock lk(node->mutex);
@@ -53,20 +44,40 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     {
         scoped_lock        lk(mutex);
         ByteCodeRunContext runContext;
-        runContext.numRegisters = sourceFile->module->maxReservedRegister;
-        runContext.registers    = (Register*) malloc(runContext.numRegisters);
-        runContext.node         = expr;
-        runContext.sourceFile   = sourceFile;
-        runContext.bc           = node->bc;
-        runContext.ip           = runContext.bc->out;
-        runContext.stackSize    = 1024;
-        runContext.stack        = (uint8_t*) malloc(runContext.stackSize);
-        runContext.bp           = runContext.stack + runContext.stackSize;
-        runContext.sp           = runContext.bp;
+        runContext.numRegistersRC = sourceFile->module->maxReservedRegisterRC;
+        runContext.registersRC    = (Register*) malloc(runContext.numRegistersRC * sizeof(Register));
+        runContext.numRegistersRR = sourceFile->module->maxReservedRegisterRR;
+        runContext.registersRR    = (Register*) malloc(runContext.numRegistersRR * sizeof(Register));
+        runContext.node           = node;
+        runContext.sourceFile     = sourceFile;
+        runContext.bc             = node->bc;
+        runContext.ip             = runContext.bc->out;
+        runContext.stackSize      = 1024;
+        runContext.stack          = (uint8_t*) malloc(runContext.stackSize);
+        runContext.bp             = runContext.stack + runContext.stackSize;
+        runContext.sp             = runContext.bp;
         SWAG_CHECK(g_Run.run(&runContext));
+
+        if (node->resultRegisterRC != UINT32_MAX)
+        {
+            node->computedValue.reg = runContext.registersRC[node->resultRegisterRC];
+            node->flags |= AST_VALUE_COMPUTED;
+        }
     }
 
-    context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveCompilerRun(SemanticContext* context)
+{
+    auto node = context->node;
+    auto expr = context->node->childs[0];
+
+    node->typeInfo = expr->typeInfo;
+    node->inheritAndFlag(expr, AST_CONST_EXPR);
+    node->inheritComputedValue(expr);
+
+    SWAG_CHECK(executeNode(context, expr));
     return true;
 }
 
@@ -83,7 +94,6 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
     SWAG_VERIFY(node->typeInfo == g_TypeMgr.typeInfoBool, sourceFile->report({sourceFile, node->childs[0]->token, "expression should be 'bool'"}));
     SWAG_VERIFY(node->computedValue.reg.b, sourceFile->report({sourceFile, node->token, "compiler assertion failed"}));
-    context->result = SemanticResult::Done;
     return true;
 }
 
@@ -136,6 +146,5 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 
     g_Log.eol();
     g_Log.unlock();
-    context->result = SemanticResult::Done;
     return true;
 }
