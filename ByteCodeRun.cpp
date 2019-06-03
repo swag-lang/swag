@@ -1,13 +1,12 @@
 #include "pch.h"
-#include "Global.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCodeRun.h"
 #include "ByteCodeRunContext.h"
 #include "Diagnostic.h"
-#include "SemanticJob.h"
 #include "SourceFile.h"
 #include "ByteCode.h"
 #include "Log.h"
+#include "Module.h"
 
 inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
@@ -265,10 +264,6 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
 {
-    uint32_t       nodeSourceFileIdx = UINT32_MAX;
-    SourceLocation nodeStartLocation;
-    SourceLocation nodeEndLocation;
-
     context->ip = context->bc->out;
     while (true)
     {
@@ -277,19 +272,15 @@ bool ByteCodeRun::run(ByteCodeRunContext* context)
         if (ip->op == ByteCodeOp::End)
             break;
 
-        // Debug informations
-        if (ip->sourceFileIdx != UINT32_MAX)
-        {
-            nodeSourceFileIdx = ip->sourceFileIdx;
-            nodeStartLocation = ip->startLocation;
-            nodeEndLocation   = ip->endLocation;
-        }
-
-		runNode(context, ip);
+        runNode(context, ip);
 
         // Error ?
         if (context->hasError)
-            return context->sourceFile->report({context->sourceFile, nodeStartLocation, nodeEndLocation, context->errorMsg});
+        {
+            assert(ip->sourceFileIdx < context->sourceFile->module->files.size());
+            auto sourceFile = context->sourceFile->module->files[ip->sourceFileIdx];
+            return context->sourceFile->report({sourceFile, ip->startLocation, ip->endLocation, context->errorMsg});
+        }
     }
 
     return true;

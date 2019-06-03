@@ -2,7 +2,4 @@
 #unittest pass semantic
 using swag;
 
-func main: () -> s32
-{
-	return 0;
-}
+//#run @assert(false)
