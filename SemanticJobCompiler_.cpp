@@ -58,15 +58,12 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         runContext.node         = expr;
         runContext.sourceFile   = sourceFile;
         runContext.bc           = node->bc;
-        runContext.stack_bc.resize(1024);
-        runContext.stack_ip.resize(1024);
-        runContext.stack_storage.resize(1024);
+        runContext.ip           = runContext.bc->out;
+        runContext.stackSize    = 1024;
+        runContext.stack        = (uint8_t*) malloc(runContext.stackSize);
+        runContext.bp           = runContext.stack + runContext.stackSize;
+        runContext.sp           = runContext.bp;
         SWAG_CHECK(g_Run.run(&runContext));
-        if (runContext.sp)
-        {
-            node->computedValue.reg = runContext.stack_storage[runContext.sp - 1].reg;
-            node->flags |= AST_VALUE_COMPUTED;
-        }
     }
 
     context->result = SemanticResult::Done;

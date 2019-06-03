@@ -115,16 +115,14 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 
     case ByteCodeOp::Ret:
     {
-        context->epbc--;
-        context->bc = context->stack_bc[context->epbc];
-        context->ip = context->stack_ip[context->epbc];
+        context->ip = context->pop<ByteCodeInstruction*>();
+        context->bc = context->pop<ByteCode*>();
         break;
     }
     case ByteCodeOp::LocalFuncCall:
     {
-        context->stack_bc[context->epbc] = context->bc;
-        context->stack_ip[context->epbc] = context->ip;
-        context->epbc++;
+        context->push(context->bc);
+        context->push(context->ip);
         context->bc = (ByteCode*) ip->r0.pointer;
         context->ip = context->bc->out;
         break;
@@ -178,7 +176,6 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
 {
-    context->ip = context->bc->out;
     while (true)
     {
         // Get instruction
