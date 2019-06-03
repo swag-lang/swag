@@ -4,8 +4,10 @@ using swag;
 
 func main:() -> s32
 {
+	@print("toto\n");
 	return 666;
 }
 
-#print main()
+#run main()
 //#print "toto"
+//#assert false

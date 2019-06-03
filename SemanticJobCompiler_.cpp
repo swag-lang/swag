@@ -41,30 +41,19 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node)
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
-    auto node = context->node;
     auto expr = context->node->childs[0];
-
-    node->typeInfo = expr->typeInfo;
-    node->inheritAndFlag(expr, AST_CONST_EXPR);
-    node->inheritComputedValue(expr);
-
     SWAG_CHECK(executeNode(context, expr));
     return true;
 }
 
 bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 {
-    auto node       = context->node;
     auto expr       = context->node->childs[0];
     auto sourceFile = context->sourceFile;
 
-    node->typeInfo = expr->typeInfo;
-    node->inheritAndFlag(expr, AST_CONST_EXPR);
-    node->inheritComputedValue(expr);
-
-    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->childs[0]->token, "can't evaluate expression at compile time"}));
-    SWAG_VERIFY(node->typeInfo == g_TypeMgr.typeInfoBool, sourceFile->report({sourceFile, node->childs[0]->token, "expression should be 'bool'"}));
-    SWAG_VERIFY(node->computedValue.reg.b, sourceFile->report({sourceFile, node->token, "compiler assertion failed"}));
+    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, expr->token, "can't evaluate expression at compile time"}));
+    SWAG_VERIFY(expr->typeInfo == g_TypeMgr.typeInfoBool, sourceFile->report({sourceFile, expr->token, "expression should be 'bool'"}));
+    SWAG_VERIFY(expr->computedValue.reg.b, sourceFile->report({sourceFile, expr, "compiler assertion failed"}));
     return true;
 }
 
