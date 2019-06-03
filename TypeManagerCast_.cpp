@@ -30,21 +30,27 @@ bool TypeManager::castToNativeU8(SourceFile* sourceFile, AstNode* nodeToCast, ui
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
-        if (nodeToCast->computedValue.reg.s64 < 0)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u8'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            if (nodeToCast->computedValue.reg.s64 < 0)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u8'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
         }
 
     case NativeType::U16:
     case NativeType::U32:
     case NativeType::U64:
-        if (nodeToCast->computedValue.reg.u64 > UINT8_MAX)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u8'", nodeToCast->computedValue.reg.u64)});
-            return false;
+            if (nodeToCast->computedValue.reg.u64 > UINT8_MAX)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u8'", nodeToCast->computedValue.reg.u64)});
+                return false;
+            }
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoU8;
@@ -62,21 +68,27 @@ bool TypeManager::castToNativeU16(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
-        if (nodeToCast->computedValue.reg.s64 < 0)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u16'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            if (nodeToCast->computedValue.reg.s64 < 0)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u16'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
         }
 
     case NativeType::U8:
     case NativeType::U32:
     case NativeType::U64:
-        if (nodeToCast->computedValue.reg.u64 > UINT16_MAX)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u16'", nodeToCast->computedValue.reg.u64)});
-            return false;
+            if (nodeToCast->computedValue.reg.u64 > UINT16_MAX)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u16'", nodeToCast->computedValue.reg.u64)});
+                return false;
+            }
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoU16;
@@ -94,21 +106,27 @@ bool TypeManager::castToNativeU32(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
-        if (nodeToCast->computedValue.reg.s64 < 0)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u32'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            if (nodeToCast->computedValue.reg.s64 < 0)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u32'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
         }
 
     case NativeType::U8:
     case NativeType::U16:
     case NativeType::U64:
-        if (nodeToCast->computedValue.reg.u64 > UINT32_MAX)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u32'", nodeToCast->computedValue.reg.u64)});
-            return false;
+            if (nodeToCast->computedValue.reg.u64 > UINT32_MAX)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u32'", nodeToCast->computedValue.reg.u64)});
+                return false;
+            }
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
@@ -126,11 +144,14 @@ bool TypeManager::castToNativeU64(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
-        if (nodeToCast->computedValue.reg.s64 < 0)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u64'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            if (nodeToCast->computedValue.reg.s64 < 0)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u64'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
         }
 
     case NativeType::U8:
@@ -150,11 +171,14 @@ bool TypeManager::castToNativeS8(SourceFile* sourceFile, AstNode* nodeToCast, ui
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
-        if (nodeToCast->computedValue.reg.s64 < INT8_MIN || nodeToCast->computedValue.reg.s64 > INT8_MAX)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's8'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            if (nodeToCast->computedValue.reg.s64 < INT8_MIN || nodeToCast->computedValue.reg.s64 > INT8_MAX)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's8'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoS8;
@@ -171,11 +195,14 @@ bool TypeManager::castToNativeS16(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S8:
     case NativeType::S32:
     case NativeType::S64:
-        if (nodeToCast->computedValue.reg.s64 < INT16_MIN || nodeToCast->computedValue.reg.s64 > INT16_MAX)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's16'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            if (nodeToCast->computedValue.reg.s64 < INT16_MIN || nodeToCast->computedValue.reg.s64 > INT16_MAX)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's16'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoS16;
@@ -192,11 +219,14 @@ bool TypeManager::castToNativeS32(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S8:
     case NativeType::S16:
     case NativeType::S64:
-        if (nodeToCast->computedValue.reg.s64 < INT32_MIN || nodeToCast->computedValue.reg.s64 > INT32_MAX)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's32'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            if (nodeToCast->computedValue.reg.s64 < INT32_MIN || nodeToCast->computedValue.reg.s64 > INT32_MAX)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's32'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoS32;
@@ -213,11 +243,14 @@ bool TypeManager::castToNativeS64(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S8:
     case NativeType::S16:
     case NativeType::S32:
-        if (nodeToCast->computedValue.reg.s64 < INT64_MIN || nodeToCast->computedValue.reg.s64 > INT64_MAX)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's64'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            if (nodeToCast->computedValue.reg.s64 < INT64_MIN || nodeToCast->computedValue.reg.s64 > INT64_MAX)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's64'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoS64;
@@ -236,18 +269,21 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S32:
     case NativeType::S64:
     {
-        float   tmpF = static_cast<float>(nodeToCast->computedValue.reg.s64);
-        int64_t tmpI = static_cast<int64_t>(tmpF);
-        if (tmpI != nodeToCast->computedValue.reg.s64)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f32'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            float   tmpF = static_cast<float>(nodeToCast->computedValue.reg.s64);
+            int64_t tmpI = static_cast<int64_t>(tmpF);
+            if (tmpI != nodeToCast->computedValue.reg.s64)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f32'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
+
+            nodeToCast->computedValue.reg.f64 = static_cast<float>(nodeToCast->computedValue.reg.s64);
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoF32;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->computedValue.reg.f64 = static_cast<float>(nodeToCast->computedValue.reg.s64);
         return true;
     }
 
@@ -256,31 +292,38 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::U32:
     case NativeType::U64:
     {
-        float    tmpF = static_cast<float>(nodeToCast->computedValue.reg.u64);
-        uint64_t tmpI = static_cast<uint64_t>(tmpF);
-        if (tmpI != nodeToCast->computedValue.reg.u64)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
-            return false;
+            float    tmpF = static_cast<float>(nodeToCast->computedValue.reg.u64);
+            uint64_t tmpI = static_cast<uint64_t>(tmpF);
+            if (tmpI != nodeToCast->computedValue.reg.u64)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
+                return false;
+            }
+
+            nodeToCast->computedValue.reg.f64 = static_cast<float>(nodeToCast->computedValue.reg.u64);
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoF32;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->computedValue.reg.f64 = static_cast<float>(nodeToCast->computedValue.reg.u64);
         return true;
     }
 
     case NativeType::F64:
     {
-        float  tmpF = static_cast<float>(nodeToCast->computedValue.reg.f64);
-        double tmpD = static_cast<double>(tmpF);
-        if (tmpD != nodeToCast->computedValue.reg.f64)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%Lf' is truncated in 'f32'", nodeToCast->computedValue.reg.f64)});
-            return false;
+            float  tmpF = static_cast<float>(nodeToCast->computedValue.reg.f64);
+            double tmpD = static_cast<double>(tmpF);
+            if (tmpD != nodeToCast->computedValue.reg.f64)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%Lf' is truncated in 'f32'", nodeToCast->computedValue.reg.f64)});
+                return false;
+            }
         }
+
         nodeToCast->typeInfo = g_TypeMgr.typeInfoF32;
         return true;
     }
@@ -298,18 +341,21 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::S32:
     case NativeType::S64:
     {
-        double  tmpF = static_cast<double>(nodeToCast->computedValue.reg.s64);
-        int64_t tmpI = static_cast<int64_t>(tmpF);
-        if (tmpI != nodeToCast->computedValue.reg.s64)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f64'", nodeToCast->computedValue.reg.s64)});
-            return false;
+            double  tmpF = static_cast<double>(nodeToCast->computedValue.reg.s64);
+            int64_t tmpI = static_cast<int64_t>(tmpF);
+            if (tmpI != nodeToCast->computedValue.reg.s64)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f64'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
+
+            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.s64);
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.s64);
         return true;
     }
 
@@ -318,18 +364,21 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
     case NativeType::U32:
     case NativeType::U64:
     {
-        double   tmpF = static_cast<double>(nodeToCast->computedValue.reg.u64);
-        uint64_t tmpI = static_cast<uint64_t>(tmpF);
-        if (tmpI != nodeToCast->computedValue.reg.u64)
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_NOERROR))
-                sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
-            return false;
+            double   tmpF = static_cast<double>(nodeToCast->computedValue.reg.u64);
+            uint64_t tmpI = static_cast<uint64_t>(tmpF);
+            if (tmpI != nodeToCast->computedValue.reg.u64)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    sourceFile->report({sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
+                return false;
+            }
+
+            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.u64);
         }
 
         nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.u64);
         return true;
     }
 
@@ -345,9 +394,7 @@ bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode
 {
     // Cast from native only for now
     if (toType->kind != TypeInfoKind::Native)
-        return false;
-    if (!(nodeToCast->flags & AST_VALUE_COMPUTED))
-        return false;
+        return castError(sourceFile, toType, nodeToCast, castFlags);
 
     switch (toType->nativeType)
     {

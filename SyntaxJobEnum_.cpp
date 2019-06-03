@@ -26,7 +26,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             auto typeInfo = sourceFile->poolFactory->typeInfoEnum.alloc();
             newScope      = Ast::newScope(sourceFile, enumNode->name, ScopeKind::Enum, currentScope);
             newScope->allocateSymTable();
-            typeInfo->name     = "enum " + enumNode->name;
+            typeInfo->name     = enumNode->name;
             typeInfo->scope    = newScope;
             enumNode->typeInfo = typeInfo;
             currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode, SymbolKind::Enum);
