@@ -9,15 +9,35 @@
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
+    case NativeType::F32:
+    case NativeType::F64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (left->typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::S8:
         {
@@ -76,16 +96,35 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
 bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
-    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
+    case NativeType::F32:
+    case NativeType::F64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, node, format("substraction not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (left->typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::S8:
         {
@@ -144,16 +183,35 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
 bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
-    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
+    case NativeType::F32:
+    case NativeType::F64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, node, format("multiplication not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (left->typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::S8:
         {
@@ -212,25 +270,37 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
 bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(left->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
-    SWAG_VERIFY(right->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left->token, "operation not yet available on that type"}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right->token, "operation not yet available on that type"}));
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
+        return sourceFile->report({sourceFile, node, "integer division is not allowed"});
+    case NativeType::F32:
+    case NativeType::F64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, node, format("division not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (left->typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U32:
-        case NativeType::U64:
-            return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "integer division is not allowed"});
         case NativeType::F32:
         case NativeType::F64:
             if (right->computedValue.reg.f64 == 0)

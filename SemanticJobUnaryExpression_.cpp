@@ -23,7 +23,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("minus operation not available on type '%s'", op->typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, op->token, format("minus operation not allowed on type '%s'", op->typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
@@ -49,19 +49,20 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 {
     auto sourceFile = context->sourceFile;
+    auto typeInfo   = TypeManager::concreteType(op->typeInfo);
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op->token, "boolean inversion not available on that type"}));
 
-    SWAG_VERIFY(op->typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op->token, "boolean inversion not available on that type"}));
-    switch (op->typeInfo->nativeType)
+    switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("boolean inversion not available on type '%s'", op->typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, op->token, format("boolean inversion not allowed on type '%s'", op->typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
     {
-        switch (op->typeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeType::Bool:
             op->computedValue.reg.b = !op->computedValue.reg.b;
