@@ -10,105 +10,106 @@
 
 inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
+    auto registers = context->registers;
     switch (ip->op)
     {
     case ByteCodeOp::CopyV0R1:
     {
-        context->registers[ip->r1.u32] = ip->r0;
+        registers[ip->r1.u32] = ip->r0;
         break;
     }
 
     case ByteCodeOp::BinOpPlusS32:
     {
-        context->registers[ip->r2.u32].s32 = context->registers[ip->r0.u32].s32 + context->registers[ip->r1.u32].s32;
+        registers[ip->r2.u32].s32 = registers[ip->r0.u32].s32 + registers[ip->r1.u32].s32;
         break;
     }
     case ByteCodeOp::BinOpPlusS64:
     {
-        context->registers[ip->r2.u32].s64 = context->registers[ip->r0.u32].s64 + context->registers[ip->r1.u32].s64;
+        registers[ip->r2.u32].s64 = registers[ip->r0.u32].s64 + registers[ip->r1.u32].s64;
         break;
     }
     case ByteCodeOp::BinOpPlusU32:
     {
-        context->registers[ip->r2.u32].u32 = context->registers[ip->r0.u32].u32 + context->registers[ip->r1.u32].u32;
+        registers[ip->r2.u32].u32 = registers[ip->r0.u32].u32 + registers[ip->r1.u32].u32;
         break;
     }
     case ByteCodeOp::BinOpPlusU64:
     {
-        context->registers[ip->r2.u32].u64 = context->registers[ip->r0.u32].u64 + context->registers[ip->r1.u32].u64;
+        registers[ip->r2.u32].u64 = registers[ip->r0.u32].u64 + registers[ip->r1.u32].u64;
 
         break;
     }
     case ByteCodeOp::BinOpPlusF32:
     case ByteCodeOp::BinOpPlusF64:
     {
-        context->registers[ip->r2.u32].f64 = context->registers[ip->r0.u32].f64 + context->registers[ip->r1.u32].f64;
+        registers[ip->r2.u32].f64 = registers[ip->r0.u32].f64 + registers[ip->r1.u32].f64;
         break;
     }
 
     case ByteCodeOp::BinOpMinusS32:
     {
-        context->registers[ip->r2.u32].s32 = context->registers[ip->r0.u32].s32 - context->registers[ip->r1.u32].s32;
+        registers[ip->r2.u32].s32 = registers[ip->r0.u32].s32 - registers[ip->r1.u32].s32;
         break;
     }
     case ByteCodeOp::BinOpMinusS64:
     {
-        context->registers[ip->r2.u32].s64 = context->registers[ip->r0.u32].s64 - context->registers[ip->r1.u32].s64;
+        registers[ip->r2.u32].s64 = registers[ip->r0.u32].s64 - registers[ip->r1.u32].s64;
         break;
     }
     case ByteCodeOp::BinOpMinusU32:
     {
-        context->registers[ip->r2.u32].u32 = context->registers[ip->r0.u32].u32 - context->registers[ip->r1.u32].u32;
+        registers[ip->r2.u32].u32 = registers[ip->r0.u32].u32 - registers[ip->r1.u32].u32;
         break;
     }
     case ByteCodeOp::BinOpMinusU64:
     {
-        context->registers[ip->r2.u32].u64 = context->registers[ip->r0.u32].u64 - context->registers[ip->r1.u32].u64;
+        registers[ip->r2.u32].u64 = registers[ip->r0.u32].u64 - registers[ip->r1.u32].u64;
         break;
     }
     case ByteCodeOp::BinOpMinusF32:
     case ByteCodeOp::BinOpMinusF64:
     {
-        context->registers[ip->r2.u32].f64 = context->registers[ip->r0.u32].f64 - context->registers[ip->r1.u32].f64;
+        registers[ip->r2.u32].f64 = registers[ip->r0.u32].f64 - registers[ip->r1.u32].f64;
         break;
     }
 
     case ByteCodeOp::BinOpMulS32:
     {
-        context->registers[ip->r2.u32].s32 = context->registers[ip->r0.u32].s32 * context->registers[ip->r1.u32].s32;
+        registers[ip->r2.u32].s32 = registers[ip->r0.u32].s32 * registers[ip->r1.u32].s32;
         break;
     }
     case ByteCodeOp::BinOpMulS64:
     {
-        context->registers[ip->r2.u32].s64 = context->registers[ip->r0.u32].s64 * context->registers[ip->r1.u32].s64;
+        registers[ip->r2.u32].s64 = registers[ip->r0.u32].s64 * registers[ip->r1.u32].s64;
         break;
     }
     case ByteCodeOp::BinOpMulU32:
     {
-        context->registers[ip->r2.u32].u32 = context->registers[ip->r0.u32].u32 * context->registers[ip->r1.u32].u32;
+        registers[ip->r2.u32].u32 = registers[ip->r0.u32].u32 * registers[ip->r1.u32].u32;
         break;
     }
     case ByteCodeOp::BinOpMulU64:
     {
-        context->registers[ip->r2.u32].u64 = context->registers[ip->r0.u32].u64 * context->registers[ip->r1.u32].u64;
+        registers[ip->r2.u32].u64 = registers[ip->r0.u32].u64 * registers[ip->r1.u32].u64;
         break;
     }
     case ByteCodeOp::BinOpMulF32:
     case ByteCodeOp::BinOpMulF64:
     {
-        context->registers[ip->r2.u32].f64 = context->registers[ip->r0.u32].f64 * context->registers[ip->r1.u32].f64;
+        registers[ip->r2.u32].f64 = registers[ip->r0.u32].f64 * registers[ip->r1.u32].f64;
         break;
     }
 
     case ByteCodeOp::BinOpDivF32:
     case ByteCodeOp::BinOpDivF64:
     {
-        auto val1 = context->registers[ip->r0.u32].f64;
-        auto val2 = context->registers[ip->r1.u32].f64;
+        auto val1 = registers[ip->r0.u32].f64;
+        auto val2 = registers[ip->r1.u32].f64;
         if (val2 == 0.0f)
             context->error("division by zero");
         else
-            context->registers[ip->r2.u32].f64 = val1 / val2;
+            registers[ip->r2.u32].f64 = val1 / val2;
         break;
     }
 
@@ -131,37 +132,37 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 
     case ByteCodeOp::IntrinsicAssert:
     {
-        if (!context->registers[ip->r0.u32].b)
-            context->error("intrisic @assert failed");
+        if (!registers[ip->r0.u32].b)
+            context->error("intrinsic @assert failed");
         break;
     }
 
     case ByteCodeOp::IntrinsicPrintF64:
     {
         g_Log.lock();
-        g_Log.print(to_string(context->registers[ip->r0.u32].f64));
+        g_Log.print(to_string(registers[ip->r0.u32].f64));
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintS64:
     {
         g_Log.lock();
-        g_Log.print(to_string(context->registers[ip->r0.u32].s64));
+        g_Log.print(to_string(registers[ip->r0.u32].s64));
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintChar:
     {
-        g_Log.lock();
         Utf8 msg;
-        msg += (char32_t) context->registers[ip->r0.u32].u32;
+        msg += (char32_t) registers[ip->r0.u32].u32;
+        g_Log.lock();
         g_Log.print(msg);
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintString:
     {
-        auto val = context->registers[ip->r0.u32].u32;
+        auto val = registers[ip->r0.u32].u32;
         assert(val < context->bc->strBuffer.size());
         g_Log.lock();
         g_Log.print(context->bc->strBuffer[val]);
