@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Global.h"
 #include "AstNode.h"
-#include "ByteCodeNodeId.h"
+#include "ByteCodeOp.h"
 #include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
 #include "SymTable.h"
@@ -12,7 +12,7 @@
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
-    emitInstruction(context, ByteCodeNodeId::Ret);
+    emitInstruction(context, ByteCodeOp::Ret);
     return true;
 }
 
@@ -28,21 +28,21 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         switch (callParams->childs[0]->typeInfo->nativeType)
         {
         case NativeType::S64:
-            emitInstruction(context, ByteCodeNodeId::IntrinsicPrintS64);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintS64);
             break;
         case NativeType::F64:
-            emitInstruction(context, ByteCodeNodeId::IntrinsicPrintF64);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintF64);
             break;
         case NativeType::Char:
-            emitInstruction(context, ByteCodeNodeId::IntrinsicPrintChar);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintChar);
             break;
         case NativeType::String:
-            emitInstruction(context, ByteCodeNodeId::IntrinsicPrintString);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintString);
             break;
         }
         break;
     case Intrisic::Assert:
-        emitInstruction(context, ByteCodeNodeId::IntrinsicAssert);
+        emitInstruction(context, ByteCodeOp::IntrinsicAssert);
         break;
     default:
         assert(false);
@@ -88,7 +88,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     }
 
     auto& out = context->bc->out;
-    emitInstruction(context, ByteCodeNodeId::LocalFuncCall);
+    emitInstruction(context, ByteCodeOp::LocalFuncCall);
     out.addPointer(overnode->bc);
 
     return true;

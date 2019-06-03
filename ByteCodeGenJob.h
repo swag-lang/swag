@@ -1,6 +1,6 @@
 #pragma once
 #include "Job.h"
-#include "ByteCodeNodeId.h"
+#include "ByteCodeOp.h"
 struct AstNode;
 struct SourceFile;
 struct SemanticContext;
@@ -36,7 +36,7 @@ struct ByteCodeGenJob : public Job
     }
 
     static bool internalError(ByteCodeGenContext* context);
-    static void emitInstruction(ByteCodeGenContext* context, ByteCodeNodeId id);
+    static void emitInstruction(ByteCodeGenContext* context, ByteCodeOp id);
 
     static bool emitLiteral(ByteCodeGenContext* context);
     static bool emitBinaryOpPlus(ByteCodeGenContext* context);

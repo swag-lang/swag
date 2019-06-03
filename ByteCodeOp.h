@@ -1,5 +1,5 @@
 #pragma once
-enum class ByteCodeNodeId : uint16_t
+enum class ByteCodeOp : uint16_t
 {
     End = 0,
 

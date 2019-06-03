@@ -16,12 +16,12 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context)
     return false;
 }
 
-void ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeNodeId id)
+void ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp id)
 {
     AstNode* node = context->node;
     if (context->debugInfos && node && node->sourceFileIdx != UINT32_MAX)
     {
-        context->bc->out.addU16((uint16_t) ByteCodeNodeId::DebugInfos);
+        context->bc->out.addU16((uint16_t) ByteCodeOp::DebugInfos);
         context->bc->out.addU32(node->sourceFileIdx);
         context->bc->out.addU32(node->token.startLocation.line);
         context->bc->out.addU32(node->token.startLocation.column);
@@ -85,7 +85,7 @@ JobResult ByteCodeGenJob::execute()
         }
     }
 
-    emitInstruction(&context, ByteCodeNodeId::End);
+    emitInstruction(&context, ByteCodeOp::End);
 
     // Inform dependencies that this node has bytecode
     {

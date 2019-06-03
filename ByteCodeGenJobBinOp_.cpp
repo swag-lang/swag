@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Global.h"
 #include "AstNode.h"
-#include "ByteCodeNodeId.h"
+#include "ByteCodeOp.h"
 #include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
 
@@ -15,22 +15,22 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context)
     switch (typeInfo->nativeType)
     {
     case NativeType::S32:
-        emitInstruction(context, ByteCodeNodeId::BinOpPlusS32);
+        emitInstruction(context, ByteCodeOp::BinOpPlusS32);
         return true;
     case NativeType::S64:
-        emitInstruction(context, ByteCodeNodeId::BinOpPlusS64);
+        emitInstruction(context, ByteCodeOp::BinOpPlusS64);
         return true;
     case NativeType::U32:
-        emitInstruction(context, ByteCodeNodeId::BinOpPlusU32);
+        emitInstruction(context, ByteCodeOp::BinOpPlusU32);
         return true;
     case NativeType::U64:
-        emitInstruction(context, ByteCodeNodeId::BinOpPlusU64);
+        emitInstruction(context, ByteCodeOp::BinOpPlusU64);
         return true;
     case NativeType::F32:
-        emitInstruction(context, ByteCodeNodeId::BinOpPlusF32);
+        emitInstruction(context, ByteCodeOp::BinOpPlusF32);
         return true;
     case NativeType::F64:
-        emitInstruction(context, ByteCodeNodeId::BinOpPlusF64);
+        emitInstruction(context, ByteCodeOp::BinOpPlusF64);
         return true;
     default:
         return internalError(context);
@@ -47,22 +47,22 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context)
     switch (typeInfo->nativeType)
     {
     case NativeType::S32:
-        emitInstruction(context, ByteCodeNodeId::BinOpMinusS32);
+        emitInstruction(context, ByteCodeOp::BinOpMinusS32);
         return true;
     case NativeType::S64:
-        emitInstruction(context, ByteCodeNodeId::BinOpMinusS64);
+        emitInstruction(context, ByteCodeOp::BinOpMinusS64);
         return true;
     case NativeType::U32:
-        emitInstruction(context, ByteCodeNodeId::BinOpMinusU32);
+        emitInstruction(context, ByteCodeOp::BinOpMinusU32);
         return true;
     case NativeType::U64:
-        emitInstruction(context, ByteCodeNodeId::BinOpMinusU64);
+        emitInstruction(context, ByteCodeOp::BinOpMinusU64);
         return true;
     case NativeType::F32:
-        emitInstruction(context, ByteCodeNodeId::BinOpMinusF32);
+        emitInstruction(context, ByteCodeOp::BinOpMinusF32);
         return true;
     case NativeType::F64:
-        emitInstruction(context, ByteCodeNodeId::BinOpMinusF64);
+        emitInstruction(context, ByteCodeOp::BinOpMinusF64);
         return true;
     default:
         return internalError(context);
@@ -79,22 +79,22 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context)
     switch (typeInfo->nativeType)
     {
     case NativeType::S32:
-        emitInstruction(context, ByteCodeNodeId::BinOpMulS32);
+        emitInstruction(context, ByteCodeOp::BinOpMulS32);
         return true;
     case NativeType::S64:
-        emitInstruction(context, ByteCodeNodeId::BinOpMulS64);
+        emitInstruction(context, ByteCodeOp::BinOpMulS64);
         return true;
     case NativeType::U32:
-        emitInstruction(context, ByteCodeNodeId::BinOpMulU32);
+        emitInstruction(context, ByteCodeOp::BinOpMulU32);
         return true;
     case NativeType::U64:
-        emitInstruction(context, ByteCodeNodeId::BinOpMulU64);
+        emitInstruction(context, ByteCodeOp::BinOpMulU64);
         return true;
     case NativeType::F32:
-        emitInstruction(context, ByteCodeNodeId::BinOpMulF32);
+        emitInstruction(context, ByteCodeOp::BinOpMulF32);
         return true;
     case NativeType::F64:
-        emitInstruction(context, ByteCodeNodeId::BinOpMulF64);
+        emitInstruction(context, ByteCodeOp::BinOpMulF64);
         return true;
     default:
         return internalError(context);
@@ -111,10 +111,10 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context)
     switch (typeInfo->nativeType)
     {
     case NativeType::F32:
-        emitInstruction(context, ByteCodeNodeId::BinOpDivF32);
+        emitInstruction(context, ByteCodeOp::BinOpDivF32);
         return true;
     case NativeType::F64:
-        emitInstruction(context, ByteCodeNodeId::BinOpDivF64);
+        emitInstruction(context, ByteCodeOp::BinOpDivF64);
         return true;
     default:
         return internalError(context);

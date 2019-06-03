@@ -1,5 +1,5 @@
 #pragma once
-#include "ByteCodeNodeId.h"
+#include "ByteCodeOp.h"
 struct ByteCode;
 struct SemanticContext;
 struct AstNode;
@@ -60,5 +60,5 @@ struct ByteCodeRun
     static uint8_t* runIntrinsicPrintString(ByteCodeRunContext* context);
     static uint8_t* runIntrinsicAssert(ByteCodeRunContext* context);
 
-    map<ByteCodeNodeId, RunNodeFct> mapNodes;
+    map<ByteCodeOp, RunNodeFct> mapNodes;
 };

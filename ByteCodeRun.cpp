@@ -10,51 +10,51 @@
 
 void ByteCodeRun::setup()
 {
-    mapNodes[ByteCodeNodeId::PushBool]   = runPushBool;
-    mapNodes[ByteCodeNodeId::PushS8]     = runPushS8;
-    mapNodes[ByteCodeNodeId::PushS16]    = runPushS16;
-    mapNodes[ByteCodeNodeId::PushS32]    = runPushS32;
-    mapNodes[ByteCodeNodeId::PushS64]    = runPushS64;
-    mapNodes[ByteCodeNodeId::PushU8]     = runPushU8;
-    mapNodes[ByteCodeNodeId::PushU16]    = runPushU16;
-    mapNodes[ByteCodeNodeId::PushU32]    = runPushU32;
-    mapNodes[ByteCodeNodeId::PushU64]    = runPushU64;
-    mapNodes[ByteCodeNodeId::PushF32]    = runPushF32;
-    mapNodes[ByteCodeNodeId::PushF64]    = runPushF64;
-    mapNodes[ByteCodeNodeId::PushString] = runPushString;
+    mapNodes[ByteCodeOp::PushBool]   = runPushBool;
+    mapNodes[ByteCodeOp::PushS8]     = runPushS8;
+    mapNodes[ByteCodeOp::PushS16]    = runPushS16;
+    mapNodes[ByteCodeOp::PushS32]    = runPushS32;
+    mapNodes[ByteCodeOp::PushS64]    = runPushS64;
+    mapNodes[ByteCodeOp::PushU8]     = runPushU8;
+    mapNodes[ByteCodeOp::PushU16]    = runPushU16;
+    mapNodes[ByteCodeOp::PushU32]    = runPushU32;
+    mapNodes[ByteCodeOp::PushU64]    = runPushU64;
+    mapNodes[ByteCodeOp::PushF32]    = runPushF32;
+    mapNodes[ByteCodeOp::PushF64]    = runPushF64;
+    mapNodes[ByteCodeOp::PushString] = runPushString;
 
-    mapNodes[ByteCodeNodeId::BinOpPlusS32] = runBinOpPlusS32;
-    mapNodes[ByteCodeNodeId::BinOpPlusS64] = runBinOpPlusS64;
-    mapNodes[ByteCodeNodeId::BinOpPlusU32] = runBinOpPlusU32;
-    mapNodes[ByteCodeNodeId::BinOpPlusU64] = runBinOpPlusU64;
-    mapNodes[ByteCodeNodeId::BinOpPlusF32] = runBinOpPlusF32;
-    mapNodes[ByteCodeNodeId::BinOpPlusF64] = runBinOpPlusF64;
+    mapNodes[ByteCodeOp::BinOpPlusS32] = runBinOpPlusS32;
+    mapNodes[ByteCodeOp::BinOpPlusS64] = runBinOpPlusS64;
+    mapNodes[ByteCodeOp::BinOpPlusU32] = runBinOpPlusU32;
+    mapNodes[ByteCodeOp::BinOpPlusU64] = runBinOpPlusU64;
+    mapNodes[ByteCodeOp::BinOpPlusF32] = runBinOpPlusF32;
+    mapNodes[ByteCodeOp::BinOpPlusF64] = runBinOpPlusF64;
 
-    mapNodes[ByteCodeNodeId::BinOpMinusS32] = runBinOpMinusS32;
-    mapNodes[ByteCodeNodeId::BinOpMinusS64] = runBinOpMinusS64;
-    mapNodes[ByteCodeNodeId::BinOpMinusU32] = runBinOpMinusU32;
-    mapNodes[ByteCodeNodeId::BinOpMinusU64] = runBinOpMinusU64;
-    mapNodes[ByteCodeNodeId::BinOpMinusF32] = runBinOpMinusF32;
-    mapNodes[ByteCodeNodeId::BinOpMinusF64] = runBinOpMinusF64;
+    mapNodes[ByteCodeOp::BinOpMinusS32] = runBinOpMinusS32;
+    mapNodes[ByteCodeOp::BinOpMinusS64] = runBinOpMinusS64;
+    mapNodes[ByteCodeOp::BinOpMinusU32] = runBinOpMinusU32;
+    mapNodes[ByteCodeOp::BinOpMinusU64] = runBinOpMinusU64;
+    mapNodes[ByteCodeOp::BinOpMinusF32] = runBinOpMinusF32;
+    mapNodes[ByteCodeOp::BinOpMinusF64] = runBinOpMinusF64;
 
-    mapNodes[ByteCodeNodeId::BinOpMulS32] = runBinOpMulS32;
-    mapNodes[ByteCodeNodeId::BinOpMulS64] = runBinOpMulS64;
-    mapNodes[ByteCodeNodeId::BinOpMulU32] = runBinOpMulU32;
-    mapNodes[ByteCodeNodeId::BinOpMulU64] = runBinOpMulU64;
-    mapNodes[ByteCodeNodeId::BinOpMulF32] = runBinOpMulF32;
-    mapNodes[ByteCodeNodeId::BinOpMulF64] = runBinOpMulF64;
+    mapNodes[ByteCodeOp::BinOpMulS32] = runBinOpMulS32;
+    mapNodes[ByteCodeOp::BinOpMulS64] = runBinOpMulS64;
+    mapNodes[ByteCodeOp::BinOpMulU32] = runBinOpMulU32;
+    mapNodes[ByteCodeOp::BinOpMulU64] = runBinOpMulU64;
+    mapNodes[ByteCodeOp::BinOpMulF32] = runBinOpMulF32;
+    mapNodes[ByteCodeOp::BinOpMulF64] = runBinOpMulF64;
 
-    mapNodes[ByteCodeNodeId::BinOpDivF32] = runBinOpDivF32;
-    mapNodes[ByteCodeNodeId::BinOpDivF64] = runBinOpDivF64;
+    mapNodes[ByteCodeOp::BinOpDivF32] = runBinOpDivF32;
+    mapNodes[ByteCodeOp::BinOpDivF64] = runBinOpDivF64;
 
-    mapNodes[ByteCodeNodeId::LocalFuncCall] = runLocalFuncCall;
-    mapNodes[ByteCodeNodeId::Ret]           = runRet;
+    mapNodes[ByteCodeOp::LocalFuncCall] = runLocalFuncCall;
+    mapNodes[ByteCodeOp::Ret]           = runRet;
 
-    mapNodes[ByteCodeNodeId::IntrinsicPrintS64]    = runIntrinsicPrintS64;
-    mapNodes[ByteCodeNodeId::IntrinsicPrintF64]    = runIntrinsicPrintF64;
-    mapNodes[ByteCodeNodeId::IntrinsicPrintChar]   = runIntrinsicPrintChar;
-    mapNodes[ByteCodeNodeId::IntrinsicPrintString] = runIntrinsicPrintString;
-    mapNodes[ByteCodeNodeId::IntrinsicAssert]      = runIntrinsicAssert;
+    mapNodes[ByteCodeOp::IntrinsicPrintS64]    = runIntrinsicPrintS64;
+    mapNodes[ByteCodeOp::IntrinsicPrintF64]    = runIntrinsicPrintF64;
+    mapNodes[ByteCodeOp::IntrinsicPrintChar]   = runIntrinsicPrintChar;
+    mapNodes[ByteCodeOp::IntrinsicPrintString] = runIntrinsicPrintString;
+    mapNodes[ByteCodeOp::IntrinsicAssert]      = runIntrinsicAssert;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
@@ -68,13 +68,13 @@ bool ByteCodeRun::run(ByteCodeRunContext* context)
     while (true)
     {
         // Get instruction
-        ByteCodeNodeId id = (ByteCodeNodeId)(*(uint16_t*) context->ep);
-        if (id == ByteCodeNodeId::End)
+        ByteCodeOp id = (ByteCodeOp)(*(uint16_t*) context->ep);
+        if (id == ByteCodeOp::End)
             break;
 
         // Debug informations
         auto& out = context->bc->out;
-        if (id == ByteCodeNodeId::DebugInfos)
+        if (id == ByteCodeOp::DebugInfos)
         {
             context->ep = out.seek(sizeof(uint16_t));
 
