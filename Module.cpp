@@ -56,3 +56,23 @@ void Module::removeFile(SourceFile* file)
 
     assert(false);
 }
+
+uint32_t Module::reserveRegister()
+{
+    scoped_lock lk(mutexRegister);
+    if (!availableRegisters.empty())
+    {
+        auto result = availableRegisters.back();
+        availableRegisters.pop_back();
+        return result;
+    }
+
+	auto result = maxReservedRegister++;
+    return result;
+}
+
+void Module::freeRegister(uint32_t reg)
+{
+    scoped_lock lk(mutexRegister);
+    availableRegisters.push_back(reg);
+}

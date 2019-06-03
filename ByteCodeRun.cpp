@@ -12,190 +12,103 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 {
     switch (ip->op)
     {
-    case ByteCodeOp::PushBool:
-        context->push(ip->r0.b);
+    case ByteCodeOp::CopyV0R1:
+    {
+        context->registers[ip->r1.u32] = ip->r0;
         break;
-    case ByteCodeOp::PushS8:
-        context->push(ip->r0.s8);
-        break;
-    case ByteCodeOp::PushS16:
-        context->push(ip->r0.s16);
-        break;
-    case ByteCodeOp::PushS32:
-        context->push(ip->r0.s32);
-        break;
-    case ByteCodeOp::PushS64:
-        context->push(ip->r0.s64);
-        break;
-    case ByteCodeOp::PushU8:
-        context->push(ip->r0.u8);
-        break;
-    case ByteCodeOp::PushU16:
-        context->push(ip->r0.u16);
-        break;
-    case ByteCodeOp::PushU32:
-        context->push(ip->r0.u32);
-        break;
-    case ByteCodeOp::PushU64:
-        context->push(ip->r0.u64);
-        break;
-    case ByteCodeOp::PushF32:
-        context->push((float) ip->r0.f64);
-        break;
-    case ByteCodeOp::PushF64:
-        context->push(ip->r0.f64);
-        break;
-    case ByteCodeOp::PushString:
-        context->push(ip->r0.u32);
-        break;
+    }
 
     case ByteCodeOp::BinOpPlusS32:
     {
-        auto val1 = context->popS32();
-        auto val2 = context->popS32();
-        context->push(val2 + val1);
+        context->registers[ip->r2.u32].s32 = context->registers[ip->r0.u32].s32 + context->registers[ip->r1.u32].s32;
         break;
     }
     case ByteCodeOp::BinOpPlusS64:
     {
-        auto val1 = context->popS64();
-        auto val2 = context->popS64();
-        context->push(val2 + val1);
+        context->registers[ip->r2.u32].s64 = context->registers[ip->r0.u32].s64 + context->registers[ip->r1.u32].s64;
         break;
     }
     case ByteCodeOp::BinOpPlusU32:
     {
-        auto val1 = context->popU32();
-        auto val2 = context->popU32();
-        context->push(val2 + val1);
+        context->registers[ip->r2.u32].u32 = context->registers[ip->r0.u32].u32 + context->registers[ip->r1.u32].u32;
         break;
     }
     case ByteCodeOp::BinOpPlusU64:
     {
-        auto val1 = context->popU64();
-        auto val2 = context->popU64();
-        context->push(val2 + val1);
+        context->registers[ip->r2.u32].u64 = context->registers[ip->r0.u32].u64 + context->registers[ip->r1.u32].u64;
+
         break;
     }
     case ByteCodeOp::BinOpPlusF32:
-    {
-        auto val1 = context->popF32();
-        auto val2 = context->popF32();
-        context->push(val2 + val1);
-        break;
-    }
     case ByteCodeOp::BinOpPlusF64:
     {
-        auto val1 = context->popU64();
-        auto val2 = context->popU64();
-        context->push(val2 + val1);
+        context->registers[ip->r2.u32].f64 = context->registers[ip->r0.u32].f64 + context->registers[ip->r1.u32].f64;
         break;
     }
 
     case ByteCodeOp::BinOpMinusS32:
     {
-        auto val1 = context->popS32();
-        auto val2 = context->popS32();
-        context->push(val2 - val1);
+        context->registers[ip->r2.u32].s32 = context->registers[ip->r0.u32].s32 - context->registers[ip->r1.u32].s32;
         break;
     }
     case ByteCodeOp::BinOpMinusS64:
     {
-        auto val1 = context->popS64();
-        auto val2 = context->popS64();
-        context->push(val2 - val1);
+        context->registers[ip->r2.u32].s64 = context->registers[ip->r0.u32].s64 - context->registers[ip->r1.u32].s64;
         break;
     }
     case ByteCodeOp::BinOpMinusU32:
     {
-        auto val1 = context->popU32();
-        auto val2 = context->popU32();
-        context->push(val2 - val1);
+        context->registers[ip->r2.u32].u32 = context->registers[ip->r0.u32].u32 - context->registers[ip->r1.u32].u32;
         break;
     }
     case ByteCodeOp::BinOpMinusU64:
     {
-        auto val1 = context->popU64();
-        auto val2 = context->popU64();
-        context->push(val2 - val1);
+        context->registers[ip->r2.u32].u64 = context->registers[ip->r0.u32].u64 - context->registers[ip->r1.u32].u64;
         break;
     }
     case ByteCodeOp::BinOpMinusF32:
-    {
-        auto val1 = context->popF32();
-        auto val2 = context->popF32();
-        context->push(val2 - val1);
-        break;
-    }
     case ByteCodeOp::BinOpMinusF64:
     {
-        auto val1 = context->popU64();
-        auto val2 = context->popU64();
-        context->push(val2 - val1);
+        context->registers[ip->r2.u32].f64 = context->registers[ip->r0.u32].f64 - context->registers[ip->r1.u32].f64;
         break;
     }
 
     case ByteCodeOp::BinOpMulS32:
     {
-        auto val1 = context->popS32();
-        auto val2 = context->popS32();
-        context->push(val2 * val1);
+        context->registers[ip->r2.u32].s32 = context->registers[ip->r0.u32].s32 * context->registers[ip->r1.u32].s32;
         break;
     }
     case ByteCodeOp::BinOpMulS64:
     {
-        auto val1 = context->popS64();
-        auto val2 = context->popS64();
-        context->push(val2 * val1);
+        context->registers[ip->r2.u32].s64 = context->registers[ip->r0.u32].s64 * context->registers[ip->r1.u32].s64;
         break;
     }
     case ByteCodeOp::BinOpMulU32:
     {
-        auto val1 = context->popU32();
-        auto val2 = context->popU32();
-        context->push(val2 * val1);
+        context->registers[ip->r2.u32].u32 = context->registers[ip->r0.u32].u32 * context->registers[ip->r1.u32].u32;
         break;
     }
     case ByteCodeOp::BinOpMulU64:
     {
-        auto val1 = context->popU64();
-        auto val2 = context->popU64();
-        context->push(val2 * val1);
+        context->registers[ip->r2.u32].u64 = context->registers[ip->r0.u32].u64 * context->registers[ip->r1.u32].u64;
         break;
     }
     case ByteCodeOp::BinOpMulF32:
-    {
-        auto val1 = context->popF32();
-        auto val2 = context->popF32();
-        context->push(val2 * val1);
-        break;
-    }
     case ByteCodeOp::BinOpMulF64:
     {
-        auto val1 = context->popU64();
-        auto val2 = context->popU64();
-        context->push(val2 * val1);
+        context->registers[ip->r2.u32].f64 = context->registers[ip->r0.u32].f64 * context->registers[ip->r1.u32].f64;
         break;
     }
 
     case ByteCodeOp::BinOpDivF32:
-    {
-        auto val1 = context->popF32();
-        auto val2 = context->popF32();
-        if (val1 == 0.0f)
-            context->error("division by zero");
-        else
-            context->push(val2 / val1);
-        break;
-    }
     case ByteCodeOp::BinOpDivF64:
     {
-        auto val1 = context->popU64();
-        auto val2 = context->popU64();
-        if (val1 == 0.0f)
+        auto val1 = context->registers[ip->r0.u32].f64;
+        auto val2 = context->registers[ip->r1.u32].f64;
+        if (val2 == 0.0f)
             context->error("division by zero");
         else
-            context->push(val2 / val1);
+            context->registers[ip->r2.u32].f64 = val1 / val2;
         break;
     }
 
@@ -218,41 +131,37 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 
     case ByteCodeOp::IntrinsicAssert:
     {
-        auto val = context->popBool();
-        if (!val)
+        if (!context->registers[ip->r0.u32].b)
             context->error("intrisic @assert failed");
         break;
     }
 
     case ByteCodeOp::IntrinsicPrintF64:
     {
-        auto val = context->popF64();
         g_Log.lock();
-        g_Log.print(to_string(val));
+        g_Log.print(to_string(context->registers[ip->r0.u32].f64));
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintS64:
     {
-        auto val = context->popS64();
         g_Log.lock();
-        g_Log.print(to_string(val));
+        g_Log.print(to_string(context->registers[ip->r0.u32].s64));
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintChar:
     {
-        auto val = context->popU32();
         g_Log.lock();
         Utf8 msg;
-        msg += (char32_t) val;
+        msg += (char32_t) context->registers[ip->r0.u32].u32;
         g_Log.print(msg);
         g_Log.unlock();
         break;
     }
     case ByteCodeOp::IntrinsicPrintString:
     {
-        auto val = context->popU32();
+        auto val = context->registers[ip->r0.u32].u32;
         assert(val < context->bc->strBuffer.size());
         g_Log.lock();
         g_Log.print(context->bc->strBuffer[val]);
@@ -260,8 +169,8 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	default:
-        context->error(format("Unknown byte code '%s'", g_ByteCodeOpNames[(int) ip->op]));
+    default:
+        context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;
     }
 }

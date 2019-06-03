@@ -2,4 +2,4 @@
 #unittest pass semantic
 using swag;
 
-//#run @assert(false)
+//#run @assert( ((2's64 + 4) * 2) == 12)

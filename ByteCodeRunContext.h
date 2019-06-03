@@ -16,7 +16,9 @@ struct StackValue
 
 struct ByteCodeRunContext
 {
-    ByteCode*                    bc = nullptr; // Current executed bytecode
+    Register*                    registers    = nullptr;
+    uint32_t                     numRegisters = 0;
+    ByteCode*                    bc           = nullptr; // Current executed bytecode
     vector<ByteCode*>            stack_bc;
     vector<ByteCodeInstruction*> stack_ip;
     vector<StackValue>           stack_storage;

@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "TypeInfo.h"
 #include "SourceFile.h"
+#include "ByteCodeGenJob.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
@@ -281,6 +282,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
     node->typeInfo = left->typeInfo;
 
+    node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
 
     switch (node->token.id)
@@ -365,7 +367,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
         }
     }
 
-	return true;
+    return true;
 }
 
 bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
@@ -398,7 +400,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
         }
     }
 
-	return true;
+    return true;
 }
 
 bool SemanticJob::resolveCompareExpression(SemanticContext* context)

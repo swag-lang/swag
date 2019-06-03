@@ -9,6 +9,7 @@
 #include "PoolFactory.h"
 #include "ThreadManager.h"
 #include "LanguageSpec.h"
+#include "Module.h"
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
@@ -22,28 +23,37 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     auto     overload   = node->resolvedSymbolOverload;
     auto     typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
     auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
+
     switch (typeInfo->intrinsic)
     {
     case Intrisic::Print:
-        switch (callParams->childs[0]->typeInfo->nativeType)
+    {
+        auto child0 = callParams->childs[0];
+        context->sourceFile->module->freeRegister(child0->resultRegister);
+        switch (child0->typeInfo->nativeType)
         {
         case NativeType::S64:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintS64);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintS64, child0->resultRegister);
             break;
         case NativeType::F64:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintF64);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegister);
             break;
         case NativeType::Char:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintChar);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintChar, child0->resultRegister);
             break;
         case NativeType::String:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintString);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegister);
             break;
         }
         break;
+    }
     case Intrisic::Assert:
-        emitInstruction(context, ByteCodeOp::IntrinsicAssert);
+    {
+        auto child0 = callParams->childs[0];
+        context->sourceFile->module->freeRegister(child0->resultRegister);
+        emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegister);
         break;
+    }
     default:
         assert(false);
     }

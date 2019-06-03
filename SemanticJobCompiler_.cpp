@@ -8,6 +8,7 @@
 #include "PoolFactory.h"
 #include "ByteCodeRun.h"
 #include "ByteCodeRunContext.h"
+#include "Module.h"
 #include "ThreadManager.h"
 
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
@@ -52,9 +53,11 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     {
         scoped_lock        lk(mutex);
         ByteCodeRunContext runContext;
-        runContext.node       = expr;
-        runContext.sourceFile = sourceFile;
-        runContext.bc         = node->bc;
+        runContext.numRegisters = sourceFile->module->maxReservedRegister;
+        runContext.registers    = (Register*) malloc(runContext.numRegisters);
+        runContext.node         = expr;
+        runContext.sourceFile   = sourceFile;
+        runContext.bc           = node->bc;
         runContext.stack_bc.resize(1024);
         runContext.stack_ip.resize(1024);
         runContext.stack_storage.resize(1024);

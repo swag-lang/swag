@@ -25,4 +25,11 @@ struct Module : public PoolElement
     PoolFactory*        poolFactory;
     Workspace*          workspace;
     bool                isRuntime = false;
+
+    uint32_t reserveRegister();
+    void     freeRegister(uint32_t reg);
+
+    uint32_t         maxReservedRegister = 0;
+    SpinLock         mutexRegister;
+    vector<uint32_t> availableRegisters;
 };
