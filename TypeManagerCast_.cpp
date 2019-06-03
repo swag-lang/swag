@@ -442,18 +442,13 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
-    if (leftNode->typeInfo == rightNode->typeInfo)
-        return true;
-    if (leftNode->typeInfo->isSame(rightNode->typeInfo))
-        return true;
-
     auto leftType  = leftNode->typeInfo;
     auto rightType = rightNode->typeInfo;
 
     if ((leftType->flags & TYPEINFO_INT_SIGNED) && (rightType->flags & TYPEINFO_FLOAT))
-        return castToNative(sourceFile, rightType, leftNode, castFlags);
+        return makeCompatibles(sourceFile, rightType, leftNode, castFlags);
 
-    return castToNative(sourceFile, leftType, rightNode, castFlags);
+    return makeCompatibles(sourceFile, leftType, rightNode, castFlags);
 }
 
 void TypeManager::promote(AstNode* left, AstNode* right)
