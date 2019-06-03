@@ -73,6 +73,7 @@ bool SemanticJob::resolveSingleOp(SemanticContext* context)
 {
     auto node = context->node;
     auto op   = node->childs[0];
+    node->inheritLocation();
 
     switch (node->token.id)
     {
