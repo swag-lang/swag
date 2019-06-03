@@ -61,7 +61,10 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         runContext.stack_storage.resize(1024);
         SWAG_CHECK(g_Run.run(&runContext));
         if (runContext.sp)
+        {
             node->computedValue.reg = runContext.stack_storage[runContext.sp - 1].reg;
+            node->flags |= AST_VALUE_COMPUTED;
+        }
     }
 
     context->result = SemanticResult::Done;
