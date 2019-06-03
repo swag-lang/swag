@@ -162,6 +162,7 @@
     <ClInclude Include="ByteCode.h" />
     <ClInclude Include="ByteCodeGenJob.h" />
     <ClInclude Include="ByteCodeOp.h" />
+    <ClInclude Include="ByteCodeOpList.h" />
     <ClInclude Include="ByteCodeRun.h" />
     <ClInclude Include="ByteCodeRunContext.h" />
     <ClInclude Include="CommandLine.h" />

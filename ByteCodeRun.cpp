@@ -259,6 +259,10 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         g_Log.unlock();
         break;
     }
+
+	default:
+        context->error(format("Unknown byte code '%s'", g_ByteCodeOpNames[(int) ip->op]));
+        break;
     }
 }
 

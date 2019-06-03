@@ -335,6 +335,9 @@
     <ClInclude Include="ByteCodeOp.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
+    <ClInclude Include="ByteCodeOpList.h">
+      <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

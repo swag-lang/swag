@@ -1,50 +1,8 @@
 #pragma once
 enum class ByteCodeOp : uint16_t
 {
-    End = 0,
-
-	LocalFuncCall,
-    Ret,
-	IntrinsicPrintS64,
-    IntrinsicPrintF64,
-    IntrinsicPrintChar,
-    IntrinsicPrintString,
-    IntrinsicAssert,
-
-    PushBool,
-    PushS8,
-    PushS16,
-    PushS32,
-    PushS64,
-    PushU8,
-    PushU16,
-    PushU32,
-    PushU64,
-    PushF32,
-    PushF64,
-	PushString,
-
-    BinOpPlusS32,
-    BinOpPlusS64,
-    BinOpPlusU32,
-    BinOpPlusU64,
-    BinOpPlusF32,
-    BinOpPlusF64,
-
-    BinOpMinusS32,
-    BinOpMinusS64,
-    BinOpMinusU32,
-    BinOpMinusU64,
-    BinOpMinusF32,
-    BinOpMinusF64,
-
-    BinOpMulS32,
-    BinOpMulS64,
-    BinOpMulU32,
-    BinOpMulU64,
-    BinOpMulF32,
-    BinOpMulF64,
-
-	BinOpDivF32,
-	BinOpDivF64,
+#define BYTECODE_OP(__op) __op,
+#include "ByteCodeOpList.h"
 };
+
+extern const char* g_ByteCodeOpNames[];
