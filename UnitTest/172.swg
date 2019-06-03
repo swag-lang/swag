@@ -7,3 +7,4 @@ func main: () -> s32
 }
 
 //#assert main == 666
+

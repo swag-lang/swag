@@ -5,26 +5,26 @@
 #include "TypeInfo.h"
 #include "SourceFile.h"
 
-bool TypeManager::castError(SourceFile* sourceFile, TypeInfo* requestedType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castError(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (!(castFlags & CASTFLAG_NOERROR))
     {
-        sourceFile->report({sourceFile, nodeToCast->token, format("can't cast from '%s' to '%s'", nodeToCast->typeInfo->name.c_str(), requestedType->name.c_str()).c_str()});
+        sourceFile->report({sourceFile, nodeToCast->token, format("can't cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
     }
 
     return false;
 }
 
-bool TypeManager::castToNativeBool(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeBool(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (nodeToCast->typeInfo == g_TypeMgr.typeInfoBool)
         return true;
-    return castError(sourceFile, g_TypeMgr.typeInfoBool, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeU8(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeU8(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -57,12 +57,12 @@ bool TypeManager::castToNativeU8(SourceFile* sourceFile, AstNode* nodeToCast, ui
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoU8, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoU8, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeU16(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeU16(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -95,12 +95,12 @@ bool TypeManager::castToNativeU16(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoU16, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoU16, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeU32(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeU32(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -133,12 +133,12 @@ bool TypeManager::castToNativeU32(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoU32, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoU32, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeU64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeU64(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -161,12 +161,12 @@ bool TypeManager::castToNativeU64(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoU64, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoU64, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeS8(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeS8(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S16:
     case NativeType::S32:
@@ -185,12 +185,12 @@ bool TypeManager::castToNativeS8(SourceFile* sourceFile, AstNode* nodeToCast, ui
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoS8, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoS8, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeS16(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeS16(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S8:
     case NativeType::S32:
@@ -209,10 +209,10 @@ bool TypeManager::castToNativeS16(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoS16, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoS16, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeS32(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeS32(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
@@ -233,12 +233,12 @@ bool TypeManager::castToNativeS32(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoS32, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoS32, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeS64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeS64(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -257,12 +257,12 @@ bool TypeManager::castToNativeS64(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoS64, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoS64, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeF32(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -329,12 +329,12 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, AstNode* nodeToCast, u
     }
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoF32, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoF32, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeF64(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    switch (nodeToCast->typeInfo->nativeType)
+    switch (fromType->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -387,57 +387,54 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, AstNode* nodeToCast, u
         return true;
     }
 
-    return castError(sourceFile, g_TypeMgr.typeInfoF64, nodeToCast, castFlags);
+    return castError(sourceFile, g_TypeMgr.typeInfoF64, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    // Cast from native only for now
-    if (toType->kind != TypeInfoKind::Native)
-        return castError(sourceFile, toType, nodeToCast, castFlags);
-
     switch (toType->nativeType)
     {
     case NativeType::Bool:
-        return castToNativeBool(sourceFile, nodeToCast, castFlags);
+        return castToNativeBool(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::U8:
-        return castToNativeU8(sourceFile, nodeToCast, castFlags);
+        return castToNativeU8(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::U16:
-        return castToNativeU16(sourceFile, nodeToCast, castFlags);
+        return castToNativeU16(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::U32:
-        return castToNativeU32(sourceFile, nodeToCast, castFlags);
+        return castToNativeU32(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::U64:
-        return castToNativeU64(sourceFile, nodeToCast, castFlags);
+        return castToNativeU64(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::S8:
-        return castToNativeS8(sourceFile, nodeToCast, castFlags);
+        return castToNativeS8(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::S16:
-        return castToNativeS16(sourceFile, nodeToCast, castFlags);
+        return castToNativeS16(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::S32:
-        return castToNativeS32(sourceFile, nodeToCast, castFlags);
+        return castToNativeS32(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::S64:
-        return castToNativeS64(sourceFile, nodeToCast, castFlags);
+        return castToNativeS64(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::F32:
-        return castToNativeF32(sourceFile, nodeToCast, castFlags);
+        return castToNativeF32(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::F64:
-        return castToNativeF64(sourceFile, nodeToCast, castFlags);
+        return castToNativeF64(sourceFile, fromType, nodeToCast, castFlags);
     }
 
-    return castError(sourceFile, toType, nodeToCast, castFlags);
+    return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (nodeToCast->typeInfo == toType)
+    auto fromType = nodeToCast->typeInfo;
+    if (fromType == toType)
         return true;
-    if (nodeToCast->typeInfo->isSame(toType))
+    if (fromType->isSame(toType))
         return true;
 
     if (toType->kind == TypeInfoKind::Native)
     {
-        return castToNative(sourceFile, toType, nodeToCast, castFlags);
+        return castToNative(sourceFile, toType, fromType, nodeToCast, castFlags);
     }
 
-    return castError(sourceFile, toType, nodeToCast, castFlags);
+    return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
