@@ -228,3 +228,5 @@ struct AstAttrDecl : public AstNode
 
 extern Pool<AstNode>     g_Pool_astNode;
 extern Pool<AstAttrDecl> g_Pool_astAttrDecl;
+extern Pool<AstVarDecl>  g_Pool_astVarDecl;
+extern Pool<AstFuncDecl> g_Pool_astFuncDecl;

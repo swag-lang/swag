@@ -162,5 +162,9 @@ struct TypeInfoFuncAttr : public TypeInfo
     Intrisic                       intrinsic;
 };
 
-extern Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
-extern Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
+extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
+extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
+extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
+extern Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
+extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
+extern Pool<SymbolMatchParameter>  g_Pool_symbolMatchParameter;

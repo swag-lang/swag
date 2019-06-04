@@ -5,8 +5,12 @@
 #include "ThreadManager.h"
 #include "Global.h"
 
-Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
-Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
+Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
+Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
+Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
+Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
+Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
+Pool<SymbolMatchParameter>  g_Pool_symbolMatchParameter;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
