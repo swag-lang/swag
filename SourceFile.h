@@ -4,7 +4,6 @@
 #include "SourceLocation.h"
 struct Module;
 struct AstNode;
-struct PoolFactory;
 struct Diagnostic;
 struct Scope;
 

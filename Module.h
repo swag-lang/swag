@@ -4,7 +4,6 @@
 struct SourceFile;
 struct SymTable;
 struct Utf8Crc;
-struct PoolFactory;
 struct Workspace;
 struct AstNode;
 struct Scope;

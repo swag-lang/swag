@@ -1,7 +1,6 @@
 #pragma once
 #include "Pool.h"
 #include "ConcatBucket.h"
-struct PoolFactory;
 
 struct Concat
 {

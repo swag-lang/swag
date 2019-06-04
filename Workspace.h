@@ -3,7 +3,6 @@
 #include "ByteCodeRunContext.h"
 struct Module;
 struct Scope;
-struct PoolFactory;
 
 struct Workspace
 {

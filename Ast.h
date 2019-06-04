@@ -5,7 +5,6 @@
 struct Scope;
 enum class ScopeKind;
 
-struct PoolFactory;
 namespace Ast
 {
     template<typename T>

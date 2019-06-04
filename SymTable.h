@@ -4,10 +4,8 @@
 #include "Utf8crc.h"
 #include "Register.h"
 #include "SourceLocation.h"
-
 struct Scope;
 struct SourceFile;
-struct PoolFactory;
 struct Token;
 struct TypeInfo;
 struct Utf8Crc;
