@@ -1,6 +1,4 @@
 #unittest module module192
-#unittest pass semantic
+#unittest pass syntax
 
-#assert ~0'u8 == 255
-#assert ~0'u16 == 0xFFFF
-
+#run toto as u32

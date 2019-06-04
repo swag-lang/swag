@@ -213,7 +213,7 @@
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobFunc_.cpp" />
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp" />
-    <ClCompile Include="ByteCodeGenJobLiteral_.cpp" />
+    <ClCompile Include="ByteCodeGenJobExpression_.cpp" />
     <ClCompile Include="ByteCodeGenJob.cpp" />
     <ClCompile Include="ByteCodeGenJobUnaryOp_.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
@@ -248,7 +248,7 @@
     <ClCompile Include="SemanticJobUnaryExpression_.cpp" />
     <ClCompile Include="SemanticJobVar_.cpp" />
     <ClCompile Include="SemanticJobEnum_.cpp" />
-    <ClCompile Include="SemanticJobLiteral_.cpp" />
+    <ClCompile Include="SemanticJobExpression_.cpp" />
     <ClCompile Include="SemanticJobFunc_.cpp" />
     <ClCompile Include="SemanticJobIdentifier_.cpp" />
     <ClCompile Include="SemanticJob.cpp" />

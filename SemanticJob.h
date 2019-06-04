@@ -90,6 +90,7 @@ struct SemanticJob : public Job
     static bool resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveXor(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
+    static bool resolveCast(SemanticContext* context);
 
     Module*             module;
     SourceFile*         sourceFile;

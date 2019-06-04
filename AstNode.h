@@ -49,6 +49,7 @@ enum class AstNodeKind
     EnumType,
     EnumValue,
     Literal,
+	Cast,
     SingleOp,
     BinaryOp,
     CompilerAssert,

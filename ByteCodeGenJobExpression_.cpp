@@ -5,6 +5,7 @@
 #include "TypeInfo.h"
 #include "Module.h"
 #include "SourceFile.h"
+#include "TypeManager.h"
 
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
@@ -14,7 +15,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitLiteral, type not native");
 
-	auto r1 = node->resultRegisterRC = context->sourceFile->module->reserveRegisterRC();
+    auto r1 = node->resultRegisterRC = context->sourceFile->module->reserveRegisterRC();
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
@@ -61,4 +62,14 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     default:
         return internalError(context, "emitLiteral, type not supported");
     }
+}
+
+bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
+{
+    AstNode* node         = context->node;
+    auto     typeInfo     = node->typeInfo;
+    auto     exprNode     = node->childs[1];
+    auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+
+    return true;
 }

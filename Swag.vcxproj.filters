@@ -176,9 +176,6 @@
     <ClCompile Include="FileSemanticJob.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="ByteCodeGenJobLiteral_.cpp">
-      <Filter>Backend\ByteCode</Filter>
-    </ClCompile>
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
@@ -194,8 +191,11 @@
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="SemanticJobLiteral_.cpp">
+    <ClCompile Include="SemanticJobExpression_.cpp">
       <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobExpression_.cpp">
+      <Filter>Backend\ByteCode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -12,7 +12,7 @@ void LanguageSpec::setup()
     keywords["#file"]     = TokenId::CompilerFile;
     keywords["#line"]     = TokenId::CompilerLine;
 
-    keywords["@print"] = TokenId::Intrisic;
+    keywords["@print"]  = TokenId::Intrisic;
     keywords["@assert"] = TokenId::Intrisic;
 
     keywords["var"]       = TokenId::KwdVar;
@@ -25,6 +25,7 @@ void LanguageSpec::setup()
     keywords["attr"]      = TokenId::KwdAttr;
     keywords["return"]    = TokenId::KwdReturn;
     keywords["using"]     = TokenId::KwdUsing;
+    keywords["as"]        = TokenId::KwdAs;
 
     keywords["u64"]    = TokenId::NativeType;
     keywords["u32"]    = TokenId::NativeType;
@@ -54,7 +55,7 @@ void LanguageSpec::setup()
     nativeTypes["char"]   = g_TypeMgr.typeInfoChar;
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
 
-    intrinsics["@print"] = Intrisic::Print;
+    intrinsics["@print"]  = Intrisic::Print;
     intrinsics["@assert"] = Intrisic::Assert;
 }
 
