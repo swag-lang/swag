@@ -62,6 +62,7 @@ struct SemanticJob : public Job
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
     static bool resolveFactorExpression(SemanticContext* context);
+    static bool resolveShiftExpression(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
@@ -84,6 +85,8 @@ struct SemanticJob : public Job
     static bool resolveUsing(SemanticContext* context);
     static bool resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right);
 
     Module*             module;
     SourceFile*         sourceFile;

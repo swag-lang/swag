@@ -71,12 +71,17 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
            (token.id == TokenId::SymAsterisk) ||
            (token.id == TokenId::SymSlash) ||
            (token.id == TokenId::SymVertical) ||
-           (token.id == TokenId::SymAmpersand))
+           (token.id == TokenId::SymAmpersand) ||
+           (token.id == TokenId::SymGreaterGreater) ||
+           (token.id == TokenId::SymLowerLower))
     {
         auto binaryNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent, false);
         binaryNode->inheritOwners(this);
-        binaryNode->semanticFct = &SemanticJob::resolveFactorExpression;
-        binaryNode->token       = move(token);
+        if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
+            binaryNode->semanticFct = &SemanticJob::resolveShiftExpression;
+        else
+            binaryNode->semanticFct = &SemanticJob::resolveFactorExpression;
+        binaryNode->token = move(token);
 
         Ast::addChild(binaryNode, leftNode, false);
         SWAG_CHECK(tokenizer.getToken(token));

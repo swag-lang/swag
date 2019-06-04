@@ -408,6 +408,106 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     return true;
 }
 
+bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U32:
+    case NativeType::U64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, left, format("shift left operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
+
+    switch (rightTypeInfo->nativeType)
+    {
+    case NativeType::U32:
+        break;
+    default:
+        return sourceFile->report({sourceFile, right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->name.c_str())});
+    }
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
+            break;
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
+            break;
+        case NativeType::U32:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 << right->computedValue.reg.u32;
+            break;
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 << right->computedValue.reg.u32;
+            break;
+        }
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U32:
+    case NativeType::U64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, left, format("shift right operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
+
+    switch (rightTypeInfo->nativeType)
+    {
+    case NativeType::U32:
+        break;
+    default:
+        return sourceFile->report({sourceFile, right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->name.c_str())});
+    }
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 >> right->computedValue.reg.u32;
+            break;
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 >> right->computedValue.reg.u32;
+            break;
+        case NativeType::U32:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
+            break;
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 >> right->computedValue.reg.u32;
+            break;
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 {
     auto node       = context->node;
@@ -447,6 +547,39 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         break;
     case TokenId::SymAmpersand:
         SWAG_CHECK(resolveBitmaskAnd(context, left, right));
+        break;
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveShiftExpression(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto left       = node->childs[0];
+    auto right      = node->childs[1];
+
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+
+    node->inheritLocation();
+    TypeManager::promote(left, right);
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoU32, right));
+    node->typeInfo = left->typeInfo;
+
+    node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
+    node->inheritAndFlag(left, right, AST_CONST_EXPR);
+
+    switch (node->token.id)
+    {
+    case TokenId::SymLowerLower:
+        SWAG_CHECK(resolveShiftLeft(context, left, right));
+        break;
+    case TokenId::SymGreaterGreater:
+        SWAG_CHECK(resolveShiftRight(context, left, right));
         break;
     }
 

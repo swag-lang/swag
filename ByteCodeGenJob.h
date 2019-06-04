@@ -58,6 +58,8 @@ struct ByteCodeGenJob : public Job
     static bool emitUnaryOp(ByteCodeGenContext* context);
     static bool emitBitmaskOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBitmaskAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
+    static bool emitShiftLeft(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
+    static bool emitShiftRight(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;
