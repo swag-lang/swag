@@ -65,6 +65,7 @@ struct ByteCodeGenJob : public Job
     static bool emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0);
     static bool emitCast(ByteCodeGenContext* context);
     static bool emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;
