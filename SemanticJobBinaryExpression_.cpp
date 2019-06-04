@@ -508,6 +508,47 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     return true;
 }
 
+bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U32:
+    case NativeType::U64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, left, format("xor operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+    }
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 ^ right->computedValue.reg.s32;
+            break;
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 ^ right->computedValue.reg.s64;
+            break;
+        case NativeType::U32:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 ^ right->computedValue.reg.u32;
+            break;
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 ^ right->computedValue.reg.u64;
+            break;
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 {
     auto node       = context->node;
@@ -547,6 +588,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         break;
     case TokenId::SymAmpersand:
         SWAG_CHECK(resolveBitmaskAnd(context, left, right));
+        break;
+    case TokenId::SymCircumflex:
+        SWAG_CHECK(resolveXor(context, left, right));
         break;
     }
 

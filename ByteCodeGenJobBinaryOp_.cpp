@@ -228,6 +228,32 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, uint32_t r0, ui
     }
 }
 
+bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitXor, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::XorS32, r0, r1, r2);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::XorS64, r0, r1, r2);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::XorU32, r0, r1, r2);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::XorU64, r0, r1, r2);
+        return true;
+    default:
+        return internalError(context, "emitXor, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node   = context->node;
@@ -271,6 +297,9 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         return true;
     case TokenId::SymGreaterGreater:
         SWAG_CHECK(emitShiftRight(context, r0, r1, r2));
+        return true;
+    case TokenId::SymCircumflex:
+        SWAG_CHECK(emitXor(context, r0, r1, r2));
         return true;
     default:
         return internalError(context, "emitBinaryOp, invalid token op");

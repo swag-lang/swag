@@ -87,6 +87,7 @@ struct SemanticJob : public Job
     static bool resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveXor(SemanticContext* context, AstNode* left, AstNode* right);
 
     Module*             module;
     SourceFile*         sourceFile;
