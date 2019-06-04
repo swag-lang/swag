@@ -1,5 +1,6 @@
-#unittest module module190
-#unittest pass syntax
+#unittest module module191
+#unittest pass semantic
 
-#run swag.@print "toto"
+#unittest error
+#run swag.@print
 

@@ -280,7 +280,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             else
             {
                 int         numParams = node->callParameters ? (int) node->callParameters->childs.size() : 0;
-                const char* args      = numParams == 1 ? "parameter" : "parameters";
+                const char* args      = numParams <= 1 ? "parameter" : "parameters";
                 Diagnostic  diag{sourceFile,
                                 node->callParameters ? node->callParameters : node,
                                 format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
