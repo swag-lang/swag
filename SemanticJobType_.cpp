@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Ast.h"
 #include "Global.h"
 #include "TypeInfo.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "SymTable.h"
 #include "Scope.h"
+#include "ByteCodeGenJob.h"
+#include "TypeManager.h"
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
@@ -54,5 +55,22 @@ bool SemanticJob::resolveTypeDecl(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Type));
 
     context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveCast(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto typeNode   = node->childs[0];
+    auto exprNode   = node->childs[1];
+
+    SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, typeNode->typeInfo, exprNode));
+    node->typeInfo    = typeNode->typeInfo;
+    node->byteCodeFct = &ByteCodeGenJob::emitCast;
+
+    node->inheritAndFlag(exprNode, AST_CONST_EXPR);
+    node->inheritComputedValue(exprNode);
+
     return true;
 }

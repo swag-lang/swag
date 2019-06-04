@@ -8,6 +8,7 @@ struct ByteCode;
 struct AstNode;
 struct ByteCodeGenJob;
 struct ByteCodeInstruction;
+struct TypeInfo;
 
 enum class ByteCodeResult
 {
@@ -63,6 +64,7 @@ struct ByteCodeGenJob : public Job
     static bool emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0);
     static bool emitCast(ByteCodeGenContext* context);
+    static bool emitCastNativeF32(ByteCodeGenContext* context, TypeInfo* typeInfo, uint32_t r0);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;

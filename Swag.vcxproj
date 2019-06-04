@@ -211,6 +211,7 @@
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />
+    <ClCompile Include="ByteCodeGenJobCast_.cpp" />
     <ClCompile Include="ByteCodeGenJobFunc_.cpp" />
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp" />
     <ClCompile Include="ByteCodeGenJobExpression_.cpp" />

@@ -7,4 +7,4 @@ func main: ()->s32
 	return 5;
 }
 
-#print main as f32
+#assert (main as f32) == 5.0

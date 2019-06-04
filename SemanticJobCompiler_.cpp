@@ -69,18 +69,12 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
     auto expr = context->node->childs[0];
-
     SWAG_CHECK(executeNode(context, expr, true));
     if (context->result == SemanticResult::Pending)
         return true;
 
-    TypeInfo* typeInfo = expr->typeInfo;
-    if (typeInfo->kind == TypeInfoKind::FunctionAttribute)
-        typeInfo = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FunctionAttribute)->returnType;
-    else
-        typeInfo = TypeManager::flattenType(expr->typeInfo);
-
     g_Log.lock();
+    TypeInfo* typeInfo = TypeManager::concreteType(expr->typeInfo);
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
@@ -111,6 +105,8 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         g_Log.print(to_string(expr->computedValue.reg.u64));
         break;
     case NativeType::F32:
+        g_Log.print(to_string(expr->computedValue.reg.f32));
+        break;
     case NativeType::F64:
         g_Log.print(to_string(expr->computedValue.reg.f64));
         break;

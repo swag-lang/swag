@@ -90,3 +90,5 @@ BYTECODE_OP(CompareOpGreaterU32)
 BYTECODE_OP(CompareOpGreaterU64)
 BYTECODE_OP(CompareOpGreaterF32)
 BYTECODE_OP(CompareOpGreaterF64)
+
+BYTECODE_OP(CastS32F32)

@@ -63,13 +63,3 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         return internalError(context, "emitLiteral, type not supported");
     }
 }
-
-bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
-{
-    AstNode* node         = context->node;
-    auto     typeInfo     = node->typeInfo;
-    auto     exprNode     = node->childs[1];
-    auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
-
-    return true;
-}
