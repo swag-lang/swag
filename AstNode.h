@@ -226,7 +226,9 @@ struct AstAttrDecl : public AstNode
     AstNode* parameters;
 };
 
-extern Pool<AstNode>     g_Pool_astNode;
-extern Pool<AstAttrDecl> g_Pool_astAttrDecl;
-extern Pool<AstVarDecl>  g_Pool_astVarDecl;
-extern Pool<AstFuncDecl> g_Pool_astFuncDecl;
+extern Pool<AstNode>          g_Pool_astNode;
+extern Pool<AstAttrDecl>      g_Pool_astAttrDecl;
+extern Pool<AstVarDecl>       g_Pool_astVarDecl;
+extern Pool<AstFuncDecl>      g_Pool_astFuncDecl;
+extern Pool<AstIdentifier>    g_Pool_astIdentifier;
+extern Pool<AstIdentifierRef> g_Pool_astIdentifierRef;
