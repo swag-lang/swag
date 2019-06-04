@@ -522,7 +522,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     case NativeType::U64:
         break;
     default:
-        return sourceFile->report({sourceFile, left, format("xor operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, context->node, format("xor operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
