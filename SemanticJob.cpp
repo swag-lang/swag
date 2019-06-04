@@ -3,6 +3,14 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "SymTable.h"
+#include "Global.h"
+
+bool SemanticJob::internalError(SemanticContext* context, const char* msg)
+{
+    AstNode* node = context->node;
+    context->sourceFile->report({context->sourceFile, node->token, format("internal compiler error during semantic (%s)", msg)});
+    return false;
+}
 
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {

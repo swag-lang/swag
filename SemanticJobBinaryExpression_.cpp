@@ -86,6 +86,8 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         case NativeType::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 + right->computedValue.reg.f64;
             break;
+        default:
+            return internalError(context, "resolveBinaryOpPlus, type not supported");
         }
     }
 
@@ -170,6 +172,8 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         case NativeType::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 - right->computedValue.reg.f64;
             break;
+        default:
+            return internalError(context, "resolveBinaryOpMinus, type not supported");
         }
     }
 
@@ -254,6 +258,8 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
         case NativeType::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 * right->computedValue.reg.f64;
             break;
+        default:
+            return internalError(context, "resolveBinaryOpMul, type not supported");
         }
     }
 
@@ -296,6 +302,8 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
                 return sourceFile->report({sourceFile, right->token, "division by zero"});
             node->computedValue.reg.f64 = left->computedValue.reg.f64 / right->computedValue.reg.f64;
             break;
+        default:
+            return internalError(context, "resolveBinaryOpDiv, type not supported");
         }
     }
 
@@ -349,6 +357,8 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 | right->computedValue.reg.u64;
             break;
+        default:
+            return internalError(context, "resolveBitmaskOr, type not supported");
         }
     }
 
@@ -402,6 +412,8 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 & right->computedValue.reg.u64;
             break;
+        default:
+            return internalError(context, "resolveBitmaskAnd, type not supported");
         }
     }
 
@@ -452,6 +464,8 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 << right->computedValue.reg.u32;
             break;
+        default:
+            return internalError(context, "resolveShiftLeft, type not supported");
         }
     }
 
@@ -502,6 +516,8 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 >> right->computedValue.reg.u32;
             break;
+        default:
+            return internalError(context, "resolveShiftRight, type not supported");
         }
     }
 
@@ -543,6 +559,8 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 ^ right->computedValue.reg.u64;
             break;
+        default:
+            return internalError(context, "resolveXor, type not supported");
         }
     }
 
@@ -592,6 +610,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     case TokenId::SymCircumflex:
         SWAG_CHECK(resolveXor(context, left, right));
         break;
+    default:
+        return internalError(context, "resolveFactorExpression, token not supported");
     }
 
     return true;
@@ -625,6 +645,8 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     case TokenId::SymGreaterGreater:
         SWAG_CHECK(resolveShiftRight(context, left, right));
         break;
+    default:
+        return internalError(context, "resolveShiftExpression, token not supported");
     }
 
     return true;
@@ -655,6 +677,8 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
         case TokenId::SymVerticalVertical:
             node->computedValue.reg.b = leftNode->computedValue.reg.b || rightNode->computedValue.reg.b;
             break;
+        default:
+            return internalError(context, "resolveBoolExpression, token not supported");
         }
     }
 
@@ -678,18 +702,24 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
             break;
         case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-            node->computedValue.reg.b = left->computedValue.reg.s64 == right->computedValue.reg.s64;
-            break;
         case NativeType::U8:
+            node->computedValue.reg.b = left->computedValue.reg.u8 == right->computedValue.reg.u8;
+            break;
+        case NativeType::S16:
         case NativeType::U16:
+            node->computedValue.reg.b = left->computedValue.reg.u16 == right->computedValue.reg.u16;
+            break;
+        case NativeType::S32:
         case NativeType::U32:
         case NativeType::Char:
+            node->computedValue.reg.b = left->computedValue.reg.u32 == right->computedValue.reg.u32;
+            break;
+        case NativeType::S64:
         case NativeType::U64:
             node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
             break;
+        default:
+            return internalError(context, "resolveCompOpEqual, type not supported");
         }
     }
 
@@ -713,18 +743,32 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
             break;
         case NativeType::S8:
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 < right->computedValue.reg.s8;
+            break;
         case NativeType::S16:
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 < right->computedValue.reg.s16;
+            break;
         case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 < right->computedValue.reg.s32;
+            break;
         case NativeType::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 < right->computedValue.reg.s64;
             break;
         case NativeType::U8:
+            node->computedValue.reg.u8 = left->computedValue.reg.u8 < right->computedValue.reg.u8;
+            break;
         case NativeType::U16:
+            node->computedValue.reg.u16 = left->computedValue.reg.u16 < right->computedValue.reg.u16;
+            break;
         case NativeType::U32:
         case NativeType::Char:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 < right->computedValue.reg.u32;
+            break;
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
             break;
+        default:
+            return internalError(context, "resolveCompOpLower, type not supported");
         }
     }
 
@@ -748,18 +792,32 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
             break;
         case NativeType::S8:
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 > right->computedValue.reg.s8;
+            break;
         case NativeType::S16:
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 > right->computedValue.reg.s16;
+            break;
         case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 > right->computedValue.reg.s32;
+            break;
         case NativeType::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 > right->computedValue.reg.s64;
             break;
         case NativeType::U8:
+            node->computedValue.reg.u8 = left->computedValue.reg.u8 > right->computedValue.reg.u8;
+            break;
         case NativeType::U16:
+            node->computedValue.reg.u16 = left->computedValue.reg.u16 > right->computedValue.reg.u16;
+            break;
         case NativeType::U32:
         case NativeType::Char:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 > right->computedValue.reg.u32;
+            break;
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
             break;
+        default:
+            return internalError(context, "resolveCompOpGreater, type not supported");
         }
     }
 
@@ -811,6 +869,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         SWAG_CHECK(resolveCompOpLower(context, left, right));
         node->computedValue.reg.b = !node->computedValue.reg.b;
         break;
+    default:
+        return internalError(context, "resolveCompareExpression, token not supported");
     }
 
     return true;

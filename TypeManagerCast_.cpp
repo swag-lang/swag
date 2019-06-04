@@ -503,18 +503,31 @@ void TypeManager::promote(AstNode* left, AstNode* right)
 
 void TypeManager::promoteInteger(AstNode* node)
 {
-    if (node->typeInfo->kind != TypeInfoKind::Native)
+    auto typeInfo = node->typeInfo;
+    if (typeInfo->kind != TypeInfoKind::Native)
         return;
 
-    if (node->typeInfo->nativeType == NativeType::U8 || node->typeInfo->nativeType == NativeType::U16)
+    switch (typeInfo->nativeType)
     {
+    case NativeType::U8:
+        if (node->flags & AST_VALUE_COMPUTED)
+            node->computedValue.reg.u32 = node->computedValue.reg.u8;
         node->typeInfo = g_TypeMgr.typeInfoU32;
-        return;
-    }
-
-    if (node->typeInfo->nativeType == NativeType::S8 || node->typeInfo->nativeType == NativeType::S16)
-    {
+        break;
+    case NativeType::U16:
+        if (node->flags & AST_VALUE_COMPUTED)
+            node->computedValue.reg.u32 = node->computedValue.reg.u16;
+        node->typeInfo = g_TypeMgr.typeInfoU32;
+        break;
+    case NativeType::S8:
+        if (node->flags & AST_VALUE_COMPUTED)
+            node->computedValue.reg.s32 = node->computedValue.reg.s8;
         node->typeInfo = g_TypeMgr.typeInfoS32;
-        return;
+        break;
+    case NativeType::S16:
+        if (node->flags & AST_VALUE_COMPUTED)
+            node->computedValue.reg.s32 = node->computedValue.reg.s16;
+        node->typeInfo = g_TypeMgr.typeInfoS32;
+        break;
     }
 }

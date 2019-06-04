@@ -30,8 +30,9 @@ struct SemanticContext
 
 struct SemanticJob : public Job
 {
-    JobResult execute() override;
-    bool      error(SemanticContext* context, const Utf8& msg);
+    JobResult   execute() override;
+    static bool error(SemanticContext* context, const Utf8& msg);
+    static bool internalError(SemanticContext* context, const char* msg);
 
     void reset() override
     {
