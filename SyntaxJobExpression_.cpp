@@ -44,7 +44,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
 {
-    if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam)
+    if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam || token.id == TokenId::SymTilde)
     {
         auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::SingleOp, sourceFile->indexInModule, parent, false);
         node->inheritOwners(this);

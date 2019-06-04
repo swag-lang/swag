@@ -61,6 +61,7 @@ struct ByteCodeGenJob : public Job
     static bool emitShiftLeft(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitShiftRight(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
+    static bool emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;

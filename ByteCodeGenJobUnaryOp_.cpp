@@ -32,6 +32,33 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
         return internalError(context, "emitUnaryOpMinus, type not supported");
     }
 }
+
+bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitUnaryOpTilde, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::InvertS32, r0);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::InvertS32, r0);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::InvertU32, r0);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::InvertU32, r0);
+        return true;
+    default:
+        return internalError(context, "emitUnaryOpTilde, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
@@ -45,6 +72,9 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
         return true;
     case TokenId::SymMinus:
         SWAG_CHECK(emitUnaryOpMinus(context, r0));
+        return true;
+    case TokenId::SymTilde:
+        SWAG_CHECK(emitUnaryOpInvert(context, r0));
         return true;
     default:
         return internalError(context, "emitUnaryOp, invalid token op");

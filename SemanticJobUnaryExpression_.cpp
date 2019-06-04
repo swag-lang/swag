@@ -71,6 +71,46 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
     return true;
 }
 
+bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
+{
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = TypeManager::concreteType(op->typeInfo);
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+    case NativeType::S16:
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, op->token, format("bit inversion operation not allowed on type '%s'", typeInfo->name.c_str())});
+    }
+
+    if (op->flags & AST_VALUE_COMPUTED)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeType::S8:
+        case NativeType::S16:
+        case NativeType::S32:
+        case NativeType::S64:
+        case NativeType::U8:
+        case NativeType::U16:
+        case NativeType::U32:
+        case NativeType::U64:
+            op->computedValue.reg.u64 = ~op->computedValue.reg.u64;
+            break;
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 {
     auto node       = context->node;
@@ -92,6 +132,9 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         break;
     case TokenId::SymMinus:
         SWAG_CHECK(resolveUnaryOpMinus(context, op));
+        break;
+    case TokenId::SymTilde:
+        SWAG_CHECK(resolveUnaryOpInvert(context, op));
         break;
     }
 

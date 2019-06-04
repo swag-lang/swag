@@ -430,6 +430,27 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::InvertS32:
+    {
+        registersRC[ip->a.u32].s32 = ~registersRC[ip->a.u32].s32;
+        break;
+    }
+    case ByteCodeOp::InvertS64:
+    {
+        registersRC[ip->a.u32].s64 = ~registersRC[ip->a.u32].s64;
+        break;
+    }
+    case ByteCodeOp::InvertU32:
+    {
+        registersRC[ip->a.u32].u32 = ~registersRC[ip->a.u32].u32;
+        break;
+    }
+    case ByteCodeOp::InvertU64:
+    {
+        registersRC[ip->a.u32].u64 = ~registersRC[ip->a.u32].u64;
+        break;
+    }
+
     default:
         context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;
