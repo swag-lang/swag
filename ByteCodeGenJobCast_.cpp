@@ -8,12 +8,16 @@
 #include "TypeManager.h"
 #include "Global.h"
 
-bool ByteCodeGenJob::emitCastNativeF32(ByteCodeGenContext* context, TypeInfo* typeInfo, uint32_t r0)
+bool ByteCodeGenJob::emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     switch (typeInfo->nativeType)
     {
     case NativeType::S32:
-        emitInstruction(context, ByteCodeOp::CastS32F32, r0);
+        emitInstruction(context, ByteCodeOp::CastS32F32, exprNode->resultRegisterRC);
+        break;
+    default:
+        context->node = exprNode;
+        internalError(context, "emitCastNativeF32, invalid source type");
         break;
     }
 
@@ -35,10 +39,13 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
     switch (typeInfo->nativeType)
     {
     case NativeType::F32:
-        SWAG_CHECK(emitCastNativeF32(context, fromTypeInfo, exprNode->resultRegisterRC));
+        SWAG_CHECK(emitCastNativeF32(context, exprNode, fromTypeInfo));
+        break;
+    default:
+        internalError(context, "emitCast, invalid cast type");
         break;
     }
 
-	node->resultRegisterRC = exprNode->resultRegisterRC;
+    node->resultRegisterRC = exprNode->resultRegisterRC;
     return true;
 }

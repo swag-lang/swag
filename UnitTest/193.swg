@@ -2,7 +2,7 @@
 #unittest pass semantic
 
 #[swag.constexpr]
-func main: ()->s32
+func main: ()->s8
 {
 	return 5;
 }

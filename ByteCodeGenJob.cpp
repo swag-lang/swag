@@ -8,8 +8,7 @@
 
 bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg)
 {
-    AstNode* node = context->node;
-    context->sourceFile->report({context->sourceFile, node->token, format("internal compiler error during bytecode generation (%s)", msg)});
+    context->sourceFile->report({context->sourceFile, context->node->token, format("internal compiler error during bytecode generation (%s)", msg)});
     return false;
 }
 
@@ -30,9 +29,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 
     ByteCodeInstruction& ins = bc->out[bc->numInstructions++];
     ins.op                   = op;
-    ins.a.u32               = r0;
-    ins.b.u32               = r1;
-    ins.c.u32               = r2;
+    ins.a.u32                = r0;
+    ins.b.u32                = r1;
+    ins.c.u32                = r2;
     ins.sourceFileIdx        = node->sourceFileIdx;
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
@@ -77,7 +76,7 @@ JobResult ByteCodeGenJob::execute()
             }
             else if (node->byteCodeFct)
             {
-                context.node = node;
+                context.node   = node;
                 context.result = ByteCodeResult::Done;
                 if (!node->byteCodeFct(&context))
                     return JobResult::ReleaseJob;
