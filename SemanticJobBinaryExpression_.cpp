@@ -315,9 +315,6 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     case NativeType::U32:
     case NativeType::U64:
         break;
-    case NativeType::F32:
-    case NativeType::F64:
-        break;
     default:
         return sourceFile->report({sourceFile, node, format("bitmask 'or' operation not allowed on type '%s'", typeInfo->name.c_str())});
     }
@@ -370,9 +367,6 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     case NativeType::S64:
     case NativeType::U32:
     case NativeType::U64:
-        break;
-    case NativeType::F32:
-    case NativeType::F64:
         break;
     default:
         return sourceFile->report({sourceFile, node, format("bitmask 'and' operation not allowed on type '%s'", typeInfo->name.c_str())});
