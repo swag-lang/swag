@@ -327,6 +327,47 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::BitmaskAndS32:
+    {
+        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 & registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::BitmaskAndS64:
+    {
+        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 & registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::BitmaskAndU32:
+    {
+        registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 & registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::BitmaskAndU64:
+    {
+        registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 & registersRC[ip->b.u32].u64;
+        break;
+    }
+    case ByteCodeOp::BitmaskOrS32:
+    {
+        registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 | registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::BitmaskOrS64:
+    {
+        registersRC[ip->c.u32].s64 = registersRC[ip->a.u32].s64 | registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::BitmaskOrU32:
+    {
+        registersRC[ip->c.u32].u32 = registersRC[ip->a.u32].u32 | registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::BitmaskOrU64:
+    {
+        registersRC[ip->c.u32].u64 = registersRC[ip->a.u32].u64 | registersRC[ip->b.u32].u64;
+        break;
+    }
+
     default:
         context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;

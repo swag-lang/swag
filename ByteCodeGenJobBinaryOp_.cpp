@@ -124,6 +124,58 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, u
     }
 }
 
+bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitBitmaskAnd, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::BitmaskAndS32, r0, r1, r2);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::BitmaskAndS64, r0, r1, r2);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::BitmaskAndU32, r0, r1, r2);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::BitmaskAndU64, r0, r1, r2);
+        return true;
+    default:
+        return internalError(context, "emitBitmaskAnd, type not supported");
+    }
+}
+
+bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitBitmaskOr, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::BitmaskOrS32, r0, r1, r2);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::BitmaskOrS64, r0, r1, r2);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::BitmaskOrU32, r0, r1, r2);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::BitmaskOrU64, r0, r1, r2);
+        return true;
+    default:
+        return internalError(context, "emitBitmaskOr, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node   = context->node;
@@ -155,6 +207,12 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
         return true;
     case TokenId::SymVerticalVertical:
         emitInstruction(context, ByteCodeOp::BinOpOr, r0, r1, r2);
+        return true;
+    case TokenId::SymVertical:
+        SWAG_CHECK(emitBitmaskOr(context, r0, r1, r2));
+        return true;
+    case TokenId::SymAmpersand:
+        SWAG_CHECK(emitBitmaskAnd(context, r0, r1, r2));
         return true;
     default:
         return internalError(context, "emitBinaryOp, invalid token op");

@@ -302,6 +302,118 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     return true;
 }
 
+bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U32:
+    case NativeType::U64:
+        break;
+    case NativeType::F32:
+    case NativeType::F64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, node, format("bitmask 'or' operation not allowed on type '%s'", typeInfo->name.c_str())});
+    }
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+
+        switch (typeInfo->nativeType)
+        {
+        case NativeType::S8:
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 | right->computedValue.reg.s8;
+            break;
+        case NativeType::S16:
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 | right->computedValue.reg.s16;
+            break;
+        case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 | right->computedValue.reg.s32;
+            break;
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 | right->computedValue.reg.s64;
+            break;
+        case NativeType::U8:
+            node->computedValue.reg.u8 = left->computedValue.reg.u8 | right->computedValue.reg.u8;
+            break;
+        case NativeType::U16:
+            node->computedValue.reg.u16 = left->computedValue.reg.u16 | right->computedValue.reg.u16;
+            break;
+        case NativeType::U32:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 | right->computedValue.reg.u32;
+            break;
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 | right->computedValue.reg.u64;
+            break;
+        }
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S32:
+    case NativeType::S64:
+    case NativeType::U32:
+    case NativeType::U64:
+        break;
+    case NativeType::F32:
+    case NativeType::F64:
+        break;
+    default:
+        return sourceFile->report({sourceFile, node, format("bitmask 'and' operation not allowed on type '%s'", typeInfo->name.c_str())});
+    }
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+
+        switch (typeInfo->nativeType)
+        {
+        case NativeType::S8:
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 & right->computedValue.reg.s8;
+            break;
+        case NativeType::S16:
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 & right->computedValue.reg.s16;
+            break;
+        case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 & right->computedValue.reg.s32;
+            break;
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 & right->computedValue.reg.s64;
+            break;
+        case NativeType::U8:
+            node->computedValue.reg.u8 = left->computedValue.reg.u8 & right->computedValue.reg.u8;
+            break;
+        case NativeType::U16:
+            node->computedValue.reg.u16 = left->computedValue.reg.u16 & right->computedValue.reg.u16;
+            break;
+        case NativeType::U32:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 & right->computedValue.reg.u32;
+            break;
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 & right->computedValue.reg.u64;
+            break;
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 {
     auto node       = context->node;
@@ -336,6 +448,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     case TokenId::SymSlash:
         SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
         break;
+    case TokenId::SymVertical:
+        SWAG_CHECK(resolveBitmaskOr(context, left, right));
+        break;
+    case TokenId::SymAmpersand:
+        SWAG_CHECK(resolveBitmaskAnd(context, left, right));
+        break;
     }
 
     return true;
@@ -352,7 +470,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, leftNode));
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, rightNode));
 
-	node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
+    node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(leftNode, rightNode, AST_CONST_EXPR);
 
     if ((leftNode->flags & AST_VALUE_COMPUTED) && (rightNode->flags & AST_VALUE_COMPUTED))

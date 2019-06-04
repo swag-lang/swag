@@ -82,6 +82,8 @@ struct SemanticJob : public Job
     static bool resolveReturn(SemanticContext* context);
     static bool resolveNamespace(SemanticContext* context);
     static bool resolveUsing(SemanticContext* context);
+    static bool resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right);
 
     Module*             module;
     SourceFile*         sourceFile;

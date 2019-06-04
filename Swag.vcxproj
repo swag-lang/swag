@@ -248,7 +248,7 @@
     <ClCompile Include="SemanticJobUnaryExpression_.cpp" />
     <ClCompile Include="SemanticJobVar_.cpp" />
     <ClCompile Include="SemanticJobEnum_.cpp" />
-    <ClCompile Include="SemanticJobExpression_.cpp" />
+    <ClCompile Include="SemanticJobLiteral_.cpp" />
     <ClCompile Include="SemanticJobFunc_.cpp" />
     <ClCompile Include="SemanticJobIdentifier_.cpp" />
     <ClCompile Include="SemanticJob.cpp" />

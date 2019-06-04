@@ -69,7 +69,9 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
     while ((token.id == TokenId::SymPlus) ||
            (token.id == TokenId::SymMinus) ||
            (token.id == TokenId::SymAsterisk) ||
-           (token.id == TokenId::SymSlash))
+           (token.id == TokenId::SymSlash) ||
+           (token.id == TokenId::SymVertical) ||
+           (token.id == TokenId::SymAmpersand))
     {
         auto binaryNode = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent, false);
         binaryNode->inheritOwners(this);
