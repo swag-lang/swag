@@ -1,12 +1,8 @@
 #include "pch.h"
 #include "Module.h"
 #include "SourceFile.h"
-#include "Pool.h"
 #include "PoolFactory.h"
 #include "Global.h"
-#include "SemanticJob.h"
-#include "ThreadManager.h"
-#include "SymTable.h"
 #include "ByteCodeRun.h"
 #include "Workspace.h"
 
