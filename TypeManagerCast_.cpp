@@ -291,7 +291,7 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, TypeInfo* fromType, As
                 return false;
             }
 
-            nodeToCast->computedValue.reg.f64 = static_cast<float>(nodeToCast->computedValue.reg.s64);
+            nodeToCast->computedValue.reg.f32 = static_cast<float>(nodeToCast->computedValue.reg.s64);
             nodeToCast->typeInfo              = g_TypeMgr.typeInfoF32;
         }
 
@@ -483,38 +483,58 @@ void TypeManager::promote(AstNode* left, AstNode* right)
 
     if (left->typeInfo->nativeType == NativeType::S64 && right->typeInfo->nativeType == NativeType::S32)
     {
-        right->typeInfo = g_TypeMgr.typeInfoS64;
-        return;
+        if (right->flags & AST_VALUE_COMPUTED)
+        {
+            right->typeInfo = g_TypeMgr.typeInfoS64;
+            return;
+        }
     }
 
     if (left->typeInfo->nativeType == NativeType::S32 && right->typeInfo->nativeType == NativeType::S64)
     {
-        left->typeInfo = g_TypeMgr.typeInfoS64;
-        return;
+        if (left->flags & AST_VALUE_COMPUTED)
+        {
+            left->typeInfo = g_TypeMgr.typeInfoS64;
+            return;
+        }
     }
 
     if (left->typeInfo->nativeType == NativeType::U64 && right->typeInfo->nativeType == NativeType::U32)
     {
-        right->typeInfo = g_TypeMgr.typeInfoU64;
-        return;
+        if (right->flags & AST_VALUE_COMPUTED)
+        {
+            right->typeInfo = g_TypeMgr.typeInfoU64;
+            return;
+        }
     }
 
     if (left->typeInfo->nativeType == NativeType::U32 && right->typeInfo->nativeType == NativeType::U64)
     {
-        left->typeInfo = g_TypeMgr.typeInfoU64;
-        return;
+        if (left->flags & AST_VALUE_COMPUTED)
+        {
+            left->typeInfo = g_TypeMgr.typeInfoU64;
+            return;
+        }
     }
 
     if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::F32)
     {
-        right->typeInfo = g_TypeMgr.typeInfoF64;
-        return;
+        if (right->flags & AST_VALUE_COMPUTED)
+        {
+            right->computedValue.reg.f64 = right->computedValue.reg.f32;
+            right->typeInfo              = g_TypeMgr.typeInfoF64;
+            return;
+        }
     }
 
     if (left->typeInfo->nativeType == NativeType::F32 && right->typeInfo->nativeType == NativeType::F64)
     {
-        left->typeInfo = g_TypeMgr.typeInfoF64;
-        return;
+        if (left->flags & AST_VALUE_COMPUTED)
+        {
+            left->computedValue.reg.f64 = left->computedValue.reg.f32;
+            left->typeInfo              = g_TypeMgr.typeInfoF64;
+            return;
+        }
     }
 }
 

@@ -443,8 +443,6 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
         token.literalValue.f64 = (double) (token.literalValue.u64) + (tokenFrac.literalValue.u64 / (double) fractPart);
         if (tokenExponent.literalValue.s64)
             token.literalValue.f64 *= std::pow(10, tokenExponent.literalValue.s64);
-        if (token.literalType->nativeType == NativeType::F32)
-            token.literalValue.f32 = static_cast<float>(token.literalValue.f64);
     }
     else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
     {
@@ -455,6 +453,12 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
+    }
+
+	// Convert to 32 bits only now, after the suffix stuff
+    if (token.literalType->nativeType == NativeType::F32)
+    {
+        token.literalValue.f32 = static_cast<float>(token.literalValue.f64);
     }
 
     // Note: even for a float32 type, the value is stored in f64 in order to keep the maximum precision

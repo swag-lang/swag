@@ -83,6 +83,8 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
         case NativeType::F32:
+            node->computedValue.reg.f32 = left->computedValue.reg.f32 + right->computedValue.reg.f32;
+            break;
         case NativeType::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 + right->computedValue.reg.f64;
             break;
@@ -169,6 +171,8 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
         case NativeType::F32:
+            node->computedValue.reg.f32 = left->computedValue.reg.f32 - right->computedValue.reg.f32;
+            break;
         case NativeType::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 - right->computedValue.reg.f64;
             break;
@@ -255,6 +259,8 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
         case NativeType::F32:
+            node->computedValue.reg.f32 = left->computedValue.reg.f32 * right->computedValue.reg.f32;
+            break;
         case NativeType::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 * right->computedValue.reg.f64;
             break;
@@ -297,6 +303,10 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         switch (typeInfo->nativeType)
         {
         case NativeType::F32:
+            if (right->computedValue.reg.f32 == 0)
+                return sourceFile->report({sourceFile, right->token, "division by zero"});
+            node->computedValue.reg.f32 = left->computedValue.reg.f32 / right->computedValue.reg.f32;
+            break;
         case NativeType::F64:
             if (right->computedValue.reg.f64 == 0)
                 return sourceFile->report({sourceFile, right->token, "division by zero"});
@@ -698,6 +708,8 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
             break;
         case NativeType::F32:
+            node->computedValue.reg.b = left->computedValue.reg.f32 == right->computedValue.reg.f32;
+            break;
         case NativeType::F64:
             node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
             break;
@@ -739,6 +751,8 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
             break;
         case NativeType::F32:
+            node->computedValue.reg.b = left->computedValue.reg.f32 < right->computedValue.reg.f32;
+            break;
         case NativeType::F64:
             node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
             break;
@@ -788,6 +802,8 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
             break;
         case NativeType::F32:
+            node->computedValue.reg.b = left->computedValue.reg.f32 > right->computedValue.reg.f32;
+            break;
         case NativeType::F64:
             node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
             break;
