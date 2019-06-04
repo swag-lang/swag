@@ -18,21 +18,6 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
-{
-    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Cast, sourceFile->indexInModule, parent, false);
-    node->inheritOwners(this);
-    node->semanticFct = &SemanticJob::resolveCast;
-    //node->byteCodeFct = &ByteCodeGenJob::emitCast;
-    node->token = move(token);
-    if (result)
-        *result = node;
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doTypeExpression(node));
-    return true;
-}
-
 bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 {
     AstNode* expr = nullptr;
@@ -40,10 +25,14 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::SymLeftParen:
+    {
+        auto saveLocation = token.startLocation;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doExpression(nullptr, &expr));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        expr->token.startLocation = saveLocation;
         break;
+    }
 
     case TokenId::LiteralNumber:
     case TokenId::LiteralCharacter:
@@ -60,12 +49,16 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
     }
 
+    // Cast
     if (token.id == TokenId::KwdAs)
     {
         AstNode* castNode;
         SWAG_CHECK(doCast(parent, &castNode));
         Ast::addChild(castNode, expr);
         expr = castNode;
+        // This is in reverse order ! "expression as type", but 'type' is the first child, and expression the 'second'
+        castNode->token.startLocation = castNode->childs.back()->token.startLocation;
+        castNode->token.endLocation   = castNode->childs.front()->token.endLocation;
     }
 
     if (parent)

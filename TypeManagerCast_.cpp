@@ -334,7 +334,8 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, TypeInfo* fromType, As
                 return false;
             }
 
-            nodeToCast->typeInfo = g_TypeMgr.typeInfoF32;
+            nodeToCast->computedValue.reg.f32 = static_cast<float>(nodeToCast->computedValue.reg.f64);
+            nodeToCast->typeInfo              = g_TypeMgr.typeInfoF32;
         }
 
         return true;
@@ -397,7 +398,8 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, TypeInfo* fromType, As
     case NativeType::F32:
         if (nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            nodeToCast->typeInfo = g_TypeMgr.typeInfoF64;
+            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.f32);
+            nodeToCast->typeInfo              = g_TypeMgr.typeInfoF64;
         }
         return true;
     }

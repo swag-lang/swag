@@ -320,12 +320,12 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0
         return true;
     case NativeType::S32:
     case NativeType::U32:
+    case NativeType::F32:
     case NativeType::Char:
         emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0, r1, r2);
         return true;
     case NativeType::S64:
     case NativeType::U64:
-    case NativeType::F32:
     case NativeType::F64:
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
         return true;

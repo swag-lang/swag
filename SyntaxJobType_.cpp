@@ -52,3 +52,18 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     SWAG_CHECK(syntaxError(token, format("invalid type declaration '%s'", token.text.c_str())));
     return true;
 }
+
+bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Cast, sourceFile->indexInModule, parent, false);
+    node->inheritOwners(this);
+    node->semanticFct = &SemanticJob::resolveCast;
+    //node->byteCodeFct = &ByteCodeGenJob::emitCast;
+    node->inheritToken(token);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doTypeExpression(node));
+    return true;
+}

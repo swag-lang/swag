@@ -87,7 +87,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
             int64_t tmp  = static_cast<int64_t>(tmpF);
             if (tmp != token.literalValue.s64)
                 return error(token, format("literal number '%I64d' is truncated in 'f32'", token.literalValue.s64));
-            token.literalValue.f64 = tmpF;
+            token.literalValue.f32 = tmpF;
             break;
         }
         case NativeType::F64:
@@ -443,6 +443,8 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
         token.literalValue.f64 = (double) (token.literalValue.u64) + (tokenFrac.literalValue.u64 / (double) fractPart);
         if (tokenExponent.literalValue.s64)
             token.literalValue.f64 *= std::pow(10, tokenExponent.literalValue.s64);
+        if (token.literalType->nativeType == NativeType::F32)
+            token.literalValue.f32 = static_cast<float>(token.literalValue.f64);
     }
     else if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
     {
