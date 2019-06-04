@@ -12,8 +12,6 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     auto sourceFile = context->sourceFile;
     auto typeInfo   = TypeManager::concreteType(op->typeInfo);
 
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op, format("minus operation not allowed on %s '%s'", TypeInfo::getNakedName(typeInfo), typeInfo->name.c_str())}));
-
     switch (typeInfo->nativeType)
     {
     case NativeType::S8:
@@ -52,8 +50,6 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
     auto sourceFile = context->sourceFile;
     auto typeInfo   = TypeManager::concreteType(op->typeInfo);
 
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, op, format("boolean inversion not allowed on %s '%s'", TypeInfo::getNakedName(typeInfo), typeInfo->name.c_str())}));
-
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
@@ -77,10 +73,14 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 
 bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 {
-    auto node = context->node;
-    auto op   = node->childs[0];
-
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto op         = node->childs[0];
     node->inheritLocation();
+
+    auto typeInfo = TypeManager::concreteType(op->typeInfo);
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(typeInfo), typeInfo->name.c_str())}));
+
     node->typeInfo = op->typeInfo;
     node->inheritAndFlag(op, AST_CONST_EXPR);
     node->byteCodeFct = &ByteCodeGenJob::emitUnaryOp;

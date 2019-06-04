@@ -10,15 +10,11 @@
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
 
-    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("addition not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("addition not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-
-    switch (leftTypeInfo->nativeType)
+    switch (typeInfo->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -32,14 +28,14 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (leftTypeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeType::S8:
         {
@@ -98,15 +94,11 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
 bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
 
-    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("substraction not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("substraction not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-
-    switch (leftTypeInfo->nativeType)
+    switch (typeInfo->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -120,14 +112,14 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("substraction not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("substraction not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (leftTypeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeType::S8:
         {
@@ -186,15 +178,11 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
 bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
 
-    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("multiplication not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("multiplication not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-
-    switch (leftTypeInfo->nativeType)
+    switch (typeInfo->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -208,14 +196,14 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("multiplication not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("multiplication not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (leftTypeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeType::S8:
         {
@@ -274,15 +262,11 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
 bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
 
-    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("division not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("division not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-
-    switch (leftTypeInfo->nativeType)
+    switch (typeInfo->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -297,14 +281,14 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("division not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("division not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (leftTypeInfo->nativeType)
+        switch (typeInfo->nativeType)
         {
         case NativeType::F32:
         case NativeType::F64:
@@ -318,41 +302,17 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     return true;
 }
 
-bool SemanticJob::resolveBoolExpression(SemanticContext* context)
-{
-    auto node      = context->node;
-    auto leftNode  = node->childs[0];
-    auto rightNode = node->childs[1];
-
-    node->inheritLocation();
-    node->typeInfo = g_TypeMgr.typeInfoBool;
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, leftNode));
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, rightNode));
-
-    node->inheritAndFlag(leftNode, rightNode, AST_CONST_EXPR);
-
-    if ((leftNode->flags & AST_VALUE_COMPUTED) && (rightNode->flags & AST_VALUE_COMPUTED))
-    {
-        node->flags |= AST_VALUE_COMPUTED;
-        switch (node->token.id)
-        {
-        case TokenId::SymAmpersandAmpersand:
-            node->computedValue.reg.b = leftNode->computedValue.reg.b && rightNode->computedValue.reg.b;
-            break;
-        case TokenId::SymVerticalVertical:
-            node->computedValue.reg.b = leftNode->computedValue.reg.b || rightNode->computedValue.reg.b;
-            break;
-        }
-    }
-
-    return true;
-}
-
 bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto left  = node->childs[0];
-    auto right = node->childs[1];
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto left       = node->childs[0];
+    auto right      = node->childs[1];
+
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
 
     node->inheritLocation();
     TypeManager::promote(left, right);
@@ -381,31 +341,67 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveBoolExpression(SemanticContext* context)
+{
+    auto node      = context->node;
+    auto leftNode  = node->childs[0];
+    auto rightNode = node->childs[1];
+
+    node->inheritLocation();
+    node->typeInfo = g_TypeMgr.typeInfoBool;
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, leftNode));
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, rightNode));
+
+	node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
+    node->inheritAndFlag(leftNode, rightNode, AST_CONST_EXPR);
+
+    if ((leftNode->flags & AST_VALUE_COMPUTED) && (rightNode->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+        switch (node->token.id)
+        {
+        case TokenId::SymAmpersandAmpersand:
+            node->computedValue.reg.b = leftNode->computedValue.reg.b && rightNode->computedValue.reg.b;
+            break;
+        case TokenId::SymVerticalVertical:
+            node->computedValue.reg.b = leftNode->computedValue.reg.b || rightNode->computedValue.reg.b;
+            break;
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    switch (left->typeInfo->nativeType)
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-    case NativeType::Bool:
-        node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
-        break;
-    case NativeType::F32:
-    case NativeType::F64:
-        node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
-        break;
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-        node->computedValue.reg.b = left->computedValue.reg.s64 == right->computedValue.reg.s64;
-        break;
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::Char:
-    case NativeType::U64:
-        node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
-        break;
+        node->flags |= AST_VALUE_COMPUTED;
+        switch (left->typeInfo->nativeType)
+        {
+        case NativeType::Bool:
+            node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
+            break;
+        case NativeType::F32:
+        case NativeType::F64:
+            node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
+            break;
+        case NativeType::S8:
+        case NativeType::S16:
+        case NativeType::S32:
+        case NativeType::S64:
+            node->computedValue.reg.b = left->computedValue.reg.s64 == right->computedValue.reg.s64;
+            break;
+        case NativeType::U8:
+        case NativeType::U16:
+        case NativeType::U32:
+        case NativeType::Char:
+        case NativeType::U64:
+            node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
+            break;
+        }
     }
 
     return true;
@@ -414,28 +410,33 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    switch (left->typeInfo->nativeType)
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-    case NativeType::Bool:
-        node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
-        break;
-    case NativeType::F32:
-    case NativeType::F64:
-        node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
-        break;
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-        node->computedValue.reg.s64 = left->computedValue.reg.s64 < right->computedValue.reg.s64;
-        break;
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::Char:
-    case NativeType::U64:
-        node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
-        break;
+        node->flags |= AST_VALUE_COMPUTED;
+        switch (left->typeInfo->nativeType)
+        {
+        case NativeType::Bool:
+            node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
+            break;
+        case NativeType::F32:
+        case NativeType::F64:
+            node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
+            break;
+        case NativeType::S8:
+        case NativeType::S16:
+        case NativeType::S32:
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 < right->computedValue.reg.s64;
+            break;
+        case NativeType::U8:
+        case NativeType::U16:
+        case NativeType::U32:
+        case NativeType::Char:
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
+            break;
+        }
     }
 
     return true;
@@ -444,28 +445,33 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    switch (left->typeInfo->nativeType)
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
-    case NativeType::Bool:
-        node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
-        break;
-    case NativeType::F32:
-    case NativeType::F64:
-        node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
-        break;
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-        node->computedValue.reg.s64 = left->computedValue.reg.s64 > right->computedValue.reg.s64;
-        break;
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::Char:
-    case NativeType::U64:
-        node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
-        break;
+        node->flags |= AST_VALUE_COMPUTED;
+        switch (left->typeInfo->nativeType)
+        {
+        case NativeType::Bool:
+            node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
+            break;
+        case NativeType::F32:
+        case NativeType::F64:
+            node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
+            break;
+        case NativeType::S8:
+        case NativeType::S16:
+        case NativeType::S32:
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 > right->computedValue.reg.s64;
+            break;
+        case NativeType::U8:
+        case NativeType::U16:
+        case NativeType::U32:
+        case NativeType::Char:
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
+            break;
+        }
     }
 
     return true;
@@ -473,9 +479,15 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
 
 bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto left  = node->childs[0];
-    auto right = node->childs[1];
+    auto node       = context->node;
+    auto left       = node->childs[0];
+    auto right      = node->childs[1];
+    auto sourceFile = context->sourceFile;
+
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
 
     node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
@@ -487,33 +499,29 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    switch (node->token.id)
     {
-        node->flags |= AST_VALUE_COMPUTED;
-        switch (node->token.id)
-        {
-        case TokenId::SymEqualEqual:
-            SWAG_CHECK(resolveCompOpEqual(context, left, right));
-            break;
-        case TokenId::SymExclamEqual:
-            SWAG_CHECK(resolveCompOpEqual(context, left, right));
-            node->computedValue.reg.b = !node->computedValue.reg.b;
-            break;
-        case TokenId::SymLower:
-            SWAG_CHECK(resolveCompOpLower(context, left, right));
-            break;
-        case TokenId::SymGreater:
-            SWAG_CHECK(resolveCompOpGreater(context, left, right));
-            break;
-        case TokenId::SymLowerEqual:
-            SWAG_CHECK(resolveCompOpGreater(context, left, right));
-            node->computedValue.reg.b = !node->computedValue.reg.b;
-            break;
-        case TokenId::SymGreaterEqual:
-            SWAG_CHECK(resolveCompOpLower(context, left, right));
-            node->computedValue.reg.b = !node->computedValue.reg.b;
-            break;
-        }
+    case TokenId::SymEqualEqual:
+        SWAG_CHECK(resolveCompOpEqual(context, left, right));
+        break;
+    case TokenId::SymExclamEqual:
+        SWAG_CHECK(resolveCompOpEqual(context, left, right));
+        node->computedValue.reg.b = !node->computedValue.reg.b;
+        break;
+    case TokenId::SymLower:
+        SWAG_CHECK(resolveCompOpLower(context, left, right));
+        break;
+    case TokenId::SymGreater:
+        SWAG_CHECK(resolveCompOpGreater(context, left, right));
+        break;
+    case TokenId::SymLowerEqual:
+        SWAG_CHECK(resolveCompOpGreater(context, left, right));
+        node->computedValue.reg.b = !node->computedValue.reg.b;
+        break;
+    case TokenId::SymGreaterEqual:
+        SWAG_CHECK(resolveCompOpLower(context, left, right));
+        node->computedValue.reg.b = !node->computedValue.reg.b;
+        break;
     }
 
     return true;

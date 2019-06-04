@@ -150,6 +150,12 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     case TokenId::SymSlash:
         SWAG_CHECK(emitBinaryOpDiv(context, r0, r1, r2));
         return true;
+    case TokenId::SymAmpersandAmpersand:
+        emitInstruction(context, ByteCodeOp::BinOpAnd, r0, r1, r2);
+        return true;
+    case TokenId::SymVerticalVertical:
+        emitInstruction(context, ByteCodeOp::BinOpOr, r0, r1, r2);
+        return true;
     default:
         return internalError(context, "emitBinaryOp, invalid token op");
     }
