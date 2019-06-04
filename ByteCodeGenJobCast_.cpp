@@ -4,6 +4,7 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 #include "Global.h"
+#include "ByteCodeOp.h"
 
 bool ByteCodeGenJob::emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {

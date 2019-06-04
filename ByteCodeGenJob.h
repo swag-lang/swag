@@ -1,6 +1,5 @@
 #pragma once
 #include "Job.h"
-#include "ByteCodeOp.h"
 struct AstNode;
 struct SourceFile;
 struct SemanticContext;
@@ -9,6 +8,7 @@ struct AstNode;
 struct ByteCodeGenJob;
 struct ByteCodeInstruction;
 struct TypeInfo;
+enum class ByteCodeOp : uint16_t;
 
 enum class ByteCodeResult
 {

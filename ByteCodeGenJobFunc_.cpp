@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "PoolFactory.h"
+#include "ByteCodeOp.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {

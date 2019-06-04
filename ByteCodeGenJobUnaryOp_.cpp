@@ -4,6 +4,7 @@
 #include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
 #include "TypeManager.h"
+#include "ByteCodeOp.h"
 
 bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
 {

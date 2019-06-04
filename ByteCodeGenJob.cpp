@@ -4,6 +4,7 @@
 #include "PoolFactory.h"
 #include "Diagnostic.h"
 #include "ThreadManager.h"
+#include "ByteCodeOp.h"
 
 bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg)
 {

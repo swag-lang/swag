@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "ByteCodeOp.h"
 
 bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {

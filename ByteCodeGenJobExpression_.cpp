@@ -5,6 +5,7 @@
 #include "TypeInfo.h"
 #include "Module.h"
 #include "SourceFile.h"
+#include "ByteCodeOp.h"
 
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {

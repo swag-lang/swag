@@ -7,6 +7,7 @@
 #include "ByteCode.h"
 #include "Log.h"
 #include "Module.h"
+#include "ByteCodeOp.h"
 
 inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
