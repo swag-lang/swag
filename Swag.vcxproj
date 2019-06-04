@@ -208,6 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ast.cpp" />
+    <ClCompile Include="AstNode.cpp" />
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />

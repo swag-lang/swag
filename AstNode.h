@@ -49,7 +49,7 @@ enum class AstNodeKind
     EnumType,
     EnumValue,
     Literal,
-	Cast,
+    Cast,
     SingleOp,
     BinaryOp,
     CompilerAssert,
@@ -225,3 +225,6 @@ struct AstAttrDecl : public AstNode
 
     AstNode* parameters;
 };
+
+extern Pool<AstNode>     g_Pool_astNode;
+extern Pool<AstAttrDecl> g_Pool_astAttrDecl;

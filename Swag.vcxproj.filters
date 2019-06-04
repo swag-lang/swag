@@ -203,6 +203,9 @@
     <ClCompile Include="PoolFactory.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="AstNode.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

@@ -36,3 +36,5 @@ struct Scope : public PoolElement
     Utf8Crc        fullname;
     vector<Scope*> alternativeScopes;
 };
+
+extern Pool<Scope> g_Pool_scope;

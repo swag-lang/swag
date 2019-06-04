@@ -1,11 +1,11 @@
 #include "pch.h"
+#include "Ast.h"
 #include "Module.h"
 #include "SyntaxJob.h"
 #include "Diagnostic.h"
 #include "Global.h"
 #include "CommandLine.h"
 #include "Stats.h"
-#include "PoolFactory.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
 
@@ -87,7 +87,7 @@ JobResult SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     // Setup root ast for file
-    sourceFile->astRoot = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::File, sourceFile->indexInModule, sourceFile->module->astRoot);
+    sourceFile->astRoot = Ast::newNode(&g_Pool_astNode, AstNodeKind::File, sourceFile->indexInModule, sourceFile->module->astRoot);
     sourceFile->astRoot->inheritOwners(this);
 
     // Setup current scope as being the module root one

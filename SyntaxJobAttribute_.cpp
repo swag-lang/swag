@@ -1,13 +1,15 @@
 #include "pch.h"
 #include "Global.h"
-#include "PoolFactory.h"
 #include "TypeInfo.h"
 #include "SourceFile.h"
-#include "SourceLocation.h"
+#include "Scope.h"
+#include "SymTable.h"
+#include "SemanticJob.h"
+#include "Ast.h"
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
-    auto attrNode = Ast::newNode(&g_PoolFactory.astAttrDecl, AstNodeKind::AttrDecl, sourceFile->indexInModule, parent, false);
+    auto attrNode = Ast::newNode(&g_Pool_astAttrDecl, AstNodeKind::AttrDecl, sourceFile->indexInModule, parent, false);
     attrNode->inheritOwners(this);
     attrNode->semanticFct = &SemanticJob::resolveAttrDecl;
     if (result)
@@ -17,7 +19,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
     Ast::assignToken(attrNode, token);
 
-    attrNode->typeInfo       = g_PoolFactory.typeInfoFuncAttr.alloc();
+    attrNode->typeInfo       = g_Pool_typeInfoFuncAttr.alloc();
     attrNode->typeInfo->name = attrNode->name;
 
     // Parameters
@@ -65,7 +67,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 {
-    auto attrBlockNode = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::AttrUse, sourceFile->indexInModule, parent, false);
+    auto attrBlockNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::AttrUse, sourceFile->indexInModule, parent, false);
     attrBlockNode->inheritOwners(this);
     attrBlockNode->semanticFct = &SemanticJob::resolveAttrUse;
     if (result)

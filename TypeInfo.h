@@ -161,3 +161,5 @@ struct TypeInfoFuncAttr : public TypeInfo
     set<TypeInfoFuncAttr*>         attributes;
     Intrisic                       intrinsic;
 };
+
+extern Pool<TypeInfoFuncAttr> g_Pool_typeInfoFuncAttr;

@@ -1,9 +1,6 @@
 #include "pch.h"
-#include "AstNode.h"
 #include "Ast.h"
-#include "PoolFactory.h"
-#include "SourceFile.h"
-#include "SyntaxJob.h"
+#include "Scope.h"
 
 namespace Ast
 {
@@ -25,7 +22,7 @@ namespace Ast
     Scope* newScope(SourceFile* sourceFile, const Utf8Crc& name, ScopeKind kind, Scope* parentScope)
     {
         auto fullname         = parentScope->fullname + "." + name;
-        auto newScope         = g_PoolFactory.scope.alloc();
+        auto newScope         = g_Pool_scope.alloc();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
         newScope->name        = name;

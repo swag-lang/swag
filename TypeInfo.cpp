@@ -5,6 +5,8 @@
 #include "ThreadManager.h"
 #include "Global.h"
 
+Pool<TypeInfoFuncAttr> g_Pool_typeInfoFuncAttr;
+
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
     if (parameters.size() != other->parameters.size())
