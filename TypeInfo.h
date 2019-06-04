@@ -13,7 +13,7 @@ enum class TypeInfoKind
     Native,
     Namespace,
     Enum,
-	EnumValue,
+    EnumValue,
     FunctionAttribute,
 };
 
@@ -56,7 +56,7 @@ struct TypeInfo : public PoolElement
         return this == from;
     }
 
-	static const char* getNakedName(TypeInfo* typeInfo);
+    static const char* getNakedName(TypeInfo* typeInfo);
 
     uint64_t     flags;
     TypeInfoKind kind;
@@ -162,4 +162,5 @@ struct TypeInfoFuncAttr : public TypeInfo
     Intrisic                       intrinsic;
 };
 
-extern Pool<TypeInfoFuncAttr> g_Pool_typeInfoFuncAttr;
+extern Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
+extern Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;

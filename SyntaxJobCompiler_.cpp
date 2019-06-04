@@ -4,12 +4,14 @@
 #include "CommandLine.h"
 #include "Workspace.h"
 #include "Module.h"
-#include "PoolFactory.h"
 #include "SourceFile.h"
+#include "Scope.h"
+#include "SemanticJob.h"
+#include "Ast.h"
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
-    auto node = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent, false);
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent, false);
     node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
@@ -24,7 +26,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
 
 bool SyntaxJob::doCompilerPrint(AstNode* parent)
 {
-    auto node = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent, false);
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent, false);
     node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
@@ -39,7 +41,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 
 bool SyntaxJob::doCompilerRun(AstNode* parent)
 {
-    auto node         = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent, false);
+    auto node         = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent, false);
     node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveCompilerRun;
     node->token       = move(token);

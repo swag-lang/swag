@@ -5,7 +5,8 @@
 #include "ThreadManager.h"
 #include "Global.h"
 
-Pool<TypeInfoFuncAttr> g_Pool_typeInfoFuncAttr;
+Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
+Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
