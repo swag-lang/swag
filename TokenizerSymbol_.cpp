@@ -1,8 +1,5 @@
 #include "pch.h"
 #include "Tokenizer.h"
-#include "Global.h"
-#include "LanguageSpec.h"
-#include "Diagnostic.h"
 
 bool Tokenizer::doSymbol(char32_t c, Token& token)
 {

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Tokenizer.h"
 #include "Global.h"
-#include "TypeManager.h"
 #include "Stats.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"

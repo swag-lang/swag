@@ -1,11 +1,7 @@
 #include "pch.h"
-#include "Tokenizer.h"
 #include "Global.h"
 #include "TypeManager.h"
-#include "Stats.h"
 #include "LanguageSpec.h"
-#include "Diagnostic.h"
-#include "CommandLine.h"
 #include "SourceFile.h"
 
 void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)

@@ -1,8 +1,6 @@
 #include "pch.h"
-#include "Tokenizer.h"
 #include "Global.h"
 #include "LanguageSpec.h"
-#include "Diagnostic.h"
 #include "TypeManager.h"
 
 bool Tokenizer::errorNumberSyntax(Token& token, const Utf8& msg)
