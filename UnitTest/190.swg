@@ -8,3 +8,4 @@ func main: ()-> u32
 }
 
 #assert main ^ 0b1001 == 0b0110
+#assert main ^ main == 0
