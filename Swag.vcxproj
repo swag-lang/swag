@@ -243,6 +243,7 @@
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
+    <ClCompile Include="PoolFactory.cpp" />
     <ClCompile Include="Scope.cpp" />
     <ClCompile Include="SemanticJobAttribute_.cpp" />
     <ClCompile Include="SemanticJobBinaryExpression_.cpp" />

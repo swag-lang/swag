@@ -4,7 +4,6 @@
 
 Concat::Concat()
 {
-    poolFactory = new PoolFactory();
     checkCount(1);
 }
 
@@ -16,7 +15,7 @@ void Concat::checkCount(int offset)
         return;
     }
 
-    lastBucket = poolFactory->concatBucket.alloc();
+    lastBucket = g_PoolFactory.concatBucket.alloc();
     if (!firstBucket)
         firstBucket = lastBucket;
     currentSP         = lastBucket->datas;

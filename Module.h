@@ -22,7 +22,6 @@ struct Module : public PoolElement
     vector<SourceFile*> files;
     AstNode*            astRoot;
     Scope*              scopeRoot;
-    PoolFactory*        poolFactory;
     Workspace*          workspace;
     bool                isRuntime = false;
 

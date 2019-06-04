@@ -15,8 +15,7 @@
 const auto BUF_SIZE = 512;
 
 SourceFile::SourceFile()
-    : poolFactory{new PoolFactory}
-    , bufferSize{BUF_SIZE}
+    : bufferSize{BUF_SIZE}
 {
     buffers[0] = new char[bufferSize];
     buffers[1] = new char[bufferSize];
@@ -178,8 +177,8 @@ char SourceFile::getPrivateChar()
 
         auto nextBufIndex = (bufferCurIndex + 1) % 2;
 
-		// First time, open and read in sync. This is faster to open files in jobs that letting
-		// the loading thread open files one by one
+        // First time, open and read in sync. This is faster to open files in jobs that letting
+        // the loading thread open files one by one
         if (!openedOnce)
         {
             if (!open())

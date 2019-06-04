@@ -7,7 +7,7 @@
 
 bool SyntaxJob::doUsing(AstNode* parent)
 {
-    auto node         = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+    auto node         = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
     node->semanticFct = &SemanticJob::resolveUsing;
     node->inheritOwners(this);
     node->inheritToken(token);
@@ -29,7 +29,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     Scope*   newScope = nullptr;
     while (true)
     {
-        namespaceNode              = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+        namespaceNode              = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
         namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
         namespaceNode->inheritOwners(this);
 
@@ -55,7 +55,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
             auto        symbol = currentScope->symTable->findNoLock(namespaceNode->name);
             if (!symbol)
             {
-                auto typeInfo           = sourceFile->poolFactory->typeInfoNamespace.alloc();
+                auto typeInfo           = g_PoolFactory.typeInfoNamespace.alloc();
                 typeInfo->name          = namespaceNode->name;
                 newScope                = Ast::newScope(sourceFile, namespaceNode->name, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;
@@ -103,7 +103,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
 
 bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent, false);
+    auto node = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent, false);
     node->inheritOwners(this);
     if (result)
         *result = node;

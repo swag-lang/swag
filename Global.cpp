@@ -6,7 +6,6 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
-#include "PoolFactory.h"
 #include "ByteCodeRun.h"
 #include "Workspace.h"
 
@@ -17,7 +16,6 @@ Stats         g_Stats;
 ThreadManager g_ThreadMgr;
 TypeManager   g_TypeMgr;
 LanguageSpec  g_LangSpec;
-PoolFactory   g_Pool;
 Workspace     g_Workspace;
 ByteCodeRun   g_Run;
 

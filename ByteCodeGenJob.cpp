@@ -45,7 +45,7 @@ JobResult ByteCodeGenJob::execute()
     context.sourceFile = sourceFile;
     context.bc         = originalNode->bc;
     if (!context.bc)
-        originalNode->bc = context.bc = sourceFile->poolFactory->byteCode.alloc();
+        originalNode->bc = context.bc = g_PoolFactory.byteCode.alloc();
 
     while (!nodes.empty())
     {

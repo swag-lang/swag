@@ -14,7 +14,7 @@ bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAt
     typeInfo->parameters.reserve(parameters->childs.size());
     for (auto param : parameters->childs)
     {
-        auto funcParam      = sourceFile->poolFactory->typeInfoFuncAttrParam.alloc();
+        auto funcParam      = g_PoolFactory.typeInfoFuncAttrParam.alloc();
         funcParam->name     = param->name;
         funcParam->typeInfo = param->typeInfo;
         typeInfo->parameters.push_back(funcParam);

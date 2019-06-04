@@ -27,7 +27,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
         {
             if (!node->byteCodeJob)
             {
-                node->byteCodeJob               = sourceFile->poolFactory->bytecodeJob.alloc();
+                node->byteCodeJob               = g_PoolFactory.bytecodeJob.alloc();
                 node->byteCodeJob->sourceFile   = sourceFile;
                 node->byteCodeJob->originalNode = node;
                 node->byteCodeJob->nodes.push_back(node);

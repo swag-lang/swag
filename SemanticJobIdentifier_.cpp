@@ -187,7 +187,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         for (auto param : node->callParameters->childs)
         {
-            auto matchParam      = sourceFile->poolFactory->symbolMatchParameter.alloc();
+            auto matchParam      = g_PoolFactory.symbolMatchParameter.alloc();
             matchParam->name     = param->name;
             matchParam->typeInfo = param->typeInfo;
             symMatch.parameters.push_back(matchParam);

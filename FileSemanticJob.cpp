@@ -8,7 +8,7 @@
 
 SemanticJob* FileSemanticJob::newSemanticJob(SourceFile* sourceFile)
 {
-    auto job        = sourceFile->poolFactory->semanticJob.alloc();
+    auto job        = g_PoolFactory.semanticJob.alloc();
     job->module     = sourceFile->module;
     job->sourceFile = sourceFile;
     return job;

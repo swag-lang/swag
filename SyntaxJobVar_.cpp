@@ -8,7 +8,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent)
     vector<AstVarDecl*> allVars;
 
     // First variable
-    AstVarDecl* firstVar = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
+    AstVarDecl* firstVar = Ast::newNode(&g_PoolFactory.astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
     firstVar->inheritOwners(this);
     firstVar->semanticFct = &SemanticJob::resolveVarDecl;
     allVars.push_back(firstVar);
@@ -27,18 +27,18 @@ bool SyntaxJob::doVarDecl(AstNode* parent)
         SWAG_CHECK(eatToken(TokenId::SymComma));
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
 
-        auto node         = Ast::newNode(&sourceFile->poolFactory->astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
+        auto node         = Ast::newNode(&g_PoolFactory.astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent, false);
         node->semanticFct = &SemanticJob::resolveVarDecl;
         node->inheritOwners(this);
         node->inheritToken(token);
         allVars.push_back(node);
 
-        auto idRef         = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, node, false);
+        auto idRef         = Ast::newNode(&g_PoolFactory.astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, node, false);
         idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
         idRef->inheritOwners(this);
         node->astAssignment = idRef;
 
-        auto id             = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef, false);
+        auto id             = Ast::newNode(&g_PoolFactory.astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef, false);
         id->semanticFct     = &SemanticJob::resolveIdentifier;
         id->inheritOwners(this);
         id->name = firstVar->name;

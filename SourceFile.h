@@ -42,14 +42,13 @@ struct SourceFile : public PoolElement
     void waitEndRequests();
     bool checkFormat(int bufferIndex);
 
-    fs::path     path;
-    BuildPass    buildPass     = BuildPass::Full;
-    int          unittestError = 0;
-    int          silent        = 0;
-    Module*      module        = nullptr;
-    AstNode*     astRoot       = nullptr;
-    PoolFactory* poolFactory   = nullptr;
-    uint32_t     indexInModule = UINT32_MAX;
+    fs::path  path;
+    BuildPass buildPass     = BuildPass::Full;
+    int       unittestError = 0;
+    int       silent        = 0;
+    Module*   module        = nullptr;
+    AstNode*  astRoot       = nullptr;
+    uint32_t  indexInModule = UINT32_MAX;
 
     const char* externalBuffer = nullptr;
     int         seekExternal   = 0;

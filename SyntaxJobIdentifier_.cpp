@@ -6,7 +6,7 @@
 
 bool SyntaxJob::doIdentifier(AstNode* parent)
 {
-    auto identifier = Ast::newNode(&sourceFile->poolFactory->astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent, false);
+    auto identifier = Ast::newNode(&g_PoolFactory.astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent, false);
     identifier->inheritOwners(this);
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
@@ -15,7 +15,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent)
 
     if (token.id == TokenId::SymLeftParen)
     {
-        auto callParams = Ast::newNode(&sourceFile->poolFactory->astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, identifier, false);
+        auto callParams = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, identifier, false);
         callParams->inheritOwners(this);
         identifier->callParameters = callParams;
         callParams->semanticFct    = &SemanticJob::resolveFuncCallParams;
@@ -41,7 +41,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
-    auto identifierRef = Ast::newNode(&sourceFile->poolFactory->astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent, false);
+    auto identifierRef = Ast::newNode(&g_PoolFactory.astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent, false);
     identifierRef->inheritOwners(this);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     identifierRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;

@@ -23,10 +23,8 @@ struct Concat
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;
-    PoolFactory*  poolFactory = nullptr;
-
-    uint8_t*      currentSP  = nullptr;
-    ConcatBucket* currentSPB = nullptr;
+    uint8_t*      currentSP   = nullptr;
+    ConcatBucket* currentSPB  = nullptr;
     int           currentSPI;
 
     inline void rewind()

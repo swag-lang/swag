@@ -25,7 +25,7 @@ namespace Ast
     Scope* newScope(SourceFile* sourceFile, const Utf8Crc& name, ScopeKind kind, Scope* parentScope)
     {
         auto fullname         = parentScope->fullname + "." + name;
-        auto newScope         = sourceFile->poolFactory->scope.alloc();
+        auto newScope         = g_PoolFactory.scope.alloc();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
         newScope->name        = name;

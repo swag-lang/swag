@@ -110,7 +110,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
         {
             if (!funcNode->byteCodeJob)
             {
-                funcNode->byteCodeJob               = sourceFile->poolFactory->bytecodeJob.alloc();
+                funcNode->byteCodeJob               = g_PoolFactory.bytecodeJob.alloc();
                 funcNode->byteCodeJob->sourceFile   = sourceFile;
                 funcNode->byteCodeJob->originalNode = funcNode;
                 funcNode->byteCodeJob->nodes.push_back(funcNode);

@@ -47,3 +47,5 @@ struct PoolFactory
     Pool<TypeInfoFuncAttrParam> typeInfoFuncAttrParam;
     Pool<SymbolMatchParameter>  symbolMatchParameter;
 };
+
+extern PoolFactory g_PoolFactory;

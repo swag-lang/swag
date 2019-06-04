@@ -10,21 +10,19 @@ Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
     : path{path}
     , workspace{workspace}
 {
-    poolFactory = new PoolFactory();
-
     if (runtime)
     {
         scopeRoot = workspace->scopeRoot;
     }
     else
     {
-        scopeRoot       = poolFactory->scope.alloc();
+        scopeRoot       = g_PoolFactory.scope.alloc();
         scopeRoot->kind = ScopeKind::Module;
         scopeRoot->allocateSymTable();
         scopeRoot->parentScope = workspace->scopeRoot;
     }
 
-    astRoot             = Ast::newNode(&poolFactory->astNode, AstNodeKind::Module, UINT32_MAX);
+    astRoot             = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::Module, UINT32_MAX);
     astRoot->ownerScope = workspace->scopeRoot;
 }
 

@@ -33,7 +33,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     auto symbol = findNoLock(node->name);
     if (!symbol)
     {
-        symbol                             = sourceFile->poolFactory->symName.alloc();
+        symbol                             = g_PoolFactory.symName.alloc();
         symbol->name                       = node->name;
         symbol->kind                       = kind;
         symbol->defaultOverload.sourceFile = sourceFile;
@@ -146,7 +146,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
 
 SymbolOverload* SymbolName::addOverloadNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
-    auto overload        = sourceFile->poolFactory->symOverload.alloc();
+    auto overload        = g_PoolFactory.symOverload.alloc();
     overload->typeInfo   = typeInfo;
     overload->sourceFile = sourceFile;
     overload->node       = node;
