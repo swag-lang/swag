@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Global.h"
 #include "AstNode.h"
-#include "ByteCodeOp.h"
 #include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
 #include "SourceFile.h"

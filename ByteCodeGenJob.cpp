@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
-#include "SourceFile.h"
 #include "Global.h"
 #include "PoolFactory.h"
 #include "Diagnostic.h"

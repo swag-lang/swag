@@ -3,8 +3,6 @@
 #include "AstNode.h"
 #include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
-#include "SourceFile.h"
-#include "Module.h"
 #include "TypeManager.h"
 
 bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)

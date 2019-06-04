@@ -14,6 +14,7 @@
 #include "SymTable.h"
 #include "ByteCode.h"
 #include "AstNode.h"
+#include "SourceFile.h"
 
 struct PoolFactory
 {

@@ -1,6 +1,4 @@
 #pragma once
-struct SourceFile;
-
 struct IPool
 {
     virtual void free(void* addr) = 0;
