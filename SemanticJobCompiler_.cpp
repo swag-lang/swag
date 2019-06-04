@@ -55,7 +55,9 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 {
     auto expr       = context->node->childs[0];
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(expr->typeInfo == g_TypeMgr.typeInfoBool, sourceFile->report({sourceFile, expr->token, "expression should be 'bool'"}));
+    auto typeInfo   = TypeManager::concreteType(expr->typeInfo);
+
+    SWAG_VERIFY(typeInfo == g_TypeMgr.typeInfoBool, sourceFile->report({sourceFile, expr->token, "expression should be 'bool'"}));
 
     SWAG_CHECK(executeNode(context, expr, true));
     if (context->result == SemanticResult::Pending)
