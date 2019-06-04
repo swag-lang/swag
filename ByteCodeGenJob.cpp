@@ -27,6 +27,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
         bc->out = newInstuctions;
     }
 
+	assert(bc->out);
     ByteCodeInstruction& ins = bc->out[bc->numInstructions++];
     ins.op                   = op;
     ins.a.u32                = r0;

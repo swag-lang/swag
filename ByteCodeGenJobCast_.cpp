@@ -12,6 +12,20 @@ bool ByteCodeGenJob::emitCastNativeF32(ByteCodeGenContext* context, AstNode* exp
 {
     switch (typeInfo->nativeType)
     {
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC, 0xFF);
+        emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
+        break;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::ClearMaskU32, exprNode->resultRegisterRC, 0xFFFF);
+        emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
+        break;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::CastU32F32, exprNode->resultRegisterRC);
+        break;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::CastU64F32, exprNode->resultRegisterRC);
+        break;
     case NativeType::S32:
         emitInstruction(context, ByteCodeOp::CastS32F32, exprNode->resultRegisterRC);
         break;

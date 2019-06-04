@@ -451,11 +451,26 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::ClearMaskU32:
+    {
+        registersRC[ip->a.u32].u32 &= ip->b.u32;
+        break;
+    }
     case ByteCodeOp::CastS32F32:
     {
         registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].s32);
         break;
 	}
+    case ByteCodeOp::CastU32F32:
+    {
+        registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].u32);
+        break;
+    }
+    case ByteCodeOp::CastU64F32:
+    {
+        registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].u64);
+        break;
+    }
 
     default:
         context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
