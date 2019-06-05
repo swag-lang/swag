@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <io.h>
 
+Log g_Log;
+
 void Log::setup()
 {
     consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);

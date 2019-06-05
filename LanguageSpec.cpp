@@ -3,6 +3,8 @@
 #include "Global.h"
 #include "TypeManager.h"
 
+LanguageSpec g_LangSpec;
+
 void LanguageSpec::setup()
 {
     keywords["#unittest"] = TokenId::CompilerUnitTest;

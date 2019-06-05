@@ -6,3 +6,5 @@ struct Stats
     atomic<int> numModules = 0;
     int         numWorkers = 0;
 };
+
+extern Stats g_Stats;

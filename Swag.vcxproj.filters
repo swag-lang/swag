@@ -203,6 +203,12 @@
     <ClCompile Include="AstNode.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="CommandLine.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Stats.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

@@ -9,6 +9,8 @@
 #include "Module.h"
 #include "ByteCodeOp.h"
 
+ByteCodeRun g_Run;
+
 inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->registersRC;

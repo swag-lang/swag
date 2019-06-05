@@ -49,3 +49,5 @@ struct TypeManager
     TypeInfoNative* typeInfoString;
     TypeInfoNative* typeInfoVoid;
 };
+
+extern TypeManager g_TypeMgr;

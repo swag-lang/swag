@@ -20,3 +20,5 @@ struct Workspace
     Scope*                 scopeRoot;
     ByteCodeRunContext     runContext;
 };
+
+extern Workspace g_Workspace;

@@ -77,3 +77,5 @@ struct Log
     WORD   defaultAttributes = 0;
 #endif
 };
+
+extern Log g_Log;

@@ -16,3 +16,5 @@ struct CommandLine
 
     fs::path exePath;
 };
+
+extern CommandLine g_CommandLine;

@@ -1,23 +1,9 @@
 #include "pch.h"
 #include "Global.h"
-#include "SourceFile.h"
-#include "Log.h"
-#include "Stats.h"
-#include "ThreadManager.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
-#include "ByteCodeRun.h"
-#include "Workspace.h"
 
-Log           g_Log;
-Global        g_Global;
-CommandLine   g_CommandLine;
-Stats         g_Stats;
-ThreadManager g_ThreadMgr;
-TypeManager   g_TypeMgr;
-LanguageSpec  g_LangSpec;
-Workspace     g_Workspace;
-ByteCodeRun   g_Run;
+Global g_Global;
 
 void Global::setup()
 {

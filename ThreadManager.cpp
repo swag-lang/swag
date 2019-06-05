@@ -7,6 +7,8 @@
 #include "Stats.h"
 #include "Job.h"
 
+ThreadManager g_ThreadMgr;
+
 void ThreadManager::init()
 {
     loadingThread = new LoadingThread();

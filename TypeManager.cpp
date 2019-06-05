@@ -2,6 +2,8 @@
 #include "TypeManager.h"
 #include "TypeInfo.h"
 
+TypeManager g_TypeMgr;
+
 void TypeManager::setup()
 {
     typeInfoS8     = new TypeInfoNative(NativeType::S8, "s8", TYPEINFO_INT_SIGNED);

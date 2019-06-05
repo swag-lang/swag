@@ -8,3 +8,5 @@ struct ByteCodeRun
     void runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     bool run(ByteCodeRunContext* context);
 };
+
+extern ByteCodeRun g_Run;

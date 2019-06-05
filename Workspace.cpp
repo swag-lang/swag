@@ -14,6 +14,8 @@
 #include "SyntaxJob.h"
 #include "ModuleOutputJob.h"
 
+Workspace g_Workspace;
+
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
     Module* module;

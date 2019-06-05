@@ -28,3 +28,5 @@ struct ThreadManager
     vector<Job*>       pendingJobs;
     atomic<int>        processingJobs = 0;
 };
+
+extern ThreadManager g_ThreadMgr;
