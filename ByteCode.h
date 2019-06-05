@@ -1,6 +1,5 @@
 #pragma once
 #include "Pool.h"
-#include "Concat.h"
 #include "Utf8.h"
 #include "SourceLocation.h"
 #include "Register.h"
