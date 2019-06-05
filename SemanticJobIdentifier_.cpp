@@ -2,9 +2,13 @@
 #include "Global.h"
 #include "Diagnostic.h"
 #include "ThreadManager.h"
-#include "PoolFactory.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
+#include "SymTable.h"
+#include "SemanticJob.h"
+#include "Scope.h"
+#include "ByteCodeGenJob.h"
+#include "Ast.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -187,7 +191,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         for (auto param : node->callParameters->childs)
         {
-            auto matchParam      = g_PoolFactory.symbolMatchParameter.alloc();
+            auto matchParam      = g_Pool_symbolMatchParameter.alloc();
             matchParam->name     = param->name;
             matchParam->typeInfo = param->typeInfo;
             symMatch.parameters.push_back(matchParam);

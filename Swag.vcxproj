@@ -192,7 +192,6 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pool.h" />
-    <ClInclude Include="PoolFactory.h" />
     <ClInclude Include="SemanticJob.h" />
     <ClInclude Include="SpinLock.h" />
     <ClInclude Include="SymTable.h" />
@@ -244,7 +243,6 @@
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
-    <ClCompile Include="PoolFactory.cpp" />
     <ClCompile Include="Scope.cpp" />
     <ClCompile Include="SemanticJobAttribute_.cpp" />
     <ClCompile Include="SemanticJobBinaryExpression_.cpp" />

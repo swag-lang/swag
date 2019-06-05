@@ -1,10 +1,15 @@
 #include "pch.h"
 #include "Global.h"
 #include "TypeManager.h"
-#include "PoolFactory.h"
 #include "SourceFile.h"
 #include "ThreadManager.h"
 #include "Diagnostic.h"
+#include "SemanticJob.h"
+#include "TypeInfo.h"
+#include "ByteCodeGenJob.h"
+#include "Ast.h"
+#include "SymTable.h"
+#include "Scope.h"
 
 bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
 {
@@ -14,7 +19,7 @@ bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAt
     typeInfo->parameters.reserve(parameters->childs.size());
     for (auto param : parameters->childs)
     {
-        auto funcParam      = g_PoolFactory.typeInfoFuncAttrParam.alloc();
+        auto funcParam      = g_Pool_typeInfoFuncAttrParam.alloc();
         funcParam->name     = param->name;
         funcParam->typeInfo = param->typeInfo;
         typeInfo->parameters.push_back(funcParam);
@@ -46,7 +51,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         }
     }
 
-    // Now the full fonction has been solved, so we wakeup jobs depending on that
+    // Now the full function has been solved, so we wakeup jobs depending on that
     scoped_lock lk(node->mutex);
     node->flags |= AST_FULL_RESOLVE;
     for (auto job : node->dependentJobs)

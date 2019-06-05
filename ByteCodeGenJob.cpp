@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
+#include "ByteCode.h"
 #include "Global.h"
-#include "PoolFactory.h"
 #include "Diagnostic.h"
 #include "ThreadManager.h"
+#include "SourceFile.h"
 #include "ByteCodeOp.h"
+
+Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
 bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg)
 {
@@ -46,7 +49,7 @@ JobResult ByteCodeGenJob::execute()
     context.sourceFile = sourceFile;
     context.bc         = originalNode->bc;
     if (!context.bc)
-        originalNode->bc = context.bc = g_PoolFactory.byteCode.alloc();
+        originalNode->bc = context.bc = g_Pool_byteCode.alloc();
 
     while (!nodes.empty())
     {

@@ -1,8 +1,12 @@
 #include "pch.h"
 #include "Global.h"
 #include "Diagnostic.h"
-#include "PoolFactory.h"
 #include "SourceFile.h"
+#include "SymTable.h"
+#include "SemanticJob.h"
+#include "TypeInfo.h"
+#include "Ast.h"
+#include "Scope.h"
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {

@@ -24,3 +24,5 @@ struct ByteCode : public PoolElement
     uint32_t             maxInstructions = 0;
     vector<Utf8>         strBuffer;
 };
+
+extern Pool<ByteCode> g_Pool_byteCode;

@@ -4,8 +4,13 @@
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "PoolFactory.h"
 #include "ByteCodeOp.h"
+#include "ByteCodeGenJob.h"
+#include "SourceFile.h"
+#include "ByteCode.h"
+#include "Ast.h"
+#include "TypeInfo.h"
+#include "SymTable.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -111,7 +116,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
         {
             if (!funcNode->byteCodeJob)
             {
-                funcNode->byteCodeJob               = g_PoolFactory.bytecodeJob.alloc();
+                funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
                 funcNode->byteCodeJob->sourceFile   = sourceFile;
                 funcNode->byteCodeJob->originalNode = funcNode;
                 funcNode->byteCodeJob->nodes.push_back(funcNode);

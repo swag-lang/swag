@@ -1,11 +1,17 @@
 #include "pch.h"
+#include "Global.h"
 #include "Diagnostic.h"
-#include "TypeManager.h"
-#include "Log.h"
 #include "SourceFile.h"
-#include "PoolFactory.h"
-#include "Module.h"
+#include "SymTable.h"
+#include "SemanticJob.h"
+#include "TypeInfo.h"
+#include "Ast.h"
+#include "Scope.h"
+#include "TypeManager.h"
 #include "ThreadManager.h"
+#include "Module.h"
+#include "Log.h"
+#include "ByteCodeGenJob.h"
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
@@ -27,7 +33,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
         {
             if (!node->byteCodeJob)
             {
-                node->byteCodeJob               = g_PoolFactory.bytecodeJob.alloc();
+                node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
                 node->byteCodeJob->sourceFile   = sourceFile;
                 node->byteCodeJob->originalNode = node;
                 node->byteCodeJob->nodes.push_back(node);

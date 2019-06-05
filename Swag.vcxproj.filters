@@ -200,9 +200,6 @@
     <ClCompile Include="ByteCodeGenJobCast_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
-    <ClCompile Include="PoolFactory.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="AstNode.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
@@ -248,9 +245,6 @@
       <Filter>Lexer</Filter>
     </ClInclude>
     <ClInclude Include="Pool.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="PoolFactory.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Job.h">

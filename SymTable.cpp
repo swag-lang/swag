@@ -1,10 +1,14 @@
 #include "pch.h"
 #include "SymTable.h"
-#include "PoolFactory.h"
 #include "Diagnostic.h"
 #include "Global.h"
 #include "ThreadManager.h"
 #include "SourceFile.h"
+#include "TypeInfo.h"
+#include "SymTable.h"
+
+Pool<SymbolOverload> g_Pool_symOverload;
+Pool<SymbolName>     g_Pool_symName;
 
 SymTable::SymTable(Scope* scope)
     : scope{scope}
@@ -33,7 +37,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     auto symbol = findNoLock(node->name);
     if (!symbol)
     {
-        symbol                             = g_PoolFactory.symName.alloc();
+        symbol                             = g_Pool_symName.alloc();
         symbol->name                       = node->name;
         symbol->kind                       = kind;
         symbol->defaultOverload.sourceFile = sourceFile;
@@ -146,7 +150,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
 
 SymbolOverload* SymbolName::addOverloadNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
-    auto overload        = g_PoolFactory.symOverload.alloc();
+    auto overload        = g_Pool_symOverload.alloc();
     overload->typeInfo   = typeInfo;
     overload->sourceFile = sourceFile;
     overload->node       = node;

@@ -1,16 +1,15 @@
 #include "pch.h"
-#include "FileSemanticJob.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
-#include "PoolFactory.h"
 #include "Global.h"
 #include "ThreadManager.h"
+#include "FileSemanticJob.h"
 
 Pool<FileSemanticJob> g_Pool_fileSemanticJob;
 
 SemanticJob* FileSemanticJob::newSemanticJob(SourceFile* sourceFile)
 {
-    auto job        = g_PoolFactory.semanticJob.alloc();
+    auto job        = g_Pool_semanticJob.alloc();
     job->module     = sourceFile->module;
     job->sourceFile = sourceFile;
     return job;

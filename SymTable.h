@@ -78,3 +78,6 @@ struct SymTable
     Scope*                     scope;
     map<Utf8Crc, SymbolName*>* mapNames[HASH_SIZE];
 };
+
+extern Pool<SymbolOverload> g_Pool_symOverload;
+extern Pool<SymbolName>     g_Pool_symName;

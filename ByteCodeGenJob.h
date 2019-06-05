@@ -72,3 +72,5 @@ struct ByteCodeGenJob : public Job
     vector<AstNode*> nodes;
     vector<Job*>     dependentJobs;
 };
+
+extern Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;

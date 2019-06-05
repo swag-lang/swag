@@ -3,8 +3,8 @@
 #include "ModuleSemanticJob.h"
 #include "ThreadManager.h"
 #include "Global.h"
-#include "PoolFactory.h"
 #include "SourceFile.h"
+#include "FileSemanticJob.h"
 
 Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
 
@@ -15,7 +15,7 @@ JobResult ModuleSemanticJob::execute()
         if (file->buildPass < BuildPass::Semantic)
             continue;
 
-        auto job        = g_PoolFactory.fileSemanticJob.alloc();
+        auto job        = g_Pool_fileSemanticJob.alloc();
         job->module     = module;
         job->sourceFile = file;
         job->nodes.push_back(file->astRoot);
