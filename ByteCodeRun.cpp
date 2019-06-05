@@ -461,7 +461,13 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::ClearMaskU64:
     {
-        registersRC[ip->a.u32].u64 &= (((uint64_t) ip->b.u32) << 32);
+        registersRC[ip->a.u32].u64 &= 0xFFFFFFFF | (((uint64_t) ip->b.u32) << 32);
+        break;
+    }
+    case ByteCodeOp::ClearMaskU32U64:
+    {
+        registersRC[ip->a.u32].u32 &= ip->b.u32;
+        registersRC[ip->a.u32].u64 &= 0xFFFFFFFF | (((uint64_t) ip->c.u32) << 32);
         break;
     }
     case ByteCodeOp::CastS32F32:

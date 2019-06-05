@@ -74,6 +74,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCastNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCast(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;

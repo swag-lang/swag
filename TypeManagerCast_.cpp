@@ -26,6 +26,13 @@ bool TypeManager::castToNativeU8(SourceFile* sourceFile, TypeInfo* fromType, Ast
 {
     switch (fromType->nativeType)
     {
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoU8;
+        return true;
+
     case NativeType::S8:
     case NativeType::S16:
     case NativeType::S32:
@@ -39,13 +46,6 @@ bool TypeManager::castToNativeU8(SourceFile* sourceFile, TypeInfo* fromType, Ast
                 return false;
             }
         }
-
-    case NativeType::Char:
-        if (!(castFlags & CASTFLAG_FORCE))
-            break;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->typeInfo = g_TypeMgr.typeInfoU8;
-        return true;
 
     case NativeType::U16:
     case NativeType::U32:
@@ -72,6 +72,13 @@ bool TypeManager::castToNativeU16(SourceFile* sourceFile, TypeInfo* fromType, As
 {
     switch (fromType->nativeType)
     {
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoU16;
+        return true;
+
     case NativeType::S8:
     case NativeType::S16:
     case NativeType::S32:
@@ -85,13 +92,6 @@ bool TypeManager::castToNativeU16(SourceFile* sourceFile, TypeInfo* fromType, As
                 return false;
             }
         }
-
-    case NativeType::Char:
-        if (!(castFlags & CASTFLAG_FORCE))
-            break;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->typeInfo = g_TypeMgr.typeInfoU16;
-        return true;
 
     case NativeType::U8:
     case NativeType::U32:
@@ -118,6 +118,13 @@ bool TypeManager::castToNativeU32(SourceFile* sourceFile, TypeInfo* fromType, As
 {
     switch (fromType->nativeType)
     {
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
+        return true;
+
     case NativeType::S8:
     case NativeType::S16:
     case NativeType::S32:
@@ -131,13 +138,6 @@ bool TypeManager::castToNativeU32(SourceFile* sourceFile, TypeInfo* fromType, As
                 return false;
             }
         }
-
-    case NativeType::Char:
-        if (!(castFlags & CASTFLAG_FORCE))
-            break;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
-        return true;
 
     case NativeType::U8:
     case NativeType::U16:
@@ -164,6 +164,13 @@ bool TypeManager::castToNativeU64(SourceFile* sourceFile, TypeInfo* fromType, As
 {
     switch (fromType->nativeType)
     {
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoU64;
+        return true;
+
     case NativeType::S8:
     case NativeType::S16:
     case NativeType::S32:
@@ -177,13 +184,6 @@ bool TypeManager::castToNativeU64(SourceFile* sourceFile, TypeInfo* fromType, As
                 return false;
             }
         }
-
-    case NativeType::Char:
-        if (!(castFlags & CASTFLAG_FORCE))
-            break;
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
-            nodeToCast->typeInfo = g_TypeMgr.typeInfoU64;
-        return true;
 
     case NativeType::U8:
     case NativeType::U16:
@@ -549,15 +549,6 @@ void TypeManager::promote(AstNode* left, AstNode* right)
     promoteInteger(left);
     promoteInteger(right);
 
-    if (left->typeInfo->nativeType == NativeType::S64 && right->typeInfo->nativeType == NativeType::S32)
-    {
-        if (right->flags & AST_VALUE_COMPUTED)
-        {
-            right->typeInfo = g_TypeMgr.typeInfoS64;
-            return;
-        }
-    }
-
     if (left->typeInfo->nativeType == NativeType::S32 && right->typeInfo->nativeType == NativeType::S64)
     {
         if (left->flags & AST_VALUE_COMPUTED)
@@ -567,11 +558,11 @@ void TypeManager::promote(AstNode* left, AstNode* right)
         }
     }
 
-    if (left->typeInfo->nativeType == NativeType::U64 && right->typeInfo->nativeType == NativeType::U32)
+    if (left->typeInfo->nativeType == NativeType::S64 && right->typeInfo->nativeType == NativeType::S32)
     {
         if (right->flags & AST_VALUE_COMPUTED)
         {
-            right->typeInfo = g_TypeMgr.typeInfoU64;
+            right->typeInfo = g_TypeMgr.typeInfoS64;
             return;
         }
     }
@@ -585,12 +576,11 @@ void TypeManager::promote(AstNode* left, AstNode* right)
         }
     }
 
-    if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::F32)
+    if (left->typeInfo->nativeType == NativeType::U64 && right->typeInfo->nativeType == NativeType::U32)
     {
         if (right->flags & AST_VALUE_COMPUTED)
         {
-            right->computedValue.reg.f64 = right->computedValue.reg.f32;
-            right->typeInfo              = g_TypeMgr.typeInfoF64;
+            right->typeInfo = g_TypeMgr.typeInfoU64;
             return;
         }
     }
@@ -601,6 +591,16 @@ void TypeManager::promote(AstNode* left, AstNode* right)
         {
             left->computedValue.reg.f64 = left->computedValue.reg.f32;
             left->typeInfo              = g_TypeMgr.typeInfoF64;
+            return;
+        }
+    }
+
+    if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::F32)
+    {
+        if (right->flags & AST_VALUE_COMPUTED)
+        {
+            right->computedValue.reg.f64 = right->computedValue.reg.f32;
+            right->typeInfo              = g_TypeMgr.typeInfoF64;
             return;
         }
     }
@@ -620,6 +620,8 @@ void TypeManager::promoteInteger(AstNode* node)
             node->computedValue.reg.u32 = node->computedValue.reg.u8;
             node->typeInfo              = g_TypeMgr.typeInfoU32;
         }
+        else
+            node->castedTypeInfo = g_TypeMgr.typeInfoU32;
         break;
     case NativeType::U16:
         if (node->flags & AST_VALUE_COMPUTED)
@@ -627,6 +629,8 @@ void TypeManager::promoteInteger(AstNode* node)
             node->computedValue.reg.u32 = node->computedValue.reg.u16;
             node->typeInfo              = g_TypeMgr.typeInfoU32;
         }
+        else
+            node->castedTypeInfo = g_TypeMgr.typeInfoU32;
         break;
     case NativeType::S8:
         if (node->flags & AST_VALUE_COMPUTED)
@@ -634,6 +638,8 @@ void TypeManager::promoteInteger(AstNode* node)
             node->computedValue.reg.s32 = node->computedValue.reg.s8;
             node->typeInfo              = g_TypeMgr.typeInfoS32;
         }
+        else
+            node->castedTypeInfo = g_TypeMgr.typeInfoS32;
         break;
     case NativeType::S16:
         if (node->flags & AST_VALUE_COMPUTED)
@@ -641,6 +647,8 @@ void TypeManager::promoteInteger(AstNode* node)
             node->computedValue.reg.s32 = node->computedValue.reg.s16;
             node->typeInfo              = g_TypeMgr.typeInfoS32;
         }
+        else
+            node->castedTypeInfo = g_TypeMgr.typeInfoS32;
         break;
     }
 }

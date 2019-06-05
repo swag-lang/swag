@@ -412,6 +412,8 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     module->freeRegisterRC(r1);
     node->resultRegisterRC = r2;
 
+    emitCast(context, node->childs[0]->castedTypeInfo, node->childs[0], node->childs[0]->typeInfo);
+    emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], node->childs[1]->typeInfo);
     switch (node->token.id)
     {
     case TokenId::SymEqualEqual:

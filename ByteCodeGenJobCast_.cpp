@@ -123,13 +123,28 @@ bool ByteCodeGenJob::emitCastNativeU64(ByteCodeGenContext* context, AstNode* exp
 {
     switch (typeInfo->nativeType)
     {
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
     case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::CastS8S16, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastS16S32, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRC);
+        break;
     case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::CastS16S32, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRC);
+        break;
     case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::CastS32S64, exprNode->resultRegisterRC);
+        break;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::ClearMaskU32U64, exprNode->resultRegisterRC, 0x000000FF, 0x00000000);
+        break;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::ClearMaskU32U64, exprNode->resultRegisterRC, 0x0000FFFF, 0x00000000);
+        break;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::ClearMaskU64, exprNode->resultRegisterRC, 0x00000000);
+        break;
+    case NativeType::U64:
     case NativeType::S64:
         break;
     case NativeType::F32:
@@ -418,6 +433,15 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
     if (fromTypeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, expression type not native");
 
+    SWAG_CHECK(emitCast(context, typeInfo, exprNode, fromTypeInfo));
+    node->resultRegisterRC = exprNode->resultRegisterRC;
+    return true;
+}
+
+bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo)
+{
+    if (typeInfo == nullptr)
+        return true;
     switch (typeInfo->nativeType)
     {
     case NativeType::S8:
@@ -455,6 +479,6 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
         break;
     }
 
-    node->resultRegisterRC = exprNode->resultRegisterRC;
+    exprNode->typeInfo = typeInfo;
     return true;
 }

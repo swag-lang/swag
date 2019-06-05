@@ -75,6 +75,7 @@ struct AstNode : public PoolElement
         parent             = nullptr;
         semanticFct        = nullptr;
         typeInfo           = nullptr;
+        castedTypeInfo     = nullptr;
         resolvedSymbolName = nullptr;
         attributes         = nullptr;
         bc                 = nullptr;
@@ -139,6 +140,7 @@ struct AstNode : public PoolElement
     AstFuncDecl* ownerFct;
 
     TypeInfo*       typeInfo;
+    TypeInfo*       castedTypeInfo;
     SymbolName*     resolvedSymbolName;
     SymbolOverload* resolvedSymbolOverload;
     ByteCodeGenJob* byteCodeJob;
