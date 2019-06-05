@@ -21,8 +21,16 @@ using swag;
 #assert main_u8 as u32 == 45
 
 #assert main_u8 as u64 == 45
+#assert 45'u8 as u64 == 45
+
 #assert main_u16 as u64 == 45
+#assert 45'u16 as u64 == 45
+
 #assert main_u32 as u64 == 45
+#assert 45'u32 as u64 == 45
+
 #assert main_s8 as u64 == 0xFFFFFFFF_FFFFFFD3
+#assert -45's8 as u64 == 45
+
 #assert main_s16 as u64 == 0xFFFFFFFF_FFFFFFD3
 #assert main_s32 as u64 == 0xFFFFFFFF_FFFFFFD3
