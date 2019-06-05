@@ -5,6 +5,7 @@ struct TypeInfo;
 struct TypeInfoNative;
 
 static const uint32_t CASTFLAG_NOERROR = 0x00000001;
+static const uint32_t CASTFLAG_FORCE   = 0x00000002;
 
 struct TypeManager
 {

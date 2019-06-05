@@ -61,7 +61,6 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Cast, sourceFile->indexInModule, parent, false);
     node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveCast;
-    //node->byteCodeFct = &ByteCodeGenJob::emitCast;
     node->inheritToken(token);
     if (result)
         *result = node;

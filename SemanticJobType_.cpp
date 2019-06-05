@@ -65,7 +65,7 @@ bool SemanticJob::resolveCast(SemanticContext* context)
     auto typeNode   = node->childs[0];
     auto exprNode   = node->childs[1];
 
-    SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, typeNode->typeInfo, exprNode));
+    SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, typeNode->typeInfo, exprNode, CASTFLAG_FORCE));
     node->typeInfo    = typeNode->typeInfo;
     node->byteCodeFct = &ByteCodeGenJob::emitCast;
 

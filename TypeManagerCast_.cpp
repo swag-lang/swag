@@ -40,6 +40,13 @@ bool TypeManager::castToNativeU8(SourceFile* sourceFile, TypeInfo* fromType, Ast
             }
         }
 
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoU8;
+        return true;
+
     case NativeType::U16:
     case NativeType::U32:
     case NativeType::U64:
@@ -78,6 +85,13 @@ bool TypeManager::castToNativeU16(SourceFile* sourceFile, TypeInfo* fromType, As
                 return false;
             }
         }
+
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoU16;
+        return true;
 
     case NativeType::U8:
     case NativeType::U32:
@@ -118,6 +132,13 @@ bool TypeManager::castToNativeU32(SourceFile* sourceFile, TypeInfo* fromType, As
             }
         }
 
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
+        return true;
+
     case NativeType::U8:
     case NativeType::U16:
     case NativeType::U64:
@@ -157,14 +178,18 @@ bool TypeManager::castToNativeU64(SourceFile* sourceFile, TypeInfo* fromType, As
             }
         }
 
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoU64;
+        return true;
+
     case NativeType::U8:
     case NativeType::U16:
     case NativeType::U32:
         if (nodeToCast->flags & AST_VALUE_COMPUTED)
-        {
             nodeToCast->typeInfo = g_TypeMgr.typeInfoU64;
-        }
-
         return true;
     }
 
@@ -175,6 +200,17 @@ bool TypeManager::castToNativeS8(SourceFile* sourceFile, TypeInfo* fromType, Ast
 {
     switch (fromType->nativeType)
     {
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoS8;
+        return true;
+
     case NativeType::S16:
     case NativeType::S32:
     case NativeType::S64:
@@ -200,6 +236,17 @@ bool TypeManager::castToNativeS16(SourceFile* sourceFile, TypeInfo* fromType, As
 {
     switch (fromType->nativeType)
     {
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoS16;
+        return true;
+
     case NativeType::S8:
     case NativeType::S32:
     case NativeType::S64:
@@ -225,6 +272,16 @@ bool TypeManager::castToNativeS32(SourceFile* sourceFile, TypeInfo* fromType, As
 {
     switch (nodeToCast->typeInfo->nativeType)
     {
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoS32;
+        return true;
+
     case NativeType::S8:
     case NativeType::S16:
     case NativeType::S64:
@@ -250,6 +307,17 @@ bool TypeManager::castToNativeS64(SourceFile* sourceFile, TypeInfo* fromType, As
 {
     switch (fromType->nativeType)
     {
+    case NativeType::U8:
+    case NativeType::U16:
+    case NativeType::U32:
+    case NativeType::U64:
+    case NativeType::Char:
+        if (!(castFlags & CASTFLAG_FORCE))
+            break;
+        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            nodeToCast->typeInfo = g_TypeMgr.typeInfoS64;
+        return true;
+
     case NativeType::S8:
     case NativeType::S16:
     case NativeType::S32:
