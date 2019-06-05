@@ -9,6 +9,8 @@
 #include "LanguageSpec.h"
 #include "SourceFile.h"
 
+Pool<SyntaxJob> g_Pool_syntaxJob;
+
 bool SyntaxJob::syntaxError(const Token& tk, const Utf8& msg)
 {
     Utf8 full = "syntax error";

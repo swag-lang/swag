@@ -9,7 +9,6 @@
 #include "Diagnostic.h"
 #include "Module.h"
 #include "Workspace.h"
-#include "PoolFactory.h"
 #include "SymTable.h"
 
 const auto BUF_SIZE = 512;
@@ -375,3 +374,5 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
 
     return report(diag, notes);
 }
+
+Pool<SourceFile> g_Pool_sourceFile;

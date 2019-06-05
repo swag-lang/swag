@@ -99,3 +99,5 @@ struct SemanticJob : public Job
     vector<Scope*>      scopeHierarchy;
     set<Scope*>         scopesHere;
 };
+
+extern Pool<SemanticJob> g_Pool_semanticJob;

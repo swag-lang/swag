@@ -7,8 +7,12 @@
 #include "CommandLine.h"
 #include "Diagnostic.h"
 #include "Runtime.h"
-#include "PoolFactory.h"
 #include "SourceFile.h"
+#include "Scope.h"
+#include "SemanticJob.h"
+#include "ModuleSemanticJob.h"
+#include "SyntaxJob.h"
+#include "ModuleOutputJob.h"
 
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
@@ -71,8 +75,8 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                     // File filtering by name
                     if (filterIsEmpty || strstr(tmp1.c_str(), g_CommandLine.fileFilter.c_str()))
                     {
-                        auto job  = g_PoolFactory.syntaxJob.alloc();
-                        auto file = g_PoolFactory.sourceFile.alloc();
+                        auto job  = g_Pool_syntaxJob.alloc();
+                        auto file = g_Pool_sourceFile.alloc();
 
                         job->sourceFile = file;
                         module->addFile(file);
@@ -90,7 +94,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
 
 void Workspace::buildRuntime()
 {
-    scopeRoot       = g_PoolFactory.scope.alloc();
+    scopeRoot       = g_Pool_scope.alloc();
     scopeRoot->kind = ScopeKind::Workspace;
     scopeRoot->allocateSymTable();
 
@@ -100,8 +104,8 @@ void Workspace::buildRuntime()
     runtimeModule->isRuntime = true;
     modules.push_back(runtimeModule);
 
-    auto file = g_PoolFactory.sourceFile.alloc();
-    auto job  = g_PoolFactory.syntaxJob.alloc();
+    auto file = g_Pool_sourceFile.alloc();
+    auto job  = g_Pool_syntaxJob.alloc();
     runtimeModule->addFile(file);
     job->sourceFile      = file;
     job->currentScope    = scopeRoot;
@@ -133,7 +137,7 @@ bool Workspace::build()
     {
         if (module->numErrors > 0)
             continue;
-        auto job    = g_PoolFactory.moduleSemanticJob.alloc();
+        auto job    = g_Pool_moduleSemanticJob.alloc();
         job->module = module;
         g_ThreadMgr.addJob(job);
     }
@@ -160,7 +164,7 @@ bool Workspace::build()
     {
         if (module->numErrors > 0)
             continue;
-        auto job    = g_PoolFactory.moduleOutputJob.alloc();
+        auto job    = g_Pool_moduleOutputJob.alloc();
         job->module = module;
         g_ThreadMgr.addJob(job);
     }

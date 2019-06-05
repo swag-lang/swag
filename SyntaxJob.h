@@ -70,3 +70,5 @@ struct SyntaxJob : public Job
     Scope*       currentScope;
     AstFuncDecl* currentFct;
 };
+
+extern Pool<SyntaxJob> g_Pool_syntaxJob;

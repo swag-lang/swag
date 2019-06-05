@@ -6,6 +6,8 @@
 #include "Global.h"
 #include "ThreadManager.h"
 
+Pool<FileSemanticJob> g_Pool_fileSemanticJob;
+
 SemanticJob* FileSemanticJob::newSemanticJob(SourceFile* sourceFile)
 {
     auto job        = g_PoolFactory.semanticJob.alloc();

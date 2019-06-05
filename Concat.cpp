@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Concat.h"
-#include "PoolFactory.h"
+
+Pool<ConcatBucket> g_Pool_concatBucket;
 
 Concat::Concat()
 {
@@ -15,7 +16,7 @@ void Concat::checkCount(int offset)
         return;
     }
 
-    lastBucket = g_PoolFactory.concatBucket.alloc();
+    lastBucket = g_Pool_concatBucket.alloc();
     if (!firstBucket)
         firstBucket = lastBucket;
     currentSP         = lastBucket->datas;

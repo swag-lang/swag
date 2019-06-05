@@ -6,6 +6,8 @@
 #include "PoolFactory.h"
 #include "SourceFile.h"
 
+Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
+
 JobResult ModuleSemanticJob::execute()
 {
     for (auto file : module->files)

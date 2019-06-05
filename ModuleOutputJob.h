@@ -8,3 +8,5 @@ struct ModuleOutputJob : public Job
 
     Module* module = nullptr;
 };
+
+extern Pool<ModuleOutputJob> g_Pool_moduleOutputJob;

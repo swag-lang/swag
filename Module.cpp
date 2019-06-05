@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "Module.h"
 #include "SourceFile.h"
-#include "PoolFactory.h"
 #include "Global.h"
 #include "ByteCodeRun.h"
 #include "Workspace.h"
+#include "Scope.h"
+#include "Ast.h"
 
 Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
     : path{path}
@@ -16,13 +17,13 @@ Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
     }
     else
     {
-        scopeRoot       = g_PoolFactory.scope.alloc();
+        scopeRoot       = g_Pool_scope.alloc();
         scopeRoot->kind = ScopeKind::Module;
         scopeRoot->allocateSymTable();
         scopeRoot->parentScope = workspace->scopeRoot;
     }
 
-    astRoot             = Ast::newNode(&g_PoolFactory.astNode, AstNodeKind::Module, UINT32_MAX);
+    astRoot             = Ast::newNode(&g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
     astRoot->ownerScope = workspace->scopeRoot;
 }
 

@@ -5,6 +5,8 @@
 #include "SymTable.h"
 #include "Global.h"
 
+Pool<SemanticJob> g_Pool_semanticJob;
+
 bool SemanticJob::internalError(SemanticContext* context, const char* msg)
 {
     AstNode* node = context->node;

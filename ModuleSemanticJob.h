@@ -7,3 +7,5 @@ struct ModuleSemanticJob : public Job
     JobResult execute() override;
     Module*   module;
 };
+
+extern Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;

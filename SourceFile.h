@@ -70,3 +70,5 @@ struct SourceFile : public PoolElement
     int                          totalRead   = 0;
     condition_variable           condVar;
 };
+
+extern Pool<SourceFile> g_Pool_sourceFile;
