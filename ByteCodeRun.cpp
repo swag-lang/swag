@@ -479,11 +479,6 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].u64);
         break;
     }
-    case ByteCodeOp::CastS8S32:
-    {
-        registersRC[ip->a.u32].s32 = static_cast<int32_t>(registersRC[ip->a.u32].s8);
-        break;
-    }
     case ByteCodeOp::CastS16S32:
     {
         registersRC[ip->a.u32].s32 = static_cast<int32_t>(registersRC[ip->a.u32].s16);
@@ -522,11 +517,6 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::CastF32S32:
     {
         registersRC[ip->a.u32].s32 = static_cast<int32_t>(registersRC[ip->a.u32].f32);
-        break;
-    }
-    case ByteCodeOp::CastF32S16:
-    {
-        registersRC[ip->a.u32].s16 = static_cast<int16_t>(registersRC[ip->a.u32].f32);
         break;
     }
     case ByteCodeOp::CastS32S16:
