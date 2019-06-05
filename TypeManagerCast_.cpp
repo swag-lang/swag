@@ -766,74 +766,44 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, Ast
 
 void TypeManager::promote(AstNode* left, AstNode* right)
 {
-    if (left->typeInfo == right->typeInfo)
+    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    if (leftTypeInfo == rightTypeInfo)
         return;
-    if ((left->typeInfo->kind != TypeInfoKind::Native) || (right->typeInfo->kind != TypeInfoKind::Native))
+    if ((leftTypeInfo->kind != TypeInfoKind::Native) || (rightTypeInfo->kind != TypeInfoKind::Native))
         return;
 
     promoteInteger(left);
     promoteInteger(right);
-
-    if (left->typeInfo->nativeType == NativeType::S32 && right->typeInfo->nativeType == NativeType::S64)
-    {
-        if (left->flags & AST_VALUE_COMPUTED)
-        {
-            left->typeInfo = g_TypeMgr.typeInfoS64;
-            return;
-        }
-    }
-
-    if (left->typeInfo->nativeType == NativeType::S64 && right->typeInfo->nativeType == NativeType::S32)
-    {
-        if (right->flags & AST_VALUE_COMPUTED)
-        {
-            right->typeInfo = g_TypeMgr.typeInfoS64;
-            return;
-        }
-    }
-
-    if (left->typeInfo->nativeType == NativeType::U32 && right->typeInfo->nativeType == NativeType::U64)
-    {
-        if (left->flags & AST_VALUE_COMPUTED)
-        {
-            left->typeInfo = g_TypeMgr.typeInfoU64;
-            return;
-        }
-    }
-
-    if (left->typeInfo->nativeType == NativeType::U64 && right->typeInfo->nativeType == NativeType::U32)
-    {
-        if (right->flags & AST_VALUE_COMPUTED)
-        {
-            right->typeInfo = g_TypeMgr.typeInfoU64;
-            return;
-        }
-    }
-
-    if (left->typeInfo->nativeType == NativeType::F32 && right->typeInfo->nativeType == NativeType::F64)
+	
+    if (leftTypeInfo->nativeType == NativeType::F32 && rightTypeInfo->nativeType == NativeType::F64)
     {
         if (left->flags & AST_VALUE_COMPUTED)
         {
             left->computedValue.reg.f64 = left->computedValue.reg.f32;
             left->typeInfo              = g_TypeMgr.typeInfoF64;
-            return;
         }
+        else
+            left->castedTypeInfo = g_TypeMgr.typeInfoF64;
+        return;
     }
 
-    if (left->typeInfo->nativeType == NativeType::F64 && right->typeInfo->nativeType == NativeType::F32)
+    if (leftTypeInfo->nativeType == NativeType::F64 && rightTypeInfo->nativeType == NativeType::F32)
     {
         if (right->flags & AST_VALUE_COMPUTED)
         {
             right->computedValue.reg.f64 = right->computedValue.reg.f32;
             right->typeInfo              = g_TypeMgr.typeInfoF64;
-            return;
         }
+        else
+            right->castedTypeInfo = g_TypeMgr.typeInfoF64;
+        return;
     }
 }
 
 void TypeManager::promoteInteger(AstNode* node)
 {
-    auto typeInfo = node->typeInfo;
+    auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return;
 
