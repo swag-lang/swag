@@ -10,7 +10,7 @@ struct Scope;
 
 struct Module : public PoolElement
 {
-    Module(Workspace* workspace, const fs::path& path, bool runtime = false);
+    void setup(Workspace* wkp, const fs::path& pth, bool runtime = false);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
 
@@ -29,9 +29,11 @@ struct Module : public PoolElement
     void     reserveRegisterRR(uint32_t count);
     bool     executeNode(SourceFile* sourceFile, AstNode* node);
 
-    SpinLock           mutexRegisterRC;
-    SpinLock           mutexRegisterRR;
-    uint32_t           maxReservedRegisterRC = 0;
-    vector<uint32_t>   availableRegistersRC;
-    uint32_t           maxReservedRegisterRR = 0;
+    SpinLock         mutexRegisterRC;
+    SpinLock         mutexRegisterRR;
+    uint32_t         maxReservedRegisterRC = 0;
+    vector<uint32_t> availableRegistersRC;
+    uint32_t         maxReservedRegisterRR = 0;
 };
+
+extern Pool<Module> g_Pool_module;

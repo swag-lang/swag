@@ -7,10 +7,13 @@
 #include "Scope.h"
 #include "Ast.h"
 
-Module::Module(Workspace* workspace, const fs::path& path, bool runtime)
-    : path{path}
-    , workspace{workspace}
+Pool<Module> g_Pool_module;
+
+void Module::setup(Workspace* wkp, const fs::path& pth, bool runtime)
 {
+    path      = pth;
+    workspace = wkp;
+
     if (runtime)
     {
         scopeRoot = workspace->scopeRoot;

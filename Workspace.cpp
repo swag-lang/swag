@@ -11,7 +11,6 @@
 #include "Scope.h"
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
-#include "SyntaxJob.h"
 #include "ModuleOutputJob.h"
 
 Workspace g_Workspace;
@@ -27,7 +26,8 @@ Module* Workspace::createOrUseModule(const fs::path& path)
         if (it != mapModules.end())
             return it->second;
 
-        module = new Module(this, path);
+        module = g_Pool_module.alloc();
+        module->setup(this, path);
         modules.push_back(module);
         mapModules[path] = module;
     }
@@ -102,7 +102,8 @@ void Workspace::buildRuntime()
 
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    auto runtimeModule       = new Module(this, "", true);
+    auto runtimeModule = g_Pool_module.alloc();
+    runtimeModule->setup(this, "", true);
     runtimeModule->isRuntime = true;
     modules.push_back(runtimeModule);
 
