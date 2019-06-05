@@ -66,6 +66,8 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doTypeExpression(node));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }

@@ -21,57 +21,47 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 {
-    AstNode* expr = nullptr;
-
     switch (token.id)
     {
     case TokenId::SymLeftParen:
     {
         auto saveLocation = token.startLocation;
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doExpression(nullptr, &expr));
+        SWAG_CHECK(doExpression(parent, result));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
-        expr->token.startLocation = saveLocation;
         break;
     }
 
     case TokenId::LiteralNumber:
     case TokenId::LiteralCharacter:
     case TokenId::LiteralString:
-        SWAG_CHECK(doLiteral(nullptr, &expr));
+        SWAG_CHECK(doLiteral(parent, result));
         break;
 
     case TokenId::Identifier:
     case TokenId::Intrisic:
-        SWAG_CHECK(doIdentifierRef(nullptr, &expr));
+        SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
     }
 
-    // Cast
-    if (token.id == TokenId::KwdAs)
-    {
-        AstNode* castNode;
-        SWAG_CHECK(doCast(parent, &castNode));
-        Ast::addChild(castNode, expr);
-        expr = castNode;
-        // This is in reverse order ! "expression as type", but 'type' is the first child, and expression the 'second'
-        castNode->token.startLocation = castNode->childs.back()->token.startLocation;
-        castNode->token.endLocation   = castNode->childs.front()->token.endLocation;
-    }
-
-    if (parent)
-        Ast::addChild(parent, expr);
-    if (result)
-        *result = expr;
-
     return true;
 }
 
 bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
 {
+    // Cast
+    if (token.id == TokenId::KwdCast)
+    {
+        AstNode* castNode;
+        SWAG_CHECK(doCast(parent, &castNode));
+        if (result)
+            *result = castNode;
+        return doUnaryExpression(castNode);
+    }
+
     if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam || token.id == TokenId::SymTilde)
     {
         auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::SingleOp, sourceFile->indexInModule, parent, false);

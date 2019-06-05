@@ -8,4 +8,4 @@ func main: ()->u16
 	return 45;
 }
 
-#assert main as f32 == 45
+#assert cast(f32) main == 45

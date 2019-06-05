@@ -151,7 +151,7 @@ bool ByteCodeGenJob::emitCastNativeU64(ByteCodeGenContext* context, AstNode* exp
         emitInstruction(context, ByteCodeOp::CastF32S64, exprNode->resultRegisterRC);
         break;
     case NativeType::F64:
-        emitInstruction(context, ByteCodeOp::CastF32F64, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC);
         break;
     default:
         context->node = exprNode;
