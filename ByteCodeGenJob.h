@@ -64,6 +64,14 @@ struct ByteCodeGenJob : public Job
     static bool emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0);
     static bool emitCast(ByteCodeGenContext* context);
+    static bool emitCastNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeS32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeS64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeU8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeU16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeU32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
 

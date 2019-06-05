@@ -459,11 +459,16 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32].u32 &= ip->b.u32;
         break;
     }
+    case ByteCodeOp::ClearMaskU64:
+    {
+        registersRC[ip->a.u32].u64 &= (((uint64_t) ip->b.u32) << 32);
+        break;
+    }
     case ByteCodeOp::CastS32F32:
     {
         registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].s32);
         break;
-	}
+    }
     case ByteCodeOp::CastU32F32:
     {
         registersRC[ip->a.u32].f32 = static_cast<float>(registersRC[ip->a.u32].u32);
@@ -507,6 +512,51 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::CastS64F64:
     {
         registersRC[ip->a.u32].f64 = static_cast<double>(registersRC[ip->a.u32].s64);
+        break;
+    }
+    case ByteCodeOp::CastS64S32:
+    {
+        registersRC[ip->a.u32].s32 = static_cast<int32_t>(registersRC[ip->a.u32].s64);
+        break;
+    }
+    case ByteCodeOp::CastF32S32:
+    {
+        registersRC[ip->a.u32].s32 = static_cast<int32_t>(registersRC[ip->a.u32].f32);
+        break;
+    }
+    case ByteCodeOp::CastF32S16:
+    {
+        registersRC[ip->a.u32].s16 = static_cast<int16_t>(registersRC[ip->a.u32].f32);
+        break;
+    }
+    case ByteCodeOp::CastS32S16:
+    {
+        registersRC[ip->a.u32].s16 = static_cast<int16_t>(registersRC[ip->a.u32].s32);
+        break;
+    }
+    case ByteCodeOp::CastS8S16:
+    {
+        registersRC[ip->a.u32].s16 = static_cast<int16_t>(registersRC[ip->a.u32].s8);
+        break;
+    }
+    case ByteCodeOp::CastS32S8:
+    {
+        registersRC[ip->a.u32].s8 = static_cast<int8_t>(registersRC[ip->a.u32].s32);
+        break;
+    }
+    case ByteCodeOp::CastF32S64:
+    {
+        registersRC[ip->a.u32].s64 = static_cast<int64_t>(registersRC[ip->a.u32].f32);
+        break;
+    }
+    case ByteCodeOp::CastS32S64:
+    {
+        registersRC[ip->a.u32].s64 = static_cast<int64_t>(registersRC[ip->a.u32].s32);
+        break;
+    }
+    case ByteCodeOp::CastF64S64:
+    {
+        registersRC[ip->a.u32].s64 = static_cast<int64_t>(registersRC[ip->a.u32].f64);
         break;
     }
 
