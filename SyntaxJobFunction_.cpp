@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Global.h"
-#include "SourceFile.h"
-#include "Scoped.h"
-#include "LanguageSpec.h"
-#include "ByteCodeGenJob.h"
-#include "SemanticJob.h"
 #include "Ast.h"
-#include "SymTable.h"
+#include "ByteCodeGenJob.h"
+#include "Global.h"
+#include "LanguageSpec.h"
 #include "Scope.h"
+#include "Scoped.h"
+#include "SemanticJob.h"
+#include "SourceFile.h"
+#include "SymTable.h"
 
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 {
