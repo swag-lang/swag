@@ -1,5 +1,5 @@
-#unittest module module157
-#unittest pass syntax
+#unittest module module157;
+#unittest pass syntax;
 
-#unittest error
+#unittest error;
 var xxxx;

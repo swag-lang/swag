@@ -1,5 +1,5 @@
-#unittest pass lexer
-#unittest error
+#unittest pass lexer;
+#unittest error;
 "tototo
 #unittest error
 to"

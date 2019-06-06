@@ -1,31 +1,31 @@
-#unittest pass lexer
+#unittest pass lexer;
 
-#unittest error
+#unittest error;
 0b11111111_1'u8
-#unittest error
+#unittest error;
 0b11111111_11111111_1'u16
-#unittest error
+#unittest error;
 0b11111111_11111111_11111111_11111111_1'u32
 
-#unittest error
+#unittest error;
 0x11111111_1's8
-#unittest error
+#unittest error;
 0b11111111_11111111_1's16
-#unittest error
+#unittest error;
 0b11111111_11111111_11111111_11111111_1's32
 
-#unittest error
+#unittest error;
 0b1'bool
-#unittest error
+#unittest error;
 0b1'f32
-#unittest error
+#unittest error;
 0b1'f64
 
-#unittest pass lexer
+#unittest pass lexer;
 0b11's8
 0b11111111_11111111's16
 0b11111111_11111111_11111111_11111111's32
 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111's64
 
-#unittest error
+#unittest error;
 0b11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111_1

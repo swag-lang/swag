@@ -1,5 +1,5 @@
-#unittest module module103
-#unittest pass semantic
+#unittest module module103;
+#unittest pass semantic;
 
 enum A: bool
 {
@@ -8,7 +8,7 @@ enum A: bool
 	Blue = true;
 }
 
-#unittest error
+#unittest error;
 enum B: bool
 {
 	Red = true;

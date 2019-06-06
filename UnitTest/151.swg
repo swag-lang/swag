@@ -1,5 +1,5 @@
-#unittest module module151
-#unittest pass syntax
+#unittest module module151;
+#unittest pass syntax;
 
 func main: () { return 1; }
 func main: () { return 1 + 5; }

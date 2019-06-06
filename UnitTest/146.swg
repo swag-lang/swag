@@ -1,7 +1,7 @@
-#unittest module module146
-#unittest pass semantic
+#unittest module module146;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 var main: bool;
 namespace A
 {

@@ -1,8 +1,8 @@
-#unittest pass syntax
+#unittest pass syntax;
 
-#unittest error
+#unittest error;
 attr toto: () -> ;
 
-#unittest pass syntax
-#unittest error
+#unittest pass syntax;
+#unittest error;
 attr toto: () -> coucou;

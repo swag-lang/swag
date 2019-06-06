@@ -1,7 +1,7 @@
-#unittest module module164
-#unittest pass syntax
+#unittest module module164;
+#unittest pass syntax;
 
-#unittest error
+#unittest error;
 namespace A.
 {
 }

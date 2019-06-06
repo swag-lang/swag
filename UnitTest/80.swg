@@ -1,12 +1,12 @@
-﻿#unittest module module80
-#unittest pass semantic
+﻿#unittest module module80;
+#unittest pass semantic;
 
 namespace A
 {
 	type a: u32;
 }
 
-#unittest error
+#unittest error;
 namespace B
 {
 	var c: a;

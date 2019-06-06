@@ -1,6 +1,6 @@
-﻿#unittest module module43
-#unittest pass semantic
-#unittest error
+﻿#unittest module module43;
+#unittest pass semantic;
+#unittest error;
 var a: s32;
 namespace toto
 {

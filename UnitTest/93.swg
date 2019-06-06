@@ -1,5 +1,5 @@
-#unittest module module93
-#unittest pass semantic
+#unittest module module93;
+#unittest pass semantic;
 
 namespace A
 {
@@ -9,7 +9,7 @@ namespace A
 	}
 }
 
-#unittest error
+#unittest error;
 var a: A.B.tt1 = true;
-#unittest error
+#unittest error;
 var b: A;

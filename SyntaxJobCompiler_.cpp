@@ -17,9 +17,10 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
     node->token       = move(token);
 
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
-    SWAG_CHECK(tokenizer.getTokenOrEOL(token));
+    SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #assert expression"}));
     SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
     return true;
 }
@@ -41,7 +42,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 
 bool SyntaxJob::doCompilerRun(AstNode* parent)
 {
-    auto node         = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent, false);
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent, false);
     node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveCompilerRun;
     node->token       = move(token);

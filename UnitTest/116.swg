@@ -1,7 +1,7 @@
-#unittest module module116
-#unittest pass semantic
+#unittest module module116;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 var main: bool;
 
 func main: ()

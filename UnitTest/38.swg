@@ -1,12 +1,12 @@
-﻿#unittest pass lexer
-#unittest error
+﻿#unittest pass lexer;
+#unittest error;
 0xFFFFFFFF_FFFFFFFF'char;
 
 0xFFFFFFFF'char;
 
-#unittest error
+#unittest error;
 0xFFFFFFFF'string;
-#unittest error
+#unittest error;
 0xFFFFFFFF'bool;
 
 1'u64;

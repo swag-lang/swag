@@ -1,7 +1,7 @@
-#unittest module module136
-#unittest pass syntax
+#unittest module module136;
+#unittest pass syntax;
 
-#unittest error
+#unittest error;
 attr toto: (b: ) -> var;
-#unittest error
+#unittest error;
 attr toto: (b, ) -> var;

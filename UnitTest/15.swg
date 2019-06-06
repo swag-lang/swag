@@ -1,27 +1,27 @@
-#unittest pass lexer
+#unittest pass lexer;
 
-#unittest error
+#unittest error;
 0xFFFFFFFF'u8
-#unittest error
+#unittest error;
 0xFFFFFFFF'u16
-#unittest error
+#unittest error;
 0xFFFFFFFFF'u32
 
-#unittest error
+#unittest error;
 0xFFFFFFFF's8
-#unittest error
+#unittest error;
 0xFFFFFFFF's16
-#unittest error
+#unittest error;
 0xFFFFFFFFF's32
 
-#unittest error
+#unittest error;
 0xFFFFFFFFF'bool
-#unittest error
+#unittest error;
 0xFFFFFFFFF'f32
-#unittest error
+#unittest error;
 0xFFFFFFFFF'f64
 
-#unittest pass lexer
+#unittest pass lexer;
 0x7F's8
 0x00000007F's8
 0xFFFF's16

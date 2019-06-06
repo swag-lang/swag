@@ -1,5 +1,5 @@
-#unittest module module156
-#unittest pass semantic
+#unittest module module156;
+#unittest pass semantic;
 
 func main: () -> bool
 { 

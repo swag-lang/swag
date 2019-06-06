@@ -1,4 +1,4 @@
-#unittest pass lexer
+#unittest pass lexer;
 
 'A'
 '0' '\n''\r'
@@ -6,8 +6,8 @@
 '\u1234'
 '\U12345678'
 
-#unittest error
+#unittest error;
 '\xFFF'
 
-#unittest error
+#unittest error;
 '00

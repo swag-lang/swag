@@ -1,4 +1,4 @@
-#unittest pass lexer
+#unittest pass lexer;
 
 .
 .1
@@ -7,17 +7,17 @@
 1.0E-2
 1e2
 
-#unittest error
+#unittest error;
 1e
-#unittest error
+#unittest error;
 1e+
-#unittest error
+#unittest error;
 1e-
-#unittest error
+#unittest error;
 1eA
-#unittest error
+#unittest error;
 1e_10
-#unittest error
+#unittest error;
 1e1_0_
 
 1e+10

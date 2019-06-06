@@ -1,7 +1,7 @@
-﻿#unittest module module56
-#unittest pass lexer
+﻿#unittest module module56;
+#unittest pass lexer;
 
-#unittest error
+#unittest error;
 21474838'f32
 21474837'f32
 21474837'f64

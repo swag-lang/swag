@@ -1,7 +1,7 @@
-#unittest module module108
-#unittest pass semantic
+#unittest module module108;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 enum A : u8
 {
 	Red = B.Red;

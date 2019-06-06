@@ -1,5 +1,5 @@
-﻿#unittest module module69
-#unittest pass semantic
+﻿#unittest module module69;
+#unittest pass semantic;
 
-#unittest error
-#assert !2
+#unittest error;
+#assert !2;

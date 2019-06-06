@@ -1,7 +1,7 @@
-#unittest module module110
-#unittest pass semantic
+#unittest module module110;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 enum A : u8
 {
 	Red = B.Red;
@@ -9,7 +9,7 @@ enum A : u8
 	Blue;
 }
 
-#unittest error
+#unittest error;
 enum B : u8
 {
 	Red = C.Red;
@@ -17,7 +17,7 @@ enum B : u8
 	Blue;
 }
 
-#unittest error
+#unittest error;
 enum C : u8
 {
 	Red = A.Red;

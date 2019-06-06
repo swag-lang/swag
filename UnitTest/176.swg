@@ -1,6 +1,6 @@
-#unittest module module176
-#unittest pass semantic
+#unittest module module176;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 func main: ()-> char { return '1'; }
-#run main() / '1'
+#run main() / '1';

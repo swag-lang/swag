@@ -1,5 +1,5 @@
-#unittest module module170
-#unittest pass semantic
+#unittest module module170;
+#unittest pass semantic;
 using swag;
 
 enum T : u16
@@ -7,5 +7,5 @@ enum T : u16
 	X = 1;
 }
 
-#assert T.X == 1
-#assert T.X != 2
+#assert T.X == 1;
+#assert T.X != 2;

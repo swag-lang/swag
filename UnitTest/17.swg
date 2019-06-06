@@ -1,16 +1,16 @@
-#unittest pass lexer
+#unittest pass lexer;
 
 145 18446744073709551615
 
-#unittest error
+#unittest error;
 18446744073709551616
 
-#unittest error
+#unittest error;
 256'u8
-#unittest error
+#unittest error;
 65536'u16
 
-#unittest error
+#unittest error;
 200's8
-#unittest error
+#unittest error;
 60_000's16

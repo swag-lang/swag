@@ -1,7 +1,7 @@
-#unittest module module140
-#unittest pass semantic
+#unittest module module140;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 attr toto: (b: bool) -> var;
 
 #[toto]

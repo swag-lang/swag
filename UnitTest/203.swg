@@ -1,5 +1,5 @@
-#unittest module module203
-#unittest pass semantic
+#unittest module module203;
+#unittest pass semantic;
 using swag;
 
 #[constexpr] 
@@ -16,18 +16,18 @@ using swag;
 	func main_f64: ()->f64 { return 1.5; }
 }
 
-#assert main_u64 == main_u8
-#assert main_u64 == main_u16
-#assert main_u64 == main_u32
+#assert main_u64 == main_u8;
+#assert main_u64 == main_u16;
+#assert main_u64 == main_u32;
 
-#assert main_s64 == main_s8
-#assert main_s64 == main_s16
-#assert main_s64 == main_s32
+#assert main_s64 == main_s8;
+#assert main_s64 == main_s16;
+#assert main_s64 == main_s32;
 
 
-#assert 1'u64 == 1'u16
+#assert 1'u64 == 1'u16;
 
-#assert 1.0 == 1'u8
-#assert 1.0 == 1'u16
-#assert 1.0 == 1'u32
-#assert 1.0 == 1'u64
+#assert 1.0 == 1'u8;
+#assert 1.0 == 1'u16;
+#assert 1.0 == 1'u32;
+#assert 1.0 == 1'u64;

@@ -1,7 +1,7 @@
-#unittest pass syntax
+#unittest pass syntax;
 
 func main: ()
 {
 }
 
-#run main()
+#run main();

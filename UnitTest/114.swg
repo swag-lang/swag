@@ -1,7 +1,7 @@
-#unittest module module114
-#unittest pass semantic
+#unittest module module114;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 func main: ()
 {
 }

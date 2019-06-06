@@ -1,5 +1,5 @@
-﻿#unittest module module46
-#unittest pass semantic
+﻿#unittest module module46;
+#unittest pass semantic;
 var a: bool;
 var b: bool;
 var c: bool;

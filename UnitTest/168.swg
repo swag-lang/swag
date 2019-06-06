@@ -1,5 +1,5 @@
-#unittest module module168
-#unittest pass semantic
+#unittest module module168;
+#unittest pass semantic;
 using swag;
 
-#run @assert( ((2's64 + 4) * 2) == 12)
+#run @assert( ((2's64 + 4) * 2) == 12);

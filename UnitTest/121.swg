@@ -1,4 +1,4 @@
-#unittest module module121
-#unittest pass syntax
+#unittest module module121;
+#unittest pass syntax;
 
 attr toto: () -> func;

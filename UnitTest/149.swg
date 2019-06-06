@@ -1,8 +1,8 @@
-#unittest module module149
-#unittest pass semantic
+#unittest module module149;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 func main: (){}
 func main: (b: string){}
 
-#run main(1)
+#run main(1);

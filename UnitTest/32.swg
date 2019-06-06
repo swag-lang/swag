@@ -1,2 +1,2 @@
-﻿#unittest module module32
-#unittest pass lexer
+﻿#unittest module module32;
+#unittest pass lexer;

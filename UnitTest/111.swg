@@ -1,5 +1,5 @@
-#unittest module module111
-#unittest pass semantic
+#unittest module module111;
+#unittest pass semantic;
 
 
-#assert #line == 5
+#assert #line == 5;

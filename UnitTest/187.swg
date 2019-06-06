@@ -1,4 +1,4 @@
-#unittest module module187
-#unittest pass syntax
+#unittest module module187;
+#unittest pass syntax;
 
-#assert 1 ^ 1 == 2
+#assert 1 ^ 1 == 2;

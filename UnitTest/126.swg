@@ -1,7 +1,7 @@
-#unittest module module126
-#unittest pass semantic
+#unittest module module126;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 attr toto: () -> func;
 attr toto1: () -> var;
 

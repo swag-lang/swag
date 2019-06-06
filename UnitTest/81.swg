@@ -1,4 +1,4 @@
-﻿#unittest module module81
-#unittest pass semantic
+﻿#unittest module module81;
+#unittest pass semantic;
 
 var a: string = "toto" "titi";

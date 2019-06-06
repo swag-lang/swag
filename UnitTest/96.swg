@@ -1,5 +1,5 @@
-#unittest module module96
-#unittest pass syntax
+#unittest module module96;
+#unittest pass syntax;
 
 enum A
 {

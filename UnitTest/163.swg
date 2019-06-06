@@ -1,5 +1,5 @@
-#unittest module module163
-#unittest pass semantic
+#unittest module module163;
+#unittest pass semantic;
 
 using A.B;
 
@@ -10,4 +10,4 @@ namespace A.B
 	}
 }
 
-#run main
+#run main;

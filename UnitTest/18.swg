@@ -1,31 +1,31 @@
-﻿#unittest pass lexer
-#unittest error
+﻿#unittest pass lexer;
+#unittest error;
 È
 
-#unittest error
+#unittest error;
 1_.00_00_1
-#unittest error
+#unittest error;
 1._00_00_1
-#unittest error
+#unittest error;
 1.00_00_1_
-#unittest error
+#unittest error;
 0È
 
-#unittest error
+#unittest error;
 0.1's8
-#unittest error
+#unittest error;
 0.1's16
-#unittest error
+#unittest error;
 0.1's32
-#unittest error
+#unittest error;
 0.1's64
-#unittest error
+#unittest error;
 0.1'u8
-#unittest error
+#unittest error;
 0.1'u16
-#unittest error
+#unittest error;
 0.1'u32
-#unittest error
+#unittest error;
 0.1'u64
 
 0.1

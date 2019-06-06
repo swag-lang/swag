@@ -1,3 +1,3 @@
-#unittest pass semantic
-#unittest error
-#print 2 / 4
+#unittest pass semantic;
+#unittest error;
+#print 2 / 4;

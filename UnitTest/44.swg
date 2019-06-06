@@ -1,3 +1,3 @@
-﻿#unittest module module44
-#unittest error
+﻿#unittest module module44;
+#unittest error;
 var a: bool;

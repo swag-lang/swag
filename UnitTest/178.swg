@@ -1,7 +1,7 @@
-#unittest module module178
-#unittest pass semantic
+#unittest module module178;
+#unittest pass semantic;
 
 namespace A{}
-#unittest error
+#unittest error;
 
-#run A && A
+#run A && A;

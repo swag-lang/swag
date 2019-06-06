@@ -1,4 +1,4 @@
-#unittest pass lexer
+#unittest pass lexer;
 
 .()[]{}:;?$
 = == - -=  + += * *= / /= & &= | |= ~ ~= ^ ^= % %=

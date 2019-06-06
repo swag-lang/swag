@@ -1,7 +1,7 @@
-﻿#unittest module module61
-#unittest pass semantic
+﻿#unittest module module61;
+#unittest pass semantic;
 
-#assert 2 == 2
-#assert true == true
-#assert !true == false
+#assert 2 == 2;
+#assert true == true;
+#assert !true == false;
 

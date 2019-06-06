@@ -1,5 +1,5 @@
-#unittest pass semantic
-#unittest error
+#unittest pass semantic;
+#unittest error;
 namespace swag
 {
 }

@@ -1,5 +1,5 @@
-#unittest module module158
-#unittest pass semantic
+#unittest module module158;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 var x, y;

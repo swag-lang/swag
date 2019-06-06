@@ -1,6 +1,6 @@
-﻿#unittest module module55
-#unittest pass semantic
+﻿#unittest module module55;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 var a: f32 = 21474837;
 var b: f32 = 21474838;

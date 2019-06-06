@@ -1,5 +1,5 @@
-#unittest module module165
-#unittest pass semantic
+#unittest module module165;
+#unittest pass semantic;
 using swag;
 
 func main: ()
@@ -7,4 +7,4 @@ func main: ()
 	@assert(true);
 }
 
-#run main
+#run main;

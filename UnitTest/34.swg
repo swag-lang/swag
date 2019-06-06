@@ -1,3 +1,3 @@
-﻿#unittest pass semantic
-#unittest pass syntax
-#unittest pass lexer
+﻿#unittest pass semantic;
+#unittest pass syntax;
+#unittest pass lexer;

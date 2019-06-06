@@ -1,9 +1,9 @@
-#unittest module module145
-#unittest pass semantic
+#unittest module module145;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 func main: (b: bool)
 {
 }
 
-#run main
+#run main;

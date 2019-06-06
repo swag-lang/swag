@@ -1,13 +1,13 @@
-#unittest module module181
-#unittest pass semantic
+#unittest module module181;
+#unittest pass semantic;
 using swag;
 
-#assert 1 | 2 == 3
-#assert 1 & 2 == 0
-#assert 3 & 1 == 1
-#assert 0xFF000000 | 0xFF == 0xFF0000FF
+#assert 1 | 2 == 3;
+#assert 1 & 2 == 0;
+#assert 3 & 1 == 1;
+#assert 0xFF000000 | 0xFF == 0xFF0000FF;
 
 #[constexpr]
 func mask: () -> s32 { return 1; }
 
-#assert mask | 2 == 3
+#assert mask | 2 == 3;

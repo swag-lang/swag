@@ -1,4 +1,4 @@
-﻿#unittest pass syntax
+﻿#unittest pass syntax;
 namespace toto
 {
 	namespace toto

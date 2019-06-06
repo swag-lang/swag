@@ -1,6 +1,6 @@
-#unittest module module87
-#unittest pass semantic
-#unittest error
+#unittest module module87;
+#unittest pass semantic;
+#unittest error;
 namespace A
 {
 	namespace B

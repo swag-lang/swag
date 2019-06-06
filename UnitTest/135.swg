@@ -1,5 +1,5 @@
-#unittest module module135
-#unittest pass syntax
+#unittest module module135;
+#unittest pass syntax;
 
 attr toto: (b: bool) -> var;
 attr toto: (b: bool, b: bool) -> var;

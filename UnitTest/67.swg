@@ -1,5 +1,5 @@
-﻿#unittest module module67
-#unittest pass semantic
+﻿#unittest module module67;
+#unittest pass semantic;
 
-#unittest error
-#print 1 / 0.0'f32
+#unittest error;
+#print 1 / 0.0'f32;

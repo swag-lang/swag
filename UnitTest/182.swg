@@ -1,5 +1,5 @@
-#unittest module module182
-#unittest pass semantic
+#unittest module module182;
+#unittest pass semantic;
 
-#unittest error
-#run 1.0 & 1
+#unittest error;
+#run 1.0 & 1;

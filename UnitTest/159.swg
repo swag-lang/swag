@@ -1,5 +1,5 @@
-#unittest module module159
-#unittest pass semantic
+#unittest module module159;
+#unittest pass semantic;
 
 func main: (argc, argv: u32)
 {

@@ -1,7 +1,7 @@
-#unittest module module94
-#unittest pass syntax
+#unittest module module94;
+#unittest pass syntax;
 
-#unittest error
+#unittest error;
 enum A
 {
 	namespace B

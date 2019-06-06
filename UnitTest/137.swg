@@ -1,5 +1,5 @@
-#unittest module module137
-#unittest pass semantic
-#unittest error
+#unittest module module137;
+#unittest pass semantic;
+#unittest error;
 type b: bool;
 var a: b();

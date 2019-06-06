@@ -1,5 +1,5 @@
-#unittest module module205
-#unittest pass semantic
+#unittest module module205;
+#unittest pass semantic;
 using swag;
 
 #[constexpr] 
@@ -16,6 +16,6 @@ using swag;
 	func main_f64: ()->f64 { return 1.0; }
 }
 
-#assert main_u8 == main_f32
-#assert main_f32 == main_u8
+#assert main_u8 == main_f32;
+#assert main_f32 == main_u8;
 

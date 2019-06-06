@@ -1,4 +1,4 @@
-#unittest pass syntax
+#unittest pass syntax;
 
 enum A: u8
 {

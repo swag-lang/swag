@@ -1,5 +1,5 @@
-﻿#unittest pass syntax
-#unittest error
+﻿#unittest pass syntax;
+#unittest error;
 namespace toto
 {
 	var a: s32;

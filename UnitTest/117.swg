@@ -1,5 +1,5 @@
-#unittest module module117
-#unittest pass semantic
+#unittest module module117;
+#unittest pass semantic;
 
 namespace A 
 {

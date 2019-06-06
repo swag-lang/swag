@@ -1,5 +1,5 @@
-﻿#unittest module module79
-#unittest pass semantic
+﻿#unittest module module79;
+#unittest pass semantic;
 
-#unittest error
+#unittest error;
 type str: 1;

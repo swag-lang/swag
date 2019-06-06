@@ -1,5 +1,5 @@
-#unittest module module171
-#unittest pass semantic
+#unittest module module171;
+#unittest pass semantic;
 using swag;
 
 enum T : s16
@@ -8,5 +8,5 @@ enum T : s16
 	Y;
 }
 
-#assert T.X == -2
-#assert T.Y == -1
+#assert T.X == -2;
+#assert T.Y == -1;

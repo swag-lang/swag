@@ -1,5 +1,5 @@
-#unittest module module107
-#unittest pass semantic
+#unittest module module107;
+#unittest pass semantic;
 
 enum A
 {
@@ -15,4 +15,4 @@ enum B
 	Blue;
 }
 
-#assert A.Blue == 102
+#assert A.Blue == 102;
