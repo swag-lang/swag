@@ -4,6 +4,6 @@ using swag;
 
 #run
 {
-	@print("toto\n");
-	@print("toto1\n");
+	@assert(1 == 1);
+	@assert(2 == 2);
 }

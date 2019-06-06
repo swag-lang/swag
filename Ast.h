@@ -2,6 +2,7 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "AstNode.h"
+struct Utf8Crc;
 struct Scope;
 enum class ScopeKind;
 
@@ -39,7 +40,7 @@ namespace Ast
     extern void        addChild(AstNode* parent, AstNode* child, bool lockParent = true);
     extern const char* getKindName(AstNode* node);
     extern const char* getNakedName(AstNode* node);
-    extern AstNode*    createIdentifierRef(SyntaxJob* job, const Utf8& name, AstNode* parent);
+    extern AstNode*    createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent);
 }; // namespace Ast
 
 template<typename T>

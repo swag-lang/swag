@@ -36,16 +36,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent)
         node->inheritToken(token);
         allVars.push_back(node);
 
-        auto idRef         = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, node);
-        idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
-        idRef->inheritOwners(this);
-        node->astAssignment = idRef;
-
-        auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
-        id->semanticFct = &SemanticJob::resolveIdentifier;
-        id->inheritOwners(this);
-        id->name  = firstVar->name;
-        id->token = firstVar->token;
+        auto idRef = Ast::createIdentifierRef(this, firstVar->name, node->token, node);
+		node->astAssignment = idRef;
 
         SWAG_CHECK(tokenizer.getToken(token));
     }

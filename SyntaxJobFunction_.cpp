@@ -189,6 +189,5 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
         SWAG_CHECK(doExpression(node));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     return true;
 }

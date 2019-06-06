@@ -3,6 +3,7 @@
 #include "Scope.h"
 #include "SourceFile.h"
 #include "SemanticJob.h"
+#include "Utf8Crc.h"
 
 namespace Ast
 {
@@ -74,18 +75,21 @@ namespace Ast
         return "something else";
     }
 
-    AstNode* createIdentifierRef(SyntaxJob* job, const Utf8& name, AstNode* parent)
+    AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent)
     {
         auto sourceFile    = job->sourceFile;
         auto idRef         = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
         idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
         idRef->inheritOwners(job);
+		idRef->name = name;
+        idRef->token = token;
 
         auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
         id->semanticFct = &SemanticJob::resolveIdentifier;
         id->inheritOwners(job);
+        id->name  = name;
+        id->token = token;
 
-        id->name = name;
         return idRef;
     }
 }; // namespace Ast

@@ -88,9 +88,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     }
 
     // Generate a call
-    auto idRef = Ast::createIdentifierRef(this, funcNode->name, runNode);
-	idRef->token = runNode->token;
-	idRef->childs[0]->token = runNode->token;
+    Ast::createIdentifierRef(this, funcNode->name, runNode->token, runNode);
     return true;
 }
 
