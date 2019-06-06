@@ -49,11 +49,11 @@ struct ByteCodeGenJob : public Job
     static bool emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOp(ByteCodeGenContext* context);
-    static bool emitIdentifier(ByteCodeGenContext* context);
     static bool emitLocalFuncCall(ByteCodeGenContext* context);
     static bool emitIntrinsic(ByteCodeGenContext* context);
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);
+    static bool emitIdentifier(ByteCodeGenContext* context);
     static bool emitLocalFuncDecl(ByteCodeGenContext* context);
     static bool emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0);
     static bool emitUnaryOp(ByteCodeGenContext* context);
@@ -75,6 +75,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCast(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
+	static bool emitFuncCallParam(ByteCodeGenContext* context);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;

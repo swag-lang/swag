@@ -43,6 +43,7 @@ enum class AstNodeKind
     FuncDeclParams,
     FuncDeclType,
     FuncCallParams,
+    FuncCallParam,
     FuncCall,
     FuncContent,
     Return,
@@ -228,9 +229,15 @@ struct AstAttrDecl : public AstNode
     AstNode* parameters;
 };
 
+struct AstFuncCallParam : public AstNode
+{
+    Utf8 namedParam;
+};
+
 extern Pool<AstNode>          g_Pool_astNode;
 extern Pool<AstAttrDecl>      g_Pool_astAttrDecl;
 extern Pool<AstVarDecl>       g_Pool_astVarDecl;
 extern Pool<AstFuncDecl>      g_Pool_astFuncDecl;
 extern Pool<AstIdentifier>    g_Pool_astIdentifier;
 extern Pool<AstIdentifierRef> g_Pool_astIdentifierRef;
+extern Pool<AstFuncCallParam> g_Pool_astFuncCallParam;

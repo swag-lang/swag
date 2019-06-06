@@ -190,8 +190,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         for (auto param : node->callParameters->childs)
         {
+            auto oneParam        = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
             auto matchParam      = g_Pool_symbolMatchParameter.alloc();
-            matchParam->name     = param->name;
+            matchParam->name     = oneParam->namedParam;
             matchParam->typeInfo = param->typeInfo;
             symMatch.parameters.push_back(matchParam);
         }
@@ -275,6 +276,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 for (auto overload : badSignature)
                 {
                     auto note = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+					note->showRange = false;
                     notes.push_back(note);
                 }
 
@@ -303,6 +305,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         for (auto overload : matches)
         {
             auto note = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+			note->showRange = false;
             notes.push_back(note);
         }
 

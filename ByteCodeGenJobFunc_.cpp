@@ -84,7 +84,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;

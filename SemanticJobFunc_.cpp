@@ -30,7 +30,6 @@ bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAt
 
 bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 {
-    context->result = SemanticResult::Done;
     return true;
 }
 
@@ -56,7 +55,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     node->flags |= AST_FULL_RESOLVE;
     for (auto job : node->dependentJobs)
         g_ThreadMgr.addJob(job);
-    context->result = SemanticResult::Done;
 
     return true;
 }
@@ -87,13 +85,19 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));
 
-    context->result = SemanticResult::Done;
     return true;
 }
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
-    context->result = SemanticResult::Done;
+    return true;
+}
+
+bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
+{
+    auto node      = context->node;
+    node->typeInfo = node->childs[0]->typeInfo;
+	node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
     return true;
 }
 
@@ -113,10 +117,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // Nothing to return
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
-    {
-        context->result = SemanticResult::Done;
         return true;
-    }
 
     // Check types
     auto returnType = funcNode->returnType->typeInfo;

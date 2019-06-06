@@ -9,7 +9,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent)
 {
     // An identifier that starts with '__' is reserved for internal usage !
     if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
-		return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
+        return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
 
     auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent);
     identifier->inheritOwners(this);
@@ -31,7 +31,11 @@ bool SyntaxJob::doIdentifier(AstNode* parent)
         {
             while (true)
             {
-                SWAG_CHECK(doExpression(callParams));
+                auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
+				param->inheritOwners(this);
+				param->semanticFct = &SemanticJob::resolveFuncCallParam;
+				param->token = token;
+                SWAG_CHECK(doExpression(param));
                 if (token.id != TokenId::SymComma)
                     break;
                 SWAG_CHECK(eatToken(TokenId::SymComma));

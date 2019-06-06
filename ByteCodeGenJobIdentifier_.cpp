@@ -2,7 +2,13 @@
 #include "AstNode.h"
 #include "ByteCodeGenJob.h"
 #include "SymTable.h"
-#include "ByteCodeOp.h"
+
+bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
+{
+    AstNode* node          = context->node;
+    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    return true;
+}
 
 bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 {

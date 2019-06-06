@@ -8,3 +8,4 @@ Pool<AstVarDecl>       g_Pool_astVarDecl;
 Pool<AstFuncDecl>      g_Pool_astFuncDecl;
 Pool<AstIdentifier>    g_Pool_astIdentifier;
 Pool<AstIdentifierRef> g_Pool_astIdentifierRef;
+Pool<AstFuncCallParam> g_Pool_astFuncCallParam;
