@@ -755,8 +755,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
-    auto leftType  = leftNode->typeInfo;
-    auto rightType = rightNode->typeInfo;
+    auto leftType  = leftNode->castedTypeInfo ? leftNode->castedTypeInfo : leftNode->typeInfo;
     return makeCompatibles(sourceFile, leftType, rightNode, castFlags);
 }
 
