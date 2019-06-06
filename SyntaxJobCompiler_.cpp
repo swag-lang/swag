@@ -18,7 +18,6 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
 
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #assert expression"}));
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
@@ -33,9 +32,9 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
     node->token       = move(token);
 
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
-    SWAG_CHECK(tokenizer.getTokenOrEOL(token));
-    SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #print expression"}));
+    SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
     return true;
 }
@@ -48,9 +47,9 @@ bool SyntaxJob::doCompilerRun(AstNode* parent)
     node->token       = move(token);
 
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
-    SWAG_CHECK(tokenizer.getTokenOrEOL(token));
-    SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #run expression"}));
+    SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
     return true;
 }
@@ -58,8 +57,7 @@ bool SyntaxJob::doCompilerRun(AstNode* parent)
 bool SyntaxJob::doCompilerUnitTest()
 {
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
-    SWAG_CHECK(tokenizer.getTokenOrEOL(token));
-    SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing #unittest parameter"}));
+    SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.text == "error")
     {
@@ -68,8 +66,7 @@ bool SyntaxJob::doCompilerUnitTest()
     }
     else if (token.text == "pass")
     {
-        SWAG_CHECK(tokenizer.getTokenOrEOL(token));
-        SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing pass name"}));
+        SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lexer")
         {
             if (g_CommandLine.test)
@@ -95,8 +92,7 @@ bool SyntaxJob::doCompilerUnitTest()
     {
         SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#unittest module can only be specified once"}));
         SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#unittest module instruction must be done before any code"}));
-        SWAG_CHECK(tokenizer.getTokenOrEOL(token));
-        SWAG_VERIFY(token.id != TokenId::EndOfLine, sourceFile->report({sourceFile, token, "missing module name"}));
+        SWAG_CHECK(tokenizer.getToken(token));
         SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
         moduleSpecified = true;
         if (g_CommandLine.test)
@@ -114,5 +110,6 @@ bool SyntaxJob::doCompilerUnitTest()
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     return true;
 }
