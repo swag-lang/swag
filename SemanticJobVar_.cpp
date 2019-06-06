@@ -32,9 +32,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
     // Register symbol with its type
-    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Variable);
+    SymbolKind symbolKind = SymbolKind::Variable;
+    if (node->kind == AstNodeKind::FuncDeclParam)
+        symbolKind = SymbolKind::FuncParam;
+    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, symbolKind);
     SWAG_CHECK(overload);
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, symbolKind));
 
     // Attributes
     if (context->node->attributes)

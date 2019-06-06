@@ -35,6 +35,7 @@ enum class SymbolKind
     EnumValue,
     Function,
     Attribute,
+	FuncParam,
 };
 
 struct SymbolName : public PoolElement

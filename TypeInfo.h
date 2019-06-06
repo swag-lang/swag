@@ -33,7 +33,7 @@ enum class NativeType
     Char,
     String,
     Void,
-	Count,
+    Count,
 };
 
 template<typename T>
@@ -112,6 +112,7 @@ struct TypeInfoFuncAttrParam : public PoolElement
 {
     Utf8      name;
     TypeInfo* typeInfo;
+    int       index;
 };
 
 enum MatchResult

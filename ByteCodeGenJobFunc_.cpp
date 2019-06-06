@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Global.h"
 #include "ThreadManager.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -9,18 +8,34 @@
 #include "SourceFile.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "TypeInfo.h"
 #include "SymTable.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
+    int  countRR  = 0;
 
     // Reserve one RR register for each return value
     if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
-        context->sourceFile->module->reserveRegisterRR(1);
+        countRR++;
 
+    // And one per parameter
+    countRR += (int) typeInfo->parameters.size();
+
+    context->sourceFile->module->reserveRegisterRR(countRR);
+    return true;
+}
+
+bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
+{
+    AstNode* node          = context->node;
+    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    return true;
+}
+
+bool ByteCodeGenJob::emitFuncCallParams(ByteCodeGenContext* context)
+{
     return true;
 }
 
@@ -81,13 +96,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         assert(false);
     }
 
-    return true;
-}
-
-bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
-{
-    AstNode* node          = context->node;
-    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
     return true;
 }
 

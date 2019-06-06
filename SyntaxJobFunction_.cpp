@@ -11,7 +11,7 @@
 
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 {
-    auto paramNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
+    auto paramNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
     paramNode->inheritOwners(this);
     paramNode->semanticFct = &SemanticJob::resolveVarDecl;
 
@@ -25,7 +25,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         SWAG_CHECK(eatToken(TokenId::SymComma));
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid parameter name '%s'", token.text.c_str())));
 
-        auto node         = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
+        auto node         = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
         node->semanticFct = &SemanticJob::resolveVarDecl;
         node->inheritOwners(this);
         node->inheritToken(token);
@@ -122,7 +122,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
     // Parameters
     {
-        Scoped scoped(this, newScope);
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(eatToken(TokenId::SymColon));
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));

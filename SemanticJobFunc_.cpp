@@ -5,7 +5,6 @@
 #include "ThreadManager.h"
 #include "Diagnostic.h"
 #include "SemanticJob.h"
-#include "TypeInfo.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "SymTable.h"
@@ -16,12 +15,14 @@ bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAt
     if (!parameters)
         return true;
 
+    int index = 0;
     typeInfo->parameters.reserve(parameters->childs.size());
     for (auto param : parameters->childs)
     {
         auto funcParam      = g_Pool_typeInfoFuncAttrParam.alloc();
         funcParam->name     = param->name;
         funcParam->typeInfo = param->typeInfo;
+        funcParam->index    = index++;
         typeInfo->parameters.push_back(funcParam);
     }
 
@@ -76,7 +77,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, funcNode->parameters));
 
-	// Collect function attributes
+    // Collect function attributes
     SWAG_CHECK(collectAttributes(context, typeInfo->attributes, funcNode->attributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
@@ -90,14 +91,16 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
+    auto node         = context->node;
+    node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParams;
     return true;
 }
 
 bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 {
-    auto node      = context->node;
-    node->typeInfo = node->childs[0]->typeInfo;
-	node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+    auto node         = context->node;
+    node->typeInfo    = node->childs[0]->typeInfo;
+    node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
     return true;
 }
 

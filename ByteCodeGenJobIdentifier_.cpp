@@ -17,6 +17,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
     case SymbolKind::Namespace:
         return true;
+    case SymbolKind::FuncParam:
+        return true;
     }
 
     return internalError(context, "emitIdentifier");
