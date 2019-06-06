@@ -1,2 +1,6 @@
 #unittest module module207;
-#unittest pass semantic;
+#unittest pass syntax;
+
+#unittest error
+#run __toto;
+

@@ -7,6 +7,10 @@
 
 bool SyntaxJob::doIdentifier(AstNode* parent)
 {
+    // An identifier that starts with '__' is reserved for internal usage !
+    if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
+		return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
+
     auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent);
     identifier->inheritOwners(this);
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
