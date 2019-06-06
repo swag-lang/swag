@@ -31,7 +31,7 @@ struct SyntaxJob : public Job
 
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
-    bool doCompilerRun(AstNode* parent);
+    bool doCompilerRunDecl(AstNode* parent);
     bool doCompilerUnitTest();
     bool doTopLevelInstruction(AstNode* parent);
     bool doVarDecl(AstNode* parent);
@@ -56,6 +56,7 @@ struct SyntaxJob : public Job
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
+    bool doStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent);

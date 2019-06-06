@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Scope.h"
+#include "SourceFile.h"
+#include "SemanticJob.h"
 
 namespace Ast
 {
@@ -72,4 +74,18 @@ namespace Ast
         return "something else";
     }
 
+    AstNode* createIdentifierRef(SyntaxJob* job, const Utf8& name, AstNode* parent)
+    {
+        auto sourceFile    = job->sourceFile;
+        auto idRef         = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
+        idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
+        idRef->inheritOwners(job);
+
+        auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
+        id->semanticFct = &SemanticJob::resolveIdentifier;
+        id->inheritOwners(job);
+
+        id->name = name;
+        return idRef;
+    }
 }; // namespace Ast

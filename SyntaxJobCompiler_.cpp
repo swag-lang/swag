@@ -8,15 +8,19 @@
 #include "Scope.h"
 #include "SemanticJob.h"
 #include "Ast.h"
+#include "Scoped.h"
+#include "SymTable.h"
+#include "TypeInfo.h"
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent, false);
+    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
+
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent);
     node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
-    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
@@ -26,12 +30,13 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
 
 bool SyntaxJob::doCompilerPrint(AstNode* parent)
 {
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent, false);
+    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
+
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent);
     node->inheritOwners(this);
     node->semanticFct = &SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
-    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
@@ -39,18 +44,53 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doCompilerRun(AstNode* parent)
+bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
 {
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent, false);
-    node->inheritOwners(this);
-    node->semanticFct = &SemanticJob::resolveCompilerRun;
-    node->token       = move(token);
-
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
+    auto runNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent);
+    runNode->inheritOwners(this);
+    runNode->semanticFct = &SemanticJob::resolveCompilerRun;
+    runNode->token       = move(token);
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    if (token.id != TokenId::SymLeftCurly)
+        return doExpression(runNode);
+
+    // Generated function
+    auto funcNode = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
+    funcNode->inheritOwners(this);
+    funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
+
+	auto typeNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
+    typeNode->inheritOwners(this);
+	typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
+
+    // Register function name
+    Scope* newScope = nullptr;
+    currentScope->allocateSymTable();
+    {
+        scoped_lock lk(currentScope->symTable->mutex);
+        auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+        newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
+        newScope->allocateSymTable();
+        int id             = g_Global.uniqueID.fetch_add(1);
+        funcNode->name     = "__" + to_string(id);
+        typeInfo->name     = funcNode->name;
+        funcNode->typeInfo = typeInfo;
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+    }
+
+    // #run content is the function body
+    {
+        Scoped scoped(this, newScope);
+        SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+    }
+
+    // Generate a call
+    auto idRef = Ast::createIdentifierRef(this, funcNode->name, runNode);
+	idRef->token = runNode->token;
+	idRef->childs[0]->token = runNode->token;
     return true;
 }
 

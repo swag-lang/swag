@@ -8,7 +8,7 @@ enum class ScopeKind;
 namespace Ast
 {
     template<typename T>
-    T* newNode(Pool<T>* pool, AstNodeKind kind, uint32_t sourceFileIdx, AstNode* parent = nullptr, bool lockParent = true)
+    T* newNode(Pool<T>* pool, AstNodeKind kind, uint32_t sourceFileIdx, AstNode* parent = nullptr)
     {
         auto node           = pool->alloc();
         node->kind          = kind;
@@ -19,12 +19,10 @@ namespace Ast
 
         if (parent)
         {
-            if (lockParent)
-                parent->lock();
+            parent->lock();
             node->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(node);
-            if (lockParent)
-                parent->unlock();
+            parent->unlock();
         }
 
         return node;
@@ -41,6 +39,7 @@ namespace Ast
     extern void        addChild(AstNode* parent, AstNode* child, bool lockParent = true);
     extern const char* getKindName(AstNode* node);
     extern const char* getNakedName(AstNode* node);
+    extern AstNode*    createIdentifierRef(SyntaxJob* job, const Utf8& name, AstNode* parent);
 }; // namespace Ast
 
 template<typename T>

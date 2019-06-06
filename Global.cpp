@@ -3,7 +3,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 
-Global g_Global;
+Global      g_Global;
 
 void Global::setup()
 {

@@ -11,7 +11,7 @@
 
 bool SyntaxJob::doUsing(AstNode* parent)
 {
-    auto node         = Ast::newNode(&g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+    auto node         = Ast::newNode(&g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveUsing;
     node->inheritOwners(this);
     node->inheritToken(token);
@@ -33,7 +33,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     Scope*   newScope = nullptr;
     while (true)
     {
-        namespaceNode              = Ast::newNode(&g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent, false);
+        namespaceNode              = Ast::newNode(&g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
         namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
         namespaceNode->inheritOwners(this);
 
@@ -105,9 +105,16 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     return true;
 }
 
+bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
+{
+    if (token.id == TokenId::SymLeftCurly)
+        return doCurlyStatement(parent, result);
+    return doEmbeddedInstruction(parent, result);
+}
+
 bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent, false);
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent);
     node->inheritOwners(this);
     if (result)
         *result = node;
@@ -200,7 +207,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         SWAG_CHECK(doCompilerPrint(parent));
         break;
     case TokenId::CompilerRun:
-        SWAG_CHECK(doCompilerRun(parent));
+        SWAG_CHECK(doCompilerRunDecl(parent));
         break;
     default:
         syntaxError(token, format("invalid token '%s'", token.text.c_str()));

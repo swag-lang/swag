@@ -3,7 +3,8 @@
 
 struct Global
 {
-    void setup();
+    void        setup();
+    atomic<int> uniqueID;
 };
 
 extern Utf8          format(const char* format, ...);

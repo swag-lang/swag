@@ -110,9 +110,8 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
     case SymbolKind::Function:
     {
-        auto typeFunc     = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
-        node->kind        = AstNodeKind::FuncCall;
-        node->semanticFct = &SemanticJob::resolveFuncCall;
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
+        node->kind    = AstNodeKind::FuncCall;
         node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
         if (typeFunc->intrinsic != Intrisic::None)
             node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;

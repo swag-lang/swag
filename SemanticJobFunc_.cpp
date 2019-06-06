@@ -41,7 +41,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncDecl;
 
     // Do we have a return value
-    if (node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
+    if (node->returnType && node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
     {
         if (!(node->flags & AST_SCOPE_HAS_RETURN))
         {
@@ -92,12 +92,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 }
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
-{
-    context->result = SemanticResult::Done;
-    return true;
-}
-
-bool SemanticJob::resolveFuncCall(SemanticContext* context)
 {
     context->result = SemanticResult::Done;
     return true;

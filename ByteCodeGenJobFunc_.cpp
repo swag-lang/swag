@@ -19,9 +19,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 
     // Reserve one RR register for each return value
     if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
-    {
         context->sourceFile->module->reserveRegisterRR(1);
-    }
 
     return true;
 }
