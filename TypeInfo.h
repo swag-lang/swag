@@ -33,6 +33,7 @@ enum class NativeType
     Char,
     String,
     Void,
+	Count,
 };
 
 template<typename T>

@@ -36,6 +36,8 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
             op->computedValue.reg.s64 = -op->computedValue.reg.s64;
             break;
         case NativeType::F32:
+            op->computedValue.reg.f32 = -op->computedValue.reg.f32;
+            break;
         case NativeType::F64:
             op->computedValue.reg.f64 = -op->computedValue.reg.f64;
             break;

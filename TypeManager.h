@@ -1,4 +1,5 @@
 #pragma once
+#include "TypeInfo.h"
 struct AstNode;
 struct SourceFile;
 struct TypeInfo;
@@ -31,7 +32,7 @@ struct TypeManager
     static bool makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
 
     static void      promote(AstNode* left, AstNode* right);
-    static void      promoteInteger(AstNode* node);
+    static void      promoteOne(AstNode* left, AstNode* right);
     static TypeInfo* flattenType(TypeInfo* typeInfo);
     static TypeInfo* concreteType(TypeInfo* typeInfo);
 
@@ -49,6 +50,7 @@ struct TypeManager
     TypeInfoNative* typeInfoChar;
     TypeInfoNative* typeInfoString;
     TypeInfoNative* typeInfoVoid;
+    TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
 };
 
 extern TypeManager g_TypeMgr;
