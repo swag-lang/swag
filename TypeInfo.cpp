@@ -4,6 +4,7 @@
 #include "SymTable.h"
 #include "ThreadManager.h"
 #include "Global.h"
+#include "TypeManager.h"
 
 Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
@@ -55,7 +56,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             return;
         }
 
-        if (!parameters[i]->typeInfo->isSame(context.parameters[i]->typeInfo))
+		auto typeInfo = TypeManager::concreteType(context.parameters[i]->typeInfo);
+        if (!parameters[i]->typeInfo->isSame(typeInfo))
         {
             context.badSignatureParameterIdx  = i;
             context.basSignatureRequestedType = parameters[i]->typeInfo;

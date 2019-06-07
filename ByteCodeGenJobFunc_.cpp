@@ -171,7 +171,10 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
 {
     auto node   = context->node;
+
+	// 3 pointers are already on that stack after BP : saved BP, BC and IP.
     int  offset = 3 * sizeof(void*);
+
     for (auto param : node->childs)
     {
         param->resolvedSymbolOverload->stackOffset = offset;
