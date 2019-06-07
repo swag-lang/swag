@@ -24,6 +24,7 @@ struct SymbolOverload : public PoolElement
     set<TypeInfoFuncAttr*> attributes;
     uint32_t               flags;
     AstNode*               node;
+    int                    stackOffset = -1;
 };
 
 enum class SymbolKind

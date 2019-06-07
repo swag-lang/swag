@@ -74,6 +74,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
         auto allParamsNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
         allParamsNode->inheritOwners(this);
         allParamsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
+        allParamsNode->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
         if (result)
             *result = allParamsNode;
 

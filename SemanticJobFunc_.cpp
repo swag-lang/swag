@@ -10,7 +10,7 @@
 #include "SymTable.h"
 #include "Scope.h"
 
-bool SemanticJob::setupFuncDeclParameters(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
+bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
 {
     if (!parameters)
         return true;
@@ -73,9 +73,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
     // Register symbol with its type
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FunctionAttribute);
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-    SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, funcNode->parameters));
+    // Register parameters
+    SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode->parameters));
 
     // Collect function attributes
     SWAG_CHECK(collectAttributes(context, typeInfo->attributes, funcNode->attributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));

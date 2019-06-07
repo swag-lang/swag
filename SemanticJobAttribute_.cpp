@@ -11,7 +11,7 @@
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
     auto sourceFile = context->sourceFile;
-    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FunctionAttribute);
+    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
 
     if (!checkNode)
     {
@@ -55,7 +55,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
         for (auto child : curAttr->childs)
         {
             SWAG_CHECK(checkAttribute(context, child, forNode, kind));
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FunctionAttribute);
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
 
             if (result.find(typeInfo) != result.end())
             {
@@ -81,9 +81,9 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 {
     auto node       = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
     auto sourceFile = context->sourceFile;
-    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
+    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
-    SWAG_CHECK(setupFuncDeclParameters(sourceFile, typeInfo, node->parameters));
+    SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, node->parameters));
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(sourceFile, node, node->typeInfo, SymbolKind::Attribute));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Attribute));
 

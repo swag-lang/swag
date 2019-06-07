@@ -735,10 +735,10 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
 {
     auto fromType = nodeToCast->typeInfo;
 
-    if (toType->kind == TypeInfoKind::FunctionAttribute)
-        toType = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::FunctionAttribute)->returnType;
-    if (fromType->kind == TypeInfoKind::FunctionAttribute)
-        fromType = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::FunctionAttribute)->returnType;
+    if (toType->kind == TypeInfoKind::FuncAttr)
+        toType = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::FuncAttr)->returnType;
+    if (fromType->kind == TypeInfoKind::FuncAttr)
+        fromType = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::FuncAttr)->returnType;
 
     if (fromType == toType)
         return true;

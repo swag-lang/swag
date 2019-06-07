@@ -14,7 +14,8 @@ enum class TypeInfoKind
     Namespace,
     Enum,
     EnumValue,
-    FunctionAttribute,
+    FuncAttr,
+    FuncAttrParam,
 };
 
 enum class NativeType
@@ -108,8 +109,13 @@ struct TypeInfoEnumValue : public TypeInfo
     TypeInfoEnum* enumOwner = nullptr;
 };
 
-struct TypeInfoFuncAttrParam : public PoolElement
+struct TypeInfoFuncAttrParam : public TypeInfo
 {
+    TypeInfoFuncAttrParam()
+    {
+        kind = TypeInfoKind::FuncAttrParam;
+    }
+
     Utf8      name;
     TypeInfo* typeInfo;
     int       index;
@@ -150,7 +156,7 @@ struct TypeInfoFuncAttr : public TypeInfo
 {
     TypeInfoFuncAttr()
     {
-        kind = TypeInfoKind::FunctionAttribute;
+        kind = TypeInfoKind::FuncAttr;
     }
 
     void match(SymbolMatchContext& context);

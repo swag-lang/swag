@@ -4,7 +4,7 @@ using swag;
 
 func main: (a: s64)
 {
-	@print(a);
+	@assert(a == 666);
 }
 
-#run main(0's64);
+#run main(666's64);

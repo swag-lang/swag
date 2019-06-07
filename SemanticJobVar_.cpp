@@ -38,6 +38,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, symbolKind);
     SWAG_CHECK(overload);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, symbolKind));
+    node->resolvedSymbolOverload = overload;
 
     // Attributes
     if (context->node->attributes)

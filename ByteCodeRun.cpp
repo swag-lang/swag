@@ -18,6 +18,39 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 
     switch (ip->op)
     {
+    case ByteCodeOp::Ret:
+    {
+        context->ip = context->pop<ByteCodeInstruction*>();
+        context->bc = context->pop<ByteCode*>();
+        context->bp = context->pop<uint8_t*>();
+        break;
+    }
+    case ByteCodeOp::LocalFuncCall:
+    {
+        context->push(context->bp);
+        context->push(context->bc);
+        context->push(context->ip);
+        context->bc = (ByteCode*) ip->a.pointer;
+        context->ip = context->bc->out;
+        context->bp = context->sp;
+        break;
+    }
+
+    case ByteCodeOp::PushRCx:
+	{
+        context->push(registersRC[ip->a.u32].u64);
+        break;
+	}
+    case ByteCodeOp::PopRCx:
+    {
+        registersRC[ip->a.u32].u64 = context->pop<uint64_t>();
+        break;
+    }
+    case ByteCodeOp::IncSP:
+    {
+        context->incSP(ip->a.u32);
+        break;
+    }       
     case ByteCodeOp::CopyVaRCx:
     {
         registersRC[ip->b.u32] = ip->a;
@@ -41,6 +74,12 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::PopBP:
     {
         context->bp = context->pop<uint8_t*>();
+        break;
+    }
+    case ByteCodeOp::RCxFromStack:
+    {
+        auto offset = ip->b.s32;
+        registersRC[ip->a.u32] = *(Register*) (context->bp + offset);
         break;
     }
 
@@ -157,21 +196,6 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
             context->error("division by zero");
         else
             registersRC[ip->c.u32].f64 = val1 / val2;
-        break;
-    }
-
-    case ByteCodeOp::Ret:
-    {
-        context->ip = context->pop<ByteCodeInstruction*>();
-        context->bc = context->pop<ByteCode*>();
-        break;
-    }
-    case ByteCodeOp::LocalFuncCall:
-    {
-        context->push(context->bc);
-        context->push(context->ip);
-        context->bc = (ByteCode*) ip->a.pointer;
-        context->ip = context->bc->out;
         break;
     }
 

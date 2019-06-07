@@ -13,7 +13,7 @@
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto node     = context->node;
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     int  countRR  = 0;
 
     // Reserve one RR register for each return value
@@ -24,6 +24,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     countRR += (int) typeInfo->parameters.size();
 
     context->sourceFile->module->reserveRegisterRR(countRR);
+    emitInstruction(context, ByteCodeOp::Ret);
     return true;
 }
 
@@ -59,7 +60,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     AstNode* node       = context->node;
     auto     overload   = node->resolvedSymbolOverload;
-    auto     typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
+    auto     typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
     auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
 
     switch (typeInfo->intrinsic)
@@ -101,10 +102,11 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
 {
-    AstNode* node       = context->node;
-    auto     sourceFile = context->sourceFile;
-    auto     overload   = node->resolvedSymbolOverload;
-    auto     funcNode   = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    AstNode* node         = context->node;
+    auto     sourceFile   = context->sourceFile;
+    auto     overload     = node->resolvedSymbolOverload;
+    auto     funcNode     = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    auto     typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
     {
         scoped_lock lk(funcNode->mutex);
@@ -135,14 +137,45 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
         }
     }
 
+    // Push parameters
+    int precallStack = 0;
+    if (!node->childs.empty())
+    {
+        auto params = node->childs.front();
+        for (int i = (int) params->childs.size() - 1; i >= 0; i--)
+        {
+            auto param = params->childs[i];
+            emitInstruction(context, ByteCodeOp::PushRCx, param->resultRegisterRC);
+            precallStack += sizeof(Register);
+        }
+    }
+
     emitInstruction(context, ByteCodeOp::LocalFuncCall)->a.pointer = funcNode->bc;
 
     // Copy result in a computing register
-    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FunctionAttribute);
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
         emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
+    }
+
+    // Restore stack as it was before the call, before the parameters
+    if (precallStack)
+    {
+        emitInstruction(context, ByteCodeOp::IncSP, precallStack);
+    }
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
+{
+    auto node   = context->node;
+    int  offset = 3 * sizeof(void*);
+    for (auto param : node->childs)
+    {
+        param->resolvedSymbolOverload->stackOffset = offset;
+        offset += sizeof(Register);
     }
 
     return true;

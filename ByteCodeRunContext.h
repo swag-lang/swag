@@ -37,19 +37,23 @@ struct ByteCodeRunContext
     void error(const string& msg);
 
     template<typename T>
-    T pop()
+    inline T pop()
     {
-        assert(sp + sizeof(T) <= bp);
         auto result = *(T*) sp;
         sp += sizeof(T);
         return result;
     }
 
     template<typename T>
-    void push(const T& value)
+    inline void push(const T& value)
     {
         assert(sp - sizeof(T) > stack);
         sp -= sizeof(T);
         *(T*) sp = value;
+    }
+
+    inline void incSP(uint32_t offset)
+    {
+        sp += offset;
     }
 };

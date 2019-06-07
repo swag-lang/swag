@@ -110,7 +110,7 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
     case SymbolKind::Function:
     {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FunctionAttribute);
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         node->kind    = AstNodeKind::FuncCall;
         node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
         if (typeFunc->intrinsic != Intrisic::None)
@@ -220,7 +220,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             numOverloads++;
 
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FunctionAttribute);
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
             typeInfo->match(symMatch);
             if (symMatch.result == MatchResult::Ok)
                 matches.push_back(overload);

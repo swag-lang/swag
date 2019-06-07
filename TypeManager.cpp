@@ -144,7 +144,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo)
     {
     case TypeInfoKind::Native:
         return typeInfo;
-    case TypeInfoKind::FunctionAttribute:
+    case TypeInfoKind::FuncAttr:
         return concreteType(static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType);
     case TypeInfoKind::Enum:
         return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType);
