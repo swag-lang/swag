@@ -33,7 +33,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::RCxFromStack, node->resultRegisterRC)->b.s32 = resolved->stackOffset;
             return true;
         }
-		break;
+
+        if (resolved->flags & OVERLOAD_VAR_GLOBAL)
+        {
+            node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
+            auto inst              = emitInstruction(context, ByteCodeOp::RCxFromDataSeg64, node->resultRegisterRC);
+            inst->b.s32            = resolved->stackOffset;
+            return true;
+        }
+        break;
     }
     }
 

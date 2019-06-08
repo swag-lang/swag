@@ -93,6 +93,14 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32] = *(Register*) (context->bp + offset);
         break;
     }
+    case ByteCodeOp::RCxFromDataSeg64:
+    {
+        auto        module = context->sourceFile->module;
+        scoped_lock lk(module->mutexDataSeg);
+        auto        offset         = ip->b.s32;
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (&module->dataSegment[offset]);
+        break;
+    }
 
     case ByteCodeOp::BinOpPlusS32:
     {
@@ -217,10 +225,24 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+	case ByteCodeOp::IntrinsicPrintF32:
+    {
+        g_Log.lock();
+        g_Log.print(to_string(registersRC[ip->a.u32].f32));
+        g_Log.unlock();
+        break;
+    }
     case ByteCodeOp::IntrinsicPrintF64:
     {
         g_Log.lock();
         g_Log.print(to_string(registersRC[ip->a.u32].f64));
+        g_Log.unlock();
+        break;
+    }
+    case ByteCodeOp::IntrinsicPrintS32:
+    {
+        g_Log.lock();
+        g_Log.print(to_string(registersRC[ip->a.u32].s32));
         g_Log.unlock();
         break;
     }

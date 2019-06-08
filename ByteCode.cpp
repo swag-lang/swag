@@ -63,7 +63,9 @@ void ByteCode::print()
         case ByteCodeOp::PushRCx:
         case ByteCodeOp::IntrinsicAssert:
         case ByteCodeOp::IntrinsicPrintChar:
+		case ByteCodeOp::IntrinsicPrintF32:
         case ByteCodeOp::IntrinsicPrintF64:
+		case ByteCodeOp::IntrinsicPrintS32:
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintString:
             wprintf(L"RC: %u ", ip->a.u32);

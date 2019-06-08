@@ -71,8 +71,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         context->sourceFile->module->freeRegisterRC(child0->resultRegisterRC);
         switch (child0->typeInfo->nativeType)
         {
+        case NativeType::S32:
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintS32, child0->resultRegisterRC);
+            break;
         case NativeType::S64:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintS64, child0->resultRegisterRC);
+            break;
+        case NativeType::F32:
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintF32, child0->resultRegisterRC);
             break;
         case NativeType::F64:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegisterRC);
@@ -83,6 +89,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         case NativeType::String:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC);
             break;
+        default:
+            return internalError(context, "emitIntrinsic, @print invalid type");
         }
         break;
     }
@@ -94,7 +102,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
     default:
-        assert(false);
+        return internalError(context, "emitIntrinsic, unknown intrinsic");
     }
 
     return true;
@@ -170,10 +178,10 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
 {
-    auto node   = context->node;
+    auto node = context->node;
 
-	// 3 pointers are already on that stack after BP : saved BP, BC and IP.
-    int  offset = 3 * sizeof(void*);
+    // 3 pointers are already on that stack after BP : saved BP, BC and IP.
+    int offset = 3 * sizeof(void*);
 
     for (auto param : node->childs)
     {

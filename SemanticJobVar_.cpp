@@ -58,7 +58,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Assign stack
     if (node->ownerScope->isGlobal())
     {
-        overload->stackOffset = sourceFile->module->reserveDataSegment(node->typeInfo->sizeOf, &node->computedValue);
+        auto value            = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
+        auto typeInfo         = TypeManager::concreteType(node->typeInfo);
+        overload->stackOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf, value);
     }
 
     // Attributes
