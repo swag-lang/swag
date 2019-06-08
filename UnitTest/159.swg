@@ -1,8 +1,8 @@
 #unittest module module159;
 #unittest pass semantic;
 
-func main: (argc, argv: u32)
+func main: (argc: u32)
 {
 }
 
-var a, b: bool;
+var a: bool;
