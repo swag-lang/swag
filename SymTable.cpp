@@ -52,13 +52,13 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     return symbol;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue)
+SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue, uint32_t flags)
 {
     scoped_lock lk(mutex);
-    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue);
+    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags);
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue)
+SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue, uint32_t flags)
 {
     auto symbol = findNoLock(node->name);
     if (!symbol)
@@ -67,6 +67,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNod
     if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
         return nullptr;
     auto result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
+	result->flags |= flags;
 
     // One less overload. When this reached zero, this means we known every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved

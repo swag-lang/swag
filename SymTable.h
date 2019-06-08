@@ -15,6 +15,8 @@ struct ByteCodeGenJob;
 struct AstNode;
 
 static const uint32_t OVERLOAD_BYTECODE_GENERATED = 0x00000001;
+static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
+static const uint32_t OVERLOAD_VAR_GLOBAL         = 0x00000004;
 
 struct SymbolOverload : public PoolElement
 {
@@ -36,7 +38,8 @@ enum class SymbolKind
     EnumValue,
     Function,
     Attribute,
-	FuncParam,
+    FuncParam,
+    GlobalVar,
 };
 
 struct SymbolName : public PoolElement
@@ -65,8 +68,8 @@ struct SymTable
     SymTable(Scope* scope);
 
     SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind);
-    SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr);
-    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr);
+    SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0);
+    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0);
     bool            checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind);
     bool            checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8Crc& name);

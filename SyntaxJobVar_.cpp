@@ -67,7 +67,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent)
     currentScope->allocateSymTable();
 
     // Register all symbols
-    for (int i = 0; i < allVars.size() - 1; i++)
+    for (int i = 0; i < allVars.size(); i++)
     {
         auto var = allVars[i];
         SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, var, SymbolKind::Variable));

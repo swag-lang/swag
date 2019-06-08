@@ -8,11 +8,29 @@
 #include "SymTable.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
+#include "Module.h"
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto node       = static_cast<AstVarDecl*>(context->node);
+
+    uint32_t symbolFlags = 0;
+    if (node->kind == AstNodeKind::FuncDeclParam)
+        symbolFlags |= OVERLOAD_VAR_FUNC_PARAM;
+    else if (node->ownerScope->isGlobal())
+        symbolFlags |= OVERLOAD_VAR_GLOBAL;
+
+    // Value
+    if (node->astAssignment)
+    {
+        if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (node->astAssignment->flags & AST_CONST_EXPR))
+        {
+            SWAG_CHECK(executeNode(context, node->astAssignment, true));
+            if (context->result == SemanticResult::Pending)
+                return true;
+        }
+    }
 
     // Find type
     if (node->astType && node->astAssignment)
@@ -32,13 +50,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
     // Register symbol with its type
-    SymbolKind symbolKind = SymbolKind::Variable;
-    if (node->kind == AstNodeKind::FuncDeclParam)
-        symbolKind = SymbolKind::FuncParam;
-    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, symbolKind);
+    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Variable, nullptr, symbolFlags);
     SWAG_CHECK(overload);
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, symbolKind));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
+
+    // Assign stack
+    if (node->ownerScope->isGlobal())
+    {
+        overload->stackOffset = sourceFile->module->reserveDataSegment(node->typeInfo->sizeOf, &node->computedValue);
+    }
 
     // Attributes
     if (context->node->attributes)

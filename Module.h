@@ -34,6 +34,19 @@ struct Module : public PoolElement
     uint32_t         maxReservedRegisterRC = 0;
     vector<uint32_t> availableRegistersRC;
     uint32_t         maxReservedRegisterRR = 0;
+
+    SpinLock        mutexDataSeg;
+    vector<uint8_t> dataSegment;
+
+    int reserveDataSegment(int size, void* content = nullptr)
+    {
+        scoped_lock lk(mutexDataSeg);
+        int         result = (int) dataSegment.size();
+        dataSegment.resize((int) dataSegment.size() + size);
+        if (content)
+            memcpy(&dataSegment[result], content, size);
+        return result;
+    }
 };
 
 extern Pool<Module> g_Pool_module;
