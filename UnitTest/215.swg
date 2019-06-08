@@ -1,0 +1,12 @@
+#unittest module module215;
+#unittest pass semantic;
+
+#unittest error;
+#run
+{
+	var a = 1;
+	if(true)
+	{
+		var a: bool = true;
+	}
+}

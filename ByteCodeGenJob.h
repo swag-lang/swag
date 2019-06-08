@@ -78,6 +78,7 @@ struct ByteCodeGenJob : public Job
     static bool emitFuncCallParam(ByteCodeGenContext* context);
     static bool emitFuncCallParams(ByteCodeGenContext* context);
     static bool emitFuncDeclParams(ByteCodeGenContext* context);
+	static bool emitIf(ByteCodeGenContext* context);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;

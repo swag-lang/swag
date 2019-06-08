@@ -4,6 +4,7 @@ struct JobThread;
 
 enum class JobResult
 {
+	Continue,
     ReleaseJob,
     KeepJobAlive,
 };

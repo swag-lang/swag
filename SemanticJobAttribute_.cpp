@@ -87,7 +87,6 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(sourceFile, node, node->typeInfo, SymbolKind::Attribute));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Attribute));
 
-    context->result = SemanticResult::Done;
     return true;
 }
 
@@ -107,6 +106,5 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         nextStatement->attributes = node;
     }
 
-    context->result = SemanticResult::Done;
     return true;
 }

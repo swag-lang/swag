@@ -209,6 +209,15 @@
     <ClCompile Include="Stats.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxJobBlock_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobBlock_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobBlock_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

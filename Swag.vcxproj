@@ -214,6 +214,7 @@
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />
+    <ClCompile Include="ByteCodeGenJobBlock_.cpp" />
     <ClCompile Include="ByteCodeGenJobCast_.cpp" />
     <ClCompile Include="ByteCodeGenJobFunc_.cpp" />
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp" />
@@ -250,6 +251,7 @@
     <ClCompile Include="Scope.cpp" />
     <ClCompile Include="SemanticJobAttribute_.cpp" />
     <ClCompile Include="SemanticJobBinaryExpression_.cpp" />
+    <ClCompile Include="SemanticJobBlock_.cpp" />
     <ClCompile Include="SemanticJobCompiler_.cpp" />
     <ClCompile Include="SemanticJobDeclaration_.cpp" />
     <ClCompile Include="SemanticJobUnaryExpression_.cpp" />
@@ -263,6 +265,7 @@
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="SymTable.cpp" />
     <ClCompile Include="SyntaxJobAttribute_.cpp" />
+    <ClCompile Include="SyntaxJobBlock_.cpp" />
     <ClCompile Include="SyntaxJobCompiler_.cpp" />
     <ClCompile Include="SyntaxJobDeclaration_.cpp" />
     <ClCompile Include="SyntaxJobEnum_.cpp" />

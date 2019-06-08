@@ -61,6 +61,7 @@ struct SyntaxJob : public Job
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
+	bool doIf(AstNode* parent);
 
     Tokenizer   tokenizer;
     Token       token;

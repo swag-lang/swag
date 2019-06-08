@@ -35,13 +35,14 @@ enum class AstNodeKind
     Identifier,
     Type,
     Namespace,
+    If,
     Statement,
     EnumDecl,
     FuncDecl,
     AttrDecl,
     AttrUse,
     FuncDeclParams,
-	FuncDeclParam,
+    FuncDeclParam,
     FuncDeclType,
     FuncCallParams,
     FuncCallParam,
@@ -59,12 +60,12 @@ enum class AstNodeKind
     CompilerRun,
 };
 
-static const uint64_t AST_CONST_EXPR         = 0x00000000'00000001;
-static const uint64_t AST_VALUE_COMPUTED     = 0x00000000'00000002;
-static const uint64_t AST_BYTECODE_GENERATED = 0x00000000'00000004;
-static const uint64_t AST_FULL_RESOLVE       = 0x00000000'00000008;
-static const uint64_t AST_SCOPE_HAS_RETURN   = 0x00000000'00000010;
-static const uint64_t AST_FCT_HAS_RETURN     = 0x00000000'00000020;
+static const uint64_t AST_CONST_EXPR           = 0x00000000'00000001;
+static const uint64_t AST_VALUE_COMPUTED       = 0x00000000'00000002;
+static const uint64_t AST_BYTECODE_GENERATED   = 0x00000000'00000004;
+static const uint64_t AST_FULL_RESOLVE         = 0x00000000'00000008;
+static const uint64_t AST_SCOPE_HAS_RETURN     = 0x00000000'00000010;
+static const uint64_t AST_FCT_HAS_RETURN       = 0x00000000'00000020;
 
 struct AstNode : public PoolElement
 {
@@ -235,6 +236,21 @@ struct AstFuncCallParam : public AstNode
     Utf8 namedParam;
 };
 
+struct AstIf : public AstNode
+{
+    void reset() override
+    {
+        AstNode::reset();
+        boolExpression = nullptr;
+        ifBlock        = nullptr;
+        elseBlock      = nullptr;
+    }
+
+    AstNode* boolExpression;
+    AstNode* ifBlock;
+    AstNode* elseBlock;
+};
+
 extern Pool<AstNode>          g_Pool_astNode;
 extern Pool<AstAttrDecl>      g_Pool_astAttrDecl;
 extern Pool<AstVarDecl>       g_Pool_astVarDecl;
@@ -242,3 +258,4 @@ extern Pool<AstFuncDecl>      g_Pool_astFuncDecl;
 extern Pool<AstIdentifier>    g_Pool_astIdentifier;
 extern Pool<AstIdentifierRef> g_Pool_astIdentifierRef;
 extern Pool<AstFuncCallParam> g_Pool_astFuncCallParam;
+extern Pool<AstIf>            g_Pool_astIf;

@@ -77,6 +77,8 @@ enum class TokenId
     KwdReturn,
 	KwdUsing,
     KwdCast,
+	KwdIf,
+	KwdElse,
 
     Identifier,
     LiteralNumber,

@@ -152,10 +152,17 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doReturn(parent));
         SWAG_CHECK(eatToken(TokenId::SymSemiColon));
         break;
+    case TokenId::KwdIf:
+        SWAG_CHECK(doIf(parent));
+        break;
+    case TokenId::KwdVar:
+		SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doVarDecl(parent));
+        break;
     case TokenId::Identifier:
     case TokenId::Intrisic:
         SWAG_CHECK(doAffectExpression(parent));
-		SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
         break;
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
