@@ -49,6 +49,8 @@ namespace Ast
             return "a namespace";
         case AstNodeKind::TypeDecl:
             return "a type";
+        case AstNodeKind::FuncDeclParam:
+            return "a function parameter";
         }
 
         return "something else";
@@ -70,6 +72,8 @@ namespace Ast
             return "namespace";
         case AstNodeKind::TypeDecl:
             return "type";
+        case AstNodeKind::FuncDeclParam:
+            return "parameter";
         }
 
         return "something else";
