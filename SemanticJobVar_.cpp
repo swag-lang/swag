@@ -47,6 +47,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->astType->typeInfo;
     }
 
+	node->typeInfo = TypeManager::concreteType(node->typeInfo);
     SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
     // Register symbol with its type
