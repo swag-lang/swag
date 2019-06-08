@@ -18,6 +18,7 @@ struct AstFuncDecl;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
+typedef bool (*ByteCodeNotifyFct)(ByteCodeGenContext* context);
 
 enum class AstNodeResolveState
 {
@@ -60,12 +61,12 @@ enum class AstNodeKind
     CompilerRun,
 };
 
-static const uint64_t AST_CONST_EXPR           = 0x00000000'00000001;
-static const uint64_t AST_VALUE_COMPUTED       = 0x00000000'00000002;
-static const uint64_t AST_BYTECODE_GENERATED   = 0x00000000'00000004;
-static const uint64_t AST_FULL_RESOLVE         = 0x00000000'00000008;
-static const uint64_t AST_SCOPE_HAS_RETURN     = 0x00000000'00000010;
-static const uint64_t AST_FCT_HAS_RETURN       = 0x00000000'00000020;
+static const uint64_t AST_CONST_EXPR         = 0x00000000'00000001;
+static const uint64_t AST_VALUE_COMPUTED     = 0x00000000'00000002;
+static const uint64_t AST_BYTECODE_GENERATED = 0x00000000'00000004;
+static const uint64_t AST_FULL_RESOLVE       = 0x00000000'00000008;
+static const uint64_t AST_SCOPE_HAS_RETURN   = 0x00000000'00000010;
+static const uint64_t AST_FCT_HAS_RETURN     = 0x00000000'00000020;
 
 struct AstNode : public PoolElement
 {
@@ -154,6 +155,7 @@ struct AstNode : public PoolElement
     Token               token;
     SemanticFct         semanticFct;
     ByteCodeFct         byteCodeFct;
+    ByteCodeNotifyFct   byteCodeAfterFct;
     AstNodeKind         kind;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
@@ -249,6 +251,9 @@ struct AstIf : public AstNode
     AstNode* boolExpression;
     AstNode* ifBlock;
     AstNode* elseBlock;
+
+    int seekJumpExpression;
+	int seekJumpAfterIf;
 };
 
 extern Pool<AstNode>          g_Pool_astNode;

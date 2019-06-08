@@ -8,6 +8,9 @@ BYTECODE_OP(IntrinsicPrintChar)
 BYTECODE_OP(IntrinsicPrintString)
 BYTECODE_OP(IntrinsicAssert)
 
+BYTECODE_OP(JumpNotTrue)
+BYTECODE_OP(Jump)
+
 BYTECODE_OP(CopyVaRCx)
 BYTECODE_OP(CopyRRxRCx)
 BYTECODE_OP(CopyRCxRRx)

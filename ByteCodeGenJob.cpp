@@ -6,6 +6,7 @@
 #include "ThreadManager.h"
 #include "SourceFile.h"
 #include "ByteCodeOp.h"
+#include "TypeInfo.h"
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
@@ -45,11 +46,15 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
 JobResult ByteCodeGenJob::execute()
 {
     ByteCodeGenContext context;
+
     context.job        = this;
     context.sourceFile = sourceFile;
     context.bc         = originalNode->bc;
     if (!context.bc)
+    {
         originalNode->bc = context.bc = g_Pool_byteCode.alloc();
+        originalNode->bc->node        = originalNode;
+    }
 
     while (!nodes.empty())
     {
@@ -82,18 +87,25 @@ JobResult ByteCodeGenJob::execute()
             {
                 context.node   = node;
                 context.result = ByteCodeResult::Done;
+
                 if (!node->byteCodeFct(&context))
                     return JobResult::ReleaseJob;
                 if (context.result == ByteCodeResult::Pending)
                     return JobResult::KeepJobAlive;
             }
 
+            if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
+                return JobResult::ReleaseJob;
             nodes.pop_back();
             break;
         }
     }
 
     emitInstruction(&context, ByteCodeOp::End);
+
+	// Print resulting bytecode
+	if(originalNode->attributeFlags & ATTRIBUTE_PRINTBC)
+		context.bc->print();
 
     // Inform dependencies that this node has bytecode
     {

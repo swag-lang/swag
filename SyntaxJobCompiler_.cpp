@@ -62,9 +62,9 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     funcNode->inheritOwners(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
 
-	auto typeNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
+    auto typeNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
     typeNode->inheritOwners(this);
-	typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
+    typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
 
     // Register function name
     Scope* newScope = nullptr;

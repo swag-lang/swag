@@ -3,6 +3,7 @@ const char* g_Runtime = R"(
 namespace swag {
 
 attr constexpr: () -> func;
+attr printByteCode: () -> func;
 
 func @print: (value: s64);
 func @print: (value: f64);

@@ -18,6 +18,17 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 
     switch (ip->op)
     {
+    case ByteCodeOp::JumpNotTrue:
+    {
+        if (!registersRC[ip->a.u32].b)
+            context->ip += ip->b.s32;
+        break;
+    }
+    case ByteCodeOp::Jump:
+    {
+        context->ip += ip->a.s32;
+        break;
+    }
     case ByteCodeOp::Ret:
     {
         context->ip = context->pop<ByteCodeInstruction*>();
@@ -37,10 +48,10 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
 
     case ByteCodeOp::PushRCx:
-	{
+    {
         context->push(registersRC[ip->a.u32].u64);
         break;
-	}
+    }
     case ByteCodeOp::PopRCx:
     {
         registersRC[ip->a.u32].u64 = context->pop<uint64_t>();
@@ -50,7 +61,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     {
         context->incSP(ip->a.u32);
         break;
-    }       
+    }
     case ByteCodeOp::CopyVaRCx:
     {
         registersRC[ip->b.u32] = ip->a;
@@ -78,7 +89,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::RCxFromStack:
     {
-        auto offset = ip->b.s32;
+        auto offset            = ip->b.s32;
         registersRC[ip->a.u32] = *(Register*) (context->bp + offset);
         break;
     }
