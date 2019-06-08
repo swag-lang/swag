@@ -1,4 +1,4 @@
-#unittest module module210;
+#unittest module module217;
 #unittest pass semantic;
 using swag;
 
@@ -8,8 +8,11 @@ func main: (a: s32) -> s32
 	return a + 1;
 }
 
-#run
+//#[printByteCode]
+func main1: ()
 {
 	@assert(main(6) == 7);
 	@assert(main(4 + 6) == 11);
 }
+
+#run main1;

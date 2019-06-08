@@ -5,4 +5,4 @@ enum class ByteCodeOp : uint16_t
 #include "ByteCodeOpList.h"
 };
 
-extern const wchar_t* g_ByteCodeOpNames[];
+extern const char* g_ByteCodeOpNames[];

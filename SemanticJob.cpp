@@ -40,7 +40,11 @@ JobResult SemanticJob::execute()
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
                     auto child        = node->childs[i];
-                    child->attributes = node->attributes; // Inherit attributes
+
+					// Top to bottom inheritance
+					if(node->kind == AstNodeKind::Statement)
+						child->attributes = node->attributes;
+
                     nodes.push_back(child);
                 }
 

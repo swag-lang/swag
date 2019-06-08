@@ -54,6 +54,7 @@ JobResult ByteCodeGenJob::execute()
     {
         originalNode->bc = context.bc = g_Pool_byteCode.alloc();
         originalNode->bc->node        = originalNode;
+        originalNode->bc->sourceFile  = sourceFile;
     }
 
     while (!nodes.empty())
@@ -103,9 +104,9 @@ JobResult ByteCodeGenJob::execute()
 
     emitInstruction(&context, ByteCodeOp::End);
 
-	// Print resulting bytecode
-	if(originalNode->attributeFlags & ATTRIBUTE_PRINTBC)
-		context.bc->print();
+    // Print resulting bytecode
+    if (originalNode->attributeFlags & ATTRIBUTE_PRINTBC)
+        context.bc->print();
 
     // Inform dependencies that this node has bytecode
     {

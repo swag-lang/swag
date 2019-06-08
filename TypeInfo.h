@@ -45,11 +45,8 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
     return casted;
 }
 
-static const uint64_t TYPEINFO_INT_SIGNED     = 0x00000000'00000001;
-static const uint64_t TYPEINFO_INT_UNSIGNED   = 0x00000000'00000002;
-static const uint64_t TYPEINFO_FLOAT          = 0x00000000'00000004;
-static const uint64_t TYPEINFO_ATTRIBUTE_FUNC = 0x00000000'00000008;
-static const uint64_t TYPEINFO_ATTRIBUTE_VAR  = 0x00000000'00000010;
+static const uint64_t TYPEINFO_ATTRIBUTE_FUNC = 0x00000000'00000001;
+static const uint64_t TYPEINFO_ATTRIBUTE_VAR  = 0x00000000'00000002;
 
 struct TypeInfo : public PoolElement
 {
@@ -64,16 +61,17 @@ struct TypeInfo : public PoolElement
     TypeInfoKind kind;
     NativeType   nativeType;
     Utf8         name;
+    int          sizeOf;
 };
 
 struct TypeInfoNative : public TypeInfo
 {
-    TypeInfoNative(NativeType type, const char* tname, uint64_t tflags)
+    TypeInfoNative(NativeType type, const char* tname, int sof)
     {
         kind       = TypeInfoKind::Native;
         nativeType = type;
         name       = tname;
-        flags      = tflags;
+        sizeOf     = sof;
     }
 };
 

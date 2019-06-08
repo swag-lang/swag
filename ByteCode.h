@@ -5,6 +5,7 @@
 #include "Register.h"
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
+struct SourceFile;
 
 struct ByteCodeInstruction
 {
@@ -25,6 +26,7 @@ struct ByteCode : public PoolElement
     uint32_t             numInstructions = 0;
     uint32_t             maxInstructions = 0;
     vector<Utf8>         strBuffer;
+    SourceFile*          sourceFile;
     AstNode*             node;
 };
 
