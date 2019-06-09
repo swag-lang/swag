@@ -196,7 +196,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
 
     for (auto param : node->childs)
     {
-        param->resolvedSymbolOverload->stackOffset = offset;
+        param->resolvedSymbolOverload->storageOffset = offset;
         offset += sizeof(Register);
     }
 

@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->resultRegisterRC                                                              = sourceFile->module->reserveRegisterRC();
-        emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC)->b.s32 = resolved->stackOffset;
+        emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         return true;
     }
 
@@ -41,7 +41,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (node->flags & AST_LEFT_EXPRESSION)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC);
-            inst->b.s32 = resolved->stackOffset;
+            inst->b.s32 = resolved->storageOffset;
         }
         else
         {
@@ -65,7 +65,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 break;
             }
 
-            inst->b.s32 = resolved->stackOffset;
+            inst->b.s32 = resolved->storageOffset;
         }
         return true;
     }
@@ -77,7 +77,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (node->flags & AST_LEFT_EXPRESSION)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC);
-            inst->b.s32 = resolved->stackOffset;
+            inst->b.s32 = resolved->storageOffset;
         }
         else
         {
@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 break;
             }
 
-            inst->b.s32 = resolved->stackOffset;
+            inst->b.s32 = resolved->storageOffset;
         }
         return true;
     }

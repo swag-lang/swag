@@ -61,14 +61,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        auto value            = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
-        overload->stackOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf, value);
+        auto value              = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
+        overload->storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf, value);
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
-		assert(node->ownerScope);
-		assert(node->ownerFct);
-        overload->stackOffset = node->ownerScope->startStackSize;
+        assert(node->ownerScope);
+        assert(node->ownerFct);
+        overload->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }
@@ -79,6 +79,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         collectAttributes(context, overload->attributes, node->attributes, context->node, AstNodeKind::VarDecl, node->attributeFlags);
     }
 
-	node->byteCodeFct = &ByteCodeGenJob::emitVarDecl;
+    node->byteCodeFct = &ByteCodeGenJob::emitVarDecl;
     return true;
 }
