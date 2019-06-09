@@ -688,6 +688,108 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::AffectOpPlusEqS8:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s8;
+        break;
+    }
+	case ByteCodeOp::AffectOpPlusEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s16;
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqU8:
+    {
+        *(uint8_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u8;
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqU16:
+    {
+        *(uint16_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u16;
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqU32:
+    {
+        *(uint32_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqU64:
+    {
+        *(uint64_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u64;
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqF32:
+    {
+        *(float*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].f32;
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqF64:
+    {
+        *(double*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].f64;
+        break;
+    }
+
+	case ByteCodeOp::AffectOpMinusEqS8:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s8;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s16;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU8:
+    {
+        *(uint8_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].u8;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU16:
+    {
+        *(uint16_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].u16;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU32:
+    {
+        *(uint32_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU64:
+    {
+        *(uint64_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].u64;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqF32:
+    {
+        *(float*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].f32;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqF64:
+    {
+        *(double*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].f64;
+        break;
+    }
+
     default:
         context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;

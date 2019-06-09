@@ -209,7 +209,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent)
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpression(nullptr, &leftNode));
 
-    if (token.id == TokenId::SymEqual)
+    if (token.id == TokenId::SymEqual ||
+        token.id == TokenId::SymPlusEqual ||
+        token.id == TokenId::SymMinusEqual)
     {
         auto affectNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::AffectOp, sourceFile->indexInModule, parent);
         affectNode->inheritOwners(this);
@@ -217,7 +219,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent)
         affectNode->token       = move(token);
 
         Ast::addChild(affectNode, leftNode);
-		SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doExpression(affectNode, &leftNode));
     }
     else
@@ -225,6 +227,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent)
         Ast::addChild(parent, leftNode);
     }
 
-	SWAG_CHECK(eatToken(TokenId::SymSemiColon));
-	return true;
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    return true;
 }

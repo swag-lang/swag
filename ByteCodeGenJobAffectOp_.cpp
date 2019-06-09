@@ -42,6 +42,94 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, uint32_t r0, u
     }
 }
 
+bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectPlusEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqS8, r0, r1);
+        return true;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqU8, r0, r1);
+        return true;
+    case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqS16, r0, r1);
+        return true;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqU16, r0, r1);
+        return true;
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqS32, r0, r1);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqU32, r0, r1);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqS64, r0, r1);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqU64, r0, r1);
+        return true;
+    case NativeType::F32:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqF32, r0, r1);
+        return true;
+    case NativeType::F64:
+        emitInstruction(context, ByteCodeOp::AffectOpPlusEqF64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectEqual, type not supported");
+    }
+}
+
+bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectMinusEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqS8, r0, r1);
+        return true;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqU8, r0, r1);
+        return true;
+    case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqS16, r0, r1);
+        return true;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqU16, r0, r1);
+        return true;
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqS32, r0, r1);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqU32, r0, r1);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqS64, r0, r1);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqU64, r0, r1);
+        return true;
+    case NativeType::F32:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqF32, r0, r1);
+        return true;
+    case NativeType::F64:
+        emitInstruction(context, ByteCodeOp::AffectOpMinusEqF64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectMinusEqual, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 {
     AstNode* node   = context->node;
@@ -57,6 +145,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     {
     case TokenId::SymEqual:
         SWAG_CHECK(emitAffectEqual(context, r0, r1));
+        return true;
+    case TokenId::SymPlusEqual:
+        SWAG_CHECK(emitAffectPlusEqual(context, r0, r1));
+        return true;
+    case TokenId::SymMinusEqual:
+        SWAG_CHECK(emitAffectMinusEqual(context, r0, r1));
         return true;
     default:
         return internalError(context, "emitAffect, invalid token op");
