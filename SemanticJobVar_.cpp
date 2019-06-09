@@ -71,6 +71,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         overload->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+        if (node->astAssignment)
+            node->byteCodeFct = &ByteCodeGenJob::emitVarDecl;
     }
 
     // Attributes
@@ -79,6 +81,5 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         collectAttributes(context, overload->attributes, node->attributes, context->node, AstNodeKind::VarDecl, node->attributeFlags);
     }
 
-    node->byteCodeFct = &ByteCodeGenJob::emitVarDecl;
     return true;
 }

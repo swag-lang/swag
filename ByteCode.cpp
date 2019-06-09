@@ -74,7 +74,7 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::CopyRCxVa:
-            wprintf(L"B: %u VA: { %I64d - %Lf }", ip->b.u32, ip->a.s64, ip->a.f64);
+            wprintf(L"B: %u VA: { %I64x }", ip->b.u32, ip->a.u64);
             break;
 
         case ByteCodeOp::Jump:
