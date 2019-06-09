@@ -983,6 +983,88 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+	case ByteCodeOp::AffectOpShiftLeftEqS8:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftLeftEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftLeftEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftLeftEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftLeftEqU8:
+    {
+        *(uint8_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftLeftEqU16:
+    {
+        *(uint16_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftLeftEqU32:
+    {
+        *(uint32_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftLeftEqU64:
+    {
+        *(uint64_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
+        break;
+    }
+
+	case ByteCodeOp::AffectOpShiftRightEqS8:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqU8:
+    {
+        *(uint8_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqU16:
+    {
+        *(uint16_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqU32:
+    {
+        *(uint32_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpShiftRightEqU64:
+    {
+        *(uint64_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
+        break;
+    }
+
     default:
         context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;

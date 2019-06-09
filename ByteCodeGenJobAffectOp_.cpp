@@ -288,6 +288,82 @@ bool ByteCodeGenJob::emitAffectXOrEqual(ByteCodeGenContext* context, uint32_t r0
     }
 }
 
+bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectShiftLeftEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS8, r0, r1);
+        return true;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU8, r0, r1);
+        return true;
+    case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS16, r0, r1);
+        return true;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU16, r0, r1);
+        return true;
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS32, r0, r1);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU32, r0, r1);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqS64, r0, r1);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftLeftEqU64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectShiftLeftEqual, type not supported");
+    }
+}
+
+bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectShiftRightEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS8, r0, r1);
+        return true;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU8, r0, r1);
+        return true;
+    case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS16, r0, r1);
+        return true;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU16, r0, r1);
+        return true;
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS32, r0, r1);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU32, r0, r1);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqS64, r0, r1);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::AffectOpShiftRightEqU64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectShiftRightEqual, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
@@ -344,6 +420,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         return true;
     case TokenId::SymCircumflexEqual:
         SWAG_CHECK(emitAffectXOrEqual(context, r0, r1));
+        return true;
+    case TokenId::SymLowerLowerEqual:
+        SWAG_CHECK(emitAffectShiftLeftEqual(context, r0, r1));
+        return true;
+    case TokenId::SymGreaterGreaterEqual:
+        SWAG_CHECK(emitAffectShiftRightEqual(context, r0, r1));
         return true;
     default:
         return internalError(context, "emitAffect, invalid token op");

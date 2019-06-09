@@ -22,21 +22,16 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
 
     switch (node->token.id)
     {
     case TokenId::SymEqual:
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
         break;
-    case TokenId::SymSlashEqual:
-        if (leftTypeInfo->nativeType != NativeType::F32 && leftTypeInfo->nativeType != NativeType::F64)
-        {
-            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
-        }
-        break;
-    case TokenId::SymAmpersandEqual:
-    case TokenId::SymVerticalEqual:
-	case TokenId::SymCircumflexEqual:
+
+    case TokenId::SymLowerLowerEqual:
+    case TokenId::SymGreaterGreaterEqual:
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoU32, right));
         if (leftTypeInfo->nativeType == NativeType::Bool ||
             leftTypeInfo->nativeType == NativeType::Char ||
             leftTypeInfo->nativeType == NativeType::String ||
@@ -46,7 +41,32 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
         break;
+
+    case TokenId::SymSlashEqual:
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
+        if (leftTypeInfo->nativeType != NativeType::F32 && leftTypeInfo->nativeType != NativeType::F64)
+        {
+            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        }
+        break;
+
+    case TokenId::SymAmpersandEqual:
+    case TokenId::SymVerticalEqual:
+    case TokenId::SymCircumflexEqual:
+    case TokenId::SymTildeEqual:
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
+        if (leftTypeInfo->nativeType == NativeType::Bool ||
+            leftTypeInfo->nativeType == NativeType::Char ||
+            leftTypeInfo->nativeType == NativeType::String ||
+            leftTypeInfo->nativeType == NativeType::F32 ||
+            leftTypeInfo->nativeType == NativeType::F64)
+        {
+            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        }
+        break;
+
     default:
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
         if (leftTypeInfo->nativeType == NativeType::Bool ||
             leftTypeInfo->nativeType == NativeType::Char ||
             leftTypeInfo->nativeType == NativeType::String)
