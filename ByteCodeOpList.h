@@ -1,5 +1,3 @@
-BYTECODE_OP(End)
-
 BYTECODE_OP(LocalFuncCall)
 BYTECODE_OP(Ret)
 BYTECODE_OP(IntrinsicPrintS32)
@@ -159,3 +157,5 @@ BYTECODE_OP(AffectOpMinusEqU32)
 BYTECODE_OP(AffectOpMinusEqU64)
 BYTECODE_OP(AffectOpMinusEqF32)
 BYTECODE_OP(AffectOpMinusEqF64)
+
+BYTECODE_OP(End)
