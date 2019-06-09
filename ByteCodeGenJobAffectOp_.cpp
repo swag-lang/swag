@@ -174,6 +174,82 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
     }
 }
 
+bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectAndEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::AffectOpAndEqS8, r0, r1);
+        return true;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpAndEqU8, r0, r1);
+        return true;
+    case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::AffectOpAndEqS16, r0, r1);
+        return true;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpAndEqU16, r0, r1);
+        return true;
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpAndEqS32, r0, r1);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::AffectOpAndEqU32, r0, r1);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpAndEqS64, r0, r1);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::AffectOpAndEqU64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectAndEqual, type not supported");
+    }
+}
+
+bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectOrEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqS8, r0, r1);
+        return true;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqU8, r0, r1);
+        return true;
+    case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqS16, r0, r1);
+        return true;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqU16, r0, r1);
+        return true;
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqS32, r0, r1);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqU32, r0, r1);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqS64, r0, r1);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::AffectOpOrEqU64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectOrEqual, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
@@ -221,6 +297,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         return true;
     case TokenId::SymSlashEqual:
         SWAG_CHECK(emitAffectDivEqual(context, r0, r1));
+        return true;
+    case TokenId::SymAmpersandEqual:
+        SWAG_CHECK(emitAffectAndEqual(context, r0, r1));
+        return true;
+    case TokenId::SymVerticalEqual:
+        SWAG_CHECK(emitAffectOrEqual(context, r0, r1));
         return true;
     default:
         return internalError(context, "emitAffect, invalid token op");

@@ -213,7 +213,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent)
         token.id == TokenId::SymPlusEqual ||
         token.id == TokenId::SymMinusEqual ||
         token.id == TokenId::SymAsteriskEqual ||
-        token.id == TokenId::SymSlashEqual)
+        token.id == TokenId::SymSlashEqual ||
+        token.id == TokenId::SymAmpersandEqual ||
+        token.id == TokenId::SymVerticalEqual)
     {
         auto affectNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::AffectOp, sourceFile->indexInModule, parent);
         affectNode->inheritOwners(this);

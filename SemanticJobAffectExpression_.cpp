@@ -28,10 +28,31 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
     case TokenId::SymEqual:
         break;
+    case TokenId::SymSlashEqual:
+        if (leftTypeInfo->nativeType != NativeType::F32 && leftTypeInfo->nativeType != NativeType::F64)
+        {
+            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        }
+        break;
+    case TokenId::SymAmpersandEqual:
+    case TokenId::SymVerticalEqual:
+        if (leftTypeInfo->nativeType == NativeType::Bool ||
+            leftTypeInfo->nativeType == NativeType::Char ||
+            leftTypeInfo->nativeType == NativeType::String ||
+            leftTypeInfo->nativeType == NativeType::F32 ||
+            leftTypeInfo->nativeType == NativeType::F64)
+        {
+            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        }
+        break;
     default:
-		if(leftTypeInfo->nativeType == NativeType::Bool || leftTypeInfo->nativeType == NativeType::Char || leftTypeInfo->nativeType == NativeType::String)
-			return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
-		break;
+        if (leftTypeInfo->nativeType == NativeType::Bool ||
+            leftTypeInfo->nativeType == NativeType::Char ||
+            leftTypeInfo->nativeType == NativeType::String)
+        {
+            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        }
+        break;
     }
 
     node->byteCodeFct = &ByteCodeGenJob::emitAffect;
