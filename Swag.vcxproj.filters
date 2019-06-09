@@ -218,6 +218,12 @@
     <ClCompile Include="ByteCodeGenJobBlock_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticJobAffectExpression_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteCodeGenJobAffectOp_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

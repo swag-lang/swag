@@ -279,9 +279,18 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	case ByteCodeOp::AffectOp32:
-		*(uint32_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u32;
-		break;
+    case ByteCodeOp::AffectOp8:
+        *(uint8_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u8;
+        break;
+    case ByteCodeOp::AffectOp16:
+        *(uint16_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u16;
+        break;
+    case ByteCodeOp::AffectOp32:
+        *(uint32_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u32;
+        break;
+    case ByteCodeOp::AffectOp64:
+        *(uint64_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u64;
+        break;
 
     case ByteCodeOp::CompareOpEqualBool:
     {

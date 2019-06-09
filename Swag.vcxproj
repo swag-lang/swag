@@ -213,6 +213,7 @@
     <ClCompile Include="AstNode.cpp" />
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="ByteCode.cpp" />
+    <ClCompile Include="ByteCodeGenJobAffectOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobBlock_.cpp" />
     <ClCompile Include="ByteCodeGenJobCast_.cpp" />
@@ -249,6 +250,7 @@
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
     <ClCompile Include="Scope.cpp" />
+    <ClCompile Include="SemanticJobAffectExpression_.cpp" />
     <ClCompile Include="SemanticJobAttribute_.cpp" />
     <ClCompile Include="SemanticJobBinaryExpression_.cpp" />
     <ClCompile Include="SemanticJobBlock_.cpp" />
