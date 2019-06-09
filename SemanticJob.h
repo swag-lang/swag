@@ -78,7 +78,7 @@ struct SemanticJob : public Job
     static bool resolveFuncDeclParams(SemanticContext* context);
     static bool resolveFuncDeclType(SemanticContext* context);
     static bool resolveFuncCallParams(SemanticContext* context);
-	static bool resolveFuncCallParam(SemanticContext* context);
+    static bool resolveFuncCallParam(SemanticContext* context);
     static bool resolveAttrDecl(SemanticContext* context);
     static bool resolveAttrUse(SemanticContext* context);
     static bool resolveReturn(SemanticContext* context);
@@ -91,7 +91,8 @@ struct SemanticJob : public Job
     static bool resolveXor(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
     static bool resolveCast(SemanticContext* context);
-	static bool resolveIf(SemanticContext* context);
+    static bool resolveIf(SemanticContext* context);
+    static bool resolveAffect(SemanticContext* context);
 
     Module*             module;
     SourceFile*         sourceFile;

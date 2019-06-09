@@ -56,6 +56,7 @@ enum class AstNodeKind
     Cast,
     SingleOp,
     BinaryOp,
+	AffectOp,
     CompilerAssert,
     CompilerPrint,
     CompilerRun,

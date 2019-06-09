@@ -190,5 +190,25 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAffectExpression(AstNode* parent)
 {
-    return doBoolExpression(parent);
+    AstNode* leftNode;
+    SWAG_CHECK(doSinglePrimaryExpression(nullptr, &leftNode));
+
+    if (token.id == TokenId::SymEqual)
+    {
+        auto affectNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::AffectOp, sourceFile->indexInModule, parent);
+        affectNode->inheritOwners(this);
+        affectNode->semanticFct = &SemanticJob::resolveAffect;
+        affectNode->token       = move(token);
+
+        Ast::addChild(affectNode, leftNode);
+		SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doExpression(affectNode, &leftNode));
+    }
+    else
+    {
+        Ast::addChild(parent, leftNode);
+    }
+
+	SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+	return true;
 }

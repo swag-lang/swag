@@ -1,0 +1,10 @@
+#unittest module module221;
+#unittest pass semantic;
+
+var v = 50;
+
+#run
+{
+	v = 6;
+	v = (5 * 3) + 11;
+}
