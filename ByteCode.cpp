@@ -70,7 +70,12 @@ void ByteCode::print()
 		case ByteCodeOp::RCxRefFromStack:
             wprintf(L"RC: %u SP: %d ", ip->a.u32, ip->b.u32);
             break;
-
+		case ByteCodeOp::AffectOp8:
+		case ByteCodeOp::AffectOp16:
+		case ByteCodeOp::AffectOp32:
+		case ByteCodeOp::AffectOp64:
+                    wprintf(L"RC: %u RC: %u ", ip->a.u32, ip->b.u32);
+			break;
         case ByteCodeOp::PushRCx:
         case ByteCodeOp::IntrinsicAssert:
         case ByteCodeOp::IntrinsicPrintChar:

@@ -224,6 +224,9 @@
     <ClCompile Include="ByteCodeGenJobAffectOp_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeGenJobVar_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

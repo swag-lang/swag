@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SemanticJob.h"
+#include "ByteCodeGenJob.h"
 #include "Global.h"
 #include "Scope.h"
 #include "TypeManager.h"
@@ -78,6 +79,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         collectAttributes(context, overload->attributes, node->attributes, context->node, AstNodeKind::VarDecl, node->attributeFlags);
     }
 
-    context->result = SemanticResult::Done;
+	node->byteCodeFct = &ByteCodeGenJob::emitVarDecl;
     return true;
 }
