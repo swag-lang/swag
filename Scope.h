@@ -12,14 +12,16 @@ enum class ScopeKind
     Namespace,
     Enum,
     Function,
+	Statement,
 };
 
 struct Scope : public PoolElement
 {
     void reset() override
     {
-        parentScope = nullptr;
-        symTable    = nullptr;
+        parentScope    = nullptr;
+        symTable       = nullptr;
+        startStackSize = 0;
     }
 
     void allocateSymTable();
@@ -35,6 +37,7 @@ struct Scope : public PoolElement
     Utf8Crc        name;
     Utf8Crc        fullname;
     vector<Scope*> alternativeScopes;
+    int            startStackSize;
 };
 
 extern Pool<Scope> g_Pool_scope;

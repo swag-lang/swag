@@ -66,6 +66,10 @@ JobResult ByteCodeGenJob::execute()
         {
         case AstNodeResolveState::Enter:
             node->bytecodeState = AstNodeResolveState::ProcessingChilds;
+
+            if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
+                return JobResult::ReleaseJob;
+
             if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
             {
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)

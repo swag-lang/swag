@@ -56,8 +56,9 @@ struct SyntaxJob : public Job
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
-    bool doStatement(AstNode* parent, AstNode** result = nullptr);
+    bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr);
+	bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent);
     bool doCast(AstNode* parent, AstNode** result = nullptr);

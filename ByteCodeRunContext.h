@@ -56,4 +56,9 @@ struct ByteCodeRunContext
     {
         sp += offset;
     }
+
+    inline void decSP(uint32_t offset)
+    {
+        sp -= offset;
+    }
 };

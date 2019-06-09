@@ -52,13 +52,22 @@ void ByteCode::print()
         case ByteCodeOp::End:
         case ByteCodeOp::PushBP:
         case ByteCodeOp::PopBP:
+		case ByteCodeOp::MovSPBP:
             break;
         case ByteCodeOp::IncSP:
+        case ByteCodeOp::DecSP:
             wprintf(L"SP: %d ", ip->a.s32);
             break;
-        case ByteCodeOp::RCxFromStack:
+		case ByteCodeOp::RCxFromStack8:
+		case ByteCodeOp::RCxFromStack16:
+		case ByteCodeOp::RCxFromStack32:
+        case ByteCodeOp::RCxFromStack64:
+		case ByteCodeOp::RCxFromDataSeg8:
+		case ByteCodeOp::RCxFromDataSeg16:
+		case ByteCodeOp::RCxFromDataSeg32:
         case ByteCodeOp::RCxFromDataSeg64:
 		case ByteCodeOp::RCxRefFromDataSeg:
+		case ByteCodeOp::RCxRefFromStack:
             wprintf(L"RC: %u SP: %d ", ip->a.u32, ip->b.u32);
             break;
 

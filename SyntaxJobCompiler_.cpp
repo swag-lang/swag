@@ -73,17 +73,17 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
         scoped_lock lk(currentScope->symTable->mutex);
         auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
         newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
-        newScope->allocateSymTable();
-        int id             = g_Global.uniqueID.fetch_add(1);
-        funcNode->name     = "__" + to_string(id);
-        typeInfo->name     = funcNode->name;
-        funcNode->typeInfo = typeInfo;
+        int id               = g_Global.uniqueID.fetch_add(1);
+        funcNode->name       = "__" + to_string(id);
+        typeInfo->name       = funcNode->name;
+        funcNode->typeInfo   = typeInfo;
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 
     // #run content is the function body
     {
-        Scoped scoped(this, newScope);
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
     }
 

@@ -105,13 +105,6 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
-{
-    if (token.id == TokenId::SymLeftCurly)
-        return doCurlyStatement(parent, result);
-    return doEmbeddedInstruction(parent, result);
-}
-
 bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent);
@@ -138,12 +131,32 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result)
+{
+    auto newScope            = Ast::newScope(sourceFile, "", ScopeKind::Statement, currentScope);
+    newScope->startStackSize = parent->ownerScope->startStackSize;
+
+    {
+        Scoped scoped(this, newScope);
+        SWAG_CHECK(doCurlyStatement(parent, result));
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
+{
+    if (token.id == TokenId::SymLeftCurly)
+        return doScopedCurlyStatement(parent, result);
+    return doEmbeddedInstruction(parent, result);
+}
+
 bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
     case TokenId::SymLeftCurly:
-        SWAG_CHECK(doCurlyStatement(parent));
+        SWAG_CHECK(doScopedCurlyStatement(parent));
         break;
     case TokenId::SymSemiColon:
         SWAG_CHECK(tokenizer.getToken(token));
@@ -156,7 +169,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIf(parent));
         break;
     case TokenId::KwdVar:
-		SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doVarDecl(parent));
         break;
     case TokenId::Identifier:

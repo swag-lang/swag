@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Ast.h"
 #include "Global.h"
 #include "Scope.h"
 #include "TypeManager.h"
-#include "ModuleSemanticJob.h"
 #include "SymTable.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
@@ -20,6 +18,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM;
     else if (node->ownerScope->isGlobal())
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
+    else
+        symbolFlags |= OVERLOAD_VAR_LOCAL;
 
     // Value
     if (node->astAssignment)
@@ -47,7 +47,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->astType->typeInfo;
     }
 
-	node->typeInfo = TypeManager::concreteType(node->typeInfo);
+    node->typeInfo = TypeManager::concreteType(node->typeInfo);
     SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
     // Register symbol with its type
@@ -57,11 +57,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     node->resolvedSymbolOverload = overload;
 
     // Assign stack
-    if (node->ownerScope->isGlobal())
+    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
         auto value            = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
-        auto typeInfo         = TypeManager::concreteType(node->typeInfo);
         overload->stackOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf, value);
+    }
+    else if (symbolFlags & OVERLOAD_VAR_LOCAL)
+    {
+		assert(node->ownerScope);
+		assert(node->ownerFct);
+        overload->stackOffset = node->ownerScope->startStackSize;
+        node->ownerScope->startStackSize += typeInfo->sizeOf;
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }
 
     // Attributes

@@ -13,12 +13,12 @@ bool SyntaxJob::doIf(AstNode* parent)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
-    SWAG_CHECK(doStatement(node, &node->ifBlock));
+    SWAG_CHECK(doEmbeddedStatement(node, &node->ifBlock));
 
     if (token.id == TokenId::KwdElse)
     {
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doStatement(node, &node->elseBlock));
+        SWAG_CHECK(doEmbeddedStatement(node, &node->elseBlock));
     }
 
     return true;

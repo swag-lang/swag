@@ -61,6 +61,4 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     default:
         return internalError(context, "emitAffect, invalid token op");
     }
-
-    return true;
 }

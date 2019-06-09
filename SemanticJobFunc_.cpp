@@ -40,6 +40,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     auto node         = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncDecl;
 
+	// Can be null for intrincics etc...
+    if (node->content)
+        node->content->byteCodeBeforeFct = &ByteCodeGenJob::emitBeforeFuncDeclContent;
+
     // Do we have a return value
     if (node->returnType && node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
     {

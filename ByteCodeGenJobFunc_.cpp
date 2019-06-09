@@ -12,7 +12,7 @@
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
-    auto node     = context->node;
+    auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     int  countRR  = 0;
 
@@ -24,6 +24,9 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     countRR += (int) typeInfo->parameters.size();
 
     context->sourceFile->module->reserveRegisterRR(countRR);
+
+    if (node->stackSize)
+        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
     return true;
 }
@@ -52,6 +55,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::CopyRRxRCx, 0, child->resultRegisterRC);
     }
 
+	assert(node->ownerFct);
+    if (node->ownerFct->stackSize)
+        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
     return true;
 }
@@ -178,15 +184,35 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    auto node     = context->node;
+    auto funcNode = node->ownerFct;
+    assert(funcNode);
 
     // 3 pointers are already on that stack after BP : saved BP, BC and IP.
     int offset = 3 * sizeof(void*);
+
+    // Then add the full stack size of the function
+    offset += funcNode->stackSize;
 
     for (auto param : node->childs)
     {
         param->resolvedSymbolOverload->stackOffset = offset;
         offset += sizeof(Register);
+    }
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
+{
+    auto node     = context->node;
+    auto funcNode = node->ownerFct;
+    assert(funcNode);
+
+    if (funcNode->stackSize)
+    {
+        emitInstruction(context, ByteCodeOp::DecSP)->a.u32 = funcNode->stackSize;
+        emitInstruction(context, ByteCodeOp::MovSPBP);
     }
 
     return true;

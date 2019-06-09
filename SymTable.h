@@ -17,6 +17,7 @@ struct AstNode;
 static const uint32_t OVERLOAD_BYTECODE_GENERATED = 0x00000001;
 static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
 static const uint32_t OVERLOAD_VAR_GLOBAL         = 0x00000004;
+static const uint32_t OVERLOAD_VAR_LOCAL          = 0x00000008;
 
 struct SymbolOverload : public PoolElement
 {

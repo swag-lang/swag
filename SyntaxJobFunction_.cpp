@@ -149,27 +149,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     else
     {
 
-        auto curly = token;
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-
-        {
-            Scoped    scoped(this, newScope);
-            ScopedFct scopedFct(this, funcNode);
-
-            auto stmtNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncContent, sourceFile->indexInModule, funcNode);
-            stmtNode->inheritOwners(this);
-            stmtNode->inheritLocation();
-            funcNode->content = stmtNode;
-            while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
-            {
-                SWAG_CHECK(doEmbeddedInstruction(stmtNode));
-            }
-
-            stmtNode->token.endLocation = token.startLocation;
-        }
-
-        SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
-        SWAG_CHECK(tokenizer.getToken(token));
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
     }
 
     return true;
