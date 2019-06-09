@@ -35,6 +35,10 @@ JobResult SemanticJob::execute()
         {
         case AstNodeResolveState::Enter:
             node->semanticState = AstNodeResolveState::ProcessingChilds;
+
+			if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))
+                return JobResult::ReleaseJob;
+
             if (!node->childs.empty())
             {
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)

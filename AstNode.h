@@ -80,6 +80,10 @@ struct AstNode : public PoolElement
         ownerFct           = nullptr;
         parent             = nullptr;
         semanticFct        = nullptr;
+        semanticBeforeFct  = nullptr;
+        byteCodeFct        = nullptr;
+        byteCodeBeforeFct  = nullptr;
+        byteCodeAfterFct   = nullptr;
         typeInfo           = nullptr;
         castedTypeInfo     = nullptr;
         resolvedSymbolName = nullptr;
@@ -156,6 +160,7 @@ struct AstNode : public PoolElement
     uint64_t            attributeFlags;
     Token               token;
     SemanticFct         semanticFct;
+    SemanticFct         semanticBeforeFct;
     ByteCodeFct         byteCodeFct;
     ByteCodeNotifyFct   byteCodeBeforeFct;
     ByteCodeNotifyFct   byteCodeAfterFct;

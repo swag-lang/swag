@@ -23,3 +23,10 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     node->ownerScope->alternativeScopes.push_back(typeInfo->scope);
     return true;
 }
+
+bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
+{
+	auto node = context->node;
+	node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
+    return true;
+}

@@ -2,12 +2,13 @@
 #unittest pass semantic;
 using swag;
 
-#[printByteCode]
+//#[printByteCode]
 func main: ()
 {
 	var a : s32;
 	{
 		var b : s64;
+		var c : s64;
 	}
 	{
 		var b : s64;

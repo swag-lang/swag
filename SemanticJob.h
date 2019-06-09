@@ -93,6 +93,7 @@ struct SemanticJob : public Job
     static bool resolveCast(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
     static bool resolveAffect(SemanticContext* context);
+    static bool resolveScopedStmtBefore(SemanticContext* context);
 
     Module*             module;
     SourceFile*         sourceFile;

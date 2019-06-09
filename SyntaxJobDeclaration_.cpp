@@ -133,14 +133,17 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto newScope            = Ast::newScope(sourceFile, "", ScopeKind::Statement, currentScope);
-    newScope->startStackSize = parent->ownerScope->startStackSize;
+    auto     newScope = Ast::newScope(sourceFile, "", ScopeKind::Statement, currentScope);
+    AstNode* statement;
 
     {
         Scoped scoped(this, newScope);
-        SWAG_CHECK(doCurlyStatement(parent, result));
+        SWAG_CHECK(doCurlyStatement(parent, &statement));
+		statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
     }
 
+    if (result)
+        *result = statement;
     return true;
 }
 
