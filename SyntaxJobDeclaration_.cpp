@@ -171,6 +171,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdIf:
         SWAG_CHECK(doIf(parent));
         break;
+    case TokenId::KwdWhile:
+        SWAG_CHECK(doWhile(parent));
+        break;
     case TokenId::KwdVar:
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doVarDecl(parent));

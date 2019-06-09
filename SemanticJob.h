@@ -92,6 +92,7 @@ struct SemanticJob : public Job
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
     static bool resolveCast(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
+	static bool resolveWhile(SemanticContext* context);
     static bool resolveAffect(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);
 

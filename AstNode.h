@@ -37,6 +37,7 @@ enum class AstNodeKind
     Type,
     Namespace,
     If,
+	While,
     Statement,
     EnumDecl,
     FuncDecl,
@@ -266,6 +267,23 @@ struct AstIf : public AstNode
     int seekJumpAfterIf;
 };
 
+struct AstWhile : public AstNode
+{
+    void reset() override
+    {
+        AstNode::reset();
+        boolExpression = nullptr;
+        block          = nullptr;
+    }
+
+    AstNode* boolExpression;
+    AstNode* block;
+
+	int seekJumpBeforeExpression;
+    int seekJumpExpression;
+    int seekJumpAfterBlock;
+};
+
 extern Pool<AstNode>          g_Pool_astNode;
 extern Pool<AstAttrDecl>      g_Pool_astAttrDecl;
 extern Pool<AstVarDecl>       g_Pool_astVarDecl;
@@ -274,3 +292,4 @@ extern Pool<AstIdentifier>    g_Pool_astIdentifier;
 extern Pool<AstIdentifierRef> g_Pool_astIdentifierRef;
 extern Pool<AstFuncCallParam> g_Pool_astFuncCallParam;
 extern Pool<AstIf>            g_Pool_astIf;
+extern Pool<AstWhile>         g_Pool_astWhile;

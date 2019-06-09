@@ -81,6 +81,10 @@ struct ByteCodeGenJob : public Job
     static bool emitIfAfterExpr(ByteCodeGenContext* context);
     static bool emitIfAfterIf(ByteCodeGenContext* context);
     static bool emitIf(ByteCodeGenContext* context);
+	static bool emitWhileBeforeExpr(ByteCodeGenContext* context);
+    static bool emitWhileAfterExpr(ByteCodeGenContext* context);
+    static bool emitWhileAfterBlock(ByteCodeGenContext* context);
+    static bool emitWhile(ByteCodeGenContext* context);
     static bool emitAffectEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffect(ByteCodeGenContext* context);
     static bool emitBeforeFuncDeclContent(ByteCodeGenContext* context);

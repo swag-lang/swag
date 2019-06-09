@@ -56,3 +56,47 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
 
     return true;
 }
+
+bool ByteCodeGenJob::emitWhile(ByteCodeGenContext* context)
+{
+    auto whileNode = CastAst<AstWhile>(context->node, AstNodeKind::While);
+
+    // Resolve ByteCodeOp::JumpNotTrue expression
+    auto instruction   = context->bc->out + whileNode->seekJumpExpression;
+    auto diff          = whileNode->seekJumpAfterBlock - whileNode->seekJumpExpression;
+    instruction->b.s32 = diff - 1;
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
+{
+    auto node                           = context->node;
+    auto whileNode                      = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+    whileNode->seekJumpBeforeExpression = context->bc->numInstructions;
+    return true;
+}
+
+bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
+{
+    auto module                   = context->sourceFile->module;
+    auto node                     = context->node;
+    auto whileNode                = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+    whileNode->seekJumpExpression = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
+    module->freeRegisterRC(node->resultRegisterRC);
+    return true;
+}
+
+bool ByteCodeGenJob::emitWhileAfterBlock(ByteCodeGenContext* context)
+{
+    auto node      = context->node;
+    auto whileNode = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+
+    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
+    auto diff   = whileNode->seekJumpBeforeExpression - context->bc->numInstructions;
+    inst->a.s32 = diff;
+
+    whileNode->seekJumpAfterBlock = context->bc->numInstructions;
+    return true;
+}

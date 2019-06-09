@@ -23,3 +23,17 @@ bool SyntaxJob::doIf(AstNode* parent)
 
     return true;
 }
+
+bool SyntaxJob::doWhile(AstNode* parent)
+{
+    auto node         = Ast::newNode(&g_Pool_astWhile, AstNodeKind::While, sourceFile->indexInModule, parent);
+    node->semanticFct = &SemanticJob::resolveWhile;
+    node->inheritOwners(this);
+    node->inheritToken(token);
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
+    SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+
+    return true;
+}

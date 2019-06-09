@@ -30,6 +30,7 @@ void LanguageSpec::setup()
     keywords["cast"]      = TokenId::KwdCast;
     keywords["if"]        = TokenId::KwdIf;
     keywords["else"]      = TokenId::KwdElse;
+    keywords["while"]     = TokenId::KwdWhile;
 
     keywords["u64"]    = TokenId::NativeType;
     keywords["u32"]    = TokenId::NativeType;

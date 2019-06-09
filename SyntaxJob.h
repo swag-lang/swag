@@ -63,6 +63,7 @@ struct SyntaxJob : public Job
     bool doUsing(AstNode* parent);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
 	bool doIf(AstNode* parent);
+	bool doWhile(AstNode* parent);
 	bool doLeftExpression(AstNode* parent, AstNode** result);
 
     Tokenizer   tokenizer;

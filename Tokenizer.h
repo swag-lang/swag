@@ -79,6 +79,7 @@ enum class TokenId
     KwdCast,
 	KwdIf,
 	KwdElse,
+	KwdWhile,
 
     Identifier,
     LiteralNumber,
