@@ -37,8 +37,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (resolved->flags & OVERLOAD_VAR_GLOBAL)
         {
             node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
-            auto inst              = emitInstruction(context, ByteCodeOp::RCxFromDataSeg64, node->resultRegisterRC);
-            inst->b.s32            = resolved->stackOffset;
+            if (node->flags & AST_LEFT_EXPRESSION)
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC);
+                inst->b.s32 = resolved->stackOffset;
+            }
+            else
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::RCxFromDataSeg64, node->resultRegisterRC);
+                inst->b.s32 = resolved->stackOffset;
+            }
             return true;
         }
         break;

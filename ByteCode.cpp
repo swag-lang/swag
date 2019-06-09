@@ -56,16 +56,18 @@ void ByteCode::print()
         case ByteCodeOp::IncSP:
             wprintf(L"SP: %d ", ip->a.s32);
             break;
-		case ByteCodeOp::RCxFromStack:
+        case ByteCodeOp::RCxFromStack:
+        case ByteCodeOp::RCxFromDataSeg64:
+		case ByteCodeOp::RCxRefFromDataSeg:
             wprintf(L"RC: %u SP: %d ", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::PushRCx:
         case ByteCodeOp::IntrinsicAssert:
         case ByteCodeOp::IntrinsicPrintChar:
-		case ByteCodeOp::IntrinsicPrintF32:
+        case ByteCodeOp::IntrinsicPrintF32:
         case ByteCodeOp::IntrinsicPrintF64:
-		case ByteCodeOp::IntrinsicPrintS32:
+        case ByteCodeOp::IntrinsicPrintS32:
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintString:
             wprintf(L"RC: %u ", ip->a.u32);

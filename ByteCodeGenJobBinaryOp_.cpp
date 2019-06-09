@@ -441,3 +441,43 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
         return internalError(context, "emitCompareOpGreater, invalid token op");
     }
 }
+
+bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOp32, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectEqual, type not supported");
+    }
+}
+
+bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
+{
+    AstNode* node   = context->node;
+    auto     module = context->sourceFile->module;
+
+    auto r0 = node->childs[0]->resultRegisterRC;
+    auto r1 = node->childs[1]->resultRegisterRC;
+    module->freeRegisterRC(r0);
+    module->freeRegisterRC(r1);
+
+    emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo));
+    switch (node->token.id)
+    {
+    case TokenId::SymEqual:
+        SWAG_CHECK(emitAffectEqual(context, r0, r1));
+        return true;
+    default:
+        return internalError(context, "emitAffect, invalid token op");
+    }
+
+    return true;
+}

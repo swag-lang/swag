@@ -38,8 +38,8 @@ struct SyntaxJob : public Job
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
     bool doAffectExpression(AstNode* parent);
-    bool doIdentifier(AstNode* parent);
-    bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
+    bool doIdentifier(AstNode* parent, uint64_t flags = 0);
+    bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint64_t flags = 0);
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
@@ -62,6 +62,7 @@ struct SyntaxJob : public Job
     bool doUsing(AstNode* parent);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
 	bool doIf(AstNode* parent);
+	bool doLeftExpression(AstNode* parent, AstNode** result);
 
     Tokenizer   tokenizer;
     Token       token;

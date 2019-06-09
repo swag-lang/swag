@@ -56,7 +56,7 @@ enum class AstNodeKind
     Cast,
     SingleOp,
     BinaryOp,
-	AffectOp,
+    AffectOp,
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
@@ -68,6 +68,7 @@ static const uint64_t AST_BYTECODE_GENERATED = 0x00000000'00000004;
 static const uint64_t AST_FULL_RESOLVE       = 0x00000000'00000008;
 static const uint64_t AST_SCOPE_HAS_RETURN   = 0x00000000'00000010;
 static const uint64_t AST_FCT_HAS_RETURN     = 0x00000000'00000020;
+static const uint64_t AST_LEFT_EXPRESSION   = 0x00000000'00000040;
 
 struct AstNode : public PoolElement
 {
@@ -254,7 +255,7 @@ struct AstIf : public AstNode
     AstNode* elseBlock;
 
     int seekJumpExpression;
-	int seekJumpAfterIf;
+    int seekJumpAfterIf;
 };
 
 extern Pool<AstNode>          g_Pool_astNode;

@@ -95,10 +95,17 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::RCxFromDataSeg64:
     {
-        auto        module = context->sourceFile->module;
-        scoped_lock lk(module->mutexDataSeg);
-        auto        offset         = ip->b.s32;
+        auto module                = context->sourceFile->module;
+        auto offset                = ip->b.s32;
         registersRC[ip->a.u32].u64 = *(uint64_t*) (&module->dataSegment[offset]);
+        break;
+    }
+
+    case ByteCodeOp::RCxRefFromDataSeg:
+    {
+        auto module                    = context->sourceFile->module;
+        auto offset                    = ip->b.s32;
+        registersRC[ip->a.u32].pointer = &module->dataSegment[offset];
         break;
     }
 
@@ -225,7 +232,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	case ByteCodeOp::IntrinsicPrintF32:
+    case ByteCodeOp::IntrinsicPrintF32:
     {
         g_Log.lock();
         g_Log.print(to_string(registersRC[ip->a.u32].f32));
@@ -271,6 +278,10 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         g_Log.unlock();
         break;
     }
+
+	case ByteCodeOp::AffectOp32:
+		*(uint32_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u32;
+		break;
 
     case ByteCodeOp::CompareOpEqualBool:
     {

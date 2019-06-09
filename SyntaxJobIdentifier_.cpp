@@ -5,7 +5,7 @@
 #include "ByteCodeGenJob.h"
 #include "SemanticJob.h"
 
-bool SyntaxJob::doIdentifier(AstNode* parent)
+bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
 {
     // An identifier that starts with '__' is reserved for internal usage !
     if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
@@ -16,6 +16,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent)
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
     identifier->inheritToken(token);
+	identifier->flags = flags;
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymLeftParen)
@@ -48,20 +49,21 @@ bool SyntaxJob::doIdentifier(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
+bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint64_t flags)
 {
     auto identifierRef = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
     identifierRef->inheritOwners(this);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     identifierRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
+	identifierRef->flags = flags;
     if (result)
         *result = identifierRef;
 
-    SWAG_CHECK(doIdentifier(identifierRef));
+    SWAG_CHECK(doIdentifier(identifierRef, flags));
     while (token.id == TokenId::SymDot)
     {
         SWAG_CHECK(eatToken(TokenId::SymDot));
-        SWAG_CHECK(doIdentifier(identifierRef));
+        SWAG_CHECK(doIdentifier(identifierRef, flags));
     }
 
     identifierRef->inheritLocation();

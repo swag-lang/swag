@@ -19,6 +19,22 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
+{
+    switch (token.id)
+    {
+    case TokenId::Identifier:
+    case TokenId::Intrisic:
+        SWAG_CHECK(doIdentifierRef(parent, result, AST_LEFT_EXPRESSION));
+        break;
+
+    default:
+        return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 {
     switch (token.id)
@@ -191,7 +207,7 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doAffectExpression(AstNode* parent)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doSinglePrimaryExpression(nullptr, &leftNode));
+    SWAG_CHECK(doLeftExpression(nullptr, &leftNode));
 
     if (token.id == TokenId::SymEqual)
     {

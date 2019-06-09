@@ -908,5 +908,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     node->typeInfo = g_TypeMgr.typeInfoBool;
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
 
+	node->byteCodeFct = &ByteCodeGenJob::emitAffect;
     return true;
 }
