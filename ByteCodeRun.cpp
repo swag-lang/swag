@@ -942,6 +942,47 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+	case ByteCodeOp::AffectOpXOrEqS8:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s8;
+        break;
+    }
+    case ByteCodeOp::AffectOpXOrEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s16;
+        break;
+    }
+    case ByteCodeOp::AffectOpXOrEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::AffectOpXOrEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::AffectOpXOrEqU8:
+    {
+        *(uint8_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].u8;
+        break;
+    }
+    case ByteCodeOp::AffectOpXOrEqU16:
+    {
+        *(uint16_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].u16;
+        break;
+    }
+    case ByteCodeOp::AffectOpXOrEqU32:
+    {
+        *(uint32_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpXOrEqU64:
+    {
+        *(uint64_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].u64;
+        break;
+    }
+
     default:
         context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;

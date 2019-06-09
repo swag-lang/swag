@@ -36,6 +36,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
     case TokenId::SymAmpersandEqual:
     case TokenId::SymVerticalEqual:
+	case TokenId::SymCircumflexEqual:
         if (leftTypeInfo->nativeType == NativeType::Bool ||
             leftTypeInfo->nativeType == NativeType::Char ||
             leftTypeInfo->nativeType == NativeType::String ||
