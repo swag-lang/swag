@@ -2,7 +2,8 @@
 #unittest pass semantic;
 using swag;
 
-#run
+#[printByteCode]
+func main: ()
 {
 	var a = 0xFFFFFF45;
 	a &= 0xFF;
@@ -10,3 +11,5 @@ using swag;
 	a |= 0x100;
 	@assert(a == 0x145);
 }
+
+#run main;

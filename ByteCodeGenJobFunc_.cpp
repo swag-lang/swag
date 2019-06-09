@@ -55,7 +55,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::CopyRRxRCx, 0, child->resultRegisterRC);
     }
 
-	assert(node->ownerFct);
+    assert(node->ownerFct);
     if (node->ownerFct->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);

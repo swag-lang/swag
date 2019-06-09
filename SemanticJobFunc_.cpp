@@ -9,6 +9,7 @@
 #include "Ast.h"
 #include "SymTable.h"
 #include "Scope.h"
+#include "CommandLine.h"
 
 bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
 {
@@ -40,7 +41,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     auto node         = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncDecl;
 
-	// Can be null for intrincics etc...
+    // Can be null for intrincics etc...
     if (node->content)
         node->content->byteCodeBeforeFct = &ByteCodeGenJob::emitBeforeFuncDeclContent;
 
@@ -56,10 +57,32 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // Now the full function has been solved, so we wakeup jobs depending on that
-    scoped_lock lk(node->mutex);
-    node->flags |= AST_FULL_RESOLVE;
-    for (auto job : node->dependentJobs)
-        g_ThreadMgr.addJob(job);
+    {
+        scoped_lock lk(node->mutex);
+        node->flags |= AST_FULL_RESOLVE;
+        for (auto job : node->dependentJobs)
+            g_ThreadMgr.addJob(job);
+    }
+
+    // Ask for bytecode
+    bool genByteCode = g_CommandLine.output && (sourceFile->buildPass > BuildPass::Semantic);
+    if (node->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
+        genByteCode = true;
+    if (genByteCode)
+    {
+        scoped_lock lk(node->mutex);
+        if (!(node->flags & AST_BYTECODE_GENERATED))
+        {
+            if (!node->byteCodeJob)
+            {
+                node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+                node->byteCodeJob->sourceFile   = sourceFile;
+                node->byteCodeJob->originalNode = node;
+                node->byteCodeJob->nodes.push_back(node);
+                g_ThreadMgr.addJob(node->byteCodeJob);
+            }
+        }
+    }
 
     return true;
 }

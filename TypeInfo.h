@@ -149,7 +149,7 @@ struct SymbolMatchContext
 };
 
 static const uint64_t ATTRIBUTE_CONSTEXPR = 0x00000000'00000001;
-static const uint64_t ATTRIBUTE_PRINTBC   = 0x00000000'00000002;
+static const uint64_t ATTRIBUTE_PRINT_BYTECODE   = 0x00000000'00000002;
 
 struct TypeInfoFuncAttr : public TypeInfo
 {

@@ -68,7 +68,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
             if (typeInfo->name == "constexpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
             if (typeInfo->name == "printByteCode")
-                flags |= ATTRIBUTE_PRINTBC;
+                flags |= ATTRIBUTE_PRINT_BYTECODE;
 
             result.insert(typeInfo);
         }
