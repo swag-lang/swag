@@ -74,6 +74,7 @@ void ByteCode::print()
         case ByteCodeOp::AffectOp16:
         case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOp64:
+
         case ByteCodeOp::AffectOpPlusEqS8:
         case ByteCodeOp::AffectOpPlusEqS16:
         case ByteCodeOp::AffectOpPlusEqS32:
@@ -84,6 +85,7 @@ void ByteCode::print()
         case ByteCodeOp::AffectOpPlusEqU64:
         case ByteCodeOp::AffectOpPlusEqF32:
         case ByteCodeOp::AffectOpPlusEqF64:
+
         case ByteCodeOp::AffectOpMinusEqS8:
         case ByteCodeOp::AffectOpMinusEqS16:
         case ByteCodeOp::AffectOpMinusEqS32:
@@ -94,6 +96,17 @@ void ByteCode::print()
         case ByteCodeOp::AffectOpMinusEqU64:
         case ByteCodeOp::AffectOpMinusEqF32:
         case ByteCodeOp::AffectOpMinusEqF64:
+
+		case ByteCodeOp::AffectOpMulEqS8:
+        case ByteCodeOp::AffectOpMulEqS16:
+        case ByteCodeOp::AffectOpMulEqS32:
+        case ByteCodeOp::AffectOpMulEqS64:
+        case ByteCodeOp::AffectOpMulEqU8:
+        case ByteCodeOp::AffectOpMulEqU16:
+        case ByteCodeOp::AffectOpMulEqU32:
+        case ByteCodeOp::AffectOpMulEqU64:
+        case ByteCodeOp::AffectOpMulEqF32:
+        case ByteCodeOp::AffectOpMulEqF64:
             wprintf(L"RCA: %u RCB: %u ", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::PushRCx:

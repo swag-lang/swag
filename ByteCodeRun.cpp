@@ -693,7 +693,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         *(int8_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s8;
         break;
     }
-	case ByteCodeOp::AffectOpPlusEqS16:
+    case ByteCodeOp::AffectOpPlusEqS16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s16;
         break;
@@ -739,7 +739,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	case ByteCodeOp::AffectOpMinusEqS8:
+    case ByteCodeOp::AffectOpMinusEqS8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s8;
         break;
@@ -787,6 +787,76 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::AffectOpMinusEqF64:
     {
         *(double*) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].f64;
+        break;
+    }
+
+    case ByteCodeOp::AffectOpMulEqS8:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].s8;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].s16;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU8:
+    {
+        *(uint8_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].u8;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU16:
+    {
+        *(uint16_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].u16;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU32:
+    {
+        *(uint32_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU64:
+    {
+        *(uint64_t*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].u64;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqF32:
+    {
+        *(float*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].f32;
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqF64:
+    {
+        *(double*) registersRC[ip->a.u32].pointer *= registersRC[ip->b.u32].f64;
+        break;
+    }
+
+    case ByteCodeOp::AffectOpDivEqF32:
+    {
+        auto val = registersRC[ip->b.u32].f32;
+        if (val == 0.0f)
+            context->error("division by zero");
+        else
+            *(float*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
+    case ByteCodeOp::AffectOpDivEqF64:
+    {
+        auto val = registersRC[ip->b.u32].f64;
+        if (val == 0.0)
+            context->error("division by zero");
+        else
+            *(double*) registersRC[ip->a.u32].pointer /= val;
         break;
     }
 

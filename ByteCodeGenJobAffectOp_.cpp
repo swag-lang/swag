@@ -22,11 +22,11 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, uint32_t r0, u
     case NativeType::U8:
         emitInstruction(context, ByteCodeOp::AffectOp8, r0, r1);
         return true;
-	case NativeType::S16:
+    case NativeType::S16:
     case NativeType::U16:
         emitInstruction(context, ByteCodeOp::AffectOp16, r0, r1);
         return true;
-	case NativeType::S32:
+    case NativeType::S32:
     case NativeType::U32:
     case NativeType::F32:
     case NativeType::Char:
@@ -130,6 +130,70 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
     }
 }
 
+bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectMulEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqS8, r0, r1);
+        return true;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqU8, r0, r1);
+        return true;
+    case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqS16, r0, r1);
+        return true;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqU16, r0, r1);
+        return true;
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqS32, r0, r1);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqU32, r0, r1);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqS64, r0, r1);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqU64, r0, r1);
+        return true;
+    case NativeType::F32:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqF32, r0, r1);
+        return true;
+    case NativeType::F64:
+        emitInstruction(context, ByteCodeOp::AffectOpMulEqF64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectMulEqual, type not supported");
+    }
+}
+
+bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectDivEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::F32:
+        emitInstruction(context, ByteCodeOp::AffectOpDivEqF32, r0, r1);
+        return true;
+    case NativeType::F64:
+        emitInstruction(context, ByteCodeOp::AffectOpDivEqF64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectDivEqual, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 {
     AstNode* node   = context->node;
@@ -151,6 +215,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         return true;
     case TokenId::SymMinusEqual:
         SWAG_CHECK(emitAffectMinusEqual(context, r0, r1));
+        return true;
+    case TokenId::SymAsteriskEqual:
+        SWAG_CHECK(emitAffectMulEqual(context, r0, r1));
+        return true;
+    case TokenId::SymSlashEqual:
+        SWAG_CHECK(emitAffectDivEqual(context, r0, r1));
         return true;
     default:
         return internalError(context, "emitAffect, invalid token op");
