@@ -2,13 +2,18 @@
 #unittest pass semantic;
 using swag;
 
-#unittest error
-
-//#[printByteCode]
+#unittest error;
 func main: ()
 {
 	var a = true;
 	a += true;
 }
 
-#run main;
+#unittest error;
+func main1: ()
+{
+	var a = 'a';
+	a += 'a';
+}
+
+

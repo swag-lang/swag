@@ -29,7 +29,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymEqual:
         break;
     default:
-        SWAG_VERIFY(leftTypeInfo->nativeType != NativeType::Bool, sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())}));
+		if(leftTypeInfo->nativeType == NativeType::Bool || leftTypeInfo->nativeType == NativeType::Char || leftTypeInfo->nativeType == NativeType::String)
+			return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
 		break;
     }
 
