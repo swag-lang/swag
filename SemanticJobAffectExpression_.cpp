@@ -18,11 +18,20 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-	SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, sourceFile->report({ sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str()) }));
+    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
 
     node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
+
+    switch (node->token.id)
+    {
+    case TokenId::SymEqual:
+        break;
+    default:
+        SWAG_VERIFY(leftTypeInfo->nativeType != NativeType::Bool, sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())}));
+		break;
+    }
 
     node->byteCodeFct = &ByteCodeGenJob::emitAffect;
     return true;
