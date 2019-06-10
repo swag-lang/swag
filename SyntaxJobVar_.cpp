@@ -6,12 +6,14 @@
 #include "Scope.h"
 #include "SymTable.h"
 
-bool SyntaxJob::doVarDecl(AstNode* parent)
+bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 {
     // First variable
     AstVarDecl* varNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
     varNode->inheritOwners(this);
     varNode->semanticFct = &SemanticJob::resolveVarDecl;
+    if (result)
+        *result = varNode;
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
     varNode->inheritToken(token);

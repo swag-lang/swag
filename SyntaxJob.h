@@ -4,6 +4,7 @@
 struct SourceFile;
 struct AstVarDecl;
 struct AstNode;
+struct AstBreakable;
 struct AstIdentifier;
 struct AstIdentifierRef;
 struct Scope;
@@ -16,10 +17,11 @@ struct SyntaxJob : public Job
 
     void reset() override
     {
-        currentScope    = nullptr;
-        currentFct      = nullptr;
-        canChangeModule = true;
-        moduleSpecified = false;
+        currentScope     = nullptr;
+        currentBreakable = nullptr;
+        currentFct       = nullptr;
+        canChangeModule  = true;
+        moduleSpecified  = false;
     }
 
     bool error(const Token& tk, const Utf8& msg);
@@ -34,10 +36,10 @@ struct SyntaxJob : public Job
     bool doCompilerRunDecl(AstNode* parent);
     bool doCompilerUnitTest();
     bool doTopLevelInstruction(AstNode* parent);
-    bool doVarDecl(AstNode* parent);
+    bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doAffectExpression(AstNode* parent);
+    bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, uint64_t flags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint64_t flags = 0);
     bool doNamespace(AstNode* parent);
@@ -58,13 +60,15 @@ struct SyntaxJob : public Job
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr);
-	bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr);
+    bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
-	bool doIf(AstNode* parent);
-	bool doWhile(AstNode* parent);
-	bool doLeftExpression(AstNode* parent, AstNode** result);
+    bool doIf(AstNode* parent, AstNode** result = nullptr);
+    bool doWhile(AstNode* parent, AstNode** result = nullptr);
+    bool doBreak(AstNode* parent, AstNode** result = nullptr);
+    bool doContinue(AstNode* parent, AstNode** result = nullptr);
+    bool doLeftExpression(AstNode* parent, AstNode** result);
 
     Tokenizer   tokenizer;
     Token       token;
@@ -72,8 +76,9 @@ struct SyntaxJob : public Job
     bool        canChangeModule;
     bool        moduleSpecified;
 
-    Scope*       currentScope;
-    AstFuncDecl* currentFct;
+    Scope*        currentScope;
+    AstFuncDecl*  currentFct;
+    AstBreakable* currentBreakable;
 };
 
 extern Pool<SyntaxJob> g_Pool_syntaxJob;

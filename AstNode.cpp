@@ -11,3 +11,4 @@ Pool<AstIdentifierRef> g_Pool_astIdentifierRef;
 Pool<AstFuncCallParam> g_Pool_astFuncCallParam;
 Pool<AstIf>            g_Pool_astIf;
 Pool<AstWhile>         g_Pool_astWhile;
+Pool<AstBreakContinue> g_Pool_astBreakContinue;

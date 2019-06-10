@@ -12,7 +12,8 @@ enum class ScopeKind
     Namespace,
     Enum,
     Function,
-	Statement,
+    Statement,
+    Breakable,
 };
 
 struct Scope : public PoolElement

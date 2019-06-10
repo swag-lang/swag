@@ -215,7 +215,7 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
     return doExpression(parent, result);
 }
 
-bool SyntaxJob::doAffectExpression(AstNode* parent)
+bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpression(nullptr, &leftNode));
@@ -239,10 +239,15 @@ bool SyntaxJob::doAffectExpression(AstNode* parent)
         Ast::addChild(affectNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doExpression(affectNode, &leftNode));
+
+        if (result)
+            *result = affectNode;
     }
     else
     {
         Ast::addChild(parent, leftNode);
+        if (result)
+            *result = leftNode;
     }
 
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));

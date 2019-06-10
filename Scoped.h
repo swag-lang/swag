@@ -1,7 +1,7 @@
 #pragma once
 #include "SyntaxJob.h"
+#include "Scope.h"
 struct SyntaxJob;
-struct Scope;
 struct AstFuncDecl;
 
 struct Scoped
@@ -20,6 +20,25 @@ struct Scoped
 
     SyntaxJob* savedJob;
     Scope*     savedScope;
+};
+
+struct ScopedBreakable
+{
+    ScopedBreakable(SyntaxJob* job, AstBreakable* newNode)
+    {
+        savedJob                 = job;
+        savedNode                = job->currentBreakable;
+        newNode->parentBreakable = savedNode;
+        job->currentBreakable    = newNode;
+    }
+
+    ~ScopedBreakable()
+    {
+        savedJob->currentBreakable = savedNode;
+    }
+
+    SyntaxJob*    savedJob;
+    AstBreakable* savedNode;
 };
 
 struct ScopedFct

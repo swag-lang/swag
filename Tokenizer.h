@@ -80,6 +80,8 @@ enum class TokenId
 	KwdIf,
 	KwdElse,
 	KwdWhile,
+	KwdBreak,
+	KwdContinue,
 
     Identifier,
     LiteralNumber,

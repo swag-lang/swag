@@ -159,28 +159,34 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::SymLeftCurly:
-        SWAG_CHECK(doScopedCurlyStatement(parent));
+        SWAG_CHECK(doScopedCurlyStatement(parent, result));
         break;
     case TokenId::SymSemiColon:
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     case TokenId::KwdReturn:
-        SWAG_CHECK(doReturn(parent));
+        SWAG_CHECK(doReturn(parent, result));
         SWAG_CHECK(eatToken(TokenId::SymSemiColon));
         break;
     case TokenId::KwdIf:
-        SWAG_CHECK(doIf(parent));
+        SWAG_CHECK(doIf(parent, result));
         break;
     case TokenId::KwdWhile:
-        SWAG_CHECK(doWhile(parent));
+        SWAG_CHECK(doWhile(parent, result));
         break;
     case TokenId::KwdVar:
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doVarDecl(parent));
+        SWAG_CHECK(doVarDecl(parent, result));
         break;
     case TokenId::Identifier:
     case TokenId::Intrisic:
-        SWAG_CHECK(doAffectExpression(parent));
+        SWAG_CHECK(doAffectExpression(parent, result));
+        break;
+    case TokenId::KwdBreak:
+        SWAG_CHECK(doBreak(parent, result));
+        break;
+    case TokenId::KwdContinue:
+        SWAG_CHECK(doContinue(parent, result));
         break;
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));

@@ -24,7 +24,7 @@ enum class AstNodeResolveState
 {
     Enter,
     ProcessingChilds,
-	PostChilds,
+    PostChilds,
 };
 
 enum class AstNodeKind
@@ -39,6 +39,8 @@ enum class AstNodeKind
     Namespace,
     If,
     While,
+    Break,
+    Continue,
     Statement,
     EnumDecl,
     FuncDecl,
@@ -79,6 +81,7 @@ struct AstNode : public PoolElement
         semanticState      = AstNodeResolveState::Enter;
         bytecodeState      = AstNodeResolveState::Enter;
         ownerScope         = nullptr;
+        ownerBreakable     = nullptr;
         ownerFct           = nullptr;
         parent             = nullptr;
         semanticFct        = nullptr;
@@ -145,12 +148,14 @@ struct AstNode : public PoolElement
 
     void inheritOwners(SyntaxJob* job)
     {
-        ownerScope = job->currentScope;
-        ownerFct   = job->currentFct;
+        ownerScope     = job->currentScope;
+        ownerBreakable = job->currentBreakable;
+        ownerFct       = job->currentFct;
     }
 
-    Scope*       ownerScope;
-    AstFuncDecl* ownerFct;
+    Scope*        ownerScope;
+    AstBreakable* ownerBreakable;
+    AstFuncDecl*  ownerFct;
 
     TypeInfo*       typeInfo;
     TypeInfo*       castedTypeInfo;
@@ -270,11 +275,29 @@ struct AstIf : public AstNode
     int seekJumpAfterIf;
 };
 
-struct AstWhile : public AstNode
+struct AstBreakContinue : public AstNode
+{
+	int jumpInstruction;
+};
+
+struct AstBreakable : public AstNode
 {
     void reset() override
     {
         AstNode::reset();
+        parentBreakable = nullptr;
+    }
+
+    AstNode*                  parentBreakable;
+    vector<AstBreakContinue*> breakList;
+    vector<AstBreakContinue*> continueList;
+};
+
+struct AstWhile : public AstBreakable
+{
+    void reset() override
+    {
+        AstBreakable::reset();
         boolExpression = nullptr;
         block          = nullptr;
     }
@@ -296,3 +319,4 @@ extern Pool<AstIdentifierRef> g_Pool_astIdentifierRef;
 extern Pool<AstFuncCallParam> g_Pool_astFuncCallParam;
 extern Pool<AstIf>            g_Pool_astIf;
 extern Pool<AstWhile>         g_Pool_astWhile;
+extern Pool<AstBreakContinue> g_Pool_astBreakContinue;

@@ -98,5 +98,40 @@ bool ByteCodeGenJob::emitWhileAfterBlock(ByteCodeGenContext* context)
     inst->a.s32 = diff;
 
     whileNode->seekJumpAfterBlock = context->bc->numInstructions;
+
+    // Resolve all continue instructions
+    for (auto continueNode : whileNode->continueList)
+    {
+        inst        = context->bc->out + continueNode->jumpInstruction;
+        diff        = whileNode->seekJumpBeforeExpression - continueNode->jumpInstruction - 1;
+        inst->a.s32 = diff;
+    }
+
+    // Resolve all break instructions
+    for (auto breakNode : whileNode->breakList)
+    {
+        inst        = context->bc->out + breakNode->jumpInstruction;
+        diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
+        inst->a.s32 = diff;
+    }
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
+{
+    auto node                  = context->node;
+    auto breakNode             = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
+    breakNode->jumpInstruction = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::Jump);
+    return true;
+}
+
+bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
+{
+    auto node                  = context->node;
+    auto breakNode             = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
+    breakNode->jumpInstruction = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::Jump);
     return true;
 }
