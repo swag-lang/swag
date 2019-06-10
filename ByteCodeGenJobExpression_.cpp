@@ -6,11 +6,12 @@
 #include "Module.h"
 #include "SourceFile.h"
 #include "ByteCodeOp.h"
+#include "TypeManager.h"
 
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = node->typeInfo;
+    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitLiteral, type not native");

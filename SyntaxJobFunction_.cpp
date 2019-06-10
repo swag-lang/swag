@@ -30,7 +30,6 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     {
         SWAG_CHECK(eatToken(TokenId::SymEqual));
         SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->astAssignment));
-		paramNode->astAssignment->flags |= AST_NO_BYTECODE;
     }
 
     // Be sure we will be able to have a type
@@ -49,6 +48,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
         allParamsNode->inheritOwners(this);
         allParamsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
         allParamsNode->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
+		allParamsNode->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         if (result)
             *result = allParamsNode;
 

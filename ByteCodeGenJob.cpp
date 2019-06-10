@@ -72,15 +72,12 @@ JobResult ByteCodeGenJob::execute()
 
             if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
             {
-                if (!(node->flags & AST_NO_BYTECODE))
+                if (!(node->flags & AST_NO_BYTECODE_CHILDS))
                 {
                     for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                     {
                         auto child = node->childs[i];
-                        if (!(child->flags & AST_NO_BYTECODE))
-                        {
-                            nodes.push_back(child);
-                        }
+                        nodes.push_back(child);
                     }
                 }
 
