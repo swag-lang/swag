@@ -16,14 +16,31 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
     if (!parameters)
         return true;
 
-    int index = 0;
+    bool defaultValueDone = false;
+    int  index            = 0;
     typeInfo->parameters.reserve(parameters->childs.size());
     for (auto param : parameters->childs)
     {
+        auto nodeParam      = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
         auto funcParam      = g_Pool_typeInfoFuncAttrParam.alloc();
         funcParam->name     = param->name;
         funcParam->typeInfo = param->typeInfo;
         funcParam->index    = index++;
+
+		// Default parameter value
+        if (nodeParam->astAssignment)
+        {
+            if (!defaultValueDone)
+            {
+                defaultValueDone               = true;
+                typeInfo->firstDefaultValueIdx = index - 1;
+            }
+        }
+        else
+        {
+            SWAG_VERIFY(!defaultValueDone, sourceFile->report({sourceFile, nodeParam, "missing parameter default value"}));
+        }
+
         typeInfo->parameters.push_back(funcParam);
     }
 

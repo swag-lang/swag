@@ -151,12 +151,30 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
         }
     }
 
-    // Push parameters
-    int precallStack = 0;
-    if (!node->childs.empty())
+    int  precallStack  = 0;
+    auto params        = node->childs.empty() ? nullptr : node->childs.front();
+    int  numCallParams = params ? (int) params->childs.size() : 0;
+
+    // Push missing default parameters
+    if (numCallParams != typeInfoFunc->parameters.size())
     {
-        auto params = node->childs.front();
-        for (int i = (int) params->childs.size() - 1; i >= 0; i--)
+        for (int i = (int) typeInfoFunc->parameters.size() - 1; i >= numCallParams; i--)
+        {
+            auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
+            context->node     = defaultParam->astAssignment;
+            assert(context->node->flags & AST_VALUE_COMPUTED);
+            emitLiteral(context);
+            context->node = node;
+            emitInstruction(context, ByteCodeOp::PushRCx, defaultParam->astAssignment->resultRegisterRC);
+            sourceFile->module->freeRegisterRC(defaultParam->astAssignment->resultRegisterRC);
+            precallStack += sizeof(Register);
+        }
+    }
+
+    // Push parameters
+    if (params)
+    {
+        for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = params->childs[i];
             emitInstruction(context, ByteCodeOp::PushRCx, param->resultRegisterRC);

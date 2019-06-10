@@ -25,7 +25,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Value
     if (node->astAssignment)
     {
-        if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (node->astAssignment->flags & AST_CONST_EXPR))
+        if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->astAssignment->flags & AST_CONST_EXPR))
         {
             SWAG_CHECK(executeNode(context, node->astAssignment, true));
             if (context->result == SemanticResult::Pending)

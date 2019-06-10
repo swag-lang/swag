@@ -18,22 +18,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
     paramNode->inheritToken(token);
 
-    vector<AstVarDecl*> allVars;
     SWAG_CHECK(tokenizer.getToken(token));
-    while (token.id == TokenId::SymComma)
-    {
-        SWAG_CHECK(eatToken(TokenId::SymComma));
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid parameter name '%s'", token.text.c_str())));
-
-        auto node         = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
-        node->semanticFct = &SemanticJob::resolveVarDecl;
-        node->inheritOwners(this);
-        node->inheritToken(token);
-        allVars.push_back(node);
-
-        SWAG_CHECK(tokenizer.getToken(token));
-    }
-
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken(TokenId::SymColon));
@@ -45,23 +30,12 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     {
         SWAG_CHECK(eatToken(TokenId::SymEqual));
         SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->astAssignment));
+		paramNode->astAssignment->flags |= AST_NO_BYTECODE;
     }
 
     // Be sure we will be able to have a type
     if (!paramNode->astType && !paramNode->astAssignment)
-    {
-        if (allVars.size() == 0)
-            return error(paramNode->token, "parameter must be initialized because no type is specified");
-        return error(paramNode->token.startLocation, allVars.back()->token.endLocation, "parameters must be initialized because no type is specified");
-    }
-
-    // All additional vars will point to the same type and assignment. We do not put them as childs, this way
-    // we're sure nodes won't be evaluated twice
-    for (auto var : allVars)
-    {
-        var->astType       = paramNode->astType;
-        var->astAssignment = paramNode->astAssignment;
-    }
+        return error(paramNode->token, "parameter must be initialized because no type is specified");
 
     return true;
 }

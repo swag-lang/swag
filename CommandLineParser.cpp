@@ -15,7 +15,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
 
     cmdLine->stats = true;
-    //cmdLine->fileFilter = "233";
+    //cmdLine->fileFilter = "246";
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address)
