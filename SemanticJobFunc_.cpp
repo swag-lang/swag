@@ -68,8 +68,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (!(node->flags & AST_SCOPE_HAS_RETURN))
         {
             if (node->flags & AST_FCT_HAS_RETURN)
-                return sourceFile->report({sourceFile, node->content->token.endLocation, node->content->token.endLocation, format("not all control paths of function '%s' return a value", node->name.c_str())});
-            return sourceFile->report({sourceFile, node->content->token.endLocation, node->content->token.endLocation, format("function '%s' must return a value", node->name.c_str())});
+                return sourceFile->report({sourceFile, node->token, format("not all control paths of function '%s' return a value", node->name.c_str())});
+            return sourceFile->report({sourceFile, node->token, format("function '%s' must return a value", node->name.c_str())});
         }
     }
 

@@ -126,6 +126,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+		funcNode->content->token = token;
     }
 
     return true;

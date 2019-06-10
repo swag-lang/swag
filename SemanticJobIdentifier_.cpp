@@ -91,7 +91,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
 void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
     node->resolvedSymbolName     = symbol;
-    node->resolvedSymbolOverload = symbol->overloads[0];
+    node->resolvedSymbolOverload = overload;
     node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
 
     switch (symbol->kind)
@@ -275,8 +275,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 vector<const Diagnostic*> notes;
                 for (auto overload : badSignature)
                 {
-                    auto note = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
-					note->showRange = false;
+                    auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+                    note->showRange = false;
                     notes.push_back(note);
                 }
 
@@ -304,8 +304,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         vector<const Diagnostic*> notes;
         for (auto overload : matches)
         {
-            auto note = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
-			note->showRange = false;
+            auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+            note->showRange = false;
             notes.push_back(note);
         }
 

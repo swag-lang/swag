@@ -2,13 +2,13 @@
 #unittest pass semantic;
 using swag;
 
-#[printByteCode]
+//#[printByteCode]
 func main: (a: s32 = 6)
 { 
 	@assert(a == 6);
 }
 
-#[printByteCode]
+//#[printByteCode]
 func main1: ()
 {
 	main;
