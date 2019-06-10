@@ -7,7 +7,7 @@ func main1: ()->s32 { return 77; }
 #[constexpr]
 func main2: ()->s32 { return 666; }
 
-#[printByteCode]
+//#[printByteCode]
 func main: ()
 {
 	var a = #run main1();
