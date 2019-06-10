@@ -1,4 +1,4 @@
-#unittest module module247;
+#unittest module module248;
 #unittest pass semantic;
 using swag;
 
@@ -8,7 +8,9 @@ func main: (a: s32 = 6)->s32
 	//@print("1");
 	return a;
 }
-func main: (a: s32, b: s32)->s32
+
+#unittest error;
+func main: (a: s32, b: s32 = 0)->s32
 { 
 	//@print("2");
 	return b;
