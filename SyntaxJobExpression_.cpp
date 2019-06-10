@@ -196,12 +196,23 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
 {
+    if (token.id == TokenId::CompilerRun)
+    {
+        SWAG_CHECK(tokenizer.getToken(token));
+        AstNode* expr;
+        SWAG_CHECK(doBoolExpression(parent, &expr));
+        if (result)
+            *result = expr;
+        expr->semanticAfterFct = &SemanticJob::forceExecuteNode;
+        return true;
+    }
+
     return doBoolExpression(parent, result);
 }
 
 bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
 {
-    return doBoolExpression(parent, result);
+    return doExpression(parent, result);
 }
 
 bool SyntaxJob::doAffectExpression(AstNode* parent)

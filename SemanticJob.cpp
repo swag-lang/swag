@@ -36,18 +36,18 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::Enter:
             node->semanticState = AstNodeResolveState::ProcessingChilds;
 
-			if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))
+            if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))
                 return JobResult::ReleaseJob;
 
             if (!node->childs.empty())
             {
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
-                    auto child        = node->childs[i];
+                    auto child = node->childs[i];
 
-					// Top to bottom inheritance
-					if(node->kind == AstNodeKind::Statement)
-						child->attributes = node->attributes;
+                    // Top to bottom inheritance
+                    if (node->kind == AstNodeKind::Statement)
+                        child->attributes = node->attributes;
 
                     nodes.push_back(child);
                 }
@@ -61,7 +61,17 @@ JobResult SemanticJob::execute()
                 context.result = SemanticResult::Done;
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
+                if (context.result == SemanticResult::Pending)
+                    return JobResult::KeepJobAlive;
+            }
 
+            node->semanticState = AstNodeResolveState::PostChilds;
+
+        case AstNodeResolveState::PostChilds:
+            if (node->semanticAfterFct)
+            {
+                if (!node->semanticAfterFct(&context))
+                    return JobResult::ReleaseJob;
                 if (context.result == SemanticResult::Pending)
                     return JobResult::KeepJobAlive;
             }

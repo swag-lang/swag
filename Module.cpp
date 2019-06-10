@@ -6,6 +6,7 @@
 #include "Workspace.h"
 #include "Scope.h"
 #include "Ast.h"
+#include "TypeManager.h"
 
 Pool<Module> g_Pool_module;
 
@@ -96,6 +97,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         {
             node->computedValue.reg = runContext->registersRC[node->resultRegisterRC];
             node->flags |= AST_VALUE_COMPUTED;
+			node->typeInfo = TypeManager::concreteType(node->typeInfo);
         }
     }
 

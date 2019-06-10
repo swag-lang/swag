@@ -48,6 +48,7 @@ struct SemanticJob : public Job
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
+	static bool forceExecuteNode(SemanticContext* context);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

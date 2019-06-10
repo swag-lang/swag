@@ -50,6 +50,12 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     return true;
 }
 
+bool SemanticJob::forceExecuteNode(SemanticContext* context)
+{
+	SWAG_CHECK(executeNode(context, context->node, false));
+    return true;
+}
+
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
     auto expr = context->node->childs[0];

@@ -24,6 +24,7 @@ enum class AstNodeResolveState
 {
     Enter,
     ProcessingChilds,
+	PostChilds,
 };
 
 enum class AstNodeKind
@@ -37,7 +38,7 @@ enum class AstNodeKind
     Type,
     Namespace,
     If,
-	While,
+    While,
     Statement,
     EnumDecl,
     FuncDecl,
@@ -82,6 +83,7 @@ struct AstNode : public PoolElement
         parent             = nullptr;
         semanticFct        = nullptr;
         semanticBeforeFct  = nullptr;
+        semanticAfterFct   = nullptr;
         byteCodeFct        = nullptr;
         byteCodeBeforeFct  = nullptr;
         byteCodeAfterFct   = nullptr;
@@ -162,6 +164,7 @@ struct AstNode : public PoolElement
     Token               token;
     SemanticFct         semanticFct;
     SemanticFct         semanticBeforeFct;
+    SemanticFct         semanticAfterFct;
     ByteCodeFct         byteCodeFct;
     ByteCodeNotifyFct   byteCodeBeforeFct;
     ByteCodeNotifyFct   byteCodeAfterFct;
@@ -279,7 +282,7 @@ struct AstWhile : public AstNode
     AstNode* boolExpression;
     AstNode* block;
 
-	int seekJumpBeforeExpression;
+    int seekJumpBeforeExpression;
     int seekJumpExpression;
     int seekJumpAfterBlock;
 };
