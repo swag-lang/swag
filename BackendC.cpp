@@ -2,6 +2,6 @@
 #include "SourceFile.h"
 #include "BackendC.h"
 
-void BackendC::generate(Module*)
+void BackendC::generate(Module* module)
 {
 }

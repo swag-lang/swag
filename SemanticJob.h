@@ -37,8 +37,8 @@ struct SemanticJob : public Job
     void reset() override
     {
         nodes.clear();
-        dependentSymbols.clear();
-        scopeHierarchy.clear();
+        cacheDependentSymbols.clear();
+        cacheScopeHierarchy.clear();
     }
 
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
@@ -48,7 +48,7 @@ struct SemanticJob : public Job
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
-	static bool forceExecuteNode(SemanticContext* context);
+    static bool forceExecuteNode(SemanticContext* context);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -93,16 +93,18 @@ struct SemanticJob : public Job
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
     static bool resolveCast(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
-	static bool resolveWhile(SemanticContext* context);
+    static bool resolveWhile(SemanticContext* context);
     static bool resolveAffect(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);
 
-    Module*             module;
-    SourceFile*         sourceFile;
-    vector<AstNode*>    nodes;
-    vector<SymbolName*> dependentSymbols;
-    vector<Scope*>      scopeHierarchy;
-    set<Scope*>         scopesHere;
+    Module*                 module;
+    SourceFile*             sourceFile;
+    vector<AstNode*>        nodes;
+    vector<SymbolName*>     cacheDependentSymbols;
+    vector<Scope*>          cacheScopeHierarchy;
+    set<Scope*>             scopesHere;
+    vector<SymbolOverload*> cacheMatches;
+    vector<SymbolOverload*> cacheBadSignature;
 };
 
 extern Pool<SemanticJob> g_Pool_semanticJob;

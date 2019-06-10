@@ -77,8 +77,8 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     auto sourceFile = context->sourceFile;
     auto job        = context->job;
 
-    SemanticJob::collectScopeHiearchy(context, job->scopeHierarchy, startScope->parentScope);
-    for (auto scope : job->scopeHierarchy)
+    SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, startScope->parentScope);
+    for (auto scope : job->cacheScopeHierarchy)
     {
         if (scope->symTable && scope != startScope)
             SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
@@ -122,21 +122,21 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Clear cache for the next symbol resolution
-    context->job->scopeHierarchy.clear();
-    context->job->dependentSymbols.clear();
+    context->job->cacheScopeHierarchy.clear();
+    context->job->cacheDependentSymbols.clear();
 }
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto  job              = context->job;
-    auto& scopeHierarchy   = job->scopeHierarchy;
-    auto& dependentSymbols = job->dependentSymbols;
+    auto& scopeHierarchy   = job->cacheScopeHierarchy;
+    auto& dependentSymbols = job->cacheDependentSymbols;
     auto  node             = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     auto  parent           = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
     auto  sourceFile       = context->sourceFile;
 
     // Compute dependencies if not already done
-    if (job->dependentSymbols.empty())
+    if (job->cacheDependentSymbols.empty())
     {
         auto startScope = parent->startScope;
         if (!startScope)
@@ -157,7 +157,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
         }
 
-        if (job->dependentSymbols.empty())
+        if (job->cacheDependentSymbols.empty())
             return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
     }
 
@@ -211,9 +211,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    vector<SymbolOverload*> matches;
-    vector<SymbolOverload*> badSignature;
-    int                     numOverloads = 0;
+    job->cacheMatches.clear();
+    job->cacheBadSignature.clear();
+    auto& matches      = job->cacheMatches;
+    auto& badSignature = job->cacheBadSignature;
+    int   numOverloads = 0;
     for (auto symbol : dependentSymbols)
     {
         for (auto overload : symbol->overloads)
