@@ -2,18 +2,11 @@
 #include "Pool.h"
 #include "Utf8.h"
 #include "SourceLocation.h"
+#include "BuildPass.h"
 struct Module;
 struct AstNode;
 struct Diagnostic;
 struct Scope;
-
-enum class BuildPass
-{
-    Lexer,
-    Syntax,
-    Semantic,
-    Full,
-};
 
 enum class TextFormat
 {
@@ -42,12 +35,12 @@ struct SourceFile : public PoolElement
     bool checkFormat(int bufferIndex);
 
     fs::path  path;
-    BuildPass buildPass     = BuildPass::Full;
     int       unittestError = 0;
     int       silent        = 0;
     Module*   module        = nullptr;
     AstNode*  astRoot       = nullptr;
     uint32_t  indexInModule = UINT32_MAX;
+    BuildPass buildPass     = BuildPass::Full;
 
     const char* externalBuffer = nullptr;
     int         seekExternal   = 0;

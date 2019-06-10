@@ -325,6 +325,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 {
     if (silent > 0)
         return false;
+    module->numErrors++;
 
     // Do not raise an error if we are waiting for one, during tests
     if (unittestError && diag.errorLevel == DiagnosticLevel::Error)
@@ -347,7 +348,6 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
     // Raise error
     g_Workspace.numErrors++;
-    module->numErrors++;
 
     // Print error
     g_Log.lock();

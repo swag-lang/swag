@@ -125,6 +125,8 @@ bool SyntaxJob::doCompilerUnitTest()
             sourceFile->report({sourceFile, token, format("invalid pass name '%s'", token.text.c_str())});
             return false;
         }
+
+		sourceFile->module->setBuildPass(sourceFile->buildPass);
     }
     else if (token.text == "module")
     {

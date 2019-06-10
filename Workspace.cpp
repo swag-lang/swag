@@ -140,6 +140,8 @@ bool Workspace::build()
     {
         if (module->numErrors > 0)
             continue;
+        if (module->buildPass < BuildPass::Semantic)
+            continue;
         auto job    = g_Pool_moduleSemanticJob.alloc();
         job->module = module;
         g_ThreadMgr.addJob(job);
@@ -171,6 +173,8 @@ bool Workspace::build()
             if (module->numErrors > 0)
                 continue;
             if (module->name.empty())
+                continue;
+            if (module->buildPass < BuildPass::Full)
                 continue;
             auto job    = g_Pool_moduleOutputJob.alloc();
             job->module = module;

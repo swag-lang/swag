@@ -103,7 +103,8 @@ JobResult SyntaxJob::execute()
         if (!ok)
         {
             // If there's an error, then we must stop at syntax pass
-            sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
+			sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
+			sourceFile->module->setBuildPass(sourceFile->buildPass);
             if (!recoverError())
                 return JobResult::ReleaseJob;
             result = false;

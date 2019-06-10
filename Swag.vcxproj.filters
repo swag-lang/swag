@@ -380,6 +380,9 @@
     <ClInclude Include="BackendCCompilerVS.h">
       <Filter>Backend\C</Filter>
     </ClInclude>
+    <ClInclude Include="BuildPass.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "SpinLock.h"
+#include "BuildPass.h"
 struct Utf8;
 struct SourceFile;
 struct SymTable;
@@ -37,9 +38,6 @@ struct Module : public PoolElement
     vector<uint32_t> availableRegistersRC;
     uint32_t         maxReservedRegisterRR = 0;
 
-    SpinLock        mutexDataSeg;
-    vector<uint8_t> dataSegment;
-
     int reserveDataSegment(int size, void* content = nullptr)
     {
         scoped_lock lk(mutexDataSeg);
@@ -49,6 +47,18 @@ struct Module : public PoolElement
             memcpy(&dataSegment[result], content, size);
         return result;
     }
+
+    SpinLock        mutexDataSeg;
+    vector<uint8_t> dataSegment;
+
+    void setBuildPass(BuildPass buildP)
+    {
+        scoped_lock lk(mutexBuildPass);
+        buildPass = buildP;
+    }
+
+    SpinLock  mutexBuildPass;
+    BuildPass buildPass = BuildPass::Full;
 };
 
 extern Pool<Module> g_Pool_module;

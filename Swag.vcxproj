@@ -165,6 +165,7 @@
     <ClInclude Include="BackendC.h" />
     <ClInclude Include="BackendCCompiler.h" />
     <ClInclude Include="BackendCCompilerVS.h" />
+    <ClInclude Include="BuildPass.h" />
     <ClInclude Include="ByteCode.h" />
     <ClInclude Include="ByteCodeGenJob.h" />
     <ClInclude Include="ByteCodeOp.h" />

@@ -10,6 +10,7 @@
 #include "SymTable.h"
 #include "Scope.h"
 #include "CommandLine.h"
+#include "Module.h"
 
 bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
 {
@@ -82,7 +83,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // Ask for bytecode
-    bool genByteCode = g_CommandLine.output && (sourceFile->buildPass > BuildPass::Semantic);
+    bool genByteCode = g_CommandLine.output && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic);
     if (node->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
         genByteCode = true;
     if (genByteCode)
