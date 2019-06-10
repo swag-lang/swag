@@ -6,7 +6,7 @@ Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 
 JobResult ModuleOutputJob::execute()
 {
-	BackendC backend;
-	backend.generate(module);
+    BackendC backend(module);
+    backend.generate();
     return JobResult::ReleaseJob;
 }

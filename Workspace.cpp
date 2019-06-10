@@ -163,13 +163,23 @@ bool Workspace::build()
     }
 
     // Output pass on all modules
-    for (auto module : modules)
+    if (g_CommandLine.output)
     {
-        if (module->numErrors > 0)
-            continue;
-        auto job    = g_Pool_moduleOutputJob.alloc();
-        job->module = module;
-        g_ThreadMgr.addJob(job);
+        auto timeBefore = chrono::high_resolution_clock::now();
+        for (auto module : modules)
+        {
+            if (module->numErrors > 0)
+                continue;
+            if (module->name.empty())
+                continue;
+            auto job    = g_Pool_moduleOutputJob.alloc();
+            job->module = module;
+            g_ThreadMgr.addJob(job);
+        }
+
+        g_ThreadMgr.waitEndJobs();
+        auto timeAfter = chrono::high_resolution_clock::now();
+        g_Stats.outputTime += timeAfter - timeBefore;
     }
 
     return true;

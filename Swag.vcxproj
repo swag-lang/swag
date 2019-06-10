@@ -163,6 +163,8 @@
     <ClInclude Include="Ast.h" />
     <ClInclude Include="AstNode.h" />
     <ClInclude Include="BackendC.h" />
+    <ClInclude Include="BackendCCompiler.h" />
+    <ClInclude Include="BackendCCompilerVS.h" />
     <ClInclude Include="ByteCode.h" />
     <ClInclude Include="ByteCodeGenJob.h" />
     <ClInclude Include="ByteCodeOp.h" />
@@ -213,6 +215,7 @@
     <ClCompile Include="Ast.cpp" />
     <ClCompile Include="AstNode.cpp" />
     <ClCompile Include="BackendC.cpp" />
+    <ClCompile Include="BackendCCompilerVS.cpp" />
     <ClCompile Include="ByteCode.cpp" />
     <ClCompile Include="ByteCodeGenJobAffectOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />

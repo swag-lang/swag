@@ -4,7 +4,20 @@ struct Module;
 
 struct BackendC
 {
-    void generate(Module* module);
+    BackendC(Module* mdl)
+        : module{mdl}
+    {
+    }
+
+    bool writeFile(const char* fileName, Concat& concat);
+    bool compile();
+    bool generate();
+
+    Module* module;
+
+    fs::path destHFile;
+    fs::path destCFile;
+    fs::path outputFile;
 
     Concat outputH;
     Concat outputC;

@@ -5,7 +5,6 @@ Pool<ConcatBucket> g_Pool_concatBucket;
 
 Concat::Concat()
 {
-    checkCount(1);
 }
 
 void Concat::checkCount(int offset)
@@ -105,4 +104,12 @@ void Concat::addPointer(void* v)
     checkCount(sizeof(void*));
     *(void**) currentSP = v;
     currentSP += sizeof(void*);
+}
+
+void Concat::addString(const string& v)
+{
+    auto len = (int) v.length();
+    checkCount(len);
+    memcpy(currentSP, v.c_str(), len);
+    currentSP += len;
 }

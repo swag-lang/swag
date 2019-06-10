@@ -7,12 +7,14 @@
 #include "Scope.h"
 #include "Ast.h"
 #include "TypeManager.h"
+#include "Log.h"
 
 Pool<Module> g_Pool_module;
 
 void Module::setup(Workspace* wkp, const fs::path& pth, bool runtime)
 {
     path      = pth;
+    name      = path.filename().string();
     workspace = wkp;
 
     if (runtime)
@@ -97,9 +99,21 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         {
             node->computedValue.reg = runContext->registersRC[node->resultRegisterRC];
             node->flags |= AST_VALUE_COMPUTED;
-			node->typeInfo = TypeManager::concreteType(node->typeInfo);
+            node->typeInfo = TypeManager::concreteType(node->typeInfo);
         }
     }
 
     return true;
+}
+
+void Module::error(const Utf8& msg)
+{
+    g_Log.lock();
+    g_Log.print(format("module %s: ", name.c_str()));
+    g_Log.setColor(LogColor::Red);
+    g_Log.print("error: ");
+    g_Log.setDefaultColor();
+    g_Log.print(msg);
+    g_Log.eol();
+    g_Log.unlock();
 }

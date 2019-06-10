@@ -27,13 +27,14 @@ void testffi()
     ffi_call(&cif, FFI_FN(toto), &result, values);
 }
 
-void printStats(chrono::duration<double>& elapsedTime)
+void printStats()
 {
     if (!g_CommandLine.stats)
         return;
 
     g_Log.setColor(LogColor::White);
-    wcout << "elapsed time ...... " << elapsedTime.count() << "s\n";
+    wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
+    wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
     wcout << "workers ........... " << g_Stats.numWorkers << "\n";
     wcout << "lines ............. " << g_Stats.numLines << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
@@ -63,9 +64,9 @@ int main(int argc, const char* argv[])
     g_Workspace.build();
 
     // Prints stats, then exit
-    auto                     timeAfter = chrono::high_resolution_clock::now();
-    chrono::duration<double> diff      = timeAfter - timeBefore;
-    printStats(diff);
+    auto timeAfter    = chrono::high_resolution_clock::now();
+    g_Stats.totalTime = timeAfter - timeBefore;
+    printStats();
 
     return g_Workspace.numErrors > 0 ? -1 : 0;
 }

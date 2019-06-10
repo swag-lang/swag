@@ -8,6 +8,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
     addArg("--syntax-only", nullptr, CommandLineType::Bool, &cmdLine->syntaxOnly);
+	addArg("--output", nullptr, CommandLineType::Bool, &cmdLine->output);
     addArg("--error-out-source", "-eos", CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", "-eon", CommandLineType::Bool, &cmdLine->errorNoteOut);
 
@@ -15,7 +16,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
 
     cmdLine->stats = true;
-    //cmdLine->fileFilter = "249";
+    cmdLine->fileFilter = "251";
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address)

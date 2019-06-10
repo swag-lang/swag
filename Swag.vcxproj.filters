@@ -227,6 +227,9 @@
     <ClCompile Include="ByteCodeGenJobVar_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="BackendCCompilerVS.cpp">
+      <Filter>Backend\C</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -370,6 +373,12 @@
     </ClInclude>
     <ClInclude Include="ByteCodeOpList.h">
       <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendCCompiler.h">
+      <Filter>Backend\C</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendCCompilerVS.h">
+      <Filter>Backend\C</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

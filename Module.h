@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "SpinLock.h"
+struct Utf8;
 struct SourceFile;
 struct SymTable;
 struct Utf8Crc;
@@ -13,6 +14,7 @@ struct Module : public PoolElement
     void setup(Workspace* wkp, const fs::path& pth, bool runtime = false);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
+    void error(const Utf8& msg);
 
     fs::path            path;
     string              name;
