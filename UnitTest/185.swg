@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-#[constexpr]
+#[constExpr]
 func main: () -> u32 { return 1; }
 
 #assert 1 << main == 2;

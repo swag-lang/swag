@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-#[constexpr]
+#[constExpr]
 func main:() -> s32
 {
 	//@print("toto\n");

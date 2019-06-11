@@ -4,7 +4,7 @@ using swag;
 
 func main1: ()->s32 { return 77; }
 
-#[constexpr]
+#[constExpr]
 func main2: ()->s32 { return 666; }
 
 //#[printByteCode]

@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-#[constexpr]
+#[constExpr]
 func value: ()->s32 { return 55; }
 
 func main: (a: s32 = value())->s32
