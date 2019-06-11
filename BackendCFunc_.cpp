@@ -26,7 +26,7 @@ bool BackendC::emitFunctions()
             for (auto r : bc->usedRegisters)
             {
                 if (index == 0)
-                    outputC.addString("__Register ");
+                    outputC.addString("__register ");
                 else
                     outputC.addString(", ");
 				index = (index + 1) % 10;
@@ -36,6 +36,7 @@ bool BackendC::emitFunctions()
             outputC.addString(";\n");
         }
 
+		// Generate bytecode
         auto ip = bc->out;
         for (uint32_t i = 0; i < bc->numInstructions; i++)
         {

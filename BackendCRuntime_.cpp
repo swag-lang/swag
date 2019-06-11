@@ -13,20 +13,20 @@ const char* g_RuntimeC = R"(
 #include <iostream>
 using namespace std;
 
-union __Register {
+union __register {
+    void*    pointer;
     uint64_t u64;
     int64_t  s64;
+    double   f64;
+    float    f32;
+    char32_t ch;
     uint32_t u32;
     int32_t  s32;
     uint16_t u16;
     int16_t  s16;
     uint8_t  u8;
     int8_t   s8;
-    float    f32;
-    double   f64;
-    char32_t ch;
     bool     b;
-    void*    pointer;
 };
 
 void __print(const char* message)
