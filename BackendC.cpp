@@ -42,7 +42,7 @@ bool BackendC::compile()
 
 bool BackendC::generate()
 {
-	outputC.addString(string("void main(){ return 0; }\n"));
+	outputC.addString(string("void main(){ }\n"));
     SWAG_CHECK(compile());
     return true;
 }

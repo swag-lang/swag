@@ -27,7 +27,11 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
     saAttr.nLength              = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle       = TRUE;
     saAttr.lpSecurityDescriptor = nullptr;
-    ::CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0);
+    if (!::CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
+    {
+        backend->module->error("can't create cl.exe process (::CreatePipe)");
+        return false;
+    }
 
     // Create process
     ::ZeroMemory(&si, sizeof(si));
@@ -50,7 +54,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                           &si,
                           &pi))
     {
-        backend->module->error("can't create cl.exe process");
+        backend->module->error("can't create cl.exe process (::CreateProcess)");
         return false;
     }
 
