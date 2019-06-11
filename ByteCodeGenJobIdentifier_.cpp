@@ -29,7 +29,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
-        node->resultRegisterRC                                                              = sourceFile->module->reserveRegisterRC();
+        node->resultRegisterRC = sourceFile->module->reserveRegisterRC(context->bc);
+
         emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         return true;
     }
@@ -37,7 +38,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Variable from the data segment
     if (resolved->flags & OVERLOAD_VAR_GLOBAL)
     {
-        node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
+        node->resultRegisterRC = sourceFile->module->reserveRegisterRC(context->bc);
         if (node->flags & AST_LEFT_EXPRESSION)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC);
@@ -73,7 +74,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Variable from the stack
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
-        node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
+        node->resultRegisterRC = sourceFile->module->reserveRegisterRC(context->bc);
         if (node->flags & AST_LEFT_EXPRESSION)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC);

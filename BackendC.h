@@ -13,6 +13,11 @@ struct BackendC
     bool compile();
     bool generate();
 
+	bool emitRuntime();
+    bool emitDataSegment();
+    bool emitMain();
+    bool emitFunctions();
+
     Module* module;
 
     fs::path destHFile;

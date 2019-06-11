@@ -187,7 +187,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        node->resultRegisterRC = sourceFile->module->reserveRegisterRC();
+        node->resultRegisterRC = sourceFile->module->reserveRegisterRC(context->bc);
         emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
     }
 

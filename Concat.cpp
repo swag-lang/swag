@@ -113,3 +113,11 @@ void Concat::addString(const string& v)
     memcpy(currentSP, v.c_str(), len);
     currentSP += len;
 }
+
+void Concat::addString(const char* v)
+{
+    auto len = (int) strlen(v);
+    checkCount(len);
+    memcpy(currentSP, v, len);
+    currentSP += len;
+}

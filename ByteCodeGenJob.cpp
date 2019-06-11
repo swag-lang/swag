@@ -7,6 +7,7 @@
 #include "SourceFile.h"
 #include "ByteCodeOp.h"
 #include "TypeInfo.h"
+#include "Module.h"
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
@@ -50,11 +51,14 @@ JobResult ByteCodeGenJob::execute()
     context.job        = this;
     context.sourceFile = sourceFile;
     context.bc         = originalNode->bc;
+
     if (!context.bc)
     {
         originalNode->bc = context.bc = g_Pool_byteCode.alloc();
         originalNode->bc->node        = originalNode;
         originalNode->bc->sourceFile  = sourceFile;
+        if (originalNode->kind == AstNodeKind::FuncDecl)
+            sourceFile->module->addByteCodeFunc(originalNode->bc);
     }
 
     while (!nodes.empty())

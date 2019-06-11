@@ -9,6 +9,7 @@ struct Utf8Crc;
 struct Workspace;
 struct AstNode;
 struct Scope;
+struct ByteCode;
 
 struct Module : public PoolElement
 {
@@ -27,7 +28,7 @@ struct Module : public PoolElement
     Workspace*          workspace;
     bool                isRuntime = false;
 
-    uint32_t reserveRegisterRC();
+    uint32_t reserveRegisterRC(ByteCode* bc);
     void     freeRegisterRC(uint32_t reg);
     void     reserveRegisterRR(uint32_t count);
     bool     executeNode(SourceFile* sourceFile, AstNode* node);
@@ -59,6 +60,15 @@ struct Module : public PoolElement
 
     SpinLock  mutexBuildPass;
     BuildPass buildPass = BuildPass::Full;
+
+    void addByteCodeFunc(ByteCode* bc)
+    {
+        scoped_lock lk(mutexByteCode);
+        byteCodeFunc.push_back(bc);
+    }
+
+    SpinLock          mutexByteCode;
+    vector<ByteCode*> byteCodeFunc;
 };
 
 extern Pool<Module> g_Pool_module;

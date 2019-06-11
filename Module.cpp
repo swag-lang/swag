@@ -8,6 +8,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Log.h"
+#include "ByteCode.h"
 
 Pool<Module> g_Pool_module;
 
@@ -65,17 +66,19 @@ void Module::reserveRegisterRR(uint32_t count)
     maxReservedRegisterRR = max(maxReservedRegisterRR, count);
 }
 
-uint32_t Module::reserveRegisterRC()
+uint32_t Module::reserveRegisterRC(ByteCode* bc)
 {
     scoped_lock lk(mutexRegisterRC);
     if (!availableRegistersRC.empty())
     {
         auto result = availableRegistersRC.back();
+		bc->usedRegisters.insert(result);
         availableRegistersRC.pop_back();
         return result;
     }
 
     auto result = maxReservedRegisterRC++;
+	bc->usedRegisters.insert(result);
     return result;
 }
 

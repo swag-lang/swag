@@ -230,6 +230,18 @@
     <ClCompile Include="BackendCCompilerVS.cpp">
       <Filter>Backend\C</Filter>
     </ClCompile>
+    <ClCompile Include="BackendCData_.cpp">
+      <Filter>Backend\C</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendCFunc_.cpp">
+      <Filter>Backend\C</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendCMain_.cpp">
+      <Filter>Backend\C</Filter>
+    </ClCompile>
+    <ClCompile Include="BackendCRuntime_.cpp">
+      <Filter>Backend\C</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

@@ -136,9 +136,11 @@ bool BackendCCompilerVS::getWinSdk(string& winSdk)
         return false;
     }
 
+	fs::path tmpPath;
     for (auto& p : fs::directory_iterator(libPath))
-        winSdk = p.path().string();
+		tmpPath = p.path();
 
+	winSdk = tmpPath.filename().string();
     return true;
 }
 
@@ -154,13 +156,14 @@ bool BackendCCompilerVS::compile()
     // Folders
     vector<string> libPath;
     libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
-    libPath.push_back(format(R"(%s\um\x64)", winSdk.c_str()));
-    libPath.push_back(format(R"(%s\ucrt\x64)", winSdk.c_str()));
+    libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\um\x64)", winSdk.c_str()));
+    libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\ucrt\x64)", winSdk.c_str()));
 
     vector<string> includePath;
-    includePath.push_back(format(R"(%s\um)", winSdk.c_str()));
-    includePath.push_back(format(R"(%s\shared)", winSdk.c_str()));
-    includePath.push_back(format(R"(%s\ucrt)", winSdk.c_str()));
+    includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\um)", winSdk.c_str()));
+    includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
+    includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
+	includePath.push_back(format(R"(%s\include)", vsTarget.c_str()));
 
     // CL arguments
     bool isDebug = false; // true;
@@ -175,7 +178,8 @@ bool BackendCCompilerVS::compile()
     }
 
     clArguments += "/nologo ";
-    clArguments += "/Tc\"" + backend->destCFile.string() + "\" ";
+	clArguments += "/EHsc ";
+    clArguments += "/Tp\"" + backend->destCFile.string() + "\" ";
     clArguments += "/Fo\"" + backend->outputFile.string() + ".obj\" ";
     for (const auto& oneIncludePath : includePath)
         clArguments += "/I\"" + oneIncludePath + "\" ";

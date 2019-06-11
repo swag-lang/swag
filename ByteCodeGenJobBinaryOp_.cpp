@@ -261,7 +261,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
     auto r0 = node->childs[0]->resultRegisterRC;
     auto r1 = node->childs[1]->resultRegisterRC;
-    auto r2 = module->reserveRegisterRC();
+    auto r2 = module->reserveRegisterRC(context->bc);
     module->freeRegisterRC(r0);
     module->freeRegisterRC(r1);
     node->resultRegisterRC = r2;
@@ -407,7 +407,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 
     auto r0 = node->childs[0]->resultRegisterRC;
     auto r1 = node->childs[1]->resultRegisterRC;
-    auto r2 = module->reserveRegisterRC();
+    auto r2 = module->reserveRegisterRC(context->bc);
     module->freeRegisterRC(r0);
     module->freeRegisterRC(r1);
     node->resultRegisterRC = r2;

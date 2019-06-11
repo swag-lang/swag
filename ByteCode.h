@@ -28,6 +28,8 @@ struct ByteCode : public PoolElement
     vector<Utf8>         strBuffer;
     SourceFile*          sourceFile;
     AstNode*             node;
+
+    set<int> usedRegisters;
 };
 
 extern Pool<ByteCode> g_Pool_byteCode;

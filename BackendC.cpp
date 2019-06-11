@@ -29,7 +29,7 @@ bool BackendC::compile()
 
     // Output C files
     destHFile  = tmpFolder + module->name + ".h";
-    destCFile  = tmpFolder + module->name + ".c";
+    destCFile  = tmpFolder + module->name + ".cpp";
     outputFile = tmpFolder + module->name + ".exe";
     SWAG_CHECK(writeFile(destHFile.string().c_str(), outputH));
     SWAG_CHECK(writeFile(destCFile.string().c_str(), outputC));
@@ -42,7 +42,11 @@ bool BackendC::compile()
 
 bool BackendC::generate()
 {
-	outputC.addString(string("void main(){ }\n"));
+	emitRuntime();
+	emitDataSegment();
+	emitFunctions();
+	emitMain();
+
     SWAG_CHECK(compile());
     return true;
 }

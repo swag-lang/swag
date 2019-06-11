@@ -16,7 +16,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitLiteral, type not native");
 
-    auto r1 = node->resultRegisterRC = context->sourceFile->module->reserveRegisterRC();
+    auto r1 = node->resultRegisterRC = context->sourceFile->module->reserveRegisterRC(context->bc);
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
@@ -57,7 +57,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         return true;
     case NativeType::String:
         context->bc->strBuffer.push_back(node->computedValue.text);
-        emitInstruction(context, ByteCodeOp::CopyRCxVa, 0, r1)->a.u32 = (uint32_t) context->bc->strBuffer.size() - 1;
+        emitInstruction(context, ByteCodeOp::CopyRCxVaStr, 0, r1)->a.u32 = (uint32_t) context->bc->strBuffer.size() - 1;
         return true;
 
     default:

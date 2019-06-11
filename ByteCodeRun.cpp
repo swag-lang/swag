@@ -68,6 +68,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::CopyRCxVa:
+	case ByteCodeOp::CopyRCxVaStr:
     {
         registersRC[ip->b.u32] = ip->a;
         break;
