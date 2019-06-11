@@ -15,7 +15,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
     HANDLE              hChildStdoutRd, hChildStdoutWr;
     DWORD               dwRead;
     CHAR                chBuf[4096];
-    string              strout;
+    Utf8                strout;
     DWORD               exit;
     UINT                errmode;
 
@@ -23,6 +23,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
     ::SetErrorMode(SEM_FAILCRITICALERRORS);
 
     // Create a pipe to receive compiler results
+    ::ZeroMemory(&saAttr, sizeof(saAttr));
     saAttr.nLength              = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle       = TRUE;
     saAttr.lpSecurityDescriptor = nullptr;
@@ -30,14 +31,13 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
 
     // Create process
     ::ZeroMemory(&si, sizeof(si));
-    si.cb = sizeof(si);
-    ::ZeroMemory(&pi, sizeof(pi));
+    si.cb         = sizeof(si);
     si.hStdError  = hChildStdoutWr;
     si.hStdOutput = hChildStdoutWr;
     si.dwFlags    = STARTF_USESTDHANDLES;
+    ::ZeroMemory(&pi, sizeof(pi));
 
-    //g_Log.print(cmdline);
-    //g_Log.eol();
+    g_Log.verbose(cmdline);
 
     if (!::CreateProcessA(nullptr,
                           (LPSTR) cmdline.c_str(),
@@ -73,18 +73,21 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                 }
             }
 
-            g_Log.print(strout);
+            wchar_t azMB[4096];
+            ::MultiByteToWideChar(CP_OEMCP, 0, chBuf, dwRead, azMB, 4096);
+            azMB[dwRead] = 0;
+            wcout << azMB;
             continue;
         }
 
         ::GetExitCodeProcess(pi.hProcess, &exit);
         if (exit != STILL_ACTIVE)
             break;
+        Sleep(1);
     }
 
-    ::CloseHandle(hChildStdoutWr);
-
     // Close process and thread handles
+    ::CloseHandle(hChildStdoutWr);
     ::CloseHandle(pi.hProcess);
     ::CloseHandle(pi.hThread);
 
@@ -156,7 +159,7 @@ bool BackendCCompilerVS::compile()
     includePath.push_back(format(R"(%s\ucrt)", winSdk.c_str()));
 
     // CL arguments
-    bool isDebug = true;
+    bool isDebug = false; // true;
 
     string clArguments = "";
     if (isDebug)

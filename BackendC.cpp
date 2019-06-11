@@ -25,7 +25,7 @@ bool BackendC::writeFile(const char* fileName, Concat& concat)
 
 bool BackendC::compile()
 {
-	string tmpFolder = "d:/temp/";
+	string tmpFolder = "f:/temp/";
 
     // Output C files
     destHFile  = tmpFolder + module->name + ".h";
@@ -42,7 +42,7 @@ bool BackendC::compile()
 
 bool BackendC::generate()
 {
-	outputC.addString(string("void main(){}\n"));
+	outputC.addString(string("void main(){ return 0; }\n"));
     SWAG_CHECK(compile());
     return true;
 }

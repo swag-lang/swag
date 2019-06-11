@@ -39,6 +39,7 @@ void printStats()
     wcout << "lines ............. " << g_Stats.numLines << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
     wcout << "modules ........... " << g_Stats.numModules << "\n";
+    wcout << "output modules .... " << g_Stats.numGenModules << "\n";
     if (g_Workspace.numErrors)
     {
         g_Log.setColor(LogColor::Red);

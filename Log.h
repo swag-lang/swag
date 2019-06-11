@@ -64,6 +64,19 @@ struct Log
         }
     }
 
+    void verbose(const Utf8& message)
+    {
+        if (g_CommandLine.silent || !g_CommandLine.verbose)
+            return;
+        lock();
+        setColor(LogColor::DarkCyan);
+        print(message);
+        if (message.back() != '\n')
+            eol();
+        setDefaultColor();
+        unlock();
+    }
+
     void eol()
     {
         if (g_CommandLine.silent)
