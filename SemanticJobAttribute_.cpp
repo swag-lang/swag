@@ -65,10 +65,12 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
             }
 
             // Predefined attributes will mark some flags
-            if (typeInfo->name == "constexpr")
+            if (typeInfo->name == "constExpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
             if (typeInfo->name == "printByteCode")
                 flags |= ATTRIBUTE_PRINT_BYTECODE;
+            if (typeInfo->name == "test")
+                flags |= ATTRIBUTE_TEST;
 
             result.insert(typeInfo);
         }

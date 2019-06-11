@@ -7,19 +7,31 @@
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
 #include "AstNode.h"
+#include "CommandLine.h"
+#include "TypeInfo.h"
 
 bool BackendC::emitFunctions()
 {
     for (auto one : module->byteCodeFunc)
     {
+        auto node = one->node;
+
+        // Do we need to generate that function ?
+        if (node->attributeFlags & ATTRIBUTE_TEST)
+        {
+            if (!g_CommandLine.test)
+                continue;
+            testFuncs.push_back(node);
+        }
+
         outputC.addString("void __");
-        outputC.addString(one->node->name.c_str());
+        outputC.addString(node->name.c_str());
         outputC.addString("(");
         outputC.addString(") {\n");
 
-        auto bc = one->node->bc;
+        auto bc = node->bc;
 
-		// Generate one local variable per used register
+        // Generate one local variable per used register
         if (bc->usedRegisters.size())
         {
             int index = 0;
@@ -29,14 +41,14 @@ bool BackendC::emitFunctions()
                     outputC.addString("__register ");
                 else
                     outputC.addString(", ");
-				index = (index + 1) % 10;
+                index = (index + 1) % 10;
                 outputC.addString(format("__r%d", r));
             }
 
             outputC.addString(";\n");
         }
 
-		// Generate bytecode
+        // Generate bytecode
         auto ip = bc->out;
         for (uint32_t i = 0; i < bc->numInstructions; i++)
         {

@@ -5,11 +5,22 @@
 #include "Global.h"
 #include "Module.h"
 #include "ByteCode.h"
+#include "CommandLine.h"
+#include "AstNode.h"
 
 bool BackendC::emitMain()
 {
     outputC.addString("\nvoid main() {\n");
-	outputC.addString("__main();\n");
-	outputC.addString("}\n");
+
+	// Generate call to test functions
+    if (g_CommandLine.test)
+    {
+        for (auto node : testFuncs)
+        {
+			outputC.addString(format("__%s();\n", node->name.c_str()));
+        }
+    }
+
+    outputC.addString("}\n");
     return true;
 }

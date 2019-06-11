@@ -1,6 +1,7 @@
 #pragma once
 #include "Concat.h"
 struct Module;
+struct AstNode;
 
 struct BackendC
 {
@@ -13,7 +14,7 @@ struct BackendC
     bool compile();
     bool generate();
 
-	bool emitRuntime();
+    bool emitRuntime();
     bool emitDataSegment();
     bool emitMain();
     bool emitFunctions();
@@ -26,4 +27,6 @@ struct BackendC
 
     Concat outputH;
     Concat outputC;
+
+    vector<AstNode*> testFuncs;
 };

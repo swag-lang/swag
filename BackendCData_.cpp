@@ -23,5 +23,6 @@ bool BackendC::emitDataSegment()
         }
     }
 
+	outputC.addString("\n");
     return true;
 }
