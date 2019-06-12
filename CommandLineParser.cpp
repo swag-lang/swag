@@ -7,25 +7,27 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 {
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
-    addArg("--syntax-only", nullptr, CommandLineType::Bool, &cmdLine->syntaxOnly);
-	addArg("--output", nullptr, CommandLineType::Bool, &cmdLine->output);
+    addArg("--output", nullptr, CommandLineType::Bool, &cmdLine->output);
     addArg("--error-out-source", "-eos", CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", "-eon", CommandLineType::Bool, &cmdLine->errorNoteOut);
+    addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test);
+	addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
+	addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
 
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
+    addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
-    cmdLine->stats = true;
-	cmdLine->runByteCodeTests = false;
+    cmdLine->stats            = true;
     //cmdLine->fileFilter = "251";
 }
 
-void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address)
+void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param)
 {
     if (longName)
-        longNameArgs[longName] = new CommandLineArgument{type, address};
+        longNameArgs[longName] = new CommandLineArgument{type, address, param};
     if (shortName)
-        shortNameArgs[shortName] = new CommandLineArgument{type, address};
+        shortNameArgs[shortName] = new CommandLineArgument{type, address, param};
 }
 
 bool CommandLineParser::process(int argc, const char* argv[])
@@ -56,6 +58,36 @@ bool CommandLineParser::process(int argc, const char* argv[])
         auto arg = it->second;
         switch (arg->type)
         {
+        case CommandLineType::Enum:
+        {
+            vector<string> tokens;
+            tokenize(arg->param, '|', tokens);
+
+            int index = 0;
+            for (auto one : tokens)
+            {
+                if (one == argument)
+                {
+                    *(int*) arg->buffer = index;
+                    break;
+                }
+
+                index++;
+            }
+
+            if (index == tokens.size())
+            {
+                g_Log.setColor(LogColor::Red);
+                g_Log.print("command line error: ");
+                g_Log.setDefaultColor();
+                g_Log.print(format("argument '%s' must be followed by '%s'", it->first.c_str(), arg->param));
+                g_Log.eol();
+                result = false;
+                continue;
+            }
+        }
+        break;
+
         case CommandLineType::Bool:
             if (argument == "true" || argument.empty())
                 *(bool*) arg->buffer = true;

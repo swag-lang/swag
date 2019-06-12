@@ -133,8 +133,6 @@ bool Workspace::build()
     // Ask for a syntax pass on all files of all modules
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
-    if (g_CommandLine.syntaxOnly)
-        return true;
 
     // Semantic pass on all modules
     for (auto module : modules)
@@ -169,13 +167,13 @@ bool Workspace::build()
         {
             for (auto func : module->byteCodeTestFunc)
             {
-				g_Stats.testFunctions++;
+                g_Stats.testFunctions++;
                 module->executeNode(module->files[func->node->sourceFileIdx], func->node);
             }
         }
     }
 
-	if (g_CommandLine.output == false)
+    if (g_CommandLine.output == false)
         return true;
 
     // Output pass on all modules

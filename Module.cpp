@@ -32,6 +32,7 @@ void Module::setup(Workspace* wkp, const fs::path& pth, bool runtime)
 
     astRoot             = Ast::newNode(&g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
     astRoot->ownerScope = workspace->scopeRoot;
+    buildPass           = g_CommandLine.buildPass;
 }
 
 void Module::addFile(SourceFile* file)
@@ -120,7 +121,7 @@ void Module::error(const Utf8& msg)
     g_Log.setDefaultColor();
     g_Log.unlock();
 
-	g_Workspace.numErrors++;
+    g_Workspace.numErrors++;
     numErrors++;
 }
 
@@ -145,4 +146,11 @@ void Module::addByteCodeFunc(ByteCode* bc)
     byteCodeFunc.push_back(bc);
     if (bc->node->attributeFlags & ATTRIBUTE_TEST)
         byteCodeTestFunc.push_back(bc);
+}
+
+void Module::setBuildPass(BuildPass buildP)
+{
+    scoped_lock lk(mutexBuildPass);
+    buildPass = (BuildPass) min((int) buildP, (int) buildPass);
+    buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
 }

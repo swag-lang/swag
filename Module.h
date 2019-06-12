@@ -17,7 +17,7 @@ struct Module : public PoolElement
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
-	void internalError(const Utf8& msg);
+    void internalError(const Utf8& msg);
 
     fs::path            path;
     string              name;
@@ -53,11 +53,7 @@ struct Module : public PoolElement
     SpinLock        mutexDataSeg;
     vector<uint8_t> dataSegment;
 
-    void setBuildPass(BuildPass buildP)
-    {
-        scoped_lock lk(mutexBuildPass);
-        buildPass = buildP;
-    }
+    void setBuildPass(BuildPass buildP);
 
     SpinLock  mutexBuildPass;
     BuildPass buildPass = BuildPass::Full;

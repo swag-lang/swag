@@ -3,7 +3,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 
-Global      g_Global;
+Global g_Global;
 
 void Global::setup()
 {
@@ -22,4 +22,21 @@ Utf8 format(const char* format, ...)
     vsnprintf(&vec[0], len + 1, format, args);
     va_end(args);
     return &vec[0];
+}
+
+void tokenize(const char* str, char c, vector<string>& tokens)
+{
+    auto pz = str;
+
+	tokens.clear();
+    while (*pz)
+    {
+        string one;
+        while (*pz && *pz != c)
+            one += *pz++;
+        if (*pz)
+            pz++;
+        if (!one.empty())
+            tokens.push_back(one);
+    }
 }
