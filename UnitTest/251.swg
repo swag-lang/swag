@@ -1,7 +1,7 @@
 #unittest module module251;
 using swag;
 
-#[test]
+#[Test]
 func main: ()
 {
 	@print("toto");
