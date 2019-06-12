@@ -10,6 +10,7 @@
 #include "CommandLine.h"
 #include "Ast.h"
 #include "TypeInfo.h"
+#include "TypeManager.h"
 
 bool BackendC::emitFunctions()
 {
@@ -27,6 +28,26 @@ bool BackendC::emitFunctions()
         outputC.addString("void __");
         outputC.addString(node->name.c_str());
         outputC.addString("(");
+
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+
+        // Result registers
+		int cptParams = 0;
+		if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
+		{
+			outputC.addString("__register& __rr0");
+			cptParams++;
+		}
+
+        // Parameters
+        for (auto param : typeFunc->parameters)
+        {
+			if (cptParams)
+				outputC.addString(", ");
+			outputC.addString(format("const __register& __rp%u", param->index));
+			cptParams++;
+        }
+
         outputC.addString(") {\n");
 
         auto bc = node->bc;
@@ -43,6 +64,27 @@ bool BackendC::emitFunctions()
                     outputC.addString(", ");
                 index = (index + 1) % 10;
                 outputC.addString(format("__r%d", r));
+                if (index == 0)
+                    outputC.addString(";\n");
+            }
+
+            outputC.addString(";\n");
+        }
+
+		// Generate one variable per function call parameter
+        if (bc->maxCallParameters)
+        {
+			int index = 0;
+            for (int i = 0; i < bc->maxCallParameters; i++)
+            {
+                if (index == 0)
+                    outputC.addString("__register ");
+                else
+                    outputC.addString(", ");
+                outputC.addString(format("__rp%d", index));
+                index = (index + 1) % 10;
+                if (index == 0)
+                    outputC.addString(";\n");
             }
 
             outputC.addString(";\n");
@@ -53,6 +95,10 @@ bool BackendC::emitFunctions()
         {
             outputC.addString(format("uint8_t __stack[%u];\n", node->stackSize));
         }
+
+        // For function call results
+        if (typeFunc->returnType == g_TypeMgr.typeInfoVoid)
+            outputC.addString("__register __rr0;\n");
 
         // Generate bytecode
         auto ip = bc->out;
@@ -102,6 +148,12 @@ bool BackendC::emitFunctions()
             case ByteCodeOp::CopyRCxVaStr:
                 outputC.addString(format("__r%u.pointer = __string%u;", ip->b.u32, ip->a.u32));
                 break;
+            case ByteCodeOp::BinOpPlusS32:
+                outputC.addString(format("__r%u.s32 = __r%u.s32 + __r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::BinOpMinusS32:
+                outputC.addString(format("__r%u.s32 = __r%u.s32 - __r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+                break;
             case ByteCodeOp::AffectOpMinusEqS32:
                 outputC.addString(format("*(int32_t*)(__r%u.pointer) -= __r%u.s32;", ip->a.u32, ip->b.u32));
                 break;
@@ -126,11 +178,23 @@ bool BackendC::emitFunctions()
             case ByteCodeOp::Ret:
                 outputC.addString("return;");
                 break;
+            case ByteCodeOp::IntrinsicPrintS32:
+                outputC.addString(format("__print(to_string(__r%u.s32).c_str());", ip->a.u32));
+                break;
+            case ByteCodeOp::IntrinsicPrintS64:
+                outputC.addString(format("__print(to_string(__r%u.s64).c_str());", ip->a.u32));
+                break;
+            case ByteCodeOp::IntrinsicPrintF32:
+                outputC.addString(format("__print(to_string(__r%u.f32).c_str());", ip->a.u32));
+                break;
+            case ByteCodeOp::IntrinsicPrintF64:
+                outputC.addString(format("__print(to_string(__r%u.f64).c_str());", ip->a.u32));
+                break;
             case ByteCodeOp::IntrinsicPrintString:
                 outputC.addString(format("__print((const char*) __r%u.pointer);", ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicAssert:
-				outputC.addString(format("__assert(__r%u.b, R\"(%s)\", %d);", ip->a.u32, module->files[ip->sourceFileIdx]->path.string().c_str(), ip->startLocation.line + 1));
+                outputC.addString(format("__assert(__r%u.b, R\"(%s)\", %d);", ip->a.u32, module->files[ip->sourceFileIdx]->path.string().c_str(), ip->startLocation.line + 1));
                 break;
             case ByteCodeOp::NegBool:
                 outputC.addString(format("__r%u.b = !__r%u.b;", ip->a.u32, ip->a.u32));
@@ -147,6 +211,42 @@ bool BackendC::emitFunctions()
             case ByteCodeOp::NegS64:
                 outputC.addString(format("__r%u.s64 = -__r%u.s64;", ip->a.u32, ip->a.u32));
                 break;
+            case ByteCodeOp::CopyRRxRCx:
+                outputC.addString(format("__rr%u = __r%u;", ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::CopyRCxRRx:
+                outputC.addString(format("__r%u = __rr%u;", ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::RCxFromStackParam64:
+                outputC.addString(format("__r%u = __rp%u;", ip->a.u32, ip->c.u32));
+                break;
+			case ByteCodeOp::PushRCxParam:
+				outputC.addString(format("__rp%u = __r%u;", ip->b.u32, ip->a.u32));
+				break;
+            case ByteCodeOp::LocalFuncCall:
+            {
+                auto funcBC     = (ByteCode*) ip->a.pointer;
+                auto typeFuncBC = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
+                outputC.addString(format("__%s(", funcBC->node->name.c_str()));
+
+				int cptCall = 0;
+				if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
+				{
+					outputC.addString("__rr0");
+					cptCall++;
+				}
+
+				for (int idxCall = 0; idxCall < (int)typeFuncBC->parameters.size(); idxCall++)
+				{
+					if(cptCall)
+						outputC.addString(", ");
+					outputC.addString(format("__rp%u", idxCall));
+					cptCall++;
+				}
+
+                outputC.addString(");");
+            }
+            break;
             default:
                 ok = false;
                 outputC.addString("// ");
@@ -155,8 +255,8 @@ bool BackendC::emitFunctions()
                 break;
             }
 
-            /*outputC.addString(" // ");
-            outputC.addString(g_ByteCodeOpNames[(int) ip->op]);*/
+            outputC.addString(" // ");
+            outputC.addString(g_ByteCodeOpNames[(int) ip->op]);
             outputC.addString("\n");
         }
 

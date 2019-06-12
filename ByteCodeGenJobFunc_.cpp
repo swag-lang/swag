@@ -9,6 +9,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "SymTable.h"
+#include "TypeManager.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -75,7 +76,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         auto child0 = callParams->childs[0];
         context->sourceFile->module->freeRegisterRC(child0->resultRegisterRC);
-        switch (child0->typeInfo->nativeType)
+        switch (TypeManager::concreteType(child0->typeInfo)->nativeType)
         {
         case NativeType::S32:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintS32, child0->resultRegisterRC);
@@ -155,6 +156,9 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     auto params        = node->childs.empty() ? nullptr : node->childs.front();
     int  numCallParams = params ? (int) params->childs.size() : 0;
 
+	// Remember the number of parameters, to allocate registers in backend
+    context->bc->maxCallParameters = max(context->bc->maxCallParameters, (int) typeInfoFunc->parameters.size());
+
     // Push missing default parameters
     if (numCallParams != typeInfoFunc->parameters.size())
     {
@@ -165,7 +169,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
             assert(context->node->flags & AST_VALUE_COMPUTED);
             emitLiteral(context);
             context->node = node;
-            emitInstruction(context, ByteCodeOp::PushRCx, defaultParam->astAssignment->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::PushRCxParam, defaultParam->astAssignment->resultRegisterRC, i);
             sourceFile->module->freeRegisterRC(defaultParam->astAssignment->resultRegisterRC);
             precallStack += sizeof(Register);
         }
@@ -177,7 +181,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
         for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = params->childs[i];
-            emitInstruction(context, ByteCodeOp::PushRCx, param->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::PushRCxParam, param->resultRegisterRC, i);
             precallStack += sizeof(Register);
         }
     }
@@ -212,9 +216,11 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     // Then add the full stack size of the function
     offset += funcNode->stackSize;
 
+    int index = 0;
     for (auto param : node->childs)
     {
         param->resolvedSymbolOverload->storageOffset = offset;
+        param->resolvedSymbolOverload->storageIndex  = index++;
         offset += sizeof(Register);
     }
 

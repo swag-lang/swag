@@ -26,20 +26,11 @@ bool BackendC::writeFile(const char* fileName, Concat& concat)
 
 bool BackendC::compile()
 {
-    string tmpFolder = "f:/temp/";
-
-    // Output C files
-    destHFile  = tmpFolder + module->name + ".h";
-    destCFile  = tmpFolder + module->name + ".cpp";
-    outputFile = tmpFolder + module->name + ".exe";
-    SWAG_CHECK(writeFile(destHFile.string().c_str(), outputH));
-    SWAG_CHECK(writeFile(destCFile.string().c_str(), outputC));
-
     if (module->buildPass == BuildPass::Full)
     {
         BackendCCompilerVS compiler(this);
         SWAG_CHECK(compiler.compile());
-		SWAG_CHECK(compiler.runTests());
+        SWAG_CHECK(compiler.runTests());
     }
 
     return true;
@@ -47,14 +38,21 @@ bool BackendC::compile()
 
 bool BackendC::generate()
 {
-	bool ok = true;
+    bool ok = true;
 
     ok &= emitRuntime();
-	ok &= emitDataSegment();
-	ok &= emitFunctions();
-	ok &= emitMain();
-	SWAG_CHECK(ok);
+    ok &= emitDataSegment();
+    ok &= emitFunctions();
+    ok &= emitMain();
 
+    string tmpFolder = "f:/temp/";
+    destHFile        = tmpFolder + module->name + ".h";
+    destCFile        = tmpFolder + module->name + ".cpp";
+    outputFile       = tmpFolder + module->name + ".exe";
+    SWAG_CHECK(writeFile(destHFile.string().c_str(), outputH));
+    SWAG_CHECK(writeFile(destCFile.string().c_str(), outputC));
+
+    SWAG_CHECK(ok);
     SWAG_CHECK(compile());
     return true;
 }

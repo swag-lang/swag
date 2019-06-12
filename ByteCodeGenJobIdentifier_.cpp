@@ -31,7 +31,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = sourceFile->module->reserveRegisterRC(context->bc);
 
-        emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+        auto inst   = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC);
+        inst->b.s32 = resolved->storageOffset;
+		inst->c.s32 = resolved->storageIndex;
         return true;
     }
 

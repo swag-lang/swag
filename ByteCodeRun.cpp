@@ -49,7 +49,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-    case ByteCodeOp::PushRCx:
+    case ByteCodeOp::PushRCxParam:
     {
         context->push(registersRC[ip->a.u32].u64);
         break;
@@ -124,6 +124,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::RCxFromStack64:
+	case ByteCodeOp::RCxFromStackParam64:
     {
         auto offset                = ip->b.s32;
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + offset);

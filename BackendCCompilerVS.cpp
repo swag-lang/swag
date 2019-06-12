@@ -60,6 +60,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
     }
 
     // Wait until child process exits
+    bool ok  = true;
     chBuf[0] = 0;
     while (1)
     {
@@ -84,21 +85,26 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
             tokenize(strout.c_str(), '\n', lines);
             for (auto oneLine : lines)
             {
-                auto pz = strstr(strout.c_str(), ": error");
-				if (pz)
-				{
-					g_Log.setColor(LogColor::Red);
-					backend->module->numErrors++;
-					g_Workspace.numErrors++;
+                if (oneLine.back() == '\r')
+                    oneLine.erase(oneLine.end() - 1);
+                auto pz = strstr(oneLine.c_str(), ": error");
+                if (pz)
+                {
+                    g_Log.setColor(LogColor::Red);
+                    backend->module->numErrors++;
+                    g_Workspace.numErrors++;
 
-					wchar_t azMB[4096];
-					::MultiByteToWideChar(CP_OEMCP, 0, oneLine.c_str(), (int)oneLine.length(), azMB, 4096);
-					azMB[dwRead] = 0;
-					g_Log.print(azMB);
-				}
+                    wchar_t azMB[4096];
+                    ::MultiByteToWideChar(CP_OEMCP, 0, oneLine.c_str(), (int) oneLine.length(), azMB, 4096);
+                    azMB[oneLine.length()]     = '\n';
+                    azMB[oneLine.length() + 1] = 0;
+                    g_Log.print(azMB);
+
+                    ok = false;
+                }
             }
 
-			g_Log.setDefaultColor();
+            g_Log.setDefaultColor();
             g_Log.unlock();
 
             continue;
@@ -117,7 +123,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
 
     ::SetErrorMode(errmode);
 
-    return true;
+    return ok;
 }
 
 bool BackendCCompilerVS::getVSTarget(string& vsTarget)
@@ -223,7 +229,7 @@ bool BackendCCompilerVS::compile()
 
 bool BackendCCompilerVS::runTests()
 {
-    g_Log.message(format("running tests on '%s'", backend->outputFile.string().c_str()));
+    g_Log.message(format("running tests on '%s'\n", backend->outputFile.string().c_str()));
 
     auto path = backend->outputFile;
     SWAG_CHECK(doProcess(path.string(), path.parent_path().string()));
