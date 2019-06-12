@@ -4,6 +4,7 @@ using swag;
 #[Test]
 func main: ()
 {
+	@assert(true);
 	var i = 5;
 	while i > 0
 	{

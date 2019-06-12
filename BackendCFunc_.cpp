@@ -107,9 +107,6 @@ bool BackendC::emitFunctions()
             case ByteCodeOp::CompareOpGreaterS32:
                 outputC.addString(format("__r%u.b = __r%u.s32 > __r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
                 break;
-            case ByteCodeOp::IntrinsicPrintString:
-                outputC.addString(format("__print((const char*) __r%u.pointer);", ip->a.u32));
-                break;
             case ByteCodeOp::Jump:
                 outputC.addString(format("goto __lbl%08u;", ip->a.s32 + i + 1));
                 break;
@@ -118,6 +115,12 @@ bool BackendC::emitFunctions()
                 break;
             case ByteCodeOp::Ret:
                 outputC.addString("return;");
+                break;
+            case ByteCodeOp::IntrinsicPrintString:
+                outputC.addString(format("__print((const char*) __r%u.pointer);", ip->a.u32));
+                break;
+            case ByteCodeOp::IntrinsicAssert:
+                outputC.addString(format("__assert(__r%u.b, __FILE__, __LINE__);", ip->a.u32));
                 break;
             default:
                 outputC.addString("// ");
