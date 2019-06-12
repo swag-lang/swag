@@ -61,6 +61,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     auto funcNode = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
     funcNode->inheritOwners(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
+	funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
 
     auto typeNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
     typeNode->inheritOwners(this);

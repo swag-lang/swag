@@ -88,8 +88,9 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     return true;
 }
 
-void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
+bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
+    auto sourceFile              = context->sourceFile;
     node->resolvedSymbolName     = symbol;
     node->resolvedSymbolOverload = overload;
     node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
@@ -116,7 +117,19 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (typeFunc->intrinsic != Intrisic::None)
             node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
         else
+        {
             node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncCall;
+
+			auto ownerFct = node->ownerFct;
+			if (ownerFct)
+			{
+				auto myAttributes = ownerFct->attributeFlags;
+				if (!(myAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
+					return sourceFile->report({ sourceFile, node->token, format("can't call compiler function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str()) });
+				if (!(myAttributes & ATTRIBUTE_TEST) && (overload->node->attributeFlags & ATTRIBUTE_TEST))
+					return sourceFile->report({ sourceFile, node->token, format("can't call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str()) });
+			}
+        }
         break;
     }
     }
@@ -124,6 +137,7 @@ void SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // Clear cache for the next symbol resolution
     context->job->cacheScopeHierarchy.clear();
     context->job->cacheDependentSymbols.clear();
+    return true;
 }
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
@@ -206,7 +220,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             assert(dependentSymbols.size() == 1);
             assert(symbol->overloads.size() == 1);
-            setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]);
+            SWAG_CHECK(setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]));
             return true;
         }
     }
@@ -315,6 +329,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return false;
     }
 
-    setSymbolMatch(context, parent, node, dependentSymbols[0], matches[0]);
+    SWAG_CHECK(setSymbolMatch(context, parent, node, dependentSymbols[0], matches[0]));
     return true;
 }

@@ -1,4 +1,4 @@
-#unittest module module251;
+#unittest module module255;
 #unittest pass semantic;
 using swag;
 
@@ -8,8 +8,4 @@ func main: ()
 	@assert(true);
 }
 
-#[Test, Compiler]
-func main1: ()
-{
-	@assert(true);
-}
+#run main;
