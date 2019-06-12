@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-#[constExpr]
+#[ConstExpr]
 func main: ()->u16
 {
 	return 45;

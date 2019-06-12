@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-#[constExpr]
+#[ConstExpr]
 func value: ()->s32 { return 55; }
 
 func main: (a: s32 = value())->s32
@@ -10,7 +10,7 @@ func main: (a: s32 = value())->s32
 	return a;
 }
 
-//#[printByteCode]
+//#[PrintByteCode]
 func main1: ()
 {
 	@assert(main == 55);
