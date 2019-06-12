@@ -80,21 +80,25 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
 
             // Process result
             g_Log.lock();
-			auto pz = strstr(strout.c_str(), ": error");
-			while(pz)
-			{
-				g_Log.setColor(LogColor::Red);
-				backend->module->numErrors++;
-				g_Workspace.numErrors++;
-				pz = strstr(pz + 1, ": error");
-			}
+            vector<string> lines;
+            tokenize(strout.c_str(), '\n', lines);
+            for (auto oneLine : lines)
+            {
+                auto pz = strstr(strout.c_str(), ": error");
+				if (pz)
+				{
+					g_Log.setColor(LogColor::Red);
+					backend->module->numErrors++;
+					g_Workspace.numErrors++;
 
-            wchar_t azMB[4096];
-            ::MultiByteToWideChar(CP_OEMCP, 0, chBuf, dwRead, azMB, 4096);
-            azMB[dwRead] = 0;
-            wcout << azMB;
+					wchar_t azMB[4096];
+					::MultiByteToWideChar(CP_OEMCP, 0, oneLine.c_str(), (int)oneLine.length(), azMB, 4096);
+					azMB[dwRead] = 0;
+					g_Log.print(azMB);
+				}
+            }
 
-            g_Log.setDefaultColor();
+			g_Log.setDefaultColor();
             g_Log.unlock();
 
             continue;
@@ -210,6 +214,8 @@ bool BackendCCompilerVS::compile()
         linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
     linkArguments += "/OUT:\"" + backend->outputFile.string() + "\" ";
 
+    g_Log.message(format("compiling '%s' => '%s' (VS)", backend->destCFile.string().c_str(), backend->outputFile.string().c_str()));
+
     auto cmdLine = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
     SWAG_CHECK(doProcess(cmdLine, clPath));
     return true;
@@ -217,6 +223,8 @@ bool BackendCCompilerVS::compile()
 
 bool BackendCCompilerVS::runTests()
 {
+    g_Log.message(format("running tests on '%s'", backend->outputFile.string().c_str()));
+
     auto path = backend->outputFile;
     SWAG_CHECK(doProcess(path.string(), path.parent_path().string()));
     return true;

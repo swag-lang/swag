@@ -5,20 +5,21 @@
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
+    addArg("--silent", "-s", CommandLineType::Bool, &cmdLine->silent);
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
     addArg("--output", nullptr, CommandLineType::Bool, &cmdLine->output);
     addArg("--error-out-source", "-eos", CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", "-eon", CommandLineType::Bool, &cmdLine->errorNoteOut);
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test);
-	addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
-	addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
+    addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
+    addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
 
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
-    cmdLine->stats            = true;
+    cmdLine->stats = true;
     //cmdLine->fileFilter = "251";
 }
 
@@ -51,8 +52,11 @@ bool CommandLineParser::process(int argc, const char* argv[])
         if (it == longNameArgs.end())
         {
             it = shortNameArgs.find(command);
-            if (it == shortNameArgs.end())
-                continue;
+			if (it == shortNameArgs.end())
+			{
+				g_Log.error(format("command line error: invalid argument '%s'", command.c_str()));
+				continue;
+			}
         }
 
         auto arg = it->second;
@@ -77,11 +81,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
 
             if (index == tokens.size())
             {
-                g_Log.setColor(LogColor::Red);
-                g_Log.print("command line error: ");
-                g_Log.setDefaultColor();
-                g_Log.print(format("argument '%s' must be followed by '%s'", it->first.c_str(), arg->param));
-                g_Log.eol();
+                g_Log.error(format("command line error: argument '%s' must be followed by '%s'", it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -95,11 +95,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
                 *(bool*) arg->buffer = false;
             else
             {
-                g_Log.setColor(LogColor::Red);
-                g_Log.print("command line error: ");
-                g_Log.setDefaultColor();
-                g_Log.print(format("argument '%s' must be followed by 'true' or 'false' ('%s')", it->first.c_str(), argument.c_str()));
-                g_Log.eol();
+                g_Log.error(format("command line error: argument '%s' must be followed by 'true' or 'false' ('%s')", it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -123,14 +119,10 @@ bool CommandLineParser::process(int argc, const char* argv[])
 
             if (!thisIsAnInt)
             {
-                g_Log.setColor(LogColor::Red);
-                g_Log.print("command line error: ");
-                g_Log.setDefaultColor();
                 if (argument.empty())
-                    g_Log.print(format("argument '%s' must be followed by an integer value", it->first.c_str()));
+                    g_Log.error(format("command line error: argument '%s' must be followed by an integer value", it->first.c_str()));
                 else
-                    g_Log.print(format("argument '%s' must be followed by an integer value ('%s')", it->first.c_str(), argument.c_str()));
-                g_Log.eol();
+                    g_Log.error(format("command line error: argument '%s' must be followed by an integer value ('%s')", it->first.c_str(), argument.c_str()));
                 continue;
             }
 

@@ -30,29 +30,26 @@ struct Log
 
     void lock()
     {
-        if (g_CommandLine.silent)
-            return;
         mutexAccess.lock();
     }
 
     void unlock()
     {
-        if (g_CommandLine.silent)
-            return;
         mutexAccess.unlock();
     }
 
     void print(const char* message)
     {
-        if (g_CommandLine.silent)
-            return;
+        wcout << message;
+    }
+
+    void print(const wchar_t* message)
+    {
         wcout << message;
     }
 
     void print(const Utf8& message)
     {
-        if (g_CommandLine.silent)
-            return;
         try
         {
             wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convert;
@@ -62,6 +59,35 @@ struct Log
         {
             wcout << "?";
         }
+    }
+
+    void eol()
+    {
+        wcout << L'\n';
+    }
+
+	void error(const Utf8& message)
+    {
+        lock();
+        setColor(LogColor::Red);
+        print(message);
+        if (message.back() != '\n')
+            eol();
+        setDefaultColor();
+        unlock();
+    }
+
+    void message(const Utf8& message)
+    {
+        if (g_CommandLine.silent)
+            return;
+        lock();
+        setColor(LogColor::Gray);
+        print(message);
+        if (message.back() != '\n')
+            eol();
+        setDefaultColor();
+        unlock();
     }
 
     void verbose(const Utf8& message)
@@ -75,13 +101,6 @@ struct Log
             eol();
         setDefaultColor();
         unlock();
-    }
-
-    void eol()
-    {
-        if (g_CommandLine.silent)
-            return;
-        wcout << L'\n';
     }
 
     mutex mutexAccess;
