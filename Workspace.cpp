@@ -12,6 +12,7 @@
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
+#include "ByteCode.h"
 
 Workspace g_Workspace;
 
@@ -149,9 +150,6 @@ bool Workspace::build()
 
     g_ThreadMgr.waitEndJobs();
 
-    if (g_CommandLine.output == false)
-        return true;
-
     // If we have some pending jobs, that means we don't have succeeded to resolve everything
     if (g_ThreadMgr.pendingJobs.size() > 0)
     {
@@ -163,6 +161,22 @@ bool Workspace::build()
             sourceFile->report({sourceFile, node->token, format("can't resolve type of identifier '%s'", node->name.c_str())});
         }
     }
+
+    // Call test functions
+    if (g_CommandLine.test)
+    {
+        for (auto module : modules)
+        {
+            for (auto func : module->byteCodeTestFunc)
+            {
+				g_Stats.testFunctions++;
+                module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+            }
+        }
+    }
+
+	if (g_CommandLine.output == false)
+        return true;
 
     // Output pass on all modules
     if (g_CommandLine.output)

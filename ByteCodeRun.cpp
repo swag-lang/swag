@@ -11,7 +11,7 @@
 
 ByteCodeRun g_Run;
 
-inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->registersRC;
     auto registersRR = context->registersRR;
@@ -31,6 +31,8 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::Ret:
     {
+        if (context->sp == context->stack + context->stackSize)
+            return false;
         context->ip = context->pop<ByteCodeInstruction*>();
         context->bc = context->pop<ByteCode*>();
         context->bp = context->pop<uint8_t*>();
@@ -68,7 +70,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::CopyRCxVa:
-	case ByteCodeOp::CopyRCxVaStr:
+    case ByteCodeOp::CopyRCxVaStr:
     {
         registersRC[ip->b.u32] = ip->a;
         break;
@@ -943,7 +945,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	case ByteCodeOp::AffectOpXOrEqS8:
+    case ByteCodeOp::AffectOpXOrEqS8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer ^= registersRC[ip->b.u32].s8;
         break;
@@ -984,7 +986,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	case ByteCodeOp::AffectOpShiftLeftEqS8:
+    case ByteCodeOp::AffectOpShiftLeftEqS8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer <<= registersRC[ip->b.u32].u32;
         break;
@@ -1025,7 +1027,7 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	case ByteCodeOp::AffectOpShiftRightEqS8:
+    case ByteCodeOp::AffectOpShiftRightEqS8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer >>= registersRC[ip->b.u32].u32;
         break;
@@ -1070,6 +1072,8 @@ inline void ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;
     }
+
+    return true;
 }
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
@@ -1081,7 +1085,8 @@ bool ByteCodeRun::run(ByteCodeRunContext* context)
         if (ip->op == ByteCodeOp::End)
             break;
 
-        runNode(context, ip);
+        if (!runNode(context, ip))
+            break;
 
         // Error ?
         if (context->hasError)

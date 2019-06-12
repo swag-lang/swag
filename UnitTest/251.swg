@@ -4,5 +4,5 @@ using swag;
 #[Test, Compiler]
 func main: ()
 {
-	@print("toto");
+	@assert(true);
 }

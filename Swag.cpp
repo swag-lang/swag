@@ -33,13 +33,17 @@ void printStats()
         return;
 
     g_Log.setColor(LogColor::White);
-    wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
+    if (g_CommandLine.output)
+        wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
     wcout << "workers ........... " << g_Stats.numWorkers << "\n";
     wcout << "lines ............. " << g_Stats.numLines << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
     wcout << "modules ........... " << g_Stats.numModules << "\n";
-    wcout << "output modules .... " << g_Stats.numGenModules << "\n";
+    if (g_CommandLine.output)
+        wcout << "output modules .... " << g_Stats.numGenModules << "\n";
+    if (g_CommandLine.test)
+        wcout << "test functions .... " << g_Stats.testFunctions << "\n";
     if (g_Workspace.numErrors)
     {
         g_Log.setColor(LogColor::Red);
