@@ -16,6 +16,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
 
     cmdLine->stats = true;
+	cmdLine->runByteCodeTests = false;
     //cmdLine->fileFilter = "251";
 }
 

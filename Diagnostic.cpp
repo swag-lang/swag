@@ -15,16 +15,6 @@ void Diagnostic::report(bool verboseMode) const
 {
     defaultColor(verboseMode);
 
-    // Source file and location
-    if (hasFile)
-    {
-        g_Log.print(sourceFile->path.filename().string().c_str());
-        if (hasLocation)
-            g_Log.print(format(":%d:%d: ", startLocation.line + 1, startLocation.column + 1));
-        else
-            g_Log.print(": ");
-    }
-
     // Message level
     switch (errorLevel)
     {
@@ -45,10 +35,21 @@ void Diagnostic::report(bool verboseMode) const
         break;
     }
 
+    // Source file and location
+    if (hasFile)
+    {
+        g_Log.print(sourceFile->path.filename().string().c_str());
+        if (hasLocation)
+            g_Log.print(format(":%d:%d: ", startLocation.line + 1, startLocation.column + 1));
+        else
+            g_Log.print(": ");
+    }
+
     // User message
-    defaultColor(verboseMode);
     g_Log.print(textMsg);
     g_Log.eol();
+    if (!verboseMode)
+        g_Log.setColor(LogColor::Gray);
 
     // Source code
     if (hasFile && hasLocation && printSource && g_CommandLine.errorSourceOut)
@@ -68,8 +69,6 @@ void Diagnostic::report(bool verboseMode) const
         line += buf;
         offset -= 2;
 
-        if (!verboseMode)
-            g_Log.setColor(LogColor::Gray);
         g_Log.print(line);
         g_Log.eol();
 

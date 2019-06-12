@@ -10,6 +10,7 @@ const char* g_RuntimeC = R"(
 #include <stdint.h>
 #include <codecvt>
 #include <iostream>
+#include <string>
 using namespace std;
 
 union __register {
@@ -38,15 +39,10 @@ void __assert(bool expr, const char* file, int line)
 {
 	if(expr) return;
 	__print(file); __print(":"); __print(to_string(line).c_str()); __print(": error: "); __print("intrinsic assertion failed\n");
+	exit(-1);
 }
 
 )";
-
-void __print(const char* message)
-{
-    wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convert;
-    wcout << convert.from_bytes(message);
-}
 
 bool BackendC::emitRuntime()
 {

@@ -163,7 +163,7 @@ bool Workspace::build()
     }
 
     // Call test functions
-    if (g_CommandLine.test)
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         for (auto module : modules)
         {
@@ -188,7 +188,7 @@ bool Workspace::build()
                 continue;
             if (module->name.empty())
                 continue;
-            if (module->buildPass < BuildPass::Full)
+            if (module->buildPass < BuildPass::Backend)
                 continue;
             auto job    = g_Pool_moduleOutputJob.alloc();
             job->module = module;

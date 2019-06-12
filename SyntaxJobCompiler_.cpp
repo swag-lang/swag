@@ -121,6 +121,11 @@ bool SyntaxJob::doCompilerUnitTest()
             if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Semantic;
         }
+        else if (token.text == "backend")
+        {
+            if (g_CommandLine.test)
+                sourceFile->buildPass = BuildPass::Backend;
+        }
         else
         {
             sourceFile->report({sourceFile, token, format("invalid pass name '%s'", token.text.c_str())});

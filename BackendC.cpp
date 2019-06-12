@@ -4,6 +4,7 @@
 #include "BackendCCompilerVS.h"
 #include "Global.h"
 #include "Module.h"
+#include "CommandLine.h"
 
 bool BackendC::writeFile(const char* fileName, Concat& concat)
 {
@@ -25,7 +26,7 @@ bool BackendC::writeFile(const char* fileName, Concat& concat)
 
 bool BackendC::compile()
 {
-	string tmpFolder = "f:/temp/";
+    string tmpFolder = "f:/temp/";
 
     // Output C files
     destHFile  = tmpFolder + module->name + ".h";
@@ -34,18 +35,25 @@ bool BackendC::compile()
     SWAG_CHECK(writeFile(destHFile.string().c_str(), outputH));
     SWAG_CHECK(writeFile(destCFile.string().c_str(), outputC));
 
-    BackendCCompilerVS compiler(this);
-    SWAG_CHECK(compiler.compile());
+    if (module->buildPass == BuildPass::Full)
+    {
+        BackendCCompilerVS compiler(this);
+        SWAG_CHECK(compiler.compile());
+		SWAG_CHECK(compiler.runTests());
+    }
 
-	return true;
+    return true;
 }
 
 bool BackendC::generate()
 {
-	emitRuntime();
-	emitDataSegment();
-	emitFunctions();
-	emitMain();
+	bool ok = true;
+
+    ok &= emitRuntime();
+	ok &= emitDataSegment();
+	ok &= emitFunctions();
+	ok &= emitMain();
+	SWAG_CHECK(ok);
 
     SWAG_CHECK(compile());
     return true;

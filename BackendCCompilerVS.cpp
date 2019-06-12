@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "Log.h"
 #include "Stats.h"
+#include "Workspace.h"
 
 bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compilerPath)
 {
@@ -29,7 +30,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
     saAttr.lpSecurityDescriptor = nullptr;
     if (!::CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
     {
-        backend->module->error("can't create cl.exe process (::CreatePipe)");
+        backend->module->error(format("can't create '%s' process (::CreatePipe)", cmdline.c_str()));
         return false;
     }
 
@@ -54,7 +55,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                           &si,
                           &pi))
     {
-        backend->module->error("can't create cl.exe process (::CreateProcess)");
+        backend->module->error(format("can't create '%s' process (::CreateProcess)", cmdline.c_str()));
         return false;
     }
 
@@ -77,10 +78,23 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                 }
             }
 
+            // Process result
+            g_Log.lock();
+			if (strstr(strout.c_str(), ": error:"))
+			{
+				g_Log.setColor(LogColor::Red);
+				backend->module->numErrors++;
+				g_Workspace.numErrors++;
+			}
+
             wchar_t azMB[4096];
             ::MultiByteToWideChar(CP_OEMCP, 0, chBuf, dwRead, azMB, 4096);
             azMB[dwRead] = 0;
             wcout << azMB;
+
+            g_Log.setDefaultColor();
+            g_Log.unlock();
+
             continue;
         }
 
@@ -136,11 +150,11 @@ bool BackendCCompilerVS::getWinSdk(string& winSdk)
         return false;
     }
 
-	fs::path tmpPath;
+    fs::path tmpPath;
     for (auto& p : fs::directory_iterator(libPath))
-		tmpPath = p.path();
+        tmpPath = p.path();
 
-	winSdk = tmpPath.filename().string();
+    winSdk = tmpPath.filename().string();
     return true;
 }
 
@@ -163,7 +177,7 @@ bool BackendCCompilerVS::compile()
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\um)", winSdk.c_str()));
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
-	includePath.push_back(format(R"(%s\include)", vsTarget.c_str()));
+    includePath.push_back(format(R"(%s\include)", vsTarget.c_str()));
 
     // CL arguments
     bool isDebug = false; // true;
@@ -178,7 +192,7 @@ bool BackendCCompilerVS::compile()
     }
 
     clArguments += "/nologo ";
-	clArguments += "/EHsc ";
+    clArguments += "/EHsc ";
     clArguments += "/Tp\"" + backend->destCFile.string() + "\" ";
     clArguments += "/Fo\"" + backend->outputFile.string() + ".obj\" ";
     for (const auto& oneIncludePath : includePath)
@@ -195,6 +209,13 @@ bool BackendCCompilerVS::compile()
     linkArguments += "/OUT:\"" + backend->outputFile.string() + "\" ";
 
     auto cmdLine = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
-    doProcess(cmdLine, clPath);
+    SWAG_CHECK(doProcess(cmdLine, clPath));
+    return true;
+}
+
+bool BackendCCompilerVS::runTests()
+{
+    auto path = backend->outputFile;
+    SWAG_CHECK(doProcess(path.string(), path.parent_path().string()));
     return true;
 }

@@ -17,6 +17,7 @@ struct Module : public PoolElement
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
+	void internalError(const Utf8& msg);
 
     fs::path            path;
     string              name;

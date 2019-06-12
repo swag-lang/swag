@@ -13,6 +13,7 @@
 
 bool BackendC::emitFunctions()
 {
+    bool ok = true;
     for (auto one : module->byteCodeFunc)
     {
         auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
@@ -104,6 +105,15 @@ bool BackendC::emitFunctions()
             case ByteCodeOp::AffectOpMinusEqS32:
                 outputC.addString(format("*(int32_t*)(__r%u.pointer) -= __r%u.s32;", ip->a.u32, ip->b.u32));
                 break;
+            case ByteCodeOp::CompareOpEqual32:
+                outputC.addString(format("__r%u.b = __r%u.u32 == __r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::CompareOpEqual64:
+                outputC.addString(format("__r%u.b = __r%u.u64 == __r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::CompareOpEqualBool:
+                outputC.addString(format("__r%u.b = __r%u.b == __r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));
+                break;
             case ByteCodeOp::CompareOpGreaterS32:
                 outputC.addString(format("__r%u.b = __r%u.s32 > __r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
                 break;
@@ -122,10 +132,26 @@ bool BackendC::emitFunctions()
             case ByteCodeOp::IntrinsicAssert:
                 outputC.addString(format("__assert(__r%u.b, __FILE__, __LINE__);", ip->a.u32));
                 break;
+            case ByteCodeOp::NegBool:
+                outputC.addString(format("__r%u.b = !__r%u.b;", ip->a.u32, ip->a.u32));
+                break;
+            case ByteCodeOp::NegF32:
+                outputC.addString(format("__r%u.f32 = -__r%u.f32;", ip->a.u32, ip->a.u32));
+                break;
+            case ByteCodeOp::NegF64:
+                outputC.addString(format("__r%u.f64 = -__r%u.f64;", ip->a.u32, ip->a.u32));
+                break;
+            case ByteCodeOp::NegS32:
+                outputC.addString(format("__r%u.s32 = -__r%u.s32;", ip->a.u32, ip->a.u32));
+                break;
+            case ByteCodeOp::NegS64:
+                outputC.addString(format("__r%u.s64 = -__r%u.s64;", ip->a.u32, ip->a.u32));
+                break;
             default:
+                ok = false;
                 outputC.addString("// ");
                 outputC.addString(g_ByteCodeOpNames[(int) ip->op]);
-                module->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
+                module->internalError(format("unknown instruction '%s' during bytecode generation", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 
@@ -137,5 +163,5 @@ bool BackendC::emitFunctions()
         outputC.addString("}\n");
     }
 
-    return true;
+    return ok;
 }

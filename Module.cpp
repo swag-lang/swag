@@ -112,13 +112,31 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 void Module::error(const Utf8& msg)
 {
     g_Log.lock();
-    g_Log.print(format("module %s: ", name.c_str()));
     g_Log.setColor(LogColor::Red);
+    g_Log.print(format("module %s: ", name.c_str()));
     g_Log.print("error: ");
-    g_Log.setDefaultColor();
     g_Log.print(msg);
     g_Log.eol();
+    g_Log.setDefaultColor();
     g_Log.unlock();
+
+	g_Workspace.numErrors++;
+    numErrors++;
+}
+
+void Module::internalError(const Utf8& msg)
+{
+    g_Log.lock();
+    g_Log.setColor(LogColor::Red);
+    g_Log.print(format("module %s: ", name.c_str()));
+    g_Log.print("internal error: ");
+    g_Log.print(msg);
+    g_Log.eol();
+    g_Log.setDefaultColor();
+    g_Log.unlock();
+
+    g_Workspace.numErrors++;
+    numErrors++;
 }
 
 void Module::addByteCodeFunc(ByteCode* bc)

@@ -1,14 +1,15 @@
 #unittest module module256;
+//#unittest pass backend;
 using swag;
 
 #[Test]
 func main: ()
 {
-	@assert(true);
 	var i = 5;
 	while i > 0
 	{
-		@print("toto\n");
 		i -= 1;
 	}
+	
+	@assert(i == 0);
 }
