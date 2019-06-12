@@ -17,12 +17,10 @@ bool BackendC::emitFunctions()
         auto node = one->node;
 
         // Do we need to generate that function ?
-        if (node->attributeFlags & ATTRIBUTE_TEST)
-        {
-            if (!g_CommandLine.test)
-                continue;
-            testFuncs.push_back(node);
-        }
+        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+        if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
+            continue;
 
         outputC.addString("void __");
         outputC.addString(node->name.c_str());

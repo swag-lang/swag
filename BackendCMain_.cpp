@@ -7,6 +7,7 @@
 #include "ByteCode.h"
 #include "CommandLine.h"
 #include "AstNode.h"
+#include "TypeInfo.h"
 
 bool BackendC::emitMain()
 {
@@ -15,8 +16,11 @@ bool BackendC::emitMain()
 	// Generate call to test functions
     if (g_CommandLine.test)
     {
-        for (auto node : testFuncs)
+        for (auto bc : module->byteCodeTestFunc)
         {
+			auto node = bc->node;
+            if (node->attributeFlags & ATTRIBUTE_COMPILER)
+                continue;
 			outputC.addString(format("__%s();\n", node->name.c_str()));
         }
     }

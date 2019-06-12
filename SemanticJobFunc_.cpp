@@ -28,7 +28,7 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
         funcParam->typeInfo = param->typeInfo;
         funcParam->index    = index++;
 
-		// Default parameter value
+        // Default parameter value
         if (nodeParam->astAssignment)
         {
             if (!defaultValueDone)
@@ -59,7 +59,14 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     auto node         = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncDecl;
 
-    // Can be null for intrincics etc...
+    // Check prototype
+    if (node->attributeFlags & ATTRIBUTE_TEST)
+    {
+        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, sourceFile->report({sourceFile, node->returnType, "function marked with the 'Test' attribute can't have a return value"}));
+        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, sourceFile->report({sourceFile, node->parameters, "function marked with the 'Test' attribute can't have parameters"}));
+    }
+
+    // Can be null for intrinsics etc...
     if (node->content)
         node->content->byteCodeBeforeFct = &ByteCodeGenJob::emitBeforeFuncDeclContent;
 
@@ -83,9 +90,21 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // Ask for bytecode
-    bool genByteCode = g_CommandLine.output && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic);
-    if (node->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
+    bool genByteCode = false;
+    if (g_CommandLine.output && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic))
+    {
         genByteCode = true;
+    }
+    if (node->attributeFlags & ATTRIBUTE_TEST)
+    {
+        if (!g_CommandLine.test)
+            genByteCode = false;
+    }
+    if (node->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
+    {
+        genByteCode = true;
+    }
+
     if (genByteCode)
     {
         scoped_lock lk(node->mutex);

@@ -61,14 +61,11 @@ struct Module : public PoolElement
     SpinLock  mutexBuildPass;
     BuildPass buildPass = BuildPass::Full;
 
-    void addByteCodeFunc(ByteCode* bc)
-    {
-        scoped_lock lk(mutexByteCode);
-        byteCodeFunc.push_back(bc);
-    }
+    void addByteCodeFunc(ByteCode* bc);
 
     SpinLock          mutexByteCode;
     vector<ByteCode*> byteCodeFunc;
+    vector<ByteCode*> byteCodeTestFunc;
 };
 
 extern Pool<Module> g_Pool_module;

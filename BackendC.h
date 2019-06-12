@@ -27,6 +27,4 @@ struct BackendC
 
     Concat outputH;
     Concat outputC;
-
-    vector<AstNode*> testFuncs;
 };

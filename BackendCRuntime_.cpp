@@ -8,7 +8,6 @@
 
 const char* g_RuntimeC = R"(
 #include <stdint.h>
-#include <locale>
 #include <codecvt>
 #include <iostream>
 using namespace std;

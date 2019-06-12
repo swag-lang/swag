@@ -72,13 +72,13 @@ uint32_t Module::reserveRegisterRC(ByteCode* bc)
     if (!availableRegistersRC.empty())
     {
         auto result = availableRegistersRC.back();
-		bc->usedRegisters.insert(result);
+        bc->usedRegisters.insert(result);
         availableRegistersRC.pop_back();
         return result;
     }
 
     auto result = maxReservedRegisterRC++;
-	bc->usedRegisters.insert(result);
+    bc->usedRegisters.insert(result);
     return result;
 }
 
@@ -119,4 +119,12 @@ void Module::error(const Utf8& msg)
     g_Log.print(msg);
     g_Log.eol();
     g_Log.unlock();
+}
+
+void Module::addByteCodeFunc(ByteCode* bc)
+{
+    scoped_lock lk(mutexByteCode);
+    byteCodeFunc.push_back(bc);
+    if (bc->node->attributeFlags & ATTRIBUTE_TEST)
+        byteCodeTestFunc.push_back(bc);
 }

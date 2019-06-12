@@ -5,6 +5,7 @@ namespace swag {
 attr ConstExpr: () -> func;
 attr PrintByteCode: () -> func;
 attr Test: () -> func;
+attr Compiler: () -> func;
 
 func @print: (value: s32);
 func @print: (value: s64);
