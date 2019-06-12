@@ -130,7 +130,7 @@ bool BackendC::emitFunctions()
                 outputC.addString(format("__print((const char*) __r%u.pointer);", ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicAssert:
-                outputC.addString(format("__assert(__r%u.b, __FILE__, __LINE__);", ip->a.u32));
+				outputC.addString(format("__assert(__r%u.b, R\"(%s)\", %d);", ip->a.u32, module->files[ip->sourceFileIdx]->path.string().c_str(), ip->startLocation.line + 1));
                 break;
             case ByteCodeOp::NegBool:
                 outputC.addString(format("__r%u.b = !__r%u.b;", ip->a.u32, ip->a.u32));

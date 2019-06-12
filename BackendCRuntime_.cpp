@@ -38,7 +38,7 @@ void __print(const char* message)
 void __assert(bool expr, const char* file, int line)
 {
 	if(expr) return;
-	__print(file); __print(":"); __print(to_string(line).c_str()); __print(": error: "); __print("intrinsic assertion failed\n");
+	__print(file); __print(":"); __print(to_string(line).c_str()); __print(": error: "); __print("intrinsic assertion failed in native code\n");
 	exit(-1);
 }
 

@@ -80,11 +80,13 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
 
             // Process result
             g_Log.lock();
-			if (strstr(strout.c_str(), ": error:"))
+			auto pz = strstr(strout.c_str(), ": error");
+			while(pz)
 			{
 				g_Log.setColor(LogColor::Red);
 				backend->module->numErrors++;
 				g_Workspace.numErrors++;
+				pz = strstr(pz + 1, ": error");
 			}
 
             wchar_t azMB[4096];
