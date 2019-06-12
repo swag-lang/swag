@@ -8,13 +8,14 @@
 #include "ByteCodeOp.h"
 #include "AstNode.h"
 #include "CommandLine.h"
+#include "Ast.h"
 #include "TypeInfo.h"
 
 bool BackendC::emitFunctions()
 {
     for (auto one : module->byteCodeFunc)
     {
-        auto node = one->node;
+        auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
 
         // Do we need to generate that function ?
         if (node->attributeFlags & ATTRIBUTE_COMPILER)
@@ -46,32 +47,88 @@ bool BackendC::emitFunctions()
             outputC.addString(";\n");
         }
 
+        // Local stack
+        if (node->stackSize)
+        {
+            outputC.addString(format("uint8_t __stack[%u];\n", node->stackSize));
+        }
+
         // Generate bytecode
         auto ip = bc->out;
-        for (uint32_t i = 0; i < bc->numInstructions; i++)
+        for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
         {
+            outputC.addString(format("__lbl%08u:; ", i));
             switch (ip->op)
             {
+            case ByteCodeOp::End:
+            case ByteCodeOp::DecSP:
+            case ByteCodeOp::IncSP:
+            case ByteCodeOp::MovSPBP:
+                break;
+            case ByteCodeOp::RCxRefFromStack:
+                outputC.addString(format("__r%u.pointer = __stack + %u;", ip->a.u32, ip->b.s32));
+                break;
+            case ByteCodeOp::RCxFromStack8:
+                outputC.addString(format("__r%u.u8 = *(uint8_t*) (__stack + %d);", ip->a.u32, ip->b.s32));
+                break;
+            case ByteCodeOp::RCxFromStack16:
+                outputC.addString(format("__r%u.u16 = *(uint16_t*) (__stack + %d);", ip->a.u32, ip->b.s32));
+                break;
+            case ByteCodeOp::RCxFromStack32:
+                outputC.addString(format("__r%u.u32 = *(uint32_t*) (__stack + %d);", ip->a.u32, ip->b.s32));
+                break;
+            case ByteCodeOp::RCxFromStack64:
+                outputC.addString(format("__r%u.u64 = *(uint64_t*) (__stack + %d);", ip->a.u32, ip->b.s32));
+                break;
+            case ByteCodeOp::AffectOp8:
+                outputC.addString(format("*(uint16_t*)(__r%u.pointer) = __r%u.u8;", ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::AffectOp16:
+                outputC.addString(format("*(uint16_t*)(__r%u.pointer) = __r%u.u16;", ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::AffectOp32:
+                outputC.addString(format("*(uint32_t*)(__r%u.pointer) = __r%u.u32;", ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::AffectOp64:
+                outputC.addString(format("*(uint64_t*)(__r%u.pointer) = __r%u.u64;", ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::CopyRCxVa32:
+                outputC.addString(format("__r%u.u32 = 0x%x;", ip->b.u32, ip->a.u32));
+                break;
+            case ByteCodeOp::CopyRCxVa64:
+                outputC.addString(format("__r%u.u64 = 0x%I64x;", ip->b.u32, ip->a.u64));
+                break;
             case ByteCodeOp::CopyRCxVaStr:
-                outputC.addString(format("__r%d.pointer = __string%d;\n", ip->b.u32, ip->a.u32));
+                outputC.addString(format("__r%u.pointer = __string%u;", ip->b.u32, ip->a.u32));
+                break;
+            case ByteCodeOp::AffectOpMinusEqS32:
+                outputC.addString(format("*(int32_t*)(__r%u.pointer) -= __r%u.s32;", ip->a.u32, ip->b.u32));
+                break;
+            case ByteCodeOp::CompareOpGreaterS32:
+                outputC.addString(format("__r%u.b = __r%u.s32 > __r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::IntrinsicPrintString:
-                outputC.addString(format("__print((const char*) __r%d.pointer);\n", ip->a.u32));
+                outputC.addString(format("__print((const char*) __r%u.pointer);", ip->a.u32));
                 break;
-            case ByteCodeOp::End:
+            case ByteCodeOp::Jump:
+                outputC.addString(format("goto __lbl%08u;", ip->a.s32 + i + 1));
+                break;
+            case ByteCodeOp::JumpNotTrue:
+                outputC.addString(format("if(!__r%d.b) goto __lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
                 break;
             case ByteCodeOp::Ret:
-                outputC.addString("return;\n");
+                outputC.addString("return;");
                 break;
             default:
                 outputC.addString("// ");
                 outputC.addString(g_ByteCodeOpNames[(int) ip->op]);
-                outputC.addString("\n");
                 module->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
                 break;
             }
 
-            ip++;
+            /*outputC.addString(" // ");
+            outputC.addString(g_ByteCodeOpNames[(int) ip->op]);*/
+            outputC.addString("\n");
         }
 
         outputC.addString("}\n");

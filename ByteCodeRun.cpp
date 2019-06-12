@@ -69,10 +69,15 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->decSP(ip->a.u32);
         break;
     }
-    case ByteCodeOp::CopyRCxVa:
+    case ByteCodeOp::CopyRCxVa32:
     case ByteCodeOp::CopyRCxVaStr:
     {
-        registersRC[ip->b.u32] = ip->a;
+        registersRC[ip->b.u32].u32 = ip->a.u32;
+        break;
+    }
+    case ByteCodeOp::CopyRCxVa64:
+    {
+        registersRC[ip->b.u32].u64 = ip->a.u64;
         break;
     }
     case ByteCodeOp::CopyRRxRCx:

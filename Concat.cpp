@@ -15,11 +15,14 @@ void Concat::checkCount(int offset)
         return;
     }
 
-    lastBucket = g_Pool_concatBucket.alloc();
+    auto newBucket = g_Pool_concatBucket.alloc();
     if (!firstBucket)
-        firstBucket = lastBucket;
-    currentSP         = lastBucket->datas;
-    lastBucket->count = offset;
+        firstBucket = newBucket;
+    if (lastBucket)
+        lastBucket->nextBucket = newBucket;
+    lastBucket       = newBucket;
+    currentSP        = newBucket->datas;
+    newBucket->count = offset;
 }
 
 void Concat::addBool(bool v)
