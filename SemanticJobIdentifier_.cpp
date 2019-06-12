@@ -120,15 +120,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncCall;
 
-			auto ownerFct = node->ownerFct;
-			if (ownerFct)
-			{
-				auto myAttributes = ownerFct->attributeFlags;
-				if (!(myAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
-					return sourceFile->report({ sourceFile, node->token, format("can't call compiler function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str()) });
-				if (!(myAttributes & ATTRIBUTE_TEST) && (overload->node->attributeFlags & ATTRIBUTE_TEST))
-					return sourceFile->report({ sourceFile, node->token, format("can't call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str()) });
-			}
+            auto ownerFct = node->ownerFct;
+            if (ownerFct)
+            {
+                auto myAttributes = ownerFct->attributeFlags;
+                if (!(myAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
+                    return sourceFile->report({sourceFile, node->token, format("can't call compiler function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                if (!(myAttributes & ATTRIBUTE_TEST) && (overload->node->attributeFlags & ATTRIBUTE_TEST))
+                    return sourceFile->report({sourceFile, node->token, format("can't call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+            }
         }
         break;
     }
@@ -152,11 +152,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Compute dependencies if not already done
     if (job->cacheDependentSymbols.empty())
     {
+        dependentSymbols.clear();
         auto startScope = parent->startScope;
         if (!startScope)
+        {
             startScope = node->ownerScope;
-        dependentSymbols.clear();
-        collectScopeHiearchy(context, scopeHierarchy, startScope);
+            collectScopeHiearchy(context, scopeHierarchy, startScope);
+        }
+        else
+            scopeHierarchy.push_back(startScope);
+
         for (auto scope : scopeHierarchy)
         {
             if (scope->symTable)
@@ -172,7 +177,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
 
         if (job->cacheDependentSymbols.empty())
+        {
+            if (parent->startScope)
+                return sourceFile->report({sourceFile, node->token, format("identifier '%s' can't be found in %s '%s'", node->name.c_str(), Scope::getNakedName(parent->startScope->kind), parent->startScope->fullname.c_str())});
             return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
+        }
     }
 
     // If one of my dependent symbol is not fully solved, we need to wait

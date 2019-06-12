@@ -25,7 +25,8 @@ struct Scope : public PoolElement
         startStackSize = 0;
     }
 
-    void allocateSymTable();
+    void               allocateSymTable();
+    static const char* getNakedName(ScopeKind kind);
 
     bool isGlobal()
     {

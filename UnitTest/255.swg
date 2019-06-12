@@ -2,10 +2,12 @@
 #unittest pass semantic;
 using swag;
 
-#[Test, Compiler]
-func main: ()
+#unittest error
+namespace A
 {
-	@assert(true);
 }
 
-#run main;
+func main: ()
+{
+	A.@assert(true);
+}
