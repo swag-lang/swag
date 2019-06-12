@@ -55,6 +55,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
 			if (it == shortNameArgs.end())
 			{
 				g_Log.error(format("command line error: invalid argument '%s'", command.c_str()));
+				result = false;
 				continue;
 			}
         }
