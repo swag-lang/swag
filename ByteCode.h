@@ -22,10 +22,11 @@ struct ByteCode : public PoolElement
 {
     void print();
 
-    ByteCodeInstruction* out               = nullptr;
-    uint32_t             numInstructions   = 0;
-    uint32_t             maxInstructions   = 0;
-    int                  maxCallParameters = 0;
+    static const int     ALIGN_RIGHT_OPCODE = 20;
+    ByteCodeInstruction* out                = nullptr;
+    uint32_t             numInstructions    = 0;
+    uint32_t             maxInstructions    = 0;
+    int                  maxCallParameters  = 0;
     vector<Utf8>         strBuffer;
     SourceFile*          sourceFile;
     AstNode*             node;

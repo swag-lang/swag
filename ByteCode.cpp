@@ -7,8 +7,13 @@
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op) #__op,
-
 const char* g_ByteCodeOpNames[] = {
+#include "ByteCodeOpList.h"
+};
+
+#undef BYTECODE_OP
+#define BYTECODE_OP(__op) (int) strlen(#__op),
+int g_ByteCodeOpNamesLen[] = {
 #include "ByteCodeOpList.h"
 };
 
@@ -39,7 +44,7 @@ void ByteCode::print()
         // Instruction
         g_Log.setColor(LogColor::White);
         int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);
-        while (len++ != 20)
+        while (len++ != ALIGN_RIGHT_OPCODE)
             g_Log.print(" ");
         g_Log.print(g_ByteCodeOpNames[(int) ip->op]);
         g_Log.print(" ");
@@ -78,7 +83,7 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::CopyRCxVa64:
-		case ByteCodeOp::CopyRCxVaStr:
+        case ByteCodeOp::CopyRCxVaStr:
             wprintf(L"B: %u VA: { %I64x }", ip->b.u32, ip->a.u64);
             break;
 

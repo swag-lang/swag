@@ -6,3 +6,4 @@ enum class ByteCodeOp : uint16_t
 };
 
 extern const char* g_ByteCodeOpNames[];
+extern int         g_ByteCodeOpNamesLen[];
