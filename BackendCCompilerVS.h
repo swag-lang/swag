@@ -13,5 +13,5 @@ struct BackendCCompilerVS : public BackendCCompiler
 
     bool getVSTarget(string& vsTarget);
 	bool getWinSdk(string& winSdk);
-	bool doProcess(const string& cmdline, const string& compilerPath);
+	bool doProcess(const string& cmdline, const string& compilerPath, bool logAll);
 };

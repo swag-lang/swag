@@ -8,7 +8,7 @@
 #include "Stats.h"
 #include "Workspace.h"
 
-bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compilerPath)
+bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compilerPath, bool logAll)
 {
     STARTUPINFOA        si;
     PROCESS_INFORMATION pi;
@@ -85,15 +85,21 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
             tokenize(strout.c_str(), '\n', lines);
             for (auto oneLine : lines)
             {
+                g_Log.setDefaultColor();
+
                 if (oneLine.back() == '\r')
                     oneLine.erase(oneLine.end() - 1);
+
                 auto pz = strstr(oneLine.c_str(), ": error");
                 if (pz)
                 {
                     g_Log.setColor(LogColor::Red);
                     backend->module->numErrors++;
                     g_Workspace.numErrors++;
+                }
 
+                if (pz || logAll)
+                {
                     wchar_t azMB[4096];
                     ::MultiByteToWideChar(CP_OEMCP, 0, oneLine.c_str(), (int) oneLine.length(), azMB, 4096);
                     azMB[oneLine.length()]     = '\n';
@@ -223,7 +229,7 @@ bool BackendCCompilerVS::compile()
     g_Log.message(format("compiling '%s' => '%s' (VS)", backend->destCFile.string().c_str(), backend->outputFile.string().c_str()));
 
     auto cmdLine = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
-    SWAG_CHECK(doProcess(cmdLine, clPath));
+    SWAG_CHECK(doProcess(cmdLine, clPath, false));
     return true;
 }
 
@@ -232,6 +238,6 @@ bool BackendCCompilerVS::runTests()
     g_Log.message(format("running tests on '%s'\n", backend->outputFile.string().c_str()));
 
     auto path = backend->outputFile;
-    SWAG_CHECK(doProcess(path.string(), path.parent_path().string()));
+    SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
     return true;
 }
