@@ -769,10 +769,17 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-    if (leftTypeInfo == rightTypeInfo)
-        return;
     if ((leftTypeInfo->kind != TypeInfoKind::Native) || (rightTypeInfo->kind != TypeInfoKind::Native))
         return;
+
+	// This types do not have a promotion
+	switch (leftTypeInfo->nativeType)
+	{
+	case NativeType::Bool:
+	case NativeType::Char:
+	case NativeType::String:
+		return;
+	}
 
     TypeInfo* newLeftTypeInfo = (TypeInfo*) g_TypeMgr.promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
 
