@@ -1,4 +1,4 @@
-#unittest module module260;
+#unittest module module262;
 //#unittest pass backend;
 using swag;
 
@@ -7,7 +7,7 @@ func fact: (v: s32)->s32
 { 
 	if(v == 1)
 		return 1;
-	var res = fact(v - 1) * v; 
+	var res = v * fact(v - 1); 
 	return res;
 }
 
