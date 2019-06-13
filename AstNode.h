@@ -38,6 +38,7 @@ enum class AstNodeKind
     Type,
     Namespace,
     If,
+	Else,
     While,
     Break,
     Continue,

@@ -1,5 +1,5 @@
 #unittest module module260;
-#unittest pass backend;
+//#unittest pass backend;
 using swag;
 
 //#[PrintByteCode]

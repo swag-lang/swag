@@ -12,6 +12,55 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 
+bool BackendC::emitFuncSignature(AstFuncDecl* node)
+{
+    outputC.addString("void __");
+    outputC.addString(node->name.c_str());
+    outputC.addString("(");
+
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+
+    // Result registers
+    int cptParams = 0;
+    if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        outputC.addString("__register& __rr0");
+        cptParams++;
+    }
+
+    // Parameters
+    for (auto param : typeFunc->parameters)
+    {
+        if (cptParams)
+            outputC.addString(", ");
+        outputC.addString(format("const __register& __rp%u", param->index));
+        cptParams++;
+    }
+
+    outputC.addString(")");
+    return true;
+}
+
+bool BackendC::emitFuncSignatures()
+{
+    for (auto one : module->byteCodeFunc)
+    {
+        auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+
+        // Do we need to generate that function ?
+        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+        if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
+            continue;
+
+		emitFuncSignature(node);
+		outputC.addString(";\n");
+    }
+
+	outputC.addString("\n");
+    return true;
+}
+
 bool BackendC::emitFunctions()
 {
     bool ok = true;
@@ -25,30 +74,10 @@ bool BackendC::emitFunctions()
         if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
             continue;
 
-        outputC.addString("void __");
-        outputC.addString(node->name.c_str());
-        outputC.addString("(");
-
+        // Signature
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-
-        // Result registers
-        int cptParams = 0;
-        if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
-        {
-            outputC.addString("__register& __rr0");
-            cptParams++;
-        }
-
-        // Parameters
-        for (auto param : typeFunc->parameters)
-        {
-            if (cptParams)
-                outputC.addString(", ");
-            outputC.addString(format("const __register& __rp%u", param->index));
-            cptParams++;
-        }
-
-        outputC.addString(") {\n");
+        emitFuncSignature(node);
+		outputC.addString(" {\n");
 
         auto bc = node->bc;
 

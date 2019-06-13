@@ -2,6 +2,7 @@
 #include "Concat.h"
 struct Module;
 struct AstNode;
+struct AstFuncDecl;
 
 struct BackendC
 {
@@ -18,6 +19,8 @@ struct BackendC
     bool emitDataSegment();
     bool emitMain();
     bool emitFunctions();
+	bool emitFuncSignatures();
+	bool emitFuncSignature(AstFuncDecl* node);
 
     Module* module;
 

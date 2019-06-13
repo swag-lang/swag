@@ -26,6 +26,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doEmbeddedStatement(node, &node->elseBlock));
+		node->elseBlock->kind = AstNodeKind::Else;
     }
 
     return true;

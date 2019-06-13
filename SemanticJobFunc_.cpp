@@ -197,6 +197,10 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     while (scanNode && scanNode != node->ownerFct->parent)
     {
         scanNode->flags |= AST_SCOPE_HAS_RETURN;
+        if (scanNode->kind == AstNodeKind::If ||
+            scanNode->kind == AstNodeKind::Else ||
+            scanNode->kind == AstNodeKind::While)
+            break;
         scanNode = scanNode->parent;
     }
 

@@ -42,6 +42,7 @@ bool BackendC::generate()
 
     ok &= emitRuntime();
     ok &= emitDataSegment();
+	ok &= emitFuncSignatures();
     ok &= emitFunctions();
     ok &= emitMain();
 
