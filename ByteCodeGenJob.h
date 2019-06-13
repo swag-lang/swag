@@ -32,6 +32,7 @@ struct ByteCodeGenJob : public Job
 
     void reset() override
     {
+		reservedRC.clear();
         nodes.clear();
         dependentJobs.clear();
     }

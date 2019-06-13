@@ -162,6 +162,15 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, (int) typeInfoFunc->parameters.size());
 
+    // Push current used registers
+    auto&            reservedRC = context->job->reservedRC;
+    vector<uint32_t> copyreservedRC;
+    for (auto it = reservedRC.begin(); it != reservedRC.end(); ++it)
+    {
+		copyreservedRC.push_back(*it);
+        emitInstruction(context, ByteCodeOp::PushRCxSaved, *it);
+    }
+
     // Push missing default parameters
     if (numCallParams != typeInfoFunc->parameters.size())
     {
@@ -173,7 +182,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
             emitLiteral(context);
             context->node = node;
             emitInstruction(context, ByteCodeOp::PushRCxParam, defaultParam->astAssignment->resultRegisterRC, i);
-            sourceFile->module->freeRegisterRC(defaultParam->astAssignment->resultRegisterRC);
+            freeRegisterRC(context, defaultParam->astAssignment->resultRegisterRC);
             precallStack += sizeof(Register);
         }
     }
@@ -202,6 +211,12 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     if (precallStack)
     {
         emitInstruction(context, ByteCodeOp::IncSP, precallStack);
+    }
+
+    // Restore reserved registers
+    for (auto it = copyreservedRC.rbegin(); it != copyreservedRC.rend(); ++it)
+    {
+        emitInstruction(context, ByteCodeOp::PopRCxSaved, *it);
     }
 
     return true;

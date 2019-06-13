@@ -35,7 +35,6 @@ bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
 {
-    auto module                = context->sourceFile->module;
     auto node                  = context->node;
     auto ifNode                = CastAst<AstIf>(node->parent, AstNodeKind::If);
     ifNode->seekJumpExpression = context->bc->numInstructions;
@@ -79,7 +78,6 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
 {
-    auto module                   = context->sourceFile->module;
     auto node                     = context->node;
     auto whileNode                = CastAst<AstWhile>(node->parent, AstNodeKind::While);
     whileNode->seekJumpExpression = context->bc->numInstructions;

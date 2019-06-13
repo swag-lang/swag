@@ -641,6 +641,9 @@ bool BackendC::emitFunctions()
             case ByteCodeOp::RCxFromStackParam64:
                 outputC.addString(format("r%u = rp%u;", ip->a.u32, ip->c.u32));
                 break;
+            case ByteCodeOp::PushRCxSaved:
+            case ByteCodeOp::PopRCxSaved:
+                break;
             case ByteCodeOp::PushRCxParam:
                 outputC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
                 break;

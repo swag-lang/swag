@@ -49,12 +49,13 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+	case ByteCodeOp::PushRCxSaved:
     case ByteCodeOp::PushRCxParam:
     {
         context->push(registersRC[ip->a.u32].u64);
         break;
     }
-    case ByteCodeOp::PopRCx:
+    case ByteCodeOp::PopRCxSaved:
     {
         registersRC[ip->a.u32].u64 = context->pop<uint64_t>();
         break;
