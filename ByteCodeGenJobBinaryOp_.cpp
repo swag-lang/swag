@@ -256,54 +256,54 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t 
 
 bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
-    AstNode* node   = context->node;
-    auto     module = context->sourceFile->module;
+    AstNode* node = context->node;
 
     auto r0 = node->childs[0]->resultRegisterRC;
     auto r1 = node->childs[1]->resultRegisterRC;
-    auto r2 = module->reserveRegisterRC(context->bc);
-    module->freeRegisterRC(r0);
-    module->freeRegisterRC(r1);
-    node->resultRegisterRC = r2;
+    auto r2 = node->resultRegisterRC = reserveRegisterRC(context);
 
     switch (node->token.id)
     {
     case TokenId::SymPlus:
         SWAG_CHECK(emitBinaryOpPlus(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymMinus:
         SWAG_CHECK(emitBinaryOpMinus(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymAsterisk:
         SWAG_CHECK(emitBinaryOpMul(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymSlash:
         SWAG_CHECK(emitBinaryOpDiv(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymAmpersandAmpersand:
         emitInstruction(context, ByteCodeOp::BinOpAnd, r0, r1, r2);
-        return true;
+        break;
     case TokenId::SymVerticalVertical:
         emitInstruction(context, ByteCodeOp::BinOpOr, r0, r1, r2);
-        return true;
+        break;
     case TokenId::SymVertical:
         SWAG_CHECK(emitBitmaskOr(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymAmpersand:
         SWAG_CHECK(emitBitmaskAnd(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymLowerLower:
         SWAG_CHECK(emitShiftLeft(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymGreaterGreater:
         SWAG_CHECK(emitShiftRight(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymCircumflex:
         SWAG_CHECK(emitXor(context, r0, r1, r2));
-        return true;
+        break;
     default:
         return internalError(context, "emitBinaryOp, invalid token op");
     }
+
+    freeRegisterRC(context, r0);
+    freeRegisterRC(context, r1);
+    return true;
 }
 
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
@@ -402,15 +402,11 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
 
 bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 {
-    AstNode* node   = context->node;
-    auto     module = context->sourceFile->module;
+    AstNode* node = context->node;
 
     auto r0 = node->childs[0]->resultRegisterRC;
     auto r1 = node->childs[1]->resultRegisterRC;
-    auto r2 = module->reserveRegisterRC(context->bc);
-    module->freeRegisterRC(r0);
-    module->freeRegisterRC(r1);
-    node->resultRegisterRC = r2;
+    auto r2 = node->resultRegisterRC = reserveRegisterRC(context);
 
     emitCast(context, node->childs[0]->castedTypeInfo, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo));
     emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo));
@@ -418,26 +414,30 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     {
     case TokenId::SymEqualEqual:
         SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymExclamEqual:
         SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
         emitInstruction(context, ByteCodeOp::NegBool, r2);
-        return true;
+        break;
     case TokenId::SymLower:
         SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymGreater:
         SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
-        return true;
+        break;
     case TokenId::SymLowerEqual:
         SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
         emitInstruction(context, ByteCodeOp::NegBool, r2);
-        return true;
+        break;
     case TokenId::SymGreaterEqual:
         SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
         emitInstruction(context, ByteCodeOp::NegBool, r2);
-        return true;
+        break;
     default:
         return internalError(context, "emitCompareOpGreater, invalid token op");
     }
+
+    freeRegisterRC(context, r0);
+    freeRegisterRC(context, r1);
+	return true;
 }

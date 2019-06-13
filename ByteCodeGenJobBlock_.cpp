@@ -40,7 +40,7 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
     auto ifNode                = CastAst<AstIf>(node->parent, AstNodeKind::If);
     ifNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
-    module->freeRegisterRC(node->resultRegisterRC);
+    freeRegisterRC(context, node->resultRegisterRC);
     return true;
 }
 
@@ -84,7 +84,7 @@ bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
     auto whileNode                = CastAst<AstWhile>(node->parent, AstNodeKind::While);
     whileNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
-    module->freeRegisterRC(node->resultRegisterRC);
+    freeRegisterRC(context, node->resultRegisterRC);
     return true;
 }
 

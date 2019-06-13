@@ -386,48 +386,49 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
 
 bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 {
-    AstNode* node   = context->node;
-    auto     module = context->sourceFile->module;
+    AstNode* node = context->node;
 
     auto r0 = node->childs[0]->resultRegisterRC;
     auto r1 = node->childs[1]->resultRegisterRC;
-    module->freeRegisterRC(r0);
-    module->freeRegisterRC(r1);
 
     emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo));
     switch (node->token.id)
     {
     case TokenId::SymEqual:
         SWAG_CHECK(emitAffectEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymPlusEqual:
         SWAG_CHECK(emitAffectPlusEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymMinusEqual:
         SWAG_CHECK(emitAffectMinusEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymAsteriskEqual:
         SWAG_CHECK(emitAffectMulEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymSlashEqual:
         SWAG_CHECK(emitAffectDivEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymAmpersandEqual:
         SWAG_CHECK(emitAffectAndEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymVerticalEqual:
         SWAG_CHECK(emitAffectOrEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymCircumflexEqual:
         SWAG_CHECK(emitAffectXOrEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymLowerLowerEqual:
         SWAG_CHECK(emitAffectShiftLeftEqual(context, r0, r1));
-        return true;
+        break;
     case TokenId::SymGreaterGreaterEqual:
         SWAG_CHECK(emitAffectShiftRightEqual(context, r0, r1));
-        return true;
+        break;
     default:
         return internalError(context, "emitAffect, invalid token op");
     }
+
+    freeRegisterRC(context, r0);
+    freeRegisterRC(context, r1);
+    return true;
 }

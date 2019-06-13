@@ -17,6 +17,20 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg)
     return false;
 }
 
+uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
+{
+	auto rc = context->sourceFile->module->reserveRegisterRC(context->bc);
+	context->job->reservedRC.insert(rc);
+	return rc;
+}
+
+void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
+{
+	auto job = context->job;
+	job->reservedRC.erase(rc);
+	context->sourceFile->module->freeRegisterRC(rc);
+}
+
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node = context->node;

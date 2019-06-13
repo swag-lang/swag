@@ -75,7 +75,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case Intrisic::Print:
     {
         auto child0 = callParams->childs[0];
-        context->sourceFile->module->freeRegisterRC(child0->resultRegisterRC);
         switch (TypeManager::concreteType(child0->typeInfo)->nativeType)
         {
         case NativeType::S32:
@@ -99,13 +98,15 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         default:
             return internalError(context, "emitIntrinsic, @print invalid type");
         }
+
+        freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
     case Intrisic::Assert:
     {
         auto child0 = callParams->childs[0];
-        context->sourceFile->module->freeRegisterRC(child0->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
+        freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
     default:
@@ -193,7 +194,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        node->resultRegisterRC = sourceFile->module->reserveRegisterRC(context->bc);
+        node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
     }
 

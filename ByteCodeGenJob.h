@@ -92,19 +92,24 @@ struct ByteCodeGenJob : public Job
     static bool emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-	static bool emitAffectXOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-	static bool emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-	static bool emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static bool emitAffectXOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static bool emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static bool emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffect(ByteCodeGenContext* context);
     static bool emitBeforeFuncDeclContent(ByteCodeGenContext* context);
     static bool emitVarDecl(ByteCodeGenContext* context);
-	static bool emitBreak(ByteCodeGenContext* context);
-	static bool emitContinue(ByteCodeGenContext* context);
+    static bool emitBreak(ByteCodeGenContext* context);
+    static bool emitContinue(ByteCodeGenContext* context);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;
     vector<AstNode*> nodes;
     vector<Job*>     dependentJobs;
+
+    static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
+    static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
+
+    set<uint32_t> reservedRC;
 };
 
 extern Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;

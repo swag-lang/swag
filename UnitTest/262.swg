@@ -2,7 +2,7 @@
 //#unittest pass backend;
 using swag;
 
-//#[PrintByteCode]
+#[PrintByteCode]
 func fact: (v: s32)->s32 
 { 
 	if(v == 1)
