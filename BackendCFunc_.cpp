@@ -53,11 +53,11 @@ bool BackendC::emitFuncSignatures()
         if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
             continue;
 
-		emitFuncSignature(node);
-		outputC.addString(";\n");
+        emitFuncSignature(node);
+        outputC.addString(";\n");
     }
 
-	outputC.addString("\n");
+    outputC.addString("\n");
     return true;
 }
 
@@ -77,11 +77,10 @@ bool BackendC::emitFunctions()
         // Signature
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         emitFuncSignature(node);
-		outputC.addString(" {\n");
-
-        auto bc = node->bc;
+        outputC.addString(" {\n");
 
         // Generate one local variable per used register
+        auto bc = node->bc;
         if (bc->usedRegisters.size())
         {
             int index = 0;
@@ -110,7 +109,7 @@ bool BackendC::emitFunctions()
                     outputC.addString("__register ");
                 else
                     outputC.addString(", ");
-                outputC.addString(format("__rp%d", index));
+                outputC.addString(format("__rc%d", index));
                 index = (index + 1) % 10;
                 if (index == 0)
                     outputC.addString(";\n");
@@ -636,7 +635,7 @@ bool BackendC::emitFunctions()
                 outputC.addString(format("__r%u = __rp%u;", ip->a.u32, ip->c.u32));
                 break;
             case ByteCodeOp::PushRCxParam:
-                outputC.addString(format("__rp%u = __r%u;", ip->b.u32, ip->a.u32));
+                outputC.addString(format("__rc%u = __r%u;", ip->b.u32, ip->a.u32));
                 break;
             case ByteCodeOp::LocalFuncCall:
             {
@@ -655,7 +654,7 @@ bool BackendC::emitFunctions()
                 {
                     if (cptCall)
                         outputC.addString(", ");
-                    outputC.addString(format("__rp%u", idxCall));
+                    outputC.addString(format("__rc%u", idxCall));
                     cptCall++;
                 }
 
