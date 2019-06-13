@@ -51,12 +51,12 @@ JobResult ByteCodeGenJob::execute()
     context.job        = this;
     context.sourceFile = sourceFile;
     context.bc         = originalNode->bc;
-
     if (!context.bc)
     {
-        originalNode->bc = context.bc = g_Pool_byteCode.alloc();
-        originalNode->bc->node        = originalNode;
-        originalNode->bc->sourceFile  = sourceFile;
+        originalNode->bc             = g_Pool_byteCode.alloc();
+        context.bc                   = originalNode->bc;
+        originalNode->bc->node       = originalNode;
+        originalNode->bc->sourceFile = sourceFile;
         if (originalNode->kind == AstNodeKind::FuncDecl)
             sourceFile->module->addByteCodeFunc(originalNode->bc);
     }

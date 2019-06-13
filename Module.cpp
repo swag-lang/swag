@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Module.h"
 #include "SourceFile.h"
-#include "Global.h"
 #include "ByteCodeRun.h"
 #include "Workspace.h"
 #include "Scope.h"
@@ -110,6 +109,21 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     return true;
 }
 
+void Module::addByteCodeFunc(ByteCode* bc)
+{
+    scoped_lock lk(mutexByteCode);
+    byteCodeFunc.push_back(bc);
+    if (bc->node->attributeFlags & ATTRIBUTE_TEST)
+        byteCodeTestFunc.push_back(bc);
+}
+
+void Module::setBuildPass(BuildPass buildP)
+{
+    scoped_lock lk(mutexBuildPass);
+    buildPass = (BuildPass) min((int) buildP, (int) buildPass);
+    buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
+}
+
 void Module::error(const Utf8& msg)
 {
     g_Log.lock();
@@ -138,19 +152,4 @@ void Module::internalError(const Utf8& msg)
 
     g_Workspace.numErrors++;
     numErrors++;
-}
-
-void Module::addByteCodeFunc(ByteCode* bc)
-{
-    scoped_lock lk(mutexByteCode);
-    byteCodeFunc.push_back(bc);
-    if (bc->node->attributeFlags & ATTRIBUTE_TEST)
-        byteCodeTestFunc.push_back(bc);
-}
-
-void Module::setBuildPass(BuildPass buildP)
-{
-    scoped_lock lk(mutexBuildPass);
-    buildPass = (BuildPass) min((int) buildP, (int) buildPass);
-    buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
 }

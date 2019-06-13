@@ -197,8 +197,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    context->result = SemanticResult::Done;
-
     // Fill specified parameters
     SymbolMatchContext symMatch;
     if (node->callParameters)

@@ -188,6 +188,8 @@ bool Workspace::build()
                 continue;
             if (module->buildPass < BuildPass::Backend)
                 continue;
+            if (module->files.size() == 0)
+                continue;
             auto job    = g_Pool_moduleOutputJob.alloc();
             job->module = module;
             g_ThreadMgr.addJob(job);

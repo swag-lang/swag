@@ -125,30 +125,32 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
 
     {
         scoped_lock lk(funcNode->mutex);
-
-        // Need to wait for function full semantic resolve
-        if (!(funcNode->flags & AST_FULL_RESOLVE))
+        if (funcNode->byteCodeJob != context->job) // If true, then this is a simple recursive call
         {
-            funcNode->dependentJobs.push_back(context->job);
-            context->result = ByteCodeResult::Pending;
-            return true;
-        }
-
-        // Need to generate bytecode, if not already done or running
-        if (!(funcNode->flags & AST_BYTECODE_GENERATED))
-        {
-            if (!funcNode->byteCodeJob)
+            // Need to wait for function full semantic resolve
+            if (!(funcNode->flags & AST_FULL_RESOLVE))
             {
-                funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-                funcNode->byteCodeJob->sourceFile   = sourceFile;
-                funcNode->byteCodeJob->originalNode = funcNode;
-                funcNode->byteCodeJob->nodes.push_back(funcNode);
-                g_ThreadMgr.addJob(funcNode->byteCodeJob);
+                funcNode->dependentJobs.push_back(context->job);
+                context->result = ByteCodeResult::Pending;
+                return true;
             }
 
-            funcNode->byteCodeJob->dependentJobs.push_back(context->job);
-            context->result = ByteCodeResult::Pending;
-            return true;
+            // Need to generate bytecode, if not already done or running
+            if (!(funcNode->flags & AST_BYTECODE_GENERATED))
+            {
+                if (!funcNode->byteCodeJob)
+                {
+                    funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+                    funcNode->byteCodeJob->sourceFile   = sourceFile;
+                    funcNode->byteCodeJob->originalNode = funcNode;
+                    funcNode->byteCodeJob->nodes.push_back(funcNode);
+                    g_ThreadMgr.addJob(funcNode->byteCodeJob);
+                }
+
+                funcNode->byteCodeJob->dependentJobs.push_back(context->job);
+                context->result = ByteCodeResult::Pending;
+                return true;
+            }
         }
     }
 
@@ -156,7 +158,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     auto params        = node->childs.empty() ? nullptr : node->childs.front();
     int  numCallParams = params ? (int) params->childs.size() : 0;
 
-	// Remember the number of parameters, to allocate registers in backend
+    // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, (int) typeInfoFunc->parameters.size());
 
     // Push missing default parameters
