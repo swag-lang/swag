@@ -28,11 +28,14 @@ struct ByteCodeGenContext
 
 struct ByteCodeGenJob : public Job
 {
+    void      setupBC(AstNode* node);
     JobResult execute() override;
 
     void reset() override
     {
-		reservedRC.clear();
+		syncToDependentNodes = false;
+        dependentNodes.clear();
+        reservedRC.clear();
         nodes.clear();
         dependentJobs.clear();
     }
@@ -106,6 +109,8 @@ struct ByteCodeGenJob : public Job
     SourceFile*      sourceFile;
     vector<AstNode*> nodes;
     vector<Job*>     dependentJobs;
+    vector<AstNode*> dependentNodes;
+    bool             syncToDependentNodes;
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);

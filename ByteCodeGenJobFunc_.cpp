@@ -139,18 +139,16 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
             // Need to generate bytecode, if not already done or running
             if (!(funcNode->flags & AST_BYTECODE_GENERATED))
             {
+                context->job->dependentNodes.push_back(funcNode);
                 if (!funcNode->byteCodeJob)
                 {
+                    context->job->setupBC(funcNode);
                     funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
                     funcNode->byteCodeJob->sourceFile   = sourceFile;
                     funcNode->byteCodeJob->originalNode = funcNode;
                     funcNode->byteCodeJob->nodes.push_back(funcNode);
                     g_ThreadMgr.addJob(funcNode->byteCodeJob);
                 }
-
-                funcNode->byteCodeJob->dependentJobs.push_back(context->job);
-                context->result = ByteCodeResult::Pending;
-                return true;
             }
         }
     }
@@ -167,7 +165,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     vector<uint32_t> copyreservedRC;
     for (auto it = reservedRC.begin(); it != reservedRC.end(); ++it)
     {
-		copyreservedRC.push_back(*it);
+        copyreservedRC.push_back(*it);
         emitInstruction(context, ByteCodeOp::PushRCxSaved, *it);
     }
 

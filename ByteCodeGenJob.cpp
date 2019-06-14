@@ -19,16 +19,16 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg)
 
 uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
 {
-	auto rc = context->sourceFile->module->reserveRegisterRC(context->bc);
-	context->job->reservedRC.insert(rc);
-	return rc;
+    auto rc = context->sourceFile->module->reserveRegisterRC(context->bc);
+    context->job->reservedRC.insert(rc);
+    return rc;
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
-	auto job = context->job;
-	job->reservedRC.erase(rc);
-	context->sourceFile->module->freeRegisterRC(rc);
+    auto job = context->job;
+    job->reservedRC.erase(rc);
+    context->sourceFile->module->freeRegisterRC(rc);
 }
 
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2)
@@ -58,88 +58,113 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     return &ins;
 }
 
+void ByteCodeGenJob::setupBC(AstNode* node)
+{
+    node->bc             = g_Pool_byteCode.alloc();
+    node->bc->node       = node;
+    node->bc->sourceFile = sourceFile;
+    if (node->kind == AstNodeKind::FuncDecl)
+        sourceFile->module->addByteCodeFunc(node->bc);
+}
+
 JobResult ByteCodeGenJob::execute()
 {
-    ByteCodeGenContext context;
-
-    context.job        = this;
-    context.sourceFile = sourceFile;
-    context.bc         = originalNode->bc;
-    if (!context.bc)
+    if (!syncToDependentNodes)
     {
-        originalNode->bc             = g_Pool_byteCode.alloc();
-        context.bc                   = originalNode->bc;
-        originalNode->bc->node       = originalNode;
-        originalNode->bc->sourceFile = sourceFile;
-        if (originalNode->kind == AstNodeKind::FuncDecl)
-            sourceFile->module->addByteCodeFunc(originalNode->bc);
-    }
+        ByteCodeGenContext context;
 
-    while (!nodes.empty())
-    {
-        auto node    = nodes.back();
-        context.node = node;
+        context.job        = this;
+        context.sourceFile = sourceFile;
+        context.bc         = originalNode->bc;
 
-        switch (node->bytecodeState)
+        if (!context.bc)
         {
-        case AstNodeResolveState::Enter:
-            node->bytecodeState = AstNodeResolveState::ProcessingChilds;
+            setupBC(originalNode);
+            context.bc = originalNode->bc;
+        }
 
-            if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
-                return JobResult::ReleaseJob;
+        while (!nodes.empty())
+        {
+            auto node    = nodes.back();
+            context.node = node;
 
-            if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
+            switch (node->bytecodeState)
             {
-                if (!(node->flags & AST_NO_BYTECODE_CHILDS))
+            case AstNodeResolveState::Enter:
+                node->bytecodeState = AstNodeResolveState::ProcessingChilds;
+
+                if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
+                    return JobResult::ReleaseJob;
+
+                if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
                 {
-                    for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+                    if (!(node->flags & AST_NO_BYTECODE_CHILDS))
                     {
-                        auto child = node->childs[i];
-                        nodes.push_back(child);
+                        for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+                        {
+                            auto child = node->childs[i];
+                            nodes.push_back(child);
+                        }
                     }
+
+                    break;
                 }
 
+            case AstNodeResolveState::ProcessingChilds:
+                if (node->flags & AST_VALUE_COMPUTED)
+                {
+                    context.node = node;
+                    if (!emitLiteral(&context))
+                        return JobResult::ReleaseJob;
+                }
+                else if (node->byteCodeFct)
+                {
+                    context.node   = node;
+                    context.result = ByteCodeResult::Done;
+
+                    if (!node->byteCodeFct(&context))
+                        return JobResult::ReleaseJob;
+                    if (context.result == ByteCodeResult::Pending)
+                        return JobResult::KeepJobAlive;
+                }
+
+                if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
+                    return JobResult::ReleaseJob;
+                nodes.pop_back();
                 break;
             }
+        }
 
-        case AstNodeResolveState::ProcessingChilds:
-            if (node->flags & AST_VALUE_COMPUTED)
-            {
-                context.node = node;
-                if (!emitLiteral(&context))
-                    return JobResult::ReleaseJob;
-            }
-            else if (node->byteCodeFct)
-            {
-                context.node   = node;
-                context.result = ByteCodeResult::Done;
+        emitInstruction(&context, ByteCodeOp::End);
 
-                if (!node->byteCodeFct(&context))
-                    return JobResult::ReleaseJob;
-                if (context.result == ByteCodeResult::Pending)
-                    return JobResult::KeepJobAlive;
-            }
+        // Print resulting bytecode
+        if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
+            context.bc->print();
 
-            if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
-                return JobResult::ReleaseJob;
-            nodes.pop_back();
-            break;
+        // Inform dependencies that this node has bytecode
+        {
+            scoped_lock lk(originalNode->mutex);
+            originalNode->byteCodeJob = nullptr;
+            originalNode->flags |= AST_BYTECODE_GENERATED;
+            for (auto job : dependentJobs)
+                g_ThreadMgr.addJob(job);
         }
     }
 
-    emitInstruction(&context, ByteCodeOp::End);
-
-    // Print resulting bytecode
-    if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
-        context.bc->print();
-
-    // Inform dependencies that this node has bytecode
+    // Wait for other dependent nodes to be generated
+    for (int i = (int) dependentNodes.size() - 1; i >= 0; i--)
     {
-        scoped_lock lk(originalNode->mutex);
-        originalNode->byteCodeJob = nullptr;
-        originalNode->flags |= AST_BYTECODE_GENERATED;
-        for (auto job : dependentJobs)
-            g_ThreadMgr.addJob(job);
+        auto node = dependentNodes[i];
+
+        scoped_lock lk(node->mutex);
+        if (node->flags & AST_BYTECODE_GENERATED)
+            dependentNodes.pop_back();
+        else
+        {
+            syncToDependentNodes = true;
+            node->byteCodeJob->dependentJobs.push_back(this);
+            return JobResult::KeepJobAlive;
+        }
     }
 
     return JobResult::ReleaseJob;

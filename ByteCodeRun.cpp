@@ -40,6 +40,9 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::LocalFuncCall:
     {
+		// Wait, in case byte code is not there
+        while (!(context->bc->node->flags & AST_BYTECODE_GENERATED))
+            ;
         context->push(context->bp);
         context->push(context->bc);
         context->push(context->ip);
@@ -49,7 +52,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	case ByteCodeOp::PushRCxSaved:
+    case ByteCodeOp::PushRCxSaved:
     case ByteCodeOp::PushRCxParam:
     {
         context->push(registersRC[ip->a.u32].u64);
@@ -125,7 +128,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::RCxFromStack64:
-	case ByteCodeOp::RCxFromStackParam64:
+    case ByteCodeOp::RCxFromStackParam64:
     {
         auto offset                = ip->b.s32;
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + offset);
