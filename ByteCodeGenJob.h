@@ -8,6 +8,7 @@ struct AstNode;
 struct ByteCodeGenJob;
 struct ByteCodeInstruction;
 struct TypeInfo;
+struct Module;
 enum class ByteCodeOp : uint16_t;
 
 enum class ByteCodeResult
@@ -28,12 +29,11 @@ struct ByteCodeGenContext
 
 struct ByteCodeGenJob : public Job
 {
-    void      setupBC(AstNode* node);
     JobResult execute() override;
 
     void reset() override
     {
-		syncToDependentNodes = false;
+        syncToDependentNodes = false;
         dependentNodes.clear();
         reservedRC.clear();
         nodes.clear();
@@ -42,6 +42,7 @@ struct ByteCodeGenJob : public Job
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
+    static void                 setupBC(Module* module, AstNode* node);
 
     static bool emitLiteral(ByteCodeGenContext* context);
     static bool emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);

@@ -104,6 +104,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     {
         genByteCode = true;
     }
+    if (node->token.id == TokenId::Intrisic)
+    {
+        genByteCode = false;
+    }
 
     if (genByteCode)
     {
@@ -116,6 +120,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
                 node->byteCodeJob->sourceFile   = sourceFile;
                 node->byteCodeJob->originalNode = node;
                 node->byteCodeJob->nodes.push_back(node);
+                ByteCodeGenJob::setupBC(context->sourceFile->module, node);
                 g_ThreadMgr.addJob(node->byteCodeJob);
             }
         }

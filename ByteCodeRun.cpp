@@ -40,13 +40,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::LocalFuncCall:
     {
-		// Wait, in case byte code is not there
-        while (!(context->bc->node->flags & AST_BYTECODE_GENERATED))
-            ;
         context->push(context->bp);
         context->push(context->bc);
         context->push(context->ip);
         context->bc = (ByteCode*) ip->a.pointer;
+		//assert(context->bc->node->flags & AST_BYTECODE_RESOLVED);
         context->ip = context->bc->out;
         context->bp = context->sp;
         break;

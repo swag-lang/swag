@@ -95,7 +95,13 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     {
         scoped_lock lk(mutex);
         auto        runContext = &workspace->runContext;
-        runContext->setup(sourceFile, node, maxReservedRegisterRC, maxReservedRegisterRR, 1024);
+
+        {
+            scoped_lock lk1(mutexRegisterRC);
+            scoped_lock lk2(mutexRegisterRR);
+            runContext->setup(sourceFile, node, maxReservedRegisterRC, maxReservedRegisterRR, 1024);
+        }
+
         SWAG_CHECK(g_Run.run(runContext));
 
         if (node->resultRegisterRC != UINT32_MAX)

@@ -58,13 +58,13 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     return &ins;
 }
 
-void ByteCodeGenJob::setupBC(AstNode* node)
+void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
 {
     node->bc             = g_Pool_byteCode.alloc();
     node->bc->node       = node;
-    node->bc->sourceFile = sourceFile;
+    node->bc->sourceFile = module->files[node->sourceFileIdx];
     if (node->kind == AstNodeKind::FuncDecl)
-        sourceFile->module->addByteCodeFunc(node->bc);
+        module->addByteCodeFunc(node->bc);
 }
 
 JobResult ByteCodeGenJob::execute()
@@ -79,7 +79,7 @@ JobResult ByteCodeGenJob::execute()
 
         if (!context.bc)
         {
-            setupBC(originalNode);
+            setupBC(sourceFile->module, originalNode);
             context.bc = originalNode->bc;
         }
 
@@ -144,27 +144,35 @@ JobResult ByteCodeGenJob::execute()
         // Inform dependencies that this node has bytecode
         {
             scoped_lock lk(originalNode->mutex);
-            originalNode->byteCodeJob = nullptr;
             originalNode->flags |= AST_BYTECODE_GENERATED;
             for (auto job : dependentJobs)
                 g_ThreadMgr.addJob(job);
+            dependentJobs.clear();
         }
     }
 
     // Wait for other dependent nodes to be generated
+    syncToDependentNodes = true;
     for (int i = (int) dependentNodes.size() - 1; i >= 0; i--)
     {
-        auto node = dependentNodes[i];
-
+        auto        node = dependentNodes[i];
         scoped_lock lk(node->mutex);
-        if (node->flags & AST_BYTECODE_GENERATED)
+        if (node->flags & AST_BYTECODE_RESOLVED)
             dependentNodes.pop_back();
         else
         {
-            syncToDependentNodes = true;
             node->byteCodeJob->dependentJobs.push_back(this);
             return JobResult::KeepJobAlive;
         }
+    }
+
+    // Inform dependencies that everything is done
+    {
+        scoped_lock lk(originalNode->mutex);
+        originalNode->byteCodeJob = nullptr;
+        originalNode->flags |= AST_BYTECODE_RESOLVED;
+        for (auto job : dependentJobs)
+            g_ThreadMgr.addJob(job);
     }
 
     return JobResult::ReleaseJob;

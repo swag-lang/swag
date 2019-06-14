@@ -142,11 +142,11 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
                 context->job->dependentNodes.push_back(funcNode);
                 if (!funcNode->byteCodeJob)
                 {
-                    context->job->setupBC(funcNode);
                     funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
                     funcNode->byteCodeJob->sourceFile   = sourceFile;
                     funcNode->byteCodeJob->originalNode = funcNode;
                     funcNode->byteCodeJob->nodes.push_back(funcNode);
+                    setupBC(sourceFile->module, funcNode);
                     g_ThreadMgr.addJob(funcNode->byteCodeJob);
                 }
             }
@@ -161,12 +161,28 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, (int) typeInfoFunc->parameters.size());
 
     // Push current used registers
-    auto&            reservedRC = context->job->reservedRC;
+    const auto&      reservedRC = context->job->reservedRC;
     vector<uint32_t> copyreservedRC;
     for (auto it = reservedRC.begin(); it != reservedRC.end(); ++it)
     {
-        copyreservedRC.push_back(*it);
-        emitInstruction(context, ByteCodeOp::PushRCxSaved, *it);
+        bool isParam = false;
+        if (params)
+        {
+            for (int i = 0; i < (int) params->childs.size(); i++)
+            {
+                if (params->childs[i]->resultRegisterRC == *it)
+                {
+                    isParam = true;
+                    break;
+                }
+            }
+        }
+
+        if (!isParam)
+        {
+            copyreservedRC.push_back(*it);
+            emitInstruction(context, ByteCodeOp::PushRCxSaved, *it);
+        }
     }
 
     // Push missing default parameters
@@ -192,6 +208,7 @@ bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
         {
             auto param = params->childs[i];
             emitInstruction(context, ByteCodeOp::PushRCxParam, param->resultRegisterRC, i);
+            freeRegisterRC(context, param->resultRegisterRC);
             precallStack += sizeof(Register);
         }
     }

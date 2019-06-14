@@ -38,9 +38,17 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
                 node->byteCodeJob->originalNode = node;
                 node->byteCodeJob->nodes.push_back(node);
                 node->byteCodeJob->dependentJobs.push_back(context->job);
+				ByteCodeGenJob::setupBC(sourceFile->module, node);
                 g_ThreadMgr.addJob(node->byteCodeJob);
             }
 
+            context->result = SemanticResult::Pending;
+            return true;
+        }
+
+        if (!(node->flags & AST_BYTECODE_RESOLVED))
+        {
+            node->byteCodeJob->dependentJobs.push_back(context->job);
             context->result = SemanticResult::Pending;
             return true;
         }
@@ -52,7 +60,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
 
 bool SemanticJob::forceExecuteNode(SemanticContext* context)
 {
-	SWAG_CHECK(executeNode(context, context->node, false));
+    SWAG_CHECK(executeNode(context, context->node, false));
     return true;
 }
 

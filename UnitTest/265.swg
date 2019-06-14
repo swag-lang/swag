@@ -9,7 +9,7 @@ func test: (v: s32)->s32
 	return v * test1(v - 1);
 }
 
-#[PrintByteCode]
+//#[PrintByteCode]
 func test1: (v: s32)->s32
 {
 	if(v == 1)
