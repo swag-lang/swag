@@ -92,22 +92,13 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Ask for bytecode
     bool genByteCode = false;
     if (g_CommandLine.output && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic))
-    {
         genByteCode = true;
-    }
-    if (node->attributeFlags & ATTRIBUTE_TEST)
-    {
-        if (!g_CommandLine.test)
-            genByteCode = false;
-    }
-    if (node->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
-    {
-        genByteCode = true;
-    }
-    if (node->token.id == TokenId::Intrisic)
-    {
+    if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
         genByteCode = false;
-    }
+    if (node->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
+        genByteCode = true;
+    if (node->token.id == TokenId::Intrisic)
+        genByteCode = false;
 
     if (genByteCode)
     {

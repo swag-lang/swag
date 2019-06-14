@@ -226,7 +226,7 @@ bool BackendCCompilerVS::compile()
         linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
     linkArguments += "/OUT:\"" + backend->outputFile.string() + "\" ";
 
-    g_Log.message(format("compiling '%s' => '%s' (VS)", backend->destCFile.string().c_str(), backend->outputFile.string().c_str()));
+    g_Log.message(format("vs compiling '%s' => '%s'", backend->destCFile.string().c_str(), backend->outputFile.string().c_str()));
 
     auto cmdLine = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
     SWAG_CHECK(doProcess(cmdLine, clPath, false));

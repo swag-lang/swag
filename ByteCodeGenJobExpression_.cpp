@@ -16,7 +16,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitLiteral, type not native");
 
-    auto r1 = node->resultRegisterRC = context->sourceFile->module->reserveRegisterRC(context->bc);
+    auto r1 = node->resultRegisterRC = reserveRegisterRC(context);
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
