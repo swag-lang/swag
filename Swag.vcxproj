@@ -164,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="Ast.h" />
     <ClInclude Include="AstNode.h" />
+    <ClInclude Include="Attribute.h" />
     <ClInclude Include="BackendC.h" />
     <ClInclude Include="BackendCCompiler.h" />
     <ClInclude Include="BackendCCompilerVS.h" />

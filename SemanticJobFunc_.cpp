@@ -11,6 +11,7 @@
 #include "Scope.h"
 #include "CommandLine.h"
 #include "Module.h"
+#include "Attribute.h"
 
 bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
 {

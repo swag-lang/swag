@@ -39,29 +39,43 @@ bool BackendC::compile()
 
 bool BackendC::emitHeader()
 {
-	outputH.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
-	outputC.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
-	outputC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
-	return true;
+    bufferH.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
+    bufferC.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
+    bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
+
+    bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+
+	bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
+	bufferH.addString(format("#define __SWAG_%s__\n", module->nameUp.c_str()));
+    return true;
+}
+
+bool BackendC::emitFooter()
+{
+    bufferH.addString(format("#endif /* __SWAG_%s__ */\n", module->nameUp.c_str()));
+    return true;
 }
 
 bool BackendC::generate()
 {
     bool ok = true;
 
-	ok &= emitHeader();
+    ok &= emitHeader();
     ok &= emitRuntime();
     ok &= emitDataSegment();
-	ok &= emitFuncSignatures();
+    ok &= emitFuncSignatures();
     ok &= emitFunctions();
     ok &= emitMain();
+	ok &= emitFooter();
 
     string tmpFolder = "f:/temp/";
-    destHFile        = tmpFolder + module->name + ".h";
-    destCFile        = tmpFolder + module->name + ".c";
-    outputFile       = tmpFolder + module->name + ".exe";
-    SWAG_CHECK(writeFile(destHFile.string().c_str(), outputH));
-    SWAG_CHECK(writeFile(destCFile.string().c_str(), outputC));
+    destFileH        = tmpFolder + module->name + ".h";
+    destFileC        = tmpFolder + module->name + ".c";
+    destFileSwg      = tmpFolder + module->name + ".swg";
+    destFile         = tmpFolder + module->name + ".exe";
+    SWAG_CHECK(writeFile(destFileH.string().c_str(), bufferH));
+    SWAG_CHECK(writeFile(destFileC.string().c_str(), bufferC));
+    SWAG_CHECK(writeFile(destFileSwg.string().c_str(), bufferSwg));
 
     SWAG_CHECK(ok);
     SWAG_CHECK(compile());

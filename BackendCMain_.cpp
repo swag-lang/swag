@@ -8,11 +8,12 @@
 #include "CommandLine.h"
 #include "AstNode.h"
 #include "TypeInfo.h"
+#include "Attribute.h"
 
 bool BackendC::emitMain()
 {
-	outputC.addString("/****************************** MAIN **********************************/\n");
-    outputC.addString("void main() {\n");
+	bufferC.addString("/****************************** MAIN **********************************/\n");
+    bufferC.addString("void main() {\n");
 
 	// Generate call to test functions
     if (g_CommandLine.test)
@@ -22,10 +23,10 @@ bool BackendC::emitMain()
 			auto node = bc->node;
             if (node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
-			outputC.addString(format("__%s();\n", node->name.c_str()));
+			bufferC.addString(format("__%s();\n", node->name.c_str()));
         }
     }
 
-    outputC.addString("}\n");
+    bufferC.addString("}\n");
     return true;
 }

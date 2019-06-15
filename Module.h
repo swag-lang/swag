@@ -21,6 +21,7 @@ struct Module : public PoolElement
 
     fs::path            path;
     string              name;
+	string              nameUp;
     atomic<int>         numErrors = 0;
     SpinLock            mutexFile;
     vector<SourceFile*> files;

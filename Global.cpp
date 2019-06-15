@@ -24,11 +24,18 @@ Utf8 format(const char* format, ...)
     return &vec[0];
 }
 
+void makeUpper(string& str)
+{
+	auto len = str.length();
+	for(int i = 0; i < len; i++)
+        str[i] = (char) toupper(str[i]);
+}
+
 void tokenize(const char* str, char c, vector<string>& tokens)
 {
     auto pz = str;
 
-	tokens.clear();
+    tokens.clear();
     while (*pz)
     {
         string one;

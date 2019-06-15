@@ -9,8 +9,8 @@
 
 const char* g_RuntimeH = R"(
 /****************************** RUNTIME *******************************/
-#ifndef SWAG_RUNTIME_DEFINED
-#define SWAG_RUNTIME_DEFINED
+#ifndef __SWAG_RUNTIME_DEFINED__
+#define __SWAG_RUNTIME_DEFINED__
 
 typedef signed char			swag_int8_t;
 typedef short				swag_int16_t;
@@ -24,6 +24,20 @@ typedef unsigned int		swag_char32_t;
 typedef unsigned long long	swag_uint64_t;
 typedef float				swag_float32_t;
 typedef double				swag_float64_t;
+
+#ifdef __cplusplus
+#define SWAG_EXTERN extern "C"
+#else
+#define SWAG_EXTERN extern
+#endif
+
+#if defined(SWAG_IMPORT)
+#define SWAG_IMPEXP __declspec(dllimport)
+#elif defined(SWAG_EXPORT)
+#define SWAG_IMPEXP __declspec(dllexport)
+#else
+#define SWAG_IMPEXP
+#endif
 
 #endif
 
@@ -91,7 +105,7 @@ static void __assert(swag_bool expr, const char* file, int line)
 
 bool BackendC::emitRuntime()
 {
-	outputH.addString(g_RuntimeH);
-    outputC.addString(g_RuntimeC);
+	bufferH.addString(g_RuntimeH);
+    bufferC.addString(g_RuntimeC);
     return true;
 }

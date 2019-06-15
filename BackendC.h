@@ -3,6 +3,8 @@
 struct Module;
 struct AstNode;
 struct AstFuncDecl;
+struct TypeInfoFuncAttr;
+struct TypeInfo;
 
 struct BackendC
 {
@@ -15,20 +17,27 @@ struct BackendC
     bool compile();
     bool generate();
 
-	bool emitHeader();
+    bool emitHeader();
+    bool emitFooter();
     bool emitRuntime();
     bool emitDataSegment();
     bool emitMain();
     bool emitFunctions();
-	bool emitFuncSignatures();
-	bool emitFuncSignature(AstFuncDecl* node);
+    bool emitFuncSignatures();
+
+    const char* swagTypeToCType(TypeInfo* typeInfo);
+    void        emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    void        emitFuncSignatureC(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    void        emitFuncSignatureH(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
 
     Module* module;
 
-    fs::path destHFile;
-    fs::path destCFile;
-    fs::path outputFile;
+    fs::path destFileH;
+    fs::path destFileC;
+    fs::path destFileSwg;
+    fs::path destFile;
 
-    Concat outputH;
-    Concat outputC;
+    Concat bufferH;
+    Concat bufferC;
+    Concat bufferSwg;
 };

@@ -9,6 +9,7 @@
 #include "Scope.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
+#include "Attribute.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {

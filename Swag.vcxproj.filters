@@ -398,6 +398,9 @@
     <ClInclude Include="Version.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="Attribute.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

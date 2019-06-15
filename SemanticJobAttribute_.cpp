@@ -7,6 +7,7 @@
 #include "TypeInfo.h"
 #include "Ast.h"
 #include "Scope.h"
+#include "Attribute.h"
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {

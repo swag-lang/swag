@@ -11,6 +11,7 @@
 #include "Scoped.h"
 #include "SymTable.h"
 #include "TypeInfo.h"
+#include "Attribute.h"
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {

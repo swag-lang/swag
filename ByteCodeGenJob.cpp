@@ -8,6 +8,7 @@
 #include "ByteCodeOp.h"
 #include "TypeInfo.h"
 #include "Module.h"
+#include "Attribute.h"
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 

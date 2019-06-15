@@ -8,6 +8,7 @@ struct Global
 };
 
 extern Utf8          format(const char* format, ...);
+extern void          makeUpper(string& str);
 extern void          tokenize(const char* str, char c, vector<string>& tokens);
 extern struct Global g_Global;
 

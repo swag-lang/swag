@@ -203,7 +203,7 @@ bool BackendCCompilerVS::compile()
     string clArguments = "";
     if (isDebug)
     {
-        auto pdbPath = backend->outputFile;
+        auto pdbPath = backend->destFile;
         pdbPath.replace_extension(".pdb");
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
         clArguments += "/Zi ";
@@ -211,8 +211,8 @@ bool BackendCCompilerVS::compile()
 
     clArguments += "/nologo ";
     clArguments += "/EHsc ";
-    clArguments += "/Tc\"" + backend->destCFile.string() + "\" ";
-    clArguments += "/Fo\"" + backend->outputFile.string() + ".obj\" ";
+    clArguments += "/Tc\"" + backend->destFileC.string() + "\" ";
+    clArguments += "/Fo\"" + backend->destFile.string() + ".obj\" ";
     for (const auto& oneIncludePath : includePath)
         clArguments += "/I\"" + oneIncludePath + "\" ";
 
@@ -224,9 +224,9 @@ bool BackendCCompilerVS::compile()
     //linkArguments += "/DLL ";
     for (const auto& oneLibPath : libPath)
         linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
-    linkArguments += "/OUT:\"" + backend->outputFile.string() + "\" ";
+    linkArguments += "/OUT:\"" + backend->destFile.string() + "\" ";
 
-    g_Log.message(format("vs compiling '%s' => '%s'", backend->destCFile.string().c_str(), backend->outputFile.string().c_str()));
+    g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.string().c_str(), backend->destFile.string().c_str()));
 
     auto cmdLine = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
     SWAG_CHECK(doProcess(cmdLine, clPath, false));
@@ -238,9 +238,9 @@ bool BackendCCompilerVS::runTests()
 	if (!g_CommandLine.runBackendTests)
 		return true;
 
-    g_Log.message(format("running tests on '%s'\n", backend->outputFile.string().c_str()));
+    g_Log.message(format("running tests on '%s'\n", backend->destFile.string().c_str()));
 
-    auto path = backend->outputFile;
+    auto path = backend->destFile;
     SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
     return true;
 }

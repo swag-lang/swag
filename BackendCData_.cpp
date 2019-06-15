@@ -10,19 +10,19 @@ bool BackendC::emitDataSegment()
 {
     int index = 0;
 
-	outputC.addString("/****************************** STRINGS *******************************/\n");
+	bufferC.addString("/****************************** STRINGS *******************************/\n");
     for (auto one : module->byteCodeFunc)
     {
         for (auto str : one->strBuffer)
         {
-			outputC.addString("static char* __string");
-			outputC.addString(format("%d = \"", index));
-			outputC.addString(str);
-			outputC.addString("\";\n");
+			bufferC.addString("static char* __string");
+			bufferC.addString(format("%d = \"", index));
+			bufferC.addString(str);
+			bufferC.addString("\";\n");
 			index++;
         }
     }
 
-	outputC.addString("\n");
+	bufferC.addString("\n");
     return true;
 }

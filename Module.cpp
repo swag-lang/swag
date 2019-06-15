@@ -8,13 +8,17 @@
 #include "TypeManager.h"
 #include "Log.h"
 #include "ByteCode.h"
+#include "Attribute.h"
 
 Pool<Module> g_Pool_module;
 
 void Module::setup(Workspace* wkp, const fs::path& pth, bool runtime)
 {
-    path      = pth;
-    name      = path.filename().string();
+    path   = pth;
+    name   = path.filename().string();
+    nameUp = name;
+	makeUpper(nameUp);
+
     workspace = wkp;
 
     if (runtime)
