@@ -122,7 +122,7 @@ bool BackendC::emitFunctions()
         // Local stack
         if (node->stackSize)
         {
-            outputC.addString(format("uint8_t stack[%u];\n", node->stackSize));
+            outputC.addString(format("swag_uint8_t stack[%u];\n", node->stackSize));
         }
 
         // For function call results
@@ -152,16 +152,16 @@ bool BackendC::emitFunctions()
                 outputC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.s32));
                 break;
             case ByteCodeOp::RCxFromStack8:
-                outputC.addString(format("r%u.u8 = *(uint8_t*) (stack + %d);", ip->a.u32, ip->b.s32));
+                outputC.addString(format("r%u.u8 = *(swag_uint8_t*) (stack + %d);", ip->a.u32, ip->b.s32));
                 break;
             case ByteCodeOp::RCxFromStack16:
-                outputC.addString(format("r%u.u16 = *(uint16_t*) (stack + %d);", ip->a.u32, ip->b.s32));
+                outputC.addString(format("r%u.u16 = *(swag_uint16_t*) (stack + %d);", ip->a.u32, ip->b.s32));
                 break;
             case ByteCodeOp::RCxFromStack32:
-                outputC.addString(format("r%u.u32 = *(uint32_t*) (stack + %d);", ip->a.u32, ip->b.s32));
+                outputC.addString(format("r%u.u32 = *(swag_uint32_t*) (stack + %d);", ip->a.u32, ip->b.s32));
                 break;
             case ByteCodeOp::RCxFromStack64:
-                outputC.addString(format("r%u.u64 = *(uint64_t*) (stack + %d);", ip->a.u32, ip->b.s32));
+                outputC.addString(format("r%u.u64 = *(swag_uint64_t*) (stack + %d);", ip->a.u32, ip->b.s32));
                 break;
             case ByteCodeOp::CopyRCxVa32:
                 outputC.addString(format("r%u.u32 = 0x%x;", ip->b.u32, ip->a.u32));
@@ -174,16 +174,16 @@ bool BackendC::emitFunctions()
                 break;
 
             case ByteCodeOp::AffectOp8:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) = r%u.u8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) = r%u.u8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOp16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) = r%u.u16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) = r%u.u16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOp32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) = r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) = r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOp64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) = r%u.u64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) = r%u.u64;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::BinOpPlusS32:
@@ -290,228 +290,228 @@ bool BackendC::emitFunctions()
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS8:
-                outputC.addString(format("*(int8_t*)(r%u.pointer) -= r%u.s8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int8_t*)(r%u.pointer) -= r%u.s8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqS16:
-                outputC.addString(format("*(int16_t*)(r%u.pointer) -= r%u.s16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int16_t*)(r%u.pointer) -= r%u.s16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqS32:
-                outputC.addString(format("*(int32_t*)(r%u.pointer) -= r%u.s32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int32_t*)(r%u.pointer) -= r%u.s32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqS64:
-                outputC.addString(format("*(int64_t*)(r%u.pointer) -= r%u.s64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int64_t*)(r%u.pointer) -= r%u.s64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqU8:
-                outputC.addString(format("*(uint8_t*)(r%u.pointer) -= r%u.u8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint8_t*)(r%u.pointer) -= r%u.u8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqU16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) -= r%u.u16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) -= r%u.u16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqU32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) -= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) -= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqU64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) -= r%u.u64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) -= r%u.u64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqF32:
-                outputC.addString(format("*(float*)(r%u.pointer) -= r%u.f32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_float32_t*)(r%u.pointer) -= r%u.f32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMinusEqF64:
-                outputC.addString(format("*(double*)(r%u.pointer) -= r%u.f64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_float64_t*)(r%u.pointer) -= r%u.f64;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS8:
-                outputC.addString(format("*(int8_t*)(r%u.pointer) += r%u.s8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int8_t*)(r%u.pointer) += r%u.s8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqS16:
-                outputC.addString(format("*(int16_t*)(r%u.pointer) += r%u.s16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int16_t*)(r%u.pointer) += r%u.s16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqS32:
-                outputC.addString(format("*(int32_t*)(r%u.pointer) += r%u.s32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int32_t*)(r%u.pointer) += r%u.s32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqS64:
-                outputC.addString(format("*(int64_t*)(r%u.pointer) += r%u.s64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int64_t*)(r%u.pointer) += r%u.s64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqU8:
-                outputC.addString(format("*(uint8_t*)(r%u.pointer) += r%u.u8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint8_t*)(r%u.pointer) += r%u.u8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqU16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) += r%u.u16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) += r%u.u16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqU32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) += r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) += r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqU64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) += r%u.u64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) += r%u.u64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqF32:
-                outputC.addString(format("*(float*)(r%u.pointer) += r%u.f32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_float32_t*)(r%u.pointer) += r%u.f32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpPlusEqF64:
-                outputC.addString(format("*(double*)(r%u.pointer) += r%u.f64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_float64_t*)(r%u.pointer) += r%u.f64;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::AffectOpMulEqS8:
-                outputC.addString(format("*(int8_t*)(r%u.pointer) *= r%u.s8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int8_t*)(r%u.pointer) *= r%u.s8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqS16:
-                outputC.addString(format("*(int16_t*)(r%u.pointer) *= r%u.s16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int16_t*)(r%u.pointer) *= r%u.s16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqS32:
-                outputC.addString(format("*(int32_t*)(r%u.pointer) *= r%u.s32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int32_t*)(r%u.pointer) *= r%u.s32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqS64:
-                outputC.addString(format("*(int64_t*)(r%u.pointer) *= r%u.s64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int64_t*)(r%u.pointer) *= r%u.s64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqU8:
-                outputC.addString(format("*(uint8_t*)(r%u.pointer) *= r%u.u8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint8_t*)(r%u.pointer) *= r%u.u8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqU16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) *= r%u.u16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) *= r%u.u16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqU32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) *= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) *= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqU64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) *= r%u.u64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) *= r%u.u64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqF32:
-                outputC.addString(format("*(float*)(r%u.pointer) *= r%u.f32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_float32_t*)(r%u.pointer) *= r%u.f32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpMulEqF64:
-                outputC.addString(format("*(double*)(r%u.pointer) *= r%u.f64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_float64_t*)(r%u.pointer) *= r%u.f64;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::AffectOpDivEqF32:
-                outputC.addString(format("*(float*)(r%u.pointer) /= r%u.f32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_float32_t*)(r%u.pointer) /= r%u.f32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpDivEqF64:
-                outputC.addString(format("*(double*)(r%u.pointer) /= r%u.f64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_float64_t*)(r%u.pointer) /= r%u.f64;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::AffectOpAndEqS8:
-                outputC.addString(format("*(int8_t*)(r%u.pointer) &= r%u.s8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int8_t*)(r%u.pointer) &= r%u.s8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpAndEqS16:
-                outputC.addString(format("*(int16_t*)(r%u.pointer) &= r%u.s16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int16_t*)(r%u.pointer) &= r%u.s16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpAndEqS32:
-                outputC.addString(format("*(int32_t*)(r%u.pointer) &= r%u.s32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int32_t*)(r%u.pointer) &= r%u.s32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpAndEqS64:
-                outputC.addString(format("*(int64_t*)(r%u.pointer) &= r%u.s64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int64_t*)(r%u.pointer) &= r%u.s64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpAndEqU8:
-                outputC.addString(format("*(uint8_t*)(r%u.pointer) &= r%u.u8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint8_t*)(r%u.pointer) &= r%u.u8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpAndEqU16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) &= r%u.u16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) &= r%u.u16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpAndEqU32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) &= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) &= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpAndEqU64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) &= r%u.u64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) &= r%u.u64;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::AffectOpOrEqS8:
-                outputC.addString(format("*(int8_t*)(r%u.pointer) |= r%u.s8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int8_t*)(r%u.pointer) |= r%u.s8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpOrEqS16:
-                outputC.addString(format("*(int16_t*)(r%u.pointer) |= r%u.s16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int16_t*)(r%u.pointer) |= r%u.s16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpOrEqS32:
-                outputC.addString(format("*(int32_t*)(r%u.pointer) |= r%u.s32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int32_t*)(r%u.pointer) |= r%u.s32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpOrEqS64:
-                outputC.addString(format("*(int64_t*)(r%u.pointer) |= r%u.s64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int64_t*)(r%u.pointer) |= r%u.s64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpOrEqU8:
-                outputC.addString(format("*(uint8_t*)(r%u.pointer) |= r%u.u8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint8_t*)(r%u.pointer) |= r%u.u8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpOrEqU16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) |= r%u.u16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) |= r%u.u16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpOrEqU32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) |= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) |= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpOrEqU64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) |= r%u.u64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) |= r%u.u64;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::AffectOpShiftLeftEqS8:
-                outputC.addString(format("*(int8_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int8_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftLeftEqS16:
-                outputC.addString(format("*(int16_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int16_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftLeftEqS32:
-                outputC.addString(format("*(int32_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int32_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftLeftEqS64:
-                outputC.addString(format("*(int64_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int64_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftLeftEqU8:
-                outputC.addString(format("*(uint8_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint8_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftLeftEqU16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftLeftEqU32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftLeftEqU64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::AffectOpShiftRightEqS8:
-                outputC.addString(format("*(int8_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int8_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftRightEqS16:
-                outputC.addString(format("*(int16_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int16_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftRightEqS32:
-                outputC.addString(format("*(int32_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int32_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftRightEqS64:
-                outputC.addString(format("*(int64_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int64_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftRightEqU8:
-                outputC.addString(format("*(uint8_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint8_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftRightEqU16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftRightEqU32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpShiftRightEqU64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::AffectOpXOrEqS8:
-                outputC.addString(format("*(int8_t*)(r%u.pointer) ^= r%u.s8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int8_t*)(r%u.pointer) ^= r%u.s8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpXOrEqS16:
-                outputC.addString(format("*(int16_t*)(r%u.pointer) ^= r%u.s16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int16_t*)(r%u.pointer) ^= r%u.s16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpXOrEqS32:
-                outputC.addString(format("*(int32_t*)(r%u.pointer) ^= r%u.s32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int32_t*)(r%u.pointer) ^= r%u.s32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpXOrEqS64:
-                outputC.addString(format("*(int64_t*)(r%u.pointer) ^= r%u.s64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_int64_t*)(r%u.pointer) ^= r%u.s64;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpXOrEqU8:
-                outputC.addString(format("*(uint8_t*)(r%u.pointer) ^= r%u.u8;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint8_t*)(r%u.pointer) ^= r%u.u8;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpXOrEqU16:
-                outputC.addString(format("*(uint16_t*)(r%u.pointer) ^= r%u.u16;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint16_t*)(r%u.pointer) ^= r%u.u16;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpXOrEqU32:
-                outputC.addString(format("*(uint32_t*)(r%u.pointer) ^= r%u.u32;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint32_t*)(r%u.pointer) ^= r%u.u32;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::AffectOpXOrEqU64:
-                outputC.addString(format("*(uint64_t*)(r%u.pointer) ^= r%u.u64;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*(swag_uint64_t*)(r%u.pointer) ^= r%u.u64;", ip->a.u32, ip->b.u32));
                 break;
 
             case ByteCodeOp::CompareOpGreaterS32:
