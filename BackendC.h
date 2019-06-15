@@ -15,6 +15,7 @@ struct BackendC
     bool compile();
     bool generate();
 
+	bool emitHeader();
     bool emitRuntime();
     bool emitDataSegment();
     bool emitMain();

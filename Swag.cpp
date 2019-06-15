@@ -4,6 +4,7 @@
 #include "Log.h"
 #include "Workspace.h"
 #include "CommandLineParser.h"
+#include "Version.h"
 
 float toto(float a)
 {
@@ -33,6 +34,7 @@ void printStats()
         return;
 
     g_Log.setColor(LogColor::White);
+	wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD).c_str();
     if (g_CommandLine.output)
         wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";

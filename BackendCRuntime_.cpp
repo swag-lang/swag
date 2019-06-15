@@ -7,8 +7,11 @@
 #include "ByteCode.h"
 #include "stdint.h"
 
-const char* g_RuntimeC = R"(
+const char* g_RuntimeH = R"(
 /****************************** RUNTIME *******************************/
+#ifndef SWAG_RUNTIME_DEFINED
+#define SWAG_RUNTIME_DEFINED
+
 typedef signed char        int8_t;
 typedef short              int16_t;
 typedef int                int32_t;
@@ -20,6 +23,12 @@ typedef unsigned int       uint32_t;
 typedef unsigned int       char32_t;
 typedef unsigned long long uint64_t;
 
+#endif
+
+)";
+
+const char* g_RuntimeC = R"(
+/****************************** RUNTIME *******************************/
 typedef union __register {
     void*    pointer;
     uint64_t u64;
@@ -80,6 +89,7 @@ void __assert(bool expr, const char* file, int line)
 
 bool BackendC::emitRuntime()
 {
+	outputH.addString(g_RuntimeH);
     outputC.addString(g_RuntimeC);
     return true;
 }

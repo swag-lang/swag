@@ -5,6 +5,7 @@
 #include "Global.h"
 #include "Module.h"
 #include "CommandLine.h"
+#include "Version.h"
 
 bool BackendC::writeFile(const char* fileName, Concat& concat)
 {
@@ -36,10 +37,19 @@ bool BackendC::compile()
     return true;
 }
 
+bool BackendC::emitHeader()
+{
+	outputH.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
+	outputC.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
+	outputC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+	return true;
+}
+
 bool BackendC::generate()
 {
     bool ok = true;
 
+	ok &= emitHeader();
     ok &= emitRuntime();
     ok &= emitDataSegment();
 	ok &= emitFuncSignatures();

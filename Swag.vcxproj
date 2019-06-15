@@ -212,6 +212,7 @@
     <ClInclude Include="TypeManager.h" />
     <ClInclude Include="Utf8.h" />
     <ClInclude Include="Utf8Crc.h" />
+    <ClInclude Include="Version.h" />
     <ClInclude Include="Workspace.h" />
   </ItemGroup>
   <ItemGroup>
