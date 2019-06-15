@@ -65,6 +65,7 @@ enum class AstNodeKind
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
+	CompilerImport,
 };
 
 static const uint64_t AST_CONST_EXPR         = 0x00000000'00000001;

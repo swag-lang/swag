@@ -86,6 +86,11 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveCompilerImport(SemanticContext* context)
+{
+    return true;
+}
+
 bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
     auto expr = context->node->childs[0];

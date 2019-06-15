@@ -13,6 +13,7 @@ void LanguageSpec::setup()
     keywords["#run"]      = TokenId::CompilerRun;
     keywords["#file"]     = TokenId::CompilerFile;
     keywords["#line"]     = TokenId::CompilerLine;
+    keywords["#import"]   = TokenId::CompilerImport;
 
     keywords["@print"]  = TokenId::Intrisic;
     keywords["@assert"] = TokenId::Intrisic;

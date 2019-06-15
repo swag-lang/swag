@@ -57,11 +57,11 @@ struct TypeInfo : public PoolElement
 
     static const char* getNakedName(TypeInfo* typeInfo);
 
-    uint64_t     flags;
+    uint64_t     flags = 0;
     TypeInfoKind kind;
-    NativeType   nativeType;
+    NativeType   nativeType = NativeType::Void;
     Utf8         name;
-    int          sizeOf;
+    int          sizeOf = 0;
 };
 
 struct TypeInfoNative : public TypeInfo

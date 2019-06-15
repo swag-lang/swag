@@ -12,6 +12,24 @@
 #include "SymTable.h"
 #include "TypeInfo.h"
 #include "Attribute.h"
+#include "TypeManager.h"
+
+bool SyntaxJob::doCompilerImport(AstNode* parent)
+{
+    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
+
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
+    node->inheritOwners(this);
+    node->semanticFct = &SemanticJob::resolveCompilerImport;
+    node->token       = move(token);
+
+    AstNode* moduleName;
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doLiteral(node, &moduleName));
+    SWAG_VERIFY(moduleName->token.literalType == g_TypeMgr.typeInfoString, sourceFile->report({sourceFile, moduleName, "#import must be followed by a module name"}));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    return true;
+}
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
@@ -62,7 +80,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     auto funcNode = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
     funcNode->inheritOwners(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
-	funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
+    funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
 
     auto typeNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
     typeNode->inheritOwners(this);
@@ -133,7 +151,7 @@ bool SyntaxJob::doCompilerUnitTest()
             return false;
         }
 
-		sourceFile->module->setBuildPass(sourceFile->buildPass);
+        sourceFile->module->setBuildPass(sourceFile->buildPass);
     }
     else if (token.text == "module")
     {

@@ -735,6 +735,12 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
 {
     auto fromType = nodeToCast->typeInfo;
 
+    if (castFlags & CASTFLAG_FLATTEN)
+    {
+        toType   = TypeManager::flattenType(toType);
+        fromType = TypeManager::flattenType(fromType);
+    }
+
     if (toType->kind == TypeInfoKind::FuncAttr)
         toType = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::FuncAttr)->returnType;
     if (fromType->kind == TypeInfoKind::FuncAttr)
@@ -755,7 +761,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
-    auto leftType  = leftNode->castedTypeInfo ? leftNode->castedTypeInfo : leftNode->typeInfo;
+    auto leftType = leftNode->castedTypeInfo ? leftNode->castedTypeInfo : leftNode->typeInfo;
     return makeCompatibles(sourceFile, leftType, rightNode, castFlags);
 }
 
@@ -772,14 +778,14 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     if ((leftTypeInfo->kind != TypeInfoKind::Native) || (rightTypeInfo->kind != TypeInfoKind::Native))
         return;
 
-	// This types do not have a promotion
-	switch (leftTypeInfo->nativeType)
-	{
-	case NativeType::Bool:
-	case NativeType::Char:
-	case NativeType::String:
-		return;
-	}
+    // This types do not have a promotion
+    switch (leftTypeInfo->nativeType)
+    {
+    case NativeType::Bool:
+    case NativeType::Char:
+    case NativeType::String:
+        return;
+    }
 
     TypeInfo* newLeftTypeInfo = (TypeInfo*) g_TypeMgr.promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
 

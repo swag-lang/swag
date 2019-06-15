@@ -235,8 +235,10 @@ bool BackendCCompilerVS::compile()
 
 bool BackendCCompilerVS::runTests()
 {
-	if (!g_CommandLine.runBackendTests)
-		return true;
+    if (!g_CommandLine.runBackendTests)
+        return true;
+    if (backend->module->byteCodeTestFunc.empty())
+        return true;
 
     g_Log.message(format("running tests on '%s'\n", backend->destFile.string().c_str()));
 
