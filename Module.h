@@ -75,6 +75,12 @@ struct Module : public PoolElement
     OutputState  outputState = OutputState::None;
     SpinLock     mutexOutputState;
     vector<Job*> dependentOutputJobs;
+
+    void addDependency(AstNode* importNode);
+
+    SpinLock         mutexDependency;
+    set<string>      moduleDependenciesNames;
+    vector<AstNode*> moduleDependencies;
 };
 
 extern Pool<Module> g_Pool_module;

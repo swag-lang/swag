@@ -177,5 +177,8 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     SWAG_VERIFY(moduleName->token.literalType == g_TypeMgr.typeInfoString, sourceFile->report({sourceFile, moduleName, "#import must be followed by a module name"}));
     node->name = moduleName->token.text;
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+
+	sourceFile->module->addDependency(node);
+
     return true;
 }

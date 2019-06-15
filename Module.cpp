@@ -17,7 +17,7 @@ void Module::setup(Workspace* wkp, const fs::path& pth, bool runtime)
     path   = pth;
     name   = path.filename().string();
     nameUp = name;
-	makeUpper(nameUp);
+    makeUpper(nameUp);
 
     workspace = wkp;
 
@@ -132,6 +132,16 @@ void Module::setBuildPass(BuildPass buildP)
     scoped_lock lk(mutexBuildPass);
     buildPass = (BuildPass) min((int) buildP, (int) buildPass);
     buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);
+}
+
+void Module::addDependency(AstNode* importNode)
+{
+    scoped_lock lk(mutexDependency);
+    if (moduleDependenciesNames.find(importNode->name) == moduleDependenciesNames.end())
+    {
+		moduleDependenciesNames.insert(importNode->name);
+        moduleDependencies.push_back(importNode);
+    }
 }
 
 void Module::error(const Utf8& msg)
