@@ -10,15 +10,15 @@ bool BackendC::emitDataSegment()
 {
     int index = 0;
 
-    // Strings
+	outputC.addString("/************************** STRINGS **************************/\n");
     for (auto one : module->byteCodeFunc)
     {
         for (auto str : one->strBuffer)
         {
 			outputC.addString("static char* __string");
-			outputC.addString(format("%d = R\"(", index));
+			outputC.addString(format("%d = \"", index));
 			outputC.addString(str);
-			outputC.addString(")\";\n");
+			outputC.addString("\";\n");
 			index++;
         }
     }

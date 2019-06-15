@@ -11,7 +11,8 @@
 
 bool BackendC::emitMain()
 {
-    outputC.addString("\nvoid main() {\n");
+	outputC.addString("/************************** MAIN **************************/\n");
+    outputC.addString("void main() {\n");
 
 	// Generate call to test functions
     if (g_CommandLine.test)

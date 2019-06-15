@@ -211,13 +211,13 @@ bool BackendCCompilerVS::compile()
 
     clArguments += "/nologo ";
     clArguments += "/EHsc ";
-    clArguments += "/Tp\"" + backend->destCFile.string() + "\" ";
+    clArguments += "/Tc\"" + backend->destCFile.string() + "\" ";
     clArguments += "/Fo\"" + backend->outputFile.string() + ".obj\" ";
     for (const auto& oneIncludePath : includePath)
         clArguments += "/I\"" + oneIncludePath + "\" ";
 
     // LINK arguments
-    string linkArguments = "";
+    string linkArguments = "legacy_stdio_definitions.lib ";
     linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
     if (isDebug)
         linkArguments += "/DEBUG ";
@@ -235,6 +235,9 @@ bool BackendCCompilerVS::compile()
 
 bool BackendCCompilerVS::runTests()
 {
+	if (!g_CommandLine.runBackendTests)
+		return true;
+
     g_Log.message(format("running tests on '%s'\n", backend->outputFile.string().c_str()));
 
     auto path = backend->outputFile;

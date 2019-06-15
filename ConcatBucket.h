@@ -4,7 +4,7 @@
 static const int CONCAT_BUCKET_SIZE = 1024;
 struct ConcatBucket : PoolElement
 {
-    uint8_t       datas[CONCAT_BUCKET_SIZE];
+    uint8_t*      datas;
     int           count      = 0;
     ConcatBucket* nextBucket = nullptr;
 };

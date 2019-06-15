@@ -20,9 +20,10 @@ void Concat::checkCount(int offset)
         firstBucket = newBucket;
     if (lastBucket)
         lastBucket->nextBucket = newBucket;
-    lastBucket       = newBucket;
-    currentSP        = newBucket->datas;
-    newBucket->count = offset;
+    lastBucket        = newBucket;
+    lastBucket->datas = (uint8_t*) malloc(max(offset, CONCAT_BUCKET_SIZE));
+    currentSP         = newBucket->datas;
+    newBucket->count  = offset;
 }
 
 void Concat::addBool(bool v)

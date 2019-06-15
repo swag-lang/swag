@@ -19,7 +19,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
-	cmdLine->stats = false;
+	//cmdLine->runBackendTests = false;
     //cmdLine->fileFilter = "185";
 }
 

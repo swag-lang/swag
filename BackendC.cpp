@@ -48,7 +48,7 @@ bool BackendC::generate()
 
     string tmpFolder = "f:/temp/";
     destHFile        = tmpFolder + module->name + ".h";
-    destCFile        = tmpFolder + module->name + ".cpp";
+    destCFile        = tmpFolder + module->name + ".c";
     outputFile       = tmpFolder + module->name + ".exe";
     SWAG_CHECK(writeFile(destHFile.string().c_str(), outputH));
     SWAG_CHECK(writeFile(destCFile.string().c_str(), outputC));

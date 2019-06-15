@@ -24,7 +24,7 @@ bool BackendC::emitFuncSignature(AstFuncDecl* node)
     int cptParams = 0;
     if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        outputC.addString("__register& rr0");
+        outputC.addString("__register* rr0");
         cptParams++;
     }
 
@@ -33,7 +33,7 @@ bool BackendC::emitFuncSignature(AstFuncDecl* node)
     {
         if (cptParams)
             outputC.addString(", ");
-        outputC.addString(format("const __register& rp%u", param->index));
+        outputC.addString(format("__register* rp%u", param->index));
         cptParams++;
     }
 
@@ -43,6 +43,7 @@ bool BackendC::emitFuncSignature(AstFuncDecl* node)
 
 bool BackendC::emitFuncSignatures()
 {
+	outputC.addString("/************************** PROTOTYPES **************************/\n");
     for (auto one : module->byteCodeFunc)
     {
         auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
@@ -63,6 +64,7 @@ bool BackendC::emitFuncSignatures()
 
 bool BackendC::emitFunctions()
 {
+	outputC.addString("/************************** FUNCTIONS **************************/\n");
     bool ok = true;
     for (auto one : module->byteCodeFunc)
     {
@@ -75,7 +77,6 @@ bool BackendC::emitFunctions()
             continue;
 
         // Signature
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         emitFuncSignature(node);
         outputC.addString(" {\n");
 
@@ -125,8 +126,7 @@ bool BackendC::emitFunctions()
         }
 
         // For function call results
-        if (typeFunc->returnType == g_TypeMgr.typeInfoVoid)
-            outputC.addString("__register rr0;\n");
+        outputC.addString("__register rt0;\n");
 
         // Generate bytecode
         auto ip = bc->out;
@@ -573,23 +573,23 @@ bool BackendC::emitFunctions()
                 break;
 
             case ByteCodeOp::IntrinsicPrintS32:
-                outputC.addString(format("__print(to_string(r%u.s32).c_str());", ip->a.u32));
+                outputC.addString(format("__print_i32(r%u.s32);", ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicPrintS64:
-                outputC.addString(format("__print(to_string(r%u.s64).c_str());", ip->a.u32));
+                outputC.addString(format("__print_i64(r%u.s64);", ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicPrintF32:
-                outputC.addString(format("__print(to_string(r%u.f32).c_str());", ip->a.u32));
+                outputC.addString(format("__print_f32(r%u.f32);", ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicPrintF64:
-                outputC.addString(format("__print(to_string(r%u.f64).c_str());", ip->a.u32));
+                outputC.addString(format("__print_f64(r%u.f64);", ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicPrintString:
                 outputC.addString(format("__print((const char*) r%u.pointer);", ip->a.u32));
                 break;
 
             case ByteCodeOp::IntrinsicAssert:
-                outputC.addString(format("__assert(r%u.b, R\"(%s)\", %d);", ip->a.u32, module->files[ip->sourceFileIdx]->path.string().c_str(), ip->startLocation.line + 1));
+                outputC.addString(format("__assert(r%u.b, \"%s\", %d);", ip->a.u32, module->files[ip->sourceFileIdx]->path.string().c_str(), ip->startLocation.line + 1));
                 break;
 
             case ByteCodeOp::NegBool:
@@ -633,13 +633,13 @@ bool BackendC::emitFunctions()
                 break;
 
             case ByteCodeOp::CopyRRxRCx:
-                outputC.addString(format("rr%u = r%u;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("*rr%u = r%u;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::CopyRCxRRx:
-                outputC.addString(format("r%u = rr%u;", ip->a.u32, ip->b.u32));
+                outputC.addString(format("r%u = rt%u;", ip->a.u32, ip->b.u32));
                 break;
             case ByteCodeOp::RCxFromStackParam64:
-                outputC.addString(format("r%u = rp%u;", ip->a.u32, ip->c.u32));
+                outputC.addString(format("r%u = *rp%u;", ip->a.u32, ip->c.u32));
                 break;
             case ByteCodeOp::PushRCxSaved:
             case ByteCodeOp::PopRCxSaved:
@@ -656,7 +656,7 @@ bool BackendC::emitFunctions()
                 int cptCall = 0;
                 if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
                 {
-                    outputC.addString("rr0");
+                    outputC.addString("&rt0");
                     cptCall++;
                 }
 
@@ -664,7 +664,7 @@ bool BackendC::emitFunctions()
                 {
                     if (cptCall)
                         outputC.addString(", ");
-                    outputC.addString(format("rc%u", idxCall));
+                    outputC.addString(format("&rc%u", idxCall));
                     cptCall++;
                 }
 
@@ -682,7 +682,7 @@ bool BackendC::emitFunctions()
             outputC.addString("\n");
         }
 
-        outputC.addString("}\n");
+        outputC.addString("}\n\n");
     }
 
     return ok;

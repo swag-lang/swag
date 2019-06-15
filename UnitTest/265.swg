@@ -22,4 +22,5 @@ func main: ()
 {
 	@assert(test(5) == 120);
 	@assert(test(4) == 24);
+	@print("toto");
 }
