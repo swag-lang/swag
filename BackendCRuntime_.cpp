@@ -7,8 +7,7 @@
 #include "ByteCode.h"
 #include "stdint.h"
 
-const char* g_RuntimeH = R"(
-/****************************** RUNTIME *******************************/
+static const char* g_RuntimeH = R"(
 #ifndef __SWAG_RUNTIME_DEFINED__
 #define __SWAG_RUNTIME_DEFINED__
 
@@ -43,8 +42,7 @@ typedef double				swag_float64_t;
 
 )";
 
-const char* g_RuntimeC = R"(
-/****************************** RUNTIME *******************************/
+static const char* g_RuntimeC = R"(
 typedef union __register {
     void*			pointer;
     swag_uint64_t	u64;
@@ -61,6 +59,9 @@ typedef union __register {
     swag_bool		b;
 } __register;
 
+)";
+
+static const char* g_Intrinsics= R"(
 static void __print(const char* message) 
 { 
 	printf(message); 
@@ -105,7 +106,11 @@ static void __assert(swag_bool expr, const char* file, int line)
 
 bool BackendC::emitRuntime()
 {
-	bufferH.addString(g_RuntimeH);
+    emitSeparator(bufferH, "RUNTIME");
+    bufferH.addString(g_RuntimeH);
+    emitSeparator(bufferC, "RUNTIME");
     bufferC.addString(g_RuntimeC);
+    emitSeparator(bufferC, "INTRINSICS");
+    bufferC.addString(g_Intrinsics);
     return true;
 }

@@ -45,15 +45,38 @@ bool BackendC::emitHeader()
 
     bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
 
-	bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
-	bufferH.addString(format("#define __SWAG_%s__\n", module->nameUp.c_str()));
+    bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
+    bufferH.addString(format("#define __SWAG_%s__\n", module->nameUp.c_str()));
+
+    bufferSwg.addString(format("namespace %s {\n\n", module->name.c_str()));
+
     return true;
 }
 
 bool BackendC::emitFooter()
 {
     bufferH.addString(format("#endif /* __SWAG_%s__ */\n", module->nameUp.c_str()));
+    bufferSwg.addString(format("\n} // namespace %s\n", module->name.c_str()));
     return true;
+}
+
+void BackendC::emitSeparator(Concat& buffer, const char* title)
+{
+    int len = (int) strlen(title);
+    buffer.addString("/*");
+    int maxLen = 80;
+	
+	int i = 0;
+    for (; i < 4; i++)
+		buffer.addString("#");
+	buffer.addString(" ");
+	buffer.addString(title);
+	buffer.addString(" ");
+	i += len + 2;
+
+	for (; i < maxLen; i++)
+		buffer.addString("#");
+	buffer.addString("*/\n");
 }
 
 bool BackendC::generate()
@@ -66,7 +89,7 @@ bool BackendC::generate()
     ok &= emitFuncSignatures();
     ok &= emitFunctions();
     ok &= emitMain();
-	ok &= emitFooter();
+    ok &= emitFooter();
 
     string tmpFolder = "f:/temp/";
     destFileH        = tmpFolder + module->name + ".h";

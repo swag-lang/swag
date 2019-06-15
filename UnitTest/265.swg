@@ -17,7 +17,7 @@ func test1: (v: s32)->s32
 	return v * test(v - 1);
 }
 
-#[test]
+#[test, public]
 func main: ()
 {
 	@assert(test(5) == 120);

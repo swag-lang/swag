@@ -17,6 +17,7 @@ struct BackendC
     bool compile();
     bool generate();
 
+    void emitSeparator(Concat& buffer, const char* title);
     bool emitHeader();
     bool emitFooter();
     bool emitRuntime();
@@ -27,8 +28,9 @@ struct BackendC
 
     const char* swagTypeToCType(TypeInfo* typeInfo);
     void        emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    void        emitFuncSignatureC(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    void        emitFuncSignatureH(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    void        emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    void        emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool        emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
 
     Module* module;
 

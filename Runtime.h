@@ -7,6 +7,7 @@ attr printbytecode: () -> func;
 attr test: () -> func;
 attr compiler: () -> func;
 attr public: () -> func;
+attr foreign: () -> func;
 }
 
 func @print: (value: s32);

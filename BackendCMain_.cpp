@@ -12,7 +12,7 @@
 
 bool BackendC::emitMain()
 {
-	bufferC.addString("/****************************** MAIN **********************************/\n");
+	emitSeparator(bufferC, "MAIN");
     bufferC.addString("void main() {\n");
 
 	// Generate call to test functions

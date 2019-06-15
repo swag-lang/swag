@@ -76,6 +76,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
                 flags |= ATTRIBUTE_COMPILER;
             if (typeInfo->name == "public")
                 flags |= ATTRIBUTE_PUBLIC;
+            if (typeInfo->name == "foreign")
+                flags |= ATTRIBUTE_FOREIGN;
 
             result.insert(typeInfo);
         }
