@@ -69,13 +69,10 @@ bool ThreadManager::doneWithJobs()
 
 void ThreadManager::jobHasEnded()
 {
-    scoped_lock<mutex> lk(mutexAdd);
     processingJobs--;
+    unique_lock<mutex> lk1(mutexDone);
     if (doneWithJobs())
-    {
-        unique_lock<mutex> lk1(mutexDone);
         condVarDone.notify_all();
-    }
 }
 
 void ThreadManager::waitEndJobs()
@@ -83,12 +80,8 @@ void ThreadManager::waitEndJobs()
     while (true)
     {
         unique_lock<mutex> lk1(mutexDone);
-        {
-            scoped_lock<mutex> lk(mutexAdd);
-            if (doneWithJobs())
-                break;
-        }
-
+        if (doneWithJobs())
+            break;
         condVarDone.wait(lk1);
     }
 }

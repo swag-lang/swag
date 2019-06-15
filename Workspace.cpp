@@ -122,8 +122,82 @@ void Workspace::buildRuntime()
 
 void Workspace::enumerateModules()
 {
-	cachePath = "f:/temp/";
+    cachePath = "f:/temp/";
     enumerateFilesInModule("f:/swag/unittest");
+}
+
+bool Workspace::buildModules(const vector<Module*>& list)
+{
+    for (auto module : list)
+    {
+        if (module->numErrors > 0)
+            continue;
+        if (module->buildPass < BuildPass::Semantic)
+            continue;
+
+        // Semantic pass
+        auto job    = g_Pool_moduleSemanticJob.alloc();
+        job->module = module;
+        g_ThreadMgr.addJob(job);
+    }
+
+    g_ThreadMgr.waitEndJobs();
+
+    // If we have some pending jobs, that means we don't have succeeded to resolve everything
+    if (g_ThreadMgr.pendingJobs.size() > 0)
+    {
+        for (auto pendingJob : g_ThreadMgr.pendingJobs)
+        {
+            auto semanticJob = static_cast<SemanticJob*>(pendingJob);
+            auto node        = semanticJob->nodes.back();
+            auto sourceFile  = semanticJob->sourceFile;
+            sourceFile->report({sourceFile, node->token, format("can't resolve type of identifier '%s'", node->name.c_str())});
+        }
+
+        g_ThreadMgr.pendingJobs.clear();
+    }
+
+    // Call test functions
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+    {
+        for (auto module : list)
+        {
+            for (auto func : module->byteCodeTestFunc)
+            {
+                g_Stats.testFunctions++;
+                module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+            }
+        }
+    }
+
+    // Output pass on all modules
+    if (g_CommandLine.output)
+    {
+        auto timeBefore = chrono::high_resolution_clock::now();
+
+        for (auto module : list)
+        {
+            if (module->numErrors > 0)
+                continue;
+            if (module->name.empty())
+                continue;
+            if (module->buildPass < BuildPass::Backend)
+                continue;
+            if (module->files.size() == 0)
+                continue;
+
+            auto outputJob    = g_Pool_moduleOutputJob.alloc();
+            outputJob->module = module;
+            g_ThreadMgr.addJob(outputJob);
+        }
+
+        g_ThreadMgr.waitEndJobs();
+
+        auto timeAfter = chrono::high_resolution_clock::now();
+        g_Stats.outputTime += timeAfter - timeBefore;
+    }
+
+    return true;
 }
 
 bool Workspace::build()
@@ -136,71 +210,7 @@ bool Workspace::build()
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
 
-    // Semantic pass on all modules
-    for (auto module : modules)
-    {
-        if (module->numErrors > 0)
-            continue;
-        if (module->buildPass < BuildPass::Semantic)
-            continue;
-        auto job    = g_Pool_moduleSemanticJob.alloc();
-        job->module = module;
-        g_ThreadMgr.addJob(job);
-    }
-
-    g_ThreadMgr.waitEndJobs();
-
-    // If we have some pending jobs, that means we don't have succeeded to resolve everything
-    if (g_ThreadMgr.pendingJobs.size() > 0)
-    {
-        for (auto job : g_ThreadMgr.pendingJobs)
-        {
-            auto semanticJob = static_cast<SemanticJob*>(job);
-            auto node        = semanticJob->nodes.back();
-            auto sourceFile  = semanticJob->sourceFile;
-            sourceFile->report({sourceFile, node->token, format("can't resolve type of identifier '%s'", node->name.c_str())});
-        }
-    }
-
-    // Call test functions
-    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
-    {
-        for (auto module : modules)
-        {
-            for (auto func : module->byteCodeTestFunc)
-            {
-                g_Stats.testFunctions++;
-                module->executeNode(module->files[func->node->sourceFileIdx], func->node);
-            }
-        }
-    }
-
-    if (g_CommandLine.output == false)
-        return true;
-
-    // Output pass on all modules
-    if (g_CommandLine.output)
-    {
-        auto timeBefore = chrono::high_resolution_clock::now();
-        for (auto module : modules)
-        {
-            if (module->numErrors > 0)
-                continue;
-            if (module->name.empty())
-                continue;
-            if (module->buildPass < BuildPass::Backend)
-                continue;
-            if (module->files.size() == 0)
-                continue;
-            auto job    = g_Pool_moduleOutputJob.alloc();
-            job->module = module;
-            g_ThreadMgr.addJob(job);
-        }
-
-        g_ThreadMgr.waitEndJobs();
-        auto timeAfter = chrono::high_resolution_clock::now();
-        g_Stats.outputTime += timeAfter - timeBefore;
-    }
+	buildModules(modules);
 
     return true;
 }

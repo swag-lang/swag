@@ -12,6 +12,7 @@ struct Workspace
     void enumerateFilesInModule(const fs::path& path);
     void buildRuntime();
     void enumerateModules();
+    bool buildModules(const vector<Module*>& list);
 
     fs::path               cachePath;
     SpinLock               mutexModules;
