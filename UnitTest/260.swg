@@ -2,7 +2,7 @@
 //#unittest pass backend;
 using swag;
 
-//#[PrintByteCode]
+//#[printbytecode]
 func fact: (v: s32)->s32 
 { 
 	if(v == 1)
@@ -11,7 +11,7 @@ func fact: (v: s32)->s32
 	return res;
 }
 
-#[Test]
+#[test]
 func main: ()
 {
 	@assert(fact(5) == 120);

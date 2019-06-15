@@ -1,7 +1,7 @@
 #unittest module module193;
 #unittest pass semantic;
 
-#[swag.ConstExpr]
+#[swag.constexpr]
 func main: ()->s32
 {
 	return 5;

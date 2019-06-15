@@ -4,10 +4,10 @@ using swag;
 
 func main1: ()->s32 { return 77; }
 
-#[ConstExpr]
+#[constexpr]
 func main2: ()->s32 { return 666; }
 
-//#[PrintByteCode]
+//#[printbytecode]
 func main: ()
 {
 	var a = #run main1();

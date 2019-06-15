@@ -2,7 +2,7 @@
 #unittest pass backend;
 using swag;
 
-#[Test]
+#[test]
 func main: ()
 {
 	var i = 5;

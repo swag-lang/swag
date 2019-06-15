@@ -4,7 +4,7 @@ using swag;
 
 var v = 50;
 
-//#[PrintByteCode]
+//#[printbytecode]
 func main: ()
 {
 	@assert(v == 50);

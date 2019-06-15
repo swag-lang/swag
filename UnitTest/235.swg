@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-//#[PrintByteCode]
+//#[printbytecode]
 func main: ()
 {
 	var a = 0xFFFFFF45;

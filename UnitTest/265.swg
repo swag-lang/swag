@@ -9,7 +9,7 @@ func test: (v: s32)->s32
 	return v * test1(v - 1);
 }
 
-//#[PrintByteCode]
+//#[printbytecode]
 func test1: (v: s32)->s32
 {
 	if(v == 1)
@@ -17,7 +17,7 @@ func test1: (v: s32)->s32
 	return v * test(v - 1);
 }
 
-#[Test]
+#[test]
 func main: ()
 {
 	@assert(test(5) == 120);

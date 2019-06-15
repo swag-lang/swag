@@ -3,7 +3,7 @@ using swag;
 
 #unittest error
 
-#[Test]
+#[test]
 func main: ()
 {
 }

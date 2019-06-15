@@ -139,7 +139,7 @@ JobResult ByteCodeGenJob::execute()
         emitInstruction(&context, ByteCodeOp::End);
 
         // Print resulting bytecode
-        if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BYTECODE)
+        if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
             context.bc->print();
 
         // Inform dependencies that this node has bytecode

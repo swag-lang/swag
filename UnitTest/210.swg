@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-//#[PrintByteCode]
+//#[printbytecode]
 func main: (a: s32) -> s32
 {
 	return a + 1;

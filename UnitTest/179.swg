@@ -1,7 +1,7 @@
 #unittest module module179;
 #unittest pass semantic;
 
-#[swag.ConstExpr]
+#[swag.constexpr]
 {
 	func main: () -> bool { return true; }
 	func main1: () -> bool { return false; }

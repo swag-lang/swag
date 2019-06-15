@@ -4,7 +4,7 @@ using swag;
 
 #unittest error;
 
-#[Test]
+#[test]
 func main: ()->s32
 {
 	return 0;
@@ -12,7 +12,7 @@ func main: ()->s32
 
 #unittest error;
 
-#[Test]
+#[test]
 func main1: (s: bool)
 {
 	@print("toto");
