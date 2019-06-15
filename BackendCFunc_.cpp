@@ -64,9 +64,6 @@ void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
 
 void BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
-    if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
-        return;
-
     buffer.addString(swagTypeToCType(typeFunc->returnType));
     buffer.addString(" ");
     buffer.addString(module->name);
@@ -89,7 +86,7 @@ void BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
         }
     }
 
-	buffer.addString(")");
+    buffer.addString(")");
 }
 
 void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
@@ -142,9 +139,12 @@ bool BackendC::emitFuncSignatures()
         emitFuncSignatureInternalC(typeFunc, node);
         bufferC.addString(";\n");
 
-        bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
-        emitFuncSignaturePublic(bufferH, typeFunc, node);
-        bufferH.addString(";\n");
+        if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        {
+            bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
+            emitFuncSignaturePublic(bufferH, typeFunc, node);
+            bufferH.addString(";\n");
+        }
 
         emitFuncSignatureSwg(typeFunc, node);
     }
@@ -790,9 +790,9 @@ bool BackendC::emitFunctions()
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
             emitFuncSignaturePublic(bufferC, typeFunc, node);
-			bufferC.addString("\n{\n");
-			bufferC.addString(format("__%s();\n", node->name.c_str()));
-			bufferC.addString("}\n\n");
+            bufferC.addString(" {\n");
+            bufferC.addString(format("__%s();\n", node->name.c_str()));
+            bufferC.addString("}\n\n");
         }
     }
 
