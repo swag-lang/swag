@@ -43,7 +43,7 @@ bool BackendC::emitFuncSignature(AstFuncDecl* node)
 
 bool BackendC::emitFuncSignatures()
 {
-	outputC.addString("/************************** PROTOTYPES **************************/\n");
+	outputC.addString("/****************************** PROTOTYPES ****************************/\n");
     for (auto one : module->byteCodeFunc)
     {
         auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
@@ -64,7 +64,7 @@ bool BackendC::emitFuncSignatures()
 
 bool BackendC::emitFunctions()
 {
-	outputC.addString("/************************** FUNCTIONS **************************/\n");
+	outputC.addString("/****************************** FUNCTIONS *****************************/\n");
     bool ok = true;
     for (auto one : module->byteCodeFunc)
     {

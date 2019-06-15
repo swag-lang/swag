@@ -10,7 +10,7 @@ bool BackendC::emitDataSegment()
 {
     int index = 0;
 
-	outputC.addString("/************************** STRINGS **************************/\n");
+	outputC.addString("/****************************** STRINGS *******************************/\n");
     for (auto one : module->byteCodeFunc)
     {
         for (auto str : one->strBuffer)
