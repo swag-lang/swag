@@ -23,14 +23,15 @@ Module* Workspace::createOrUseModule(const fs::path& path)
     {
         scoped_lock lk(mutexModules);
 
-        auto it = mapModules.find(path);
-        if (it != mapModules.end())
+        auto it = mapModulesPaths.find(path);
+        if (it != mapModulesPaths.end())
             return it->second;
 
         module = g_Pool_module.alloc();
         module->setup(this, path);
         modules.push_back(module);
-        mapModules[path] = module;
+        mapModulesPaths[path]         = module;
+        mapModulesNames[module->name] = module;
     }
 
     if (g_CommandLine.stats)
@@ -121,7 +122,8 @@ void Workspace::buildRuntime()
 
 void Workspace::enumerateModules()
 {
-    enumerateFilesInModule("f:\\swag\\unittest");
+	cachePath = "f:/temp/";
+    enumerateFilesInModule("f:/swag/unittest");
 }
 
 bool Workspace::build()

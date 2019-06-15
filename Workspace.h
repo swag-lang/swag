@@ -13,10 +13,12 @@ struct Workspace
     void buildRuntime();
     void enumerateModules();
 
+    fs::path               cachePath;
     SpinLock               mutexModules;
     atomic<int>            numErrors = 0;
     vector<Module*>        modules;
-    map<fs::path, Module*> mapModules;
+    map<fs::path, Module*> mapModulesPaths;
+    map<string, Module*>   mapModulesNames;
     Scope*                 scopeRoot;
     ByteCodeRunContext     runContext;
 };

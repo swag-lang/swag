@@ -6,6 +6,8 @@
 #include "Module.h"
 #include "CommandLine.h"
 #include "Version.h"
+#include "ThreadManager.h"
+#include "Workspace.h"
 
 bool BackendC::writeFile(const char* fileName, Concat& concat)
 {
@@ -65,18 +67,18 @@ void BackendC::emitSeparator(Concat& buffer, const char* title)
     int len = (int) strlen(title);
     buffer.addString("/*");
     int maxLen = 80;
-	
-	int i = 0;
-    for (; i < 4; i++)
-		buffer.addString("#");
-	buffer.addString(" ");
-	buffer.addString(title);
-	buffer.addString(" ");
-	i += len + 2;
 
-	for (; i < maxLen; i++)
-		buffer.addString("#");
-	buffer.addString("*/\n");
+    int i = 0;
+    for (; i < 4; i++)
+        buffer.addString("#");
+    buffer.addString(" ");
+    buffer.addString(title);
+    buffer.addString(" ");
+    i += len + 2;
+
+    for (; i < maxLen; i++)
+        buffer.addString("#");
+    buffer.addString("*/\n");
 }
 
 bool BackendC::generate()
@@ -91,14 +93,21 @@ bool BackendC::generate()
     ok &= emitMain();
     ok &= emitFooter();
 
-    string tmpFolder = "f:/temp/";
-    destFileH        = tmpFolder + module->name + ".h";
-    destFileC        = tmpFolder + module->name + ".c";
-    destFileSwg      = tmpFolder + module->name + ".swg";
-    destFile         = tmpFolder + module->name + ".exe";
+    auto workspace = module->workspace;
+    destFileH      = workspace->cachePath.string() + module->name + ".h";
+    destFileC      = workspace->cachePath.string() + module->name + ".c";
+    destFileSwg    = workspace->cachePath.string() + module->name + ".swg";
+    destFile       = workspace->cachePath.string() + module->name + ".exe";
     SWAG_CHECK(writeFile(destFileH.string().c_str(), bufferH));
     SWAG_CHECK(writeFile(destFileC.string().c_str(), bufferC));
     SWAG_CHECK(writeFile(destFileSwg.string().c_str(), bufferSwg));
+
+    {
+        module->outputState = OutputState::BackendFilesGenerated;
+        scoped_lock lk(module->mutexOutputState);
+        for (auto job : module->dependentOutputJobs)
+            g_ThreadMgr.addJob(job);
+    }
 
     SWAG_CHECK(ok);
     SWAG_CHECK(compile());

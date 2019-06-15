@@ -10,6 +10,13 @@ struct Workspace;
 struct AstNode;
 struct Scope;
 struct ByteCode;
+struct Job;
+
+enum class OutputState
+{
+    None,
+    BackendFilesGenerated,
+};
 
 struct Module : public PoolElement
 {
@@ -21,7 +28,7 @@ struct Module : public PoolElement
 
     fs::path            path;
     string              name;
-	string              nameUp;
+    string              nameUp;
     atomic<int>         numErrors = 0;
     SpinLock            mutexFile;
     vector<SourceFile*> files;
@@ -64,6 +71,10 @@ struct Module : public PoolElement
     SpinLock          mutexByteCode;
     vector<ByteCode*> byteCodeFunc;
     vector<ByteCode*> byteCodeTestFunc;
+
+    OutputState  outputState = OutputState::None;
+    SpinLock     mutexOutputState;
+    vector<Job*> dependentOutputJobs;
 };
 
 extern Pool<Module> g_Pool_module;

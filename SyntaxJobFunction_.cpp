@@ -48,7 +48,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
         allParamsNode->inheritOwners(this);
         allParamsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
         allParamsNode->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
-		allParamsNode->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
+        allParamsNode->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         if (result)
             *result = allParamsNode;
 
@@ -116,17 +116,17 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
 
     // Content of function
-    if (isIntrinsic)
+    if (token.id == TokenId::SymSemiColon || isIntrinsic)
     {
         SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+        return true;
     }
-    else
-    {
 
+    {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
-		funcNode->content->token = token;
+        funcNode->content->token = token;
     }
 
     return true;

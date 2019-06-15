@@ -61,10 +61,15 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncDecl;
 
     // Check prototype
+    if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
+    {
+        sourceFile->report({sourceFile, node->token, "function marker with the 'foreign' attribute can't have a body"});
+    }
+
     if (node->attributeFlags & ATTRIBUTE_TEST)
     {
-        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, sourceFile->report({sourceFile, node->returnType, "function marked with the 'Test' attribute can't have a return value"}));
-        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, sourceFile->report({sourceFile, node->parameters, "function marked with the 'Test' attribute can't have parameters"}));
+        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, sourceFile->report({sourceFile, node->returnType, "function marked with the 'test' attribute can't have a return value"}));
+        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, sourceFile->report({sourceFile, node->parameters, "function marked with the 'test' attribute can't have parameters"}));
     }
 
     // Can be null for intrinsics etc...

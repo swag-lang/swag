@@ -14,23 +14,6 @@
 #include "Attribute.h"
 #include "TypeManager.h"
 
-bool SyntaxJob::doCompilerImport(AstNode* parent)
-{
-    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
-
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
-    node->inheritOwners(this);
-    node->semanticFct = &SemanticJob::resolveCompilerImport;
-    node->token       = move(token);
-
-    AstNode* moduleName;
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doLiteral(node, &moduleName));
-    SWAG_VERIFY(moduleName->token.literalType == g_TypeMgr.typeInfoString, sourceFile->report({sourceFile, moduleName, "#import must be followed by a module name"}));
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
-    return true;
-}
-
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
@@ -175,6 +158,24 @@ bool SyntaxJob::doCompilerUnitTest()
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    return true;
+}
+
+bool SyntaxJob::doCompilerImport(AstNode* parent)
+{
+    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
+
+    auto node         = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
+    node->semanticFct = &SemanticJob::resolveCompilerImport;
+    node->inheritOwners(this);
+    node->inheritToken(token);
+
+    AstNode* moduleName;
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doLiteral(nullptr, &moduleName));
+    SWAG_VERIFY(moduleName->token.literalType == g_TypeMgr.typeInfoString, sourceFile->report({sourceFile, moduleName, "#import must be followed by a module name"}));
+    node->name = moduleName->token.text;
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     return true;
 }
