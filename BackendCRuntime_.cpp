@@ -43,28 +43,36 @@ void __print(const char* message)
 
 void __print_i32(int32_t value)   
 { 
-	static char buf[100]; snprintf(buf, 100, "%d", value); 
+	char buf[100]; 
+	snprintf(buf, 100, "%d", value); 
 }
 
 void __print_i64(int64_t value)   
 { 
-	static char buf[100]; snprintf(buf, 100, "%lld", value); 
+	char buf[100]; 
+	snprintf(buf, 100, "%lld", value); 
 }
 
 void __print_f32(float value)
 { 
-	static char buf[100]; snprintf(buf, 100, "%f", value); 
+	char buf[100]; 
+	snprintf(buf, 100, "%f", value); 
 }
 
 void __print_f64(float value)
 { 
-	static char buf[100]; snprintf(buf, 100, "%lf", value); 
+	char buf[100]; 
+	snprintf(buf, 100, "%lf", value); 
 }
 
 void __assert(bool expr, const char* file, int line)
 {
-	if(expr) return;
-	__print(file); __print(":"); __print_i32(line); __print(": error: intrinsic assertion failed in native code\n");
+	if(expr) 
+		return;
+	__print(file); 
+	__print(":"); 
+	__print_i32(line); 
+	__print(": error: intrinsic assertion failed in native code\n");
 	exit(-1);
 }
 
