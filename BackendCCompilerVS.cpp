@@ -262,6 +262,7 @@ bool BackendCCompilerVS::compile()
         {
             linkArguments += "/DLL ";
             linkArguments += "/OUT:\"" + backend->destFile + ".dll\" ";
+			clArguments += "/DSWAG_IS_DLL ";
             g_Log.message(format("vs compiling '%s' => '%s.dll'", backend->destFileC.c_str(), backend->destFile.c_str()));
         }
         else

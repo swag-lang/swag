@@ -31,7 +31,7 @@ bool BackendC::compile()
 {
     if (module->buildPass == BuildPass::Full)
     {
-		BackendParameters params = module->backendParameters;
+        BackendParameters  params = module->backendParameters;
         BackendCCompilerVS compiler(this, params);
         SWAG_CHECK(compiler.compile());
         SWAG_CHECK(compiler.runTests());
@@ -46,9 +46,18 @@ bool BackendC::emitHeader()
     bufferC.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
     bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
 
+    // My include file. Need to export for dlls
+    bufferC.addString("#ifdef SWAG_IS_DLL\n");
+    bufferC.addString("#define SWAG_EXPORT\n");
+    bufferC.addString("#endif\n");
     bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+
+    // My dependencies. Need to import for dlls
     for (auto depName : module->moduleDependenciesNames)
-		bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
+    {
+		bufferC.addString("#undef SWAG_EXPORT\n");
+        bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
+    }
 
     bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
     bufferH.addString(format("#define __SWAG_%s__\n", module->nameUp.c_str()));

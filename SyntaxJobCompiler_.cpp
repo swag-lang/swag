@@ -100,11 +100,14 @@ bool SyntaxJob::doCompilerUnitTest()
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getToken(token));
 
+	// ERROR
     if (token.text == "error")
     {
         if (g_CommandLine.test)
             sourceFile->unittestError++;
     }
+
+	// BACKEND
     else if (token.text == "backend")
     {
 		SWAG_CHECK(tokenizer.getToken(token));
@@ -113,12 +116,24 @@ bool SyntaxJob::doCompilerUnitTest()
             if (g_CommandLine.test)
                 sourceFile->module->backendParameters.type = BackendType::Lib;
         }
+        else if (token.text == "dll")
+        {
+            if (g_CommandLine.test)
+                sourceFile->module->backendParameters.type = BackendType::Dll;
+        }
+        else if (token.text == "exe")
+        {
+            if (g_CommandLine.test)
+                sourceFile->module->backendParameters.type = BackendType::Exe;
+        }
         else
         {
             sourceFile->report({sourceFile, token, format("invalid backend parameter '%s'", token.text.c_str())});
             return false;
         }
     }
+
+	// PASS
     else if (token.text == "pass")
     {
         SWAG_CHECK(tokenizer.getToken(token));
@@ -150,6 +165,8 @@ bool SyntaxJob::doCompilerUnitTest()
 
         sourceFile->module->setBuildPass(sourceFile->buildPass);
     }
+
+	// MODULE
     else if (token.text == "module")
     {
         SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#unittest module can only be specified once"}));
@@ -165,6 +182,8 @@ bool SyntaxJob::doCompilerUnitTest()
             currentScope = newModule->scopeRoot;
         }
     }
+
+	// ???
     else
     {
         sourceFile->report({sourceFile, token, format("unknown #unittest parameter '%s'", token.text.c_str())});
