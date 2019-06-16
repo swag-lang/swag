@@ -71,6 +71,8 @@ string LanguageSpec::tokenToName(TokenId id)
 {
     switch (id)
     {
+    case TokenId::SymComma:
+        return ",";
     case TokenId::SymColon:
         return ":";
     case TokenId::SymSemiColon:
