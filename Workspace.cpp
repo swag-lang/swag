@@ -131,6 +131,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     // Dependency pass
     for (auto module : list)
     {
+        module->hasBeenBuilt = true;
         for (auto node : module->moduleDependencies)
         {
             // Now the .swg export file is in the cache
@@ -152,14 +153,13 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
-	g_ThreadMgr.waitEndJobs();
+    g_ThreadMgr.waitEndJobs();
 
     // Semantic pass
     for (auto module : list)
     {
-        auto job             = g_Pool_moduleSemanticJob.alloc();
-        job->module          = module;
-        module->hasBeenBuilt = true;
+        auto job    = g_Pool_moduleSemanticJob.alloc();
+        job->module = module;
         g_ThreadMgr.addJob(job);
     }
 
@@ -245,10 +245,13 @@ bool Workspace::build()
             if (module->buildPass < BuildPass::Semantic)
                 continue;
 
-            bool canBuild = true;
+            bool canBuild  = true;
+            bool hasErrors = false;
             for (auto depName : module->moduleDependenciesNames)
             {
                 auto it = mapModulesNames.find(depName);
+                if (it->second->numErrors)
+                    hasErrors = true;
                 if (it != mapModulesNames.end() && !it->second->hasBeenBuilt)
                 {
                     canBuild = false;
@@ -256,7 +259,9 @@ bool Workspace::build()
                 }
             }
 
-            if (canBuild)
+            if (hasErrors)
+                module->error("module can't be compiled because it depends on other modules with errors");
+            else if (canBuild)
                 order.push_back(module);
             else
                 nextRemain.push_back(module);
