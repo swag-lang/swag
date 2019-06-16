@@ -96,7 +96,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
     }
 }
 
-void Workspace::buildRuntime()
+void Workspace::addRuntime()
 {
     scopeRoot       = g_Pool_scope.alloc();
     scopeRoot->kind = ScopeKind::Workspace;
@@ -128,16 +128,12 @@ void Workspace::enumerateModules()
 
 bool Workspace::buildModules(const vector<Module*>& list)
 {
+    // Semantic pass
     for (auto module : list)
     {
-        if (module->numErrors > 0)
-            continue;
-        if (module->buildPass < BuildPass::Semantic)
-            continue;
-
-        // Semantic pass
-        auto job    = g_Pool_moduleSemanticJob.alloc();
-        job->module = module;
+        auto job             = g_Pool_moduleSemanticJob.alloc();
+        job->module          = module;
+        module->hasBeenBuilt = true;
         g_ThreadMgr.addJob(job);
     }
 
@@ -204,13 +200,49 @@ bool Workspace::build()
 {
     g_ThreadMgr.init();
 
-    buildRuntime();
-
     // Ask for a syntax pass on all files of all modules
+    addRuntime();
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
 
-	buildModules(modules);
+    // Build modules in dependency order
+    vector<Module*> order;
+    vector<Module*> remain = modules;
+    vector<Module*> nextRemain;
+    int             pass = 0;
+    while (!remain.empty())
+    {
+        for (auto module : remain)
+        {
+            if (module->numErrors > 0)
+                continue;
+            if (module->buildPass < BuildPass::Semantic)
+                continue;
+
+            bool canBuild = true;
+            for (auto depName : module->moduleDependenciesNames)
+            {
+                auto it = mapModulesNames.find(depName);
+                if (it != mapModulesNames.end() && !it->second->hasBeenBuilt)
+                {
+                    canBuild = false;
+                    break;
+                }
+            }
+
+            if (canBuild)
+                order.push_back(module);
+            else
+                nextRemain.push_back(module);
+        }
+
+        buildModules(order);
+        pass++;
+
+        remain = nextRemain;
+		order.clear();
+        nextRemain.clear();
+    }
 
     return true;
 }

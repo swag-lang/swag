@@ -81,6 +81,7 @@ struct Module : public PoolElement
     SpinLock         mutexDependency;
     set<string>      moduleDependenciesNames;
     vector<AstNode*> moduleDependencies;
+    bool             hasBeenBuilt = false;
 };
 
 extern Pool<Module> g_Pool_module;

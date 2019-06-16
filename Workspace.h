@@ -10,7 +10,7 @@ struct Workspace
     Module* createOrUseModule(const fs::path& path);
 
     void enumerateFilesInModule(const fs::path& path);
-    void buildRuntime();
+    void addRuntime();
     void enumerateModules();
     bool buildModules(const vector<Module*>& list);
 
