@@ -116,7 +116,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLocalFuncCall(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
 {
     AstNode* node         = context->node;
     auto     sourceFile   = context->sourceFile;
@@ -273,4 +273,9 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     }
 
     return true;
+}
+
+bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
+{
+	return true;
 }

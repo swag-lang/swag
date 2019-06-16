@@ -116,10 +116,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         node->kind    = AstNodeKind::FuncCall;
         node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
         if (typeFunc->intrinsic != Intrisic::None)
+        {
             node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+        }
+        else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
+            node->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
+        }
         else
         {
-            node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncCall;
+            node->byteCodeFct = &ByteCodeGenJob::emitLocalCall;
 
             auto ownerFct = node->ownerFct;
             if (ownerFct)
