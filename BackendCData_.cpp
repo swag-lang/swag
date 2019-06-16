@@ -8,21 +8,29 @@
 
 bool BackendC::emitDataSegment()
 {
-    int index = 0;
+    emitSeparator(bufferC, "STRINGS");
 
-	emitSeparator(bufferC, "STRINGS");
+    int index = 0;
     for (auto one : module->byteCodeFunc)
     {
-        for (auto str : one->strBuffer)
+        for (const auto& str : one->strBuffer)
         {
-			bufferC.addString("static char* __string");
-			bufferC.addString(format("%d = \"", index));
-			bufferC.addString(str);
-			bufferC.addString("\";\n");
-			index++;
+            bufferC.addString("static swag_uint8_t __string");
+            bufferC.addString(format("%d[] = {", index));
+
+            const uint8_t* pz = (const uint8_t * ) str.c_str();
+            while (*pz)
+            {
+                bufferC.addString(to_string(*pz));
+				bufferC.addString(",");
+				pz++;
+            }
+
+            bufferC.addString("};\n");
+            index++;
         }
     }
 
-	bufferC.addString("\n");
+    bufferC.addString("\n");
     return true;
 }
