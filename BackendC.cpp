@@ -46,6 +46,8 @@ bool BackendC::emitHeader()
     bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
 
     bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+    for (auto depName : module->moduleDependenciesNames)
+		bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
 
     bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
     bufferH.addString(format("#define __SWAG_%s__\n", module->nameUp.c_str()));
@@ -97,7 +99,7 @@ bool BackendC::generate()
     destFileH      = workspace->cachePath.string() + module->name + ".h";
     destFileC      = workspace->cachePath.string() + module->name + ".c";
     destFileSwg    = workspace->cachePath.string() + module->name + ".swg";
-    destFile       = workspace->cachePath.string() + module->name + ".exe";
+    destFile       = workspace->cachePath.string() + module->name;
     SWAG_CHECK(writeFile(destFileH.string().c_str(), bufferH));
     SWAG_CHECK(writeFile(destFileC.string().c_str(), bufferC));
     SWAG_CHECK(writeFile(destFileSwg.string().c_str(), bufferSwg));

@@ -278,7 +278,6 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
 {
     AstNode* node         = context->node;
-    auto     sourceFile   = context->sourceFile;
     auto     overload     = node->resolvedSymbolOverload;
     auto     funcNode     = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
     auto     typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
@@ -290,10 +289,21 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
         for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = params->childs[i];
+            emitInstruction(context, ByteCodeOp::PushRCxParam, param->resultRegisterRC, i);
             freeRegisterRC(context, param->resultRegisterRC);
         }
     }
 
-    //emitInstruction(context, ByteCodeOp::ForeignCall);
+    auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+    inst->a.pointer = funcNode;
+    inst->b.pointer = typeInfoFunc;
+
+    // Copy result in a computing register
+    if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
+    }
+
     return true;
 }

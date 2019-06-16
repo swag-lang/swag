@@ -92,6 +92,10 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                     oneLine.erase(oneLine.end() - 1);
 
                 auto pz = strstr(oneLine.c_str(), ": error");
+                if (!pz)
+                    pz = strstr(oneLine.c_str(), ": fatal error");
+                if (!pz)
+                    pz = strstr(oneLine.c_str(), ": warning");
                 if (pz)
                 {
                     g_Log.setColor(LogColor::Red);
@@ -179,6 +183,8 @@ bool BackendCCompilerVS::getWinSdk(string& winSdk)
 
 bool BackendCCompilerVS::compile()
 {
+    auto module = backend->module;
+
     string vsTarget;
     SWAG_CHECK(getVSTarget(vsTarget));
     string winSdk;
@@ -191,12 +197,14 @@ bool BackendCCompilerVS::compile()
     libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\um\x64)", winSdk.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\ucrt\x64)", winSdk.c_str()));
+    libPath.push_back(module->workspace->cachePath.string());
 
     vector<string> includePath;
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\um)", winSdk.c_str()));
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
     includePath.push_back(format(R"(%s\include)", vsTarget.c_str()));
+    //includePath.push_back(module->workspace->cachePath.string());
 
     // CL arguments
     bool isDebug = false; // true;
@@ -217,20 +225,55 @@ bool BackendCCompilerVS::compile()
     for (const auto& oneIncludePath : includePath)
         clArguments += "/I\"" + oneIncludePath + "\" ";
 
-    // LINK arguments
-    string linkArguments = "legacy_stdio_definitions.lib ";
-    linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-    if (isDebug)
-        linkArguments += "/DEBUG ";
-    //linkArguments += "/DLL ";
-    for (const auto& oneLibPath : libPath)
-        linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
-    linkArguments += "/OUT:\"" + backend->destFile.string() + "\" ";
-
     g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.string().c_str(), backend->destFile.string().c_str()));
 
-    auto cmdLine = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
-    SWAG_CHECK(doProcess(cmdLine, clPath, false));
+    switch (module->backendParameters.type)
+    {
+    case BackendType::Lib:
+    {
+        auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + " /c";
+        SWAG_CHECK(doProcess(cmdLineCL, clPath, g_CommandLine.verbose_backend_command));
+
+        string libArguments;
+        libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
+        if (g_CommandLine.verbose_backend_command)
+            libArguments += "/VERBOSE ";
+        libArguments += "/OUT:\"" + backend->destFile.string() + ".lib\" ";
+        libArguments += "\"" + backend->destFile.string() + ".obj\" ";
+
+        auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
+        SWAG_CHECK(doProcess(cmdLineLIB, clPath, g_CommandLine.verbose_backend_command));
+    }
+    break;
+
+    case BackendType::Dll:
+    case BackendType::Exe:
+    {
+        string linkArguments;
+        linkArguments += "legacy_stdio_definitions.lib ";
+        for (auto depName : module->moduleDependenciesNames)
+            linkArguments += depName + ".lib ";
+        for (const auto& oneLibPath : libPath)
+            linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
+
+        linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
+        if (isDebug)
+            linkArguments += "/DEBUG ";
+
+		if (module->backendParameters.type == BackendType::Dll)
+		{
+			linkArguments += "/DLL ";
+			linkArguments += "/OUT:\"" + backend->destFile.string() + ".dll\" ";
+		}
+		else
+			linkArguments += "/OUT:\"" + backend->destFile.string() + ".exe\" ";
+
+        auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
+        SWAG_CHECK(doProcess(cmdLineCL, clPath, g_CommandLine.verbose_backend_command));
+    }
+    break;
+    }
+
     return true;
 }
 

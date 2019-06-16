@@ -105,6 +105,20 @@ bool SyntaxJob::doCompilerUnitTest()
         if (g_CommandLine.test)
             sourceFile->unittestError++;
     }
+    else if (token.text == "backend")
+    {
+		SWAG_CHECK(tokenizer.getToken(token));
+        if (token.text == "lib")
+        {
+            if (g_CommandLine.test)
+                sourceFile->module->backendParameters.type = BackendType::Lib;
+        }
+        else
+        {
+            sourceFile->report({sourceFile, token, format("invalid backend parameter '%s'", token.text.c_str())});
+            return false;
+        }
+    }
     else if (token.text == "pass")
     {
         SWAG_CHECK(tokenizer.getToken(token));

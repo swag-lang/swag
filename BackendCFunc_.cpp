@@ -9,6 +9,7 @@
 #include "CommandLine.h"
 #include "Ast.h"
 #include "TypeManager.h"
+#include "Scope.h"
 
 const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
 {
@@ -732,6 +733,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::PushRCxParam:
             bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
             break;
+
         case ByteCodeOp::LocalCall:
         {
             auto funcBC     = (ByteCode*) ip->a.pointer;
@@ -756,11 +758,21 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(");");
         }
         break;
+
+        case ByteCodeOp::ForeignCall:
+        {
+            auto nodeFunc     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+            auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
+            bufferC.addString(format("%s_%s", nodeFunc->ownerScope->name.c_str(), nodeFunc->name.c_str()));
+			bufferC.addString("();");
+        }
+        break;
+
         default:
             ok = false;
             bufferC.addString("// ");
             bufferC.addString(g_ByteCodeOpNames[(int) ip->op]);
-            module->internalError(format("unknown instruction '%s' during bytecode generation", g_ByteCodeOpNames[(int) ip->op]));
+            module->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
 

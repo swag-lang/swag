@@ -2,6 +2,7 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "BuildPass.h"
+#include "BackendParameters.h"
 struct Utf8;
 struct SourceFile;
 struct SymTable;
@@ -30,6 +31,7 @@ struct Module : public PoolElement
     Scope*              scopeRoot;
     Workspace*          workspace;
     bool                isRuntime = false;
+    BackendParameters   backendParameters;
 
     uint32_t reserveRegisterRC(ByteCode* bc);
     void     freeRegisterRC(uint32_t reg);

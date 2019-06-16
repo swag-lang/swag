@@ -44,11 +44,15 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->push(context->bc);
         context->push(context->ip);
         context->bc = (ByteCode*) ip->a.pointer;
-		//assert(context->bc->node->flags & AST_BYTECODE_RESOLVED);
         context->ip = context->bc->out;
         context->bp = context->sp;
         break;
     }
+    case ByteCodeOp::ForeignCall:
+	{
+		//context->error(format("foreign call not done in bytecode !"));
+		break;
+	}
 
     case ByteCodeOp::PushRCxSaved:
     case ByteCodeOp::PushRCxParam:
