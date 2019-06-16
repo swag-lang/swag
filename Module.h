@@ -12,12 +12,6 @@ struct Scope;
 struct ByteCode;
 struct Job;
 
-enum class OutputState
-{
-    None,
-    BackendFilesGenerated,
-};
-
 struct Module : public PoolElement
 {
     void setup(Workspace* wkp, const fs::path& pth, bool runtime = false);
@@ -71,10 +65,6 @@ struct Module : public PoolElement
     SpinLock          mutexByteCode;
     vector<ByteCode*> byteCodeFunc;
     vector<ByteCode*> byteCodeTestFunc;
-
-    OutputState  outputState = OutputState::None;
-    SpinLock     mutexOutputState;
-    vector<Job*> dependentOutputJobs;
 
     void addDependency(AstNode* importNode);
 

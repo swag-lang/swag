@@ -128,6 +128,32 @@ void Workspace::enumerateModules()
 
 bool Workspace::buildModules(const vector<Module*>& list)
 {
+    // Dependency pass
+    for (auto module : list)
+    {
+        for (auto node : module->moduleDependencies)
+        {
+            // Now the .swg export file is in the cache
+            auto path = cachePath.string() + node->name + ".swg";
+            if (!fs::exists(path))
+            {
+                auto sourceFile = module->files[node->sourceFileIdx];
+                sourceFile->report({sourceFile, node->childs.front(), format("could not find module export file '%s'", path.c_str())});
+                continue;
+            }
+
+            // Then do syntax on it
+            auto job        = g_Pool_syntaxJob.alloc();
+            auto file       = g_Pool_sourceFile.alloc();
+            job->sourceFile = file;
+            module->addFile(file);
+            file->path = move(path);
+            g_ThreadMgr.addJob(job);
+        }
+    }
+
+	g_ThreadMgr.waitEndJobs();
+
     // Semantic pass
     for (auto module : list)
     {
@@ -240,8 +266,8 @@ bool Workspace::build()
         if (order.empty())
         {
             for (auto module : remain)
-				module->error("can't compute the build order. do you have a dependency cycle ?");
-			return false;
+                module->error("can't compute the build order. do you have a dependency cycle ?");
+            return false;
         }
 
         buildModules(order);

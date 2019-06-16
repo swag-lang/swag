@@ -102,13 +102,6 @@ bool BackendC::generate()
     SWAG_CHECK(writeFile(destFileC.string().c_str(), bufferC));
     SWAG_CHECK(writeFile(destFileSwg.string().c_str(), bufferSwg));
 
-    {
-        module->outputState = OutputState::BackendFilesGenerated;
-        scoped_lock lk(module->mutexOutputState);
-        for (auto job : module->dependentOutputJobs)
-            g_ThreadMgr.addJob(job);
-    }
-
     SWAG_CHECK(ok);
     SWAG_CHECK(compile());
     return true;

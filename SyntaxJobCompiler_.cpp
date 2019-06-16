@@ -166,8 +166,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
 
-    auto node         = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
-    node->semanticFct = &SemanticJob::resolveCompilerImport;
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
     node->inheritOwners(this);
     node->inheritToken(token);
 
@@ -178,7 +177,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     node->name = moduleName->token.text;
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
-	sourceFile->module->addDependency(node);
+    sourceFile->module->addDependency(node);
 
     return true;
 }
