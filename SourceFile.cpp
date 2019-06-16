@@ -11,7 +11,8 @@
 #include "Workspace.h"
 #include "SymTable.h"
 
-const auto BUF_SIZE = 512;
+Pool<SourceFile> g_Pool_sourceFile;
+const auto       BUF_SIZE = 512;
 
 SourceFile::SourceFile()
     : bufferSize{BUF_SIZE}
@@ -331,7 +332,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (unittestError && diag.errorLevel == DiagnosticLevel::Error)
     {
         unittestError--;
-        if (g_CommandLine.verbose)
+        if (g_CommandLine.verbose && g_CommandLine.verbose_unittest_errors)
         {
             g_Log.lock();
             diag.report(true);
@@ -374,5 +375,3 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
 
     return report(diag, notes);
 }
-
-Pool<SourceFile> g_Pool_sourceFile;

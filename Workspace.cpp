@@ -13,6 +13,7 @@
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "ByteCode.h"
+#include "Log.h"
 
 Workspace g_Workspace;
 
@@ -128,6 +129,9 @@ void Workspace::enumerateModules()
 
 bool Workspace::buildModules(const vector<Module*>& list)
 {
+    if (g_CommandLine.verbose_test)
+        g_Log.verbose("starting dependency pass...");
+
     // Dependency pass
     for (auto module : list)
     {
@@ -154,6 +158,9 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     g_ThreadMgr.waitEndJobs();
+
+	if (g_CommandLine.verbose_test)
+        g_Log.verbose("starting semantic pass...");
 
     // Semantic pass
     for (auto module : list)
@@ -182,6 +189,9 @@ bool Workspace::buildModules(const vector<Module*>& list)
     // Call test functions
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
+        if (g_CommandLine.verbose_test)
+            g_Log.verbose("running bytecode test functions...");
+
         for (auto module : list)
         {
             for (auto func : module->byteCodeTestFunc)
@@ -195,6 +205,9 @@ bool Workspace::buildModules(const vector<Module*>& list)
     // Output pass on all modules
     if (g_CommandLine.output)
     {
+        if (g_CommandLine.verbose_test)
+            g_Log.verbose("starting backend pass...");
+
         auto timeBefore = chrono::high_resolution_clock::now();
 
         for (auto module : list)
@@ -231,11 +244,14 @@ bool Workspace::build()
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
 
+	if (g_CommandLine.verbose_build_pass)
+        g_Log.verbose(format("## syntax pass done on %d module(s)", modules.size()));
+
     // Build modules in dependency order
     vector<Module*> order;
     vector<Module*> remain = modules;
     vector<Module*> nextRemain;
-    int             pass = 0;
+    int             pass = 1;
     while (!remain.empty())
     {
         for (auto module : remain)
@@ -275,9 +291,12 @@ bool Workspace::build()
             return false;
         }
 
-        buildModules(order);
-        pass++;
+        if (g_CommandLine.verbose_build_pass)
+			g_Log.verbose(format("## starting build pass %d on %d module(s)", pass, (int) order.size()));
 
+        buildModules(order);
+
+        pass++;
         remain = nextRemain;
         order.clear();
         nextRemain.clear();

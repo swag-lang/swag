@@ -30,7 +30,7 @@ void testffi()
 
 void printStats()
 {
-    if (!g_CommandLine.stats)
+    if (!g_CommandLine.stats || g_CommandLine.silent)
         return;
 
     g_Log.setColor(LogColor::White);

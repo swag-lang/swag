@@ -4,7 +4,6 @@
 struct CommandLine
 {
     bool test             = true;
-    bool verbose          = false;
     bool silent           = false;
     bool stats            = true;
     bool output           = true;
@@ -12,6 +11,12 @@ struct CommandLine
     bool errorNoteOut     = true; // Errors will output notes, if defined
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
+
+    bool verbose                 = false;
+    bool verbose_unittest_errors = false;
+    bool verbose_backend_command = false;
+    bool verbose_test            = true;
+    bool verbose_build_pass      = true;
 
     BuildPass buildPass = BuildPass::Full;
     int       numCores  = 0;

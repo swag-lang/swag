@@ -42,7 +42,8 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
     si.dwFlags    = STARTF_USESTDHANDLES;
     ::ZeroMemory(&pi, sizeof(pi));
 
-    g_Log.verbose(cmdline);
+    if (g_CommandLine.verbose_backend_command)
+        g_Log.verbose(cmdline);
 
     if (!::CreateProcessA(nullptr,
                           (LPSTR) cmdline.c_str(),
@@ -240,7 +241,8 @@ bool BackendCCompilerVS::runTests()
     if (backend->module->byteCodeTestFunc.empty())
         return true;
 
-    g_Log.message(format("running tests on '%s'\n", backend->destFile.string().c_str()));
+    if (g_CommandLine.verbose_test)
+        g_Log.verbose(format("running tests on '%s'\n", backend->destFile.string().c_str()));
 
     auto path = backend->destFile;
     SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
