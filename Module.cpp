@@ -139,9 +139,26 @@ void Module::addDependency(AstNode* importNode)
     scoped_lock lk(mutexDependency);
     if (moduleDependenciesNames.find(importNode->name) == moduleDependenciesNames.end())
     {
-		moduleDependenciesNames.insert(importNode->name);
+        moduleDependenciesNames.insert(importNode->name);
         moduleDependencies.push_back(importNode);
     }
+}
+
+uint32_t Module::reserveDataSegmentString(const Utf8& str)
+{
+    scoped_lock lk(mutexDataSeg);
+    strBuffer.push_back(str);
+    return (uint32_t)(strBuffer.size() - 1);
+}
+
+int Module::reserveDataSegment(int size, void* content)
+{
+    scoped_lock lk(mutexDataSeg);
+    int         result = (int) dataSegment.size();
+    dataSegment.resize((int) dataSegment.size() + size);
+    if (content)
+        memcpy(&dataSegment[result], content, size);
+    return result;
 }
 
 void Module::error(const Utf8& msg)

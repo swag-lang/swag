@@ -49,10 +49,10 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::ForeignCall:
-	{
-		//context->error(format("foreign call not done in bytecode !"));
-		break;
-	}
+    {
+        //context->error(format("foreign call not done in bytecode !"));
+        break;
+    }
 
     case ByteCodeOp::PushRCxSaved:
     case ByteCodeOp::PushRCxParam:
@@ -341,10 +341,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::IntrinsicPrintString:
     {
-        auto val = registersRC[ip->a.u32].u32;
-        assert(val < context->bc->strBuffer.size());
+        auto module = context->sourceFile->module;
+        auto val    = registersRC[ip->a.u32].u32;
+        assert(val < module->strBuffer.size());
         g_Log.lock();
-        g_Log.print(context->bc->strBuffer[val]);
+        g_Log.print(module->strBuffer[val]);
         g_Log.unlock();
         break;
     }

@@ -44,18 +44,12 @@ struct Module : public PoolElement
     vector<uint32_t> availableRegistersRC;
     uint32_t         maxReservedRegisterRR = 0;
 
-    int reserveDataSegment(int size, void* content = nullptr)
-    {
-        scoped_lock lk(mutexDataSeg);
-        int         result = (int) dataSegment.size();
-        dataSegment.resize((int) dataSegment.size() + size);
-        if (content)
-            memcpy(&dataSegment[result], content, size);
-        return result;
-    }
+    uint32_t reserveDataSegmentString(const Utf8& str);
+    int      reserveDataSegment(int size, void* content = nullptr);
 
     SpinLock        mutexDataSeg;
     vector<uint8_t> dataSegment;
+    vector<Utf8>    strBuffer;
 
     void setBuildPass(BuildPass buildP);
 

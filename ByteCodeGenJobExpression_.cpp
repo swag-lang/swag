@@ -56,9 +56,11 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r1)->a.u32 = node->computedValue.reg.u32;
         return true;
     case NativeType::String:
-        context->bc->strBuffer.push_back(node->computedValue.text);
-        emitInstruction(context, ByteCodeOp::CopyRCxVaStr, 0, r1)->a.u32 = (uint32_t) context->bc->strBuffer.size() - 1;
+    {
+        auto index = context->sourceFile->module->reserveDataSegmentString(node->computedValue.text);
+        emitInstruction(context, ByteCodeOp::CopyRCxVaStr, index, r1);
         return true;
+    }
 
     default:
         return internalError(context, "emitLiteral, type not supported");
