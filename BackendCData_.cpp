@@ -24,7 +24,7 @@ bool BackendC::emitDataSegment()
             pz++;
         }
 
-        bufferC.addString("};\n");
+        bufferC.addString("0};\n");
         index++;
     }
 
