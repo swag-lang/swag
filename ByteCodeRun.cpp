@@ -38,7 +38,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->bp = context->pop<uint8_t*>();
         break;
     }
-    case ByteCodeOp::LocalFuncCall:
+    case ByteCodeOp::LocalCall:
     {
         context->push(context->bp);
         context->push(context->bc);
@@ -1077,7 +1077,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
 
     default:
-        context->error(format("unknown byte code instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
+        context->error(format("unknown bytecode instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;
     }
 

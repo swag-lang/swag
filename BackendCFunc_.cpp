@@ -133,6 +133,8 @@ bool BackendC::emitFuncSignatures()
             continue;
         if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
             continue;
+        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+            continue;
 
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
@@ -730,7 +732,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::PushRCxParam:
             bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
             break;
-        case ByteCodeOp::LocalFuncCall:
+        case ByteCodeOp::LocalCall:
         {
             auto funcBC     = (ByteCode*) ip->a.pointer;
             auto typeFuncBC = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
@@ -782,6 +784,8 @@ bool BackendC::emitFunctions()
         if (node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
         if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
+            continue;
+        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
             continue;
 
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);

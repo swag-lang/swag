@@ -213,7 +213,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
         }
     }
 
-    emitInstruction(context, ByteCodeOp::LocalFuncCall)->a.pointer = funcNode->bc;
+    emitInstruction(context, ByteCodeOp::LocalCall)->a.pointer = funcNode->bc;
 
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
@@ -277,5 +277,12 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
 {
-	return true;
+    AstNode* node         = context->node;
+    auto     sourceFile   = context->sourceFile;
+    auto     overload     = node->resolvedSymbolOverload;
+    auto     funcNode     = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    auto     typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+
+	//emitInstruction(context, ByteCodeOp::ForeignCall);
+    return true;
 }

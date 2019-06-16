@@ -98,7 +98,7 @@ void ByteCode::print()
             wprintf(bcNum, ip->b.s32 + i + 1);
             break;
 
-        case ByteCodeOp::LocalFuncCall:
+        case ByteCodeOp::LocalCall:
         {
             auto bc = (ByteCode*) ip->a.pointer;
             g_Log.print("[");

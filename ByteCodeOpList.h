@@ -1,4 +1,5 @@
-BYTECODE_OP(LocalFuncCall)
+BYTECODE_OP(LocalCall)
+BYTECODE_OP(ForeignCall)
 BYTECODE_OP(Ret)
 BYTECODE_OP(IntrinsicPrintS32)
 BYTECODE_OP(IntrinsicPrintS64)
