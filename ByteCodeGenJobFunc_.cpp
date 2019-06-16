@@ -283,6 +283,17 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     auto     funcNode     = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
     auto     typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-	//emitInstruction(context, ByteCodeOp::ForeignCall);
+    auto params        = node->childs.empty() ? nullptr : node->childs.front();
+    int  numCallParams = params ? (int) params->childs.size() : 0;
+    if (params)
+    {
+        for (int i = numCallParams - 1; i >= 0; i--)
+        {
+            auto param = params->childs[i];
+            freeRegisterRC(context, param->resultRegisterRC);
+        }
+    }
+
+    //emitInstruction(context, ByteCodeOp::ForeignCall);
     return true;
 }
