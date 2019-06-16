@@ -236,11 +236,19 @@ bool Workspace::build()
                 nextRemain.push_back(module);
         }
 
+        // Nothing to build !
+        if (order.empty())
+        {
+            for (auto module : remain)
+				module->error("can't compute the build order. do you have a dependency cycle ?");
+			return false;
+        }
+
         buildModules(order);
         pass++;
 
         remain = nextRemain;
-		order.clear();
+        order.clear();
         nextRemain.clear();
     }
 
