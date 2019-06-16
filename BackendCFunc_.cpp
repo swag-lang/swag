@@ -675,7 +675,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-            bufferC.addString(format("__assert(r%u.b, \"%s\", %d);", ip->a.u32, module->files[ip->sourceFileIdx]->path.string().c_str(), ip->startLocation.line + 1));
+            bufferC.addString(format("__assert(r%u.b, \"%s\", %d);", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
 
         case ByteCodeOp::NegBool:

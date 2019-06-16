@@ -26,8 +26,8 @@ Utf8 format(const char* format, ...)
 
 void makeUpper(string& str)
 {
-	auto len = str.length();
-	for(int i = 0; i < len; i++)
+    auto len = str.length();
+    for (int i = 0; i < len; i++)
         str[i] = (char) toupper(str[i]);
 }
 
@@ -46,4 +46,18 @@ void tokenize(const char* str, char c, vector<string>& tokens)
         if (!one.empty())
             tokens.push_back(one);
     }
+}
+
+string normalizePath(const fs::path& path)
+{
+	auto str = path.string();
+	auto len = str.length();
+	for (int i = 0; i < len; i++)
+	{
+		char c = str[i];
+		if (c == '\\')
+			str[i] = '/';
+	}
+
+	return str;
 }

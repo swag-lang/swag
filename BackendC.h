@@ -34,10 +34,10 @@ struct BackendC
 
     Module* module;
 
-    fs::path destFileH;
-    fs::path destFileC;
-    fs::path destFileSwg;
-    fs::path destFile;
+    string destFileH;
+    string destFileC;
+    string destFileSwg;
+    string destFile;
 
     Concat bufferH;
     Concat bufferC;

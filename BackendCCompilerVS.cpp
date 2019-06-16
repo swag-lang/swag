@@ -192,27 +192,25 @@ bool BackendCCompilerVS::compile()
 
     string clPath = vsTarget + R"(\bin\Hostx64\x64\)";
 
-    // Folders
+    // Library paths
     vector<string> libPath;
     libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\um\x64)", winSdk.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\ucrt\x64)", winSdk.c_str()));
     libPath.push_back(module->workspace->cachePath.string());
 
+    // Include paths
     vector<string> includePath;
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\um)", winSdk.c_str()));
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
     includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
     includePath.push_back(format(R"(%s\include)", vsTarget.c_str()));
-    //includePath.push_back(module->workspace->cachePath.string());
 
     // CL arguments
-    bool isDebug = false; // true;
-
     string clArguments = "";
-    if (isDebug)
+    if (backendParameters.debugInformations)
     {
-        auto pdbPath = backend->destFile;
+        fs::path pdbPath = backend->destFile;
         pdbPath.replace_extension(".pdb");
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
         clArguments += "/Zi ";
@@ -220,14 +218,12 @@ bool BackendCCompilerVS::compile()
 
     clArguments += "/nologo ";
     clArguments += "/EHsc ";
-    clArguments += "/Tc\"" + backend->destFileC.string() + "\" ";
-    clArguments += "/Fo\"" + backend->destFile.string() + ".obj\" ";
+    clArguments += "/Tc\"" + backend->destFileC + "\" ";
+    clArguments += "/Fo\"" + backend->destFile + ".obj\" ";
     for (const auto& oneIncludePath : includePath)
         clArguments += "/I\"" + oneIncludePath + "\" ";
 
-    g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.string().c_str(), backend->destFile.string().c_str()));
-
-    switch (module->backendParameters.type)
+    switch (backendParameters.type)
     {
     case BackendType::Lib:
     {
@@ -238,8 +234,10 @@ bool BackendCCompilerVS::compile()
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
         if (g_CommandLine.verbose_backend_command)
             libArguments += "/VERBOSE ";
-        libArguments += "/OUT:\"" + backend->destFile.string() + ".lib\" ";
-        libArguments += "\"" + backend->destFile.string() + ".obj\" ";
+        libArguments += "/OUT:\"" + backend->destFile + ".lib\" ";
+        libArguments += "\"" + backend->destFile + ".obj\" ";
+
+        g_Log.message(format("vs compiling '%s' => '%s.lib'", backend->destFileC.c_str(), backend->destFile.c_str()));
 
         auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
         SWAG_CHECK(doProcess(cmdLineLIB, clPath, g_CommandLine.verbose_backend_command));
@@ -257,16 +255,21 @@ bool BackendCCompilerVS::compile()
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 
         linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-        if (isDebug)
+        if (backendParameters.debugInformations)
             linkArguments += "/DEBUG ";
 
-		if (module->backendParameters.type == BackendType::Dll)
-		{
-			linkArguments += "/DLL ";
-			linkArguments += "/OUT:\"" + backend->destFile.string() + ".dll\" ";
-		}
-		else
-			linkArguments += "/OUT:\"" + backend->destFile.string() + ".exe\" ";
+        if (backendParameters.type == BackendType::Dll)
+        {
+            linkArguments += "/DLL ";
+            linkArguments += "/OUT:\"" + backend->destFile + ".dll\" ";
+            g_Log.message(format("vs compiling '%s' => '%s.dll'", backend->destFileC.c_str(), backend->destFile.c_str()));
+        }
+        else
+        {
+            linkArguments += "/OUT:\"" + backend->destFile + ".exe\" ";
+            clArguments += "/DSWAG_HAS_MAIN ";
+            g_Log.message(format("vs compiling '%s' => '%s.exe'", backend->destFileC.c_str(), backend->destFile.c_str()));
+        }
 
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
         SWAG_CHECK(doProcess(cmdLineCL, clPath, g_CommandLine.verbose_backend_command));
@@ -285,9 +288,9 @@ bool BackendCCompilerVS::runTests()
         return true;
 
     if (g_CommandLine.verbose_test)
-        g_Log.verbose(format("running tests on '%s'\n", backend->destFile.string().c_str()));
+        g_Log.verbose(format("running tests on '%s'\n", backend->destFile.c_str()));
 
-    auto path = backend->destFile;
+    fs::path path = backend->destFile;
     SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
     return true;
 }

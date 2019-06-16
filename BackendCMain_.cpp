@@ -13,6 +13,7 @@
 bool BackendC::emitMain()
 {
 	emitSeparator(bufferC, "MAIN");
+    bufferC.addString("#ifdef SWAG_HAS_MAIN\n");
     bufferC.addString("void main() {\n");
 
 	// Generate call to test functions
@@ -28,5 +29,6 @@ bool BackendC::emitMain()
     }
 
     bufferC.addString("}\n");
+    bufferC.addString("#endif\n");
     return true;
 }

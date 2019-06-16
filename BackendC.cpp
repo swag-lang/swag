@@ -31,7 +31,8 @@ bool BackendC::compile()
 {
     if (module->buildPass == BuildPass::Full)
     {
-        BackendCCompilerVS compiler(this);
+		BackendParameters params = module->backendParameters;
+        BackendCCompilerVS compiler(this, params);
         SWAG_CHECK(compiler.compile());
         SWAG_CHECK(compiler.runTests());
     }
@@ -100,9 +101,9 @@ bool BackendC::generate()
     destFileC      = workspace->cachePath.string() + module->name + ".c";
     destFileSwg    = workspace->cachePath.string() + module->name + ".swg";
     destFile       = workspace->cachePath.string() + module->name;
-    SWAG_CHECK(writeFile(destFileH.string().c_str(), bufferH));
-    SWAG_CHECK(writeFile(destFileC.string().c_str(), bufferC));
-    SWAG_CHECK(writeFile(destFileSwg.string().c_str(), bufferSwg));
+    SWAG_CHECK(writeFile(destFileH.c_str(), bufferH));
+    SWAG_CHECK(writeFile(destFileC.c_str(), bufferC));
+    SWAG_CHECK(writeFile(destFileSwg.c_str(), bufferSwg));
 
     SWAG_CHECK(ok);
     SWAG_CHECK(compile());
