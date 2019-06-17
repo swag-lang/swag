@@ -16,9 +16,14 @@ const char* Scope::getNakedName(ScopeKind kind)
     {
     case ScopeKind::Namespace:
         return "namespace";
-	case ScopeKind::Enum:
+    case ScopeKind::Enum:
         return "enum";
     default:
         return "???";
     }
+}
+
+string Scope::makeFullName(const string& parentName, const string& name)
+{
+    return parentName.empty() ? name : parentName + "." + name;
 }

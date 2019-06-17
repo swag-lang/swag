@@ -40,7 +40,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     {
         symbol                             = g_Pool_symName.alloc();
         symbol->name                       = node->name;
-        symbol->fullName                   = scope->fullname + "." + node->name;
+        symbol->fullName                   = Scope::makeFullName(scope->fullname, node->name);
         symbol->kind                       = kind;
         symbol->defaultOverload.sourceFile = sourceFile;
         symbol->defaultOverload.node       = node;

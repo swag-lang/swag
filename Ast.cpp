@@ -22,9 +22,9 @@ namespace Ast
         child->parent = parent;
     }
 
-    Scope* newScope(SourceFile* sourceFile, const Utf8Crc& name, ScopeKind kind, Scope* parentScope)
+    Scope* newScope(SourceFile* sourceFile, const string& name, ScopeKind kind, Scope* parentScope)
     {
-        auto fullname         = parentScope->fullname + "." + name;
+        Utf8 fullname         = Scope::makeFullName(parentScope->fullname, name);
         auto newScope         = g_Pool_scope.alloc();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
@@ -85,7 +85,7 @@ namespace Ast
         auto idRef         = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
         idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
         idRef->inheritOwners(job);
-		idRef->name = name;
+        idRef->name  = name;
         idRef->token = token;
 
         auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);

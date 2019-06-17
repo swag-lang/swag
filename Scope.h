@@ -26,6 +26,7 @@ struct Scope : public PoolElement
     }
 
     void               allocateSymTable();
+    static string      makeFullName(const string& parentName, const string& name);
     static const char* getNakedName(ScopeKind kind);
 
     bool isGlobal()
@@ -37,7 +38,7 @@ struct Scope : public PoolElement
     Scope*         parentScope;
     SymTable*      symTable;
     Utf8Crc        name;
-    Utf8Crc        fullname;
+    Utf8           fullname;
     vector<Scope*> alternativeScopes;
     int            startStackSize;
 };
