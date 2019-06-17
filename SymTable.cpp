@@ -54,17 +54,19 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     return symbol;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue, uint32_t flags)
+SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue, uint32_t flags, SymbolName** resultName)
 {
     scoped_lock lk(mutex);
-    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags);
+    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName);
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue, uint32_t flags)
+SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue, uint32_t flags, SymbolName** resultName)
 {
     auto symbol = findNoLock(node->name);
     if (!symbol)
         symbol = registerSymbolNameNoLock(sourceFile, node, kind);
+    if (resultName)
+        *resultName = symbol;
 
     if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
         return nullptr;

@@ -9,6 +9,7 @@ struct Global
 
 extern Utf8          format(const char* format, ...);
 extern void          makeUpper(string& str);
+extern void          replaceAll(string& str, char src, char dst);
 extern string        normalizePath(const fs::path& path);
 extern void          tokenize(const char* str, char c, vector<string>& tokens);
 extern struct Global g_Global;

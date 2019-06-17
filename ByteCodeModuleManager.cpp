@@ -28,10 +28,16 @@ void ByteCodeModuleManager::loadModule(ByteCodeRunContext* context, const string
 
 void* ByteCodeModuleManager::getFnPointer(ByteCodeRunContext* context, const string& moduleName, const string& funcName)
 {
-    auto here = loadedModules.find(moduleName);
-    if (here != loadedModules.end())
-        return ::GetProcAddress((HMODULE) here->second, funcName.c_str());
+    // Search in a specific module
+    if (!moduleName.empty())
+    {
+        auto here = loadedModules.find(moduleName);
+        if (here != loadedModules.end())
+            return ::GetProcAddress((HMODULE) here->second, funcName.c_str());
+        return nullptr;
+    }
 
+    // Else search in all loaded modules
     for (auto it : loadedModules)
     {
         auto ptr = ::GetProcAddress((HMODULE) it.second, funcName.c_str());

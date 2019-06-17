@@ -154,7 +154,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // Register symbol
     typeInfo->returnType             = typeNode->typeInfo;
-    funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function);
+    funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, 0, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
     funcNode->resolvedSymbolOverload->attributes = move(attributes);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));

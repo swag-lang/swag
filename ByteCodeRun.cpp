@@ -13,22 +13,27 @@
 #include "ByteCodeModuleManager.h"
 #include "Scope.h"
 #include "ffi.h"
+#include "SymTable.h"
 
 ByteCodeRun g_Run;
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    auto nodeFunc     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
+    auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
 
-	// Load corresponding module
-    g_ModuleMgr.loadModule(context, nodeFunc->ownerScope->name);
+    // Load module if specified
+    ComputedValue moduleName;
+    bool          hasModuleName = nodeFunc->resolvedSymbolOverload->attributes.getValue("swag.foreign.module", moduleName);
+    if (hasModuleName)
+        g_ModuleMgr.loadModule(context, moduleName.text);
 
-    auto fnName = format("%s_%s", nodeFunc->ownerScope->name.c_str(), nodeFunc->name.c_str());
-    auto fn     = g_ModuleMgr.getFnPointer(context, nodeFunc->ownerScope->name, fnName);
+    auto fnName = nodeFunc->resolvedSymbolName->fullName;
+    replaceAll(fnName, '.', '_');
+
+    auto fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", fnName);
     if (!fn)
     {
-        context->error(format("can't resolve external function call '%s'", fnName.c_str()));
+        context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
         return;
     }
 
