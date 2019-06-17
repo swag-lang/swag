@@ -162,9 +162,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     int                            firstDefaultValueIdx = -1;
     vector<TypeInfoFuncAttrParam*> parameters;
     TypeInfo*                      returnType;
-
-    set<TypeInfoFuncAttr*> attributes;
-    Intrisic               intrinsic;
+    Intrisic                       intrinsic;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;

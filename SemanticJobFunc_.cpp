@@ -147,12 +147,16 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode->parameters));
 
     // Collect function attributes
-    SWAG_CHECK(collectAttributes(context, typeInfo->attributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
+    set<TypeInfoFuncAttr*> attributes;
+    SWAG_CHECK(collectAttributes(context, attributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 
+    // Register symbol
     typeInfo->returnType = typeNode->typeInfo;
-    SWAG_CHECK(typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function));
+    auto overload        = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function);
+    SWAG_CHECK(overload);
+    overload->attributes = move(attributes);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));
 
     return true;
