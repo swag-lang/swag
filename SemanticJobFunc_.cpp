@@ -99,7 +99,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     bool genByteCode = false;
     if (g_CommandLine.output && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic))
         genByteCode = true;
-    if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
+    if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
         genByteCode = true;

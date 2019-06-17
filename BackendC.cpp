@@ -27,19 +27,6 @@ bool BackendC::writeFile(const char* fileName, Concat& concat)
     return true;
 }
 
-bool BackendC::compile()
-{
-    if (module->buildPass == BuildPass::Full)
-    {
-        BackendParameters  params = module->backendParameters;
-        BackendCCompilerVS compiler(this, params);
-        SWAG_CHECK(compiler.compile());
-        SWAG_CHECK(compiler.runTests());
-    }
-
-    return true;
-}
-
 bool BackendC::emitHeader()
 {
     bufferH.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
@@ -55,7 +42,7 @@ bool BackendC::emitHeader()
     // My dependencies. Need to import for dlls
     for (auto depName : module->moduleDependenciesNames)
     {
-		bufferC.addString("#undef SWAG_EXPORT\n");
+        bufferC.addString("#undef SWAG_EXPORT\n");
         bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
     }
 
@@ -91,6 +78,29 @@ void BackendC::emitSeparator(Concat& buffer, const char* title)
     for (; i < maxLen; i++)
         buffer.addString("#");
     buffer.addString("*/\n");
+}
+
+bool BackendC::compile()
+{
+    if (module->buildPass != BuildPass::Full)
+        return true;
+
+    BackendCCompilerVS compiler(this);
+    compiler.backendParameters = module->backendParameters;
+    SWAG_CHECK(compiler.compile());
+
+	// Compile a specific version, to test it
+    if (g_CommandLine.unittest && g_CommandLine.runBackendTests && !module->byteCodeTestFunc.empty())
+    {
+        compiler.backendParameters.type = BackendType::Exe;
+		compiler.backendParameters.postFix = ".test";
+		compiler.backendParameters.defines.clear();
+		compiler.backendParameters.defines.push_back("SWAG_IS_UNITTEST");
+        SWAG_CHECK(compiler.compile());
+        SWAG_CHECK(compiler.runTests());
+    }
+
+    return true;
 }
 
 bool BackendC::generate()

@@ -11,6 +11,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--output", nullptr, CommandLineType::Bool, &cmdLine->output);
     addArg("--error-out-source", "-eos", CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", "-eon", CommandLineType::Bool, &cmdLine->errorNoteOut);
+    addArg("--unittest", nullptr, CommandLineType::Bool, &cmdLine->unittest);
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test);
     addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
@@ -19,7 +20,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
-	//cmdLine->runBackendTests = false;
+    //cmdLine->runBackendTests = false;
     //cmdLine->fileFilter = "273";
 }
 
@@ -52,12 +53,12 @@ bool CommandLineParser::process(int argc, const char* argv[])
         if (it == longNameArgs.end())
         {
             it = shortNameArgs.find(command);
-			if (it == shortNameArgs.end())
-			{
-				g_Log.error(format("command line error: invalid argument '%s'", command.c_str()));
-				result = false;
-				continue;
-			}
+            if (it == shortNameArgs.end())
+            {
+                g_Log.error(format("command line error: invalid argument '%s'", command.c_str()));
+                result = false;
+                continue;
+            }
         }
 
         auto arg = it->second;

@@ -187,7 +187,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     // Call test functions
-    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+    if (g_CommandLine.unittest && g_CommandLine.runByteCodeTests)
     {
         if (g_CommandLine.verbose_test)
             g_Log.verbose("running bytecode test functions...");

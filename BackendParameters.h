@@ -8,6 +8,8 @@ enum class BackendType
 
 struct BackendParameters
 {
-    BackendType type              = BackendType::Exe;
-    bool        debugInformations = false;
+    BackendType    type              = BackendType::Exe;
+    bool           debugInformations = false;
+    string         postFix;
+    vector<string> defines;
 };

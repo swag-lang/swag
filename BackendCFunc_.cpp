@@ -132,7 +132,7 @@ bool BackendC::emitFuncSignatures()
         // Do we need to generate that function ?
         if (node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
+        if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
             continue;
         if (node->attributeFlags & ATTRIBUTE_FOREIGN)
             continue;
@@ -795,7 +795,7 @@ bool BackendC::emitFunctions()
         // Do we need to generate that function ?
         if (node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test)
+        if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
             continue;
         if (node->attributeFlags & ATTRIBUTE_FOREIGN)
             continue;

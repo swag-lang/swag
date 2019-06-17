@@ -17,16 +17,15 @@ bool BackendC::emitMain()
     bufferC.addString("void main() {\n");
 
 	// Generate call to test functions
-    if (g_CommandLine.test)
+	bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
+    for (auto bc : module->byteCodeTestFunc)
     {
-        for (auto bc : module->byteCodeTestFunc)
-        {
-			auto node = bc->node;
-            if (node->attributeFlags & ATTRIBUTE_COMPILER)
-                continue;
-			bufferC.addString(format("__%s();\n", node->name.c_str()));
-        }
+		auto node = bc->node;
+        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+		bufferC.addString(format("__%s();\n", node->name.c_str()));
     }
+	bufferC.addString("#endif\n");
 
     bufferC.addString("}\n");
     bufferC.addString("#endif\n");

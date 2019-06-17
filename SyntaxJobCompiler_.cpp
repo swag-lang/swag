@@ -103,7 +103,7 @@ bool SyntaxJob::doCompilerUnitTest()
 	// ERROR
     if (token.text == "error")
     {
-        if (g_CommandLine.test)
+        if (g_CommandLine.unittest)
             sourceFile->unittestError++;
     }
 
@@ -113,17 +113,17 @@ bool SyntaxJob::doCompilerUnitTest()
 		SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lib")
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine.unittest)
                 sourceFile->module->backendParameters.type = BackendType::Lib;
         }
         else if (token.text == "dll")
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine.unittest)
                 sourceFile->module->backendParameters.type = BackendType::Dll;
         }
         else if (token.text == "exe")
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine.unittest)
                 sourceFile->module->backendParameters.type = BackendType::Exe;
         }
         else
@@ -139,22 +139,22 @@ bool SyntaxJob::doCompilerUnitTest()
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lexer")
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine.unittest)
                 sourceFile->buildPass = BuildPass::Lexer;
         }
         else if (token.text == "syntax")
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine.unittest)
                 sourceFile->buildPass = BuildPass::Syntax;
         }
         else if (token.text == "semantic")
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine.unittest)
                 sourceFile->buildPass = BuildPass::Semantic;
         }
         else if (token.text == "backend")
         {
-            if (g_CommandLine.test)
+            if (g_CommandLine.unittest)
                 sourceFile->buildPass = BuildPass::Backend;
         }
         else
@@ -174,7 +174,7 @@ bool SyntaxJob::doCompilerUnitTest()
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
         moduleSpecified = true;
-        if (g_CommandLine.test)
+        if (g_CommandLine.unittest)
         {
             auto newModule = g_Workspace.createOrUseModule(token.text);
             sourceFile->module->removeFile(sourceFile);

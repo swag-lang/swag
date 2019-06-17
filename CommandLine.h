@@ -3,12 +3,13 @@
 
 struct CommandLine
 {
+    bool unittest         = true;
     bool test             = true;
     bool silent           = false;
     bool stats            = true;
     bool output           = true;
-    bool errorSourceOut   = true; // Errors will output source code
-    bool errorNoteOut     = true; // Errors will output notes, if defined
+    bool errorSourceOut   = true;
+    bool errorNoteOut     = true;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
 

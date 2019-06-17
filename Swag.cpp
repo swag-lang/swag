@@ -44,7 +44,7 @@ void printStats()
     wcout << "modules ........... " << g_Stats.numModules << "\n";
     if (g_CommandLine.output)
         wcout << "output modules .... " << g_Stats.numGenModules << "\n";
-    if (g_CommandLine.test)
+    if (g_CommandLine.unittest)
         wcout << "test functions .... " << g_Stats.testFunctions << "\n";
     if (g_Workspace.numErrors)
     {

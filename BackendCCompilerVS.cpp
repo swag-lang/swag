@@ -223,6 +223,10 @@ bool BackendCCompilerVS::compile()
     for (const auto& oneIncludePath : includePath)
         clArguments += "/I\"" + oneIncludePath + "\" ";
 
+    for (const auto& define : backendParameters.defines)
+        clArguments += "/D" + define + " ";
+
+    string resultFile;
     switch (backendParameters.type)
     {
     case BackendType::Lib:
@@ -234,10 +238,11 @@ bool BackendCCompilerVS::compile()
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
         if (g_CommandLine.verbose_backend_command)
             libArguments += "/VERBOSE ";
-        libArguments += "/OUT:\"" + backend->destFile + ".lib\" ";
+        resultFile = backend->destFile + backendParameters.postFix + ".lib";
+        libArguments += "/OUT:\"" + resultFile + "\" ";
         libArguments += "\"" + backend->destFile + ".obj\" ";
 
-        g_Log.message(format("vs compiling '%s' => '%s.lib'", backend->destFileC.c_str(), backend->destFile.c_str()));
+        g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.c_str(), resultFile.c_str()));
 
         auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
         SWAG_CHECK(doProcess(cmdLineLIB, clPath, g_CommandLine.verbose_backend_command));
@@ -261,16 +266,20 @@ bool BackendCCompilerVS::compile()
         if (backendParameters.type == BackendType::Dll)
         {
             linkArguments += "/DLL ";
-            linkArguments += "/OUT:\"" + backend->destFile + ".dll\" ";
-			clArguments += "/DSWAG_IS_DLL ";
+            resultFile = backend->destFile + backendParameters.postFix + ".dll";
+			linkArguments += "/OUT:\"" + resultFile + "\" ";
+            clArguments += "/DSWAG_IS_DLL ";
             g_Log.message(format("vs compiling '%s' => '%s.dll'", backend->destFileC.c_str(), backend->destFile.c_str()));
         }
         else
         {
-            linkArguments += "/OUT:\"" + backend->destFile + ".exe\" ";
+            resultFile = backend->destFile + backendParameters.postFix + ".exe";
+			linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_HAS_MAIN ";
             g_Log.message(format("vs compiling '%s' => '%s.exe'", backend->destFileC.c_str(), backend->destFile.c_str()));
         }
+
+        g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.c_str(), resultFile.c_str()));
 
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
         SWAG_CHECK(doProcess(cmdLineCL, clPath, g_CommandLine.verbose_backend_command));
@@ -283,15 +292,10 @@ bool BackendCCompilerVS::compile()
 
 bool BackendCCompilerVS::runTests()
 {
-    if (!g_CommandLine.runBackendTests)
-        return true;
-    if (backend->module->byteCodeTestFunc.empty())
-        return true;
-
     if (g_CommandLine.verbose_test)
         g_Log.verbose(format("running tests on '%s'\n", backend->destFile.c_str()));
 
-    fs::path path = backend->destFile;
+    fs::path path = backend->destFile + ".test.exe";
     SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
     return true;
 }
