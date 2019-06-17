@@ -17,7 +17,7 @@
 
 ByteCodeRun g_Run;
 
-void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
 
@@ -27,32 +27,32 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     if (hasModuleName)
         g_ModuleMgr.loadModule(context, moduleName.text);
 
-    auto fnName = nodeFunc->resolvedSymbolName->fullName;
-    replaceAll(fnName, '.', '_');
+    auto funcName = nodeFunc->resolvedSymbolName->fullName;
+    replaceAll(funcName, '.', '_');
 
-    auto fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", fnName);
+    auto fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
     if (!fn)
     {
         if (!hasModuleName || g_ModuleMgr.isModuleLoaded(moduleName.text))
         {
-            context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
-            return;
+            context->error(format("can't resolve external function call to '%s'", funcName.c_str()));
+            return nullptr;
         }
 
         // Compile the generated files
         auto externalModule = context->sourceFile->module->workspace->getModuleByName(moduleName.text);
         if (!externalModule)
         {
-            context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
-            return;
+            context->error(format("can't resolve external function call to '%s'", funcName.c_str()));
+            return nullptr;
         }
 
         // Need to compile the dll version of the module in order to be able to call a function
         // from the compiler
         if (externalModule->backendParameters.type == BackendType::Dll)
         {
-            context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
-            return;
+            context->error(format("can't resolve external function call to '%s'", funcName.c_str()));
+            return nullptr;
         }
 
         auto compileJob                    = g_Pool_moduleCompileJob.alloc();
@@ -67,15 +67,24 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         std::unique_lock<std::mutex> lk(mutexDone);
         condVar.wait(lk);
 
-		// Last try
+        // Last try
         g_ModuleMgr.loadModule(context, moduleName.text);
-        fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", fnName);
+        fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
         if (!externalModule)
         {
-            context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
-            return;
+            context->error(format("can't resolve external function call to '%s'", funcName.c_str()));
+            return nullptr;
         }
     }
+
+    return fn;
+}
+
+void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+{
+    auto fn = ffiGetFuncAddress(context, ip);
+    if (!fn)
+        return;
 
     ffi_cif   cif;
     ffi_type* args[10];
