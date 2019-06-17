@@ -5,5 +5,5 @@ using swag;
 #[public]
 func other: ()
 {
-	@print("toto");
+	//@print("toto");
 }
