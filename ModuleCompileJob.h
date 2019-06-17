@@ -9,6 +9,9 @@ struct ModuleCompileJob : public Job
 
     Module*           module = nullptr;
     BackendParameters backendParameters;
+
+    condition_variable* condVar   = nullptr;
+    mutex*              mutexDone = nullptr;
 };
 
 extern Pool<ModuleCompileJob> g_Pool_moduleCompileJob;

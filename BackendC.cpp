@@ -124,12 +124,6 @@ bool BackendC::generate()
     SWAG_CHECK(writeFile(destFileH.c_str(), bufferH));
     SWAG_CHECK(writeFile(destFileC.c_str(), bufferC));
     SWAG_CHECK(writeFile(destFileSwg.c_str(), bufferSwg));
-    SWAG_CHECK(ok);
-
-    auto compileJob               = g_Pool_moduleCompileJob.alloc();
-    compileJob->module            = module;
-    compileJob->backendParameters = module->backendParameters;
-    g_ThreadMgr.addJob(compileJob);
 
     return true;
 }

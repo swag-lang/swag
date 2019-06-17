@@ -7,6 +7,11 @@
 
 ByteCodeModuleManager g_ModuleMgr;
 
+bool ByteCodeModuleManager::isModuleLoaded(const string& name)
+{
+    return loadedModules.find(name) != loadedModules.end();
+}
+
 void ByteCodeModuleManager::loadModule(ByteCodeRunContext* context, const string& name)
 {
     if (loadedModules.find(name) != loadedModules.end())
@@ -17,11 +22,8 @@ void ByteCodeModuleManager::loadModule(ByteCodeRunContext* context, const string
     path += ".dll";
 
     auto h = ::LoadLibrary(path.c_str());
-    if (h == INVALID_HANDLE_VALUE)
-    {
-        assert(false);
+    if (h == NULL)
         return;
-    }
 
     loadedModules[name] = h;
 }

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
 #include "ByteCodeRun.h"
 #include "ByteCodeRunContext.h"
 #include "Diagnostic.h"
@@ -8,12 +7,13 @@
 #include "Log.h"
 #include "Module.h"
 #include "ByteCodeOp.h"
-#include "TypeInfo.h"
 #include "Ast.h"
 #include "ByteCodeModuleManager.h"
-#include "Scope.h"
 #include "ffi.h"
 #include "SymTable.h"
+#include "Workspace.h"
+#include "ThreadManager.h"
+#include "ModuleCompileJob.h"
 
 ByteCodeRun g_Run;
 
@@ -33,8 +33,48 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     auto fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", fnName);
     if (!fn)
     {
-        context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
-        return;
+        if (!hasModuleName || g_ModuleMgr.isModuleLoaded(moduleName.text))
+        {
+            context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
+            return;
+        }
+
+        // Compile the generated files
+        auto externalModule = context->sourceFile->module->workspace->getModuleByName(moduleName.text);
+        if (!externalModule)
+        {
+            context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
+            return;
+        }
+
+        // Need to compile the dll version of the module in order to be able to call a function
+        // from the compiler
+        if (externalModule->backendParameters.type == BackendType::Dll)
+        {
+            context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
+            return;
+        }
+
+        auto compileJob                    = g_Pool_moduleCompileJob.alloc();
+        compileJob->module                 = externalModule;
+        compileJob->backendParameters      = externalModule->backendParameters;
+        compileJob->backendParameters.type = BackendType::Dll;
+        compileJob->mutexDone              = &mutexDone;
+        compileJob->condVar                = &condVar;
+        g_ThreadMgr.addJob(compileJob);
+
+        // Sync wait for the dll to be generated
+        std::unique_lock<std::mutex> lk(mutexDone);
+        condVar.wait(lk);
+
+		// Last try
+        g_ModuleMgr.loadModule(context, moduleName.text);
+        fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", fnName);
+        if (!externalModule)
+        {
+            context->error(format("can't resolve external function call to '%s'", fnName.c_str()));
+            return;
+        }
     }
 
     ffi_cif   cif;

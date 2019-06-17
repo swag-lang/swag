@@ -10,5 +10,12 @@ JobResult ModuleCompileJob::execute()
 {
     module->backend->compile(backendParameters);
     g_Stats.numGenModules++;
+
+    if (mutexDone)
+    {
+        std::unique_lock<std::mutex> lk(*mutexDone);
+        condVar->notify_all();
+    }
+
     return JobResult::ReleaseJob;
 }

@@ -9,10 +9,11 @@ struct Workspace
     bool    build();
     Module* createOrUseModule(const fs::path& path);
 
-    void enumerateFilesInModule(const fs::path& path);
-    void addRuntime();
-    void enumerateModules();
-    bool buildModules(const vector<Module*>& list);
+    void    enumerateFilesInModule(const fs::path& path);
+    void    addRuntime();
+    void    enumerateModules();
+    bool    buildModules(const vector<Module*>& list);
+    Module* getModuleByName(const string& name);
 
     fs::path               cachePath;
     SpinLock               mutexModules;

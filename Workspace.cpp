@@ -17,6 +17,15 @@
 
 Workspace g_Workspace;
 
+Module* Workspace::getModuleByName(const string& name)
+{
+    scoped_lock lk(mutexModules);
+    auto        it = mapModulesNames.find(name);
+    if (it == mapModulesNames.end())
+        return nullptr;
+    return it->second;
+}
+
 Module* Workspace::createOrUseModule(const fs::path& path)
 {
     Module* module;
@@ -159,7 +168,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
     g_ThreadMgr.waitEndJobs();
 
-	if (g_CommandLine.verbose_build_pass)
+    if (g_CommandLine.verbose_build_pass)
         g_Log.verbose("starting semantic pass...");
 
     // Semantic pass
@@ -244,7 +253,7 @@ bool Workspace::build()
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
 
-	if (g_CommandLine.verbose_build_pass)
+    if (g_CommandLine.verbose_build_pass)
         g_Log.verbose(format("## syntax pass done on %d module(s)", modules.size()));
 
     // Build modules in dependency order
@@ -292,7 +301,7 @@ bool Workspace::build()
         }
 
         if (g_CommandLine.verbose_build_pass)
-			g_Log.verbose(format("## starting build pass %d on %d module(s)", pass, (int) order.size()));
+            g_Log.verbose(format("## starting build pass %d on %d module(s)", pass, (int) order.size()));
 
         buildModules(order);
 
