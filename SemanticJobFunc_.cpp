@@ -147,7 +147,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode->parameters));
 
     // Collect function attributes
-    SWAG_CHECK(collectAttributes(context, typeInfo->attributes, funcNode->attributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
+    SWAG_CHECK(collectAttributes(context, typeInfo->attributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 

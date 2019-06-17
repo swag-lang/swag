@@ -1,7 +1,8 @@
 #unittest module module273b;
 #unittest backend dll;
+using swag;
 
-#[swag.public]
+#[public]
 func other: ()
 {
 	@print("toto");

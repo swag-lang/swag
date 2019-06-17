@@ -122,7 +122,7 @@ bool BackendC::emitFuncSignatures()
     emitSeparator(bufferH, "PROTOTYPES");
     emitSeparator(bufferC, "PROTOTYPES");
 
-    bufferSwg.addString("#[swag.foreign]\n");
+    bufferSwg.addString(format("#[swag.foreign(\"%s\")]\n", module->name.c_str()));
     bufferSwg.addString("{\n");
 
     for (auto one : module->byteCodeFunc)

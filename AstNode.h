@@ -97,7 +97,7 @@ struct AstNode : public PoolElement
         typeInfo           = nullptr;
         castedTypeInfo     = nullptr;
         resolvedSymbolName = nullptr;
-        attributes         = nullptr;
+        parentAttributes         = nullptr;
         bc                 = nullptr;
         sourceFileIdx      = UINT32_MAX;
         attributeFlags     = 0;
@@ -168,7 +168,7 @@ struct AstNode : public PoolElement
     ByteCodeGenJob* byteCodeJob;
 
     AstNode*            parent;
-    AstNode*            attributes;
+    AstNode*            parentAttributes;
     uint64_t            attributeFlags;
     Token               token;
     SemanticFct         semanticFct;

@@ -242,6 +242,9 @@
     <ClCompile Include="BackendCRuntime_.cpp">
       <Filter>Backend\C</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeModuleManager.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="BackendParameters.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteCodeModuleManager.h">
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

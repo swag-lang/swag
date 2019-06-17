@@ -47,7 +47,7 @@ JobResult SemanticJob::execute()
 
                     // Top to bottom inheritance
                     if (node->kind == AstNodeKind::Statement)
-                        child->attributes = node->attributes;
+                        child->parentAttributes = node->parentAttributes;
 
                     nodes.push_back(child);
                 }

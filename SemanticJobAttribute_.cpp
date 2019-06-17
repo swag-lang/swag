@@ -82,7 +82,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
             result.insert(typeInfo);
         }
 
-        curAttr = curAttr->attributes;
+        curAttr = curAttr->parentAttributes;
     }
 
     return true;
@@ -114,7 +114,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
 
     if (nextStatement)
     {
-        nextStatement->attributes = node;
+        nextStatement->parentAttributes = node;
     }
 
     return true;

@@ -8,8 +8,41 @@
 #include "Log.h"
 #include "Module.h"
 #include "ByteCodeOp.h"
+#include "TypeInfo.h"
+#include "Ast.h"
+#include "ByteCodeModuleManager.h"
+#include "Scope.h"
+#include "ffi.h"
 
 ByteCodeRun g_Run;
+
+void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+{
+    auto nodeFunc     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
+
+	// Load corresponding module
+    g_ModuleMgr.loadModule(context, nodeFunc->ownerScope->name);
+
+    auto fnName = format("%s_%s", nodeFunc->ownerScope->name.c_str(), nodeFunc->name.c_str());
+    auto fn     = g_ModuleMgr.getFnPointer(context, nodeFunc->ownerScope->name, fnName);
+    if (!fn)
+    {
+        context->error(format("can't resolve external function call '%s'", fnName.c_str()));
+        return;
+    }
+
+    ffi_cif   cif;
+    ffi_type* args[10];
+    void*     values[10];
+
+    args[0] = &ffi_type_void;
+    //values[0] = &f;
+
+    // Initialize the cif
+    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 0, &ffi_type_void, args);
+    ffi_call(&cif, FFI_FN(fn), nullptr, values);
+}
 
 inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
@@ -50,7 +83,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::ForeignCall:
     {
-        //context->error(format("foreign call not done in bytecode !"));
+        ffiCall(context, ip);
         break;
     }
 
