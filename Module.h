@@ -12,6 +12,7 @@ struct AstNode;
 struct Scope;
 struct ByteCode;
 struct Job;
+struct Backend;
 
 struct Module : public PoolElement
 {
@@ -32,6 +33,7 @@ struct Module : public PoolElement
     Workspace*          workspace;
     bool                isRuntime = false;
     BackendParameters   backendParameters;
+    Backend*            backend = nullptr;
 
     uint32_t reserveRegisterRC(ByteCode* bc);
     void     freeRegisterRC(uint32_t reg);

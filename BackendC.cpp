@@ -8,6 +8,7 @@
 #include "Version.h"
 #include "ThreadManager.h"
 #include "Workspace.h"
+#include "ModuleCompileJob.h"
 
 bool BackendC::writeFile(const char* fileName, Concat& concat)
 {
@@ -89,13 +90,13 @@ bool BackendC::compile()
     compiler.backendParameters = module->backendParameters;
     SWAG_CHECK(compiler.compile());
 
-	// Compile a specific version, to test it
+    // Compile a specific version, to test it
     if (g_CommandLine.unittest && g_CommandLine.runBackendTests && !module->byteCodeTestFunc.empty())
     {
-        compiler.backendParameters.type = BackendType::Exe;
-		compiler.backendParameters.postFix = ".test";
-		compiler.backendParameters.defines.clear();
-		compiler.backendParameters.defines.push_back("SWAG_IS_UNITTEST");
+        compiler.backendParameters.type    = BackendType::Exe;
+        compiler.backendParameters.postFix = ".test";
+        compiler.backendParameters.defines.clear();
+        compiler.backendParameters.defines.push_back("SWAG_IS_UNITTEST");
         SWAG_CHECK(compiler.compile());
         SWAG_CHECK(compiler.runTests());
     }
@@ -123,8 +124,12 @@ bool BackendC::generate()
     SWAG_CHECK(writeFile(destFileH.c_str(), bufferH));
     SWAG_CHECK(writeFile(destFileC.c_str(), bufferC));
     SWAG_CHECK(writeFile(destFileSwg.c_str(), bufferSwg));
-
     SWAG_CHECK(ok);
-    SWAG_CHECK(compile());
+
+    auto compileJob               = g_Pool_moduleCompileJob.alloc();
+    compileJob->module            = module;
+    compileJob->backendParameters = module->backendParameters;
+    g_ThreadMgr.addJob(compileJob);
+
     return true;
 }

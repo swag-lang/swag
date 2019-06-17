@@ -245,6 +245,9 @@
     <ClCompile Include="ByteCodeModuleManager.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCompileJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -409,6 +412,12 @@
     </ClInclude>
     <ClInclude Include="ByteCodeModuleManager.h">
       <Filter>Backend\ByteCode</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCompileJob.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="Backend.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

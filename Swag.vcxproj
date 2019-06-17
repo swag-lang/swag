@@ -165,6 +165,7 @@
     <ClInclude Include="Ast.h" />
     <ClInclude Include="AstNode.h" />
     <ClInclude Include="Attribute.h" />
+    <ClInclude Include="Backend.h" />
     <ClInclude Include="BackendC.h" />
     <ClInclude Include="BackendCCompiler.h" />
     <ClInclude Include="BackendCCompilerVS.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="ffi_common.h" />
     <ClInclude Include="FileSemanticJob.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="ModuleCompileJob.h" />
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="Runtime.h" />
     <ClInclude Include="Scope.h" />
@@ -264,6 +266,7 @@
     <ClCompile Include="JobThread.cpp" />
     <ClCompile Include="LanguageSpec.cpp" />
     <ClCompile Include="Module.cpp" />
+    <ClCompile Include="ModuleCompileJob.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
     <ClCompile Include="Scope.cpp" />
