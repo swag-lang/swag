@@ -267,14 +267,14 @@ bool BackendCCompilerVS::compile()
         {
             linkArguments += "/DLL ";
             resultFile = backend->destFile + backendParameters.postFix + ".dll";
-			linkArguments += "/OUT:\"" + resultFile + "\" ";
+            linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_DLL ";
             g_Log.message(format("vs compiling '%s' => '%s.dll'", backend->destFileC.c_str(), backend->destFile.c_str()));
         }
         else
         {
             resultFile = backend->destFile + backendParameters.postFix + ".exe";
-			linkArguments += "/OUT:\"" + resultFile + "\" ";
+            linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_HAS_MAIN ";
             g_Log.message(format("vs compiling '%s' => '%s.exe'", backend->destFileC.c_str(), backend->destFile.c_str()));
         }
@@ -292,10 +292,10 @@ bool BackendCCompilerVS::compile()
 
 bool BackendCCompilerVS::runTests()
 {
-    if (g_CommandLine.verbose_test)
-        g_Log.verbose(format("running tests on '%s'\n", backend->destFile.c_str()));
-
     fs::path path = backend->destFile + ".test.exe";
+
+    if (g_CommandLine.verbose_test)
+        g_Log.verbose(format("running tests on '%s'\n", path.string().c_str()));
     SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
     return true;
 }
