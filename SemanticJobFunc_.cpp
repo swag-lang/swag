@@ -172,7 +172,9 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 {
     auto node         = context->node;
-    node->typeInfo    = node->childs[0]->typeInfo;
+    auto child        = node->childs.front();
+    node->typeInfo    = child->typeInfo;
+    node->inheritComputedValue(child);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
     return true;
 }

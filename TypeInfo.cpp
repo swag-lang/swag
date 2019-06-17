@@ -5,13 +5,13 @@
 #include "ThreadManager.h"
 #include "Global.h"
 #include "TypeManager.h"
+#include "AstNode.h"
 
 Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
 Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
 Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
-Pool<SymbolMatchParameter>  g_Pool_symbolMatchParameter;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
@@ -41,7 +41,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     bool badSignature   = false;
 
     // First we solve unnamed parameters
-    for (int i = 0; i < context.parameters.size(); i++)
+    int numParams = (int) context.parameters.size();
+    for (int i = 0; i < numParams; i++)
     {
         auto param = context.parameters[i];
         if (!param->name.empty())
@@ -56,7 +57,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             return;
         }
 
-		auto typeInfo = TypeManager::concreteType(context.parameters[i]->typeInfo);
+        auto typeInfo = TypeManager::concreteType(context.parameters[i]->typeInfo);
         if (!parameters[i]->typeInfo->isSame(typeInfo))
         {
             context.badSignatureParameterIdx  = i;

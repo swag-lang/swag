@@ -103,13 +103,26 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
-    auto        node          = context->node;
+    auto        sourceFile    = context->sourceFile;
+    auto        node          = CastAst<AstAttrUse>(context->node, AstNodeKind::AttrUse);
     auto        nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
     AstNodeKind kind          = nextStatement ? nextStatement->kind : AstNodeKind::Module;
 
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkAttribute(context, child, nextStatement, kind));
+
+        // Collect parameters
+        auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+        auto identifier    = CastAst<AstIdentifier>(identifierRef->childs.back(), AstNodeKind::Identifier);
+        if (identifier->callParameters)
+        {
+            for (auto one : identifier->callParameters->childs)
+            {
+                auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
+                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, param, "attribute parameter cannot be evaluated at compile time"}));
+            }
+        }
     }
 
     if (nextStatement)

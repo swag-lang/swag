@@ -4,6 +4,7 @@
 #include "Utf8Crc.h"
 #include "Tokenizer.h"
 #include "SyntaxJob.h"
+#include "Register.h"
 struct SemanticContext;
 struct ByteCodeGenContext;
 struct Scope;
@@ -65,7 +66,7 @@ enum class AstNodeKind
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
-	CompilerImport,
+    CompilerImport,
 };
 
 static const uint64_t AST_CONST_EXPR         = 0x00000000'00000001;
@@ -97,7 +98,7 @@ struct AstNode : public PoolElement
         typeInfo           = nullptr;
         castedTypeInfo     = nullptr;
         resolvedSymbolName = nullptr;
-        parentAttributes         = nullptr;
+        parentAttributes   = nullptr;
         bc                 = nullptr;
         sourceFileIdx      = UINT32_MAX;
         attributeFlags     = 0;
@@ -256,6 +257,17 @@ struct AstAttrDecl : public AstNode
     AstNode* parameters;
 };
 
+struct AstAttrUse : public AstNode
+{
+    void reset() override
+    {
+        AstNode::reset();
+		values.clear();
+    }
+
+    map<string, ComputedValue> values;
+};
+
 struct AstFuncCallParam : public AstNode
 {
     Utf8 namedParam;
@@ -316,6 +328,7 @@ struct AstWhile : public AstBreakable
 
 extern Pool<AstNode>          g_Pool_astNode;
 extern Pool<AstAttrDecl>      g_Pool_astAttrDecl;
+extern Pool<AstAttrUse>       g_Pool_astAttrUse;
 extern Pool<AstVarDecl>       g_Pool_astVarDecl;
 extern Pool<AstFuncDecl>      g_Pool_astFuncDecl;
 extern Pool<AstIdentifier>    g_Pool_astIdentifier;

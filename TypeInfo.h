@@ -7,6 +7,7 @@ struct TypeInfo;
 struct SymbolMatchContext;
 struct Job;
 enum class Intrisic;
+struct AstFuncCallParam;
 
 enum class TypeInfoKind
 {
@@ -127,25 +128,13 @@ enum MatchResult
     BadSignature
 };
 
-struct SymbolMatchParameter : public PoolElement
-{
-    Utf8      name;
-    TypeInfo* typeInfo;
-};
-
 struct SymbolMatchContext
 {
-    int                           badSignatureParameterIdx  = 0;
-    TypeInfo*                     basSignatureRequestedType = nullptr;
-    TypeInfo*                     basSignatureGivenType     = nullptr;
-    MatchResult                   result                    = MatchResult::Ok;
-    vector<SymbolMatchParameter*> parameters;
-
-    ~SymbolMatchContext()
-    {
-        for (auto param : parameters)
-            param->release();
-    }
+    int                       badSignatureParameterIdx  = 0;
+    TypeInfo*                 basSignatureRequestedType = nullptr;
+    TypeInfo*                 basSignatureGivenType     = nullptr;
+    MatchResult               result                    = MatchResult::Ok;
+    vector<AstFuncCallParam*> parameters;
 };
 
 struct TypeInfoFuncAttr : public TypeInfo
@@ -170,4 +159,3 @@ extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
 extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
 extern Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
-extern Pool<SymbolMatchParameter>  g_Pool_symbolMatchParameter;

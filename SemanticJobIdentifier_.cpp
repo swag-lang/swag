@@ -219,11 +219,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         for (auto param : node->callParameters->childs)
         {
-            auto oneParam        = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
-            auto matchParam      = g_Pool_symbolMatchParameter.alloc();
-            matchParam->name     = oneParam->namedParam;
-            matchParam->typeInfo = param->typeInfo;
-            symMatch.parameters.push_back(matchParam);
+            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
+            symMatch.parameters.push_back(oneParam);
         }
     }
     else
