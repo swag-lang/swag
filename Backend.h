@@ -1,4 +1,5 @@
 #pragma once
+struct BackendParameters;
 
 struct Backend
 {
@@ -7,8 +8,8 @@ struct Backend
     {
     }
 
-    virtual bool compile()  = 0;
-    virtual bool generate() = 0;
+    virtual bool generate()                                          = 0;
+    virtual bool compile(const BackendParameters& backendParameters) = 0;
 
     Module* module;
 };

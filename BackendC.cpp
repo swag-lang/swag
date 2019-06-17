@@ -12,7 +12,7 @@
 
 bool BackendC::writeFile(const char* fileName, Concat& concat)
 {
-    FILE* file;
+    FILE* file = nullptr;
     fopen_s(&file, fileName, "wt");
     SWAG_VERIFY(file, module->error(format("can't open file '%s' for writing'", fileName)));
 
@@ -81,13 +81,13 @@ void BackendC::emitSeparator(Concat& buffer, const char* title)
     buffer.addString("*/\n");
 }
 
-bool BackendC::compile()
+bool BackendC::compile(const BackendParameters& backendParameters)
 {
     if (module->buildPass != BuildPass::Full)
         return true;
 
     BackendCCompilerVS compiler(this);
-    compiler.backendParameters = module->backendParameters;
+    compiler.backendParameters = backendParameters;
     SWAG_CHECK(compiler.compile());
 
     // Compile a specific version, to test it

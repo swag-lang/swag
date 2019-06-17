@@ -6,6 +6,7 @@ struct AstNode;
 struct AstFuncDecl;
 struct TypeInfoFuncAttr;
 struct TypeInfo;
+struct BackendParameters;
 
 struct BackendC : public Backend
 {
@@ -14,8 +15,8 @@ struct BackendC : public Backend
     {
     }
 
-    bool compile() override;
     bool generate() override;
+    bool compile(const BackendParameters& backendParameters) override;
 
     bool writeFile(const char* fileName, Concat& concat);
 

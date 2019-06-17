@@ -8,7 +8,7 @@ Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
 JobResult ModuleCompileJob::execute()
 {
-    module->backend->compile();
+    module->backend->compile(backendParameters);
     g_Stats.numGenModules++;
     return JobResult::ReleaseJob;
 }
