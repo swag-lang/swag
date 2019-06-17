@@ -16,6 +16,8 @@ struct ByteCodeGenJob;
 struct ByteCode;
 struct Job;
 struct AstFuncDecl;
+struct AstAttrUse;
+struct TypeInfoFuncAttrParam;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -169,7 +171,7 @@ struct AstNode : public PoolElement
     ByteCodeGenJob* byteCodeJob;
 
     AstNode*            parent;
-    AstNode*            parentAttributes;
+    AstAttrUse*         parentAttributes;
     uint64_t            attributeFlags;
     Token               token;
     SemanticFct         semanticFct;
@@ -262,7 +264,7 @@ struct AstAttrUse : public AstNode
     void reset() override
     {
         AstNode::reset();
-		values.clear();
+        values.clear();
     }
 
     map<string, ComputedValue> values;
@@ -270,7 +272,8 @@ struct AstAttrUse : public AstNode
 
 struct AstFuncCallParam : public AstNode
 {
-    Utf8 namedParam;
+    Utf8                   namedParam;
+    TypeInfoFuncAttrParam* resolvedParameter;
 };
 
 struct AstIf : public AstNode

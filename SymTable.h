@@ -19,16 +19,24 @@ static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
 static const uint32_t OVERLOAD_VAR_GLOBAL         = 0x00000004;
 static const uint32_t OVERLOAD_VAR_LOCAL          = 0x00000008;
 
+struct SymbolAttributes
+{
+    set<TypeInfoFuncAttr*>     attributes;
+    map<string, ComputedValue> values;
+
+    bool getValue(const string& fullName, ComputedValue& value);
+};
+
 struct SymbolOverload : public PoolElement
 {
-    TypeInfo*              typeInfo;
-    SourceFile*            sourceFile;
-    ComputedValue          computedValue;
-    set<TypeInfoFuncAttr*> attributes;
-    uint32_t               flags;
-    AstNode*               node;
-    int                    storageOffset = -1;
-    int                    storageIndex  = 0;
+    TypeInfo*        typeInfo;
+    SourceFile*      sourceFile;
+    ComputedValue    computedValue;
+    uint32_t         flags;
+    AstNode*         node;
+    SymbolAttributes attributes;
+    int              storageOffset = -1;
+    int              storageIndex  = 0;
 };
 
 enum class SymbolKind
@@ -47,6 +55,7 @@ enum class SymbolKind
 struct SymbolName : public PoolElement
 {
     SpinLock                mutex;
+    Utf8                    fullName;
     Utf8Crc                 name;
     SymbolOverload          defaultOverload;
     SymbolKind              kind;

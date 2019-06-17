@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "TypeInfo.h"
 #include "SymTable.h"
+#include "Scope.h"
 
 Pool<SymbolOverload> g_Pool_symOverload;
 Pool<SymbolName>     g_Pool_symName;
@@ -39,6 +40,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     {
         symbol                             = g_Pool_symName.alloc();
         symbol->name                       = node->name;
+        symbol->fullName                   = scope->fullname + "." + node->name;
         symbol->kind                       = kind;
         symbol->defaultOverload.sourceFile = sourceFile;
         symbol->defaultOverload.node       = node;
@@ -67,7 +69,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNod
     if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
         return nullptr;
     auto result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
-	result->flags |= flags;
+    result->flags |= flags;
 
     // One less overload. When this reached zero, this means we known every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
@@ -218,4 +220,13 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
     }
 
     return nullptr;
+}
+
+bool SymbolAttributes::getValue(const string& fullName, ComputedValue& value)
+{
+    auto it = values.find(fullName);
+    if (it == values.end())
+        return false;
+    value = it->second;
+    return true;
 }

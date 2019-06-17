@@ -10,8 +10,10 @@ struct SymbolName;
 struct Scope;
 struct AstIdentifierRef;
 struct SymbolOverload;
+struct AstAttrUse;
 enum class AstNodeKind;
 enum class SymbolKind;
+struct SymbolAttributes;
 struct ByteCodeGenJob;
 
 enum class SemanticResult
@@ -42,7 +44,7 @@ struct SemanticJob : public Job
     }
 
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
-    static bool collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
+    static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
     static void collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);

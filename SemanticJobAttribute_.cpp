@@ -43,7 +43,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAttr*>& result, AstNode* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags)
+bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags)
 {
     if (!attrUse)
         return true;
@@ -58,7 +58,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
             SWAG_CHECK(checkAttribute(context, child, forNode, kind));
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
 
-            if (result.find(typeInfo) != result.end())
+            if (result.attributes.find(typeInfo) != result.attributes.end())
             {
                 Diagnostic diag{sourceFile, forNode->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), forNode->name.c_str())};
                 Diagnostic note{sourceFile, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
@@ -79,7 +79,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, set<TypeInfoFuncAt
             if (typeInfo->name == "foreign")
                 flags |= ATTRIBUTE_FOREIGN;
 
-            result.insert(typeInfo);
+            result.attributes.insert(typeInfo);
+            result.values.insert(curAttr->values.begin(), curAttr->values.end());
         }
 
         curAttr = curAttr->parentAttributes;
@@ -121,6 +122,8 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, param, "attribute parameter cannot be evaluated at compile time"}));
+                string attrFullName        = identifierRef->resolvedSymbolName->fullName + "." + param->resolvedParameter->name;
+                node->values[attrFullName] = param->computedValue;
             }
         }
     }

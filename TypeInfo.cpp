@@ -5,7 +5,7 @@
 #include "ThreadManager.h"
 #include "Global.h"
 #include "TypeManager.h"
-#include "AstNode.h"
+#include "Ast.h"
 
 Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
@@ -44,7 +44,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     int numParams = (int) context.parameters.size();
     for (int i = 0; i < numParams; i++)
     {
-        auto param = context.parameters[i];
+        auto param = CastAst<AstFuncCallParam>(context.parameters[i], AstNodeKind::FuncCallParam);
         if (!param->name.empty())
         {
             firstUserNamed = i;
@@ -66,6 +66,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             badSignature                      = true;
         }
 
+		param->resolvedParameter = parameters[i];
         cptResolved++;
     }
 

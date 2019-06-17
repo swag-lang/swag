@@ -147,16 +147,16 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode->parameters));
 
     // Collect function attributes
-    set<TypeInfoFuncAttr*> attributes;
+    SymbolAttributes attributes;
     SWAG_CHECK(collectAttributes(context, attributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 
     // Register symbol
-    typeInfo->returnType = typeNode->typeInfo;
-    auto overload        = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function);
-    SWAG_CHECK(overload);
-    overload->attributes = move(attributes);
+    typeInfo->returnType             = typeNode->typeInfo;
+    funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function);
+    SWAG_CHECK(funcNode->resolvedSymbolOverload);
+    funcNode->resolvedSymbolOverload->attributes = move(attributes);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));
 
     return true;
@@ -171,9 +171,9 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 {
-    auto node         = context->node;
-    auto child        = node->childs.front();
-    node->typeInfo    = child->typeInfo;
+    auto node      = context->node;
+    auto child     = node->childs.front();
+    node->typeInfo = child->typeInfo;
     node->inheritComputedValue(child);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
     return true;
