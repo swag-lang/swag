@@ -90,14 +90,9 @@ bool BackendC::compile(const BackendParameters& backendParameters)
     compiler.backendParameters = backendParameters;
     SWAG_CHECK(compiler.compile());
 
-    // Compile a specific version, to test it
-    if (g_CommandLine.unittest && g_CommandLine.runBackendTests && !module->byteCodeTestFunc.empty())
+    // Test
+    if (backendParameters.runTests)
     {
-        compiler.backendParameters.type    = BackendType::Exe;
-        compiler.backendParameters.postFix = ".test";
-        compiler.backendParameters.defines.clear();
-        compiler.backendParameters.defines.push_back("SWAG_IS_UNITTEST");
-        SWAG_CHECK(compiler.compile());
         SWAG_CHECK(compiler.runTests());
     }
 

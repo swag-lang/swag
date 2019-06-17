@@ -216,10 +216,23 @@ bool BackendCCompilerVS::compile()
         clArguments += "/Zi ";
     }
 
+    // Append a string related to the version
+    string outputTypeName;
+    switch (backendParameters.type)
+    {
+    case BackendType::Lib:
+        outputTypeName = ".lib";
+        break;
+    case BackendType::Dll:
+        outputTypeName = ".dll";
+        break;
+    }
+
     clArguments += "/nologo ";
     clArguments += "/EHsc ";
     clArguments += "/Tc\"" + backend->destFileC + "\" ";
-    clArguments += "/Fo\"" + backend->destFile + ".obj\" ";
+    string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
+    clArguments += "/Fo\"" + nameObj + "\" ";
     for (const auto& oneIncludePath : includePath)
         clArguments += "/I\"" + oneIncludePath + "\" ";
 
@@ -240,7 +253,7 @@ bool BackendCCompilerVS::compile()
             libArguments += "/VERBOSE ";
         resultFile = backend->destFile + backendParameters.postFix + ".lib";
         libArguments += "/OUT:\"" + resultFile + "\" ";
-        libArguments += "\"" + backend->destFile + ".obj\" ";
+        libArguments += "\"" + nameObj +"\" ";
 
         g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.c_str(), resultFile.c_str()));
 
@@ -269,14 +282,12 @@ bool BackendCCompilerVS::compile()
             resultFile = backend->destFile + backendParameters.postFix + ".dll";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_DLL ";
-            g_Log.message(format("vs compiling '%s' => '%s.dll'", backend->destFileC.c_str(), backend->destFile.c_str()));
         }
         else
         {
             resultFile = backend->destFile + backendParameters.postFix + ".exe";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_HAS_MAIN ";
-            g_Log.message(format("vs compiling '%s' => '%s.exe'", backend->destFileC.c_str(), backend->destFile.c_str()));
         }
 
         g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.c_str(), resultFile.c_str()));
