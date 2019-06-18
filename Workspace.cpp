@@ -54,6 +54,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
 {
     // Create a default module
     auto module = createOrUseModule(path);
+	module->compileVersion = g_CommandLine.compileVersion;
 
     // Scan source folder
     WIN32_FIND_DATAA findfile;

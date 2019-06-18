@@ -9,20 +9,21 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
     addArg("--output", nullptr, CommandLineType::Bool, &cmdLine->output);
-    addArg("--error-out-source", "-eos", CommandLineType::Bool, &cmdLine->errorSourceOut);
-    addArg("--error-out-note", "-eon", CommandLineType::Bool, &cmdLine->errorNoteOut);
+    addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut);
+    addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut);
     addArg("--unittest", nullptr, CommandLineType::Bool, &cmdLine->unittest);
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test);
     addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
-	addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanCache);
+    addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanCache);
+    addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
 
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
     //cmdLine->runBackendTests = false;
-    //cmdLine->fileFilter = "271";
+    cmdLine->fileFilter = "277";
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param)
@@ -104,6 +105,19 @@ bool CommandLineParser::process(int argc, const char* argv[])
             }
             break;
 
+        case CommandLineType::StringList:
+        {
+            if (argument.empty())
+            {
+                g_Log.error(format("command line error: argument '%s' must be followed by a string", it->first.c_str(), argument.c_str()));
+                result = false;
+                continue;
+            }
+
+            ((set<string>*) arg->buffer)->insert(argument);
+            break;
+        }
+
         case CommandLineType::Int:
         {
             pz               = argument.c_str();
@@ -126,6 +140,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
                     g_Log.error(format("command line error: argument '%s' must be followed by an integer value", it->first.c_str()));
                 else
                     g_Log.error(format("command line error: argument '%s' must be followed by an integer value ('%s')", it->first.c_str(), argument.c_str()));
+				result = false;
                 continue;
             }
 

@@ -44,6 +44,45 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
     return true;
 }
 
+bool SyntaxJob::doCompilerVersion(AstNode* parent)
+{
+    auto node = Ast::newNode(&g_Pool_astIf, AstNodeKind::CompilerVersion, sourceFile->indexInModule, parent);
+    node->inheritOwners(this);
+    node->token = move(token);
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+        SWAG_CHECK(doIdentifierRef(nullptr, &node->boolExpression));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+
+        auto version          = node->boolExpression->childs.back()->name;
+        bool versionValidated = sourceFile->module->compileVersion.find(version) != sourceFile->module->compileVersion.end();
+
+        SWAG_CHECK(doStatement(nullptr, &node->ifBlock));
+        if (token.id == TokenId::CompilerElse)
+        {
+            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_CHECK(doStatement(nullptr, &node->elseBlock));
+        }
+
+        if (versionValidated)
+            Ast::addChild(node, node->ifBlock);
+        else if (node->elseBlock)
+            Ast::addChild(node, node->elseBlock);
+    }
+    else if (token.id == TokenId::SymEqual)
+    {
+        SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#version can only be defined in the top level scope"}));
+        AstNode* identifier;
+        SWAG_CHECK(doIdentifierRef(nullptr, &identifier));
+        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
@@ -98,17 +137,17 @@ bool SyntaxJob::doCompilerUnitTest()
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getToken(token));
 
-	// ERROR
+    // ERROR
     if (token.text == "error")
     {
         if (g_CommandLine.unittest)
             sourceFile->unittestError++;
     }
 
-	// BACKEND
+    // BACKEND
     else if (token.text == "backend")
     {
-		SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lib")
         {
             if (g_CommandLine.unittest)
@@ -131,7 +170,7 @@ bool SyntaxJob::doCompilerUnitTest()
         }
     }
 
-	// PASS
+    // PASS
     else if (token.text == "pass")
     {
         SWAG_CHECK(tokenizer.getToken(token));
@@ -164,7 +203,7 @@ bool SyntaxJob::doCompilerUnitTest()
         sourceFile->module->setBuildPass(sourceFile->buildPass);
     }
 
-	// MODULE
+    // MODULE
     else if (token.text == "module")
     {
         SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#unittest module can only be specified once"}));
@@ -175,13 +214,14 @@ bool SyntaxJob::doCompilerUnitTest()
         if (g_CommandLine.unittest)
         {
             auto newModule = g_Workspace.createOrUseModule(token.text);
+            newModule->compileVersion.insert(sourceFile->module->compileVersion.begin(), sourceFile->module->compileVersion.end());
             sourceFile->module->removeFile(sourceFile);
             newModule->addFile(sourceFile);
             currentScope = newModule->scopeRoot;
         }
     }
 
-	// ???
+    // ???
     else
     {
         sourceFile->report({sourceFile, token, format("unknown #unittest parameter '%s'", token.text.c_str())});
@@ -205,8 +245,8 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doLiteral(nullptr, &moduleName));
     SWAG_VERIFY(moduleName->token.literalType == g_TypeMgr.typeInfoString, sourceFile->report({sourceFile, moduleName, "#import must be followed by a module name"}));
-    node->name = moduleName->token.text;
-	node->token.endLocation = token.endLocation;
+    node->name              = moduleName->token.text;
+    node->token.endLocation = token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
     sourceFile->module->addDependency(node);

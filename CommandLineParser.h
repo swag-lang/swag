@@ -5,6 +5,7 @@ enum CommandLineType
     Bool,
     Int,
 	Enum,
+	StringList,
 };
 
 struct CommandLineArgument

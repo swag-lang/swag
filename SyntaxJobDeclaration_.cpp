@@ -139,7 +139,7 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result)
     {
         Scoped scoped(this, newScope);
         SWAG_CHECK(doCurlyStatement(parent, &statement));
-		statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
+        statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
     }
 
     if (result)
@@ -151,6 +151,24 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
         return doScopedCurlyStatement(parent, result);
+    return doEmbeddedInstruction(parent, result);
+}
+
+bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
+{
+    if (token.id == TokenId::SymLeftCurly)
+        return doCurlyStatement(parent, result);
+
+    bool isGlobal = currentScope->isGlobal();
+    if (isGlobal)
+    {
+        auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent);
+        node->inheritOwners(this);
+        if (result)
+            *result = node;
+        return doTopLevelInstruction(node);
+    }
+
     return doEmbeddedInstruction(parent, result);
 }
 
@@ -238,6 +256,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         break;
     case TokenId::CompilerPrint:
         SWAG_CHECK(doCompilerPrint(parent));
+        break;
+    case TokenId::CompilerVersion:
+        SWAG_CHECK(doCompilerVersion(parent));
         break;
     case TokenId::CompilerRun:
         SWAG_CHECK(doCompilerRunDecl(parent));

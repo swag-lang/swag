@@ -20,10 +20,11 @@ struct CommandLine
     bool verbose_test            = true;
     bool verbose_build_pass      = true;
 
-    BuildPass buildPass = BuildPass::Full;
-    int       numCores  = 0;
-    int       tabSize   = 4;
-    string    fileFilter;
+    BuildPass   buildPass = BuildPass::Full;
+    int         numCores  = 0;
+    int         tabSize   = 4;
+    string      fileFilter;
+    set<string> compileVersion;
 
     fs::path exePath;
 };

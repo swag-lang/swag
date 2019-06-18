@@ -34,6 +34,7 @@ struct Module : public PoolElement
     bool                isRuntime = false;
     BackendParameters   backendParameters;
     Backend*            backend = nullptr;
+    set<string>         compileVersion;
 
     uint32_t reserveRegisterRC(ByteCode* bc);
     void     freeRegisterRC(uint32_t reg);

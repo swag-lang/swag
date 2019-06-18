@@ -14,6 +14,8 @@ void LanguageSpec::setup()
     keywords["#file"]     = TokenId::CompilerFile;
     keywords["#line"]     = TokenId::CompilerLine;
     keywords["#import"]   = TokenId::CompilerImport;
+    keywords["#version"]  = TokenId::CompilerVersion;
+    keywords["#else"]     = TokenId::CompilerElse;
 
     keywords["@print"]  = TokenId::Intrisic;
     keywords["@assert"] = TokenId::Intrisic;

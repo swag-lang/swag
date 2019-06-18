@@ -64,6 +64,8 @@ enum class TokenId
     CompilerFile,
     CompilerLine,
 	CompilerImport,
+	CompilerVersion,
+	CompilerElse,
 
     Intrisic,
 
