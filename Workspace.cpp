@@ -133,6 +133,24 @@ void Workspace::addRuntime()
 void Workspace::enumerateModules()
 {
     cachePath = "f:/temp/";
+
+	// Clean cache
+    if (g_CommandLine.unittest || g_CommandLine.cleanCache)
+    {
+		if (fs::exists(cachePath))
+			fs::remove_all(cachePath);
+    }
+
+	// Be sure the cache folder exists
+    if (!fs::exists(cachePath))
+    {
+        if (!fs::create_directory(cachePath))
+        {
+            g_Log.error(format("fatal error: can't create cache directory '%s'", cachePath.c_str()));
+            exit(-1);
+        }
+    }
+
     enumerateFilesInModule("f:/swag/unittest");
 }
 

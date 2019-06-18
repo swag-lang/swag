@@ -15,6 +15,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test);
     addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
+	addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanCache);
 
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);

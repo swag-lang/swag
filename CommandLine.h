@@ -12,6 +12,7 @@ struct CommandLine
     bool errorNoteOut     = true;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
+    bool cleanCache       = true;
 
     bool verbose                 = false;
     bool verbose_unittest_errors = false;
