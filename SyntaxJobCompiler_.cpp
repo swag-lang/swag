@@ -5,12 +5,10 @@
 #include "Workspace.h"
 #include "Module.h"
 #include "SourceFile.h"
-#include "Scope.h"
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "Scoped.h"
 #include "SymTable.h"
-#include "TypeInfo.h"
 #include "Attribute.h"
 #include "TypeManager.h"
 
