@@ -170,7 +170,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
             if (!fs::exists(path))
             {
                 auto sourceFile = module->files[node->sourceFileIdx];
-                sourceFile->report({sourceFile, node->childs.front(), format("could not find module export file '%s'", path.c_str())});
+                sourceFile->report({sourceFile, node, format("could not find module export file '%s'", path.c_str())});
                 continue;
             }
 
