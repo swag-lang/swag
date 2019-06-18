@@ -1,5 +1,5 @@
 #unittest module module271a;
-#import "module271b";
+#import module271b;
 
 #[swag.test]
 func main: ()

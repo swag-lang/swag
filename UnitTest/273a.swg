@@ -1,5 +1,5 @@
 #unittest module module273a;
-#import "module273b";
+#import module273b;
 
 //#[swag.test, swag.printbytecode]
 #[swag.test]

@@ -51,6 +51,8 @@ bool SyntaxJob::doCompilerVersion(AstNode* parent)
     node->token = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
+
+    // Test a specific version
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(eatToken(TokenId::SymLeftParen));
@@ -72,11 +74,15 @@ bool SyntaxJob::doCompilerVersion(AstNode* parent)
         else if (node->elseBlock)
             Ast::addChild(node, node->elseBlock);
     }
-    else if (token.id == TokenId::SymEqual)
+
+    // Change current version, for the current file
+    else if (token.id == TokenId::SymPlusEqual)
     {
         SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#version can only be defined in the top level scope"}));
+        SWAG_CHECK(tokenizer.getToken(token));
         AstNode* identifier;
         SWAG_CHECK(doIdentifierRef(nullptr, &identifier));
+        auto version = identifier->childs.back()->name;
         SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     }
 
@@ -241,12 +247,12 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     node->inheritOwners(this);
     node->inheritToken(token);
 
-    AstNode* moduleName;
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doLiteral(nullptr, &moduleName));
-    SWAG_VERIFY(moduleName->token.literalType == g_TypeMgr.typeInfoString, sourceFile->report({sourceFile, moduleName, "#import must be followed by a module name"}));
-    node->name              = moduleName->token.text;
-    node->token.endLocation = token.endLocation;
+    AstNode* identifier;
+    SWAG_CHECK(doIdentifierRef(nullptr, &identifier));
+    auto moduleName         = identifier->childs.back()->name;
+    node->name              = moduleName;
+    node->token.endLocation = identifier->childs.back()->token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
     sourceFile->module->addDependency(node);

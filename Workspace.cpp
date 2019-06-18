@@ -53,8 +53,8 @@ Module* Workspace::createOrUseModule(const fs::path& path)
 void Workspace::enumerateFilesInModule(const fs::path& path)
 {
     // Create a default module
-    auto module = createOrUseModule(path);
-	module->compileVersion = g_CommandLine.compileVersion;
+    auto module            = createOrUseModule(path);
+    module->compileVersion = g_CommandLine.compileVersion;
 
     // Scan source folder
     WIN32_FIND_DATAA findfile;
@@ -135,14 +135,14 @@ void Workspace::enumerateModules()
 {
     cachePath = "f:/temp/";
 
-	// Clean cache
+    // Clean cache
     if (g_CommandLine.unittest || g_CommandLine.cleanCache)
     {
-		if (fs::exists(cachePath))
-			fs::remove_all(cachePath);
+        if (fs::exists(cachePath))
+            fs::remove_all(cachePath);
     }
 
-	// Be sure the cache folder exists
+    // Be sure the cache folder exists
     if (!fs::exists(cachePath))
     {
         if (!fs::create_directory(cachePath))
@@ -294,8 +294,10 @@ bool Workspace::build()
             for (auto depName : module->moduleDependenciesNames)
             {
                 auto it = mapModulesNames.find(depName);
-                if (it->second->numErrors)
+                if (it != mapModulesNames.end() && it->second->numErrors)
+                {
                     hasErrors = true;
+                }
                 if (it != mapModulesNames.end() && !it->second->hasBeenBuilt)
                 {
                     canBuild = false;

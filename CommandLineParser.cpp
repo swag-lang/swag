@@ -23,7 +23,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
     //cmdLine->runBackendTests = false;
-    cmdLine->fileFilter = "277";
+    //cmdLine->fileFilter = "278";
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param)
