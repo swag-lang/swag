@@ -37,6 +37,8 @@ struct TypeManager
     static TypeInfo* flattenType(TypeInfo* typeInfo);
     static TypeInfo* concreteType(TypeInfo* typeInfo);
 
+    TypeInfo* registerType(TypeInfo* typeInfo);
+
     TypeInfoNative* typeInfoS8;
     TypeInfoNative* typeInfoS16;
     TypeInfoNative* typeInfoS32;
@@ -52,6 +54,9 @@ struct TypeManager
     TypeInfoNative* typeInfoString;
     TypeInfoNative* typeInfoVoid;
     TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
+
+    SpinLock          mutexTypes;
+    vector<TypeInfo*> allTypes;
 };
 
 extern TypeManager g_TypeMgr;

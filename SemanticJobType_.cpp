@@ -1,22 +1,31 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Global.h"
-#include "TypeInfo.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "SymTable.h"
 #include "Scope.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
+#include "Ast.h"
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
-    auto node = context->node;
+    auto node = CastAst<AstType>(context->node, AstNodeKind::Type);
 
     if (node->token.literalType)
     {
-        node->typeInfo  = node->token.literalType;
-        context->result = SemanticResult::Done;
+        if (node->ptrCount)
+        {
+            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            ptrType->ptrCount    = node->ptrCount;
+            ptrType->pointedType = node->token.literalType;
+            ptrType->sizeOf      = sizeof(void*);
+            ptrType->name        = "*" + node->token.literalType->name;
+            node->typeInfo       = g_TypeMgr.registerType(ptrType);
+        }
+        else
+            node->typeInfo = node->token.literalType;
         return true;
     }
 
@@ -41,7 +50,6 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         }
     }
 
-    context->result = SemanticResult::Done;
     return true;
 }
 
@@ -54,7 +62,6 @@ bool SemanticJob::resolveTypeDecl(SemanticContext* context)
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Type));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Type));
 
-    context->result = SemanticResult::Done;
     return true;
 }
 

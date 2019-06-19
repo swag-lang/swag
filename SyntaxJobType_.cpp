@@ -34,11 +34,19 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Type, sourceFile->indexInModule, parent);
+    auto node = Ast::newNode(&g_Pool_astType, AstNodeKind::Type, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveTypeExpression;
     if (result)
         *result = node;
+
+	// Pointers
+    node->ptrCount = 0;
+    while (token.id == TokenId::SymAsterisk)
+    {
+        node->ptrCount++;
+        SWAG_CHECK(tokenizer.getToken(token));
+    }
 
     if (token.id == TokenId::NativeType)
     {

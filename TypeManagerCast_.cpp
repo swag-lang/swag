@@ -741,6 +741,8 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
         fromType = TypeManager::flattenType(fromType);
     }
 
+	assert(toType && fromType);
+
     if (toType->kind == TypeInfoKind::FuncAttr)
         toType = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::FuncAttr)->returnType;
     if (fromType->kind == TypeInfoKind::FuncAttr)

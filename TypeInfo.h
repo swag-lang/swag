@@ -17,6 +17,7 @@ enum class TypeInfoKind
     EnumValue,
     FuncAttr,
     FuncAttrParam,
+    Pointer,
 };
 
 enum class NativeType
@@ -154,8 +155,30 @@ struct TypeInfoFuncAttr : public TypeInfo
     Intrisic                       intrinsic;
 };
 
+struct TypeInfoPointer : public TypeInfo
+{
+    TypeInfoPointer()
+    {
+        kind = TypeInfoKind::Pointer;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (kind != from->kind)
+            return false;
+        auto castedFrom = static_cast<TypeInfoPointer*>(from);
+        if (ptrCount != castedFrom->ptrCount)
+            return false;
+        return pointedType->isSame(castedFrom->pointedType);
+    }
+
+    TypeInfo* pointedType;
+    int       ptrCount;
+};
+
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
 extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
 extern Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
+extern Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;

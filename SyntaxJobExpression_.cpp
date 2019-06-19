@@ -69,6 +69,24 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
+{
+    if (token.id == TokenId::SymAmpersand)
+    {
+        auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule, parent);
+        node->inheritOwnersAndFlags(this);
+        node->inheritToken(token);
+        node->semanticFct = &SemanticJob::resolveMakePointer;
+        if (result)
+            *result = node;
+        parent = node;
+        result = nullptr;
+        SWAG_CHECK(tokenizer.getToken(token));
+    }
+
+    return doSinglePrimaryExpression(parent, result);
+}
+
 bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
 {
     // Cast
@@ -91,10 +109,10 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
         if (result)
             *result = node;
         SWAG_CHECK(tokenizer.getToken(token));
-        return doSinglePrimaryExpression(node);
+        return doPrimaryExpression(node);
     }
 
-    return doSinglePrimaryExpression(parent, result);
+    return doPrimaryExpression(parent, result);
 }
 
 bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)

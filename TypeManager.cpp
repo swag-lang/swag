@@ -152,3 +152,19 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo)
 
     return typeInfo;
 }
+
+TypeInfo* TypeManager::registerType(TypeInfo* newTypeInfo)
+{
+    scoped_lock lk(mutexTypes);
+    for (auto typeInfo : allTypes)
+    {
+        if (typeInfo->isSame(newTypeInfo))
+        {
+            newTypeInfo->release();
+            return typeInfo;
+        }
+    }
+
+    allTypes.push_back(newTypeInfo);
+    return newTypeInfo;
+}
