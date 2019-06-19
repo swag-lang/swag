@@ -741,7 +741,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
         fromType = TypeManager::flattenType(fromType);
     }
 
-	assert(toType && fromType);
+    assert(toType && fromType);
 
     if (toType->kind == TypeInfoKind::FuncAttr)
         toType = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::FuncAttr)->returnType;
@@ -752,6 +752,10 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
         return true;
     if (fromType->isSame(toType))
         return true;
+
+	// Pointer to pointer, with a user cast
+    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer && (castFlags & CASTFLAG_FORCE))
+		return true;
 
     if (toType->kind == TypeInfoKind::Native)
     {
