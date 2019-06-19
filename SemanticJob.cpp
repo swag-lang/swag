@@ -44,6 +44,8 @@ JobResult SemanticJob::execute()
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
                     auto child = node->childs[i];
+                    if (child->isDisabled())
+                        continue;
 
                     // Top to bottom inheritance
                     if (node->kind == AstNodeKind::Statement)
