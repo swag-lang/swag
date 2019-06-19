@@ -249,7 +249,8 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     node->token.endLocation = identifier->childs.back()->token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
-    sourceFile->module->addDependency(node);
+	if (!isContextDisabled())
+		sourceFile->module->addDependency(node);
 
     return true;
 }

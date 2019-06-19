@@ -1,8 +1,15 @@
 #unittest module module272a;
-#import module272b;
-
-#[swag.test]
-func main: ()
+#version(FastTest)
 {
-	module272b.other();
+	#unittest pass semantic;
+}
+#else
+{
+	#import module272b;
+
+	#[swag.test]
+	func main: ()
+	{
+		module272b.other();
+	}
 }

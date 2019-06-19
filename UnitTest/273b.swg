@@ -1,9 +1,16 @@
 #unittest module module273b;
-#unittest backend dll;
-using swag;
-
-#[public]
-func other: ()
+#version(FastTest)
 {
-	//@print("toto");
+	#unittest pass semantic;
+}
+#else
+{
+	#unittest backend dll;
+	using swag;
+
+	#[public]
+	func other: ()
+	{
+		//@print("toto");
+	}
 }

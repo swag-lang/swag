@@ -1,22 +1,28 @@
 #unittest module module262;
-//#unittest pass backend;
-using swag;
-
-//#[printbytecode]
-func fact: (v: s32)->s32 
-{ 
-	if(v == 1)
-		return 1;
-	var res = v * fact(v - 1); 
-	return res;
-}
-
-#[test]
-func main: ()
+#version(FastTest)
 {
-	@assert(fact(5) == 120);
-	@assert(fact(4) == 24);
-	@assert(fact(3) == 6);
-	@assert(fact(2) == 2);
-	@assert(fact(1) == 1);
+	#unittest pass backend;
+}
+#else
+{
+	using swag;
+
+	//#[printbytecode]
+	func fact: (v: s32)->s32 
+	{ 
+		if(v == 1)
+			return 1;
+		var res = v * fact(v - 1); 
+		return res;
+	}
+
+	#[test]
+	func main: ()
+	{
+		@assert(fact(5) == 120);
+		@assert(fact(4) == 24);
+		@assert(fact(3) == 6);
+		@assert(fact(2) == 2);
+		@assert(fact(1) == 1);
+	}
 }

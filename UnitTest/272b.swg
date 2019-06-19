@@ -1,8 +1,15 @@
 #unittest module module272b;
-#unittest backend dll;
-
-#[swag.public]
-func other: ()
+#version(FastTest)
 {
-	//@print("::::::::::::::::::::::::::::::::::");
+	#unittest pass semantic;
+}
+#else
+{
+	#unittest backend dll;
+
+	#[swag.public]
+	func other: ()
+	{
+		//@print("::::::::::::::::::::::::::::::::::");
+	}
 }
