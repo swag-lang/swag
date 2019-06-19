@@ -119,7 +119,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 
-    // #run content is the function body
+    // run content is the function body
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
@@ -128,6 +128,28 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
 
     // Generate a call
     Ast::createIdentifierRef(this, funcNode->name, runNode->token, runNode);
+    return true;
+}
+
+bool SyntaxJob::doCompilerModule()
+{
+    if (!isContextDisabled())
+    {
+        SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#module can only be specified once"}));
+        SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#module instruction must be done before any code"}));
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
+        moduleSpecified = true;
+
+        auto newModule = g_Workspace.createOrUseModule(token.text);
+        newModule->compileVersion.insert(sourceFile->module->compileVersion.begin(), sourceFile->module->compileVersion.end());
+        sourceFile->module->removeFile(sourceFile);
+        newModule->addFile(sourceFile);
+        currentScope = newModule->scopeRoot;
+    }
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
     return true;
 }
 
@@ -199,26 +221,8 @@ bool SyntaxJob::doCompilerUnitTest()
             return false;
         }
 
-		if (!isContextDisabled())
-			sourceFile->module->setBuildPass(sourceFile->buildPass);
-    }
-
-    // MODULE
-    else if (token.text == "module")
-    {
-        SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#unittest module can only be specified once"}));
-        SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#unittest module instruction must be done before any code"}));
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
-        moduleSpecified = true;
-        if (g_CommandLine.unittest)
-        {
-            auto newModule = g_Workspace.createOrUseModule(token.text);
-            newModule->compileVersion.insert(sourceFile->module->compileVersion.begin(), sourceFile->module->compileVersion.end());
-            sourceFile->module->removeFile(sourceFile);
-            newModule->addFile(sourceFile);
-            currentScope = newModule->scopeRoot;
-        }
+        if (!isContextDisabled())
+            sourceFile->module->setBuildPass(sourceFile->buildPass);
     }
 
     // ???
@@ -249,8 +253,8 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     node->token.endLocation = identifier->childs.back()->token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
 
-	if (!isContextDisabled())
-		sourceFile->module->addDependency(node);
+    if (!isContextDisabled())
+        sourceFile->module->addDependency(node);
 
     return true;
 }

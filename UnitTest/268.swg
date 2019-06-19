@@ -1,3 +1,3 @@
-#unittest module module268;
+#module module268;
 #unittest error;
 #import module267;

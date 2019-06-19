@@ -1,4 +1,4 @@
-﻿#unittest module module66;
+﻿#module module66;
 #unittest pass semantic;
 
 #assert (1 + 2) * 4 == 12;

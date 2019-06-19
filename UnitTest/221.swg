@@ -1,4 +1,4 @@
-#unittest module module221;
+#module module221;
 #unittest pass semantic;
 
 var v = 50;

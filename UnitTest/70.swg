@@ -1,2 +1,2 @@
-﻿#unittest module module70;
+﻿#module module70;
 #unittest pass semantic;

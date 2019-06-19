@@ -1,4 +1,4 @@
-#unittest module module273b;
+#module module273b;
 #version(FastTest)
 {
 	#unittest pass semantic;

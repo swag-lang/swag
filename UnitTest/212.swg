@@ -1,4 +1,4 @@
-#unittest module module212;
+#module module212;
 #unittest pass syntax;
 
 #run

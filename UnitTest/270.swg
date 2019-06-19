@@ -1,4 +1,4 @@
-#unittest module module270;
+#module module270;
 #unittest error;
 
 #[swag.publ ic]

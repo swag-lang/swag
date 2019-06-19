@@ -1,4 +1,4 @@
-#unittest module module269;
+#module module269;
 #unittest error;
 
 #[swag.foreign]

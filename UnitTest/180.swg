@@ -1,4 +1,4 @@
-#unittest module module180;
+#module module180;
 #unittest pass syntax;
 
 #assert 1 | 2 == 30;

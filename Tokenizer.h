@@ -57,6 +57,7 @@ enum class TokenId
     SymBackSlash,
     SymAttrStart,
 
+	CompilerModule,
     CompilerUnitTest,
     CompilerAssert,
     CompilerPrint,

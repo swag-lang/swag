@@ -103,8 +103,8 @@ JobResult SyntaxJob::execute()
         if (!ok)
         {
             // If there's an error, then we must stop at syntax pass
-			sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
-			sourceFile->module->setBuildPass(sourceFile->buildPass);
+            sourceFile->buildPass = min(sourceFile->buildPass, BuildPass::Syntax);
+            sourceFile->module->setBuildPass(sourceFile->buildPass);
             if (!recoverError())
                 return JobResult::ReleaseJob;
             result = false;
@@ -115,9 +115,13 @@ JobResult SyntaxJob::execute()
             break;
 
         // Top level
-        if (token.id == TokenId::CompilerUnitTest)
+        switch (token.id)
         {
+        case TokenId::CompilerUnitTest:
             ok = doCompilerUnitTest();
+            continue;
+        case TokenId::CompilerModule:
+            ok = doCompilerModule();
             continue;
         }
 

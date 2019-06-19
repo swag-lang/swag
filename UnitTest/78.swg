@@ -1,4 +1,4 @@
-﻿#unittest module module78;
+﻿#module module78;
 #unittest pass semantic;
 
 type str: string;

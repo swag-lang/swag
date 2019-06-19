@@ -1,4 +1,4 @@
-#unittest module module207;
+#module module207;
 #unittest pass syntax;
 
 #unittest error

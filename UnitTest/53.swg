@@ -1,4 +1,4 @@
-﻿#unittest module module53;
+﻿#module module53;
 #unittest pass semantic;
 
 var a: u16 = 256;

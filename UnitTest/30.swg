@@ -1,3 +1,3 @@
 ﻿#unittest error;
-#unittest module
+#module
 toto

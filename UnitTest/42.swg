@@ -1,4 +1,4 @@
-﻿#unittest module module42;
+﻿#module module42;
 #unittest pass semantic;
 #unittest error;
 namespace toto

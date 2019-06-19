@@ -25,7 +25,7 @@
             <Keywords name="Folders in comment, middle"></Keywords>
             <Keywords name="Folders in comment, close"></Keywords>
             <Keywords name="Keywords1">func op enum return if else var while true false break continue let const namespace block as match extern using for tag struct impl repeat</Keywords>
-            <Keywords name="Keywords2">#assert #run #unittest #print #version #else #import package</Keywords>
+            <Keywords name="Keywords2">#assert #run #unittest #print #version #else #import #module</Keywords>
             <Keywords name="Keywords3">@file @line @assert @print</Keywords>
             <Keywords name="Keywords4">bool i8 i16 i32 i64 u8 u16 u32 u64 f32 f64 string char ref ptr null void Self</Keywords>
             <Keywords name="Keywords5">postcopy drop opequal</Keywords>

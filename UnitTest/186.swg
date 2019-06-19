@@ -1,4 +1,4 @@
-#unittest module module186;
+#module module186;
 #unittest pass semantic;
 
 #assert 0xFF << 4 == 0xFF0;

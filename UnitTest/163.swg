@@ -1,4 +1,4 @@
-#unittest module module163;
+#module module163;
 #unittest pass semantic;
 
 using A.B;

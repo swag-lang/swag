@@ -43,6 +43,7 @@ struct SyntaxJob : public Job
     bool doCompilerVersion(AstNode* parent);
     bool doCompilerRunDecl(AstNode* parent);
     bool doCompilerUnitTest();
+    bool doCompilerModule();
     bool doCompilerImport(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);

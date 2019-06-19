@@ -1,4 +1,4 @@
-﻿#unittest module module77;
+﻿#module module77;
 #unittest pass semantic;
 
 type a: u32;

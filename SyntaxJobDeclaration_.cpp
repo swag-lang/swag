@@ -251,6 +251,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::CompilerUnitTest:
         SWAG_CHECK(doCompilerUnitTest());
         break;
+    case TokenId::CompilerModule:
+        SWAG_CHECK(doCompilerModule());
+        break;
     case TokenId::CompilerAssert:
         SWAG_CHECK(doCompilerAssert(parent));
         break;

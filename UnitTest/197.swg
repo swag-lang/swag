@@ -1,4 +1,4 @@
-#unittest module module197;
+#module module197;
 #unittest pass semantic;
 
 #assert cast(s8) cast(u8) 45  == 45;

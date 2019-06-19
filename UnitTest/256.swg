@@ -1,4 +1,4 @@
-#unittest module module256;
+#module module256;
 #unittest pass backend;
 using swag;
 

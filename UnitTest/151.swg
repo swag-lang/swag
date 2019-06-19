@@ -1,4 +1,4 @@
-#unittest module module151;
+#module module151;
 #unittest pass syntax;
 
 func main: () { return 1; }

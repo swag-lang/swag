@@ -1,4 +1,4 @@
-#unittest module module129;
+#module module129;
 #unittest pass semantic;
 
 attr toto: () -> var;

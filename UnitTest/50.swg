@@ -1,4 +1,4 @@
-﻿#unittest module module50;
+﻿#module module50;
 #unittest pass semantic;
 
 var x: s8 = 1's8;

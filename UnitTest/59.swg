@@ -1,4 +1,4 @@
-﻿#unittest module module59;
+﻿#module module59;
 #unittest pass semantic;
 
 var a: bool = true && true;
