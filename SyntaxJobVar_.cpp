@@ -40,7 +40,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     }
 
     currentScope->allocateSymTable();
-    SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+    if (!isContextDisabled())
+        SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
 
     return true;
 }

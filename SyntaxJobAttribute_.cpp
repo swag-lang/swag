@@ -59,7 +59,8 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     currentScope->allocateSymTable();
     {
         scoped_lock lk(currentScope->symTable->mutex);
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode, SymbolKind::Attribute);
+        if (!isContextDisabled())
+            currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode, SymbolKind::Attribute);
     }
 
     return true;

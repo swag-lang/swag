@@ -33,7 +33,8 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             typeInfo->name     = enumNode->name;
             typeInfo->scope    = newScope;
             enumNode->typeInfo = typeInfo;
-            currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode, SymbolKind::Enum);
+            if (!isContextDisabled())
+                currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode, SymbolKind::Enum);
         }
         else
         {
@@ -69,7 +70,8 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         enumValue->inheritOwnersAndFlags(this);
         enumValue->semanticFct = &SemanticJob::resolveEnumValue;
         Ast::assignToken(enumValue, token);
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue, SymbolKind::EnumValue);
+        if (!isContextDisabled())
+            currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue, SymbolKind::EnumValue);
 
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.id == TokenId::SymEqual)

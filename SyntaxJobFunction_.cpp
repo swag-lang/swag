@@ -92,7 +92,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         typeInfo->name      = funcNode->name;
         typeInfo->intrinsic = isIntrinsic ? token.intrisic : Intrisic::None;
         funcNode->typeInfo  = typeInfo;
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+        if (!isContextDisabled())
+			currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 
     // Parameters
