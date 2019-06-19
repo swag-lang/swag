@@ -3,6 +3,8 @@
 #include "Diagnostic.h"
 #include "TypeInfo.h"
 #include "TypeManager.h"
+#include "Global.h"
+#include "SourceFile.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -16,8 +18,12 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {
-    auto node     = context->node;
-    auto typeInfo = node->childs.front()->typeInfo;
+    auto node       = context->node;
+    auto child      = node->childs.front();
+    auto typeInfo   = child->typeInfo;
+    auto sourceFile = context->sourceFile;
+
+    SWAG_VERIFY(child->kind == AstNodeKind::IdentifierRef, sourceFile->report({sourceFile, child, "invalid address expression"}));
 
     auto ptrType         = g_Pool_typeInfoPointer.alloc();
     ptrType->ptrCount    = 1;
