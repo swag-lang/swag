@@ -313,8 +313,11 @@ Utf8 SourceFile::getLine(long seek)
                 line += " ";
             }
         }
-        else
-            line += c;
+		else
+		{
+			line += c;
+			column++;
+		}
     }
 
     directMode = false;
