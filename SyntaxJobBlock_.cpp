@@ -12,7 +12,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(&g_Pool_astIf, AstNodeKind::If, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveIf;
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
@@ -36,7 +36,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(&g_Pool_astWhile, AstNodeKind::While, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveWhile;
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
@@ -58,7 +58,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 
     auto node         = Ast::newNode(&g_Pool_astBreakContinue, AstNodeKind::Break, sourceFile->indexInModule, parent);
     node->byteCodeFct = &ByteCodeGenJob::emitBreak;
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
@@ -76,7 +76,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 
     auto node         = Ast::newNode(&g_Pool_astBreakContinue, AstNodeKind::Continue, sourceFile->indexInModule, parent);
     node->byteCodeFct = &ByteCodeGenJob::emitContinue;
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;

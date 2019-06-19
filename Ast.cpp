@@ -84,13 +84,13 @@ namespace Ast
         auto sourceFile    = job->sourceFile;
         auto idRef         = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
         idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
-        idRef->inheritOwners(job);
+        idRef->inheritOwnersAndFlags(job);
         idRef->name  = name;
         idRef->token = token;
 
         auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
         id->semanticFct = &SemanticJob::resolveIdentifier;
-        id->inheritOwners(job);
+        id->inheritOwnersAndFlags(job);
         id->name  = name;
         id->token = token;
 

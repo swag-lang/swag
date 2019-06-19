@@ -10,7 +10,7 @@
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
     auto attrNode = Ast::newNode(&g_Pool_astAttrDecl, AstNodeKind::AttrDecl, sourceFile->indexInModule, parent);
-    attrNode->inheritOwners(this);
+    attrNode->inheritOwnersAndFlags(this);
     attrNode->semanticFct = &SemanticJob::resolveAttrDecl;
     if (result)
         *result = attrNode;
@@ -68,7 +68,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 {
     auto attrBlockNode = Ast::newNode(&g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile->indexInModule, parent);
-    attrBlockNode->inheritOwners(this);
+    attrBlockNode->inheritOwnersAndFlags(this);
     attrBlockNode->semanticFct = &SemanticJob::resolveAttrUse;
     if (result)
         *result = attrBlockNode;

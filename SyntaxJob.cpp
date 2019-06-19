@@ -90,7 +90,7 @@ JobResult SyntaxJob::execute()
 
     // Setup root ast for file
     sourceFile->astRoot = Ast::newNode(&g_Pool_astNode, AstNodeKind::File, sourceFile->indexInModule, sourceFile->module->astRoot);
-    sourceFile->astRoot->inheritOwners(this);
+    sourceFile->astRoot->inheritOwnersAndFlags(this);
 
     // Setup current scope as being the module root one
     currentScope = sourceFile->module->scopeRoot;

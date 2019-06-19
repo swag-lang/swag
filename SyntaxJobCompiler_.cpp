@@ -17,7 +17,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
 
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent);
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
@@ -33,7 +33,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
 
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent);
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
@@ -47,44 +47,37 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 bool SyntaxJob::doCompilerVersion(AstNode* parent)
 {
     auto node = Ast::newNode(&g_Pool_astIf, AstNodeKind::CompilerVersion, sourceFile->indexInModule, parent);
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->token = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(doIdentifierRef(nullptr, &node->boolExpression));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
 
-    // Test a specific version
-    if (token.id == TokenId::SymLeftParen)
+    auto version          = node->boolExpression->childs.back()->name;
+    bool versionValidated = sourceFile->module->compileVersion.find(version) != sourceFile->module->compileVersion.end();
+
+    uint64_t ifFlags = versionValidated ? 0 : AST_DISABLED;
     {
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-        SWAG_CHECK(doIdentifierRef(nullptr, &node->boolExpression));
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
-
-        auto version          = node->boolExpression->childs.back()->name;
-        bool versionValidated = sourceFile->module->compileVersion.find(version) != sourceFile->module->compileVersion.end();
-
+        ScopedFlags scopedFlags(this, ifFlags);
         SWAG_CHECK(doStatement(nullptr, &node->ifBlock));
-        if (token.id == TokenId::CompilerElse)
+    }
+
+    if (token.id == TokenId::CompilerElse)
+    {
+        uint64_t elseFlags = versionValidated ? AST_DISABLED : 0;
+        SWAG_CHECK(tokenizer.getToken(token));
         {
-            SWAG_CHECK(tokenizer.getToken(token));
+            ScopedFlags scopedFlags(this, elseFlags);
             SWAG_CHECK(doStatement(nullptr, &node->elseBlock));
         }
-
-        if (versionValidated)
-            Ast::addChild(node, node->ifBlock);
-        else if (node->elseBlock)
-            Ast::addChild(node, node->elseBlock);
     }
 
-    // Change current version, for the current file
-    else if (token.id == TokenId::SymPlusEqual)
-    {
-        SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#version can only be defined in the top level scope"}));
-        SWAG_CHECK(tokenizer.getToken(token));
-        AstNode* identifier;
-        SWAG_CHECK(doIdentifierRef(nullptr, &identifier));
-        auto version = identifier->childs.back()->name;
-        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
-    }
+    if (versionValidated)
+        Ast::addChild(node, node->ifBlock);
+    else if (node->elseBlock)
+        Ast::addChild(node, node->elseBlock);
 
     return true;
 }
@@ -94,7 +87,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
 
     auto runNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent);
-    runNode->inheritOwners(this);
+    runNode->inheritOwnersAndFlags(this);
     runNode->semanticFct = &SemanticJob::resolveCompilerRun;
     runNode->token       = move(token);
 
@@ -104,12 +97,12 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
 
     // Generated function
     auto funcNode = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
-    funcNode->inheritOwners(this);
+    funcNode->inheritOwnersAndFlags(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
 
     auto typeNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
-    typeNode->inheritOwners(this);
+    typeNode->inheritOwnersAndFlags(this);
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
 
     // Register function name
@@ -182,22 +175,22 @@ bool SyntaxJob::doCompilerUnitTest()
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lexer")
         {
-            if (g_CommandLine.unittest)
+            if (g_CommandLine.unittest && !isContextDisabled())
                 sourceFile->buildPass = BuildPass::Lexer;
         }
         else if (token.text == "syntax")
         {
-            if (g_CommandLine.unittest)
+            if (g_CommandLine.unittest && !isContextDisabled())
                 sourceFile->buildPass = BuildPass::Syntax;
         }
         else if (token.text == "semantic")
         {
-            if (g_CommandLine.unittest)
+            if (g_CommandLine.unittest && !isContextDisabled())
                 sourceFile->buildPass = BuildPass::Semantic;
         }
         else if (token.text == "backend")
         {
-            if (g_CommandLine.unittest)
+            if (g_CommandLine.unittest && !isContextDisabled())
                 sourceFile->buildPass = BuildPass::Backend;
         }
         else
@@ -206,7 +199,8 @@ bool SyntaxJob::doCompilerUnitTest()
             return false;
         }
 
-        sourceFile->module->setBuildPass(sourceFile->buildPass);
+		if (!isContextDisabled())
+			sourceFile->module->setBuildPass(sourceFile->buildPass);
     }
 
     // MODULE
@@ -244,7 +238,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
 
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
 
     SWAG_CHECK(tokenizer.getToken(token));

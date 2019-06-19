@@ -9,25 +9,25 @@
 
 bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
 {
-	if (token.id != TokenId::Identifier && token.id != TokenId::Intrisic)
-		return sourceFile->report({ sourceFile, token, format("invalid identifier '%s'", token.text.c_str()) });
+    if (token.id != TokenId::Identifier && token.id != TokenId::Intrisic)
+        return sourceFile->report({sourceFile, token, format("invalid identifier '%s'", token.text.c_str())});
 
     // An identifier that starts with '__' is reserved for internal usage !
     if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
         return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
 
     auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent);
-    identifier->inheritOwners(this);
+    identifier->inheritOwnersAndFlags(this);
+    identifier->flags |= flags;
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
     identifier->inheritToken(token);
-    identifier->flags = flags;
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymLeftParen)
     {
         auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, identifier);
-        callParams->inheritOwners(this);
+        callParams->inheritOwnersAndFlags(this);
         identifier->callParameters = callParams;
         callParams->semanticFct    = &SemanticJob::resolveFuncCallParams;
         callParams->token          = move(token);
@@ -38,7 +38,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
             while (true)
             {
                 auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
-                param->inheritOwners(this);
+                param->inheritOwnersAndFlags(this);
                 param->semanticFct = &SemanticJob::resolveFuncCallParam;
                 param->token       = token;
                 SWAG_CHECK(doExpression(param));
@@ -57,10 +57,10 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint64_t flags)
 {
     auto identifierRef = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
-    identifierRef->inheritOwners(this);
+    identifierRef->inheritOwnersAndFlags(this);
+    identifierRef->flags |= flags;
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     identifierRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
-    identifierRef->flags       = flags;
     if (result)
         *result = identifierRef;
 

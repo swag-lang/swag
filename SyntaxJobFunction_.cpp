@@ -12,7 +12,7 @@
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 {
     auto paramNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
-    paramNode->inheritOwners(this);
+    paramNode->inheritOwnersAndFlags(this);
     paramNode->semanticFct = &SemanticJob::resolveVarDecl;
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
@@ -45,7 +45,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     if (token.id != TokenId::SymRightParen)
     {
         auto allParamsNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
-        allParamsNode->inheritOwners(this);
+        allParamsNode->inheritOwnersAndFlags(this);
         allParamsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
         allParamsNode->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
         allParamsNode->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
@@ -70,7 +70,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 {
     auto funcNode = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
-    funcNode->inheritOwners(this);
+    funcNode->inheritOwnersAndFlags(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
@@ -106,7 +106,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
     // Return type
     auto typeNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
-    typeNode->inheritOwners(this);
+    typeNode->inheritOwnersAndFlags(this);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)
@@ -135,7 +135,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, parent);
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveReturn;
     node->byteCodeFct = &ByteCodeGenJob::emitReturn;
     if (result)

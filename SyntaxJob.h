@@ -1,6 +1,7 @@
 #pragma once
 #include "Tokenizer.h"
 #include "Job.h"
+#include "AstFlags.h"
 struct SourceFile;
 struct AstVarDecl;
 struct AstNode;
@@ -20,8 +21,14 @@ struct SyntaxJob : public Job
         currentScope     = nullptr;
         currentBreakable = nullptr;
         currentFct       = nullptr;
+        currentFlags     = 0;
         canChangeModule  = true;
         moduleSpecified  = false;
+    }
+
+    bool isContextDisabled() const
+    {
+        return currentFlags & AST_DISABLED;
     }
 
     bool error(const Token& tk, const Utf8& msg);
@@ -33,10 +40,10 @@ struct SyntaxJob : public Job
 
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
-	bool doCompilerVersion(AstNode* parent);
+    bool doCompilerVersion(AstNode* parent);
     bool doCompilerRunDecl(AstNode* parent);
     bool doCompilerUnitTest();
-	bool doCompilerImport(AstNode* parent);
+    bool doCompilerImport(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
@@ -61,7 +68,7 @@ struct SyntaxJob : public Job
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);
-	bool doStatement(AstNode* parent, AstNode** result = nullptr);
+    bool doStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
@@ -78,6 +85,7 @@ struct SyntaxJob : public Job
     SourceFile* sourceFile = nullptr;
     bool        canChangeModule;
     bool        moduleSpecified;
+    uint64_t    currentFlags;
 
     Scope*        currentScope;
     AstFuncDecl*  currentFct;

@@ -4,11 +4,12 @@
 #include "Ast.h"
 #include "ByteCodeGenJob.h"
 #include "SemanticJob.h"
+#include "Scoped.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Literal, sourceFile->indexInModule, parent);
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveLiteral;
     node->byteCodeFct = &ByteCodeGenJob::emitLiteral;
     node->token       = move(token);
@@ -25,8 +26,10 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     {
     case TokenId::Identifier:
     case TokenId::Intrisic:
+    {
         SWAG_CHECK(doIdentifierRef(parent, result, AST_LEFT_EXPRESSION));
-        break;
+    }
+    break;
 
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
@@ -81,7 +84,7 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam || token.id == TokenId::SymTilde)
     {
         auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::SingleOp, sourceFile->indexInModule, parent);
-        node->inheritOwners(this);
+        node->inheritOwnersAndFlags(this);
         node->semanticFct = &SemanticJob::resolveUnaryOp;
         node->token       = move(token);
 
@@ -111,7 +114,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
            (token.id == TokenId::SymCircumflex))
     {
         auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent);
-        binaryNode->inheritOwners(this);
+        binaryNode->inheritOwnersAndFlags(this);
         if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
             binaryNode->semanticFct = &SemanticJob::resolveShiftExpression;
         else
@@ -147,7 +150,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
            (token.id == TokenId::SymGreater))
     {
         auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent);
-        binaryNode->inheritOwners(this);
+        binaryNode->inheritOwnersAndFlags(this);
         binaryNode->semanticFct = &SemanticJob::resolveCompareExpression;
         binaryNode->token       = move(token);
 
@@ -175,7 +178,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     while ((token.id == TokenId::SymVerticalVertical) || (token.id == TokenId::SymAmpersandAmpersand))
     {
         auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent);
-        binaryNode->inheritOwners(this);
+        binaryNode->inheritOwnersAndFlags(this);
         binaryNode->semanticFct = &SemanticJob::resolveBoolExpression;
         binaryNode->token       = move(token);
 
@@ -232,7 +235,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         token.id == TokenId::SymGreaterGreaterEqual)
     {
         auto affectNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::AffectOp, sourceFile->indexInModule, parent);
-        affectNode->inheritOwners(this);
+        affectNode->inheritOwnersAndFlags(this);
         affectNode->semanticFct = &SemanticJob::resolveAffect;
         affectNode->token       = move(token);
 

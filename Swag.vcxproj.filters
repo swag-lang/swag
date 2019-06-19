@@ -419,6 +419,9 @@
     <ClInclude Include="Backend.h">
       <Filter>Backend</Filter>
     </ClInclude>
+    <ClInclude Include="AstFlags.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

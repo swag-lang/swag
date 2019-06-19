@@ -163,6 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ast.h" />
+    <ClInclude Include="AstFlags.h" />
     <ClInclude Include="AstNode.h" />
     <ClInclude Include="Attribute.h" />
     <ClInclude Include="Backend.h" />

@@ -58,3 +58,21 @@ struct ScopedFct
     SyntaxJob*   savedJob;
     AstFuncDecl* savedFct;
 };
+
+struct ScopedFlags
+{
+    ScopedFlags(SyntaxJob* job, uint64_t newFlags)
+    {
+        savedJob          = job;
+        savedFlags        = job->currentFlags;
+        job->currentFlags = newFlags;
+    }
+
+    ~ScopedFlags()
+    {
+        savedJob->currentFlags = savedFlags;
+    }
+
+    SyntaxJob* savedJob;
+    uint64_t   savedFlags;
+};

@@ -13,7 +13,7 @@ bool SyntaxJob::doUsing(AstNode* parent)
 {
     auto node         = Ast::newNode(&g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveUsing;
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -35,7 +35,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     {
         namespaceNode              = Ast::newNode(&g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
         namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
-        namespaceNode->inheritOwners(this);
+        namespaceNode->inheritOwnersAndFlags(this);
 
         switch (token.id)
         {
@@ -108,7 +108,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
 bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent);
-    node->inheritOwners(this);
+    node->inheritOwnersAndFlags(this);
     if (result)
         *result = node;
 
@@ -163,7 +163,7 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
     if (isGlobal)
     {
         auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent);
-        node->inheritOwners(this);
+        node->inheritOwnersAndFlags(this);
         if (result)
             *result = node;
         return doTopLevelInstruction(node);
