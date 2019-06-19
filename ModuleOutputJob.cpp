@@ -13,6 +13,8 @@ JobResult ModuleOutputJob::execute()
     module->backend = new BackendC(module);
     if (!module->backend->generate())
         return JobResult::ReleaseJob;
+    if (module->buildPass < BuildPass::Full)
+        return JobResult::ReleaseJob;
 
     // Compile the official normal version
     auto compileJob               = g_Pool_moduleCompileJob.alloc();
