@@ -2,7 +2,6 @@
 #include "Global.h"
 #include "SourceFile.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
 #include "SemanticJob.h"
 #include "Scoped.h"
 
@@ -11,7 +10,6 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Literal, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveLiteral;
-    node->byteCodeFct = &ByteCodeGenJob::emitLiteral;
     node->token       = move(token);
 
     if (result)
@@ -71,20 +69,41 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
 {
+    AstNode* exprNode;
     if (token.id == TokenId::SymAmpersand)
     {
-        auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule, parent);
-        node->inheritOwnersAndFlags(this);
-        node->inheritToken(token);
-        node->semanticFct = &SemanticJob::resolveMakePointer;
-        if (result)
-            *result = node;
-        parent = node;
-        result = nullptr;
+        exprNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule);
+        exprNode->inheritOwnersAndFlags(this);
+        exprNode->inheritToken(token);
+        exprNode->semanticFct = &SemanticJob::resolveMakePointer;
         SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doIdentifierRef(exprNode));
+    }
+    else
+    {
+        SWAG_CHECK(doSinglePrimaryExpression(nullptr, &exprNode));
     }
 
-    return doSinglePrimaryExpression(parent, result);
+    while (token.id == TokenId::SymLeftSquare)
+    {
+        auto arrayNode = Ast::newNode(&g_Pool_astArrayAccess, AstNodeKind::ArrayAccess, sourceFile->indexInModule);
+        arrayNode->inheritOwnersAndFlags(this);
+        arrayNode->token = move(token);
+		arrayNode->semanticFct = &SemanticJob::resolveArrayAccess;
+        Ast::addChild(arrayNode, exprNode);
+        arrayNode->array = exprNode;
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
+        exprNode = arrayNode;
+        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+    }
+
+    if (parent)
+        Ast::addChild(parent, exprNode);
+
+    if (result)
+        *result = exprNode;
+    return true;
 }
 
 bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
@@ -139,7 +158,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
             binaryNode->semanticFct = &SemanticJob::resolveFactorExpression;
         binaryNode->token = move(token);
 
-        Ast::addChild(binaryNode, leftNode, false);
+        Ast::addChild(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doUnaryExpression(binaryNode));
         leftNode = binaryNode;
@@ -147,7 +166,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
     }
 
     if (!isBinary)
-        Ast::addChild(parent, leftNode, false);
+        Ast::addChild(parent, leftNode);
     if (result)
         *result = leftNode;
 
@@ -172,7 +191,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         binaryNode->semanticFct = &SemanticJob::resolveCompareExpression;
         binaryNode->token       = move(token);
 
-        Ast::addChild(binaryNode, leftNode, false);
+        Ast::addChild(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doFactorExpression(binaryNode));
         leftNode = binaryNode;
@@ -180,7 +199,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     }
 
     if (!isBinary)
-        Ast::addChild(parent, leftNode, false);
+        Ast::addChild(parent, leftNode);
     if (result)
         *result = leftNode;
 
@@ -200,7 +219,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
         binaryNode->semanticFct = &SemanticJob::resolveBoolExpression;
         binaryNode->token       = move(token);
 
-        Ast::addChild(binaryNode, leftNode, false);
+        Ast::addChild(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doCompareExpression(binaryNode));
         leftNode = binaryNode;
@@ -208,7 +227,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     }
 
     if (!isBinary)
-        Ast::addChild(parent, leftNode, false);
+        Ast::addChild(parent, leftNode);
     if (result)
         *result = leftNode;
 

@@ -64,9 +64,10 @@ enum class AstNodeKind
     Literal,
     Cast,
     SingleOp,
-	MakePointer,
+    MakePointer,
     BinaryOp,
     AffectOp,
+    ArrayAccess,
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
@@ -340,6 +341,19 @@ struct AstType : public AstNode
     int ptrCount;
 };
 
+struct AstArrayAccess : public AstNode
+{
+    void reset() override
+    {
+        AstNode::reset();
+        array  = nullptr;
+        access = nullptr;
+    }
+
+    AstNode* array;
+    AstNode* access;
+};
+
 extern Pool<AstNode>          g_Pool_astNode;
 extern Pool<AstAttrDecl>      g_Pool_astAttrDecl;
 extern Pool<AstAttrUse>       g_Pool_astAttrUse;
@@ -352,3 +366,4 @@ extern Pool<AstIf>            g_Pool_astIf;
 extern Pool<AstWhile>         g_Pool_astWhile;
 extern Pool<AstBreakContinue> g_Pool_astBreakContinue;
 extern Pool<AstType>          g_Pool_astType;
+extern Pool<AstArrayAccess>   g_Pool_astArrayAccess;

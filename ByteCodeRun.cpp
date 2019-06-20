@@ -449,6 +449,9 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::AffectOp64:
         *(uint64_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u64;
         break;
+    case ByteCodeOp::AffectOpPointer:
+        *(void**) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].pointer;
+        break;
 
     case ByteCodeOp::CompareOpEqualBool:
     {

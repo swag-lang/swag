@@ -5,10 +5,12 @@
 #include "TypeManager.h"
 #include "Global.h"
 #include "SourceFile.h"
+#include "ByteCodeGenJob.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
-    auto node = context->node;
+    auto node         = context->node;
+    node->byteCodeFct = &ByteCodeGenJob::emitLiteral;
     node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     node->typeInfo           = node->token.literalType;
     node->computedValue.reg  = node->token.literalValue;
@@ -24,6 +26,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto sourceFile = context->sourceFile;
 
     SWAG_VERIFY(child->kind == AstNodeKind::IdentifierRef, sourceFile->report({sourceFile, child, "invalid address expression"}));
+    node->byteCodeFct = &ByteCodeGenJob::emitMakePointer;
 
     auto ptrType         = g_Pool_typeInfoPointer.alloc();
     ptrType->ptrCount    = 1;

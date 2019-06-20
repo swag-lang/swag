@@ -8,6 +8,13 @@
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
 
+bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
+{
+    AstNode* node          = context->node;
+    node->resultRegisterRC = node->childs.front()->resultRegisterRC;
+    return true;
+}
+
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
     AstNode* node     = context->node;

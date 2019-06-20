@@ -12,9 +12,15 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, uint32_t r0, u
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);
+        return true;
+    }
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectEqual, type not native");
-
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:

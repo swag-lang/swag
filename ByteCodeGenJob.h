@@ -106,6 +106,7 @@ struct ByteCodeGenJob : public Job
     static bool emitVarDecl(ByteCodeGenContext* context);
     static bool emitBreak(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
+	static bool emitMakePointer(ByteCodeGenContext* context);
 
     AstNode*         originalNode;
     SourceFile*      sourceFile;

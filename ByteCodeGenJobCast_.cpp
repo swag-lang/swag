@@ -428,11 +428,16 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
     auto     exprNode     = node->childs[1];
     auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
 
+    if (typeInfo->kind == TypeInfoKind::Pointer && fromTypeInfo->kind == TypeInfoKind::Pointer)
+    {
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+        return true;
+    }
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, cast type not native");
     if (fromTypeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, expression type not native");
-
     SWAG_CHECK(emitCast(context, typeInfo, exprNode, fromTypeInfo));
     node->resultRegisterRC = exprNode->resultRegisterRC;
     return true;

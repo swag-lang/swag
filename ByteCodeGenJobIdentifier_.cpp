@@ -3,8 +3,6 @@
 #include "ByteCodeGenJob.h"
 #include "SymTable.h"
 #include "TypeInfo.h"
-#include "SourceFile.h"
-#include "Module.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 
@@ -17,8 +15,8 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 {
-    auto node       = context->node;
-    auto resolved   = node->resolvedSymbolOverload;
+    auto node     = context->node;
+    auto resolved = node->resolvedSymbolOverload;
 
     if (node->resolvedSymbolName->kind == SymbolKind::Namespace)
         return true;
@@ -29,10 +27,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-
-        auto inst   = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC);
-        inst->b.s32 = resolved->storageOffset;
-		inst->c.s32 = resolved->storageIndex;
+        auto inst              = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC);
+        inst->b.s32            = resolved->storageOffset;
+        inst->c.s32            = resolved->storageIndex;
         return true;
     }
 
@@ -69,6 +66,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
             inst->b.s32 = resolved->storageOffset;
         }
+
         return true;
     }
 

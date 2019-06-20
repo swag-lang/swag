@@ -37,7 +37,7 @@ namespace Ast
     }
 
     extern Scope*      newScope(SourceFile* sourceFile, const string& name, ScopeKind kind, Scope* parentScope);
-    extern void        addChild(AstNode* parent, AstNode* child, bool lockParent = true);
+    extern void        addChild(AstNode* parent, AstNode* child);
     extern const char* getKindName(AstNode* node);
     extern const char* getNakedName(AstNode* node);
     extern AstNode*    createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent);

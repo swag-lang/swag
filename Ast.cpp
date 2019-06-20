@@ -7,16 +7,14 @@
 
 namespace Ast
 {
-    void addChild(AstNode* parent, AstNode* child, bool lockParent)
+    void addChild(AstNode* parent, AstNode* child)
     {
         if (parent)
         {
             assert(parent && child);
-            if (lockParent)
-                parent->lock();
+            parent->lock();
             parent->childs.push_back(child);
-            if (lockParent)
-                parent->unlock();
+            parent->unlock();
         }
 
         child->parent = parent;

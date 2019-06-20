@@ -891,3 +891,27 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolveArrayAccess(SemanticContext* context)
+{
+    auto sourceFile = context->sourceFile;
+    auto arrayNode  = CastAst<AstArrayAccess>(context->node, AstNodeKind::ArrayAccess);
+    auto arrayType  = arrayNode->array->typeInfo;
+    SWAG_VERIFY(arrayType->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, arrayNode->array, format("type '%s' can't be referenced like a pointer", arrayType->name.c_str())}));
+
+    auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
+    if (typePtr->ptrCount == 1)
+    {
+        arrayNode->typeInfo = typePtr->pointedType;
+    }
+    else
+    {
+        auto newType        = g_Pool_typeInfoPointer.alloc();
+        newType->name       = typePtr->name;
+        newType->ptrCount   = typePtr->ptrCount - 1;
+        newType->sizeOf     = typePtr->sizeOf;
+        arrayNode->typeInfo = g_TypeMgr.registerType(newType);
+    }
+
+    return true;
+}
