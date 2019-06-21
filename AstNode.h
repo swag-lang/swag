@@ -67,7 +67,7 @@ enum class AstNodeKind
     MakePointer,
     BinaryOp,
     AffectOp,
-    ArrayAccess,
+    PointerDeref,
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
@@ -341,7 +341,7 @@ struct AstType : public AstNode
     int ptrCount;
 };
 
-struct AstArrayAccess : public AstNode
+struct AstPointerDeref : public AstNode
 {
     void reset() override
     {
@@ -366,4 +366,4 @@ extern Pool<AstIf>            g_Pool_astIf;
 extern Pool<AstWhile>         g_Pool_astWhile;
 extern Pool<AstBreakContinue> g_Pool_astBreakContinue;
 extern Pool<AstType>          g_Pool_astType;
-extern Pool<AstArrayAccess>   g_Pool_astArrayAccess;
+extern Pool<AstPointerDeref>   g_Pool_astPointerDeref;

@@ -44,7 +44,7 @@ typedef double				swag_float64_t;
 
 static const char* g_RuntimeC = R"(
 typedef union __register {
-    void*			pointer;
+    swag_uint8_t*	pointer;
     swag_uint64_t	u64;
     swag_int64_t	s64;
     swag_float64_t	f64;

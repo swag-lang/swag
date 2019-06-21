@@ -14,4 +14,4 @@ Pool<AstWhile>         g_Pool_astWhile;
 Pool<AstBreakContinue> g_Pool_astBreakContinue;
 Pool<AstAttrUse>       g_Pool_astAttrUse;
 Pool<AstType>          g_Pool_astType;
-Pool<AstArrayAccess>   g_Pool_astArrayAccess;
+Pool<AstPointerDeref>   g_Pool_astPointerDeref;

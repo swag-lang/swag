@@ -77,7 +77,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         exprNode->inheritToken(token);
         exprNode->semanticFct = &SemanticJob::resolveMakePointer;
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doIdentifierRef(exprNode));
+        SWAG_CHECK(doIdentifierRef(exprNode, nullptr, AST_LEFT_EXPRESSION));
     }
     else
     {
@@ -86,10 +86,10 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
 
     while (token.id == TokenId::SymLeftSquare)
     {
-        auto arrayNode = Ast::newNode(&g_Pool_astArrayAccess, AstNodeKind::ArrayAccess, sourceFile->indexInModule);
+        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeref, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
         arrayNode->token = move(token);
-		arrayNode->semanticFct = &SemanticJob::resolveArrayAccess;
+		arrayNode->semanticFct = &SemanticJob::resolvePointerDeref;
         Ast::addChild(arrayNode, exprNode);
         arrayNode->array = exprNode;
         SWAG_CHECK(tokenizer.getToken(token));

@@ -14,7 +14,7 @@ union Register {
     double   f64;
     char32_t ch;
     bool     b;
-    void*    pointer;
+    uint8_t* pointer;
 };
 
 struct ComputedValue

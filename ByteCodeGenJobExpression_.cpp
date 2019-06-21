@@ -7,18 +7,58 @@
 #include "SourceFile.h"
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
+#include "Ast.h"
+
+bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
+{
+    auto node     = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
+    auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
+    int  sizeOf;
+    if (typeInfo->ptrCount == 1)
+        sizeOf = typeInfo->pointedType->sizeOf;
+    else
+        sizeOf = sizeof(void*);
+
+	if (sizeOf > 1)
+        emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
+    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+    if (!(node->flags & AST_LEFT_EXPRESSION))
+    {
+        switch (sizeOf)
+        {
+        case 1:
+            emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitArrayAccess, type not supported");
+            break;
+        }
+    }
+
+	node->resultRegisterRC = node->array->resultRegisterRC;
+    return true;
+}
 
 bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 {
-    AstNode* node          = context->node;
+    auto node              = context->node;
     node->resultRegisterRC = node->childs.front()->resultRegisterRC;
     return true;
 }
 
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto node     = context->node;
+    auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitLiteral, type not native");

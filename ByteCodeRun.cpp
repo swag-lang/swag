@@ -141,6 +141,32 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::IncPointer:
+    {
+        registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::DeRef8:
+    {
+        registersRC[ip->a.u32].u8 = *(uint8_t*) registersRC[ip->a.u32].pointer;
+        break;
+    }
+    case ByteCodeOp::DeRef16:
+    {
+        registersRC[ip->a.u32].u16 = *(uint16_t*) registersRC[ip->a.u32].pointer;
+        break;
+    }
+    case ByteCodeOp::DeRef32:
+    {
+        registersRC[ip->a.u32].u32 = *(uint32_t*) registersRC[ip->a.u32].pointer;
+        break;
+    }
+    case ByteCodeOp::DeRef64:
+    {
+        registersRC[ip->a.u32].u64 = *(uint64_t*) registersRC[ip->a.u32].pointer;
+        break;
+    }
+
     case ByteCodeOp::PushRCxSaved:
     case ByteCodeOp::PushRCxParam:
     {
@@ -329,6 +355,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::MulRCxS32:
+    {
+        registersRC[ip->a.u32].s32 *= ip->b.s32;
+        break;
+    }
     case ByteCodeOp::BinOpMulS32:
     {
         registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 * registersRC[ip->b.u32].s32;

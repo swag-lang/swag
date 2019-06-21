@@ -234,6 +234,25 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::MovSPBP:
             break;
 
+        case ByteCodeOp::IncPointer:
+            bufferC.addString(format("r%u.pointer += r%u.s32;", ip->a.u32, ip->b.s32));
+            break;
+        case ByteCodeOp::DeRef8:
+            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::DeRef16:
+            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::DeRef32:
+            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::DeRef64:
+            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::MulRCxS32:
+            bufferC.addString(format("r%u.s32 *= %d;", ip->a.u32, ip->b.s32));
+            break;
+
         case ByteCodeOp::RCxRefFromStack:
             bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.s32));
             break;
@@ -260,7 +279,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
 
         case ByteCodeOp::AffectOp8:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) = r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) = r%u.u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOp16:
             bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) = r%u.u16;", ip->a.u32, ip->b.u32));
@@ -270,6 +289,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
         case ByteCodeOp::AffectOp64:
             bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) = r%u.u64;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpPointer:
+            bufferC.addString(format("*(void**)(r%u.pointer) = r%u.pointer;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::BinOpPlusS32:
@@ -764,7 +786,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             auto nodeFunc     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
             auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
             bufferC.addString(format("%s_%s", nodeFunc->ownerScope->name.c_str(), nodeFunc->name.c_str()));
-			bufferC.addString("();");
+            bufferC.addString("();");
         }
         break;
 

@@ -892,11 +892,12 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveArrayAccess(SemanticContext* context)
+bool SemanticJob::resolvePointerDeref(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
-    auto arrayNode  = CastAst<AstArrayAccess>(context->node, AstNodeKind::ArrayAccess);
+    auto arrayNode  = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
     auto arrayType  = arrayNode->array->typeInfo;
+    arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
     SWAG_VERIFY(arrayType->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, arrayNode->array, format("type '%s' can't be referenced like a pointer", arrayType->name.c_str())}));
 
     auto typePtr = static_cast<TypeInfoPointer*>(arrayType);

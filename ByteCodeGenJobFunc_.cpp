@@ -213,7 +213,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
         }
     }
 
-    emitInstruction(context, ByteCodeOp::LocalCall)->a.pointer = funcNode->bc;
+    emitInstruction(context, ByteCodeOp::LocalCall)->a.pointer = (uint8_t*) funcNode->bc;
 
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
@@ -295,8 +295,8 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     }
 
     auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
-    inst->a.pointer = funcNode;
-    inst->b.pointer = typeInfoFunc;
+    inst->a.pointer = (uint8_t*) funcNode;
+    inst->b.pointer = (uint8_t*) typeInfoFunc;
 
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
