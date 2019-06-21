@@ -1,5 +1,8 @@
 #module module287;
-//#unittest pass backend;
+#version(FastTest)
+{
+	#unittest pass backend;
+}
 
 //#[swag.printbytecode]
 #[swag.test]

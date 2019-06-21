@@ -13,13 +13,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
     auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
-    int  sizeOf;
-    if (typeInfo->ptrCount == 1)
-        sizeOf = typeInfo->pointedType->sizeOf;
-    else
-        sizeOf = sizeof(void*);
+    int  sizeOf   = typeInfo->sizeOfPointedBy();
 
-	if (sizeOf > 1)
+    if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
     if (!(node->flags & AST_LEFT_EXPRESSION))
@@ -44,7 +40,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
     }
 
-	node->resultRegisterRC = node->array->resultRegisterRC;
+    node->resultRegisterRC = node->array->resultRegisterRC;
     return true;
 }
 

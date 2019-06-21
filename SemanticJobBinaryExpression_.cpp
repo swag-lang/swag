@@ -10,11 +10,39 @@
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
+    auto node          = context->node;
+    auto sourceFile    = context->sourceFile;
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
-    switch (typeInfo->nativeType)
+    // Pointer arithmetic
+    if (leftTypeInfo->kind == TypeInfoKind::Pointer)
+    {
+        node->typeInfo = leftTypeInfo;
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("addition not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
+        switch (rightTypeInfo->nativeType)
+        {
+        case NativeType::S8:
+        case NativeType::S16:
+        case NativeType::S32:
+        case NativeType::S64:
+        case NativeType::U8:
+        case NativeType::U16:
+        case NativeType::U32:
+        case NativeType::U64:
+            break;
+        default:
+            return sourceFile->report({sourceFile, node, format("addition not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
+        }
+
+        return true;
+    }
+
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", rightTypeInfo->name.c_str())}));
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+    leftTypeInfo = TypeManager::concreteType(left->typeInfo);
+
+    switch (leftTypeInfo->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -28,14 +56,15 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
+    node->typeInfo = leftTypeInfo;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::S8:
         {
@@ -584,18 +613,13 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto left       = node->childs[0];
     auto right      = node->childs[1];
 
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-
     node->inheritLocation();
-    TypeManager::promote(left, right);
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
-    node->typeInfo = left->typeInfo;
-
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
+
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    TypeManager::promote(left, right);
 
     switch (node->token.id)
     {
@@ -603,21 +627,45 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         SWAG_CHECK(resolveBinaryOpPlus(context, left, right));
         break;
     case TokenId::SymMinus:
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+        node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBinaryOpMinus(context, left, right));
         break;
     case TokenId::SymAsterisk:
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+        node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBinaryOpMul(context, left, right));
         break;
     case TokenId::SymSlash:
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+        node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
         break;
     case TokenId::SymVertical:
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+        node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBitmaskOr(context, left, right));
         break;
     case TokenId::SymAmpersand:
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+        node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBitmaskAnd(context, left, right));
         break;
     case TokenId::SymCircumflex:
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+        node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveXor(context, left, right));
         break;
     default:
@@ -894,9 +942,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
 bool SemanticJob::resolvePointerDeref(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto arrayNode  = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
-    auto arrayType  = arrayNode->array->typeInfo;
+    auto sourceFile        = context->sourceFile;
+    auto arrayNode         = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
+    auto arrayType         = arrayNode->array->typeInfo;
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
     SWAG_VERIFY(arrayType->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, arrayNode->array, format("type '%s' can't be referenced like a pointer", arrayType->name.c_str())}));
 

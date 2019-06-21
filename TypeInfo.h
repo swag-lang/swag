@@ -172,6 +172,16 @@ struct TypeInfoPointer : public TypeInfo
         return pointedType->isSame(castedFrom->pointedType);
     }
 
+    uint32_t sizeOfPointedBy()
+    {
+        int size;
+        if (ptrCount == 1)
+            size = pointedType->sizeOf;
+        else
+            size = sizeof(void*);
+        return size;
+    }
+
     TypeInfo* pointedType;
     int       ptrCount;
 };
