@@ -6,7 +6,7 @@ using swag;
 	#unittest pass backend;
 }
 
-#[swag.printbytecode]
+//#[printbytecode]
 #[test]
 func test1: ()
 {
@@ -15,4 +15,6 @@ func test1: ()
 	var b = &a;
 	var c = b + 1;
 	@assert(c[0] == 500);
+	var d = c - 1;
+	@assert(d[0] == 666);
 }

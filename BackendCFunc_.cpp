@@ -237,6 +237,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::IncPointer:
             bufferC.addString(format("r%u.pointer += r%u.s32;", ip->a.u32, ip->b.s32));
             break;
+        case ByteCodeOp::DecPointer:
+            bufferC.addString(format("r%u.pointer -= r%u.s32;", ip->a.u32, ip->b.s32));
+            break;
         case ByteCodeOp::DeRef8:
             bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
             break;

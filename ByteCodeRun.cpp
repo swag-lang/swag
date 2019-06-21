@@ -146,6 +146,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s32;
         break;
     }
+    case ByteCodeOp::DecPointer:
+    {
+        registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s32;
+        break;
+    }
     case ByteCodeOp::DeRef8:
     {
         registersRC[ip->a.u32].u8 = *(uint8_t*) registersRC[ip->a.u32].pointer;

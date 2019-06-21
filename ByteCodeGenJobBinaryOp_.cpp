@@ -59,32 +59,46 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0,
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitBinaryOpMinus, type not native");
 
-    switch (typeInfo->nativeType)
+    if (typeInfo->kind == TypeInfoKind::Native)
     {
-    case NativeType::S32:
-        emitInstruction(context, ByteCodeOp::BinOpMinusS32, r0, r1, r2);
-        return true;
-    case NativeType::S64:
-        emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
-        return true;
-    case NativeType::U32:
-        emitInstruction(context, ByteCodeOp::BinOpMinusU32, r0, r1, r2);
-        return true;
-    case NativeType::U64:
-        emitInstruction(context, ByteCodeOp::BinOpMinusU64, r0, r1, r2);
-        return true;
-    case NativeType::F32:
-        emitInstruction(context, ByteCodeOp::BinOpMinusF32, r0, r1, r2);
-        return true;
-    case NativeType::F64:
-        emitInstruction(context, ByteCodeOp::BinOpMinusF64, r0, r1, r2);
-        return true;
-    default:
-        return internalError(context, "emitBinaryOpMinus, type not supported");
+        switch (typeInfo->nativeType)
+        {
+        case NativeType::S32:
+            emitInstruction(context, ByteCodeOp::BinOpMinusS32, r0, r1, r2);
+            return true;
+        case NativeType::S64:
+            emitInstruction(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
+            return true;
+        case NativeType::U32:
+            emitInstruction(context, ByteCodeOp::BinOpMinusU32, r0, r1, r2);
+            return true;
+        case NativeType::U64:
+            emitInstruction(context, ByteCodeOp::BinOpMinusU64, r0, r1, r2);
+            return true;
+        case NativeType::F32:
+            emitInstruction(context, ByteCodeOp::BinOpMinusF32, r0, r1, r2);
+            return true;
+        case NativeType::F64:
+            emitInstruction(context, ByteCodeOp::BinOpMinusF64, r0, r1, r2);
+            return true;
+        default:
+            return internalError(context, "emitBinaryOpMinus, type not supported");
+        }
     }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
+        int  sizeOf  = typePtr->sizeOfPointedBy();
+        if (sizeOf > 1)
+            emitInstruction(context, ByteCodeOp::MulRCxS32, r1)->b.s32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::DecPointer, r0, r1);
+        node->resultRegisterRC = r0;
+        freeRegisterRC(context, r2);
+        return true;
+    }
+
+    return internalError(context, "emitBinaryOpMinus, invalid native");
 }
 
 bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
