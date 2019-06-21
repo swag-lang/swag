@@ -22,7 +22,7 @@ struct ByteCode : public PoolElement
 {
     void print();
 
-    static const int     ALIGN_RIGHT_OPCODE = 20;
+    static const int     ALIGN_RIGHT_OPCODE = 25;
     ByteCodeInstruction* out                = nullptr;
     uint32_t             numInstructions    = 0;
     uint32_t             maxInstructions    = 0;

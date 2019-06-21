@@ -461,6 +461,12 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::AffectOpPlusEqF64:
             bufferC.addString(format("*(swag_float64_t*)(r%u.pointer) += r%u.f64;", ip->a.u32, ip->b.u32));
             break;
+        case ByteCodeOp::AffectOpPlusEqPointer:
+            bufferC.addString(format("**(swag_uint8_t*)(r%u.pointer) += r%u.s32;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpMinusEqPointer:
+            bufferC.addString(format("**(swag_uint8_t*)(r%u.pointer) -= r%u.s32;", ip->a.u32, ip->b.u32));
+            break;
 
         case ByteCodeOp::AffectOpMulEqS8:
             bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) *= r%u.s8;", ip->a.u32, ip->b.u32));

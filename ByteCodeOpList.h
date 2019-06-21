@@ -160,6 +160,8 @@ BYTECODE_OP(AffectOpPlusEqU32)
 BYTECODE_OP(AffectOpPlusEqU64)
 BYTECODE_OP(AffectOpPlusEqF32)
 BYTECODE_OP(AffectOpPlusEqF64)
+BYTECODE_OP(AffectOpPlusEqPointer)
+BYTECODE_OP(AffectOpMinusEqPointer)
 
 BYTECODE_OP(AffectOpMinusEqS8)
 BYTECODE_OP(AffectOpMinusEqS16)

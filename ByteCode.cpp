@@ -44,7 +44,7 @@ void ByteCode::print()
         // Instruction
         g_Log.setColor(LogColor::White);
         int len = (int) strlen(g_ByteCodeOpNames[(int) ip->op]);
-        while (len++ != ALIGN_RIGHT_OPCODE)
+        while (len++ < ALIGN_RIGHT_OPCODE)
             g_Log.print(" ");
         g_Log.print(g_ByteCodeOpNames[(int) ip->op]);
         g_Log.print(" ");

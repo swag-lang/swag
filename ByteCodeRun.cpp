@@ -880,6 +880,16 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         *(double*) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].f64;
         break;
     }
+    case ByteCodeOp::AffectOpPlusEqPointer:
+    {
+        *(uint8_t**) registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqPointer:
+    {
+        *(uint8_t**) registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s32;
+        break;
+    }
 
     case ByteCodeOp::AffectOpMinusEqS8:
     {
