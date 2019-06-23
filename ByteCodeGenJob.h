@@ -9,7 +9,7 @@ struct ByteCodeGenJob;
 struct ByteCodeInstruction;
 struct TypeInfo;
 struct Module;
-struct RegisterResult;
+struct RegisterList;
 enum class ByteCodeOp : uint16_t;
 
 enum class ByteCodeResult
@@ -92,7 +92,7 @@ struct ByteCodeGenJob : public Job
     static bool emitWhileAfterExpr(ByteCodeGenContext* context);
     static bool emitWhileAfterBlock(ByteCodeGenContext* context);
     static bool emitWhile(ByteCodeGenContext* context);
-    static bool emitAffectEqual(ByteCodeGenContext* context, RegisterResult& r0, RegisterResult& r1);
+    static bool emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1);
     static bool emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
@@ -118,7 +118,7 @@ struct ByteCodeGenJob : public Job
     bool             syncToDependentNodes;
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
-    static void     freeRegisterRC(ByteCodeGenContext* context, RegisterResult& rc);
+    static void     freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
 
     set<uint32_t> reservedRC;

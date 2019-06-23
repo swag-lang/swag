@@ -1,5 +1,5 @@
 #pragma once
-struct RegisterResult
+struct RegisterList
 {
     static const int MAX_STATIC = 2;
 

@@ -9,7 +9,7 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 
-bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterResult& r0, RegisterResult& r1)
+bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);

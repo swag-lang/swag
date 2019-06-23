@@ -18,7 +18,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     {
         if (node->astAssignment)
         {
-            RegisterResult r0;
+            RegisterList r0;
             r0          = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromStack, r0);
             inst->b.s32 = resolved->storageOffset;

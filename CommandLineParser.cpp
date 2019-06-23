@@ -18,12 +18,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanCache);
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
 
+	addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
     //cmdLine->runBackendTests = false;
-    //cmdLine->fileFilter = "292";
+    //cmdLine->fileFilter = "293";
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param)
@@ -115,6 +116,19 @@ bool CommandLineParser::process(int argc, const char* argv[])
             }
 
             ((set<string>*) arg->buffer)->insert(argument);
+            break;
+        }
+
+		case CommandLineType::String:
+        {
+            if (argument.empty())
+            {
+                g_Log.error(format("command line error: argument '%s' must be followed by a string", it->first.c_str(), argument.c_str()));
+                result = false;
+                continue;
+            }
+
+            *((string*) arg->buffer) = argument;
             break;
         }
 

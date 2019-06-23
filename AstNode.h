@@ -6,7 +6,7 @@
 #include "SyntaxJob.h"
 #include "Register.h"
 #include "AstFlags.h"
-#include "RegisterResult.h"
+#include "RegisterList.h"
 struct SemanticContext;
 struct ByteCodeGenContext;
 struct Scope;
@@ -193,7 +193,7 @@ struct AstNode : public PoolElement
     uint32_t            sourceFileIdx;
     uint32_t            childParentIdx;
     ByteCode*           bc;
-    RegisterResult      resultRegisterRC;
+    RegisterList      resultRegisterRC;
 };
 
 struct AstVarDecl : public AstNode

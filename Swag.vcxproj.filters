@@ -422,8 +422,8 @@
     <ClInclude Include="AstFlags.h">
       <Filter>Lexer</Filter>
     </ClInclude>
-    <ClInclude Include="RegisterResult.h">
-      <Filter>Lexer</Filter>
+    <ClInclude Include="RegisterList.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
