@@ -11,32 +11,44 @@
 
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
-    auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
-    int  sizeOf   = typeInfo->sizeOfPointedBy();
+    auto node = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
 
-    if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
-    if (!(node->flags & AST_LEFT_EXPRESSION))
+	// Dereference of a string constant
+    if (node->array->typeInfo->kind == TypeInfoKind::Native && node->array->typeInfo->nativeType == NativeType::String)
     {
-        switch (sizeOf)
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC[0], node->access->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC[0]);
+    }
+
+	// Dereference of a pointer
+    else
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
+        int  sizeOf   = typeInfo->sizeOfPointedBy();
+
+        if (sizeOf > 1)
+            emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+        if (!(node->flags & AST_LEFT_EXPRESSION))
         {
-        case 1:
-            emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
-            break;
-        case 2:
-            emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
-            break;
-        case 4:
-            emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
-            break;
-        case 8:
-            emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
-            break;
-        default:
-            return internalError(context, "emitArrayAccess, type not supported");
-            break;
+            switch (sizeOf)
+            {
+            case 1:
+                emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
+                break;
+            case 2:
+                emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
+                break;
+            case 4:
+                emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
+                break;
+            case 8:
+                emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
+                break;
+            default:
+                return internalError(context, "emitArrayAccess, type not supported");
+                break;
+            }
         }
     }
 
