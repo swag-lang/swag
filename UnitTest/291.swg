@@ -10,5 +10,5 @@ using swag;
 #[test]
 func test1: ()
 {
-	@print("toto");
+	//@print("toto");
 }

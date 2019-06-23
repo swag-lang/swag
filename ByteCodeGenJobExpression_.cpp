@@ -101,8 +101,9 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         return true;
     case NativeType::String:
     {
+        auto r1    = reserveRegisterRC(context);
         auto index = context->sourceFile->module->reserveDataSegmentString(node->computedValue.text);
-        emitInstruction(context, ByteCodeOp::CopyRCxVaStr, index, r0);
+        emitInstruction(context, ByteCodeOp::CopyRCxVaStr, index, r0, r1);
         return true;
     }
 

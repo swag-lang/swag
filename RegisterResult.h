@@ -5,7 +5,7 @@ struct RegisterResult
 
     uint32_t         oneResult[MAX_STATIC];
     vector<uint32_t> registers;
-    uint32_t         countResults = 0;
+    int              countResults = 0;
 
     int size()
     {
@@ -26,14 +26,14 @@ struct RegisterResult
         countResults = 1;
     }
 
-	void clear()
-	{
-		countResults = 0;
-		registers.clear();
-	}
+    void clear()
+    {
+        countResults = 0;
+        registers.clear();
+    }
 
-	operator uint32_t()
-	{
-		return (*this)[0];
-	}
+    operator uint32_t()
+    {
+        return (*this)[0];
+    }
 };

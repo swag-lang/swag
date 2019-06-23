@@ -193,8 +193,16 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->decSP(ip->a.u32);
         break;
     }
-    case ByteCodeOp::CopyRCxVa32:
     case ByteCodeOp::CopyRCxVaStr:
+    {
+        auto module = context->sourceFile->module;
+        assert(ip->a.u32 < module->strBuffer.size());
+        const auto& str                = module->strBuffer[ip->a.u32];
+        registersRC[ip->b.u32].pointer = (uint8_t*) str.c_str();
+        registersRC[ip->c.u32].u32     = (uint32_t) str.length();
+        break;
+    }
+    case ByteCodeOp::CopyRCxVa32:
     {
         registersRC[ip->b.u32].u32 = ip->a.u32;
         break;
@@ -464,11 +472,8 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::IntrinsicPrintString:
     {
-        auto module = context->sourceFile->module;
-        auto val    = registersRC[ip->a.u32].u32;
-        assert(val < module->strBuffer.size());
         g_Log.lock();
-        g_Log.print(module->strBuffer[val]);
+        g_Log.print((const char*) registersRC[ip->a.u32].pointer);
         g_Log.unlock();
         break;
     }

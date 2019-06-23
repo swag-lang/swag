@@ -17,7 +17,7 @@ void TypeManager::setup()
     typeInfoF32    = new TypeInfoNative(NativeType::F32, "f32", 4);
     typeInfoF64    = new TypeInfoNative(NativeType::F64, "f64", 8);
     typeInfoChar   = new TypeInfoNative(NativeType::Char, "char", 1);
-    typeInfoString = new TypeInfoNative(NativeType::String, "string", 4);
+    typeInfoString = new TypeInfoNative(NativeType::String, "string", sizeof(void*));
     typeInfoVoid   = new TypeInfoNative(NativeType::Void, "void", 0);
 
     promoteMatrix[(int) NativeType::U8][(int) NativeType::U8]  = typeInfoU32;
