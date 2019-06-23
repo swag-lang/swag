@@ -157,12 +157,9 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     auto params        = node->childs.empty() ? nullptr : node->childs.front();
     int  numCallParams = params ? (int) params->childs.size() : 0;
 
-    // Remember the number of parameters, to allocate registers in backend
-    context->bc->maxCallParameters = max(context->bc->maxCallParameters, (int) typeInfoFunc->parameters.size());
-
     // Push current used registers
     const auto&      reservedRC = context->job->reservedRC;
-    vector<uint32_t> copyreservedRC;
+    vector<uint32_t> copyReservedRC;
     for (auto it = reservedRC.begin(); it != reservedRC.end(); ++it)
     {
         bool isParam = false;
@@ -184,14 +181,16 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
 
         if (!isParam)
         {
-            copyreservedRC.push_back(*it);
+            copyReservedRC.push_back(*it);
             emitInstruction(context, ByteCodeOp::PushRCxSaved, *it);
         }
     }
 
     // Push missing default parameters
+    int numParameters = 0;
     if (numCallParams != typeInfoFunc->parameters.size())
     {
+        int index = 0;
         for (int i = (int) typeInfoFunc->parameters.size() - 1; i >= numCallParams; i--)
         {
             auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
@@ -199,25 +198,41 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
             assert(context->node->flags & AST_VALUE_COMPUTED);
             emitLiteral(context);
             context->node = node;
-            emitInstruction(context, ByteCodeOp::PushRCxParam, defaultParam->astAssignment->resultRegisterRC, i);
+            for (int r = defaultParam->astAssignment->resultRegisterRC.size() - 1; r >= 0; r--)
+            {
+                emitInstruction(context, ByteCodeOp::PushRCxParam, defaultParam->astAssignment->resultRegisterRC[r], index);
+                precallStack += sizeof(Register);
+                index++;
+                numParameters++;
+            }
+
             freeRegisterRC(context, defaultParam->astAssignment->resultRegisterRC);
-            precallStack += sizeof(Register);
         }
     }
 
     // Push parameters
     if (params)
     {
+        int index = 0;
         for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = params->childs[i];
-            emitInstruction(context, ByteCodeOp::PushRCxParam, param->resultRegisterRC, i);
+            for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
+            {
+                emitInstruction(context, ByteCodeOp::PushRCxParam, param->resultRegisterRC[r], index);
+                precallStack += sizeof(Register);
+                index++;
+                numParameters++;
+            }
+
             freeRegisterRC(context, param->resultRegisterRC);
-            precallStack += sizeof(Register);
         }
     }
 
-    emitInstruction(context, ByteCodeOp::LocalCall)->a.pointer = (uint8_t*) funcNode->bc;
+    // Remember the number of parameters, to allocate registers in backend
+    context->bc->maxCallParameters = max(context->bc->maxCallParameters, numParameters);
+
+    emitInstruction(context, ByteCodeOp::LocalCall, 0, numParameters)->a.pointer = (uint8_t*) funcNode->bc;
 
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
@@ -233,7 +248,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     }
 
     // Restore reserved registers
-    for (auto it = copyreservedRC.rbegin(); it != copyreservedRC.rend(); ++it)
+    for (auto it = copyReservedRC.rbegin(); it != copyReservedRC.rend(); ++it)
     {
         emitInstruction(context, ByteCodeOp::PopRCxSaved, *it);
     }
@@ -256,9 +271,21 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     int index = 0;
     for (auto param : node->childs)
     {
-        param->resolvedSymbolOverload->storageOffset = offset;
-        param->resolvedSymbolOverload->storageIndex  = index++;
-        offset += sizeof(Register);
+        auto resolved           = param->resolvedSymbolOverload;
+        resolved->storageOffset = offset;
+        resolved->storageIndex  = index;
+
+        switch (resolved->typeInfo->nativeType)
+        {
+        case NativeType::String:
+            offset += 2 * sizeof(Register);
+            index += 2;
+            break;
+        default:
+            offset += sizeof(Register);
+            index++;
+            break;
+        }
     }
 
     return true;

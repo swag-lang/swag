@@ -26,6 +26,14 @@ struct RegisterResult
         countResults = 1;
     }
 
+    void operator+=(uint32_t r)
+    {
+        if (countResults >= MAX_STATIC)
+            registers.push_back(r);
+        else
+            oneResult[countResults++] = r;
+    }
+
     void clear()
     {
         countResults = 0;

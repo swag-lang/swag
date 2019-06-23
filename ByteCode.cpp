@@ -65,10 +65,16 @@ void ByteCode::print()
             wprintf(L"A: %d ", ip->a.s32);
             break;
 
+        case ByteCodeOp::PushRCxParam:
+        case ByteCodeOp::PushRCxSaved:
+            wprintf(L"A: %u ", ip->a.u32);
+            break;
+
         case ByteCodeOp::RCxFromStack8:
         case ByteCodeOp::RCxFromStack16:
         case ByteCodeOp::RCxFromStack32:
         case ByteCodeOp::RCxFromStack64:
+        case ByteCodeOp::RCxFromStackParam64:
         case ByteCodeOp::RCxFromDataSeg8:
         case ByteCodeOp::RCxFromDataSeg16:
         case ByteCodeOp::RCxFromDataSeg32:
@@ -82,8 +88,11 @@ void ByteCode::print()
             wprintf(L"B: %u VA: { %x }", ip->b.u32, ip->a.u32);
             break;
 
-        case ByteCodeOp::CopyRCxVa64:
         case ByteCodeOp::CopyRCxVaStr:
+            wprintf(L"B: %u C: %u VA: { %u }", ip->b.u32, ip->c.u32, ip->a.u32);
+            break;
+
+        case ByteCodeOp::CopyRCxVa64:
             wprintf(L"B: %u VA: { %I64x }", ip->b.u32, ip->a.u64);
             break;
 

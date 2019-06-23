@@ -105,11 +105,22 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     }
 
     // Parameters
+    int index = 0;
     for (auto param : typeFunc->parameters)
     {
         if (cptParams)
             bufferC.addString(", ");
-        bufferC.addString(format("__register* rp%u", param->index));
+        switch (param->typeInfo->nativeType)
+        {
+        case NativeType::String:
+            bufferC.addString(format("__register* rp%u, __register* rp%u", index, index + 1));
+            index += 2;
+            break;
+        default:
+            bufferC.addString(format("__register* rp%u", index));
+            index++;
+            break;
+        }
         cptParams++;
     }
 
@@ -278,7 +289,8 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.u64 = 0x%I64x;", ip->b.u32, ip->a.u64));
             break;
         case ByteCodeOp::CopyRCxVaStr:
-            bufferC.addString(format("r%u.pointer = __string%u;", ip->b.u32, ip->a.u32));
+            bufferC.addString(format("r%u.pointer = __string%u; ", ip->b.u32, ip->a.u32));
+            bufferC.addString(format("r%u.u32 = %u;", ip->c.u32, module->strBuffer[ip->a.u32].size()));
             break;
 
         case ByteCodeOp::AffectOp8:
@@ -778,11 +790,24 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
                 cptCall++;
             }
 
+            auto index = ip->b.u32 - 1;
             for (int idxCall = 0; idxCall < (int) typeFuncBC->parameters.size(); idxCall++)
             {
                 if (cptCall)
                     bufferC.addString(", ");
-                bufferC.addString(format("&rc%u", idxCall));
+                auto param = typeFuncBC->parameters[idxCall];
+                switch (param->typeInfo->nativeType)
+                {
+                case NativeType::String:
+                    bufferC.addString(format("&rc%u, &rc%u", index, index - 1));
+                    index -= 2;
+                    break;
+                default:
+                    bufferC.addString(format("&rc%u", index));
+                    index--;
+                    break;
+                }
+
                 cptCall++;
             }
 

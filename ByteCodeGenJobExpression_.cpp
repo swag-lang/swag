@@ -103,6 +103,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     {
         auto r1    = reserveRegisterRC(context);
         auto index = context->sourceFile->module->reserveDataSegmentString(node->computedValue.text);
+        node->resultRegisterRC += r1;
         emitInstruction(context, ByteCodeOp::CopyRCxVaStr, index, r0, r1);
         return true;
     }
