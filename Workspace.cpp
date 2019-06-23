@@ -224,6 +224,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
         {
             for (auto func : module->byteCodeTestFunc)
             {
+				if (func->sourceFile->module->numErrors)
+					continue;
                 g_Stats.testFunctions++;
                 module->executeNode(module->files[func->node->sourceFileIdx], func->node);
             }

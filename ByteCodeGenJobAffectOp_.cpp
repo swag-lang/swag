@@ -9,7 +9,7 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 
-bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterResult& r0, RegisterResult& r1)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
@@ -22,6 +22,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, uint32_t r0, u
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectEqual, type not native");
+
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
@@ -44,6 +45,10 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, uint32_t r0, u
     case NativeType::F64:
         emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1);
         return true;
+	case NativeType::String:
+		emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
+		emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+		return true;
     default:
         return internalError(context, "emitAffectEqual, type not supported");
     }
@@ -88,7 +93,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
             emitInstruction(context, ByteCodeOp::AffectOpPlusEqF64, r0, r1);
             return true;
         default:
-            return internalError(context, "emitAffectEqual, type not supported");
+            return internalError(context, "emitAffectPlusEqual, type not supported");
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Pointer)

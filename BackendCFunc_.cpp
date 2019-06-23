@@ -303,7 +303,10 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) = r%u.u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOp64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) = r%u.u64;", ip->a.u32, ip->b.u32));
+			if(ip->c.s32 == 0)
+				bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) = r%u.u64;", ip->a.u32, ip->b.u32));
+			else
+				bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer + %d) = r%u.u64;", ip->a.u32, ip->c.s32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPointer:
             bufferC.addString(format("*(void**)(r%u.pointer) = r%u.pointer;", ip->a.u32, ip->b.u32));

@@ -488,7 +488,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         *(uint32_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u32;
         break;
     case ByteCodeOp::AffectOp64:
-        *(uint64_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u64;
+        *(uint64_t*) (registersRC[ip->a.u32].pointer + ip->c.s32) = registersRC[ip->b.u32].u64;
         break;
     case ByteCodeOp::AffectOpPointer:
         *(void**) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].pointer;
@@ -1223,7 +1223,8 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
 
     default:
-        context->error(format("unknown bytecode instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
+        if (ip->op < ByteCodeOp::End)
+            context->error(format("unknown bytecode instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));
         break;
     }
 
