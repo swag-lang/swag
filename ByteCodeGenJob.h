@@ -9,6 +9,7 @@ struct ByteCodeGenJob;
 struct ByteCodeInstruction;
 struct TypeInfo;
 struct Module;
+struct RegisterResult;
 enum class ByteCodeOp : uint16_t;
 
 enum class ByteCodeResult
@@ -117,6 +118,7 @@ struct ByteCodeGenJob : public Job
     bool             syncToDependentNodes;
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
+    static void     freeRegisterRC(ByteCodeGenContext* context, RegisterResult& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
 
     set<uint32_t> reservedRC;

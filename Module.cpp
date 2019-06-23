@@ -108,9 +108,9 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
         SWAG_CHECK(g_Run.run(runContext));
 
-        if (node->resultRegisterRC != UINT32_MAX)
+        if (node->resultRegisterRC.size())
         {
-            node->computedValue.reg = runContext->registersRC[node->resultRegisterRC];
+            node->computedValue.reg = runContext->registersRC[node->resultRegisterRC[0]];
             node->flags |= AST_VALUE_COMPUTED;
             node->typeInfo = TypeManager::concreteType(node->typeInfo);
         }

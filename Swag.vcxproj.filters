@@ -422,6 +422,9 @@
     <ClInclude Include="AstFlags.h">
       <Filter>Lexer</Filter>
     </ClInclude>
+    <ClInclude Include="RegisterResult.h">
+      <Filter>Lexer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

@@ -25,6 +25,16 @@ uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
     return rc;
 }
 
+void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterResult& rc)
+{
+    auto job = context->job;
+    for (int i = 0; i < rc.size(); i++)
+    {
+        job->reservedRC.erase(rc[i]);
+        context->sourceFile->module->freeRegisterRC(rc[i]);
+    }
+}
+
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
     auto job = context->job;

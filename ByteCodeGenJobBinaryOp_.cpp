@@ -287,9 +287,10 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    auto r0 = node->childs[0]->resultRegisterRC;
-    auto r1 = node->childs[1]->resultRegisterRC;
-    auto r2 = node->resultRegisterRC = reserveRegisterRC(context);
+    auto r0                = node->childs[0]->resultRegisterRC;
+    auto r1                = node->childs[1]->resultRegisterRC;
+    auto r2                = reserveRegisterRC(context);
+    node->resultRegisterRC = r2;
 
     switch (node->token.id)
     {
@@ -433,9 +434,10 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    auto r0 = node->childs[0]->resultRegisterRC;
-    auto r1 = node->childs[1]->resultRegisterRC;
-    auto r2 = node->resultRegisterRC = reserveRegisterRC(context);
+    auto r0                = node->childs[0]->resultRegisterRC;
+    auto r1                = node->childs[1]->resultRegisterRC;
+    auto r2                = reserveRegisterRC(context);
+    node->resultRegisterRC = r2;
 
     emitCast(context, node->childs[0]->castedTypeInfo, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo));
     emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo));

@@ -6,6 +6,7 @@
 #include "SyntaxJob.h"
 #include "Register.h"
 #include "AstFlags.h"
+#include "RegisterResult.h"
 struct SemanticContext;
 struct ByteCodeGenContext;
 struct Scope;
@@ -100,7 +101,7 @@ struct AstNode : public PoolElement
         attributeFlags     = 0;
         flags              = 0;
         byteCodeJob        = nullptr;
-        resultRegisterRC   = UINT32_MAX;
+        resultRegisterRC.clear();
         childs.clear();
     }
 
@@ -192,7 +193,7 @@ struct AstNode : public PoolElement
     uint32_t            sourceFileIdx;
     uint32_t            childParentIdx;
     ByteCode*           bc;
-    uint32_t            resultRegisterRC;
+    RegisterResult      resultRegisterRC;
 };
 
 struct AstVarDecl : public AstNode
@@ -366,4 +367,4 @@ extern Pool<AstIf>            g_Pool_astIf;
 extern Pool<AstWhile>         g_Pool_astWhile;
 extern Pool<AstBreakContinue> g_Pool_astBreakContinue;
 extern Pool<AstType>          g_Pool_astType;
-extern Pool<AstPointerDeref>   g_Pool_astPointerDeref;
+extern Pool<AstPointerDeref>  g_Pool_astPointerDeref;

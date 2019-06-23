@@ -192,6 +192,7 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="ModuleCompileJob.h" />
     <ClInclude Include="ModuleOutputJob.h" />
+    <ClInclude Include="RegisterResult.h" />
     <ClInclude Include="Runtime.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />

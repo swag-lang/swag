@@ -168,12 +168,16 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
         bool isParam = false;
         if (params)
         {
-            for (int i = 0; i < (int) params->childs.size(); i++)
+            for (int i = 0; !isParam && (i < (int) params->childs.size()); i++)
             {
-                if (params->childs[i]->resultRegisterRC == *it)
+                auto oneChild = params->childs[i];
+                for (int r = 0; r < (int) oneChild->resultRegisterRC.size(); r++)
                 {
-                    isParam = true;
-                    break;
+                    if (oneChild->resultRegisterRC[r] == *it)
+                    {
+                        isParam = true;
+                        break;
+                    }
                 }
             }
         }
