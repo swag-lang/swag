@@ -9,7 +9,9 @@
 
 bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
 {
-    if (token.id != TokenId::Identifier && token.id != TokenId::Intrisic)
+    if (token.id != TokenId::Identifier &&
+        token.id != TokenId::IntrisicPrint &&
+        token.id != TokenId::IntrisicAssert)
         return sourceFile->report({sourceFile, token, format("invalid identifier '%s'", token.text.c_str())});
 
     // An identifier that starts with '__' is reserved for internal usage !

@@ -171,6 +171,14 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32].u64 = *(uint64_t*) registersRC[ip->a.u32].pointer;
         break;
     }
+    case ByteCodeOp::BoundCheck:
+    {
+		int maxOffset = registersRC[ip->a.u32].u32;
+		int curOffset = registersRC[ip->b.u32].u32;
+		if (curOffset > maxOffset)
+			context->error(format("index out of range (index is '%d', maximum index is '%d')", curOffset, maxOffset));
+		break;
+    }
 
     case ByteCodeOp::PushRCxSaved:
     case ByteCodeOp::PushRCxParam:

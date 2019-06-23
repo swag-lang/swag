@@ -74,12 +74,16 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
-
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::Intrisic, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
-    Ast::assignToken(funcNode, token);
 
-    bool isIntrinsic = token.id == TokenId::Intrisic;
+    bool isIntrinsic = false;
+    if (token.id == TokenId::IntrisicPrint ||
+        token.id == TokenId::IntrisicAssert)
+    {
+        isIntrinsic = true;
+    }
+    SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
+    Ast::assignToken(funcNode, token);
 
     // Register function name
     Scope* newScope = nullptr;
@@ -89,11 +93,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
         newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
         newScope->allocateSymTable();
-        typeInfo->name      = funcNode->name;
-        typeInfo->intrinsic = isIntrinsic ? token.intrisic : Intrisic::None;
-        funcNode->typeInfo  = typeInfo;
+        typeInfo->name     = funcNode->name;
+        funcNode->typeInfo = typeInfo;
         if (!isContextDisabled())
-			currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+            currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 
     // Parameters

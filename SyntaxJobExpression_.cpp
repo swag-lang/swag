@@ -23,7 +23,8 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::Identifier:
-    case TokenId::Intrisic:
+    case TokenId::IntrisicPrint:
+    case TokenId::IntrisicAssert:
     {
         SWAG_CHECK(doIdentifierRef(parent, result, AST_LEFT_EXPRESSION));
     }
@@ -33,6 +34,22 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
     }
 
+    return true;
+}
+
+bool SyntaxJob::doSizeOf(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::SizeOf, sourceFile->indexInModule, parent);
+    node->inheritOwnersAndFlags(this);
+    node->semanticFct = &SemanticJob::resolveSizeOf;
+    node->token       = move(token);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
 
@@ -56,8 +73,18 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::Identifier:
-    case TokenId::Intrisic:
+    case TokenId::IntrisicPrint:
+    case TokenId::IntrisicAssert:
         SWAG_CHECK(doIdentifierRef(parent, result));
+        break;
+
+    case TokenId::IntrisicSizeOf:
+        SWAG_CHECK(doSizeOf(parent, result));
+        break;
+
+	case TokenId::NativeType:
+	case TokenId::SymAsterisk:
+        SWAG_CHECK(doTypeExpression(parent, result));
         break;
 
     default:
@@ -88,8 +115,8 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     {
         auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeref, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
-        arrayNode->token = move(token);
-		arrayNode->semanticFct = &SemanticJob::resolvePointerDeref;
+        arrayNode->token       = move(token);
+        arrayNode->semanticFct = &SemanticJob::resolvePointerDeref;
         Ast::addChild(arrayNode, exprNode);
         arrayNode->array = exprNode;
         SWAG_CHECK(tokenizer.getToken(token));

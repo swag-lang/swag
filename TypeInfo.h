@@ -152,7 +152,6 @@ struct TypeInfoFuncAttr : public TypeInfo
     int                            firstDefaultValueIdx = -1;
     vector<TypeInfoFuncAttrParam*> parameters;
     TypeInfo*                      returnType;
-    Intrisic                       intrinsic;
 };
 
 struct TypeInfoPointer : public TypeInfo

@@ -18,6 +18,21 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveSizeOf(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto child      = node->childs.front();
+
+    SWAG_VERIFY(child->typeInfo, sourceFile->report({sourceFile, child, "expression cannot be evaluated at compile time"}));
+
+    node->computedValue.reg.u64 = child->typeInfo->sizeOf;
+    node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+    node->typeInfo = g_TypeMgr.typeInfoU32;
+
+    return true;
+}
+
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {
     auto node       = context->node;

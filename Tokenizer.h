@@ -57,18 +57,20 @@ enum class TokenId
     SymBackSlash,
     SymAttrStart,
 
-	CompilerModule,
+    CompilerModule,
     CompilerUnitTest,
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
     CompilerFile,
     CompilerLine,
-	CompilerImport,
-	CompilerVersion,
-	CompilerElse,
+    CompilerImport,
+    CompilerVersion,
+    CompilerElse,
 
-    Intrisic,
+    IntrisicPrint,
+    IntrisicAssert,
+    IntrisicSizeOf,
 
     KwdVar,
     KwdNamespace,
@@ -79,13 +81,13 @@ enum class TokenId
     KwdTrue,
     KwdFalse,
     KwdReturn,
-	KwdUsing,
+    KwdUsing,
     KwdCast,
-	KwdIf,
-	KwdElse,
-	KwdWhile,
-	KwdBreak,
-	KwdContinue,
+    KwdIf,
+    KwdElse,
+    KwdWhile,
+    KwdBreak,
+    KwdContinue,
 
     Identifier,
     LiteralNumber,
@@ -100,15 +102,12 @@ enum class TokenId
 
 struct Token
 {
-    Utf8           text;
-    SourceLocation startLocation;
-    SourceLocation endLocation;
-    Register       literalValue;
-    TokenId        id;
-    union {
-        TypeInfoNative* literalType;
-        Intrisic        intrisic;
-    };
+    Utf8            text;
+    SourceLocation  startLocation;
+    SourceLocation  endLocation;
+    Register        literalValue;
+    TokenId         id;
+    TypeInfoNative* literalType;
 };
 
 struct Tokenizer

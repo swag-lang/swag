@@ -9,6 +9,7 @@ enum class Intrisic
     None = 0,
     Print,
     Assert,
+	SizeOf,
 };
 
 struct LanguageSpec
@@ -18,7 +19,6 @@ struct LanguageSpec
 
     map<Utf8, TokenId>         keywords;
     map<Utf8, TypeInfoNative*> nativeTypes;
-    map<Utf8, Intrisic>        intrinsics;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')

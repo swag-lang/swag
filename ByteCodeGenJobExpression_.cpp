@@ -16,6 +16,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 	// Dereference of a string constant
     if (node->array->typeInfo->kind == TypeInfoKind::Native && node->array->typeInfo->nativeType == NativeType::String)
     {
+		emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC[0], node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC[0]);
     }

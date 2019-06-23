@@ -70,9 +70,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     auto     typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
     auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
 
-    switch (typeInfo->intrinsic)
+    switch (node->token.id)
     {
-    case Intrisic::Print:
+	case TokenId::IntrisicPrint:
     {
         auto child0 = callParams->childs[0];
         switch (TypeManager::concreteType(child0->typeInfo)->nativeType)
@@ -102,7 +102,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
-    case Intrisic::Assert:
+	case TokenId::IntrisicAssert:
     {
         auto child0 = callParams->childs[0];
         emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);

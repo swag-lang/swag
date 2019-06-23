@@ -63,6 +63,7 @@ enum class AstNodeKind
     EnumType,
     EnumValue,
     Literal,
+	SizeOf,
     Cast,
     SingleOp,
     MakePointer,

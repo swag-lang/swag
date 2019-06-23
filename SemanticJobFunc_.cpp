@@ -105,7 +105,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
         genByteCode = true;
-    if (node->token.id == TokenId::Intrisic)
+    if (node->token.id == TokenId::IntrisicPrint || node->token.id == TokenId::IntrisicAssert)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         genByteCode = false;

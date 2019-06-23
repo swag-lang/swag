@@ -71,34 +71,41 @@ static void __print_i32(swag_int32_t value)
 { 
 	char buf[100]; 
 	snprintf(buf, 100, "%d", value); 
+	__print(buf);
 }
 
 static void __print_i64(swag_int64_t value)   
 { 
 	char buf[100]; 
 	snprintf(buf, 100, "%lld", value); 
+	__print(buf);
 }
 
 static void __print_f32(swag_float32_t value)
 { 
 	char buf[100]; 
 	snprintf(buf, 100, "%f", value); 
+	__print(buf);
 }
 
 static void __print_f64(swag_float64_t value)
 { 
 	char buf[100]; 
 	snprintf(buf, 100, "%lf", value); 
+	__print(buf);
 }
 
-static void __assert(swag_bool expr, const char* file, int line)
+static void __assert(swag_bool expr, const char* file, int line, const char* msg)
 {
 	if(expr) 
 		return;
 	__print(file); 
 	__print(":"); 
-	__print_i32(line); 
-	__print(": error: intrinsic assertion failed in native code\n");
+	__print_i32(line);
+	if(msg)
+		__print(msg);
+	else	
+		__print(": error: intrinsic assertion failed in native code\n");
 	exit(-1);
 }
 

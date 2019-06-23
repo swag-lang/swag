@@ -18,8 +18,9 @@ void LanguageSpec::setup()
     keywords["#version"]  = TokenId::CompilerVersion;
     keywords["#else"]     = TokenId::CompilerElse;
 
-    keywords["@print"]  = TokenId::Intrisic;
-    keywords["@assert"] = TokenId::Intrisic;
+    keywords["@print"]  = TokenId::IntrisicPrint;
+    keywords["@assert"] = TokenId::IntrisicAssert;
+	keywords["@sizeof"] = TokenId::IntrisicSizeOf;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
@@ -65,9 +66,6 @@ void LanguageSpec::setup()
     nativeTypes["bool"]   = g_TypeMgr.typeInfoBool;
     nativeTypes["char"]   = g_TypeMgr.typeInfoChar;
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
-
-    intrinsics["@print"]  = Intrisic::Print;
-    intrinsics["@assert"] = Intrisic::Assert;
 }
 
 string LanguageSpec::tokenToName(TokenId id)
