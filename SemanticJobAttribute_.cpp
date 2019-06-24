@@ -116,6 +116,16 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         // Collect parameters
         auto identifierRef = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
         auto identifier    = static_cast<AstIdentifier*>(identifierRef->childs.back());
+
+        // Be sure this is an attribute
+        if (identifier->resolvedSymbolName->kind != SymbolKind::Attribute)
+        {
+            Diagnostic diag{sourceFile, identifier, format("invalid attribute '%s'", identifier->resolvedSymbolName->name.c_str())};
+            Diagnostic note{sourceFile, identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", identifier->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note};
+            sourceFile->report(diag, &note);
+            return false;
+        }
+
         if (identifier->callParameters)
         {
             for (auto one : identifier->callParameters->childs)
