@@ -13,15 +13,15 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
 
-	// Dereference of a string constant
+    // Dereference of a string constant
     if (node->array->typeInfo->kind == TypeInfoKind::Native && node->array->typeInfo->nativeType == NativeType::String)
     {
-		emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC[0], node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC[0]);
     }
 
-	// Dereference of a pointer
+    // Dereference of a pointer
     else
     {
         auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
@@ -124,4 +124,21 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     default:
         return internalError(context, "emitLiteral, type not supported");
     }
+}
+
+bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
+{
+    auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
+
+    if (typeInfo->isNative(NativeType::String))
+    {
+		node->resultRegisterRC = node->expression->resultRegisterRC[1];
+    }
+    else
+    {
+        return internalError(context, "emitCountProperty, type not supported");
+    }
+
+    return true;
 }

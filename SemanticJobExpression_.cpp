@@ -36,11 +36,17 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
         break;
 
     case Property::Count:
-        SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
         if (expr->typeInfo->isNative(NativeType::String))
         {
-            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
-            node->computedValue.reg.u64 = expr->computedValue.text.length();
+            if (expr->flags & AST_VALUE_COMPUTED)
+            {
+                node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+                node->computedValue.reg.u64 = expr->computedValue.text.length();
+            }
+            else
+            {
+				node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+            }
         }
         else
         {
