@@ -7,9 +7,9 @@ func test1: ()-> string
 	return "toto1";
 }
 
-#unittest error;
 //#[swag.printbytecode]
 #test
 {
-	@print(test1);
+	var c = test1;
+	@assert(c == "toto1");
 }
