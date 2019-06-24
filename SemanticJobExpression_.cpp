@@ -45,7 +45,7 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
             }
             else
             {
-				node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+                node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
             }
         }
         else
@@ -54,6 +54,24 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
         }
 
         node->typeInfo = g_TypeMgr.typeInfoU32;
+        break;
+
+    case Property::Data:
+        if (expr->typeInfo->isNative(NativeType::String))
+        {
+            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            ptrType->ptrCount    = 1;
+            ptrType->pointedType = g_TypeMgr.typeInfoU8;
+            ptrType->sizeOf      = sizeof(void*);
+            ptrType->name        = "*u8";
+            node->typeInfo       = g_TypeMgr.registerType(ptrType);
+            node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
+        }
+        else
+        {
+            return sourceFile->report({sourceFile, expr, "'data' property can't be applied to expression"});
+        }
+
         break;
     }
 

@@ -70,6 +70,7 @@ void LanguageSpec::setup()
 
     properties["sizeof"] = Property::SizeOf;
     properties["count"]  = Property::Count;
+	properties["data"] = Property::Data;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

@@ -142,3 +142,20 @@ bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
 
     return true;
 }
+
+bool ByteCodeGenJob::emitDataProperty(ByteCodeGenContext* context)
+{
+    auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
+
+    if (typeInfo->isNative(NativeType::String))
+    {
+        node->resultRegisterRC = node->expression->resultRegisterRC[0];
+    }
+    else
+    {
+        return internalError(context, "emitCountData, type not supported");
+    }
+
+    return true;
+}

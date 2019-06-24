@@ -16,6 +16,7 @@ enum class Property
 {
     SizeOf,
 	Count,
+	Data,
 };
 
 struct LanguageSpec
