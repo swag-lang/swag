@@ -17,6 +17,7 @@ void LanguageSpec::setup()
     keywords["#import"]   = TokenId::CompilerImport;
     keywords["#version"]  = TokenId::CompilerVersion;
     keywords["#else"]     = TokenId::CompilerElse;
+    keywords["#test"]     = TokenId::CompilerTest;
 
     keywords["@print"]  = TokenId::IntrisicPrint;
     keywords["@assert"] = TokenId::IntrisicAssert;
@@ -27,7 +28,6 @@ void LanguageSpec::setup()
     keywords["type"]      = TokenId::KwdType;
     keywords["enum"]      = TokenId::KwdEnum;
     keywords["func"]      = TokenId::KwdFunc;
-    keywords["test"]      = TokenId::KwdTest;
     keywords["true"]      = TokenId::KwdTrue;
     keywords["false"]     = TokenId::KwdFalse;
     keywords["attr"]      = TokenId::KwdAttr;

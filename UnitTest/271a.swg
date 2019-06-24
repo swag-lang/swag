@@ -7,7 +7,7 @@
 {
 	#import module271b;
 
-	test
+	#test
 	{
 		module271b.other();
 	}

@@ -9,7 +9,7 @@ func test1: ()-> string
 
 #unittest error;
 //#[swag.printbytecode]
-test
+#test
 {
 	@print(test1);
 }

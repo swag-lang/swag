@@ -247,7 +247,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         SWAG_CHECK(doAttrUse(parent));
         break;
     case TokenId::KwdFunc:
-	case TokenId::KwdTest:
+	case TokenId::CompilerTest:
         SWAG_CHECK(doFuncDecl(parent));
         break;
     case TokenId::CompilerUnitTest:

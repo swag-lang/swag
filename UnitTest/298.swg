@@ -14,7 +14,7 @@
 	}
 
 	//#[printbytecode]
-	test
+	#test
 	{
 		var res = test2;
 		//@print(res);

@@ -3,13 +3,13 @@
 using swag;
 
 #[compiler]
-test
+#test
 {
 	@assert(true);
 }
 
 #[compiler]
-test
+#test
 {
 	@assert(true);
 }

@@ -21,7 +21,7 @@
 	}
 
 	#[swag.public]
-	test
+	#test
 	{
 		@assert(test2(5) == 120);
 		@assert(test2(4) == 24);

@@ -14,7 +14,7 @@ func test2: (v: string, v1: string)
 }
 
 //#[printbytecode]
-test
+#test
 {
 	test2("toto", "titi");
 }

@@ -67,6 +67,7 @@ enum class TokenId
     CompilerImport,
     CompilerVersion,
     CompilerElse,
+    CompilerTest,
 
     IntrisicPrint,
     IntrisicAssert,
@@ -77,7 +78,6 @@ enum class TokenId
     KwdType,
     KwdEnum,
     KwdFunc,
-	KwdTest,
     KwdAttr,
     KwdTrue,
     KwdFalse,

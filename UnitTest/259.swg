@@ -10,7 +10,7 @@
 		return a - b; 
 	}
 
-	test
+	#test
 	{
 		@assert(test1(60.0, 40.0) == 20);
 		@assert(test1(50.0, 50.0) == 0);

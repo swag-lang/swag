@@ -8,7 +8,7 @@ using swag;
 }
 
 //#[printbytecode]
-test
+#test
 {
 	var b = "abcd";
 	@assert(b[0] == cast(u8) 'a');

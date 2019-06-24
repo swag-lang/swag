@@ -2,7 +2,7 @@
 #unittest pass backend;
 using swag;
 
-test
+#test
 {
 	var i = 5;
 	while i > 0

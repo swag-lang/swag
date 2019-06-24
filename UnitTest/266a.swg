@@ -7,7 +7,7 @@
 {
 	#import module266b;
 
-	test
+	#test
 	{
 	}
 }

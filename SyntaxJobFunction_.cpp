@@ -79,7 +79,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     bool isTest      = false;
     bool isIntrinsic = false;
 
-    if (token.id == TokenId::KwdTest)
+    if (token.id == TokenId::CompilerTest)
         isTest = true;
     SWAG_CHECK(tokenizer.getToken(token));
 

@@ -16,7 +16,7 @@
 		return res;
 	}
 
-	test
+	#test
 	{
 		@assert(fact(5) == 120);
 		@assert(fact(4) == 24);

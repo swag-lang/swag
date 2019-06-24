@@ -7,7 +7,7 @@ using swag;
 }
 
 //#[printbytecode]
-test
+#test
 {
 	var a: s32 = 666;
 	var a1: s32 = 500;
