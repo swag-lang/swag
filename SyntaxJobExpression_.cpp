@@ -130,7 +130,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeref, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
         arrayNode->token       = move(token);
-        arrayNode->semanticFct = &SemanticJob::resolvePointerDeref;
+        arrayNode->semanticFct = &SemanticJob::resolvePointerDeRef;
         Ast::addChild(arrayNode, exprNode);
         arrayNode->array = exprNode;
         SWAG_CHECK(tokenizer.getToken(token));

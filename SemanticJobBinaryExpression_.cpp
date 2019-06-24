@@ -762,12 +762,14 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node = context->node;
+    auto node         = context->node;
+    auto leftTypeInfo = left->typeInfo;
+    auto sourceFile   = context->sourceFile;
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
-        switch (left->typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::Bool:
             node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
@@ -795,8 +797,12 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         case NativeType::U64:
             node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
             break;
+        case NativeType::String:
+            node->computedValue.reg.b = left->computedValue.text == right->computedValue.text;
+            break;
+
         default:
-            return internalError(context, "resolveCompOpEqual, type not supported");
+            return sourceFile->report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
 
@@ -805,12 +811,14 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
 
 bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node = context->node;
+    auto node         = context->node;
+    auto leftTypeInfo = left->typeInfo;
+    auto sourceFile   = context->sourceFile;
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
-        switch (left->typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::Bool:
             node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
@@ -846,8 +854,9 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
             break;
+
         default:
-            return internalError(context, "resolveCompOpLower, type not supported");
+            return sourceFile->report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
 
@@ -856,12 +865,14 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
 
 bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node = context->node;
+    auto node         = context->node;
+    auto leftTypeInfo = left->typeInfo;
+    auto sourceFile   = context->sourceFile;
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
-        switch (left->typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::Bool:
             node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
@@ -897,8 +908,9 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
         case NativeType::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
             break;
+
         default:
-            return internalError(context, "resolveCompOpGreater, type not supported");
+            return sourceFile->report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
 
@@ -952,38 +964,6 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         break;
     default:
         return internalError(context, "resolveCompareExpression, token not supported");
-    }
-
-    return true;
-}
-
-bool SemanticJob::resolvePointerDeref(SemanticContext* context)
-{
-    auto sourceFile        = context->sourceFile;
-    auto arrayNode         = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
-    auto arrayType         = arrayNode->array->typeInfo;
-    arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
-
-    if (arrayType->kind == TypeInfoKind::Native && arrayType->nativeType == NativeType::String)
-    {
-        arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
-    }
-    else
-    {
-        SWAG_VERIFY(arrayType->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, arrayNode->array, format("type '%s' can't be referenced like a pointer", arrayType->name.c_str())}));
-        auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
-        if (typePtr->ptrCount == 1)
-        {
-            arrayNode->typeInfo = typePtr->pointedType;
-        }
-        else
-        {
-            auto newType        = g_Pool_typeInfoPointer.alloc();
-            newType->name       = typePtr->name;
-            newType->ptrCount   = typePtr->ptrCount - 1;
-            newType->sizeOf     = typePtr->sizeOf;
-            arrayNode->typeInfo = g_TypeMgr.registerType(newType);
-        }
     }
 
     return true;

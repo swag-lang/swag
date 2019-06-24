@@ -97,3 +97,35 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolvePointerDeRef(SemanticContext* context)
+{
+    auto sourceFile        = context->sourceFile;
+    auto arrayNode         = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
+    auto arrayType         = arrayNode->array->typeInfo;
+    arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
+
+    if (arrayType->kind == TypeInfoKind::Native && arrayType->nativeType == NativeType::String)
+    {
+        arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
+    }
+    else
+    {
+        SWAG_VERIFY(arrayType->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, arrayNode->array, format("type '%s' can't be referenced like a pointer", arrayType->name.c_str())}));
+        auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
+        if (typePtr->ptrCount == 1)
+        {
+            arrayNode->typeInfo = typePtr->pointedType;
+        }
+        else
+        {
+            auto newType        = g_Pool_typeInfoPointer.alloc();
+            newType->name       = typePtr->name;
+            newType->ptrCount   = typePtr->ptrCount - 1;
+            newType->sizeOf     = typePtr->sizeOf;
+            arrayNode->typeInfo = g_TypeMgr.registerType(newType);
+        }
+    }
+
+    return true;
+}

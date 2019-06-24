@@ -1,35 +1,41 @@
 #module module304;
-
-var g: bool = true;
-var g1: s32 = 666;
-var g2: u64 = 0xF000_000F;
-
-/*
-func compare: (str1: string, str2: string)-> bool
+#version(FastTest)
 {
-	var count1 = @prop(str1, count);
-	var count2 = @prop(str2, count);
-	if(count1 != count2)
-		return false;
-		
-	@print(cast(s32) count1);
-	var src = @prop(str1, data);
-	var dst = @prop(str2, data);
-	while(src[0] != 0)
+	#unittest pass backend;
+}
+#else
+{
+	var g: bool = true;
+	var g1: s32 = 666;
+	var g2: u64 = 0xF000_000F;
+
+	/*
+	func compare: (str1: string, str2: string)-> bool
 	{
-		if(src[0] != dst[0])
+		var count1 = @prop(str1, count);
+		var count2 = @prop(str2, count);
+		if(count1 != count2)
 			return false;
-		src += 1;
-		dst += 1;
-	}
-	
-	return true;
-}*/
+			
+		@print(cast(s32) count1);
+		var src = @prop(str1, data);
+		var dst = @prop(str2, data);
+		while(src[0] != 0)
+		{
+			if(src[0] != dst[0])
+				return false;
+			src += 1;
+			dst += 1;
+		}
+		
+		return true;
+	}*/
 
-//#[swag.printbytecode]
-#test
-{
-	@assert(g == true);
-	@assert(g1 == 666);
-	@assert(g2 == 0xF000_000F);
+	//#[swag.printbytecode]
+	#test
+	{
+		@assert(g == true);
+		@assert(g1 == 666);
+		@assert(g2 == 0xF000_000F);
+	}
 }
