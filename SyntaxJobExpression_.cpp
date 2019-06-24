@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "Scoped.h"
+#include "LanguageSpec.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
@@ -37,18 +38,28 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doSizeOf(AstNode* parent, AstNode** result)
+bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::SizeOf, sourceFile->indexInModule, parent);
+    auto node = Ast::newNode(&g_Pool_astProperty, AstNodeKind::IntrinsicProp, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
-    node->semanticFct = &SemanticJob::resolveSizeOf;
+    node->semanticFct = &SemanticJob::resolveIntrinsicProp;
     node->token       = move(token);
     if (result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(doExpression(node, &node->expression));
+    SWAG_CHECK(eatToken(TokenId::SymComma));
+
+    AstNode* identifier;
+    SWAG_CHECK(doIdentifierRef(nullptr, &identifier));
+    const auto& name = identifier->childs.back()->name;
+	auto it = g_LangSpec.properties.find(name);
+	if (it == g_LangSpec.properties.end())
+		return syntaxError(token, format("invalid property '%s'", name.c_str()));
+
+	node->prop = it->second;
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
@@ -78,8 +89,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
-    case TokenId::IntrisicSizeOf:
-        SWAG_CHECK(doSizeOf(parent, result));
+    case TokenId::IntrisicProp:
+        SWAG_CHECK(doIntrinsicProp(parent, result));
         break;
 
     case TokenId::NativeType:

@@ -21,7 +21,7 @@ void LanguageSpec::setup()
 
     keywords["@print"]  = TokenId::IntrisicPrint;
     keywords["@assert"] = TokenId::IntrisicAssert;
-    keywords["@sizeof"] = TokenId::IntrisicSizeOf;
+    keywords["@prop"]   = TokenId::IntrisicProp;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
@@ -67,6 +67,8 @@ void LanguageSpec::setup()
     nativeTypes["bool"]   = g_TypeMgr.typeInfoBool;
     nativeTypes["char"]   = g_TypeMgr.typeInfoChar;
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
+
+    properties["sizeof"] = Property::SizeOf;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

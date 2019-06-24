@@ -20,6 +20,7 @@ struct Job;
 struct AstFuncDecl;
 struct AstAttrUse;
 struct TypeInfoFuncAttrParam;
+enum class Property;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -63,7 +64,8 @@ enum class AstNodeKind
     EnumType,
     EnumValue,
     Literal,
-	SizeOf,
+    SizeOf,
+    IntrinsicProp,
     Cast,
     SingleOp,
     MakePointer,
@@ -194,7 +196,7 @@ struct AstNode : public PoolElement
     uint32_t            sourceFileIdx;
     uint32_t            childParentIdx;
     ByteCode*           bc;
-    RegisterList      resultRegisterRC;
+    RegisterList        resultRegisterRC;
 };
 
 struct AstVarDecl : public AstNode
@@ -356,6 +358,17 @@ struct AstPointerDeref : public AstNode
     AstNode* access;
 };
 
+struct AstProperty : public AstNode
+{
+    void reset() override
+    {
+        AstNode::reset();
+    }
+
+    AstNode* expression;
+    Property prop;
+};
+
 extern Pool<AstNode>          g_Pool_astNode;
 extern Pool<AstAttrDecl>      g_Pool_astAttrDecl;
 extern Pool<AstAttrUse>       g_Pool_astAttrUse;
@@ -369,3 +382,4 @@ extern Pool<AstWhile>         g_Pool_astWhile;
 extern Pool<AstBreakContinue> g_Pool_astBreakContinue;
 extern Pool<AstType>          g_Pool_astType;
 extern Pool<AstPointerDeref>  g_Pool_astPointerDeref;
+extern Pool<AstProperty>      g_Pool_astProperty;

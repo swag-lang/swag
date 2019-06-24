@@ -6,6 +6,8 @@
 #include "Global.h"
 #include "SourceFile.h"
 #include "ByteCodeGenJob.h"
+#include "Ast.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -18,17 +20,20 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveSizeOf(SemanticContext* context)
+bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
 {
-    auto node       = context->node;
+    auto node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto sourceFile = context->sourceFile;
-    auto child      = node->childs.front();
 
-    SWAG_VERIFY(child->typeInfo, sourceFile->report({sourceFile, child, "expression cannot be evaluated at compile time"}));
-
-    node->computedValue.reg.u64 = child->typeInfo->sizeOf;
-    node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
-    node->typeInfo = g_TypeMgr.typeInfoU32;
+    switch (node->prop)
+    {
+    case Property::SizeOf:
+        SWAG_VERIFY(node->expression->typeInfo, sourceFile->report({sourceFile, node->expression, "expression cannot be evaluated at compile time"}));
+        node->computedValue.reg.u64 = node->expression->typeInfo->sizeOf;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+        node->typeInfo = g_TypeMgr.typeInfoU32;
+        break;
+    }
 
     return true;
 }
