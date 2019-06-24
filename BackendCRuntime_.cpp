@@ -109,6 +109,11 @@ static void __assert(swag_bool expr, const char* file, int line, const char* msg
 	exit(-1);
 }
 
+static swag_bool __strcmp(const char* str1, const char* str2)
+{
+	return !strcmp(str1, str2);
+}
+
 )";
 
 bool BackendC::emitRuntime()

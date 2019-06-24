@@ -3,10 +3,9 @@
 
 var g = "toto";
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var c = @prop(g, count);
 	@assert(c == 4);
-	@assert(g == "toto");
 }

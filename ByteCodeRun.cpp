@@ -173,11 +173,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::BoundCheck:
     {
-		int maxOffset = registersRC[ip->a.u32].u32;
-		int curOffset = registersRC[ip->b.u32].u32;
-		if (curOffset > maxOffset)
-			context->error(format("index out of range (index is '%d', maximum index is '%d')", curOffset, maxOffset));
-		break;
+        int maxOffset = registersRC[ip->a.u32].u32;
+        int curOffset = registersRC[ip->b.u32].u32;
+        if (curOffset > maxOffset)
+            context->error(format("index out of range (index is '%d', maximum index is '%d')", curOffset, maxOffset));
+        break;
     }
 
     case ByteCodeOp::PushRCxSaved:
@@ -515,6 +515,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::CompareOpEqual64:
     {
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].u64 == registersRC[ip->b.u32].u64;
+        break;
+    }
+    case ByteCodeOp::CompareOpEqualString:
+    {
+        registersRC[ip->c.u32].b = !strcmp((const char*) registersRC[ip->a.u32].pointer, (const char*) registersRC[ip->b.u32].pointer);
         break;
     }
 

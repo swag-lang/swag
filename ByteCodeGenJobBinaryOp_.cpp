@@ -359,6 +359,9 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0
     case NativeType::F64:
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
         return true;
+    case NativeType::String:
+        emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
+        return true;
     default:
         return internalError(context, "emitCompareOpEqual, type not supported");
     }

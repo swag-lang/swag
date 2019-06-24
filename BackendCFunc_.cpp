@@ -742,6 +742,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::CompareOpEqualBool:
             bufferC.addString(format("r%u.b = r%u.b == r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
+		case ByteCodeOp::CompareOpEqualString:
+            bufferC.addString(format("r%u.b = __strcmp((const char*) r%u.pointer, (const char*) r%u.pointer);", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
 
         case ByteCodeOp::Jump:
             bufferC.addString(format("goto lbl%08u;", ip->a.s32 + i + 1));
