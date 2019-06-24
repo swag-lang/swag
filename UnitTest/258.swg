@@ -5,14 +5,12 @@
 }
 #else
 {
-	using swag;
-
 	func test: (a: s32, b: s32)->s32 
 	{ 
 		return a - b; 
 	}
 
-	#[test]
+	#[swag.test]
 	func main: ()
 	{
 		@assert(test(60, 40) == 20);

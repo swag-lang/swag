@@ -2,13 +2,13 @@
 #unittest pass semantic;
 using swag;
 
-#[printbytecode]
+//#[printbytecode]
 func test2: ()-> string
 {
 	return "toto1";
 }
 
-#[printbytecode]
+//#[printbytecode]
 #[test]
 func test1: ()
 {

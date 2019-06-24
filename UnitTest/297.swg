@@ -1,14 +1,14 @@
 #module module297;
 #unittest pass semantic;
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 func test: ()-> string
 {
 	return "toto1";
 }
 
 #unittest error;
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #[test]
 func test1: ()
 {
