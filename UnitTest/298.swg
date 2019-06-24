@@ -7,16 +7,17 @@
 {
 	using swag;
 
-	#[printbytecode]
+	//#[printbytecode]
 	func test2: ()-> string
 	{
 		return "toto1";
 	}
 
-	#[printbytecode]
-	#[test]
-	func test1: ()
+	//#[printbytecode]
+	test
 	{
-		@print(test2);
+		var res = test2;
+		//@print(res);
+		//@print(test2.count);
 	}
 }

@@ -84,8 +84,6 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     AstNode* node       = context->node;
-    auto     overload   = node->resolvedSymbolOverload;
-    auto     typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
     auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
 
     switch (node->token.id)
@@ -268,7 +266,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
             {
                 node->resultRegisterRC = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
-				context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+                context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
             }
         }
         else

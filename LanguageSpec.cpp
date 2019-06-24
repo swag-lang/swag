@@ -20,13 +20,14 @@ void LanguageSpec::setup()
 
     keywords["@print"]  = TokenId::IntrisicPrint;
     keywords["@assert"] = TokenId::IntrisicAssert;
-	keywords["@sizeof"] = TokenId::IntrisicSizeOf;
+    keywords["@sizeof"] = TokenId::IntrisicSizeOf;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["namespace"] = TokenId::KwdNamespace;
     keywords["type"]      = TokenId::KwdType;
     keywords["enum"]      = TokenId::KwdEnum;
     keywords["func"]      = TokenId::KwdFunc;
+    keywords["test"]      = TokenId::KwdTest;
     keywords["true"]      = TokenId::KwdTrue;
     keywords["false"]     = TokenId::KwdFalse;
     keywords["attr"]      = TokenId::KwdAttr;

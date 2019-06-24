@@ -111,8 +111,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
     case SymbolKind::Function:
     {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        node->kind    = AstNodeKind::FuncCall;
+        node->kind = AstNodeKind::FuncCall;
         node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
 
         if (node->token.id == TokenId::IntrisicPrint || node->token.id == TokenId::IntrisicAssert)

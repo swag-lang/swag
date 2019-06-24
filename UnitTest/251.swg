@@ -2,14 +2,14 @@
 #unittest pass semantic;
 using swag;
 
-#[test, compiler]
-func main: ()
+#[compiler]
+test
 {
 	@assert(true);
 }
 
-#[test, compiler]
-func main1: ()
+#[compiler]
+test
 {
 	@assert(true);
 }

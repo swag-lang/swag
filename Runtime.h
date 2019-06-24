@@ -4,7 +4,6 @@ namespace swag {
 
 attr constexpr: () -> func;
 attr printbytecode: () -> func;
-attr test: () -> func;
 attr compiler: () -> func;
 attr public: () -> func;
 attr foreign: (module: string = "") -> func;

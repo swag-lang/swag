@@ -2,8 +2,7 @@
 #unittest pass backend;
 using swag;
 
-#[test]
-func main: ()
+test
 {
 	var i = 5;
 	while i > 0

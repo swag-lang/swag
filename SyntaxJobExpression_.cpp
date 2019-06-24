@@ -82,8 +82,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doSizeOf(parent, result));
         break;
 
-	case TokenId::NativeType:
-	case TokenId::SymAsterisk:
+    case TokenId::NativeType:
+    case TokenId::SymAsterisk:
         SWAG_CHECK(doTypeExpression(parent, result));
         break;
 
@@ -97,6 +97,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
 {
     AstNode* exprNode;
+
+    // Take pointer
     if (token.id == TokenId::SymAmpersand)
     {
         exprNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule);
@@ -111,6 +113,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doSinglePrimaryExpression(nullptr, &exprNode));
     }
 
+    // Dereference pointer
     while (token.id == TokenId::SymLeftSquare)
     {
         auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeref, sourceFile->indexInModule);

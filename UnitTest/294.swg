@@ -4,8 +4,7 @@ using swag;
 #unittest error;
 
 //#[printbytecode]
-#[test]
-func test1: ()
+test
 {
 	var b = "XYZ";
 	@assert(b[4] == 0);

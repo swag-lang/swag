@@ -5,7 +5,7 @@
 }
 #else
 {
-	func test: (v: s32)->s32
+	func test2: (v: s32)->s32
 	{
 		if(v == 1)
 			return 1;
@@ -17,13 +17,13 @@
 	{
 		if(v == 1)
 			return 1;
-		return v * test(v - 1);
+		return v * test2(v - 1);
 	}
 
-	#[swag.test, swag.public]
-	func main: ()
+	#[swag.public]
+	test
 	{
-		@assert(test(5) == 120);
-		@assert(test(4) == 24);
+		@assert(test2(5) == 120);
+		@assert(test2(4) == 24);
 	}
 }

@@ -8,8 +8,7 @@
 	#import module273b;
 
 	//#[swag.test, swag.printbytecode]
-	#[swag.test]
-	func main: ()
+	test
 	{
 		module273b.other();
 	}

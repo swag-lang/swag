@@ -2,15 +2,14 @@
 #unittest pass semantic;
 
 //#[swag.printbytecode]
-func test: ()-> string
+func test1: ()-> string
 {
 	return "toto1";
 }
 
 #unittest error;
 //#[swag.printbytecode]
-#[test]
-func test1: ()
+test
 {
-	@print(test);
+	@print(test1);
 }

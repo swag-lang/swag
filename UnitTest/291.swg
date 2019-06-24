@@ -14,8 +14,7 @@ func test2: (v: string, v1: string)
 }
 
 //#[printbytecode]
-#[test]
-func test1: ()
+test
 {
 	test2("toto", "titi");
 }

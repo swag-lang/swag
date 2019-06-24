@@ -7,6 +7,7 @@
 #include "Scoped.h"
 #include "SemanticJob.h"
 #include "SourceFile.h"
+#include "Attribute.h"
 #include "SymTable.h"
 
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
@@ -74,16 +75,30 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
+
+    bool isTest      = false;
+    bool isIntrinsic = false;
+
+    if (token.id == TokenId::KwdTest)
+        isTest = true;
     SWAG_CHECK(tokenizer.getToken(token));
 
-    bool isIntrinsic = false;
-    if (token.id == TokenId::IntrisicPrint ||
-        token.id == TokenId::IntrisicAssert)
+    // Name
+    if (isTest)
     {
-        isIntrinsic = true;
+        Ast::assignToken(funcNode, token);
+        int id         = g_Global.uniqueID.fetch_add(1);
+        funcNode->name = "__test" + to_string(id);
+        funcNode->attributeFlags |= ATTRIBUTE_TEST;
     }
-    SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
-    Ast::assignToken(funcNode, token);
+    else
+    {
+        if (token.id == TokenId::IntrisicPrint || token.id == TokenId::IntrisicAssert)
+            isIntrinsic = true;
+
+        SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
+        Ast::assignToken(funcNode, token);
+    }
 
     // Register function name
     Scope* newScope = nullptr;
@@ -100,6 +115,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
 
     // Parameters
+    if (!isTest)
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
@@ -113,10 +129,13 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     typeNode->inheritOwnersAndFlags(this);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
-    if (token.id == TokenId::SymMinusGreat)
+    if (!isTest)
     {
-        SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
-        SWAG_CHECK(doTypeExpression(typeNode));
+        if (token.id == TokenId::SymMinusGreat)
+        {
+            SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
+            SWAG_CHECK(doTypeExpression(typeNode));
+        }
     }
 
     // Content of function

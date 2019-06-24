@@ -7,8 +7,7 @@
 {
 	#import module271b;
 
-	#[swag.test]
-	func main: ()
+	test
 	{
 		module271b.other();
 	}

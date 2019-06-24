@@ -5,11 +5,10 @@
 }
 #else
 {
-	func test: ()->s32 { return 666; }
+	func test1: ()->s32 { return 666; }
 
-	#[swag.test]
-	func main: ()
+	test
 	{
-		@assert(test == 666);
+		@assert(test1 == 666);
 	}
 }

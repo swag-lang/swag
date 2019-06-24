@@ -77,6 +77,7 @@ enum class TokenId
     KwdType,
     KwdEnum,
     KwdFunc,
+	KwdTest,
     KwdAttr,
     KwdTrue,
     KwdFalse,

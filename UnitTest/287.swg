@@ -5,8 +5,7 @@
 }
 
 //#[swag.printbytecode]
-#[swag.test]
-func test1: ()
+test
 {
 	var a: bool = true;
 	var b = &a;
@@ -14,8 +13,7 @@ func test1: ()
 	@assert(c == true);
 }
 
-#[swag.test]
-func test2: ()
+test
 {
 	var a: s32 = 666;
 	var b = &a;

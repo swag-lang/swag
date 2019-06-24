@@ -7,8 +7,7 @@
 {
 	#import module266b;
 
-	#[swag.test]
-	func main: ()
+	test
 	{
 	}
 }
