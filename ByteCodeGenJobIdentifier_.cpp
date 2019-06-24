@@ -27,9 +27,23 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC);
-        inst->b.s32            = resolved->storageOffset;
-        inst->c.s32            = resolved->storageIndex;
+        if (resolved->typeInfo->isNative(NativeType::String))
+        {
+            node->resultRegisterRC += reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC[1]);
+            inst->b.s32 = resolved->storageOffset + 8;
+            inst->c.s32 = resolved->storageIndex + 1;
+            inst        = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC[0]);
+            inst->b.s32 = resolved->storageOffset;
+            inst->c.s32 = resolved->storageIndex;
+        }
+        else
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC);
+            inst->b.s32 = resolved->storageOffset;
+            inst->c.s32 = resolved->storageIndex;
+        }
+
         return true;
     }
 
@@ -40,6 +54,14 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (node->flags & AST_LEFT_EXPRESSION)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC);
+            inst->b.s32 = resolved->storageOffset;
+        }
+        else if (resolved->typeInfo->isNative(NativeType::String))
+        {
+            node->resultRegisterRC += reserveRegisterRC(context);
+            auto inst   = emitInstruction(context, ByteCodeOp::RCxFromDataSeg64, node->resultRegisterRC[1]);
+            inst->b.s32 = resolved->storageOffset + 8;
+            inst        = emitInstruction(context, ByteCodeOp::RCxFromDataSeg64, node->resultRegisterRC[0]);
             inst->b.s32 = resolved->storageOffset;
         }
         else
@@ -79,11 +101,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC);
             inst->b.s32 = resolved->storageOffset;
         }
-        else if (resolved->typeInfo->nativeType == NativeType::String)
+        else if (resolved->typeInfo->isNative(NativeType::String))
         {
-			node->resultRegisterRC += reserveRegisterRC(context);
-			emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC[1])->b.s32 = resolved->storageOffset + 8;
-			emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
+            node->resultRegisterRC += reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC[1])->b.s32 = resolved->storageOffset + 8;
+            emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
         }
         else
         {

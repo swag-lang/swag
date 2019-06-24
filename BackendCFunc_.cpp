@@ -303,6 +303,19 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.s32 *= %d;", ip->a.u32, ip->b.s32));
             break;
 
+        case ByteCodeOp::RCxFromDataSeg8:
+            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
+            break;
+        case ByteCodeOp::RCxFromDataSeg16:
+            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
+            break;
+        case ByteCodeOp::RCxFromDataSeg32:
+            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
+            break;
+        case ByteCodeOp::RCxFromDataSeg64:
+            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
+            break;
+
         case ByteCodeOp::RCxRefFromStack:
             bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.s32));
             break;
