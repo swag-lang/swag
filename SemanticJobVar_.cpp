@@ -57,12 +57,21 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
 
-    // Assign stack
+    // Assign value
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        auto value              = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
-        overload->storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf, value);
+        auto  value    = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
+        void* ptrValue = &value->reg;
+        if (typeInfo->isNative(NativeType::String))
+        {
+            static Register storedV[2];
+            storedV[0].pointer = (uint8_t*) value->text.c_str();
+            storedV[1].u64     = value->text.length();
+            ptrValue           = &storedV;
+        }
+
+        overload->storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf, ptrValue);
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
