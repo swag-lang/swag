@@ -19,7 +19,24 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 
     // Reserve one RR register for each return value
     if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
-        countRR++;
+    {
+        if (typeInfo->returnType->kind == TypeInfoKind::Native)
+        {
+            switch (typeInfo->returnType->nativeType)
+            {
+            case NativeType::String:
+                countRR += 2;
+                break;
+            default:
+                countRR++;
+                break;
+            }
+        }
+        else
+        {
+            internalError(context, "emitLocalFuncDecl, invalid return type");
+        }
+    }
 
     // And one per parameter
     countRR += (int) typeInfo->parameters.size();
@@ -53,7 +70,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     {
         auto child = node->childs[0];
         assert(child->typeInfo->kind == TypeInfoKind::Native);
-        emitInstruction(context, ByteCodeOp::CopyRRxRCx, 0, child->resultRegisterRC);
+        for (int r = 0; r < child->resultRegisterRC.size(); r++)
+            emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
     }
 
     assert(node->ownerFct);
@@ -72,7 +90,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
     switch (node->token.id)
     {
-	case TokenId::IntrisicPrint:
+    case TokenId::IntrisicPrint:
     {
         auto child0 = callParams->childs[0];
         switch (TypeManager::concreteType(child0->typeInfo)->nativeType)
@@ -102,7 +120,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
-	case TokenId::IntrisicAssert:
+    case TokenId::IntrisicAssert:
     {
         auto child0 = callParams->childs[0];
         emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
@@ -237,8 +255,26 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
+        if (typeInfoFunc->returnType->kind == TypeInfoKind::Native)
+        {
+            if (typeInfoFunc->returnType->nativeType == NativeType::String)
+            {
+                reserveRegisterRC(context, node->resultRegisterRC, 2);
+                emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC[0], 0);
+                emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC[1], 1);
+                context->bc->maxCallResults = max(context->bc->maxCallResults, 2);
+            }
+            else
+            {
+                node->resultRegisterRC = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
+				context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+            }
+        }
+        else
+        {
+            assert(false);
+        }
     }
 
     // Restore stack as it was before the call, before the parameters

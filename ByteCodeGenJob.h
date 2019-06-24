@@ -118,6 +118,7 @@ struct ByteCodeGenJob : public Job
     bool             syncToDependentNodes;
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
+    static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
     static void     freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
 

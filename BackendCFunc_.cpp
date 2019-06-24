@@ -96,12 +96,22 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     bufferC.addString(node->name.c_str());
     bufferC.addString("(");
 
-    // Result registers
+    // Result
     int cptParams = 0;
     if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        bufferC.addString("__register* rr0");
-        cptParams++;
+        if (typeFunc->returnType->kind == TypeInfoKind::Native)
+        {
+            if (typeFunc->returnType->nativeType == NativeType::String)
+                bufferC.addString("__register* rr0, __register* rr1");
+            else
+                bufferC.addString("__register* rr0");
+            cptParams++;
+        }
+        else
+        {
+            assert(false);
+        }
     }
 
     // Parameters
@@ -110,17 +120,24 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     {
         if (cptParams)
             bufferC.addString(", ");
-        switch (param->typeInfo->nativeType)
+        if (param->typeInfo->kind == TypeInfoKind::Native)
         {
-        case NativeType::String:
-            bufferC.addString(format("__register* rp%u, __register* rp%u", index, index + 1));
-            index += 2;
-            break;
-        default:
-            bufferC.addString(format("__register* rp%u", index));
-            index++;
-            break;
+            if (param->typeInfo->nativeType == NativeType::String)
+            {
+                bufferC.addString(format("__register* rp%u, __register* rp%u", index, index + 1));
+                index += 2;
+            }
+            else
+            {
+                bufferC.addString(format("__register* rp%u", index));
+                index++;
+            }
         }
+        else
+        {
+            assert(false);
+        }
+
         cptParams++;
     }
 
@@ -216,14 +233,30 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         bufferC.addString(";\n");
     }
 
+    // For function call results
+    if (bc->maxCallResults)
+    {
+        int index = 0;
+        for (int i = 0; i < bc->maxCallResults; i++)
+        {
+            if (index == 0)
+                bufferC.addString("__register ");
+            else
+                bufferC.addString(", ");
+            bufferC.addString(format("rt%u", index));
+            index = (index + 1) % 10;
+            if (index == 0)
+                bufferC.addString(";\n");
+        }
+
+        bufferC.addString(";\n");
+    }
+
     // Local stack
     if (node->stackSize)
     {
         bufferC.addString(format("swag_uint8_t stack[%u];\n", node->stackSize));
     }
-
-    // For function call results
-    bufferC.addString("__register rt0;\n");
 
     // Generate bytecode
     auto ip = bc->out;
@@ -245,9 +278,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::MovSPBP:
             break;
 
-		case ByteCodeOp::BoundCheck:
-			bufferC.addString(format("__assert(r%u.u32 >= r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
-			break;
+        case ByteCodeOp::BoundCheck:
+            bufferC.addString(format("__assert(r%u.u32 >= r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            break;
         case ByteCodeOp::IncPointer:
             bufferC.addString(format("r%u.pointer += r%u.s32;", ip->a.u32, ip->b.s32));
             break;
@@ -306,10 +339,10 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) = r%u.u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOp64:
-			if(ip->c.s32 == 0)
-				bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) = r%u.u64;", ip->a.u32, ip->b.u32));
-			else
-				bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer + %d) = r%u.u64;", ip->a.u32, ip->c.s32, ip->b.u32));
+            if (ip->c.s32 == 0)
+                bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) = r%u.u64;", ip->a.u32, ip->b.u32));
+            else
+                bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer + %d) = r%u.u64;", ip->a.u32, ip->c.s32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPointer:
             bufferC.addString(format("*(void**)(r%u.pointer) = r%u.pointer;", ip->a.u32, ip->b.u32));
@@ -792,8 +825,18 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             int cptCall = 0;
             if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
             {
-                bufferC.addString("&rt0");
-                cptCall++;
+                if (typeFuncBC->returnType->kind == TypeInfoKind::Native)
+                {
+                    if (typeFuncBC->returnType->nativeType == NativeType::String)
+                        bufferC.addString("&rt0, &rt1");
+                    else
+                        bufferC.addString("&rt0");
+                    cptCall++;
+                }
+                else
+                {
+                    assert(false);
+                }
             }
 
             auto index = ip->b.u32 - 1;

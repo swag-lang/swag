@@ -27,6 +27,7 @@ struct ByteCode : public PoolElement
     uint32_t             numInstructions    = 0;
     uint32_t             maxInstructions    = 0;
     int                  maxCallParameters  = 0;
+    int                  maxCallResults     = 0;
     SourceFile*          sourceFile;
     AstNode*             node;
 
