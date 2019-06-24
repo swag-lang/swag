@@ -50,9 +50,10 @@ struct Module : public PoolElement
     uint32_t reserveDataSegmentString(const Utf8& str);
     int      reserveDataSegment(int size, void* content = nullptr);
 
-    SpinLock        mutexDataSeg;
-    vector<uint8_t> dataSegment;
-    vector<Utf8>    strBuffer;
+    SpinLock            mutexDataSeg;
+    vector<uint8_t>     dataSegment;
+    vector<Utf8>        strBuffer;
+    map<Utf8, uint32_t> mapStrBuffer;
 
     void setBuildPass(BuildPass buildP);
 

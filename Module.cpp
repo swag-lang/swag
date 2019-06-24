@@ -147,8 +147,14 @@ void Module::addDependency(AstNode* importNode)
 uint32_t Module::reserveDataSegmentString(const Utf8& str)
 {
     scoped_lock lk(mutexDataSeg);
+    auto        it = mapStrBuffer.find(str);
+    if (it != mapStrBuffer.end())
+        return it->second;
+
     strBuffer.push_back(str);
-    return (uint32_t)(strBuffer.size() - 1);
+    uint32_t result   = (uint32_t)(strBuffer.size() - 1);
+    mapStrBuffer[str] = result;
+    return result;
 }
 
 int Module::reserveDataSegment(int size, void* content)
