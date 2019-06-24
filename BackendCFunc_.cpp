@@ -316,6 +316,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
             break;
 
+        case ByteCodeOp::RCxRefFromDataSeg:
+            bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.s32));
+            break;
         case ByteCodeOp::RCxRefFromStack:
             bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.s32));
             break;
@@ -742,7 +745,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::CompareOpEqualBool:
             bufferC.addString(format("r%u.b = r%u.b == r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
-		case ByteCodeOp::CompareOpEqualString:
+        case ByteCodeOp::CompareOpEqualString:
             bufferC.addString(format("r%u.b = __strcmp((const char*) r%u.pointer, (const char*) r%u.pointer);", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 

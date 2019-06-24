@@ -1,0 +1,14 @@
+#module module311;
+//#unittest pass semantic;
+
+var g: string;
+
+//#[swag.printbytecode]
+#test
+{
+	g = "toto";
+	@assert(g == "toto");
+	g = "titi";
+	@assert(g == "titi");
+	//@print(g);
+}
