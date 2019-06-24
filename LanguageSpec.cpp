@@ -69,6 +69,7 @@ void LanguageSpec::setup()
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
 
     properties["sizeof"] = Property::SizeOf;
+    properties["count"]  = Property::Count;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

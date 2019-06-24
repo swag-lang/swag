@@ -57,6 +57,11 @@ struct TypeInfo : public PoolElement
         return this == from;
     }
 
+    bool isNative(NativeType native)
+    {
+        return (kind == TypeInfoKind::Native) && (nativeType == native);
+    }
+
     static const char* getNakedName(TypeInfo* typeInfo);
 
     uint64_t     flags = 0;

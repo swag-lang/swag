@@ -24,13 +24,29 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
 {
     auto node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto sourceFile = context->sourceFile;
+    auto expr       = node->expression;
 
     switch (node->prop)
     {
     case Property::SizeOf:
-        SWAG_VERIFY(node->expression->typeInfo, sourceFile->report({sourceFile, node->expression, "expression cannot be evaluated at compile time"}));
-        node->computedValue.reg.u64 = node->expression->typeInfo->sizeOf;
+        SWAG_VERIFY(expr->typeInfo, sourceFile->report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
+        node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+        node->typeInfo = g_TypeMgr.typeInfoU32;
+        break;
+
+    case Property::Count:
+        SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
+        if (expr->typeInfo->isNative(NativeType::String))
+        {
+            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+            node->computedValue.reg.u64 = expr->computedValue.text.length();
+        }
+        else
+        {
+            return sourceFile->report({sourceFile, expr, "'count' property can't be applied to expression"});
+        }
+
         node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
     }

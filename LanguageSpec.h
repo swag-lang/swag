@@ -15,6 +15,7 @@ enum class Intrisic
 enum class Property
 {
     SizeOf,
+	Count,
 };
 
 struct LanguageSpec
