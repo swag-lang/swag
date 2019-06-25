@@ -34,5 +34,6 @@ bool BackendC::emitMain()
 
     bufferC.addString("}\n");
     bufferC.addString("#endif\n");
+	bufferC.addString("\n");
     return true;
 }
