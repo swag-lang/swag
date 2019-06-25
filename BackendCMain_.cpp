@@ -13,11 +13,13 @@
 bool BackendC::emitMain()
 {
 	emitSeparator(bufferC, "MAIN");
-    bufferC.addString("#ifdef SWAG_HAS_MAIN\n");
+    bufferC.addString("#ifdef SWAG_IS_EXE\n");
     bufferC.addString("void main() {\n");
 
-	// Call to global init of this module
+	// Call to global init of this module, and dependencies
 	bufferC.addString(format("__%s_globalInit();\n", module->name.c_str()));
+    for (auto& k : module->moduleDependenciesNames)
+		bufferC.addString(format("__%s_globalInit();\n", k.c_str()));
 
 	// Generate call to test functions
 	bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");

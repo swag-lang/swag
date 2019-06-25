@@ -73,6 +73,6 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("__initDataSeg();\n");
     bufferC.addString("}\n\n");
 
-	bufferH.addString(format("SWAG_EXTERN void __%s_globalInit();\n", module->name.c_str()));
+	bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void __%s_globalInit();\n", module->name.c_str()));
     return true;
 }

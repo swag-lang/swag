@@ -1,5 +1,5 @@
 #module module312;
-//#unittest pass semantic;
+#import module312b;
 
 var g: string = "toto";
 var g1: string = "titi";

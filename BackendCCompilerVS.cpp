@@ -210,8 +210,7 @@ bool BackendCCompilerVS::compile()
     string clArguments = "";
     if (backendParameters.debugInformations)
     {
-        fs::path pdbPath = backend->destFile;
-        pdbPath.replace_extension(".pdb");
+        fs::path pdbPath = backend->destFile + backendParameters.postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
         clArguments += "/Zi ";
     }
@@ -253,7 +252,7 @@ bool BackendCCompilerVS::compile()
             libArguments += "/VERBOSE ";
         resultFile = backend->destFile + backendParameters.postFix + ".lib";
         libArguments += "/OUT:\"" + resultFile + "\" ";
-        libArguments += "\"" + nameObj +"\" ";
+        libArguments += "\"" + nameObj + "\" ";
 
         g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.c_str(), resultFile.c_str()));
 
@@ -287,7 +286,7 @@ bool BackendCCompilerVS::compile()
         {
             resultFile = backend->destFile + backendParameters.postFix + ".exe";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
-            clArguments += "/DSWAG_HAS_MAIN ";
+            clArguments += "/DSWAG_IS_EXE ";
         }
 
         g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.c_str(), resultFile.c_str()));
