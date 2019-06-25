@@ -16,6 +16,9 @@ bool BackendC::emitMain()
     bufferC.addString("#ifdef SWAG_HAS_MAIN\n");
     bufferC.addString("void main() {\n");
 
+	// Call to global init of this module
+	bufferC.addString(format("__%s_globalInit();\n", module->name.c_str()));
+
 	// Generate call to test functions
 	bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
     for (auto bc : module->byteCodeTestFunc)

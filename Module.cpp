@@ -157,6 +157,12 @@ uint32_t Module::reserveDataSegmentString(const Utf8& str)
     return result;
 }
 
+void Module::addDataSegmentInitString(uint32_t segOffset, uint32_t strIndex)
+{
+    scoped_lock lk(mutexDataSeg);
+    strBufferInit[strIndex] = segOffset;
+}
+
 int Module::reserveDataSegment(int size, void* content)
 {
     scoped_lock lk(mutexDataSeg);

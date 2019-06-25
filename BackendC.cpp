@@ -109,6 +109,7 @@ bool BackendC::generate()
     ok &= emitStrings();
     ok &= emitFuncSignatures();
     ok &= emitFunctions();
+    ok &= emitGlobalInit();
     ok &= emitMain();
     ok &= emitFooter();
 

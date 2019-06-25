@@ -61,17 +61,24 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        auto  value    = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
-        void* ptrValue = &value->reg;
+        auto     value    = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
+        void*    ptrValue = &value->reg;
+        Register storedV[2];
         if (typeInfo->isNative(NativeType::String))
         {
-            static Register storedV[2];
+            // Store direct pointer to text. Not sure this is really safe
             storedV[0].pointer = (uint8_t*) value->text.c_str();
             storedV[1].u64     = value->text.length();
             ptrValue           = &storedV;
         }
 
         overload->storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf, ptrValue);
+
+        if (typeInfo->isNative(NativeType::String))
+        {
+            auto strIndex = sourceFile->module->reserveDataSegmentString(value->text);
+            sourceFile->module->addDataSegmentInitString(overload->storageOffset, strIndex);
+        }
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {

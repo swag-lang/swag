@@ -58,3 +58,21 @@ bool BackendC::emitStrings()
     bufferC.addString("\n");
     return true;
 }
+
+bool BackendC::emitGlobalInit()
+{
+    bufferC.addString("static void __initDataSeg() {\n");
+    for (auto& k : module->strBufferInit)
+    {
+        bufferC.addString(format("*(void**) (__dataseg + %d) = __string%d;\n", k.second, k.first));
+    }
+
+    bufferC.addString("}\n\n");
+
+    bufferC.addString(format("void __%s_globalInit() {\n", module->name.c_str()));
+    bufferC.addString("__initDataSeg();\n");
+    bufferC.addString("}\n\n");
+
+	bufferH.addString(format("SWAG_EXTERN void __%s_globalInit();\n", module->name.c_str()));
+    return true;
+}
