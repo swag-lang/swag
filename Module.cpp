@@ -35,6 +35,7 @@ void Module::addFile(SourceFile* file)
     files.push_back(file);
     if (file->scopeRoot)
     {
+        file->scopeRoot->indexInParent = (uint32_t) scopeRoot->childScopes.size();
         scopeRoot->childScopes.push_back(file->scopeRoot);
         file->scopeRoot->parentScope = scopeRoot;
     }
@@ -45,20 +46,18 @@ void Module::removeFile(SourceFile* file)
     scoped_lock lk(mutexFile);
     assert(file->module == this);
 
+    assert(files[file->indexInModule] == file);
     files[file->indexInModule]                = files.back();
     files[file->indexInModule]->indexInModule = file->indexInModule;
     files.pop_back();
     file->module        = nullptr;
     file->indexInModule = UINT32_MAX;
 
-    for (auto it = scopeRoot->childScopes.begin(); it != scopeRoot->childScopes.end(); ++it)
-    {
-        if (*it == file->scopeRoot)
-        {
-            scopeRoot->childScopes.erase(it);
-            break;
-        }
-    }
+    auto indexInParent = file->scopeRoot->indexInParent;
+    assert(scopeRoot->childScopes[indexInParent] == file->scopeRoot);
+    scopeRoot->childScopes[indexInParent]                = scopeRoot->childScopes.back();
+    scopeRoot->childScopes[indexInParent]->indexInParent = indexInParent;
+    scopeRoot->indexInParent                             = UINT32_MAX;
 }
 
 void Module::reserveRegisterRR(uint32_t count)

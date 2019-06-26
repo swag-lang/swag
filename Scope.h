@@ -5,6 +5,7 @@
 struct SyntaxJob;
 struct Scope;
 struct SymTable;
+struct SourceFile;
 
 enum class ScopeKind
 {
@@ -43,6 +44,7 @@ struct Scope : public PoolElement
     ScopeKind      kind;
     Scope*         parentScope;
     SymTable*      symTable;
+    uint32_t       indexInParent = UINT32_MAX;
     Utf8Crc        name;
     Utf8           fullname;
     vector<Scope*> alternativeScopes;

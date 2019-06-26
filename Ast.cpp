@@ -31,6 +31,7 @@ namespace Ast
         if (parentScope)
         {
             scoped_lock lk(parentScope->lockChilds);
+            newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
             parentScope->childScopes.push_back(newScope);
         }
 
