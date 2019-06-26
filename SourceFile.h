@@ -35,12 +35,13 @@ struct SourceFile : public PoolElement
     bool checkFormat(int bufferIndex);
 
     fs::path  path;
-    int       unittestError = 0;
-    int       silent        = 0;
-    Module*   module        = nullptr;
-    AstNode*  astRoot       = nullptr;
-    uint32_t  indexInModule = UINT32_MAX;
-    BuildPass buildPass     = BuildPass::Full;
+    int       unittestError      = 0;
+    int       silent             = 0;
+    Module*   module             = nullptr;
+    AstNode*  astRoot            = nullptr;
+    uint32_t  indexInModule      = UINT32_MAX;
+    uint32_t  indexInModuleScope = UINT32_MAX;
+    BuildPass buildPass          = BuildPass::Full;
 
     const char* externalBuffer = nullptr;
     int         seekExternal   = 0;
@@ -62,6 +63,7 @@ struct SourceFile : public PoolElement
     bool                         formatDone  = false;
     int                          totalRead   = 0;
     condition_variable           condVar;
+    Scope*                       scopeRoot = nullptr;
 };
 
 extern Pool<SourceFile> g_Pool_sourceFile;

@@ -16,7 +16,7 @@ struct Backend;
 
 struct Module : public PoolElement
 {
-    void setup(Workspace* wkp, const fs::path& pth, bool runtime = false);
+    void setup(Workspace* wkp, const fs::path& pth);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
@@ -31,7 +31,6 @@ struct Module : public PoolElement
     AstNode*            astRoot;
     Scope*              scopeRoot;
     Workspace*          workspace;
-    bool                isRuntime = false;
     BackendParameters   backendParameters;
     Backend*            backend = nullptr;
     set<string>         compileVersion;

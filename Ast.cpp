@@ -20,14 +20,20 @@ namespace Ast
         child->parent = parent;
     }
 
-    Scope* newScope(SourceFile* sourceFile, const string& name, ScopeKind kind, Scope* parentScope)
+    Scope* newScope(const string& name, ScopeKind kind, Scope* parentScope)
     {
-        Utf8 fullname         = Scope::makeFullName(parentScope->fullname, name);
+        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
         auto newScope         = g_Pool_scope.alloc();
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
         newScope->name        = name;
         newScope->fullname    = move(fullname);
+        if (parentScope)
+        {
+            scoped_lock lk(parentScope->lockChilds);
+            parentScope->childScopes.push_back(newScope);
+        }
+
         return newScope;
     }
 

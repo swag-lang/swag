@@ -61,7 +61,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
             {
                 auto typeInfo           = g_Pool_typeInfoNamespace.alloc();
                 typeInfo->name          = namespaceNode->name;
-                newScope                = Ast::newScope(sourceFile, namespaceNode->name, ScopeKind::Namespace, currentScope);
+                newScope                = Ast::newScope(namespaceNode->name, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
                 currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, namespaceNode, typeInfo, SymbolKind::Namespace);
@@ -133,7 +133,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto     newScope = Ast::newScope(sourceFile, "", ScopeKind::Statement, currentScope);
+    auto     newScope = Ast::newScope("", ScopeKind::Statement, currentScope);
     AstNode* statement;
 
     {

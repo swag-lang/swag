@@ -14,7 +14,7 @@
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
 
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
@@ -30,7 +30,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
 
 bool SyntaxJob::doCompilerPrint(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
 
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
@@ -84,7 +84,7 @@ bool SyntaxJob::doCompilerVersion(AstNode* parent)
 
 bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
 
     auto runNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent);
     runNode->inheritOwnersAndFlags(this);
@@ -111,7 +111,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     {
         scoped_lock lk(currentScope->symTable->mutex);
         auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
-        newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
+        newScope             = Ast::newScope(funcNode->name, ScopeKind::Function, currentScope);
         int id               = g_Global.uniqueID.fetch_add(1);
         funcNode->name       = "__" + to_string(id);
         typeInfo->name       = funcNode->name;
@@ -145,7 +145,7 @@ bool SyntaxJob::doCompilerModule()
         newModule->compileVersion.insert(sourceFile->module->compileVersion.begin(), sourceFile->module->compileVersion.end());
         sourceFile->module->removeFile(sourceFile);
         newModule->addFile(sourceFile);
-        currentScope = newModule->scopeRoot;
+        currentScope = sourceFile->scopeRoot;
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -155,7 +155,7 @@ bool SyntaxJob::doCompilerModule()
 
 bool SyntaxJob::doCompilerUnitTest()
 {
-    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#unittest can only be declared in the top level scope"}));
     SWAG_CHECK(tokenizer.getToken(token));
 
     // ERROR
@@ -239,7 +239,7 @@ bool SyntaxJob::doCompilerUnitTest()
 
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->kind == ScopeKind::Module, sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
 
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);

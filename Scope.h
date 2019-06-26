@@ -1,14 +1,15 @@
 #pragma once
 #include "Utf8Crc.h"
 #include "Pool.h"
+#include "SpinLock.h"
 struct SyntaxJob;
 struct Scope;
 struct SymTable;
 
 enum class ScopeKind
 {
-    Workspace,
     Module,
+    File,
     Namespace,
     Enum,
     Function,
@@ -31,7 +32,12 @@ struct Scope : public PoolElement
 
     bool isGlobal()
     {
-        return kind == ScopeKind::Workspace || kind == ScopeKind::Module || kind == ScopeKind::Namespace;
+        return kind == ScopeKind::Module || kind == ScopeKind::File || kind == ScopeKind::Namespace;
+    }
+
+    bool isTopLevel()
+    {
+        return kind == ScopeKind::Module || kind == ScopeKind::File;
     }
 
     ScopeKind      kind;
@@ -40,7 +46,9 @@ struct Scope : public PoolElement
     Utf8Crc        name;
     Utf8           fullname;
     vector<Scope*> alternativeScopes;
+    vector<Scope*> childScopes;
     int            startStackSize;
+    SpinLock       lockChilds;
 };
 
 extern Pool<Scope> g_Pool_scope;

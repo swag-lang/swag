@@ -21,8 +21,8 @@ struct Workspace
     vector<Module*>        modules;
     map<fs::path, Module*> mapModulesPaths;
     map<string, Module*>   mapModulesNames;
-    Scope*                 scopeRoot;
     ByteCodeRunContext     runContext;
+    Module*                runtimeModule;
 };
 
 extern Workspace g_Workspace;

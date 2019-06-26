@@ -3,8 +3,6 @@
 #include "ThreadManager.h"
 #include "Module.h"
 #include "Stats.h"
-#include "Global.h"
-#include "CommandLine.h"
 #include "Diagnostic.h"
 #include "Runtime.h"
 #include "SourceFile.h"
@@ -109,22 +107,16 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
 
 void Workspace::addRuntime()
 {
-    scopeRoot       = g_Pool_scope.alloc();
-    scopeRoot->kind = ScopeKind::Workspace;
-    scopeRoot->allocateSymTable();
-
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    auto runtimeModule = g_Pool_module.alloc();
-    runtimeModule->setup(this, "", true);
-    runtimeModule->isRuntime = true;
+    runtimeModule = g_Pool_module.alloc();
+    runtimeModule->setup(this, "");
     modules.push_back(runtimeModule);
 
     auto file = g_Pool_sourceFile.alloc();
     auto job  = g_Pool_syntaxJob.alloc();
     runtimeModule->addFile(file);
     job->sourceFile      = file;
-    job->currentScope    = scopeRoot;
     file->path           = "<swag.runtime>";
     file->module         = runtimeModule;
     file->externalBuffer = g_Runtime;
@@ -224,8 +216,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
         {
             for (auto func : module->byteCodeTestFunc)
             {
-				if (func->sourceFile->module->numErrors)
-					continue;
+                if (func->sourceFile->module->numErrors)
+                    continue;
                 g_Stats.testFunctions++;
                 module->executeNode(module->files[func->node->sourceFileIdx], func->node);
             }

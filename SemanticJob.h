@@ -62,7 +62,7 @@ struct SemanticJob : public Job
     static bool resolveTypeExpression(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeDecl(SemanticContext* context);
-	static bool resolveIntrinsicProp(SemanticContext* context);
+    static bool resolveIntrinsicProp(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
@@ -98,9 +98,9 @@ struct SemanticJob : public Job
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
     static bool resolveAffect(SemanticContext* context);
-	static bool resolveMakePointer(SemanticContext* context);
+    static bool resolveMakePointer(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);
-	static bool resolvePointerDeRef(SemanticContext* context);
+    static bool resolvePointerDeRef(SemanticContext* context);
 
     Module*                 module;
     SourceFile*             sourceFile;
@@ -108,6 +108,7 @@ struct SemanticJob : public Job
     vector<SymbolName*>     cacheDependentSymbols;
     vector<Scope*>          cacheScopeHierarchy;
     set<Scope*>             scopesHere;
+    set<Scope*>             scopesHereNoAlt;
     vector<SymbolOverload*> cacheMatches;
     vector<SymbolOverload*> cacheBadSignature;
 };

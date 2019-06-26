@@ -106,7 +106,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     {
         scoped_lock lk(currentScope->symTable->mutex);
         auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
-        newScope             = Ast::newScope(sourceFile, funcNode->name, ScopeKind::Function, currentScope);
+        newScope             = Ast::newScope(funcNode->name, ScopeKind::Function, currentScope);
         newScope->allocateSymTable();
         typeInfo->name     = funcNode->name;
         funcNode->typeInfo = typeInfo;

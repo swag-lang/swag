@@ -8,6 +8,7 @@
 #include "Stats.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
+#include "Scope.h"
 
 Pool<SyntaxJob> g_Pool_syntaxJob;
 
@@ -88,12 +89,13 @@ JobResult SyntaxJob::execute()
 
     tokenizer.setFile(sourceFile);
 
+	// One unnamed scope per file
+    sourceFile->scopeRoot = Ast::newScope("", ScopeKind::File, sourceFile->module->scopeRoot);
+    currentScope          = sourceFile->scopeRoot;
+
     // Setup root ast for file
     sourceFile->astRoot = Ast::newNode(&g_Pool_astNode, AstNodeKind::File, sourceFile->indexInModule, sourceFile->module->astRoot);
     sourceFile->astRoot->inheritOwnersAndFlags(this);
-
-    // Setup current scope as being the module root one
-    currentScope = sourceFile->module->scopeRoot;
 
     bool result = true;
     bool ok     = tokenizer.getToken(token);

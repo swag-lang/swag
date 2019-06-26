@@ -12,7 +12,7 @@
 
 Pool<Module> g_Pool_module;
 
-void Module::setup(Workspace* wkp, const fs::path& pth, bool runtime)
+void Module::setup(Workspace* wkp, const fs::path& pth)
 {
     path   = pth;
     name   = path.filename().string();
@@ -20,22 +20,11 @@ void Module::setup(Workspace* wkp, const fs::path& pth, bool runtime)
     makeUpper(nameUp);
 
     workspace = wkp;
+    scopeRoot = Ast::newScope("", ScopeKind::Module, nullptr);
+    scopeRoot->allocateSymTable();
 
-    if (runtime)
-    {
-        scopeRoot = workspace->scopeRoot;
-    }
-    else
-    {
-        scopeRoot       = g_Pool_scope.alloc();
-        scopeRoot->kind = ScopeKind::Module;
-        scopeRoot->allocateSymTable();
-        scopeRoot->parentScope = workspace->scopeRoot;
-    }
-
-    astRoot             = Ast::newNode(&g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
-    astRoot->ownerScope = workspace->scopeRoot;
-    buildPass           = g_CommandLine.buildPass;
+    astRoot   = Ast::newNode(&g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
+    buildPass = g_CommandLine.buildPass;
 }
 
 void Module::addFile(SourceFile* file)
@@ -44,24 +33,32 @@ void Module::addFile(SourceFile* file)
     file->module        = this;
     file->indexInModule = (uint32_t) files.size();
     files.push_back(file);
+    if (file->scopeRoot)
+    {
+        scopeRoot->childScopes.push_back(file->scopeRoot);
+        file->scopeRoot->parentScope = scopeRoot;
+    }
 }
 
 void Module::removeFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
     assert(file->module == this);
-    for (auto it = files.begin(); it != files.end(); ++it)
+
+    files[file->indexInModule]                = files.back();
+    files[file->indexInModule]->indexInModule = file->indexInModule;
+    files.pop_back();
+    file->module        = nullptr;
+    file->indexInModule = UINT32_MAX;
+
+    for (auto it = scopeRoot->childScopes.begin(); it != scopeRoot->childScopes.end(); ++it)
     {
-        if (*it == file)
+        if (*it == file->scopeRoot)
         {
-            file->module        = nullptr;
-            file->indexInModule = UINT32_MAX;
-            files.erase(it);
-            return;
+            scopeRoot->childScopes.erase(it);
+            break;
         }
     }
-
-    assert(false);
 }
 
 void Module::reserveRegisterRR(uint32_t count)

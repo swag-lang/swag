@@ -10,6 +10,8 @@
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Attribute.h"
+#include "Module.h"
+#include "Workspace.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -38,17 +40,29 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
 void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope)
 {
-    auto  job  = context->job;
-    auto& here = job->scopesHere;
+    auto  job       = context->job;
+    auto& here      = job->scopesHere;
+    auto& hereNoAlt = job->scopesHereNoAlt;
 
     here.clear();
+    hereNoAlt.clear();
     scopes.clear();
     if (!startScope)
         return;
+
     scopes.push_back(startScope);
+    here.insert(startScope);
+
+    auto runTime = context->sourceFile->module->workspace->runtimeModule->scopeRoot;
+    scopes.push_back(runTime);
+    here.insert(runTime);
+    hereNoAlt.insert(runTime);
+
     for (int i = 0; i < scopes.size(); i++)
     {
         auto scope = scopes[i];
+
+        // Add parent scope
         if (scope->parentScope)
         {
             if (here.find(scope->parentScope) == here.end())
@@ -58,15 +72,34 @@ void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>&
             }
         }
 
+        // Add current alternative scopes, made by 'using'.
         if (!scope->alternativeScopes.empty())
         {
-            for (int j = 0; j < scope->alternativeScopes.size(); j++)
+            // Can we add alternative scopes for that specific scope ?
+            if (hereNoAlt.find(scope) == hereNoAlt.end())
             {
-                auto altScope = scope->alternativeScopes[j];
-                if (here.find(altScope) == here.end())
+                for (int j = 0; j < scope->alternativeScopes.size(); j++)
                 {
-                    scopes.push_back(altScope);
-                    here.insert(altScope);
+                    auto altScope = scope->alternativeScopes[j];
+                    if (here.find(altScope) == here.end())
+                    {
+                        scopes.push_back(altScope);
+                        here.insert(altScope);
+                    }
+                }
+            }
+        }
+
+        // If we are on a module, add all files
+        if (scope->kind == ScopeKind::Module)
+        {
+            for (auto child : scope->childScopes)
+            {
+                if (here.find(child) == here.end())
+                {
+                    scopes.push_back(child);
+                    here.insert(child);
+                    hereNoAlt.insert(child);
                 }
             }
         }
@@ -325,7 +358,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         auto       symbol = dependentSymbols[0];
         Diagnostic diag{sourceFile,
                         node->callParameters ? node->callParameters : node,
-                        format("ambiguous call to overloaded %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                        format("ambiguous call to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
 
         vector<const Diagnostic*> notes;
         for (auto overload : matches)
