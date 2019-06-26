@@ -25,6 +25,7 @@ struct CommandLine
     int         tabSize   = 4;
     string      fileFilter;
     set<string> compileVersion;
+    uint32_t    maxStaticArraySize = 32 * 1024 * 1024;
 
     fs::path exePath;
 };

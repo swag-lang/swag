@@ -18,6 +18,7 @@ enum class TypeInfoKind
     FuncAttr,
     FuncAttrParam,
     Pointer,
+    Array,
 };
 
 enum class NativeType
@@ -49,6 +50,8 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 
 static const uint64_t TYPEINFO_ATTRIBUTE_FUNC = 0x00000000'00000001;
 static const uint64_t TYPEINFO_ATTRIBUTE_VAR  = 0x00000000'00000002;
+static const uint64_t TYPEINFO_INTEGER        = 0x00000000'00000004;
+static const uint64_t TYPEINFO_FLOAT          = 0x00000000'00000008;
 
 struct TypeInfo : public PoolElement
 {
@@ -62,6 +65,11 @@ struct TypeInfo : public PoolElement
         return (kind == TypeInfoKind::Native) && (nativeType == native);
     }
 
+    bool isNativeInteger()
+    {
+        return flags & TYPEINFO_INTEGER;
+    }
+
     static const char* getNakedName(TypeInfo* typeInfo);
 
     uint64_t     flags = 0;
@@ -73,12 +81,13 @@ struct TypeInfo : public PoolElement
 
 struct TypeInfoNative : public TypeInfo
 {
-    TypeInfoNative(NativeType type, const char* tname, int sof)
+    TypeInfoNative(NativeType type, const char* tname, int sof, uint64_t fl)
     {
         kind       = TypeInfoKind::Native;
         nativeType = type;
         name       = tname;
         sizeOf     = sof;
+        flags      = fl;
     }
 };
 
@@ -187,7 +196,28 @@ struct TypeInfoPointer : public TypeInfo
     }
 
     TypeInfo* pointedType;
-    int       ptrCount;
+    uint32_t  ptrCount;
+};
+
+struct TypeInfoArray : public TypeInfo
+{
+    TypeInfoArray()
+    {
+        kind = TypeInfoKind::Array;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (kind != from->kind)
+            return false;
+        auto castedFrom = static_cast<TypeInfoArray*>(from);
+        if (size != castedFrom->size)
+            return false;
+        return pointedType->isSame(castedFrom->pointedType);
+    }
+
+    TypeInfo* pointedType;
+    uint32_t  size;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
@@ -196,3 +226,4 @@ extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
 extern Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 extern Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
+extern Pool<TypeInfoArray>         g_Pool_typeInfoArray;

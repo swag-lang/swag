@@ -13,6 +13,7 @@ Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
 Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
+Pool<TypeInfoArray>         g_Pool_typeInfoArray;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {

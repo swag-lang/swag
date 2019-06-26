@@ -57,7 +57,7 @@ void Module::removeFile(SourceFile* file)
     assert(scopeRoot->childScopes[indexInParent] == file->scopeRoot);
     scopeRoot->childScopes[indexInParent]                = scopeRoot->childScopes.back();
     scopeRoot->childScopes[indexInParent]->indexInParent = indexInParent;
-    scopeRoot->indexInParent                             = UINT32_MAX;
+    file->scopeRoot->indexInParent                       = UINT32_MAX;
 }
 
 void Module::reserveRegisterRR(uint32_t count)

@@ -8,45 +8,61 @@
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "Ast.h"
+#include "CommandLine.h"
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
-    auto node = CastAst<AstType>(context->node, AstNodeKind::Type);
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstType>(context->node, AstNodeKind::Type);
 
-    if (node->token.literalType)
-    {
-        if (node->ptrCount)
-        {
-            auto ptrType         = g_Pool_typeInfoPointer.alloc();
-            ptrType->ptrCount    = node->ptrCount;
-            ptrType->pointedType = node->token.literalType;
-            ptrType->sizeOf      = sizeof(void*);
-            ptrType->name        = "*" + node->token.literalType->name;
-            node->typeInfo       = g_TypeMgr.registerType(ptrType);
-        }
-        else
-            node->typeInfo = node->token.literalType;
-        return true;
-    }
-
-    if (node->childs.empty())
-    {
-        return context->job->error(context, "invalid type (yet) !");
-    }
-
-    auto child     = node->childs[0];
-    node->typeInfo = child->typeInfo;
+    node->typeInfo = node->typeExpression ? node->typeExpression->typeInfo : node->token.literalType;
+    SWAG_VERIFY(node->typeInfo, context->job->error(context, "invalid type (yet) !"));
 
     // If type comes from an identifier, be sure it's a type
-    if (child->resolvedSymbolName)
+    if (node->typeExpression)
     {
-        auto symName = child->resolvedSymbolName;
-        auto symOver = child->resolvedSymbolOverload;
-        if (symName->kind != SymbolKind::Enum && symName->kind != SymbolKind::Type)
+        auto child = node->childs.back();
+        if (child->resolvedSymbolName)
         {
-            Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type", child->name.c_str())};
-            Diagnostic note{symOver->sourceFile, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
-            return context->sourceFile->report(diag, &note);
+            auto symName = child->resolvedSymbolName;
+            auto symOver = child->resolvedSymbolOverload;
+            if (symName->kind != SymbolKind::Enum && symName->kind != SymbolKind::Type)
+            {
+                Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type", child->name.c_str())};
+                Diagnostic note{symOver->sourceFile, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
+                return context->sourceFile->report(diag, &note);
+            }
+        }
+    }
+
+    // In fact, this is a pointer
+    if (node->ptrCount)
+    {
+        auto ptrType         = g_Pool_typeInfoPointer.alloc();
+        ptrType->ptrCount    = node->ptrCount;
+        ptrType->pointedType = node->typeInfo;
+        ptrType->sizeOf      = sizeof(void*);
+        ptrType->name        = "*" + node->typeInfo->name;
+        node->typeInfo       = g_TypeMgr.registerType(ptrType);
+    }
+
+    // In fact, this is an array
+    if (node->arrayDim)
+    {
+        for (int i = node->arrayDim - 1; i >= 0; i--)
+        {
+            auto child = node->childs[i];
+            SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, child, "can't evaluate array dimension at compile time"}));
+            SWAG_VERIFY(child->typeInfo->isNativeInteger(), sourceFile->report({sourceFile, child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(child->typeInfo->sizeOf <= 4, sourceFile->report({sourceFile, child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.maxStaticArraySize, sourceFile->report({sourceFile, child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.maxStaticArraySize, child->computedValue.reg.u32)}));
+
+            auto ptrArray         = g_Pool_typeInfoArray.alloc();
+            ptrArray->size        = child->computedValue.reg.u32;
+            ptrArray->pointedType = node->typeInfo;
+            ptrArray->name        = format("[%s]", node->typeInfo->name.c_str());
+            ptrArray->sizeOf      = ptrArray->size * ptrArray->pointedType->sizeOf;
+            node->typeInfo        = ptrArray;
         }
     }
 

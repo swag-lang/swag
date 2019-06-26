@@ -339,10 +339,14 @@ struct AstType : public AstNode
     void reset() override
     {
         AstNode::reset();
-        ptrCount = 0;
+        ptrCount       = 0;
+        arrayDim       = 0;
+        typeExpression = nullptr;
     }
 
-    int ptrCount;
+    AstNode* typeExpression;
+    int      ptrCount;
+    int      arrayDim;
 };
 
 struct AstPointerDeref : public AstNode

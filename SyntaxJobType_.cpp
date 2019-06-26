@@ -40,7 +40,24 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-	// Pointers
+    // Array
+    node->arrayDim = 0;
+    if (token.id == TokenId::SymLeftSquare)
+    {
+        SWAG_CHECK(tokenizer.getToken(token));
+        while (true)
+        {
+            node->arrayDim++;
+            SWAG_CHECK(doExpression(node));
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(tokenizer.getToken(token));
+        }
+
+        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+    }
+
+    // Pointers
     node->ptrCount = 0;
     while (token.id == TokenId::SymAsterisk)
     {
@@ -57,7 +74,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::Identifier)
     {
-        SWAG_CHECK(doIdentifierRef(node));
+        SWAG_CHECK(doIdentifierRef(node, &node->typeExpression));
         return true;
     }
 
