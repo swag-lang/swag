@@ -109,6 +109,7 @@ struct ByteCodeGenJob : public Job
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
+    static bool emitPointerRef(ByteCodeGenContext* context);
 	static bool emitCountProperty(ByteCodeGenContext* context);
 	static bool emitDataProperty(ByteCodeGenContext* context);
 

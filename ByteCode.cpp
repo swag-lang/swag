@@ -62,12 +62,26 @@ void ByteCode::print()
 
         case ByteCodeOp::IncSP:
         case ByteCodeOp::DecSP:
-            wprintf(L"A: %d ", ip->a.s32);
+            wprintf(L"SA: %d ", ip->a.s32);
             break;
 
         case ByteCodeOp::PushRCxParam:
         case ByteCodeOp::PushRCxSaved:
-            wprintf(L"A: %u ", ip->a.u32);
+		case ByteCodeOp::DeRef8:
+		case ByteCodeOp::DeRef16:
+		case ByteCodeOp::DeRef32:
+		case ByteCodeOp::DeRef64:
+		case ByteCodeOp::DeRefPointer:
+            wprintf(L"RA: %u ", ip->a.u32);
+            break;
+
+		case ByteCodeOp::IncPointer:
+		case ByteCodeOp::AffectOp8:
+		case ByteCodeOp::AffectOp16:
+		case ByteCodeOp::AffectOp32:
+		case ByteCodeOp::AffectOp64:
+		case ByteCodeOp::AffectOpPointer:
+            wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::RCxFromStack8:
@@ -81,19 +95,20 @@ void ByteCode::print()
         case ByteCodeOp::RCxFromDataSeg64:
         case ByteCodeOp::RCxRefFromDataSeg:
         case ByteCodeOp::RCxRefFromStack:
-            wprintf(L"A: %u B: %d ", ip->a.u32, ip->b.s32);
+		case ByteCodeOp::MulRCxS32:
+            wprintf(L"RA: %u SB: %d ", ip->a.u32, ip->b.s32);
             break;
 
         case ByteCodeOp::CopyRCxVa32:
-            wprintf(L"B: %u VA: { %x }", ip->b.u32, ip->a.u32);
+            wprintf(L"RB: %u VA: { %x }", ip->b.u32, ip->a.u32);
             break;
 
         case ByteCodeOp::CopyRCxVaStr:
-            wprintf(L"B: %u C: %u VA: { %u }", ip->b.u32, ip->c.u32, ip->a.u32);
+            wprintf(L"RB: %u RC: %u VA: { %u }", ip->b.u32, ip->c.u32, ip->a.u32);
             break;
 
         case ByteCodeOp::CopyRCxVa64:
-            wprintf(L"B: %u VA: { %I64x }", ip->b.u32, ip->a.u64);
+            wprintf(L"RB: %u VA: { %I64x }", ip->b.u32, ip->a.u64);
             break;
 
         case ByteCodeOp::Jump:
@@ -119,7 +134,7 @@ void ByteCode::print()
         break;
         default:
             g_Log.setColor(LogColor::Gray);
-            wprintf(L"A: %u B: %u C: %u", ip->a.u32, ip->b.u32, ip->c.u32);
+            wprintf(L"RA: %u RB: %u RC: %u", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         }
 

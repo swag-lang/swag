@@ -56,9 +56,9 @@ struct SyntaxJob : public Job
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
-	bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
+    bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
     bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);
-	bool doPrimaryExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doPrimaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doUnaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doFactorExpression(AstNode* parent, AstNode** result = nullptr);
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
@@ -81,7 +81,10 @@ struct SyntaxJob : public Job
     bool doWhile(AstNode* parent, AstNode** result = nullptr);
     bool doBreak(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
-    bool doLeftExpression(AstNode* parent, AstNode** result);
+    bool doPointerDeRef(AstNode** exprNode);
+    bool doPointerRef(AstNode** exprNode);
+
+    bool doLeftExpression(AstNode* parent, AstNode** result = nullptr);
 
     Tokenizer   tokenizer;
     Token       token;

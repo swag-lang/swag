@@ -98,10 +98,21 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolvePointerRef(SemanticContext* context)
+{
+    auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
+    arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
+    arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
+    arrayNode->byteCodeFct            = &ByteCodeGenJob::emitPointerRef;
+    auto typePtr                      = CastTypeInfo<TypeInfoPointer>(arrayNode->array->typeInfo, TypeInfoKind::Pointer);
+    arrayNode->typeInfo               = typePtr->pointedType;
+    return true;
+}
+
 bool SemanticJob::resolvePointerDeRef(SemanticContext* context)
 {
     auto sourceFile        = context->sourceFile;
-    auto arrayNode         = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
+    auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
     auto arrayType         = arrayNode->array->typeInfo;
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
 

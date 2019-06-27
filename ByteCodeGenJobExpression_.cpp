@@ -9,9 +9,21 @@
 #include "TypeManager.h"
 #include "Ast.h"
 
+bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
+{
+    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
+    int  sizeOf = node->typeInfo->sizeOf;
+	emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
+    if (sizeOf > 1)
+        emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
+	emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+	node->resultRegisterRC = node->array->resultRegisterRC;
+	return true;
+}
+
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstPointerDeref>(context->node, AstNodeKind::PointerDeref);
+    auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
 
     // Dereference of a string constant
     if (node->array->typeInfo->kind == TypeInfoKind::Native && node->array->typeInfo->nativeType == NativeType::String)
@@ -133,7 +145,7 @@ bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
 
     if (typeInfo->isNative(NativeType::String))
     {
-		node->resultRegisterRC = node->expression->resultRegisterRC[1];
+        node->resultRegisterRC = node->expression->resultRegisterRC[1];
     }
     else
     {

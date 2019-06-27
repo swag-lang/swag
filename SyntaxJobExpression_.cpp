@@ -19,15 +19,61 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doPointerDeRef(AstNode** exprNode)
+{
+    SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
+    while (true)
+    {
+        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeRef, sourceFile->indexInModule);
+        arrayNode->inheritOwnersAndFlags(this);
+        arrayNode->token       = move(token);
+        arrayNode->semanticFct = &SemanticJob::resolvePointerDeRef;
+        Ast::addChild(arrayNode, *exprNode);
+        arrayNode->array = *exprNode;
+        SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
+        *exprNode = arrayNode;
+        if (token.id != TokenId::SymComma)
+            break;
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+    return true;
+}
+
+bool SyntaxJob::doPointerRef(AstNode** exprNode)
+{
+    SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
+    while (true)
+    {
+        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeRef, sourceFile->indexInModule);
+        arrayNode->inheritOwnersAndFlags(this);
+        arrayNode->token       = move(token);
+        arrayNode->semanticFct = &SemanticJob::resolvePointerRef;
+        arrayNode->flags |= AST_LEFT_EXPRESSION;
+        Ast::addChild(arrayNode, *exprNode);
+        arrayNode->array = *exprNode;
+        SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
+        *exprNode = arrayNode;
+        if (token.id != TokenId::SymComma)
+            break;
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+    return true;
+}
+
 bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
 {
+    AstNode* exprNode;
     switch (token.id)
     {
     case TokenId::Identifier:
     case TokenId::IntrisicPrint:
     case TokenId::IntrisicAssert:
     {
-        SWAG_CHECK(doIdentifierRef(parent, result, AST_LEFT_EXPRESSION));
+        SWAG_CHECK(doIdentifierRef(nullptr, &exprNode, AST_LEFT_EXPRESSION));
     }
     break;
 
@@ -35,6 +81,15 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
     }
 
+    // Dereference pointer
+    if (token.id == TokenId::SymLeftSquare)
+    {
+        SWAG_CHECK(doPointerRef(&exprNode));
+    }
+
+    Ast::addChild(parent, exprNode);
+    if (result)
+        *result = exprNode;
     return true;
 }
 
@@ -55,11 +110,11 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     AstNode* identifier;
     SWAG_CHECK(doIdentifierRef(nullptr, &identifier));
     const auto& name = identifier->childs.back()->name;
-	auto it = g_LangSpec.properties.find(name);
-	if (it == g_LangSpec.properties.end())
-		return syntaxError(token, format("invalid property '%s'", name.c_str()));
+    auto        it   = g_LangSpec.properties.find(name);
+    if (it == g_LangSpec.properties.end())
+        return syntaxError(token, format("invalid property '%s'", name.c_str()));
 
-	node->prop = it->second;
+    node->prop = it->second;
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
@@ -125,23 +180,13 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     }
 
     // Dereference pointer
-    while (token.id == TokenId::SymLeftSquare)
+    if (token.id == TokenId::SymLeftSquare)
     {
-        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeref, sourceFile->indexInModule);
-        arrayNode->inheritOwnersAndFlags(this);
-        arrayNode->token       = move(token);
-        arrayNode->semanticFct = &SemanticJob::resolvePointerDeRef;
-        Ast::addChild(arrayNode, exprNode);
-        arrayNode->array = exprNode;
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
-        exprNode = arrayNode;
-        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+        SWAG_CHECK(doPointerDeRef(&exprNode));
     }
 
     if (parent)
         Ast::addChild(parent, exprNode);
-
     if (result)
         *result = exprNode;
     return true;
