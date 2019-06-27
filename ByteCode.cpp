@@ -72,6 +72,13 @@ void ByteCode::print()
 		case ByteCodeOp::DeRef32:
 		case ByteCodeOp::DeRef64:
 		case ByteCodeOp::DeRefPointer:
+		case ByteCodeOp::IntrinsicAssert:
+		case ByteCodeOp::IntrinsicPrintChar:
+		case ByteCodeOp::IntrinsicPrintF32:
+		case ByteCodeOp::IntrinsicPrintF64:
+		case ByteCodeOp::IntrinsicPrintS32:
+		case ByteCodeOp::IntrinsicPrintS64:
+		case ByteCodeOp::IntrinsicPrintString:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
