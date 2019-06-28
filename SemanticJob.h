@@ -101,7 +101,7 @@ struct SemanticJob : public Job
     static bool resolveMakePointer(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);
     static bool resolvePointerDeRef(SemanticContext* context);
-    static bool resolvePointerRef(SemanticContext* context);
+    static bool resolveArrayOrPointerRef(SemanticContext* context);
 
     Module*                 module;
     SourceFile*             sourceFile;

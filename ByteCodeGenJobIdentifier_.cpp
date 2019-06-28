@@ -96,10 +96,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (node->flags & AST_LEFT_EXPRESSION)
+        if (resolved->typeInfo->kind == TypeInfoKind::Array)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC);
-            inst->b.s32 = resolved->storageOffset;
+            auto typeArray = CastTypeInfo<TypeInfoArray>(resolved->typeInfo, TypeInfoKind::Array);
+            node->resultRegisterRC += reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, node->resultRegisterRC[1])->a.u32  = typeArray->size;
+        }
+        else if (node->flags & AST_LEFT_EXPRESSION)
+        {
+            emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         }
         else if (resolved->typeInfo->isNative(NativeType::String))
         {

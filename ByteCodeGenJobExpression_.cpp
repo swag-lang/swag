@@ -13,12 +13,24 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
     int  sizeOf = node->typeInfo->sizeOf;
-	emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
-	emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
-	node->resultRegisterRC = node->array->resultRegisterRC;
-	return true;
+    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+    node->resultRegisterRC = node->array->resultRegisterRC;
+    return true;
+}
+
+bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
+{
+    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
+    int  sizeOf = node->typeInfo->sizeOf;
+    emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
+    if (sizeOf > 1)
+        emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
+    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+    node->resultRegisterRC = node->array->resultRegisterRC;
+    return true;
 }
 
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
@@ -34,10 +46,19 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference of a pointer
-    else
+    else if (node->array->typeInfo->kind == TypeInfoKind::Pointer || node->array->typeInfo->kind == TypeInfoKind::Array)
     {
-        auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
-        int  sizeOf   = typeInfo->sizeOfPointedBy();
+        int sizeOf;
+        if (node->array->typeInfo->kind == TypeInfoKind::Pointer)
+        {
+            auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
+            sizeOf        = typeInfo->sizeOfPointedBy();
+        }
+        else
+        {
+            auto typeInfo = CastTypeInfo<TypeInfoArray>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Array);
+            sizeOf        = typeInfo->pointedType->sizeOf;
+        }
 
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;

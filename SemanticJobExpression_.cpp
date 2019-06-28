@@ -98,14 +98,24 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolvePointerRef(SemanticContext* context)
+bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
 {
     auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
-    arrayNode->byteCodeFct            = &ByteCodeGenJob::emitPointerRef;
-    auto typePtr                      = CastTypeInfo<TypeInfoPointer>(arrayNode->array->typeInfo, TypeInfoKind::Pointer);
-    arrayNode->typeInfo               = typePtr->pointedType;
+    if (arrayNode->array->typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        auto typePtr        = CastTypeInfo<TypeInfoPointer>(arrayNode->array->typeInfo, TypeInfoKind::Pointer);
+        arrayNode->typeInfo = typePtr->pointedType;
+        arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerRef;
+    }
+    else
+    {
+        auto typePtr        = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
+        arrayNode->typeInfo = typePtr->pointedType;
+        arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
+    }
+
     return true;
 }
 
@@ -120,9 +130,8 @@ bool SemanticJob::resolvePointerDeRef(SemanticContext* context)
     {
         arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
     }
-    else
+    else if (arrayType->kind == TypeInfoKind::Pointer)
     {
-        SWAG_VERIFY(arrayType->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, arrayNode->array, format("type '%s' can't be referenced like a pointer", arrayType->name.c_str())}));
         auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
         if (typePtr->ptrCount == 1)
         {
@@ -136,6 +145,15 @@ bool SemanticJob::resolvePointerDeRef(SemanticContext* context)
             newType->sizeOf     = typePtr->sizeOf;
             arrayNode->typeInfo = g_TypeMgr.registerType(newType);
         }
+    }
+    else if (arrayType->kind == TypeInfoKind::Array)
+    {
+        auto typePtr        = static_cast<TypeInfoArray*>(arrayType);
+        arrayNode->typeInfo = typePtr->pointedType;
+    }
+    else
+    {
+        return sourceFile->report({sourceFile, arrayNode->array, format("type '%s' can't be referenced like a pointer", arrayType->name.c_str())});
     }
 
     return true;
