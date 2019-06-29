@@ -18,13 +18,14 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanCache);
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
 
-	addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
+    addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
     //cmdLine->runBackendTests = false;
-    //cmdLine->fileFilter = "324";
+    cmdLine->fileFilter       = "329";
+    cmdLine->addRuntimeModule = false;
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param)
@@ -119,7 +120,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
             break;
         }
 
-		case CommandLineType::String:
+        case CommandLineType::String:
         {
             if (argument.empty())
             {
@@ -154,7 +155,7 @@ bool CommandLineParser::process(int argc, const char* argv[])
                     g_Log.error(format("command line error: argument '%s' must be followed by an integer value", it->first.c_str()));
                 else
                     g_Log.error(format("command line error: argument '%s' must be followed by an integer value ('%s')", it->first.c_str(), argument.c_str()));
-				result = false;
+                result = false;
                 continue;
             }
 

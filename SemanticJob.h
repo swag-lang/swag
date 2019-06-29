@@ -64,6 +64,7 @@ struct SemanticJob : public Job
     static bool resolveTypeDecl(SemanticContext* context);
     static bool resolveIntrinsicProp(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
+	static bool resolveExpressionList(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
     static bool resolveFactorExpression(SemanticContext* context);

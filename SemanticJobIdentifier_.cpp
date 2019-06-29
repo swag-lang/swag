@@ -53,10 +53,14 @@ void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>&
     scopes.push_back(startScope);
     here.insert(startScope);
 
-    auto runTime = context->sourceFile->module->workspace->runtimeModule->scopeRoot;
-    scopes.push_back(runTime);
-    here.insert(runTime);
-    hereNoAlt.insert(runTime);
+	// Can be null because of g_CommandLine.addRuntimeModule to false
+    if (context->sourceFile->module->workspace->runtimeModule)
+    {
+        auto runTime = context->sourceFile->module->workspace->runtimeModule->scopeRoot;
+        scopes.push_back(runTime);
+        here.insert(runTime);
+        hereNoAlt.insert(runTime);
+    }
 
     for (int i = 0; i < scopes.size(); i++)
     {

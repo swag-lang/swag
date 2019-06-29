@@ -19,6 +19,7 @@ enum class TypeInfoKind
     FuncAttrParam,
     Pointer,
     Array,
+	ExpressionList,
 };
 
 enum class NativeType
@@ -220,10 +221,37 @@ struct TypeInfoArray : public TypeInfo
     uint32_t  size;
 };
 
-extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
-extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
-extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
-extern Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
-extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
-extern Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
-extern Pool<TypeInfoArray>         g_Pool_typeInfoArray;
+struct TypeInfoExpressionList : public TypeInfo
+{
+	TypeInfoExpressionList()
+    {
+        kind = TypeInfoKind::ExpressionList;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (kind != from->kind)
+            return false;
+        auto other = static_cast<TypeInfoExpressionList*>(from);
+        if (childs.size() != other->childs.size())
+            return false;
+        for (int i = 0; i < childs.size(); i++)
+        {
+            if (!childs[i]->isSame(other->childs[i]))
+                return false;
+        }
+
+        return true;
+    }
+
+    vector<TypeInfo*> childs;
+};
+
+extern Pool<TypeInfoFuncAttr>       g_Pool_typeInfoFuncAttr;
+extern Pool<TypeInfoNamespace>      g_Pool_typeInfoNamespace;
+extern Pool<TypeInfoEnum>           g_Pool_typeInfoEnum;
+extern Pool<TypeInfoEnumValue>      g_Pool_typeInfoEnumValue;
+extern Pool<TypeInfoFuncAttrParam>  g_Pool_typeInfoFuncAttrParam;
+extern Pool<TypeInfoPointer>        g_Pool_typeInfoPointer;
+extern Pool<TypeInfoArray>          g_Pool_typeInfoArray;
+extern Pool<TypeInfoExpressionList> g_Pool_typeInfoExpressionList;

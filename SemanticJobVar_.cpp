@@ -23,7 +23,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
 
     // Value
-    if (node->astAssignment)
+    if (node->astAssignment && node->astAssignment->kind != AstNodeKind::ExpressionList)
     {
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->astAssignment->flags & AST_CONST_EXPR))
         {
@@ -31,6 +31,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (context->result == SemanticResult::Pending)
                 return true;
         }
+    }
+
+    // A global variable must have its value computed at that point
+    if (node->astAssignment && (symbolFlags & OVERLOAD_VAR_GLOBAL))
+    {
+        SWAG_VERIFY(node->astAssignment->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->astAssignment, "can't evaluate initialization expression at compile time"}));
     }
 
     // Find type

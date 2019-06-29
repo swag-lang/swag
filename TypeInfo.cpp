@@ -7,13 +7,14 @@
 #include "TypeManager.h"
 #include "Ast.h"
 
-Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
-Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
-Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
-Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
-Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
-Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
-Pool<TypeInfoArray>         g_Pool_typeInfoArray;
+Pool<TypeInfoFuncAttr>       g_Pool_typeInfoFuncAttr;
+Pool<TypeInfoNamespace>      g_Pool_typeInfoNamespace;
+Pool<TypeInfoEnum>           g_Pool_typeInfoEnum;
+Pool<TypeInfoEnumValue>      g_Pool_typeInfoEnumValue;
+Pool<TypeInfoFuncAttrParam>  g_Pool_typeInfoFuncAttrParam;
+Pool<TypeInfoPointer>        g_Pool_typeInfoPointer;
+Pool<TypeInfoArray>          g_Pool_typeInfoArray;
+Pool<TypeInfoExpressionList> g_Pool_typeInfoExpressionList;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
@@ -68,7 +69,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             badSignature                      = true;
         }
 
-		param->resolvedParameter = parameters[i];
+        param->resolvedParameter = parameters[i];
         cptResolved++;
     }
 

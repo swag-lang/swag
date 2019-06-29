@@ -348,27 +348,32 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 
     auto initNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->inheritOwnersAndFlags(this);
+    initNode->semanticFct = &SemanticJob::resolveExpressionList;
+	initNode->inheritToken(token);
     SWAG_CHECK(tokenizer.getToken(token));
+
     if (token.id == TokenId::SymRightCurly)
         return syntaxError(token, format("initializer list is empty"));
+    if (result)
+        *result = initNode;
 
     while (token.id != TokenId::SymRightCurly)
     {
-		if (token.id == TokenId::SymLeftCurly)
-		{
-			SWAG_CHECK(doInitializationExpression(initNode));
-		}
-		else
-		{
-			SWAG_CHECK(doExpression(initNode));
-		}
+        if (token.id == TokenId::SymLeftCurly)
+        {
+            SWAG_CHECK(doInitializationExpression(initNode));
+        }
+        else
+        {
+            SWAG_CHECK(doExpression(initNode));
+        }
 
-		if (token.id != TokenId::SymComma)
-			break;
-		SWAG_CHECK(eatToken(TokenId::SymComma));
+        if (token.id != TokenId::SymComma)
+            break;
+        SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
-	SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
 

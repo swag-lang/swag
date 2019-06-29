@@ -107,6 +107,9 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
 
 void Workspace::addRuntime()
 {
+    if (!g_CommandLine.addRuntimeModule)
+        return;
+
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
     runtimeModule = g_Pool_module.alloc();

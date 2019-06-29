@@ -20,6 +20,27 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveExpressionList(SemanticContext* context)
+{
+    auto node      = context->node;
+    auto typeInfo  = g_Pool_typeInfoExpressionList.alloc();
+    typeInfo->name = "<type list>";
+
+	node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    for (auto child : node->childs)
+    {
+        typeInfo->childs.push_back(child->typeInfo);
+        typeInfo->sizeOf += child->typeInfo->sizeOf;
+        if (!(child->flags & AST_VALUE_COMPUTED))
+            node->flags &= ~AST_VALUE_COMPUTED;
+        if (!(child->flags & AST_CONST_EXPR))
+            node->flags &= ~AST_CONST_EXPR;
+    }
+
+    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
 {
     auto node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
@@ -105,14 +126,14 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
     if (arrayNode->array->typeInfo->kind == TypeInfoKind::Pointer)
     {
-        auto typePtr        = CastTypeInfo<TypeInfoPointer>(arrayNode->array->typeInfo, TypeInfoKind::Pointer);
-        arrayNode->typeInfo = typePtr->pointedType;
+        auto typePtr           = CastTypeInfo<TypeInfoPointer>(arrayNode->array->typeInfo, TypeInfoKind::Pointer);
+        arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerRef;
     }
     else
     {
-        auto typePtr        = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
-        arrayNode->typeInfo = typePtr->pointedType;
+        auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
+        arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
     }
 
