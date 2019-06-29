@@ -70,6 +70,7 @@ enum class AstNodeKind
     SingleOp,
     MakePointer,
     BinaryOp,
+	ExpressionList,
     AffectOp,
     PointerDeRef,
     PointerRef,

@@ -8,6 +8,7 @@
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
 #include "Ast.h"
+#include "CommandLine.h"
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
@@ -25,7 +26,8 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
     int  sizeOf = node->typeInfo->sizeOf;
-    emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
+    if (g_CommandLine.debugBoundCheck)
+        emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
@@ -40,7 +42,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a string constant
     if (node->array->typeInfo->kind == TypeInfoKind::Native && node->array->typeInfo->nativeType == NativeType::String)
     {
-        emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
+        if (g_CommandLine.debugBoundCheck)
+            emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC[0], node->access->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC[0]);
     }
@@ -58,6 +61,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             auto typeInfo = CastTypeInfo<TypeInfoArray>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Array);
             sizeOf        = typeInfo->pointedType->sizeOf;
+            if (g_CommandLine.debugBoundCheck)
+                emitInstruction(context, ByteCodeOp::BoundCheck, node->array->resultRegisterRC[1], node->access->resultRegisterRC);
         }
 
         if (sizeOf > 1)

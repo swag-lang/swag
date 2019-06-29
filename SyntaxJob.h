@@ -55,6 +55,7 @@ struct SyntaxJob : public Job
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
+	bool doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
     bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);

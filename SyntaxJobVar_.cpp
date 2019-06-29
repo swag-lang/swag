@@ -28,7 +28,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymEqual)
     {
         SWAG_CHECK(eatToken(TokenId::SymEqual));
-        SWAG_CHECK(doAssignmentExpression(varNode, &varNode->astAssignment));
+        SWAG_CHECK(doInitializationExpression(varNode, &varNode->astAssignment));
     }
 
     SWAG_CHECK(eatToken(TokenId::SymSemiColon));
