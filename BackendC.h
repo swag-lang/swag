@@ -25,6 +25,7 @@ struct BackendC : public Backend
     bool emitFooter();
     bool emitRuntime();
     bool emitDataSegment();
+	bool emitConstantSegment();
     bool emitStrings();
     bool emitMain();
     bool emitFunctions();

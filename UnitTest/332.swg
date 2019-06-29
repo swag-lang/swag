@@ -1,5 +1,5 @@
 #module module332;
-#unittest pass semantic;
+//#unittest pass semantic;
 
 //#[swag.printbytecode]
 #test

@@ -33,6 +33,33 @@ bool BackendC::emitDataSegment()
     return true;
 }
 
+bool BackendC::emitConstantSegment()
+{
+    emitSeparator(bufferC, "CONSTANT SEGMENT");
+    if (module->constantSegment.size())
+    {
+        int count = (int) module->constantSegment.size();
+        bufferC.addString(format("static swag_uint8_t __constantseg[%d] = {\n", count));
+
+        const uint8_t* pz  = (const uint8_t*) &module->constantSegment[0];
+        int            cpt = 0;
+        while (count--)
+        {
+            bufferC.addString(to_string(*pz));
+            bufferC.addString(",");
+            pz++;
+            cpt = (cpt + 1) % 20;
+            if (cpt == 0)
+                bufferC.addString("\n");
+        }
+
+        bufferC.addString("\n};\n");
+    }
+
+    bufferC.addString("\n");
+    return true;
+}
+
 bool BackendC::emitStrings()
 {
     emitSeparator(bufferC, "STRINGS");

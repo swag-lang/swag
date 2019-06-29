@@ -106,6 +106,7 @@ bool BackendC::generate()
     ok &= emitHeader();
     ok &= emitRuntime();
 	ok &= emitDataSegment();
+	ok &= emitConstantSegment();
     ok &= emitStrings();
     ok &= emitFuncSignatures();
     ok &= emitFunctions();

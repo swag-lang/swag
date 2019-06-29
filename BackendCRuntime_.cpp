@@ -114,6 +114,11 @@ static swag_bool __strcmp(const char* str1, const char* str2)
 	return !strcmp(str1, str2);
 }
 
+static void __memcpy(void* dst, void* src, swag_uint32_t size)
+{
+	memcpy(dst, src, size);
+}
+
 )";
 
 bool BackendC::emitRuntime()
