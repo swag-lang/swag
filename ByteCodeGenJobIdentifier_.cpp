@@ -51,7 +51,14 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_GLOBAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (node->flags & AST_LEFT_EXPRESSION)
+        if (resolved->typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(resolved->typeInfo, TypeInfoKind::Array);
+            node->resultRegisterRC += reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, node->resultRegisterRC[1])->a.u32  = typeArray->size;
+        }
+        else if (node->flags & AST_LEFT_EXPRESSION)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC);
             inst->b.s32 = resolved->storageOffset;

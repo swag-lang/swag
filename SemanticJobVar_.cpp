@@ -9,6 +9,45 @@
 #include "SourceFile.h"
 #include "Module.h"
 
+uint8_t* SemanticJob::collectLiterals(SourceFile* sourceFile, uint8_t* ptrDest, AstNode* node)
+{
+    for (auto child : node->childs)
+    {
+        if (child->kind == AstNodeKind::ExpressionList)
+        {
+            ptrDest = collectLiterals(sourceFile, ptrDest, child);
+            if (!ptrDest)
+                return nullptr;
+            continue;
+        }
+
+        switch (child->typeInfo->sizeOf)
+        {
+        case 1:
+            *(uint8_t*) ptrDest = child->computedValue.reg.u8;
+            ptrDest += 1;
+            break;
+        case 2:
+            *(uint16_t*) ptrDest = child->computedValue.reg.u16;
+            ptrDest += 2;
+            break;
+        case 4:
+            *(uint32_t*) ptrDest = child->computedValue.reg.u32;
+            ptrDest += 4;
+            break;
+        case 8:
+            *(uint64_t*) ptrDest = child->computedValue.reg.u64;
+            ptrDest += 8;
+            break;
+        default:
+            sourceFile->report({sourceFile, node, "collectLiterals, invalid size"});
+            return nullptr;
+        }
+    }
+
+    return ptrDest;
+}
+
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
@@ -84,6 +123,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             auto strIndex = sourceFile->module->reserveDataSegmentString(value->text);
             sourceFile->module->addDataSegmentInitString(overload->storageOffset, strIndex);
+        }
+        else if (node->astAssignment && node->astAssignment->typeInfo->kind == TypeInfoKind::TypeList)
+        {
+            sourceFile->module->mutexDataSeg.lock();
+            collectLiterals(sourceFile, &sourceFile->module->dataSegment[overload->storageOffset], node->astAssignment);
+            sourceFile->module->mutexDataSeg.unlock();
         }
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)

@@ -9,6 +9,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "CommandLine.h"
+#include "SemanticJob.h"
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
@@ -102,45 +103,6 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
     return true;
 }
 
-uint8_t* ByteCodeGenJob::collectLiterals(ByteCodeGenContext* context, uint8_t* ptrDest, AstNode* node)
-{
-    for (auto child : node->childs)
-    {
-        if (child->kind == AstNodeKind::ExpressionList)
-        {
-            ptrDest = collectLiterals(context, ptrDest, child);
-            if (!ptrDest)
-                return nullptr;
-            continue;
-        }
-
-        switch (child->typeInfo->sizeOf)
-        {
-        case 1:
-            *(uint8_t*) ptrDest = child->computedValue.reg.u8;
-            ptrDest += 1;
-            break;
-        case 2:
-            *(uint16_t*) ptrDest = child->computedValue.reg.u16;
-            ptrDest += 2;
-            break;
-        case 4:
-            *(uint32_t*) ptrDest = child->computedValue.reg.u32;
-            ptrDest += 4;
-            break;
-        case 8:
-            *(uint64_t*) ptrDest = child->computedValue.reg.u64;
-            ptrDest += 8;
-            break;
-        default:
-            internalError(context, "collectLiterals, invalid size");
-            return nullptr;
-        }
-    }
-
-    return ptrDest;
-}
-
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 {
     auto node   = context->node;
@@ -152,7 +114,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     // Reserve space in constant segment, and copy all
     int offset = module->reserveConstantSegment(node->typeInfo->sizeOf);
     module->mutexConstantSeg.lock();
-    collectLiterals(context, &module->constantSegment[offset], node);
+    SemanticJob::collectLiterals(context->sourceFile, &module->constantSegment[offset], node);
     module->mutexConstantSeg.unlock();
 
     node->resultRegisterRC = reserveRegisterRC(context);

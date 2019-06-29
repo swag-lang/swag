@@ -43,14 +43,15 @@ struct SemanticJob : public Job
         cacheScopeHierarchy.clear();
     }
 
-    static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
-    static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
-    static void collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope);
-    static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
-    static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
-    static bool setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
-    static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
-    static bool forceExecuteNode(SemanticContext* context);
+    static bool     checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
+    static bool     collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
+    static void     collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope);
+    static bool     setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
+    static bool     checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
+    static bool     setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
+    static bool     executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
+    static bool     forceExecuteNode(SemanticContext* context);
+    static uint8_t* collectLiterals(SourceFile* sourceFile, uint8_t* ptrDest, AstNode* node);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -64,7 +65,7 @@ struct SemanticJob : public Job
     static bool resolveTypeDecl(SemanticContext* context);
     static bool resolveIntrinsicProp(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
-	static bool resolveExpressionList(SemanticContext* context);
+    static bool resolveExpressionList(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
     static bool resolveFactorExpression(SemanticContext* context);

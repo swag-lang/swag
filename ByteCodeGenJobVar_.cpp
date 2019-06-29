@@ -25,7 +25,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
 
             emitAffectEqual(context, r0, node->astAssignment->resultRegisterRC);
             freeRegisterRC(context, r0);
-			freeRegisterRC(context, node->astAssignment->resultRegisterRC);
+            freeRegisterRC(context, node->astAssignment->resultRegisterRC);
         }
     }
 
