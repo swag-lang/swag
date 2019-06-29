@@ -19,7 +19,7 @@ enum class TypeInfoKind
     FuncAttrParam,
     Pointer,
     Array,
-	ExpressionList,
+	TypeList,
 };
 
 enum class NativeType
@@ -221,18 +221,18 @@ struct TypeInfoArray : public TypeInfo
     uint32_t  size;
 };
 
-struct TypeInfoExpressionList : public TypeInfo
+struct TypeInfoList : public TypeInfo
 {
-	TypeInfoExpressionList()
+	TypeInfoList()
     {
-        kind = TypeInfoKind::ExpressionList;
+        kind = TypeInfoKind::TypeList;
     }
 
     bool isSame(TypeInfo* from) override
     {
         if (kind != from->kind)
             return false;
-        auto other = static_cast<TypeInfoExpressionList*>(from);
+        auto other = static_cast<TypeInfoList*>(from);
         if (childs.size() != other->childs.size())
             return false;
         for (int i = 0; i < childs.size(); i++)
@@ -254,4 +254,4 @@ extern Pool<TypeInfoEnumValue>      g_Pool_typeInfoEnumValue;
 extern Pool<TypeInfoFuncAttrParam>  g_Pool_typeInfoFuncAttrParam;
 extern Pool<TypeInfoPointer>        g_Pool_typeInfoPointer;
 extern Pool<TypeInfoArray>          g_Pool_typeInfoArray;
-extern Pool<TypeInfoExpressionList> g_Pool_typeInfoExpressionList;
+extern Pool<TypeInfoList> g_Pool_typeInfoExpressionList;

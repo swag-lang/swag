@@ -322,6 +322,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::RCxRefFromDataSeg:
             bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.s32));
             break;
+        case ByteCodeOp::RCxRefFromConstantSeg:
+            bufferC.addString(format("r%u.pointer = __constantseg + %u;", ip->a.u32, ip->b.s32));
+            break;
         case ByteCodeOp::RCxRefFromStack:
             bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.s32));
             break;

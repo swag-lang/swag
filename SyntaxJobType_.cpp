@@ -5,6 +5,7 @@
 #include "SemanticJob.h"
 #include "Scope.h"
 #include "SymTable.h"
+#include "Scoped.h"
 
 bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 {
@@ -34,7 +35,8 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&g_Pool_astType, AstNodeKind::Type, sourceFile->indexInModule, parent);
+    ScopedFlags sc(this, AST_NO_BYTECODE_CHILDS);
+    auto        node = Ast::newNode(&g_Pool_astType, AstNodeKind::Type, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveTypeExpression;
     if (result)

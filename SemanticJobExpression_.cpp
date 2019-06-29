@@ -37,6 +37,7 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
             node->flags &= ~AST_CONST_EXPR;
     }
 
+	node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
     return true;
 }

@@ -206,6 +206,14 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->decSP(ip->a.u32);
         break;
     }
+    case ByteCodeOp::Copy:
+    {
+        void*    dst  = registersRC[ip->a.u32].pointer;
+        void*    src  = registersRC[ip->b.u32].pointer;
+        uint32_t size = ip->c.u32;
+		memcpy(dst, src, size);
+        break;
+    }
     case ByteCodeOp::CopyRCxVaStr:
     {
         auto module = context->sourceFile->module;
@@ -315,6 +323,13 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         auto module                    = context->sourceFile->module;
         auto offset                    = ip->b.s32;
         registersRC[ip->a.u32].pointer = &module->dataSegment[offset];
+        break;
+    }
+    case ByteCodeOp::RCxRefFromConstantSeg:
+    {
+        auto module                    = context->sourceFile->module;
+        auto offset                    = ip->b.s32;
+        registersRC[ip->a.u32].pointer = &module->constantSegment[offset];
         break;
     }
 

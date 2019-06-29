@@ -133,11 +133,21 @@ JobResult ByteCodeGenJob::execute()
                 }
 
             case AstNodeResolveState::ProcessingChilds:
+
+				// Computed constexpr value. Just emit the result
                 if (node->flags & AST_VALUE_COMPUTED)
                 {
                     context.node = node;
-                    if (!emitLiteral(&context))
-                        return JobResult::ReleaseJob;
+                    if (node->typeInfo->kind == TypeInfoKind::TypeList)
+                    {
+                        if (!emitExpressionList(&context))
+                            return JobResult::ReleaseJob;
+                    }
+                    else
+                    {
+                        if (!emitLiteral(&context))
+                            return JobResult::ReleaseJob;
+                    }
                 }
                 else if (node->byteCodeFct)
                 {

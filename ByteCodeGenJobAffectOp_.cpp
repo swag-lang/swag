@@ -20,6 +20,12 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
+	if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
+        return true;
+    }
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectEqual, type not native");
 

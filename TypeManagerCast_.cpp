@@ -731,6 +731,38 @@ bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, TypeInf
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
 
+bool TypeManager::castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+{
+    TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
+    if (fromType->kind == TypeInfoKind::TypeList)
+    {
+        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
+        auto          fromSize     = fromTypeList->childs.size();
+        if (toTypeArray->size != fromSize)
+        {
+            if (!(castFlags & CASTFLAG_NOERROR))
+            {
+                if (toTypeArray->size > fromTypeList->childs.size())
+                    sourceFile->report({sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->size)});
+                else
+                    sourceFile->report({sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->size)});
+            }
+
+            return false;
+        }
+
+		assert(fromSize == nodeToCast->childs.size());
+        for (int i = 0; i < fromSize; i++)
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeArray->pointedType, nodeToCast->childs[i], castFlags));
+        }
+
+        return true;
+    }
+
+    return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
+}
+
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
     auto fromType = nodeToCast->typeInfo;
@@ -753,14 +785,17 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
     if (fromType->isSame(toType))
         return true;
 
-	// Pointer to pointer, with a user cast
+    // Pointer to pointer, with a user cast
     if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer && (castFlags & CASTFLAG_FORCE))
-		return true;
+        return true;
 
+    // Cast to nativer type
     if (toType->kind == TypeInfoKind::Native)
-    {
         return castToNative(sourceFile, toType, fromType, nodeToCast, castFlags);
-    }
+
+    // Cast to array
+    if (toType->kind == TypeInfoKind::Array)
+        return castToArray(sourceFile, toType, fromType, nodeToCast, castFlags);
 
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }

@@ -169,6 +169,16 @@ int Module::reserveDataSegment(int size, void* content)
     return result;
 }
 
+int Module::reserveConstantSegment(int size, void* content)
+{
+    scoped_lock lk(mutexConstantSeg);
+    int         result = (int) constantSegment.size();
+    constantSegment.resize((int) constantSegment.size() + size);
+    if (content)
+        memcpy(&constantSegment[result], content, size);
+    return result;
+}
+
 void Module::error(const Utf8& msg)
 {
     g_Log.lock();

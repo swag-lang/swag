@@ -1,8 +1,8 @@
-#module module329;
+#module module330;
 #unittest pass semantic;
 
 #unittest error;
 #test
 {
-	var a: [4] s32 = {0};
+	var a: [1] s32 = {0, 1};
 }
