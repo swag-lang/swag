@@ -98,7 +98,11 @@ const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
         return "enum";
     case TypeInfoKind::EnumValue:
         return "enum value";
+    case TypeInfoKind::Array:
+        return "array";
+    case TypeInfoKind::Pointer:
+        return "pointer";
     }
 
-    return "???";
+    return "type";
 }

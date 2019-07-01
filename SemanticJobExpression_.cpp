@@ -141,7 +141,7 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolvePointerDeRef(SemanticContext* context)
+bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto sourceFile        = context->sourceFile;
     auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);

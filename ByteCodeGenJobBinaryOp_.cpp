@@ -340,97 +340,128 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCompareOpEqual, type not native");
 
-    switch (typeInfo->nativeType)
+    if (typeInfo->kind == TypeInfoKind::Native)
     {
-    case NativeType::Bool:
-        emitInstruction(context, ByteCodeOp::CompareOpEqualBool, r0, r1, r2);
-        return true;
-    case NativeType::S32:
-    case NativeType::U32:
-    case NativeType::F32:
-    case NativeType::Char:
-        emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0, r1, r2);
-        return true;
-    case NativeType::S64:
-    case NativeType::U64:
-    case NativeType::F64:
-        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
-        return true;
-    case NativeType::String:
-        emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
-        return true;
-    default:
-        return internalError(context, "emitCompareOpEqual, type not supported");
+        switch (typeInfo->nativeType)
+        {
+        case NativeType::Bool:
+            emitInstruction(context, ByteCodeOp::CompareOpEqualBool, r0, r1, r2);
+            return true;
+        case NativeType::S32:
+        case NativeType::U32:
+        case NativeType::F32:
+        case NativeType::Char:
+            emitInstruction(context, ByteCodeOp::CompareOpEqual32, r0, r1, r2);
+            return true;
+        case NativeType::S64:
+        case NativeType::U64:
+        case NativeType::F64:
+            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+            return true;
+        case NativeType::String:
+            emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
+            return true;
+        default:
+            return internalError(context, "emitCompareOpEqual, type not supported");
+        }
     }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
+    }
+    else
+    {
+        return internalError(context, "emitCompareOpEqual, invalid type");
+    }
+
+    return true;
 }
 
 bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCompareOpLower, type not native");
-
-    switch (typeInfo->nativeType)
+    if (typeInfo->kind == TypeInfoKind::Native)
     {
-    case NativeType::S32:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerS32, r0, r1, r2);
-        return true;
-    case NativeType::U32:
-    case NativeType::Char:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, r2);
-        return true;
-    case NativeType::S64:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerS64, r0, r1, r2);
-        return true;
-    case NativeType::U64:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
-        return true;
-    case NativeType::F32:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerF32, r0, r1, r2);
-        return true;
-    case NativeType::F64:
-        emitInstruction(context, ByteCodeOp::CompareOpLowerF64, r0, r1, r2);
-        return true;
-    default:
-        return internalError(context, "emitCompareOpLower, type not supported");
+        switch (typeInfo->nativeType)
+        {
+        case NativeType::S32:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerS32, r0, r1, r2);
+            return true;
+        case NativeType::U32:
+        case NativeType::Char:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, r2);
+            return true;
+        case NativeType::S64:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerS64, r0, r1, r2);
+            return true;
+        case NativeType::U64:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, r2);
+            return true;
+        case NativeType::F32:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerF32, r0, r1, r2);
+            return true;
+        case NativeType::F64:
+            emitInstruction(context, ByteCodeOp::CompareOpLowerF64, r0, r1, r2);
+            return true;
+        default:
+            return internalError(context, "emitCompareOpLower, type not supported");
+        }
     }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::CompareOpLowerPointer, r0, r1, r2);
+    }
+    else
+    {
+        return internalError(context, "emitCompareOpLower, type not native");
+    }
+
+    return true;
 }
 
 bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
-    if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCompareOpGreater, type not native");
+	if (typeInfo->kind == TypeInfoKind::Native)
+	{
+		switch (typeInfo->nativeType)
+		{
+		case NativeType::S32:
+			emitInstruction(context, ByteCodeOp::CompareOpGreaterS32, r0, r1, r2);
+			return true;
+		case NativeType::U32:
+		case NativeType::Char:
+			emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, r2);
+			return true;
+		case NativeType::S64:
+			emitInstruction(context, ByteCodeOp::CompareOpGreaterS64, r0, r1, r2);
+			return true;
+		case NativeType::U64:
+			emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
+			return true;
+		case NativeType::F32:
+			emitInstruction(context, ByteCodeOp::CompareOpGreaterF32, r0, r1, r2);
+			return true;
+		case NativeType::F64:
+			emitInstruction(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
+			return true;
+		default:
+			return internalError(context, "emitCompareOpGreater, type not supported");
+		}
+	}
+	else if (typeInfo->kind == TypeInfoKind::Pointer)
+	{
+		emitInstruction(context, ByteCodeOp::CompareOpGreaterPointer, r0, r1, r2);
+	}
+	else
+	{
+		return internalError(context, "emitCompareOpGreater, type not native");
+	}
 
-    switch (typeInfo->nativeType)
-    {
-    case NativeType::S32:
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterS32, r0, r1, r2);
-        return true;
-    case NativeType::U32:
-    case NativeType::Char:
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, r2);
-        return true;
-    case NativeType::S64:
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterS64, r0, r1, r2);
-        return true;
-    case NativeType::U64:
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
-        return true;
-    case NativeType::F32:
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterF32, r0, r1, r2);
-        return true;
-    case NativeType::F64:
-        emitInstruction(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
-        return true;
-    default:
-        return internalError(context, "emitCompareOpGreater, type not supported");
-    }
+	return true;
 }
 
 bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)

@@ -728,6 +728,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::CompareOpGreaterF64:
             bufferC.addString(format("r%u.b = r%u.f64 > r%u.f64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
+        case ByteCodeOp::CompareOpGreaterPointer:
+            bufferC.addString(format("r%u.b = r%u.pointer > r%u.pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
 
         case ByteCodeOp::CompareOpLowerS32:
             bufferC.addString(format("r%u.b = r%u.s32 < r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
@@ -747,12 +750,18 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::CompareOpLowerF64:
             bufferC.addString(format("r%u.b = r%u.f64 < r%u.f64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
+        case ByteCodeOp::CompareOpLowerPointer:
+            bufferC.addString(format("r%u.b = r%u.pointer < r%u.pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
 
         case ByteCodeOp::CompareOpEqual32:
             bufferC.addString(format("r%u.b = r%u.u32 == r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqual64:
             bufferC.addString(format("r%u.b = r%u.u64 == r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::CompareOpEqualPointer:
+            bufferC.addString(format("r%u.b = r%u.pointer == r%u.pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqualBool:
             bufferC.addString(format("r%u.b = r%u.b == r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));

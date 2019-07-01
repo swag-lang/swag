@@ -82,7 +82,7 @@ struct SyntaxJob : public Job
     bool doWhile(AstNode* parent, AstNode** result = nullptr);
     bool doBreak(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
-    bool doPointerDeRef(AstNode** exprNode);
+    bool doArrayPointerDeRef(AstNode** exprNode);
     bool doPointerRef(AstNode** exprNode);
 
     bool doLeftExpression(AstNode* parent, AstNode** result = nullptr);

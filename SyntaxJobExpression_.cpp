@@ -19,7 +19,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doPointerDeRef(AstNode** exprNode)
+bool SyntaxJob::doArrayPointerDeRef(AstNode** exprNode)
 {
     SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
     while (true)
@@ -27,7 +27,7 @@ bool SyntaxJob::doPointerDeRef(AstNode** exprNode)
         auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeRef, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
         arrayNode->token       = move(token);
-        arrayNode->semanticFct = &SemanticJob::resolvePointerDeRef;
+        arrayNode->semanticFct = &SemanticJob::resolveArrayPointerDeRef;
         Ast::addChild(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
         SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
@@ -182,7 +182,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     // Dereference pointer
     if (token.id == TokenId::SymLeftSquare)
     {
-        SWAG_CHECK(doPointerDeRef(&exprNode));
+        SWAG_CHECK(doArrayPointerDeRef(&exprNode));
     }
 
     if (parent)
