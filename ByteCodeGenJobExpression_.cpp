@@ -217,6 +217,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     {
         return internalError(context, "emitLiteral, type not native");
     }
+
+	return true;
 }
 
 bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)

@@ -322,6 +322,18 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
             break;
 
+        case ByteCodeOp::ClearRefFromStack8:
+            bufferC.addString(format("*(swag_uint8_t*)(stack + %u) = 0;", ip->a.u32));
+            break;
+        case ByteCodeOp::ClearRefFromStack16:
+            bufferC.addString(format("*(swag_uint16_t*)(stack + %u) = 0;", ip->a.u32));
+            break;
+        case ByteCodeOp::ClearRefFromStack32:
+            bufferC.addString(format("*(swag_uint32_t*)(stack + %u) = 0;", ip->a.u32));
+            break;
+        case ByteCodeOp::ClearRefFromStack64:
+            bufferC.addString(format("*(swag_uint64_t*)(stack + %u) = 0;", ip->a.u32));
+            break;
         case ByteCodeOp::RCxRefFromDataSeg:
             bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.s32));
             break;
@@ -329,7 +341,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.pointer = __constantseg + %u;", ip->a.u32, ip->b.s32));
             break;
         case ByteCodeOp::RCxRefFromStack:
-            bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RCxFromStack8:
             bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (stack + %d);", ip->a.u32, ip->b.s32));
@@ -356,8 +368,8 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.pointer = __string%u; ", ip->b.u32, ip->a.u32));
             bufferC.addString(format("r%u.u32 = %u;", ip->c.u32, module->strBuffer[ip->a.u32].size()));
             break;
-		case ByteCodeOp::ClearRCx:
-			bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));
+        case ByteCodeOp::ClearRCx:
+            bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));
             break;
 
         case ByteCodeOp::AffectOp8:

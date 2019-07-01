@@ -298,10 +298,22 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::RCxRefFromStack:
     {
-        auto offset                    = ip->b.s32;
+        auto offset                    = ip->b.u32;
         registersRC[ip->a.u32].pointer = context->bp + offset;
         break;
     }
+    case ByteCodeOp::ClearRefFromStack8:
+        *(uint8_t*) (context->bp + ip->a.u32) = 0;
+        break;
+    case ByteCodeOp::ClearRefFromStack16:
+        *(uint16_t*) (context->bp + ip->a.u32) = 0;
+        break;
+    case ByteCodeOp::ClearRefFromStack32:
+        *(uint32_t*) (context->bp + ip->a.u32) = 0;
+        break;
+    case ByteCodeOp::ClearRefFromStack64:
+        *(uint64_t*) (context->bp + ip->a.u32) = 0;
+        break;
 
     case ByteCodeOp::RCxFromDataSeg8:
     {
