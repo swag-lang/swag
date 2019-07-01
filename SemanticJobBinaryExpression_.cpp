@@ -268,7 +268,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             auto result = left->computedValue.reg.s8 * right->computedValue.reg.s8;
             if (result < INT8_MIN || result > INT8_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's8'"});
-            node->computedValue.reg.s8 = left->computedValue.reg.s8 * right->computedValue.reg.s8;
+            node->computedValue.reg.s8 = (int8_t) result;
         }
         break;
         case NativeType::S16:
@@ -276,7 +276,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             auto result = left->computedValue.reg.s16 * right->computedValue.reg.s16;
             if (result < INT16_MIN || result > INT16_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's16'"});
-            node->computedValue.reg.s16 = left->computedValue.reg.s16 * right->computedValue.reg.s16;
+            node->computedValue.reg.s16 = (int16_t) result;
         }
         break;
         case NativeType::S32:
@@ -284,7 +284,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             auto result = left->computedValue.reg.s32 * right->computedValue.reg.s32;
             if (result < INT32_MIN || result > INT32_MAX)
                 return sourceFile->report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 's32'"});
-            node->computedValue.reg.s32 = left->computedValue.reg.s32 * right->computedValue.reg.s32;
+            node->computedValue.reg.s32 = result;
         }
         break;
         case NativeType::S64:

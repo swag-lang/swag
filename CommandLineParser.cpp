@@ -25,7 +25,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
-    //cmdLine->fileFilter = "333";
+    //cmdLine->fileFilter = "335";
 }
 
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param)

@@ -226,15 +226,15 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
     SWAG_CHECK(doUnaryExpression(nullptr, &leftNode));
 
     bool isBinary = false;
-    while ((token.id == TokenId::SymPlus) ||
-           (token.id == TokenId::SymMinus) ||
-           (token.id == TokenId::SymAsterisk) ||
-           (token.id == TokenId::SymSlash) ||
-           (token.id == TokenId::SymVertical) ||
-           (token.id == TokenId::SymAmpersand) ||
-           (token.id == TokenId::SymGreaterGreater) ||
-           (token.id == TokenId::SymLowerLower) ||
-           (token.id == TokenId::SymCircumflex))
+    if ((token.id == TokenId::SymPlus) ||
+        (token.id == TokenId::SymMinus) ||
+        (token.id == TokenId::SymAsterisk) ||
+        (token.id == TokenId::SymSlash) ||
+        (token.id == TokenId::SymVertical) ||
+        (token.id == TokenId::SymAmpersand) ||
+        (token.id == TokenId::SymGreaterGreater) ||
+        (token.id == TokenId::SymLowerLower) ||
+        (token.id == TokenId::SymCircumflex))
     {
         auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent);
         binaryNode->inheritOwnersAndFlags(this);
@@ -246,8 +246,8 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
 
         Ast::addChild(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doUnaryExpression(binaryNode));
-        leftNode = binaryNode;
+        SWAG_CHECK(doFactorExpression(binaryNode));
+		leftNode = binaryNode;
         isBinary = true;
     }
 
@@ -349,7 +349,7 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
     auto initNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->inheritOwnersAndFlags(this);
     initNode->semanticFct = &SemanticJob::resolveExpressionList;
-	initNode->inheritToken(token);
+    initNode->inheritToken(token);
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightCurly)
