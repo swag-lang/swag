@@ -143,12 +143,12 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 
     case ByteCodeOp::IncPointer:
     {
-        registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].s32;
+        registersRC[ip->a.u32].pointer += registersRC[ip->b.u32].u32;
         break;
     }
     case ByteCodeOp::DecPointer:
     {
-        registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].s32;
+        registersRC[ip->a.u32].pointer -= registersRC[ip->b.u32].u32;
         break;
     }
     case ByteCodeOp::DeRef8:

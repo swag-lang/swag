@@ -45,7 +45,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, 
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->sizeOfPointedBy();
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::MulRCxS32, r1)->b.s32 = sizeOf;
+            emitInstruction(context, ByteCodeOp::MulRCxS32, r1)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::IncPointer, r0, r1);
         node->resultRegisterRC = r0;
         freeRegisterRC(context, r2);
