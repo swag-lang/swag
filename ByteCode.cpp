@@ -70,8 +70,8 @@ void ByteCode::print()
             wprintf(L"VA: { %u }", ip->a.u32);
             break;
 
-        case ByteCodeOp::PushRCxParam:
-        case ByteCodeOp::PushRCxSaved:
+        case ByteCodeOp::PushRAParam:
+        case ByteCodeOp::PushRASaved:
         case ByteCodeOp::DeRef8:
         case ByteCodeOp::DeRef16:
         case ByteCodeOp::DeRef32:
@@ -98,24 +98,24 @@ void ByteCode::print()
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::RCxFromStack8:
-        case ByteCodeOp::RCxFromStack16:
-        case ByteCodeOp::RCxFromStack32:
-        case ByteCodeOp::RCxFromStack64:
-        case ByteCodeOp::RCxRefFromStack:
+        case ByteCodeOp::RAFromStack8:
+        case ByteCodeOp::RAFromStack16:
+        case ByteCodeOp::RAFromStack32:
+        case ByteCodeOp::RAFromStack64:
+        case ByteCodeOp::RARefFromStack:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::RCxFromStackParam64:
+        case ByteCodeOp::RAFromStackParam64:
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
-        case ByteCodeOp::RCxFromDataSeg8:
-        case ByteCodeOp::RCxFromDataSeg16:
-        case ByteCodeOp::RCxFromDataSeg32:
-        case ByteCodeOp::RCxFromDataSeg64:
-        case ByteCodeOp::RCxRefFromDataSeg:
-        case ByteCodeOp::RCxRefFromConstantSeg:
+        case ByteCodeOp::RAFromDataSeg8:
+        case ByteCodeOp::RAFromDataSeg16:
+        case ByteCodeOp::RAFromDataSeg32:
+        case ByteCodeOp::RAFromDataSeg64:
+        case ByteCodeOp::RARefFromDataSeg:
+        case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::MulRAVB:
             wprintf(L"RA: %u SB: %d ", ip->a.u32, ip->b.s32);
             break;

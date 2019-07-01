@@ -193,8 +193,8 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-    case ByteCodeOp::PushRCxSaved:
-    case ByteCodeOp::PushRCxParam:
+    case ByteCodeOp::PushRASaved:
+    case ByteCodeOp::PushRAParam:
     {
         context->push(registersRC[ip->a.u32].u64);
         break;
@@ -271,20 +271,20 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->bp = context->sp;
         break;
     }
-    case ByteCodeOp::RCxFromStack8:
+    case ByteCodeOp::RAFromStack8:
         registersRC[ip->a.u32].u8 = *(uint8_t*) (context->bp + ip->b.u32);
         break;
-    case ByteCodeOp::RCxFromStack16:
+    case ByteCodeOp::RAFromStack16:
         registersRC[ip->a.u32].u16 = *(uint16_t*) (context->bp + ip->b.u32);
         break;
-    case ByteCodeOp::RCxFromStack32:
+    case ByteCodeOp::RAFromStack32:
         registersRC[ip->a.u32].u32 = *(uint32_t*) (context->bp + ip->b.u32);
         break;
-    case ByteCodeOp::RCxFromStack64:
-    case ByteCodeOp::RCxFromStackParam64:
+    case ByteCodeOp::RAFromStack64:
+    case ByteCodeOp::RAFromStackParam64:
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
-    case ByteCodeOp::RCxRefFromStack:
+    case ByteCodeOp::RARefFromStack:
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
 
@@ -304,42 +304,42 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         *(void**) (context->bp + ip->a.u32) = nullptr;
         break;
 
-    case ByteCodeOp::RCxFromDataSeg8:
+    case ByteCodeOp::RAFromDataSeg8:
     {
         auto module               = context->sourceFile->module;
         auto offset               = ip->b.s32;
         registersRC[ip->a.u32].u8 = *(uint8_t*) (&module->dataSegment[offset]);
         break;
     }
-    case ByteCodeOp::RCxFromDataSeg16:
+    case ByteCodeOp::RAFromDataSeg16:
     {
         auto module                = context->sourceFile->module;
         auto offset                = ip->b.s32;
         registersRC[ip->a.u32].u16 = *(uint16_t*) (&module->dataSegment[offset]);
         break;
     }
-    case ByteCodeOp::RCxFromDataSeg32:
+    case ByteCodeOp::RAFromDataSeg32:
     {
         auto module                = context->sourceFile->module;
         auto offset                = ip->b.s32;
         registersRC[ip->a.u32].u32 = *(uint32_t*) (&module->dataSegment[offset]);
         break;
     }
-    case ByteCodeOp::RCxFromDataSeg64:
+    case ByteCodeOp::RAFromDataSeg64:
     {
         auto module                = context->sourceFile->module;
         auto offset                = ip->b.s32;
         registersRC[ip->a.u32].u64 = *(uint64_t*) (&module->dataSegment[offset]);
         break;
     }
-    case ByteCodeOp::RCxRefFromDataSeg:
+    case ByteCodeOp::RARefFromDataSeg:
     {
         auto module                    = context->sourceFile->module;
         auto offset                    = ip->b.s32;
         registersRC[ip->a.u32].pointer = &module->dataSegment[offset];
         break;
     }
-    case ByteCodeOp::RCxRefFromConstantSeg:
+    case ByteCodeOp::RARefFromConstantSeg:
     {
         auto module                    = context->sourceFile->module;
         auto offset                    = ip->b.s32;

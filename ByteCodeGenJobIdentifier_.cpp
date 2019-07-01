@@ -30,16 +30,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (resolved->typeInfo->isNative(NativeType::String))
         {
             node->resultRegisterRC += reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC[1]);
             inst->b.u32 = resolved->storageOffset + 8;
             inst->c.u32 = resolved->storageIndex + 1;
-            inst        = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC[0]);
+            inst        = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC[0]);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
         }
         else
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC);
+            auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
         }
@@ -53,18 +53,18 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         if (resolved->typeInfo->kind == TypeInfoKind::Array)
         {
-            emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         }
         else if (node->flags & AST_LEFT_EXPRESSION)
         {
-            emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         }
         else if (resolved->typeInfo->isNative(NativeType::String))
         {
             node->resultRegisterRC += reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::RCxFromDataSeg64, node->resultRegisterRC[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[1]);
             inst->b.s32 = resolved->storageOffset + 8;
-            inst        = emitInstruction(context, ByteCodeOp::RCxFromDataSeg64, node->resultRegisterRC[0]);
+            inst        = emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0]);
             inst->b.s32 = resolved->storageOffset;
         }
         else
@@ -73,16 +73,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             switch (resolved->typeInfo->sizeOf)
             {
             case 1:
-                inst = emitInstruction(context, ByteCodeOp::RCxFromDataSeg8, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg8, node->resultRegisterRC);
                 break;
             case 2:
-                inst = emitInstruction(context, ByteCodeOp::RCxFromDataSeg16, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg16, node->resultRegisterRC);
                 break;
             case 4:
-                inst = emitInstruction(context, ByteCodeOp::RCxFromDataSeg32, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg32, node->resultRegisterRC);
                 break;
             case 8:
-                inst = emitInstruction(context, ByteCodeOp::RCxFromDataSeg64, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC);
                 break;
             default:
                 return internalError(context, "emitIdentifier, invalid global variable sizeof");
@@ -101,17 +101,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         if (resolved->typeInfo->kind == TypeInfoKind::Array)
         {
-            emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         }
         else if (node->flags & AST_LEFT_EXPRESSION)
         {
-            emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         }
         else if (resolved->typeInfo->isNative(NativeType::String))
         {
             node->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC[1])->b.s32 = resolved->storageOffset + 8;
-            emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.s32 = resolved->storageOffset + 8;
+            emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
         }
         else
         {
@@ -119,16 +119,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             switch (resolved->typeInfo->sizeOf)
             {
             case 1:
-                inst = emitInstruction(context, ByteCodeOp::RCxFromStack8, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::RAFromStack8, node->resultRegisterRC);
                 break;
             case 2:
-                inst = emitInstruction(context, ByteCodeOp::RCxFromStack16, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::RAFromStack16, node->resultRegisterRC);
                 break;
             case 4:
-                inst = emitInstruction(context, ByteCodeOp::RCxFromStack32, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::RAFromStack32, node->resultRegisterRC);
                 break;
             case 8:
-                inst = emitInstruction(context, ByteCodeOp::RCxFromStack64, node->resultRegisterRC);
+                inst = emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC);
                 break;
             default:
                 return internalError(context, "emitIdentifier, invalid local variable sizeof");

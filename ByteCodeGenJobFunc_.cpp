@@ -198,7 +198,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
         if (!isParam)
         {
             copyReservedRC.push_back(*it);
-            emitInstruction(context, ByteCodeOp::PushRCxSaved, *it);
+            emitInstruction(context, ByteCodeOp::PushRASaved, *it);
         }
     }
 
@@ -216,7 +216,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
             context->node = node;
             for (int r = defaultParam->astAssignment->resultRegisterRC.size() - 1; r >= 0; r--)
             {
-                emitInstruction(context, ByteCodeOp::PushRCxParam, defaultParam->astAssignment->resultRegisterRC[r], index);
+                emitInstruction(context, ByteCodeOp::PushRAParam, defaultParam->astAssignment->resultRegisterRC[r], index);
                 precallStack += sizeof(Register);
                 index++;
                 numParameters++;
@@ -235,7 +235,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
             auto param = params->childs[i];
             for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
             {
-                emitInstruction(context, ByteCodeOp::PushRCxParam, param->resultRegisterRC[r], index);
+                emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r], index);
                 precallStack += sizeof(Register);
                 index++;
                 numParameters++;
@@ -354,7 +354,7 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
         for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = params->childs[i];
-            emitInstruction(context, ByteCodeOp::PushRCxParam, param->resultRegisterRC, i);
+            emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC, i);
             freeRegisterRC(context, param->resultRegisterRC);
         }
     }
