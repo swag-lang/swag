@@ -225,20 +225,20 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::CopyRCxVaStr:
     {
         auto module = context->sourceFile->module;
-        assert(ip->a.u32 < module->strBuffer.size());
-        const auto& str                = module->strBuffer[ip->a.u32];
-        registersRC[ip->b.u32].pointer = (uint8_t*) str.c_str();
-        registersRC[ip->c.u32].u32     = (uint32_t) str.length();
+        assert(ip->c.u32 < module->strBuffer.size());
+        const auto& str                = module->strBuffer[ip->c.u32];
+        registersRC[ip->a.u32].pointer = (uint8_t*) str.c_str();
+        registersRC[ip->b.u32].u32     = (uint32_t) str.length();
         break;
     }
     case ByteCodeOp::CopyRCxVa32:
     {
-        registersRC[ip->b.u32].u32 = ip->a.u32;
+        registersRC[ip->a.u32].u32 = ip->b.u32;
         break;
     }
     case ByteCodeOp::CopyRCxVa64:
     {
-        registersRC[ip->b.u32].u64 = ip->a.u64;
+        registersRC[ip->a.u32].u64 = ip->b.u64;
         break;
     }
     case ByteCodeOp::ClearRCx:

@@ -124,15 +124,15 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::CopyRCxVa32:
-            wprintf(L"RB: %u VA: { %x }", ip->b.u32, ip->a.u32);
+            wprintf(L"RA: %u VB: { %x }", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::CopyRCxVaStr:
-            wprintf(L"RB: %u RC: %u VA: { %u }", ip->b.u32, ip->c.u32, ip->a.u32);
+            wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
         case ByteCodeOp::CopyRCxVa64:
-            wprintf(L"RB: %u VA: { %I64x }", ip->b.u32, ip->a.u64);
+            wprintf(L"RA: %u VB: { %I64x }", ip->a.u32, ip->b.u64);
             break;
 
         case ByteCodeOp::Jump:

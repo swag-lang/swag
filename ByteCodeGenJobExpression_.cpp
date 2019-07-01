@@ -162,47 +162,47 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeType::Bool:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.b = node->computedValue.reg.b;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.b = node->computedValue.reg.b;
             return true;
         case NativeType::U8:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.u8 = node->computedValue.reg.u8;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.u8 = node->computedValue.reg.u8;
             return true;
         case NativeType::U16:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.u16 = node->computedValue.reg.u16;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.u16 = node->computedValue.reg.u16;
             return true;
         case NativeType::U32:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeType::U64:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa64, 0, r0)->a.u64 = node->computedValue.reg.u64;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa64, r0)->b.u64 = node->computedValue.reg.u64;
             return true;
         case NativeType::S8:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.s8 = node->computedValue.reg.s8;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.s8 = node->computedValue.reg.s8;
             return true;
         case NativeType::S16:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.s16 = node->computedValue.reg.s16;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.s16 = node->computedValue.reg.s16;
             return true;
         case NativeType::S32:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.s32 = node->computedValue.reg.s32;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.s32 = node->computedValue.reg.s32;
             return true;
         case NativeType::S64:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa64, 0, r0)->a.s64 = node->computedValue.reg.s64;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa64, r0)->b.s64 = node->computedValue.reg.s64;
             return true;
         case NativeType::F32:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.f32 = node->computedValue.reg.f32;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.f32 = node->computedValue.reg.f32;
             return true;
         case NativeType::F64:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa64, 0, r0)->a.f64 = node->computedValue.reg.f64;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa64, r0)->b.f64 = node->computedValue.reg.f64;
             return true;
         case NativeType::Char:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, r0)->a.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeType::String:
         {
             auto r1    = reserveRegisterRC(context);
             auto index = context->sourceFile->module->reserveDataSegmentString(node->computedValue.text);
             node->resultRegisterRC += r1;
-            emitInstruction(context, ByteCodeOp::CopyRCxVaStr, index, r0, r1);
+            emitInstruction(context, ByteCodeOp::CopyRCxVaStr, r0, r1)->c.u32 = index;
             return true;
         }
         default:

@@ -362,14 +362,14 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("__memcpy(r%u.pointer, r%u.pointer, %d);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::CopyRCxVa32:
-            bufferC.addString(format("r%u.u32 = 0x%x;", ip->b.u32, ip->a.u32));
+            bufferC.addString(format("r%u.u32 = 0x%x;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRCxVa64:
-            bufferC.addString(format("r%u.u64 = 0x%I64x;", ip->b.u32, ip->a.u64));
+            bufferC.addString(format("r%u.u64 = 0x%I64x;", ip->a.u32, ip->b.u64));
             break;
         case ByteCodeOp::CopyRCxVaStr:
-            bufferC.addString(format("r%u.pointer = __string%u; ", ip->b.u32, ip->a.u32));
-            bufferC.addString(format("r%u.u32 = %u;", ip->c.u32, module->strBuffer[ip->a.u32].size()));
+            bufferC.addString(format("r%u.pointer = __string%u; ", ip->a.u32, ip->c.u32));
+            bufferC.addString(format("r%u.u32 = %u;", ip->b.u32, module->strBuffer[ip->c.u32].size()));
             break;
         case ByteCodeOp::ClearRCx:
             bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));
