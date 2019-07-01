@@ -42,9 +42,13 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             case 8:
                 emitInstruction(context, ByteCodeOp::ClearRefFromStack64)->a.u32 = resolved->storageOffset;
                 break;
-			default:
-				return internalError(context, "emitVarDecl, invalid size of type for default initialization");
+            default:
+                return internalError(context, "emitVarDecl, invalid size of type for default initialization");
             }
+        }
+        else if (resolved->typeInfo->kind == TypeInfoKind::Pointer)
+        {
+            emitInstruction(context, ByteCodeOp::ClearRefFromStackPointer)->a.u32 = resolved->storageOffset;
         }
     }
 
