@@ -247,7 +247,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
         Ast::addChild(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doFactorExpression(binaryNode));
-		leftNode = binaryNode;
+        leftNode = binaryNode;
         isBinary = true;
     }
 
@@ -265,12 +265,12 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     SWAG_CHECK(doFactorExpression(nullptr, &leftNode));
 
     bool isBinary = false;
-    while ((token.id == TokenId::SymEqualEqual) ||
-           (token.id == TokenId::SymExclamEqual) ||
-           (token.id == TokenId::SymLowerEqual) ||
-           (token.id == TokenId::SymGreaterEqual) ||
-           (token.id == TokenId::SymLower) ||
-           (token.id == TokenId::SymGreater))
+    if ((token.id == TokenId::SymEqualEqual) ||
+        (token.id == TokenId::SymExclamEqual) ||
+        (token.id == TokenId::SymLowerEqual) ||
+        (token.id == TokenId::SymGreaterEqual) ||
+        (token.id == TokenId::SymLower) ||
+        (token.id == TokenId::SymGreater))
     {
         auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent);
         binaryNode->inheritOwnersAndFlags(this);
@@ -298,7 +298,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     SWAG_CHECK(doCompareExpression(nullptr, &leftNode));
 
     bool isBinary = false;
-    while ((token.id == TokenId::SymVerticalVertical) || (token.id == TokenId::SymAmpersandAmpersand))
+    if ((token.id == TokenId::SymVerticalVertical) || (token.id == TokenId::SymAmpersandAmpersand))
     {
         auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent);
         binaryNode->inheritOwnersAndFlags(this);
