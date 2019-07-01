@@ -236,7 +236,10 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
         (token.id == TokenId::SymLowerLower) ||
         (token.id == TokenId::SymCircumflex))
     {
-        auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent);
+        if (parent && parent->kind == AstNodeKind::FactorOp && parent->token.id != token.id)
+			return syntaxError(token, "operator order ambiguity, please add parenthesis");
+
+        auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FactorOp, sourceFile->indexInModule, parent);
         binaryNode->inheritOwnersAndFlags(this);
         if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
             binaryNode->semanticFct = &SemanticJob::resolveShiftExpression;
