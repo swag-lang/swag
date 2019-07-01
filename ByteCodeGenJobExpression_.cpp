@@ -31,7 +31,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     if (g_CommandLine.debugBoundCheck)
     {
         auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
-        emitInstruction(context, ByteCodeOp::BoundCheckV, node->array->resultRegisterRC)->b.u32 = typeInfo->size;
+        emitInstruction(context, ByteCodeOp::BoundCheckV, node->access->resultRegisterRC)->b.u32 = typeInfo->size;
     }
 
     if (sizeOf > 1)
@@ -91,7 +91,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoArray>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Array);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
         if (g_CommandLine.debugBoundCheck)
-            emitInstruction(context, ByteCodeOp::BoundCheckV, node->array->resultRegisterRC)->b.u32 = typeInfo->size;
+            emitInstruction(context, ByteCodeOp::BoundCheckV, node->access->resultRegisterRC)->b.u32 = typeInfo->size;
 
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
