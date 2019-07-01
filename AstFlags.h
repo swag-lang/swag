@@ -9,3 +9,4 @@ static const uint64_t AST_LEFT_EXPRESSION    = 0x00000000'00000040;
 static const uint64_t AST_NO_BYTECODE_CHILDS = 0x00000000'00000080;
 static const uint64_t AST_BYTECODE_RESOLVED  = 0x00000000'00000100;
 static const uint64_t AST_DISABLED           = 0x00000000'00000200;
+static const uint64_t AST_DISABLED_INIT      = 0x00000000'00000400;

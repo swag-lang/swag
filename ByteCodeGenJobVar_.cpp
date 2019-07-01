@@ -24,31 +24,37 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             freeRegisterRC(context, r0);
             freeRegisterRC(context, node->astAssignment->resultRegisterRC);
         }
-
-        // Default initialization
-        else if (resolved->typeInfo->kind == TypeInfoKind::Native)
+        else if (!(node->flags & AST_DISABLED_INIT))
         {
-            switch (resolved->typeInfo->sizeOf)
+            // Default initialization
+            if (resolved->typeInfo->isNative(NativeType::String))
             {
-            case 1:
-                emitInstruction(context, ByteCodeOp::ClearRefFromStack8)->a.u32 = resolved->storageOffset;
-                break;
-            case 2:
-                emitInstruction(context, ByteCodeOp::ClearRefFromStack16)->a.u32 = resolved->storageOffset;
-                break;
-            case 4:
-                emitInstruction(context, ByteCodeOp::ClearRefFromStack32)->a.u32 = resolved->storageOffset;
-                break;
-            case 8:
-                emitInstruction(context, ByteCodeOp::ClearRefFromStack64)->a.u32 = resolved->storageOffset;
-                break;
-            default:
-                return internalError(context, "emitVarDecl, invalid size of type for default initialization");
+				emitInstruction(context, ByteCodeOp::ClearRefFromStackPointer)->a.u32 = resolved->storageOffset;
             }
-        }
-        else if (resolved->typeInfo->kind == TypeInfoKind::Pointer)
-        {
-            emitInstruction(context, ByteCodeOp::ClearRefFromStackPointer)->a.u32 = resolved->storageOffset;
+            else if (resolved->typeInfo->kind == TypeInfoKind::Native)
+            {
+                switch (resolved->typeInfo->sizeOf)
+                {
+                case 1:
+                    emitInstruction(context, ByteCodeOp::ClearRefFromStack8)->a.u32 = resolved->storageOffset;
+                    break;
+                case 2:
+                    emitInstruction(context, ByteCodeOp::ClearRefFromStack16)->a.u32 = resolved->storageOffset;
+                    break;
+                case 4:
+                    emitInstruction(context, ByteCodeOp::ClearRefFromStack32)->a.u32 = resolved->storageOffset;
+                    break;
+                case 8:
+                    emitInstruction(context, ByteCodeOp::ClearRefFromStack64)->a.u32 = resolved->storageOffset;
+                    break;
+                default:
+                    return internalError(context, "emitVarDecl, invalid size of type for default initialization");
+                }
+            }
+            else if (resolved->typeInfo->kind == TypeInfoKind::Pointer)
+            {
+                emitInstruction(context, ByteCodeOp::ClearRefFromStackPointer)->a.u32 = resolved->storageOffset;
+            }
         }
     }
 

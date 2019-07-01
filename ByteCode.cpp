@@ -62,11 +62,11 @@ void ByteCode::print()
 
         case ByteCodeOp::IncSP:
         case ByteCodeOp::DecSP:
-		case ByteCodeOp::ClearRefFromStack8:
-		case ByteCodeOp::ClearRefFromStack16:
-		case ByteCodeOp::ClearRefFromStack32:
-		case ByteCodeOp::ClearRefFromStack64:
-		case ByteCodeOp::ClearRefFromStackPointer:
+        case ByteCodeOp::ClearRefFromStack8:
+        case ByteCodeOp::ClearRefFromStack16:
+        case ByteCodeOp::ClearRefFromStack32:
+        case ByteCodeOp::ClearRefFromStack64:
+        case ByteCodeOp::ClearRefFromStackPointer:
             wprintf(L"VA: { %u }", ip->a.u32);
             break;
 
@@ -84,7 +84,7 @@ void ByteCode::print()
         case ByteCodeOp::IntrinsicPrintS32:
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintString:
-		case ByteCodeOp::ClearRA:
+        case ByteCodeOp::ClearRA:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -94,6 +94,7 @@ void ByteCode::print()
         case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOp64:
         case ByteCodeOp::AffectOpPointer:
+        case ByteCodeOp::IsNullString:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
@@ -105,7 +106,7 @@ void ByteCode::print()
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 
-		case ByteCodeOp::RCxFromStackParam64:
+        case ByteCodeOp::RCxFromStackParam64:
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 

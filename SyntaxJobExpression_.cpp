@@ -237,7 +237,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
         (token.id == TokenId::SymCircumflex))
     {
         if (parent && parent->kind == AstNodeKind::FactorOp && parent->token.id != token.id)
-			return syntaxError(token, "operator order ambiguity, please add parenthesis");
+            return syntaxError(token, "operator order ambiguity, please add parenthesis");
 
         auto binaryNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FactorOp, sourceFile->indexInModule, parent);
         binaryNode->inheritOwnersAndFlags(this);
@@ -346,6 +346,13 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 {
+    if (token.id == TokenId::SymQuestion)
+    {
+		parent->flags |= AST_DISABLED_INIT;
+        SWAG_CHECK(eatToken(TokenId::SymQuestion));
+        return true;
+    }
+
     if (token.id != TokenId::SymLeftCurly)
         return doExpression(parent, result);
 

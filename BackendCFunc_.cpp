@@ -305,7 +305,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::DeRefPointer:
             bufferC.addString(format("r%u.pointer = *(swag_uint8_t**) r%u.pointer;", ip->a.u32, ip->a.u32));
             break;
-        case ByteCodeOp::MulRCxS32:
+        case ByteCodeOp::MulRAVB:
             bufferC.addString(format("r%u.s32 *= %d;", ip->a.u32, ip->b.s32));
             break;
 
@@ -361,17 +361,17 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::Copy:
             bufferC.addString(format("__memcpy(r%u.pointer, r%u.pointer, %d);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
-        case ByteCodeOp::CopyRCxVa32:
+        case ByteCodeOp::CopyRAVB32:
             bufferC.addString(format("r%u.u32 = 0x%x;", ip->a.u32, ip->b.u32));
             break;
-        case ByteCodeOp::CopyRCxVa64:
+        case ByteCodeOp::CopyRAVB64:
             bufferC.addString(format("r%u.u64 = 0x%I64x;", ip->a.u32, ip->b.u64));
             break;
-        case ByteCodeOp::CopyRCxVaStr:
+        case ByteCodeOp::CopyRAVBStr:
             bufferC.addString(format("r%u.pointer = __string%u; ", ip->a.u32, ip->c.u32));
             bufferC.addString(format("r%u.u32 = %u;", ip->b.u32, module->strBuffer[ip->c.u32].size()));
             break;
-        case ByteCodeOp::ClearRCx:
+        case ByteCodeOp::ClearRA:
             bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));
             break;
 
@@ -786,6 +786,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
         case ByteCodeOp::CompareOpEqualString:
             bufferC.addString(format("r%u.b = __strcmp((const char*) r%u.pointer, (const char*) r%u.pointer);", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::IsNullString:
+            bufferC.addString(format("r%u.b = r%u.pointer == 0;", ip->b.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::Jump:

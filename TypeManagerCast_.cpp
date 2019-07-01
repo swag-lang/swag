@@ -751,7 +751,7 @@ bool TypeManager::castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
             return false;
         }
 
-		assert(fromSize == nodeToCast->childs.size());
+        assert(fromSize == nodeToCast->childs.size());
         for (int i = 0; i < fromSize; i++)
         {
             SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeArray->pointedType, nodeToCast->childs[i], castFlags));
@@ -790,8 +790,12 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
         return true;
     if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer && (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull))
         return true;
+    if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
+        return true;
+    if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeType::String))
+        return true;
 
-    // Cast to nativer type
+    // Cast to native type
     if (toType->kind == TypeInfoKind::Native)
         return castToNative(sourceFile, toType, fromType, nodeToCast, castFlags);
 

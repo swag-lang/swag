@@ -22,7 +22,7 @@ void TypeManager::setup()
     typeInfoVoid   = new TypeInfoNative(NativeType::Void, "void", 0, 0);
 
     typeInfoNull         = new TypeInfoPointer();
-    typeInfoNull->name   = "*void";
+    typeInfoNull->name   = "null";
     typeInfoNull->sizeOf = sizeof(void*);
 
     promoteMatrix[(int) NativeType::U8][(int) NativeType::U8]  = typeInfoU32;

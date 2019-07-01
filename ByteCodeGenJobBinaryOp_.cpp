@@ -338,8 +338,10 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto node     = context->node;
+    auto left     = node->childs.front();
+    auto right    = node->childs.back();
+    auto typeInfo = TypeManager::concreteType(left->typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Native)
     {
@@ -360,7 +362,10 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
             return true;
         case NativeType::String:
-            emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
+            if (right->typeInfo == g_TypeMgr.typeInfoNull)
+                emitInstruction(context, ByteCodeOp::IsNullString, r0, r2);
+            else
+                emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
             return true;
         default:
             return internalError(context, "emitCompareOpEqual, type not supported");
@@ -425,43 +430,43 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
-	if (typeInfo->kind == TypeInfoKind::Native)
-	{
-		switch (typeInfo->nativeType)
-		{
-		case NativeType::S32:
-			emitInstruction(context, ByteCodeOp::CompareOpGreaterS32, r0, r1, r2);
-			return true;
-		case NativeType::U32:
-		case NativeType::Char:
-			emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, r2);
-			return true;
-		case NativeType::S64:
-			emitInstruction(context, ByteCodeOp::CompareOpGreaterS64, r0, r1, r2);
-			return true;
-		case NativeType::U64:
-			emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
-			return true;
-		case NativeType::F32:
-			emitInstruction(context, ByteCodeOp::CompareOpGreaterF32, r0, r1, r2);
-			return true;
-		case NativeType::F64:
-			emitInstruction(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
-			return true;
-		default:
-			return internalError(context, "emitCompareOpGreater, type not supported");
-		}
-	}
-	else if (typeInfo->kind == TypeInfoKind::Pointer)
-	{
-		emitInstruction(context, ByteCodeOp::CompareOpGreaterPointer, r0, r1, r2);
-	}
-	else
-	{
-		return internalError(context, "emitCompareOpGreater, type not native");
-	}
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeType::S32:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterS32, r0, r1, r2);
+            return true;
+        case NativeType::U32:
+        case NativeType::Char:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterU32, r0, r1, r2);
+            return true;
+        case NativeType::S64:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterS64, r0, r1, r2);
+            return true;
+        case NativeType::U64:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterU64, r0, r1, r2);
+            return true;
+        case NativeType::F32:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterF32, r0, r1, r2);
+            return true;
+        case NativeType::F64:
+            emitInstruction(context, ByteCodeOp::CompareOpGreaterF64, r0, r1, r2);
+            return true;
+        default:
+            return internalError(context, "emitCompareOpGreater, type not supported");
+        }
+    }
+    else if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::CompareOpGreaterPointer, r0, r1, r2);
+    }
+    else
+    {
+        return internalError(context, "emitCompareOpGreater, type not native");
+    }
 
-	return true;
+    return true;
 }
 
 bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)

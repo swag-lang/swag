@@ -561,6 +561,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->c.u32].b = !strcmp((const char*) registersRC[ip->a.u32].pointer, (const char*) registersRC[ip->b.u32].pointer);
         break;
     }
+    case ByteCodeOp::IsNullString:
+    {
+        registersRC[ip->b.u32].b = registersRC[ip->a.u32].pointer == nullptr;
+        break;
+    }
 
     case ByteCodeOp::CompareOpLowerS32:
     {
