@@ -53,11 +53,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         if (resolved->typeInfo->kind == TypeInfoKind::Array)
         {
-            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
         else if (node->flags & AST_LEFT_EXPRESSION)
         {
-            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
         else if (resolved->typeInfo->isNative(NativeType::String))
         {
@@ -89,7 +89,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 break;
             }
 
-            inst->b.s32 = resolved->storageOffset;
+            inst->b.u32 = resolved->storageOffset;
         }
 
         return true;

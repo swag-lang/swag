@@ -117,7 +117,7 @@ void ByteCode::print()
         case ByteCodeOp::RARefFromDataSeg:
         case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::MulRAVB:
-            wprintf(L"RA: %u SB: %d ", ip->a.u32, ip->b.s32);
+            wprintf(L"RA: %u VB: { %u }", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::BoundCheckV:

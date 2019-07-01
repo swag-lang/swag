@@ -145,7 +145,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
     node->resultRegisterRC = reserveRegisterRC(context);
 
-    emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC)->b.s32 = offset;
+    emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC)->b.u32 = offset;
     return true;
 }
 

@@ -310,16 +310,16 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
 
         case ByteCodeOp::RAFromDataSeg8:
-            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg16:
-            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg32:
-            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg64:
-            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__dataseg + %d);", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::ClearRefFromStack8:
@@ -338,10 +338,10 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("*(void**)(stack + %u) = (void*) 0;", ip->a.u32));
             break;
         case ByteCodeOp::RARefFromDataSeg:
-            bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromConstantSeg:
-            bufferC.addString(format("r%u.pointer = __constantseg + %u;", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.pointer = __constantseg + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromStack:
             bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.u32));
