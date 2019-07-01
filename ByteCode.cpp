@@ -67,27 +67,27 @@ void ByteCode::print()
 
         case ByteCodeOp::PushRCxParam:
         case ByteCodeOp::PushRCxSaved:
-		case ByteCodeOp::DeRef8:
-		case ByteCodeOp::DeRef16:
-		case ByteCodeOp::DeRef32:
-		case ByteCodeOp::DeRef64:
-		case ByteCodeOp::DeRefPointer:
-		case ByteCodeOp::IntrinsicAssert:
-		case ByteCodeOp::IntrinsicPrintChar:
-		case ByteCodeOp::IntrinsicPrintF32:
-		case ByteCodeOp::IntrinsicPrintF64:
-		case ByteCodeOp::IntrinsicPrintS32:
-		case ByteCodeOp::IntrinsicPrintS64:
-		case ByteCodeOp::IntrinsicPrintString:
+        case ByteCodeOp::DeRef8:
+        case ByteCodeOp::DeRef16:
+        case ByteCodeOp::DeRef32:
+        case ByteCodeOp::DeRef64:
+        case ByteCodeOp::DeRefPointer:
+        case ByteCodeOp::IntrinsicAssert:
+        case ByteCodeOp::IntrinsicPrintChar:
+        case ByteCodeOp::IntrinsicPrintF32:
+        case ByteCodeOp::IntrinsicPrintF64:
+        case ByteCodeOp::IntrinsicPrintS32:
+        case ByteCodeOp::IntrinsicPrintS64:
+        case ByteCodeOp::IntrinsicPrintString:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
-		case ByteCodeOp::IncPointer:
-		case ByteCodeOp::AffectOp8:
-		case ByteCodeOp::AffectOp16:
-		case ByteCodeOp::AffectOp32:
-		case ByteCodeOp::AffectOp64:
-		case ByteCodeOp::AffectOpPointer:
+        case ByteCodeOp::IncPointer:
+        case ByteCodeOp::AffectOp8:
+        case ByteCodeOp::AffectOp16:
+        case ByteCodeOp::AffectOp32:
+        case ByteCodeOp::AffectOp64:
+        case ByteCodeOp::AffectOpPointer:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
@@ -101,10 +101,14 @@ void ByteCode::print()
         case ByteCodeOp::RCxFromDataSeg32:
         case ByteCodeOp::RCxFromDataSeg64:
         case ByteCodeOp::RCxRefFromDataSeg:
-		case ByteCodeOp::RCxRefFromConstantSeg:
+        case ByteCodeOp::RCxRefFromConstantSeg:
         case ByteCodeOp::RCxRefFromStack:
-		case ByteCodeOp::MulRCxS32:
+        case ByteCodeOp::MulRCxS32:
             wprintf(L"RA: %u SB: %d ", ip->a.u32, ip->b.s32);
+            break;
+
+        case ByteCodeOp::BoundCheckV:
+            wprintf(L"RA: %u VB: { %x }", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::CopyRCxVa32:

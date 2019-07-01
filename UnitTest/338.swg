@@ -1,10 +1,9 @@
-#module module337;
+#module module338;
 //#unittest pass semantic;
 
 #unittest error;
 #test
 {
 	var a: [4, 6] s32;
-	a[4, 0] = 1;
-	//@print(a[0, 0]);
+	a[0, 6] = 1;
 }
