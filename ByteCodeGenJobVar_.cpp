@@ -20,7 +20,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             r0 = reserveRegisterRC(context);
 
             emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.s32 = resolved->storageOffset;
-            emitAffectEqual(context, r0, node->astAssignment->resultRegisterRC);
+            emitAffectEqual(context, r0, node->astAssignment->resultRegisterRC, node->typeInfo);
             freeRegisterRC(context, r0);
             freeRegisterRC(context, node->astAssignment->resultRegisterRC);
         }

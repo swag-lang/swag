@@ -8,6 +8,7 @@
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "TypeInfo.h"
 
 uint8_t* SemanticJob::collectLiterals(SourceFile* sourceFile, uint8_t* ptrDest, AstNode* node)
 {
@@ -64,9 +65,9 @@ bool SemanticJob::resolveConstDecl(SemanticContext* context)
             return true;
     }
 
-	node->inheritComputedValue(node->astAssignment);
+    node->inheritComputedValue(node->astAssignment);
     SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->token, format("constant value '%s' cannot be evaluated at compile time", node->name.c_str())}));
-	node->flags |= AST_NO_BYTECODE;
+    node->flags |= AST_NO_BYTECODE;
 
     // Find type
     if (node->astType && node->astAssignment)
@@ -134,6 +135,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (node->astAssignment)
     {
         node->typeInfo = node->astAssignment->typeInfo;
+
+        // Convert from initialization list to array
+        if (node->typeInfo->kind == TypeInfoKind::TypeList)
+        {
+            auto typeList          = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
+            auto typeArray         = g_Pool_typeInfoArray.alloc();
+            typeArray->pointedType = typeList->childs.front();
+            typeArray->sizeOf      = node->typeInfo->sizeOf;
+            typeArray->size        = (uint32_t) typeList->childs.size();
+            typeArray->name        = format("[%s]", typeArray->pointedType->name.c_str());
+            node->typeInfo         = g_TypeMgr.registerType(typeArray);
+            SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
+        }
     }
     else if (node->astType)
     {

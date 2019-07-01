@@ -9,10 +9,10 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 
-bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1)
+bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = forcedTypeInfo ? forcedTypeInfo : TypeManager::concreteType(node->childs.front()->typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
@@ -20,7 +20,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-	if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->kind == TypeInfoKind::Array)
     {
         emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
         return true;
@@ -51,10 +51,10 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     case NativeType::F64:
         emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1);
         return true;
-	case NativeType::String:
-		emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
-		emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
-		return true;
+    case NativeType::String:
+        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
+        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+        return true;
     default:
         return internalError(context, "emitAffectEqual, type not supported");
     }
@@ -63,7 +63,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node         = context->node;
-    auto     leftTypeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     leftTypeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (leftTypeInfo->kind == TypeInfoKind::Native)
     {
         switch (leftTypeInfo->nativeType)
@@ -118,7 +118,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
 bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node         = context->node;
-    auto     leftTypeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     leftTypeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (leftTypeInfo->kind == TypeInfoKind::Native)
     {
         switch (leftTypeInfo->nativeType)
@@ -173,7 +173,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
 bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectMulEqual, type not native");
 
@@ -217,7 +217,7 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
 bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectAndEqual, type not native");
 
@@ -255,7 +255,7 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
 bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectOrEqual, type not native");
 
@@ -293,7 +293,7 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
 bool ByteCodeGenJob::emitAffectXOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectXOrEqual, type not native");
 
@@ -331,7 +331,7 @@ bool ByteCodeGenJob::emitAffectXOrEqual(ByteCodeGenContext* context, uint32_t r0
 bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectShiftLeftEqual, type not native");
 
@@ -369,7 +369,7 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
 bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectShiftRightEqual, type not native");
 
@@ -407,7 +407,7 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
 bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectDivEqual, type not native");
 
