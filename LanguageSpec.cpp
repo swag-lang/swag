@@ -30,6 +30,7 @@ void LanguageSpec::setup()
     keywords["func"]      = TokenId::KwdFunc;
     keywords["true"]      = TokenId::KwdTrue;
     keywords["false"]     = TokenId::KwdFalse;
+    keywords["null"]      = TokenId::KwdNull;
     keywords["attr"]      = TokenId::KwdAttr;
     keywords["return"]    = TokenId::KwdReturn;
     keywords["using"]     = TokenId::KwdUsing;
@@ -70,7 +71,7 @@ void LanguageSpec::setup()
 
     properties["sizeof"] = Property::SizeOf;
     properties["count"]  = Property::Count;
-	properties["data"] = Property::Data;
+    properties["data"]   = Property::Data;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

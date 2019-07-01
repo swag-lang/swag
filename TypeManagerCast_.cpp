@@ -788,6 +788,8 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
     // Pointer to pointer, with a user cast
     if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer && (castFlags & CASTFLAG_FORCE))
         return true;
+    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer && (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull))
+        return true;
 
     // Cast to nativer type
     if (toType->kind == TypeInfoKind::Native)

@@ -241,6 +241,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->b.u32].u64 = ip->a.u64;
         break;
     }
+    case ByteCodeOp::ClearRCx:
+    {
+        registersRC[ip->a.u32].u64 = 0;
+        break;
+    }
     case ByteCodeOp::CopyRRxRCx:
     {
         registersRR[ip->a.u32] = registersRC[ip->b.u32];

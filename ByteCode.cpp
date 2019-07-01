@@ -79,6 +79,7 @@ void ByteCode::print()
         case ByteCodeOp::IntrinsicPrintS32:
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintString:
+		case ByteCodeOp::ClearRCx:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 

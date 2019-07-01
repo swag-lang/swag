@@ -28,7 +28,7 @@ struct TypeManager
     static bool castToNativeF64(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
 
     static bool castToNative(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-	static bool castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
 
     static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags = 0);
     static bool makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
@@ -40,20 +40,22 @@ struct TypeManager
 
     TypeInfo* registerType(TypeInfo* typeInfo);
 
-    TypeInfoNative* typeInfoS8;
-    TypeInfoNative* typeInfoS16;
-    TypeInfoNative* typeInfoS32;
-    TypeInfoNative* typeInfoS64;
-    TypeInfoNative* typeInfoU8;
-    TypeInfoNative* typeInfoU16;
-    TypeInfoNative* typeInfoU32;
-    TypeInfoNative* typeInfoU64;
-    TypeInfoNative* typeInfoBool;
-    TypeInfoNative* typeInfoF32;
-    TypeInfoNative* typeInfoF64;
-    TypeInfoNative* typeInfoChar;
-    TypeInfoNative* typeInfoString;
-    TypeInfoNative* typeInfoVoid;
+    TypeInfoNative*  typeInfoS8;
+    TypeInfoNative*  typeInfoS16;
+    TypeInfoNative*  typeInfoS32;
+    TypeInfoNative*  typeInfoS64;
+    TypeInfoNative*  typeInfoU8;
+    TypeInfoNative*  typeInfoU16;
+    TypeInfoNative*  typeInfoU32;
+    TypeInfoNative*  typeInfoU64;
+    TypeInfoNative*  typeInfoBool;
+    TypeInfoNative*  typeInfoF32;
+    TypeInfoNative*  typeInfoF64;
+    TypeInfoNative*  typeInfoChar;
+    TypeInfoNative*  typeInfoString;
+    TypeInfoNative*  typeInfoVoid;
+    TypeInfoPointer* typeInfoNull;
+
     TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
 
     SpinLock          mutexTypes;

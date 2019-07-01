@@ -33,6 +33,11 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
         token.literalType    = g_TypeMgr.typeInfoBool;
         token.literalValue.b = false;
         return;
+    case TokenId::KwdNull:
+        token.id                   = TokenId::LiteralNumber;
+        token.literalType          = g_TypeMgr.typeInfoNull;
+        token.literalValue.pointer = nullptr;
+        return;
     case TokenId::CompilerFile:
         token.id          = TokenId::LiteralString;
         token.literalType = g_TypeMgr.typeInfoString;
