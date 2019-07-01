@@ -222,7 +222,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         memcpy(dst, src, size);
         break;
     }
-    case ByteCodeOp::CopyRCxVaStr:
+    case ByteCodeOp::CopyRAVBStr:
     {
         auto module = context->sourceFile->module;
         assert(ip->c.u32 < module->strBuffer.size());
@@ -231,17 +231,17 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->b.u32].u32     = (uint32_t) str.length();
         break;
     }
-    case ByteCodeOp::CopyRCxVa32:
+    case ByteCodeOp::CopyRAVB32:
     {
         registersRC[ip->a.u32].u32 = ip->b.u32;
         break;
     }
-    case ByteCodeOp::CopyRCxVa64:
+    case ByteCodeOp::CopyRAVB64:
     {
         registersRC[ip->a.u32].u64 = ip->b.u64;
         break;
     }
-    case ByteCodeOp::ClearRCx:
+    case ByteCodeOp::ClearRA:
     {
         registersRC[ip->a.u32].u64 = 0;
         break;
@@ -410,7 +410,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-    case ByteCodeOp::MulRCxS32:
+    case ByteCodeOp::MulRAVB:
     {
         registersRC[ip->a.u32].s32 *= ip->b.s32;
         break;

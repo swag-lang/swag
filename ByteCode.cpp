@@ -84,7 +84,7 @@ void ByteCode::print()
         case ByteCodeOp::IntrinsicPrintS32:
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintString:
-		case ByteCodeOp::ClearRCx:
+		case ByteCodeOp::ClearRA:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -115,7 +115,7 @@ void ByteCode::print()
         case ByteCodeOp::RCxFromDataSeg64:
         case ByteCodeOp::RCxRefFromDataSeg:
         case ByteCodeOp::RCxRefFromConstantSeg:
-        case ByteCodeOp::MulRCxS32:
+        case ByteCodeOp::MulRAVB:
             wprintf(L"RA: %u SB: %d ", ip->a.u32, ip->b.s32);
             break;
 
@@ -123,15 +123,15 @@ void ByteCode::print()
             wprintf(L"RA: %u VB: { %x }", ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::CopyRCxVa32:
+        case ByteCodeOp::CopyRAVB32:
             wprintf(L"RA: %u VB: { %x }", ip->a.u32, ip->b.u32);
             break;
 
-        case ByteCodeOp::CopyRCxVaStr:
+        case ByteCodeOp::CopyRAVBStr:
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
-        case ByteCodeOp::CopyRCxVa64:
+        case ByteCodeOp::CopyRAVB64:
             wprintf(L"RA: %u VB: { %I64x }", ip->a.u32, ip->b.u64);
             break;
 

@@ -17,7 +17,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     int  sizeOf = node->typeInfo->sizeOf;
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
     if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.s32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
     return true;
@@ -35,7 +35,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     }
 
     if (sizeOf > 1)
-        emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.s32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
     return true;
@@ -61,7 +61,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         int  sizeOf   = typeInfo->sizeOfPointedBy();
 
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
+            emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.s32 = sizeOf;
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
         if (!(node->flags & AST_LEFT_EXPRESSION))
         {
@@ -94,7 +94,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::BoundCheckV, node->access->resultRegisterRC)->b.u32 = typeInfo->size - 1;
 
         if (sizeOf > 1)
-            emitInstruction(context, ByteCodeOp::MulRCxS32, node->access->resultRegisterRC)->b.s32 = sizeOf;
+            emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.s32 = sizeOf;
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
         if (!(node->flags & AST_LEFT_EXPRESSION) && typeInfo->pointedType->kind != TypeInfoKind::Array)
         {
@@ -162,47 +162,47 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         switch (typeInfo->nativeType)
         {
         case NativeType::Bool:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.b = node->computedValue.reg.b;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.b = node->computedValue.reg.b;
             return true;
         case NativeType::U8:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.u8 = node->computedValue.reg.u8;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u8 = node->computedValue.reg.u8;
             return true;
         case NativeType::U16:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.u16 = node->computedValue.reg.u16;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u16 = node->computedValue.reg.u16;
             return true;
         case NativeType::U32:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeType::U64:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa64, r0)->b.u64 = node->computedValue.reg.u64;
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = node->computedValue.reg.u64;
             return true;
         case NativeType::S8:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.s8 = node->computedValue.reg.s8;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s8 = node->computedValue.reg.s8;
             return true;
         case NativeType::S16:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.s16 = node->computedValue.reg.s16;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s16 = node->computedValue.reg.s16;
             return true;
         case NativeType::S32:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.s32 = node->computedValue.reg.s32;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s32 = node->computedValue.reg.s32;
             return true;
         case NativeType::S64:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa64, r0)->b.s64 = node->computedValue.reg.s64;
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.s64 = node->computedValue.reg.s64;
             return true;
         case NativeType::F32:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.f32 = node->computedValue.reg.f32;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.f32 = node->computedValue.reg.f32;
             return true;
         case NativeType::F64:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa64, r0)->b.f64 = node->computedValue.reg.f64;
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.f64 = node->computedValue.reg.f64;
             return true;
         case NativeType::Char:
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, r0)->b.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeType::String:
         {
             auto r1    = reserveRegisterRC(context);
             auto index = context->sourceFile->module->reserveDataSegmentString(node->computedValue.text);
             node->resultRegisterRC += r1;
-            emitInstruction(context, ByteCodeOp::CopyRCxVaStr, r0, r1)->c.u32 = index;
+            emitInstruction(context, ByteCodeOp::CopyRAVBStr, r0, r1)->c.u32 = index;
             return true;
         }
         default:
@@ -211,7 +211,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     }
     else if (typeInfo == g_TypeMgr.typeInfoNull)
     {
-        emitInstruction(context, ByteCodeOp::ClearRCx, r0);
+        emitInstruction(context, ByteCodeOp::ClearRA, r0);
     }
     else
     {
