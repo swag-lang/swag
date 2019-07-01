@@ -272,36 +272,22 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::RCxFromStack8:
-    {
-        auto offset               = ip->b.s32;
-        registersRC[ip->a.u32].u8 = *(uint8_t*) (context->bp + offset);
+        registersRC[ip->a.u32].u8 = *(uint8_t*) (context->bp + ip->b.u32);
         break;
-    }
     case ByteCodeOp::RCxFromStack16:
-    {
-        auto offset                = ip->b.s32;
-        registersRC[ip->a.u32].u16 = *(uint16_t*) (context->bp + offset);
+        registersRC[ip->a.u32].u16 = *(uint16_t*) (context->bp + ip->b.u32);
         break;
-    }
     case ByteCodeOp::RCxFromStack32:
-    {
-        auto offset                = ip->b.s32;
-        registersRC[ip->a.u32].u32 = *(uint32_t*) (context->bp + offset);
+        registersRC[ip->a.u32].u32 = *(uint32_t*) (context->bp + ip->b.u32);
         break;
-    }
     case ByteCodeOp::RCxFromStack64:
     case ByteCodeOp::RCxFromStackParam64:
-    {
-        auto offset                = ip->b.s32;
-        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + offset);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
-    }
     case ByteCodeOp::RCxRefFromStack:
-    {
-        auto offset                    = ip->b.u32;
-        registersRC[ip->a.u32].pointer = context->bp + offset;
+        registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
-    }
+
     case ByteCodeOp::ClearRefFromStack8:
         *(uint8_t*) (context->bp + ip->a.u32) = 0;
         break;

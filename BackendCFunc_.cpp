@@ -347,16 +347,16 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RCxFromStack8:
-            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (stack + %d);", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RCxFromStack16:
-            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (stack + %d);", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RCxFromStack32:
-            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (stack + %d);", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RCxFromStack64:
-            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (stack + %d);", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::Copy:
             bufferC.addString(format("__memcpy(r%u.pointer, r%u.pointer, %d);", ip->a.u32, ip->b.u32, ip->c.u32));

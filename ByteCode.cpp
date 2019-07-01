@@ -101,14 +101,20 @@ void ByteCode::print()
         case ByteCodeOp::RCxFromStack16:
         case ByteCodeOp::RCxFromStack32:
         case ByteCodeOp::RCxFromStack64:
-        case ByteCodeOp::RCxFromStackParam64:
+        case ByteCodeOp::RCxRefFromStack:
+            wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
+            break;
+
+		case ByteCodeOp::RCxFromStackParam64:
+            wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
+            break;
+
         case ByteCodeOp::RCxFromDataSeg8:
         case ByteCodeOp::RCxFromDataSeg16:
         case ByteCodeOp::RCxFromDataSeg32:
         case ByteCodeOp::RCxFromDataSeg64:
         case ByteCodeOp::RCxRefFromDataSeg:
         case ByteCodeOp::RCxRefFromConstantSeg:
-        case ByteCodeOp::RCxRefFromStack:
         case ByteCodeOp::MulRCxS32:
             wprintf(L"RA: %u SB: %d ", ip->a.u32, ip->b.s32);
             break;

@@ -31,17 +31,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC[1]);
-            inst->b.s32 = resolved->storageOffset + 8;
-            inst->c.s32 = resolved->storageIndex + 1;
+            inst->b.u32 = resolved->storageOffset + 8;
+            inst->c.u32 = resolved->storageIndex + 1;
             inst        = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC[0]);
-            inst->b.s32 = resolved->storageOffset;
-            inst->c.s32 = resolved->storageIndex;
+            inst->b.u32 = resolved->storageOffset;
+            inst->c.u32 = resolved->storageIndex;
         }
         else
         {
             auto inst   = emitInstruction(context, ByteCodeOp::RCxFromStackParam64, node->resultRegisterRC);
-            inst->b.s32 = resolved->storageOffset;
-            inst->c.s32 = resolved->storageIndex;
+            inst->b.u32 = resolved->storageOffset;
+            inst->c.u32 = resolved->storageIndex;
         }
 
         return true;
@@ -134,7 +134,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 return internalError(context, "emitIdentifier, invalid local variable sizeof");
             }
 
-            inst->b.s32 = resolved->storageOffset;
+            inst->b.u32 = resolved->storageOffset;
         }
 
         return true;
