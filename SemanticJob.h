@@ -61,6 +61,7 @@ struct SemanticJob : public Job
     static bool resolveUnaryOpMinus(SemanticContext* context, AstNode* op);
     static bool resolveUnaryOp(SemanticContext* context);
     static bool resolveTypeExpression(SemanticContext* context);
+	static bool resolveConstDecl(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeDecl(SemanticContext* context);
     static bool resolveIntrinsicProp(SemanticContext* context);

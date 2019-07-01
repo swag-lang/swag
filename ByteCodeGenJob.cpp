@@ -120,7 +120,7 @@ JobResult ByteCodeGenJob::execute()
 
                 if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
                 {
-                    if (!(node->flags & AST_NO_BYTECODE_CHILDS))
+                    if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
                     {
                         for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                         {
@@ -133,35 +133,38 @@ JobResult ByteCodeGenJob::execute()
                 }
 
             case AstNodeResolveState::ProcessingChilds:
-
-				// Computed constexpr value. Just emit the result
-                if (node->flags & AST_VALUE_COMPUTED)
+                if (!(node->flags & AST_NO_BYTECODE))
                 {
-                    context.node = node;
-                    if (node->typeInfo->kind == TypeInfoKind::TypeList)
+                    // Computed constexpr value. Just emit the result
+                    if (node->flags & AST_VALUE_COMPUTED)
                     {
-                        if (!emitExpressionList(&context))
-                            return JobResult::ReleaseJob;
+                        context.node = node;
+                        if (node->typeInfo->kind == TypeInfoKind::TypeList)
+                        {
+                            if (!emitExpressionList(&context))
+                                return JobResult::ReleaseJob;
+                        }
+                        else
+                        {
+                            if (!emitLiteral(&context))
+                                return JobResult::ReleaseJob;
+                        }
                     }
-                    else
+                    else if (node->byteCodeFct)
                     {
-                        if (!emitLiteral(&context))
-                            return JobResult::ReleaseJob;
-                    }
-                }
-                else if (node->byteCodeFct)
-                {
-                    context.node   = node;
-                    context.result = ByteCodeResult::Done;
+                        context.node   = node;
+                        context.result = ByteCodeResult::Done;
 
-                    if (!node->byteCodeFct(&context))
+                        if (!node->byteCodeFct(&context))
+                            return JobResult::ReleaseJob;
+                        if (context.result == ByteCodeResult::Pending)
+                            return JobResult::KeepJobAlive;
+                    }
+
+                    if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
                         return JobResult::ReleaseJob;
-                    if (context.result == ByteCodeResult::Pending)
-                        return JobResult::KeepJobAlive;
                 }
 
-                if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
-                    return JobResult::ReleaseJob;
                 nodes.pop_back();
                 break;
             }

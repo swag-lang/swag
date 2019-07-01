@@ -74,6 +74,7 @@ enum class TokenId
     IntrisicProp,
 
     KwdVar,
+	KwdConst,
     KwdNamespace,
     KwdType,
     KwdEnum,

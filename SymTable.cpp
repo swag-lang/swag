@@ -159,8 +159,13 @@ SymbolOverload* SymbolName::addOverloadNoLock(SourceFile* sourceFile, AstNode* n
     overload->typeInfo   = typeInfo;
     overload->sourceFile = sourceFile;
     overload->node       = node;
+
     if (computedValue)
+    {
         overload->computedValue = *computedValue;
+        overload->flags |= OVERLOAD_COMPUTED_VALUE;
+    }
+
     overloads.push_back(overload);
     return overload;
 }

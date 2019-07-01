@@ -193,7 +193,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doWhile(parent, result));
         break;
     case TokenId::KwdVar:
-        SWAG_CHECK(tokenizer.getToken(token));
+	case TokenId::KwdConst:
         SWAG_CHECK(doVarDecl(parent, result));
         break;
     case TokenId::Identifier:
@@ -225,7 +225,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         SWAG_CHECK(tokenizer.getToken(token));
         break;
     case TokenId::KwdVar:
-        SWAG_CHECK(tokenizer.getToken(token));
+	case TokenId::KwdConst:
         SWAG_CHECK(doVarDecl(parent));
         break;
     case TokenId::KwdType:

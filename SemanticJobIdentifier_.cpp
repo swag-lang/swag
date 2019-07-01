@@ -22,7 +22,6 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->resolvedSymbolOverload = identifier->resolvedSymbolOverload;
     node->typeInfo               = identifier->typeInfo;
     node->name                   = move(identifier->name);
-    node->inheritComputedValue(identifier);
 
     // Flag inheritance
     bool isConstExpr = true;
@@ -34,6 +33,13 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
     if (isConstExpr)
         node->flags |= AST_CONST_EXPR;
+
+    // Symbol is in fact a constant value : no need for bytecode
+    if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
+    {
+        node->computedValue = node->resolvedSymbolOverload->computedValue;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+    }
 
     return true;
 }
@@ -53,7 +59,7 @@ void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>&
     scopes.push_back(startScope);
     here.insert(startScope);
 
-	// Can be null because of g_CommandLine.addRuntimeModule to false
+    // Can be null because of g_CommandLine.addRuntimeModule to false
     if (context->sourceFile->module->workspace->runtimeModule)
     {
         auto runTime = context->sourceFile->module->workspace->runtimeModule->scopeRoot;

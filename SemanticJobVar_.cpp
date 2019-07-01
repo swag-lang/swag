@@ -48,6 +48,53 @@ uint8_t* SemanticJob::collectLiterals(SourceFile* sourceFile, uint8_t* ptrDest, 
     return ptrDest;
 }
 
+bool SemanticJob::resolveConstDecl(SemanticContext* context)
+{
+    auto sourceFile = context->sourceFile;
+    auto node       = static_cast<AstVarDecl*>(context->node);
+
+    if (!node->astAssignment)
+        return sourceFile->report({sourceFile, node, "a constant must be initialized"});
+
+    // Be sure we have a constant value
+    if (node->astAssignment->flags & AST_CONST_EXPR)
+    {
+        SWAG_CHECK(executeNode(context, node->astAssignment, true));
+        if (context->result == SemanticResult::Pending)
+            return true;
+    }
+
+	node->inheritComputedValue(node->astAssignment);
+    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->token, format("constant value '%s' cannot be evaluated at compile time", node->name.c_str())}));
+	node->flags |= AST_NO_BYTECODE;
+
+    // Find type
+    if (node->astType && node->astAssignment)
+    {
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->astType->typeInfo, node->astAssignment));
+        node->typeInfo = node->astType->typeInfo;
+    }
+    else if (node->astAssignment)
+    {
+        node->typeInfo = node->astAssignment->typeInfo;
+    }
+    else if (node->astType)
+    {
+        node->typeInfo = node->astType->typeInfo;
+    }
+
+    node->typeInfo = TypeManager::concreteType(node->typeInfo);
+    SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of constant '%s'", node->name.c_str())}));
+
+    // Register symbol with its type
+    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Variable, &node->computedValue, 0);
+    SWAG_CHECK(overload);
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
+    node->resolvedSymbolOverload = overload;
+
+    return true;
+}
+
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
@@ -138,7 +185,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         overload->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
-        node->byteCodeFct = &ByteCodeGenJob::emitVarDecl;
+        node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
     }
 
     // Attributes
