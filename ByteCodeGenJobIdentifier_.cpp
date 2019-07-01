@@ -53,15 +53,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         if (resolved->typeInfo->kind == TypeInfoKind::Array)
         {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(resolved->typeInfo, TypeInfoKind::Array);
-            node->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, node->resultRegisterRC[1])->a.u32  = typeArray->size;
+            emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         }
         else if (node->flags & AST_LEFT_EXPRESSION)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC);
-            inst->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RCxRefFromDataSeg, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         }
         else if (resolved->typeInfo->isNative(NativeType::String))
         {
@@ -105,10 +101,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         if (resolved->typeInfo->kind == TypeInfoKind::Array)
         {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(resolved->typeInfo, TypeInfoKind::Array);
-            node->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
-            emitInstruction(context, ByteCodeOp::CopyRCxVa32, 0, node->resultRegisterRC[1])->a.u32  = typeArray->size;
+            emitInstruction(context, ByteCodeOp::RCxRefFromStack, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
         }
         else if (node->flags & AST_LEFT_EXPRESSION)
         {
