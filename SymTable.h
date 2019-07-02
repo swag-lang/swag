@@ -37,8 +37,8 @@ struct SymbolOverload : public PoolElement
     uint32_t         flags;
     AstNode*         node;
     SymbolAttributes attributes;
-    int              storageOffset = -1;
-    int              storageIndex  = 0;
+    uint32_t         storageOffset = UINT32_MAX;
+    uint32_t         storageIndex  = 0;
 };
 
 enum class SymbolKind

@@ -46,17 +46,20 @@ struct Module : public PoolElement
     vector<uint32_t> availableRegistersRC;
     uint32_t         maxReservedRegisterRR = 0;
 
-    uint32_t reserveDataSegmentString(const Utf8& str);
+    uint32_t reserveString(const Utf8& str);
     void     addDataSegmentInitString(uint32_t segOffset, uint32_t strIndex);
+    void     addConstantSegmentInitString(uint32_t segOffset, uint32_t strIndex);
     int      reserveDataSegment(int size, void* content = nullptr);
     int      reserveConstantSegment(int size, void* content = nullptr);
 
     SpinLock                mutexDataSeg;
     SpinLock                mutexConstantSeg;
+    SpinLock                mutexString;
     vector<uint8_t>         dataSegment;
     vector<uint8_t>         constantSegment;
     vector<Utf8>            strBuffer;
-    map<uint32_t, uint32_t> strBufferInit;
+    map<uint32_t, uint32_t> strBufferDataSegInit;
+    map<uint32_t, uint32_t> strBufferConstantSegInit;
     map<Utf8, uint32_t>     mapStrBuffer;
 
     void setBuildPass(BuildPass buildP);

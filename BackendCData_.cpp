@@ -88,16 +88,26 @@ bool BackendC::emitStrings()
 
 bool BackendC::emitGlobalInit()
 {
+	// Data segment
     bufferC.addString("static void __initDataSeg() {\n");
-    for (auto& k : module->strBufferInit)
+    for (auto& k : module->strBufferDataSegInit)
     {
         bufferC.addString(format("*(void**) (__dataseg + %d) = __string%d;\n", k.second, k.first));
     }
-
     bufferC.addString("}\n\n");
 
+	// Constant segment
+    bufferC.addString("static void __initConstantSeg() {\n");
+    for (auto& k : module->strBufferConstantSegInit)
+    {
+        bufferC.addString(format("*(void**) (__constantseg + %d) = __string%d;\n", k.second, k.first));
+    }
+    bufferC.addString("}\n\n");
+
+	// Main init fct
     bufferC.addString(format("void __%s_globalInit() {\n", module->name.c_str()));
     bufferC.addString("__initDataSeg();\n");
+	bufferC.addString("__initConstantSeg();\n");
     bufferC.addString("}\n\n");
 
 	bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void __%s_globalInit();\n", module->name.c_str()));

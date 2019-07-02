@@ -10,6 +10,7 @@
 #include "Ast.h"
 #include "CommandLine.h"
 #include "SemanticJob.h"
+#include "Global.h"
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
@@ -30,7 +31,8 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 
     if (g_CommandLine.debugBoundCheck)
     {
-        auto typeInfo                                                                            = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
+        auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
+
         emitInstruction(context, ByteCodeOp::BoundCheckV, node->access->resultRegisterRC)->b.u32 = typeInfo->size - 1;
     }
 
@@ -138,14 +140,17 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         return internalError(context, "emitExpressionList, expression not constant");
 
     // Reserve space in constant segment, and copy all
-    int offset = module->reserveConstantSegment(node->typeInfo->sizeOf);
+    uint32_t storageOffset = module->reserveConstantSegment(node->typeInfo->sizeOf);
     module->mutexConstantSeg.lock();
-    SemanticJob::collectLiterals(context->sourceFile, &module->constantSegment[offset], node);
+    auto offset = storageOffset;
+    auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, SegmentBuffer::Constant);
     module->mutexConstantSeg.unlock();
+    SWAG_CHECK(result);
 
+    // Emit a reference to the buffer
     node->resultRegisterRC = reserveRegisterRC(context);
-
-    emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC)->b.u32 = offset;
+    auto inst              = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC);
+    inst->b.u32            = storageOffset;
     return true;
 }
 
@@ -200,7 +205,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         case NativeType::String:
         {
             auto r1    = reserveRegisterRC(context);
-            auto index = context->sourceFile->module->reserveDataSegmentString(node->computedValue.text);
+            auto index = context->sourceFile->module->reserveString(node->computedValue.text);
             node->resultRegisterRC += r1;
             emitInstruction(context, ByteCodeOp::CopyRAVBStr, r0, r1)->c.u32 = index;
             return true;
@@ -218,7 +223,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
         return internalError(context, "emitLiteral, type not native");
     }
 
-	return true;
+    return true;
 }
 
 bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)

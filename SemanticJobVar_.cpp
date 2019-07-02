@@ -9,44 +9,69 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "TypeInfo.h"
+#include "Register.h"
 
-uint8_t* SemanticJob::collectLiterals(SourceFile* sourceFile, uint8_t* ptrDest, AstNode* node)
+bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer)
 {
+    auto     module  = sourceFile->module;
+    uint8_t* ptrDest = buffer == SegmentBuffer::Constant ? &module->constantSegment[offset] : &module->dataSegment[offset];
+
     for (auto child : node->childs)
     {
         if (child->kind == AstNodeKind::ExpressionList)
         {
-            ptrDest = collectLiterals(sourceFile, ptrDest, child);
-            if (!ptrDest)
-                return nullptr;
+            SWAG_CHECK(collectLiterals(sourceFile, offset, child, buffer));
             continue;
         }
 
-        switch (child->typeInfo->sizeOf)
+        if (child->typeInfo->isNative(NativeType::String))
         {
-        case 1:
-            *(uint8_t*) ptrDest = child->computedValue.reg.u8;
-            ptrDest += 1;
-            break;
-        case 2:
-            *(uint16_t*) ptrDest = child->computedValue.reg.u16;
-            ptrDest += 2;
-            break;
-        case 4:
-            *(uint32_t*) ptrDest = child->computedValue.reg.u32;
-            ptrDest += 4;
-            break;
-        case 8:
-            *(uint64_t*) ptrDest = child->computedValue.reg.u64;
-            ptrDest += 8;
-            break;
-        default:
-            sourceFile->report({sourceFile, node, "collectLiterals, invalid size"});
-            return nullptr;
+            Register* storedV  = (Register*) ptrDest;
+            storedV[0].pointer = (uint8_t*) child->computedValue.text.c_str();
+            storedV[1].u64     = child->computedValue.text.length();
+
+            auto stringIndex = module->reserveString(child->computedValue.text);
+            if (buffer == SegmentBuffer::Constant)
+                module->addConstantSegmentInitString(offset, stringIndex);
+            else
+                module->addDataSegmentInitString(offset, stringIndex);
+
+            ptrDest += 2 * sizeof(Register);
+            offset += 2 * sizeof(Register);
+        }
+        else
+        {
+            switch (child->typeInfo->sizeOf)
+            {
+            case 1:
+                *(uint8_t*) ptrDest = child->computedValue.reg.u8;
+                ptrDest += 1;
+                offset += 1;
+                break;
+            case 2:
+                *(uint16_t*) ptrDest = child->computedValue.reg.u16;
+                ptrDest += 2;
+                offset += 2;
+                break;
+            case 4:
+                *(uint32_t*) ptrDest = child->computedValue.reg.u32;
+                ptrDest += 4;
+                offset += 4;
+                break;
+            case 8:
+                *(uint64_t*) ptrDest = child->computedValue.reg.u64;
+                ptrDest += 8;
+                offset += 8;
+                break;
+
+            default:
+                sourceFile->report({sourceFile, node, "collectLiterals, invalid type size"});
+                return false;
+            }
         }
     }
 
-    return ptrDest;
+    return true;
 }
 
 bool SemanticJob::resolveConstDecl(SemanticContext* context)
@@ -182,14 +207,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         if (typeInfo->isNative(NativeType::String))
         {
-            auto strIndex = sourceFile->module->reserveDataSegmentString(value->text);
+            auto strIndex = sourceFile->module->reserveString(value->text);
             sourceFile->module->addDataSegmentInitString(overload->storageOffset, strIndex);
         }
         else if (node->astAssignment && node->astAssignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
             sourceFile->module->mutexDataSeg.lock();
-            collectLiterals(sourceFile, &sourceFile->module->dataSegment[overload->storageOffset], node->astAssignment);
+            auto offset = overload->storageOffset;
+            auto result = collectLiterals(sourceFile, offset, node->astAssignment, SegmentBuffer::Data);
             sourceFile->module->mutexDataSeg.unlock();
+            SWAG_CHECK(result);
         }
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)

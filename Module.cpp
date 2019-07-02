@@ -140,9 +140,9 @@ void Module::addDependency(AstNode* importNode)
     }
 }
 
-uint32_t Module::reserveDataSegmentString(const Utf8& str)
+uint32_t Module::reserveString(const Utf8& str)
 {
-    scoped_lock lk(mutexDataSeg);
+    scoped_lock lk(mutexString);
     auto        it = mapStrBuffer.find(str);
     if (it != mapStrBuffer.end())
         return it->second;
@@ -155,8 +155,14 @@ uint32_t Module::reserveDataSegmentString(const Utf8& str)
 
 void Module::addDataSegmentInitString(uint32_t segOffset, uint32_t strIndex)
 {
-    scoped_lock lk(mutexDataSeg);
-    strBufferInit[strIndex] = segOffset;
+    scoped_lock lk(mutexString);
+    strBufferDataSegInit[strIndex] = segOffset;
+}
+
+void Module::addConstantSegmentInitString(uint32_t segOffset, uint32_t strIndex)
+{
+    scoped_lock lk(mutexString);
+    strBufferConstantSegInit[strIndex] = segOffset;
 }
 
 int Module::reserveDataSegment(int size, void* content)
