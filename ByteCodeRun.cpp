@@ -176,6 +176,13 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32].pointer = *(uint8_t**) registersRC[ip->a.u32].pointer;
         break;
     }
+    case ByteCodeOp::DeRefString:
+    {
+        uint64_t** ptr                 = (uint64_t**) registersRC[ip->a.u32].pointer;
+        registersRC[ip->a.u32].pointer = (uint8_t*) ptr[0];
+        registersRC[ip->b.u32].u64     = (uint64_t) ptr[1];
+        break;
+    }
     case ByteCodeOp::BoundCheck:
     {
         int maxOffset = registersRC[ip->a.u32].u32;

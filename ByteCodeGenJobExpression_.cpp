@@ -98,7 +98,13 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.s32 = sizeOf;
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
-        if (!(node->flags & AST_LEFT_EXPRESSION) && typeInfo->pointedType->kind != TypeInfoKind::Array)
+
+        if (typeInfo->pointedType->isNative(NativeType::String))
+        {
+            node->array->resultRegisterRC += context->sourceFile->module->reserveRegisterRC(context->bc);
+            emitInstruction(context, ByteCodeOp::DeRefString, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+        }
+        else if (!(node->flags & AST_LEFT_EXPRESSION) && typeInfo->pointedType->kind != TypeInfoKind::Array)
         {
             switch (sizeOf)
             {
