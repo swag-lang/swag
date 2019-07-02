@@ -3,8 +3,12 @@
 
 var a = {"0", "1.0"};
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
-	@print(cast(s32) @prop(a[0], count));
+	var b = {"0", "1.0"};
+	@assert(@prop(a[0], count) == 1);
+	@assert(@prop(a[1], count) == 3);
+	@assert(@prop(b[0], count) == 1);
+	@assert(@prop(b[1], count) == 3);
 }
