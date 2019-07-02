@@ -311,7 +311,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
 
         case ByteCodeOp::MulRAVB:
-            bufferC.addString(format("r%u.s32 *= %d;", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r%u.s32 *= %u;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::RAFromDataSeg8:
