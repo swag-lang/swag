@@ -17,7 +17,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
     int  sizeOf = node->typeInfo->sizeOf;
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
-    if (sizeOf > 1)
+    if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
@@ -36,7 +36,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::BoundCheckV, node->access->resultRegisterRC)->b.u32 = typeInfo->size - 1;
     }
 
-    if (sizeOf > 1)
+    if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
@@ -63,9 +63,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         int  sizeOf   = typeInfo->sizeOfPointedBy();
 
         // Increment pointer (if increment is not 0)
-        if (!(node->access->flags & AST_VALUE_COMPUTED) || node->access->computedValue.reg.u32)
+        if (!g_CommandLine.optimizeByteCode || !node->access->isConstantInt0())
         {
-            if (sizeOf > 1)
+            if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
         }
@@ -101,9 +101,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::BoundCheckV, node->access->resultRegisterRC)->b.u32 = typeInfo->size - 1;
 
         // Increment pointer (if increment is not 0)
-        if (!(node->access->flags & AST_VALUE_COMPUTED) || node->access->computedValue.reg.u32)
+        if (!g_CommandLine.optimizeByteCode || !node->access->isConstantInt0())
         {
-            if (sizeOf > 1)
+            if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
         }

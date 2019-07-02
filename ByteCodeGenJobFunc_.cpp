@@ -10,6 +10,7 @@
 #include "Ast.h"
 #include "SymTable.h"
 #include "TypeManager.h"
+#include "CommandLine.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -120,8 +121,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrisicAssert:
     {
-        auto child0 = callParams->childs[0];
-        emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
+        auto child0 = callParams->childs.front();
+		if(!g_CommandLine.optimizeByteCode || !child0->isConstantTrue())
+			emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }

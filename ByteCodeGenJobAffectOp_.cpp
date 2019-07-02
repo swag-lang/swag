@@ -8,6 +8,7 @@
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
+#include "CommandLine.h"
 
 bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo)
 {
@@ -106,7 +107,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->sizeOfPointedBy();
-        if (sizeOf > 1)
+        if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::AffectOpPlusEqPointer, r0, r1);
         return true;
@@ -161,7 +162,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->sizeOfPointedBy();
-        if (sizeOf > 1)
+		if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::AffectOpMinusEqPointer, r0, r1);
         return true;

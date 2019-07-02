@@ -70,8 +70,8 @@ enum class AstNodeKind
     SingleOp,
     MakePointer,
     BinaryOp,
-	FactorOp,
-	ExpressionList,
+    FactorOp,
+    ExpressionList,
     AffectOp,
     PointerDeRef,
     PointerRef,
@@ -165,6 +165,26 @@ struct AstNode : public PoolElement
         ownerBreakable = job->currentBreakable;
         ownerFct       = job->currentFct;
         flags |= job->currentFlags;
+    }
+
+    bool isConstantTrue()
+    {
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b == true;
+    }
+
+	bool isConstantFalse()
+    {
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b == false;
+    }
+
+	bool isConstantInt0()
+    {
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 0;
+    }
+
+	bool isConstantInt1()
+    {
+        return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
     }
 
     Scope*        ownerScope;

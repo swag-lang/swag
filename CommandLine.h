@@ -16,6 +16,7 @@ struct CommandLine
 
     bool debugBoundCheck  = true;
     bool addRuntimeModule = true;
+    bool optimizeByteCode = true;
 
     bool verbose                 = false;
     bool verbose_unittest_errors = false;

@@ -172,17 +172,20 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         exprNode->inheritToken(token);
         exprNode->semanticFct = &SemanticJob::resolveMakePointer;
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doIdentifierRef(exprNode, nullptr, AST_LEFT_EXPRESSION));
+
+        AstNode* identifierRef;
+        SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef, AST_LEFT_EXPRESSION));
+
+        if (token.id == TokenId::SymLeftSquare)
+            SWAG_CHECK(doArrayPointerDeRef(&identifierRef));
+
+        Ast::addChild(exprNode, identifierRef);
     }
     else
     {
         SWAG_CHECK(doSinglePrimaryExpression(nullptr, &exprNode));
-    }
-
-    // Dereference pointer
-    if (token.id == TokenId::SymLeftSquare)
-    {
-        SWAG_CHECK(doArrayPointerDeRef(&exprNode));
+        if (token.id == TokenId::SymLeftSquare)
+            SWAG_CHECK(doArrayPointerDeRef(&exprNode));
     }
 
     if (parent)
@@ -348,7 +351,7 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymQuestion)
     {
-		parent->flags |= AST_DISABLED_INIT;
+        parent->flags |= AST_DISABLED_INIT;
         SWAG_CHECK(eatToken(TokenId::SymQuestion));
         return true;
     }
