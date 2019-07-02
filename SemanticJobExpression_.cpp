@@ -26,7 +26,7 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
     auto typeInfo  = g_Pool_typeInfoExpressionList.alloc();
     typeInfo->name = "<type list>";
 
-	node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     for (auto child : node->childs)
     {
         typeInfo->childs.push_back(child->typeInfo);
@@ -37,8 +37,8 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
             node->flags &= ~AST_CONST_EXPR;
     }
 
-	node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
-    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+    node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
+    node->typeInfo    = g_TypeMgr.registerType(typeInfo);
     return true;
 }
 
@@ -70,9 +70,15 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
                 node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
             }
         }
+        else if (expr->typeInfo->kind == TypeInfoKind::Array)
+        {
+            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+            auto typeArray              = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
+            node->computedValue.reg.u64 = typeArray->size;
+        }
         else
         {
-            return sourceFile->report({sourceFile, expr, "'count' property can't be applied to expression"});
+            return sourceFile->report({sourceFile, expr, format("'count' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
         }
 
         node->typeInfo = g_TypeMgr.typeInfoU32;
@@ -91,7 +97,7 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
         }
         else
         {
-            return sourceFile->report({sourceFile, expr, "'data' property can't be applied to expression"});
+            return sourceFile->report({sourceFile, expr, format("'data' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
         }
 
         break;
