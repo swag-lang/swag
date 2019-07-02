@@ -6,28 +6,6 @@
 #include "CommandLineParser.h"
 #include "Version.h"
 
-float toto(float a)
-{
-    return a / 3;
-}
-
-void testffi()
-{
-    ffi_cif   cif;
-    ffi_type* args[10];
-    void*     values[10];
-    float     f;
-
-    args[0]   = &ffi_type_float;
-    values[0] = &f;
-
-    /* Initialize the cif */
-    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 1, &ffi_type_float, args);
-    f            = 666;
-    float result = 0;
-    ffi_call(&cif, FFI_FN(toto), &result, values);
-}
-
 void printStats()
 {
     if (!g_CommandLine.stats || g_CommandLine.silent)
