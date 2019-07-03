@@ -117,8 +117,17 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     {
         node->byteCodeFct = &ByteCodeGenJob::emitMakePointer;
 
-        auto ptrType         = g_Pool_typeInfoPointer.alloc();
-        ptrType->ptrCount    = 1;
+        auto ptrType      = g_Pool_typeInfoPointer.alloc();
+        ptrType->ptrCount = 1;
+
+        // If this is an array, then this is legit, the pointer will pointer to the first
+        // element : need to find it's type
+        while (typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            typeInfo       = typeArray->pointedType;
+        }
+
         ptrType->pointedType = typeInfo;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->name        = "*" + typeInfo->name;
