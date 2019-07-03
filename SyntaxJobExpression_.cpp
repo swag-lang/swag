@@ -24,10 +24,11 @@ bool SyntaxJob::doArrayPointerDeRef(AstNode** exprNode)
     SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
     while (true)
     {
-        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeRef, sourceFile->indexInModule);
+        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::ArrayPointerDeRef, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
         arrayNode->token       = move(token);
         arrayNode->semanticFct = &SemanticJob::resolveArrayPointerDeRef;
+
         Ast::addChild(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
         SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
@@ -41,16 +42,17 @@ bool SyntaxJob::doArrayPointerDeRef(AstNode** exprNode)
     return true;
 }
 
-bool SyntaxJob::doPointerRef(AstNode** exprNode)
+bool SyntaxJob::doArrayPointerRef(AstNode** exprNode)
 {
     SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
     while (true)
     {
-        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::PointerDeRef, sourceFile->indexInModule);
+        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::ArrayPointerRef, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
         arrayNode->token       = move(token);
         arrayNode->semanticFct = &SemanticJob::resolveArrayOrPointerRef;
         arrayNode->flags |= AST_LEFT_EXPRESSION;
+
         Ast::addChild(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
         SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
@@ -84,7 +86,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     // Dereference pointer
     if (token.id == TokenId::SymLeftSquare)
     {
-        SWAG_CHECK(doPointerRef(&exprNode));
+        SWAG_CHECK(doArrayPointerRef(&exprNode));
     }
 
     Ast::addChild(parent, exprNode);
@@ -177,7 +179,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef, AST_LEFT_EXPRESSION));
 
         if (token.id == TokenId::SymLeftSquare)
-            SWAG_CHECK(doArrayPointerDeRef(&identifierRef));
+            SWAG_CHECK(doArrayPointerRef(&identifierRef));
 
         Ast::addChild(exprNode, identifierRef);
     }

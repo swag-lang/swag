@@ -113,22 +113,28 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto typeInfo   = child->typeInfo;
     auto sourceFile = context->sourceFile;
 
-    SWAG_VERIFY(child->kind == AstNodeKind::IdentifierRef, sourceFile->report({sourceFile, child, "invalid address expression"}));
-    node->byteCodeFct = &ByteCodeGenJob::emitMakePointer;
+    if (child->kind == AstNodeKind::IdentifierRef || child->kind == AstNodeKind::ArrayPointerRef)
+    {
+        node->byteCodeFct = &ByteCodeGenJob::emitMakePointer;
 
-    auto ptrType         = g_Pool_typeInfoPointer.alloc();
-    ptrType->ptrCount    = 1;
-    ptrType->pointedType = typeInfo;
-    ptrType->sizeOf      = sizeof(void*);
-    ptrType->name        = "*" + typeInfo->name;
-    node->typeInfo       = g_TypeMgr.registerType(ptrType);
+        auto ptrType         = g_Pool_typeInfoPointer.alloc();
+        ptrType->ptrCount    = 1;
+        ptrType->pointedType = typeInfo;
+        ptrType->sizeOf      = sizeof(void*);
+        ptrType->name        = "*" + typeInfo->name;
+        node->typeInfo       = g_TypeMgr.registerType(ptrType);
+    }
+    else
+    {
+        return sourceFile->report({sourceFile, child, "invalid address expression"});
+    }
 
     return true;
 }
 
 bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
 {
-    auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
+    auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
     if (arrayNode->array->typeInfo->kind == TypeInfoKind::Pointer)
@@ -150,7 +156,7 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
 bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto sourceFile        = context->sourceFile;
-    auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::PointerDeRef);
+    auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
     auto arrayType         = arrayNode->array->typeInfo;
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
 

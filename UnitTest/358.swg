@@ -3,9 +3,9 @@
 
 var a = {1, 2};
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
-	var ptr = &a[0];
-	//@print(ptr[0]);
+	var ptr = &a[1];
+	@assert(ptr[0] == 2);
 }

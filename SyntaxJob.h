@@ -55,7 +55,7 @@ struct SyntaxJob : public Job
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
-	bool doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
     bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);
@@ -83,7 +83,7 @@ struct SyntaxJob : public Job
     bool doBreak(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerDeRef(AstNode** exprNode);
-    bool doPointerRef(AstNode** exprNode);
+    bool doArrayPointerRef(AstNode** exprNode);
 
     bool doLeftExpression(AstNode* parent, AstNode** result = nullptr);
 
