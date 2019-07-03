@@ -113,6 +113,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto typeInfo   = child->typeInfo;
     auto sourceFile = context->sourceFile;
 
+    SWAG_VERIFY(child->flags & AST_REFERENCABLE, sourceFile->report({sourceFile, child, "invalid address expression"}));
+
     if (child->kind == AstNodeKind::IdentifierRef || child->kind == AstNodeKind::ArrayPointerRef)
     {
         node->byteCodeFct = &ByteCodeGenJob::emitMakePointer;
@@ -143,7 +145,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
 bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
 {
-    auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
+    auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
     if (arrayNode->array->typeInfo->kind == TypeInfoKind::Pointer)
@@ -157,6 +159,7 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
+        arrayNode->inheritAndFlag(arrayNode->array, AST_REFERENCABLE);
     }
 
     return true;

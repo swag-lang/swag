@@ -14,7 +14,7 @@
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
+    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
     int  sizeOf = node->typeInfo->sizeOf;
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
     if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
@@ -26,7 +26,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
+    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
     int  sizeOf = node->typeInfo->sizeOf;
 
     if (g_CommandLine.debugBoundCheck)
