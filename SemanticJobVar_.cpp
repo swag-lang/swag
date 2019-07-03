@@ -143,6 +143,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (context->result == SemanticResult::Pending)
                 return true;
         }
+
+        SWAG_VERIFY(node->astAssignment->typeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, node->astAssignment, "affect not allowed from an array"}));
     }
 
     // A global variable must have its value computed at that point
