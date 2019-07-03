@@ -14,6 +14,7 @@ struct Workspace
     void    enumerateModules();
     bool    buildModules(const vector<Module*>& list);
     Module* getModuleByName(const string& name);
+    void    removeCache();
 
     fs::path               cachePath;
     SpinLock               mutexModules;

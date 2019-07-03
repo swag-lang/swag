@@ -126,6 +126,28 @@ void Workspace::addRuntime()
     g_ThreadMgr.addJob(job);
 }
 
+void Workspace::removeCache()
+{
+    for (auto& p : fs::directory_iterator(cachePath))
+    {
+        bool ok = true;
+        try
+        {
+            ok = fs::remove_all(p.path());
+        }
+        catch (...)
+        {
+            ok = false;
+        }
+
+        if (!ok)
+        {
+            g_Log.error(format("fatal error: can't delete cache file '%s'", p.path().c_str()));
+            exit(-1);
+        }
+    }
+}
+
 void Workspace::enumerateModules()
 {
     cachePath = "f:/temp/";
@@ -134,7 +156,7 @@ void Workspace::enumerateModules()
     if (g_CommandLine.unittest || g_CommandLine.cleanCache)
     {
         if (fs::exists(cachePath))
-            fs::remove_all(cachePath);
+            removeCache();
     }
 
     // Be sure the cache folder exists

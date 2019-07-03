@@ -6,6 +6,6 @@ var a = {1, 2};
 #[swag.printbytecode]
 #test
 {
-	//var ptr = &a[0];
+	var ptr = &a[0];
 	//@print(ptr[0]);
 }
