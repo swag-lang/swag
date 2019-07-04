@@ -453,7 +453,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
         SWAG_CHECK(doNumberSuffix(token));
     }
 
-	// Convert to 32 bits only now, after the suffix stuff
+    // Convert to 32 bits only now, after the suffix stuff
     if (token.literalType->nativeType == NativeType::F32)
     {
         token.literalValue.f32 = static_cast<float>(token.literalValue.f64);
@@ -511,6 +511,15 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
             token.endLocation = location;
             token.text        = ".";
             token.id          = TokenId::SymDot;
+            if (c == '.')
+            {
+                treatChar(c, offset);
+                token.id          = TokenId::SymDotDot;
+                token.text        = "..";
+                token.endLocation = location;
+                treatChar(c, offset);
+            }
+
             return true;
         }
     }

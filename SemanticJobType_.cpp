@@ -49,7 +49,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     // In fact, this is an array
     if (node->arrayDim)
     {
-		// If no childs, then this is an array without a specified size
+        // If no childs, then this is an array without a specified size
         if (node->childs.empty())
         {
             assert(node->arrayDim == UINT32_MAX);
@@ -79,6 +79,14 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             }
         }
     }
+    else if (node->isSlice)
+    {
+        auto ptrSlice         = g_Pool_typeInfoSlice.alloc();
+        ptrSlice->pointedType = node->typeInfo;
+        ptrSlice->name        = format("[..] %s", node->typeInfo->name.c_str());
+        ptrSlice->sizeOf      = 2 * sizeof(void*);
+        node->typeInfo        = ptrSlice;
+    }
 
     return true;
 }
@@ -86,7 +94,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 bool SemanticJob::resolveTypeDecl(SemanticContext* context)
 {
     auto node      = context->node;
-    node->typeInfo = node->childs[0]->typeInfo;
+    node->typeInfo = node->childs.front()->typeInfo;
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Type));

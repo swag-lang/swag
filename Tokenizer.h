@@ -8,6 +8,7 @@ enum class Intrisic;
 enum class TokenId
 {
     SymDot,
+	SymDotDot,
     SymLeftParen,
     SymRightParen,
     SymLeftSquare,

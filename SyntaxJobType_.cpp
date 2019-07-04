@@ -56,6 +56,14 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
                 break;
             }
 
+			// Slice
+            if (token.id == TokenId::SymDotDot)
+            {
+				node->isSlice = true;
+				SWAG_CHECK(tokenizer.getToken(token));
+                break;
+            }
+
             node->arrayDim++;
             SWAG_CHECK(doExpression(node));
             if (token.id != TokenId::SymComma)

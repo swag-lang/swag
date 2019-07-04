@@ -19,6 +19,7 @@ enum class TypeInfoKind
     FuncAttrParam,
     Pointer,
     Array,
+	Slice,
     TypeList,
 };
 
@@ -221,6 +222,24 @@ struct TypeInfoArray : public TypeInfo
     uint32_t  size;
 };
 
+struct TypeInfoSlice : public TypeInfo
+{
+	TypeInfoSlice()
+    {
+        kind = TypeInfoKind::Slice;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (kind != from->kind)
+            return false;
+        auto castedFrom = static_cast<TypeInfoSlice*>(from);
+        return pointedType->isSame(castedFrom->pointedType);
+    }
+
+    TypeInfo* pointedType;
+};
+
 struct TypeInfoList : public TypeInfo
 {
     TypeInfoList()
@@ -259,4 +278,5 @@ extern Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 extern Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
 extern Pool<TypeInfoArray>         g_Pool_typeInfoArray;
+extern Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
 extern Pool<TypeInfoList>          g_Pool_typeInfoExpressionList;

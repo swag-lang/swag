@@ -173,17 +173,17 @@ struct AstNode : public PoolElement
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b == true;
     }
 
-	bool isConstantFalse()
+    bool isConstantFalse()
     {
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.b == false;
     }
 
-	bool isConstantInt0()
+    bool isConstantInt0()
     {
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 0;
     }
 
-	bool isConstantInt1()
+    bool isConstantInt1()
     {
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
     }
@@ -365,12 +365,14 @@ struct AstType : public AstNode
         AstNode::reset();
         ptrCount       = 0;
         arrayDim       = 0;
+        isSlice        = false;
         typeExpression = nullptr;
     }
 
     AstNode* typeExpression;
     int      ptrCount;
     int      arrayDim;
+    bool     isSlice;
 };
 
 struct AstPointerDeRef : public AstNode

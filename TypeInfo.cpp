@@ -7,14 +7,15 @@
 #include "TypeManager.h"
 #include "Ast.h"
 
-Pool<TypeInfoFuncAttr>       g_Pool_typeInfoFuncAttr;
-Pool<TypeInfoNamespace>      g_Pool_typeInfoNamespace;
-Pool<TypeInfoEnum>           g_Pool_typeInfoEnum;
-Pool<TypeInfoEnumValue>      g_Pool_typeInfoEnumValue;
-Pool<TypeInfoFuncAttrParam>  g_Pool_typeInfoFuncAttrParam;
-Pool<TypeInfoPointer>        g_Pool_typeInfoPointer;
-Pool<TypeInfoArray>          g_Pool_typeInfoArray;
-Pool<TypeInfoList> g_Pool_typeInfoExpressionList;
+Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
+Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
+Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
+Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
+Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
+Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
+Pool<TypeInfoArray>         g_Pool_typeInfoArray;
+Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
+Pool<TypeInfoList>          g_Pool_typeInfoExpressionList;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
