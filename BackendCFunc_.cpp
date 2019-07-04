@@ -100,17 +100,15 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     int cptParams = 0;
     if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        if (typeFunc->returnType->kind == TypeInfoKind::Native)
+        if (typeFunc->returnType->isNative(NativeType::String))
         {
-            if (typeFunc->returnType->nativeType == NativeType::String)
-                bufferC.addString("__register* rr0, __register* rr1");
-            else
-                bufferC.addString("__register* rr0");
+            bufferC.addString("__register* rr0, __register* rr1");
             cptParams++;
         }
         else
         {
-            assert(false);
+            bufferC.addString("__register* rr0");
+            cptParams++;
         }
     }
 
@@ -120,22 +118,15 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     {
         if (cptParams)
             bufferC.addString(", ");
-        if (param->typeInfo->kind == TypeInfoKind::Native)
+        if (param->typeInfo->isNative(NativeType::String))
         {
-            if (param->typeInfo->nativeType == NativeType::String)
-            {
-                bufferC.addString(format("__register* rp%u, __register* rp%u", index, index + 1));
-                index += 2;
-            }
-            else
-            {
-                bufferC.addString(format("__register* rp%u", index));
-                index++;
-            }
+            bufferC.addString(format("__register* rp%u, __register* rp%u", index, index + 1));
+            index += 2;
         }
         else
         {
-            assert(false);
+            bufferC.addString(format("__register* rp%u", index));
+            index++;
         }
 
         cptParams++;
