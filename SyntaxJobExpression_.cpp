@@ -31,7 +31,7 @@ bool SyntaxJob::doArrayPointerDeRef(AstNode** exprNode)
 
         Ast::addChild(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
-        SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
+	    SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));	
         *exprNode = arrayNode;
         if (token.id != TokenId::SymComma)
             break;

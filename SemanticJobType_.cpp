@@ -49,20 +49,34 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     // In fact, this is an array
     if (node->arrayDim)
     {
-        for (int i = node->arrayDim - 1; i >= 0; i--)
+		// If no childs, then this is an array without a specified size
+        if (node->childs.empty())
         {
-            auto child = node->childs[i];
-            SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, child, "can't evaluate array dimension at compile time"}));
-            SWAG_VERIFY(child->typeInfo->isNativeInteger(), sourceFile->report({sourceFile, child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
-            SWAG_VERIFY(child->typeInfo->sizeOf <= 4, sourceFile->report({sourceFile, child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
-            SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.maxStaticArraySize, sourceFile->report({sourceFile, child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.maxStaticArraySize, child->computedValue.reg.u32)}));
-
+            assert(node->arrayDim == UINT32_MAX);
             auto ptrArray         = g_Pool_typeInfoArray.alloc();
-            ptrArray->size        = child->computedValue.reg.u32;
+            ptrArray->size        = UINT32_MAX;
             ptrArray->pointedType = node->typeInfo;
-            ptrArray->name        = format("[%d] %s", node->arrayDim + 1, node->typeInfo->name.c_str());
-            ptrArray->sizeOf      = ptrArray->size * ptrArray->pointedType->sizeOf;
+            ptrArray->name        = format("[] %s", node->typeInfo->name.c_str());
+            ptrArray->sizeOf      = 0;
             node->typeInfo        = ptrArray;
+        }
+        else
+        {
+            for (int i = node->arrayDim - 1; i >= 0; i--)
+            {
+                auto child = node->childs[i];
+                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, child, "can't evaluate array dimension at compile time"}));
+                SWAG_VERIFY(child->typeInfo->isNativeInteger(), sourceFile->report({sourceFile, child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
+                SWAG_VERIFY(child->typeInfo->sizeOf <= 4, sourceFile->report({sourceFile, child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
+                SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.maxStaticArraySize, sourceFile->report({sourceFile, child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.maxStaticArraySize, child->computedValue.reg.u32)}));
+
+                auto ptrArray         = g_Pool_typeInfoArray.alloc();
+                ptrArray->size        = child->computedValue.reg.u32;
+                ptrArray->pointedType = node->typeInfo;
+                ptrArray->name        = format("[%d] %s", child->computedValue.reg.u32, node->typeInfo->name.c_str());
+                ptrArray->sizeOf      = ptrArray->size * ptrArray->pointedType->sizeOf;
+                node->typeInfo        = ptrArray;
+            }
         }
     }
 

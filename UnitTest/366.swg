@@ -1,10 +1,9 @@
-#module module365;
+#module module366;
 //#unittest pass semantic;
 
 //#[swag.printbytecode]
 #unittest error;
 #test
 {
-	//var arr: [] s32 = {6, 10, 10};
-	var arr: [] s32;
+	var arr: [4] s32 = 0;
 }

@@ -49,6 +49,13 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         while (true)
         {
+			// Size of array can be nothing
+            if (token.id == TokenId::SymRightSquare)
+            {
+                node->arrayDim = UINT32_MAX;
+                break;
+            }
+
             node->arrayDim++;
             SWAG_CHECK(doExpression(node));
             if (token.id != TokenId::SymComma)
