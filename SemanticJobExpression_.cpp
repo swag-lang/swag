@@ -76,6 +76,10 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
             auto typeArray              = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
             node->computedValue.reg.u64 = typeArray->size;
         }
+        else if (expr->typeInfo->kind == TypeInfoKind::Slice)
+        {
+			node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+        }
         else
         {
             return sourceFile->report({sourceFile, expr, format("'count' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});

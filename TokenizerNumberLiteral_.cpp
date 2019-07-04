@@ -513,7 +513,6 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
             token.id          = TokenId::SymDot;
             if (c == '.')
             {
-                treatChar(c, offset);
                 token.id          = TokenId::SymDotDot;
                 token.text        = "..";
                 token.endLocation = location;

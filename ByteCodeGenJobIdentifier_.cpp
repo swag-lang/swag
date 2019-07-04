@@ -59,13 +59,11 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (resolved->typeInfo->isNative(NativeType::String))
+        else if (resolved->typeInfo->isNative(NativeType::String) || resolved->typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
-            auto inst   = emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[1]);
-            inst->b.s32 = resolved->storageOffset + 8;
-            inst        = emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0]);
-            inst->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+            emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
         }
         else
         {
@@ -101,17 +99,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         if (resolved->typeInfo->kind == TypeInfoKind::Array)
         {
-            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
         else if (node->flags & AST_LEFT_EXPRESSION)
         {
-            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (resolved->typeInfo->isNative(NativeType::String))
+        else if (resolved->typeInfo->isNative(NativeType::String) || resolved->typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.s32 = resolved->storageOffset + 8;
-            emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.s32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+            emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
         }
         else
         {

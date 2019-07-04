@@ -245,7 +245,7 @@ bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
     auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    if (typeInfo->isNative(NativeType::String))
+    if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
     {
         node->resultRegisterRC = node->expression->resultRegisterRC[1];
     }
@@ -262,7 +262,7 @@ bool ByteCodeGenJob::emitDataProperty(ByteCodeGenContext* context)
     auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    if (typeInfo->isNative(NativeType::String))
+    if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
     {
         node->resultRegisterRC = node->expression->resultRegisterRC[0];
     }
