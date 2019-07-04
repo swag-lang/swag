@@ -27,6 +27,13 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
+    if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
+        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+        return true;
+    }
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitAffectEqual, type not native");
 
@@ -162,7 +169,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(leftTypeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->sizeOfPointedBy();
-		if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+        if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::AffectOpMinusEqPointer, r0, r1);
         return true;

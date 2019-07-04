@@ -1,8 +1,6 @@
 #include "pch.h"
-#include "AstNode.h"
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
-#include "TypeInfo.h"
 #include "Module.h"
 #include "SourceFile.h"
 #include "ByteCodeOp.h"
@@ -155,7 +153,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         return internalError(context, "emitExpressionList, expression not constant");
 
     // Reserve space in constant segment, and copy all
-    uint32_t storageOffset = module->reserveConstantSegment(node->typeInfo->sizeOf);
+    auto     typeList      = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
+    uint32_t storageOffset = module->reserveConstantSegment(typeList->sizeOf);
     module->mutexConstantSeg.lock();
     auto offset = storageOffset;
     auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, SegmentBuffer::Constant);
@@ -163,9 +162,9 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     SWAG_CHECK(result);
 
     // Emit a reference to the buffer
-    node->resultRegisterRC = reserveRegisterRC(context);
-    auto inst              = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC);
-    inst->b.u32            = storageOffset;
+    reserveRegisterRC(context, node->resultRegisterRC, 2);
+    auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+    inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
     return true;
 }
 

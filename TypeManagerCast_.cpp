@@ -763,6 +763,24 @@ bool TypeManager::castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
 
+bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+{
+    TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
+    if (fromType->kind == TypeInfoKind::TypeList)
+    {
+        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
+        auto          fromSize     = fromTypeList->childs.size();
+        for (int i = 0; i < fromSize; i++)
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeSlice->pointedType, nodeToCast->childs[i], castFlags));
+        }
+
+        return true;
+    }
+
+    return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
+}
+
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
     auto fromType = nodeToCast->typeInfo;
@@ -802,6 +820,10 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
     // Cast to array
     if (toType->kind == TypeInfoKind::Array)
         return castToArray(sourceFile, toType, fromType, nodeToCast, castFlags);
+
+    // Cast to slice
+    if (toType->kind == TypeInfoKind::Slice)
+        return castToSlice(sourceFile, toType, fromType, nodeToCast, castFlags);
 
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }

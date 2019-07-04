@@ -337,7 +337,8 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromConstantSeg:
-            bufferC.addString(format("r%u.pointer = __constantseg + %u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32)));
+            bufferC.addString(format("r%u.u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF));
             break;
         case ByteCodeOp::RARefFromStack:
             bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.u32));

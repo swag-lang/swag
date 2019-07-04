@@ -373,8 +373,10 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::RARefFromConstantSeg:
     {
         auto module                    = context->sourceFile->module;
-        auto offset                    = ip->b.u32;
+        auto offset                    = (uint32_t)(ip->c.u64 >> 32);
+        auto count                     = (uint32_t)(ip->c.u64 & 0xFFFFFFFF);
         registersRC[ip->a.u32].pointer = &module->constantSegment[offset];
+        registersRC[ip->b.u32].u64     = count;
         break;
     }
 

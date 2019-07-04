@@ -154,7 +154,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Be sure array without a size have a initializer, to deduce the size
-    if (node->astType->typeInfo->kind == TypeInfoKind::Array)
+    if (node->astType && node->astType->typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->astType->typeInfo, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->size != UINT32_MAX || node->astAssignment, sourceFile->report({sourceFile, node, "missing initialization expression to deduce size of array"}));
