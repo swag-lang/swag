@@ -161,8 +161,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(!node->astAssignment || node->astAssignment->kind == AstNodeKind::ExpressionList, sourceFile->report({sourceFile, node, "invalid initialization expression for an array"}));
 
 		// Deduce size of array
-        if (typeArray->size == UINT32_MAX)
-            typeArray->size = (uint32_t) node->astAssignment->childs.size();
+		if (typeArray->size == UINT32_MAX)
+		{
+			typeArray->size = (uint32_t)node->astAssignment->childs.size();
+			typeArray->sizeOf = typeArray->size * typeArray->pointedType->sizeOf;
+			typeArray->name = format("[%d] %s", typeArray->size, typeArray->pointedType->name.c_str());
+		}
     }
 
     // Find type
