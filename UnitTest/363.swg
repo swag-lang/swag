@@ -1,11 +1,11 @@
 #module module363;
 //#unittest pass semantic;
 
-
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var arr = {6, 10};
 	var idx = 0;
 	var c = arr[idx];
+	@assert(c == 6);
 }

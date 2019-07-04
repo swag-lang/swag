@@ -26,7 +26,7 @@ bool SyntaxJob::doArrayPointerDeRef(AstNode** exprNode)
     {
         auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::ArrayPointerDeRef, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
-        arrayNode->token       = move(token);
+        arrayNode->token       = token;
         arrayNode->semanticFct = &SemanticJob::resolveArrayPointerDeRef;
 
         Ast::addChild(arrayNode, *exprNode);
