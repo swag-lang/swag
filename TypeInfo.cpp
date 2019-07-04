@@ -64,8 +64,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         if (!parameters[i]->typeInfo->isSame(typeInfo))
         {
             context.badSignatureParameterIdx  = i;
-            context.basSignatureRequestedType = parameters[i]->typeInfo;
-            context.basSignatureGivenType     = context.parameters[i]->typeInfo;
+            context.badSignatureRequestedType = parameters[i]->typeInfo;
+            context.badSignatureGivenType     = context.parameters[i]->typeInfo;
             badSignature                      = true;
         }
 

@@ -147,8 +147,8 @@ enum MatchResult
 struct SymbolMatchContext
 {
     int                       badSignatureParameterIdx  = 0;
-    TypeInfo*                 basSignatureRequestedType = nullptr;
-    TypeInfo*                 basSignatureGivenType     = nullptr;
+    TypeInfo*                 badSignatureRequestedType = nullptr;
+    TypeInfo*                 badSignatureGivenType     = nullptr;
     MatchResult               result                    = MatchResult::Ok;
     vector<AstFuncCallParam*> parameters;
 };

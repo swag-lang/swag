@@ -325,13 +325,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             case MatchResult::BadSignature:
             {
                 Diagnostic diag{sourceFile,
-                                node->callParameters,
+                                node->callParameters->childs[symMatch.badSignatureParameterIdx],
                                 format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
                                        symMatch.badSignatureParameterIdx,
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),
-                                       symMatch.basSignatureRequestedType->name.c_str(),
-                                       symMatch.basSignatureGivenType->name.c_str())};
+                                       symMatch.badSignatureRequestedType->name.c_str(),
+                                       symMatch.badSignatureGivenType->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }

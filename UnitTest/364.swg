@@ -8,6 +8,7 @@ func test: (arr: [2] s32, idx: s32, val: s32)
 }
 
 //#[swag.printbytecode]
+#unittest error;
 #test
 {
 	var arr = {6, 10, 10};

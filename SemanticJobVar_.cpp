@@ -171,7 +171,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             typeArray->pointedType = typeList->childs.front();
             typeArray->sizeOf      = node->typeInfo->sizeOf;
             typeArray->size        = (uint32_t) typeList->childs.size();
-            typeArray->name        = format("[%s]", typeArray->pointedType->name.c_str());
+            typeArray->name        = format("[%d] %s", typeArray->size, typeArray->pointedType->name.c_str());
             node->typeInfo         = g_TypeMgr.registerType(typeArray);
             SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
         }

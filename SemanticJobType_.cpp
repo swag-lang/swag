@@ -60,7 +60,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             auto ptrArray         = g_Pool_typeInfoArray.alloc();
             ptrArray->size        = child->computedValue.reg.u32;
             ptrArray->pointedType = node->typeInfo;
-            ptrArray->name        = format("[%s]", node->typeInfo->name.c_str());
+            ptrArray->name        = format("[%d] %s", node->arrayDim + 1, node->typeInfo->name.c_str());
             ptrArray->sizeOf      = ptrArray->size * ptrArray->pointedType->sizeOf;
             node->typeInfo        = ptrArray;
         }
