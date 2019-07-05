@@ -9,4 +9,5 @@
 	slice = "toto";
 	@assert(@prop(slice, count) == 4);
 	@assert(cast(char) slice[0] == 't');
+	@assert(cast(char) slice[1] == 'o');
 }

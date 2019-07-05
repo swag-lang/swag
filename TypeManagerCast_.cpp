@@ -711,6 +711,7 @@ bool TypeManager::castToNative(SourceFile* sourceFile, TypeInfo* toType, TypeInf
     case NativeType::U16:
         return castToNativeU16(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::U32:
+    case NativeType::Char:
         return castToNativeU32(sourceFile, fromType, nodeToCast, castFlags);
     case NativeType::U64:
         return castToNativeU64(sourceFile, fromType, nodeToCast, castFlags);

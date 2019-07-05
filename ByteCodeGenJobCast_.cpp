@@ -468,6 +468,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, TypeInfo* typeInfo, A
         SWAG_CHECK(emitCastNativeU16(context, exprNode, fromTypeInfo));
         break;
     case NativeType::U32:
+    case NativeType::Char:
         SWAG_CHECK(emitCastNativeU32(context, exprNode, fromTypeInfo));
         break;
     case NativeType::U64:
