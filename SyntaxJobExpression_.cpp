@@ -31,7 +31,7 @@ bool SyntaxJob::doArrayPointerDeRef(AstNode** exprNode)
 
         Ast::addChild(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
-	    SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));	
+        SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
         *exprNode = arrayNode;
         if (token.id != TokenId::SymComma)
             break;
@@ -349,18 +349,8 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
     return doExpression(parent, result);
 }
 
-bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doExpressionList(AstNode* parent, AstNode** result)
 {
-    if (token.id == TokenId::SymQuestion)
-    {
-        parent->flags |= AST_DISABLED_INIT;
-        SWAG_CHECK(eatToken(TokenId::SymQuestion));
-        return true;
-    }
-
-    if (token.id != TokenId::SymLeftCurly)
-        return doExpression(parent, result);
-
     auto initNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->inheritOwnersAndFlags(this);
     initNode->semanticFct = &SemanticJob::resolveExpressionList;
@@ -390,6 +380,24 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
+}
+
+bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
+{
+    if (token.id == TokenId::SymQuestion)
+    {
+        parent->flags |= AST_DISABLED_INIT;
+        SWAG_CHECK(eatToken(TokenId::SymQuestion));
+        return true;
+    }
+
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        SWAG_CHECK(doExpressionList(parent, result));
+        return true;
+    }
+
+    return doExpression(parent, result);
 }
 
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
