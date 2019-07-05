@@ -74,7 +74,7 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
         {
             node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
             auto typeArray              = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
-            node->computedValue.reg.u64 = typeArray->size;
+            node->computedValue.reg.u64 = typeArray->count;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Slice)
         {

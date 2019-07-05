@@ -92,10 +92,13 @@ void ByteCode::print()
         case ByteCodeOp::AffectOp8:
         case ByteCodeOp::AffectOp16:
         case ByteCodeOp::AffectOp32:
-        case ByteCodeOp::AffectOp64:
         case ByteCodeOp::AffectOpPointer:
         case ByteCodeOp::IsNullString:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
+            break;
+
+        case ByteCodeOp::AffectOp64:
+            wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
         case ByteCodeOp::RAFromStack8:

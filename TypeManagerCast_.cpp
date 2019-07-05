@@ -738,14 +738,14 @@ bool TypeManager::castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
         auto          fromSize     = fromTypeList->childs.size();
-        if (toTypeArray->size != fromSize)
+        if (toTypeArray->count != fromSize)
         {
             if (!(castFlags & CASTFLAG_NOERROR))
             {
-                if (toTypeArray->size > fromTypeList->childs.size())
-                    sourceFile->report({sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->size)});
+                if (toTypeArray->count > fromTypeList->childs.size())
+                    sourceFile->report({sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
                 else
-                    sourceFile->report({sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->size)});
+                    sourceFile->report({sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
             }
 
             return false;
@@ -776,6 +776,12 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
         }
 
         return true;
+    }
+    else if (fromType->kind == TypeInfoKind::Array)
+    {
+        TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+        if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType))
+            return true;
     }
 
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);

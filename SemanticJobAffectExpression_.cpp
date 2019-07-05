@@ -25,8 +25,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::SymEqual:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native || leftTypeInfo->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native || rightTypeInfo->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        if (leftTypeInfo->kind != TypeInfoKind::Native &&
+            leftTypeInfo->kind != TypeInfoKind::Pointer &&
+            leftTypeInfo->kind != TypeInfoKind::Slice)
+            return sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())});
+        if (rightTypeInfo->kind != TypeInfoKind::Native &&
+            rightTypeInfo->kind != TypeInfoKind::Pointer &&
+            rightTypeInfo->kind != TypeInfoKind::Array &&
+            rightTypeInfo->kind != TypeInfoKind::Slice)
+            return sourceFile->report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())});
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
         break;
 

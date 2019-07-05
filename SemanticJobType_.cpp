@@ -54,7 +54,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         {
             assert(node->arrayDim == UINT32_MAX);
             auto ptrArray         = g_Pool_typeInfoArray.alloc();
-            ptrArray->size        = UINT32_MAX;
+            ptrArray->count       = UINT32_MAX;
             ptrArray->pointedType = node->typeInfo;
             ptrArray->name        = format("[] %s", node->typeInfo->name.c_str());
             ptrArray->sizeOf      = 0;
@@ -71,10 +71,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.maxStaticArraySize, sourceFile->report({sourceFile, child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.maxStaticArraySize, child->computedValue.reg.u32)}));
 
                 auto ptrArray         = g_Pool_typeInfoArray.alloc();
-                ptrArray->size        = child->computedValue.reg.u32;
+                ptrArray->count       = child->computedValue.reg.u32;
                 ptrArray->pointedType = node->typeInfo;
                 ptrArray->name        = format("[%d] %s", child->computedValue.reg.u32, node->typeInfo->name.c_str());
-                ptrArray->sizeOf      = ptrArray->size * ptrArray->pointedType->sizeOf;
+                ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
                 node->typeInfo        = ptrArray;
             }
         }

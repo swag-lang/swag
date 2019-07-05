@@ -29,8 +29,24 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
-        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+        if (node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
+        {
+            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1);
+
+            auto module    = context->sourceFile->module;
+            auto typeArray = CastTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
+            auto r2        = module->reserveRegisterRC(context->bc);
+
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, r2)->b.u64 = typeArray->count;
+            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r2, 8);
+
+            module->freeRegisterRC(r2);
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
+            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+        }
         return true;
     }
 

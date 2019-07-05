@@ -213,13 +213,13 @@ struct TypeInfoArray : public TypeInfo
         if (kind != from->kind)
             return false;
         auto castedFrom = static_cast<TypeInfoArray*>(from);
-        if (size != castedFrom->size)
+        if (count != castedFrom->count)
             return false;
         return pointedType->isSame(castedFrom->pointedType);
     }
 
     TypeInfo* pointedType;
-    uint32_t  size;
+    uint32_t  count;
 };
 
 struct TypeInfoSlice : public TypeInfo

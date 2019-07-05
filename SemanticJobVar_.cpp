@@ -157,16 +157,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->astType && node->astType->typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->astType->typeInfo, TypeInfoKind::Array);
-        SWAG_VERIFY(typeArray->size != UINT32_MAX || node->astAssignment, sourceFile->report({sourceFile, node, "missing initialization expression to deduce size of array"}));
+        SWAG_VERIFY(typeArray->count != UINT32_MAX || node->astAssignment, sourceFile->report({sourceFile, node, "missing initialization expression to deduce size of array"}));
         SWAG_VERIFY(!node->astAssignment || node->astAssignment->kind == AstNodeKind::ExpressionList, sourceFile->report({sourceFile, node, "invalid initialization expression for an array"}));
 
-		// Deduce size of array
-		if (typeArray->size == UINT32_MAX)
-		{
-			typeArray->size = (uint32_t)node->astAssignment->childs.size();
-			typeArray->sizeOf = typeArray->size * typeArray->pointedType->sizeOf;
-			typeArray->name = format("[%d] %s", typeArray->size, typeArray->pointedType->name.c_str());
-		}
+        // Deduce size of array
+        if (typeArray->count == UINT32_MAX)
+        {
+            typeArray->count  = (uint32_t) node->astAssignment->childs.size();
+            typeArray->sizeOf = typeArray->count * typeArray->pointedType->sizeOf;
+            typeArray->name   = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
+        }
     }
 
     // Find type
@@ -186,8 +186,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto typeArray         = g_Pool_typeInfoArray.alloc();
             typeArray->pointedType = typeList->childs.front();
             typeArray->sizeOf      = node->typeInfo->sizeOf;
-            typeArray->size        = (uint32_t) typeList->childs.size();
-            typeArray->name        = format("[%d] %s", typeArray->size, typeArray->pointedType->name.c_str());
+            typeArray->count       = (uint32_t) typeList->childs.size();
+            typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
             node->typeInfo         = g_TypeMgr.registerType(typeArray);
             SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
         }
