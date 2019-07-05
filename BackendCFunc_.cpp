@@ -270,10 +270,10 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
 
         case ByteCodeOp::BoundCheck:
-            bufferC.addString(format("__assert(r%u.u32 >= r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            bufferC.addString(format("__assert(r%u.u32 <= r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
-        case ByteCodeOp::BoundCheckV:
-            bufferC.addString(format("__assert(r%u.u32 <= %u, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+        case ByteCodeOp::BoundCheckString:
+            bufferC.addString(format("__assert(r%u.u32 <= r%u.u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::IncPointer:
             bufferC.addString(format("r%u.pointer += r%u.u32;", ip->a.u32, ip->b.u32));

@@ -209,16 +209,16 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::BoundCheck:
     {
-        int maxOffset = registersRC[ip->a.u32].u32;
-        int curOffset = registersRC[ip->b.u32].u32;
+        int curOffset = registersRC[ip->a.u32].u32;
+        int maxOffset = registersRC[ip->b.u32].u32;
         if (curOffset > maxOffset)
             context->error(format("index out of range (index is '%d', maximum index is '%d')", curOffset, maxOffset));
         break;
     }
-    case ByteCodeOp::BoundCheckV:
+    case ByteCodeOp::BoundCheckString:
     {
         int curOffset = registersRC[ip->a.u32].u32;
-        int maxOffset = ip->b.u32;
+        int maxOffset = registersRC[ip->b.u32].u32;
         if (curOffset > maxOffset)
             context->error(format("index out of range (index is '%d', maximum index is '%d')", curOffset, maxOffset));
         break;

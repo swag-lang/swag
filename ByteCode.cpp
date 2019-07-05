@@ -94,6 +94,8 @@ void ByteCode::print()
         case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOpPointer:
         case ByteCodeOp::IsNullString:
+        case ByteCodeOp::BoundCheck:
+        case ByteCodeOp::BoundCheckString:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
@@ -121,10 +123,6 @@ void ByteCode::print()
         case ByteCodeOp::RARefFromDataSeg:
         case ByteCodeOp::MulRAVB:
             wprintf(L"RA: %u VB: { %u }", ip->a.u32, ip->b.u32);
-            break;
-
-        case ByteCodeOp::BoundCheckV:
-            wprintf(L"RA: %u VB: { %x }", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::CopyRAVB32:
