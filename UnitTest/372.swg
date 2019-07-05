@@ -1,10 +1,11 @@
-#module module371;
+#module module372;
 //#unittest pass semantic;
+
+var slice: [..] s32;	
 
 //#[swag.printbytecode]
 #test
 {
-	var slice: [..] s32;	
     slice = {1, 2, 3};	
 	@assert(slice[0] == 1);
 	@assert(slice[1] == 2);

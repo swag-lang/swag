@@ -83,6 +83,47 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC[0]);
     }
 
+    // Dereference of a slice
+    else if (node->array->typeInfo->kind == TypeInfoKind::Slice)
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Slice);
+        int  sizeOf   = typeInfo->pointedType->sizeOf;
+
+        if (g_CommandLine.debugBoundCheck)
+        {
+            emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+        }
+
+        // Increment pointer (if increment is not 0)
+        if (!g_CommandLine.optimizeByteCode || !node->access->isConstantInt0())
+        {
+            if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+                emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
+            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+        }
+
+        if (!(node->flags & AST_LEFT_EXPRESSION))
+        {
+            switch (sizeOf)
+            {
+            case 1:
+                emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
+                break;
+            case 2:
+                emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
+                break;
+            case 4:
+                emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
+                break;
+            case 8:
+                emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
+                break;
+            default:
+                return internalError(context, "emitPointerDeRef, type not supported");
+            }
+        }
+    }
+
     // Dereference of a pointer
     else if (node->array->typeInfo->kind == TypeInfoKind::Pointer)
     {
