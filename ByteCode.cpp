@@ -98,6 +98,7 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::AffectOp64:
+        case ByteCodeOp::RARefFromConstantSeg:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
@@ -118,7 +119,6 @@ void ByteCode::print()
         case ByteCodeOp::RAFromDataSeg32:
         case ByteCodeOp::RAFromDataSeg64:
         case ByteCodeOp::RARefFromDataSeg:
-        case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::MulRAVB:
             wprintf(L"RA: %u VB: { %u }", ip->a.u32, ip->b.u32);
             break;

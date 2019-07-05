@@ -41,6 +41,23 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
+{
+    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
+    int  sizeOf = node->typeInfo->sizeOf;
+
+    if (g_CommandLine.debugBoundCheck)
+    {
+        emitInstruction(context, ByteCodeOp::BoundCheckV, node->access->resultRegisterRC)->b.u32 = 0;
+    }
+
+    if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
+    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+    node->resultRegisterRC = node->array->resultRegisterRC;
+    return true;
+}
+
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
@@ -131,6 +148,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
                 return internalError(context, "emitPointerDeRef, type not supported");
             }
         }
+    }
+    else
+    {
+        return internalError(context, "emitPointerDeRef, type not supported");
     }
 
     node->resultRegisterRC = node->array->resultRegisterRC;

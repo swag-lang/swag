@@ -78,7 +78,7 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Slice)
         {
-			node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+            node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
         }
         else
         {
@@ -152,18 +152,38 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
     auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
-    if (arrayNode->array->typeInfo->kind == TypeInfoKind::Pointer)
+
+    auto arrayType = arrayNode->array->typeInfo;
+    switch (arrayType->kind)
     {
-        auto typePtr           = CastTypeInfo<TypeInfoPointer>(arrayNode->array->typeInfo, TypeInfoKind::Pointer);
+    case TypeInfoKind::Pointer:
+    {
+        auto typePtr           = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerRef;
+        break;
     }
-    else
+    case TypeInfoKind::Array:
     {
-        auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayNode->array->typeInfo, TypeInfoKind::Array);
+        auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
         arrayNode->inheritAndFlag(arrayNode->array, AST_REFERENCABLE);
+        break;
+    }
+    case TypeInfoKind::Slice:
+    {
+        auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
+        arrayNode->typeInfo    = typePtr->pointedType;
+        arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
+        arrayNode->inheritAndFlag(arrayNode->array, AST_REFERENCABLE);
+        break;
+    }
+    default:
+    {
+        auto sourceFile = context->sourceFile;
+        return sourceFile->report({sourceFile, arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
+    }
     }
 
     return true;
@@ -201,9 +221,14 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         auto typePtr        = static_cast<TypeInfoArray*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
     }
+    else if (arrayType->kind == TypeInfoKind::Slice)
+    {
+        auto typePtr        = static_cast<TypeInfoSlice*>(arrayType);
+        arrayNode->typeInfo = typePtr->pointedType;
+    }
     else
     {
-        return sourceFile->report({sourceFile, arrayNode->array, format("type '%s' can't be referenced like a pointer", arrayType->name.c_str())});
+        return sourceFile->report({sourceFile, arrayNode->array, format("type '%s' cannot be referenced like a pointer", arrayType->name.c_str())});
     }
 
     return true;
