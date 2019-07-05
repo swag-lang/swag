@@ -134,6 +134,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
     }
 
+    case TokenId::SymLeftCurly:
+        SWAG_CHECK(doExpressionList(parent, result));
+        break;
+
     case TokenId::LiteralNumber:
     case TokenId::LiteralCharacter:
     case TokenId::LiteralString:

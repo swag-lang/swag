@@ -28,19 +28,20 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
             leftTypeInfo->kind != TypeInfoKind::Slice)
-            return sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())});
+            return sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Array &&
-            rightTypeInfo->kind != TypeInfoKind::Slice)
-            return sourceFile->report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())});
+            rightTypeInfo->kind != TypeInfoKind::Slice &&
+            rightTypeInfo->kind != TypeInfoKind::TypeList)
+            return sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())});
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
         break;
 
     case TokenId::SymLowerLowerEqual:
     case TokenId::SymGreaterGreaterEqual:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoU32, right));
         if (leftTypeInfo->nativeType == NativeType::Bool ||
             leftTypeInfo->nativeType == NativeType::Char ||
@@ -48,17 +49,17 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeType::F32 ||
             leftTypeInfo->nativeType == NativeType::F64)
         {
-            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+            return sourceFile->report({sourceFile, node, format("affect not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
         break;
 
     case TokenId::SymSlashEqual:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
         if (leftTypeInfo->nativeType != NativeType::F32 && leftTypeInfo->nativeType != NativeType::F64)
         {
-            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+            return sourceFile->report({sourceFile, node, format("affect not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
         break;
 
@@ -66,8 +67,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymVerticalEqual:
     case TokenId::SymCircumflexEqual:
     case TokenId::SymTildeEqual:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
         if (leftTypeInfo->nativeType == NativeType::Bool ||
             leftTypeInfo->nativeType == NativeType::Char ||
@@ -75,7 +76,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeType::F32 ||
             leftTypeInfo->nativeType == NativeType::F64)
         {
-            return sourceFile->report({sourceFile, node, format("operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+            return sourceFile->report({sourceFile, node, format("affect not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
         break;
 
