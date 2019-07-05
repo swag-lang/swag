@@ -27,7 +27,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (resolved->typeInfo->isNative(NativeType::String))
+        if (resolved->typeInfo->isNative(NativeType::String) || resolved->typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC[1]);

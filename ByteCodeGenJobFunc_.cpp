@@ -122,8 +122,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case TokenId::IntrisicAssert:
     {
         auto child0 = callParams->childs.front();
-		if(!g_CommandLine.optimizeByteCode || !child0->isConstantTrue())
-			emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
+        if (!g_CommandLine.optimizeByteCode || !child0->isConstantTrue())
+            emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
@@ -273,7 +273,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
         }
         else
         {
-            assert(false);
+            internalError(context, "emitLocalCall, bad return type");
         }
     }
 
@@ -311,16 +311,19 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         resolved->storageOffset = offset;
         resolved->storageIndex  = index;
 
-        switch (resolved->typeInfo->nativeType)
+        if (resolved->typeInfo->isNative(NativeType::String) || resolved->typeInfo->kind == TypeInfoKind::Slice)
         {
-        case NativeType::String:
             offset += 2 * sizeof(Register);
             index += 2;
-            break;
-        default:
+        }
+        else if (resolved->typeInfo->kind == TypeInfoKind::Native || resolved->typeInfo->kind == TypeInfoKind::Array)
+        {
             offset += sizeof(Register);
             index++;
-            break;
+        }
+        else
+        {
+			return internalError(context, "emitFuncDeclParams, invalid parameter type", param);
         }
     }
 

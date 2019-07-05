@@ -100,7 +100,7 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     int cptParams = 0;
     if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        if (typeFunc->returnType->isNative(NativeType::String))
+        if (typeFunc->returnType->isNative(NativeType::String) || typeFunc->returnType->kind == TypeInfoKind::Slice)
         {
             bufferC.addString("__register* rr0, __register* rr1");
             cptParams++;
@@ -118,7 +118,7 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     {
         if (cptParams)
             bufferC.addString(", ");
-        if (param->typeInfo->isNative(NativeType::String))
+        if (param->typeInfo->isNative(NativeType::String) || param->typeInfo->kind == TypeInfoKind::Slice)
         {
             bufferC.addString(format("__register* rp%u, __register* rp%u", index, index + 1));
             index += 2;
@@ -364,7 +364,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::CopyRAVB64:
             bufferC.addString(format("r%u.u64 = 0x%I64x;", ip->a.u32, ip->b.u64));
             break;
-        case ByteCodeOp::CopyRAVBStr:
+        case ByteCodeOp::CopyRARBStr:
             bufferC.addString(format("r%u.pointer = __string%u; ", ip->a.u32, ip->c.u32));
             bufferC.addString(format("r%u.u32 = %u;", ip->b.u32, module->strBuffer[ip->c.u32].size()));
             break;
@@ -883,17 +883,15 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             int cptCall = 0;
             if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
             {
-                if (typeFuncBC->returnType->kind == TypeInfoKind::Native)
+                if (typeFuncBC->returnType->isNative(NativeType::String) || typeFuncBC->returnType->kind == TypeInfoKind::Slice)
                 {
-                    if (typeFuncBC->returnType->nativeType == NativeType::String)
-                        bufferC.addString("&rt0, &rt1");
-                    else
-                        bufferC.addString("&rt0");
+                    bufferC.addString("&rt0, &rt1");
                     cptCall++;
                 }
                 else
                 {
-                    assert(false);
+                    bufferC.addString("&rt0");
+                    cptCall++;
                 }
             }
 
@@ -903,16 +901,15 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
                 if (cptCall)
                     bufferC.addString(", ");
                 auto param = typeFuncBC->parameters[idxCall];
-                switch (param->typeInfo->nativeType)
+                if (param->typeInfo->isNative(NativeType::String) || param->typeInfo->kind == TypeInfoKind::Slice)
                 {
-                case NativeType::String:
                     bufferC.addString(format("&rc%u, &rc%u", index, index - 1));
                     index -= 2;
-                    break;
-                default:
+                }
+                else
+                {
                     bufferC.addString(format("&rc%u", index));
                     index--;
-                    break;
                 }
 
                 cptCall++;

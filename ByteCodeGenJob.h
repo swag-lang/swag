@@ -41,7 +41,7 @@ struct ByteCodeGenJob : public Job
         dependentJobs.clear();
     }
 
-    static bool                 internalError(ByteCodeGenContext* context, const char* msg);
+    static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 setupBC(Module* module, AstNode* node);
 

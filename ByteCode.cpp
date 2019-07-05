@@ -101,6 +101,7 @@ void ByteCode::print()
 
         case ByteCodeOp::AffectOp64:
         case ByteCodeOp::RARefFromConstantSeg:
+        case ByteCodeOp::CopyRARBStr:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
@@ -127,10 +128,6 @@ void ByteCode::print()
 
         case ByteCodeOp::CopyRAVB32:
             wprintf(L"RA: %u VB: { %x }", ip->a.u32, ip->b.u32);
-            break;
-
-        case ByteCodeOp::CopyRAVBStr:
-            wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
         case ByteCodeOp::CopyRAVB64:

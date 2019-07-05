@@ -3,7 +3,7 @@ using swag;
 
 #unittest error;
 
-#[printbytecode]
+//#[printbytecode]
 #test
 {
 	var b = "XYZ";

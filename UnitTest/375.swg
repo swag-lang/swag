@@ -1,0 +1,18 @@
+#module module375;
+//#unittest pass semantic;
+
+//#[swag.printbytecode]
+func a: (ptr: [..] s32, cpt: s32)
+{
+	@assert(@prop(ptr, count) == cpt);
+}
+
+//#[swag.printbytecode]
+#test
+{
+	var slice: [..] s32;
+	slice = {1,2,3};
+	a(slice, 3);
+	slice = {1,2,3,4,5,6};
+	a(slice, 6);
+}

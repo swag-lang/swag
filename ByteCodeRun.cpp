@@ -253,7 +253,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         memcpy(dst, src, size);
         break;
     }
-    case ByteCodeOp::CopyRAVBStr:
+    case ByteCodeOp::CopyRARBStr:
     {
         auto module = context->sourceFile->module;
         assert(ip->c.u32 < module->strBuffer.size());

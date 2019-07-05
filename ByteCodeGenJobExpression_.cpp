@@ -302,7 +302,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
             auto r1    = reserveRegisterRC(context);
             auto index = context->sourceFile->module->reserveString(node->computedValue.text);
             node->resultRegisterRC += r1;
-            emitInstruction(context, ByteCodeOp::CopyRAVBStr, r0, r1)->c.u32 = index;
+            emitInstruction(context, ByteCodeOp::CopyRARBStr, r0, r1)->c.u32 = index;
             return true;
         }
         default:

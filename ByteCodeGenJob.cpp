@@ -12,9 +12,11 @@
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
-bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg)
+bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg, AstNode* node)
 {
-    context->sourceFile->report({context->sourceFile, context->node->token, format("internal compiler error during bytecode generation (%s)", msg)});
+	if (!node)
+		node = context->node;
+    context->sourceFile->report({context->sourceFile, node->token, format("internal error, %s", msg)});
     return false;
 }
 
