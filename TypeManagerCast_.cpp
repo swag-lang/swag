@@ -783,6 +783,11 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
         if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType))
             return true;
     }
+    else if (fromType->isNative(NativeType::String))
+    {
+        if (toTypeSlice->pointedType->isNative(NativeType::U8))
+            return true;
+    }
 
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
