@@ -1,11 +1,11 @@
-#module module383;
+#module module384;
 //#unittest pass semantic;
 
 //#[swag.printbytecode]
 #test
 {
 	var cpt: u32 = 0;
-	loop(5)
+	while(cpt < 10)
 	{
 		cpt += index;
 	}

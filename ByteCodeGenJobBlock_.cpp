@@ -79,7 +79,8 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     if (loopNode->needIndex)
     {
         loopNode->registerIndex = module->reserveRegisterRC(context->bc);
-		emitInstruction(context, ByteCodeOp::CopyRAVB32, loopNode->registerIndex)->b.s32 = -1;
+        auto inst               = emitInstruction(context, ByteCodeOp::CopyRAVB32, loopNode->registerIndex);
+        inst->b.s32             = -1;
     }
 
     auto r0                            = module->reserveRegisterRC(context->bc);
@@ -94,7 +95,9 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 
     // Increment the index
     if (loopNode->needIndex)
+    {
         emitInstruction(context, ByteCodeOp::IncRA, loopNode->registerIndex);
+    }
 
     return true;
 }
@@ -138,24 +141,42 @@ bool ByteCodeGenJob::emitWhile(ByteCodeGenContext* context)
     auto diff          = whileNode->seekJumpAfterBlock - whileNode->seekJumpExpression;
     instruction->b.s32 = diff - 1;
 
+    freeRegisterRC(context, whileNode->resultRegisterRC);
     return true;
 }
 
 bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
 {
-    auto node                           = context->node;
-    auto whileNode                      = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+    auto node      = context->node;
+    auto whileNode = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+
+    // To store the 'index' of the loop
+    if (whileNode->needIndex)
+    {
+        auto module              = context->sourceFile->module;
+        whileNode->registerIndex = module->reserveRegisterRC(context->bc);
+        auto inst                = emitInstruction(context, ByteCodeOp::CopyRAVB32, whileNode->registerIndex);
+        inst->b.s32              = -1;
+    }
+
     whileNode->seekJumpBeforeExpression = context->bc->numInstructions;
     return true;
 }
 
 bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
 {
-    auto node                     = context->node;
-    auto whileNode                = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+    auto node      = context->node;
+    auto whileNode = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+
     whileNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
-    freeRegisterRC(context, node->resultRegisterRC);
+
+    // Increment the index
+    if (whileNode->needIndex)
+    {
+        emitInstruction(context, ByteCodeOp::IncRA, whileNode->registerIndex);
+    }
+
     return true;
 }
 
