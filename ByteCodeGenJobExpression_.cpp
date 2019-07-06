@@ -323,12 +323,13 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
+    auto node     = context->node;
+    auto expr     = node->childs.front();
+    auto typeInfo = TypeManager::concreteType(expr->typeInfo);
 
     if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
     {
-        node->resultRegisterRC = node->expression->resultRegisterRC[1];
+        node->resultRegisterRC = expr->resultRegisterRC[1];
     }
     else
     {

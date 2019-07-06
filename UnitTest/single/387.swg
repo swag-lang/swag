@@ -1,0 +1,15 @@
+#module module387;
+//#unittest pass semantic;
+
+//#[swag.printbytecode]
+#test
+{
+	var cpt = 0;
+	var l = "titi";
+	loop(l)
+	{
+		cpt += 1;
+	}
+	
+	@assert(cpt == 4);
+}
