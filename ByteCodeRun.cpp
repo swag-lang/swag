@@ -135,6 +135,12 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
             context->ip += ip->b.s32;
         break;
     }
+    case ByteCodeOp::JumpTrue:
+    {
+        if (registersRC[ip->a.u32].b)
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::Jump:
     {
         context->ip += ip->a.s32;
@@ -275,6 +281,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::ClearRA:
     {
         registersRC[ip->a.u32].u64 = 0;
+        break;
+    }
+    case ByteCodeOp::DecRA:
+    {
+        registersRC[ip->a.u32].u32--;
         break;
     }
     case ByteCodeOp::CopyRRxRCx:
@@ -597,6 +608,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::IsNullString:
     {
         registersRC[ip->b.u32].b = registersRC[ip->a.u32].pointer == nullptr;
+        break;
+    }
+    case ByteCodeOp::IsNullU32:
+    {
+        registersRC[ip->b.u32].b = registersRC[ip->a.u32].u32 == 0;
         break;
     }
 

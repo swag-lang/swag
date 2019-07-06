@@ -26,7 +26,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doEmbeddedStatement(node, &node->elseBlock));
-		node->elseBlock->kind = AstNodeKind::Else;
+        node->elseBlock->kind = AstNodeKind::Else;
     }
 
     return true;
@@ -46,6 +46,26 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
     {
         ScopedBreakable scoped(this, node);
         SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
+        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
+{
+    auto node         = Ast::newNode(&g_Pool_astLoop, AstNodeKind::Loop, sourceFile->indexInModule, parent);
+    node->semanticFct = &SemanticJob::resolveLoop;
+    node->inheritOwnersAndFlags(this);
+    node->inheritToken(token);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    {
+        ScopedBreakable scoped(this, node);
+        SWAG_CHECK(doExpression(node, &node->expression));
         SWAG_CHECK(doEmbeddedStatement(node, &node->block));
     }
 

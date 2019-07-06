@@ -92,6 +92,7 @@ enum class TokenId
     KwdWhile,
     KwdBreak,
     KwdContinue,
+	KwdLoop,
 
     Identifier,
     LiteralNumber,

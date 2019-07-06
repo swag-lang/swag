@@ -371,6 +371,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::ClearRA:
             bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));
             break;
+        case ByteCodeOp::DecRA:
+            bufferC.addString(format("r%u.u32--;", ip->a.u32));
+            break;
 
         case ByteCodeOp::AffectOp8:
             bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) = r%u.u8;", ip->a.u32, ip->b.u32));
@@ -787,12 +790,18 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::IsNullString:
             bufferC.addString(format("r%u.b = r%u.pointer == 0;", ip->b.u32, ip->a.u32));
             break;
+        case ByteCodeOp::IsNullU32:
+            bufferC.addString(format("r%u.b = r%u.u32 == 0;", ip->b.u32, ip->a.u32));
+            break;
 
         case ByteCodeOp::Jump:
             bufferC.addString(format("goto lbl%08u;", ip->a.s32 + i + 1));
             break;
         case ByteCodeOp::JumpNotTrue:
             bufferC.addString(format("if(!r%d.b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
+            break;
+        case ByteCodeOp::JumpTrue:
+            bufferC.addString(format("if(r%d.b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
             break;
         case ByteCodeOp::Ret:
             bufferC.addString("return;");

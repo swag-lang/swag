@@ -41,6 +41,7 @@ void LanguageSpec::setup()
     keywords["while"]     = TokenId::KwdWhile;
     keywords["break"]     = TokenId::KwdBreak;
     keywords["continue"]  = TokenId::KwdContinue;
+    keywords["loop"]      = TokenId::KwdLoop;
 
     keywords["u64"]    = TokenId::NativeType;
     keywords["u32"]    = TokenId::NativeType;

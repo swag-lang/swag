@@ -56,6 +56,66 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
+{
+    auto loopNode = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+
+    // Resolve ByteCodeOp::JumpNotTrue expression
+    auto instruction   = context->bc->out + loopNode->seekJumpExpression;
+    auto diff          = loopNode->seekJumpAfterBlock - loopNode->seekJumpExpression;
+    instruction->b.s32 = diff - 1;
+
+    freeRegisterRC(context, loopNode->resultRegisterRC);
+    return true;
+}
+
+bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
+{
+    auto node     = context->node;
+    auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
+
+    loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+
+    auto r0 = context->sourceFile->module->reserveRegisterRC(context->bc);
+    emitInstruction(context, ByteCodeOp::IsNullU32, node->resultRegisterRC, r0);
+    loopNode->seekJumpExpression = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpTrue, r0);
+    freeRegisterRC(context, r0);
+
+    emitInstruction(context, ByteCodeOp::DecRA, node->resultRegisterRC);
+    return true;
+}
+
+bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
+{
+    auto node     = context->node;
+    auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
+
+    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
+    auto diff   = loopNode->seekJumpBeforeExpression - context->bc->numInstructions;
+    inst->a.s32 = diff;
+
+    loopNode->seekJumpAfterBlock = context->bc->numInstructions;
+
+    // Resolve all continue instructions
+    for (auto continueNode : loopNode->continueList)
+    {
+        inst        = context->bc->out + continueNode->jumpInstruction;
+        diff        = loopNode->seekJumpBeforeExpression - continueNode->jumpInstruction - 1;
+        inst->a.s32 = diff;
+    }
+
+    // Resolve all break instructions
+    for (auto breakNode : loopNode->breakList)
+    {
+        inst        = context->bc->out + breakNode->jumpInstruction;
+        diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
+        inst->a.s32 = diff;
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitWhile(ByteCodeGenContext* context)
 {
     auto whileNode = CastAst<AstWhile>(context->node, AstNodeKind::While);

@@ -1,4 +1,4 @@
-#module module377;
+#module module379;
 //#unittest pass semantic;
 
 //#[swag.printbytecode]
@@ -7,7 +7,7 @@
 {
 	var cpt = 0;
 	
-	loop(10.0)
+	loop(-10)
 	{
 		cpt += 1;
 	}

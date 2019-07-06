@@ -1,13 +1,12 @@
-#module module377;
+#module module378;
 //#unittest pass semantic;
 
 //#[swag.printbytecode]
-#unittest error;
 #test
 {
 	var cpt = 0;
 	
-	loop(10.0)
+	loop(10)
 	{
 		cpt += 1;
 	}

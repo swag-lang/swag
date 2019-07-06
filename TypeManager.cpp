@@ -10,10 +10,10 @@ void TypeManager::setup()
     typeInfoS16    = new TypeInfoNative(NativeType::S16, "s16", 2, TYPEINFO_INTEGER);
     typeInfoS32    = new TypeInfoNative(NativeType::S32, "s32", 4, TYPEINFO_INTEGER);
     typeInfoS64    = new TypeInfoNative(NativeType::S64, "s64", 8, TYPEINFO_INTEGER);
-    typeInfoU8     = new TypeInfoNative(NativeType::U8, "u8", 1, TYPEINFO_INTEGER);
-    typeInfoU16    = new TypeInfoNative(NativeType::U16, "u16", 2, TYPEINFO_INTEGER);
-    typeInfoU32    = new TypeInfoNative(NativeType::U32, "u32", 4, TYPEINFO_INTEGER);
-    typeInfoU64    = new TypeInfoNative(NativeType::U64, "u64", 8, TYPEINFO_INTEGER);
+    typeInfoU8     = new TypeInfoNative(NativeType::U8, "u8", 1, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoU16    = new TypeInfoNative(NativeType::U16, "u16", 2, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoU32    = new TypeInfoNative(NativeType::U32, "u32", 4, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
+    typeInfoU64    = new TypeInfoNative(NativeType::U64, "u64", 8, TYPEINFO_INTEGER | TYPEINFO_UNSIGNED);
     typeInfoBool   = new TypeInfoNative(NativeType::Bool, "bool", 1, 0);
     typeInfoF32    = new TypeInfoNative(NativeType::F32, "f32", 4, TYPEINFO_FLOAT);
     typeInfoF64    = new TypeInfoNative(NativeType::F64, "f64", 8, TYPEINFO_FLOAT);

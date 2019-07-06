@@ -30,3 +30,45 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     node->block->byteCodeAfterFct           = &ByteCodeGenJob::emitWhileAfterBlock;
     return true;
 }
+
+bool SemanticJob::resolveLoop(SemanticContext* context)
+{
+    auto node       = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    auto sourceFile = context->sourceFile;
+    auto expression = node->expression;
+    auto typeInfo   = expression->typeInfo;
+
+    SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, sourceFile->report({sourceFile, expression, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
+    SWAG_VERIFY(typeInfo->sizeOf <= 4, sourceFile->report({sourceFile, expression, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
+
+    if (expression->flags & AST_VALUE_COMPUTED)
+    {
+        if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
+        {
+            switch (typeInfo->nativeType)
+            {
+            case NativeType::S8:
+                if (expression->computedValue.reg.s8 < 0)
+                    return sourceFile->report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s8)});
+                break;
+            case NativeType::S16:
+                if (expression->computedValue.reg.s16 < 0)
+                    return sourceFile->report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s16)});
+                break;
+            case NativeType::S32:
+                if (expression->computedValue.reg.s32 < 0)
+                    return sourceFile->report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s32)});
+                break;
+            }
+        }
+    }
+    else
+    {
+        SWAG_VERIFY(typeInfo->flags & TYPEINFO_UNSIGNED, sourceFile->report({sourceFile, expression, format("expression should be of type unsigned integer, but is '%s'", typeInfo->name.c_str())}));
+    }
+
+    node->byteCodeFct                  = &ByteCodeGenJob::emitLoop;
+    node->expression->byteCodeAfterFct = &ByteCodeGenJob::emitLoopAfterExpr;
+    node->block->byteCodeAfterFct      = &ByteCodeGenJob::emitLoopAfterBlock;
+    return true;
+}
