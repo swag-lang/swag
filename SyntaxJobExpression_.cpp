@@ -99,7 +99,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astProperty, AstNodeKind::IntrinsicProp, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
-    node->semanticFct = &SemanticJob::resolveIntrinsicProp;
+    node->semanticFct = &SemanticJob::resolveIntrinsicProperty;
     node->token       = move(token);
     if (result)
         *result = node;

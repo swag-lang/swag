@@ -15,6 +15,7 @@ enum class AstNodeKind;
 enum class SymbolKind;
 struct SymbolAttributes;
 struct ByteCodeGenJob;
+struct TypeInfo;
 
 enum class SemanticResult
 {
@@ -70,7 +71,8 @@ struct SemanticJob : public Job
     static bool resolveConstDecl(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeDecl(SemanticContext* context);
-    static bool resolveIntrinsicProp(SemanticContext* context);
+	static bool resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
 	static bool resolveIndex(SemanticContext* context);
     static bool resolveExpressionList(SemanticContext* context);

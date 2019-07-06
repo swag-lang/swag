@@ -42,7 +42,40 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
+bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    if (typeInfo->isNative(NativeType::String))
+    {
+        if (node->flags & AST_VALUE_COMPUTED)
+        {
+            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+            node->computedValue.reg.u64 = node->computedValue.text.length();
+        }
+        else
+        {
+            node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+        }
+    }
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+        auto typeArray              = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        node->computedValue.reg.u64 = typeArray->count;
+    }
+    else if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+    }
+    else
+    {
+        return false;
+    }
+
+    node->typeInfo = g_TypeMgr.typeInfoU32;
+    return true;
+}
+
+bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 {
     auto node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto sourceFile = context->sourceFile;
@@ -58,34 +91,9 @@ bool SemanticJob::resolveIntrinsicProp(SemanticContext* context)
         break;
 
     case Property::Count:
-        if (expr->typeInfo->isNative(NativeType::String))
-        {
-            if (expr->flags & AST_VALUE_COMPUTED)
-            {
-                node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
-                node->computedValue.reg.u64 = expr->computedValue.text.length();
-            }
-            else
-            {
-                node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
-            }
-        }
-        else if (expr->typeInfo->kind == TypeInfoKind::Array)
-        {
-            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
-            auto typeArray              = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
-            node->computedValue.reg.u64 = typeArray->count;
-        }
-        else if (expr->typeInfo->kind == TypeInfoKind::Slice)
-        {
-            node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
-        }
-        else
-        {
-            return sourceFile->report({sourceFile, expr, format("'count' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
-        }
-
-        node->typeInfo = g_TypeMgr.typeInfoU32;
+        node->inheritComputedValue(node->expression);
+        if (!resolveCountProperty(context, node, node->expression->typeInfo))
+            return sourceFile->report({sourceFile, node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
         break;
 
     case Property::Data:
