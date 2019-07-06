@@ -107,6 +107,17 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             node->typeInfo       = g_TypeMgr.registerType(ptrType);
             node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
         }
+        else if (expr->typeInfo->kind == TypeInfoKind::Slice)
+        {
+            auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(expr->typeInfo, TypeInfoKind::Slice);
+            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            ptrType->ptrCount    = 1;
+            ptrType->pointedType = ptrSlice->pointedType;
+            ptrType->sizeOf      = sizeof(void*);
+            ptrType->name        = "*" + ptrSlice->pointedType->name;
+            node->typeInfo       = g_TypeMgr.registerType(ptrType);
+            node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
+        }
         else
         {
             return sourceFile->report({sourceFile, expr, format("'data' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
