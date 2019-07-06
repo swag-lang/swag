@@ -8,7 +8,7 @@
 	var val = 0;
 	loop(cpt)
 	{
-		// This shoudln't change the loop count, as 'loop' avaluates the number
+		// This shouldn't change the loop count, as 'loop' avaluates its expression
 		// only once
 		cpt = 4;
 		val += 1;
