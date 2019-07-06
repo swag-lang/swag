@@ -67,6 +67,7 @@ enum class AstNodeKind
     Literal,
     SizeOf,
     IntrinsicProp,
+	Index,
     Cast,
     SingleOp,
     MakePointer,
@@ -335,8 +336,11 @@ struct AstBreakable : public AstNode
     {
         AstNode::reset();
         parentBreakable = nullptr;
+        needIndex       = false;
     }
 
+    bool                      needIndex;
+    uint32_t                  registerIndex;
     AstNode*                  parentBreakable;
     vector<AstBreakContinue*> breakList;
     vector<AstBreakContinue*> continueList;

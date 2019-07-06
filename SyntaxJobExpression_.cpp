@@ -12,9 +12,9 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveLiteral;
     node->token       = move(token);
-
     if (result)
         *result = node;
+
     SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
@@ -148,6 +148,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrisicPrint:
     case TokenId::IntrisicAssert:
         SWAG_CHECK(doIdentifierRef(parent, result));
+        break;
+
+    case TokenId::KwdIndex:
+        SWAG_CHECK(doIndex(parent, result));
         break;
 
     case TokenId::IntrisicProp:

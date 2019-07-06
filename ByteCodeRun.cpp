@@ -268,6 +268,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->b.u32].u32     = (uint32_t) str.length();
         break;
     }
+    case ByteCodeOp::CopyRARB32:
+    {
+        registersRC[ip->a.u32].u32 = registersRC[ip->b.u32].u32;
+        break;
+    }
     case ByteCodeOp::CopyRAVB32:
     {
         registersRC[ip->a.u32].u32 = ip->b.u32;
@@ -286,6 +291,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::DecRA:
     {
         registersRC[ip->a.u32].u32--;
+        break;
+    }
+    case ByteCodeOp::IncRA:
+    {
+        registersRC[ip->a.u32].u32++;
         break;
     }
     case ByteCodeOp::CopyRRxRCx:

@@ -1,4 +1,4 @@
-#module module380;
+#module module381;
 //#unittest pass semantic;
 
 //#[swag.printbytecode]
@@ -8,7 +8,13 @@
 	
 	var cpt = 0;
 	loop(@prop(toto, count))
+	{
+		//@print("toto");
 		cpt += 1;
-		
-	@assert(cpt == 4);
+		if(cpt == 2)
+			break;
+	}
+	
+	//@print(cpt);
+	@assert(cpt == 2);
 }

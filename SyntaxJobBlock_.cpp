@@ -90,6 +90,21 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
+{
+    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable scope"}));
+
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, parent);
+    node->inheritOwnersAndFlags(this);
+    node->semanticFct = &SemanticJob::resolveIndex;
+    node->token       = move(token);
+    if (result)
+        *result = node;
+
+	SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}
+
 bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable scope"}));

@@ -73,16 +73,29 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
+    auto module   = context->sourceFile->module;
 
+    // To store the 'index' of the loop
+    if (loopNode->needIndex)
+    {
+        loopNode->registerIndex = module->reserveRegisterRC(context->bc);
+		emitInstruction(context, ByteCodeOp::CopyRAVB32, loopNode->registerIndex)->b.s32 = -1;
+    }
+
+    auto r0                            = module->reserveRegisterRC(context->bc);
     loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
-
-    auto r0 = context->sourceFile->module->reserveRegisterRC(context->bc);
     emitInstruction(context, ByteCodeOp::IsNullU32, node->resultRegisterRC, r0);
     loopNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpTrue, r0);
     freeRegisterRC(context, r0);
 
+    // Decrement the loop variable
     emitInstruction(context, ByteCodeOp::DecRA, node->resultRegisterRC);
+
+    // Increment the index
+    if (loopNode->needIndex)
+        emitInstruction(context, ByteCodeOp::IncRA, loopNode->registerIndex);
+
     return true;
 }
 
@@ -191,5 +204,13 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     auto breakNode             = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
     breakNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
+    return true;
+}
+
+bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
+{
+    auto node              = context->node;
+    node->resultRegisterRC = context->sourceFile->module->reserveRegisterRC(context->bc);
+    emitInstruction(context, ByteCodeOp::CopyRARB32, node->resultRegisterRC, node->ownerBreakable->registerIndex);
     return true;
 }

@@ -72,3 +72,12 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     node->block->byteCodeAfterFct      = &ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }
+
+bool SemanticJob::resolveIndex(SemanticContext* context)
+{
+    auto node                       = context->node;
+    node->ownerBreakable->needIndex = true;
+    node->typeInfo                  = g_TypeMgr.typeInfoU32;
+    node->byteCodeFct               = &ByteCodeGenJob::emitIndex;
+    return true;
+}
