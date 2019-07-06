@@ -752,10 +752,10 @@ bool TypeManager::castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
             return false;
         }
 
-        assert(fromSize == nodeToCast->childs.size());
+        assert(!nodeToCast || fromSize == nodeToCast->childs.size());
         for (int i = 0; i < fromSize; i++)
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeArray->pointedType, nodeToCast->childs[i], castFlags));
+            SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeArray->pointedType, fromTypeList->childs[i], nodeToCast ? nodeToCast->childs[i] : nullptr, castFlags));
         }
 
         return true;
