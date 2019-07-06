@@ -17,7 +17,7 @@ bool TypeManager::castError(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* 
 
 bool TypeManager::castToNativeBool(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (nodeToCast->typeInfo == g_TypeMgr.typeInfoBool)
+    if (fromType == g_TypeMgr.typeInfoBool)
         return true;
     return castError(sourceFile, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
 }
@@ -793,10 +793,8 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    auto fromType = nodeToCast->typeInfo;
-
     if (castFlags & CASTFLAG_FLATTEN)
     {
         toType   = TypeManager::flattenType(toType);
@@ -838,6 +836,12 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstN
         return castToSlice(sourceFile, toType, fromType, nodeToCast, castFlags);
 
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
+}
+
+bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
+{
+    auto fromType = nodeToCast->typeInfo;
+    return makeCompatibles(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
