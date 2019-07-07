@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     if (g_CommandLine.debugBoundCheck)
     {
         auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
-        auto r0       = context->sourceFile->module->reserveRegisterRC(context->bc);
+        auto r0       = reserveRegisterRC(context);
 
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count - 1;
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
@@ -52,7 +52,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 
     if (g_CommandLine.debugBoundCheck)
     {
-        auto r0 = context->sourceFile->module->reserveRegisterRC(context->bc);
+        auto r0 = reserveRegisterRC(context);
 
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = UINT32_MAX;
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
@@ -167,7 +167,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         int  sizeOf   = typeInfo->pointedType->sizeOf;
         if (g_CommandLine.debugBoundCheck)
         {
-            auto r0 = context->sourceFile->module->reserveRegisterRC(context->bc);
+            auto r0 = reserveRegisterRC(context);
 
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count - 1;
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
@@ -185,7 +185,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (typeInfo->pointedType->isNative(NativeType::String))
         {
-            node->array->resultRegisterRC += context->sourceFile->module->reserveRegisterRC(context->bc);
+            node->array->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::DeRefString, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
         }
         else if (!(node->flags & AST_LEFT_EXPRESSION) && typeInfo->pointedType->kind != TypeInfoKind::Array)
@@ -250,17 +250,19 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         // Emit one affectation per child
         int      offsetIdx     = listNode->storageOffset;
         uint32_t oneOffset     = typeList->childs.front()->sizeOf;
-        node->resultRegisterRC = module->reserveRegisterRC(context->bc);
+        node->resultRegisterRC = reserveRegisterRC(context);
         for (auto child : job->collectChilds)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = offsetIdx;
-			emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
+            emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
             offsetIdx += oneOffset;
             module->freeRegisterRC(child->resultRegisterRC);
         }
 
-		// Reference to the stack
-		emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = listNode->storageOffset;
+        // Reference to the stack
+        emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = listNode->storageOffset;
+        node->resultRegisterRC += reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32 = (uint32_t) listNode->childs.size();
     }
     else
     {

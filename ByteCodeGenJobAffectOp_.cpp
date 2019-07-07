@@ -35,7 +35,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
             auto module    = context->sourceFile->module;
             auto typeArray = CastTypeInfo<TypeInfoArray>(node->childs[1]->typeInfo, TypeInfoKind::Array);
-            auto r2        = module->reserveRegisterRC(context->bc);
+            auto r2        = reserveRegisterRC(context);
 
             emitInstruction(context, ByteCodeOp::CopyRAVB64, r2)->b.u64 = typeArray->count;
             emitInstruction(context, ByteCodeOp::AffectOp64, r0, r2, 8);
