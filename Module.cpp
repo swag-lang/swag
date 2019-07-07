@@ -44,6 +44,8 @@ void Module::addFile(SourceFile* file)
 void Module::removeFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
+	scoped_lock lk1(scopeRoot->lockChilds);
+
     SWAG_ASSERT(file->module == this);
 
     SWAG_ASSERT(files[file->indexInModule] == file);

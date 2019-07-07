@@ -227,25 +227,49 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 {
-    auto node   = context->node;
-    auto module = context->sourceFile->module;
-
-    //if (!(node->flags & AST_CONST_EXPR))
-    //    return internalError(context, "emitExpressionList, expression not constant");
+    auto node        = context->node;
+    auto module      = context->sourceFile->module;
+    auto job         = context->job;
+    bool isConstExpr = node->flags & AST_CONST_EXPR;
 
     // Reserve space in constant segment, and copy all
     auto     typeList      = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
     uint32_t storageOffset = module->reserveConstantSegment(typeList->sizeOf);
     module->mutexConstantSeg.lock();
+    job->collectChilds.clear();
     auto offset = storageOffset;
-    auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, SegmentBuffer::Constant);
+    auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, isConstExpr ? nullptr : &job->collectChilds, SegmentBuffer::Constant);
     module->mutexConstantSeg.unlock();
     SWAG_CHECK(result);
 
-    // Emit a reference to the buffer
-    reserveRegisterRC(context, node->resultRegisterRC, 2);
-    auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-    inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
+    if (!isConstExpr)
+    {
+        // Must be called only on the real node !
+        auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+
+        // Emit one affectation per child
+        int      offsetIdx     = listNode->storageOffset;
+        uint32_t oneOffset     = typeList->childs.front()->sizeOf;
+        node->resultRegisterRC = module->reserveRegisterRC(context->bc);
+        for (auto child : job->collectChilds)
+        {
+            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = offsetIdx;
+			emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
+            offsetIdx += oneOffset;
+            module->freeRegisterRC(child->resultRegisterRC);
+        }
+
+		// Reference to the stack
+		emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = listNode->storageOffset;
+    }
+    else
+    {
+        // Emit a reference to the buffer
+        reserveRegisterRC(context, node->resultRegisterRC, 2);
+        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
+    }
+
     return true;
 }
 

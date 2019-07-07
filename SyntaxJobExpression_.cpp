@@ -332,7 +332,7 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doExpressionList(AstNode* parent, AstNode** result)
 {
-    auto initNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
+    auto initNode = Ast::newNode(&g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->inheritOwnersAndFlags(this);
     initNode->semanticFct = &SemanticJob::resolveExpressionList;
     initNode->inheritToken(token);

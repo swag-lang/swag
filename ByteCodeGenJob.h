@@ -125,6 +125,7 @@ struct ByteCodeGenJob : public Job
     vector<AstNode*> nodes;
     vector<Job*>     dependentJobs;
     vector<AstNode*> dependentNodes;
+	vector<AstNode*> collectChilds;
     bool             syncToDependentNodes;
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);

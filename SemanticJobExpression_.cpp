@@ -8,6 +8,7 @@
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "LanguageSpec.h"
+#include "Scope.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -22,7 +23,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionList(SemanticContext* context)
 {
-    auto node      = context->node;
+    auto node      = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     auto typeInfo  = g_Pool_typeInfoExpressionList.alloc();
     typeInfo->name = "<type list>";
 
@@ -39,6 +40,15 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
 
     node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
     node->typeInfo    = g_TypeMgr.registerType(typeInfo);
+
+    // Reserve
+    if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
+    {
+        node->storageOffset = node->ownerScope->startStackSize;
+        node->ownerScope->startStackSize += node->typeInfo->sizeOf;
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+    }
+
     return true;
 }
 

@@ -58,7 +58,7 @@ struct SemanticJob : public Job
     static bool setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool forceExecuteNode(SemanticContext* context);
-    static bool collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer);
+    static bool collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -71,10 +71,10 @@ struct SemanticJob : public Job
     static bool resolveConstDecl(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeDecl(SemanticContext* context);
-	static bool resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static bool resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
-	static bool resolveIndex(SemanticContext* context);
+    static bool resolveIndex(SemanticContext* context);
     static bool resolveExpressionList(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
@@ -109,7 +109,7 @@ struct SemanticJob : public Job
     static bool resolveCast(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
-	static bool resolveLoop(SemanticContext* context);
+    static bool resolveLoop(SemanticContext* context);
     static bool resolveAffect(SemanticContext* context);
     static bool resolveMakePointer(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);

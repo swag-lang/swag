@@ -11,7 +11,7 @@
 #include "TypeInfo.h"
 #include "Register.h"
 
-bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer)
+bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer)
 {
     auto     module  = sourceFile->module;
     uint8_t* ptrDest = buffer == SegmentBuffer::Constant ? &module->constantSegment[offset] : &module->dataSegment[offset];
@@ -20,9 +20,12 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
     {
         if (child->kind == AstNodeKind::ExpressionList)
         {
-            SWAG_CHECK(collectLiterals(sourceFile, offset, child, buffer));
+            SWAG_CHECK(collectLiterals(sourceFile, offset, child, orderedChilds, buffer));
             continue;
         }
+
+        if (orderedChilds)
+            orderedChilds->push_back(child);
 
         if (child->typeInfo->isNative(NativeType::String))
         {
@@ -230,9 +233,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else if (node->astAssignment && node->astAssignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
+            SWAG_VERIFY(node->astAssignment->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node, "cannot evaluate expression at compile time"}));
             sourceFile->module->mutexDataSeg.lock();
             auto offset = overload->storageOffset;
-            auto result = collectLiterals(sourceFile, offset, node->astAssignment, SegmentBuffer::Data);
+            auto result = collectLiterals(sourceFile, offset, node->astAssignment, nullptr, SegmentBuffer::Data);
             sourceFile->module->mutexDataSeg.unlock();
             SWAG_CHECK(result);
         }

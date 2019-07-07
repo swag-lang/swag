@@ -418,24 +418,31 @@ struct AstProperty : public AstNode
     void reset() override
     {
         AstNode::reset();
+        expression = nullptr;
     }
 
     AstNode* expression;
     Property prop;
 };
 
-extern Pool<AstNode>          g_Pool_astNode;
-extern Pool<AstAttrDecl>      g_Pool_astAttrDecl;
-extern Pool<AstAttrUse>       g_Pool_astAttrUse;
-extern Pool<AstVarDecl>       g_Pool_astVarDecl;
-extern Pool<AstFuncDecl>      g_Pool_astFuncDecl;
-extern Pool<AstIdentifier>    g_Pool_astIdentifier;
-extern Pool<AstIdentifierRef> g_Pool_astIdentifierRef;
-extern Pool<AstFuncCallParam> g_Pool_astFuncCallParam;
-extern Pool<AstIf>            g_Pool_astIf;
-extern Pool<AstWhile>         g_Pool_astWhile;
-extern Pool<AstLoop>          g_Pool_astLoop;
-extern Pool<AstBreakContinue> g_Pool_astBreakContinue;
-extern Pool<AstType>          g_Pool_astType;
-extern Pool<AstPointerDeRef>  g_Pool_astPointerDeref;
-extern Pool<AstProperty>      g_Pool_astProperty;
+struct AstExpressionList : public AstNode
+{
+    uint32_t storageOffset;
+};
+
+extern Pool<AstNode>           g_Pool_astNode;
+extern Pool<AstAttrDecl>       g_Pool_astAttrDecl;
+extern Pool<AstAttrUse>        g_Pool_astAttrUse;
+extern Pool<AstVarDecl>        g_Pool_astVarDecl;
+extern Pool<AstFuncDecl>       g_Pool_astFuncDecl;
+extern Pool<AstIdentifier>     g_Pool_astIdentifier;
+extern Pool<AstIdentifierRef>  g_Pool_astIdentifierRef;
+extern Pool<AstFuncCallParam>  g_Pool_astFuncCallParam;
+extern Pool<AstIf>             g_Pool_astIf;
+extern Pool<AstWhile>          g_Pool_astWhile;
+extern Pool<AstLoop>           g_Pool_astLoop;
+extern Pool<AstBreakContinue>  g_Pool_astBreakContinue;
+extern Pool<AstType>           g_Pool_astType;
+extern Pool<AstPointerDeRef>   g_Pool_astPointerDeref;
+extern Pool<AstProperty>       g_Pool_astProperty;
+extern Pool<AstExpressionList> g_Pool_astExpressionList;
