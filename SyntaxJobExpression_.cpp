@@ -5,6 +5,8 @@
 #include "SemanticJob.h"
 #include "Scoped.h"
 #include "LanguageSpec.h"
+#include "Global.h"
+#include "SymTable.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
@@ -63,35 +65,6 @@ bool SyntaxJob::doArrayPointerRef(AstNode** exprNode)
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-    return true;
-}
-
-bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
-{
-    AstNode* exprNode;
-    switch (token.id)
-    {
-    case TokenId::Identifier:
-    case TokenId::IntrisicPrint:
-    case TokenId::IntrisicAssert:
-    {
-        SWAG_CHECK(doIdentifierRef(nullptr, &exprNode, AST_LEFT_EXPRESSION));
-    }
-    break;
-
-    default:
-        return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
-    }
-
-    // Dereference pointer
-    if (token.id == TokenId::SymLeftSquare)
-    {
-        SWAG_CHECK(doArrayPointerRef(&exprNode));
-    }
-
-    Ast::addChild(parent, exprNode);
-    if (result)
-        *result = exprNode;
     return true;
 }
 
@@ -408,21 +381,69 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
     return doExpression(parent, result);
 }
 
+bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
+{
+    AstNode* exprNode;
+    switch (token.id)
+    {
+    case TokenId::Identifier:
+    case TokenId::IntrisicPrint:
+    case TokenId::IntrisicAssert:
+    {
+        SWAG_CHECK(doIdentifierRef(nullptr, &exprNode, AST_LEFT_EXPRESSION));
+    }
+    break;
+
+    default:
+        return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+    }
+
+    // Dereference pointer
+    if (token.id == TokenId::SymLeftSquare)
+    {
+        SWAG_CHECK(doArrayPointerRef(&exprNode));
+    }
+
+    Ast::addChild(parent, exprNode);
+    if (result)
+        *result = exprNode;
+    return true;
+}
+
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpression(nullptr, &leftNode));
 
-    if (token.id == TokenId::SymEqual ||
-        token.id == TokenId::SymPlusEqual ||
-        token.id == TokenId::SymMinusEqual ||
-        token.id == TokenId::SymAsteriskEqual ||
-        token.id == TokenId::SymSlashEqual ||
-        token.id == TokenId::SymAmpersandEqual ||
-        token.id == TokenId::SymVerticalEqual ||
-        token.id == TokenId::SymCircumflexEqual ||
-        token.id == TokenId::SymLowerLowerEqual ||
-        token.id == TokenId::SymGreaterGreaterEqual)
+    // Variable declaration and initialization
+    if (token.id == TokenId::SymColonEqual)
+    {
+        SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected"));
+
+        AstVarDecl* varNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
+        varNode->inheritOwnersAndFlags(this);
+        varNode->inheritToken(leftNode->childs.back()->token);
+        varNode->semanticFct = &SemanticJob::resolveVarDecl;
+        if (result)
+            *result = varNode;
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doInitializationExpression(varNode, &varNode->astAssignment));
+        currentScope->allocateSymTable();
+        if (!isContextDisabled())
+            SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+    }
+
+    // Affect operator
+    else if (token.id == TokenId::SymEqual ||
+             token.id == TokenId::SymPlusEqual ||
+             token.id == TokenId::SymMinusEqual ||
+             token.id == TokenId::SymAsteriskEqual ||
+             token.id == TokenId::SymSlashEqual ||
+             token.id == TokenId::SymAmpersandEqual ||
+             token.id == TokenId::SymVerticalEqual ||
+             token.id == TokenId::SymCircumflexEqual ||
+             token.id == TokenId::SymLowerLowerEqual ||
+             token.id == TokenId::SymGreaterGreaterEqual)
     {
         auto affectNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::AffectOp, sourceFile->indexInModule, parent);
         affectNode->inheritOwnersAndFlags(this);
