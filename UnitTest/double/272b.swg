@@ -8,7 +8,7 @@
 	#unittest backend dll;
 
 	#[swag.public]
-	func other: ()
+	func other()
 	{
 		//@print("::::::::::::::::::::::::::::::::::");
 	}

@@ -8,7 +8,7 @@
 	#unittest backend lib;
 
 	#[swag.public]
-	func other: ()
+	func other()
 	{
 	}
 }

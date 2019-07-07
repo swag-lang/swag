@@ -9,7 +9,7 @@
 	using swag;
 
 	#[public]
-	func other: ()
+	func other()
 	{
 		//@print("toto");
 	}

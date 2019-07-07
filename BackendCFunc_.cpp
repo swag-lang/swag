@@ -57,7 +57,7 @@ void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
 
     bufferSwg.addString("func ");
     bufferSwg.addString(node->name.c_str());
-    bufferSwg.addString(": (");
+    bufferSwg.addString("(");
     bufferSwg.addString(")");
 
     bufferSwg.addString(";\n");
