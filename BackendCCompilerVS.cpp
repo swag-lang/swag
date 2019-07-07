@@ -102,15 +102,10 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                     backend->module->numErrors++;
                     g_Workspace.numErrors++;
                 }
-
+				
                 if (pz || logAll)
                 {
-                    wchar_t azMB[4096];
-                    ::MultiByteToWideChar(CP_OEMCP, 0, oneLine.c_str(), (int) oneLine.length(), azMB, 4096);
-                    azMB[oneLine.length()]     = '\n';
-                    azMB[oneLine.length() + 1] = 0;
-                    g_Log.print(azMB);
-
+					g_Log.print(oneLine);
                     ok = false;
                 }
             }

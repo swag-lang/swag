@@ -65,6 +65,59 @@ static const char* g_Intrinsics= R"(
 static void __print(const char* message) 
 { 
 	printf(message); 
+
+	swag_uint32_t wc;
+	while(*message)
+    {
+        char c = *message;
+        if ((c & 0x80) == 0)
+        {
+			wc = c;
+            message += 1;
+        }
+        else if ((c & 0xE0) == 0xC0)
+        {
+            wc = (c & 0x1F) << 6;
+            wc |= (message[1] & 0x3F);
+            message += 2;
+        }
+        else if ((c & 0xF0) == 0xE0)
+        {
+            wc = (c & 0xF) << 12;
+            wc |= (message[1] & 0x3F) << 6;
+            wc |= (message[2] & 0x3F);
+            message += 3;
+        }
+        else if ((c & 0xF8) == 0xF0)
+        {
+            wc = (c & 0x7) << 18;
+            wc |= (message[1] & 0x3F) << 12;
+            wc |= (message[2] & 0x3F) << 6;
+            wc |= (message[3] & 0x3F);
+            message += 4;
+        }
+        else if ((c & 0xFC) == 0xF8)
+        {
+            wc = (c & 0x3) << 24;
+            wc |= (c & 0x3F) << 18;
+            wc |= (c & 0x3F) << 12;
+            wc |= (c & 0x3F) << 6;
+            wc |= (c & 0x3F);
+            message += 5;
+        }
+        else if ((c & 0xFE) == 0xFC)
+        {
+            wc = (c & 0x1) << 30;
+            wc |= (c & 0x3F) << 24;
+            wc |= (c & 0x3F) << 18;
+            wc |= (c & 0x3F) << 12;
+            wc |= (c & 0x3F) << 6;
+            wc |= (c & 0x3F);
+            message += 6;
+        }
+
+		printf("%c", wc); 
+    }
 }
 
 static void __print_i32(swag_int32_t value)   
