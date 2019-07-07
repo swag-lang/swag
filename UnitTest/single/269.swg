@@ -2,4 +2,4 @@
 #unittest error;
 
 #[swag.foreign]
-func main: (){}
+func main (){}

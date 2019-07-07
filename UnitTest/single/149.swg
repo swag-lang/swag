@@ -2,7 +2,7 @@
 #unittest pass semantic;
 
 #unittest error;
-func main: (){}
-func main: (b: string){}
+func main (){}
+func main (b: string){}
 
 #run main(1);

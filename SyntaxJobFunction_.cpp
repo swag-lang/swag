@@ -120,7 +120,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(eatToken(TokenId::SymColon));
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
     }
 

@@ -3,7 +3,7 @@
 using swag;
 
 //#[printbytecode]
-func main: ()
+func main ()
 {
 	var a : s32 = 666;
 	@assert(a == 666);

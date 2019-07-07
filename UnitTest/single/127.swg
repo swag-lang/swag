@@ -4,7 +4,7 @@
 attr toto: () -> func;
 
 #[toto]
-func main: ()
+func main ()
 {
 }
 

@@ -2,6 +2,6 @@
 #unittest pass semantic;
 
 #unittest error;
-func main: (b: bool, b: u32) { }
+func main (b: bool, b: u32) { }
 
 

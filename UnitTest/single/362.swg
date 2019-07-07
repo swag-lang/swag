@@ -2,7 +2,7 @@
 //#unittest pass semantic;
 
 //#[swag.printbytecode]
-func test: (arr: [2] s32, idx: s32, val: s32)
+func test (arr: [2] s32, idx: s32, val: s32)
 {
 	@assert(arr[idx] == val);
 }

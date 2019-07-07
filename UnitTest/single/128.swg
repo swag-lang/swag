@@ -8,5 +8,5 @@ attr toto1: () -> func;
 #[toto]
 {
 	#[toto1]
-	func main: () {}
+	func main () {}
 }

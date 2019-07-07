@@ -7,7 +7,7 @@ using swag;
 }
 
 //#[printbytecode]
-func test2: (v: string, v1: string)
+func test2 (v: string, v1: string)
 {
 	//@print(v);
 	//@print(v1);

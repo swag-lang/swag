@@ -5,7 +5,7 @@
 }
 #else
 {
-	func test1: (a: f32, b: f32)->f32 
+	func test1 (a: f32, b: f32)->f32 
 	{ 
 		return a - b; 
 	}

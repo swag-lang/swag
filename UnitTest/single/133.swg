@@ -11,7 +11,7 @@ namespace A
 }
 
 #[A.toto]
-func main: () {}
+func main () {}
 
 #[A.B.toto1]
 var a: bool;

@@ -1,9 +1,9 @@
 #unittest pass syntax;
 
-func main: ()
+func main ()
 {
 }
 
-func main: () -> u32
+func main () -> u32
 {
 }

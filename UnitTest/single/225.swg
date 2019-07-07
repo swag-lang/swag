@@ -7,7 +7,7 @@ var b1: u64 = 666;
 var b2: f32 = 1.5;
 
 //#[printbytecode]
-func main: ()
+func main ()
 {
 	@assert(b0 == true);
 	b0 = false;

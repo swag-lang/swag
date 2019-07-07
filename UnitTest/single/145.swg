@@ -2,7 +2,7 @@
 #unittest pass semantic;
 
 #unittest error;
-func main: (b: bool)
+func main (b: bool)
 {
 }
 

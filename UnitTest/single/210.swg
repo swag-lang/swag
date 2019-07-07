@@ -3,7 +3,7 @@
 using swag;
 
 //#[printbytecode]
-func main: (a: s32) -> s32
+func main (a: s32) -> s32
 {
 	return a + 1;
 }

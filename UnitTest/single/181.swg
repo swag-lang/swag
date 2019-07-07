@@ -8,6 +8,6 @@ using swag;
 #assert 0xFF000000 | 0xFF == 0xFF0000FF;
 
 #[constexpr]
-func mask: () -> s32 { return 1; }
+func mask () -> s32 { return 1; }
 
 #assert mask | 2 == 3;

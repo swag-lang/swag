@@ -3,14 +3,14 @@
 
 #version(toto)
 {
-	func a: ()
+	func a ()
 	{
 		@assert(false);
 	}
 }
 #else
 {
-	func a: ()
+	func a ()
 	{
 	}
 }

@@ -3,18 +3,18 @@
 using swag;
 
 //#[printbytecode]
-func main: (a: s32 = 6)->s32
+func main (a: s32 = 6)->s32
 { 
 	//@print("1");
 	return a;
 }
-func main: (a: s32, b: s32)->s32
+func main (a: s32, b: s32)->s32
 { 
 	//@print("2");
 	return b;
 }
 
-func main1: ()
+func main1 ()
 {
 	@assert(main == 6);
 	@assert(main(5) == 5);

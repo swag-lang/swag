@@ -4,11 +4,11 @@ using swag;
 #unittest error
 
 #[Compiler]
-func main: ()
+func main ()
 {
 }
 
-func main1: ()
+func main1 ()
 {
 	main();
 }

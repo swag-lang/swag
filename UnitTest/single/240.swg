@@ -4,7 +4,7 @@ using swag;
 
 //#[printbytecode]
 #unittest error;
-func main: ()
+func main ()
 {
 	var a = 10;
 	//while a > 0

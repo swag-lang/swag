@@ -2,13 +2,13 @@
 #unittest pass semantic;
 using swag;
 
-func main1: ()->s32 { return 77; }
+func main1 ()->s32 { return 77; }
 
 #[constexpr]
-func main2: ()->s32 { return 666; }
+func main2 ()->s32 { return 666; }
 
 //#[printbytecode]
-func main: ()
+func main ()
 {
 	var a = #run main1();
 	var b = main1();

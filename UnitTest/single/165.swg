@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-func main: ()
+func main ()
 {
 	@assert(true);
 }

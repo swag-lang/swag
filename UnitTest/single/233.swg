@@ -4,7 +4,7 @@ using swag;
 
 var ga: u32 = 0;
 
-func main: (off: u32)
+func main (off: u32)
 {
 	ga += off;
 }

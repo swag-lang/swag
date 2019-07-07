@@ -5,7 +5,7 @@ using swag;
 var v = 50;
 
 //#[printbytecode]
-func main: ()
+func main ()
 {
 	@assert(v == 50);
 	v = 666;

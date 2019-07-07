@@ -3,7 +3,7 @@
 using swag;
 
 //#[printbytecode]
-func main: ()
+func main ()
 {
 	if(false)
 	{

@@ -2,7 +2,7 @@
 #unittest pass semantic;
 
 //#[swag.printbytecode]
-func main: ()
+func main ()
 {
 	var a: bool;
 	var b = &a;

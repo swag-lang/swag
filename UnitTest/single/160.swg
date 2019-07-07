@@ -2,6 +2,6 @@
 #unittest pass semantic;
 
 #unittest error
-func main: (argc, argv)
+func main (argc, argv)
 {
 }

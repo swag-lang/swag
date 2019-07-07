@@ -1,7 +1,7 @@
 #module module303;
 
 /*
-func compare: (str1: string, str2: string)-> bool
+func compare (str1: string, str2: string)-> bool
 {
 	var count1 = @prop(str1, count);
 	var count2 = @prop(str2, count);
@@ -23,7 +23,7 @@ func compare: (str1: string, str2: string)-> bool
 }*/
 
 //#[swag.printbytecode]
-func compare: (str: string)
+func compare (str: string)
 {
 	var count = @prop(str, count);
 	@assert(count == 4);

@@ -1,6 +1,6 @@
 #module module314;
 
-func len: (str: string)->u32
+func len (str: string)->u32
 {
 	var p = @prop(str, data);
 	var l = 0'u32;

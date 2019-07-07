@@ -3,7 +3,7 @@
 using swag;
 
 #[constexpr]
-func main: () -> s32
+func main () -> s32
 {
 	return -1;
 }

@@ -2,7 +2,7 @@
 //#unittest pass semantic;
 
 //#[swag.printbytecode]
-func a: (ptr: [..] s32, cpt: s32)
+func a (ptr: [..] s32, cpt: s32)
 {
 	@assert(@prop(ptr, count) == cpt);
 }

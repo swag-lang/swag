@@ -8,7 +8,7 @@
 	using swag;
 
 	//#[printbytecode]
-	func test2: ()-> string
+	func test2 ()-> string
 	{
 		return "toto1";
 	}

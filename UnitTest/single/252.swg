@@ -5,7 +5,7 @@ using swag;
 #unittest error;
 
 #[test]
-func main: ()->s32
+func main ()->s32
 {
 	return 0;
 }
@@ -13,7 +13,7 @@ func main: ()->s32
 #unittest error;
 
 #[test]
-func main1: (s: bool)
+func main1 (s: bool)
 {
 	@print("toto");
 }

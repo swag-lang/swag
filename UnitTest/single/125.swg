@@ -5,7 +5,7 @@ attr toto: () -> var;
 
 #unittest error;
 #[toto]
-func main: ()
+func main ()
 {
 }
 

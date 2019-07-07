@@ -5,7 +5,7 @@
 }
 #else
 {
-	func test1: ()->s32 { return 666; }
+	func test1 ()->s32 { return 666; }
 
 	#test
 	{

@@ -3,7 +3,7 @@
 using swag;
 
 #[constexpr]
-func main: ()->u16
+func main ()->u16
 {
 	return 45;
 }

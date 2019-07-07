@@ -7,7 +7,7 @@ namespace A
 {
 }
 
-func main: ()
+func main ()
 {
 	A.@assert(true);
 }

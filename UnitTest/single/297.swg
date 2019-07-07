@@ -2,7 +2,7 @@
 #unittest pass semantic;
 
 //#[swag.printbytecode]
-func test1: ()-> string
+func test1 ()-> string
 {
 	return "toto1";
 }

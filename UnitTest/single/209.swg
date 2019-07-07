@@ -2,7 +2,7 @@
 #unittest pass semantic;
 using swag;
 
-func main: (a: f64, b: f64)
+func main (a: f64, b: f64)
 {
 	@assert(a == 666);
 	@assert(b == 555);

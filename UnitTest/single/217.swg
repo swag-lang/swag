@@ -3,13 +3,13 @@
 using swag;
 
 //#[printbytecode]
-func main: (a: s32) -> s32
+func main (a: s32) -> s32
 {
 	return a + 1;
 }
 
 //#[printbytecode]
-func main1: ()
+func main1 ()
 {
 	@assert(main(6) == 7);
 	@assert(main(4 + 6) == 11);

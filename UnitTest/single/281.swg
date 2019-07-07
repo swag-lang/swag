@@ -1,7 +1,7 @@
 #module module281;
 #unittest pass semantic;
 
-func main: ()
+func main ()
 {
 	var v: u32 		= 0;
 	var p: *u32 	= &v;

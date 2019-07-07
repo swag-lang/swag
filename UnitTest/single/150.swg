@@ -3,7 +3,7 @@
 
 #run main;
 
-func main: ()
+func main ()
 {
 	return;
 }

@@ -3,7 +3,7 @@
 using swag;
 
 //#[printbytecode]
-func main: ()
+func main ()
 {
 	var a = 0xFFFFFF45;
 	a &= 0xFF;

@@ -1,7 +1,7 @@
 #module module282;
 #unittest pass semantic;
 
-func main: ()
+func main ()
 {
 	var v: u32 	 = 0;
 	var p1: *s32 = cast(*s32) &v;

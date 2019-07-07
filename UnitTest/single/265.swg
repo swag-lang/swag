@@ -5,7 +5,7 @@
 }
 #else
 {
-	func test2: (v: s32)->s32
+	func test2 (v: s32)->s32
 	{
 		if(v == 1)
 			return 1;
@@ -13,7 +13,7 @@
 	}
 
 	//#[swag.printbytecode]
-	func test1: (v: s32)->s32
+	func test1 (v: s32)->s32
 	{
 		if(v == 1)
 			return 1;

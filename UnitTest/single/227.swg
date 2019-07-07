@@ -3,7 +3,7 @@
 using swag;
 
 //#[printbytecode]
-func main: ()
+func main ()
 {
 	var a : s32;
 	var b : s32;
@@ -17,7 +17,7 @@ func main: ()
 }
 
 //#[printbytecode]
-func main1: ()
+func main1 ()
 {
 	main();
 }
