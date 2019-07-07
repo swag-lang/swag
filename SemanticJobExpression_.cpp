@@ -152,8 +152,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto typeInfo   = child->typeInfo;
     auto sourceFile = context->sourceFile;
 
-    SWAG_VERIFY(child->flags & AST_REFERENCABLE, sourceFile->report({sourceFile, child, "invalid address expression"}));
-
+    SWAG_VERIFY(child->flags & AST_L_VALUE, sourceFile->report({sourceFile, child, "invalid address expression"}));
+	
     if (child->kind == AstNodeKind::IdentifierRef || child->kind == AstNodeKind::ArrayPointerRef)
     {
         node->byteCodeFct = &ByteCodeGenJob::emitMakePointer;
@@ -187,6 +187,7 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
     auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
+	arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
 
     auto arrayType = arrayNode->array->typeInfo;
     switch (arrayType->kind)
@@ -203,7 +204,7 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
-        arrayNode->inheritAndFlag(arrayNode->array, AST_REFERENCABLE);
+        arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
         break;
     }
     case TypeInfoKind::Slice:
@@ -211,7 +212,7 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
-        arrayNode->inheritAndFlag(arrayNode->array, AST_REFERENCABLE);
+        arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
         break;
     }
     default:

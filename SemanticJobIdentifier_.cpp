@@ -42,7 +42,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     }
     else if (node->resolvedSymbolName->kind == SymbolKind::GlobalVar || node->resolvedSymbolName->kind == SymbolKind::Variable)
     {
-        node->flags |= AST_REFERENCABLE;
+        node->flags |= AST_L_VALUE;
     }
 
     return true;
