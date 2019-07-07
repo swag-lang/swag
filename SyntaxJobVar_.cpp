@@ -42,9 +42,11 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         return error(varNode->token, "variable must be initialized because no type is specified");
     }
 
-    currentScope->allocateSymTable();
     if (!isContextDisabled())
+    {
+        currentScope->allocateSymTable();
         SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+    }
 
     return true;
 }
