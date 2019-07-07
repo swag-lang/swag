@@ -18,6 +18,7 @@ void printStats()
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
     wcout << "workers ........... " << g_Stats.numWorkers << "\n";
     wcout << "lines ............. " << g_Stats.numLines << "\n";
+	wcout << "lines/s ........... " << (int) (g_Stats.numLines / g_Stats.totalTime.count()) << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
     wcout << "modules ........... " << g_Stats.numModules << "\n";
     if (g_CommandLine.output)
