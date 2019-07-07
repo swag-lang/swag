@@ -67,7 +67,7 @@ enum class AstNodeKind
     Literal,
     SizeOf,
     IntrinsicProp,
-	Index,
+    Index,
     Cast,
     SingleOp,
     MakePointer,
@@ -144,7 +144,10 @@ struct AstNode : public PoolElement
     {
         inheritAndFlag(from, AST_VALUE_COMPUTED);
         if (flags & AST_VALUE_COMPUTED)
+        {
+            flags |= AST_CONST_EXPR;
             computedValue = move(from->computedValue);
+        }
     }
 
     void inheritLocation()

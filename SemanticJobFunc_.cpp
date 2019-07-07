@@ -138,7 +138,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // Return type
     if (!typeNode->childs.empty())
-        typeNode->typeInfo = typeNode->childs[0]->typeInfo;
+        typeNode->typeInfo = typeNode->childs.front()->typeInfo;
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
@@ -177,6 +177,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
     node->inheritComputedValue(child);
+    node->inheritAndFlag(child, AST_CONST_EXPR);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
     return true;
 }
@@ -211,7 +212,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         scanNode->flags |= AST_SCOPE_HAS_RETURN;
         if (scanNode->kind == AstNodeKind::If ||
             scanNode->kind == AstNodeKind::Else ||
-            scanNode->kind == AstNodeKind::While)
+            scanNode->kind == AstNodeKind::While ||
+            scanNode->kind == AstNodeKind::Loop)
             break;
         scanNode = scanNode->parent;
     }
