@@ -50,15 +50,7 @@ struct Log
 
     void print(const Utf8& message)
     {
-        try
-        {
-            wstring_convert<codecvt_utf8<wchar_t>, wchar_t> convert;
-            wcout << convert.from_bytes(message);
-        }
-        catch (...)
-        {
-            wcout << "?";
-        }
+		wcout << utf8ToUnicode(message);
     }
 
     void eol()

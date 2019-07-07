@@ -230,8 +230,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     auto node   = context->node;
     auto module = context->sourceFile->module;
 
-    if (!(node->flags & AST_CONST_EXPR))
-        return internalError(context, "emitExpressionList, expression not constant");
+    //if (!(node->flags & AST_CONST_EXPR))
+    //    return internalError(context, "emitExpressionList, expression not constant");
 
     // Reserve space in constant segment, and copy all
     auto     typeList      = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);

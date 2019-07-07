@@ -10,6 +10,7 @@ void Log::setup()
 {
     consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);
     _setmode(_fileno(stdout), _O_U16TEXT);
+
     CONSOLE_SCREEN_BUFFER_INFO info;
     GetConsoleScreenBufferInfo(consoleHandle, &info);
     defaultAttributes = info.wAttributes;
@@ -72,7 +73,7 @@ void Log::setColor(LogColor color)
         break;
     }
 
-	WORD back = defaultAttributes & (BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
+    WORD back = defaultAttributes & (BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
     ::SetConsoleTextAttribute(consoleHandle, attributes | back);
 }
 

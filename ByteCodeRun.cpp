@@ -569,7 +569,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::IntrinsicPrintString:
     {
         g_Log.lock();
-        g_Log.print((const char*) registersRC[ip->a.u32].pointer);
+        g_Log.print(string((const char*) registersRC[ip->a.u32].pointer));
         g_Log.unlock();
         break;
     }
