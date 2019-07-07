@@ -262,7 +262,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::CopyRARBStr:
     {
         auto module = context->sourceFile->module;
-        assert(ip->c.u32 < module->strBuffer.size());
+        SWAG_ASSERT(ip->c.u32 < module->strBuffer.size());
         const auto& str                = module->strBuffer[ip->c.u32];
         registersRC[ip->a.u32].pointer = (uint8_t*) str.c_str();
         registersRC[ip->b.u32].u32     = (uint32_t) str.length();
@@ -1372,7 +1372,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* context)
         // Error ?
         if (context->hasError)
         {
-            assert(ip->sourceFileIdx < context->sourceFile->module->files.size());
+            SWAG_ASSERT(ip->sourceFileIdx < context->sourceFile->module->files.size());
             auto sourceFile = context->sourceFile->module->files[ip->sourceFileIdx];
             return context->sourceFile->report({sourceFile, ip->startLocation, ip->endLocation, context->errorMsg});
         }

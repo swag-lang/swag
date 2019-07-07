@@ -47,6 +47,6 @@ template<typename T>
 inline T* CastAst(AstNode* ptr, AstNodeKind kind)
 {
     T* casted = static_cast<T*>(ptr);
-    assert(casted->kind == kind);
+    SWAG_ASSERT(casted->kind == kind);
     return casted;
 }

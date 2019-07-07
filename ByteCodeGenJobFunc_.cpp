@@ -70,12 +70,12 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     if (!node->childs.empty())
     {
         auto child = node->childs[0];
-        assert(child->typeInfo->kind == TypeInfoKind::Native);
+        SWAG_ASSERT(child->typeInfo->kind == TypeInfoKind::Native);
         for (int r = 0; r < child->resultRegisterRC.size(); r++)
             emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
     }
 
-    assert(node->ownerFct);
+    SWAG_ASSERT(node->ownerFct);
     if (node->ownerFct->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
@@ -213,7 +213,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
         {
             auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
             context->node     = defaultParam->astAssignment;
-            assert(context->node->flags & AST_VALUE_COMPUTED);
+            SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
             emitLiteral(context);
             context->node = node;
             for (int r = defaultParam->astAssignment->resultRegisterRC.size() - 1; r >= 0; r--)
@@ -296,7 +296,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto funcNode = node->ownerFct;
-    assert(funcNode);
+    SWAG_ASSERT(funcNode);
 
     // 3 pointers are already on that stack after BP : saved BP, BC and IP.
     int offset = 3 * sizeof(void*);
@@ -334,7 +334,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto funcNode = node->ownerFct;
-    assert(funcNode);
+    SWAG_ASSERT(funcNode);
 
     if (funcNode->stackSize)
     {

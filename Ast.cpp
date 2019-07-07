@@ -11,7 +11,7 @@ namespace Ast
     {
         if (parent)
         {
-            assert(parent && child);
+            SWAG_ASSERT(parent && child);
             parent->lock();
             parent->childs.push_back(child);
             parent->unlock();

@@ -239,8 +239,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
-        assert(node->ownerScope);
-        assert(node->ownerFct);
+        SWAG_ASSERT(node->ownerScope);
+        SWAG_ASSERT(node->ownerFct);
         overload->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);

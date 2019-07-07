@@ -2,6 +2,7 @@
 #include "Pool.h"
 #include "Utf8.h"
 #include "SpinLock.h"
+#include "Log.h"
 struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;
@@ -46,7 +47,7 @@ template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 {
     T* casted = static_cast<T*>(ptr);
-    assert(casted->kind == kind);
+    SWAG_ASSERT(casted->kind == kind);
     return casted;
 }
 

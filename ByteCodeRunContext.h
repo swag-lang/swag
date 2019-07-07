@@ -1,5 +1,6 @@
 #pragma once
 #include "Register.h"
+#include "Log.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
@@ -47,7 +48,7 @@ struct ByteCodeRunContext
     template<typename T>
     inline void push(const T& value)
     {
-        assert(sp - sizeof(T) > stack);
+        SWAG_ASSERT(sp - sizeof(T) > stack);
         sp -= sizeof(T);
         *(T*) sp = value;
     }

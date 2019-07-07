@@ -29,9 +29,9 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t numRC, uint
     sourceFile = sf;
     node       = nd;
     bc         = node->bc;
-    assert(bc);
+    SWAG_ASSERT(bc);
     ip = bc->out;
-    assert(ip);
+    SWAG_ASSERT(ip);
 
     hasError = false;
     errorMsg.clear();

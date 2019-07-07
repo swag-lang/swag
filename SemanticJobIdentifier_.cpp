@@ -275,8 +275,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         auto symbol = dependentSymbols[0];
         if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
         {
-            assert(dependentSymbols.size() == 1);
-            assert(symbol->overloads.size() == 1);
+            SWAG_ASSERT(dependentSymbols.size() == 1);
+            SWAG_ASSERT(symbol->overloads.size() == 1);
             SWAG_CHECK(setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]));
             return true;
         }

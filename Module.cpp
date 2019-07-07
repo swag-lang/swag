@@ -44,9 +44,9 @@ void Module::addFile(SourceFile* file)
 void Module::removeFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
-    assert(file->module == this);
+    SWAG_ASSERT(file->module == this);
 
-    assert(files[file->indexInModule] == file);
+    SWAG_ASSERT(files[file->indexInModule] == file);
     files[file->indexInModule]                = files.back();
     files[file->indexInModule]->indexInModule = file->indexInModule;
     files.pop_back();
@@ -54,7 +54,7 @@ void Module::removeFile(SourceFile* file)
     file->indexInModule = UINT32_MAX;
 
     auto indexInParent = file->scopeRoot->indexInParent;
-    assert(scopeRoot->childScopes[indexInParent] == file->scopeRoot);
+    SWAG_ASSERT(scopeRoot->childScopes[indexInParent] == file->scopeRoot);
     scopeRoot->childScopes[indexInParent]                = scopeRoot->childScopes.back();
     scopeRoot->childScopes[indexInParent]->indexInParent = indexInParent;
     file->scopeRoot->indexInParent                       = UINT32_MAX;

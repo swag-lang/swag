@@ -20,7 +20,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
         if (typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR)
             return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
-        assert(false);
+        SWAG_ASSERT(false);
         return false;
     }
 

@@ -752,7 +752,7 @@ bool TypeManager::castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
             return false;
         }
 
-        assert(!nodeToCast || fromSize == nodeToCast->childs.size());
+        SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
         for (int i = 0; i < fromSize; i++)
         {
             SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeArray->pointedType, fromTypeList->childs[i], nodeToCast ? nodeToCast->childs[i] : nullptr, castFlags));
@@ -801,7 +801,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
         fromType = TypeManager::flattenType(fromType);
     }
 
-    assert(toType && fromType);
+    SWAG_ASSERT(toType && fromType);
 
     if (toType->kind == TypeInfoKind::FuncAttr)
         toType = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::FuncAttr)->returnType;

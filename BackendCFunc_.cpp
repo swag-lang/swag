@@ -13,7 +13,7 @@
 
 const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
 {
-    assert(typeInfo->kind == TypeInfoKind::Native);
+    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
@@ -45,7 +45,7 @@ const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
     case NativeType::Void:
         return "void";
     default:
-        assert(false);
+        SWAG_ASSERT(false);
         return "";
     }
 }

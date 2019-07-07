@@ -138,7 +138,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
         g_Log.print(expr->computedValue.text);
         break;
     default:
-        assert(false);
+        SWAG_ASSERT(false);
         break;
     }
 

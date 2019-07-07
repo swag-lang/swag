@@ -1,4 +1,7 @@
 #pragma once
+#include "Global.h"
+#include "Log.h"
+
 struct RegisterList
 {
     static const int MAX_STATIC = 2;
@@ -14,7 +17,7 @@ struct RegisterList
 
     uint32_t operator[](int index)
     {
-        assert(index < countResults);
+        SWAG_ASSERT(index < countResults);
         if (index < MAX_STATIC)
             return oneResult[index];
         return registers[index - MAX_STATIC];
