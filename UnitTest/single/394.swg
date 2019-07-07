@@ -1,10 +1,11 @@
 #module module394;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+#[swag.printbytecode]
 #test
 {
-	var d : [] s32 = {5};
+	c := 666;
+	d := {c};
 	@print(d[0]);
 	//@print("这是什么");
 }

@@ -101,12 +101,12 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                     g_Log.setColor(LogColor::Red);
                     backend->module->numErrors++;
                     g_Workspace.numErrors++;
+					ok = false;
                 }
 				
                 if (pz || logAll)
                 {
 					g_Log.print(oneLine);
-                    ok = false;
                 }
             }
 
