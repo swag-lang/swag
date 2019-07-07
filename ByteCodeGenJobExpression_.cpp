@@ -259,7 +259,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             module->freeRegisterRC(child->resultRegisterRC);
         }
 
-        // Reference to the stack
+        // Reference to the stack, and store the number of element in a register
         emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = listNode->storageOffset;
         node->resultRegisterRC += reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1])->b.u32 = (uint32_t) listNode->childs.size();
