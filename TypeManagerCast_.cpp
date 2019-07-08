@@ -614,7 +614,7 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, TypeInfo* fromType, As
     case NativeType::U32:
     case NativeType::U64:
     {
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+        if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
             float    tmpF = static_cast<float>(nodeToCast->computedValue.reg.u64);
             uint64_t tmpI = static_cast<uint64_t>(tmpF);
@@ -636,7 +636,7 @@ bool TypeManager::castToNativeF32(SourceFile* sourceFile, TypeInfo* fromType, As
 
     case NativeType::F64:
     {
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+        if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
             float  tmpF = static_cast<float>(nodeToCast->computedValue.reg.f64);
             double tmpD = static_cast<double>(tmpF);
@@ -694,7 +694,7 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, TypeInfo* fromType, As
     case NativeType::U32:
     case NativeType::U64:
     {
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+        if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
             double   tmpF = static_cast<double>(nodeToCast->computedValue.reg.u64);
             uint64_t tmpI = static_cast<uint64_t>(tmpF);
@@ -715,7 +715,7 @@ bool TypeManager::castToNativeF64(SourceFile* sourceFile, TypeInfo* fromType, As
     }
 
     case NativeType::F32:
-        if (nodeToCast->flags & AST_VALUE_COMPUTED)
+        if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
             nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.f32);
             nodeToCast->typeInfo              = g_TypeMgr.typeInfoF64;

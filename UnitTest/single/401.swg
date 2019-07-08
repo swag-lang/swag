@@ -67,5 +67,5 @@ func Hash(buffer: [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
 //#[swag.printbytecode]
 #test
 {
-	@print(Hash("toto"));
+	@print(cast(s64) Hash("toto"));
 }
