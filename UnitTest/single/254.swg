@@ -1,14 +1,9 @@
 #module module254;
 using swag;
 
-#unittest error
+#unittest error;
 
 #[test]
 func main ()
 {
-}
-
-func main1 ()
-{
-	main();
 }

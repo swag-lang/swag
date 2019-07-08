@@ -1,9 +1,9 @@
 #module module253;
 using swag;
 
-#unittest error
+#unittest error;
 
-#[Compiler]
+#[compiler]
 func main ()
 {
 }

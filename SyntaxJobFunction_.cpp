@@ -140,7 +140,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     // Content of function
     if (token.id == TokenId::SymSemiColon || isIntrinsic)
     {
-        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+        SWAG_CHECK(eatSemiCol("after function declaration"));
         return true;
     }
 

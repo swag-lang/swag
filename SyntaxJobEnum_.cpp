@@ -80,7 +80,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             SWAG_CHECK(doExpression(enumValue));
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+        SWAG_CHECK(eatSemiCol("after enum value"));
     }
 
     currentScope = savedScope;

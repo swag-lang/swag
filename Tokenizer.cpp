@@ -152,6 +152,7 @@ bool Tokenizer::error(Token& token, const Utf8& msg)
 bool Tokenizer::getToken(Token& token, bool skipEOL)
 {
     unsigned offset;
+    lastTokenIsEOL = false;
     while (true)
     {
         token.startLocation = location;
@@ -174,14 +175,14 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 return true;
             }
 
-			lastTokenIsEOL = true;
+            lastTokenIsEOL = true;
             continue;
         }
 
         if (SWAG_IS_BLANK(c))
             continue;
 
-		// Comments
+        // Comments
         if (c == '/')
         {
             auto nc = getCharNoSeek(offset);
@@ -205,8 +206,6 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
             }
         }
 
-		lastTokenIsEOL = false;
-
         // Identifier
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
         {
@@ -215,10 +214,10 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
             if (c == '#' && nc == '[')
             {
                 treatChar(nc, offset);
-				token.text += nc;
-				token.endLocation = location;
-				token.id = TokenId::SymAttrStart;
-				return true;
+                token.text += nc;
+                token.endLocation = location;
+                token.id          = TokenId::SymAttrStart;
+                return true;
             }
 
             getIdentifier(token, nc, offset);

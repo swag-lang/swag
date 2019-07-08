@@ -64,11 +64,11 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
 
 bool SyntaxJob::eatSemiCol(const char* msg)
 {
-    if (token.id != TokenId::SymSemiColon && tokenizer.lastTokenIsEOL)
+    if (token.id != TokenId::SymSemiColon && !tokenizer.lastTokenIsEOL)
     {
         if (!msg)
             msg = "";
-        SWAG_CHECK(syntaxError(token, format("';' or a end of line is expected instead of '%s' %s", token.text.c_str(), msg)));
+        SWAG_CHECK(syntaxError(token, format("';' or 'end of line' is expected instead of '%s' %s", token.text.c_str(), msg)));
     }
 
     if (token.id == TokenId::SymSemiColon)

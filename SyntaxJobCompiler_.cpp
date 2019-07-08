@@ -23,7 +23,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("after '#compiler' expression"));
 
     return true;
 }
@@ -39,7 +39,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("after '#print' expression"));
 
     return true;
 }
@@ -149,7 +149,7 @@ bool SyntaxJob::doCompilerModule()
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("after module name"));
     return true;
 }
 
@@ -233,7 +233,7 @@ bool SyntaxJob::doCompilerUnitTest()
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("after unittest expression"));
     return true;
 }
 
@@ -251,7 +251,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     auto moduleName         = identifier->childs.back()->name;
     node->name              = moduleName;
     node->token.endLocation = identifier->childs.back()->token.endLocation;
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("after import expression"));
 
     if (!isContextDisabled())
         sourceFile->module->addDependency(node);

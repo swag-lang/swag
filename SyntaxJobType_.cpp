@@ -24,7 +24,7 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymColon));
     SWAG_CHECK(doTypeExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("after type alias"));
 
     currentScope->allocateSymTable();
     if (!isContextDisabled())
