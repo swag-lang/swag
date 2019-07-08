@@ -77,65 +77,25 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
     return true;
 }
 
-bool SemanticJob::resolveConstDecl(SemanticContext* context)
-{
-    auto sourceFile = context->sourceFile;
-    auto node       = static_cast<AstVarDecl*>(context->node);
-
-    if (!node->astAssignment)
-        return sourceFile->report({sourceFile, node, "a constant must be initialized"});
-
-    // Be sure we have a constant value
-    if (node->astAssignment->flags & AST_CONST_EXPR)
-    {
-        SWAG_CHECK(executeNode(context, node->astAssignment, true));
-        if (context->result == SemanticResult::Pending)
-            return true;
-    }
-
-    node->inheritComputedValue(node->astAssignment);
-    SWAG_VERIFY(node->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->token, format("constant value '%s' cannot be evaluated at compile time", node->name.c_str())}));
-    node->flags |= AST_NO_BYTECODE;
-
-    // Find type
-    if (node->astType && node->astAssignment)
-    {
-        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->astType->typeInfo, node->astAssignment));
-        node->typeInfo = node->astType->typeInfo;
-    }
-    else if (node->astAssignment)
-    {
-        node->typeInfo = node->astAssignment->typeInfo;
-    }
-    else if (node->astType)
-    {
-        node->typeInfo = node->astType->typeInfo;
-    }
-
-    node->typeInfo = TypeManager::concreteType(node->typeInfo);
-    SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of constant '%s'", node->name.c_str())}));
-
-    // Register symbol with its type
-    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Variable, &node->computedValue, 0);
-    SWAG_CHECK(overload);
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
-    node->resolvedSymbolOverload = overload;
-
-    return true;
-}
-
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto node       = static_cast<AstVarDecl*>(context->node);
+    bool isConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
     uint32_t symbolFlags = 0;
     if (node->kind == AstNodeKind::FuncDeclParam)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM;
     else if (node->ownerScope->isGlobal())
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
-    else
+    else if (!isConstant)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
+
+    // A constant must be initialized
+    if (isConstant && !node->astAssignment)
+    {
+        return sourceFile->report({sourceFile, node, "a constant must be initialized"});
+    }
 
     // Value
     if (node->astAssignment && node->astAssignment->kind != AstNodeKind::ExpressionList)
@@ -150,8 +110,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(node->astAssignment->typeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, node->astAssignment, "affect not allowed from an array"}));
     }
 
-    // A global variable must have its value computed at that point
-    if (node->astAssignment && (symbolFlags & OVERLOAD_VAR_GLOBAL))
+    // A global variable or a constant must have its value computed at that point
+    if (isConstant || (node->astAssignment && (symbolFlags & OVERLOAD_VAR_GLOBAL)))
     {
         SWAG_VERIFY(node->astAssignment->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->astAssignment, "can't evaluate initialization expression at compile time"}));
     }
@@ -203,8 +163,31 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     node->typeInfo = TypeManager::concreteType(node->typeInfo);
     SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
+    // A constant does nothing on backend, except if it can't be stored in a register
+    if (isConstant)
+    {
+        node->flags |= AST_NO_BYTECODE;
+        if (node->typeInfo->kind != TypeInfoKind::Array)
+        {
+            node->inheritComputedValue(node->astAssignment);
+        }
+        else
+        {
+            // Reserve space in constant segment
+            auto     module        = sourceFile->module;
+            auto     typeArray     = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
+            uint32_t storageOffset = module->reserveConstantSegment(typeArray->sizeOf);
+            module->mutexConstantSeg.lock();
+            auto offset = storageOffset;
+            auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, SegmentBuffer::Constant);
+            module->mutexConstantSeg.unlock();
+            SWAG_CHECK(result);
+			node->computedValue.reg.u64 = storageOffset;
+        }
+    }
+
     // Register symbol with its type
-    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Variable, nullptr, symbolFlags);
+    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Variable, isConstant ? &node->computedValue : nullptr, symbolFlags);
     SWAG_CHECK(overload);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;

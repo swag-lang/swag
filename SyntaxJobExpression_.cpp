@@ -466,6 +466,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             *result = leftNode;
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("after affect expression"));
     return true;
 }

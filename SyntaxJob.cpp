@@ -43,14 +43,34 @@ bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation&
     return false;
 }
 
-bool SyntaxJob::eatToken(TokenId id)
+bool SyntaxJob::eatToken()
+{
+    SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}
+
+bool SyntaxJob::eatToken(TokenId id, const char* msg)
 {
     if (token.id != id)
     {
-        SWAG_CHECK(syntaxError(token, format("'%s' expected instead of '%s'", g_LangSpec.tokenToName(id).c_str(), token.text.c_str())));
+        if (!msg)
+            msg = "";
+        SWAG_CHECK(syntaxError(token, format("'%s' is expected instead of '%s' %s", g_LangSpec.tokenToName(id).c_str(), token.text.c_str(), msg)));
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}
+
+bool SyntaxJob::eatSemiCol(const char* msg)
+{
+    if (token.id != TokenId::SymSemiColon && tokenizer.lastTokenIsEOL)
+    {
+        if (!msg)
+            msg = "";
+        SWAG_CHECK(syntaxError(token, format("';' or a end of line is expected instead of '%s' %s", token.text.c_str(), msg)));
+    }
+
     return true;
 }
 

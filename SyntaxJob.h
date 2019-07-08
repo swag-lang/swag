@@ -35,7 +35,9 @@ struct SyntaxJob : public Job
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg);
     bool syntaxError(const Token& tk, const Utf8& msg);
     bool notSupportedError(const Token& tk);
-    bool eatToken(TokenId id);
+	bool eatToken();
+    bool eatToken(TokenId id, const char* msg = nullptr);
+	bool eatSemiCol(const char* msg = nullptr);
     bool recoverError();
 
     bool doCompilerAssert(AstNode* parent);

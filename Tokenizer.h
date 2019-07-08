@@ -8,7 +8,7 @@ enum class Intrisic;
 enum class TokenId
 {
     SymDot,
-	SymDotDot,
+    SymDotDot,
     SymLeftParen,
     SymRightParen,
     SymLeftSquare,
@@ -75,7 +75,7 @@ enum class TokenId
     IntrisicProp,
 
     KwdVar,
-	KwdConst,
+    KwdConst,
     KwdNamespace,
     KwdType,
     KwdEnum,
@@ -92,8 +92,8 @@ enum class TokenId
     KwdWhile,
     KwdBreak,
     KwdContinue,
-	KwdLoop,
-	KwdIndex,
+    KwdLoop,
+    KwdIndex,
 
     Identifier,
     LiteralNumber,
@@ -141,15 +141,11 @@ struct Tokenizer
     bool     getDigitHexa(Token& token, int& result);
     bool     doCharLiteral(Token& token);
 
-    bool getTokenOrEOL(Token& token)
-    {
-        return getToken(token, false);
-    }
-
     SourceFile*    sourceFile      = nullptr;
     char32_t       cacheChar       = 0;
     unsigned       cacheCharOffset = 0;
     int            seek            = 0;
     SourceLocation location;
-    bool           endReached = false;
+    bool           endReached     = false;
+    bool           lastTokenIsEOL = false;
 };

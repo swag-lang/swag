@@ -232,7 +232,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     auto job         = context->job;
     bool isConstExpr = node->flags & AST_CONST_EXPR;
 
-    // Reserve space in constant segment, and copy all
+    // Reserve space in constant segment
     auto     typeList      = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
     uint32_t storageOffset = module->reserveConstantSegment(typeList->sizeOf);
     module->mutexConstantSeg.lock();
@@ -338,6 +338,14 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     else if (typeInfo == g_TypeMgr.typeInfoNull)
     {
         emitInstruction(context, ByteCodeOp::ClearRA, r0);
+    }
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto     typeArray     = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        uint32_t storageOffset = node->computedValue.reg.u32;
+        node->resultRegisterRC += reserveRegisterRC(context);
+        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
     }
     else
     {

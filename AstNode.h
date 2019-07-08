@@ -38,6 +38,7 @@ enum class AstNodeKind
     Module,
     File,
     VarDecl,
+	ConstDecl,
     TypeDecl,
     IdentifierRef,
     Identifier,

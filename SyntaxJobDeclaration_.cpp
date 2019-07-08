@@ -19,7 +19,7 @@ bool SyntaxJob::doUsing(AstNode* parent)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doIdentifierRef(node));
 
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("after 'using' declaration"));
     return true;
 }
 
@@ -184,7 +184,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdReturn:
         SWAG_CHECK(doReturn(parent, result));
-        SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+        SWAG_CHECK(eatSemiCol("after return expression"));
         break;
     case TokenId::KwdIf:
         SWAG_CHECK(doIf(parent, result));

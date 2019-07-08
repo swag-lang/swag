@@ -12,9 +12,9 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     // First variable
-    AstVarDecl* varNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
+    AstVarDecl* varNode = Ast::newNode(&g_Pool_astVarDecl, isConstant ? AstNodeKind::ConstDecl : AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
     varNode->inheritOwnersAndFlags(this);
-    varNode->semanticFct = isConstant ? &SemanticJob::resolveConstDecl : &SemanticJob::resolveVarDecl;
+    varNode->semanticFct = SemanticJob::resolveVarDecl;
     if (result)
         *result = varNode;
 
@@ -24,17 +24,17 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     if (token.id == TokenId::SymColon)
     {
-        SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doTypeExpression(varNode, &varNode->astType));
     }
 
     if (token.id == TokenId::SymEqual)
     {
-        SWAG_CHECK(eatToken(TokenId::SymEqual));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->astAssignment));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymSemiColon));
+    SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
 
     // Be sure we will be able to have a type
     if (!varNode->astType && !varNode->astAssignment)

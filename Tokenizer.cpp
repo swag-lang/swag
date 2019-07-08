@@ -174,12 +174,14 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 return true;
             }
 
+			lastTokenIsEOL = true;
             continue;
         }
 
         if (SWAG_IS_BLANK(c))
             continue;
 
+		// Comments
         if (c == '/')
         {
             auto nc = getCharNoSeek(offset);
@@ -202,6 +204,8 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 continue;
             }
         }
+
+		lastTokenIsEOL = false;
 
         // Identifier
         if (SWAG_IS_ALPHA(c) || c == '_' || c == '#' || c == '@')
