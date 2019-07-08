@@ -56,16 +56,21 @@ var Table: [256] u64 =
 	0x9afce626ce85b507'u64
 }
 
+//#[swag.printbytecode]
 func Hash(buffer: [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
 {
 	crc := previous	
 	loop(buffer)
-		crc = Table[(crc >> 56) ^ buffer[index]] ^ (crc << 8);	
+	{
+		var i = (crc >> 56) ^ buffer[index]
+		crc = Table[(crc >> 56) ^ buffer[index]] ^ (crc << 8)
+	}
+	
 	return crc ^ 0xFFFFFFFFFFFFFFFF'u64
 }
 
 //#[swag.printbytecode]
 #test
 {
-	@print(cast(s64) Hash("toto"));
+	@assert(Hash("toto") == 9075899076715882869);
 }

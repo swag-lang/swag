@@ -71,6 +71,8 @@ bool SyntaxJob::eatSemiCol(const char* msg)
         SWAG_CHECK(syntaxError(token, format("';' or a end of line is expected instead of '%s' %s", token.text.c_str(), msg)));
     }
 
+    if (token.id == TokenId::SymSemiColon)
+        SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
 

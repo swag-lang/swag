@@ -205,10 +205,10 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     }
 
     // Push missing default parameters
-    int numParameters = 0;
+    int numParameters  = 0;
+    int indexParameter = 0;
     if (numCallParams != typeInfoFunc->parameters.size())
     {
-        int index = 0;
         for (int i = (int) typeInfoFunc->parameters.size() - 1; i >= numCallParams; i--)
         {
             auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
@@ -218,9 +218,9 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
             context->node = node;
             for (int r = defaultParam->astAssignment->resultRegisterRC.size() - 1; r >= 0; r--)
             {
-                emitInstruction(context, ByteCodeOp::PushRAParam, defaultParam->astAssignment->resultRegisterRC[r], index);
+                emitInstruction(context, ByteCodeOp::PushRAParam, defaultParam->astAssignment->resultRegisterRC[r], indexParameter);
                 precallStack += sizeof(Register);
-                index++;
+                indexParameter++;
                 numParameters++;
             }
 
@@ -231,15 +231,14 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     // Push parameters
     if (params)
     {
-        int index = 0;
         for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = params->childs[i];
             for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
             {
-                emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r], index);
+                emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r], indexParameter);
                 precallStack += sizeof(Register);
-                index++;
+                indexParameter++;
                 numParameters++;
             }
 
@@ -323,7 +322,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         }
         else
         {
-			return internalError(context, "emitFuncDeclParams, invalid parameter type", param);
+            return internalError(context, "emitFuncDeclParams, invalid parameter type", param);
         }
     }
 

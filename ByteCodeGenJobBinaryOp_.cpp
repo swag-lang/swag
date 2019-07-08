@@ -248,10 +248,10 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, uint32_t r0, ui
         emitInstruction(context, ByteCodeOp::ShiftRightS64, r0, r1, r2);
         return true;
     case NativeType::U32:
-        emitInstruction(context, ByteCodeOp::ShiftRightS32, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::ShiftRightU32, r0, r1, r2);
         return true;
     case NativeType::U64:
-        emitInstruction(context, ByteCodeOp::ShiftRightS64, r0, r1, r2);
+        emitInstruction(context, ByteCodeOp::ShiftRightU64, r0, r1, r2);
         return true;
     default:
         return internalError(context, "emitShiftRight, type not supported");

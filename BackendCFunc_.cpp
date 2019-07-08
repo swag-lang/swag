@@ -282,13 +282,13 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.pointer -= r%u.u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::DeRef8:
-            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.u64 = *(swag_uint8_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::DeRef16:
-            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.u64 = *(swag_uint16_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::DeRef32:
-            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.u64 = *(swag_uint32_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::DeRef64:
             bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
