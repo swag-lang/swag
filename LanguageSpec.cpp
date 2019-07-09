@@ -101,6 +101,8 @@ string LanguageSpec::tokenToName(TokenId id)
         return "]";
     case TokenId::SymDot:
         return ".";
+    case TokenId::SymExclam:
+        return "!";
     }
 
     return "???";

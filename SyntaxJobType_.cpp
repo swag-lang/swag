@@ -49,18 +49,18 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         while (true)
         {
-			// Size of array can be nothing
+            // Size of array can be nothing
             if (token.id == TokenId::SymRightSquare)
             {
                 node->arrayDim = UINT32_MAX;
                 break;
             }
 
-			// Slice
+            // Slice
             if (token.id == TokenId::SymDotDot)
             {
-				node->isSlice = true;
-				SWAG_CHECK(tokenizer.getToken(token));
+                node->isSlice = true;
+                SWAG_CHECK(tokenizer.getToken(token));
                 break;
             }
 
@@ -99,6 +99,29 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doTemplateTypes(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::TypeList, sourceFile->indexInModule, parent);
+    node->inheritOwnersAndFlags(this);
+    node->semanticFct = &SemanticJob::resolveTypeList;
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(eatToken(TokenId::SymExclam));
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTypeExpression(node));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after types"));
+    }
+    else
+    {
+        SWAG_CHECK(doTypeExpression(node));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Cast, sourceFile->indexInModule, parent);
@@ -109,8 +132,9 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doTemplateTypes(node));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doTypeExpression(node));
+    SWAG_CHECK(doUnaryExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }

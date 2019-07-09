@@ -4,7 +4,7 @@
 //#[swag.printbytecode]
 func a (ptr: [..] s32, cpt: s32)
 {
-	@assert(@prop(ptr, count) == cast(u32) cpt);
+	@assert(@prop(ptr, count) == cast!u32(cpt));
 }
 
 //#[swag.printbytecode]

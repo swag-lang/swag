@@ -119,3 +119,11 @@ bool SemanticJob::resolveCast(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolveTypeList(SemanticContext* context)
+{
+    auto node = context->node;
+    if (node->childs.size() == 1)
+        node->typeInfo = node->childs.front()->typeInfo;
+    return true;
+}

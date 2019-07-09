@@ -11,6 +11,6 @@ using swag;
 #test
 {
 	var b = "XYZ";
-	@assert(b[2] == cast(u8) 'Z');
+	@assert(b[2] == cast!u8('Z'));
 	@assert(b[3] == 0);
 }

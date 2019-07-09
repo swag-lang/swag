@@ -35,9 +35,9 @@ struct SyntaxJob : public Job
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg);
     bool syntaxError(const Token& tk, const Utf8& msg);
     bool notSupportedError(const Token& tk);
-	bool eatToken();
+    bool eatToken();
     bool eatToken(TokenId id, const char* msg = nullptr);
-	bool eatSemiCol(const char* msg = nullptr);
+    bool eatSemiCol(const char* msg = nullptr);
     bool recoverError();
 
     bool doCompilerAssert(AstNode* parent);
@@ -61,7 +61,7 @@ struct SyntaxJob : public Job
     bool doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
-	bool doIndex(AstNode* parent, AstNode** result = nullptr);
+    bool doIndex(AstNode* parent, AstNode** result = nullptr);
     bool doSinglePrimaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doPrimaryExpression(AstNode* parent, AstNode** result = nullptr);
     bool doUnaryExpression(AstNode* parent, AstNode** result = nullptr);
@@ -81,10 +81,11 @@ struct SyntaxJob : public Job
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent);
+    bool doTemplateTypes(AstNode* parent, AstNode** result = nullptr);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
     bool doIf(AstNode* parent, AstNode** result = nullptr);
     bool doWhile(AstNode* parent, AstNode** result = nullptr);
-	bool doLoop(AstNode* parent, AstNode** result = nullptr);
+    bool doLoop(AstNode* parent, AstNode** result = nullptr);
     bool doBreak(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerDeRef(AstNode** exprNode);

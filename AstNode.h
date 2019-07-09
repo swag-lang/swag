@@ -70,6 +70,7 @@ enum class AstNodeKind
     IntrinsicProp,
     Index,
     Cast,
+	TypeList,
     SingleOp,
     MakePointer,
     BinaryOp,

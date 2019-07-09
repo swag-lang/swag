@@ -183,11 +183,8 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
     // Cast
     if (token.id == TokenId::KwdCast)
     {
-        AstNode* castNode;
-        SWAG_CHECK(doCast(parent, &castNode));
-        if (result)
-            *result = castNode;
-        return doUnaryExpression(castNode);
+        SWAG_CHECK(doCast(parent, result));
+        return true;
     }
 
     if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam || token.id == TokenId::SymTilde)
