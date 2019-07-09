@@ -6,6 +6,7 @@
 #include "Scope.h"
 #include "SymTable.h"
 #include "Scoped.h"
+#include "Diagnostic.h"
 
 bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 {
@@ -111,7 +112,14 @@ bool SyntaxJob::doTemplateTypes(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(node));
+        while (true)
+        {
+            SWAG_CHECK(doTypeExpression(node));
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken());
+        }
+
         SWAG_CHECK(eatToken(TokenId::SymRightParen, "after types"));
     }
     else
@@ -133,6 +141,11 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doTemplateTypes(node));
+
+	auto typeList = node->childs.front();
+    if (typeList->childs.size() > 1)
+        return sourceFile->report({sourceFile, typeList->childs[1], "a cast cannot have more than one type"});
+
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doUnaryExpression(node));
     SWAG_CHECK(eatToken(TokenId::SymRightParen));

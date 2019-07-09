@@ -2,5 +2,5 @@
 
 #test
 {
-	var c = cast!s32(0);
+	var c = cast!(s32)(0);
 }
