@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "Global.h"
 #include "ByteCodeOp.h"
+#include "ByteCode.h"
 
 bool ByteCodeGenJob::emitCastNativeU8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
@@ -434,11 +435,31 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
         return true;
     }
 
+    if (typeInfo->kind == TypeInfoKind::Slice && fromTypeInfo->kind == TypeInfoKind::Slice)
+    {
+        SWAG_CHECK(emitCastSlice(context, typeInfo, exprNode, fromTypeInfo));
+        return true;
+    }
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, cast type not native");
     if (fromTypeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, expression type not native");
+
     SWAG_CHECK(emitCast(context, typeInfo, exprNode, fromTypeInfo));
+    node->resultRegisterRC = exprNode->resultRegisterRC;
+    return true;
+}
+
+bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo)
+{
+    auto node          = context->node;
+    auto toTypeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+    auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
+    int  diff          = fromTypeSlice->pointedType->sizeOf / toTypeSlice->pointedType->sizeOf;
+
+    auto inst              = emitInstruction(context, ByteCodeOp::MulRAVB, exprNode->resultRegisterRC[1]);
+    inst->b.u32            = diff;
     node->resultRegisterRC = exprNode->resultRegisterRC;
     return true;
 }

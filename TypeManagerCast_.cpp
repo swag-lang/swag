@@ -818,6 +818,20 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
         if (toTypeSlice->pointedType->isNative(NativeType::U8))
             return true;
     }
+    else if (fromType->kind == TypeInfoKind::Slice)
+    {
+		if (castFlags & CASTFLAG_FORCE)
+		{
+			auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
+			if (fromTypeSlice->pointedType->kind == TypeInfoKind::Native)
+			{
+				int s = toTypeSlice->pointedType->sizeOf;
+				int d = fromTypeSlice->pointedType->sizeOf;
+				if ((d / s) * s == d)
+					return true;
+			}
+		}
+    }
 
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
