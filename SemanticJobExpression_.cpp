@@ -211,7 +211,7 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
     {
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
-        arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
+        arrayNode->byteCodeFct = &ByteCodeGenJob::emitSliceRef;
         arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
         break;
     }
