@@ -10,9 +10,10 @@
 #include "Workspace.h"
 #include "ModuleCompileJob.h"
 
-bool BackendC::writeFile(const char* fileName, Concat& concat)
+bool BackendC::writeFile(OutputFile& concat)
 {
-    FILE* file = nullptr;
+    auto  fileName = concat.fileName.c_str();
+    FILE* file     = nullptr;
     fopen_s(&file, fileName, "wt");
     SWAG_VERIFY(file, module->error(format("can't open file '%s' for writing'", fileName)));
 
@@ -101,12 +102,17 @@ bool BackendC::compile(const BackendParameters& backendParameters)
 
 bool BackendC::generate()
 {
-    bool ok = true;
+    auto workspace     = module->workspace;
+    bufferH.fileName   = workspace->cachePath.string() + module->name + ".h";
+    bufferC.fileName   = workspace->cachePath.string() + module->name + ".c";
+    bufferSwg.fileName = workspace->cachePath.string() + module->name + ".swg";
+    destFile           = workspace->cachePath.string() + module->name;
 
+    bool ok = true;
     ok &= emitHeader();
     ok &= emitRuntime();
-	ok &= emitDataSegment();
-	ok &= emitConstantSegment();
+    ok &= emitDataSegment();
+    ok &= emitConstantSegment();
     ok &= emitStrings();
     ok &= emitFuncSignatures();
     ok &= emitFunctions();
@@ -114,14 +120,9 @@ bool BackendC::generate()
     ok &= emitMain();
     ok &= emitFooter();
 
-    auto workspace = module->workspace;
-    destFileH      = workspace->cachePath.string() + module->name + ".h";
-    destFileC      = workspace->cachePath.string() + module->name + ".c";
-    destFileSwg    = workspace->cachePath.string() + module->name + ".swg";
-    destFile       = workspace->cachePath.string() + module->name;
-    SWAG_CHECK(writeFile(destFileH.c_str(), bufferH));
-    SWAG_CHECK(writeFile(destFileC.c_str(), bufferC));
-    SWAG_CHECK(writeFile(destFileSwg.c_str(), bufferSwg));
+    SWAG_CHECK(writeFile(bufferH));
+    SWAG_CHECK(writeFile(bufferC));
+    SWAG_CHECK(writeFile(bufferSwg));
 
     return true;
 }

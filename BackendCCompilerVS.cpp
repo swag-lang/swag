@@ -224,7 +224,7 @@ bool BackendCCompilerVS::compile()
 
     clArguments += "/nologo ";
     clArguments += "/EHsc ";
-    clArguments += "/Tc\"" + backend->destFileC + "\" ";
+    clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
     string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
     for (const auto& oneIncludePath : includePath)
@@ -249,7 +249,7 @@ bool BackendCCompilerVS::compile()
         libArguments += "/OUT:\"" + resultFile + "\" ";
         libArguments += "\"" + nameObj + "\" ";
 
-        g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.c_str(), resultFile.c_str()));
+        g_Log.message(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
         SWAG_CHECK(doProcess(cmdLineLIB, clPath, g_CommandLine.verbose_backend_command));
@@ -284,7 +284,7 @@ bool BackendCCompilerVS::compile()
             clArguments += "/DSWAG_IS_EXE ";
         }
 
-        g_Log.message(format("vs compiling '%s' => '%s'", backend->destFileC.c_str(), resultFile.c_str()));
+        g_Log.message(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
         SWAG_CHECK(doProcess(cmdLineCL, clPath, g_CommandLine.verbose_backend_command));

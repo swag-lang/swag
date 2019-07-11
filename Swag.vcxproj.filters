@@ -251,6 +251,9 @@
     <ClCompile Include="SavingThread.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="OutputFile.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -430,6 +433,9 @@
     </ClInclude>
     <ClInclude Include="SavingThread.h">
       <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputFile.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 #include "Backend.h"
-#include "Concat.h"
+#include "OutputFile.h"
 struct Module;
 struct AstNode;
 struct AstFuncDecl;
@@ -18,14 +18,14 @@ struct BackendC : public Backend
     bool generate() override;
     bool compile(const BackendParameters& backendParameters) override;
 
-    bool writeFile(const char* fileName, Concat& concat);
+    bool writeFile(OutputFile& concat);
 
     void emitSeparator(Concat& buffer, const char* title);
     bool emitHeader();
     bool emitFooter();
     bool emitRuntime();
     bool emitDataSegment();
-	bool emitConstantSegment();
+    bool emitConstantSegment();
     bool emitStrings();
     bool emitMain();
     bool emitFunctions();
@@ -38,12 +38,9 @@ struct BackendC : public Backend
     void        emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool        emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
 
-    string destFileH;
-    string destFileC;
-    string destFileSwg;
     string destFile;
 
-    Concat bufferH;
-    Concat bufferC;
-    Concat bufferSwg;
+    OutputFile bufferH;
+    OutputFile bufferC;
+    OutputFile bufferSwg;
 };
