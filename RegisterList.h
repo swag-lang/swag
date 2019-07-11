@@ -34,7 +34,8 @@ struct RegisterList
         if (countResults >= MAX_STATIC)
             registers.push_back(r);
         else
-            oneResult[countResults++] = r;
+            oneResult[countResults] = r;
+		countResults++;
     }
 
     void clear()
