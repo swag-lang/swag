@@ -106,7 +106,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
 				
                 if (pz || logAll)
                 {
-					g_Log.print(oneLine);
+					g_Log.print(oneLine + "\n");
                 }
             }
 
