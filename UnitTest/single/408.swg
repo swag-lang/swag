@@ -1,6 +1,6 @@
 #module module408
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var c: [..] u32 = {0x01_02_03_04};

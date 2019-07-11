@@ -14,7 +14,9 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
     int  sizeOf = node->typeInfo->sizeOf;
-    emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC);
+
+    emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
+
     if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
@@ -50,7 +52,12 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
     int  sizeOf = node->typeInfo->sizeOf;
 
-    if (g_CommandLine.debugBoundCheck)
+    node->array->resultRegisterRC += reserveRegisterRC(context);
+    auto inst   = emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+    inst->c.u32 = sizeof(void*);
+    emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC[0], node->array->resultRegisterRC[0]);
+
+    /*if (g_CommandLine.debugBoundCheck)
     {
         auto r0 = reserveRegisterRC(context);
 
@@ -58,7 +65,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
 
         context->sourceFile->module->freeRegisterRC(r0);
-    }
+    }*/
 
     if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;

@@ -76,7 +76,6 @@ void ByteCode::print()
         case ByteCodeOp::DeRef16:
         case ByteCodeOp::DeRef32:
         case ByteCodeOp::DeRef64:
-        case ByteCodeOp::DeRefPointer:
         case ByteCodeOp::IntrinsicAssert:
         case ByteCodeOp::IntrinsicPrintChar:
         case ByteCodeOp::IntrinsicPrintF32:
@@ -106,6 +105,7 @@ void ByteCode::print()
         case ByteCodeOp::AffectOp64:
         case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::CopyRARBStr:
+        case ByteCodeOp::DeRefPointer:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 

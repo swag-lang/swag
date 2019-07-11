@@ -294,7 +294,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::DeRefPointer:
-            bufferC.addString(format("r%u.pointer = *(swag_uint8_t**) r%u.pointer;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.pointer = *(swag_uint8_t**) (r%u.pointer + %u);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::DeRefString:
             bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (r%u.pointer + 8);", ip->b.u32, ip->a.u32));

@@ -203,7 +203,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::DeRefPointer:
     {
-        registersRC[ip->a.u32].pointer = *(uint8_t**) registersRC[ip->a.u32].pointer;
+        registersRC[ip->b.u32].pointer = *(uint8_t**) (registersRC[ip->a.u32].pointer + ip->c.u32);
         break;
     }
     case ByteCodeOp::DeRefString:
@@ -215,18 +215,18 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::BoundCheck:
     {
-        int curOffset = registersRC[ip->a.u32].u32;
-        int maxOffset = registersRC[ip->b.u32].u32;
+        uint32_t curOffset = registersRC[ip->a.u32].u32;
+        uint32_t maxOffset = registersRC[ip->b.u32].u32;
         if (curOffset > maxOffset)
-            context->error(format("index out of range (index is '%d', maximum index is '%d')", curOffset, maxOffset));
+            context->error(format("index out of range (index is '%u', maximum index is '%u')", curOffset, maxOffset));
         break;
     }
     case ByteCodeOp::BoundCheckString:
     {
-        int curOffset = registersRC[ip->a.u32].u32;
-        int maxOffset = registersRC[ip->b.u32].u32;
+        uint32_t curOffset = registersRC[ip->a.u32].u32;
+        uint32_t maxOffset = registersRC[ip->b.u32].u32;
         if (curOffset > maxOffset)
-            context->error(format("index out of range (index is '%d', maximum index is '%d')", curOffset, maxOffset));
+            context->error(format("index out of range (index is '%u', maximum index is '%u')", curOffset, maxOffset));
         break;
     }
 

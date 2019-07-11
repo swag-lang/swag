@@ -107,7 +107,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 return true;
         }
 
-        SWAG_VERIFY(node->astAssignment->typeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, node->astAssignment, "affect not allowed from an array"}));
+        if (node->astType && node->astType->typeInfo->kind != TypeInfoKind::Slice)
+        {
+            SWAG_VERIFY(node->astAssignment->typeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, node->astAssignment, "affect not allowed from an array"}));
+        }
     }
 
     // A global variable or a constant must have its value computed at that point
@@ -182,7 +185,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, SegmentBuffer::Constant);
             module->mutexConstantSeg.unlock();
             SWAG_CHECK(result);
-			node->computedValue.reg.u64 = storageOffset;
+            node->computedValue.reg.u64 = storageOffset;
         }
     }
 
