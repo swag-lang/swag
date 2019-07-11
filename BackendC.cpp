@@ -10,25 +10,6 @@
 #include "Workspace.h"
 #include "ModuleCompileJob.h"
 
-bool BackendC::writeFile(OutputFile& concat)
-{
-    auto  fileName = concat.fileName.c_str();
-    FILE* file     = nullptr;
-    fopen_s(&file, fileName, "wt");
-    SWAG_VERIFY(file, module->error(format("can't open file '%s' for writing'", fileName)));
-
-    auto bucket = concat.firstBucket;
-    while (bucket)
-    {
-        int count = bucket->count;
-        fwrite(bucket->datas, 1, count, file);
-        bucket = bucket->nextBucket;
-    }
-
-    fclose(file);
-    return true;
-}
-
 bool BackendC::emitHeader()
 {
     bufferH.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
@@ -120,9 +101,9 @@ bool BackendC::generate()
     ok &= emitMain();
     ok &= emitFooter();
 
-    SWAG_CHECK(writeFile(bufferH));
-    SWAG_CHECK(writeFile(bufferC));
-    SWAG_CHECK(writeFile(bufferSwg));
+    bufferH.flush();
+    bufferC.flush();
+    bufferSwg.flush();
 
     return true;
 }

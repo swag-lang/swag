@@ -18,8 +18,6 @@ struct BackendC : public Backend
     bool generate() override;
     bool compile(const BackendParameters& backendParameters) override;
 
-    bool writeFile(OutputFile& concat);
-
     void emitSeparator(Concat& buffer, const char* title);
     bool emitHeader();
     bool emitFooter();

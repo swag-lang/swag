@@ -19,8 +19,10 @@ struct Concat
     void addF64(double v);
     void addBool(bool v);
     void addPointer(void* v);
-	void addString(const char* v);
-	void addString(const string& v);
+    void addString(const char* v);
+    void addString(const string& v);
+
+    virtual void flushBucket(ConcatBucket* bucket){};
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;

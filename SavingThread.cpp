@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "SavingThread.h"
-#include "SourceFile.h"
+#include "OutputFile.h"
 
 SavingThread::SavingThread()
 {
@@ -25,8 +25,10 @@ SaveThreadRequest* SavingThread::newRequest()
     {
         auto req = freeRequests.back();
         freeRequests.pop_back();
+        req->file       = nullptr;
         req->buffer     = nullptr;
         req->bufferSize = 0;
+        req->done       = false;
         return req;
     }
 
@@ -46,8 +48,8 @@ SaveThreadRequest* SavingThread::getRequest()
     lock_guard<mutex> lk(mutexAdd);
     if (queueRequests.empty())
         return nullptr;
-    auto req = queueRequests.back();
-    queueRequests.pop_back();
+    auto req = queueRequests.front();
+    queueRequests.pop_front();
     return req;
 }
 
@@ -71,11 +73,13 @@ void SavingThread::loop()
         }
 
         FILE* file = nullptr;
-        fopen_s(&file, req->fileName, "w+t");
+        fopen_s(&file, req->file->fileName.c_str(), "a+t");
         if (file)
         {
             fwrite(req->buffer, 1, req->bufferSize, file);
             fclose(file);
+            req->done = true;
+            req->file->notifySave(req);
         }
     }
 }

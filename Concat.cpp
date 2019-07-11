@@ -15,11 +15,15 @@ void Concat::checkCount(int offset)
         return;
     }
 
+	if (lastBucket)
+        flushBucket(lastBucket);
+
     auto newBucket = g_Pool_concatBucket.alloc();
     if (!firstBucket)
         firstBucket = newBucket;
     if (lastBucket)
         lastBucket->nextBucket = newBucket;
+
     lastBucket        = newBucket;
     lastBucket->datas = (uint8_t*) malloc(max(offset, CONCAT_BUCKET_SIZE));
     currentSP         = newBucket->datas;

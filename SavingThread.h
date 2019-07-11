@@ -1,11 +1,12 @@
 #pragma once
-struct SourceFile;
+struct OutputFile;
 
 struct SaveThreadRequest
 {
-    const char* fileName;
+    OutputFile* file;
     char*       buffer;
     long        bufferSize;
+    bool        done;
 };
 
 struct SavingThread
@@ -22,8 +23,8 @@ struct SavingThread
 
     thread*                    thread     = nullptr;
     bool                       requestEnd = false;
-    vector<SaveThreadRequest*> queueRequests;
-    vector<SaveThreadRequest*> freeRequests;
+    deque<SaveThreadRequest*> queueRequests;
+	deque<SaveThreadRequest*> freeRequests;
     mutex                      mutexAdd;
     mutex                      mutexNew;
     condition_variable         condVar;
