@@ -24,7 +24,6 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
     // Parameters
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymColon));
     SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
 
     // Return type

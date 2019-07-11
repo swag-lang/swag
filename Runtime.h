@@ -2,11 +2,11 @@ const char* g_Runtime = R"(
 
 namespace swag {
 
-attr constexpr: () -> func;
-attr printbytecode: () -> func;
-attr compiler: () -> func;
-attr public: () -> func;
-attr foreign: (module: string = "") -> func;
+attr constexpr() -> func;
+attr printbytecode() -> func;
+attr compiler() -> func;
+attr public() -> func;
+attr foreign(module: string = "") -> func;
 }
 
 func @print(value: s32);
