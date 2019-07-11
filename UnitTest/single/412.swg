@@ -1,16 +1,12 @@
 #module module412
 
 //#[swag.printbytecode]
+#unittest error;
 #test
 {
 	var c = {666, 666};
 	var d: [..] s32 = c;
-	d[0] = 100;
-	@assert(c[0] == 100);
-	@assert(c[1] == 666);
-	d[1] = 200;
-	@assert(c[0] == 100);
-	@assert(c[1] == 200);
+	d[2] = 100;
 	
 	//var c = {0};
 	//var d: [..] *s32 = {&c[0]};

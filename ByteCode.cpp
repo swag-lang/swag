@@ -98,6 +98,7 @@ void ByteCode::print()
 		case ByteCodeOp::IsNullU32:
         case ByteCodeOp::BoundCheck:
         case ByteCodeOp::BoundCheckString:
+        case ByteCodeOp::BoundCheckReg:
         case ByteCodeOp::CopyRARB32:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;

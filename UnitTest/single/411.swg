@@ -1,6 +1,6 @@
 #module module411
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var c = {666};
