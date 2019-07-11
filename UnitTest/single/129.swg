@@ -1,8 +1,8 @@
 #module module129;
 #unittest pass semantic;
 
-attr toto: () -> var;
-attr toto1: () -> func;
+attr toto() -> var;
+attr toto1() -> func;
 
 #unittest error;
 #[toto1]

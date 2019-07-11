@@ -1,7 +1,7 @@
 #module module125;
 #unittest pass semantic;
 
-attr toto: () -> var;
+attr toto() -> var;
 
 #unittest error;
 #[toto]
@@ -9,7 +9,7 @@ func main ()
 {
 }
 
-attr toto1: () -> func;
+attr toto: () -> func;
 
 #unittest error;
 #[toto1]

@@ -1,15 +1,15 @@
 #module module123;
 #unittest pass syntax;
 
-attr toto: () -> func, var;
+attr toto() -> func, var;
 
 #unittest error;
-attr toto: () -> func, ;
-
-#unittest pass syntax;
-#unittest error;
-attr toto: () -> func, func;
+attr toto() -> func, ;
 
 #unittest pass syntax;
 #unittest error;
-attr toto: () -> var, var;
+attr toto() -> func, func;
+
+#unittest pass syntax;
+#unittest error;
+attr toto() -> var, var;

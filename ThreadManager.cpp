@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ThreadManager.h"
 #include "LoadingThread.h"
+#include "SavingThread.h"
 #include "JobThread.h"
 #include "Global.h"
 #include "CommandLine.h"
@@ -12,6 +13,7 @@ ThreadManager g_ThreadMgr;
 void ThreadManager::init()
 {
     loadingThread = new LoadingThread();
+    savingThread  = new SavingThread();
 
     int numCores = std::thread::hardware_concurrency();
     if (g_CommandLine.numCores == 0)
@@ -28,6 +30,7 @@ void ThreadManager::init()
 ThreadManager::~ThreadManager()
 {
     delete loadingThread;
+    delete savingThread;
 }
 
 void ThreadManager::addJob(Job* job)

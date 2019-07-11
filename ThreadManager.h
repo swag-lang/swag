@@ -2,6 +2,7 @@
 struct Job;
 struct JobThread;
 struct LoadingThread;
+struct SavingThread;
 
 struct ThreadManager
 {
@@ -18,6 +19,7 @@ struct ThreadManager
     Job* getJob();
 
     LoadingThread*     loadingThread = nullptr;
+    SavingThread*      savingThread  = nullptr;
     vector<Job*>       queueJobs;
     vector<JobThread*> availableThreads;
     vector<JobThread*> workerThreads;

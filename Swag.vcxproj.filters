@@ -248,6 +248,9 @@
     <ClCompile Include="ModuleCompileJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="SavingThread.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -424,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="RegisterList.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="SavingThread.h">
+      <Filter>Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

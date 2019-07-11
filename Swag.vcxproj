@@ -194,6 +194,7 @@
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="RegisterList.h" />
     <ClInclude Include="Runtime.h" />
+    <ClInclude Include="SavingThread.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />
     <ClInclude Include="SourceLocation.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="ModuleCompileJob.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
+    <ClCompile Include="SavingThread.cpp" />
     <ClCompile Include="Scope.cpp" />
     <ClCompile Include="SemanticJobAffectExpression_.cpp" />
     <ClCompile Include="SemanticJobAttribute_.cpp" />

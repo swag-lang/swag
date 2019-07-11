@@ -2,6 +2,6 @@
 #unittest pass semantic;
 
 #unittest error;
-attr toto: (b: bool) -> var;
+attr toto(b: bool) -> var;
 #[toto(0)]
 var a: bool;

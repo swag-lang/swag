@@ -4,9 +4,9 @@
 #unittest error;
 namespace A
 {
-	attr toto: () -> func;
+	attr toto() -> func;
 	namespace B
 	{
-		attr toto: () -> var;
+		attr toto() -> var;
 	}
 }
