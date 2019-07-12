@@ -91,6 +91,12 @@ struct TypeInfo : public PoolElement
         sizeOf     = 0;
     }
 
+    void setConst()
+    {
+        flags |= TYPEINFO_CONST;
+        name = "const " + name;
+    }
+
     static const char* getNakedName(TypeInfo* typeInfo);
 
     uint64_t     flags;

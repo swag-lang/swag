@@ -244,36 +244,20 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
     reserveRegisterRC(context, node->resultRegisterRC, 2);
 
-    if (!isConstExpr || (node->flags & AST_FORCE_STACK))
+    if (!isConstExpr)
     {
         // Must be called only on the real node !
         auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
         // Emit one affectation per child
-        if (!isConstExpr)
+        int      offsetIdx = listNode->storageOffset;
+        uint32_t oneOffset = typeList->childs.front()->sizeOf;
+        for (auto child : job->collectChilds)
         {
-            int      offsetIdx = listNode->storageOffset;
-            uint32_t oneOffset = typeList->childs.front()->sizeOf;
-            for (auto child : job->collectChilds)
-            {
-                emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = offsetIdx;
-                emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
-                offsetIdx += oneOffset;
-                module->freeRegisterRC(child->resultRegisterRC);
-            }
-        }
-        else
-        {
-            RegisterList rl;
-            reserveRegisterRC(context, rl, 3);
-            emitInstruction(context, ByteCodeOp::RARefFromStack, rl[0])->b.u32 = listNode->storageOffset;
-
-            auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, rl[1], rl[2]);
-            inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
-
-            emitInstruction(context, ByteCodeOp::Copy, rl[0], rl[1])->c.u32 = listNode->typeInfo->sizeOf;
-
-            freeRegisterRC(context, rl);
+            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = offsetIdx;
+            emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
+            offsetIdx += oneOffset;
+            module->freeRegisterRC(child->resultRegisterRC);
         }
 
         // Reference to the stack, and store the number of element in a register

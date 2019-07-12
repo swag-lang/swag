@@ -236,17 +236,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
-
-        // If we initialize a slice with a constexpr expression list, we need to reserve a dummy array on the stack, in order
-        // to be able to change the content
-        if (node->typeInfo->kind == TypeInfoKind::Slice && node->astAssignment && node->astAssignment->typeInfo->kind == TypeInfoKind::TypeList)
-        {
-            auto listNode           = CastAst<AstExpressionList>(node->astAssignment, AstNodeKind::ExpressionList);
-            listNode->storageOffset = node->ownerScope->startStackSize;
-            listNode->flags |= AST_FORCE_STACK;
-            node->ownerScope->startStackSize += listNode->typeInfo->sizeOf;
-            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
-        }
     }
 
     // Attributes

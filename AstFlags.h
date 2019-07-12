@@ -12,4 +12,4 @@ static const uint64_t AST_DISABLED           = 0x00000000'00000200;
 static const uint64_t AST_DISABLED_INIT      = 0x00000000'00000400;
 static const uint64_t AST_NO_BYTECODE        = 0x00000000'00000800;
 static const uint64_t AST_L_VALUE            = 0x00000000'00001000;
-static const uint64_t AST_FORCE_STACK        = 0x00000000'00002000;
+
