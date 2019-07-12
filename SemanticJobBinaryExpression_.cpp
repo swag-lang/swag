@@ -933,8 +933,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);
-    left->typeInfo  = TypeManager::flatten(left->typeInfo);
-    right->typeInfo = TypeManager::flatten(right->typeInfo);
+    left->typeInfo  = TypeManager::flattenType(left->typeInfo);
+    right->typeInfo = TypeManager::flattenType(right->typeInfo);
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
 
     node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;

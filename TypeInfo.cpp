@@ -13,7 +13,6 @@ Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
 Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
-Pool<TypeInfoConst>         g_Pool_typeInfoConst;
 Pool<TypeInfoArray>         g_Pool_typeInfoArray;
 Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
 Pool<TypeInfoList>          g_Pool_typeInfoExpressionList;

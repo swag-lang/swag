@@ -108,7 +108,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 return true;
         }
 
-        if (node->astType && TypeManager::unconst(node->astType->typeInfo)->kind != TypeInfoKind::Slice)
+        if (node->astType && node->astType->typeInfo->kind != TypeInfoKind::Slice)
         {
             SWAG_VERIFY(node->astAssignment->typeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, node->astAssignment, "affect not allowed from an array"}));
         }

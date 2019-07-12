@@ -19,7 +19,6 @@ enum class TypeInfoKind
     FuncAttr,
     FuncAttrParam,
     Pointer,
-    Const,
     Array,
     Slice,
     TypeList,
@@ -75,21 +74,13 @@ struct TypeInfo : public PoolElement
         return flags & TYPEINFO_INTEGER;
     }
 
-    void reset()
-    {
-        flags      = 0;
-        nativeType = NativeType::Void;
-        sizeOf     = 0;
-        name.clear();
-    }
-
     static const char* getNakedName(TypeInfo* typeInfo);
 
-    uint64_t     flags;
+    uint64_t     flags = 0;
     TypeInfoKind kind;
-    NativeType   nativeType;
+    NativeType   nativeType = NativeType::Void;
     Utf8         name;
-    int          sizeOf;
+    int          sizeOf = 0;
 };
 
 struct TypeInfoNative : public TypeInfo
@@ -111,31 +102,18 @@ struct TypeInfoNamespace : public TypeInfo
         kind = TypeInfoKind::Namespace;
     }
 
-    void reset() override
-    {
-        scope = nullptr;
-        TypeInfo::reset();
-    }
-
     Scope* scope;
 };
 
 struct TypeInfoEnum : public TypeInfo
 {
+    Scope*    scope;
+    TypeInfo* rawType = nullptr;
+
     TypeInfoEnum()
     {
         kind = TypeInfoKind::Enum;
     }
-
-    void reset() override
-    {
-        scope   = nullptr;
-        rawType = nullptr;
-        TypeInfo::reset();
-    }
-
-    Scope*    scope;
-    TypeInfo* rawType;
 };
 
 struct TypeInfoEnumValue : public TypeInfo
@@ -145,15 +123,8 @@ struct TypeInfoEnumValue : public TypeInfo
         kind = TypeInfoKind::EnumValue;
     }
 
-    void reset() override
-    {
-        scope     = nullptr;
-        enumOwner = nullptr;
-        TypeInfo::reset();
-    }
-
     Scope*        scope;
-    TypeInfoEnum* enumOwner;
+    TypeInfoEnum* enumOwner = nullptr;
 };
 
 struct TypeInfoFuncAttrParam : public TypeInfo
@@ -161,13 +132,6 @@ struct TypeInfoFuncAttrParam : public TypeInfo
     TypeInfoFuncAttrParam()
     {
         kind = TypeInfoKind::FuncAttrParam;
-    }
-
-    void reset() override
-    {
-        typeInfo = nullptr;
-        index    = 0;
-        TypeInfo::reset();
     }
 
     Utf8      name;
@@ -199,14 +163,6 @@ struct TypeInfoFuncAttr : public TypeInfo
         kind = TypeInfoKind::FuncAttr;
     }
 
-    void reset() override
-    {
-        firstDefaultValueIdx = -1;
-        parameters.clear();
-        returnType = nullptr;
-        TypeInfo::reset();
-    }
-
     void match(SymbolMatchContext& context);
     bool isSame(TypeInfoFuncAttr* from);
     bool isSame(TypeInfo* from) override;
@@ -221,13 +177,6 @@ struct TypeInfoPointer : public TypeInfo
     TypeInfoPointer()
     {
         kind = TypeInfoKind::Pointer;
-    }
-
-    void reset() override
-    {
-        pointedType = nullptr;
-        ptrCount    = 0;
-        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
@@ -254,42 +203,11 @@ struct TypeInfoPointer : public TypeInfo
     uint32_t  ptrCount;
 };
 
-struct TypeInfoConst : public TypeInfo
-{
-    TypeInfoConst()
-    {
-        kind = TypeInfoKind::Const;
-    }
-
-    void reset() override
-    {
-        pointedType = nullptr;
-        TypeInfo::reset();
-    }
-
-    bool isSame(TypeInfo* from) override
-    {
-        if (kind != from->kind)
-            return false;
-        auto castedFrom = static_cast<TypeInfoConst*>(from);
-        return pointedType->isSame(castedFrom->pointedType);
-    }
-
-    TypeInfo* pointedType;
-};
-
 struct TypeInfoArray : public TypeInfo
 {
     TypeInfoArray()
     {
         kind = TypeInfoKind::Array;
-    }
-
-    void reset() override
-    {
-        pointedType = nullptr;
-        count       = 0;
-        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
@@ -313,12 +231,6 @@ struct TypeInfoSlice : public TypeInfo
         kind = TypeInfoKind::Slice;
     }
 
-    void reset() override
-    {
-        pointedType = nullptr;
-        TypeInfo::reset();
-    }
-
     bool isSame(TypeInfo* from) override
     {
         if (kind != from->kind)
@@ -337,10 +249,9 @@ struct TypeInfoList : public TypeInfo
         kind = TypeInfoKind::TypeList;
     }
 
-    void reset() override
+    void reset()
     {
         childs.clear();
-        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
@@ -350,8 +261,7 @@ struct TypeInfoList : public TypeInfo
         auto other = static_cast<TypeInfoList*>(from);
         if (childs.size() != other->childs.size())
             return false;
-        auto size = childs.size();
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < childs.size(); i++)
         {
             if (!childs[i]->isSame(other->childs[i]))
                 return false;
@@ -371,5 +281,4 @@ extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 extern Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
 extern Pool<TypeInfoArray>         g_Pool_typeInfoArray;
 extern Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
-extern Pool<TypeInfoConst>         g_Pool_typeInfoConst;
 extern Pool<TypeInfoList>          g_Pool_typeInfoExpressionList;

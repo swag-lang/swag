@@ -38,7 +38,7 @@ enum class AstNodeKind
     Module,
     File,
     VarDecl,
-    ConstDecl,
+	ConstDecl,
     TypeDecl,
     IdentifierRef,
     Identifier,
@@ -70,7 +70,7 @@ enum class AstNodeKind
     IntrinsicProp,
     Index,
     Cast,
-    TypeList,
+	TypeList,
     SingleOp,
     MakePointer,
     BinaryOp,
@@ -393,7 +393,6 @@ struct AstType : public AstNode
         ptrCount       = 0;
         arrayDim       = 0;
         isSlice        = false;
-        isConst        = false;
         typeExpression = nullptr;
     }
 
@@ -401,7 +400,6 @@ struct AstType : public AstNode
     int      ptrCount;
     int      arrayDim;
     bool     isSlice;
-    bool     isConst;
 };
 
 struct AstPointerDeRef : public AstNode

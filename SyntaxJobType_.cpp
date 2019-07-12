@@ -43,14 +43,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-	// This is a const type
-    node->isConst = false;
-    if (token.id == TokenId::KwdConst)
-    {
-        node->isConst = true;
-        SWAG_CHECK(tokenizer.getToken(token));
-    }
-
     // Array
     node->arrayDim = 0;
     if (token.id == TokenId::SymLeftSquare)
@@ -91,7 +83,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    // Type
     if (token.id == TokenId::NativeType)
     {
         node->token = move(token);
@@ -151,7 +142,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doTemplateTypes(node));
 
-    auto typeList = node->childs.front();
+	auto typeList = node->childs.front();
     if (typeList->childs.size() > 1)
         return sourceFile->report({sourceFile, typeList->childs[1], "a cast cannot have more than one type"});
 
