@@ -74,13 +74,20 @@ struct TypeInfo : public PoolElement
         return flags & TYPEINFO_INTEGER;
     }
 
+    void reset() override
+    {
+        flags      = 0;
+        nativeType = NativeType::Void;
+        sizeOf     = 0;
+    }
+
     static const char* getNakedName(TypeInfo* typeInfo);
 
-    uint64_t     flags = 0;
+    uint64_t     flags;
     TypeInfoKind kind;
-    NativeType   nativeType = NativeType::Void;
+    NativeType   nativeType;
     Utf8         name;
-    int          sizeOf = 0;
+    int          sizeOf;
 };
 
 struct TypeInfoNative : public TypeInfo
@@ -102,18 +109,31 @@ struct TypeInfoNamespace : public TypeInfo
         kind = TypeInfoKind::Namespace;
     }
 
+    void reset() override
+    {
+        scope = nullptr;
+        TypeInfo::reset();
+    }
+
     Scope* scope;
 };
 
 struct TypeInfoEnum : public TypeInfo
 {
-    Scope*    scope;
-    TypeInfo* rawType = nullptr;
-
     TypeInfoEnum()
     {
         kind = TypeInfoKind::Enum;
     }
+
+    void reset() override
+    {
+        scope   = nullptr;
+        rawType = nullptr;
+        TypeInfo::reset();
+    }
+
+    Scope*    scope;
+    TypeInfo* rawType;
 };
 
 struct TypeInfoEnumValue : public TypeInfo
@@ -123,8 +143,15 @@ struct TypeInfoEnumValue : public TypeInfo
         kind = TypeInfoKind::EnumValue;
     }
 
+    void reset() override
+    {
+        scope     = nullptr;
+        enumOwner = nullptr;
+        TypeInfo::reset();
+    }
+
     Scope*        scope;
-    TypeInfoEnum* enumOwner = nullptr;
+    TypeInfoEnum* enumOwner;
 };
 
 struct TypeInfoFuncAttrParam : public TypeInfo
@@ -132,6 +159,13 @@ struct TypeInfoFuncAttrParam : public TypeInfo
     TypeInfoFuncAttrParam()
     {
         kind = TypeInfoKind::FuncAttrParam;
+    }
+
+    void reset() override
+    {
+        typeInfo = nullptr;
+        index    = 0;
+        TypeInfo::reset();
     }
 
     Utf8      name;
@@ -163,11 +197,19 @@ struct TypeInfoFuncAttr : public TypeInfo
         kind = TypeInfoKind::FuncAttr;
     }
 
+    void reset() override
+    {
+        firstDefaultValueIdx = -1;
+        parameters.clear();
+        returnType = nullptr;
+        TypeInfo::reset();
+    }
+
     void match(SymbolMatchContext& context);
     bool isSame(TypeInfoFuncAttr* from);
     bool isSame(TypeInfo* from) override;
 
-    int                            firstDefaultValueIdx = -1;
+    int                            firstDefaultValueIdx;
     vector<TypeInfoFuncAttrParam*> parameters;
     TypeInfo*                      returnType;
 };
@@ -199,6 +241,13 @@ struct TypeInfoPointer : public TypeInfo
         return size;
     }
 
+    void reset() override
+    {
+        pointedType = nullptr;
+        ptrCount    = 0;
+        TypeInfo::reset();
+    }
+
     TypeInfo* pointedType;
     uint32_t  ptrCount;
 };
@@ -220,6 +269,13 @@ struct TypeInfoArray : public TypeInfo
         return pointedType->isSame(castedFrom->pointedType);
     }
 
+    void reset() override
+    {
+        pointedType = nullptr;
+        count       = 0;
+        TypeInfo::reset();
+    }
+
     TypeInfo* pointedType;
     uint32_t  count;
 };
@@ -229,6 +285,12 @@ struct TypeInfoSlice : public TypeInfo
     TypeInfoSlice()
     {
         kind = TypeInfoKind::Slice;
+    }
+
+    void reset() override
+    {
+        pointedType = nullptr;
+        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
@@ -252,6 +314,7 @@ struct TypeInfoList : public TypeInfo
     void reset()
     {
         childs.clear();
+        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
