@@ -32,7 +32,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 
 bool TypeInfoFuncAttr::isSame(TypeInfo* from)
 {
-    if (kind != from->kind)
+    if (!TypeInfo::isSame(from))
         return false;
     auto fromFunc = CastTypeInfo<TypeInfoFuncAttr>(from, TypeInfoKind::FuncAttr);
     return isSame(fromFunc);

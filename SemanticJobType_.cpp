@@ -43,7 +43,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrType->pointedType = node->typeInfo;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->name        = "*" + node->typeInfo->name;
-        node->typeInfo       = g_TypeMgr.registerType(ptrType);
+        if (node->isConst)
+            ptrType->flags |= TYPEINFO_CONST;
+        node->typeInfo = g_TypeMgr.registerType(ptrType);
     }
 
     // In fact, this is an array
@@ -58,7 +60,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrArray->pointedType = node->typeInfo;
             ptrArray->name        = format("[] %s", node->typeInfo->name.c_str());
             ptrArray->sizeOf      = 0;
-            node->typeInfo        = g_TypeMgr.registerType(ptrArray);
+            if (node->isConst)
+                ptrArray->flags |= TYPEINFO_CONST;
+            node->typeInfo = g_TypeMgr.registerType(ptrArray);
         }
         else
         {
@@ -75,7 +79,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 ptrArray->pointedType = node->typeInfo;
                 ptrArray->name        = format("[%d] %s", child->computedValue.reg.u32, node->typeInfo->name.c_str());
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
-                node->typeInfo        = g_TypeMgr.registerType(ptrArray);
+                if (node->isConst)
+                    ptrArray->flags |= TYPEINFO_CONST;
+                node->typeInfo = g_TypeMgr.registerType(ptrArray);
             }
         }
     }
@@ -85,7 +91,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrSlice->pointedType = node->typeInfo;
         ptrSlice->name        = format("[..] %s", node->typeInfo->name.c_str());
         ptrSlice->sizeOf      = 2 * sizeof(void*);
-        node->typeInfo        = g_TypeMgr.registerType(ptrSlice);
+        if (node->isConst)
+            ptrSlice->flags |= TYPEINFO_CONST;
+        node->typeInfo = g_TypeMgr.registerType(ptrSlice);
     }
 
     return true;

@@ -56,12 +56,17 @@ static const uint64_t TYPEINFO_ATTRIBUTE_VAR  = 0x00000000'00000002;
 static const uint64_t TYPEINFO_INTEGER        = 0x00000000'00000004;
 static const uint64_t TYPEINFO_FLOAT          = 0x00000000'00000008;
 static const uint64_t TYPEINFO_UNSIGNED       = 0x00000000'00000010;
+static const uint64_t TYPEINFO_CONST          = 0x00000000'00000020;
 
 struct TypeInfo : public PoolElement
 {
     virtual bool isSame(TypeInfo* from)
     {
-        return this == from;
+        if (kind != from->kind)
+            return false;
+        if (isConst() != from->isConst())
+            return false;
+        return true;
     }
 
     bool isNative(NativeType native)
@@ -72,6 +77,11 @@ struct TypeInfo : public PoolElement
     bool isNativeInteger()
     {
         return flags & TYPEINFO_INTEGER;
+    }
+
+    bool isConst()
+    {
+        return flags & TYPEINFO_CONST;
     }
 
     void reset() override
@@ -99,6 +109,11 @@ struct TypeInfoNative : public TypeInfo
         name       = tname;
         sizeOf     = sof;
         flags      = fl;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        return this == from;
     }
 };
 
@@ -130,6 +145,14 @@ struct TypeInfoEnum : public TypeInfo
         scope   = nullptr;
         rawType = nullptr;
         TypeInfo::reset();
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (!TypeInfo::isSame(from))
+            return false;
+        auto castedFrom = static_cast<TypeInfoEnum*>(from);
+        return rawType->isSame(castedFrom->rawType);
     }
 
     Scope*    scope;
@@ -166,6 +189,14 @@ struct TypeInfoFuncAttrParam : public TypeInfo
         typeInfo = nullptr;
         index    = 0;
         TypeInfo::reset();
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (!TypeInfo::isSame(from))
+            return false;
+        auto castedFrom = static_cast<TypeInfoFuncAttrParam*>(from);
+        return typeInfo->isSame(castedFrom->typeInfo);
     }
 
     Utf8      name;
@@ -223,7 +254,7 @@ struct TypeInfoPointer : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
-        if (kind != from->kind)
+        if (!TypeInfo::isSame(from))
             return false;
         auto castedFrom = static_cast<TypeInfoPointer*>(from);
         if (ptrCount != castedFrom->ptrCount)
@@ -261,7 +292,7 @@ struct TypeInfoArray : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
-        if (kind != from->kind)
+        if (!TypeInfo::isSame(from))
             return false;
         auto castedFrom = static_cast<TypeInfoArray*>(from);
         if (count != castedFrom->count)
@@ -295,7 +326,7 @@ struct TypeInfoSlice : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
-        if (kind != from->kind)
+        if (!TypeInfo::isSame(from))
             return false;
         auto castedFrom = static_cast<TypeInfoSlice*>(from);
         return pointedType->isSame(castedFrom->pointedType);
@@ -319,7 +350,7 @@ struct TypeInfoList : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
-        if (kind != from->kind)
+        if (!TypeInfo::isSame(from))
             return false;
         auto other = static_cast<TypeInfoList*>(from);
         if (childs.size() != other->childs.size())
