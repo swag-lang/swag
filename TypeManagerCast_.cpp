@@ -840,8 +840,8 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
 {
     if (castFlags & CASTFLAG_FLATTEN)
     {
-        toType   = TypeManager::flattenType(toType);
-        fromType = TypeManager::flattenType(fromType);
+        toType   = TypeManager::flatten(toType);
+        fromType = TypeManager::flatten(fromType);
     }
 
     SWAG_ASSERT(toType && fromType);

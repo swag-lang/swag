@@ -37,7 +37,8 @@ struct TypeManager
 
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);
-    static TypeInfo* flattenType(TypeInfo* typeInfo);
+    static TypeInfo* flatten(TypeInfo* typeInfo);
+    static TypeInfo* unconst(TypeInfo* typeInfo);
     static TypeInfo* concreteType(TypeInfo* typeInfo);
 
     TypeInfo* registerType(TypeInfo* typeInfo);

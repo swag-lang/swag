@@ -136,11 +136,18 @@ void TypeManager::setup()
     promoteMatrix[(int) NativeType::F64][(int) NativeType::F64] = typeInfoF64;
 }
 
-TypeInfo* TypeManager::flattenType(TypeInfo* typeInfo)
+TypeInfo* TypeManager::flatten(TypeInfo* typeInfo)
 {
     if (typeInfo->kind != TypeInfoKind::Enum)
         return typeInfo;
     return static_cast<TypeInfoEnum*>(typeInfo)->rawType;
+}
+
+TypeInfo* TypeManager::unconst(TypeInfo* typeInfo)
+{
+    if (typeInfo->kind != TypeInfoKind::Const)
+        return typeInfo;
+    return static_cast<TypeInfoConst*>(typeInfo)->pointedType;
 }
 
 TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo)
@@ -161,6 +168,10 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo)
 TypeInfo* TypeManager::registerType(TypeInfo* newTypeInfo)
 {
     scoped_lock lk(mutexTypes);
+
+	if (newTypeInfo->kind == TypeInfoKind::Native)
+        return newTypeInfo;
+
     for (auto typeInfo : allTypes)
     {
         if (typeInfo->isSame(newTypeInfo))
