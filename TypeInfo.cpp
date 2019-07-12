@@ -15,7 +15,8 @@ Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
 Pool<TypeInfoArray>         g_Pool_typeInfoArray;
 Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
-Pool<TypeInfoList>          g_Pool_typeInfoExpressionList;
+Pool<TypeInfoList>          g_Pool_typeInfoList;
+Pool<TypeInfoNative>        g_Pool_typeInfoNative;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
@@ -107,4 +108,109 @@ const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
     }
 
     return "type";
+}
+
+TypeInfo* TypeInfoNative::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoNative.alloc();
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoNamespace::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoNamespace.alloc();
+    auto other   = static_cast<TypeInfoNamespace*>(from);
+
+    newType->scope = other->scope;
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoEnum::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoEnum.alloc();
+    auto other   = static_cast<TypeInfoEnum*>(from);
+
+    newType->scope   = other->scope;
+    newType->rawType = other->rawType;
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoEnumValue::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoEnumValue.alloc();
+    auto other   = static_cast<TypeInfoEnumValue*>(from);
+
+    newType->scope     = other->scope;
+    newType->enumOwner = other->enumOwner;
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoFuncAttrParam::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoFuncAttrParam.alloc();
+    auto other   = static_cast<TypeInfoFuncAttrParam*>(from);
+
+    newType->namedParam = other->namedParam;
+    newType->typeInfo   = other->typeInfo;
+    newType->index      = other->index;
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoFuncAttr::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoFuncAttr.alloc();
+    auto other   = static_cast<TypeInfoFuncAttr*>(from);
+
+    newType->firstDefaultValueIdx = other->firstDefaultValueIdx;
+    newType->parameters           = other->parameters;
+    newType->returnType           = other->returnType;
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoPointer::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoPointer.alloc();
+    auto other   = static_cast<TypeInfoPointer*>(from);
+
+    newType->pointedType = other->pointedType;
+    newType->ptrCount    = other->ptrCount;
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoArray::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoArray.alloc();
+    auto other   = static_cast<TypeInfoArray*>(from);
+
+    newType->pointedType = other->pointedType;
+    newType->count       = other->count;
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoSlice::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoSlice.alloc();
+    auto other   = static_cast<TypeInfoSlice*>(from);
+
+    newType->pointedType = other->pointedType;
+    newType->copyFrom(from);
+    return newType;
+}
+
+TypeInfo* TypeInfoList::clone(TypeInfo* from)
+{
+    auto newType = g_Pool_typeInfoList.alloc();
+    auto other   = static_cast<TypeInfoList*>(from);
+
+    newType->childs = other->childs;
+    newType->copyFrom(from);
+    return newType;
 }

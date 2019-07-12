@@ -24,7 +24,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 bool SemanticJob::resolveExpressionList(SemanticContext* context)
 {
     auto node      = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-    auto typeInfo  = g_Pool_typeInfoExpressionList.alloc();
+    auto typeInfo  = g_Pool_typeInfoList.alloc();
     typeInfo->name = "<type list>";
 
     node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;

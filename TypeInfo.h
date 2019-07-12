@@ -97,6 +97,17 @@ struct TypeInfo : public PoolElement
         name = "const " + name;
     }
 
+    virtual TypeInfo* clone(TypeInfo* from) = 0;
+
+    void copyFrom(TypeInfo* from)
+    {
+        flags      = from->flags;
+        kind       = from->kind;
+        nativeType = from->nativeType;
+        name       = from->name;
+        sizeOf     = from->sizeOf;
+    }
+
     static const char* getNakedName(TypeInfo* typeInfo);
 
     uint64_t     flags;
@@ -108,6 +119,11 @@ struct TypeInfo : public PoolElement
 
 struct TypeInfoNative : public TypeInfo
 {
+    TypeInfoNative()
+    {
+        kind = TypeInfoKind::Native;
+    }
+
     TypeInfoNative(NativeType type, const char* tname, int sof, uint64_t fl)
     {
         kind       = TypeInfoKind::Native;
@@ -121,6 +137,8 @@ struct TypeInfoNative : public TypeInfo
     {
         return this == from;
     }
+
+    TypeInfo* clone(TypeInfo* from) override;
 };
 
 struct TypeInfoNamespace : public TypeInfo
@@ -135,6 +153,8 @@ struct TypeInfoNamespace : public TypeInfo
         scope = nullptr;
         TypeInfo::reset();
     }
+
+    TypeInfo* clone(TypeInfo* from) override;
 
     Scope* scope;
 };
@@ -161,6 +181,8 @@ struct TypeInfoEnum : public TypeInfo
         return rawType->isSame(castedFrom->rawType);
     }
 
+    TypeInfo* clone(TypeInfo* from) override;
+
     Scope*    scope;
     TypeInfo* rawType;
 };
@@ -178,6 +200,8 @@ struct TypeInfoEnumValue : public TypeInfo
         enumOwner = nullptr;
         TypeInfo::reset();
     }
+
+    TypeInfo* clone(TypeInfo* from) override;
 
     Scope*        scope;
     TypeInfoEnum* enumOwner;
@@ -205,7 +229,9 @@ struct TypeInfoFuncAttrParam : public TypeInfo
         return typeInfo->isSame(castedFrom->typeInfo);
     }
 
-    Utf8      name;
+    TypeInfo* clone(TypeInfo* from) override;
+
+    Utf8      namedParam;
     TypeInfo* typeInfo;
     int       index;
 };
@@ -242,6 +268,8 @@ struct TypeInfoFuncAttr : public TypeInfo
         TypeInfo::reset();
     }
 
+    TypeInfo* clone(TypeInfo* from) override;
+
     void match(SymbolMatchContext& context);
     bool isSame(TypeInfoFuncAttr* from);
     bool isSame(TypeInfo* from) override;
@@ -258,6 +286,13 @@ struct TypeInfoPointer : public TypeInfo
         kind = TypeInfoKind::Pointer;
     }
 
+    void reset() override
+    {
+        pointedType = nullptr;
+        ptrCount    = 0;
+        TypeInfo::reset();
+    }
+
     bool isSame(TypeInfo* from) override
     {
         if (!TypeInfo::isSame(from))
@@ -268,6 +303,8 @@ struct TypeInfoPointer : public TypeInfo
         return pointedType->isSame(castedFrom->pointedType);
     }
 
+    TypeInfo* clone(TypeInfo* from) override;
+
     uint32_t sizeOfPointedBy()
     {
         int size;
@@ -276,13 +313,6 @@ struct TypeInfoPointer : public TypeInfo
         else
             size = sizeof(void*);
         return size;
-    }
-
-    void reset() override
-    {
-        pointedType = nullptr;
-        ptrCount    = 0;
-        TypeInfo::reset();
     }
 
     TypeInfo* pointedType;
@@ -296,6 +326,13 @@ struct TypeInfoArray : public TypeInfo
         kind = TypeInfoKind::Array;
     }
 
+    void reset() override
+    {
+        pointedType = nullptr;
+        count       = 0;
+        TypeInfo::reset();
+    }
+
     bool isSame(TypeInfo* from) override
     {
         if (!TypeInfo::isSame(from))
@@ -306,12 +343,7 @@ struct TypeInfoArray : public TypeInfo
         return pointedType->isSame(castedFrom->pointedType);
     }
 
-    void reset() override
-    {
-        pointedType = nullptr;
-        count       = 0;
-        TypeInfo::reset();
-    }
+    TypeInfo* clone(TypeInfo* from) override;
 
     TypeInfo* pointedType;
     uint32_t  count;
@@ -337,6 +369,8 @@ struct TypeInfoSlice : public TypeInfo
         auto castedFrom = static_cast<TypeInfoSlice*>(from);
         return pointedType->isSame(castedFrom->pointedType);
     }
+
+    TypeInfo* clone(TypeInfo* from) override;
 
     TypeInfo* pointedType;
 };
@@ -370,6 +404,8 @@ struct TypeInfoList : public TypeInfo
         return true;
     }
 
+    TypeInfo* clone(TypeInfo* from) override;
+
     vector<TypeInfo*> childs;
 };
 
@@ -381,4 +417,5 @@ extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 extern Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
 extern Pool<TypeInfoArray>         g_Pool_typeInfoArray;
 extern Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
-extern Pool<TypeInfoList>          g_Pool_typeInfoExpressionList;
+extern Pool<TypeInfoList>          g_Pool_typeInfoList;
+extern Pool<TypeInfoNative>        g_Pool_typeInfoNative;
