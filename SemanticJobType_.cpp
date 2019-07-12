@@ -58,7 +58,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrArray->pointedType = node->typeInfo;
             ptrArray->name        = format("[] %s", node->typeInfo->name.c_str());
             ptrArray->sizeOf      = 0;
-            node->typeInfo        = ptrArray;
+            node->typeInfo        = g_TypeMgr.registerType(ptrArray);
         }
         else
         {
@@ -75,7 +75,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 ptrArray->pointedType = node->typeInfo;
                 ptrArray->name        = format("[%d] %s", child->computedValue.reg.u32, node->typeInfo->name.c_str());
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
-                node->typeInfo        = ptrArray;
+                node->typeInfo        = g_TypeMgr.registerType(ptrArray);
             }
         }
     }
@@ -85,7 +85,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrSlice->pointedType = node->typeInfo;
         ptrSlice->name        = format("[..] %s", node->typeInfo->name.c_str());
         ptrSlice->sizeOf      = 2 * sizeof(void*);
-        node->typeInfo        = ptrSlice;
+        node->typeInfo        = g_TypeMgr.registerType(ptrSlice);
     }
 
     return true;
