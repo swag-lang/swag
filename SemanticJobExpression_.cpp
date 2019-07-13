@@ -39,7 +39,10 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
     }
 
     node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
-    node->typeInfo    = g_TypeMgr.registerType(typeInfo);
+
+    if (node->flags & AST_CONST_EXPR)
+        typeInfo->setConst();
+    node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
     // Reserve
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
@@ -189,7 +192,10 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
     arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
 
-    auto arrayType = arrayNode->array->typeInfo;
+    auto arrayType  = arrayNode->array->typeInfo;
+    auto sourceFile = context->sourceFile;
+    SWAG_VERIFY(!arrayType->isConst(), sourceFile->report({sourceFile, arrayNode->array, format("type '%s' is constant and cannot be referenced", arrayType->name.c_str())}));
+
     switch (arrayType->kind)
     {
     case TypeInfoKind::Pointer:
@@ -217,7 +223,6 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
     }
     default:
     {
-        auto sourceFile = context->sourceFile;
         return sourceFile->report({sourceFile, arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
     }
     }

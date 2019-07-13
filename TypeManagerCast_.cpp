@@ -820,17 +820,17 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
     }
     else if (fromType->kind == TypeInfoKind::Slice)
     {
-		if (castFlags & CASTFLAG_FORCE)
-		{
-			auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
-			if (fromTypeSlice->pointedType->kind == TypeInfoKind::Native)
-			{
-				int s = toTypeSlice->pointedType->sizeOf;
-				int d = fromTypeSlice->pointedType->sizeOf;
-				if ((d / s) * s == d)
-					return true;
-			}
-		}
+        if (castFlags & CASTFLAG_FORCE)
+        {
+            auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
+            if (fromTypeSlice->pointedType->kind == TypeInfoKind::Native)
+            {
+                int s = toTypeSlice->pointedType->sizeOf;
+                int d = fromTypeSlice->pointedType->sizeOf;
+                if ((d / s) * s == d)
+                    return true;
+            }
+        }
     }
 
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
@@ -865,6 +865,13 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
         return true;
     if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeType::String))
         return true;
+
+    // Const
+    if (!toType->isConst() && fromType->isConst())
+    {
+		if(toType->kind != TypeInfoKind::Array)
+			return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
+    }
 
     // Cast to native type
     if (toType->kind == TypeInfoKind::Native)

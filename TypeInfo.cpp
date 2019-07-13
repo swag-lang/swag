@@ -110,107 +110,98 @@ const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
     return "type";
 }
 
-TypeInfo* TypeInfoNative::clone(TypeInfo* from)
+TypeInfo* TypeInfoNative::clone()
 {
     auto newType = g_Pool_typeInfoNative.alloc();
-    newType->copyFrom(from);
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoNamespace::clone(TypeInfo* from)
+TypeInfo* TypeInfoNamespace::clone()
 {
     auto newType = g_Pool_typeInfoNamespace.alloc();
-    auto other   = static_cast<TypeInfoNamespace*>(from);
 
-    newType->scope = other->scope;
-    newType->copyFrom(from);
+    newType->scope = this->scope;
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoEnum::clone(TypeInfo* from)
+TypeInfo* TypeInfoEnum::clone()
 {
     auto newType = g_Pool_typeInfoEnum.alloc();
-    auto other   = static_cast<TypeInfoEnum*>(from);
 
-    newType->scope   = other->scope;
-    newType->rawType = other->rawType;
-    newType->copyFrom(from);
+    newType->scope   = this->scope;
+    newType->rawType = this->rawType;
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoEnumValue::clone(TypeInfo* from)
+TypeInfo* TypeInfoEnumValue::clone()
 {
     auto newType = g_Pool_typeInfoEnumValue.alloc();
-    auto other   = static_cast<TypeInfoEnumValue*>(from);
 
-    newType->scope     = other->scope;
-    newType->enumOwner = other->enumOwner;
-    newType->copyFrom(from);
+    newType->scope     = this->scope;
+    newType->enumOwner = this->enumOwner;
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoFuncAttrParam::clone(TypeInfo* from)
+TypeInfo* TypeInfoFuncAttrParam::clone()
 {
     auto newType = g_Pool_typeInfoFuncAttrParam.alloc();
-    auto other   = static_cast<TypeInfoFuncAttrParam*>(from);
 
-    newType->namedParam = other->namedParam;
-    newType->typeInfo   = other->typeInfo;
-    newType->index      = other->index;
-    newType->copyFrom(from);
+    newType->namedParam = this->namedParam;
+    newType->typeInfo   = this->typeInfo;
+    newType->index      = this->index;
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoFuncAttr::clone(TypeInfo* from)
+TypeInfo* TypeInfoFuncAttr::clone()
 {
     auto newType = g_Pool_typeInfoFuncAttr.alloc();
-    auto other   = static_cast<TypeInfoFuncAttr*>(from);
 
-    newType->firstDefaultValueIdx = other->firstDefaultValueIdx;
-    newType->parameters           = other->parameters;
-    newType->returnType           = other->returnType;
-    newType->copyFrom(from);
+    newType->firstDefaultValueIdx = this->firstDefaultValueIdx;
+    newType->parameters           = this->parameters;
+    newType->returnType           = this->returnType;
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoPointer::clone(TypeInfo* from)
+TypeInfo* TypeInfoPointer::clone()
 {
     auto newType = g_Pool_typeInfoPointer.alloc();
-    auto other   = static_cast<TypeInfoPointer*>(from);
 
-    newType->pointedType = other->pointedType;
-    newType->ptrCount    = other->ptrCount;
-    newType->copyFrom(from);
+    newType->pointedType = this->pointedType;
+    newType->ptrCount    = this->ptrCount;
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoArray::clone(TypeInfo* from)
+TypeInfo* TypeInfoArray::clone()
 {
     auto newType = g_Pool_typeInfoArray.alloc();
-    auto other   = static_cast<TypeInfoArray*>(from);
 
-    newType->pointedType = other->pointedType;
-    newType->count       = other->count;
-    newType->copyFrom(from);
+    newType->pointedType = this->pointedType;
+    newType->count       = this->count;
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoSlice::clone(TypeInfo* from)
+TypeInfo* TypeInfoSlice::clone()
 {
     auto newType = g_Pool_typeInfoSlice.alloc();
-    auto other   = static_cast<TypeInfoSlice*>(from);
 
-    newType->pointedType = other->pointedType;
-    newType->copyFrom(from);
+    newType->pointedType = this->pointedType;
+    newType->copyFrom(this);
     return newType;
 }
 
-TypeInfo* TypeInfoList::clone(TypeInfo* from)
+TypeInfo* TypeInfoList::clone()
 {
     auto newType = g_Pool_typeInfoList.alloc();
-    auto other   = static_cast<TypeInfoList*>(from);
 
-    newType->childs = other->childs;
-    newType->copyFrom(from);
+    newType->childs = this->childs;
+    newType->copyFrom(this);
     return newType;
 }

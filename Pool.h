@@ -1,4 +1,6 @@
 #pragma once
+#include "SpinLock.h"
+
 struct IPool
 {
     virtual void free(void* addr) = 0;
@@ -38,7 +40,7 @@ struct Pool : public IPool
 {
     T* alloc()
     {
-        lock_guard<mutex> lg(mutexBucket);
+        scoped_lock lk(mutexBucket);
         if (firstFreeElem)
         {
             auto cur      = firstFreeElem;
@@ -74,7 +76,7 @@ struct Pool : public IPool
 
     void free(void* addr)
     {
-        lock_guard<mutex> lg(mutexBucket);
+        scoped_lock lk(mutexBucket);
         ((T*) addr)->nextFree = firstFreeElem;
         firstFreeElem         = ((T*) addr);
     }
@@ -82,5 +84,5 @@ struct Pool : public IPool
     PoolSlot<T, S>* rootBucket    = nullptr;
     PoolSlot<T, S>* lastBucket    = nullptr;
     PoolElement*    firstFreeElem = nullptr;
-    mutex           mutexBucket;
+    SpinLock        mutexBucket;
 };

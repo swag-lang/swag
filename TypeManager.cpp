@@ -165,11 +165,13 @@ TypeInfo* TypeManager::registerType(TypeInfo* newTypeInfo)
     {
         if (typeInfo->isSame(newTypeInfo))
         {
-            newTypeInfo->release();
+            if ((newTypeInfo != typeInfo) && !(newTypeInfo->flags & TYPEINFO_IN_MANAGER))
+                newTypeInfo->release();
             return typeInfo;
         }
     }
 
+    newTypeInfo->flags |= TYPEINFO_IN_MANAGER;
     allTypes.push_back(newTypeInfo);
     return newTypeInfo;
 }

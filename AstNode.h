@@ -269,10 +269,10 @@ struct AstFuncDecl : public AstNode
 {
     void reset() override
     {
+        stackSize  = 0;
         parameters = nullptr;
         returnType = nullptr;
         content    = nullptr;
-        stackSize  = 0;
         dependentJobs.clear();
         AstNode::reset();
     }
@@ -299,8 +299,8 @@ struct AstAttrUse : public AstNode
 {
     void reset() override
     {
-        AstNode::reset();
         values.clear();
+        AstNode::reset();
     }
 
     map<string, ComputedValue> values;
@@ -316,10 +316,10 @@ struct AstIf : public AstNode
 {
     void reset() override
     {
-        AstNode::reset();
         boolExpression = nullptr;
         ifBlock        = nullptr;
         elseBlock      = nullptr;
+        AstNode::reset();
     }
 
     AstNode* boolExpression;
@@ -339,9 +339,12 @@ struct AstBreakable : public AstNode
 {
     void reset() override
     {
-        AstNode::reset();
-        parentBreakable = nullptr;
         needIndex       = false;
+        registerIndex   = 0;
+        parentBreakable = nullptr;
+		breakList.clear();
+        continueList.clear();
+        AstNode::reset();
     }
 
     bool                      needIndex;
@@ -355,9 +358,9 @@ struct AstWhile : public AstBreakable
 {
     void reset() override
     {
-        AstBreakable::reset();
         boolExpression = nullptr;
         block          = nullptr;
+        AstBreakable::reset();
     }
 
     AstNode* boolExpression;
@@ -372,9 +375,9 @@ struct AstLoop : public AstBreakable
 {
     void reset() override
     {
-        AstBreakable::reset();
         expression = nullptr;
         block      = nullptr;
+        AstBreakable::reset();
     }
 
     AstNode* expression;
@@ -389,12 +392,12 @@ struct AstType : public AstNode
 {
     void reset() override
     {
-        AstNode::reset();
+        typeExpression = nullptr;
         ptrCount       = 0;
         arrayDim       = 0;
         isSlice        = false;
         isConst        = false;
-        typeExpression = nullptr;
+        AstNode::reset();
     }
 
     AstNode* typeExpression;
@@ -408,9 +411,9 @@ struct AstPointerDeRef : public AstNode
 {
     void reset() override
     {
-        AstNode::reset();
         array  = nullptr;
         access = nullptr;
+        AstNode::reset();
     }
 
     AstNode* array;
@@ -421,8 +424,8 @@ struct AstProperty : public AstNode
 {
     void reset() override
     {
-        AstNode::reset();
         expression = nullptr;
+        AstNode::reset();
     }
 
     AstNode* expression;

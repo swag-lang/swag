@@ -170,6 +170,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // A constant does nothing on backend, except if it can't be stored in a register
     if (isConstant)
     {
+		// Set it as const (so this is a new type)
+		auto typeInfo = node->typeInfo->clone();
+		typeInfo->setConst();
+		node->typeInfo = g_TypeMgr.registerType(typeInfo);
+
         node->flags |= AST_NO_BYTECODE;
         if (node->typeInfo->kind != TypeInfoKind::Array)
         {
