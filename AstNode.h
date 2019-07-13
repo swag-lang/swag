@@ -39,6 +39,7 @@ enum class AstNodeKind
     File,
     VarDecl,
     ConstDecl,
+	LetDecl,
     TypeDecl,
     IdentifierRef,
     Identifier,

@@ -82,6 +82,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto node       = static_cast<AstVarDecl*>(context->node);
+
     bool isConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
     uint32_t symbolFlags = 0;
@@ -91,11 +92,18 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if (!isConstant)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
+    if (node->kind == AstNodeKind::LetDecl)
+        symbolFlags |= OVERLOAD_CONST;
 
     // A constant must be initialized
     if (isConstant && !node->astAssignment)
     {
         return sourceFile->report({sourceFile, node, "a constant must be initialized"});
+    }
+
+    if ((symbolFlags & OVERLOAD_CONST) && !node->astAssignment)
+    {
+        return sourceFile->report({sourceFile, node, "a unmutable 'let' variable must be initialized"});
     }
 
     // Value

@@ -8,11 +8,21 @@
 
 bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 {
-    bool isConstant = token.id == TokenId::KwdConst;
-    SWAG_CHECK(tokenizer.getToken(token));
-
     // First variable
-    AstVarDecl* varNode = Ast::newNode(&g_Pool_astVarDecl, isConstant ? AstNodeKind::ConstDecl : AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
+    AstNodeKind kind = AstNodeKind::VarDecl;
+    switch (token.id)
+    {
+    case TokenId::KwdConst:
+        kind = AstNodeKind::ConstDecl;
+        break;
+    case TokenId::KwdLet:
+        kind = AstNodeKind::LetDecl;
+        break;
+    }
+
+	SWAG_CHECK(tokenizer.getToken(token));
+
+    AstVarDecl* varNode = Ast::newNode(&g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
     varNode->inheritOwnersAndFlags(this);
     varNode->semanticFct = SemanticJob::resolveVarDecl;
     if (result)

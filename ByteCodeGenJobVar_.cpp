@@ -8,7 +8,7 @@
 
 bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
+    auto node     = static_cast<AstVarDecl*>(context->node);
     auto resolved = node->resolvedSymbolOverload;
 
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
@@ -29,7 +29,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             // Default initialization
             if (resolved->typeInfo->isNative(NativeType::String))
             {
-				emitInstruction(context, ByteCodeOp::ClearRefFromStackPointer)->a.u32 = resolved->storageOffset;
+                emitInstruction(context, ByteCodeOp::ClearRefFromStackPointer)->a.u32 = resolved->storageOffset;
             }
             else if (resolved->typeInfo->kind == TypeInfoKind::Native)
             {

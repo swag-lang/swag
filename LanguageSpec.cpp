@@ -24,6 +24,7 @@ void LanguageSpec::setup()
     keywords["@prop"]   = TokenId::IntrisicProp;
 
     keywords["var"]       = TokenId::KwdVar;
+    keywords["let"]       = TokenId::KwdLet;
     keywords["const"]     = TokenId::KwdConst;
     keywords["namespace"] = TokenId::KwdNamespace;
     keywords["type"]      = TokenId::KwdType;
