@@ -32,14 +32,26 @@ struct SymbolAttributes
 
 struct SymbolOverload : public PoolElement
 {
+    void reset() override
+    {
+        typeInfo   = nullptr;
+        sourceFile = nullptr;
+        flags      = 0;
+        node       = nullptr;
+        attributes.attributes.clear();
+        attributes.values.clear();
+        storageOffset = UINT32_MAX;
+        storageIndex  = 0;
+    }
+
     TypeInfo*        typeInfo;
     SourceFile*      sourceFile;
     ComputedValue    computedValue;
     uint32_t         flags;
     AstNode*         node;
     SymbolAttributes attributes;
-    uint32_t         storageOffset = UINT32_MAX;
-    uint32_t         storageIndex  = 0;
+    uint32_t         storageOffset;
+    uint32_t         storageIndex;
 };
 
 enum class SymbolKind
