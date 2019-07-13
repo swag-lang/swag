@@ -2,7 +2,7 @@
 //#unittest pass semantic;
 
 //#[swag.printbytecode]
-func a (ptr: [..] s32, cpt: s32)
+func a (ptr: const [..] s32, cpt: s32)
 {
 	@assert(@prop(ptr, count) == cast!u32(cpt));
 }
@@ -10,7 +10,7 @@ func a (ptr: [..] s32, cpt: s32)
 //#[swag.printbytecode]
 #test
 {
-	var slice: [..] s32;
+	var slice: const [..] s32;
 	slice = {1,2,3};
 	a(slice, 3);
 	slice = {1,2,3,4,5,6};
