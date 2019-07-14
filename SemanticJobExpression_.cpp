@@ -9,6 +9,7 @@
 #include "Ast.h"
 #include "LanguageSpec.h"
 #include "Scope.h"
+#include "SymTable.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -164,7 +165,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         auto ptrType      = g_Pool_typeInfoPointer.alloc();
         ptrType->ptrCount = 1;
 
-        // If this is an array, then this is legit, the pointer will pointer to the first
+        // If this is an array, then this is legit, the pointer will address the first
         // element : need to find it's type
         while (typeInfo->kind == TypeInfoKind::Array)
         {
@@ -175,7 +176,12 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         ptrType->pointedType = typeInfo;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->name        = "*" + typeInfo->name;
-        node->typeInfo       = g_TypeMgr.registerType(ptrType);
+
+        // Type is constant if we take address of a readonly variable
+        if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_CONST)
+            ptrType->setConst();
+
+        node->typeInfo = g_TypeMgr.registerType(ptrType);
     }
     else
     {
