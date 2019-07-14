@@ -31,6 +31,30 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveSwitch(SemanticContext* context)
+{
+    auto node                           = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
+    node->typeInfo                      = node->expression->typeInfo;
+    node->byteCodeFct                   = &ByteCodeGenJob::emitSwitch;
+    node->expression->byteCodeBeforeFct = &ByteCodeGenJob::emitSwitchBeforeExpr;
+    node->expression->byteCodeAfterFct  = &ByteCodeGenJob::emitSwitchAfterExpr;
+    return true;
+}
+
+bool SemanticJob::resolveCase(SemanticContext* context)
+{
+    auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+    for (auto oneExpression : node->expressions)
+    {
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->ownerSwitch->expression, oneExpression));
+    }
+
+    node->typeInfo                 = node->ownerSwitch->expression->typeInfo;
+    node->block->byteCodeBeforeFct = &ByteCodeGenJob::emitSwitchCaseBeforeBlock;
+    node->block->byteCodeAfterFct  = &ByteCodeGenJob::emitSwitchCaseAfterBlock;
+    return true;
+}
+
 bool SemanticJob::resolveLoop(SemanticContext* context)
 {
     auto node       = CastAst<AstLoop>(context->node, AstNodeKind::Loop);

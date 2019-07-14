@@ -39,7 +39,7 @@ enum class AstNodeKind
     File,
     VarDecl,
     ConstDecl,
-	LetDecl,
+    LetDecl,
     TypeDecl,
     IdentifierRef,
     Identifier,
@@ -49,6 +49,8 @@ enum class AstNodeKind
     Else,
     While,
     Loop,
+    Switch,
+    SwitchCase,
     Break,
     Continue,
     Statement,
@@ -343,7 +345,7 @@ struct AstBreakable : public AstNode
         needIndex       = false;
         registerIndex   = 0;
         parentBreakable = nullptr;
-		breakList.clear();
+        breakList.clear();
         continueList.clear();
         AstNode::reset();
     }
@@ -387,6 +389,58 @@ struct AstLoop : public AstBreakable
     int seekJumpBeforeExpression;
     int seekJumpExpression;
     int seekJumpAfterBlock;
+};
+
+struct AstSwitch : public AstBreakable
+{
+    void reset() override
+    {
+        expression = nullptr;
+        block      = nullptr;
+        cases.clear();
+        AstBreakable::reset();
+    }
+
+    AstNode*                      expression;
+    AstNode*                      block;
+    vector<struct AstSwitchCase*> cases;
+
+    int seekJumpBeforeExpression;
+    int seekJumpExpression;
+    int seekJumpAfterBlock;
+};
+
+struct AstSwitchCase : public AstNode
+{
+    void reset() override
+    {
+        expressions.clear();
+        block       = nullptr;
+        ownerSwitch = nullptr;
+        isDefault   = false;
+        AstNode::reset();
+    }
+
+    vector<AstNode*> expressions;
+    AstNode*         block;
+    AstSwitch*       ownerSwitch;
+
+    bool isDefault;
+    int  seekJumpBeforeExpression;
+    int  seekJumpExpression;
+    int  seekJumpAfterBlock;
+};
+
+struct AstSwitchCaseBlock : public AstNode
+{
+    void reset() override
+    {
+        ownerCase = nullptr;
+        AstNode::reset();
+    }
+
+    AstSwitchCase* ownerCase;
+    int            seekJumpNextCase;
 };
 
 struct AstType : public AstNode
@@ -438,19 +492,22 @@ struct AstExpressionList : public AstNode
     uint32_t storageOffset;
 };
 
-extern Pool<AstNode>           g_Pool_astNode;
-extern Pool<AstAttrDecl>       g_Pool_astAttrDecl;
-extern Pool<AstAttrUse>        g_Pool_astAttrUse;
-extern Pool<AstVarDecl>        g_Pool_astVarDecl;
-extern Pool<AstFuncDecl>       g_Pool_astFuncDecl;
-extern Pool<AstIdentifier>     g_Pool_astIdentifier;
-extern Pool<AstIdentifierRef>  g_Pool_astIdentifierRef;
-extern Pool<AstFuncCallParam>  g_Pool_astFuncCallParam;
-extern Pool<AstIf>             g_Pool_astIf;
-extern Pool<AstWhile>          g_Pool_astWhile;
-extern Pool<AstLoop>           g_Pool_astLoop;
-extern Pool<AstBreakContinue>  g_Pool_astBreakContinue;
-extern Pool<AstType>           g_Pool_astType;
-extern Pool<AstPointerDeRef>   g_Pool_astPointerDeref;
-extern Pool<AstProperty>       g_Pool_astProperty;
-extern Pool<AstExpressionList> g_Pool_astExpressionList;
+extern Pool<AstNode>            g_Pool_astNode;
+extern Pool<AstAttrDecl>        g_Pool_astAttrDecl;
+extern Pool<AstAttrUse>         g_Pool_astAttrUse;
+extern Pool<AstVarDecl>         g_Pool_astVarDecl;
+extern Pool<AstFuncDecl>        g_Pool_astFuncDecl;
+extern Pool<AstIdentifier>      g_Pool_astIdentifier;
+extern Pool<AstIdentifierRef>   g_Pool_astIdentifierRef;
+extern Pool<AstFuncCallParam>   g_Pool_astFuncCallParam;
+extern Pool<AstIf>              g_Pool_astIf;
+extern Pool<AstWhile>           g_Pool_astWhile;
+extern Pool<AstLoop>            g_Pool_astLoop;
+extern Pool<AstSwitch>          g_Pool_astSwitch;
+extern Pool<AstSwitchCase>      g_Pool_astSwitchCase;
+extern Pool<AstSwitchCaseBlock> g_Pool_astSwitchCaseBlock;
+extern Pool<AstBreakContinue>   g_Pool_astBreakContinue;
+extern Pool<AstType>            g_Pool_astType;
+extern Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
+extern Pool<AstProperty>        g_Pool_astProperty;
+extern Pool<AstExpressionList>  g_Pool_astExpressionList;

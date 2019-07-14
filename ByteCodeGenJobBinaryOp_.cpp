@@ -45,7 +45,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, 
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->sizeOfPointedBy();
-		if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+        if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::IncPointer, r0, r1);
         node->resultRegisterRC = r0;
@@ -91,7 +91,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0,
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->sizeOfPointedBy();
-		if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+        if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.s32 = sizeOf;
         emitInstruction(context, ByteCodeOp::DecPointer, r0, r1);
         node->resultRegisterRC = r0;
@@ -337,11 +337,8 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto node     = context->node;
-    auto left     = node->childs.front();
-    auto right    = node->childs.back();
     auto typeInfo = TypeManager::concreteType(left->typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Native)
@@ -382,6 +379,15 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0
     }
 
     return true;
+}
+
+bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    auto node  = context->node;
+    auto left  = node->childs.front();
+    auto right = node->childs.back();
+    SWAG_CHECK(emitCompareOpEqual(context, left, right, r0, r1, r2));
+	return true;
 }
 
 bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)

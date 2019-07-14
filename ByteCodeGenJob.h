@@ -52,6 +52,7 @@ struct ByteCodeGenJob : public Job
     static bool emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOp(ByteCodeGenContext* context);
+	static bool emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
@@ -82,7 +83,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCastNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
-	static bool emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
+    static bool emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitCast(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitFuncCallParam(ByteCodeGenContext* context);
     static bool emitFuncCallParams(ByteCodeGenContext* context);
@@ -94,8 +95,13 @@ struct ByteCodeGenJob : public Job
     static bool emitWhileBeforeExpr(ByteCodeGenContext* context);
     static bool emitWhileAfterExpr(ByteCodeGenContext* context);
     static bool emitWhileAfterBlock(ByteCodeGenContext* context);
-	static bool emitIndex(ByteCodeGenContext* context);
-	static bool emitLoop(ByteCodeGenContext* context);
+    static bool emitSwitch(ByteCodeGenContext* context);
+    static bool emitSwitchBeforeExpr(ByteCodeGenContext* context);
+    static bool emitSwitchAfterExpr(ByteCodeGenContext* context);
+	static bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);
+	static bool emitSwitchCaseAfterBlock(ByteCodeGenContext* context);
+    static bool emitIndex(ByteCodeGenContext* context);
+    static bool emitLoop(ByteCodeGenContext* context);
     static bool emitLoopAfterExpr(ByteCodeGenContext* context);
     static bool emitLoopAfterBlock(ByteCodeGenContext* context);
     static bool emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo = nullptr);
@@ -126,7 +132,7 @@ struct ByteCodeGenJob : public Job
     vector<AstNode*> nodes;
     vector<Job*>     dependentJobs;
     vector<AstNode*> dependentNodes;
-	vector<AstNode*> collectChilds;
+    vector<AstNode*> collectChilds;
     bool             syncToDependentNodes;
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);

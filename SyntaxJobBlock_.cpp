@@ -52,6 +52,79 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
+{
+    auto switchNode         = Ast::newNode(&g_Pool_astSwitch, AstNodeKind::Switch, sourceFile->indexInModule, parent);
+    switchNode->semanticFct = &SemanticJob::resolveSwitch;
+    switchNode->inheritOwnersAndFlags(this);
+    switchNode->inheritToken(token);
+    if (result)
+        *result = switchNode;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doExpression(switchNode, &switchNode->expression));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+
+    bool hasDefault = false;
+    while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
+    {
+        SWAG_VERIFY(token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, sourceFile->report({sourceFile, token, "'case' or 'default' expression expected"}));
+        bool isDefault = token.id == TokenId::KwdDefault;
+        SWAG_VERIFY(!isDefault || !hasDefault, sourceFile->report({sourceFile, token, "'default' expression already defined"}));
+        if (isDefault)
+            hasDefault = true;
+
+        // One case
+        auto caseNode         = Ast::newNode(&g_Pool_astSwitchCase, AstNodeKind::SwitchCase, sourceFile->indexInModule, switchNode);
+        caseNode->ownerSwitch = switchNode;
+        caseNode->semanticFct = &SemanticJob::resolveCase;
+        caseNode->inheritOwnersAndFlags(this);
+        caseNode->inheritToken(token);
+        switchNode->cases.push_back(caseNode);
+        SWAG_CHECK(tokenizer.getToken(token));
+
+        // Case expressions
+        if (!isDefault)
+        {
+            while (token.id != TokenId::SymColon)
+            {
+                AstNode* expression;
+                SWAG_CHECK(doExpression(caseNode, &expression));
+                caseNode->expressions.push_back(expression);
+                if (token.id != TokenId::SymComma)
+                    break;
+                SWAG_CHECK(eatToken());
+            }
+        }
+
+        if (isDefault)
+        {
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after 'default' expression"));
+        }
+        else
+        {
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after 'case' expression"));
+        }
+
+        // Content
+        auto statement = Ast::newNode(&g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, switchNode);
+        statement->inheritOwnersAndFlags(this);
+		statement->ownerCase = caseNode;
+        caseNode->block = statement;
+
+        // Instructions
+        ScopedBreakable scoped(this, switchNode);
+        while (token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly)
+        {
+            SWAG_CHECK(doEmbeddedInstruction(statement));
+        }
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+
+    return true;
+}
+
 bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(&g_Pool_astLoop, AstNodeKind::Loop, sourceFile->indexInModule, parent);
@@ -101,7 +174,7 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-	SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
 

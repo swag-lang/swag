@@ -192,6 +192,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdWhile:
         SWAG_CHECK(doWhile(parent, result));
         break;
+    case TokenId::KwdSwitch:
+        SWAG_CHECK(doSwitch(parent, result));
+        break;
     case TokenId::KwdLoop:
         SWAG_CHECK(doLoop(parent, result));
         break;
