@@ -1,13 +1,6 @@
 #module module429
 //#unittest pass semantic
 
-enum COLOR
-{
-	RED;
-	GREEN;
-	BLUE;
-}
-
 func T(color: COLOR)->s32
 {
 	res := 0;
@@ -25,4 +18,11 @@ func T(color: COLOR)->s32
 //#[swag.printbytecode]
 #test
 {
+}
+
+enum COLOR
+{
+	RED;
+	GREEN;
+	BLUE;
 }

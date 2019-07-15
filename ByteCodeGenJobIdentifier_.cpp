@@ -5,6 +5,7 @@
 #include "TypeInfo.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
+#include "TypeManager.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
@@ -23,11 +24,13 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (node->resolvedSymbolName->kind != SymbolKind::Variable)
         return internalError(context, "emitIdentifier");
 
+    auto typeInfo = TypeManager::concreteType(resolved->typeInfo);
+
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (resolved->typeInfo->isNative(NativeType::String) || resolved->typeInfo->kind == TypeInfoKind::Slice)
+        if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC[1]);
@@ -51,7 +54,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_GLOBAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (resolved->typeInfo->kind == TypeInfoKind::Array)
+        if (typeInfo->kind == TypeInfoKind::Array)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
@@ -59,7 +62,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (resolved->typeInfo->isNative(NativeType::String) || resolved->typeInfo->kind == TypeInfoKind::Slice)
+        else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
@@ -68,7 +71,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else
         {
             ByteCodeInstruction* inst;
-            switch (resolved->typeInfo->sizeOf)
+            switch (typeInfo->sizeOf)
             {
             case 1:
                 inst = emitInstruction(context, ByteCodeOp::RAFromDataSeg8, node->resultRegisterRC);
@@ -97,7 +100,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (resolved->typeInfo->kind == TypeInfoKind::Array)
+        if (typeInfo->kind == TypeInfoKind::Array)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
@@ -105,7 +108,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (resolved->typeInfo->isNative(NativeType::String) || resolved->typeInfo->kind == TypeInfoKind::Slice)
+        else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
@@ -114,7 +117,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else
         {
             ByteCodeInstruction* inst;
-            switch (resolved->typeInfo->sizeOf)
+            switch (typeInfo->sizeOf)
             {
             case 1:
                 inst = emitInstruction(context, ByteCodeOp::RAFromStack8, node->resultRegisterRC);

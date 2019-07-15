@@ -49,11 +49,6 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
     return true;
 }
 
-bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
-{
-    return true;
-}
-
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
     auto sourceFile   = context->sourceFile;

@@ -13,7 +13,7 @@
 bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = forcedTypeInfo ? forcedTypeInfo : TypeManager::concreteType(node->childs.front()->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {

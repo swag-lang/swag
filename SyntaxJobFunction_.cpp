@@ -47,7 +47,6 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     {
         auto allParamsNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
         allParamsNode->inheritOwnersAndFlags(this);
-        allParamsNode->semanticFct = &SemanticJob::resolveFuncDeclParams;
         allParamsNode->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
         allParamsNode->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         if (result)

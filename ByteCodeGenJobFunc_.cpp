@@ -69,8 +69,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     // Copy result to RR0... registers
     if (!node->childs.empty())
     {
-        auto child = node->childs[0];
-        SWAG_ASSERT(child->typeInfo->kind == TypeInfoKind::Native);
+        auto child    = node->childs[0];
+        auto typeInfo = TypeManager::concreteType(child->typeInfo);
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
         for (int r = 0; r < child->resultRegisterRC.size(); r++)
             emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
     }
@@ -310,12 +311,13 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         resolved->storageOffset = offset;
         resolved->storageIndex  = index;
 
-        if (resolved->typeInfo->isNative(NativeType::String) || resolved->typeInfo->kind == TypeInfoKind::Slice)
+        auto typeInfo = TypeManager::concreteType(resolved->typeInfo);
+        if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
             offset += 2 * sizeof(Register);
             index += 2;
         }
-        else if (resolved->typeInfo->kind == TypeInfoKind::Native || resolved->typeInfo->kind == TypeInfoKind::Array)
+        else if (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array)
         {
             offset += sizeof(Register);
             index++;

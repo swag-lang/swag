@@ -90,7 +90,6 @@ struct SemanticJob : public Job
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);
     static bool resolveFuncDecl(SemanticContext* context);
-    static bool resolveFuncDeclParams(SemanticContext* context);
     static bool resolveFuncDeclType(SemanticContext* context);
     static bool resolveFuncCallParams(SemanticContext* context);
     static bool resolveFuncCallParam(SemanticContext* context);
