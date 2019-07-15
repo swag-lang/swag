@@ -1,7 +1,7 @@
 #module module426
 #unittest pass semantic
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	res := 0;

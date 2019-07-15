@@ -439,6 +439,7 @@ struct AstSwitchCaseBlock : public AstNode
         AstNode::reset();
     }
 
+    bool           isDefault = false;
     AstSwitchCase* ownerCase;
     int            seekJumpNextCase;
 };

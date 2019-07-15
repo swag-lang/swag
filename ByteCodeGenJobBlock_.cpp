@@ -214,17 +214,10 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
     auto switchNode              = CastAst<AstSwitch>(node, AstNodeKind::Switch);
     switchNode->resultRegisterRC = switchNode->expression->resultRegisterRC;
 
-	// Resolve the jump to go outside the switch
-	auto inst   = context->bc->out + switchNode->seekJumpExpression;
+    // Resolve the jump to go outside the switch
+    auto inst   = context->bc->out + switchNode->seekJumpExpression;
     inst->a.s32 = context->bc->numInstructions - switchNode->seekJumpExpression - 1;
 
-    return true;
-}
-
-bool ByteCodeGenJob::emitSwitchBeforeExpr(ByteCodeGenContext* context)
-{
-    auto node       = context->node;
-    auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
     return true;
 }
 
@@ -233,8 +226,8 @@ bool ByteCodeGenJob::emitSwitchAfterExpr(ByteCodeGenContext* context)
     auto node       = context->node;
     auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
 
-	// Jump to the first case
-	emitInstruction(context, ByteCodeOp::Jump)->a.s32 = 1;
+    // Jump to the first case
+    emitInstruction(context, ByteCodeOp::Jump)->a.s32 = 1;
 
     // Jump to exit the switch
     switchNode->seekJumpExpression = context->bc->numInstructions;
@@ -251,27 +244,31 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 
     caseNode->ownerSwitch->resultRegisterRC = caseNode->ownerSwitch->expression->resultRegisterRC;
 
-    vector<ByteCodeInstruction*> allJumps;
-
-    auto r0 = reserveRegisterRC(context);
-    for (auto expr : caseNode->expressions)
+    // Default case does not have expressions
+    vector<uint32_t> allJumps;
+    if (!caseNode->expressions.empty())
     {
-        SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
-        auto inst   = emitInstruction(context, ByteCodeOp::JumpTrue, r0);
-        inst->b.u32 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
-        allJumps.push_back(inst);
-    }
+        auto r0 = reserveRegisterRC(context);
+        for (auto expr : caseNode->expressions)
+        {
+            SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
+            allJumps.push_back(context->bc->numInstructions);
+            auto inst   = emitInstruction(context, ByteCodeOp::JumpTrue, r0);
+            inst->b.u32 = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
+        }
 
-    freeRegisterRC(context, r0);
+        freeRegisterRC(context, r0);
 
-    // Jump to the next case
-    blockNode->seekJumpNextCase = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::Jump);
+        // Jump to the next case, except for the default, which is the last
+        blockNode->seekJumpNextCase = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::Jump);
 
-    // Now this is the beginning of the block, so we can resolve all Jump
-    for (auto jump : allJumps)
-    {
-        jump->b.s32 = context->bc->numInstructions - jump->b.u32;
+        // Now this is the beginning of the block, so we can resolve all Jump
+        for (auto jumpIdx : allJumps)
+        {
+            ByteCodeInstruction* jump = context->bc->out + jumpIdx;
+            jump->b.s32               = context->bc->numInstructions - jump->b.u32;
+        }
     }
 
     return true;
@@ -281,6 +278,10 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::Statement);
+
+	// For the default case, do nothing, fallback to the end of the switch
+    if (blockNode->ownerCase->isDefault)
+        return true;
 
     // Jump to exit the switch
     auto inst   = emitInstruction(context, ByteCodeOp::Jump);

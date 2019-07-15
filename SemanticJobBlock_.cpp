@@ -36,7 +36,6 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     auto node                           = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
     node->typeInfo                      = node->expression->typeInfo;
     node->byteCodeFct                   = &ByteCodeGenJob::emitSwitch;
-    node->expression->byteCodeBeforeFct = &ByteCodeGenJob::emitSwitchBeforeExpr;
     node->expression->byteCodeAfterFct  = &ByteCodeGenJob::emitSwitchAfterExpr;
     return true;
 }

@@ -65,7 +65,9 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     SWAG_CHECK(doExpression(switchNode, &switchNode->expression));
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
-    bool hasDefault = false;
+    AstSwitchCase*      defaultCase      = nullptr;
+    AstSwitchCaseBlock* defaultStatement = nullptr;
+    bool                hasDefault       = false;
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
     {
         SWAG_VERIFY(token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, sourceFile->report({sourceFile, token, "'case' or 'default' expression expected"}));
@@ -75,13 +77,17 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             hasDefault = true;
 
         // One case
-        auto caseNode         = Ast::newNode(&g_Pool_astSwitchCase, AstNodeKind::SwitchCase, sourceFile->indexInModule, switchNode);
+        auto caseNode         = Ast::newNode(&g_Pool_astSwitchCase, AstNodeKind::SwitchCase, sourceFile->indexInModule, isDefault ? nullptr : switchNode);
+        caseNode->isDefault   = isDefault;
         caseNode->ownerSwitch = switchNode;
         caseNode->semanticFct = &SemanticJob::resolveCase;
         caseNode->inheritOwnersAndFlags(this);
         caseNode->inheritToken(token);
-        switchNode->cases.push_back(caseNode);
         SWAG_CHECK(tokenizer.getToken(token));
+        if (isDefault)
+            defaultCase = caseNode;
+        else
+            switchNode->cases.push_back(caseNode);
 
         // Case expressions
         if (!isDefault)
@@ -107,10 +113,12 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         }
 
         // Content
-        auto statement = Ast::newNode(&g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, switchNode);
+        auto statement = Ast::newNode(&g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, isDefault ? nullptr : switchNode);
         statement->inheritOwnersAndFlags(this);
-		statement->ownerCase = caseNode;
-        caseNode->block = statement;
+        statement->ownerCase = caseNode;
+        caseNode->block      = statement;
+        if (isDefault)
+            defaultStatement = statement;
 
         // Instructions
         ScopedBreakable scoped(this, switchNode);
@@ -118,6 +126,14 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         {
             SWAG_CHECK(doEmbeddedInstruction(statement));
         }
+    }
+
+    // Add the default case as the last one
+    if (defaultCase)
+    {
+        Ast::addChild(switchNode, defaultCase);
+        Ast::addChild(switchNode, defaultStatement);
+        switchNode->cases.push_back(defaultCase);
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
