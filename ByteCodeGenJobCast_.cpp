@@ -464,6 +464,14 @@ bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeIn
         inst->b.u32            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
+    else if (fromTypeInfo->kind == TypeInfoKind::TypeList)
+    {
+        auto fromTypeList      = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeList);
+        int  diff              = fromTypeList->childs.front()->sizeOf / toTypeSlice->pointedType->sizeOf;
+        auto inst              = emitInstruction(context, ByteCodeOp::MulRAVB, exprNode->resultRegisterRC[1]);
+        inst->b.u32            = diff;
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+    }
     else
     {
         return internalError(context, "emitCastSlice, invalid expression type", exprNode);

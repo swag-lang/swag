@@ -43,8 +43,12 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
 
     node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
 
-    if (node->flags & AST_CONST_EXPR)
-        typeInfo->setConst();
+	if (node->flags & AST_CONST_EXPR)
+	{
+		node->flags |= AST_NO_BYTECODE_CHILDS;
+		typeInfo->setConst();
+	}
+
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
     // Reserve
