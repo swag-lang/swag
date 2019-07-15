@@ -435,7 +435,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Slice && fromTypeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->kind == TypeInfoKind::Slice)
     {
         SWAG_CHECK(emitCastSlice(context, typeInfo, exprNode, fromTypeInfo));
         return true;
@@ -444,7 +444,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, cast type not native");
     if (fromTypeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native");
+        return internalError(context, "emitCast, expression type not native", exprNode);
 
     SWAG_CHECK(emitCast(context, typeInfo, exprNode, fromTypeInfo));
     node->resultRegisterRC = exprNode->resultRegisterRC;
@@ -453,14 +453,22 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
-    auto node          = context->node;
-    auto toTypeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-    auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
-    int  diff          = fromTypeSlice->pointedType->sizeOf / toTypeSlice->pointedType->sizeOf;
+    auto node        = context->node;
+    auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
-    auto inst              = emitInstruction(context, ByteCodeOp::MulRAVB, exprNode->resultRegisterRC[1]);
-    inst->b.u32            = diff;
-    node->resultRegisterRC = exprNode->resultRegisterRC;
+    if (fromTypeInfo->kind == TypeInfoKind::Slice)
+    {
+        auto fromTypeSlice     = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
+        int  diff              = fromTypeSlice->pointedType->sizeOf / toTypeSlice->pointedType->sizeOf;
+        auto inst              = emitInstruction(context, ByteCodeOp::MulRAVB, exprNode->resultRegisterRC[1]);
+        inst->b.u32            = diff;
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+    }
+    else
+    {
+        return internalError(context, "emitCastSlice, invalid expression type", exprNode);
+    }
+
     return true;
 }
 

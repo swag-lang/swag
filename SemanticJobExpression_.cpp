@@ -28,17 +28,15 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
     auto typeInfo  = g_Pool_typeInfoList.alloc();
     typeInfo->name = "<type list>";
 
-    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
-		// Be sure types are coherent (all types should match the type of the first value)
-		SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->childs.front(), child));
+        // Be sure types are coherent (all types should match the type of the first value)
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->childs.front(), child));
 
-		// Flags
+        // Flags
         typeInfo->childs.push_back(child->typeInfo);
         typeInfo->sizeOf += child->typeInfo->sizeOf;
-        if (!(child->flags & AST_VALUE_COMPUTED))
-            node->flags &= ~AST_VALUE_COMPUTED;
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
     }
