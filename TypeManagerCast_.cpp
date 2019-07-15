@@ -838,10 +838,10 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FLATTEN)
+    if (castFlags & CASTFLAG_CONCRETE_ENUM)
     {
-        toType   = TypeManager::flattenType(toType);
-        fromType = TypeManager::flattenType(fromType);
+        toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
     }
 
     SWAG_ASSERT(toType && fromType);

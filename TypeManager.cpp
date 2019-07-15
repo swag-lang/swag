@@ -136,25 +136,20 @@ void TypeManager::setup()
     promoteMatrix[(int) NativeType::F64][(int) NativeType::F64] = typeInfoF64;
 }
 
-TypeInfo* TypeManager::flattenType(TypeInfo* typeInfo)
-{
-    if (typeInfo->kind != TypeInfoKind::Enum)
-        return typeInfo;
-    return static_cast<TypeInfoEnum*>(typeInfo)->rawType;
-}
-
-TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, bool forCall)
+TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
 {
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Native:
         return typeInfo;
     case TypeInfoKind::FuncAttr:
-        return concreteType(static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType);
+        if (flags & MakeConcrete::FlagFunc)
+            return concreteType(static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType);
+        break;
     case TypeInfoKind::Enum:
-		if(!forCall)
-			return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType);
-		break;
+        if (flags & MakeConcrete::FlagEnum)
+            return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType);
+        break;
     }
 
     return typeInfo;

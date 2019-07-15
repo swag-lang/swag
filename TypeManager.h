@@ -7,7 +7,14 @@ struct TypeInfoNative;
 
 static const uint32_t CASTFLAG_NOERROR = 0x00000001;
 static const uint32_t CASTFLAG_FORCE   = 0x00000002;
-static const uint32_t CASTFLAG_FLATTEN = 0x00000004;
+static const uint32_t CASTFLAG_CONCRETE_ENUM = 0x00000004;
+
+enum MakeConcrete
+{
+    FlagAll  = 0xFFFFFFFF,
+    FlagEnum = 0x00000001,
+    FlagFunc = 0x00000002,
+};
 
 struct TypeManager
 {
@@ -29,16 +36,15 @@ struct TypeManager
 
     static bool castToNative(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-	static bool castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
 
-	static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags = 0);
+    static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags = 0);
     static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags = 0);
     static bool makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
 
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);
-    static TypeInfo* flattenType(TypeInfo* typeInfo);
-    static TypeInfo* concreteType(TypeInfo* typeInfo, bool forCall = false);
+    static TypeInfo* concreteType(TypeInfo* typeInfo, MakeConcrete flags = MakeConcrete::FlagAll);
 
     TypeInfo* registerType(TypeInfo* typeInfo);
 
