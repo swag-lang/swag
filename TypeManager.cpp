@@ -143,7 +143,7 @@ TypeInfo* TypeManager::flattenType(TypeInfo* typeInfo)
     return static_cast<TypeInfoEnum*>(typeInfo)->rawType;
 }
 
-TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo)
+TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, bool forCall)
 {
     switch (typeInfo->kind)
     {
@@ -152,7 +152,9 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo)
     case TypeInfoKind::FuncAttr:
         return concreteType(static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType);
     case TypeInfoKind::Enum:
-        return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType);
+		if(!forCall)
+			return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType);
+		break;
     }
 
     return typeInfo;

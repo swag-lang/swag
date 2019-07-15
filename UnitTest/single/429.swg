@@ -9,7 +9,7 @@ func T(color: COLOR)->s32
 	case COLOR.RED: 	res = 1;
 	case COLOR.GREEN: 	res = 2;
 	case COLOR.BLUE: 	res = 3;
-	default: 			res = 0;
+	default: 			res = 4;
 	}
 	
 	return res;
@@ -18,6 +18,12 @@ func T(color: COLOR)->s32
 //#[swag.printbytecode]
 #test
 {
+	var res : s32 = T(COLOR.RED);
+	@assert(res == 1);
+	@assert(T(COLOR.GREEN) == 2);
+	@assert(T(COLOR.BLUE) == 3);
+	@assert(T(COLOR.WHITE) == 4);
+	@assert(T(COLOR.BLACK) == 4);
 }
 
 enum COLOR
@@ -25,4 +31,6 @@ enum COLOR
 	RED;
 	GREEN;
 	BLUE;
+	WHITE;
+	BLACK;
 }

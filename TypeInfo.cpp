@@ -49,7 +49,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     int numParams = (int) context.parameters.size();
     for (int i = 0; i < numParams; i++)
     {
-        auto param = CastAst<AstFuncCallParam>(context.parameters[i], AstNodeKind::FuncCallParam);
+        auto callParameter = context.parameters[i];
+        auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
         if (!param->name.empty())
         {
             firstUserNamed = i;
@@ -62,17 +63,18 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             return;
         }
 
-        auto typeInfo = TypeManager::concreteType(context.parameters[i]->typeInfo);
-        bool same     = TypeManager::makeCompatibles(nullptr, parameters[i]->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+        auto symbolParameter = parameters[i];
+        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, true);
+        bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
         if (!same)
         {
             context.badSignatureParameterIdx  = i;
-            context.badSignatureRequestedType = parameters[i]->typeInfo;
+            context.badSignatureRequestedType = symbolParameter->typeInfo;
             context.badSignatureGivenType     = typeInfo;
             badSignature                      = true;
         }
 
-        param->resolvedParameter = parameters[i];
+        param->resolvedParameter = symbolParameter;
         cptResolved++;
     }
 
