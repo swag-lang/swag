@@ -14,8 +14,15 @@
 
 bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer)
 {
-    auto     module  = sourceFile->module;
-    uint8_t* ptrDest = buffer == SegmentBuffer::Constant ? &module->constantSegment[offset] : &module->dataSegment[offset];
+    auto module = sourceFile->module;
+
+    uint8_t* ptrDest;
+    if (buffer == SegmentBuffer::Constant)
+        ptrDest = &module->constantSegment[offset];
+    else if (buffer == SegmentBuffer::Data)
+        ptrDest = &module->dataSegment[offset];
+    else
+        ptrDest = nullptr;
 
     for (auto child : node->childs)
     {
@@ -27,6 +34,10 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
 
         if (orderedChilds)
             orderedChilds->push_back(child);
+
+		// We do not want to store the result in the constant/data buffer
+		if (!ptrDest)
+			continue;
 
         if (child->typeInfo->isNative(NativeType::String))
         {

@@ -27,6 +27,7 @@ enum class SegmentBuffer
 {
     Data,
     Constant,
+	None,
 };
 
 struct SemanticContext

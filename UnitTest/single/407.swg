@@ -3,5 +3,5 @@
 #unittest error
 #test
 {
-	var c = cast!(s32, bool)(0)
+	var c = cast(s32, bool) 0
 }

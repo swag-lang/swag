@@ -148,14 +148,9 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doTemplateTypes(node));
-
-    auto typeList = node->childs.front();
-    if (typeList->childs.size() > 1)
-        return sourceFile->report({sourceFile, typeList->childs[1], "a cast cannot have more than one type"});
-
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
+    SWAG_CHECK(doTypeExpression(node));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
     SWAG_CHECK(doUnaryExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }

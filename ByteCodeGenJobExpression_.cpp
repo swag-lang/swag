@@ -232,13 +232,14 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     auto job         = context->job;
     bool isConstExpr = node->flags & AST_CONST_EXPR;
 
-    // Reserve space in constant segment
+    // Reserve space in constant segment, except if expression is not constexpr, because in that case,
+	// each affectation will be done one by one
     auto     typeList      = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
-    uint32_t storageOffset = module->reserveConstantSegment(typeList->sizeOf);
-    module->mutexConstantSeg.lock();
+    uint32_t storageOffset = isConstExpr ? module->reserveConstantSegment(typeList->sizeOf) : 0;
     job->collectChilds.clear();
+    module->mutexConstantSeg.lock();
     auto offset = storageOffset;
-    auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, isConstExpr ? nullptr : &job->collectChilds, SegmentBuffer::Constant);
+    auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, isConstExpr ? nullptr : &job->collectChilds, isConstExpr ? SegmentBuffer::Constant : SegmentBuffer::None);
     module->mutexConstantSeg.unlock();
     SWAG_CHECK(result);
 

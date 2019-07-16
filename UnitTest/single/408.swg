@@ -4,7 +4,7 @@
 #test
 {
 	var c: const [..] u32 = {0x01_02_03_04};
-	var d = cast!(const [..] u8)(c);
+	var d = cast(const [..] u8) c;
 	@assert(@prop(d, count) == 4);
 	@assert(d[0] == 0x04);
 	@assert(d[1] == 0x03);
