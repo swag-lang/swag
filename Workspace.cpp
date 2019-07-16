@@ -169,7 +169,7 @@ void Workspace::enumerateModules()
         }
     }
 
-    enumerateFilesInModule("f:/swag/unittest");
+    enumerateFilesInModule("f:/swag/unittest/single");
 }
 
 bool Workspace::buildModules(const vector<Module*>& list)

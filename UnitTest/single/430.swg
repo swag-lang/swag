@@ -6,7 +6,7 @@
 {
 	len("toto");
 	len("coucou")
-	len({1'u8,2,3,4,5,5,5,5,5,5})
+	len({1'u8,2'u8})
 }
 
 func len(buffer: const [..] u8)

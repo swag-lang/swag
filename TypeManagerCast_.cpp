@@ -802,7 +802,7 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
         auto          fromSize     = fromTypeList->childs.size();
         for (int i = 0; i < fromSize; i++)
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeSlice->pointedType, fromTypeList->childs[i], nodeToCast ? nodeToCast->childs[i] : nullptr, castFlags));
+            SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeSlice->pointedType, fromTypeList->childs[i], /*nodeToCast ? nodeToCast->childs[i] :*/ nullptr, castFlags));
         }
 
         return true;

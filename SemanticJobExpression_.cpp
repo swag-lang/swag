@@ -31,9 +31,6 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
-        // Be sure types are coherent (all types should match the type of the first value)
-        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->childs.front(), child));
-
         // Flags
         typeInfo->childs.push_back(child->typeInfo);
         typeInfo->sizeOf += child->typeInfo->sizeOf;

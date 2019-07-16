@@ -1,10 +1,9 @@
 #module module431
 //#unittest pass semantic
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
-	//len({1'u8,2,3,4})
 	len(cast(const [..] u8) {0x01_02_03_04} )
 }
 
@@ -19,9 +18,6 @@ func len(buffer: const [..] u8)
 		total += cast(s32) (buffer[index]);
 	}
 	
-	@print(cast(s32) (total))
-	@print(" ")
-	@print(cast(s32) (result))
-	@print("\n")
-	//@assert(result == @prop(buffer, count));
+	@assert(total == 10)
+	@assert(result == 4)
 }
