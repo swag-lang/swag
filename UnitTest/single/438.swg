@@ -9,8 +9,8 @@
 		i < 10
 		{ i += 1; j += 2; }
 	{
-		cpt += 1
+		cpt += j
 	}
 	
-	@assert(cpt == 5)
+	@assert(cpt == 90)
 }
