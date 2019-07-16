@@ -75,7 +75,7 @@ enum class TokenId
     IntrisicProp,
 
     KwdVar,
-	KwdLet,
+    KwdLet,
     KwdConst,
     KwdNamespace,
     KwdType,
@@ -95,9 +95,10 @@ enum class TokenId
     KwdContinue,
     KwdLoop,
     KwdIndex,
-	KwdSwitch,
-	KwdCase,
-	KwdDefault,
+    KwdSwitch,
+    KwdCase,
+    KwdDefault,
+    KwdFor,
 
     Identifier,
     LiteralNumber,

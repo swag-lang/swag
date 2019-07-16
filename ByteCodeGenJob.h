@@ -52,7 +52,7 @@ struct ByteCodeGenJob : public Job
     static bool emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOp(ByteCodeGenContext* context);
-	static bool emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2);
+    static bool emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
@@ -95,10 +95,15 @@ struct ByteCodeGenJob : public Job
     static bool emitWhileBeforeExpr(ByteCodeGenContext* context);
     static bool emitWhileAfterExpr(ByteCodeGenContext* context);
     static bool emitWhileAfterBlock(ByteCodeGenContext* context);
+    static bool emitFor(ByteCodeGenContext* context);
+    static bool emitForBeforeExpr(ByteCodeGenContext* context);
+    static bool emitForAfterExpr(ByteCodeGenContext* context);
+    static bool emitForAfterPost(ByteCodeGenContext* context);
+    static bool emitForAfterBlock(ByteCodeGenContext* context);
     static bool emitSwitch(ByteCodeGenContext* context);
     static bool emitSwitchAfterExpr(ByteCodeGenContext* context);
-	static bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);
-	static bool emitSwitchCaseAfterBlock(ByteCodeGenContext* context);
+    static bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);
+    static bool emitSwitchCaseAfterBlock(ByteCodeGenContext* context);
     static bool emitIndex(ByteCodeGenContext* context);
     static bool emitLoop(ByteCodeGenContext* context);
     static bool emitLoopAfterExpr(ByteCodeGenContext* context);

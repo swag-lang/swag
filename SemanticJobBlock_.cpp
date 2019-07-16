@@ -31,12 +31,31 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveForBefore(SemanticContext* context)
+{
+    auto node                        = CastAst<AstFor>(context->node, AstNodeKind::For);
+    node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
+	return true;
+}
+
+bool SemanticJob::resolveFor(SemanticContext* context)
+{
+    auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, node->boolExpression));
+    node->byteCodeFct                       = &ByteCodeGenJob::emitFor;
+    node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitForBeforeExpr;
+    node->boolExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitForAfterExpr;
+    node->postExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitForAfterPost;
+    node->block->byteCodeAfterFct           = &ByteCodeGenJob::emitForAfterBlock;
+    return true;
+}
+
 bool SemanticJob::resolveSwitch(SemanticContext* context)
 {
-    auto node                           = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
-    node->typeInfo                      = node->expression->typeInfo;
-    node->byteCodeFct                   = &ByteCodeGenJob::emitSwitch;
-    node->expression->byteCodeAfterFct  = &ByteCodeGenJob::emitSwitchAfterExpr;
+    auto node                          = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
+    node->typeInfo                     = node->expression->typeInfo;
+    node->byteCodeFct                  = &ByteCodeGenJob::emitSwitch;
+    node->expression->byteCodeAfterFct = &ByteCodeGenJob::emitSwitchAfterExpr;
     return true;
 }
 

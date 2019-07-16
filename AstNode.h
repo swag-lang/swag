@@ -48,6 +48,7 @@ enum class AstNodeKind
     If,
     Else,
     While,
+    For,
     Loop,
     Switch,
     SwitchCase,
@@ -374,6 +375,29 @@ struct AstWhile : public AstBreakable
     int seekJumpAfterBlock;
 };
 
+struct AstFor : public AstBreakable
+{
+    void reset() override
+    {
+        preExpression  = nullptr;
+        boolExpression = nullptr;
+        postExpression = nullptr;
+        block          = nullptr;
+        AstBreakable::reset();
+    }
+
+    AstNode* preExpression;
+    AstNode* boolExpression;
+    AstNode* postExpression;
+    AstNode* block;
+
+    int seekJumpBeforeExpression;
+    int seekJumpExpression;
+    int seekJumpAfterBlock;
+	int seekJumpToBlock;
+	int seekJumpBeforePost;
+};
+
 struct AstLoop : public AstBreakable
 {
     void reset() override
@@ -503,6 +527,7 @@ extern Pool<AstIdentifierRef>   g_Pool_astIdentifierRef;
 extern Pool<AstFuncCallParam>   g_Pool_astFuncCallParam;
 extern Pool<AstIf>              g_Pool_astIf;
 extern Pool<AstWhile>           g_Pool_astWhile;
+extern Pool<AstFor>             g_Pool_astFor;
 extern Pool<AstLoop>            g_Pool_astLoop;
 extern Pool<AstSwitch>          g_Pool_astSwitch;
 extern Pool<AstSwitchCase>      g_Pool_astSwitchCase;

@@ -208,6 +208,107 @@ bool ByteCodeGenJob::emitWhileAfterBlock(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitFor(ByteCodeGenContext* context)
+{
+    auto forNode = CastAst<AstFor>(context->node, AstNodeKind::For);
+
+    // Resolve ByteCodeOp::JumpNotTrue expression
+    auto instruction   = context->bc->out + forNode->seekJumpExpression;
+    auto diff          = forNode->seekJumpAfterBlock - forNode->seekJumpExpression;
+    instruction->b.s32 = diff - 1;
+
+    freeRegisterRC(context, forNode->resultRegisterRC);
+    return true;
+}
+
+bool ByteCodeGenJob::emitForBeforeExpr(ByteCodeGenContext* context)
+{
+    auto node    = context->node;
+    auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
+
+    // To store the 'index' of the loop
+    if (forNode->needIndex)
+    {
+        forNode->registerIndex = reserveRegisterRC(context);
+        auto inst              = emitInstruction(context, ByteCodeOp::CopyRAVB32, forNode->registerIndex);
+        inst->b.s32            = -1;
+    }
+
+    forNode->seekJumpBeforeExpression = context->bc->numInstructions;
+    return true;
+}
+
+bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
+{
+    auto node    = context->node;
+    auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
+
+    forNode->seekJumpExpression = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
+
+    // Increment the index
+    if (forNode->needIndex)
+    {
+        emitInstruction(context, ByteCodeOp::IncRA, forNode->registerIndex);
+    }
+
+    // Jump to the block
+    forNode->seekJumpToBlock = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::Jump);
+
+    // This is the start of the post statement
+    forNode->seekJumpBeforePost = context->bc->numInstructions;
+    return true;
+}
+
+bool ByteCodeGenJob::emitForAfterPost(ByteCodeGenContext* context)
+{
+    auto node    = context->node;
+    auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
+
+    // Jump to the test expression
+    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
+    inst->a.s32 = forNode->seekJumpBeforeExpression - context->bc->numInstructions;
+
+    // And set the jump to the start of the block
+    inst        = context->bc->out + forNode->seekJumpToBlock;
+    auto diff   = context->bc->numInstructions - forNode->seekJumpToBlock - 1;
+    inst->a.s32 = diff;
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitForAfterBlock(ByteCodeGenContext* context)
+{
+    auto node    = context->node;
+    auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
+
+    // Jump to the post expression
+    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
+    auto diff   = forNode->seekJumpBeforePost - context->bc->numInstructions;
+    inst->a.s32 = diff;
+
+    forNode->seekJumpAfterBlock = context->bc->numInstructions;
+
+    // Resolve all continue instructions
+    for (auto continueNode : forNode->continueList)
+    {
+        inst        = context->bc->out + continueNode->jumpInstruction;
+        diff        = forNode->seekJumpBeforePost - continueNode->jumpInstruction - 1;
+        inst->a.s32 = diff;
+    }
+
+    // Resolve all break instructions
+    for (auto breakNode : forNode->breakList)
+    {
+        inst        = context->bc->out + breakNode->jumpInstruction;
+        diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
+        inst->a.s32 = diff;
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
 {
     auto node                    = context->node;
@@ -279,7 +380,7 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     auto node      = context->node;
     auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::Statement);
 
-	// For the default case, do nothing, fallback to the end of the switch
+    // For the default case, do nothing, fallback to the end of the switch
     if (blockNode->ownerCase->isDefault)
         return true;
 

@@ -27,7 +27,7 @@ enum class SegmentBuffer
 {
     Data,
     Constant,
-	None,
+    None,
 };
 
 struct SemanticContext
@@ -108,8 +108,10 @@ struct SemanticJob : public Job
     static bool resolveCast(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
-	static bool resolveSwitch(SemanticContext* context);
-	static bool resolveCase(SemanticContext* context);
+	static bool resolveForBefore(SemanticContext* context);
+    static bool resolveFor(SemanticContext* context);
+    static bool resolveSwitch(SemanticContext* context);
+    static bool resolveCase(SemanticContext* context);
     static bool resolveLoop(SemanticContext* context);
     static bool resolveAffect(SemanticContext* context);
     static bool resolveMakePointer(SemanticContext* context);

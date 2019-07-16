@@ -47,6 +47,7 @@ void LanguageSpec::setup()
     keywords["switch"]    = TokenId::KwdSwitch;
     keywords["case"]      = TokenId::KwdCase;
     keywords["default"]   = TokenId::KwdDefault;
+    keywords["for"]       = TokenId::KwdFor;
 
     keywords["u64"]    = TokenId::NativeType;
     keywords["u32"]    = TokenId::NativeType;

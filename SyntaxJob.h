@@ -85,6 +85,7 @@ struct SyntaxJob : public Job
     bool doCast(AstNode* parent, AstNode** result = nullptr);
     bool doIf(AstNode* parent, AstNode** result = nullptr);
     bool doWhile(AstNode* parent, AstNode** result = nullptr);
+	bool doFor(AstNode* parent, AstNode** result = nullptr);
     bool doLoop(AstNode* parent, AstNode** result = nullptr);
     bool doSwitch(AstNode* parent, AstNode** result = nullptr);
     bool doBreak(AstNode* parent, AstNode** result = nullptr);

@@ -52,6 +52,40 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
+{
+    auto   newScope = Ast::newScope("", ScopeKind::Statement, currentScope);
+    Scoped scoped(this, newScope);
+
+    auto node               = Ast::newNode(&g_Pool_astFor, AstNodeKind::For, sourceFile->indexInModule, parent);
+    node->semanticBeforeFct = &SemanticJob::resolveForBefore;
+    node->semanticFct       = &SemanticJob::resolveFor;
+    node->inheritOwnersAndFlags(this);
+    node->inheritToken(token);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    bool hasParen = token.id == TokenId::SymLeftParen;
+    if (hasParen)
+        SWAG_CHECK(eatToken());
+
+    {
+        ScopedBreakable scopedBreakable(this, node);
+        SWAG_CHECK(doEmbeddedStatement(node, &node->preExpression));
+        SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
+        SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
+        SWAG_CHECK(doEmbeddedStatement(node, &node->postExpression));
+
+        if (hasParen)
+            SWAG_CHECK(eatToken(TokenId::SymRightParen));
+
+        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 {
     auto switchNode         = Ast::newNode(&g_Pool_astSwitch, AstNodeKind::Switch, sourceFile->indexInModule, parent);

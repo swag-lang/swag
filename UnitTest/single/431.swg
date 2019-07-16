@@ -4,18 +4,18 @@
 //#[swag.printbytecode]
 #test
 {
-	len(cast(const [..] u8) {0x01_02_03_04} )
+	len(cast(const[..]u8) {0x01_02_03_04} )
 }
 
 //#[swag.printbytecode]
 func len(buffer: const [..] u8)
 {
-	result := 0'u32
-	total := 0;
-	loop(buffer)
+	result := 0
+	total := 0
+	loop buffer
 	{
-		result += 1;
-		total += cast(s32) (buffer[index]);
+		result += 1
+		total += cast(s32) buffer[index]
 	}
 	
 	@assert(total == 10)

@@ -940,7 +940,6 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::ForeignCall:
         {
             auto nodeFunc     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-            auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
             bufferC.addString(format("%s_%s", nodeFunc->ownerScope->name.c_str(), nodeFunc->name.c_str()));
             bufferC.addString("();");
         }
