@@ -73,16 +73,16 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     {
         ScopedBreakable scopedBreakable(this, node);
 
-		// Pre statement. Do not call doScopedCurlyStatement in order to avoid
-		// creating a new scope in the case of for { i:= 0; j := 0 } for example
-		if (token.id == TokenId::SymLeftCurly)
-		{
-			SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
-		}
-		else
-		{
-			SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
-		}
+        // Pre statement. Do not call doScopedCurlyStatement in order to avoid
+        // creating a new scope in the case of for { i:= 0; j := 0 } for example
+        if (token.id == TokenId::SymLeftCurly)
+        {
+            SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
+        }
+        else
+        {
+            SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
+        }
 
         SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
         SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
@@ -226,7 +226,8 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable scope"}));
+    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable loop"}));
+    SWAG_VERIFY(currentBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable loop"}));
 
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
@@ -241,7 +242,8 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable scope"}));
+    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable loop"}));
+    SWAG_VERIFY(currentBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable loop"}));
 
     auto node         = Ast::newNode(&g_Pool_astBreakContinue, AstNodeKind::Continue, sourceFile->indexInModule, parent);
     node->byteCodeFct = &ByteCodeGenJob::emitContinue;

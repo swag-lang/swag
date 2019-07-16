@@ -339,11 +339,15 @@ struct AstBreakContinue : public AstNode
     int jumpInstruction;
 };
 
+const uint32_t BREAKABLE_CAN_HAVE_INDEX    = 0x00000001;
+const uint32_t BREAKABLE_CAN_HAVE_CONTINUE = 0x00000002;
+const uint32_t BREAKABLE_NEED_INDEX        = 0x00000002;
+
 struct AstBreakable : public AstNode
 {
     void reset() override
     {
-        needIndex       = false;
+        breakableFlags  = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
         registerIndex   = 0;
         parentBreakable = nullptr;
         breakList.clear();
@@ -351,7 +355,12 @@ struct AstBreakable : public AstNode
         AstNode::reset();
     }
 
-    bool                      needIndex;
+    bool needIndex()
+    {
+        return breakableFlags & BREAKABLE_NEED_INDEX;
+    }
+
+    uint32_t                  breakableFlags;
     uint32_t                  registerIndex;
     AstNode*                  parentBreakable;
     vector<AstBreakContinue*> breakList;
@@ -394,8 +403,8 @@ struct AstFor : public AstBreakable
     int seekJumpBeforeExpression;
     int seekJumpExpression;
     int seekJumpAfterBlock;
-	int seekJumpToBlock;
-	int seekJumpBeforePost;
+    int seekJumpToBlock;
+    int seekJumpBeforePost;
 };
 
 struct AstLoop : public AstBreakable
@@ -423,6 +432,8 @@ struct AstSwitch : public AstBreakable
         block      = nullptr;
         cases.clear();
         AstBreakable::reset();
+        breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
+        breakableFlags &= ~BREAKABLE_CAN_HAVE_CONTINUE;
     }
 
     AstNode*                      expression;

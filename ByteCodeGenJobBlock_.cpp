@@ -75,7 +75,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
 
     // To store the 'index' of the loop
-    if (loopNode->needIndex)
+    if (loopNode->needIndex())
     {
         loopNode->registerIndex = reserveRegisterRC(context);
         auto inst               = emitInstruction(context, ByteCodeOp::CopyRAVB32, loopNode->registerIndex);
@@ -93,7 +93,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::DecRA, node->resultRegisterRC);
 
     // Increment the index
-    if (loopNode->needIndex)
+    if (loopNode->needIndex())
     {
         emitInstruction(context, ByteCodeOp::IncRA, loopNode->registerIndex);
     }
@@ -150,7 +150,7 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
     auto whileNode = CastAst<AstWhile>(node->parent, AstNodeKind::While);
 
     // To store the 'index' of the loop
-    if (whileNode->needIndex)
+    if (whileNode->needIndex())
     {
         whileNode->registerIndex = reserveRegisterRC(context);
         auto inst                = emitInstruction(context, ByteCodeOp::CopyRAVB32, whileNode->registerIndex);
@@ -170,7 +170,7 @@ bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
 
     // Increment the index
-    if (whileNode->needIndex)
+    if (whileNode->needIndex())
     {
         emitInstruction(context, ByteCodeOp::IncRA, whileNode->registerIndex);
     }
@@ -227,7 +227,7 @@ bool ByteCodeGenJob::emitForBeforeExpr(ByteCodeGenContext* context)
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
 
     // To store the 'index' of the loop
-    if (forNode->needIndex)
+    if (forNode->needIndex())
     {
         forNode->registerIndex = reserveRegisterRC(context);
         auto inst              = emitInstruction(context, ByteCodeOp::CopyRAVB32, forNode->registerIndex);
@@ -247,7 +247,7 @@ bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
 
     // Increment the index
-    if (forNode->needIndex)
+    if (forNode->needIndex())
     {
         emitInstruction(context, ByteCodeOp::IncRA, forNode->registerIndex);
     }
@@ -317,7 +317,16 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
 
     // Resolve the jump to go outside the switch
     auto inst   = context->bc->out + switchNode->seekJumpExpression;
-    inst->a.s32 = context->bc->numInstructions - switchNode->seekJumpExpression - 1;
+    auto diff   = context->bc->numInstructions - switchNode->seekJumpExpression - 1;
+    inst->a.s32 = diff;
+
+    // Resolve all break instructions
+    for (auto breakNode : switchNode->breakList)
+    {
+        inst        = context->bc->out + breakNode->jumpInstruction;
+        diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
+        inst->a.s32 = diff;
+    }
 
     return true;
 }

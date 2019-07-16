@@ -35,7 +35,7 @@ bool SemanticJob::resolveForBefore(SemanticContext* context)
 {
     auto node                        = CastAst<AstFor>(context->node, AstNodeKind::For);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
-	return true;
+    return true;
 }
 
 bool SemanticJob::resolveFor(SemanticContext* context)
@@ -120,9 +120,9 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
 
 bool SemanticJob::resolveIndex(SemanticContext* context)
 {
-    auto node                       = context->node;
-    node->ownerBreakable->needIndex = true;
-    node->typeInfo                  = g_TypeMgr.typeInfoU32;
-    node->byteCodeFct               = &ByteCodeGenJob::emitIndex;
+    auto node = context->node;
+    node->ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
+    node->typeInfo    = g_TypeMgr.typeInfoU32;
+    node->byteCodeFct = &ByteCodeGenJob::emitIndex;
     return true;
 }
