@@ -244,7 +244,8 @@ enum MatchResult
     TooManyParameters,
     NotEnoughParameters,
     BadSignature,
-    InvalidNamedParameter
+    InvalidNamedParameter,
+    DuplicatedNamedParameter,
 };
 
 struct SymbolMatchContext
@@ -254,6 +255,7 @@ struct SymbolMatchContext
     TypeInfo*                 badSignatureGivenType;
     MatchResult               result;
     vector<AstFuncCallParam*> parameters;
+    vector<bool>              doneParameters;
 
     SymbolMatchContext()
     {

@@ -316,11 +316,13 @@ struct AstFuncCallParam : public AstNode
     {
         namedParam.clear();
         resolvedParameter = nullptr;
+        namedParamNode    = nullptr;
         index             = -1;
         AstNode::reset();
     }
 
     Utf8                   namedParam;
+    AstNode*               namedParamNode;
     TypeInfoFuncAttrParam* resolvedParameter;
     int                    index;
 };

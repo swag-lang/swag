@@ -44,6 +44,10 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     int  cptResolved  = 0;
     bool badSignature = false;
 
+    // One boolean per used parameter
+    context.doneParameters.clear();
+    context.doneParameters.resize(parameters.size(), false);
+
     // First we solve unnamed parameters
     int  numParams          = (int) context.parameters.size();
     bool hasNamedParameters = false;
@@ -74,8 +78,9 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             badSignature                      = true;
         }
 
-        param->resolvedParameter = symbolParameter;
-        param->index             = cptResolved++;
+        context.doneParameters[cptResolved] = true;
+        param->resolvedParameter            = symbolParameter;
+        param->index                        = cptResolved++;
     }
 
     // Named parameters
@@ -104,8 +109,16 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
                 auto symbolParameter = parameters[j];
                 if (parameters[j]->name == param->namedParam)
                 {
-                    param->resolvedParameter = symbolParameter;
-                    param->index             = j;
+                    if (context.doneParameters[j])
+                    {
+                        context.badSignatureParameterIdx = i;
+                        context.result                   = DuplicatedNamedParameter;
+                        return;
+                    }
+
+                    param->resolvedParameter            = symbolParameter;
+                    param->index                        = j;
+                    context.doneParameters[cptResolved] = true;
                     cptResolved++;
                     break;
                 }

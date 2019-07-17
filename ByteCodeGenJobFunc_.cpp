@@ -176,17 +176,8 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     auto allParams     = node->childs.empty() ? nullptr : node->childs.front();
     int  numCallParams = allParams ? (int) allParams->childs.size() : 0;
 
-    // Sort childs by parameter index (if first index is -1, then we do not need to sort)
-    if (numCallParams && static_cast<AstFuncCallParam*>(allParams->childs.front())->index != -1)
-    {
-        sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
-            AstFuncCallParam* p1 = static_cast<AstFuncCallParam*>(n1);
-            AstFuncCallParam* p2 = static_cast<AstFuncCallParam*>(n2);
-            return p1->index < p2->index;
-        });
-    }
-
-    // Push current used registers
+    // Push current used registers before the call, to restore their value after the call
+    // (as a function can change everything)
     const auto&      reservedRC = context->job->reservedRC;
     vector<uint32_t> copyReservedRC;
     for (auto it = reservedRC.begin(); it != reservedRC.end(); ++it)
@@ -201,6 +192,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
                 {
                     if (oneChild->resultRegisterRC[r] == *it)
                     {
+                        // No need to store the register value, as this will be used for the parameter
                         isParam = true;
                         break;
                     }
@@ -213,6 +205,16 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
             copyReservedRC.push_back(*it);
             emitInstruction(context, ByteCodeOp::PushRASaved, *it);
         }
+    }
+
+    // Sort childs by parameter index (if first index is -1, then we do not need to sort)
+    if (numCallParams && static_cast<AstFuncCallParam*>(allParams->childs.front())->index != -1)
+    {
+        sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
+            AstFuncCallParam* p1 = static_cast<AstFuncCallParam*>(n1);
+            AstFuncCallParam* p2 = static_cast<AstFuncCallParam*>(n2);
+            return p1->index < p2->index;
+        });
     }
 
     // Push missing default parameters

@@ -1,4 +1,4 @@
-#module module444
+#module module445
 //#unittest pass syntax
 
 #unittest error
@@ -11,5 +11,5 @@ func F(a: s32, b: s32)
 //#[swag.printbytecode]
 #test
 {
-	F(a: 0, a: 1)
+	F(a: 0, c: 1)
 }

@@ -261,7 +261,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         for (auto param : node->callParameters->childs)
         {
             auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallOneParam);
-			job->symMatch.parameters.push_back(oneParam);
+            job->symMatch.parameters.push_back(oneParam);
         }
     }
     else
@@ -309,7 +309,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             case MatchResult::InvalidNamedParameter:
             {
                 auto       param = static_cast<AstFuncCallParam*>(node->callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{sourceFile, param, format("bad named parameter '%s'", param->namedParam.c_str())};
+                Diagnostic diag{sourceFile, param->namedParamNode, format("unknown named parameter '%s'", param->namedParam.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            case MatchResult::DuplicatedNamedParameter:
+            {
+                auto       param = static_cast<AstFuncCallParam*>(node->callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                Diagnostic diag{sourceFile, param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
@@ -330,11 +337,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 Diagnostic diag{sourceFile,
                                 node->callParameters->childs[job->symMatch.badSignatureParameterIdx],
                                 format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
-									   job->symMatch.badSignatureParameterIdx,
+                                       job->symMatch.badSignatureParameterIdx,
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),
-									   job->symMatch.badSignatureRequestedType->name.c_str(),
-									   job->symMatch.badSignatureGivenType->name.c_str())};
+                                       job->symMatch.badSignatureRequestedType->name.c_str(),
+                                       job->symMatch.badSignatureGivenType->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }

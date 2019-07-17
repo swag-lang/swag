@@ -51,7 +51,8 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
                 {
                     if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
                         return sourceFile->report({sourceFile, paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
-                    param->namedParam = paramExpression->childs.front()->token.text;
+                    param->namedParamNode = paramExpression->childs.front();
+                    param->namedParam     = param->namedParamNode->token.text;
                     SWAG_CHECK(eatToken());
                     SWAG_CHECK(doExpression(param));
                 }
