@@ -207,8 +207,8 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
         }
     }
 
-    // Sort childs by parameter index (if first index is -1, then we do not need to sort)
-    if (numCallParams && static_cast<AstFuncCallParam*>(allParams->childs.front())->index != -1)
+    // Sort childs by parameter index
+    if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
     {
         sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
             AstFuncCallParam* p1 = static_cast<AstFuncCallParam*>(n1);
@@ -218,41 +218,63 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     }
 
     // Push missing default parameters
-    int numParameters  = 0;
-    int indexParameter = 0;
+    int numRegisters = 0;
     if (numCallParams != typeInfoFunc->parameters.size())
     {
-        for (int i = (int) typeInfoFunc->parameters.size() - 1; i >= numCallParams; i--)
+        // Push all parameters, from end to start
+        for (int i = (int) typeInfoFunc->parameters.size() - 1; i >= 0; i--)
         {
-            auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
-            context->node     = defaultParam->astAssignment;
-            SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
-            emitLiteral(context);
-            context->node = node;
-            for (int r = defaultParam->astAssignment->resultRegisterRC.size() - 1; r >= 0; r--)
+            // Determine if this parameter has been covered by the call
+            bool covered = false;
+            for (int j = 0; allParams && j < allParams->childs.size(); j++)
             {
-                emitInstruction(context, ByteCodeOp::PushRAParam, defaultParam->astAssignment->resultRegisterRC[r], indexParameter);
-                precallStack += sizeof(Register);
-                indexParameter++;
-                numParameters++;
+                auto param = static_cast<AstFuncCallParam*>(allParams->childs[j]);
+                if (param->index == i)
+                {
+                    for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
+                    {
+                        emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r], numRegisters);
+                        precallStack += sizeof(Register);
+                        numRegisters++;
+                    }
+
+                    freeRegisterRC(context, param->resultRegisterRC);
+                    covered = true;
+                    break;
+                }
             }
 
-            freeRegisterRC(context, defaultParam->astAssignment->resultRegisterRC);
+            // If not covered, then this is a default value
+            if (!covered)
+            {
+                auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
+                context->node     = defaultParam->astAssignment;
+                SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
+                emitLiteral(context);
+                context->node = node;
+                for (int r = defaultParam->astAssignment->resultRegisterRC.size() - 1; r >= 0; r--)
+                {
+                    emitInstruction(context, ByteCodeOp::PushRAParam, defaultParam->astAssignment->resultRegisterRC[r], numRegisters);
+                    precallStack += sizeof(Register);
+                    numRegisters++;
+                }
+
+                freeRegisterRC(context, defaultParam->astAssignment->resultRegisterRC);
+            }
         }
     }
 
-    // Push parameters
-    if (allParams)
+    // Fast call. No need to do fancy things, all the parameters are covered by the call
+    else if(numCallParams)
     {
         for (int i = numCallParams - 1; i >= 0; i--)
         {
             auto param = allParams->childs[i];
             for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
             {
-                emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r], indexParameter);
+                emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r], numRegisters);
                 precallStack += sizeof(Register);
-                indexParameter++;
-                numParameters++;
+                numRegisters++;
             }
 
             freeRegisterRC(context, param->resultRegisterRC);
@@ -260,9 +282,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     }
 
     // Remember the number of parameters, to allocate registers in backend
-    context->bc->maxCallParameters = max(context->bc->maxCallParameters, numParameters);
+    context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
 
-    emitInstruction(context, ByteCodeOp::LocalCall, 0, numParameters)->a.pointer = (uint8_t*) funcNode->bc;
+    auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
+    inst->a.pointer = (uint8_t*) funcNode->bc;
+    inst->b.u32     = numRegisters;
 
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)

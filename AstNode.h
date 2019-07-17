@@ -315,9 +315,10 @@ struct AstFuncCallParam : public AstNode
     void reset() override
     {
         namedParam.clear();
-        resolvedParameter = nullptr;
-        namedParamNode    = nullptr;
-        index             = -1;
+        resolvedParameter  = nullptr;
+        namedParamNode     = nullptr;
+        index              = 0;
+        mustSortParameters = false;
         AstNode::reset();
     }
 
@@ -325,6 +326,7 @@ struct AstFuncCallParam : public AstNode
     AstNode*               namedParamNode;
     TypeInfoFuncAttrParam* resolvedParameter;
     int                    index;
+    bool                   mustSortParameters;
 };
 
 struct AstIf : public AstNode

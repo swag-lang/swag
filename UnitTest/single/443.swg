@@ -3,12 +3,12 @@
 
 func F(a: s32, b: s32)
 {
-	@assert(a == 1)
-	@assert(b == 0)
+	@assert(a == 124)
+	@assert(b == 666)
 }
 
 //#[swag.printbytecode]
 #test
 {
-	F(b: 0, a: 1)
+	F(b: 666, a: 124)
 }

@@ -86,11 +86,14 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     // Named parameters
     if (hasNamedParameters)
     {
+        auto callParameter = context.parameters[0];
+        callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
+
         auto startResolved = cptResolved;
         for (int i = startResolved; i < numParams; i++)
         {
-            auto callParameter = context.parameters[i];
-            auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallOneParam);
+            callParameter = context.parameters[i];
+            auto param    = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallOneParam);
             if (param->namedParam.empty())
             {
                 // After the last named parameters, we must have the first default value, or nothing
@@ -116,9 +119,9 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
                         return;
                     }
 
-                    param->resolvedParameter            = symbolParameter;
-                    param->index                        = j;
-                    context.doneParameters[cptResolved] = true;
+                    param->resolvedParameter  = symbolParameter;
+                    param->index              = j;
+                    context.doneParameters[j] = true;
                     cptResolved++;
                     break;
                 }
@@ -133,12 +136,11 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
     }
 
-    // Set first child index to -1. This is used to tell : no named parameters to avoid a useless sort in bytecodegen
+    // No need to sort childs if there's no named parameters, as the order is already correct
     else if (context.parameters.size())
     {
         auto callParameter = context.parameters[0];
-        auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallOneParam);
-        param->index       = -1;
+        callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
     }
 
     // Not enough parameters
