@@ -337,7 +337,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 Diagnostic diag{sourceFile,
                                 node->callParameters->childs[job->symMatch.badSignatureParameterIdx],
                                 format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
-                                       job->symMatch.badSignatureParameterIdx,
+                                       job->symMatch.badSignatureParameterIdx + 1,
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),
                                        job->symMatch.badSignatureRequestedType->name.c_str(),

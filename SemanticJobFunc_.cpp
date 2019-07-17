@@ -40,7 +40,7 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
         }
         else
         {
-            SWAG_VERIFY(!defaultValueDone, sourceFile->report({sourceFile, nodeParam, "missing parameter default value"}));
+            SWAG_VERIFY(!defaultValueDone, sourceFile->report({sourceFile, nodeParam, format("parameter '%d', missing default value", index)}));
         }
 
         typeInfo->parameters.push_back(funcParam);

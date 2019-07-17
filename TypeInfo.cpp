@@ -119,6 +119,16 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
                         return;
                     }
 
+                    auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+                    bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+                    if (!same)
+                    {
+                        context.badSignatureParameterIdx  = i;
+                        context.badSignatureRequestedType = symbolParameter->typeInfo;
+                        context.badSignatureGivenType     = typeInfo;
+                        badSignature                      = true;
+                    }
+
                     param->resolvedParameter  = symbolParameter;
                     param->index              = j;
                     context.doneParameters[j] = true;

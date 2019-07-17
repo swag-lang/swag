@@ -225,7 +225,10 @@ bool Workspace::buildModules(const vector<Module*>& list)
             auto semanticJob = static_cast<SemanticJob*>(pendingJob);
             auto node        = semanticJob->nodes.back();
             auto sourceFile  = semanticJob->sourceFile;
-            sourceFile->report({sourceFile, node->token, format("can't resolve type of identifier '%s'", node->name.c_str())});
+            if (!sourceFile->module->numErrors)
+            {
+                sourceFile->report({sourceFile, node->token, format("can't resolve type of identifier '%s'", node->name.c_str())});
+            }
         }
 
         g_ThreadMgr.pendingJobs.clear();
