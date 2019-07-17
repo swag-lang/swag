@@ -3,6 +3,7 @@
 
 struct CommandLine
 {
+    bool help             = false;
     bool unittest         = true;
     bool test             = true;
     bool silent           = false;

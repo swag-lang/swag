@@ -5,6 +5,7 @@
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
+    addArg("--help", "-?", CommandLineType::Bool, &cmdLine->help);
     addArg("--silent", "-s", CommandLineType::Bool, &cmdLine->silent);
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
@@ -29,12 +30,62 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->fileFilter = "246";
 }
 
+void CommandLineParser::logArguments()
+{
+    int    cpt = 0;
+    string line;
+    for (auto arg : longNameArgs)
+    {
+        auto oneArg = arg.second;
+
+        line = arg.first;
+        line += " ";
+        line += oneArg->shortName;
+        while (line.length() != 25)
+            line += " ";
+
+        switch (oneArg->type)
+        {
+        case CommandLineType::Bool:
+            line += "true|false";
+            break;
+        case CommandLineType::Int:
+            line += "<integer>";
+            break;
+        case CommandLineType::String:
+            line += "<string>";
+            break;
+        case CommandLineType::StringList:
+            line += "<string list>";
+            break;
+        case CommandLineType::Enum:
+            line += oneArg->param;
+            break;
+        }
+
+        g_Log.message(line);
+        cpt++;
+    }
+}
+
 void CommandLineParser::addArg(const char* longName, const char* shortName, CommandLineType type, void* address, const char* param)
 {
+    auto arg = new CommandLineArgument{type, address, param};
+
     if (longName)
-        longNameArgs[longName] = new CommandLineArgument{type, address, param};
+        arg->longName = longName;
     if (shortName)
-        shortNameArgs[shortName] = new CommandLineArgument{type, address, param};
+        arg->shortName = shortName;
+
+    if (longName)
+    {
+        longNameArgs[longName] = arg;
+    }
+
+    if (shortName)
+    {
+        shortNameArgs[shortName] = arg;
+    }
 }
 
 bool CommandLineParser::process(int argc, const char* argv[])

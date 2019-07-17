@@ -12,13 +12,13 @@ void printStats()
         return;
 
     g_Log.setColor(LogColor::White);
-	wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD).c_str();
+    wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD).c_str();
     if (g_CommandLine.output)
         wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
     wcout << "workers ........... " << g_Stats.numWorkers << "\n";
     wcout << "lines ............. " << g_Stats.numLines << "\n";
-	wcout << "lines/s ........... " << (int) (g_Stats.numLines / g_Stats.totalTime.count()) << "\n";
+    wcout << "lines/s ........... " << (int) (g_Stats.numLines / g_Stats.totalTime.count()) << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
     wcout << "modules ........... " << g_Stats.numModules << "\n";
     if (g_CommandLine.output)
@@ -45,6 +45,14 @@ int main(int argc, const char* argv[])
     cmdParser.setup(&g_CommandLine);
     if (!cmdParser.process(argc, argv))
         return -2;
+
+    // Log all arguments
+    if (g_CommandLine.help)
+    {
+		wcout << "swag version " << format("%d.%d.%d\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD).c_str();
+        cmdParser.logArguments();
+        exit(0);
+    }
 
     g_Global.setup();
     g_Workspace.build();
