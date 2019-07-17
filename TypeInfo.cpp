@@ -41,19 +41,19 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* from)
 
 void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 {
-    int  firstUserNamed = 0;
-    int  cptResolved    = 0;
-    bool badSignature   = false;
+    int  cptResolved  = 0;
+    bool badSignature = false;
 
     // First we solve unnamed parameters
-    int numParams = (int) context.parameters.size();
+    int  numParams          = (int) context.parameters.size();
+    bool hasNamedParameters = false;
     for (int i = 0; i < numParams; i++)
     {
         auto callParameter = context.parameters[i];
-        auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
-        if (!param->name.empty())
+        auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallOneParam);
+        if (!param->namedParam.empty())
         {
-            firstUserNamed = i;
+            hasNamedParameters = true;
             break;
         }
 
@@ -75,10 +75,58 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
 
         param->resolvedParameter = symbolParameter;
-        cptResolved++;
+        param->index             = cptResolved++;
     }
 
     // Named parameters
+    if (hasNamedParameters)
+    {
+        auto startResolved = cptResolved;
+        for (int i = startResolved; i < numParams; i++)
+        {
+            auto callParameter = context.parameters[i];
+            auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallOneParam);
+            if (param->namedParam.empty())
+            {
+                // After the last named parameters, we must have the first default value, or nothing
+                if (i < firstDefaultValueIdx)
+                {
+                    context.badSignatureParameterIdx = i;
+                    context.result                   = InvalidNamedParameter;
+                    return;
+                }
+
+                break;
+            }
+
+            for (int j = startResolved; j < parameters.size(); j++)
+            {
+                auto symbolParameter = parameters[j];
+                if (parameters[j]->name == param->namedParam)
+                {
+                    param->resolvedParameter = symbolParameter;
+                    param->index             = j;
+                    cptResolved++;
+                    break;
+                }
+            }
+
+            if (!param->resolvedParameter)
+            {
+                context.badSignatureParameterIdx = i;
+                context.result                   = InvalidNamedParameter;
+                return;
+            }
+        }
+    }
+
+    // Set first child index to -1. This is used to tell : no named parameters to avoid a useless sort in bytecodegen
+    else if (context.parameters.size())
+    {
+        auto callParameter = context.parameters[0];
+        auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallOneParam);
+        param->index       = -1;
+    }
 
     // Not enough parameters
     int firstDefault = firstDefaultValueIdx;

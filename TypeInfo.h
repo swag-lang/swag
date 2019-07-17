@@ -243,16 +243,31 @@ enum MatchResult
     Ok,
     TooManyParameters,
     NotEnoughParameters,
-    BadSignature
+    BadSignature,
+    InvalidNamedParameter
 };
 
 struct SymbolMatchContext
 {
-    int                       badSignatureParameterIdx  = 0;
-    TypeInfo*                 badSignatureRequestedType = nullptr;
-    TypeInfo*                 badSignatureGivenType     = nullptr;
-    MatchResult               result                    = MatchResult::Ok;
+    int                       badSignatureParameterIdx;
+    TypeInfo*                 badSignatureRequestedType;
+    TypeInfo*                 badSignatureGivenType;
+    MatchResult               result;
     vector<AstFuncCallParam*> parameters;
+
+    SymbolMatchContext()
+    {
+        reset();
+    }
+
+    void reset()
+    {
+        badSignatureParameterIdx  = 0;
+        badSignatureRequestedType = nullptr;
+        badSignatureGivenType     = nullptr;
+        result                    = MatchResult::Ok;
+        parameters.clear();
+    }
 };
 
 struct TypeInfoFuncAttr : public TypeInfo

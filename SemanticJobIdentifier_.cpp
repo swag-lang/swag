@@ -247,7 +247,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // Fill specified parameters
-    SymbolMatchContext symMatch;
+    job->symMatch.reset();
     if (node->callParameters)
     {
         auto symbol = dependentSymbols[0];
@@ -260,8 +260,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         for (auto param : node->callParameters->childs)
         {
-            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
-            symMatch.parameters.push_back(oneParam);
+            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallOneParam);
+			job->symMatch.parameters.push_back(oneParam);
         }
     }
     else
@@ -290,10 +290,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             numOverloads++;
 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-            typeInfo->match(symMatch);
-            if (symMatch.result == MatchResult::Ok)
+            typeInfo->match(job->symMatch);
+            if (job->symMatch.result == MatchResult::Ok)
                 matches.push_back(overload);
-            else if (symMatch.result == MatchResult::BadSignature)
+            else if (job->symMatch.result == MatchResult::BadSignature)
                 badSignature.push_back(overload);
         }
     }
@@ -304,8 +304,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (numOverloads == 1)
         {
             auto overload = symbol->overloads[0];
-            switch (symMatch.result)
+            switch (job->symMatch.result)
             {
+            case MatchResult::InvalidNamedParameter:
+            {
+                auto       param = static_cast<AstFuncCallParam*>(node->callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                Diagnostic diag{sourceFile, param, format("bad named parameter '%s'", param->namedParam.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
             case MatchResult::NotEnoughParameters:
             {
                 Diagnostic diag{sourceFile, node->callParameters ? node->callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
@@ -321,13 +328,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             case MatchResult::BadSignature:
             {
                 Diagnostic diag{sourceFile,
-                                node->callParameters->childs[symMatch.badSignatureParameterIdx],
+                                node->callParameters->childs[job->symMatch.badSignatureParameterIdx],
                                 format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
-                                       symMatch.badSignatureParameterIdx,
+									   job->symMatch.badSignatureParameterIdx,
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),
-                                       symMatch.badSignatureRequestedType->name.c_str(),
-                                       symMatch.badSignatureGivenType->name.c_str())};
+									   job->symMatch.badSignatureRequestedType->name.c_str(),
+									   job->symMatch.badSignatureGivenType->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }

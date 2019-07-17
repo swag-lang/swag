@@ -86,7 +86,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     AstNode* node       = context->node;
-    auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
+    auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParameters);
 
     switch (node->token.id)
     {
@@ -173,8 +173,18 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     }
 
     int  precallStack  = 0;
-    auto params        = node->childs.empty() ? nullptr : node->childs.front();
-    int  numCallParams = params ? (int) params->childs.size() : 0;
+    auto allParams     = node->childs.empty() ? nullptr : node->childs.front();
+    int  numCallParams = allParams ? (int) allParams->childs.size() : 0;
+
+    // Sort childs by parameter index (if first index is -1, then we do not need to sort)
+    if (numCallParams && static_cast<AstFuncCallParam*>(allParams->childs.front())->index != -1)
+    {
+        sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
+            AstFuncCallParam* p1 = static_cast<AstFuncCallParam*>(n1);
+            AstFuncCallParam* p2 = static_cast<AstFuncCallParam*>(n2);
+            return p1->index < p2->index;
+        });
+    }
 
     // Push current used registers
     const auto&      reservedRC = context->job->reservedRC;
@@ -182,11 +192,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     for (auto it = reservedRC.begin(); it != reservedRC.end(); ++it)
     {
         bool isParam = false;
-        if (params)
+        if (allParams)
         {
-            for (int i = 0; !isParam && (i < (int) params->childs.size()); i++)
+            for (int i = 0; !isParam && (i < (int) allParams->childs.size()); i++)
             {
-                auto oneChild = params->childs[i];
+                auto oneChild = allParams->childs[i];
                 for (int r = 0; r < (int) oneChild->resultRegisterRC.size(); r++)
                 {
                     if (oneChild->resultRegisterRC[r] == *it)
@@ -230,11 +240,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     }
 
     // Push parameters
-    if (params)
+    if (allParams)
     {
         for (int i = numCallParams - 1; i >= 0; i--)
         {
-            auto param = params->childs[i];
+            auto param = allParams->childs[i];
             for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
             {
                 emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r], indexParameter);

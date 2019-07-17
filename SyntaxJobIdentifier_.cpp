@@ -28,7 +28,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
 
     if (token.id == TokenId::SymLeftParen)
     {
-        auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, identifier);
+        auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, identifier);
         callParams->inheritOwnersAndFlags(this);
         identifier->callParameters = callParams;
         callParams->semanticFct    = &SemanticJob::resolveFuncCallParams;
@@ -39,11 +39,27 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
         {
             while (true)
             {
-                auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
+                auto param = Ast::newNode(&g_Pool_astFuncCallOneParam, AstNodeKind::FuncCallOneParam, sourceFile->indexInModule, callParams);
                 param->inheritOwnersAndFlags(this);
                 param->semanticFct = &SemanticJob::resolveFuncCallParam;
                 param->token       = token;
-                SWAG_CHECK(doExpression(param));
+                AstNode* paramExpression;
+                SWAG_CHECK(doExpression(nullptr, &paramExpression));
+
+                // Name
+                if (token.id == TokenId::SymColon)
+                {
+                    if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
+                        return sourceFile->report({sourceFile, paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
+                    param->namedParam = paramExpression->childs.front()->token.text;
+                    SWAG_CHECK(eatToken());
+                    SWAG_CHECK(doExpression(param));
+                }
+                else
+                {
+                    Ast::addChild(param, paramExpression);
+                }
+
                 if (token.id != TokenId::SymComma)
                     break;
                 SWAG_CHECK(eatToken(TokenId::SymComma));

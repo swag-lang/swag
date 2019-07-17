@@ -1,6 +1,7 @@
 #pragma once
 #include "Job.h"
 #include "Utf8.h"
+#include "TypeInfo.h"
 struct AstNode;
 struct Module;
 struct SourceFile;
@@ -15,7 +16,6 @@ enum class AstNodeKind;
 enum class SymbolKind;
 struct SymbolAttributes;
 struct ByteCodeGenJob;
-struct TypeInfo;
 
 enum class SemanticResult
 {
@@ -108,7 +108,7 @@ struct SemanticJob : public Job
     static bool resolveCast(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
-	static bool resolveForBefore(SemanticContext* context);
+    static bool resolveForBefore(SemanticContext* context);
     static bool resolveFor(SemanticContext* context);
     static bool resolveSwitch(SemanticContext* context);
     static bool resolveCase(SemanticContext* context);
@@ -129,6 +129,7 @@ struct SemanticJob : public Job
     set<Scope*>             scopesHereNoAlt;
     vector<SymbolOverload*> cacheMatches;
     vector<SymbolOverload*> cacheBadSignature;
+    SymbolMatchContext      symMatch;
 };
 
 extern Pool<SemanticJob> g_Pool_semanticJob;
