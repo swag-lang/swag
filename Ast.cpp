@@ -3,6 +3,7 @@
 #include "Scope.h"
 #include "SourceFile.h"
 #include "SemanticJob.h"
+#include "ByteCodeGenJob.h"
 #include "Utf8Crc.h"
 
 namespace Ast
@@ -89,12 +90,14 @@ namespace Ast
         auto sourceFile    = job->sourceFile;
         auto idRef         = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
         idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
+        idRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
         idRef->inheritOwnersAndFlags(job);
         idRef->name  = name;
         idRef->token = token;
 
         auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
         id->semanticFct = &SemanticJob::resolveIdentifier;
+        id->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
         id->inheritOwnersAndFlags(job);
         id->name  = name;
         id->token = token;

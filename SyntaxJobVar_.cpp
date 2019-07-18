@@ -20,18 +20,32 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         break;
     }
 
-	SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
 
     AstVarDecl* varNode = Ast::newNode(&g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
     varNode->inheritOwnersAndFlags(this);
     varNode->semanticFct = SemanticJob::resolveVarDecl;
+    varNode->inheritToken(token);
     if (result)
         *result = varNode;
-
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
-    varNode->inheritToken(token);
-
     SWAG_CHECK(tokenizer.getToken(token));
+
+    // Multiple declaration
+    vector<AstVarDecl*> otherVariables;
+    while (token.id == TokenId::SymComma)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+
+        AstVarDecl* otherVarNode = Ast::newNode(&g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
+        otherVarNode->inheritOwnersAndFlags(this);
+        otherVarNode->semanticFct = SemanticJob::resolveVarDecl;
+        otherVarNode->inheritToken(token);
+        SWAG_CHECK(tokenizer.getToken(token));
+        otherVariables.push_back(otherVarNode);
+    }
+
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken());
@@ -44,18 +58,25 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->astAssignment));
     }
 
-    SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
-
     // Be sure we will be able to have a type
     if (!varNode->astType && !varNode->astAssignment)
-    {
         return error(varNode->token, "variable must be initialized because no type is specified");
-    }
 
+    SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
+
+	// Generate initialization for other variables (init to the first var)
+	for (auto otherVar : otherVariables)
+	{
+		otherVar->astAssignment = Ast::createIdentifierRef(this, varNode->name, varNode->token, otherVar);
+	}
+
+	// Register symbol name
     if (!isContextDisabled())
     {
         currentScope->allocateSymTable();
         SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+		for(auto otherVar : otherVariables)
+			SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, otherVar, SymbolKind::Variable));
     }
 
     return true;
