@@ -183,34 +183,60 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::DeRef8:
     {
-        registersRC[ip->a.u32].u64 = *(uint8_t*) registersRC[ip->a.u32].pointer;
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            registersRC[ip->a.u32].u64 = *(uint8_t*) ptr;
         break;
     }
     case ByteCodeOp::DeRef16:
     {
-        registersRC[ip->a.u32].u64 = *(uint16_t*) registersRC[ip->a.u32].pointer;
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            registersRC[ip->a.u32].u64 = *(uint16_t*) ptr;
         break;
     }
     case ByteCodeOp::DeRef32:
     {
-        registersRC[ip->a.u32].u64 = *(uint32_t*) registersRC[ip->a.u32].pointer;
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            registersRC[ip->a.u32].u64 = *(uint32_t*) ptr;
         break;
     }
     case ByteCodeOp::DeRef64:
     {
-        registersRC[ip->a.u32].u64 = *(uint64_t*) registersRC[ip->a.u32].pointer;
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            registersRC[ip->a.u32].u64 = *(uint64_t*) ptr;
         break;
     }
     case ByteCodeOp::DeRefPointer:
     {
-        registersRC[ip->b.u32].pointer = *(uint8_t**) (registersRC[ip->a.u32].pointer + ip->c.u32);
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+            registersRC[ip->b.u32].pointer = *(uint8_t**) (ptr + ip->c.u32);
         break;
     }
     case ByteCodeOp::DeRefString:
     {
-        uint64_t** ptr                 = (uint64_t**) registersRC[ip->a.u32].pointer;
-        registersRC[ip->a.u32].pointer = (uint8_t*) ptr[0];
-        registersRC[ip->b.u32].u64     = (uint64_t) ptr[1];
+        auto ptr = registersRC[ip->a.u32].pointer;
+        if (ptr == nullptr)
+            context->error("dereferencing a null pointer");
+        else
+        {
+            uint64_t** ptrptr              = (uint64_t**) ptr;
+            registersRC[ip->a.u32].pointer = (uint8_t*) ptrptr[0];
+            registersRC[ip->b.u32].u64     = (uint64_t) ptrptr[1];
+        }
         break;
     }
     case ByteCodeOp::BoundCheck:
