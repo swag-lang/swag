@@ -592,7 +592,10 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         *(uint32_t*) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].u32;
         break;
     case ByteCodeOp::AffectOp64:
-        *(uint64_t*) (registersRC[ip->a.u32].pointer + ip->c.s32) = registersRC[ip->b.u32].u64;
+        *(uint64_t*) (registersRC[ip->a.u32].pointer + ip->c.u32) = registersRC[ip->b.u32].u64;
+        break;
+    case ByteCodeOp::AffectOp64Null:
+        *(uint64_t*) (registersRC[ip->a.u32].pointer + ip->b.u32) = 0;
         break;
     case ByteCodeOp::AffectOpPointer:
         *(void**) registersRC[ip->a.u32].pointer = registersRC[ip->b.u32].pointer;

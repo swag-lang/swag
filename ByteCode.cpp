@@ -84,8 +84,8 @@ void ByteCode::print()
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintString:
         case ByteCodeOp::ClearRA:
-		case ByteCodeOp::DecRA:
-		case ByteCodeOp::IncRA:
+        case ByteCodeOp::DecRA:
+        case ByteCodeOp::IncRA:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -95,7 +95,7 @@ void ByteCode::print()
         case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOpPointer:
         case ByteCodeOp::IsNullString:
-		case ByteCodeOp::IsNullU32:
+        case ByteCodeOp::IsNullU32:
         case ByteCodeOp::BoundCheck:
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::BoundCheckReg:
@@ -115,6 +115,7 @@ void ByteCode::print()
         case ByteCodeOp::RAFromStack32:
         case ByteCodeOp::RAFromStack64:
         case ByteCodeOp::RARefFromStack:
+        case ByteCodeOp::AffectOp64Null:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 
@@ -144,7 +145,7 @@ void ByteCode::print()
             wprintf(bcNum, ip->a.s32 + i + 1);
             break;
         case ByteCodeOp::JumpNotTrue:
-		case ByteCodeOp::JumpTrue:
+        case ByteCodeOp::JumpTrue:
             g_Log.setColor(LogColor::Gray);
             wprintf(L"RA: %u ", ip->a.u32);
             g_Log.setColor(LogColor::Cyan);

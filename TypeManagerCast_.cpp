@@ -905,6 +905,10 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
         if (toTypeSlice->pointedType->isNative(NativeType::U8))
             return true;
     }
+    else if (fromType == g_TypeMgr.typeInfoNull)
+    {
+        return true;
+    }
     else if (fromType->kind == TypeInfoKind::Slice)
     {
         if (castFlags & CASTFLAG_FORCE)
@@ -971,6 +975,8 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
     // Cast to slice
     if (toType->kind == TypeInfoKind::Slice)
         return castToSlice(sourceFile, toType, fromType, nodeToCast, castFlags);
+    else
+        toType = toType;
 
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }

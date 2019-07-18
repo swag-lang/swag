@@ -21,7 +21,8 @@ void TypeManager::setup()
     typeInfoString = new TypeInfoNative(NativeType::String, "string", 2 * sizeof(Register), 0);
     typeInfoVoid   = new TypeInfoNative(NativeType::Void, "void", 0, 0);
 
-    typeInfoNull         = new TypeInfoPointer();
+    typeInfoNull = new TypeInfoPointer();
+    typeInfoNull->reset();
     typeInfoNull->name   = "null";
     typeInfoNull->sizeOf = sizeof(void*);
 

@@ -10,7 +10,7 @@
 #include "ByteCode.h"
 #include "CommandLine.h"
 
-bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo)
+bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, TypeInfo* fromTypeInfo)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo);
@@ -29,7 +29,12 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        if (node->childs.size() > 1 && node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
+        if (fromTypeInfo && fromTypeInfo == g_TypeMgr.typeInfoNull)
+        {
+            emitInstruction(context, ByteCodeOp::AffectOp64Null, r0);
+            emitInstruction(context, ByteCodeOp::AffectOp64Null, r0, 8);
+        }
+        else if (node->childs.size() > 1 && node->childs[1]->typeInfo->kind == TypeInfoKind::Array)
         {
             emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1);
 
