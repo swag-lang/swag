@@ -603,7 +603,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
 	case ByteCodeOp::IntrinsicPrintString:
 	{
 		g_Log.lock();
-		g_Log.print(string((const char*)registersRC[ip->a.u32].pointer));
+		auto ptr = registersRC[ip->a.u32].pointer;
+		if (ptr == nullptr)
+			g_Log.print("<null>");
+		else
+			g_Log.print(string((const char*)ptr));
 		g_Log.unlock();
 		break;
 	}

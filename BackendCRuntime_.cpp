@@ -61,9 +61,10 @@ typedef union __register {
 
 )";
 
-static const char* g_Intrinsics= R"(
+static const char* g_Intrinsics = R"(
 static void __print(const char* message) 
 { 
+	if(!message) message = "<null>";
 	printf(message);
 }
 
