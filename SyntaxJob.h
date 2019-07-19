@@ -51,6 +51,7 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
+	bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, uint64_t flags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint64_t flags = 0);

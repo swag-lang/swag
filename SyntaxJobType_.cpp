@@ -34,10 +34,50 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
+{
+    // Else this is a type expression
+    auto node = Ast::newNode(&g_Pool_astTypeLambda, AstNodeKind::TypeLambda, sourceFile->indexInModule, parent);
+    node->inheritOwnersAndFlags(this);
+    node->semanticFct = &SemanticJob::resolveTypeLambda;
+    node->inheritToken(token);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    if (token.id != TokenId::SymRightParen)
+    {
+        auto params      = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, nullptr);
+        node->parameters = params;
+        while (true)
+        {
+            SWAG_CHECK(doTypeExpression(params));
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken());
+        }
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    if (token.id == TokenId::SymMinusGreat)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doTypeExpression(node, &node->returnType));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
     ScopedFlags sc(this, AST_NO_BYTECODE_CHILDS);
-    auto        node = Ast::newNode(&g_Pool_astType, AstNodeKind::Type, sourceFile->indexInModule, parent);
+
+    // This is a function
+    if (token.id == TokenId::SymLeftParen)
+        return doTypeExpressionLambda(parent, result);
+
+    // Else this is a type expression
+    auto node = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveTypeExpression;
     if (result)

@@ -9,11 +9,29 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "CommandLine.h"
+#include "TypeManager.h"
+
+bool SemanticJob::resolveTypeLambda(SemanticContext* context)
+{
+    auto node     = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
+    auto typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+
+    if (node->returnType)
+        typeInfo->returnType = node->returnType->typeInfo;
+
+    typeInfo->name = format("()");
+    if (typeInfo->returnType)
+        typeInfo->name += format("->%s", typeInfo->returnType->name.c_str());
+    typeInfo->sizeOf = sizeof(void*);
+    node->typeInfo   = g_TypeMgr.registerType(typeInfo);
+
+    return true;
+}
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstType>(context->node, AstNodeKind::Type);
+    auto node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     node->typeInfo = node->typeExpression ? node->typeExpression->typeInfo : node->token.literalType;
     SWAG_VERIFY(node->typeInfo, context->job->error(context, "invalid type (yet) !"));

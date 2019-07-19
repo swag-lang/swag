@@ -43,7 +43,8 @@ enum class AstNodeKind
     TypeDecl,
     IdentifierRef,
     Identifier,
-    Type,
+    TypeExpression,
+	TypeLambda,
     Namespace,
     If,
     Else,
@@ -492,7 +493,7 @@ struct AstSwitchCaseBlock : public AstNode
     int            seekJumpNextCase;
 };
 
-struct AstType : public AstNode
+struct AstTypeExpression : public AstNode
 {
     void reset() override
     {
@@ -509,6 +510,19 @@ struct AstType : public AstNode
     int      arrayDim;
     bool     isSlice;
     bool     isConst;
+};
+
+struct AstTypeLambda : public AstNode
+{
+    void reset() override
+    {
+        parameters = nullptr;
+        returnType = 0;
+        AstNode::reset();
+    }
+
+    AstNode* parameters;
+    AstNode* returnType;
 };
 
 struct AstPointerDeRef : public AstNode
@@ -557,7 +571,8 @@ extern Pool<AstSwitch>          g_Pool_astSwitch;
 extern Pool<AstSwitchCase>      g_Pool_astSwitchCase;
 extern Pool<AstSwitchCaseBlock> g_Pool_astSwitchCaseBlock;
 extern Pool<AstBreakContinue>   g_Pool_astBreakContinue;
-extern Pool<AstType>            g_Pool_astType;
+extern Pool<AstTypeExpression>            g_Pool_astTypeExpression;
+extern Pool<AstTypeLambda>      g_Pool_astTypeLambda;
 extern Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
 extern Pool<AstProperty>        g_Pool_astProperty;
 extern Pool<AstExpressionList>  g_Pool_astExpressionList;
