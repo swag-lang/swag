@@ -1,4 +1,5 @@
 BYTECODE_OP(LocalCall)
+BYTECODE_OP(LambdaCall)
 BYTECODE_OP(ForeignCall)
 BYTECODE_OP(Ret)
 BYTECODE_OP(IntrinsicPrintS32)

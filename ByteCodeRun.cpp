@@ -165,6 +165,16 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->bp = context->sp;
         break;
     }
+    case ByteCodeOp::LambdaCall:
+    {
+        context->push(context->bp);
+        context->push(context->bc);
+        context->push(context->ip);
+        context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
+        context->ip = context->bc->out;
+        context->bp = context->sp;
+        break;
+    }
     case ByteCodeOp::MakeLambda:
     {
 		registersRC[ip->a.u32].pointer = ip->b.pointer;

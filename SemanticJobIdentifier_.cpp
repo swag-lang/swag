@@ -156,28 +156,42 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         node->computedValue = node->resolvedSymbolOverload->computedValue;
         break;
+
+    case SymbolKind::Variable:
+    {
+		// Lambda call
+        AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        if (identifier->typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
+			node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
+
+        break;
+    }
+
     case SymbolKind::Function:
     {
-		// This is for a lambda
-		if (node->flags & AST_TAKE_ADDRESS)
-		{
-			// The makePointer will deal with the real make lambda thing
-			node->flags |= AST_NO_BYTECODE;
-			break;
-		}
+        // This is for a lambda
+        if (node->flags & AST_TAKE_ADDRESS)
+        {
+            // The makePointer will deal with the real make lambda thing
+            node->flags |= AST_NO_BYTECODE;
+            break;
+        }
 
         node->kind = AstNodeKind::FuncCall;
         node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
 
         if (node->token.id == TokenId::IntrisicPrint || node->token.id == TokenId::IntrisicAssert)
+        {
             node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+        }
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
+        {
             node->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
+        }
         else
         {
             node->byteCodeFct = &ByteCodeGenJob::emitLocalCall;
-
-            auto ownerFct = node->ownerFct;
+            auto ownerFct     = node->ownerFct;
             if (ownerFct)
             {
                 auto myAttributes = ownerFct->attributeFlags;
@@ -256,12 +270,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     // Fill specified parameters
     job->symMatch.reset();
-	job->symMatch.forLambda = (node->flags & AST_TAKE_ADDRESS);
+    job->symMatch.forLambda = (node->flags & AST_TAKE_ADDRESS);
 
     if (node->callParameters)
     {
         auto symbol = dependentSymbols[0];
-        if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
+        if (symbol->kind != SymbolKind::Attribute &&
+            symbol->kind != SymbolKind::Function &&
+            (symbol->kind != SymbolKind::Variable || symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Lambda))
         {
             Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
             Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
@@ -299,7 +315,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             numOverloads++;
 
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+            auto typeInfo = static_cast<TypeInfoFuncAttr*>(overload->typeInfo);
+            assert(typeInfo->kind == TypeInfoKind::FuncAttr || typeInfo->kind == TypeInfoKind::Lambda);
             typeInfo->match(job->symMatch);
             if (job->symMatch.result == MatchResult::Ok)
                 matches.push_back(overload);

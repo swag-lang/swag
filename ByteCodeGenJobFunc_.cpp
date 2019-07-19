@@ -135,14 +135,35 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
+{
+    AstNode* node          = context->node;
+    auto     overload      = node->resolvedSymbolOverload;
+    auto     varNode       = CastAst<AstVarDecl>(overload->node, AstNodeKind::VarDecl);
+    node->resultRegisterRC = varNode->astAssignment->resultRegisterRC;
+    return emitLocalCall(context, nullptr, varNode);
+}
+
 bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
 {
-    AstNode* node         = context->node;
-    auto     sourceFile   = context->sourceFile;
-    auto     overload     = node->resolvedSymbolOverload;
-    auto     funcNode     = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-    auto     typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    AstNode* node     = context->node;
+    auto     overload = node->resolvedSymbolOverload;
+    auto     funcNode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    return emitLocalCall(context, funcNode, nullptr);
+}
 
+bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* funcNode, AstVarDecl* varNode)
+{
+    AstNode* node       = context->node;
+    auto     sourceFile = context->sourceFile;
+
+    TypeInfoFuncAttr* typeInfoFunc = nullptr;
+    if (funcNode)
+        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    else
+        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(varNode->typeInfo, TypeInfoKind::Lambda);
+
+    if (funcNode)
     {
         scoped_lock lk(funcNode->mutex);
         if (funcNode->byteCodeJob != context->job) // If true, then this is a simple recursive call
@@ -265,7 +286,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     }
 
     // Fast call. No need to do fancy things, all the parameters are covered by the call
-    else if(numCallParams)
+    else if (numCallParams)
     {
         for (int i = numCallParams - 1; i >= 0; i--)
         {
@@ -284,9 +305,17 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
 
-    auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
-    inst->a.pointer = (uint8_t*) funcNode->bc;
-    inst->b.u32     = numRegisters;
+    if (funcNode)
+    {
+        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
+        inst->a.pointer = (uint8_t*) funcNode->bc;
+        inst->b.u32     = numRegisters;
+    }
+    else
+    {
+        auto inst   = emitInstruction(context, ByteCodeOp::LambdaCall, node->resultRegisterRC);
+        inst->b.u32 = numRegisters;
+    }
 
     // Copy result in a computing register
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)

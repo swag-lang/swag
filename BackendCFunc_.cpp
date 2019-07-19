@@ -899,6 +899,10 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
         }
 
+		case ByteCodeOp::LambdaCall:
+        {
+            break;
+        }
         case ByteCodeOp::LocalCall:
         {
             auto funcBC     = (ByteCode*) ip->a.pointer;
