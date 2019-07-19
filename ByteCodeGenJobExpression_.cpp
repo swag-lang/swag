@@ -228,6 +228,15 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 {
 	auto node = context->node;
+
+	// This is a special expression list which initialize the pointer and the count of a slice
+	if (node->flags & AST_SLICE_INIT_EXPRESSION)
+	{
+		node->resultRegisterRC = node->childs.front()->resultRegisterRC;
+		node->resultRegisterRC += node->childs.back()->resultRegisterRC;
+		return true;
+	}
+
 	auto module = context->sourceFile->module;
 	auto job = context->job;
 	bool isConstExpr = node->flags & AST_CONST_EXPR;
