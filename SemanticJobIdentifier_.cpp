@@ -11,6 +11,7 @@
 #include "Ast.h"
 #include "Attribute.h"
 #include "Module.h"
+#include "TypeManager.h"
 #include "Workspace.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
@@ -159,10 +160,17 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Variable:
     {
-		// Lambda call
+        // Lambda call
         AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
-			node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
+        {
+			// From now this is considered as a function, not a lambda
+			auto funcType = identifier->typeInfo->clone();
+			funcType->kind = TypeInfoKind::FuncAttr;
+			node->typeInfo = g_TypeMgr.registerType(funcType);
+
+            node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
+        }
 
         break;
     }

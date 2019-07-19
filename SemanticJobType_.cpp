@@ -13,13 +13,11 @@
 
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
-    auto node     = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
-    auto typeInfo = g_Pool_typeInfoFuncAttr.alloc();
-	typeInfo->kind = TypeInfoKind::Lambda;
-
+    auto node      = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
+    auto typeInfo  = g_Pool_typeInfoFuncAttr.alloc();
+    typeInfo->kind = TypeInfoKind::Lambda;
     if (node->returnType)
         typeInfo->returnType = node->returnType->typeInfo;
-
     typeInfo->name = format("()");
     if (typeInfo->returnType)
         typeInfo->name += format("->%s", typeInfo->returnType->name.c_str());

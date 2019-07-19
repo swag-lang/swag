@@ -140,7 +140,8 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     AstNode* node          = context->node;
     auto     overload      = node->resolvedSymbolOverload;
     auto     varNode       = CastAst<AstVarDecl>(overload->node, AstNodeKind::VarDecl);
-    node->resultRegisterRC = varNode->astAssignment->resultRegisterRC;
+	SWAG_CHECK(emitIdentifier(context));
+    node->resultRegisterRC = node->resultRegisterRC;
     return emitLocalCall(context, nullptr, varNode);
 }
 

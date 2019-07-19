@@ -144,7 +144,6 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
     case TypeInfoKind::Native:
         return typeInfo;
     case TypeInfoKind::FuncAttr:
-    case TypeInfoKind::Lambda:
         if (flags & MakeConcrete::FlagFunc)
         {
             auto returnType = static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType;

@@ -86,10 +86,11 @@ void ByteCode::print()
         case ByteCodeOp::ClearRA:
         case ByteCodeOp::DecRA:
         case ByteCodeOp::IncRA:
+		case ByteCodeOp::LambdaCall:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
-        case ByteCodeOp::IncPointer:
+            case ByteCodeOp::IncPointer:
         case ByteCodeOp::AffectOp8:
         case ByteCodeOp::AffectOp16:
         case ByteCodeOp::AffectOp32:
@@ -154,6 +155,7 @@ void ByteCode::print()
 
         case ByteCodeOp::MakeLambda:
         {
+            wprintf(L"RA: %u ", ip->a.u32);
             auto bc = (ByteCode*) ip->b.pointer;
             g_Log.print("[");
             g_Log.print(bc->sourceFile->path.string());
