@@ -157,7 +157,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
 
         AstNode* identifierRef;
-        SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef, AST_LEFT_EXPRESSION));
+        SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef, AST_LEFT_EXPRESSION | AST_TAKE_ADDRESS));
 
         if (token.id == TokenId::SymLeftSquare)
             SWAG_CHECK(doArrayPointerRef(&identifierRef));

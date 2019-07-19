@@ -14,3 +14,4 @@ static const uint64_t AST_NO_BYTECODE           = 0x00000000'00000800;
 static const uint64_t AST_L_VALUE               = 0x00000000'00001000;
 static const uint64_t AST_MUST_SORT_CHILDS      = 0x00000000'00002000;
 static const uint64_t AST_SLICE_INIT_EXPRESSION = 0x00000000'00004000;
+static const uint64_t AST_TAKE_ADDRESS          = 0x00000000'00008000;

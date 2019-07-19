@@ -224,7 +224,8 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 {
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
-    auto funcNode   = CastAst<AstFuncDecl>(node->childs.front()->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+    auto front      = node->childs.front();
+    auto funcNode   = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
     // Need to generate bytecode, if not already done or running
     if (!(funcNode->flags & AST_BYTECODE_GENERATED))
@@ -241,8 +242,10 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
         }
     }
 
-    node->resultRegisterRC = node->childs.front()->resultRegisterRC;
-    emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC)->b.pointer = (uint8_t*) funcNode->bc;
+    freeRegisterRC(context, front->resultRegisterRC);
+    node->resultRegisterRC = reserveRegisterRC(context);
+    auto inst              = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
+    inst->b.pointer        = (uint8_t*) funcNode->bc;
     return true;
 }
 

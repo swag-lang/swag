@@ -158,6 +158,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
     case SymbolKind::Function:
     {
+		// This is for a lambda
+		if (node->flags & AST_TAKE_ADDRESS)
+		{
+			// The makePointer will deal with the real make lambda thing
+			node->flags |= AST_NO_BYTECODE;
+			break;
+		}
+
         node->kind = AstNodeKind::FuncCall;
         node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
 
@@ -248,6 +256,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     // Fill specified parameters
     job->symMatch.reset();
+	job->symMatch.forLambda = (node->flags & AST_TAKE_ADDRESS);
+
     if (node->callParameters)
     {
         auto symbol = dependentSymbols[0];

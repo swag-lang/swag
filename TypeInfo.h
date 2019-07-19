@@ -257,6 +257,7 @@ struct SymbolMatchContext
     MatchResult               result;
     vector<AstFuncCallParam*> parameters;
     vector<bool>              doneParameters;
+    bool                      forLambda;
 
     SymbolMatchContext()
     {
@@ -269,6 +270,7 @@ struct SymbolMatchContext
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
         result                    = MatchResult::Ok;
+        forLambda                 = false;
         parameters.clear();
     }
 };

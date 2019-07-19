@@ -45,6 +45,13 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     int  cptResolved  = 0;
     bool badSignature = false;
 
+	// For a lambda
+	if (context.forLambda)
+	{
+		context.result = MatchResult::Ok;
+		return;
+	}
+
     // One boolean per used parameter
     context.doneParameters.clear();
     context.doneParameters.resize(parameters.size(), false);
