@@ -892,6 +892,13 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
             break;
 
+        case ByteCodeOp::MakeLambda:
+        {
+            auto funcBC = (ByteCode*) ip->b.pointer;
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &__%s;", ip->a.u32, funcBC->node->name.c_str()));
+            break;
+        }
+
         case ByteCodeOp::LocalCall:
         {
             auto funcBC     = (ByteCode*) ip->a.pointer;
@@ -939,7 +946,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
 
         case ByteCodeOp::ForeignCall:
         {
-            auto nodeFunc     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+            auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
             bufferC.addString(format("%s_%s", nodeFunc->ownerScope->name.c_str(), nodeFunc->name.c_str()));
             bufferC.addString("();");
         }

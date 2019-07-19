@@ -98,15 +98,18 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                     pz = strstr(oneLine.c_str(), ": warning");
                 if (pz)
                 {
-                    g_Log.setColor(LogColor::Red);
                     backend->module->numErrors++;
                     g_Workspace.numErrors++;
-					ok = false;
+                    ok = false;
                 }
-				
+
                 if (pz || logAll)
                 {
-					g_Log.print(oneLine + "\n");
+                    if (pz)
+                        g_Log.setColor(LogColor::Red);
+                    else
+                        g_Log.setDefaultColor();
+                    g_Log.print(oneLine + "\n");
                 }
             }
 

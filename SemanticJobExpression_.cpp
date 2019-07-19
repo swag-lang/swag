@@ -177,10 +177,11 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     // Lambda
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
-        auto lambdaType   = child->typeInfo->clone();
-        lambdaType->kind  = TypeInfoKind::Lambda;
-        node->typeInfo    = g_TypeMgr.registerType(lambdaType);
-        node->byteCodeFct = &ByteCodeGenJob::emitMakeLambda;
+        auto lambdaType    = child->typeInfo->clone();
+        lambdaType->kind   = TypeInfoKind::Lambda;
+        lambdaType->sizeOf = sizeof(void*);
+        node->typeInfo     = g_TypeMgr.registerType(lambdaType);
+        node->byteCodeFct  = &ByteCodeGenJob::emitMakeLambda;
     }
 
     // Expression
