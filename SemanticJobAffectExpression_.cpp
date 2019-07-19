@@ -29,12 +29,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymEqual:
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
-            leftTypeInfo->kind != TypeInfoKind::Slice)
+            leftTypeInfo->kind != TypeInfoKind::Slice &&
+			leftTypeInfo->kind != TypeInfoKind::Lambda)
             return sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::Slice &&
+			rightTypeInfo->kind != TypeInfoKind::Lambda &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(rightTypeInfo), rightTypeInfo->name.c_str())});
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));

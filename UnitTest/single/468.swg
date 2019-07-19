@@ -1,10 +1,10 @@
-#module module466
+#module module468
 #unittest pass semantic
 
 //#[swag.printbytecode]
 #test
 {
-	a := &F;
+	var a: ()->s32 = &F;
 	var b: s32 = a();
 	@assert(b == 666)
 }
@@ -12,9 +12,4 @@
 func F()->s32
 {
 	return 666
-}
-
-func F1()->s32
-{
-	return 667
 }

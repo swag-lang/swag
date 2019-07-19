@@ -144,8 +144,14 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
     case TypeInfoKind::Native:
         return typeInfo;
     case TypeInfoKind::FuncAttr:
+    case TypeInfoKind::Lambda:
         if (flags & MakeConcrete::FlagFunc)
-            return concreteType(static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType);
+        {
+            auto returnType = static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType;
+			if (!returnType)
+				return g_TypeMgr.typeInfoVoid;
+            return concreteType(returnType);
+        }
         break;
     case TypeInfoKind::Enum:
         if (flags & MakeConcrete::FlagEnum)

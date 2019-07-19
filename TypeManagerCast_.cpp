@@ -966,9 +966,11 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
 	SWAG_ASSERT(toType && fromType);
 
 	if (toType->kind == TypeInfoKind::FuncAttr)
-		toType = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::FuncAttr)->returnType;
+		toType = TypeManager::concreteType(toType, MakeConcrete::FlagFunc);
 	if (fromType->kind == TypeInfoKind::FuncAttr)
-		fromType = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::FuncAttr)->returnType;
+		fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
+	if (toType->kind != TypeInfoKind::Lambda && fromType->kind == TypeInfoKind::Lambda)
+		fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
 
 	if (fromType == toType)
 		return true;
