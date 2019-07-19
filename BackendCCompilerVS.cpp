@@ -236,13 +236,15 @@ bool BackendCCompilerVS::compile()
     for (const auto& define : backendParameters.defines)
         clArguments += "/D" + define + " ";
 
+	bool verbose = g_CommandLine.verbose && g_CommandLine.verbose_backend_command;
+
     string resultFile;
     switch (backendParameters.type)
     {
     case BackendType::Lib:
     {
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + " /c";
-        SWAG_CHECK(doProcess(cmdLineCL, clPath, g_CommandLine.verbose_backend_command));
+        SWAG_CHECK(doProcess(cmdLineCL, clPath, verbose));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -255,7 +257,7 @@ bool BackendCCompilerVS::compile()
         g_Log.message(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
-        SWAG_CHECK(doProcess(cmdLineLIB, clPath, g_CommandLine.verbose_backend_command));
+        SWAG_CHECK(doProcess(cmdLineLIB, clPath, verbose));
     }
     break;
 
@@ -290,7 +292,7 @@ bool BackendCCompilerVS::compile()
         g_Log.message(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
-        SWAG_CHECK(doProcess(cmdLineCL, clPath, g_CommandLine.verbose_backend_command));
+        SWAG_CHECK(doProcess(cmdLineCL, clPath, verbose));
     }
     break;
     }
