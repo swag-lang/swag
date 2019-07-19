@@ -18,6 +18,7 @@ enum class TypeInfoKind
     EnumValue,
     FuncAttr,
     FuncAttrParam,
+    Lambda,
     Pointer,
     Array,
     Slice,

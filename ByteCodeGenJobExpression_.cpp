@@ -9,6 +9,8 @@
 #include "CommandLine.h"
 #include "SemanticJob.h"
 #include "Global.h"
+#include "SymTable.h"
+#include "ThreadManager.h"
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
@@ -215,6 +217,32 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     node->resultRegisterRC = node->array->resultRegisterRC;
+    return true;
+}
+
+bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
+{
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto funcNode   = CastAst<AstFuncDecl>(node->childs.front()->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+
+    // Need to generate bytecode, if not already done or running
+    if (!(funcNode->flags & AST_BYTECODE_GENERATED))
+    {
+        context->job->dependentNodes.push_back(funcNode);
+        if (!funcNode->byteCodeJob)
+        {
+            funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+            funcNode->byteCodeJob->sourceFile   = sourceFile;
+            funcNode->byteCodeJob->originalNode = funcNode;
+            funcNode->byteCodeJob->nodes.push_back(funcNode);
+            setupBC(sourceFile->module, funcNode);
+            g_ThreadMgr.addJob(funcNode->byteCodeJob);
+        }
+    }
+
+    node->resultRegisterRC = node->childs.front()->resultRegisterRC;
+    emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC)->b.pointer = (uint8_t*) funcNode->bc;
     return true;
 }
 

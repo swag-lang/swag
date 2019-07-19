@@ -152,6 +152,17 @@ void ByteCode::print()
             wprintf(bcNum, ip->b.s32 + i + 1);
             break;
 
+        case ByteCodeOp::MakeLambda:
+        {
+            auto bc = (ByteCode*) ip->b.pointer;
+            g_Log.print("[");
+            g_Log.print(bc->sourceFile->path.string());
+            g_Log.print(", ");
+            g_Log.print(bc->node->name);
+            g_Log.print("]");
+            break;
+        }
+
         case ByteCodeOp::LocalCall:
         {
             auto bc = (ByteCode*) ip->a.pointer;
@@ -160,8 +171,9 @@ void ByteCode::print()
             g_Log.print(", ");
             g_Log.print(bc->node->name);
             g_Log.print("]");
+            break;
         }
-        break;
+
         default:
             g_Log.setColor(LogColor::Gray);
             wprintf(L"RA: %u RB: %u RC: %u", ip->a.u32, ip->b.u32, ip->c.u32);

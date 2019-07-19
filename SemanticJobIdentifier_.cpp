@@ -40,7 +40,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->computedValue = node->resolvedSymbolOverload->computedValue;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
     }
-    else if (node->resolvedSymbolName->kind == SymbolKind::GlobalVar || node->resolvedSymbolName->kind == SymbolKind::Variable)
+    else if (node->resolvedSymbolName->kind == SymbolKind::GlobalVar || node->resolvedSymbolName->kind == SymbolKind::Variable || node->resolvedSymbolName->kind == SymbolKind::Function)
     {
         node->flags |= AST_L_VALUE;
     }

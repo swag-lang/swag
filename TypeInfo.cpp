@@ -35,7 +35,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* from)
 {
     if (!TypeInfo::isSame(from))
         return false;
-    auto fromFunc = CastTypeInfo<TypeInfoFuncAttr>(from, TypeInfoKind::FuncAttr);
+    auto fromFunc = static_cast<TypeInfoFuncAttr*>(from);
+    assert(from->kind == TypeInfoKind::FuncAttr || from->kind == TypeInfoKind::Lambda);
     return isSame(fromFunc);
 }
 

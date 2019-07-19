@@ -170,9 +170,21 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto typeInfo   = child->typeInfo;
     auto sourceFile = context->sourceFile;
 
-    SWAG_VERIFY(child->flags & AST_L_VALUE, sourceFile->report({sourceFile, child, "invalid address expression"}));
+    SWAG_VERIFY(child->flags & AST_L_VALUE, sourceFile->report({sourceFile, child, "cannot take address of expression"}));
+    if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerRef)
+        return sourceFile->report({sourceFile, child, "invalid address expression"});
 
-    if (child->kind == AstNodeKind::IdentifierRef || child->kind == AstNodeKind::ArrayPointerRef)
+    // Lambda
+    if (child->resolvedSymbolName->kind == SymbolKind::Function)
+    {
+        auto lambdaType   = child->typeInfo->clone();
+        lambdaType->kind  = TypeInfoKind::Lambda;
+        node->typeInfo    = g_TypeMgr.registerType(lambdaType);
+        node->byteCodeFct = &ByteCodeGenJob::emitMakeLambda;
+    }
+
+    // Expression
+    else
     {
         node->byteCodeFct = &ByteCodeGenJob::emitMakePointer;
 
@@ -196,10 +208,6 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             ptrType->setConst();
 
         node->typeInfo = g_TypeMgr.registerType(ptrType);
-    }
-    else
-    {
-        return sourceFile->report({sourceFile, child, "invalid address expression"});
     }
 
     return true;
