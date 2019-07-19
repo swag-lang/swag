@@ -40,11 +40,11 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
 
     node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
 
-	if (node->flags & AST_CONST_EXPR)
-	{
-		node->flags |= AST_NO_BYTECODE_CHILDS;
-		typeInfo->setConst();
-	}
+    if (node->flags & AST_CONST_EXPR)
+    {
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+        typeInfo->setConst();
+    }
 
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
@@ -138,6 +138,17 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = ptrSlice->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrSlice->pointedType->name;
+            node->typeInfo       = g_TypeMgr.registerType(ptrType);
+            node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
+        }
+        else if (expr->typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto ptrArray        = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
+            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            ptrType->ptrCount    = 1;
+            ptrType->pointedType = ptrArray->pointedType;
+            ptrType->sizeOf      = sizeof(void*);
+            ptrType->name        = "*" + ptrArray->pointedType->name;
             node->typeInfo       = g_TypeMgr.registerType(ptrType);
             node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
         }
