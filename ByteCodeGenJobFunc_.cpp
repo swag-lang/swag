@@ -384,7 +384,10 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
             offset += 2 * sizeof(Register);
             index += 2;
         }
-        else if (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array)
+        else if (typeInfo->kind == TypeInfoKind::Native ||
+                 typeInfo->kind == TypeInfoKind::Array ||
+                 typeInfo->kind == TypeInfoKind::Lambda ||
+                 typeInfo->kind == TypeInfoKind::Pointer)
         {
             offset += sizeof(Register);
             index++;
