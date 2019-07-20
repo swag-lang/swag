@@ -230,6 +230,15 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     // Need to generate bytecode, if not already done or running
     {
         scoped_lock lk(funcNode->mutex);
+
+        // Need to wait for function full semantic resolve
+        if (!(funcNode->flags & AST_FULL_RESOLVE))
+        {
+            funcNode->dependentJobs.push_back(context->job);
+            context->result = ByteCodeResult::Pending;
+            return true;
+        }
+
         if (!(funcNode->flags & AST_BYTECODE_GENERATED))
         {
             context->job->dependentNodes.push_back(funcNode);
