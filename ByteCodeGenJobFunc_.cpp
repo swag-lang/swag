@@ -137,10 +137,10 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
 {
-    AstNode* node          = context->node;
-    auto     overload      = node->resolvedSymbolOverload;
-    auto     varNode       = CastAst<AstVarDecl>(overload->node, AstNodeKind::VarDecl);
-	SWAG_CHECK(emitIdentifier(context));
+    AstNode* node     = context->node;
+    auto     overload = node->resolvedSymbolOverload;
+    auto     varNode  = CastAst<AstVarDecl>(overload->node, AstNodeKind::VarDecl);
+    SWAG_CHECK(emitIdentifier(context));
     node->resultRegisterRC = node->resultRegisterRC;
     return emitLocalCall(context, nullptr, varNode);
 }
@@ -314,8 +314,9 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     }
     else
     {
-        auto inst   = emitInstruction(context, ByteCodeOp::LambdaCall, node->resultRegisterRC);
-        inst->b.u32 = numRegisters;
+        auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, node->resultRegisterRC);
+        inst->b.u32     = numRegisters;
+        inst->c.pointer = (uint8_t*) typeInfoFunc;
     }
 
     // Copy result in a computing register

@@ -899,16 +899,45 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
         }
 
-		case ByteCodeOp::LambdaCall:
-        {
-            break;
-        }
+        case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LocalCall:
         {
-            auto funcBC     = (ByteCode*) ip->a.pointer;
-            auto typeFuncBC = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
-            bufferC.addString(format("__%s(", funcBC->node->name.c_str()));
+            TypeInfoFuncAttr* typeFuncBC;
 
+			// Normal function call
+            if (ip->op == ByteCodeOp::LocalCall)
+            {
+                auto funcBC = (ByteCode*) ip->a.pointer;
+                typeFuncBC  = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
+                bufferC.addString(format("{ __%s", funcBC->node->name.c_str()));
+            }
+
+			// Lambda call
+            else
+            {
+                typeFuncBC = (TypeInfoFuncAttr*) ip->c.pointer;
+
+				// Need to output the function prototype too
+                bufferC.addString("{ typedef void(*tfn)(");
+                uint32_t numReg = ip->b.u32;
+                if (typeFuncBC->returnType->isNative(NativeType::String) || typeFuncBC->returnType->kind == TypeInfoKind::Slice)
+                    numReg += 2;
+                else if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
+                    numReg += 1;
+                for (uint32_t j = 0; j < numReg; j++)
+                {
+                    if (j)
+                        bufferC.addString(",");
+                    bufferC.addString("__register*");
+                }
+
+                bufferC.addString("); ");
+
+				// Then the call
+                bufferC.addString(format("((tfn)r%u.pointer)", ip->a.u32));
+            }
+
+            bufferC.addString("(");
             int cptCall = 0;
             if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
             {
@@ -944,7 +973,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
                 cptCall++;
             }
 
-            bufferC.addString(");");
+            bufferC.addString("); }");
         }
         break;
 
