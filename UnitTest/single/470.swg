@@ -11,6 +11,6 @@
 
 func F(x: s32)->s32
 {
-	@print(x)
+	//@print(x)
 	return x
 }

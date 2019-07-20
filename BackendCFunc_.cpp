@@ -904,7 +904,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         {
             TypeInfoFuncAttr* typeFuncBC;
 
-			// Normal function call
+            // Normal function call
             if (ip->op == ByteCodeOp::LocalCall)
             {
                 auto funcBC = (ByteCode*) ip->a.pointer;
@@ -912,19 +912,14 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
                 bufferC.addString(format("{ __%s", funcBC->node->name.c_str()));
             }
 
-			// Lambda call
+            // Lambda call
             else
             {
                 typeFuncBC = (TypeInfoFuncAttr*) ip->c.pointer;
 
-				// Need to output the function prototype too
+                // Need to output the function prototype too
                 bufferC.addString("{ typedef void(*tfn)(");
-                uint32_t numReg = ip->b.u32;
-                if (typeFuncBC->returnType->isNative(NativeType::String) || typeFuncBC->returnType->kind == TypeInfoKind::Slice)
-                    numReg += 2;
-                else if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
-                    numReg += 1;
-                for (uint32_t j = 0; j < numReg; j++)
+                for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
                 {
                     if (j)
                         bufferC.addString(",");
@@ -933,7 +928,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
 
                 bufferC.addString("); ");
 
-				// Then the call
+                // Then the call
                 bufferC.addString(format("((tfn)r%u.pointer)", ip->a.u32));
             }
 

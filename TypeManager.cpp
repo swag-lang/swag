@@ -18,8 +18,8 @@ void TypeManager::setup()
     typeInfoF32    = new TypeInfoNative(NativeType::F32, "f32", 4, TYPEINFO_FLOAT);
     typeInfoF64    = new TypeInfoNative(NativeType::F64, "f64", 8, TYPEINFO_FLOAT);
     typeInfoChar   = new TypeInfoNative(NativeType::Char, "char", 4, 0);
-    typeInfoString = new TypeInfoNative(NativeType::String, "string", 2 * sizeof(Register), 0);
     typeInfoVoid   = new TypeInfoNative(NativeType::Void, "void", 0, 0);
+    typeInfoString = new TypeInfoNative(NativeType::String, "string", 2 * sizeof(void*), 0);
 
     typeInfoNull = new TypeInfoPointer();
     typeInfoNull->reset();
@@ -147,8 +147,8 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
         if (flags & MakeConcrete::FlagFunc)
         {
             auto returnType = static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType;
-			if (!returnType)
-				return g_TypeMgr.typeInfoVoid;
+            if (!returnType)
+                return g_TypeMgr.typeInfoVoid;
             return concreteType(returnType);
         }
         break;

@@ -100,6 +100,13 @@ struct TypeInfo : public PoolElement
         name = "const " + name;
     }
 
+    virtual int numRegisters()
+    {
+        if (sizeOf == 0)
+            return 0;
+        return max(sizeOf, sizeof(void*)) / sizeof(void*);
+    }
+
     virtual TypeInfo* clone() = 0;
 
     void copyFrom(TypeInfo* from)
@@ -232,6 +239,11 @@ struct TypeInfoFuncAttrParam : public TypeInfo
         return typeInfo->isSame(castedFrom->typeInfo);
     }
 
+    int numRegisters() override
+    {
+        return typeInfo->numRegisters();
+    }
+
     TypeInfo* clone() override;
 
     Utf8      namedParam;
@@ -288,6 +300,19 @@ struct TypeInfoFuncAttr : public TypeInfo
         parameters.clear();
         returnType = nullptr;
         TypeInfo::reset();
+    }
+
+    int numParamsRegisters()
+    {
+        int total = 0;
+        for (auto param : parameters)
+            total += param->numRegisters();
+        return total;
+    }
+
+    int numReturnRegisters()
+    {
+        return returnType->numRegisters();
     }
 
     TypeInfo* clone() override;
