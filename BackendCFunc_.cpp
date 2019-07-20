@@ -933,39 +933,25 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             }
 
             bufferC.addString("(");
-            int cptCall = 0;
-            if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
+            for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
             {
-                if (typeFuncBC->returnType->isNative(NativeType::String) || typeFuncBC->returnType->kind == TypeInfoKind::Slice)
-                {
-                    bufferC.addString("&rt0, &rt1");
-                    cptCall++;
-                }
-                else
-                {
-                    bufferC.addString("&rt0");
-                    cptCall++;
-                }
+                if (j)
+                    bufferC.addString(",");
+                bufferC.addString(format("&rt%d", j));
             }
 
             auto index = ip->b.u32 - 1;
             for (int idxCall = 0; idxCall < (int) typeFuncBC->parameters.size(); idxCall++)
             {
-                if (cptCall)
-                    bufferC.addString(", ");
-                auto param = typeFuncBC->parameters[idxCall];
-                if (param->typeInfo->isNative(NativeType::String) || param->typeInfo->kind == TypeInfoKind::Slice)
+                auto param     = typeFuncBC->parameters[idxCall];
+                auto typeParam = TypeManager::concreteType(param->typeInfo);
+                for (int j = 0; j < typeParam->numRegisters(); j++)
                 {
-                    bufferC.addString(format("&rc%u, &rc%u", index, index - 1));
-                    index -= 2;
-                }
-                else
-                {
+                    if (idxCall || j || typeFuncBC->numReturnRegisters())
+                        bufferC.addString(", ");
                     bufferC.addString(format("&rc%u", index));
-                    index--;
+                    index -= 1;
                 }
-
-                cptCall++;
             }
 
             bufferC.addString("); }");
