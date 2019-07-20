@@ -228,17 +228,20 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     auto funcNode   = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
     // Need to generate bytecode, if not already done or running
-    if (!(funcNode->flags & AST_BYTECODE_GENERATED))
     {
-        context->job->dependentNodes.push_back(funcNode);
-        if (!funcNode->byteCodeJob)
+        scoped_lock lk(funcNode->mutex);
+        if (!(funcNode->flags & AST_BYTECODE_GENERATED))
         {
-            funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-            funcNode->byteCodeJob->sourceFile   = sourceFile;
-            funcNode->byteCodeJob->originalNode = funcNode;
-            funcNode->byteCodeJob->nodes.push_back(funcNode);
-            setupBC(sourceFile->module, funcNode);
-            g_ThreadMgr.addJob(funcNode->byteCodeJob);
+            context->job->dependentNodes.push_back(funcNode);
+            if (!funcNode->byteCodeJob)
+            {
+                funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+                funcNode->byteCodeJob->sourceFile   = sourceFile;
+                funcNode->byteCodeJob->originalNode = funcNode;
+                funcNode->byteCodeJob->nodes.push_back(funcNode);
+                setupBC(sourceFile->module, funcNode);
+                g_ThreadMgr.addJob(funcNode->byteCodeJob);
+            }
         }
     }
 
