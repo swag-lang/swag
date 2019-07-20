@@ -27,7 +27,6 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
         if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo))
             return false;
     }
-
     return true;
 }
 
@@ -38,6 +37,21 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* from)
     auto fromFunc = static_cast<TypeInfoFuncAttr*>(from);
     assert(from->kind == TypeInfoKind::FuncAttr || from->kind == TypeInfoKind::Lambda);
     return isSame(fromFunc);
+}
+
+bool TypeInfoFuncAttr::isSameExact(TypeInfo* from)
+{
+    if (!isSame(from))
+        return false;
+    auto fromFunc = static_cast<TypeInfoFuncAttr*>(from);
+
+    if (returnType && returnType != g_TypeMgr.typeInfoVoid && !fromFunc->returnType)
+        return false;
+    if (!returnType && fromFunc->returnType && fromFunc->returnType != g_TypeMgr.typeInfoVoid)
+        return false;
+    if (returnType && fromFunc->returnType && !returnType->isSame(fromFunc->returnType))
+        return false;
+    return true;
 }
 
 void TypeInfoFuncAttr::match(SymbolMatchContext& context)

@@ -71,6 +71,11 @@ struct TypeInfo : public PoolElement
         return true;
     }
 
+    virtual bool isSameExact(TypeInfo* from)
+    {
+        return isSame(from);
+    }
+
     bool isNative(NativeType native)
     {
         return (kind == TypeInfoKind::Native) && (nativeType == native);
@@ -303,6 +308,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     void match(SymbolMatchContext& context);
     bool isSame(TypeInfoFuncAttr* from);
     bool isSame(TypeInfo* from) override;
+    bool isSameExact(TypeInfo* from) override;
 
     int                            firstDefaultValueIdx;
     vector<TypeInfoFuncAttrParam*> parameters;

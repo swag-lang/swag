@@ -166,7 +166,7 @@ TypeInfo* TypeManager::registerType(TypeInfo* newTypeInfo)
     scoped_lock lk(mutexTypes);
     for (auto typeInfo : allTypes)
     {
-        if (typeInfo->isSame(newTypeInfo))
+        if (typeInfo->isSameExact(newTypeInfo))
         {
             if ((newTypeInfo != typeInfo) && !(newTypeInfo->flags & TYPEINFO_IN_MANAGER))
             {
