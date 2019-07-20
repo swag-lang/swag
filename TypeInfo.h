@@ -316,6 +316,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     }
 
     TypeInfo* clone() override;
+    void      computeName();
 
     void match(SymbolMatchContext& context);
     bool isSame(TypeInfoFuncAttr* from);

@@ -45,12 +45,12 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     int  cptResolved  = 0;
     bool badSignature = false;
 
-	// For a lambda
-	if (context.forLambda)
-	{
-		context.result = MatchResult::Ok;
-		return;
-	}
+    // For a lambda
+    if (context.forLambda)
+    {
+        context.result = MatchResult::Ok;
+        return;
+    }
 
     // One boolean per used parameter
     context.doneParameters.clear();
@@ -249,6 +249,22 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->returnType           = this->returnType;
     newType->copyFrom(this);
     return newType;
+}
+
+void TypeInfoFuncAttr::computeName()
+{
+    name = format("(");
+
+    for (int i = 0; i < parameters.size(); i++)
+    {
+        if (i)
+            name += ", ";
+        name += parameters[i]->typeInfo->name;
+    }
+
+    name += ")";
+    if (returnType)
+        name += format("->%s", returnType->name.c_str());
 }
 
 TypeInfo* TypeInfoPointer::clone()

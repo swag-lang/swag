@@ -41,7 +41,9 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->computedValue = node->resolvedSymbolOverload->computedValue;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
     }
-    else if (node->resolvedSymbolName->kind == SymbolKind::GlobalVar || node->resolvedSymbolName->kind == SymbolKind::Variable || node->resolvedSymbolName->kind == SymbolKind::Function)
+    else if (node->resolvedSymbolName->kind == SymbolKind::GlobalVar ||
+             node->resolvedSymbolName->kind == SymbolKind::Variable ||
+             node->resolvedSymbolName->kind == SymbolKind::Function)
     {
         node->flags |= AST_L_VALUE;
     }
@@ -164,10 +166,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
-			// From now this is considered as a function, not a lambda
-			auto funcType = identifier->typeInfo->clone();
-			funcType->kind = TypeInfoKind::FuncAttr;
-			node->typeInfo = g_TypeMgr.registerType(funcType);
+            // From now this is considered as a function, not a lambda
+            auto funcType  = identifier->typeInfo->clone();
+            funcType->kind = TypeInfoKind::FuncAttr;
+            node->typeInfo = g_TypeMgr.registerType(funcType);
 
             node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
         }

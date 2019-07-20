@@ -19,8 +19,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
     Ast::assignToken(attrNode, token);
 
-    attrNode->typeInfo       = g_Pool_typeInfoFuncAttr.alloc();
-    attrNode->typeInfo->name = attrNode->name;
+    attrNode->typeInfo = g_Pool_typeInfoFuncAttr.alloc();
 
     // Parameters
     SWAG_CHECK(tokenizer.getToken(token));

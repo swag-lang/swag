@@ -47,7 +47,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto params      = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, nullptr);
+        auto params      = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
         node->parameters = params;
         while (true)
         {

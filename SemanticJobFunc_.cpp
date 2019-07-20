@@ -150,7 +150,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         funcNode->flags |= AST_CONST_EXPR;
 
     // Register symbol
-    typeInfo->returnType             = typeNode->typeInfo;
+    typeInfo->returnType = typeNode->typeInfo;
+    typeInfo->computeName();
     funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, 0, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
     funcNode->resolvedSymbolOverload->attributes = move(attributes);

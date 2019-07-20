@@ -1008,7 +1008,10 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
 
 	// Cast to slice
 	if (toType->kind == TypeInfoKind::Lambda)
-		return toType->isSame(fromType);
+	{
+		if (toType->isSame(fromType))
+			return true;
+	}
 
 	return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }

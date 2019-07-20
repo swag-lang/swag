@@ -107,7 +107,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
         newScope             = Ast::newScope(funcNode->name, ScopeKind::Function, currentScope);
         newScope->allocateSymTable();
-        typeInfo->name     = funcNode->name;
         funcNode->typeInfo = typeInfo;
         if (!isContextDisabled())
             currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);

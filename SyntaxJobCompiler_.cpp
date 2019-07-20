@@ -114,7 +114,6 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
         newScope             = Ast::newScope(funcNode->name, ScopeKind::Function, currentScope);
         int id               = g_Global.uniqueID.fetch_add(1);
         funcNode->name       = "__" + to_string(id);
-        typeInfo->name       = funcNode->name;
         funcNode->typeInfo   = typeInfo;
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }

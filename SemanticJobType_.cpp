@@ -18,9 +18,18 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     typeInfo->kind = TypeInfoKind::Lambda;
     if (node->returnType)
         typeInfo->returnType = node->returnType->typeInfo;
-    typeInfo->name = format("()");
-    if (typeInfo->returnType)
-        typeInfo->name += format("->%s", typeInfo->returnType->name.c_str());
+
+    if (node->parameters)
+    {
+        for (auto param : node->parameters->childs)
+        {
+            auto typeParam      = g_Pool_typeInfoFuncAttrParam.alloc();
+            typeParam->typeInfo = param->typeInfo;
+			typeInfo->parameters.push_back(typeParam);
+        }
+    }
+
+    typeInfo->computeName();
     typeInfo->sizeOf = sizeof(void*);
     node->typeInfo   = g_TypeMgr.registerType(typeInfo);
 
