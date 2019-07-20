@@ -139,7 +139,7 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
 {
     AstNode* node     = context->node;
     auto     overload = node->resolvedSymbolOverload;
-    auto     varNode  = CastAst<AstVarDecl>(overload->node, AstNodeKind::VarDecl);
+    auto     varNode  = (AstVarDecl*) overload->node;
     SWAG_CHECK(emitIdentifier(context));
     node->resultRegisterRC = node->resultRegisterRC;
     return emitLocalCall(context, nullptr, varNode);
@@ -320,7 +320,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     }
 
     // Copy result in a computing register
-    if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
+    if (typeInfoFunc->returnType && typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         if (typeInfoFunc->returnType->kind == TypeInfoKind::Native)
         {
