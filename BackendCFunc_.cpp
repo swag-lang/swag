@@ -97,39 +97,24 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     bufferC.addString("(");
 
     // Result
-    int cptParams = 0;
-    if (typeFunc->returnType != g_TypeMgr.typeInfoVoid)
+    for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
     {
-        if (typeFunc->returnType->isNative(NativeType::String) || typeFunc->returnType->kind == TypeInfoKind::Slice)
-        {
-            bufferC.addString("__register* rr0, __register* rr1");
-            cptParams++;
-        }
-        else
-        {
-            bufferC.addString("__register* rr0");
-            cptParams++;
-        }
+        if (i)
+            bufferC.addString(", ");
+        bufferC.addString(format("__register* rr%d", i));
     }
 
     // Parameters
     int index = 0;
     for (auto param : typeFunc->parameters)
     {
-        if (cptParams)
-            bufferC.addString(", ");
-        if (param->typeInfo->isNative(NativeType::String) || param->typeInfo->kind == TypeInfoKind::Slice)
+        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        for (int i = 0; i < typeParam->numRegisters(); i++)
         {
-            bufferC.addString(format("__register* rp%u, __register* rp%u", index, index + 1));
-            index += 2;
+            if (index || i || typeFunc->numReturnRegisters())
+                bufferC.addString(", ");
+            bufferC.addString(format("__register* rp%u", index++));
         }
-        else
-        {
-            bufferC.addString(format("__register* rp%u", index));
-            index++;
-        }
-
-        cptParams++;
     }
 
     bufferC.addString(")");
