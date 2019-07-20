@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SavingThread.h"
 #include "OutputFile.h"
+#include "Log.h"
 
 SavingThread::SavingThread()
 {
@@ -78,8 +79,13 @@ void SavingThread::loop()
         {
             fwrite(req->buffer, 1, req->bufferSize, file);
             fclose(file);
-            req->done = true;
-            req->file->notifySave(req);
         }
+		else
+		{
+			g_Log.error(format("cannot open file '%s' for writing", req->file->fileName.c_str()));
+		}
+
+        req->done = true;
+        req->file->notifySave(req);
     }
 }
