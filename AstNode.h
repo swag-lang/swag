@@ -44,7 +44,7 @@ enum class AstNodeKind
     IdentifierRef,
     Identifier,
     TypeExpression,
-	TypeLambda,
+    TypeLambda,
     Namespace,
     If,
     Else,
@@ -316,8 +316,8 @@ struct AstFuncCallParam : public AstNode
     void reset() override
     {
         namedParam.clear();
-        resolvedParameter  = nullptr;
         namedParamNode     = nullptr;
+        resolvedParameter  = nullptr;
         index              = 0;
         mustSortParameters = false;
         AstNode::reset();
@@ -473,24 +473,26 @@ struct AstSwitchCase : public AstNode
     vector<AstNode*> expressions;
     AstNode*         block;
     AstSwitch*       ownerSwitch;
+    bool             isDefault;
 
-    bool isDefault;
-    int  seekJumpBeforeExpression;
-    int  seekJumpExpression;
-    int  seekJumpAfterBlock;
+    int seekJumpBeforeExpression;
+    int seekJumpExpression;
+    int seekJumpAfterBlock;
 };
 
 struct AstSwitchCaseBlock : public AstNode
 {
     void reset() override
     {
+        isDefault = false;
         ownerCase = nullptr;
         AstNode::reset();
     }
 
-    bool           isDefault = false;
+    bool           isDefault;
     AstSwitchCase* ownerCase;
-    int            seekJumpNextCase;
+
+    int seekJumpNextCase;
 };
 
 struct AstTypeExpression : public AstNode
@@ -517,7 +519,7 @@ struct AstTypeLambda : public AstNode
     void reset() override
     {
         parameters = nullptr;
-        returnType = 0;
+        returnType = nullptr;
         AstNode::reset();
     }
 
@@ -571,7 +573,7 @@ extern Pool<AstSwitch>          g_Pool_astSwitch;
 extern Pool<AstSwitchCase>      g_Pool_astSwitchCase;
 extern Pool<AstSwitchCaseBlock> g_Pool_astSwitchCaseBlock;
 extern Pool<AstBreakContinue>   g_Pool_astBreakContinue;
-extern Pool<AstTypeExpression>            g_Pool_astTypeExpression;
+extern Pool<AstTypeExpression>  g_Pool_astTypeExpression;
 extern Pool<AstTypeLambda>      g_Pool_astTypeLambda;
 extern Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
 extern Pool<AstProperty>        g_Pool_astProperty;

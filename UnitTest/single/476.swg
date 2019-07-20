@@ -1,5 +1,5 @@
 #module module476
-#unittest pass semantic
+//#unittest pass semantic
 
 var g = 0
 

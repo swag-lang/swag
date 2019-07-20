@@ -44,13 +44,6 @@ struct SemanticJob : public Job
     static bool error(SemanticContext* context, const Utf8& msg);
     static bool internalError(SemanticContext* context, const char* msg);
 
-    void reset() override
-    {
-        nodes.clear();
-        cacheDependentSymbols.clear();
-        cacheScopeHierarchy.clear();
-    }
-
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
     static void collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope);
@@ -69,7 +62,7 @@ struct SemanticJob : public Job
     static bool resolveUnaryOpMinus(SemanticContext* context, AstNode* op);
     static bool resolveUnaryOp(SemanticContext* context);
     static bool resolveTypeExpression(SemanticContext* context);
-	static bool resolveTypeLambda(SemanticContext* context);
+    static bool resolveTypeLambda(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeDecl(SemanticContext* context);
     static bool resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
@@ -120,6 +113,18 @@ struct SemanticJob : public Job
     static bool resolveArrayPointerDeRef(SemanticContext* context);
     static bool resolveArrayOrPointerRef(SemanticContext* context);
     static bool resolveTypeList(SemanticContext* context);
+
+    void reset() override
+    {
+        nodes.clear();
+        cacheDependentSymbols.clear();
+        cacheScopeHierarchy.clear();
+		scopesHere.clear();
+		scopesHereNoAlt.clear();
+		cacheMatches.clear();
+		cacheBadSignature.clear();
+		symMatch.reset();
+    }
 
     Module*                 module;
     SourceFile*             sourceFile;

@@ -16,16 +16,6 @@ struct SyntaxJob : public Job
 {
     JobResult execute() override;
 
-    void reset() override
-    {
-        currentScope     = nullptr;
-        currentBreakable = nullptr;
-        currentFct       = nullptr;
-        currentFlags     = 0;
-        canChangeModule  = true;
-        moduleSpecified  = false;
-    }
-
     bool isContextDisabled() const
     {
         return currentFlags & AST_DISABLED;
@@ -51,7 +41,7 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
-	bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
+    bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, uint64_t flags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint64_t flags = 0);
@@ -86,7 +76,7 @@ struct SyntaxJob : public Job
     bool doCast(AstNode* parent, AstNode** result = nullptr);
     bool doIf(AstNode* parent, AstNode** result = nullptr);
     bool doWhile(AstNode* parent, AstNode** result = nullptr);
-	bool doFor(AstNode* parent, AstNode** result = nullptr);
+    bool doFor(AstNode* parent, AstNode** result = nullptr);
     bool doLoop(AstNode* parent, AstNode** result = nullptr);
     bool doSwitch(AstNode* parent, AstNode** result = nullptr);
     bool doBreak(AstNode* parent, AstNode** result = nullptr);
@@ -96,13 +86,22 @@ struct SyntaxJob : public Job
 
     bool doLeftExpression(AstNode* parent, AstNode** result = nullptr);
 
-    Tokenizer   tokenizer;
-    Token       token;
-    SourceFile* sourceFile = nullptr;
-    bool        canChangeModule;
-    bool        moduleSpecified;
-    uint64_t    currentFlags;
+    void reset() override
+    {
+        canChangeModule  = true;
+        moduleSpecified  = false;
+        currentFlags     = 0;
+        currentScope     = nullptr;
+        currentFct       = nullptr;
+        currentBreakable = nullptr;
+    }
 
+    Tokenizer     tokenizer;
+    Token         token;
+    SourceFile*   sourceFile = nullptr;
+    bool          canChangeModule;
+    bool          moduleSpecified;
+    uint64_t      currentFlags;
     Scope*        currentScope;
     AstFuncDecl*  currentFct;
     AstBreakable* currentBreakable;

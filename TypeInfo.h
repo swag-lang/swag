@@ -153,15 +153,11 @@ struct TypeInfoNative : public TypeInfo
 
 struct TypeInfoNamespace : public TypeInfo
 {
-    TypeInfoNamespace()
-    {
-        kind = TypeInfoKind::Namespace;
-    }
-
     void reset() override
     {
-        scope = nullptr;
         TypeInfo::reset();
+        kind  = TypeInfoKind::Namespace;
+        scope = nullptr;
     }
 
     TypeInfo* clone() override;
@@ -171,16 +167,12 @@ struct TypeInfoNamespace : public TypeInfo
 
 struct TypeInfoEnum : public TypeInfo
 {
-    TypeInfoEnum()
-    {
-        kind = TypeInfoKind::Enum;
-    }
-
     void reset() override
     {
+        TypeInfo::reset();
+        kind    = TypeInfoKind::Enum;
         scope   = nullptr;
         rawType = nullptr;
-        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
@@ -199,16 +191,12 @@ struct TypeInfoEnum : public TypeInfo
 
 struct TypeInfoEnumValue : public TypeInfo
 {
-    TypeInfoEnumValue()
-    {
-        kind = TypeInfoKind::EnumValue;
-    }
-
     void reset() override
     {
+        TypeInfo::reset();
+        kind      = TypeInfoKind::EnumValue;
         scope     = nullptr;
         enumOwner = nullptr;
-        TypeInfo::reset();
     }
 
     TypeInfo* clone() override;
@@ -219,16 +207,13 @@ struct TypeInfoEnumValue : public TypeInfo
 
 struct TypeInfoFuncAttrParam : public TypeInfo
 {
-    TypeInfoFuncAttrParam()
-    {
-        kind = TypeInfoKind::FuncAttrParam;
-    }
-
     void reset() override
     {
+        TypeInfo::reset();
+        kind = TypeInfoKind::FuncAttrParam;
+        namedParam.clear();
         typeInfo = nullptr;
         index    = 0;
-        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
@@ -282,24 +267,21 @@ struct SymbolMatchContext
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
         result                    = MatchResult::Ok;
-        forLambda                 = false;
         parameters.clear();
+        doneParameters.clear();
+        forLambda = false;
     }
 };
 
 struct TypeInfoFuncAttr : public TypeInfo
 {
-    TypeInfoFuncAttr()
-    {
-        kind = TypeInfoKind::FuncAttr;
-    }
-
     void reset() override
     {
+        TypeInfo::reset();
+        kind                 = TypeInfoKind::FuncAttr;
         firstDefaultValueIdx = -1;
         parameters.clear();
         returnType = nullptr;
-        TypeInfo::reset();
     }
 
     int numParamsRegisters()
@@ -312,7 +294,7 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     int numReturnRegisters()
     {
-        return returnType->numRegisters();
+        return returnType ? returnType->numRegisters() : 0;
     }
 
     TypeInfo* clone() override;
@@ -329,16 +311,12 @@ struct TypeInfoFuncAttr : public TypeInfo
 
 struct TypeInfoPointer : public TypeInfo
 {
-    TypeInfoPointer()
-    {
-        kind = TypeInfoKind::Pointer;
-    }
-
     void reset() override
     {
+        TypeInfo::reset();
+        kind        = TypeInfoKind::Pointer;
         pointedType = nullptr;
         ptrCount    = 0;
-        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
@@ -369,16 +347,12 @@ struct TypeInfoPointer : public TypeInfo
 
 struct TypeInfoArray : public TypeInfo
 {
-    TypeInfoArray()
-    {
-        kind = TypeInfoKind::Array;
-    }
-
     void reset() override
     {
+        TypeInfo::reset();
+        kind        = TypeInfoKind::Array;
         pointedType = nullptr;
         count       = 0;
-        TypeInfo::reset();
     }
 
     bool isSame(TypeInfo* from) override
@@ -399,15 +373,11 @@ struct TypeInfoArray : public TypeInfo
 
 struct TypeInfoSlice : public TypeInfo
 {
-    TypeInfoSlice()
-    {
-        kind = TypeInfoKind::Slice;
-    }
-
     void reset() override
     {
-        pointedType = nullptr;
         TypeInfo::reset();
+        kind        = TypeInfoKind::Slice;
+        pointedType = nullptr;
     }
 
     bool isSame(TypeInfo* from) override
@@ -425,15 +395,11 @@ struct TypeInfoSlice : public TypeInfo
 
 struct TypeInfoList : public TypeInfo
 {
-    TypeInfoList()
-    {
-        kind = TypeInfoKind::TypeList;
-    }
-
     void reset()
     {
-        childs.clear();
         TypeInfo::reset();
+        kind = TypeInfoKind::TypeList;
+        childs.clear();
     }
 
     bool isSame(TypeInfo* from) override

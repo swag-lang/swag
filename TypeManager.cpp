@@ -169,7 +169,10 @@ TypeInfo* TypeManager::registerType(TypeInfo* newTypeInfo)
         if (typeInfo->isSame(newTypeInfo))
         {
             if ((newTypeInfo != typeInfo) && !(newTypeInfo->flags & TYPEINFO_IN_MANAGER))
+            {
                 newTypeInfo->release();
+            }
+
             return typeInfo;
         }
     }
