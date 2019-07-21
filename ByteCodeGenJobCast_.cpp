@@ -472,6 +472,14 @@ bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeIn
         inst->b.u32            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
+    else if (fromTypeInfo->kind == TypeInfoKind::Array)
+    {
+        auto fromTypeArray     = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+		node->resultRegisterRC += reserveRegisterRC(context);
+        auto inst   = emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1]);
+        inst->b.u32 = fromTypeArray->count;
+    }
     else
     {
         return internalError(context, "emitCastSlice, invalid expression type", exprNode);

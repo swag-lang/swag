@@ -21,7 +21,7 @@ struct TypeManager
 {
     void setup();
 
-    static bool castError(SourceFile* sourceFile, TypeInfo* requestedType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castError(SourceFile* sourceFile, TypeInfo* requestedType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid = false);
 
     static bool castToNativeBool(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeU8(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
