@@ -6,6 +6,7 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
+#include "SourceFile.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
@@ -30,7 +31,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
+        if ((node->flags & AST_LEFT_EXPRESSION) && typeInfo->kind != TypeInfoKind::Lambda)
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC);
+            inst->b.u32 = resolved->storageOffset;
+        }
+        else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC[1]);

@@ -46,6 +46,8 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
         job->reservedRC.erase(rc[i]);
         context->sourceFile->module->freeRegisterRC(rc[i]);
     }
+
+	rc.clear();
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)

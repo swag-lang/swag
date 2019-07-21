@@ -34,21 +34,12 @@ struct ByteCodeGenJob : public Job
 {
     JobResult execute() override;
 
-    void reset() override
-    {
-        syncToDependentNodes = false;
-        dependentNodes.clear();
-        reservedRC.clear();
-        nodes.clear();
-        dependentJobs.clear();
-    }
-
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 setupBC(Module* module, AstNode* node);
 
     static bool emitExpressionList(ByteCodeGenContext* context);
-	static bool emitLiteral(ByteCodeGenContext* context, TypeInfo* toType);
+    static bool emitLiteral(ByteCodeGenContext* context, TypeInfo* toType);
     static bool emitLiteral(ByteCodeGenContext* context);
     static bool emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
@@ -61,8 +52,8 @@ struct ByteCodeGenJob : public Job
     static bool emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOp(ByteCodeGenContext* context);
     static bool emitLocalCall(ByteCodeGenContext* context);
-	static bool emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* funcNode, AstVarDecl* varNode);
-	static bool emitLambdaCall(ByteCodeGenContext* context);
+    static bool emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* funcNode, AstVarDecl* varNode);
+    static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
     static bool emitIntrinsic(ByteCodeGenContext* context);
     static bool emitReturn(ByteCodeGenContext* context);
@@ -129,7 +120,7 @@ struct ByteCodeGenJob : public Job
     static bool emitBreak(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
-	static bool emitMakeLambda(ByteCodeGenContext* context);
+    static bool emitMakeLambda(ByteCodeGenContext* context);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
     static bool emitPointerRef(ByteCodeGenContext* context);
     static bool emitArrayRef(ByteCodeGenContext* context);
@@ -137,20 +128,30 @@ struct ByteCodeGenJob : public Job
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
 
-    AstNode*         originalNode;
-    SourceFile*      sourceFile;
-    vector<AstNode*> nodes;
-    vector<Job*>     dependentJobs;
-    vector<AstNode*> dependentNodes;
-    vector<AstNode*> collectChilds;
-    bool             syncToDependentNodes;
-
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
     static void     freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
 
-    set<uint32_t> reservedRC;
+    void reset() override
+    {
+        originalNode = nullptr;
+        nodes.clear();
+        dependentJobs.clear();
+        dependentNodes.clear();
+        collectChilds.clear();
+        syncToDependentNodes = false;
+        reservedRC.clear();
+    }
+
+    SourceFile*      sourceFile;
+    AstNode*         originalNode;
+    vector<AstNode*> nodes;
+    vector<Job*>     dependentJobs;
+    vector<AstNode*> dependentNodes;
+    vector<AstNode*> collectChilds;
+    bool             syncToDependentNodes;
+    set<uint32_t>    reservedRC;
 };
 
 extern Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;

@@ -21,7 +21,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 
     if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
     return true;
 }
@@ -44,7 +44,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 
     if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
     return true;
 }
@@ -64,7 +64,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 
     if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
     return true;
 }
@@ -81,8 +81,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
         }
 
-        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC[0], node->access->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
     }
 
     // Dereference of a slice
@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (!(node->flags & AST_LEFT_EXPRESSION))
@@ -137,7 +137,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (!(node->flags & AST_LEFT_EXPRESSION))
@@ -182,7 +182,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
-            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
         if (typeInfo->pointedType->isNative(NativeType::String))

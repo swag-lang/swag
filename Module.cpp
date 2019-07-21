@@ -87,6 +87,10 @@ uint32_t Module::reserveRegisterRC(ByteCode* bc)
 void Module::freeRegisterRC(uint32_t reg)
 {
     scoped_lock lk(mutexRegisterRC);
+#ifdef _DEBUG
+	for (auto r : availableRegistersRC)
+		assert(r != reg);
+#endif
     availableRegistersRC.push_back(reg);
 }
 
