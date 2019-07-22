@@ -24,20 +24,24 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionList(SemanticContext* context)
 {
-    auto node      = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-    auto typeInfo  = g_Pool_typeInfoList.alloc();
-    typeInfo->name = "<type list>";
+    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
+    auto typeInfo = g_Pool_typeInfoList.alloc();
+
+    typeInfo->name = "{";
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
-        // Flags
+		if (!typeInfo->childs.empty())
+			typeInfo->name += ", ";
         typeInfo->childs.push_back(child->typeInfo);
+		typeInfo->name += child->typeInfo->name;
         typeInfo->sizeOf += child->typeInfo->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
     }
 
+	typeInfo->name += "}";
     node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
 
     if (node->flags & AST_CONST_EXPR)

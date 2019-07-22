@@ -36,7 +36,6 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 {
-    // Else this is a type expression
     auto node = Ast::newNode(&g_Pool_astTypeLambda, AstNodeKind::TypeLambda, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveTypeLambda;
@@ -68,6 +67,29 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
+{
+    // Else this is a type expression
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
+    node->inheritOwnersAndFlags(this);
+    node->semanticFct = &SemanticJob::resolveTypeTuple;
+    node->inheritToken(token);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(eatToken());
+    while (token.id != TokenId::SymRightCurly)
+    {
+        SWAG_CHECK(doTypeExpression(node));
+        if (token.id != TokenId::SymComma)
+            break;
+        SWAG_CHECK(eatToken());
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
+    return true;
+}
+
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
     ScopedFlags sc(this, AST_NO_BYTECODE_CHILDS);
@@ -75,6 +97,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     // This is a function
     if (token.id == TokenId::SymLeftParen)
         return doTypeExpressionLambda(parent, result);
+
+    // This is a tuple
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        return doTypeExpressionTuple(parent, result);
+    }
 
     // Else this is a type expression
     auto node = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);

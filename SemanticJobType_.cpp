@@ -11,6 +11,28 @@
 #include "CommandLine.h"
 #include "TypeManager.h"
 
+bool SemanticJob::resolveTypeTuple(SemanticContext* context)
+{
+    auto node = context->node;
+    SWAG_VERIFY(node->childs.size(), context->job->error(context, "empty tuple type"));
+
+    auto typeInfoList = g_Pool_typeInfoList.alloc();
+	typeInfoList->flags |= TYPEINFO_CONST;
+
+	typeInfoList->name = "{";
+	for (auto child : node->childs)
+	{
+		if (!typeInfoList->childs.empty())
+			typeInfoList->name += ", ";
+		typeInfoList->childs.push_back(child->typeInfo);
+		typeInfoList->name += child->typeInfo->name;
+	}
+
+	typeInfoList->name += "}";
+    node->typeInfo = g_TypeMgr.registerType(typeInfoList);
+    return true;
+}
+
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
     auto node      = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
@@ -25,7 +47,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
         {
             auto typeParam      = g_Pool_typeInfoFuncAttrParam.alloc();
             typeParam->typeInfo = param->typeInfo;
-			typeInfo->parameters.push_back(typeParam);
+            typeInfo->parameters.push_back(typeParam);
         }
     }
 
