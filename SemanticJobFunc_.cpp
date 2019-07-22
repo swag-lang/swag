@@ -151,6 +151,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // Register symbol
     typeInfo->returnType = typeNode->typeInfo;
+
+    // Be sure this is a valid return type
+    if (typeInfo->returnType->kind != TypeInfoKind::Native && typeInfo->returnType->kind != TypeInfoKind::TypeList)
+    {
+        return sourceFile->report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
+    }
+
     typeInfo->computeName();
     funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, 0, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
@@ -209,7 +216,9 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         if (scanNode->kind == AstNodeKind::If ||
             scanNode->kind == AstNodeKind::Else ||
             scanNode->kind == AstNodeKind::While ||
-            scanNode->kind == AstNodeKind::Loop)
+            scanNode->kind == AstNodeKind::Loop ||
+            scanNode->kind == AstNodeKind::For ||
+            scanNode->kind == AstNodeKind::Switch)
             break;
         scanNode = scanNode->parent;
     }
