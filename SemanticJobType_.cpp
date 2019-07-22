@@ -26,6 +26,7 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
 			typeInfoList->name += ", ";
 		typeInfoList->childs.push_back(child->typeInfo);
 		typeInfoList->name += child->typeInfo->name;
+		typeInfoList->sizeOf += child->typeInfo->sizeOf;
 	}
 
 	typeInfoList->name += "}";

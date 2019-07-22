@@ -71,9 +71,15 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     {
         auto child    = node->childs[0];
         auto typeInfo = TypeManager::concreteType(child->typeInfo);
-        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
-        for (int r = 0; r < child->resultRegisterRC.size(); r++)
-            emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+		if (typeInfo->kind == TypeInfoKind::Native)
+		{
+			for (int r = 0; r < child->resultRegisterRC.size(); r++)
+				emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+		}
+		else
+		{
+			return internalError(context, "emitReturn, type not native");
+		}
     }
 
     SWAG_ASSERT(node->ownerFct);

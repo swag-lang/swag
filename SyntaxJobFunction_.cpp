@@ -156,6 +156,7 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
+	node->inheritToken(token);
     node->semanticFct = &SemanticJob::resolveReturn;
     node->byteCodeFct = &ByteCodeGenJob::emitReturn;
     if (result)
