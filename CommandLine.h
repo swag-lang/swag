@@ -15,6 +15,7 @@ struct CommandLine
     bool runBackendTests  = true;
     bool cleanCache       = true;
 
+    bool debug            = false;
     bool debugBoundCheck  = true;
     bool addRuntimeModule = true;
     bool optimizeByteCode = true;

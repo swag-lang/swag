@@ -44,6 +44,8 @@ Module* Workspace::createOrUseModule(const fs::path& path)
 
     if (g_CommandLine.stats)
         g_Stats.numModules++;
+	if (g_CommandLine.debug)
+		module->backendParameters.debugInformations = true;
 
     return module;
 }

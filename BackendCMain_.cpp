@@ -12,28 +12,29 @@
 
 bool BackendC::emitMain()
 {
-	emitSeparator(bufferC, "MAIN");
+    emitSeparator(bufferC, "MAIN");
     bufferC.addString("#ifdef SWAG_IS_EXE\n");
     bufferC.addString("void main() {\n");
 
-	// Call to global init of this module, and dependencies
-	bufferC.addString(format("__%s_globalInit();\n", module->name.c_str()));
+    // Call to global init of this module, and dependencies
+    bufferC.addString(format("__%s_globalInit();\n", module->name.c_str()));
     for (auto& k : module->moduleDependenciesNames)
-		bufferC.addString(format("__%s_globalInit();\n", k.c_str()));
+        bufferC.addString(format("__%s_globalInit();\n", k.c_str()));
 
-	// Generate call to test functions
-	bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
+    // Generate call to test functions
+    bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
     for (auto bc : module->byteCodeTestFunc)
     {
-		auto node = bc->node;
+        auto node = bc->node;
         if (node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-		bufferC.addString(format("__%s();\n", node->name.c_str()));
+        bufferC.addString(format("__%s();\n", node->name.c_str()));
     }
-	bufferC.addString("#endif\n");
+    bufferC.addString("#endif\n");
 
     bufferC.addString("}\n");
     bufferC.addString("#endif\n");
-	bufferC.addString("\n");
+    bufferC.addString("\n");
+	
     return true;
 }

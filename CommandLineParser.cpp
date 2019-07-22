@@ -18,6 +18,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
     addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanCache);
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
+    addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->debug);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
