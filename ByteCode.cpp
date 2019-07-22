@@ -111,6 +111,10 @@ void ByteCode::print()
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
+        case ByteCodeOp::RARefFromStackParam:
+			wprintf(L"RA: %u VB: { %u } VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
+            break;
+
         case ByteCodeOp::RAFromStack8:
         case ByteCodeOp::RAFromStack16:
         case ByteCodeOp::RAFromStack32:

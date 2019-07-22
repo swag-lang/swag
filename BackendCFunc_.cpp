@@ -870,6 +870,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::RAFromStackParam64:
             bufferC.addString(format("r%u = *rp%u;", ip->a.u32, ip->c.u32));
             break;
+        case ByteCodeOp::RARefFromStackParam:
+            bufferC.addString(format("r%u.pointer = rp%u->pointer;", ip->a.u32, ip->c.u32));
+            break;
         case ByteCodeOp::PushRASaved:
         case ByteCodeOp::PopRCxSaved:
             break;

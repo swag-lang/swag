@@ -386,6 +386,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::RARefFromStack:
+	case ByteCodeOp::RARefFromStackParam:
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
 

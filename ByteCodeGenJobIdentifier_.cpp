@@ -33,8 +33,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = reserveRegisterRC(context);
         if ((node->flags & AST_LEFT_EXPRESSION) && typeInfo->kind != TypeInfoKind::Lambda)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC);
+            auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStackParam, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
+			inst->c.u32 = resolved->storageIndex;
         }
         else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
