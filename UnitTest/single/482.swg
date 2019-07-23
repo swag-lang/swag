@@ -4,6 +4,7 @@
 //#[swag.printbytecode]
 #test
 {
+	var res = T()
 }
 
 //#[swag.printbytecode]

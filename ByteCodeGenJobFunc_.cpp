@@ -20,24 +20,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 
     // Reserve one RR register for each return value
     if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
-    {
-        if (typeInfo->returnType->kind == TypeInfoKind::Native)
-        {
-            switch (typeInfo->returnType->nativeType)
-            {
-            case NativeType::String:
-                countRR += 2;
-                break;
-            default:
-                countRR++;
-                break;
-            }
-        }
-        else
-        {
-            internalError(context, "emitLocalFuncDecl, invalid return type");
-        }
-    }
+        countRR += typeInfo->returnType->numRegisters();
 
     // And one per parameter
     countRR += (int) typeInfo->parameters.size();
@@ -69,18 +52,11 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     // Copy result to RR0... registers
     if (!node->childs.empty())
     {
-		//for(auto child: node->childs)
-        auto child    = node->childs[0];
-        auto typeInfo = TypeManager::concreteType(child->typeInfo);
-		if (typeInfo->kind == TypeInfoKind::Native)
-		{
-			for (int r = 0; r < child->resultRegisterRC.size(); r++)
-				emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
-		}
-		else
-		{
-			return internalError(context, "emitReturn, type not native");
-		}
+        for (auto child : node->childs)
+        {
+            for (int r = 0; r < child->resultRegisterRC.size(); r++)
+                emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+        }
     }
 
     SWAG_ASSERT(node->ownerFct);
