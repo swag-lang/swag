@@ -69,6 +69,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     // Copy result to RR0... registers
     if (!node->childs.empty())
     {
+		//for(auto child: node->childs)
         auto child    = node->childs[0];
         auto typeInfo = TypeManager::concreteType(child->typeInfo);
 		if (typeInfo->kind == TypeInfoKind::Native)

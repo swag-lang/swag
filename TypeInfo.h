@@ -424,6 +424,14 @@ struct TypeInfoList : public TypeInfo
         return true;
     }
 
+    int numRegisters() override
+    {
+        int num = 0;
+        for (auto child : childs)
+            num += child->numRegisters();
+        return num;
+    }
+
     TypeInfo* clone() override;
 
     vector<TypeInfo*> childs;
