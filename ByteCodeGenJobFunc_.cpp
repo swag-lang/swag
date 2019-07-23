@@ -305,26 +305,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     // Copy result in a computing register
     if (typeInfoFunc->returnType && typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        if (typeInfoFunc->returnType->kind == TypeInfoKind::Native)
-        {
-            if (typeInfoFunc->returnType->nativeType == NativeType::String)
-            {
-                reserveRegisterRC(context, node->resultRegisterRC, 2);
-                emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC[0], 0);
-                emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC[1], 1);
-                context->bc->maxCallResults = max(context->bc->maxCallResults, 2);
-            }
-            else
-            {
-                node->resultRegisterRC = reserveRegisterRC(context);
-                emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
-                context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-            }
-        }
-        else
-        {
-            internalError(context, "emitLocalCall, bad return type");
-        }
+        auto numRegs = typeInfoFunc->returnType->numRegisters();
+        reserveRegisterRC(context, node->resultRegisterRC, numRegs);
+        context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
+        for (int idx = 0; idx < node->resultRegisterRC.size(); idx++)
+            emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC[idx], idx);
     }
 
     // Restore stack as it was before the call, before the parameters
