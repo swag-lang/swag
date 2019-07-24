@@ -1,14 +1,12 @@
-#module module482
+#module module484
 //#unittest pass semantic
 
 //#[swag.printbytecode]
-#unittest error
 #test
 {
 	var res = T()
 	b := 1
-	//@print(res.0)
-	@print(b.0)
+	@print(res.1)
 }
 
 //#[swag.printbytecode]

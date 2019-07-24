@@ -78,12 +78,17 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(eatToken());
-    while (token.id != TokenId::SymRightCurly)
+
+    auto newScope = Ast::newScope("", ScopeKind::TypeList, currentScope);
     {
-        SWAG_CHECK(doTypeExpression(node));
-        if (token.id != TokenId::SymComma)
-            break;
-        SWAG_CHECK(eatToken());
+        Scoped scoped(this, newScope);
+        while (token.id != TokenId::SymRightCurly)
+        {
+            SWAG_CHECK(doTypeExpression(node));
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken());
+        }
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
@@ -100,9 +105,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 
     // This is a tuple
     if (token.id == TokenId::SymLeftCurly)
-    {
         return doTypeExpressionTuple(parent, result);
-    }
 
     // Else this is a type expression
     auto node = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);

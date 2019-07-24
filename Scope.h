@@ -16,6 +16,7 @@ enum class ScopeKind
     Function,
     Statement,
     Breakable,
+	TypeList,
 };
 
 struct Scope : public PoolElement

@@ -406,6 +406,7 @@ struct TypeInfoList : public TypeInfo
         TypeInfo::reset();
         kind = TypeInfoKind::TypeList;
         childs.clear();
+        scope = nullptr;
     }
 
     bool isSame(TypeInfo* from) override
@@ -435,6 +436,7 @@ struct TypeInfoList : public TypeInfo
     TypeInfo* clone() override;
 
     vector<TypeInfo*> childs;
+    Scope*            scope;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;

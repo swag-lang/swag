@@ -18,6 +18,8 @@ const char* Scope::getNakedName(ScopeKind kind)
         return "namespace";
     case ScopeKind::Enum:
         return "enum";
+    case ScopeKind::TypeList:
+        return "tuple";
     default:
         return "???";
     }

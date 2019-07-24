@@ -17,19 +17,20 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
     SWAG_VERIFY(node->childs.size(), context->job->error(context, "empty tuple type"));
 
     auto typeInfoList = g_Pool_typeInfoList.alloc();
-	typeInfoList->flags |= TYPEINFO_CONST;
+    typeInfoList->flags |= TYPEINFO_CONST;
+    typeInfoList->scope = node->childs.front()->ownerScope;
 
-	typeInfoList->name = "{";
-	for (auto child : node->childs)
-	{
-		if (!typeInfoList->childs.empty())
-			typeInfoList->name += ", ";
-		typeInfoList->childs.push_back(child->typeInfo);
-		typeInfoList->name += child->typeInfo->name;
-		typeInfoList->sizeOf += child->typeInfo->sizeOf;
-	}
+    typeInfoList->name = "{";
+    for (auto child : node->childs)
+    {
+        if (!typeInfoList->childs.empty())
+            typeInfoList->name += ", ";
+        typeInfoList->childs.push_back(child->typeInfo);
+        typeInfoList->name += child->typeInfo->name;
+        typeInfoList->sizeOf += child->typeInfo->sizeOf;
+    }
 
-	typeInfoList->name += "}";
+    typeInfoList->name += "}";
     node->typeInfo = g_TypeMgr.registerType(typeInfoList);
     return true;
 }

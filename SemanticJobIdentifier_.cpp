@@ -164,14 +164,22 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         // Lambda call
         AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (identifier->typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
+        auto           typeInfo   = g_TypeMgr.concreteType(identifier->typeInfo);
+        if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
             // From now this is considered as a function, not a lambda
-            auto funcType  = identifier->typeInfo->clone();
-            funcType->kind = TypeInfoKind::FuncAttr;
-            node->typeInfo = g_TypeMgr.registerType(funcType);
-
+            auto funcType     = typeInfo->clone();
+            funcType->kind    = TypeInfoKind::FuncAttr;
+            node->typeInfo    = g_TypeMgr.registerType(funcType);
             node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
+        }
+
+        // Tuple
+        else if (typeInfo->kind == TypeInfoKind::TypeList)
+        {
+            parent->startScope = static_cast<TypeInfoList*>(typeInfo)->scope;
+            node->typeInfo     = typeInfo;
+            parent->typeInfo   = typeInfo;
         }
 
         break;
@@ -230,6 +238,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  parent           = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
     auto  sourceFile       = context->sourceFile;
 
+    if (node->flags & AST_IDENTIFIER_IS_INTEGER)
+    {
+		SWAG_VERIFY(parent->startScope && parent->typeInfo, sourceFile->report({ sourceFile, node->token, "invalid access by literal"} ));
+        SWAG_VERIFY(parent->typeInfo->kind == TypeInfoKind::TypeList, sourceFile->report({sourceFile, node->token, format("access by literal invalid on type '%s'", parent->typeInfo->name.c_str())}));
+		auto index = stoi(node->name);
+		auto typeList = CastTypeInfo<TypeInfoList>(parent->typeInfo, TypeInfoKind::TypeList);
+		SWAG_VERIFY(index >= 0 && index < typeList->childs.size(), sourceFile->report({ sourceFile, node->token, format("access by literal is out of range (maximum index is '%d')", typeList->childs.size() - 1) }));
+    }
+
     // Compute dependencies if not already done
     if (job->cacheDependentSymbols.empty())
     {
@@ -260,7 +277,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (job->cacheDependentSymbols.empty())
         {
             if (parent->startScope)
-                return sourceFile->report({sourceFile, node->token, format("identifier '%s' can't be found in %s '%s'", node->name.c_str(), Scope::getNakedName(parent->startScope->kind), parent->startScope->fullname.c_str())});
+                return sourceFile->report({sourceFile, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedName(parent->startScope->kind), parent->startScope->fullname.c_str())});
             return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
         }
     }

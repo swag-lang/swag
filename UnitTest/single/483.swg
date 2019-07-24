@@ -1,4 +1,4 @@
-#module module482
+#module module483
 //#unittest pass semantic
 
 //#[swag.printbytecode]
@@ -7,8 +7,7 @@
 {
 	var res = T()
 	b := 1
-	//@print(res.0)
-	@print(b.0)
+	@print(res.2)
 }
 
 //#[swag.printbytecode]
