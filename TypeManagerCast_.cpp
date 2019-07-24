@@ -883,41 +883,6 @@ bool TypeManager::castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
     return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToTuple(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
-{
-    TypeInfoList* toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::Tuple);
-    if (fromType->kind == TypeInfoKind::TypeList)
-    {
-        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-        auto          fromSize     = fromTypeList->childs.size();
-        if (toTypeList->childs.size() != fromSize)
-        {
-            if (!(castFlags & CASTFLAG_NOERROR))
-            {
-                if (toTypeList->childs.size() > fromTypeList->childs.size())
-                    sourceFile->report({sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
-                else
-                    sourceFile->report({sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
-            }
-
-            return false;
-        }
-
-        SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
-        for (int i = 0; i < fromSize; i++)
-        {
-            SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeList->childs[i], fromTypeList->childs[i], nodeToCast ? nodeToCast->childs[i] : nullptr, castFlags));
-        }
-
-		if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
-			nodeToCast->typeInfo = toTypeList;
-
-        return true;
-    }
-
-    return castError(sourceFile, toType, fromType, nodeToCast, castFlags);
-}
-
 bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     TypeInfoSlice* toTypeSlice     = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
@@ -1049,10 +1014,6 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
     if (toType->kind == TypeInfoKind::Array)
         return castToArray(sourceFile, toType, fromType, nodeToCast, castFlags);
 
-    // Cast to tuple
-    if (toType->kind == TypeInfoKind::Tuple)
-        return castToTuple(sourceFile, toType, fromType, nodeToCast, castFlags);
-
     // Cast to slice
     if (toType->kind == TypeInfoKind::Slice)
         return castToSlice(sourceFile, toType, fromType, nodeToCast, castFlags);
@@ -1102,8 +1063,6 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     }
 
     TypeInfo* newLeftTypeInfo = (TypeInfo*) g_TypeMgr.promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
-	if (newLeftTypeInfo == nullptr)
-		newLeftTypeInfo = leftTypeInfo;
 
     if (newLeftTypeInfo == leftTypeInfo)
         return;

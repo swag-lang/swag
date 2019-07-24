@@ -80,7 +80,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (typeInfo->kind == TypeInfoKind::Tuple)
+        else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
@@ -131,7 +131,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (typeInfo->kind == TypeInfoKind::Tuple)
+        else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }

@@ -23,7 +23,6 @@ enum class TypeInfoKind
     Array,
     Slice,
     TypeList,
-	Tuple,
 };
 
 enum class NativeType
@@ -426,12 +425,19 @@ struct TypeInfoList : public TypeInfo
         return true;
     }
 
+    bool isSameExact(TypeInfo* from) override
+    {
+        if (!isSame(from))
+            return false;
+		auto other = static_cast<TypeInfoList*>(from);
+        if (scope != other->scope)
+            return false;
+		return true;
+    }
+
     int numRegisters() override
     {
-        int num = 0;
-        for (auto child : childs)
-            num += child->numRegisters();
-        return num;
+        return 1;
     }
 
     TypeInfo* clone() override;

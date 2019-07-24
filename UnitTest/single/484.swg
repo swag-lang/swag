@@ -1,7 +1,7 @@
 #module module484
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+#[swag.printbytecode]
 #test
 {
 	var res = T()
@@ -10,7 +10,7 @@
 	@assert(res.2 == 3)
 }
 
-//#[swag.printbytecode]
+#[swag.printbytecode]
 func T()-> {s32,s32,s32}
 {
 	return {1,2,3}

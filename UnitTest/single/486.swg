@@ -11,7 +11,7 @@
 }
 
 //#[swag.printbytecode]
-func T()-> {bool,s64,bool}
+func T()-> {bool,s32,bool}
 {
 	return {true,2,false}
 }

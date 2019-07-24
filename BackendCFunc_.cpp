@@ -864,8 +864,14 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
             break;
 
+		case ByteCodeOp::CopyRR0:
+            bufferC.addString(format("__memcpy(rr0->pointer, r%u.pointer, %u);", ip->a.u32, ip->b.u32));
+            break;
         case ByteCodeOp::CopyRRxRCx:
             bufferC.addString(format("*rr%u = r%u;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::CopyRRxRCxCall:
+            bufferC.addString(format("rt%u = r%u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRCxRRx:
             bufferC.addString(format("r%u = rt%u;", ip->a.u32, ip->b.u32));

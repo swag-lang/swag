@@ -177,7 +177,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // Tuple
-        else if (typeInfo->kind == TypeInfoKind::Tuple)
+        else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             parent->startScope = static_cast<TypeInfoList*>(typeInfo)->scope;
             node->typeInfo     = typeInfo;
@@ -221,6 +221,17 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     return sourceFile->report({sourceFile, node->token, format("can't call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
             }
         }
+
+        // For a tuple, need to reserve room on the stack for the return result
+        auto returnType = g_TypeMgr.concreteType(node->typeInfo);
+        if (returnType->kind == TypeInfoKind::TypeList)
+        {
+            auto fctCall                  = CastAst<AstIdentifier>(node, AstNodeKind::FuncCall);
+            fctCall->fctCallStorageOffset = node->ownerScope->startStackSize;
+            node->ownerScope->startStackSize += returnType->sizeOf;
+            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+        }
+
         break;
     }
     }
@@ -244,9 +255,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (node->flags & AST_IDENTIFIER_IS_INTEGER)
     {
         SWAG_VERIFY(parent->startScope && parent->typeInfo, sourceFile->report({sourceFile, node->token, "invalid access by literal"}));
-        SWAG_VERIFY(parent->typeInfo->kind == TypeInfoKind::Tuple, sourceFile->report({sourceFile, node->token, format("access by literal invalid on type '%s'", parent->typeInfo->name.c_str())}));
+        SWAG_VERIFY(parent->typeInfo->kind == TypeInfoKind::TypeList, sourceFile->report({sourceFile, node->token, format("access by literal invalid on type '%s'", parent->typeInfo->name.c_str())}));
         auto index    = stoi(node->name);
-        auto typeList = CastTypeInfo<TypeInfoList>(parent->typeInfo, TypeInfoKind::Tuple);
+        auto typeList = CastTypeInfo<TypeInfoList>(parent->typeInfo, TypeInfoKind::TypeList);
         SWAG_VERIFY(index >= 0 && index < typeList->childs.size(), sourceFile->report({sourceFile, node->token, format("access by literal is out of range (maximum index is '%d')", typeList->childs.size() - 1)}));
 
         // Compute offset from start of tuple

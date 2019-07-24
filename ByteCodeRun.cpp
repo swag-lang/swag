@@ -177,7 +177,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     }
     case ByteCodeOp::MakeLambda:
     {
-		registersRC[ip->a.u32].pointer = ip->b.pointer;
+        registersRC[ip->a.u32].pointer = ip->b.pointer;
         break;
     }
     case ByteCodeOp::ForeignCall:
@@ -186,7 +186,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-	case ByteCodeOp::IncPointerVB:
+    case ByteCodeOp::IncPointerVB:
     {
         registersRC[ip->a.u32].pointer += ip->b.u32;
         break;
@@ -313,6 +313,14 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         memcpy(dst, src, size);
         break;
     }
+    case ByteCodeOp::CopyRR0:
+    {
+        void*    dst  = registersRR[0].pointer;
+        void*    src  = registersRC[ip->a.u32].pointer;
+        uint32_t size = ip->b.u32;
+        memcpy(dst, src, size);
+        break;
+    }
     case ByteCodeOp::CopyRARBStr:
     {
         auto module = context->sourceFile->module;
@@ -353,6 +361,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::CopyRRxRCx:
+	case ByteCodeOp::CopyRRxRCxCall:
     {
         registersRR[ip->a.u32] = registersRC[ip->b.u32];
         break;
@@ -391,7 +400,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::RARefFromStack:
-	case ByteCodeOp::RARefFromStackParam:
+    case ByteCodeOp::RARefFromStackParam:
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
 

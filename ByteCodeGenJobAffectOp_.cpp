@@ -33,21 +33,9 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Tuple)
+    if (typeInfo->kind == TypeInfoKind::TypeList)
     {
-        auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::Tuple);
-
-        int startRegister = 0;
-        for (int idx = 0; idx < typeList->childs.size(); idx++)
-        {
-            auto         child = typeList->childs[idx];
-            RegisterList subRegisters;
-            for (int cptR = 0; cptR < child->numRegisters(); cptR++)
-                subRegisters += r1[startRegister++];
-            emitAffectEqual(context, r0, subRegisters, child);
-            emitInstruction(context, ByteCodeOp::IncPointerVB, r0)->b.u32 = child->sizeOf;
-        }
-
+		emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
         return true;
     }
 

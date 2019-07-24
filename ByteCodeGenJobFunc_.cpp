@@ -52,10 +52,19 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     // Copy result to RR0... registers
     if (!node->childs.empty())
     {
-        for (auto child : node->childs)
+        auto front = node->childs.front();
+        if (front->typeInfo->kind == TypeInfoKind::TypeList)
         {
-            for (int r = 0; r < child->resultRegisterRC.size(); r++)
-                emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+            auto inst   = emitInstruction(context, ByteCodeOp::CopyRR0, front->resultRegisterRC);
+            inst->b.u32 = front->typeInfo->sizeOf;
+        }
+        else
+        {
+            for (auto child : node->childs)
+            {
+                for (int r = 0; r < child->resultRegisterRC.size(); r++)
+                    emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+            }
         }
     }
 
@@ -289,6 +298,17 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
 
+    // Store in RR0 the address of the stack to store the result
+    if (typeInfoFunc->returnType && typeInfoFunc->returnType->kind == TypeInfoKind::TypeList)
+    {
+        auto fctCall           = CastAst<AstIdentifier>(node, AstNodeKind::FuncCall);
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto inst              = emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC);
+        inst->b.u32            = fctCall->fctCallStorageOffset;
+        emitInstruction(context, ByteCodeOp::CopyRRxRCxCall, 0, node->resultRegisterRC);
+        context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+    }
+
     if (funcNode)
     {
         auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
@@ -305,11 +325,14 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     // Copy result in a computing register
     if (typeInfoFunc->returnType && typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        auto numRegs = typeInfoFunc->returnType->numRegisters();
-        reserveRegisterRC(context, node->resultRegisterRC, numRegs);
-        context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
-        for (int idx = 0; idx < node->resultRegisterRC.size(); idx++)
-            emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC[idx], idx);
+        if (typeInfoFunc->returnType->kind != TypeInfoKind::TypeList)
+        {
+            auto numRegs = typeInfoFunc->returnType->numRegisters();
+            reserveRegisterRC(context, node->resultRegisterRC, numRegs);
+            context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
+            for (int idx = 0; idx < node->resultRegisterRC.size(); idx++)
+                emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC[idx], idx);
+        }
     }
 
     // Restore stack as it was before the call, before the parameters

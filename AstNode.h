@@ -263,11 +263,13 @@ struct AstIdentifier : public AstNode
 {
     void reset() override
     {
-        callParameters = nullptr;
+        callParameters       = nullptr;
+        fctCallStorageOffset = 0;
         AstNode::reset();
     }
 
     AstNode* callParameters;
+    uint32_t fctCallStorageOffset;
 };
 
 struct AstFuncDecl : public AstNode

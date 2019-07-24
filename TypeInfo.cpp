@@ -319,6 +319,7 @@ TypeInfo* TypeInfoList::clone()
     auto newType = g_Pool_typeInfoList.alloc();
 
     newType->childs = this->childs;
+    newType->scope  = this->scope;
     newType->copyFrom(this);
     return newType;
 }

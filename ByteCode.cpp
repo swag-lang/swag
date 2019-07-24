@@ -102,6 +102,7 @@ void ByteCode::print()
         case ByteCodeOp::CopyRARB32:
         case ByteCodeOp::CopyRRxRCx:
         case ByteCodeOp::CopyRCxRRx:
+		case ByteCodeOp::CopyRRxRCxCall:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
@@ -124,6 +125,7 @@ void ByteCode::print()
         case ByteCodeOp::RARefFromStack:
         case ByteCodeOp::AffectOp64Null:
 		case ByteCodeOp::IncPointerVB:
+        case ByteCodeOp::CopyRR0:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 
