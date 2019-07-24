@@ -29,8 +29,18 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
-		emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);
+        emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);
         return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::TypeList)
+    {
+		for (int idx = 0; idx < r1.size(); idx++)
+		{
+			emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[idx], idx * 8);
+		}
+
+		return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Slice)
@@ -58,6 +68,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
             emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
         }
+
         return true;
     }
 

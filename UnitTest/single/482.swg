@@ -1,10 +1,11 @@
 #module module482
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+#[swag.printbytecode]
 #test
 {
 	var res = T()
+	@print(res.0)
 }
 
 //#[swag.printbytecode]

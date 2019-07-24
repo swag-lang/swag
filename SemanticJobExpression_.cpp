@@ -32,16 +32,16 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
-		if (!typeInfo->childs.empty())
-			typeInfo->name += ", ";
+        if (!typeInfo->childs.empty())
+            typeInfo->name += ", ";
         typeInfo->childs.push_back(child->typeInfo);
-		typeInfo->name += child->typeInfo->name;
+        typeInfo->name += child->typeInfo->name;
         typeInfo->sizeOf += child->typeInfo->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
     }
 
-	typeInfo->name += "}";
+    typeInfo->name += "}";
     node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
 
     if (node->flags & AST_CONST_EXPR)
@@ -267,7 +267,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto sourceFile        = context->sourceFile;
     auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
-    auto arrayType         = arrayNode->array->typeInfo;
+    auto arrayType         = g_TypeMgr.concreteType(arrayNode->array->typeInfo);
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
 
     if (arrayType->kind == TypeInfoKind::Native && arrayType->nativeType == NativeType::String)
@@ -302,7 +302,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
     else
     {
-        return sourceFile->report({sourceFile, arrayNode->array, format("type '%s' cannot be referenced like a pointer", arrayType->name.c_str())});
+        return sourceFile->report({sourceFile, arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedName(arrayType), arrayType->name.c_str())});
     }
 
     return true;

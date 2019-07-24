@@ -202,6 +202,10 @@ const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
         return "array";
     case TypeInfoKind::Pointer:
         return "pointer";
+    case TypeInfoKind::FuncAttr:
+        return "function";
+    case TypeInfoKind::TypeList:
+        return "tuple";
     }
 
     return "type";
