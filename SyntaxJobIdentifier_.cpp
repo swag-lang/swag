@@ -7,12 +7,17 @@
 #include "SourceFile.h"
 #include "Diagnostic.h"
 
-bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags)
+bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags, bool acceptInteger)
 {
     if (token.id != TokenId::Identifier &&
         token.id != TokenId::IntrisicPrint &&
         token.id != TokenId::IntrisicAssert)
-        return sourceFile->report({sourceFile, token, format("invalid identifier '%s'", token.text.c_str())});
+    {
+        if (token.id == TokenId::LiteralNumber && acceptInteger)
+            flags |= AST_IDENTIFIER_IS_INTEGER;
+        else
+            return syntaxError(token, format("invalid identifier '%s'", token.text.c_str()));
+    }
 
     // An identifier that starts with '__' is reserved for internal usage !
     if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
@@ -87,7 +92,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint64_t flag
     while (token.id == TokenId::SymDot)
     {
         SWAG_CHECK(eatToken(TokenId::SymDot));
-        SWAG_CHECK(doIdentifier(identifierRef, flags));
+        SWAG_CHECK(doIdentifier(identifierRef, flags, true));
     }
 
     identifierRef->inheritLocation();

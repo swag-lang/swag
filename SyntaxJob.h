@@ -44,7 +44,7 @@ struct SyntaxJob : public Job
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doIdentifier(AstNode* parent, uint64_t flags = 0);
+    bool doIdentifier(AstNode* parent, uint64_t flags = 0, bool acceptInteger = false);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint64_t flags = 0);
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
