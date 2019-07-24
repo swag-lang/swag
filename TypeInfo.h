@@ -23,6 +23,7 @@ enum class TypeInfoKind
     Array,
     Slice,
     TypeList,
+	Tuple,
 };
 
 enum class NativeType

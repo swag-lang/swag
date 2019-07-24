@@ -153,7 +153,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     typeInfo->returnType = typeNode->typeInfo;
 
     // Be sure this is a valid return type
-    if (typeInfo->returnType->kind != TypeInfoKind::Native && typeInfo->returnType->kind != TypeInfoKind::TypeList)
+    if (typeInfo->returnType->kind != TypeInfoKind::Native && typeInfo->returnType->kind != TypeInfoKind::Tuple)
     {
         return sourceFile->report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
     }

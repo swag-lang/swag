@@ -16,7 +16,8 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
     auto node = context->node;
     SWAG_VERIFY(node->childs.size(), context->job->error(context, "empty tuple type"));
 
-    auto typeInfoList = g_Pool_typeInfoList.alloc();
+    auto typeInfoList  = g_Pool_typeInfoList.alloc();
+    typeInfoList->kind = TypeInfoKind::Tuple;
     typeInfoList->flags |= TYPEINFO_CONST;
     typeInfoList->scope = node->childs.front()->ownerScope;
 

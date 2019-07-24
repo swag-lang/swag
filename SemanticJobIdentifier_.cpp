@@ -177,7 +177,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // Tuple
-        else if (typeInfo->kind == TypeInfoKind::TypeList)
+        else if (typeInfo->kind == TypeInfoKind::Tuple)
         {
             parent->startScope = static_cast<TypeInfoList*>(typeInfo)->scope;
             node->typeInfo     = typeInfo;
@@ -244,9 +244,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (node->flags & AST_IDENTIFIER_IS_INTEGER)
     {
         SWAG_VERIFY(parent->startScope && parent->typeInfo, sourceFile->report({sourceFile, node->token, "invalid access by literal"}));
-        SWAG_VERIFY(parent->typeInfo->kind == TypeInfoKind::TypeList, sourceFile->report({sourceFile, node->token, format("access by literal invalid on type '%s'", parent->typeInfo->name.c_str())}));
+        SWAG_VERIFY(parent->typeInfo->kind == TypeInfoKind::Tuple, sourceFile->report({sourceFile, node->token, format("access by literal invalid on type '%s'", parent->typeInfo->name.c_str())}));
         auto index    = stoi(node->name);
-        auto typeList = CastTypeInfo<TypeInfoList>(parent->typeInfo, TypeInfoKind::TypeList);
+        auto typeList = CastTypeInfo<TypeInfoList>(parent->typeInfo, TypeInfoKind::Tuple);
         SWAG_VERIFY(index >= 0 && index < typeList->childs.size(), sourceFile->report({sourceFile, node->token, format("access by literal is out of range (maximum index is '%d')", typeList->childs.size() - 1)}));
 
         // Compute offset from start of tuple

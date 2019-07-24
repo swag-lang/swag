@@ -33,7 +33,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::TypeList)
+    if (typeInfo->kind == TypeInfoKind::Tuple)
     {
 		for (int idx = 0; idx < r1.size(); idx++)
 		{
