@@ -156,6 +156,7 @@ BYTECODE_OP(AffectOp32)
 BYTECODE_OP(AffectOp64)
 BYTECODE_OP(AffectOp64Null)
 BYTECODE_OP(AffectOpPointer)
+BYTECODE_OP(IncPointerVB)
 BYTECODE_OP(IncPointer)
 BYTECODE_OP(DecPointer)
 

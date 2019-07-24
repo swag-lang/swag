@@ -294,7 +294,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         return true;
     }
 
-    // This is a tuple : every childs have been generated
+    // This is a tuple : every child has been generated
     if (node->typeInfo->kind == TypeInfoKind::Tuple)
     {
         for (auto child : node->childs)

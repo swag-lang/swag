@@ -5,7 +5,7 @@
 #test
 {
 	var res = T()
-	@print(res.0)
+	@print(res.1)
 }
 
 #[swag.printbytecode]

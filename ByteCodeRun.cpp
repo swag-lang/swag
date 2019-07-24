@@ -186,6 +186,11 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+	case ByteCodeOp::IncPointerVB:
+    {
+        registersRC[ip->a.u32].pointer += ip->b.u32;
+        break;
+    }
     case ByteCodeOp::IncPointer:
     {
         registersRC[ip->c.u32].pointer = registersRC[ip->a.u32].pointer + registersRC[ip->b.u32].u32;

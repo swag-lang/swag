@@ -19,11 +19,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 {
     auto node = context->node;
 
-	// Direct index in a tuple
+    // Direct index in a tuple
     if (node->flags & AST_IDENTIFIER_IS_INTEGER)
     {
-		node->resultRegisterRC = node->parent->resultRegisterRC;
-		return true;
+        node->resultRegisterRC = node->parent->resultRegisterRC;
+        if (!g_CommandLine.optimizeByteCode || node->computedValue.reg.u32 > 0)
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
+            inst->b.u32 = node->computedValue.reg.u32;
+        }
+
+        return true;
     }
 
     auto resolved = node->resolvedSymbolOverload;
@@ -61,7 +67,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u32 = resolved->storageIndex;
         }
 
-		node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
@@ -112,7 +118,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
-		node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
@@ -162,7 +168,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
-		node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 

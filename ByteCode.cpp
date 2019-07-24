@@ -86,11 +86,11 @@ void ByteCode::print()
         case ByteCodeOp::ClearRA:
         case ByteCodeOp::DecRA:
         case ByteCodeOp::IncRA:
-		case ByteCodeOp::LambdaCall:
+        case ByteCodeOp::LambdaCall:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
-            case ByteCodeOp::IncPointer:
+        case ByteCodeOp::IncPointer:
         case ByteCodeOp::AffectOp8:
         case ByteCodeOp::AffectOp16:
         case ByteCodeOp::AffectOp32:
@@ -101,8 +101,8 @@ void ByteCode::print()
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::BoundCheckReg:
         case ByteCodeOp::CopyRARB32:
-		case ByteCodeOp::CopyRRxRCx:
-		case ByteCodeOp::CopyRCxRRx:
+        case ByteCodeOp::CopyRRxRCx:
+        case ByteCodeOp::CopyRCxRRx:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
@@ -114,7 +114,7 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::RARefFromStackParam:
-			wprintf(L"RA: %u VB: { %u } VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
+            wprintf(L"RA: %u VB: { %u } VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
         case ByteCodeOp::RAFromStack8:
@@ -123,6 +123,7 @@ void ByteCode::print()
         case ByteCodeOp::RAFromStack64:
         case ByteCodeOp::RARefFromStack:
         case ByteCodeOp::AffectOp64Null:
+		case ByteCodeOp::IncPointerVB:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 
