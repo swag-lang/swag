@@ -657,7 +657,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         if (ptr == nullptr)
             context->error("dereferencing a null pointer");
         else
-            *(uint32_t*) ptr = registersRC[ip->b.u32].u32;
+            *(uint32_t*) (ptr + ip->c.u32) = registersRC[ip->b.u32].u32;
         break;
     }
     case ByteCodeOp::AffectOp64:

@@ -69,6 +69,37 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
+{
+    auto node     = context->node;
+    auto typeInfo = node->typeInfo;
+
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->sizeOf)
+        {
+        case 1:
+            emitInstruction(context, ByteCodeOp::DeRef8, node->resultRegisterRC);
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::DeRef16, node->resultRegisterRC);
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitStructDeRef, native, size not supported");
+        }
+
+        return true;
+    }
+
+    return internalError(context, "emitStructDeRef, invalid type");
+}
+
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
@@ -121,7 +152,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
                 break;
             default:
-                return internalError(context, "emitPointerDeRef, type not supported");
+                return internalError(context, "emitPointerDeRef, slice, size not supported");
             }
         }
     }
@@ -157,7 +188,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
                 break;
             default:
-                return internalError(context, "emitPointerDeRef, type not supported");
+                return internalError(context, "emitPointerDeRef, pointer, size not supported");
             }
         }
     }
@@ -207,7 +238,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
                 break;
             default:
-                return internalError(context, "emitPointerDeRef, type not supported");
+                return internalError(context, "emitPointerDeRef, array, size not supported");
             }
         }
     }
@@ -272,14 +303,14 @@ bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
 {
     auto node = context->node;
 
-	// Do not generat bytecode for childs in case of a constant expression
-	// (and not for a tuple)
+    // Do not generat bytecode for childs in case of a constant expression
+    // (and not for a tuple)
     if ((node->flags & AST_CONST_EXPR) && (node->typeInfo->kind != TypeInfoKind::Tuple))
     {
         node->flags |= AST_NO_BYTECODE_CHILDS;
     }
 
-	return true;
+    return true;
 }
 
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)

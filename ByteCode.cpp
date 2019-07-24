@@ -93,7 +93,6 @@ void ByteCode::print()
         case ByteCodeOp::IncPointer:
         case ByteCodeOp::AffectOp8:
         case ByteCodeOp::AffectOp16:
-        case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOpPointer:
         case ByteCodeOp::IsNullString:
         case ByteCodeOp::IsNullU32:
@@ -106,6 +105,7 @@ void ByteCode::print()
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
+		case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOp64:
         case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::CopyRARBStr:

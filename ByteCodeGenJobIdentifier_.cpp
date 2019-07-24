@@ -29,7 +29,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = node->computedValue.reg.u32;
         }
 
-        return true;
+		emitStructDeRef(context);
+		return true;
     }
 
     auto resolved = node->resolvedSymbolOverload;
@@ -79,7 +80,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (typeInfo->kind == TypeInfoKind::TypeList)
+        else if (typeInfo->kind == TypeInfoKind::Tuple)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
@@ -130,7 +131,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (typeInfo->kind == TypeInfoKind::TypeList)
+        else if (typeInfo->kind == TypeInfoKind::Tuple)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
