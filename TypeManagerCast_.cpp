@@ -909,6 +909,9 @@ bool TypeManager::castToTuple(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
             SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, toTypeList->childs[i], fromTypeList->childs[i], nodeToCast ? nodeToCast->childs[i] : nullptr, castFlags));
         }
 
+		if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+			nodeToCast->typeInfo = toTypeList;
+
         return true;
     }
 

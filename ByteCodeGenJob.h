@@ -38,6 +38,7 @@ struct ByteCodeGenJob : public Job
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 setupBC(Module* module, AstNode* node);
 
+	static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
     static bool emitLiteral(ByteCodeGenContext* context, TypeInfo* toType);
     static bool emitLiteral(ByteCodeGenContext* context);

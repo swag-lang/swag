@@ -42,14 +42,11 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
     }
 
     typeInfo->name += "}";
-    node->byteCodeFct = &ByteCodeGenJob::emitExpressionList;
+    node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
+    node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
 
     if (node->flags & AST_CONST_EXPR)
-    {
-        node->flags |= AST_NO_BYTECODE_CHILDS;
         typeInfo->setConst();
-    }
-
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
     // Reserve

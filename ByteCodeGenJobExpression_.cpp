@@ -268,6 +268,20 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
+{
+    auto node = context->node;
+
+	// Do not generat bytecode for childs in case of a constant expression
+	// (and not for a tuple)
+    if ((node->flags & AST_CONST_EXPR) && (node->typeInfo->kind != TypeInfoKind::Tuple))
+    {
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+    }
+
+	return true;
+}
+
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 {
     auto node = context->node;
@@ -277,6 +291,14 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = node->childs.front()->resultRegisterRC;
         node->resultRegisterRC += node->childs.back()->resultRegisterRC;
+        return true;
+    }
+
+    // This is a tuple : every childs have been generated
+    if (node->typeInfo->kind == TypeInfoKind::Tuple)
+    {
+        for (auto child : node->childs)
+            node->resultRegisterRC += child->resultRegisterRC;
         return true;
     }
 
