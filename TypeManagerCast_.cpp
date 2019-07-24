@@ -1102,6 +1102,8 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     }
 
     TypeInfo* newLeftTypeInfo = (TypeInfo*) g_TypeMgr.promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
+	if (newLeftTypeInfo == nullptr)
+		newLeftTypeInfo = leftTypeInfo;
 
     if (newLeftTypeInfo == leftTypeInfo)
         return;
