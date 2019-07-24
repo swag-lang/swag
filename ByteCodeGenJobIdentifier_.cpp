@@ -17,9 +17,16 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 {
-    auto node     = context->node;
-    auto resolved = node->resolvedSymbolOverload;
+    auto node = context->node;
 
+	// Direct index in a tuple
+    if (node->flags & AST_IDENTIFIER_IS_INTEGER)
+    {
+		node->resultRegisterRC = node->parent->resultRegisterRC;
+		return true;
+    }
+
+    auto resolved = node->resolvedSymbolOverload;
     if (node->resolvedSymbolName->kind == SymbolKind::Namespace)
         return true;
     if (node->resolvedSymbolName->kind != SymbolKind::Variable)
@@ -35,7 +42,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStackParam, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
-			inst->c.u32 = resolved->storageIndex;
+            inst->c.u32 = resolved->storageIndex;
         }
         else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
@@ -54,6 +61,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u32 = resolved->storageIndex;
         }
 
+		node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
@@ -62,6 +70,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
         if (typeInfo->kind == TypeInfoKind::Array)
+        {
+            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+        }
+        else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
@@ -100,6 +112,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
+		node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
@@ -108,6 +121,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
         if (typeInfo->kind == TypeInfoKind::Array)
+        {
+            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
+        }
+        else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
@@ -145,6 +162,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
+		node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 

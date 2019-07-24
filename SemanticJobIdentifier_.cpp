@@ -16,9 +16,8 @@
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
-    auto           node       = static_cast<AstIdentifierRef*>(context->node);
-    AstIdentifier* identifier = static_cast<AstIdentifier*>(node->childs.back());
-
+    auto           node          = static_cast<AstIdentifierRef*>(context->node);
+    AstIdentifier* identifier    = static_cast<AstIdentifier*>(node->childs.back());
     node->resolvedSymbolName     = identifier->resolvedSymbolName;
     node->resolvedSymbolOverload = identifier->resolvedSymbolOverload;
     node->typeInfo               = identifier->typeInfo;
@@ -36,16 +35,19 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->flags |= AST_CONST_EXPR;
 
     // Symbol is in fact a constant value : no need for bytecode
-    if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
+    if (node->resolvedSymbolOverload)
     {
-        node->computedValue = node->resolvedSymbolOverload->computedValue;
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
-    }
-    else if (node->resolvedSymbolName->kind == SymbolKind::GlobalVar ||
-             node->resolvedSymbolName->kind == SymbolKind::Variable ||
-             node->resolvedSymbolName->kind == SymbolKind::Function)
-    {
-        node->flags |= AST_L_VALUE;
+        if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
+        {
+            node->computedValue = node->resolvedSymbolOverload->computedValue;
+            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+        }
+        else if (node->resolvedSymbolName->kind == SymbolKind::GlobalVar ||
+                 node->resolvedSymbolName->kind == SymbolKind::Variable ||
+                 node->resolvedSymbolName->kind == SymbolKind::Function)
+        {
+            node->flags |= AST_L_VALUE;
+        }
     }
 
     return true;
@@ -238,13 +240,27 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  parent           = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
     auto  sourceFile       = context->sourceFile;
 
+    // Direct access to a tuple inside value
     if (node->flags & AST_IDENTIFIER_IS_INTEGER)
     {
-		SWAG_VERIFY(parent->startScope && parent->typeInfo, sourceFile->report({ sourceFile, node->token, "invalid access by literal"} ));
+        SWAG_VERIFY(parent->startScope && parent->typeInfo, sourceFile->report({sourceFile, node->token, "invalid access by literal"}));
         SWAG_VERIFY(parent->typeInfo->kind == TypeInfoKind::TypeList, sourceFile->report({sourceFile, node->token, format("access by literal invalid on type '%s'", parent->typeInfo->name.c_str())}));
-		auto index = stoi(node->name);
-		auto typeList = CastTypeInfo<TypeInfoList>(parent->typeInfo, TypeInfoKind::TypeList);
-		SWAG_VERIFY(index >= 0 && index < typeList->childs.size(), sourceFile->report({ sourceFile, node->token, format("access by literal is out of range (maximum index is '%d')", typeList->childs.size() - 1) }));
+        auto index    = stoi(node->name);
+        auto typeList = CastTypeInfo<TypeInfoList>(parent->typeInfo, TypeInfoKind::TypeList);
+        SWAG_VERIFY(index >= 0 && index < typeList->childs.size(), sourceFile->report({sourceFile, node->token, format("access by literal is out of range (maximum index is '%d')", typeList->childs.size() - 1)}));
+
+        // Compute offset from start of tuple
+        int offset = 0;
+        for (int i = 0; i < index; i++)
+        {
+            auto typeInfo = typeList->childs[i];
+            offset += typeInfo->sizeOf;
+        }
+
+        node->computedValue.reg.u32 = (uint32_t) offset;
+        node->typeInfo              = typeList->childs[index];
+        parent->typeInfo            = typeList->childs[index];
+        return true;
     }
 
     // Compute dependencies if not already done
