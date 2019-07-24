@@ -293,7 +293,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (job->cacheDependentSymbols.empty())
         {
             if (parent->startScope)
-                return sourceFile->report({sourceFile, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedName(parent->startScope->kind), parent->startScope->fullname.c_str())});
+            {
+                auto displayName = parent->startScope->fullname;
+                if (displayName.empty() && parent->typeInfo)
+                    displayName = parent->typeInfo->name;
+                if (!displayName.empty())
+                    return sourceFile->report({sourceFile, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedName(parent->startScope->kind), displayName.c_str())});
+            }
+
             return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
         }
     }
