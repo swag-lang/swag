@@ -349,7 +349,7 @@ bool Tokenizer::doIntLiteral(char32_t c, Token& token, unsigned& fractPart)
     return true;
 }
 
-bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
+bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
 {
     unsigned fractPart = 1;
     unsigned offset    = 1;
@@ -362,23 +362,15 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
     token.id          = TokenId::LiteralNumber;
 
     // Integer part
-    if (!startsWithDot)
-    {
-        SWAG_CHECK(doIntLiteral(c, token, fractPart));
-        c = getCharNoSeek(offset);
-    }
-    else
-        token.literalValue.s64 = 0;
+    SWAG_CHECK(doIntLiteral(c, token, fractPart));
+    c = getCharNoSeek(offset);
 
     // If there's a dot, then this is a floating point number
-    if (c == '.' || startsWithDot)
+    if (c == '.')
     {
         token.literalType = g_TypeMgr.typeInfoF32;
-        if (!startsWithDot)
-        {
-            token.text += c;
-            treatChar(c, offset);
-        }
+        token.text += c;
+        treatChar(c, offset);
 
         // Fraction part
         tokenFrac.startLocation = location;
@@ -386,8 +378,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenFrac, "a digit separator can't start a fractional part"));
         if (SWAG_IS_DIGIT(c))
         {
-            if (!startsWithDot)
-                token.text += c;
+            token.text += c;
             tokenFrac.text = c;
             treatChar(c, offset);
             SWAG_CHECK(doIntLiteral(c, tokenFrac, fractPart));
@@ -466,8 +457,7 @@ bool Tokenizer::doIntFloatLiteral(bool startsWithDot, char32_t c, Token& token)
 
 bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
 {
-    bool startsWithDot = false;
-    token.text         = c;
+    token.text = c;
     if (c == '0')
     {
         unsigned offset;
@@ -501,29 +491,8 @@ bool Tokenizer::doNumberLiteral(char32_t c, Token& token)
             return error(token, format("invalid literal number prefix '%s'", token.text.c_str()));
         }
     }
-    else if (c == '.')
-    {
-        unsigned offset;
-        startsWithDot = true;
-        c             = getCharNoSeek(offset);
-        if (!SWAG_IS_DIGIT(c))
-        {
-            token.endLocation = location;
-            token.text        = ".";
-            token.id          = TokenId::SymDot;
-            if (c == '.')
-            {
-                token.id          = TokenId::SymDotDot;
-                token.text        = "..";
-                token.endLocation = location;
-                treatChar(c, offset);
-            }
 
-            return true;
-        }
-    }
-
-    SWAG_CHECK(doIntFloatLiteral(startsWithDot, c, token));
+    SWAG_CHECK(doIntFloatLiteral(c, token));
     token.endLocation = location;
 
     return true;

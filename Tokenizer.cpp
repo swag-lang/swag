@@ -239,7 +239,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         }
 
         // Number literal
-        if (SWAG_IS_DIGIT(c) || c == '.')
+        if (SWAG_IS_DIGIT(c))
         {
             SWAG_CHECK(doNumberLiteral(c, token));
             return true;

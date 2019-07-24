@@ -136,7 +136,7 @@ struct Tokenizer
     bool     doHexLiteral(Token& token);
     bool     doBinLiteral(Token& token);
     bool     doNumberSuffix(Token& token);
-    bool     doIntFloatLiteral(bool hasIntegralPart, char32_t c, Token& token);
+    bool     doIntFloatLiteral(char32_t c, Token& token);
     bool     doIntLiteral(char32_t c, Token& token, unsigned& fractPart);
     bool     error(Token& token, const Utf8& msg);
     bool     errorNumberSyntax(Token& token, const Utf8& msg);
