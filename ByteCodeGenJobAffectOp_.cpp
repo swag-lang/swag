@@ -35,13 +35,20 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Tuple)
     {
-		auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::Tuple);
-		for (int idx = 0; idx < r1.size(); idx++)
-		{
-			emitInstruction(context, ByteCodeOp::AffectOp32, r0, r1[idx], idx * 4);
-		}
+        auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::Tuple);
 
-		return true;
+        int startRegister = 0;
+        for (int idx = 0; idx < typeList->childs.size(); idx++)
+        {
+            auto         child = typeList->childs[idx];
+            RegisterList subRegisters;
+            for (int cptR = 0; cptR < child->numRegisters(); cptR++)
+                subRegisters += r1[startRegister++];
+            emitAffectEqual(context, r0, subRegisters, child);
+            emitInstruction(context, ByteCodeOp::IncPointerVB, r0)->b.u32 = child->sizeOf;
+        }
+
+        return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Slice)
