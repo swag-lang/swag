@@ -76,8 +76,14 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 
     if (typeInfo->isNative(NativeType::String))
     {
-		node->resultRegisterRC += reserveRegisterRC(context);
-		emitInstruction(context, ByteCodeOp::DeRefString, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        node->resultRegisterRC += reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::DeRefString, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+		emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
 		return true;
     }
 
