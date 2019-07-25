@@ -221,6 +221,27 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         }
     }
 
+    // Store in RR0 the address of the stack to store the result
+    if (typeInfoFunc->returnType && typeInfoFunc->returnType->kind == TypeInfoKind::TypeList)
+    {
+        auto fctCall           = CastAst<AstIdentifier>(node, AstNodeKind::FuncCall);
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto inst              = emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC);
+        inst->b.u32            = fctCall->fctCallStorageOffset;
+        emitInstruction(context, ByteCodeOp::CopyRRxRCxCall, 0, node->resultRegisterRC);
+        context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+        copyReservedRC.push_back(node->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::PushRASaved, node->resultRegisterRC);
+    }
+
+    // If we are in a function that need to keep the RR0 register alive, we need to save it
+    bool rr0Saved = false;
+    if (node->ownerFct && node->ownerFct->returnType && node->ownerFct->returnType->typeInfo && node->ownerFct->returnType->typeInfo->kind == TypeInfoKind::TypeList)
+    {
+        emitInstruction(context, ByteCodeOp::PushRRSaved, 0);
+        rr0Saved = true;
+    }
+
     // Sort childs by parameter index
     if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
     {
@@ -298,17 +319,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
 
-    // Store in RR0 the address of the stack to store the result
-    if (typeInfoFunc->returnType && typeInfoFunc->returnType->kind == TypeInfoKind::TypeList)
-    {
-        auto fctCall           = CastAst<AstIdentifier>(node, AstNodeKind::FuncCall);
-        node->resultRegisterRC = reserveRegisterRC(context);
-        auto inst              = emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC);
-        inst->b.u32            = fctCall->fctCallStorageOffset;
-        emitInstruction(context, ByteCodeOp::CopyRRxRCxCall, 0, node->resultRegisterRC);
-        context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-    }
-
     if (funcNode)
     {
         auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
@@ -341,10 +351,16 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         emitInstruction(context, ByteCodeOp::IncSP, precallStack);
     }
 
+    // If we are in a function that need to keep the RR0 register alive, we need to restore it
+    if (rr0Saved)
+    {
+        emitInstruction(context, ByteCodeOp::PopRRSaved, 0);
+    }
+
     // Restore reserved registers
     for (auto it = copyReservedRC.rbegin(); it != copyReservedRC.rend(); ++it)
     {
-        emitInstruction(context, ByteCodeOp::PopRCxSaved, *it);
+        emitInstruction(context, ByteCodeOp::PopRASaved, *it);
     }
 
     return true;

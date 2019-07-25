@@ -290,9 +290,19 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->push(registersRC[ip->a.u32].u64);
         break;
     }
-    case ByteCodeOp::PopRCxSaved:
+    case ByteCodeOp::PopRASaved:
     {
         registersRC[ip->a.u32].u64 = context->pop<uint64_t>();
+        break;
+    }
+    case ByteCodeOp::PushRRSaved:
+    {
+        context->push(registersRR[ip->a.u32].u64);
+        break;
+    }
+    case ByteCodeOp::PopRRSaved:
+    {
+        registersRR[ip->a.u32].u64 = context->pop<uint64_t>();
         break;
     }
     case ByteCodeOp::IncSP:

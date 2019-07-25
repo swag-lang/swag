@@ -883,7 +883,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.pointer = (swag_int8_t*) &rp%u->pointer;", ip->a.u32, ip->c.u32));
             break;
         case ByteCodeOp::PushRASaved:
-        case ByteCodeOp::PopRCxSaved:
+        case ByteCodeOp::PopRASaved:
+        case ByteCodeOp::PushRRSaved:
+        case ByteCodeOp::PopRRSaved:
             break;
         case ByteCodeOp::PushRAParam:
             bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));

@@ -72,6 +72,9 @@ void ByteCode::print()
 
         case ByteCodeOp::PushRAParam:
         case ByteCodeOp::PushRASaved:
+		case ByteCodeOp::PopRASaved:
+        case ByteCodeOp::PushRRSaved:
+		case ByteCodeOp::PopRRSaved:
         case ByteCodeOp::DeRef8:
         case ByteCodeOp::DeRef16:
         case ByteCodeOp::DeRef32:
