@@ -3,7 +3,7 @@
 //#[swag.printbytecode]
 #test
 {
-	a := {1, 2, 3, 0}
+	a := [1, 2, 3, 0]
 	b := F1(&a[0]);
 	@assert(b == 3)
 	b = F1(@prop(a, data))

@@ -10,5 +10,5 @@ func test (arr: [2] s32)
 //#[swag.printbytecode]
 #test
 {
-	test({1, 2});
+	test([1, 2]);
 }

@@ -26,9 +26,14 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
-    auto typeInfo = g_Pool_typeInfoList.alloc();
+    auto typeInfo      = g_Pool_typeInfoList.alloc();
+    typeInfo->listKind = node->listKind;
 
-    typeInfo->name = "{";
+    if (typeInfo->listKind == TypeInfoListKind::Array)
+        typeInfo->name = "[";
+    else
+        typeInfo->name = "{";
+
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
@@ -41,7 +46,11 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
             node->flags &= ~AST_CONST_EXPR;
     }
 
-    typeInfo->name += "}";
+    if (typeInfo->listKind == TypeInfoListKind::Array)
+        typeInfo->name += "]";
+    else
+        typeInfo->name += "}";
+
     node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
 

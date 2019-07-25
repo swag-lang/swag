@@ -35,9 +35,9 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
         if (orderedChilds)
             orderedChilds->push_back(child);
 
-		// We do not want to store the result in the constant/data buffer
-		if (!ptrDest)
-			continue;
+        // We do not want to store the result in the constant/data buffer
+        if (!ptrDest)
+            continue;
 
         if (child->typeInfo->isNative(NativeType::String))
         {
@@ -168,14 +168,26 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeList)
         {
-            auto typeList          = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
-            auto typeArray         = g_Pool_typeInfoArray.alloc();
-            typeArray->pointedType = typeList->childs.front();
-            typeArray->sizeOf      = node->typeInfo->sizeOf;
-            typeArray->count       = (uint32_t) typeList->childs.size();
-            typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
-            node->typeInfo         = g_TypeMgr.registerType(typeArray);
-            SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
+            auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
+			if (typeList->listKind == TypeInfoListKind::Array)
+			{
+				auto typeArray = g_Pool_typeInfoArray.alloc();
+				typeArray->pointedType = typeList->childs.front();
+				typeArray->sizeOf = node->typeInfo->sizeOf;
+				typeArray->count = (uint32_t)typeList->childs.size();
+				typeArray->name = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
+				node->typeInfo = g_TypeMgr.registerType(typeArray);
+				SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
+			}
+			else if (typeList->listKind == TypeInfoListKind::Tuple)
+			{
+				auto typeTuple = static_cast<TypeInfoList*>(typeList->clone());
+				typeTuple->scope = Ast::newScope("", ScopeKind::TypeList, node->ownerScope);
+				node->typeInfo = g_TypeMgr.registerType(typeTuple);
+				SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
+			}
+			else
+				return internalError(context, "resolveVarDecl, invalid typelist kind");
         }
     }
     else if (node->astType)

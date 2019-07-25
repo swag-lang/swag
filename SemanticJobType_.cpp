@@ -18,7 +18,8 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
 
     auto typeInfoList = g_Pool_typeInfoList.alloc();
     typeInfoList->flags |= TYPEINFO_CONST;
-    typeInfoList->scope = node->childs.front()->ownerScope;
+    typeInfoList->scope    = node->childs.front()->ownerScope;
+    typeInfoList->listKind = TypeInfoListKind::Tuple;
 
     typeInfoList->name = "{";
     for (auto child : node->childs)

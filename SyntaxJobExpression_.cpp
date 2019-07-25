@@ -339,6 +339,11 @@ bool SyntaxJob::doExpressionList(AstNode* parent, AstNode** result)
     initNode->inheritToken(token);
     SWAG_CHECK(tokenizer.getToken(token));
 
+    if (leftId == TokenId::SymLeftCurly)
+        initNode->listKind = TypeInfoListKind::Tuple;
+    else
+        initNode->listKind = TypeInfoListKind::Array;
+
     if (token.id == rightId)
         return syntaxError(token, format("initializer list is empty"));
     if (result)

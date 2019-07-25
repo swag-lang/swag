@@ -21,6 +21,7 @@ struct AstFuncDecl;
 struct AstAttrUse;
 struct TypeInfoFuncAttrParam;
 enum class Property;
+enum class TypeInfoListKind;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -556,7 +557,8 @@ struct AstProperty : public AstNode
 
 struct AstExpressionList : public AstNode
 {
-    uint32_t storageOffset;
+    uint32_t         storageOffset;
+    TypeInfoListKind listKind;
 };
 
 extern Pool<AstNode>            g_Pool_astNode;

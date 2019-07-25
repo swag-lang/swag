@@ -3,7 +3,7 @@
 //#[swag.printbytecode]
 #test
 {
-	var c = {666};
+	var c = [666];
 	var d: [..] s32 = cast([..]s32) c;
 	@assert(d[0] == 666);
 	@assert(@prop(d, count) == 1);

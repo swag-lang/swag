@@ -399,6 +399,12 @@ struct TypeInfoSlice : public TypeInfo
     TypeInfo* pointedType;
 };
 
+enum class TypeInfoListKind
+{
+    Array,
+    Tuple,
+};
+
 struct TypeInfoList : public TypeInfo
 {
     void reset()
@@ -407,6 +413,7 @@ struct TypeInfoList : public TypeInfo
         kind = TypeInfoKind::TypeList;
         childs.clear();
         scope = nullptr;
+		listKind = TypeInfoListKind::Array;
     }
 
     bool isSame(TypeInfo* from) override
@@ -415,6 +422,8 @@ struct TypeInfoList : public TypeInfo
             return false;
         auto other = static_cast<TypeInfoList*>(from);
         if (childs.size() != other->childs.size())
+            return false;
+        if (listKind != other->listKind)
             return false;
         for (int i = 0; i < childs.size(); i++)
         {
@@ -429,10 +438,10 @@ struct TypeInfoList : public TypeInfo
     {
         if (!isSame(from))
             return false;
-		auto other = static_cast<TypeInfoList*>(from);
+        auto other = static_cast<TypeInfoList*>(from);
         if (scope != other->scope)
             return false;
-		return true;
+        return true;
     }
 
     int numRegisters() override
@@ -442,6 +451,7 @@ struct TypeInfoList : public TypeInfo
 
     TypeInfo* clone() override;
 
+    TypeInfoListKind  listKind;
     vector<TypeInfo*> childs;
     Scope*            scope;
 };

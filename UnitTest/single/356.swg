@@ -1,7 +1,7 @@
 #module module356;
 //#unittest pass semantic;
 
-var a = {"0", "1.0"};
+var a = ["0", "1.0"];
 
 //#[swag.printbytecode]
 #test

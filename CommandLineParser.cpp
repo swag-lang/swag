@@ -28,7 +28,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
     //cmdLine->optimizeByteCode = false;
-	//cmdLine->fileFilter = "484";
+	cmdLine->fileFilter = "489";
 }
 
 void CommandLineParser::logArguments()

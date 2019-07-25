@@ -1,7 +1,7 @@
 #module module401;
 
 var Table: [256] u64 = 
-{
+[
 	0x0000000000000000'u64, 0x42f0e1eba9ea3693'u64, 0x85e1c3d753d46d26'u64, 0xc711223cfa3e5bb5'u64, 0x493366450e42ecdf'u64,
 	0x0bc387aea7a8da4c'u64, 0xccd2a5925d9681f9'u64, 0x8e224479f47cb76a'u64, 0x9266cc8a1c85d9be'u64, 0xd0962d61b56fef2d'u64,
 	0x17870f5d4f51b498'u64, 0x5577eeb6e6bb820b'u64, 0xdb55aacf12c73561'u64, 0x99a54b24bb2d03f2'u64, 0x5eb4691841135847'u64,
@@ -54,7 +54,7 @@ var Table: [256] u64 =
 	0x8d7be97b81d4019f'u64, 0x4a6acb477bea5a2a'u64, 0x089a2aacd2006cb9'u64, 0x14dea25f3af9026d'u64, 0x562e43b4931334fe'u64,
 	0x913f6188692d6f4b'u64, 0xd3cf8063c0c759d8'u64, 0x5dedc41a34bbeeb2'u64, 0x1f1d25f19d51d821'u64, 0xd80c07cd676f8394'u64,
 	0x9afce626ce85b507'u64
-}
+]
 
 //#[swag.printbytecode]
 func Hash(buffer: [..] u8, previous: u64 = 0xFFFFFFFF_FFFFFFFF) -> u64
