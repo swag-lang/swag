@@ -74,6 +74,13 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     auto node     = context->node;
     auto typeInfo = node->typeInfo;
 
+    if (typeInfo->isNative(NativeType::String))
+    {
+		node->resultRegisterRC += reserveRegisterRC(context);
+		emitInstruction(context, ByteCodeOp::DeRefString, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+		return true;
+    }
+
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->sizeOf)
