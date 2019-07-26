@@ -23,7 +23,7 @@ enum class TypeInfoKind
     Array,
     Slice,
     TypeList,
-	Variadic,
+    Variadic,
 };
 
 enum class NativeType
@@ -60,6 +60,7 @@ static const uint64_t TYPEINFO_FLOAT          = 0x00000000'00000008;
 static const uint64_t TYPEINFO_UNSIGNED       = 0x00000000'00000010;
 static const uint64_t TYPEINFO_CONST          = 0x00000000'00000020;
 static const uint64_t TYPEINFO_IN_MANAGER     = 0x00000000'00000040;
+static const uint64_t TYPEINFO_VARIADIC       = 0x00000000'00000080;
 
 struct TypeInfo : public PoolElement
 {

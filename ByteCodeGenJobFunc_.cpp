@@ -316,6 +316,27 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         }
     }
 
+    // Variadic parameter is on top of stack
+    if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
+    {
+        auto r0          = reserveRegisterRC(context);
+        auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+
+        // Store number of extra parameters
+        emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = numVariadic;
+        emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
+        precallStack += sizeof(Register);
+        numRegisters++;
+
+        // Store address on the stack of those parameters
+        emitInstruction(context, ByteCodeOp::MovRASP, r0);
+        emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
+        precallStack += sizeof(Register);
+        numRegisters++;
+
+        freeRegisterRC(context, r0);
+    }
+
     // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
 
@@ -380,9 +401,22 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     // Then add the full stack size of the function
     offset += funcNode->stackSize;
 
-    int index = 0;
-    for (auto param : node->childs)
+    // Variadic parameter is the last one pushed on the stack
+    if (funcNode->typeInfo->flags & TYPEINFO_VARIADIC)
     {
+        auto param              = node->childs.back();
+        auto resolved           = param->resolvedSymbolOverload;
+        resolved->storageOffset = offset;
+        offset += g_TypeMgr.typeInfoVariadic->sizeOf;
+        resolved->storageIndex = (uint32_t) node->childs.size() - 1;
+    }
+
+    int index = 0;
+    for (int i = 0; i < node->childs.size(); i++)
+    {
+        if ((i == node->childs.size() - 1) && funcNode->typeInfo->flags & TYPEINFO_VARIADIC)
+            break;
+        auto param              = node->childs[i];
         auto resolved           = param->resolvedSymbolOverload;
         resolved->storageOffset = offset;
         resolved->storageIndex  = index;

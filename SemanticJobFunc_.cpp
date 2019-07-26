@@ -29,10 +29,11 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
         funcParam->typeInfo = param->typeInfo;
         funcParam->index    = index++;
 
-		// Variadic must be the last one
-		if (nodeParam->typeInfo == g_TypeMgr.typeInfoVariadic)
+        // Variadic must be the last one
+        if (nodeParam->typeInfo == g_TypeMgr.typeInfoVariadic)
         {
-			funcAttr->flags |= AST_VARIADIC;
+            typeInfo->flags |= TYPEINFO_VARIADIC;
+            funcAttr->flags |= AST_VARIADIC;
             if (index != parameters->childs.size())
                 return sourceFile->report({sourceFile, nodeParam, "variadic argument should be the last one"});
         }
