@@ -329,7 +329,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         numRegisters++;
 
         // Store address on the stack of those parameters
-        emitInstruction(context, ByteCodeOp::MovRASP, r0);
+        emitInstruction(context, ByteCodeOp::MovRASP, r0, numRegisters - 1);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
         precallStack += sizeof(Register);
         numRegisters++;

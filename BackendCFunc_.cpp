@@ -14,8 +14,6 @@
 const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
 {
     SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
-    if (typeInfo == g_TypeMgr.typeInfoVariadic)
-        return "...";
 
     switch (typeInfo->nativeType)
     {
@@ -112,20 +110,11 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     for (auto param : typeFunc->parameters)
     {
         auto typeParam = TypeManager::concreteType(param->typeInfo);
-        if (typeParam == g_TypeMgr.typeInfoVariadic)
+        for (int i = 0; i < typeParam->numRegisters(); i++)
         {
-            if (index || typeFunc->numReturnRegisters())
+            if (index || i || typeFunc->numReturnRegisters())
                 bufferC.addString(", ");
-            bufferC.addString("int __numargs, ...");
-        }
-        else
-        {
-            for (int i = 0; i < typeParam->numRegisters(); i++)
-            {
-                if (index || i || typeFunc->numReturnRegisters())
-                    bufferC.addString(", ");
-                bufferC.addString(format("__register* rp%u", index++));
-            }
+            bufferC.addString(format("__register* rp%u", index++));
         }
     }
 
@@ -245,13 +234,6 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
     {
         bufferC.addString(format("swag_uint8_t stack[%u];\n", node->stackSize));
     }
-
-	// Variadic
-	if (node->flags & AST_VARIADIC)
-	{
-		bufferC.addString("va_list __args;\n");
-		bufferC.addString("va_start(__args, __numargs);\n");
-	}
 
     // Generate bytecode
     auto ip = bc->out;
@@ -917,6 +899,10 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
         }
 
+		case ByteCodeOp::MovRASP:
+			bufferC.addString(format("r%u.pointer = (swag_int8_t*) &rc%u;", ip->a.u32, ip->b.u32));
+			break;
+
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LocalCall:
         {
@@ -959,29 +945,11 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             }
 
             auto index         = ip->b.u32 - 1;
-            auto numCallParams = ip->node ? ip->node->childs.size() : 0;
-            numCallParams      = max(numCallParams, typeFuncBC->parameters.size());
+            auto numCallParams = typeFuncBC->parameters.size();
             for (int idxCall = 0; idxCall < (int) numCallParams; idxCall++)
             {
-                // Get the type from the function definition
-				bool isVariadic = false;
-                if (idxCall < typeFuncBC->parameters.size())
-                {
-                    auto sourceType = typeFuncBC->parameters[idxCall]->typeInfo;
-					if (sourceType->kind == TypeInfoKind::Variadic)
-					{
-						bufferC.addString(format("%d, ", ip->node->childs.size() - idxCall));
-						isVariadic = true;
-					}
-                }
-
-                // Get the type from the caller
-                TypeInfo* typeParam;
-                if (idxCall < typeFuncBC->parameters.size() && !isVariadic)
-                    typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-                else
-                    typeParam = ip->node->childs[idxCall]->typeInfo;
-                typeParam = TypeManager::concreteType(typeParam);
+                auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+                typeParam      = TypeManager::concreteType(typeParam);
                 for (int j = 0; j < typeParam->numRegisters(); j++)
                 {
                     if (idxCall || j || typeFuncBC->numReturnRegisters())

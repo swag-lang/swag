@@ -33,7 +33,6 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
         if (nodeParam->typeInfo == g_TypeMgr.typeInfoVariadic)
         {
             typeInfo->flags |= TYPEINFO_VARIADIC;
-            funcAttr->flags |= AST_VARIADIC;
             if (index != parameters->childs.size())
                 return sourceFile->report({sourceFile, nodeParam, "variadic argument should be the last one"});
         }
