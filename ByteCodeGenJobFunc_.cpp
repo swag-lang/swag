@@ -324,12 +324,14 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
         inst->a.pointer = (uint8_t*) funcNode->bc;
         inst->b.u32     = numRegisters;
+        inst->node      = allParams;
     }
     else
     {
         auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, node->resultRegisterRC);
         inst->b.u32     = numRegisters;
         inst->c.pointer = (uint8_t*) typeInfoFunc;
+        inst->node      = allParams;
     }
 
     // Copy result in a computing register

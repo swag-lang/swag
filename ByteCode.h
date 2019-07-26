@@ -9,13 +9,14 @@ struct SourceFile;
 
 struct ByteCodeInstruction
 {
-    Register       a;
-    Register       b;
-    Register       c;
-    uint32_t       sourceFileIdx;
-    SourceLocation startLocation;
-    SourceLocation endLocation;
-    ByteCodeOp     op;
+    struct AstNode* node;
+    Register        a;
+    Register        b;
+    Register        c;
+    uint32_t        sourceFileIdx;
+    SourceLocation  startLocation;
+    SourceLocation  endLocation;
+    ByteCodeOp      op;
 };
 
 struct ByteCode : public PoolElement

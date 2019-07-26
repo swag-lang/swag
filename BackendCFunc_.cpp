@@ -14,6 +14,9 @@
 const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
 {
     SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+    if (typeInfo == g_TypeMgr.typeInfoVariadic)
+        return "...";
+
     switch (typeInfo->nativeType)
     {
     case NativeType::Bool:
@@ -109,11 +112,20 @@ void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDec
     for (auto param : typeFunc->parameters)
     {
         auto typeParam = TypeManager::concreteType(param->typeInfo);
-        for (int i = 0; i < typeParam->numRegisters(); i++)
+        if (typeParam == g_TypeMgr.typeInfoVariadic)
         {
-            if (index || i || typeFunc->numReturnRegisters())
+            if (index || typeFunc->numReturnRegisters())
                 bufferC.addString(", ");
-            bufferC.addString(format("__register* rp%u", index++));
+            bufferC.addString("int __numargs, ...");
+        }
+        else
+        {
+            for (int i = 0; i < typeParam->numRegisters(); i++)
+            {
+                if (index || i || typeFunc->numReturnRegisters())
+                    bufferC.addString(", ");
+                bufferC.addString(format("__register* rp%u", index++));
+            }
         }
     }
 
@@ -864,7 +876,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
             break;
 
-		case ByteCodeOp::CopyRR0:
+        case ByteCodeOp::CopyRR0:
             bufferC.addString(format("__memcpy(rr0->pointer, r%u.pointer, %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRRxRCx:
@@ -939,11 +951,30 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
                 bufferC.addString(format("&rt%d", j));
             }
 
-            auto index = ip->b.u32 - 1;
-            for (int idxCall = 0; idxCall < (int) typeFuncBC->parameters.size(); idxCall++)
+            auto index         = ip->b.u32 - 1;
+            auto numCallParams = ip->node ? ip->node->childs.size() : 0;
+            numCallParams      = max(numCallParams, typeFuncBC->parameters.size());
+            for (int idxCall = 0; idxCall < (int) numCallParams; idxCall++)
             {
-                auto param     = typeFuncBC->parameters[idxCall];
-                auto typeParam = TypeManager::concreteType(param->typeInfo);
+                // Get the type from the function definition
+				bool isVariadic = false;
+                if (idxCall < typeFuncBC->parameters.size())
+                {
+                    auto sourceType = typeFuncBC->parameters[idxCall]->typeInfo;
+					if (sourceType->kind == TypeInfoKind::Variadic)
+					{
+						bufferC.addString(format("%d, ", ip->node->childs.size() - idxCall));
+						isVariadic = true;
+					}
+                }
+
+                // Get the type from the caller
+                TypeInfo* typeParam;
+                if (idxCall < typeFuncBC->parameters.size() && !isVariadic)
+                    typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+                else
+                    typeParam = ip->node->childs[idxCall]->typeInfo;
+                typeParam = TypeManager::concreteType(typeParam);
                 for (int j = 0; j < typeParam->numRegisters(); j++)
                 {
                     if (idxCall || j || typeFuncBC->numReturnRegisters())
