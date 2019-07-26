@@ -91,8 +91,14 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
 
         auto symbolParameter = parameters[i];
-        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-        bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+        if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
+        {
+            context.result = MatchResult::Ok;
+            return;
+        }
+
+        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
         if (!same)
         {
             context.badSignatureParameterIdx  = i;

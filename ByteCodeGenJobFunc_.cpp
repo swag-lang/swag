@@ -254,7 +254,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
 
     // Push missing default parameters
     int numRegisters = 0;
-    if (numCallParams != typeInfoFunc->parameters.size())
+    if (numCallParams < typeInfoFunc->parameters.size())
     {
         // Push all parameters, from end to start
         for (int i = (int) typeInfoFunc->parameters.size() - 1; i >= 0; i--)
@@ -385,24 +385,10 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         resolved->storageOffset = offset;
         resolved->storageIndex  = index;
 
-        auto typeInfo = TypeManager::concreteType(resolved->typeInfo);
-        if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
-        {
-            offset += 2 * sizeof(Register);
-            index += 2;
-        }
-        else if (typeInfo->kind == TypeInfoKind::Native ||
-                 typeInfo->kind == TypeInfoKind::Array ||
-                 typeInfo->kind == TypeInfoKind::Lambda ||
-                 typeInfo->kind == TypeInfoKind::Pointer)
-        {
-            offset += sizeof(Register);
-            index++;
-        }
-        else
-        {
-            return internalError(context, "emitFuncDeclParams, invalid parameter type", param);
-        }
+        auto typeInfo     = TypeManager::concreteType(resolved->typeInfo);
+        int  numRegisters = typeInfo->numRegisters();
+        offset += numRegisters * sizeof(Register);
+        index += numRegisters;
     }
 
     return true;
