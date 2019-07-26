@@ -3,8 +3,8 @@
 
 enum EN : s32
 {
-	Red = 666;
-	Green;
+	Red = 666
+	Green
 }
 
 //#[swag.printbytecode]

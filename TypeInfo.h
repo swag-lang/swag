@@ -23,6 +23,7 @@ enum class TypeInfoKind
     Array,
     Slice,
     TypeList,
+	Variadic,
 };
 
 enum class NativeType
@@ -412,8 +413,8 @@ struct TypeInfoList : public TypeInfo
         TypeInfo::reset();
         kind = TypeInfoKind::TypeList;
         childs.clear();
-        scope = nullptr;
-		listKind = TypeInfoListKind::Array;
+        scope    = nullptr;
+        listKind = TypeInfoListKind::Array;
     }
 
     bool isSame(TypeInfo* from) override
@@ -456,6 +457,17 @@ struct TypeInfoList : public TypeInfo
     Scope*            scope;
 };
 
+struct TypeInfoVariadic : public TypeInfo
+{
+    void reset()
+    {
+        TypeInfo::reset();
+        kind = TypeInfoKind::Variadic;
+    }
+
+    TypeInfo* clone() override;
+};
+
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
 extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
@@ -466,3 +478,4 @@ extern Pool<TypeInfoArray>         g_Pool_typeInfoArray;
 extern Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
 extern Pool<TypeInfoList>          g_Pool_typeInfoList;
 extern Pool<TypeInfoNative>        g_Pool_typeInfoNative;
+extern Pool<TypeInfoVariadic>      g_Pool_typeInfoVariadic;

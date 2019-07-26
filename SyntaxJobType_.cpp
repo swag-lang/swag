@@ -7,6 +7,7 @@
 #include "SymTable.h"
 #include "Scoped.h"
 #include "Diagnostic.h"
+#include "TypeManager.h"
 
 bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 {
@@ -98,6 +99,20 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
     ScopedFlags sc(this, AST_NO_BYTECODE_CHILDS);
+
+    // ...
+    if (token.id == TokenId::SymDotDotDot)
+    {
+        auto node = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
+        node->inheritOwnersAndFlags(this);
+        node->semanticFct = &SemanticJob::resolveTypeExpression;
+        node->inheritToken(token);
+        if (result)
+            *result = node;
+        node->token.literalType = g_TypeMgr.typeInfoVariadic;
+        SWAG_CHECK(tokenizer.getToken(token));
+        return true;
+    }
 
     // This is a function
     if (token.id == TokenId::SymLeftParen)

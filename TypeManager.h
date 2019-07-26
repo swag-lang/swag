@@ -4,6 +4,7 @@ struct AstNode;
 struct SourceFile;
 struct TypeInfo;
 struct TypeInfoNative;
+struct TypeInfoVariadic;
 
 static const uint32_t CASTFLAG_NOERROR       = 0x00000001;
 static const uint32_t CASTFLAG_FORCE         = 0x00000002;
@@ -37,7 +38,7 @@ struct TypeManager
 
     static bool castToNative(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-	static bool castToTuple(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToTuple(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
 
     static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags = 0);
@@ -50,21 +51,22 @@ struct TypeManager
 
     TypeInfo* registerType(TypeInfo* typeInfo);
 
-    TypeInfoNative*  typeInfoS8;
-    TypeInfoNative*  typeInfoS16;
-    TypeInfoNative*  typeInfoS32;
-    TypeInfoNative*  typeInfoS64;
-    TypeInfoNative*  typeInfoU8;
-    TypeInfoNative*  typeInfoU16;
-    TypeInfoNative*  typeInfoU32;
-    TypeInfoNative*  typeInfoU64;
-    TypeInfoNative*  typeInfoBool;
-    TypeInfoNative*  typeInfoF32;
-    TypeInfoNative*  typeInfoF64;
-    TypeInfoNative*  typeInfoChar;
-    TypeInfoNative*  typeInfoString;
-    TypeInfoNative*  typeInfoVoid;
-    TypeInfoPointer* typeInfoNull;
+    TypeInfoNative*   typeInfoS8;
+    TypeInfoNative*   typeInfoS16;
+    TypeInfoNative*   typeInfoS32;
+    TypeInfoNative*   typeInfoS64;
+    TypeInfoNative*   typeInfoU8;
+    TypeInfoNative*   typeInfoU16;
+    TypeInfoNative*   typeInfoU32;
+    TypeInfoNative*   typeInfoU64;
+    TypeInfoNative*   typeInfoBool;
+    TypeInfoNative*   typeInfoF32;
+    TypeInfoNative*   typeInfoF64;
+    TypeInfoNative*   typeInfoChar;
+    TypeInfoNative*   typeInfoString;
+    TypeInfoNative*   typeInfoVoid;
+    TypeInfoPointer*  typeInfoNull;
+    TypeInfoVariadic* typeInfoVariadic;
 
     TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
 

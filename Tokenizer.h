@@ -9,6 +9,7 @@ enum class TokenId
 {
     SymDot,
     SymDotDot,
+	SymDotDotDot,
     SymLeftParen,
     SymRightParen,
     SymLeftSquare,

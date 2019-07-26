@@ -49,9 +49,17 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
         c        = getCharNoSeek(offset);
         if (c == '.')
         {
-            token.id = TokenId::SymDotDot;
             token.text += c;
             treatChar(c, offset);
+            token.id = TokenId::SymDotDot;
+
+            c = getCharNoSeek(offset);
+            if (c == '.')
+            {
+                token.id = TokenId::SymDotDotDot;
+                token.text += c;
+                treatChar(c, offset);
+            }
         }
         return true;
 

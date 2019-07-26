@@ -21,6 +21,10 @@ void TypeManager::setup()
     typeInfoVoid   = new TypeInfoNative(NativeType::Void, "void", 0, 0);
     typeInfoString = new TypeInfoNative(NativeType::String, "string", 2 * sizeof(void*), 0);
 
+    typeInfoVariadic = new TypeInfoVariadic();
+	typeInfoVariadic->reset();
+	typeInfoVariadic->name = "...";
+
     typeInfoNull = new TypeInfoPointer();
     typeInfoNull->reset();
     typeInfoNull->name   = "null";
