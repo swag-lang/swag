@@ -246,6 +246,13 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         bufferC.addString(format("swag_uint8_t stack[%u];\n", node->stackSize));
     }
 
+	// Variadic
+	if (node->flags & AST_VARIADIC)
+	{
+		bufferC.addString("va_list __args;\n");
+		bufferC.addString("va_start(__args, __numargs);\n");
+	}
+
     // Generate bytecode
     auto ip = bc->out;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)

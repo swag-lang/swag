@@ -13,7 +13,7 @@
 #include "Module.h"
 #include "Attribute.h"
 
-bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters)
+bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters)
 {
     if (!parameters)
         return true;
@@ -32,6 +32,7 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
 		// Variadic must be the last one
 		if (nodeParam->typeInfo == g_TypeMgr.typeInfoVariadic)
         {
+			funcAttr->flags |= AST_VARIADIC;
             if (index != parameters->childs.size())
                 return sourceFile->report({sourceFile, nodeParam, "variadic argument should be the last one"});
         }
@@ -148,7 +149,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
     // Register parameters
-    SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode->parameters));
+    SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode, funcNode->parameters));
 
     // Collect function attributes
     SymbolAttributes attributes;

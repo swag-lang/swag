@@ -49,7 +49,7 @@ struct SemanticJob : public Job
     static void collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
-    static bool setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* parameters);
+    static bool setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool forceExecuteNode(SemanticContext* context);
     static bool collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer);
