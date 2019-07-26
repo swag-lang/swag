@@ -19,16 +19,17 @@ void TypeManager::setup()
     typeInfoF64    = new TypeInfoNative(NativeType::F64, "f64", 8, TYPEINFO_FLOAT);
     typeInfoChar   = new TypeInfoNative(NativeType::Char, "char", 4, 0);
     typeInfoVoid   = new TypeInfoNative(NativeType::Void, "void", 0, 0);
-    typeInfoString = new TypeInfoNative(NativeType::String, "string", 2 * sizeof(void*), 0);
+    typeInfoString = new TypeInfoNative(NativeType::String, "string", 2 * sizeof(Register), 0);
 
     typeInfoVariadic = new TypeInfoVariadic();
-	typeInfoVariadic->reset();
-	typeInfoVariadic->name = "...";
+    typeInfoVariadic->reset();
+    typeInfoVariadic->name   = "...";
+    typeInfoVariadic->sizeOf = 2 * sizeof(Register);
 
     typeInfoNull = new TypeInfoPointer();
     typeInfoNull->reset();
     typeInfoNull->name   = "null";
-    typeInfoNull->sizeOf = sizeof(void*);
+    typeInfoNull->sizeOf = sizeof(Register);
 
     promoteMatrix[(int) NativeType::U8][(int) NativeType::U8]  = typeInfoU32;
     promoteMatrix[(int) NativeType::U8][(int) NativeType::U16] = typeInfoU32;

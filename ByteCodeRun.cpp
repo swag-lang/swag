@@ -371,7 +371,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
     case ByteCodeOp::CopyRRxRCx:
-	case ByteCodeOp::CopyRRxRCxCall:
+    case ByteCodeOp::CopyRRxRCxCall:
     {
         registersRR[ip->a.u32] = registersRC[ip->b.u32];
         break;
@@ -396,6 +396,10 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->bp = context->sp;
         break;
     }
+    case ByteCodeOp::MovRASP:
+        registersRC[ip->a.u32].pointer = context->sp;
+        break;
+
     case ByteCodeOp::RAFromStack8:
         registersRC[ip->a.u32].u8 = *(uint8_t*) (context->bp + ip->b.u32);
         break;

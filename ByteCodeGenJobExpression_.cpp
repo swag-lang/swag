@@ -83,8 +83,8 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-		emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
-		return true;
+        emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Native)
@@ -484,6 +484,11 @@ bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
     if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
     {
         node->resultRegisterRC = expr->resultRegisterRC[1];
+    }
+    else if (typeInfo->kind == TypeInfoKind::Variadic)
+    {
+		node->resultRegisterRC = expr->resultRegisterRC;
+		emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);
     }
     else
     {

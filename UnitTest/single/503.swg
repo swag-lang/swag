@@ -1,0 +1,16 @@
+#module module503
+#unittest pass semantic
+
+//#[swag.printbytecode]
+func T(xx: string, xy: bool, a: ...)
+{
+	@assert(@prop(a, count) == 3)
+	@assert(xx == "true")
+	@assert(xy == true)
+}
+
+//#[swag.printbytecode]
+#test
+{
+	T("true", true, 10, 100, 1000)
+}

@@ -90,6 +90,7 @@ void ByteCode::print()
         case ByteCodeOp::DecRA:
         case ByteCodeOp::IncRA:
         case ByteCodeOp::LambdaCall:
+		case ByteCodeOp::MovRASP:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 

@@ -93,7 +93,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         auto symbolParameter = parameters[i];
         if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
         {
-            context.result = MatchResult::Ok;
+			context.result = badSignature ? MatchResult::BadSignature : MatchResult::Ok;
             return;
         }
 
