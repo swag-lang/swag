@@ -10,9 +10,11 @@ enum EN : s32
 //#[swag.printbytecode]
 #test
 {
-	using EN
-	
 	var val : EN
+	
+	using EN	
 	val = EN.Red
 	@assert(val == 666)
+	val = Green
+	@assert(val == 667)
 }
