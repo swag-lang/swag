@@ -14,7 +14,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto right      = node->childs[1];
     auto sourceFile = context->sourceFile;
 
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+	auto leftTypeInfo = left->typeInfo;
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, sourceFile->report({sourceFile, left, format("affect operation not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, left, "affect not allowed on array"}));
@@ -30,7 +30,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
-			leftTypeInfo->kind != TypeInfoKind::Lambda)
+			leftTypeInfo->kind != TypeInfoKind::Lambda &&
+			leftTypeInfo->kind != TypeInfoKind::Enum)
             return sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedName(leftTypeInfo), leftTypeInfo->name.c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&

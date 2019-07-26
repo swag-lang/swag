@@ -9,12 +9,14 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 
-bool SyntaxJob::doUsing(AstNode* parent)
+bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(&g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveUsing;
     node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
+	if (result)
+		*result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doIdentifierRef(node));
@@ -185,6 +187,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdReturn:
         SWAG_CHECK(doReturn(parent, result));
         SWAG_CHECK(eatSemiCol("after return expression"));
+        break;
+    case TokenId::KwdUsing:
+        SWAG_CHECK(doUsing(parent, result));
         break;
     case TokenId::KwdIf:
         SWAG_CHECK(doIf(parent, result));

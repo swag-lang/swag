@@ -72,7 +72,7 @@ struct SyntaxJob : public Job
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
-    bool doUsing(AstNode* parent);
+    bool doUsing(AstNode* parent, AstNode** result = nullptr);
     bool doTemplateTypes(AstNode* parent, AstNode** result = nullptr);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
     bool doIf(AstNode* parent, AstNode** result = nullptr);

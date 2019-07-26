@@ -1010,7 +1010,7 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
 
 bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_CONCRETE_ENUM)
+    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_FORCE))
     {
         toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnum);
         fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
