@@ -121,7 +121,37 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
 
         ::GetExitCodeProcess(pi.hProcess, &exit);
         if (exit != STILL_ACTIVE)
+        {
+            switch (exit)
+            {
+            case 0:
+                break;
+            case STATUS_ACCESS_VIOLATION:
+                g_Log.lock();
+				g_Log.setColor(LogColor::Red);
+                backend->module->numErrors++;
+                g_Workspace.numErrors++;
+				wcout << cmdline.c_str();
+				wcout << ": access violation during process execution\n";
+				g_Log.setDefaultColor();
+                g_Log.unlock();
+				ok = false;
+				break;
+			default:
+                g_Log.lock();
+                g_Log.setColor(LogColor::Red);
+                backend->module->numErrors++;
+                g_Workspace.numErrors++;
+                wcout << cmdline.c_str();
+                wcout << ": process execution failed\n";
+                g_Log.setDefaultColor();
+                g_Log.unlock();
+                ok = false;
+                break;
+            }
             break;
+        }
+
         Sleep(1);
     }
 
@@ -236,7 +266,7 @@ bool BackendCCompilerVS::compile()
     for (const auto& define : backendParameters.defines)
         clArguments += "/D" + define + " ";
 
-	bool verbose = g_CommandLine.verbose && g_CommandLine.verbose_backend_command;
+    bool verbose = g_CommandLine.verbose && g_CommandLine.verbose_backend_command;
 
     string resultFile;
     switch (backendParameters.type)

@@ -192,16 +192,17 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
     }
 
     // Generate one variable per function call parameter
+	// Put in in reverse order, so that if we address one rc register, we got older one just after (usefull for variadic)
     if (bc->maxCallParameters)
     {
         int index = 0;
-        for (int i = 0; i < bc->maxCallParameters; i++)
+        for (int i = bc->maxCallParameters - 1; i >= 0; i--)
         {
             if (index == 0)
                 bufferC.addString("__register ");
             else
                 bufferC.addString(", ");
-            bufferC.addString(format("rc%u", index));
+            bufferC.addString(format("rc%u", i));
             index = (index + 1) % 10;
             if (index == 0)
                 bufferC.addString(";\n");

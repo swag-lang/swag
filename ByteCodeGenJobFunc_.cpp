@@ -252,8 +252,9 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         });
     }
 
-    // Push missing default parameters
     int numRegisters = 0;
+
+	// Push missing default parameters
     if (numCallParams < typeInfoFunc->parameters.size())
     {
         // Push all parameters, from end to start
@@ -326,13 +327,13 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = numVariadic;
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
         precallStack += sizeof(Register);
-        numRegisters++;
+		numRegisters++;
 
         // Store address on the stack of those parameters
         emitInstruction(context, ByteCodeOp::MovRASP, r0, numRegisters - 1);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
         precallStack += sizeof(Register);
-        numRegisters++;
+		numRegisters++;
 
         freeRegisterRC(context, r0);
     }
