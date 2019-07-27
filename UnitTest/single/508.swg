@@ -4,6 +4,7 @@
 //#[swag.printbytecode]
 func T(xx: bool, a: ...)
 {
+	@assert(xx == true)
 	//x := cast(s32) a[0]
 }
 

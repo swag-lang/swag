@@ -254,6 +254,30 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
 
     int numRegisters = 0;
 
+    if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
+    {
+        // Store the offset (in registers) of each additional parameter
+        int offset = 0;
+        for (int i = (int) typeInfoFunc->parameters.size() - 1; i < numCallParams; i++)
+        {
+            auto typeParam = allParams->childs[i]->typeInfo;
+            offset += typeParam->numRegisters();
+        }
+
+        auto r0 = reserveRegisterRC(context);
+        for (int i = (int) typeInfoFunc->parameters.size() - 1; i < numCallParams; i++)
+        {
+            auto typeParam = allParams->childs[i]->typeInfo;
+            offset -= typeParam->numRegisters();
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = offset;
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
+            numRegisters++;
+            precallStack += sizeof(Register);
+        }
+
+        freeRegisterRC(context, r0);
+    }
+
     // Push missing default parameters
     if (numCallParams < typeInfoFunc->parameters.size())
     {
@@ -322,25 +346,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     {
         auto r0          = reserveRegisterRC(context);
         auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
-
-#if 0
-        // Store the offset (in registers) of each additional parameter
-        int offset = 0;
-        for (int i = (int) typeInfoFunc->parameters.size() - 1; i < numCallParams; i++)
-        {
-            auto typeParam = allParams->childs[i]->typeInfo;
-            offset += typeParam->numRegisters();
-        }
-
-        for (int i = (int) typeInfoFunc->parameters.size() - 1; i < numCallParams; i++)
-        {
-            auto typeParam = allParams->childs[i]->typeInfo;
-            offset -= typeParam->numRegisters();
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = offset;
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
-            precallStack += sizeof(Register);
-        }
-#endif
 
         // Store number of extra parameters
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = numVariadic;
