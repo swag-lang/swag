@@ -254,7 +254,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
 
     int numRegisters = 0;
 
-	// Push missing default parameters
+    // Push missing default parameters
     if (numCallParams < typeInfoFunc->parameters.size())
     {
         // Push all parameters, from end to start
@@ -326,14 +326,13 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         // Store number of extra parameters
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = numVariadic;
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
-        precallStack += sizeof(Register);
-		numRegisters++;
 
-        // Store address on the stack of those parameters
-        emitInstruction(context, ByteCodeOp::MovRASP, r0, numRegisters - 1);
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
-        precallStack += sizeof(Register);
-		numRegisters++;
+        // Store address on the stack of those parameters. This must be the last push
+        emitInstruction(context, ByteCodeOp::MovRASP, r0, numRegisters);
+        emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters + 1);
+
+        precallStack += 2 * sizeof(Register);
+        numRegisters += 2;
 
         freeRegisterRC(context, r0);
     }
@@ -346,14 +345,13 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
         inst->a.pointer = (uint8_t*) funcNode->bc;
         inst->b.u32     = numRegisters;
-        inst->node      = allParams;
+        inst->c.pointer = (uint8_t*) typeInfoFunc;
     }
     else
     {
         auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, node->resultRegisterRC);
         inst->b.u32     = numRegisters;
         inst->c.pointer = (uint8_t*) typeInfoFunc;
-        inst->node      = allParams;
     }
 
     // Copy result in a computing register
@@ -409,7 +407,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         auto resolved           = param->resolvedSymbolOverload;
         resolved->storageOffset = offset;
         offset += g_TypeMgr.typeInfoVariadic->sizeOf;
-        resolved->storageIndex = (uint32_t) node->childs.size() - 1;
+        resolved->storageIndex = 0; // Always the first one
     }
 
     int index = 0;

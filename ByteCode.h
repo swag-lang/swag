@@ -9,7 +9,6 @@ struct SourceFile;
 
 struct ByteCodeInstruction
 {
-    struct AstNode* node;
     Register        a;
     Register        b;
     Register        c;

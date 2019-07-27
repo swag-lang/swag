@@ -4,12 +4,11 @@
 //#[swag.printbytecode]
 func T(xx: bool, a: ...)
 {
-	//@assert(@prop(a, count) == 3)
-	@print(cast(s32) @prop(a, count))
+	@assert(@prop(a, count) == 3)
 }
 
 //#[swag.printbytecode]
 #test
 {
-	T(true, 10, 100, 666)
+	T(true, 10, 100, 600)
 }
