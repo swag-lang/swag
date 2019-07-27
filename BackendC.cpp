@@ -16,9 +16,6 @@ bool BackendC::emitHeader()
     bufferC.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
     bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD));
 
-	// Includes
-	bufferC.addString(format("#include <stdarg.h>\n", module->name.c_str()));
-
     // My include file. Need to export for dlls
     bufferC.addString("#ifdef SWAG_IS_DLL\n");
     bufferC.addString("#define SWAG_EXPORT\n");
