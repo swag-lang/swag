@@ -1,10 +1,10 @@
-#module module507
+#module module508
 //#unittest pass semantic
 
 //#[swag.printbytecode]
 func T(xx: bool, a: ...)
 {
-	x := a[0]
+	//x := cast(s32) a[0]
 }
 
 //#[swag.printbytecode]

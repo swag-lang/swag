@@ -1025,6 +1025,8 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
     if (toType->kind != TypeInfoKind::Lambda && fromType->kind == TypeInfoKind::Lambda)
         fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
 
+	if (fromType->kind == TypeInfoKind::VariadicValue)
+		return true;
     if (fromType == toType)
         return true;
     if (fromType->isSame(toType))

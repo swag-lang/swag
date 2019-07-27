@@ -196,6 +196,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
+    SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::VariadicValue, sourceFile->report({sourceFile, node, "declaration not allowed on a variadic value, you must cast"}));
 
     // A constant does nothing on backend, except if it can't be stored in a register
     if (isConstant)
