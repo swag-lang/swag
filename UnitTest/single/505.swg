@@ -2,7 +2,7 @@
 //#unittest pass semantic
 
 //#[swag.printbytecode]
-func T(xx: bool, a: ...)
+func T(xx: bool, yy: string, a: ...)
 {
 	@assert(@prop(a, count) == 3)
 }
@@ -10,5 +10,5 @@ func T(xx: bool, a: ...)
 //#[swag.printbytecode]
 #test
 {
-	T(true, 10, 100, 600)
+	T(true, "toto", 10, 100, 600)
 }

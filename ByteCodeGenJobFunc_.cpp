@@ -318,10 +318,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     }
 
     // Variadic parameter is on top of stack
+    uint32_t numVariadic = 0;
     if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
     {
-        auto r0          = reserveRegisterRC(context);
-        auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+        auto r0     = reserveRegisterRC(context);
+        numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
 
         // Store number of extra parameters
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = numVariadic;

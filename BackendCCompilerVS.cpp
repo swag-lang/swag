@@ -125,6 +125,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
             switch (exit)
             {
             case 0:
+			case -1:
                 break;
             case STATUS_ACCESS_VIOLATION:
                 g_Log.lock();
