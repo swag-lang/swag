@@ -26,6 +26,12 @@ void TypeManager::setup()
     typeInfoVariadic->name   = "...";
     typeInfoVariadic->sizeOf = 2 * sizeof(Register);
 
+    typeInfoVariadicValue = new TypeInfoVariadic();
+    typeInfoVariadicValue->reset();
+    typeInfoVariadicValue->kind   = TypeInfoKind::VariadicValue;
+    typeInfoVariadicValue->name   = "...";
+    typeInfoVariadicValue->sizeOf = 0;
+
     typeInfoNull = new TypeInfoPointer();
     typeInfoNull->reset();
     typeInfoNull->name   = "null";

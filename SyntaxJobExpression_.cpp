@@ -52,7 +52,7 @@ bool SyntaxJob::doArrayPointerRef(AstNode** exprNode)
         auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::ArrayPointerRef, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
         arrayNode->token       = move(token);
-        arrayNode->semanticFct = &SemanticJob::resolveArrayOrPointerRef;
+        arrayNode->semanticFct = &SemanticJob::resolveArrayPointerRef;
         arrayNode->flags |= AST_LEFT_EXPRESSION;
 
         Ast::addChild(arrayNode, *exprNode);

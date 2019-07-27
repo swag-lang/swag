@@ -74,7 +74,15 @@ void SavingThread::loop()
         }
 
         FILE* file = nullptr;
-        fopen_s(&file, req->file->fileName.c_str(), "a+t");
+
+		for (int tryOpen = 0; tryOpen < 10; tryOpen++)
+		{
+			fopen_s(&file, req->file->fileName.c_str(), "a+t");
+			if (file)
+				break;
+			Sleep(1);
+		}
+
         if (file)
         {
             fwrite(req->buffer, 1, req->bufferSize, file);
@@ -82,7 +90,7 @@ void SavingThread::loop()
         }
 		else
 		{
-			g_Log.error(format("cannot open file '%s' for writing", req->file->fileName.c_str()));
+			g_Log.error(format("cannot open file '%s' for writing (error %d)", req->file->fileName.c_str(), errno));
 		}
 
         req->done = true;

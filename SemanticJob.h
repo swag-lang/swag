@@ -112,7 +112,7 @@ struct SemanticJob : public Job
     static bool resolveMakePointer(SemanticContext* context);
     static bool resolveScopedStmtBefore(SemanticContext* context);
     static bool resolveArrayPointerDeRef(SemanticContext* context);
-    static bool resolveArrayOrPointerRef(SemanticContext* context);
+    static bool resolveArrayPointerRef(SemanticContext* context);
     static bool resolveTypeList(SemanticContext* context);
 
     void reset() override

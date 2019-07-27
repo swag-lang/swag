@@ -101,7 +101,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic)
     {
-		node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+        node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
     }
     else
     {
@@ -228,7 +228,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
+bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 {
     auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
@@ -238,6 +238,9 @@ bool SemanticJob::resolveArrayOrPointerRef(SemanticContext* context)
     auto arrayType  = arrayNode->array->typeInfo;
     auto sourceFile = context->sourceFile;
     SWAG_VERIFY(!arrayType->isConst(), sourceFile->report({sourceFile, arrayNode->array, format("type '%s' is constant and cannot be referenced", arrayType->name.c_str())}));
+
+    if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
+        return sourceFile->report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
     switch (arrayType->kind)
     {
@@ -280,6 +283,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     auto arrayType         = g_TypeMgr.concreteType(arrayNode->array->typeInfo);
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
 
+	if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
+        return sourceFile->report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
+
     if (arrayType->kind == TypeInfoKind::Native && arrayType->nativeType == NativeType::String)
     {
         arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
@@ -309,6 +315,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         auto typePtr        = static_cast<TypeInfoSlice*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
+    }
+    else if (arrayType->kind == TypeInfoKind::Variadic)
+    {
+        arrayNode->typeInfo = g_TypeMgr.typeInfoVariadicValue;
     }
     else
     {

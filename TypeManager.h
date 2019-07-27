@@ -67,6 +67,7 @@ struct TypeManager
     TypeInfoNative*   typeInfoVoid;
     TypeInfoPointer*  typeInfoNull;
     TypeInfoVariadic* typeInfoVariadic;
+	TypeInfoVariadic* typeInfoVariadicValue;
 
     TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
 

@@ -24,6 +24,7 @@ enum class TypeInfoKind
     Slice,
     TypeList,
     Variadic,
+	VariadicValue,
 };
 
 enum class NativeType

@@ -195,29 +195,6 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     context.result = badSignature ? MatchResult::BadSignature : MatchResult::Ok;
 }
 
-const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
-{
-    switch (typeInfo->kind)
-    {
-    case TypeInfoKind::Namespace:
-        return "namespace";
-    case TypeInfoKind::Enum:
-        return "enum";
-    case TypeInfoKind::EnumValue:
-        return "enum value";
-    case TypeInfoKind::Array:
-        return "array";
-    case TypeInfoKind::Pointer:
-        return "pointer";
-    case TypeInfoKind::FuncAttr:
-        return "function";
-    case TypeInfoKind::TypeList:
-        return "tuple";
-    }
-
-    return "type";
-}
-
 TypeInfo* TypeInfoNative::clone()
 {
     auto newType = g_Pool_typeInfoNative.alloc();
@@ -337,4 +314,29 @@ TypeInfo* TypeInfoVariadic::clone()
     auto newType = g_Pool_typeInfoVariadic.alloc();
     newType->copyFrom(this);
     return newType;
+}
+
+const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
+{
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Namespace:
+        return "namespace";
+    case TypeInfoKind::Enum:
+        return "enum";
+    case TypeInfoKind::EnumValue:
+        return "enum value";
+    case TypeInfoKind::Array:
+        return "array";
+    case TypeInfoKind::Pointer:
+        return "pointer";
+    case TypeInfoKind::FuncAttr:
+        return "function";
+    case TypeInfoKind::TypeList:
+        return "tuple";
+	case TypeInfoKind::Variadic:
+		return "variadic";
+    }
+
+    return "<type>";
 }
