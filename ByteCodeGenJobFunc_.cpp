@@ -318,11 +318,10 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     }
 
     // Variadic parameter is on top of stack
-    uint32_t numVariadic = 0;
     if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
     {
-        auto r0     = reserveRegisterRC(context);
-        numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+        auto r0          = reserveRegisterRC(context);
+        auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
 
         // Store number of extra parameters
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = numVariadic;
@@ -345,13 +344,13 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     {
         auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
         inst->a.pointer = (uint8_t*) funcNode->bc;
-        inst->b.u32     = numRegisters;
+        inst->b.u64     = numRegisters;
         inst->c.pointer = (uint8_t*) typeInfoFunc;
     }
     else
     {
         auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, node->resultRegisterRC);
-        inst->b.u32     = numRegisters;
+        inst->b.u64     = numRegisters;
         inst->c.pointer = (uint8_t*) typeInfoFunc;
     }
 
@@ -402,6 +401,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     offset += funcNode->stackSize;
 
     // Variadic parameter is the last one pushed on the stack
+    int storageIndex = 0;
     if (funcNode->typeInfo->flags & TYPEINFO_VARIADIC)
     {
         auto param              = node->childs.back();
@@ -409,9 +409,9 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         resolved->storageOffset = offset;
         offset += g_TypeMgr.typeInfoVariadic->sizeOf;
         resolved->storageIndex = 0; // Always the first one
+        storageIndex += 2;
     }
 
-    int index = 0;
     for (int i = 0; i < node->childs.size(); i++)
     {
         if ((i == node->childs.size() - 1) && funcNode->typeInfo->flags & TYPEINFO_VARIADIC)
@@ -419,12 +419,12 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
         auto param              = node->childs[i];
         auto resolved           = param->resolvedSymbolOverload;
         resolved->storageOffset = offset;
-        resolved->storageIndex  = index;
+        resolved->storageIndex  = storageIndex;
 
         auto typeInfo     = TypeManager::concreteType(resolved->typeInfo);
         int  numRegisters = typeInfo->numRegisters();
         offset += numRegisters * sizeof(Register);
-        index += numRegisters;
+        storageIndex += numRegisters;
     }
 
     return true;

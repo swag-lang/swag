@@ -192,7 +192,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
     }
 
     // Generate one variable per function call parameter
-	// Put in in reverse order, so that if we address one rc register, we got older one just after (usefull for variadic)
+    // Put in in reverse order, so that if we address one rc register, we got older one just after (usefull for variadic)
     if (bc->maxCallParameters)
     {
         int index = 0;
@@ -900,9 +900,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
         }
 
-		case ByteCodeOp::MovRASP:
-			bufferC.addString(format("r%u.pointer = (swag_int8_t*) &rc%u;", ip->a.u32, ip->b.u32));
-			break;
+        case ByteCodeOp::MovRASP:
+            bufferC.addString(format("r%u.pointer = (swag_int8_t*) &rc%u;", ip->a.u32, ip->b.u32));
+            break;
 
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LocalCall:
@@ -945,15 +945,15 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
                 bufferC.addString(format("&rt%d", j));
             }
 
-            auto index         = ip->b.u32 - 1;
+            auto index         = ip->b.u64 - 1;
             auto numCallParams = typeFuncBC->parameters.size();
-            for (int idxCall = 0; idxCall < (int) numCallParams; idxCall++)
+            for (int idxCall = (int) numCallParams - 1; idxCall >= 0; idxCall--)
             {
                 auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
                 typeParam      = TypeManager::concreteType(typeParam);
                 for (int j = 0; j < typeParam->numRegisters(); j++)
                 {
-                    if (idxCall || j || typeFuncBC->numReturnRegisters())
+                    if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
                         bufferC.addString(", ");
                     bufferC.addString(format("&rc%u", index));
                     index -= 1;
