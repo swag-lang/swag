@@ -361,8 +361,8 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.pointer = __string%u; ", ip->a.u32, ip->c.u32));
             bufferC.addString(format("r%u.u32 = %u;", ip->b.u32, module->strBuffer[ip->c.u32].size()));
             break;
-        case ByteCodeOp::CopyRARB32:
-            bufferC.addString(format("r%u.u32 = r%u.u32; ", ip->a.u32, ip->b.u32));
+        case ByteCodeOp::CopyRARB:
+            bufferC.addString(format("r%u = r%u; ", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ClearRA:
             bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));

@@ -103,7 +103,7 @@ void ByteCode::print()
         case ByteCodeOp::BoundCheck:
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::BoundCheckReg:
-        case ByteCodeOp::CopyRARB32:
+        case ByteCodeOp::CopyRARB:
         case ByteCodeOp::CopyRRxRCx:
         case ByteCodeOp::CopyRCxRRx:
 		case ByteCodeOp::CopyRRxRCxCall:

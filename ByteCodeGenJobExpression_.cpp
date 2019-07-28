@@ -255,6 +255,15 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             }
         }
     }
+
+    // Dereference a variadic parameter
+    else if (node->array->typeInfo->kind == TypeInfoKind::Variadic)
+    {
+        auto r0 = reserveRegisterRC(context);
+		emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef32, r0);
+        freeRegisterRC(context, r0);
+    }
     else
     {
         return internalError(context, "emitPointerDeRef, type not supported");
@@ -487,8 +496,8 @@ bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic)
     {
-		node->resultRegisterRC = expr->resultRegisterRC;
-		emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);
+        node->resultRegisterRC = expr->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);
     }
     else
     {

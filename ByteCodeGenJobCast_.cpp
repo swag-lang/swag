@@ -441,6 +441,12 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
         return true;
     }
 
+    if (fromTypeInfo->kind == TypeInfoKind::VariadicValue)
+    {
+        SWAG_CHECK(emitCastVariadic(context, typeInfo, exprNode, fromTypeInfo));
+        return true;
+    }
+
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, cast type not native");
     if (fromTypeInfo->kind != TypeInfoKind::Native)
@@ -449,6 +455,13 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
     SWAG_CHECK(emitCast(context, typeInfo, exprNode, fromTypeInfo));
     node->resultRegisterRC = exprNode->resultRegisterRC;
     return true;
+}
+
+bool ByteCodeGenJob::emitCastVariadic(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo)
+{
+	auto node = context->node;
+	node->resultRegisterRC = exprNode->resultRegisterRC;
+	return true;
 }
 
 bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo)
@@ -476,7 +489,7 @@ bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeIn
     {
         auto fromTypeArray     = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-		node->resultRegisterRC += reserveRegisterRC(context);
+        node->resultRegisterRC += reserveRegisterRC(context);
         auto inst   = emitInstruction(context, ByteCodeOp::CopyRAVB32, node->resultRegisterRC[1]);
         inst->b.u32 = fromTypeArray->count;
     }

@@ -425,6 +425,6 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
 {
     auto node              = context->node;
     node->resultRegisterRC = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::CopyRARB32, node->resultRegisterRC, node->ownerBreakable->registerIndex);
+    emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC, node->ownerBreakable->registerIndex);
     return true;
 }
