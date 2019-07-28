@@ -460,38 +460,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitCastVariadic(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
     auto node              = context->node;
+    node->typeInfo         = typeInfo;
     node->resultRegisterRC = exprNode->resultRegisterRC;
-
-    if (typeInfo->isNative(NativeType::String))
-    {
-		node->resultRegisterRC += reserveRegisterRC(context);
-		emitInstruction(context, ByteCodeOp::DeRefString, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-    }
-    else if (typeInfo->kind == TypeInfoKind::Native)
-    {
-        switch (typeInfo->sizeOf)
-        {
-        case 1:
-            emitInstruction(context, ByteCodeOp::DeRef8, node->resultRegisterRC);
-            break;
-        case 2:
-            emitInstruction(context, ByteCodeOp::DeRef16, node->resultRegisterRC);
-            break;
-        case 4:
-            emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);
-            break;
-        case 8:
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC);
-            break;
-        default:
-            return internalError(context, "emitCastVariadic, pointer, size not supported");
-        }
-    }
-    else
-    {
-        internalError(context, "emitCastVariadic, bad type");
-    }
-
+    emitStructDeRef(context);
     return true;
 }
 
