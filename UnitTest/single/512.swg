@@ -1,18 +1,18 @@
 #module module512
-#unittest pass semantic
+//#unittest pass semantic
 
 //#[swag.printbytecode]
 func T(xx: string, a: ...)
 {
 	i := 0'u32
 	idx := 0
-	while(i < @prop(xx, count))
+	while i < @prop(xx, count)
 	{
 		c := xx[i]
-		if(c == cast(u8) '%')
+		if c == cast(u8) '%'
 		{
 			i += 1
-			switch(cast(char) xx[i])
+			switch cast(char) xx[i]
 			{
 			case 'd':
 				@assert(cast(s32) a[idx] == 10)
