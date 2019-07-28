@@ -253,7 +253,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     }
 
     int numRegisters = 0;
-
     if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
     {
         // Store the offset (in registers) of each additional parameter
@@ -268,11 +267,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         for (int i = (int) typeInfoFunc->parameters.size() - 1; i < numCallParams; i++)
         {
             auto typeParam = allParams->childs[i]->typeInfo;
-            numRegisters++;
             offset -= typeParam->numRegisters();
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = offset;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
             precallStack += sizeof(Register);
+            numRegisters++;
         }
 
         freeRegisterRC(context, r0);
@@ -352,7 +351,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
 
         // Store number of extra parameters
-        emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | (numPushParams << 32);
+        emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | ((numPushParams  + 1) << 32);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
 
         // Store address on the stack of those parameters. This must be the last push

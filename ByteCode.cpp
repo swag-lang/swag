@@ -89,6 +89,7 @@ void ByteCode::print()
         case ByteCodeOp::ClearRA:
         case ByteCodeOp::DecRA:
         case ByteCodeOp::IncRA:
+		case ByteCodeOp::IncRA64:
         case ByteCodeOp::LambdaCall:
 		case ByteCodeOp::MovRASP:
             wprintf(L"RA: %u ", ip->a.u32);
@@ -130,6 +131,7 @@ void ByteCode::print()
         case ByteCodeOp::AffectOp64Null:
 		case ByteCodeOp::IncPointerVB:
         case ByteCodeOp::CopyRR0:
+		case ByteCodeOp::ShiftRightU64VB:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 

@@ -259,9 +259,25 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a variadic parameter
     else if (node->array->typeInfo->kind == TypeInfoKind::Variadic)
     {
-        auto r0 = reserveRegisterRC(context);
-		emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::DeRef32, r0);
+		RegisterList r0;
+
+        reserveRegisterRC(context, r0, 2);
+        emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef64, r0);
+        emitInstruction(context, ByteCodeOp::ShiftRightU64VB, r0)->b.u32 = 32;
+        emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[0], r0[1]);
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register);
+
+		// This will deref the offset of the variadic argument
+        emitInstruction(context, ByteCodeOp::IncPointer, r0[1], node->access->resultRegisterRC, r0[1]);
+        emitInstruction(context, ByteCodeOp::DeRef32, r0[1]);
+		emitInstruction(context, ByteCodeOp::IncRA64, r0[1]);
+		emitInstruction(context, ByteCodeOp::MulRAVB, r0[1])->b.u32 = sizeof(Register);
+
+		// Point to the argument
+		emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[1], node->array->resultRegisterRC);
+
         freeRegisterRC(context, r0);
     }
     else

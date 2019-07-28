@@ -373,6 +373,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::IncRA:
             bufferC.addString(format("r%u.u32++;", ip->a.u32));
             break;
+        case ByteCodeOp::IncRA64:
+            bufferC.addString(format("r%u.u64++;", ip->a.u32));
+            break;
 
         case ByteCodeOp::AffectOp8:
             bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) = r%u.u8;", ip->a.u32, ip->b.u32));
@@ -487,6 +490,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
         case ByteCodeOp::ShiftRightU64:
             bufferC.addString(format("r%u.u64 = r%u.u64 >> r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::ShiftRightU64VB:
+            bufferC.addString(format("r%u.u64 >>= %u;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::BinOpDivF32:
