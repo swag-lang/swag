@@ -237,7 +237,8 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
     }
 
     // Generate bytecode
-    auto ip = bc->out;
+    int  vaargsIdx = 0;
+    auto ip        = bc->out;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         bufferC.addString(format("lbl%08u:; ", i));
@@ -907,7 +908,11 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         }
 
         case ByteCodeOp::MovRASP:
-            bufferC.addString(format("r%u.pointer = (swag_int8_t*) &rc%u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("__register vaargs%u[] = {", vaargsIdx));
+            for (int j = ip->b.u32 - 1; j >= 0; j--)
+                bufferC.addString(format("rc%u, ", j));
+            bufferC.addString(format(" }; r%u.pointer = (swag_int8_t*) &vaargs%u;", ip->a.u32, vaargsIdx));
+			vaargsIdx++;
             break;
 
         case ByteCodeOp::LambdaCall:

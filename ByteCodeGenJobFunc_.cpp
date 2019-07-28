@@ -355,7 +355,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters);
 
         // Store address on the stack of those parameters. This must be the last push
-        emitInstruction(context, ByteCodeOp::MovRASP, r0, numRegisters);
+        emitInstruction(context, ByteCodeOp::MovRASP, r0, numRegisters + 1);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, numRegisters + 1);
 
         precallStack += 2 * sizeof(Register);
