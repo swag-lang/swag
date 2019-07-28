@@ -465,7 +465,7 @@ bool ByteCodeGenJob::emitCastVariadic(ByteCodeGenContext* context, TypeInfo* typ
     if (typeInfo->isNative(NativeType::String))
     {
 		node->resultRegisterRC += reserveRegisterRC(context);
-		emitInstruction(context, ByteCodeOp::DeRefString, node->resultRegisterRC);
+		emitInstruction(context, ByteCodeOp::DeRefString, node->resultRegisterRC[0], node->resultRegisterRC[1]);
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
     {
