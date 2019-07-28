@@ -344,6 +344,14 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         case NativeType::Bool:
             emitInstruction(context, ByteCodeOp::CompareOpEqualBool, r0, r1, r2);
             return true;
+        case NativeType::S8:
+        case NativeType::U8:
+            emitInstruction(context, ByteCodeOp::CompareOpEqual8, r0, r1, r2);
+            return true;
+        case NativeType::S16:
+        case NativeType::U16:
+            emitInstruction(context, ByteCodeOp::CompareOpEqual16, r0, r1, r2);
+            return true;
         case NativeType::S32:
         case NativeType::U32:
         case NativeType::F32:
@@ -383,7 +391,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0
     auto left  = node->childs.front();
     auto right = node->childs.back();
     SWAG_CHECK(emitCompareOpEqual(context, left, right, r0, r1, r2));
-	return true;
+    return true;
 }
 
 bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)

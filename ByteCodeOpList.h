@@ -132,6 +132,8 @@ BYTECODE_OP(InvertU32)
 BYTECODE_OP(InvertU64)
 
 BYTECODE_OP(CompareOpEqualBool)
+BYTECODE_OP(CompareOpEqual8)
+BYTECODE_OP(CompareOpEqual16)
 BYTECODE_OP(CompareOpEqual32)
 BYTECODE_OP(CompareOpEqual64)
 BYTECODE_OP(CompareOpEqualPointer)

@@ -778,6 +778,12 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("r%u.b = r%u.pointer < r%u.pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
+        case ByteCodeOp::CompareOpEqual8:
+            bufferC.addString(format("r%u.b = r%u.u8 == r%u.u8;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::CompareOpEqual16:
+            bufferC.addString(format("r%u.b = r%u.u16 == r%u.u16;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
         case ByteCodeOp::CompareOpEqual32:
             bufferC.addString(format("r%u.b = r%u.u32 == r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
@@ -912,7 +918,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             for (int j = ip->b.u32 - 1; j >= 0; j--)
                 bufferC.addString(format("rc%u, ", j));
             bufferC.addString(format(" }; r%u.pointer = (swag_int8_t*) &vaargs%u;", ip->a.u32, vaargsIdx));
-			vaargsIdx++;
+            vaargsIdx++;
             break;
 
         case ByteCodeOp::LambdaCall:

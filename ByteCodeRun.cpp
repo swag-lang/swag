@@ -721,6 +721,16 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].b == registersRC[ip->b.u32].b;
         break;
     }
+    case ByteCodeOp::CompareOpEqual8:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u8 == registersRC[ip->b.u32].u8;
+        break;
+    }
+    case ByteCodeOp::CompareOpEqual16:
+    {
+        registersRC[ip->c.u32].b = registersRC[ip->a.u32].u16 == registersRC[ip->b.u32].u16;
+        break;
+    }
     case ByteCodeOp::CompareOpEqual32:
     {
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].u32 == registersRC[ip->b.u32].u32;
