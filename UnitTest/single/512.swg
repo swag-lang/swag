@@ -8,8 +8,8 @@ func T(xx: string, a: ...)
 	idx := 0
 	while i < @prop(xx, count)
 	{
-		c := xx[i]
-		if c == cast(u8) '%'
+		c := cast(char) xx[i]
+		if c == '%'
 		{
 			i += 1
 			switch cast(char) xx[i]
