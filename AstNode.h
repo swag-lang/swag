@@ -265,6 +265,8 @@ struct AstIdentifierRef : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     Scope* startScope;
 };
 
@@ -276,6 +278,8 @@ struct AstIdentifier : public AstNode
         fctCallStorageOffset = 0;
         AstNode::reset();
     }
+
+    AstNode* clone() override;
 
     AstNode* callParameters;
     uint32_t fctCallStorageOffset;
@@ -293,6 +297,8 @@ struct AstFuncDecl : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     int          stackSize;
     AstNode*     parameters;
     AstNode*     returnType;
@@ -308,6 +314,8 @@ struct AstAttrDecl : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     AstNode* parameters;
 };
 
@@ -318,6 +326,8 @@ struct AstAttrUse : public AstNode
         values.clear();
         AstNode::reset();
     }
+
+    AstNode* clone() override;
 
     map<string, ComputedValue> values;
 };
@@ -333,6 +343,8 @@ struct AstFuncCallParam : public AstNode
         mustSortParameters = false;
         AstNode::reset();
     }
+
+    AstNode* clone() override;
 
     Utf8                   namedParam;
     AstNode*               namedParamNode;
@@ -351,6 +363,8 @@ struct AstIf : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     AstNode* boolExpression;
     AstNode* ifBlock;
     AstNode* elseBlock;
@@ -361,6 +375,8 @@ struct AstIf : public AstNode
 
 struct AstBreakContinue : public AstNode
 {
+    AstNode* clone() override;
+
     int jumpInstruction;
 };
 
@@ -385,6 +401,8 @@ struct AstBreakable : public AstNode
         return breakableFlags & BREAKABLE_NEED_INDEX;
     }
 
+    void copyFrom(AstNode* from);
+
     uint32_t                  breakableFlags;
     uint32_t                  registerIndex;
     AstNode*                  parentBreakable;
@@ -400,6 +418,8 @@ struct AstWhile : public AstBreakable
         block          = nullptr;
         AstBreakable::reset();
     }
+
+    AstNode* clone() override;
 
     AstNode* boolExpression;
     AstNode* block;
@@ -419,6 +439,8 @@ struct AstFor : public AstBreakable
         block          = nullptr;
         AstBreakable::reset();
     }
+
+    AstNode* clone() override;
 
     AstNode* preExpression;
     AstNode* boolExpression;
@@ -441,6 +463,8 @@ struct AstLoop : public AstBreakable
         AstBreakable::reset();
     }
 
+    AstNode* clone() override;
+
     AstNode* expression;
     AstNode* block;
 
@@ -460,6 +484,8 @@ struct AstSwitch : public AstBreakable
         breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
         breakableFlags &= ~BREAKABLE_CAN_HAVE_CONTINUE;
     }
+
+    AstNode* clone() override;
 
     AstNode*                      expression;
     AstNode*                      block;
@@ -481,6 +507,8 @@ struct AstSwitchCase : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     vector<AstNode*> expressions;
     AstNode*         block;
     AstSwitch*       ownerSwitch;
@@ -499,6 +527,8 @@ struct AstSwitchCaseBlock : public AstNode
         ownerCase = nullptr;
         AstNode::reset();
     }
+
+    AstNode* clone() override;
 
     bool           isDefault;
     AstSwitchCase* ownerCase;
@@ -536,6 +566,8 @@ struct AstTypeLambda : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     AstNode* parameters;
     AstNode* returnType;
 };
@@ -549,6 +581,8 @@ struct AstPointerDeRef : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     AstNode* array;
     AstNode* access;
 };
@@ -561,16 +595,18 @@ struct AstProperty : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     AstNode* expression;
     Property prop;
 };
 
 struct AstExpressionList : public AstNode
 {
+    AstNode* clone() override;
+
     uint32_t         storageOffset;
     TypeInfoListKind listKind;
-
-    AstNode* clone() override;
 };
 
 extern Pool<AstNode>            g_Pool_astNode;
@@ -580,7 +616,7 @@ extern Pool<AstVarDecl>         g_Pool_astVarDecl;
 extern Pool<AstFuncDecl>        g_Pool_astFuncDecl;
 extern Pool<AstIdentifier>      g_Pool_astIdentifier;
 extern Pool<AstIdentifierRef>   g_Pool_astIdentifierRef;
-extern Pool<AstFuncCallParam>   g_Pool_astFuncCallOneParam;
+extern Pool<AstFuncCallParam>   g_Pool_astFuncCallParam;
 extern Pool<AstIf>              g_Pool_astIf;
 extern Pool<AstWhile>           g_Pool_astWhile;
 extern Pool<AstFor>             g_Pool_astFor;
