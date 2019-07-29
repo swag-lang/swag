@@ -569,6 +569,8 @@ struct AstExpressionList : public AstNode
 {
     uint32_t         storageOffset;
     TypeInfoListKind listKind;
+
+    AstNode* clone() override;
 };
 
 extern Pool<AstNode>            g_Pool_astNode;

@@ -90,3 +90,12 @@ AstNode* AstTypeExpression::clone()
     newNode->isConst        = isConst;
     return newNode;
 }
+
+AstNode* AstExpressionList::clone()
+{
+    auto newNode = g_Pool_astExpressionList.alloc();
+    newNode->copyFrom(this);
+    newNode->storageOffset = storageOffset;
+    newNode->listKind      = listKind;
+    return newNode;
+}
