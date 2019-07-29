@@ -254,6 +254,12 @@
     <ClCompile Include="OutputFile.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="SyntaxJobStruct_.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobStruct_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

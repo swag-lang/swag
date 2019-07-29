@@ -54,6 +54,7 @@ JobResult FileSemanticJob::execute()
             case AstNodeKind::VarDecl:
             case AstNodeKind::TypeDecl:
             case AstNodeKind::EnumDecl:
+            case AstNodeKind::StructDecl:
             case AstNodeKind::FuncDecl:
             case AstNodeKind::CompilerAssert:
             case AstNodeKind::CompilerPrint:

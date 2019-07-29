@@ -1,9 +1,5 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "TypeInfo.h"
-#include "SymTable.h"
-#include "ThreadManager.h"
-#include "Global.h"
 #include "TypeManager.h"
 #include "Ast.h"
 
@@ -18,6 +14,7 @@ Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
 Pool<TypeInfoList>          g_Pool_typeInfoList;
 Pool<TypeInfoNative>        g_Pool_typeInfoNative;
 Pool<TypeInfoVariadic>      g_Pool_typeInfoVariadic;
+Pool<TypeInfoStruct>        g_Pool_typeInfoStruct;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
@@ -93,7 +90,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         auto symbolParameter = parameters[i];
         if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
         {
-			context.result = badSignature ? MatchResult::BadSignature : MatchResult::Ok;
+            context.result = badSignature ? MatchResult::BadSignature : MatchResult::Ok;
             return;
         }
 
@@ -205,7 +202,6 @@ TypeInfo* TypeInfoNative::clone()
 TypeInfo* TypeInfoNamespace::clone()
 {
     auto newType = g_Pool_typeInfoNamespace.alloc();
-
     newType->scope = this->scope;
     newType->copyFrom(this);
     return newType;
@@ -214,7 +210,6 @@ TypeInfo* TypeInfoNamespace::clone()
 TypeInfo* TypeInfoEnum::clone()
 {
     auto newType = g_Pool_typeInfoEnum.alloc();
-
     newType->scope   = this->scope;
     newType->rawType = this->rawType;
     newType->copyFrom(this);
@@ -224,7 +219,6 @@ TypeInfo* TypeInfoEnum::clone()
 TypeInfo* TypeInfoEnumValue::clone()
 {
     auto newType = g_Pool_typeInfoEnumValue.alloc();
-
     newType->scope     = this->scope;
     newType->enumOwner = this->enumOwner;
     newType->copyFrom(this);
@@ -234,7 +228,6 @@ TypeInfo* TypeInfoEnumValue::clone()
 TypeInfo* TypeInfoFuncAttrParam::clone()
 {
     auto newType = g_Pool_typeInfoFuncAttrParam.alloc();
-
     newType->namedParam = this->namedParam;
     newType->typeInfo   = this->typeInfo;
     newType->index      = this->index;
@@ -245,7 +238,6 @@ TypeInfo* TypeInfoFuncAttrParam::clone()
 TypeInfo* TypeInfoFuncAttr::clone()
 {
     auto newType = g_Pool_typeInfoFuncAttr.alloc();
-
     newType->firstDefaultValueIdx = this->firstDefaultValueIdx;
     newType->parameters           = this->parameters;
     newType->returnType           = this->returnType;
@@ -272,7 +264,6 @@ void TypeInfoFuncAttr::computeName()
 TypeInfo* TypeInfoPointer::clone()
 {
     auto newType = g_Pool_typeInfoPointer.alloc();
-
     newType->pointedType = this->pointedType;
     newType->ptrCount    = this->ptrCount;
     newType->copyFrom(this);
@@ -282,7 +273,6 @@ TypeInfo* TypeInfoPointer::clone()
 TypeInfo* TypeInfoArray::clone()
 {
     auto newType = g_Pool_typeInfoArray.alloc();
-
     newType->pointedType = this->pointedType;
     newType->count       = this->count;
     newType->copyFrom(this);
@@ -292,7 +282,6 @@ TypeInfo* TypeInfoArray::clone()
 TypeInfo* TypeInfoSlice::clone()
 {
     auto newType = g_Pool_typeInfoSlice.alloc();
-
     newType->pointedType = this->pointedType;
     newType->copyFrom(this);
     return newType;
@@ -301,7 +290,6 @@ TypeInfo* TypeInfoSlice::clone()
 TypeInfo* TypeInfoList::clone()
 {
     auto newType = g_Pool_typeInfoList.alloc();
-
     newType->childs   = this->childs;
     newType->scope    = this->scope;
     newType->listKind = this->listKind;
@@ -312,6 +300,13 @@ TypeInfo* TypeInfoList::clone()
 TypeInfo* TypeInfoVariadic::clone()
 {
     auto newType = g_Pool_typeInfoVariadic.alloc();
+    newType->copyFrom(this);
+    return newType;
+}
+
+TypeInfo* TypeInfoStruct::clone()
+{
+    auto newType = g_Pool_typeInfoStruct.alloc();
     newType->copyFrom(this);
     return newType;
 }
@@ -334,8 +329,8 @@ const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
         return "function";
     case TypeInfoKind::TypeList:
         return "tuple";
-	case TypeInfoKind::Variadic:
-		return "variadic";
+    case TypeInfoKind::Variadic:
+        return "variadic";
     }
 
     return "<type>";

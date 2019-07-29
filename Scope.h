@@ -13,6 +13,7 @@ enum class ScopeKind
     File,
     Namespace,
     Enum,
+	Struct,
     Function,
     Statement,
     Breakable,

@@ -24,7 +24,8 @@ enum class TypeInfoKind
     Slice,
     TypeList,
     Variadic,
-	VariadicValue,
+    VariadicValue,
+    Struct,
 };
 
 enum class NativeType
@@ -470,6 +471,17 @@ struct TypeInfoVariadic : public TypeInfo
     TypeInfo* clone() override;
 };
 
+struct TypeInfoStruct : public TypeInfo
+{
+    void reset()
+    {
+        TypeInfo::reset();
+        kind = TypeInfoKind::Struct;
+    }
+
+    TypeInfo* clone() override;
+};
+
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
 extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
@@ -481,3 +493,4 @@ extern Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
 extern Pool<TypeInfoList>          g_Pool_typeInfoList;
 extern Pool<TypeInfoNative>        g_Pool_typeInfoNative;
 extern Pool<TypeInfoVariadic>      g_Pool_typeInfoVariadic;
+extern Pool<TypeInfoStruct>        g_Pool_typeInfoStruct;

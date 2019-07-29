@@ -282,6 +282,7 @@
     <ClCompile Include="SemanticJobBlock_.cpp" />
     <ClCompile Include="SemanticJobCompiler_.cpp" />
     <ClCompile Include="SemanticJobDeclaration_.cpp" />
+    <ClCompile Include="SemanticJobStruct_.cpp" />
     <ClCompile Include="SemanticJobUnaryExpression_.cpp" />
     <ClCompile Include="SemanticJobVar_.cpp" />
     <ClCompile Include="SemanticJobEnum_.cpp" />
@@ -300,6 +301,7 @@
     <ClCompile Include="SyntaxJobExpression_.cpp" />
     <ClCompile Include="SyntaxJobFunction_.cpp" />
     <ClCompile Include="SyntaxJobIdentifier_.cpp" />
+    <ClCompile Include="SyntaxJobStruct_.cpp" />
     <ClCompile Include="SyntaxJobType_.cpp" />
     <ClCompile Include="SyntaxJobVar_.cpp" />
     <ClCompile Include="TokenizerIdentifier_.cpp" />

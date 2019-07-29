@@ -21,6 +21,7 @@ static const uint32_t OVERLOAD_VAR_GLOBAL         = 0x00000004;
 static const uint32_t OVERLOAD_VAR_LOCAL          = 0x00000008;
 static const uint32_t OVERLOAD_COMPUTED_VALUE     = 0x00000010;
 static const uint32_t OVERLOAD_CONST              = 0x00000020;
+static const uint32_t OVERLOAD_VAR_STRUCT         = 0x00000040;
 
 struct SymbolAttributes
 {

@@ -1,15 +1,12 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
-#include "Global.h"
 #include "Scope.h"
 #include "TypeManager.h"
 #include "SymTable.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "Module.h"
-#include "TypeInfo.h"
-#include "Register.h"
 #include "Ast.h"
 
 bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer)
@@ -101,6 +98,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM;
     else if (node->ownerScope->isGlobal())
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
+    else if (node->ownerScope->kind == ScopeKind::Struct)
+        symbolFlags |= OVERLOAD_VAR_STRUCT;
     else if (!isConstant)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
     if (node->kind == AstNodeKind::LetDecl)
@@ -169,25 +168,25 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->kind == TypeInfoKind::TypeList)
         {
             auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
-			if (typeList->listKind == TypeInfoListKind::Array)
-			{
-				auto typeArray = g_Pool_typeInfoArray.alloc();
-				typeArray->pointedType = typeList->childs.front();
-				typeArray->sizeOf = node->typeInfo->sizeOf;
-				typeArray->count = (uint32_t)typeList->childs.size();
-				typeArray->name = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
-				node->typeInfo = g_TypeMgr.registerType(typeArray);
-				SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
-			}
-			else if (typeList->listKind == TypeInfoListKind::Tuple)
-			{
-				auto typeTuple = static_cast<TypeInfoList*>(typeList->clone());
-				typeTuple->scope = Ast::newScope("", ScopeKind::TypeList, node->ownerScope);
-				node->typeInfo = g_TypeMgr.registerType(typeTuple);
-				SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
-			}
-			else
-				return internalError(context, "resolveVarDecl, invalid typelist kind");
+            if (typeList->listKind == TypeInfoListKind::Array)
+            {
+                auto typeArray         = g_Pool_typeInfoArray.alloc();
+                typeArray->pointedType = typeList->childs.front();
+                typeArray->sizeOf      = node->typeInfo->sizeOf;
+                typeArray->count       = (uint32_t) typeList->childs.size();
+                typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
+                node->typeInfo         = g_TypeMgr.registerType(typeArray);
+                SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
+            }
+            else if (typeList->listKind == TypeInfoListKind::Tuple)
+            {
+                auto typeTuple   = static_cast<TypeInfoList*>(typeList->clone());
+                typeTuple->scope = Ast::newScope("", ScopeKind::TypeList, node->ownerScope);
+                node->typeInfo   = g_TypeMgr.registerType(typeTuple);
+                SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
+            }
+            else
+                return internalError(context, "resolveVarDecl, invalid typelist kind");
         }
     }
     else if (node->astType)

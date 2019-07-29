@@ -58,6 +58,7 @@ enum class AstNodeKind
     Continue,
     Statement,
     EnumDecl,
+    StructDecl,
     FuncDecl,
     AttrDecl,
     AttrUse,
@@ -201,6 +202,11 @@ struct AstNode : public PoolElement
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
     }
 
+    AstNode*         findChildRef(AstNode* ref, AstNode* fromChild);
+    virtual AstNode* clone();
+    void             copyFrom(AstNode* from);
+
+    AstNodeKind   kind;
     Scope*        ownerScope;
     AstBreakable* ownerBreakable;
     AstFuncDecl*  ownerFct;
@@ -212,28 +218,30 @@ struct AstNode : public PoolElement
     SymbolOverload* resolvedSymbolOverload;
     ByteCodeGenJob* byteCodeJob;
 
-    AstNode*            parent;
-    AstAttrUse*         parentAttributes;
-    uint64_t            attributeFlags;
-    Token               token;
-    SemanticFct         semanticFct;
-    SemanticFct         semanticBeforeFct;
-    SemanticFct         semanticAfterFct;
-    ByteCodeFct         byteCodeFct;
-    ByteCodeNotifyFct   byteCodeBeforeFct;
-    ByteCodeNotifyFct   byteCodeAfterFct;
-    AstNodeKind         kind;
+    AstNode*    parent;
+    uint32_t    childParentIdx;
+    AstAttrUse* parentAttributes;
+    uint64_t    attributeFlags;
+    Token       token;
+
+    SemanticFct       semanticFct;
+    SemanticFct       semanticBeforeFct;
+    SemanticFct       semanticAfterFct;
+    ByteCodeFct       byteCodeFct;
+    ByteCodeNotifyFct byteCodeBeforeFct;
+    ByteCodeNotifyFct byteCodeAfterFct;
+
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
-    uint64_t            flags;
-    vector<AstNode*>    childs;
-    SpinLock            mutex;
-    ComputedValue       computedValue;
-    Utf8Crc             name;
-    uint32_t            sourceFileIdx;
-    uint32_t            childParentIdx;
-    ByteCode*           bc;
-    RegisterList        resultRegisterRC;
+
+    uint64_t         flags;
+    vector<AstNode*> childs;
+    SpinLock         mutex;
+    ComputedValue    computedValue;
+    Utf8Crc          name;
+    uint32_t         sourceFileIdx;
+    ByteCode*        bc;
+    RegisterList     resultRegisterRC;
 };
 
 struct AstVarDecl : public AstNode
@@ -509,6 +517,8 @@ struct AstTypeExpression : public AstNode
         isConst        = false;
         AstNode::reset();
     }
+
+    AstNode* clone() override;
 
     AstNode* typeExpression;
     int      ptrCount;

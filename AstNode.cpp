@@ -23,3 +23,70 @@ Pool<AstTypeLambda>      g_Pool_astTypeLambda;
 Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
 Pool<AstProperty>        g_Pool_astProperty;
 Pool<AstExpressionList>  g_Pool_astExpressionList;
+
+AstNode* AstNode::clone()
+{
+    auto result = g_Pool_astNode.alloc();
+    result->copyFrom(this);
+    return result;
+}
+
+void AstNode::copyFrom(AstNode* from)
+{
+    ownerScope     = from->ownerScope;
+    ownerBreakable = from->ownerBreakable;
+    ownerFct       = from->ownerFct;
+    ownerFlags     = from->ownerFlags;
+
+    typeInfo               = from->typeInfo;
+    castedTypeInfo         = from->castedTypeInfo;
+    resolvedSymbolName     = from->resolvedSymbolName;
+    resolvedSymbolOverload = from->resolvedSymbolOverload;
+
+    parentAttributes = from->parentAttributes;
+    parentAttributes = from->parentAttributes;
+    attributeFlags   = from->attributeFlags;
+    token            = from->token;
+
+    semanticFct       = from->semanticFct;
+    semanticBeforeFct = from->semanticBeforeFct;
+    semanticAfterFct  = from->semanticAfterFct;
+    byteCodeFct       = from->byteCodeFct;
+    byteCodeBeforeFct = from->byteCodeBeforeFct;
+    byteCodeAfterFct  = from->byteCodeAfterFct;
+
+    kind             = from->kind;
+    flags            = from->flags;
+    computedValue    = from->computedValue;
+    name             = from->name;
+    sourceFileIdx    = from->sourceFileIdx;
+    bc               = from->bc;
+    resultRegisterRC = from->resultRegisterRC;
+
+    childs = from->childs;
+    for (int i = 0; i < childs.size(); i++)
+        childs[i] = childs[i]->clone();
+}
+
+AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
+{
+    for (int i = 0; i < childs.size(); i++)
+    {
+        if (childs[i] == ref)
+            return fromChild->childs[i];
+    }
+
+    return nullptr;
+}
+
+AstNode* AstTypeExpression::clone()
+{
+    auto newNode = g_Pool_astTypeExpression.alloc();
+    newNode->copyFrom(this);
+    newNode->typeExpression = findChildRef(typeExpression, newNode);
+    newNode->ptrCount       = ptrCount;
+    newNode->arrayDim       = arrayDim;
+    newNode->isSlice        = isSlice;
+    newNode->isConst        = isConst;
+    return newNode;
+}

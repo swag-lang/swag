@@ -64,19 +64,43 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
 
-	// Generate initialization for other variables (init to the first var)
-	for (auto otherVar : otherVariables)
-	{
-		otherVar->astAssignment = Ast::createIdentifierRef(this, varNode->name, varNode->token, otherVar);
-	}
+    if (varNode->astAssignment)
+    {
+        // When initialization is supposed to be constexpr, we just duplicate the initialization
+		assert(currentScope);
+        if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
+        {
+            for (auto otherVar : otherVariables)
+            {
+                otherVar->astAssignment = varNode->astAssignment->clone();
+                Ast::addChild(otherVar, otherVar->astAssignment);
+            }
+        }
+        // Otherwise, we generate initialization for other variables (init to the first var)
+        else
+        {
+            for (auto otherVar : otherVariables)
+            {
+                otherVar->astAssignment = Ast::createIdentifierRef(this, varNode->name, varNode->token, otherVar);
+            }
+        }
+    }
+    else
+    {
+        for (auto otherVar : otherVariables)
+        {
+            otherVar->astType = varNode->astType->clone();
+            Ast::addChild(otherVar, otherVar->astType);
+        }
+    }
 
-	// Register symbol name
+    // Register symbol name
     if (!isContextDisabled())
     {
         currentScope->allocateSymTable();
         SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
-		for(auto otherVar : otherVariables)
-			SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, otherVar, SymbolKind::Variable));
+        for (auto otherVar : otherVariables)
+            SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, otherVar, SymbolKind::Variable));
     }
 
     return true;
