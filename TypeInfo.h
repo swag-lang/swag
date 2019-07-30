@@ -476,10 +476,28 @@ struct TypeInfoStruct : public TypeInfo
     void reset()
     {
         TypeInfo::reset();
-        kind = TypeInfoKind::Struct;
+        childs.clear();
+        kind  = TypeInfoKind::Struct;
+        scope = nullptr;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (!TypeInfo::isSame(from))
+            return false;
+        auto other = static_cast<TypeInfoStruct*>(from);
+        for (int i = 0; i < childs.size(); i++)
+        {
+            if (!childs[i]->isSame(other->childs[i]))
+                return false;
+        }
+        return true;
     }
 
     TypeInfo* clone() override;
+
+    Scope*            scope;
+    vector<TypeInfo*> childs;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;

@@ -77,7 +77,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         {
             auto symName = child->resolvedSymbolName;
             auto symOver = child->resolvedSymbolOverload;
-            if (symName->kind != SymbolKind::Enum && symName->kind != SymbolKind::Type)
+            if (symName->kind != SymbolKind::Enum &&
+                symName->kind != SymbolKind::Type &&
+                symName->kind != SymbolKind::Struct)
             {
                 Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type", child->name.c_str())};
                 Diagnostic note{symOver->sourceFile, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};

@@ -188,6 +188,8 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a type";
     case SymbolKind::Variable:
         return "a variable";
+    case SymbolKind::Struct:
+        return "a struct";
     }
 
     return "something else";
@@ -211,6 +213,8 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "type";
     case SymbolKind::Variable:
         return "variable";
+    case SymbolKind::Struct:
+        return "struct";
     }
 
     return "???";

@@ -27,14 +27,14 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         auto        symbol = currentScope->symTable->findNoLock(structNode->name);
         if (!symbol)
         {
-            auto typeInfo = g_Pool_typeInfoEnum.alloc();
+            auto typeInfo = g_Pool_typeInfoStruct.alloc();
             newScope      = Ast::newScope(structNode->name, ScopeKind::Struct, currentScope);
             newScope->allocateSymTable();
             typeInfo->name       = structNode->name;
             typeInfo->scope      = newScope;
             structNode->typeInfo = typeInfo;
             if (!isContextDisabled())
-                currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Enum);
+                currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
         }
         else
         {

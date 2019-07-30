@@ -26,9 +26,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
         }
 
+        typeInfo->childs.push_back(child->typeInfo);
         typeInfo->sizeOf += child->typeInfo->sizeOf;
     }
 
-	node->typeInfo = g_TypeMgr.registerType(typeInfo);
+    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+
+    // Register symbol with its type
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
+
     return true;
 }
