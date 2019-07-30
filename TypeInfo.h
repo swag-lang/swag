@@ -55,14 +55,15 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
     return casted;
 }
 
-static const uint64_t TYPEINFO_ATTRIBUTE_FUNC = 0x00000000'00000001;
-static const uint64_t TYPEINFO_ATTRIBUTE_VAR  = 0x00000000'00000002;
-static const uint64_t TYPEINFO_INTEGER        = 0x00000000'00000004;
-static const uint64_t TYPEINFO_FLOAT          = 0x00000000'00000008;
-static const uint64_t TYPEINFO_UNSIGNED       = 0x00000000'00000010;
-static const uint64_t TYPEINFO_CONST          = 0x00000000'00000020;
-static const uint64_t TYPEINFO_IN_MANAGER     = 0x00000000'00000040;
-static const uint64_t TYPEINFO_VARIADIC       = 0x00000000'00000080;
+static const uint64_t TYPEINFO_ATTRIBUTE_FUNC         = 0x00000000'00000001;
+static const uint64_t TYPEINFO_ATTRIBUTE_VAR          = 0x00000000'00000002;
+static const uint64_t TYPEINFO_INTEGER                = 0x00000000'00000004;
+static const uint64_t TYPEINFO_FLOAT                  = 0x00000000'00000008;
+static const uint64_t TYPEINFO_UNSIGNED               = 0x00000000'00000010;
+static const uint64_t TYPEINFO_CONST                  = 0x00000000'00000020;
+static const uint64_t TYPEINFO_IN_MANAGER             = 0x00000000'00000040;
+static const uint64_t TYPEINFO_VARIADIC               = 0x00000000'00000080;
+static const uint64_t TYPEINFO_STRUCT_HAS_CONSTRUCTOR = 0x00000000'00000100;
 
 struct TypeInfo : public PoolElement
 {
@@ -486,8 +487,8 @@ struct TypeInfoStruct : public TypeInfo
         if (!TypeInfo::isSame(from))
             return false;
         auto other = static_cast<TypeInfoStruct*>(from);
-		if (childs.size() != other->childs.size())
-			return false;
+        if (childs.size() != other->childs.size())
+            return false;
         for (int i = 0; i < childs.size(); i++)
         {
             if (!childs[i]->isSame(other->childs[i]))

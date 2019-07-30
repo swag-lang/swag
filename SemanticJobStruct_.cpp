@@ -20,6 +20,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
+    uint32_t structFlags   = 0;
 
     for (auto child : node->childs)
     {
@@ -30,11 +31,12 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         {
             SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
             if (varDecl->astAssignment->computedValue.reg.u64)
-                node->flags |= AST_STRUCT_HAS_CONSTRUCTOR;
+				structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
         }
 
         typeInfo->childs.push_back(child->typeInfo);
         typeInfo->sizeOf += child->typeInfo->sizeOf;
+		typeInfo->flags |= structFlags;
 
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;

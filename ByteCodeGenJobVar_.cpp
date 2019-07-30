@@ -13,7 +13,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
     auto typeInfo = resolved->typeInfo;
 
     // Just clear the content of the structure
-    if (!(node->flags & AST_STRUCT_HAS_CONSTRUCTOR))
+    if (!(typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
     {
         auto inst   = emitInstruction(context, ByteCodeOp::ClearRefFromStackX);
         inst->a.u32 = resolved->storageOffset;

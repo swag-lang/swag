@@ -1,5 +1,5 @@
 #module module525
-//#unittest pass semantic
+#unittest pass semantic
 
 struct point
 {
@@ -7,7 +7,7 @@ struct point
 	var y: s32 = 100
 }
 
-//#[swag.printbytecode]
+#[swag.printbytecode]
 #test
 {
 	var pt: point
