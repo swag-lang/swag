@@ -67,7 +67,7 @@ BYTECODE_OP(ClearRefFromStack8)
 BYTECODE_OP(ClearRefFromStack16)
 BYTECODE_OP(ClearRefFromStack32)
 BYTECODE_OP(ClearRefFromStack64)
-BYTECODE_OP(ClearRefFromStackPointer)
+BYTECODE_OP(ClearRefFromStackX)
 
 BYTECODE_OP(BinOpPlusS32)
 BYTECODE_OP(BinOpPlusS64)

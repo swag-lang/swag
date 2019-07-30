@@ -66,8 +66,11 @@ void ByteCode::print()
         case ByteCodeOp::ClearRefFromStack16:
         case ByteCodeOp::ClearRefFromStack32:
         case ByteCodeOp::ClearRefFromStack64:
-        case ByteCodeOp::ClearRefFromStackPointer:
             wprintf(L"VA: { %u }", ip->a.u32);
+            break;
+
+		case ByteCodeOp::ClearRefFromStackX:
+            wprintf(L"VA: { %u } VB: { %u }", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::PushRAParam:

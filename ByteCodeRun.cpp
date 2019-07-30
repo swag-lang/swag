@@ -435,8 +435,8 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     case ByteCodeOp::ClearRefFromStack64:
         *(uint64_t*) (context->bp + ip->a.u32) = 0;
         break;
-    case ByteCodeOp::ClearRefFromStackPointer:
-        *(void**) (context->bp + ip->a.u32) = nullptr;
+    case ByteCodeOp::ClearRefFromStackX:
+		memset(context->bp + ip->a.u32, 0, ip->b.u32);
         break;
 
     case ByteCodeOp::RAFromDataSeg8:
