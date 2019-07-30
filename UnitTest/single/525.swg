@@ -11,7 +11,7 @@ impl point
 {
 }
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var pt: point
