@@ -36,7 +36,7 @@ namespace Ast
         node->token = move(token);
     }
 
-    extern Scope*      newScope(const string& name, ScopeKind kind, Scope* parentScope);
+    extern Scope*      newScope(const string& name, ScopeKind kind, Scope* parentScope, bool singleNamed = false);
     extern void        addChild(AstNode* parent, AstNode* child);
     extern const char* getKindName(AstNode* node);
     extern const char* getNakedName(AstNode* node);

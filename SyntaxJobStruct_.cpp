@@ -9,8 +9,9 @@
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
-    auto implNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::Impl, sourceFile->indexInModule, parent);
+    auto implNode = Ast::newNode(&g_Pool_astImpl, AstNodeKind::Impl, sourceFile->indexInModule, parent);
     implNode->inheritOwnersAndFlags(this);
+	implNode->semanticFct = &SemanticJob::resolveImpl;
     if (result)
         *result = implNode;
 
@@ -23,8 +24,13 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
+    // Get or create scope
+    auto newScope = Ast::newScope(implNode->name, ScopeKind::Struct, currentScope, true);
+    newScope->allocateSymTable();
+    implNode->structScope = newScope;
+
     {
-        //Scoped scoped(this, newScope);
+        Scoped scoped(this, newScope);
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doTopLevelInstruction(implNode));
@@ -58,7 +64,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         if (!symbol)
         {
             auto typeInfo = g_Pool_typeInfoStruct.alloc();
-            newScope      = Ast::newScope(structNode->name, ScopeKind::Struct, currentScope);
+            newScope      = Ast::newScope(structNode->name, ScopeKind::Struct, currentScope, true);
             newScope->allocateSymTable();
             typeInfo->name       = structNode->name;
             typeInfo->scope      = newScope;

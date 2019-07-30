@@ -10,6 +10,11 @@
 #include "Ast.h"
 #include "AstNode.h"
 
+bool SemanticJob::resolveImpl(SemanticContext* context)
+{
+	return true;
+}
+
 bool SemanticJob::resolveStruct(SemanticContext* context)
 {
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);

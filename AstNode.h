@@ -59,7 +59,7 @@ enum class AstNodeKind
     Statement,
     EnumDecl,
     StructDecl,
-	Impl,
+    Impl,
     FuncDecl,
     AttrDecl,
     AttrUse,
@@ -615,6 +615,19 @@ struct AstStruct : public AstNode
     AstNode* clone() override;
 };
 
+struct AstImpl : public AstNode
+{
+    void reset() override
+    {
+        structScope = nullptr;
+        AstNode::reset();
+    }
+
+    AstNode* clone() override;
+
+    Scope* structScope;
+};
+
 extern Pool<AstNode>            g_Pool_astNode;
 extern Pool<AstAttrDecl>        g_Pool_astAttrDecl;
 extern Pool<AstAttrUse>         g_Pool_astAttrUse;
@@ -637,3 +650,4 @@ extern Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
 extern Pool<AstProperty>        g_Pool_astProperty;
 extern Pool<AstExpressionList>  g_Pool_astExpressionList;
 extern Pool<AstStruct>          g_Pool_astStruct;
+extern Pool<AstImpl>            g_Pool_astImpl;

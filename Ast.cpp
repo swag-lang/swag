@@ -21,8 +21,26 @@ namespace Ast
         child->parent = parent;
     }
 
-    Scope* newScope(const string& name, ScopeKind kind, Scope* parentScope)
+    Scope* newScope(const string& name, ScopeKind kind, Scope* parentScope, bool singleNamed)
     {
+        if (parentScope)
+        {
+            parentScope->lockChilds.lock();
+
+            // A scope with the same name already exists
+            if (singleNamed)
+            {
+                for (auto child : parentScope->childScopes)
+                {
+					if (child->name == name)
+					{
+						parentScope->lockChilds.unlock();
+						return child;
+					}
+                }
+            }
+        }
+
         Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
         auto newScope         = g_Pool_scope.alloc();
         newScope->kind        = kind;
@@ -31,10 +49,12 @@ namespace Ast
         newScope->fullname    = move(fullname);
         if (parentScope)
         {
-            scoped_lock lk(parentScope->lockChilds);
             newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
             parentScope->childScopes.push_back(newScope);
         }
+
+        if (parentScope)
+            parentScope->lockChilds.unlock();
 
         return newScope;
     }

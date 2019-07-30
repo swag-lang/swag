@@ -24,6 +24,7 @@ Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
 Pool<AstProperty>        g_Pool_astProperty;
 Pool<AstExpressionList>  g_Pool_astExpressionList;
 Pool<AstStruct>          g_Pool_astStruct;
+Pool<AstImpl>            g_Pool_astImpl;
 
 AstNode* AstNode::clone()
 {
@@ -270,5 +271,14 @@ AstNode* AstExpressionList::clone()
 AstNode* AstStruct::clone()
 {
     auto newNode = g_Pool_astStruct.alloc();
+    newNode->copyFrom(this);
+    return newNode;
+}
+
+AstNode* AstImpl::clone()
+{
+    auto newNode = g_Pool_astImpl.alloc();
+    newNode->copyFrom(this);
+    newNode->structScope = structScope;
     return newNode;
 }
