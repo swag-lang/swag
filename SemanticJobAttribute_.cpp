@@ -27,7 +27,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind != AstNodeKind::FuncDecl && kind != AstNodeKind::Statement)
     {
         Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a function definition", oneAttribute->name.c_str())};
-        Diagnostic note{sourceFile, checkNode->token, format("this is %s", Ast::getKindName(checkNode)), DiagnosticLevel::Note};
+        Diagnostic note{sourceFile, checkNode->token, format("this is %s", AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
         Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note, &note1);
     }
@@ -35,7 +35,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind != AstNodeKind::VarDecl && kind != AstNodeKind::Statement)
     {
         Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a variable definition", oneAttribute->name.c_str())};
-        Diagnostic note{sourceFile, checkNode->token, format("this is %s", Ast::getKindName(checkNode)), DiagnosticLevel::Note};
+        Diagnostic note{sourceFile, checkNode->token, format("this is %s", AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
         Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note, &note1);
     }

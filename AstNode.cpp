@@ -26,6 +26,52 @@ Pool<AstExpressionList>  g_Pool_astExpressionList;
 Pool<AstStruct>          g_Pool_astStruct;
 Pool<AstImpl>            g_Pool_astImpl;
 
+const char* AstNode::getKindName(AstNode* node)
+{
+    switch (node->kind)
+    {
+    case AstNodeKind::VarDecl:
+        return "a variable";
+    case AstNodeKind::FuncDecl:
+        return "a function";
+    case AstNodeKind::EnumDecl:
+        return "an enum";
+    case AstNodeKind::EnumValue:
+        return "an enum value";
+    case AstNodeKind::Namespace:
+        return "a namespace";
+    case AstNodeKind::TypeDecl:
+        return "a type";
+    case AstNodeKind::FuncDeclParam:
+        return "a function parameter";
+    }
+
+    return "something else";
+}
+
+const char* AstNode::getNakedKindName(AstNode* node)
+{
+    switch (node->kind)
+    {
+    case AstNodeKind::VarDecl:
+        return "variable";
+    case AstNodeKind::FuncDecl:
+        return "function";
+    case AstNodeKind::EnumDecl:
+        return "enum";
+    case AstNodeKind::EnumValue:
+        return "enum value";
+    case AstNodeKind::Namespace:
+        return "namespace";
+    case AstNodeKind::TypeDecl:
+        return "type";
+    case AstNodeKind::FuncDeclParam:
+        return "parameter";
+    }
+
+    return "something else";
+}
+
 AstNode* AstNode::clone()
 {
     auto result = g_Pool_astNode.alloc();

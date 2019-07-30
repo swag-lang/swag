@@ -203,9 +203,11 @@ struct AstNode : public PoolElement
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
     }
 
-    AstNode*         findChildRef(AstNode* ref, AstNode* fromChild);
-    virtual AstNode* clone();
-    void             copyFrom(AstNode* from);
+    static const char* getKindName(AstNode* node);
+    static const char* getNakedKindName(AstNode* node);
+    AstNode*           findChildRef(AstNode* ref, AstNode* fromChild);
+    virtual AstNode*   clone();
+    void               copyFrom(AstNode* from);
 
     AstNodeKind   kind;
     Scope*        ownerScope;
@@ -620,7 +622,7 @@ struct AstImpl : public AstNode
     void reset() override
     {
         structScope = nullptr;
-		identifier = nullptr;
+        identifier  = nullptr;
         AstNode::reset();
     }
 
