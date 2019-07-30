@@ -17,6 +17,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     typeInfo->name = format("struct %s", node->name.c_str());
+
+    uint32_t storageOffset = 0;
+    uint32_t storageIndex  = 0;
+
     for (auto child : node->childs)
     {
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
@@ -27,8 +31,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         typeInfo->childs.push_back(child->typeInfo);
         typeInfo->sizeOf += child->typeInfo->sizeOf;
-		child->resolvedSymbolOverload->storageOffset = 0;
-		child->resolvedSymbolOverload->storageIndex = 0;
+
+        child->resolvedSymbolOverload->storageOffset = storageOffset;
+        child->resolvedSymbolOverload->storageIndex  = storageIndex;
+        storageOffset += child->typeInfo->sizeOf;
+        storageIndex++;
     }
 
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
