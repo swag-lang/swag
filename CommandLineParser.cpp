@@ -9,7 +9,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--silent", "-s", CommandLineType::Bool, &cmdLine->silent);
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
-    addArg("--output", nullptr, CommandLineType::Bool, &cmdLine->output);
+    addArg("--output", "-o", CommandLineType::Bool, &cmdLine->output);
     addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut);
     addArg("--unittest", nullptr, CommandLineType::Bool, &cmdLine->unittest);
@@ -28,7 +28,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
     //cmdLine->optimizeByteCode = false;
-	cmdLine->fileFilter = "528";
+	//cmdLine->fileFilter = "528";
 }
 
 void CommandLineParser::logArguments()

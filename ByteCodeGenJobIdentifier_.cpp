@@ -34,8 +34,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    auto resolved = node->resolvedSymbolOverload;
-    if (node->resolvedSymbolName->kind == SymbolKind::Namespace)
+    auto resolved     = node->resolvedSymbolOverload;
+    auto resolvedName = node->resolvedSymbolName;
+    if (resolvedName->kind == SymbolKind::Namespace || resolvedName->kind == SymbolKind::Struct)
         return true;
     if (node->resolvedSymbolName->kind != SymbolKind::Variable)
         return internalError(context, "emitIdentifier");

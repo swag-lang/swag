@@ -160,6 +160,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         node->computedValue = node->resolvedSymbolOverload->computedValue;
         break;
+    case SymbolKind::Struct:
+        parent->startScope = static_cast<TypeInfoStruct*>(node->typeInfo)->scope;
+        node->flags |= AST_CONST_EXPR;
+        break;
 
     case SymbolKind::Variable:
     {

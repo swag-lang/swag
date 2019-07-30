@@ -24,7 +24,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get or create scope
-    auto newScope = Ast::newScope(implNode->name, ScopeKind::Struct, currentScope, true);
+    auto newScope = Ast::newScope(implNode->identifier->childs.front()->name, ScopeKind::Struct, currentScope, true);
     newScope->allocateSymTable();
     implNode->structScope = newScope;
 

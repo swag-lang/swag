@@ -144,7 +144,7 @@ void Workspace::removeCache()
 
         if (!ok)
         {
-            g_Log.error(format("fatal error: can't delete cache file '%s'", p.path().c_str()));
+            g_Log.error(format("fatal error: can't delete cache content '%s'", p.path().string().c_str()));
             exit(-1);
         }
     }
