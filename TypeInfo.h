@@ -486,6 +486,8 @@ struct TypeInfoStruct : public TypeInfo
         if (!TypeInfo::isSame(from))
             return false;
         auto other = static_cast<TypeInfoStruct*>(from);
+		if (childs.size() != other->childs.size())
+			return false;
         for (int i = 0; i < childs.size(); i++)
         {
             if (!childs[i]->isSame(other->childs[i]))

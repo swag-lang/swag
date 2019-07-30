@@ -609,6 +609,11 @@ struct AstExpressionList : public AstNode
     TypeInfoListKind listKind;
 };
 
+struct AstStruct : public AstNode
+{
+    AstNode* clone() override;
+};
+
 extern Pool<AstNode>            g_Pool_astNode;
 extern Pool<AstAttrDecl>        g_Pool_astAttrDecl;
 extern Pool<AstAttrUse>         g_Pool_astAttrUse;
@@ -630,3 +635,4 @@ extern Pool<AstTypeLambda>      g_Pool_astTypeLambda;
 extern Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
 extern Pool<AstProperty>        g_Pool_astProperty;
 extern Pool<AstExpressionList>  g_Pool_astExpressionList;
+extern Pool<AstStruct>          g_Pool_astStruct;

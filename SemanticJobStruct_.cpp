@@ -12,7 +12,7 @@
 
 bool SemanticJob::resolveStruct(SemanticContext* context)
 {
-    auto node       = context->node;
+    auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
@@ -24,9 +24,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     for (auto child : node->childs)
     {
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+
+        // Var has an initialization
         if (varDecl->astAssignment)
         {
             SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
+            if (varDecl->astAssignment->computedValue.reg.u64)
+                node->flags |= AST_STRUCT_HAS_CONSTRUCTOR;
         }
 
         typeInfo->childs.push_back(child->typeInfo);

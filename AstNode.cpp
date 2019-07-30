@@ -23,6 +23,7 @@ Pool<AstTypeLambda>      g_Pool_astTypeLambda;
 Pool<AstPointerDeRef>    g_Pool_astPointerDeref;
 Pool<AstProperty>        g_Pool_astProperty;
 Pool<AstExpressionList>  g_Pool_astExpressionList;
+Pool<AstStruct>          g_Pool_astStruct;
 
 AstNode* AstNode::clone()
 {
@@ -263,5 +264,11 @@ AstNode* AstExpressionList::clone()
     newNode->copyFrom(this);
     newNode->storageOffset = storageOffset;
     newNode->listKind      = listKind;
+    return newNode;
+}
+
+AstNode* AstStruct::clone()
+{
+    auto newNode = g_Pool_astStruct.alloc();
     return newNode;
 }

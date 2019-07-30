@@ -9,7 +9,7 @@
 
 bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 {
-    auto structNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);
+    auto structNode = Ast::newNode(&g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);
     structNode->inheritOwnersAndFlags(this);
     structNode->semanticFct = &SemanticJob::resolveStruct;
     if (result)

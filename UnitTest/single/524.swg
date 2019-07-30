@@ -1,14 +1,7 @@
 #module module524
 //#unittest pass semantic
 
-struct point
-{
-	var x: s32
-	var y: s32
-	var z: s32
-}
-
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var pt: [10] s32
