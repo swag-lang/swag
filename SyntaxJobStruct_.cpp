@@ -15,13 +15,12 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (result)
         *result = implNode;
 
+	// Identifier
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid impl name '%s'", token.text.c_str())));
-    Ast::assignToken(implNode, token);
+	SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier, AST_NO_BYTECODE));
 
-    // Content of struct
+    // Content of impl block
     auto curly = token;
-    SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get or create scope

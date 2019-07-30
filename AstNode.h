@@ -620,12 +620,14 @@ struct AstImpl : public AstNode
     void reset() override
     {
         structScope = nullptr;
+		identifier = nullptr;
         AstNode::reset();
     }
 
     AstNode* clone() override;
 
-    Scope* structScope;
+    Scope*   structScope;
+    AstNode* identifier;
 };
 
 extern Pool<AstNode>            g_Pool_astNode;

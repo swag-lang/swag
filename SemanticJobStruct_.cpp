@@ -12,7 +12,19 @@
 
 bool SemanticJob::resolveImpl(SemanticContext* context)
 {
-	return true;
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+
+    // Be sure this is a struct
+    auto typeInfo = node->identifier->typeInfo;
+    if (typeInfo->kind != TypeInfoKind::Struct)
+    {
+        Diagnostic diag{ sourceFile, node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getKindName(typeInfo)) };
+        Diagnostic note{ node->identifier->resolvedSymbolOverload->sourceFile, node->identifier->resolvedSymbolOverload->node->token.startLocation, node->identifier->resolvedSymbolOverload->node->token.endLocation, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
+        return sourceFile->report(diag, &note);
+    }
+
+    return true;
 }
 
 bool SemanticJob::resolveStruct(SemanticContext* context)
@@ -36,12 +48,12 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         {
             SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
             if (varDecl->astAssignment->computedValue.reg.u64)
-				structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+                structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
         }
 
         typeInfo->childs.push_back(child->typeInfo);
         typeInfo->sizeOf += child->typeInfo->sizeOf;
-		typeInfo->flags |= structFlags;
+        typeInfo->flags |= structFlags;
 
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;

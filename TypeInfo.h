@@ -128,7 +128,8 @@ struct TypeInfo : public PoolElement
         sizeOf     = from->sizeOf;
     }
 
-    static const char* getNakedName(TypeInfo* typeInfo);
+    static const char* getKindName(TypeInfo* typeInfo);
+    static const char* getNakedKindName(TypeInfo* typeInfo);
 
     uint64_t     flags;
     TypeInfoKind kind;

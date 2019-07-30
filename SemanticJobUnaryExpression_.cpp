@@ -121,7 +121,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     node->inheritLocation();
 
     auto typeInfo = TypeManager::concreteType(op->typeInfo);
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedName(typeInfo), typeInfo->name.c_str())}));
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())}));
 
     node->typeInfo = op->typeInfo;
     node->inheritAndFlag(op, AST_CONST_EXPR);

@@ -313,7 +313,32 @@ TypeInfo* TypeInfoStruct::clone()
     return newType;
 }
 
-const char* TypeInfo::getNakedName(TypeInfo* typeInfo)
+const char* TypeInfo::getKindName(TypeInfo* typeInfo)
+{
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Namespace:
+        return "a namespace";
+    case TypeInfoKind::Enum:
+        return "an enum";
+    case TypeInfoKind::EnumValue:
+        return "an enum value";
+    case TypeInfoKind::Array:
+        return "an array";
+    case TypeInfoKind::Pointer:
+        return "a pointer";
+    case TypeInfoKind::FuncAttr:
+        return "a function";
+    case TypeInfoKind::TypeList:
+        return "a tuple";
+    case TypeInfoKind::Variadic:
+        return "a variadic";
+    }
+
+    return "<type>";
+}
+
+const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
 {
     switch (typeInfo->kind)
     {

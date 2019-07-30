@@ -280,5 +280,6 @@ AstNode* AstImpl::clone()
     auto newNode = g_Pool_astImpl.alloc();
     newNode->copyFrom(this);
     newNode->structScope = structScope;
+    newNode->identifier  = findChildRef(identifier, newNode);
     return newNode;
 }
