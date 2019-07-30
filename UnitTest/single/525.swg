@@ -7,6 +7,10 @@ struct point
 	var y: s32 = 100
 }
 
+impl point
+{
+}
+
 #[swag.printbytecode]
 #test
 {

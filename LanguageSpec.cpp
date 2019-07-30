@@ -29,6 +29,7 @@ void LanguageSpec::setup()
     keywords["namespace"] = TokenId::KwdNamespace;
     keywords["type"]      = TokenId::KwdType;
     keywords["enum"]      = TokenId::KwdEnum;
+    keywords["impl"]      = TokenId::KwdImpl;
     keywords["struct"]    = TokenId::KwdStruct;
     keywords["func"]      = TokenId::KwdFunc;
     keywords["true"]      = TokenId::KwdTrue;

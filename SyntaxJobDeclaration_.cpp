@@ -253,6 +253,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::KwdEnum:
         SWAG_CHECK(doEnum(parent));
         break;
+    case TokenId::KwdImpl:
+        SWAG_CHECK(doImpl(parent));
+        break;
     case TokenId::KwdStruct:
         SWAG_CHECK(doStruct(parent));
         break;

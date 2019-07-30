@@ -7,6 +7,36 @@
 #include "SymTable.h"
 #include "SemanticJob.h"
 
+bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
+{
+    auto implNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::Impl, sourceFile->indexInModule, parent);
+    implNode->inheritOwnersAndFlags(this);
+    if (result)
+        *result = implNode;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid impl name '%s'", token.text.c_str())));
+    Ast::assignToken(implNode, token);
+
+    // Content of struct
+    auto curly = token;
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+
+    {
+        //Scoped scoped(this, newScope);
+        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+        {
+            SWAG_CHECK(doTopLevelInstruction(implNode));
+        }
+    }
+
+    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    return true;
+}
+
 bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 {
     auto structNode = Ast::newNode(&g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);

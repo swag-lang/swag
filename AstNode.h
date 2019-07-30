@@ -59,6 +59,7 @@ enum class AstNodeKind
     Statement,
     EnumDecl,
     StructDecl,
+	Impl,
     FuncDecl,
     AttrDecl,
     AttrUse,

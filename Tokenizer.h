@@ -81,6 +81,7 @@ enum class TokenId
     KwdNamespace,
     KwdType,
     KwdEnum,
+	KwdImpl,
 	KwdStruct,
     KwdFunc,
     KwdAttr,
