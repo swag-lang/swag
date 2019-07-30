@@ -1,5 +1,5 @@
 #module module522
-#unittest pass semantic
+//#unittest pass semantic
 
 //#[swag.printbytecode]
 struct point
