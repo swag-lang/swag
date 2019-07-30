@@ -42,8 +42,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->computedValue = node->resolvedSymbolOverload->computedValue;
             node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
         }
-        else if (node->resolvedSymbolName->kind == SymbolKind::GlobalVar ||
-                 node->resolvedSymbolName->kind == SymbolKind::Variable ||
+        else if (node->resolvedSymbolName->kind == SymbolKind::Variable ||
                  node->resolvedSymbolName->kind == SymbolKind::Function)
         {
             node->flags |= AST_L_VALUE;
@@ -180,6 +179,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             parent->startScope = static_cast<TypeInfoList*>(typeInfo)->scope;
+            node->typeInfo     = typeInfo;
+            parent->typeInfo   = typeInfo;
+        }
+
+        // Struct
+        else if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            parent->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
             node->typeInfo     = typeInfo;
             parent->typeInfo   = typeInfo;
         }

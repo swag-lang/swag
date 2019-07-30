@@ -1,4 +1,4 @@
-#module module520
+#module module521
 #unittest pass semantic
 
 //#[swag.printbytecode]
@@ -10,5 +10,5 @@ struct point
 #test
 {
 	var pt: point
-	@assert(@prop(pt, sizeof) == 8)
+	pt.x = 10
 }

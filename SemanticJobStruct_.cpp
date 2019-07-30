@@ -14,10 +14,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 {
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
+    auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
-    auto typeInfo  = g_Pool_typeInfoStruct.alloc();
     typeInfo->name = format("struct %s", node->name.c_str());
-
     for (auto child : node->childs)
     {
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);

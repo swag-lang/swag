@@ -65,7 +65,6 @@ enum class SymbolKind
     Function,
     Attribute,
     FuncParam,
-    GlobalVar,
 	Struct,
 };
 

@@ -201,46 +201,46 @@ TypeInfo* TypeInfoNative::clone()
 
 TypeInfo* TypeInfoNamespace::clone()
 {
-    auto newType = g_Pool_typeInfoNamespace.alloc();
-    newType->scope = this->scope;
+    auto newType   = g_Pool_typeInfoNamespace.alloc();
+    newType->scope = scope;
     newType->copyFrom(this);
     return newType;
 }
 
 TypeInfo* TypeInfoEnum::clone()
 {
-    auto newType = g_Pool_typeInfoEnum.alloc();
-    newType->scope   = this->scope;
-    newType->rawType = this->rawType;
+    auto newType     = g_Pool_typeInfoEnum.alloc();
+    newType->scope   = scope;
+    newType->rawType = rawType;
     newType->copyFrom(this);
     return newType;
 }
 
 TypeInfo* TypeInfoEnumValue::clone()
 {
-    auto newType = g_Pool_typeInfoEnumValue.alloc();
-    newType->scope     = this->scope;
-    newType->enumOwner = this->enumOwner;
+    auto newType       = g_Pool_typeInfoEnumValue.alloc();
+    newType->scope     = scope;
+    newType->enumOwner = enumOwner;
     newType->copyFrom(this);
     return newType;
 }
 
 TypeInfo* TypeInfoFuncAttrParam::clone()
 {
-    auto newType = g_Pool_typeInfoFuncAttrParam.alloc();
-    newType->namedParam = this->namedParam;
-    newType->typeInfo   = this->typeInfo;
-    newType->index      = this->index;
+    auto newType        = g_Pool_typeInfoFuncAttrParam.alloc();
+    newType->namedParam = namedParam;
+    newType->typeInfo   = typeInfo;
+    newType->index      = index;
     newType->copyFrom(this);
     return newType;
 }
 
 TypeInfo* TypeInfoFuncAttr::clone()
 {
-    auto newType = g_Pool_typeInfoFuncAttr.alloc();
-    newType->firstDefaultValueIdx = this->firstDefaultValueIdx;
-    newType->parameters           = this->parameters;
-    newType->returnType           = this->returnType;
+    auto newType                  = g_Pool_typeInfoFuncAttr.alloc();
+    newType->firstDefaultValueIdx = firstDefaultValueIdx;
+    newType->parameters           = parameters;
+    newType->returnType           = returnType;
     newType->copyFrom(this);
     return newType;
 }
@@ -263,36 +263,36 @@ void TypeInfoFuncAttr::computeName()
 
 TypeInfo* TypeInfoPointer::clone()
 {
-    auto newType = g_Pool_typeInfoPointer.alloc();
-    newType->pointedType = this->pointedType;
-    newType->ptrCount    = this->ptrCount;
+    auto newType         = g_Pool_typeInfoPointer.alloc();
+    newType->pointedType = pointedType;
+    newType->ptrCount    = ptrCount;
     newType->copyFrom(this);
     return newType;
 }
 
 TypeInfo* TypeInfoArray::clone()
 {
-    auto newType = g_Pool_typeInfoArray.alloc();
-    newType->pointedType = this->pointedType;
-    newType->count       = this->count;
+    auto newType         = g_Pool_typeInfoArray.alloc();
+    newType->pointedType = pointedType;
+    newType->count       = count;
     newType->copyFrom(this);
     return newType;
 }
 
 TypeInfo* TypeInfoSlice::clone()
 {
-    auto newType = g_Pool_typeInfoSlice.alloc();
-    newType->pointedType = this->pointedType;
+    auto newType         = g_Pool_typeInfoSlice.alloc();
+    newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
 }
 
 TypeInfo* TypeInfoList::clone()
 {
-    auto newType = g_Pool_typeInfoList.alloc();
-    newType->childs   = this->childs;
-    newType->scope    = this->scope;
-    newType->listKind = this->listKind;
+    auto newType      = g_Pool_typeInfoList.alloc();
+    newType->childs   = childs;
+    newType->scope    = scope;
+    newType->listKind = listKind;
     newType->copyFrom(this);
     return newType;
 }
@@ -306,7 +306,9 @@ TypeInfo* TypeInfoVariadic::clone()
 
 TypeInfo* TypeInfoStruct::clone()
 {
-    auto newType = g_Pool_typeInfoStruct.alloc();
+    auto newType    = g_Pool_typeInfoStruct.alloc();
+    newType->scope  = scope;
+    newType->childs = childs;
     newType->copyFrom(this);
     return newType;
 }
