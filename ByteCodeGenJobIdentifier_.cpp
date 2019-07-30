@@ -12,6 +12,7 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    node->typeInfo         = node->childs.back()->typeInfo;
     return true;
 }
 
@@ -29,8 +30,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = node->computedValue.reg.u32;
         }
 
-		emitStructDeRef(context);
-		return true;
+        emitStructDeRef(context);
+        return true;
     }
 
     auto resolved = node->resolvedSymbolOverload;
@@ -68,6 +69,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u32 = resolved->storageIndex;
         }
 
+        node->parent->typeInfo         = node->typeInfo;
         node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
@@ -76,11 +78,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_GLOBAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (typeInfo->kind == TypeInfoKind::Array)
-        {
-            emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
-        }
-        else if (typeInfo->kind == TypeInfoKind::TypeList)
+        if (typeInfo->kind == TypeInfoKind::Array ||
+            typeInfo->kind == TypeInfoKind::TypeList ||
+            typeInfo->kind == TypeInfoKind::Struct)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
@@ -119,6 +119,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
+        node->parent->typeInfo         = node->typeInfo;
         node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
@@ -127,11 +128,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (typeInfo->kind == TypeInfoKind::Array)
-        {
-            emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
-        }
-        else if (typeInfo->kind == TypeInfoKind::TypeList)
+        if (typeInfo->kind == TypeInfoKind::Array ||
+            typeInfo->kind == TypeInfoKind::TypeList ||
+            typeInfo->kind == TypeInfoKind::Struct)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
@@ -169,7 +168,25 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
+        node->parent->typeInfo         = node->typeInfo;
         node->parent->resultRegisterRC = node->resultRegisterRC;
+        return true;
+    }
+
+    // Direct index in a structure
+    if (node->parent && node->parent->typeInfo && node->parent->typeInfo->kind == TypeInfoKind::Struct)
+    {
+        node->resultRegisterRC = node->parent->resultRegisterRC;
+        if (!g_CommandLine.optimizeByteCode || node->resolvedSymbolOverload->storageOffset > 0)
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
+            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+        }
+
+        if (!(node->flags & AST_LEFT_EXPRESSION))
+            emitStructDeRef(context);
+
+        node->parent->typeInfo = node->typeInfo;
         return true;
     }
 

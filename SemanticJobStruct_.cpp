@@ -27,6 +27,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         typeInfo->childs.push_back(child->typeInfo);
         typeInfo->sizeOf += child->typeInfo->sizeOf;
+		child->resolvedSymbolOverload->storageOffset = 0;
+		child->resolvedSymbolOverload->storageIndex = 0;
     }
 
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
