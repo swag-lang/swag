@@ -19,18 +19,34 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
     paramNode->inheritToken(token);
 
-    SWAG_CHECK(tokenizer.getToken(token));
-    if (token.id == TokenId::SymColon)
+    // 'self'
+    if (paramNode->name == "self")
     {
-        SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doTypeExpression(paramNode, &paramNode->astType));
-        SWAG_CHECK(paramNode->astType);
+        SWAG_CHECK(eatToken());
+        SWAG_VERIFY(currentScope->parentScope->kind == ScopeKind::Struct, syntaxError(token, "'self' can only be used in an 'impl' block"));
+        auto typeNode = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
+        typeNode->inheritOwnersAndFlags(this);
+        typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
+        Utf8Crc name             = currentScope->parentScope->name;
+		name.computeCrc();
+        typeNode->typeExpression = Ast::createIdentifierRef(this, name, token, typeNode);
+        paramNode->astType       = typeNode;
     }
-
-    if (token.id == TokenId::SymEqual)
+    else
     {
-        SWAG_CHECK(eatToken(TokenId::SymEqual));
-        SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->astAssignment));
+        SWAG_CHECK(tokenizer.getToken(token));
+        if (token.id == TokenId::SymColon)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doTypeExpression(paramNode, &paramNode->astType));
+            SWAG_CHECK(paramNode->astType);
+        }
+
+        if (token.id == TokenId::SymEqual)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->astAssignment));
+        }
     }
 
     // Be sure we will be able to have a type
@@ -156,7 +172,7 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
-	node->inheritToken(token);
+    node->inheritToken(token);
     node->semanticFct = &SemanticJob::resolveReturn;
     node->byteCodeFct = &ByteCodeGenJob::emitReturn;
     if (result)

@@ -19,7 +19,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     auto node  = context->node;
     auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
 
-	node->flags |= AST_NO_BYTECODE;
+    node->flags |= AST_NO_BYTECODE;
 
     Scope* scope = nullptr;
     switch (idref->resolvedSymbolOverload->typeInfo->kind)
@@ -33,6 +33,12 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     case TypeInfoKind::Enum:
     {
         auto typeInfo = static_cast<TypeInfoEnum*>(idref->resolvedSymbolOverload->typeInfo);
+        scope         = typeInfo->scope;
+        break;
+    }
+    case TypeInfoKind::Struct:
+    {
+        auto typeInfo = static_cast<TypeInfoStruct*>(idref->resolvedSymbolOverload->typeInfo);
         scope         = typeInfo->scope;
         break;
     }
