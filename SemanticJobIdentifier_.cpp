@@ -132,8 +132,15 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, startScope);
     for (auto scope : job->cacheScopeHierarchy)
     {
-        if (scope->symTable && scope != startScope)
-            SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
+		// A function parameter cannot have conflict with the struct is in
+		if (node->kind == AstNodeKind::FuncDeclParam && scope->kind == ScopeKind::Struct)
+			continue;
+
+		// Do not check if this is the same scope
+		if (!scope->symTable || scope == startScope)
+			continue;
+
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
     }
 
     return true;
