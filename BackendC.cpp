@@ -105,5 +105,5 @@ bool BackendC::generate()
     bufferC.flush();
     bufferSwg.flush();
 
-    return true;
+    return ok;
 }

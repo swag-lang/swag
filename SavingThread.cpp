@@ -29,7 +29,6 @@ SaveThreadRequest* SavingThread::newRequest()
         req->file       = nullptr;
         req->buffer     = nullptr;
         req->bufferSize = 0;
-        req->done       = false;
         return req;
     }
 
@@ -74,26 +73,24 @@ void SavingThread::loop()
         }
 
         FILE* file = nullptr;
-
-		for (int tryOpen = 0; tryOpen < 10; tryOpen++)
-		{
-			fopen_s(&file, req->file->fileName.c_str(), "a+t");
-			if (file)
-				break;
-			Sleep(1);
-		}
+        for (int tryOpen = 0; tryOpen < 10; tryOpen++)
+        {
+            fopen_s(&file, req->file->fileName.c_str(), "a+t");
+            if (file)
+                break;
+            Sleep(10);
+        }
 
         if (file)
         {
             fwrite(req->buffer, 1, req->bufferSize, file);
             fclose(file);
         }
-		else
-		{
-			g_Log.error(format("cannot open file '%s' for writing (error %d)", req->file->fileName.c_str(), errno));
-		}
+        else
+        {
+            g_Log.error(format("cannot open file '%s' for writing (error %d)", req->file->fileName.c_str(), errno));
+        }
 
-        req->done = true;
         req->file->notifySave(req);
     }
 }

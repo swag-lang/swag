@@ -10,6 +10,7 @@ struct OutputFile : public Concat
     mutex                      mutexNotify;
     condition_variable         condVar;
     vector<SaveThreadRequest*> reqToRelease;
+    int                        pendingRequests = 0;
 
     void flushBucket(ConcatBucket* bucket) override;
     void flush();

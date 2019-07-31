@@ -6,7 +6,6 @@ struct SaveThreadRequest
     OutputFile* file;
     char*       buffer;
     long        bufferSize;
-    bool        done;
 };
 
 struct SavingThread
@@ -21,11 +20,11 @@ struct SavingThread
     SaveThreadRequest* getRequest();
     void               waitRequest();
 
-    thread*                    thread     = nullptr;
-    bool                       requestEnd = false;
+    thread*                   thread     = nullptr;
+    bool                      requestEnd = false;
     deque<SaveThreadRequest*> queueRequests;
-	deque<SaveThreadRequest*> freeRequests;
-    mutex                      mutexAdd;
-    mutex                      mutexNew;
-    condition_variable         condVar;
+    deque<SaveThreadRequest*> freeRequests;
+    mutex                     mutexAdd;
+    mutex                     mutexNew;
+    condition_variable        condVar;
 };
