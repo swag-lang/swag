@@ -120,6 +120,11 @@ static void __memcpy(void* dst, void* src, swag_uint32_t size)
 	memcpy(dst, src, size);
 }
 
+static void __memclear(void* dst, swag_uint32_t size)
+{
+	memset(dst, 0, size);
+}
+
 )";
 
 bool BackendC::emitRuntime()

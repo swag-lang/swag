@@ -325,7 +325,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             bufferC.addString(format("*(swag_uint64_t*)(stack + %u) = 0;", ip->a.u32));
             break;
         case ByteCodeOp::ClearRefFromStackX:
-            bufferC.addString(format("memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("__memclear(stack + %u, %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromDataSeg:
             bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.u32));
