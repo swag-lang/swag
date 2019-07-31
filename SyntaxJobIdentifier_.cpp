@@ -7,8 +7,9 @@
 #include "SourceFile.h"
 #include "Diagnostic.h"
 
-bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags, bool acceptInteger)
+bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 {
+    uint32_t flags = 0;
     if (token.id != TokenId::Identifier &&
         token.id != TokenId::IntrisicPrint &&
         token.id != TokenId::IntrisicAssert)
@@ -25,7 +26,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags, bool acceptInteger
 
     auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent);
     identifier->inheritOwnersAndFlags(this);
-    identifier->flags |= flags;
+	identifier->flags |= flags;
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
     identifier->inheritToken(token);
@@ -78,21 +79,20 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags, bool acceptInteger
     return true;
 }
 
-bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint64_t flags)
+bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
     auto identifierRef = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
     identifierRef->inheritOwnersAndFlags(this);
-    identifierRef->flags |= flags;
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     identifierRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
     if (result)
         *result = identifierRef;
 
-    SWAG_CHECK(doIdentifier(identifierRef, flags));
+    SWAG_CHECK(doIdentifier(identifierRef));
     while (token.id == TokenId::SymDot)
     {
         SWAG_CHECK(eatToken(TokenId::SymDot));
-        SWAG_CHECK(doIdentifier(identifierRef, flags, true));
+        SWAG_CHECK(doIdentifier(identifierRef, true));
     }
 
     identifierRef->inheritLocation();

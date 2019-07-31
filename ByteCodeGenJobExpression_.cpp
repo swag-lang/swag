@@ -148,7 +148,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (!(node->flags & AST_LEFT_EXPRESSION))
+        if (!(node->flags & AST_TAKE_ADDRESS))
         {
             switch (sizeOf)
             {
@@ -184,7 +184,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (!(node->flags & AST_LEFT_EXPRESSION))
+        if (!(node->flags & AST_TAKE_ADDRESS))
         {
             switch (sizeOf)
             {
@@ -234,7 +234,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             node->array->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::DeRefString, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
         }
-        else if (!(node->flags & AST_LEFT_EXPRESSION) && typeInfo->pointedType->kind != TypeInfoKind::Array)
+        else if (!(node->flags & AST_TAKE_ADDRESS) && typeInfo->pointedType->kind != TypeInfoKind::Array)
         {
             switch (sizeOf)
             {

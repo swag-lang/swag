@@ -17,7 +17,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 
 	// Identifier
     SWAG_CHECK(tokenizer.getToken(token));
-	SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier, AST_NO_BYTECODE));
+	SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
+	implNode->flags |= AST_NO_BYTECODE;
 
     // Content of impl block
     auto curly = token;

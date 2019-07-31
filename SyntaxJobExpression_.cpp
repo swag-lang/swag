@@ -157,7 +157,8 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
 
         AstNode* identifierRef;
-        SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef, AST_LEFT_EXPRESSION | AST_TAKE_ADDRESS));
+        SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef));
+		forceTakeAddress(identifierRef);
 
         if (token.id == TokenId::SymLeftSquare)
             SWAG_CHECK(doArrayPointerRef(&identifierRef));
@@ -415,16 +416,16 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
-void SyntaxJob::setLeftExpression(AstNode* node)
+void SyntaxJob::forceTakeAddress(AstNode* node)
 {
-    node->flags |= AST_LEFT_EXPRESSION;
+    node->flags |= AST_TAKE_ADDRESS;
 	switch (node->kind)
 	{
 	case AstNodeKind::IdentifierRef:
-		node->childs.back()->flags |= AST_LEFT_EXPRESSION;
+		node->childs.back()->flags |= AST_TAKE_ADDRESS;
 		break;
 	case AstNodeKind::ArrayPointerRef:
-		setLeftExpression(static_cast<AstPointerDeRef*>(node)->array);
+		forceTakeAddress(static_cast<AstPointerDeRef*>(node)->array);
 		break;
 	}       
 }
@@ -479,7 +480,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             *result = affectNode;
 
         auto left = affectNode->childs.front();
-		setLeftExpression(left);
+		forceTakeAddress(left);
     }
     else
     {
