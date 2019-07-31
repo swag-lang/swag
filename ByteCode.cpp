@@ -69,15 +69,15 @@ void ByteCode::print()
             wprintf(L"VA: { %u }", ip->a.u32);
             break;
 
-		case ByteCodeOp::ClearRefFromStackX:
+        case ByteCodeOp::ClearRefFromStackX:
             wprintf(L"VA: { %u } VB: { %u }", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::PushRAParam:
         case ByteCodeOp::PushRASaved:
-		case ByteCodeOp::PopRASaved:
+        case ByteCodeOp::PopRASaved:
         case ByteCodeOp::PushRRSaved:
-		case ByteCodeOp::PopRRSaved:
+        case ByteCodeOp::PopRRSaved:
         case ByteCodeOp::DeRef8:
         case ByteCodeOp::DeRef16:
         case ByteCodeOp::DeRef32:
@@ -92,9 +92,9 @@ void ByteCode::print()
         case ByteCodeOp::ClearRA:
         case ByteCodeOp::DecRA:
         case ByteCodeOp::IncRA:
-		case ByteCodeOp::IncRA64:
+        case ByteCodeOp::IncRA64:
         case ByteCodeOp::LambdaCall:
-		case ByteCodeOp::MovRASP:
+        case ByteCodeOp::MovRASP:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -110,11 +110,11 @@ void ByteCode::print()
         case ByteCodeOp::CopyRARB:
         case ByteCodeOp::CopyRRxRCx:
         case ByteCodeOp::CopyRCxRRx:
-		case ByteCodeOp::CopyRRxRCxCall:
+        case ByteCodeOp::CopyRRxRCxCall:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 
-		case ByteCodeOp::AffectOp32:
+        case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOp64:
         case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::CopyRARBStr:
@@ -132,9 +132,9 @@ void ByteCode::print()
         case ByteCodeOp::RAFromStack64:
         case ByteCodeOp::RARefFromStack:
         case ByteCodeOp::AffectOp64Null:
-		case ByteCodeOp::IncPointerVB:
+        case ByteCodeOp::IncPointerVB:
         case ByteCodeOp::CopyRR0:
-		case ByteCodeOp::ShiftRightU64VB:
+        case ByteCodeOp::ShiftRightU64VB:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 

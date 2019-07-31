@@ -52,6 +52,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStackParam, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
+			if(typeInfo->kind == TypeInfoKind::Struct)
+				emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         }
         else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
