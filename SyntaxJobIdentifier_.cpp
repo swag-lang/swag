@@ -44,7 +44,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint64_t flags, bool acceptInteger
         {
             while (true)
             {
-                auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallOneParam, sourceFile->indexInModule, callParams);
+                auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
                 param->inheritOwnersAndFlags(this);
                 param->semanticFct = &SemanticJob::resolveFuncCallParam;
                 param->token       = token;

@@ -37,6 +37,7 @@ namespace Ast
     }
 
     extern Scope*   newScope(const string& name, ScopeKind kind, Scope* parentScope, bool singleNamed = false);
+    extern void     removeFromParent(AstNode* child);
     extern void     addChild(AstNode* parent, AstNode* child);
     extern AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent);
 }; // namespace Ast

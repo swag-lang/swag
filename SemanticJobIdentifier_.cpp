@@ -132,13 +132,13 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, startScope);
     for (auto scope : job->cacheScopeHierarchy)
     {
-		// A function parameter cannot have conflict with the struct is in
-		if (node->kind == AstNodeKind::FuncDeclParam && scope->kind == ScopeKind::Struct)
-			continue;
+        // A function parameter cannot have conflict with the struct is in
+        if (node->kind == AstNodeKind::FuncDeclParam && scope->kind == ScopeKind::Struct)
+            continue;
 
-		// Do not check if this is the same scope
-		if (!scope->symTable || scope == startScope)
-			continue;
+        // Do not check if this is the same scope
+        if (!scope->symTable || scope == startScope)
+            continue;
 
         SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
     }
@@ -148,10 +148,13 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
-    auto sourceFile              = context->sourceFile;
-    node->resolvedSymbolName     = symbol;
-    node->resolvedSymbolOverload = overload;
-    node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
+    auto sourceFile                = context->sourceFile;
+    parent->resolvedSymbolName     = symbol;
+    parent->resolvedSymbolOverload = overload;
+    parent->previousResolvedNode   = node;
+    node->resolvedSymbolName       = symbol;
+    node->resolvedSymbolOverload   = overload;
+    node->typeInfo                 = node->resolvedSymbolOverload->typeInfo;
 
     switch (symbol->kind)
     {
@@ -363,9 +366,21 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             return sourceFile->report(diag, &note);
         }
 
+        // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
+        if (parent->resolvedSymbolName && parent->resolvedSymbolName->kind == SymbolKind::Variable)
+        {
+            auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
+            node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+            fctCallParam->parent   = node->callParameters;
+            fctCallParam->typeInfo = parent->previousResolvedNode->typeInfo;
+            fctCallParam->token    = parent->previousResolvedNode->token;
+            Ast::removeFromParent(parent->previousResolvedNode);
+            Ast::addChild(fctCallParam, parent->previousResolvedNode);
+        }
+
         for (auto param : node->callParameters->childs)
         {
-            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallOneParam);
+            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
             job->symMatch.parameters.push_back(oneParam);
         }
     }

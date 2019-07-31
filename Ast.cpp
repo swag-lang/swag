@@ -8,6 +8,24 @@
 
 namespace Ast
 {
+    void removeFromParent(AstNode* child)
+    {
+        auto parent = child->parent;
+        parent->lock();
+        for (int i = 0; i < parent->childs.size(); i++)
+        {
+            if (parent->childs[i] == child)
+            {
+				parent->childs.erase(parent->childs.begin() + i);
+                child->parent = nullptr;
+                parent->unlock();
+                return;
+            }
+        }
+
+        parent->unlock();
+    }
+
     void addChild(AstNode* parent, AstNode* child)
     {
         if (parent)
@@ -32,11 +50,11 @@ namespace Ast
             {
                 for (auto child : parentScope->childScopes)
                 {
-					if (child->name == name)
-					{
-						parentScope->lockChilds.unlock();
-						return child;
-					}
+                    if (child->name == name)
+                    {
+                        parentScope->lockChilds.unlock();
+                        return child;
+                    }
                 }
             }
         }

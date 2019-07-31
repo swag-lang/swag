@@ -74,7 +74,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     for (int i = 0; i < numParams; i++)
     {
         auto callParameter = context.parameters[i];
-        auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallOneParam);
+        auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
         if (!param->namedParam.empty())
         {
             hasNamedParameters = true;
@@ -119,7 +119,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         for (int i = startResolved; i < numParams; i++)
         {
             callParameter = context.parameters[i];
-            auto param    = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallOneParam);
+            auto param    = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
             if (param->namedParam.empty())
             {
                 // After the last named parameters, we must have the first default value, or nothing

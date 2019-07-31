@@ -132,7 +132,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         {
             for (auto one : identifier->callParameters->childs)
             {
-                auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallOneParam);
+                auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, param, "attribute parameter cannot be evaluated at compile time"}));
                 string attrFullName        = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->name);
                 node->values[attrFullName] = param->computedValue;

@@ -67,7 +67,7 @@ enum class AstNodeKind
     FuncDeclParam,
     FuncDeclType,
     FuncCallParameters,
-    FuncCallOneParam,
+    FuncCallParam,
     FuncCall,
     FuncContent,
     Return,
@@ -265,12 +265,14 @@ struct AstIdentifierRef : public AstNode
     void reset() override
     {
         startScope = nullptr;
+		previousResolvedNode = nullptr;
         AstNode::reset();
     }
 
     AstNode* clone() override;
 
-    Scope* startScope;
+    Scope*   startScope;
+    AstNode* previousResolvedNode;
 };
 
 struct AstIdentifier : public AstNode
