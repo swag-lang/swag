@@ -11,6 +11,7 @@ impl point
 	//#[swag.printbytecode]
 	func set(self, x: s32)
 	{
+		@assert(self.x == 100)
 		self.x = x
 	}
 }
@@ -19,6 +20,7 @@ impl point
 #test
 {
 	var pt: point
+	pt.x = 100
 	point.set(pt, 10)
 	@assert(pt.x == 10)
 }
