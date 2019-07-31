@@ -9,7 +9,7 @@ struct toto
 
 impl toto
 {
-	func f(self)
+	func fff(self)
 	{
 		//@print(self.x)
 	}
@@ -21,5 +21,5 @@ impl toto
 	var pt: toto
 	pt.x = 100
 	pt.y = 200
-	f(pt)
+	fff(pt)
 }
