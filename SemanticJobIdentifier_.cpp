@@ -34,9 +34,9 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     if (isConstExpr)
         node->flags |= AST_CONST_EXPR;
 
-    // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload)
     {
+        // Symbol is in fact a constant value : no need for bytecode
         if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
         {
             node->computedValue = node->resolvedSymbolOverload->computedValue;

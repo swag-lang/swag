@@ -53,7 +53,6 @@ bool SyntaxJob::doArrayPointerRef(AstNode** exprNode)
         arrayNode->inheritOwnersAndFlags(this);
         arrayNode->token       = move(token);
         arrayNode->semanticFct = &SemanticJob::resolveArrayPointerRef;
-        arrayNode->flags |= AST_LEFT_EXPRESSION;
 
         Ast::addChild(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
@@ -396,7 +395,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     case TokenId::IntrisicPrint:
     case TokenId::IntrisicAssert:
     {
-        SWAG_CHECK(doIdentifierRef(nullptr, &exprNode, AST_LEFT_EXPRESSION));
+        SWAG_CHECK(doIdentifierRef(nullptr, &exprNode));
     }
     break;
 
@@ -414,6 +413,20 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     if (result)
         *result = exprNode;
     return true;
+}
+
+void SyntaxJob::setLeftExpression(AstNode* node)
+{
+    node->flags |= AST_LEFT_EXPRESSION;
+	switch (node->kind)
+	{
+	case AstNodeKind::IdentifierRef:
+		node->childs.back()->flags |= AST_LEFT_EXPRESSION;
+		break;
+	case AstNodeKind::ArrayPointerRef:
+		setLeftExpression(static_cast<AstPointerDeRef*>(node)->array);
+		break;
+	}       
 }
 
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
@@ -464,6 +477,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 
         if (result)
             *result = affectNode;
+
+        auto left = affectNode->childs.front();
+		setLeftExpression(left);
     }
     else
     {

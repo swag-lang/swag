@@ -43,6 +43,7 @@ struct SyntaxJob : public Job
 	bool doTypeExpressionTuple(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
+	void setLeftExpression(AstNode* node);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, uint64_t flags = 0, bool acceptInteger = false);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint64_t flags = 0);
