@@ -617,7 +617,15 @@ struct AstExpressionList : public AstNode
 
 struct AstStruct : public AstNode
 {
+    void reset() override
+    {
+        opInit = nullptr;
+        AstNode::reset();
+    }
+
     AstNode* clone() override;
+
+    ByteCode* opInit;
 };
 
 struct AstImpl : public AstNode

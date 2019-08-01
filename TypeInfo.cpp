@@ -309,7 +309,7 @@ TypeInfo* TypeInfoStruct::clone()
     auto newType         = g_Pool_typeInfoStruct.alloc();
     newType->scope       = scope;
     newType->childs      = childs;
-    newType->defaultInit = defaultInit;
+    newType->structNode  = structNode;
     newType->copyFrom(this);
     return newType;
 }

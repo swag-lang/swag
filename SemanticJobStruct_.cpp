@@ -35,6 +35,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     auto job        = context->job;
 
+    typeInfo->structNode = node;
     if (job->resolvedStage == 0)
     {
         typeInfo->name = format("struct %s", node->name.c_str());
@@ -50,11 +51,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             auto varDecl = static_cast<AstVarDecl*>(child);
 
-			// Var is a struct
+            // Var is a struct
             if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
             {
-				if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
-					structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+                if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
+                    structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
             }
 
             // Var has an initialization
@@ -82,32 +83,5 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     job->resolvedStage = 1;
-
-    // Search init function
-    auto symboleName = typeInfo->scope->symTable->find("opInit");
-    if (symboleName)
-    {
-        if (symboleName->cptOverloads)
-        {
-            symboleName->dependentJobs.push_back(context->job);
-            g_ThreadMgr.addPendingJob(context->job);
-            context->result = SemanticResult::Pending;
-            return true;
-        }
-
-        node->ownerScope->symTable->mutex.lock();
-        auto typeInfoFunc = g_Pool_typeInfoFuncAttr.alloc();
-        auto param        = g_Pool_typeInfoFuncAttrParam.alloc();
-        param->typeInfo   = typeInfo;
-        typeInfoFunc->parameters.push_back(param);
-
-        auto overload = symboleName->findOverload(typeInfoFunc);
-        if (overload)
-            typeInfo->defaultInit = overload->node;
-        node->ownerScope->symTable->mutex.unlock();
-
-        typeInfoFunc->release();
-    }
-
     return true;
 }

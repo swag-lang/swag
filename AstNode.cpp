@@ -318,6 +318,7 @@ AstNode* AstStruct::clone()
 {
     auto newNode = g_Pool_astStruct.alloc();
     newNode->copyFrom(this);
+    newNode->opInit = opInit;
     return newNode;
 }
 

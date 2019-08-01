@@ -4,7 +4,7 @@
 struct point
 {
 	var x = 10
-	var y = 20
+	var y = 200
 }
 
 impl point
@@ -22,5 +22,5 @@ impl point
 {
 	var pt: point
 	@assert(pt.x == 10)
-	@assert(pt.y == 20)
+	@assert(pt.y == 200)
 }

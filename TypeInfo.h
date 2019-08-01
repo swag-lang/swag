@@ -479,9 +479,9 @@ struct TypeInfoStruct : public TypeInfo
     {
         TypeInfo::reset();
         childs.clear();
-        kind  = TypeInfoKind::Struct;
-        scope = nullptr;
-		defaultInit = nullptr;
+        kind        = TypeInfoKind::Struct;
+        scope       = nullptr;
+        structNode  = nullptr;
     }
 
     bool isSame(TypeInfo* from) override
@@ -505,7 +505,7 @@ struct TypeInfoStruct : public TypeInfo
 
     Scope*            scope;
     vector<TypeInfo*> childs;
-    struct AstNode*   defaultInit;
+    struct AstNode*   structNode;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
