@@ -85,19 +85,19 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                 switch (typeVar->sizeOf)
                 {
                 case 1:
-					emitInstruction(context, ByteCodeOp::Clear8, 0);
+					emitInstruction(&cxt, ByteCodeOp::Clear8, 0);
                     break;
                 case 2:
-					emitInstruction(context, ByteCodeOp::Clear16, 0);
+					emitInstruction(&cxt, ByteCodeOp::Clear16, 0);
                     break;
                 case 4:
-					emitInstruction(context, ByteCodeOp::Clear32, 0);
+					emitInstruction(&cxt, ByteCodeOp::Clear32, 0);
                     break;
                 case 8:
-					emitInstruction(context, ByteCodeOp::Clear64, 0);
+					emitInstruction(&cxt, ByteCodeOp::Clear64, 0);
                     break;
 				default:
-					emitInstruction(context, ByteCodeOp::ClearX, 0)->b.u32 = typeVar->sizeOf;
+					emitInstruction(&cxt, ByteCodeOp::ClearX, 0)->b.u32 = typeVar->sizeOf;
 					break;
                 }                
             }
