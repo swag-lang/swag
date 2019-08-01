@@ -1,0 +1,23 @@
+#module module536
+#unittest pass semantic
+
+struct point1
+{
+	var x = 100
+	var y = 200
+	var z = 300
+}
+
+struct point
+{
+	var in: point1
+	var x = 10
+	var y = 20
+}
+
+//#[swag.printbytecode]
+#test
+{
+	var pt: point
+	@assert(@prop(pt, sizeof) == 20)
+}

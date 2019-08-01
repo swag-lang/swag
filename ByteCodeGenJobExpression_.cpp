@@ -81,6 +81,11 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
+	if (typeInfo->kind == TypeInfoKind::Struct)
+	{
+		return true;
+	}
+
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);

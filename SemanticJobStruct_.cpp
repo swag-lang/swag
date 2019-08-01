@@ -50,8 +50,15 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             auto varDecl = static_cast<AstVarDecl*>(child);
 
+			// Var is a struct
+            if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
+            {
+				if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
+					structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+            }
+
             // Var has an initialization
-            if (varDecl->astAssignment)
+            else if (varDecl->astAssignment)
             {
                 SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
                 if (varDecl->astAssignment->computedValue.reg.u64)
