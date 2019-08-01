@@ -16,7 +16,7 @@ namespace Ast
         {
             if (parent->childs[i] == child)
             {
-				parent->childs.erase(parent->childs.begin() + i);
+                parent->childs.erase(parent->childs.begin() + i);
                 child->parent = nullptr;
                 parent->unlock();
                 return;
@@ -87,12 +87,17 @@ namespace Ast
         idRef->name  = name;
         idRef->token = token;
 
-        auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
-        id->semanticFct = &SemanticJob::resolveIdentifier;
-        id->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
-        id->inheritOwnersAndFlags(job);
-        id->name  = name;
-        id->token = token;
+        vector<string> tokens;
+        tokenize(name.c_str(), '.', tokens);
+        for (int i = 0; i < tokens.size(); i++)
+        {
+            auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
+            id->semanticFct = &SemanticJob::resolveIdentifier;
+            id->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
+            id->inheritOwnersAndFlags(job);
+            id->name  = tokens[i];
+            id->token = token;
+        }
 
         return idRef;
     }

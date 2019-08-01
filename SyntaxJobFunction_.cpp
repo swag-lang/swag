@@ -27,9 +27,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         auto typeNode = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
         typeNode->inheritOwnersAndFlags(this);
         typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
-        Utf8Crc name             = currentScope->parentScope->name;
-		name.computeCrc();
-        typeNode->typeExpression = Ast::createIdentifierRef(this, name, token, typeNode);
+        typeNode->typeExpression = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
         paramNode->astType       = typeNode;
     }
     else

@@ -17,10 +17,10 @@ impl point
 	}*/
 }
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var pt: point
-	@print(pt.x)
-	@print(pt.y)
+	@assert(pt.x == 10)
+	@assert(pt.y == 20)
 }
