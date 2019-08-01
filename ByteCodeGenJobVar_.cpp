@@ -25,6 +25,8 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
 	if (typeInfo->defaultInit)
 	{
 		askForByteCode(context, CastAst<AstFuncDecl>(typeInfo->defaultInit, AstNodeKind::FuncDecl));
+		if (context->result == ByteCodeResult::Pending)
+			return true;
 
 		// Push self
 		RegisterList r0;

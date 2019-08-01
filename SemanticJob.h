@@ -63,7 +63,7 @@ struct SemanticJob : public Job
     static bool resolveUnaryOp(SemanticContext* context);
     static bool resolveTypeExpression(SemanticContext* context);
     static bool resolveTypeLambda(SemanticContext* context);
-	static bool resolveTypeTuple(SemanticContext* context);
+    static bool resolveTypeTuple(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeDecl(SemanticContext* context);
     static bool resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
@@ -83,8 +83,8 @@ struct SemanticJob : public Job
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
-	static bool resolveImpl(SemanticContext* context);
-	static bool resolveStruct(SemanticContext* context);
+    static bool resolveImpl(SemanticContext* context);
+    static bool resolveStruct(SemanticContext* context);
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);
     static bool resolveFuncDecl(SemanticContext* context);
@@ -122,11 +122,11 @@ struct SemanticJob : public Job
         nodes.clear();
         cacheDependentSymbols.clear();
         cacheScopeHierarchy.clear();
-		scopesHere.clear();
-		scopesHereNoAlt.clear();
-		cacheMatches.clear();
-		cacheBadSignature.clear();
-		symMatch.reset();
+        scopesHere.clear();
+        scopesHereNoAlt.clear();
+        cacheMatches.clear();
+        cacheBadSignature.clear();
+        symMatch.reset();
     }
 
     Module*                 module;
@@ -139,6 +139,7 @@ struct SemanticJob : public Job
     vector<SymbolOverload*> cacheMatches;
     vector<SymbolOverload*> cacheBadSignature;
     SymbolMatchContext      symMatch;
+    uint32_t                resolvedStage;
 };
 
 extern Pool<SemanticJob> g_Pool_semanticJob;

@@ -9,6 +9,7 @@
 #include "Scope.h"
 #include "Ast.h"
 #include "AstNode.h"
+#include "ThreadManager.h"
 
 bool SemanticJob::resolveImpl(SemanticContext* context)
 {
@@ -32,55 +33,74 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto job        = context->job;
 
-    typeInfo->name = format("struct %s", node->name.c_str());
-
-    uint32_t storageOffset = 0;
-    uint32_t storageIndex  = 0;
-    uint32_t structFlags   = 0;
-
-    for (auto child : node->childs)
+    if (job->resolvedStage == 0)
     {
-        if (child->kind != AstNodeKind::VarDecl)
-            continue;
+        typeInfo->name = format("struct %s", node->name.c_str());
 
-        auto varDecl = static_cast<AstVarDecl*>(child);
+        uint32_t storageOffset = 0;
+        uint32_t storageIndex  = 0;
+        uint32_t structFlags   = 0;
 
-        // Var has an initialization
-        if (varDecl->astAssignment)
+        for (auto child : node->childs)
         {
-            SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
-            if (varDecl->astAssignment->computedValue.reg.u64)
-                structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+            if (child->kind != AstNodeKind::VarDecl)
+                continue;
+
+            auto varDecl = static_cast<AstVarDecl*>(child);
+
+            // Var has an initialization
+            if (varDecl->astAssignment)
+            {
+                SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
+                if (varDecl->astAssignment->computedValue.reg.u64)
+                    structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+            }
+
+            typeInfo->childs.push_back(child->typeInfo);
+            typeInfo->sizeOf += child->typeInfo->sizeOf;
+            typeInfo->flags |= structFlags;
+
+            child->resolvedSymbolOverload->storageOffset = storageOffset;
+            child->resolvedSymbolOverload->storageIndex  = storageIndex;
+            storageOffset += child->typeInfo->sizeOf;
+            storageIndex++;
         }
 
-        typeInfo->childs.push_back(child->typeInfo);
-        typeInfo->sizeOf += child->typeInfo->sizeOf;
-        typeInfo->flags |= structFlags;
+        node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
-        child->resolvedSymbolOverload->storageOffset = storageOffset;
-        child->resolvedSymbolOverload->storageIndex  = storageIndex;
-        storageOffset += child->typeInfo->sizeOf;
-        storageIndex++;
+        // Register symbol with its type
+        SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
     }
 
-    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+    job->resolvedStage = 1;
 
     // Search init function
-    auto symboleName = node->ownerScope->symTable->find("opInit");
+    auto symboleName = typeInfo->scope->symTable->find("opInit");
     if (symboleName)
     {
+        if (symboleName->cptOverloads)
+        {
+            symboleName->dependentJobs.push_back(context->job);
+            g_ThreadMgr.addPendingJob(context->job);
+            context->result = SemanticResult::Pending;
+            return true;
+        }
+
         node->ownerScope->symTable->mutex.lock();
         auto typeInfoFunc = g_Pool_typeInfoFuncAttr.alloc();
-        auto overload     = symboleName->findOverload(typeInfoFunc);
+        auto param        = g_Pool_typeInfoFuncAttrParam.alloc();
+        param->typeInfo   = typeInfo;
+        typeInfoFunc->parameters.push_back(param);
+
+        auto overload = symboleName->findOverload(typeInfoFunc);
         if (overload)
             typeInfo->defaultInit = overload->node;
         node->ownerScope->symTable->mutex.unlock();
+
         typeInfoFunc->release();
     }
-
-    // Register symbol with its type
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
 
     return true;
 }

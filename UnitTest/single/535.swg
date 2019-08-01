@@ -7,7 +7,17 @@ struct point
 	var y = 20
 }
 
-//#[swag.printbytecode]
+impl point
+{
+	func opInit(self)
+	{
+		self.x = 10
+		self.y = 20
+		@print("toto\n")
+	}
+}
+
+#[swag.printbytecode]
 #test
 {
 	var pt: point

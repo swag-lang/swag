@@ -34,6 +34,7 @@ JobResult SemanticJob::execute()
         switch (node->semanticState)
         {
         case AstNodeResolveState::Enter:
+			resolvedStage = 0;
             node->semanticState = AstNodeResolveState::ProcessingChilds;
 
             if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))

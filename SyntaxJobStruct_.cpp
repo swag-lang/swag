@@ -108,10 +108,11 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     return true;
 }
 
-void SyntaxJob::buildStructConstruct(AstNode* node)
+void SyntaxJob::buildStructConstruct(AstNode* parent)
 {
-    auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-    auto funcNode   = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, structNode->sourceFileIdx, node);
+	return;
+    auto structNode = CastAst<AstStruct>(parent, AstNodeKind::StructDecl);
+    auto funcNode   = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, structNode->sourceFileIdx, parent);
     funcNode->inheritOwnersAndFlags(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     funcNode->name        = "opInit";
