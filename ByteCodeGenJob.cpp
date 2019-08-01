@@ -9,13 +9,14 @@
 #include "TypeInfo.h"
 #include "Module.h"
 #include "Attribute.h"
+#include "Scope.h"
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
 bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg, AstNode* node)
 {
-	if (!node)
-		node = context->node;
+    if (!node)
+        node = context->node;
     context->sourceFile->report({context->sourceFile, node->token, format("internal error, %s", msg)});
     return false;
 }
@@ -47,7 +48,7 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
         context->sourceFile->module->freeRegisterRC(rc[i]);
     }
 
-	rc.clear();
+    rc.clear();
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
@@ -89,6 +90,8 @@ void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
     node->bc             = g_Pool_byteCode.alloc();
     node->bc->node       = node;
     node->bc->sourceFile = module->files[node->sourceFileIdx];
+    node->bc->name       = node->ownerScope->fullname + "_" + node->name;
+	replaceAll(node->bc->name, '.', '_');
     if (node->kind == AstNodeKind::FuncDecl)
         module->addByteCodeFunc(node->bc);
 }

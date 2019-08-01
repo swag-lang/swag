@@ -22,9 +22,10 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
         return true;
     }
 
-    structNode->opInit                    = g_Pool_byteCode.alloc();
-    structNode->opInit->sourceFile        = context->sourceFile;
-    structNode->opInit->name              = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
+    structNode->opInit             = g_Pool_byteCode.alloc();
+    structNode->opInit->sourceFile = context->sourceFile;
+    structNode->opInit->name       = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
+    replaceAll(structNode->opInit->name, '.', '_');
     structNode->opInit->typeInfoFunc      = typeInfoFunc;
     structNode->opInit->maxCallParameters = 1;
     structNode->opInit->usedRegisters.insert(0);
