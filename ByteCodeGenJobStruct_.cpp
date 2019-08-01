@@ -38,76 +38,102 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     auto structNode = CastAst<AstStruct>(typeInfo->structNode, AstNodeKind::StructDecl);
 
     structNode->lock();
-    if (!structNode->opInit)
+    if (structNode->opInit)
     {
-        structNode->opInit             = g_Pool_byteCode.alloc();
-        structNode->opInit->sourceFile = context->sourceFile;
-        structNode->opInit->name       = "opInit";
+        structNode->unlock();
+        return true;
+    }
 
-        ByteCodeGenContext cxt{*context};
-        cxt.bc = structNode->opInit;
+    structNode->opInit             = g_Pool_byteCode.alloc();
+    structNode->opInit->sourceFile = context->sourceFile;
+    structNode->opInit->name       = "opInit";
 
-        for (auto child : structNode->childs)
+    ByteCodeGenContext cxt{*context};
+    cxt.bc = structNode->opInit;
+
+    for (auto child : structNode->childs)
+    {
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        auto typeVar = varDecl->typeInfo;
+
+        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+        emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+
+        if (varDecl->astAssignment)
         {
-            auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-            auto typeVar = varDecl->typeInfo;
-
-            emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
-
-            if (varDecl->astAssignment)
+            if (typeVar->isNative(NativeType::String))
             {
-                if (typeVar->kind == TypeInfoKind::Native)
-                {
-                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->astAssignment->computedValue.reg.u32;
-                    emitInstruction(&cxt, ByteCodeOp::AffectOp32, 0, 1);
-                }
-                else
-                {
-                    return internalError(context, "generateStructInit, invalid type");
-                }
+                return internalError(context, "generateStructInit, invalid native type, string");
             }
-            else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
-            {
-                auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
-                if (!generateStructInit(context, static_cast<TypeInfoStruct*>(typeVar)))
-                    return false;
-
-                emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-                auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
-                inst->a.pointer = (uint8_t*) static_cast<AstStruct*>(typeVarStruct->structNode)->opInit;
-                inst->b.u64     = 1;
-                inst->c.pointer = (uint8_t*) typeVarStruct;
-                emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
-            }
-            else
+            else if (typeVar->kind == TypeInfoKind::Native)
             {
                 switch (typeVar->sizeOf)
                 {
                 case 1:
-					emitInstruction(&cxt, ByteCodeOp::Clear8, 0);
+                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->astAssignment->computedValue.reg.u8;
+                    emitInstruction(&cxt, ByteCodeOp::AffectOp8, 0, 1);
                     break;
                 case 2:
-					emitInstruction(&cxt, ByteCodeOp::Clear16, 0);
+                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->astAssignment->computedValue.reg.u16;
+                    emitInstruction(&cxt, ByteCodeOp::AffectOp16, 0, 1);
                     break;
                 case 4:
-					emitInstruction(&cxt, ByteCodeOp::Clear32, 0);
+                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->astAssignment->computedValue.reg.u32;
+                    emitInstruction(&cxt, ByteCodeOp::AffectOp32, 0, 1);
                     break;
                 case 8:
-					emitInstruction(&cxt, ByteCodeOp::Clear64, 0);
+                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB64, 1)->b.u64 = varDecl->astAssignment->computedValue.reg.u64;
+                    emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1);
                     break;
-				default:
-					emitInstruction(&cxt, ByteCodeOp::ClearX, 0)->b.u32 = typeVar->sizeOf;
-					break;
-                }                
+                default:
+                    return internalError(context, "generateStructInit, invalid native type sizeof");
+                }
+            }
+            else
+            {
+                return internalError(context, "generateStructInit, invalid assignment type");
             }
         }
+        else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
+        {
+            auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
+            if (!generateStructInit(context, static_cast<TypeInfoStruct*>(typeVar)))
+                return false;
 
-        emitInstruction(&cxt, ByteCodeOp::Ret);
-        emitInstruction(&cxt, ByteCodeOp::End);
+            emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+            auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+            inst->a.pointer = (uint8_t*) static_cast<AstStruct*>(typeVarStruct->structNode)->opInit;
+            inst->b.u64     = 1;
+            inst->c.pointer = (uint8_t*) typeVarStruct;
+            emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+        }
+        else
+        {
+            switch (typeVar->sizeOf)
+            {
+            case 1:
+                emitInstruction(&cxt, ByteCodeOp::Clear8, 0);
+                break;
+            case 2:
+                emitInstruction(&cxt, ByteCodeOp::Clear16, 0);
+                break;
+            case 4:
+                emitInstruction(&cxt, ByteCodeOp::Clear32, 0);
+                break;
+            case 8:
+                emitInstruction(&cxt, ByteCodeOp::Clear64, 0);
+                break;
+            default:
+                emitInstruction(&cxt, ByteCodeOp::ClearX, 0)->b.u32 = typeVar->sizeOf;
+                break;
+            }
+        }
     }
 
+    emitInstruction(&cxt, ByteCodeOp::Ret);
+    emitInstruction(&cxt, ByteCodeOp::End);
     structNode->unlock();
+
     return true;
 }
 
