@@ -59,9 +59,12 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
 
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
-    auto sourceFile   = context->sourceFile;
-    auto node         = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    node->byteCodeFct = &ByteCodeGenJob::emitLocalFuncDecl;
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+
+    node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
+    typeInfo->stackSize = node->stackSize;
 
     // Check prototype
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)

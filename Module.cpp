@@ -125,7 +125,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
 {
     scoped_lock lk(mutexByteCode);
     byteCodeFunc.push_back(bc);
-    if (bc->node->attributeFlags & ATTRIBUTE_TEST)
+    if (bc->node && bc->node->attributeFlags & ATTRIBUTE_TEST)
         byteCodeTestFunc.push_back(bc);
 }
 

@@ -91,10 +91,10 @@ void BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
     buffer.addString(")");
 }
 
-void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, const string& name)
 {
     bufferC.addString("void __");
-    bufferC.addString(node->name.c_str());
+    bufferC.addString(name.c_str());
     bufferC.addString("(");
 
     // Result
@@ -132,29 +132,38 @@ bool BackendC::emitFuncSignatures()
 
     for (auto one : module->byteCodeFunc)
     {
-        auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+        TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
+        AstFuncDecl*      node     = nullptr;
 
-        // Do we need to generate that function ?
-        if (node->attributeFlags & ATTRIBUTE_COMPILER)
-            continue;
-        if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
-            continue;
-        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-            continue;
-
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-
-        emitFuncSignatureInternalC(typeFunc, node);
-        bufferC.addString(";\n");
-
-        if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        if (one->node)
         {
-            bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
-            emitFuncSignaturePublic(bufferH, typeFunc, node);
-            bufferH.addString(";\n");
+            node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+
+            // Do we need to generate that function ?
+            if (node->attributeFlags & ATTRIBUTE_COMPILER)
+                continue;
+            if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
+                continue;
+            if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+                continue;
+
+            typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        emitFuncSignatureSwg(typeFunc, node);
+        emitFuncSignatureInternalC(typeFunc, node ? node->name : one->name);
+        bufferC.addString(";\n");
+
+        if (node)
+        {
+            if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+            {
+                bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
+                emitFuncSignaturePublic(bufferH, typeFunc, node);
+                bufferH.addString(";\n");
+            }
+
+            emitFuncSignatureSwg(typeFunc, node);
+        }
     }
 
     bufferSwg.addString("}\n");
@@ -162,17 +171,16 @@ bool BackendC::emitFuncSignatures()
     return true;
 }
 
-bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, const string& name)
 {
     bool ok = true;
 
     // Signature
     bufferC.addString("static ");
-    emitFuncSignatureInternalC(typeFunc, node);
+    emitFuncSignatureInternalC(typeFunc, name);
     bufferC.addString(" {\n");
 
     // Generate one local variable per used register
-    auto bc = node->bc;
     if (bc->usedRegisters.size())
     {
         int index = 0;
@@ -231,9 +239,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
     }
 
     // Local stack
-    if (node->stackSize)
+    if (typeFunc->stackSize)
     {
-        bufferC.addString(format("swag_uint8_t stack[%u];\n", node->stackSize));
+        bufferC.addString(format("swag_uint8_t stack[%u];\n", typeFunc->stackSize));
     }
 
     // Generate bytecode
@@ -310,6 +318,22 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
             break;
         case ByteCodeOp::RAFromDataSeg64:
             bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
+            break;
+
+        case ByteCodeOp::Clear8:
+            bufferC.addString(format("*(swag_uint8_t*)r%u.pointer = 0;", ip->a.u32));
+            break;
+        case ByteCodeOp::Clear16:
+            bufferC.addString(format("*(swag_uint16_t*)r%u.pointer = 0;", ip->a.u32));
+            break;
+        case ByteCodeOp::Clear32:
+            bufferC.addString(format("*(swag_uint32_t*)r%u.pointer = 0;", ip->a.u32));
+            break;
+        case ByteCodeOp::Clear64:
+            bufferC.addString(format("*(swag_uint64_t*)r%u.pointer = 0;", ip->a.u32));
+            break;
+        case ByteCodeOp::ClearX:
+            bufferC.addString(format("__memclear(r%u.pointer, %u);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::ClearRefFromStack8:
@@ -924,21 +948,18 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LocalCall:
         {
-            TypeInfoFuncAttr* typeFuncBC;
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->c.pointer;
 
             // Normal function call
             if (ip->op == ByteCodeOp::LocalCall)
             {
                 auto funcBC = (ByteCode*) ip->a.pointer;
-                typeFuncBC  = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
-                bufferC.addString(format("{ __%s", funcBC->node->name.c_str()));
+                bufferC.addString(format("{ __%s", funcBC->node ? funcBC->node->name.c_str() : funcBC->name.c_str()));
             }
 
             // Lambda call
             else
             {
-                typeFuncBC = (TypeInfoFuncAttr*) ip->c.pointer;
-
                 // Need to output the function prototype too
                 bufferC.addString("{ typedef void(*tfn)(");
                 for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
@@ -1011,20 +1032,27 @@ bool BackendC::emitFunctions()
     bool ok = true;
     for (auto one : module->byteCodeFunc)
     {
-        auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+        TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
+        AstFuncDecl*      node     = nullptr;
 
-        // Do we need to generate that function ?
-        if (node->attributeFlags & ATTRIBUTE_COMPILER)
-            continue;
-        if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
-            continue;
-        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-            continue;
+        if (one->node)
+        {
+            node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
 
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        ok &= emitInternalFunction(typeFunc, node);
+            // Do we need to generate that function ?
+            if (node->attributeFlags & ATTRIBUTE_COMPILER)
+                continue;
+            if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
+                continue;
+            if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+                continue;
 
-        if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+            typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        }
+
+        ok &= emitInternalFunction(typeFunc, one, node ? node->name : one->name);
+
+        if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
             emitFuncSignaturePublic(bufferC, typeFunc, node);
             bufferC.addString(" {\n");

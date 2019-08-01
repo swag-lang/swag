@@ -7,6 +7,7 @@ struct AstFuncDecl;
 struct TypeInfoFuncAttr;
 struct TypeInfo;
 struct BackendParameters;
+struct ByteCode;
 
 struct BackendC : public Backend
 {
@@ -32,9 +33,9 @@ struct BackendC : public Backend
 
     const char* swagTypeToCType(TypeInfo* typeInfo);
     void        emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    void        emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    void        emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, const string& name);
     void        emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool        emitInternalFunction(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool        emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, const string& name);
 
     string destFile;
 

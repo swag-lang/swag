@@ -133,7 +133,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
 
-    static bool generateStructInit(ByteCodeGenContext* context, struct TypeInfoStruct* typeInfo);
+    static bool generateStructInit(ByteCodeGenContext* context, struct TypeInfoStruct* typeInfo, struct TypeInfoFuncAttr* typeInfoFunc);
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);

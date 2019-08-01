@@ -293,6 +293,7 @@ struct TypeInfoFuncAttr : public TypeInfo
         firstDefaultValueIdx = -1;
         parameters.clear();
         returnType = nullptr;
+        stackSize  = 0;
     }
 
     int numParamsRegisters()
@@ -319,6 +320,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     int                            firstDefaultValueIdx;
     vector<TypeInfoFuncAttrParam*> parameters;
     TypeInfo*                      returnType;
+    int                            stackSize;
 };
 
 struct TypeInfoPointer : public TypeInfo
@@ -479,9 +481,9 @@ struct TypeInfoStruct : public TypeInfo
     {
         TypeInfo::reset();
         childs.clear();
-        kind        = TypeInfoKind::Struct;
-        scope       = nullptr;
-        structNode  = nullptr;
+        kind       = TypeInfoKind::Struct;
+        scope      = nullptr;
+        structNode = nullptr;
     }
 
     bool isSame(TypeInfo* from) override

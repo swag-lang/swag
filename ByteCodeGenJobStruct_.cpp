@@ -6,35 +6,12 @@
 #include "Ast.h"
 #include "TypeInfo.h"
 #include "SourceFile.h"
+#include "Module.h"
+#include "TypeManager.h"
 
-/*
-auto symboleName = typeInfo -> scope -> symTable -> find("opInit");
-if (symboleName)
+bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, TypeInfoFuncAttr* typeInfoFunc)
 {
-    if (symboleName->cptOverloads)
-    {
-        symboleName->dependentJobs.push_back(context->job);
-        g_ThreadMgr.addPendingJob(context->job);
-        context->result = SemanticResult::Pending;
-        return true;
-    }
-
-    node->ownerScope->symTable->mutex.lock();
-    auto typeInfoFunc = g_Pool_typeInfoFuncAttr.alloc();
-    auto param        = g_Pool_typeInfoFuncAttrParam.alloc();
-    param->typeInfo   = typeInfo;
-    typeInfoFunc->parameters.push_back(param);
-
-    auto overload = symboleName->findOverload(typeInfoFunc);
-    if (overload)
-        typeInfo->defaultInit = overload->node;
-    node->ownerScope->symTable->mutex.unlock();
-
-    typeInfoFunc->release();
-}*/
-
-bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo)
-{
+    auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfo->structNode, AstNodeKind::StructDecl);
 
     structNode->lock();
@@ -44,9 +21,15 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
         return true;
     }
 
-    structNode->opInit             = g_Pool_byteCode.alloc();
-    structNode->opInit->sourceFile = context->sourceFile;
-    structNode->opInit->name       = "opInit";
+    structNode->opInit                    = g_Pool_byteCode.alloc();
+    structNode->opInit->sourceFile        = context->sourceFile;
+    structNode->opInit->name              = "opInit";
+    structNode->opInit->typeInfoFunc      = typeInfoFunc;
+    structNode->opInit->maxCallParameters = 1;
+    structNode->opInit->usedRegisters.insert(0);
+    structNode->opInit->usedRegisters.insert(1);
+    context->node->ownerFct->bc->maxCallParameters = max(1, context->node->ownerFct->bc->maxCallParameters);
+    sourceFile->module->addByteCodeFunc(structNode->opInit);
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = structNode->opInit;
@@ -97,7 +80,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
         else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
         {
             auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
-            if (!generateStructInit(context, static_cast<TypeInfoStruct*>(typeVar)))
+            if (!generateStructInit(context, static_cast<TypeInfoStruct*>(typeVar), typeInfoFunc))
                 return false;
 
             emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
@@ -153,8 +136,15 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
         return true;
     }
 
+    // Type
+    auto typeInfoFunc = g_Pool_typeInfoFuncAttr.alloc();
+    auto param        = g_Pool_typeInfoFuncAttrParam.alloc();
+    param->typeInfo   = typeInfo;
+    typeInfoFunc->parameters.push_back(param);
+    typeInfoFunc = (TypeInfoFuncAttr*) g_TypeMgr.registerType(typeInfoFunc);
+
     // Be sure referenced function has bytecode
-    if (!generateStructInit(context, typeInfo))
+    if (!generateStructInit(context, typeInfo, typeInfoFunc))
         return false;
 
     // Push self
@@ -168,7 +158,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
     inst            = emitInstruction(context, ByteCodeOp::LocalCall, 0);
     inst->a.pointer = (uint8_t*) structNode->opInit;
     inst->b.u64     = 1;
-    inst->c.pointer = (uint8_t*) typeInfo;
+    inst->c.pointer = (uint8_t*) typeInfoFunc;
     emitInstruction(context, ByteCodeOp::IncSP, 8);
 
     return true;

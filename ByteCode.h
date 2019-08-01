@@ -6,6 +6,7 @@
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
 struct SourceFile;
+struct TypeInfoFuncAttr;
 
 struct ByteCodeInstruction
 {
@@ -28,8 +29,9 @@ struct ByteCode : public PoolElement
     uint32_t             maxInstructions    = 0;
     int                  maxCallParameters  = 0;
     int                  maxCallResults     = 0;
-    SourceFile*          sourceFile;
-    AstNode*             node;
+    SourceFile*          sourceFile         = nullptr;
+    TypeInfoFuncAttr*    typeInfoFunc       = nullptr;
+    AstNode*             node               = nullptr;
     string               name;
 
     set<int> usedRegisters;

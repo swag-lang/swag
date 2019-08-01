@@ -241,6 +241,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
     newType->parameters           = parameters;
     newType->returnType           = returnType;
+    newType->stackSize            = stackSize;
     newType->copyFrom(this);
     return newType;
 }
@@ -306,10 +307,10 @@ TypeInfo* TypeInfoVariadic::clone()
 
 TypeInfo* TypeInfoStruct::clone()
 {
-    auto newType         = g_Pool_typeInfoStruct.alloc();
-    newType->scope       = scope;
-    newType->childs      = childs;
-    newType->structNode  = structNode;
+    auto newType        = g_Pool_typeInfoStruct.alloc();
+    newType->scope      = scope;
+    newType->childs     = childs;
+    newType->structNode = structNode;
     newType->copyFrom(this);
     return newType;
 }
