@@ -8,6 +8,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "Scope.h"
 
 bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, TypeInfoFuncAttr* typeInfoFunc)
 {
@@ -23,7 +24,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
 
     structNode->opInit                    = g_Pool_byteCode.alloc();
     structNode->opInit->sourceFile        = context->sourceFile;
-    structNode->opInit->name              = "opInit";
+    structNode->opInit->name              = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
     structNode->opInit->typeInfoFunc      = typeInfoFunc;
     structNode->opInit->maxCallParameters = 1;
     structNode->opInit->usedRegisters.insert(0);
@@ -87,7 +88,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
             auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
             inst->a.pointer = (uint8_t*) static_cast<AstStruct*>(typeVarStruct->structNode)->opInit;
             inst->b.u64     = 1;
-            inst->c.pointer = (uint8_t*) typeVarStruct;
+            inst->c.pointer = (uint8_t*) typeInfoFunc;
             emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
         }
         else

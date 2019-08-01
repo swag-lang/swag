@@ -505,6 +505,11 @@ struct TypeInfoStruct : public TypeInfo
 
     TypeInfo* clone() override;
 
+	int numRegisters() override
+    {
+        return 1;
+    }
+
     Scope*            scope;
     vector<TypeInfo*> childs;
     struct AstNode*   structNode;

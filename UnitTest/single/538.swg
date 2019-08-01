@@ -1,5 +1,5 @@
 #module module538
-#unittest pass semantic
+//#unittest pass semantic
 
 struct point1
 {
