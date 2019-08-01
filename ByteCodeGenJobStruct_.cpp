@@ -7,7 +7,6 @@
 #include "TypeInfo.h"
 #include "SourceFile.h"
 
-
 /*
 auto symboleName = typeInfo -> scope -> symTable -> find("opInit");
 if (symboleName)
@@ -34,11 +33,8 @@ if (symboleName)
     typeInfoFunc->release();
 }*/
 
-bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context)
+bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo)
 {
-    auto node       = context->node;
-    auto resolved   = node->resolvedSymbolOverload;
-    auto typeInfo   = CastTypeInfo<TypeInfoStruct>(resolved->typeInfo, TypeInfoKind::Struct);
     auto structNode = CastAst<AstStruct>(typeInfo->structNode, AstNodeKind::StructDecl);
 
     structNode->lock();
@@ -54,19 +50,56 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context)
         for (auto child : structNode->childs)
         {
             auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+            auto typeVar = varDecl->typeInfo;
+
+            emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+
             if (varDecl->astAssignment)
             {
-                if (varDecl->typeInfo->kind == TypeInfoKind::Native)
+                if (typeVar->kind == TypeInfoKind::Native)
                 {
-                    emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-                    emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
-                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32   = varDecl->astAssignment->computedValue.reg.u32;
+                    emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->astAssignment->computedValue.reg.u32;
                     emitInstruction(&cxt, ByteCodeOp::AffectOp32, 0, 1);
                 }
                 else
                 {
                     return internalError(context, "generateStructInit, invalid type");
                 }
+            }
+            else if (typeVar->kind == TypeInfoKind::Struct && (typeVar->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
+            {
+                auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
+                if (!generateStructInit(context, static_cast<TypeInfoStruct*>(typeVar)))
+                    return false;
+
+                emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+                auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+                inst->a.pointer = (uint8_t*) static_cast<AstStruct*>(typeVarStruct->structNode)->opInit;
+                inst->b.u64     = 1;
+                inst->c.pointer = (uint8_t*) typeVarStruct;
+                emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+            }
+            else
+            {
+                switch (typeVar->sizeOf)
+                {
+                case 1:
+					emitInstruction(context, ByteCodeOp::Clear8, 0);
+                    break;
+                case 2:
+					emitInstruction(context, ByteCodeOp::Clear16, 0);
+                    break;
+                case 4:
+					emitInstruction(context, ByteCodeOp::Clear32, 0);
+                    break;
+                case 8:
+					emitInstruction(context, ByteCodeOp::Clear64, 0);
+                    break;
+				default:
+					emitInstruction(context, ByteCodeOp::ClearX, 0)->b.u32 = typeVar->sizeOf;
+					break;
+                }                
             }
         }
 
@@ -95,7 +128,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
     }
 
     // Be sure referenced function has bytecode
-    if (!generateStructInit(context))
+    if (!generateStructInit(context, typeInfo))
         return false;
 
     // Push self

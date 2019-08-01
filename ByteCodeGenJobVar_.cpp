@@ -46,8 +46,8 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     emitInstruction(context, ByteCodeOp::ClearRefFromStack16)->a.u32 = resolved->storageOffset;
                     break;
                 case 4:
-                    emitInstruction(context, ByteCodeOp::ClearRefFromStack32)->a.u32 = resolved->storageOffset;
-                    break;
+					emitInstruction(context, ByteCodeOp::ClearRefFromStack32)->a.u32 = resolved->storageOffset;
+					break;
                 case 8:
                     emitInstruction(context, ByteCodeOp::ClearRefFromStack64)->a.u32 = resolved->storageOffset;
                     break;

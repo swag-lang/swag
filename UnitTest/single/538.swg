@@ -3,7 +3,7 @@
 
 struct point1
 {
-	var x: s32
+	var x: s32 = 666
 	var y: s32
 	var z: s32 = 100
 }
@@ -15,10 +15,11 @@ struct point
 	var y: s32
 }
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var pt: point
 	@assert(pt.x == 10)
+	@assert(pt.in.x == 666)
 	@assert(pt.in.z == 100)
 }

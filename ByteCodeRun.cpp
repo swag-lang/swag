@@ -436,7 +436,23 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         *(uint64_t*) (context->bp + ip->a.u32) = 0;
         break;
     case ByteCodeOp::ClearRefFromStackX:
-		memset(context->bp + ip->a.u32, 0, ip->b.u32);
+        memset(context->bp + ip->a.u32, 0, ip->b.u32);
+        break;
+
+    case ByteCodeOp::Clear8:
+        *(uint8_t*) (registersRC[ip->a.u32].pointer) = 0;
+        break;
+    case ByteCodeOp::Clear16:
+        *(uint16_t*) (registersRC[ip->a.u32].pointer) = 0;
+        break;
+    case ByteCodeOp::Clear32:
+        *(uint32_t*) (registersRC[ip->a.u32].pointer) = 0;
+        break;
+    case ByteCodeOp::Clear64:
+        *(uint64_t*) (registersRC[ip->a.u32].pointer) = 0;
+        break;
+    case ByteCodeOp::ClearX:
+        memset(registersRC[ip->a.u32].pointer, 0, ip->b.u32);
         break;
 
     case ByteCodeOp::RAFromDataSeg8:
