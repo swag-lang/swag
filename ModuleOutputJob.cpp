@@ -10,30 +10,32 @@ Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 
 JobResult ModuleOutputJob::execute()
 {
-	assert(!module->backend);
+    assert(!module->backend);
     module->backend = new BackendC(module);
     if (!module->backend->generate())
         return JobResult::ReleaseJob;
     if (module->buildPass < BuildPass::Full)
         return JobResult::ReleaseJob;
 
-    // Compile the official normal version
-    auto compileJob               = g_Pool_moduleCompileJob.alloc();
-    compileJob->module            = module;
-    compileJob->backendParameters = module->backendParameters;
-    g_ThreadMgr.addJob(compileJob);
-
     // Compile a specific version, to test it
-    if (g_CommandLine.unittest && g_CommandLine.runBackendTests && !module->byteCodeTestFunc.empty())
+    if (g_CommandLine.unittest)
     {
-        compileJob                            = g_Pool_moduleCompileJob.alloc();
+        auto compileJob                       = g_Pool_moduleCompileJob.alloc();
         compileJob->module                    = module;
         compileJob->backendParameters         = module->backendParameters;
         compileJob->backendParameters.type    = BackendType::Exe;
         compileJob->backendParameters.postFix = ".test";
         compileJob->backendParameters.defines.clear();
         compileJob->backendParameters.defines.push_back("SWAG_IS_UNITTEST");
-        compileJob->backendParameters.runTests = true;
+        g_ThreadMgr.addJob(compileJob);
+    }
+
+    // Compile the official normal version
+    else
+    {
+        auto compileJob               = g_Pool_moduleCompileJob.alloc();
+        compileJob->module            = module;
+        compileJob->backendParameters = module->backendParameters;
         g_ThreadMgr.addJob(compileJob);
     }
 

@@ -10,7 +10,6 @@ struct BackendParameters
 {
     BackendType    type              = BackendType::Exe;
     bool           debugInformations = false;
-    bool           runTests          = false;
     string         postFix;
     vector<string> defines;
 };

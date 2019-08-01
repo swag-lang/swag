@@ -22,7 +22,7 @@ struct CommandLine
 
     bool verbose                 = false;
     bool verbose_unittest_errors = false;
-    bool verbose_backend_command = true;
+    bool verbose_backend_command = false;
     bool verbose_test            = true;
     bool verbose_build_pass      = true;
 
