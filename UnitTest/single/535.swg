@@ -1,0 +1,16 @@
+#module module535
+#unittest pass semantic
+
+struct point
+{
+	var x = 10
+	var y = 20
+}
+
+//#[swag.printbytecode]
+#test
+{
+	var pt: point
+	@print(pt.x)
+	@print(pt.y)
+}

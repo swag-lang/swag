@@ -306,9 +306,10 @@ TypeInfo* TypeInfoVariadic::clone()
 
 TypeInfo* TypeInfoStruct::clone()
 {
-    auto newType    = g_Pool_typeInfoStruct.alloc();
-    newType->scope  = scope;
-    newType->childs = childs;
+    auto newType         = g_Pool_typeInfoStruct.alloc();
+    newType->scope       = scope;
+    newType->childs      = childs;
+    newType->defaultInit = defaultInit;
     newType->copyFrom(this);
     return newType;
 }

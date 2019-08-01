@@ -8,9 +8,9 @@
 
 bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
 {
-    auto node     = static_cast<AstStruct*>(context->node);
+    auto node     = context->node;
     auto resolved = node->resolvedSymbolOverload;
-    auto typeInfo = resolved->typeInfo;
+    auto typeInfo = CastTypeInfo<TypeInfoStruct>(resolved->typeInfo, TypeInfoKind::Struct);
 
     // Just clear the content of the structure
     if (!(typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
@@ -20,6 +20,26 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
         inst->b.u32 = typeInfo->sizeOf;
         return true;
     }
+
+    // Be sure referenced function has bytecode
+	if (typeInfo->defaultInit)
+	{
+		askForByteCode(context, CastAst<AstFuncDecl>(typeInfo->defaultInit, AstNodeKind::FuncDecl));
+
+		// Push self
+		RegisterList r0;
+		r0 = reserveRegisterRC(context);
+		auto inst = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
+		inst->b.s32 = resolved->storageOffset;
+
+		// Then call
+		emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
+		inst = emitInstruction(context, ByteCodeOp::LocalCall, 0);
+		inst->a.pointer = (uint8_t*)typeInfo->defaultInit->bc;
+		inst->b.u64 = 1;
+		inst->c.pointer = (uint8_t*)typeInfo->defaultInit->typeInfo;
+		emitInstruction(context, ByteCodeOp::IncSP, 8);
+	}
 
     return true;
 }
@@ -50,6 +70,8 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             if (typeInfo->kind == TypeInfoKind::Struct)
             {
                 emitStructInit(context);
+                if (context->result == ByteCodeResult::Pending)
+                    return true;
             }
             else
             {

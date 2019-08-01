@@ -6,19 +6,20 @@
 #include "Scoped.h"
 #include "SymTable.h"
 #include "SemanticJob.h"
+#include "ByteCodeGenJob.h"
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
     auto implNode = Ast::newNode(&g_Pool_astImpl, AstNodeKind::Impl, sourceFile->indexInModule, parent);
     implNode->inheritOwnersAndFlags(this);
-	implNode->semanticFct = &SemanticJob::resolveImpl;
+    implNode->semanticFct = &SemanticJob::resolveImpl;
     if (result)
         *result = implNode;
 
-	// Identifier
+    // Identifier
     SWAG_CHECK(tokenizer.getToken(token));
-	SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
-	implNode->flags |= AST_NO_BYTECODE;
+    SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
+    implNode->flags |= AST_NO_BYTECODE;
 
     // Content of impl block
     auto curly = token;
@@ -100,5 +101,50 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
+
+    // Generic initialization function
+    buildStructConstruct(structNode);
+
     return true;
+}
+
+void SyntaxJob::buildStructConstruct(AstNode* node)
+{
+    auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+    auto funcNode   = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, structNode->sourceFileIdx, node);
+    funcNode->inheritOwnersAndFlags(this);
+    funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
+    funcNode->name        = "opInit";
+    funcNode->name.computeCrc();
+
+    funcNode->returnType = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, structNode->sourceFileIdx, funcNode);
+    funcNode->returnType->inheritOwnersAndFlags(this);
+    funcNode->returnType->semanticFct = &SemanticJob::resolveFuncDeclType;
+
+    // Register function name
+    Scope* newScope = nullptr;
+    currentScope->allocateSymTable();
+    {
+        scoped_lock lk(currentScope->symTable->mutex);
+        auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+        newScope             = Ast::newScope(funcNode->name, ScopeKind::Function, currentScope);
+        newScope->allocateSymTable();
+        funcNode->typeInfo = typeInfo;
+        if (!isContextDisabled())
+            currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+    }
+
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+
+		// Parameters
+        funcNode->parameters = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, structNode->sourceFileIdx, funcNode);
+        funcNode->parameters->inheritOwnersAndFlags(this);
+        funcNode->parameters->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
+
+		// Content
+		funcNode->content = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, structNode->sourceFileIdx, funcNode);
+		funcNode->content->inheritOwnersAndFlags(this);
+    }
 }

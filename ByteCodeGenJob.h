@@ -37,8 +37,9 @@ struct ByteCodeGenJob : public Job
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 setupBC(Module* module, AstNode* node);
+    static void                 askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode);
 
-	static bool emitExpressionListBefore(ByteCodeGenContext* context);
+    static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
     static bool emitLiteral(ByteCodeGenContext* context, TypeInfo* toType);
     static bool emitLiteral(ByteCodeGenContext* context);
@@ -81,7 +82,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
-	static bool emitCastVariadic(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
+    static bool emitCastVariadic(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitCast(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitFuncCallParam(ByteCodeGenContext* context);
     static bool emitFuncCallParams(ByteCodeGenContext* context);
@@ -119,13 +120,13 @@ struct ByteCodeGenJob : public Job
     static bool emitAffect(ByteCodeGenContext* context);
     static bool emitBeforeFuncDeclContent(ByteCodeGenContext* context);
     static bool emitVarDecl(ByteCodeGenContext* context);
-	static bool emitStructInit(ByteCodeGenContext* context);
+    static bool emitStructInit(ByteCodeGenContext* context);
     static bool emitBreak(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
-	static bool emitStructDeRef(ByteCodeGenContext* context);
+    static bool emitStructDeRef(ByteCodeGenContext* context);
     static bool emitPointerRef(ByteCodeGenContext* context);
     static bool emitArrayRef(ByteCodeGenContext* context);
     static bool emitSliceRef(ByteCodeGenContext* context);

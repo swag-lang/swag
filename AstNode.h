@@ -264,8 +264,8 @@ struct AstIdentifierRef : public AstNode
 {
     void reset() override
     {
-        startScope = nullptr;
-		previousResolvedNode = nullptr;
+        startScope           = nullptr;
+        previousResolvedNode = nullptr;
         AstNode::reset();
     }
 
@@ -608,6 +608,7 @@ struct AstProperty : public AstNode
 
 struct AstExpressionList : public AstNode
 {
+
     AstNode* clone() override;
 
     uint32_t         storageOffset;

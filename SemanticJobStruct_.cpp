@@ -19,8 +19,8 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Struct)
     {
-        Diagnostic diag{ sourceFile, node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getKindName(typeInfo)) };
-        Diagnostic note{ node->identifier->resolvedSymbolOverload->sourceFile, node->identifier->resolvedSymbolOverload->node->token.startLocation, node->identifier->resolvedSymbolOverload->node->token.endLocation, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{sourceFile, node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getKindName(typeInfo))};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->sourceFile, node->identifier->resolvedSymbolOverload->node->token.startLocation, node->identifier->resolvedSymbolOverload->node->token.endLocation, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
         return sourceFile->report(diag, &note);
     }
 
@@ -41,7 +41,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     for (auto child : node->childs)
     {
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        if (child->kind != AstNodeKind::VarDecl)
+            continue;
+
+        auto varDecl = static_cast<AstVarDecl*>(child);
 
         // Var has an initialization
         if (varDecl->astAssignment)
@@ -62,6 +65,19 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
+
+    // Search init function
+    auto symboleName = node->ownerScope->symTable->find("opInit");
+    if (symboleName)
+    {
+        node->ownerScope->symTable->mutex.lock();
+        auto typeInfoFunc = g_Pool_typeInfoFuncAttr.alloc();
+        auto overload     = symboleName->findOverload(typeInfoFunc);
+        if (overload)
+            typeInfo->defaultInit = overload->node;
+        node->ownerScope->symTable->mutex.unlock();
+        typeInfoFunc->release();
+    }
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
