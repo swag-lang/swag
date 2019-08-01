@@ -103,15 +103,15 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     // Generic initialization function
-	{
-		Scoped scoped(this, newScope);
-		buildStructConstruct(structNode);
-	}
+    {
+        Scoped scoped(this, newScope);
+        buildStructInit(structNode);
+    }
 
     return true;
 }
 
-void SyntaxJob::buildStructConstruct(AstNode* parent)
+void SyntaxJob::buildStructInit(AstNode* parent)
 {
     auto structNode = CastAst<AstStruct>(parent, AstNodeKind::StructDecl);
     auto funcNode   = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, structNode->sourceFileIdx, parent);
@@ -119,10 +119,6 @@ void SyntaxJob::buildStructConstruct(AstNode* parent)
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     funcNode->name        = "opInit";
     funcNode->name.computeCrc();
-
-    funcNode->returnType = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, structNode->sourceFileIdx, funcNode);
-    funcNode->returnType->inheritOwnersAndFlags(this);
-    funcNode->returnType->semanticFct = &SemanticJob::resolveFuncDeclType;
 
     // Register function name
     Scope* newScope = nullptr;
@@ -141,13 +137,32 @@ void SyntaxJob::buildStructConstruct(AstNode* parent)
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
 
-		// Parameters
+        // Parameters
         funcNode->parameters = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, structNode->sourceFileIdx, funcNode);
         funcNode->parameters->inheritOwnersAndFlags(this);
         funcNode->parameters->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
 
-		// Content
-		funcNode->content = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, structNode->sourceFileIdx, funcNode);
-		funcNode->content->inheritOwnersAndFlags(this);
+        // One parameter
+        auto param = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, structNode->sourceFileIdx, funcNode->parameters);
+        funcNode->parameters->inheritOwnersAndFlags(this);
+        param->semanticFct = &SemanticJob::resolveVarDecl;
+
+        auto typeNode = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, structNode->sourceFileIdx, param);
+        typeNode->inheritOwnersAndFlags(this);
+        typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
+        typeNode->typeExpression = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
+        param->astType           = typeNode;
+    }
+
+    funcNode->returnType = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, structNode->sourceFileIdx, funcNode);
+    funcNode->returnType->inheritOwnersAndFlags(this);
+    funcNode->returnType->semanticFct = &SemanticJob::resolveFuncDeclType;
+
+	// Content
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        funcNode->content = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, structNode->sourceFileIdx, funcNode);
+        funcNode->content->inheritOwnersAndFlags(this);
     }
 }

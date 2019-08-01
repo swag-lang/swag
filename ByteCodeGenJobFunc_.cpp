@@ -181,9 +181,7 @@ void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* fu
 
 bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* funcNode, AstVarDecl* varNode)
 {
-    AstNode* node       = context->node;
-    auto     sourceFile = context->sourceFile;
-
+    AstNode*          node         = context->node;
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
     if (funcNode)
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
