@@ -9,12 +9,12 @@ struct point
 
 impl point
 {
-	func opInit(self)
+	/*func opInit(self)
 	{
 		self.x = 10
 		self.y = 20
 		@print("toto\n")
-	}
+	}*/
 }
 
 #[swag.printbytecode]

@@ -103,14 +103,16 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     // Generic initialization function
-    buildStructConstruct(structNode);
+	{
+		Scoped scoped(this, newScope);
+		buildStructConstruct(structNode);
+	}
 
     return true;
 }
 
 void SyntaxJob::buildStructConstruct(AstNode* parent)
 {
-	return;
     auto structNode = CastAst<AstStruct>(parent, AstNodeKind::StructDecl);
     auto funcNode   = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, structNode->sourceFileIdx, parent);
     funcNode->inheritOwnersAndFlags(this);
