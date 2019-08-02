@@ -152,7 +152,8 @@ bool Tokenizer::error(Token& token, const Utf8& msg)
 bool Tokenizer::getToken(Token& token, bool skipEOL)
 {
     unsigned offset;
-    lastTokenIsEOL = false;
+    lastTokenIsEOL      = forceLastTokenIsEOL;
+    forceLastTokenIsEOL = false;
     while (true)
     {
         token.startLocation = location;

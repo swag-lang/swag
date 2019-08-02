@@ -165,6 +165,8 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
         auto c = getCharNoSeek(offset);
         while (SWAG_IS_BLANK(c) || SWAG_IS_EOL(c))
         {
+            if (SWAG_IS_EOL(c))
+				forceLastTokenIsEOL = true;
             treatChar(c, offset);
             c = getCharNoSeek(offset);
         }
