@@ -140,7 +140,6 @@ struct SemanticJob : public Job
     vector<SymbolOverload*> cacheMatches;
     vector<SymbolOverload*> cacheBadSignature;
     SymbolMatchContext      symMatch;
-    uint32_t                resolvedStage;
 };
 
 extern Pool<SemanticJob> g_Pool_semanticJob;

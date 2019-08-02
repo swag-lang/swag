@@ -73,7 +73,7 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, buffer));
-			ptrDest = ptrStart + offset;
+            ptrDest = ptrStart + offset;
         }
     }
 
@@ -105,52 +105,52 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto job        = context->job;
 
     typeInfo->structNode = node;
-    if (job->resolvedStage == 0)
+    typeInfo->name       = format("struct %s", node->name.c_str());
+
+    uint32_t storageOffset = 0;
+    uint32_t storageIndex  = 0;
+    uint32_t structFlags   = 0;
+
+    for (auto child : node->childs)
     {
-        typeInfo->name = format("struct %s", node->name.c_str());
+        if (child->kind != AstNodeKind::VarDecl)
+            continue;
 
-        uint32_t storageOffset = 0;
-        uint32_t storageIndex  = 0;
-        uint32_t structFlags   = 0;
+        auto varDecl = static_cast<AstVarDecl*>(child);
 
-        for (auto child : node->childs)
+        // Var is a struct
+        if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
         {
-            if (child->kind != AstNodeKind::VarDecl)
-                continue;
-
-            auto varDecl = static_cast<AstVarDecl*>(child);
-
-            // Var is a struct
-            if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
-            {
-                if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
-                    structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
-            }
-
-            // Var has an initialization
-            else if (varDecl->astAssignment)
-            {
-                SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
-                if (varDecl->astAssignment->computedValue.reg.u64)
-                    structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
-            }
-
-            typeInfo->childs.push_back(child->typeInfo);
-            typeInfo->sizeOf += child->typeInfo->sizeOf;
-            typeInfo->flags |= structFlags;
-
-            child->resolvedSymbolOverload->storageOffset = storageOffset;
-            child->resolvedSymbolOverload->storageIndex  = storageIndex;
-            storageOffset += child->typeInfo->sizeOf;
-            storageIndex++;
+            if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
+                structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
         }
 
-        node->typeInfo = g_TypeMgr.registerType(typeInfo);
+        // Var has an initialization
+        else if (varDecl->astAssignment)
+        {
+            SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
 
-        // Register symbol with its type
-        SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
+            auto typeInfoAssignment = varDecl->astAssignment->typeInfo;
+			if(typeInfoAssignment->isNative(NativeType::String))
+				structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+			else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->astAssignment->computedValue.reg.u64)
+                structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+        }
+
+        typeInfo->childs.push_back(child->typeInfo);
+        typeInfo->sizeOf += child->typeInfo->sizeOf;
+        typeInfo->flags |= structFlags;
+
+        child->resolvedSymbolOverload->storageOffset = storageOffset;
+        child->resolvedSymbolOverload->storageIndex  = storageIndex;
+        storageOffset += child->typeInfo->sizeOf;
+        storageIndex++;
     }
 
-    job->resolvedStage = 1;
+    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+
+    // Register symbol with its type
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
+
     return true;
 }
