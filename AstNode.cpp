@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Pool.h"
 #include "AstNode.h"
+#include "Scope.h"
 
 Pool<AstNode>            g_Pool_astNode;
 Pool<AstAttrDecl>        g_Pool_astAttrDecl;
@@ -25,6 +26,13 @@ Pool<AstProperty>        g_Pool_astProperty;
 Pool<AstExpressionList>  g_Pool_astExpressionList;
 Pool<AstStruct>          g_Pool_astStruct;
 Pool<AstImpl>            g_Pool_astImpl;
+
+void AstNode::computeFullName()
+{
+    assert(ownerScope);
+    fullname = ownerScope->fullname + "_" + name;
+    replaceAll(fullname, '.', '_');
+}
 
 const char* AstNode::getKindName(AstNode* node)
 {
@@ -118,6 +126,7 @@ void AstNode::copyFrom(AstNode* from)
     flags            = from->flags;
     computedValue    = from->computedValue;
     name             = from->name;
+    fullname         = from->fullname;
     sourceFileIdx    = from->sourceFileIdx;
     bc               = from->bc;
     resultRegisterRC = from->resultRegisterRC;

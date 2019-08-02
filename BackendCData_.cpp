@@ -89,7 +89,7 @@ bool BackendC::emitStrings()
 bool BackendC::emitGlobalInit()
 {
 	// Data segment
-    bufferC.addString("static void __initDataSeg() {\n");
+    bufferC.addString("static void initDataSeg() {\n");
     for (auto& k : module->strBufferDataSegInit)
     {
         bufferC.addString(format("*(void**) (__dataseg + %d) = __string%d;\n", k.second, k.first));
@@ -97,7 +97,7 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("}\n\n");
 
 	// Constant segment
-    bufferC.addString("static void __initConstantSeg() {\n");
+    bufferC.addString("static void initConstantSeg() {\n");
     for (auto& k : module->strBufferConstantSegInit)
     {
         bufferC.addString(format("*(void**) (__constantseg + %d) = __string%d;\n", k.second, k.first));
@@ -105,11 +105,11 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("}\n\n");
 
 	// Main init fct
-    bufferC.addString(format("void __%s_globalInit() {\n", module->name.c_str()));
-    bufferC.addString("__initDataSeg();\n");
-	bufferC.addString("__initConstantSeg();\n");
+    bufferC.addString(format("void %s_globalInit() {\n", module->name.c_str()));
+    bufferC.addString("initDataSeg();\n");
+	bufferC.addString("initConstantSeg();\n");
     bufferC.addString("}\n\n");
 
-	bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void __%s_globalInit();\n", module->name.c_str()));
+	bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit();\n", module->name.c_str()));
     return true;
 }

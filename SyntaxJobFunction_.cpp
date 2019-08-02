@@ -113,6 +113,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         Ast::assignToken(funcNode, token);
     }
 
+	funcNode->computeFullName();
+
     // Register function name
     Scope* newScope = nullptr;
     currentScope->allocateSymTable();

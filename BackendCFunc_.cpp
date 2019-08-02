@@ -57,7 +57,7 @@ void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
         return;
 
     bufferSwg.addString("func ");
-    bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString(node->fullname.c_str());
     bufferSwg.addString("(");
     bufferSwg.addString(")");
 
@@ -70,7 +70,7 @@ void BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
     buffer.addString(" ");
     buffer.addString(module->name);
     buffer.addString("_");
-    buffer.addString(node->name.c_str());
+    buffer.addString(node->fullname.c_str());
     buffer.addString("(");
 
     if (node->parameters)
@@ -93,7 +93,7 @@ void BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
 
 void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, const string& name)
 {
-    bufferC.addString("void __");
+    bufferC.addString("void ");
     bufferC.addString(name.c_str());
     bufferC.addString("(");
 
@@ -150,7 +150,7 @@ bool BackendC::emitFuncSignatures()
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        emitFuncSignatureInternalC(typeFunc, node ? node->name : one->name);
+        emitFuncSignatureInternalC(typeFunc, node ? node->fullname : one->name);
         bufferC.addString(";\n");
 
         if (node)
@@ -933,7 +933,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
         case ByteCodeOp::MakeLambda:
         {
             auto funcBC = (ByteCode*) ip->b.pointer;
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &__%s;", ip->a.u32, funcBC->node->name.c_str()));
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->node->fullname.c_str()));
             break;
         }
 
@@ -948,13 +948,13 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LocalCall:
         {
+            auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->c.pointer;
 
             // Normal function call
             if (ip->op == ByteCodeOp::LocalCall)
             {
-                auto funcBC = (ByteCode*) ip->a.pointer;
-                bufferC.addString(format("{ __%s", funcBC->node ? funcBC->node->name.c_str() : funcBC->name.c_str()));
+                bufferC.addString(format("{ %s", funcBC->node ? funcBC->node->fullname.c_str() : funcBC->name.c_str()));
             }
 
             // Lambda call
@@ -1038,6 +1038,7 @@ bool BackendC::emitFunctions()
         if (one->node)
         {
             node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+			node->computeFullName();
 
             // Do we need to generate that function ?
             if (node->attributeFlags & ATTRIBUTE_COMPILER)
@@ -1050,13 +1051,13 @@ bool BackendC::emitFunctions()
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        ok &= emitInternalFunction(typeFunc, one, node ? node->name : one->name);
+        ok &= emitInternalFunction(typeFunc, one, node ? node->fullname : one->name);
 
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
             emitFuncSignaturePublic(bufferC, typeFunc, node);
             bufferC.addString(" {\n");
-            bufferC.addString(format("__%s();\n", node->name.c_str()));
+            bufferC.addString(format("%s();\n", node->fullname.c_str()));
             bufferC.addString("}\n\n");
         }
     }

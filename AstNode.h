@@ -208,6 +208,7 @@ struct AstNode : public PoolElement
     AstNode*           findChildRef(AstNode* ref, AstNode* fromChild);
     virtual AstNode*   clone();
     void               copyFrom(AstNode* from);
+    void               computeFullName();
 
     AstNodeKind   kind;
     Scope*        ownerScope;
@@ -242,6 +243,7 @@ struct AstNode : public PoolElement
     SpinLock         mutex;
     ComputedValue    computedValue;
     Utf8Crc          name;
+    Utf8             fullname;
     uint32_t         sourceFileIdx;
     ByteCode*        bc;
     RegisterList     resultRegisterRC;

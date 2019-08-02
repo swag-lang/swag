@@ -17,18 +17,18 @@ bool BackendC::emitMain()
     bufferC.addString("void main() {\n");
 
     // Call to global init of this module, and dependencies
-    bufferC.addString(format("__%s_globalInit();\n", module->name.c_str()));
+    bufferC.addString(format("%s_globalInit();\n", module->name.c_str()));
     for (auto& k : module->moduleDependenciesNames)
-        bufferC.addString(format("__%s_globalInit();\n", k.c_str()));
+        bufferC.addString(format("%s_globalInit();\n", k.c_str()));
 
     // Generate call to test functions
     bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
     for (auto bc : module->byteCodeTestFunc)
     {
         auto node = bc->node;
-        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        bufferC.addString(format("__%s();\n", node->name.c_str()));
+        bufferC.addString(format("%s();\n", node->fullname.c_str()));
     }
     bufferC.addString("#endif\n");
 
