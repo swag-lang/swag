@@ -9,7 +9,73 @@
 #include "Scope.h"
 #include "Ast.h"
 #include "AstNode.h"
+#include "Module.h"
 #include "ThreadManager.h"
+
+bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, int offset, AstNode* node, SegmentBuffer buffer)
+{
+    AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+    auto       module     = sourceFile->module;
+
+    uint8_t* ptrDest;
+    if (buffer == SegmentBuffer::Constant)
+        ptrDest = &module->constantSegment[offset];
+    else if (buffer == SegmentBuffer::Data)
+        ptrDest = &module->dataSegment[offset];
+    else
+        ptrDest = nullptr;
+
+    for (auto child : structNode->childs)
+    {
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        if (!varDecl->astAssignment)
+        {
+            return internalError(context, "collectStructLiterals, no assignment");
+        }
+        else
+        {
+            auto typeInfo = child->typeInfo;
+            if (typeInfo->isNative(NativeType::String))
+            {
+                return internalError(context, "collectStructLiterals, invalid type, string");
+            }
+            else if (typeInfo->kind == TypeInfoKind::Native)
+            {
+                switch (typeInfo->sizeOf)
+                {
+                case 1:
+                    *(uint8_t*) ptrDest = varDecl->astAssignment->computedValue.reg.u8;
+                    ptrDest += 1;
+                    offset += 1;
+                    break;
+                case 2:
+                    *(uint16_t*) ptrDest = varDecl->astAssignment->computedValue.reg.u16;
+                    ptrDest += 2;
+                    offset += 2;
+                    break;
+                case 4:
+                    *(uint32_t*) ptrDest = varDecl->astAssignment->computedValue.reg.u32;
+                    ptrDest += 4;
+                    offset += 4;
+                    break;
+                case 8:
+                    *(uint64_t*) ptrDest = varDecl->astAssignment->computedValue.reg.u64;
+                    ptrDest += 8;
+                    offset += 8;
+                    break;
+                default:
+                    return internalError(context, "collectStructLiterals, invalid native type sizeof");
+                }
+            }
+            else
+            {
+                return internalError(context, "collectStructLiterals, invalid type");
+            }
+        }
+    }
+
+    return true;
+}
 
 bool SemanticJob::resolveImpl(SemanticContext* context)
 {

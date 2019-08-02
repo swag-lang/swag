@@ -53,6 +53,7 @@ struct SemanticJob : public Job
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool forceExecuteNode(SemanticContext* context);
     static bool collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer);
+	static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, int offset, AstNode* node, SegmentBuffer buffer);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

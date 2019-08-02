@@ -265,6 +265,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             sourceFile->module->mutexDataSeg.unlock();
             SWAG_CHECK(result);
         }
+        else if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+            sourceFile->module->mutexDataSeg.lock();
+            auto offset = overload->storageOffset;
+            auto result = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, SegmentBuffer::Data);
+            sourceFile->module->mutexDataSeg.unlock();
+			SWAG_CHECK(result);
+        }
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
