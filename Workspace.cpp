@@ -236,24 +236,6 @@ bool Workspace::buildModules(const vector<Module*>& list)
         g_ThreadMgr.pendingJobs.clear();
     }
 
-    // Call test functions
-    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
-    {
-        if (g_CommandLine.verbose_build_pass)
-            g_Log.verbose("running bytecode test functions...");
-
-        for (auto module : list)
-        {
-            for (auto func : module->byteCodeTestFunc)
-            {
-                if (func->sourceFile->module->numErrors)
-                    continue;
-                g_Stats.testFunctions++;
-                module->executeNode(module->files[func->node->sourceFileIdx], func->node);
-            }
-        }
-    }
-
     // Output pass on all modules
     if (g_CommandLine.output)
     {
@@ -282,6 +264,24 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
         auto timeAfter = chrono::high_resolution_clock::now();
         g_Stats.outputTime += timeAfter - timeBefore;
+    }
+
+	// Call test functions
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+    {
+        if (g_CommandLine.verbose_build_pass)
+            g_Log.verbose("running bytecode test functions...");
+
+        for (auto module : list)
+        {
+            for (auto func : module->byteCodeTestFunc)
+            {
+                if (func->sourceFile->module->numErrors)
+                    continue;
+                g_Stats.testFunctions++;
+                module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+            }
+        }
     }
 
     return true;

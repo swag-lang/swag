@@ -1,5 +1,5 @@
 #module module449
-//#unittest pass syntax
+#unittest pass semantic
 
 //#[swag.printbytecode]
 #unittest error

@@ -23,6 +23,8 @@ namespace titi
 //#[swag.printbytecode]
 #test
 {	
+	@assert(a == false)
+	@assert(b == false)
 	toto.F
 	titi.F
 	@assert(a == true)

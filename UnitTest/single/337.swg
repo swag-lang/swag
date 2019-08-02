@@ -1,5 +1,5 @@
 #module module337;
-//#unittest pass semantic;
+#unittest pass semantic;
 
 #unittest error;
 #test
