@@ -44,7 +44,7 @@ void Module::addFile(SourceFile* file)
 void Module::removeFile(SourceFile* file)
 {
     scoped_lock lk(mutexFile);
-	scoped_lock lk1(scopeRoot->lockChilds);
+    scoped_lock lk1(scopeRoot->lockChilds);
 
     SWAG_ASSERT(file->module == this);
 
@@ -88,8 +88,8 @@ void Module::freeRegisterRC(uint32_t reg)
 {
     scoped_lock lk(mutexRegisterRC);
 #ifdef _DEBUG
-	for (auto r : availableRegistersRC)
-		assert(r != reg);
+    for (auto r : availableRegistersRC)
+        assert(r != reg);
 #endif
     availableRegistersRC.push_back(reg);
 }
@@ -171,23 +171,19 @@ void Module::addConstantSegmentInitString(uint32_t segOffset, uint32_t strIndex)
     strBufferConstantSegInit[strIndex] = segOffset;
 }
 
-int Module::reserveDataSegment(int size, void* content)
+int Module::reserveDataSegment(int size)
 {
     scoped_lock lk(mutexDataSeg);
     int         result = (int) dataSegment.size();
-    dataSegment.resize((int) dataSegment.size() + size);
-    if (content)
-        memcpy(&dataSegment[result], content, size);
+    dataSegment.resize((int) dataSegment.size() + size, 0);
     return result;
 }
 
-int Module::reserveConstantSegment(int size, void* content)
+int Module::reserveConstantSegment(int size)
 {
     scoped_lock lk(mutexConstantSeg);
     int         result = (int) constantSegment.size();
-    constantSegment.resize((int) constantSegment.size() + size);
-    if (content)
-        memcpy(&constantSegment[result], content, size);
+    constantSegment.resize((int) constantSegment.size() + size, 0);
     return result;
 }
 

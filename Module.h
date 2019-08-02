@@ -49,8 +49,8 @@ struct Module : public PoolElement
     uint32_t reserveString(const Utf8& str);
     void     addDataSegmentInitString(uint32_t segOffset, uint32_t strIndex);
     void     addConstantSegmentInitString(uint32_t segOffset, uint32_t strIndex);
-    int      reserveDataSegment(int size, void* content = nullptr);
-    int      reserveConstantSegment(int size, void* content = nullptr);
+    int      reserveDataSegment(int size);
+    int      reserveConstantSegment(int size);
 
     SpinLock                mutexDataSeg;
     SpinLock                mutexConstantSeg;

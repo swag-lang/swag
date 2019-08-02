@@ -129,11 +129,15 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     auto sourceFile = context->sourceFile;
     auto job        = context->job;
 
+	// No ghosting from struct
+	if (startScope->kind == ScopeKind::Struct)
+		return true;
+
     SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, startScope);
     for (auto scope : job->cacheScopeHierarchy)
     {
-        // A function parameter cannot have conflict with the struct is in
-        if (node->kind == AstNodeKind::FuncDeclParam && scope->kind == ScopeKind::Struct)
+		// No ghosting with struct
+        if (scope->kind == ScopeKind::Struct)
             continue;
 
         // Do not check if this is the same scope

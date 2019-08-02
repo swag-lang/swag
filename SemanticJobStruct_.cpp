@@ -12,27 +12,24 @@
 #include "Module.h"
 #include "ThreadManager.h"
 
-bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, int offset, AstNode* node, SegmentBuffer buffer)
+bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer)
 {
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
     auto       module     = sourceFile->module;
 
-    uint8_t* ptrDest;
+    uint8_t* ptrStart;
     if (buffer == SegmentBuffer::Constant)
-        ptrDest = &module->constantSegment[offset];
+        ptrStart = &module->constantSegment[offset];
     else if (buffer == SegmentBuffer::Data)
-        ptrDest = &module->dataSegment[offset];
+        ptrStart = &module->dataSegment[offset];
     else
-        ptrDest = nullptr;
+        ptrStart = nullptr;
 
+    auto ptrDest = ptrStart;
     for (auto child : structNode->childs)
     {
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-        if (!varDecl->astAssignment)
-        {
-            return internalError(context, "collectStructLiterals, no assignment");
-        }
-        else
+        if (varDecl->astAssignment)
         {
             auto typeInfo = child->typeInfo;
             if (typeInfo->isNative(NativeType::String))
@@ -71,6 +68,12 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
             {
                 return internalError(context, "collectStructLiterals, invalid type");
             }
+        }
+        else if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
+            SWAG_CHECK(collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, buffer));
+			ptrDest = ptrStart + offset;
         }
     }
 

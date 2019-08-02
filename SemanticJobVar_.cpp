@@ -235,45 +235,60 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     node->resolvedSymbolOverload = overload;
 
     // Assign value
+    auto module   = sourceFile->module;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        auto     value    = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
-        void*    ptrValue = &value->reg;
-        Register storedV[2];
+        auto value              = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
+        overload->storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
+
+		module->mutexDataSeg.lock();
         if (typeInfo->isNative(NativeType::String))
         {
-            // Store direct pointer to text. Not sure this is really safe
-            storedV[0].pointer = (uint8_t*) value->text.c_str();
-            storedV[1].u64     = value->text.length();
-            ptrValue           = &storedV;
+            uint8_t* ptrDest                       = module->dataSegment.data() + overload->storageOffset;
+            *(const char**) ptrDest                = value->text.c_str();
+            *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
+            auto strIndex = module->reserveString(value->text);
+            module->addDataSegmentInitString(overload->storageOffset, strIndex);
         }
-
-        overload->storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf, ptrValue);
-
-        if (typeInfo->isNative(NativeType::String))
+        else if (typeInfo->kind == TypeInfoKind::Native)
         {
-            auto strIndex = sourceFile->module->reserveString(value->text);
-            sourceFile->module->addDataSegmentInitString(overload->storageOffset, strIndex);
+            uint8_t* ptrDest = module->dataSegment.data() + overload->storageOffset;
+            switch (typeInfo->sizeOf)
+            {
+            case 1:
+                *(uint8_t*) ptrDest = value->reg.u8;
+                break;
+            case 2:
+                *(uint16_t*) ptrDest = value->reg.u16;
+                break;
+            case 4:
+                *(uint32_t*) ptrDest = value->reg.u32;
+                break;
+            case 8:
+                *(uint64_t*) ptrDest = value->reg.u64;
+                break;
+            default:
+                module->mutexDataSeg.unlock();
+                return internalError(context, "emitVarDecl, init native, bad size");
+            }
         }
         else if (node->astAssignment && node->astAssignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
             SWAG_VERIFY(node->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "cannot evaluate expression at compile time"}));
-            sourceFile->module->mutexDataSeg.lock();
             auto offset = overload->storageOffset;
             auto result = collectLiterals(sourceFile, offset, node->astAssignment, nullptr, SegmentBuffer::Data);
-            sourceFile->module->mutexDataSeg.unlock();
             SWAG_CHECK(result);
         }
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            sourceFile->module->mutexDataSeg.lock();
             auto offset = overload->storageOffset;
             auto result = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, SegmentBuffer::Data);
-            sourceFile->module->mutexDataSeg.unlock();
-			SWAG_CHECK(result);
+            SWAG_CHECK(result);
         }
+
+        module->mutexDataSeg.unlock();
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
