@@ -374,16 +374,17 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     AstNode* exprNode;
     switch (token.id)
     {
-    case TokenId::Identifier:
     case TokenId::IntrisicPrint:
     case TokenId::IntrisicAssert:
-    {
+        SWAG_CHECK(doIdentifierRef(parent, result));
+        return true;
+
+    case TokenId::Identifier:
         SWAG_CHECK(doIdentifierRef(nullptr, &exprNode));
-    }
-    break;
+        break;
 
     default:
-        return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
+        return syntaxError(token, format("invalid token '%s' in left expression", token.text.c_str()));
     }
 
     // Dereference pointer
