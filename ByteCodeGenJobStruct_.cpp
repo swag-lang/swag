@@ -132,11 +132,10 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     return true;
 }
 
-bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset)
 {
     auto node       = context->node;
     auto resolved   = node->resolvedSymbolOverload;
-    auto typeInfo   = CastTypeInfo<TypeInfoStruct>(resolved->typeInfo, TypeInfoKind::Struct);
     auto structNode = CastAst<AstStruct>(typeInfo->structNode, AstNodeKind::StructDecl);
 
     // Just clear the content of the structure
@@ -164,6 +163,10 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context)
     r0          = reserveRegisterRC(context);
     auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
     inst->b.s32 = resolved->storageOffset;
+
+    // Offset variable reference
+    if (regOffset != UINT32_MAX)
+        emitInstruction(context, ByteCodeOp::IncPointer, r0, regOffset, r0);
 
     // Then call
     emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);

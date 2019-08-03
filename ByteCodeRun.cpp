@@ -375,6 +375,12 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         registersRC[ip->a.u32].u64++;
         break;
     }
+    case ByteCodeOp::IncRAVB:
+    {
+        registersRC[ip->a.u32].u32 += ip->b.u32;
+        break;
+    }
+
     case ByteCodeOp::CopyRRxRCx:
     case ByteCodeOp::CopyRRxRCxCall:
     {

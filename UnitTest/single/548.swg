@@ -11,4 +11,5 @@ struct point
 #test
 {
 	var pt: [10] point
+	//@print(pt[0].x)
 }

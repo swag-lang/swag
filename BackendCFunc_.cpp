@@ -401,6 +401,9 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
         case ByteCodeOp::IncRA64:
             bufferC.addString(format("r%u.u64++;", ip->a.u32));
             break;
+        case ByteCodeOp::IncRAVB:
+            bufferC.addString(format("r%u.u32 += %u;", ip->a.u32, ip->b.u32));
+            break;
 
         case ByteCodeOp::AffectOp8:
             bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) = r%u.u8;", ip->a.u32, ip->b.u32));
