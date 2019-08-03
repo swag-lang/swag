@@ -102,7 +102,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-    auto job        = context->job;
 
     typeInfo->structNode = node;
     typeInfo->name       = format("struct %s", node->name.c_str());

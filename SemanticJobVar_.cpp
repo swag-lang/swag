@@ -242,14 +242,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         auto value              = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
         overload->storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
 
-		module->mutexDataSeg.lock();
+        module->mutexDataSeg.lock();
         if (typeInfo->isNative(NativeType::String))
         {
             uint8_t* ptrDest                       = module->dataSegment.data() + overload->storageOffset;
             *(const char**) ptrDest                = value->text.c_str();
             *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
-            auto strIndex = module->reserveString(value->text);
-            module->addDataSegmentInitString(overload->storageOffset, strIndex);
+            auto stringIndex                       = module->reserveString(value->text);
+            module->addDataSegmentInitString(overload->storageOffset, stringIndex);
         }
         else if (typeInfo->kind == TypeInfoKind::Native)
         {
@@ -283,8 +283,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            auto offset = overload->storageOffset;
-            auto result = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, SegmentBuffer::Data);
+            auto offset     = overload->storageOffset;
+            auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, SegmentBuffer::Data);
             SWAG_CHECK(result);
         }
 

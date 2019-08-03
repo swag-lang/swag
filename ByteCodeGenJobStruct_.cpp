@@ -30,6 +30,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     structNode->opInit->maxCallParameters = 1;
     structNode->opInit->usedRegisters.insert(0);
     structNode->opInit->usedRegisters.insert(1);
+    structNode->opInit->usedRegisters.insert(2);
     context->node->ownerFct->bc->maxCallParameters = max(1, context->node->ownerFct->bc->maxCallParameters);
     sourceFile->module->addByteCodeFunc(structNode->opInit);
 
@@ -42,13 +43,21 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
         auto typeVar = varDecl->typeInfo;
 
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+        if (!g_CommandLine.optimizeByteCode || varDecl->resolvedSymbolOverload->storageOffset)
+        {
+            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+        }
 
         if (varDecl->astAssignment)
         {
             if (typeVar->isNative(NativeType::String))
             {
-                return internalError(context, "generateStructInit, invalid native type, string");
+                auto module      = sourceFile->module;
+                auto stringIndex = module->reserveString(varDecl->astAssignment->computedValue.text);
+
+                emitInstruction(&cxt, ByteCodeOp::CopyRARBStr, 1, 2)->c.u32 = stringIndex;
+                emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1, 0);
+                emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 2, 8);
             }
             else if (typeVar->kind == TypeInfoKind::Native)
             {
@@ -119,6 +128,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     emitInstruction(&cxt, ByteCodeOp::End);
     structNode->unlock();
 
+    //structNode->opInit->print();
     return true;
 }
 

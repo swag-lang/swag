@@ -3,11 +3,12 @@
 
 struct point
 {
-	var x = "10"
+	var x = "toto"
 }
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var pt: point
+	@assert(pt.x == "toto")
 }

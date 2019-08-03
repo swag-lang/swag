@@ -28,9 +28,18 @@ void ByteCode::print()
     g_Log.setColor(LogColor::Magenta);
     g_Log.print(sourceFile->path.string());
     g_Log.print(", ");
-    g_Log.print(AstNode::getNakedKindName(node));
-    g_Log.print(" ");
-    g_Log.print(node->name.c_str());
+    if (node)
+    {
+        g_Log.print(AstNode::getNakedKindName(node));
+        g_Log.print(" ");
+        g_Log.print(node->name.c_str());
+    }
+    else
+    {
+        g_Log.print(" ");
+        g_Log.print(name.c_str());
+    }
+
     g_Log.eol();
 
     for (int i = 0; i < (int) numInstructions; i++)
