@@ -24,42 +24,49 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             emitAffectEqual(context, r0, node->astAssignment->resultRegisterRC, node->typeInfo, node->astAssignment->typeInfo);
             freeRegisterRC(context, r0);
             freeRegisterRC(context, node->astAssignment->resultRegisterRC);
+			return true;
         }
 
-        // Default initialization
-        else if (!(node->flags & AST_DISABLED_INIT))
+        // No default initialization
+        if (node->flags & AST_DISABLED_INIT)
+            return true;
+
+        if (typeInfo->kind == TypeInfoKind::Array)
         {
-            if (typeInfo->kind == TypeInfoKind::Struct)
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            if (typeArray->pointedType->kind == TypeInfoKind::Struct)
             {
-                emitStructInit(context);
-                if (context->result == ByteCodeResult::Pending)
-                    return true;
+                return true;
             }
-            else
-            {
-                switch (typeInfo->sizeOf)
-                {
-                case 1:
-                    emitInstruction(context, ByteCodeOp::ClearRefFromStack8)->a.u32 = resolved->storageOffset;
-                    break;
-                case 2:
-                    emitInstruction(context, ByteCodeOp::ClearRefFromStack16)->a.u32 = resolved->storageOffset;
-                    break;
-                case 4:
-					emitInstruction(context, ByteCodeOp::ClearRefFromStack32)->a.u32 = resolved->storageOffset;
-					break;
-                case 8:
-                    emitInstruction(context, ByteCodeOp::ClearRefFromStack64)->a.u32 = resolved->storageOffset;
-                    break;
-                default:
-                {
-                    auto inst   = emitInstruction(context, ByteCodeOp::ClearRefFromStackX);
-                    inst->a.u32 = resolved->storageOffset;
-                    inst->b.u32 = typeInfo->sizeOf;
-                    break;
-                }
-                }
-            }
+        }
+
+        if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            emitStructInit(context);
+            return true;
+        }
+
+        switch (typeInfo->sizeOf)
+        {
+        case 1:
+            emitInstruction(context, ByteCodeOp::ClearRefFromStack8)->a.u32 = resolved->storageOffset;
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::ClearRefFromStack16)->a.u32 = resolved->storageOffset;
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::ClearRefFromStack32)->a.u32 = resolved->storageOffset;
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::ClearRefFromStack64)->a.u32 = resolved->storageOffset;
+            break;
+        default:
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::ClearRefFromStackX);
+            inst->a.u32 = resolved->storageOffset;
+            inst->b.u32 = typeInfo->sizeOf;
+            break;
+        }
         }
     }
 
