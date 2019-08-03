@@ -95,10 +95,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::Identifier:
-    case TokenId::IntrisicPrint:
-    case TokenId::IntrisicAssert:
-	case TokenId::IntrisicAlloc:
-	case TokenId::IntrisicFree:
+    case TokenId::IntrinsicPrint:
+    case TokenId::IntrinsicAssert:
+	case TokenId::IntrinsicAlloc:
+	case TokenId::IntrinsicFree:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
@@ -106,7 +106,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIndex(parent, result));
         break;
 
-    case TokenId::IntrisicProp:
+    case TokenId::IntrinsicProp:
         SWAG_CHECK(doIntrinsicProp(parent, result));
         break;
 
@@ -376,10 +376,10 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     AstNode* exprNode;
     switch (token.id)
     {
-    case TokenId::IntrisicPrint:
-    case TokenId::IntrisicAssert:
-	case TokenId::IntrisicAlloc:
-	case TokenId::IntrisicFree:
+    case TokenId::IntrinsicPrint:
+    case TokenId::IntrinsicAssert:
+	case TokenId::IntrinsicAlloc:
+	case TokenId::IntrinsicFree:
         SWAG_CHECK(doIdentifierRef(parent, result));
         return true;
 

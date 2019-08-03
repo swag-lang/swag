@@ -19,11 +19,11 @@ void LanguageSpec::setup()
     keywords["#else"]     = TokenId::CompilerElse;
     keywords["#test"]     = TokenId::CompilerTest;
 
-    keywords["@print"]  = TokenId::IntrisicPrint;
-    keywords["@assert"] = TokenId::IntrisicAssert;
-    keywords["@prop"]   = TokenId::IntrisicProp;
-    keywords["@alloc"]  = TokenId::IntrisicAlloc;
-    keywords["@free"]   = TokenId::IntrisicFree;
+    keywords["@print"]  = TokenId::IntrinsicPrint;
+    keywords["@assert"] = TokenId::IntrinsicAssert;
+    keywords["@prop"]   = TokenId::IntrinsicProp;
+    keywords["@alloc"]  = TokenId::IntrinsicAlloc;
+    keywords["@free"]   = TokenId::IntrinsicFree;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["let"]       = TokenId::KwdLet;

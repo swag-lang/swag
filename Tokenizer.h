@@ -71,11 +71,11 @@ enum class TokenId
     CompilerElse,
     CompilerTest,
 
-    IntrisicPrint,
-    IntrisicAssert,
-    IntrisicProp,
-	IntrisicAlloc,
-	IntrisicFree,
+    IntrinsicPrint,
+    IntrinsicAssert,
+    IntrinsicProp,
+	IntrinsicAlloc,
+	IntrinsicFree,
 
     KwdVar,
     KwdLet,

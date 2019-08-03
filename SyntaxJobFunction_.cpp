@@ -106,10 +106,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
     else
     {
-        if (token.id == TokenId::IntrisicPrint ||
-            token.id == TokenId::IntrisicAssert ||
-            token.id == TokenId::IntrisicAlloc ||
-            token.id == TokenId::IntrisicFree)
+        if (token.id == TokenId::IntrinsicPrint ||
+            token.id == TokenId::IntrinsicAssert ||
+            token.id == TokenId::IntrinsicAlloc ||
+            token.id == TokenId::IntrinsicFree)
             isIntrinsic = true;
 
         SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));

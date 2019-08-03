@@ -82,7 +82,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
     switch (node->token.id)
     {
-    case TokenId::IntrisicPrint:
+    case TokenId::IntrinsicPrint:
     {
         auto child0 = callParams->childs[0];
         switch (TypeManager::concreteType(child0->typeInfo)->nativeType)
@@ -112,7 +112,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
-    case TokenId::IntrisicAssert:
+    case TokenId::IntrinsicAssert:
     {
         auto child0 = callParams->childs.front();
         if (!g_CommandLine.optimizeByteCode || !child0->isConstantTrue())
@@ -120,14 +120,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
-    case TokenId::IntrisicAlloc:
+    case TokenId::IntrinsicAlloc:
     {
         auto child0            = callParams->childs.front();
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRC, child0->resultRegisterRC);
         break;
     }
-    case TokenId::IntrisicFree:
+    case TokenId::IntrinsicFree:
     {
         auto child0 = callParams->childs.front();
         emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
