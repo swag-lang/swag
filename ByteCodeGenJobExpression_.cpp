@@ -14,7 +14,7 @@
 
 bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
+    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
@@ -28,7 +28,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
+    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
     if (g_CommandLine.debugBoundCheck)
@@ -51,7 +51,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
 {
-    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
+    auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
     node->array->resultRegisterRC += reserveRegisterRC(context);
@@ -120,7 +120,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
+    auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
 
     // Dereference of a string constant
     if (node->array->typeInfo->isNative(NativeType::String))

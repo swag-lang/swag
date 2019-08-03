@@ -185,7 +185,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto sourceFile = context->sourceFile;
 
     SWAG_VERIFY(child->flags & AST_L_VALUE, sourceFile->report({sourceFile, child, "cannot take address of expression"}));
-    if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerRef)
+    if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerIndex)
         return sourceFile->report({sourceFile, child, "invalid address expression"});
 
     // Lambda
@@ -228,9 +228,24 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
+{
+    auto node = context->node;
+    if (node->flags & AST_TAKE_ADDRESS)
+    {
+        SWAG_CHECK(resolveArrayPointerRef(context));
+    }
+    else
+    {
+        SWAG_CHECK(resolveArrayPointerDeRef(context));
+    }
+
+	return true;
+}
+
 bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 {
-    auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerRef);
+    auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
     arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
@@ -279,11 +294,11 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto sourceFile        = context->sourceFile;
-    auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerDeRef);
+    auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     auto arrayType         = g_TypeMgr.concreteType(arrayNode->array->typeInfo);
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
 
-	if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
+    if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
         return sourceFile->report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
     if (arrayType->kind == TypeInfoKind::Native && arrayType->nativeType == NativeType::String)

@@ -21,38 +21,15 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doArrayPointerDeRef(AstNode** exprNode)
+bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
 {
     SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
     while (true)
     {
-        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::ArrayPointerDeRef, sourceFile->indexInModule);
+        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::ArrayPointerIndex, sourceFile->indexInModule);
         arrayNode->inheritOwnersAndFlags(this);
         arrayNode->token       = token;
-        arrayNode->semanticFct = &SemanticJob::resolveArrayPointerDeRef;
-
-        Ast::addChild(arrayNode, *exprNode);
-        arrayNode->array = *exprNode;
-        SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
-        *exprNode = arrayNode;
-        if (token.id != TokenId::SymComma)
-            break;
-        SWAG_CHECK(eatToken(TokenId::SymComma));
-    }
-
-    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-    return true;
-}
-
-bool SyntaxJob::doArrayPointerRef(AstNode** exprNode)
-{
-    SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
-    while (true)
-    {
-        auto arrayNode = Ast::newNode(&g_Pool_astPointerDeref, AstNodeKind::ArrayPointerRef, sourceFile->indexInModule);
-        arrayNode->inheritOwnersAndFlags(this);
-        arrayNode->token       = move(token);
-        arrayNode->semanticFct = &SemanticJob::resolveArrayPointerRef;
+        arrayNode->semanticFct = &SemanticJob::resolveArrayPointerIndex;
 
         Ast::addChild(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
@@ -158,18 +135,23 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
 
         AstNode* identifierRef;
         SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef));
-		forceTakeAddress(identifierRef);
+        forceTakeAddress(identifierRef);
 
         if (token.id == TokenId::SymLeftSquare)
-            SWAG_CHECK(doArrayPointerRef(&identifierRef));
+        {
+            SWAG_CHECK(doArrayPointerIndex(&identifierRef));
+        }
 
         Ast::addChild(exprNode, identifierRef);
+        identifierRef->flags |= AST_L_VALUE | AST_TAKE_ADDRESS;
     }
     else
     {
         SWAG_CHECK(doSinglePrimaryExpression(nullptr, &exprNode));
         if (token.id == TokenId::SymLeftSquare)
-            SWAG_CHECK(doArrayPointerDeRef(&exprNode));
+        {
+            SWAG_CHECK(doArrayPointerIndex(&exprNode));
+        }
     }
 
     if (parent)
@@ -407,7 +389,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     // Dereference pointer
     if (token.id == TokenId::SymLeftSquare)
     {
-        SWAG_CHECK(doArrayPointerRef(&exprNode));
+        SWAG_CHECK(doArrayPointerIndex(&exprNode));
     }
 
     Ast::addChild(parent, exprNode);
@@ -419,15 +401,15 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
 void SyntaxJob::forceTakeAddress(AstNode* node)
 {
     node->flags |= AST_TAKE_ADDRESS;
-	switch (node->kind)
-	{
-	case AstNodeKind::IdentifierRef:
-		node->childs.back()->flags |= AST_TAKE_ADDRESS;
-		break;
-	case AstNodeKind::ArrayPointerRef:
-		forceTakeAddress(static_cast<AstPointerDeRef*>(node)->array);
-		break;
-	}       
+    switch (node->kind)
+    {
+    case AstNodeKind::IdentifierRef:
+        node->childs.back()->flags |= AST_TAKE_ADDRESS;
+        break;
+    case AstNodeKind::ArrayPointerIndex:
+        forceTakeAddress(static_cast<AstPointerDeRef*>(node)->array);
+        break;
+    }
 }
 
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
@@ -480,7 +462,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             *result = affectNode;
 
         auto left = affectNode->childs.front();
-		forceTakeAddress(left);
+        forceTakeAddress(left);
     }
     else
     {

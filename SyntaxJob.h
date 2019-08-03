@@ -85,9 +85,7 @@ struct SyntaxJob : public Job
     bool doSwitch(AstNode* parent, AstNode** result = nullptr);
     bool doBreak(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
-    bool doArrayPointerDeRef(AstNode** exprNode);
-    bool doArrayPointerRef(AstNode** exprNode);
-
+    bool doArrayPointerIndex(AstNode** exprNode);
     bool doLeftExpression(AstNode* parent, AstNode** result = nullptr);
 
     void reset() override
