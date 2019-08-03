@@ -22,6 +22,8 @@ void LanguageSpec::setup()
     keywords["@print"]  = TokenId::IntrisicPrint;
     keywords["@assert"] = TokenId::IntrisicAssert;
     keywords["@prop"]   = TokenId::IntrisicProp;
+    keywords["@alloc"]  = TokenId::IntrisicAlloc;
+    keywords["@free"]   = TokenId::IntrisicFree;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["let"]       = TokenId::KwdLet;

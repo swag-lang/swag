@@ -62,6 +62,8 @@ typedef union __register {
 )";
 
 static const char* g_Intrinsics = R"(
+#include "malloc.h"
+
 static void __print(const char* message) 
 { 
 	if(!message) message = "<null>";
@@ -123,6 +125,16 @@ static void __memcpy(void* dst, void* src, swag_uint32_t size)
 static void __memclear(void* dst, swag_uint32_t size)
 {
 	memset(dst, 0, size);
+}
+
+static swag_uint8_t* __alloc(swag_uint32_t size)
+{
+	return (swag_uint8_t*) malloc(size);
+}
+
+static void __free(swag_uint8_t* ptr)
+{
+	free(ptr);
 }
 
 )";

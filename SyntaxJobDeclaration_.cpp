@@ -214,6 +214,8 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::Identifier:
     case TokenId::IntrisicPrint:
 	case TokenId::IntrisicAssert:
+	case TokenId::IntrisicAlloc:
+	case TokenId::IntrisicFree:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
     case TokenId::KwdBreak:

@@ -74,6 +74,8 @@ enum class TokenId
     IntrisicPrint,
     IntrisicAssert,
     IntrisicProp,
+	IntrisicAlloc,
+	IntrisicFree,
 
     KwdVar,
     KwdLet,

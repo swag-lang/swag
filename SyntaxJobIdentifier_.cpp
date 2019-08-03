@@ -12,7 +12,9 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
     uint32_t flags = 0;
     if (token.id != TokenId::Identifier &&
         token.id != TokenId::IntrisicPrint &&
-        token.id != TokenId::IntrisicAssert)
+        token.id != TokenId::IntrisicAssert &&
+        token.id != TokenId::IntrisicAlloc &&
+        token.id != TokenId::IntrisicFree)
     {
         if (token.id == TokenId::LiteralNumber && acceptInteger)
             flags |= AST_IDENTIFIER_IS_INTEGER;
@@ -26,7 +28,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 
     auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent);
     identifier->inheritOwnersAndFlags(this);
-	identifier->flags |= flags;
+    identifier->flags |= flags;
     identifier->semanticFct = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
     identifier->inheritToken(token);

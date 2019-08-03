@@ -237,7 +237,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         node->kind = AstNodeKind::FuncCall;
         node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
 
-        if (node->token.id == TokenId::IntrisicPrint || node->token.id == TokenId::IntrisicAssert)
+        if (node->token.id == TokenId::IntrisicPrint ||
+            node->token.id == TokenId::IntrisicAssert ||
+            node->token.id == TokenId::IntrisicAlloc ||
+            node->token.id == TokenId::IntrisicFree)
         {
             node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
         }

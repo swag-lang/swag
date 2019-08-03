@@ -97,6 +97,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::Identifier:
     case TokenId::IntrisicPrint:
     case TokenId::IntrisicAssert:
+	case TokenId::IntrisicAlloc:
+	case TokenId::IntrisicFree:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
@@ -376,6 +378,8 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     {
     case TokenId::IntrisicPrint:
     case TokenId::IntrisicAssert:
+	case TokenId::IntrisicAlloc:
+	case TokenId::IntrisicFree:
         SWAG_CHECK(doIdentifierRef(parent, result));
         return true;
 

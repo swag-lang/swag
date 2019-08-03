@@ -83,7 +83,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         node->content->byteCodeBeforeFct = &ByteCodeGenJob::emitBeforeFuncDeclContent;
 
     // Do we have a return value
-    if (node->returnType && node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
+    if (node->content && node->returnType && node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
     {
         if (!(node->flags & AST_SCOPE_HAS_RETURN))
         {
@@ -111,7 +111,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
         genByteCode = true;
-    if (node->token.id == TokenId::IntrisicPrint || node->token.id == TokenId::IntrisicAssert)
+    if (node->token.id == TokenId::IntrisicPrint ||
+        node->token.id == TokenId::IntrisicAssert ||
+        node->token.id == TokenId::IntrisicAlloc ||
+        node->token.id == TokenId::IntrisicFree)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         genByteCode = false;
@@ -164,7 +167,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     typeInfo->returnType = typeNode->typeInfo;
 
     // Be sure this is a valid return type
-    if (typeInfo->returnType->kind != TypeInfoKind::Native && typeInfo->returnType->kind != TypeInfoKind::TypeList)
+    if (typeInfo->returnType->kind != TypeInfoKind::Native &&
+        typeInfo->returnType->kind != TypeInfoKind::TypeList &&
+        typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return sourceFile->report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 
     typeInfo->computeName();

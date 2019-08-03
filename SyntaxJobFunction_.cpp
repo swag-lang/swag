@@ -106,14 +106,17 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
     else
     {
-        if (token.id == TokenId::IntrisicPrint || token.id == TokenId::IntrisicAssert)
+        if (token.id == TokenId::IntrisicPrint ||
+            token.id == TokenId::IntrisicAssert ||
+            token.id == TokenId::IntrisicAlloc ||
+            token.id == TokenId::IntrisicFree)
             isIntrinsic = true;
 
         SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
         Ast::assignToken(funcNode, token);
     }
 
-	funcNode->computeFullName();
+    funcNode->computeFullName();
 
     // Register function name
     Scope* newScope = nullptr;

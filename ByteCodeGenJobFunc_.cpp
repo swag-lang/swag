@@ -120,6 +120,20 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
+    case TokenId::IntrisicAlloc:
+    {
+        auto child0            = callParams->childs.front();
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRC, child0->resultRegisterRC);
+        break;
+    }
+    case TokenId::IntrisicFree:
+    {
+        auto child0 = callParams->childs.front();
+        emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
+        break;
+    }
+
     default:
         return internalError(context, "emitIntrinsic, unknown intrinsic");
     }

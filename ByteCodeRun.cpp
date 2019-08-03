@@ -633,6 +633,16 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
             context->error("intrinsic @assert failed");
         break;
     }
+    case ByteCodeOp::IntrinsicAlloc:
+    {
+        registersRC[ip->a.u32].pointer = (uint8_t*) malloc(registersRC[ip->b.u32].u32);
+        break;
+    }
+    case ByteCodeOp::IntrinsicFree:
+    {
+        free(registersRC[ip->a.u32].pointer);
+        break;
+    }
 
     case ByteCodeOp::IntrinsicPrintF32:
     {

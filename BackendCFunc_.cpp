@@ -865,6 +865,12 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
         case ByteCodeOp::IntrinsicAssert:
             bufferC.addString(format("__assert(r%u.b, \"%s\", %d, 0);", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
+        case ByteCodeOp::IntrinsicAlloc:
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) __alloc(r%u.u32);", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::IntrinsicFree:
+            bufferC.addString(format("__free(r%u.pointer);", ip->a.u32));
+            break;
 
         case ByteCodeOp::NegBool:
             bufferC.addString(format("r%u.b = !r%u.b;", ip->a.u32, ip->a.u32));
