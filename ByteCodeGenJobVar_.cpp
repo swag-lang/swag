@@ -38,17 +38,21 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             {
                 if (typeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
                 {
-					// Need to loop on every element of the array in order to initialize them
+                    // Need to loop on every element of the array in order to initialize them
                     RegisterList r0;
                     reserveRegisterRC(context, r0, 3);
                     emitInstruction(context, ByteCodeOp::CopyRAVB32, r0[0])->b.u32 = typeArray->count;
                     emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
                     auto seekJump = context->bc->numInstructions;
+                    emitInstruction(context, ByteCodeOp::PushRASaved, r0[0]);
+                    emitInstruction(context, ByteCodeOp::PushRASaved, r0[1]);
                     emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct), r0[1]);
+                    emitInstruction(context, ByteCodeOp::PopRASaved, r0[1]);
+                    emitInstruction(context, ByteCodeOp::PopRASaved, r0[0]);
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
-					emitInstruction(context, ByteCodeOp::IncRAVB, r0[0])->b.u32 = typeArray->pointedType->sizeOf;
-                    emitInstruction(context, ByteCodeOp::IsNullU32, r0[2], r0);
-                    emitInstruction(context, ByteCodeOp::JumpNotTrue, r0[2])->b.s32 = seekJump - context->bc->numInstructions;
+                    emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->pointedType->sizeOf;
+                    emitInstruction(context, ByteCodeOp::IsNullU32, r0[0], r0[2]);
+                    emitInstruction(context, ByteCodeOp::JumpNotTrue, r0[2])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                     freeRegisterRC(context, r0);
                     return true;
@@ -58,7 +62,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
 
         if (typeInfo->kind == TypeInfoKind::Struct)
         {
-            emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct), INT32_MAX);
+            emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct), UINT32_MAX);
             return true;
         }
 

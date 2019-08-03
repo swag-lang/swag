@@ -129,14 +129,14 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     auto sourceFile = context->sourceFile;
     auto job        = context->job;
 
-	// No ghosting from struct
-	if (startScope->kind == ScopeKind::Struct)
-		return true;
+    // No ghosting from struct
+    if (startScope->kind == ScopeKind::Struct)
+        return true;
 
     SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, startScope);
     for (auto scope : job->cacheScopeHierarchy)
     {
-		// No ghosting with struct
+        // No ghosting with struct
         if (scope->kind == ScopeKind::Struct)
             continue;
 
@@ -207,6 +207,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             parent->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
             node->typeInfo     = typeInfo;
             parent->typeInfo   = typeInfo;
+        }
+
+        // Pointer
+        else if (typeInfo->kind == TypeInfoKind::Pointer)
+        {
+            auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            if (typePointer->pointedType->kind == TypeInfoKind::Struct)
+            {
+                parent->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
+                node->typeInfo     = typePointer->pointedType;
+                parent->typeInfo   = typePointer->pointedType;
+            }
         }
 
         break;
