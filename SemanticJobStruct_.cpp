@@ -31,32 +31,42 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         if (varDecl->astAssignment)
         {
-            auto typeInfo = child->typeInfo;
+            auto  typeInfo = child->typeInfo;
+            auto& value    = varDecl->astAssignment->computedValue;
+
             if (typeInfo->isNative(NativeType::String))
             {
-                return internalError(context, "collectStructLiterals, invalid type, string");
+                Register* storedV  = (Register*) ptrDest;
+                storedV[0].pointer = (uint8_t*) value.text.c_str();
+                storedV[1].u64     = value.text.length();
+
+                auto stringIndex = module->reserveString(value.text);
+                module->addDataSegmentInitString(offset, stringIndex);
+
+                ptrDest += 2 * sizeof(Register);
+                offset += 2 * sizeof(Register);
             }
             else if (typeInfo->kind == TypeInfoKind::Native)
             {
                 switch (typeInfo->sizeOf)
                 {
                 case 1:
-                    *(uint8_t*) ptrDest = varDecl->astAssignment->computedValue.reg.u8;
+                    *(uint8_t*) ptrDest = value.reg.u8;
                     ptrDest += 1;
                     offset += 1;
                     break;
                 case 2:
-                    *(uint16_t*) ptrDest = varDecl->astAssignment->computedValue.reg.u16;
+                    *(uint16_t*) ptrDest = value.reg.u16;
                     ptrDest += 2;
                     offset += 2;
                     break;
                 case 4:
-                    *(uint32_t*) ptrDest = varDecl->astAssignment->computedValue.reg.u32;
+                    *(uint32_t*) ptrDest = value.reg.u32;
                     ptrDest += 4;
                     offset += 4;
                     break;
                 case 8:
-                    *(uint64_t*) ptrDest = varDecl->astAssignment->computedValue.reg.u64;
+                    *(uint64_t*) ptrDest = value.reg.u64;
                     ptrDest += 8;
                     offset += 8;
                     break;
@@ -130,9 +140,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
 
             auto typeInfoAssignment = varDecl->astAssignment->typeInfo;
-			if(typeInfoAssignment->isNative(NativeType::String))
-				structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
-			else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->astAssignment->computedValue.reg.u64)
+            if (typeInfoAssignment->isNative(NativeType::String))
+                structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+            else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->astAssignment->computedValue.reg.u64)
                 structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
         }
 
