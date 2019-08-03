@@ -95,10 +95,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::Identifier:
-    case TokenId::IntrinsicPrint:
-    case TokenId::IntrinsicAssert:
-	case TokenId::IntrinsicAlloc:
-	case TokenId::IntrinsicFree:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
@@ -106,8 +102,15 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIndex(parent, result));
         break;
 
-    case TokenId::IntrinsicProp:
-        SWAG_CHECK(doIntrinsicProp(parent, result));
+    case TokenId::Intrinsic:
+        if (g_LangSpec.intrinsics[token.text] == Intrinsic::IntrinsicProp)
+        {
+            SWAG_CHECK(doIntrinsicProp(parent, result));
+        }
+        else
+        {
+            SWAG_CHECK(doIdentifierRef(parent, result));
+        }
         break;
 
     case TokenId::NativeType:
@@ -376,10 +379,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
     AstNode* exprNode;
     switch (token.id)
     {
-    case TokenId::IntrinsicPrint:
-    case TokenId::IntrinsicAssert:
-	case TokenId::IntrinsicAlloc:
-	case TokenId::IntrinsicFree:
+    case TokenId::Intrinsic:
         SWAG_CHECK(doIdentifierRef(parent, result));
         return true;
 

@@ -79,10 +79,10 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     AstNode* node       = context->node;
     auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParameters);
-
-    switch (node->token.id)
+    auto     intrinsic  = g_LangSpec.intrinsics[node->token.text];
+    switch (intrinsic)
     {
-    case TokenId::IntrinsicPrint:
+    case Intrinsic::IntrinsicPrint:
     {
         auto child0 = callParams->childs[0];
         switch (TypeManager::concreteType(child0->typeInfo)->nativeType)
@@ -112,7 +112,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
-    case TokenId::IntrinsicAssert:
+    case Intrinsic::IntrinsicAssert:
     {
         auto child0 = callParams->childs.front();
         if (!g_CommandLine.optimizeByteCode || !child0->isConstantTrue())
@@ -120,14 +120,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
-    case TokenId::IntrinsicAlloc:
+    case Intrinsic::IntrinsicAlloc:
     {
         auto child0            = callParams->childs.front();
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicAlloc, node->resultRegisterRC, child0->resultRegisterRC);
         break;
     }
-    case TokenId::IntrinsicFree:
+    case Intrinsic::IntrinsicFree:
     {
         auto child0 = callParams->childs.front();
         emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);

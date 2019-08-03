@@ -10,11 +10,7 @@
 bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 {
     uint32_t flags = 0;
-    if (token.id != TokenId::Identifier &&
-        token.id != TokenId::IntrinsicPrint &&
-        token.id != TokenId::IntrinsicAssert &&
-        token.id != TokenId::IntrinsicAlloc &&
-        token.id != TokenId::IntrinsicFree)
+    if (token.id != TokenId::Identifier && token.id != TokenId::Intrinsic)
     {
         if (token.id == TokenId::LiteralNumber && acceptInteger)
             flags |= AST_IDENTIFIER_IS_INTEGER;

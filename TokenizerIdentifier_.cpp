@@ -13,12 +13,18 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
         c = getCharNoSeek(offset);
     }
 
-    // Keyword
-    auto it = g_LangSpec.keywords.find(token.text);
-    if (it != g_LangSpec.keywords.end())
-        token.id = it->second;
+    if (token.text[0] == '@')
+    {
+        token.id = TokenId::Intrinsic;
+    }
     else
-        token.id = TokenId::Identifier;
+    {
+        auto it = g_LangSpec.keywords.find(token.text);
+        if (it != g_LangSpec.keywords.end())
+            token.id = it->second;
+        else
+            token.id = TokenId::Identifier;
+    }
 
     // Special keywords
     switch (token.id)

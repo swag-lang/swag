@@ -19,12 +19,6 @@ void LanguageSpec::setup()
     keywords["#else"]     = TokenId::CompilerElse;
     keywords["#test"]     = TokenId::CompilerTest;
 
-    keywords["@print"]  = TokenId::IntrinsicPrint;
-    keywords["@assert"] = TokenId::IntrinsicAssert;
-    keywords["@prop"]   = TokenId::IntrinsicProp;
-    keywords["@alloc"]  = TokenId::IntrinsicAlloc;
-    keywords["@free"]   = TokenId::IntrinsicFree;
-
     keywords["var"]       = TokenId::KwdVar;
     keywords["let"]       = TokenId::KwdLet;
     keywords["const"]     = TokenId::KwdConst;
@@ -84,6 +78,12 @@ void LanguageSpec::setup()
     properties["sizeof"] = Property::SizeOf;
     properties["count"]  = Property::Count;
     properties["data"]   = Property::Data;
+
+    intrinsics["@print"]  = Intrinsic::IntrinsicPrint;
+    intrinsics["@assert"] = Intrinsic::IntrinsicAssert;
+    intrinsics["@prop"]   = Intrinsic::IntrinsicProp;
+    intrinsics["@alloc"]  = Intrinsic::IntrinsicAlloc;
+    intrinsics["@free"]   = Intrinsic::IntrinsicFree;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

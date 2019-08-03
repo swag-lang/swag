@@ -212,10 +212,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDecl(parent, result));
         break;
     case TokenId::Identifier:
-    case TokenId::IntrinsicPrint:
-	case TokenId::IntrinsicAssert:
-	case TokenId::IntrinsicAlloc:
-	case TokenId::IntrinsicFree:
+    case TokenId::Intrinsic:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
     case TokenId::KwdBreak:

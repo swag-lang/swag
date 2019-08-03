@@ -15,8 +15,17 @@ enum class Intrisic
 enum class Property
 {
     SizeOf,
-	Count,
-	Data,
+    Count,
+    Data,
+};
+
+enum class Intrinsic
+{
+    IntrinsicPrint,
+    IntrinsicAssert,
+    IntrinsicProp,
+    IntrinsicAlloc,
+    IntrinsicFree,
 };
 
 struct LanguageSpec
@@ -27,6 +36,7 @@ struct LanguageSpec
     map<Utf8, TokenId>         keywords;
     map<Utf8, TypeInfoNative*> nativeTypes;
     map<Utf8, Property>        properties;
+    map<Utf8, Intrinsic>       intrinsics;
 };
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
