@@ -39,8 +39,11 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         // Symbol is in fact a constant value : no need for bytecode
         if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
         {
-			node->computedValue = node->resolvedSymbolOverload->computedValue;
-			node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+			if (childBack->kind != AstNodeKind::ArrayPointerIndex)
+			{
+				node->computedValue = node->resolvedSymbolOverload->computedValue;
+				node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+			}
         }
         else if (node->resolvedSymbolName->kind == SymbolKind::Variable ||
                  node->resolvedSymbolName->kind == SymbolKind::Function)

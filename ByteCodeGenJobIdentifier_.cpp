@@ -13,7 +13,7 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;
-	node->typeInfo = node->childs.back()->typeInfo;
+    node->typeInfo         = node->childs.back()->typeInfo;
     return true;
 }
 
@@ -177,6 +177,22 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->parent->resultRegisterRC              = node->resultRegisterRC;
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         return true;
+    }
+
+    // Reference to an array
+    if (resolved->flags & OVERLOAD_COMPUTED_VALUE)
+    {
+        if (typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            reserveRegisterRC(context, node->resultRegisterRC, 2);
+            node->parent->resultRegisterRC      = node->resultRegisterRC;
+            auto inst                           = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+            auto storageOffset                  = node->resolvedSymbolOverload->computedValue.reg.u32;
+            inst->c.u64                         = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
+            identifier->identifierRef->typeInfo = identifier->typeInfo;
+            return true;
+        }
     }
 
     // Direct index in a structure
