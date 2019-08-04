@@ -10,12 +10,13 @@
 bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 {
     uint32_t flags = 0;
+
+	// This can be a number, for a tuple direct reference of its members
     if (token.id != TokenId::Identifier && token.id != TokenId::Intrinsic)
     {
-        if (token.id == TokenId::LiteralNumber && acceptInteger)
-            flags |= AST_IDENTIFIER_IS_INTEGER;
-        else
+        if (token.id != TokenId::LiteralNumber || !acceptInteger)
             return syntaxError(token, format("invalid identifier '%s'", token.text.c_str()));
+        flags |= AST_IDENTIFIER_IS_INTEGER;
     }
 
     // An identifier that starts with '__' is reserved for internal usage !
