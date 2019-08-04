@@ -284,6 +284,7 @@
     <ClCompile Include="SemanticJobBlock_.cpp" />
     <ClCompile Include="SemanticJobCompiler_.cpp" />
     <ClCompile Include="SemanticJobDeclaration_.cpp" />
+    <ClCompile Include="SemanticJobRef_.cpp" />
     <ClCompile Include="SemanticJobStruct_.cpp" />
     <ClCompile Include="SemanticJobUnaryExpression_.cpp" />
     <ClCompile Include="SemanticJobVar_.cpp" />
