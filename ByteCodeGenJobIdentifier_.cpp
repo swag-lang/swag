@@ -124,8 +124,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
 
         identifier->identifierRef->typeInfo         = node->typeInfo;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
         return true;
     }
 
@@ -174,23 +174,22 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
 
         identifier->identifierRef->typeInfo         = node->typeInfo;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
         return true;
     }
 
-    // Reference to an array
+    // Reference to a constant array
     if (resolved->flags & OVERLOAD_COMPUTED_VALUE)
     {
         if (typeInfo->kind == TypeInfoKind::Array)
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             reserveRegisterRC(context, node->resultRegisterRC, 2);
-            node->parent->resultRegisterRC      = node->resultRegisterRC;
-            auto inst                           = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-            auto storageOffset                  = node->resolvedSymbolOverload->storageOffset;
-            inst->c.u64                         = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
-            identifier->identifierRef->typeInfo = identifier->typeInfo;
+            node->parent->resultRegisterRC = node->resultRegisterRC;
+            auto inst                      = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+            auto storageOffset             = node->resolvedSymbolOverload->storageOffset;
+            inst->c.u64                    = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
             return true;
         }
     }
@@ -208,7 +207,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (!(node->flags & AST_TAKE_ADDRESS))
             emitStructDeRef(context);
 
-        identifier->identifierRef->typeInfo = identifier->typeInfo;
         return true;
     }
 
