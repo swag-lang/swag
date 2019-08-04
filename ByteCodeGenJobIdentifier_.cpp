@@ -188,7 +188,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             reserveRegisterRC(context, node->resultRegisterRC, 2);
             node->parent->resultRegisterRC      = node->resultRegisterRC;
             auto inst                           = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-            auto storageOffset                  = node->resolvedSymbolOverload->computedValue.reg.u32;
+            auto storageOffset                  = node->resolvedSymbolOverload->storageOffset;
             inst->c.u64                         = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
             identifier->identifierRef->typeInfo = identifier->typeInfo;
             return true;

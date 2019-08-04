@@ -198,6 +198,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::VariadicValue, sourceFile->report({sourceFile, node, "declaration not allowed on a variadic value, you must cast"}));
 
     // A constant does nothing on backend, except if it can't be stored in a register
+    uint32_t storageOffset = 0;
     if (isConstant)
     {
         // Set it as const (so this is a new type)
@@ -216,15 +217,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         else
         {
             // Reserve space in constant segment
-            auto     module        = sourceFile->module;
-            auto     typeArray     = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
-            uint32_t storageOffset = module->reserveConstantSegment(typeArray->sizeOf);
+            auto module    = sourceFile->module;
+            auto typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
+            storageOffset  = module->reserveConstantSegment(typeArray->sizeOf);
             module->mutexConstantSeg.lock();
             auto offset = storageOffset;
             auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, SegmentBuffer::Constant);
             module->mutexConstantSeg.unlock();
             SWAG_CHECK(result);
-            node->computedValue.reg.u64 = storageOffset;
         }
     }
 
@@ -233,6 +233,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_CHECK(overload);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
+    overload->storageOffset      = storageOffset;
 
     // Assign value
     auto module   = sourceFile->module;
