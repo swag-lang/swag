@@ -16,12 +16,12 @@
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
-    auto           node          = static_cast<AstIdentifierRef*>(context->node);
-    AstIdentifier* identifier    = static_cast<AstIdentifier*>(node->childs.back());
-    node->resolvedSymbolName     = identifier->resolvedSymbolName;
-    node->resolvedSymbolOverload = identifier->resolvedSymbolOverload;
-    node->typeInfo               = identifier->typeInfo;
-    node->name                   = move(identifier->name);
+    auto node                    = static_cast<AstIdentifierRef*>(context->node);
+    auto childBack               = node->childs.back();
+    node->resolvedSymbolName     = childBack->resolvedSymbolName;
+    node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
+    node->typeInfo               = childBack->typeInfo;
+    node->name                   = move(childBack->name);
 
     // Flag inheritance
     bool isConstExpr = true;
@@ -39,8 +39,8 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         // Symbol is in fact a constant value : no need for bytecode
         if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
         {
-            node->computedValue = node->resolvedSymbolOverload->computedValue;
-            node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+			node->computedValue = node->resolvedSymbolOverload->computedValue;
+			node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
         }
         else if (node->resolvedSymbolName->kind == SymbolKind::Variable ||
                  node->resolvedSymbolName->kind == SymbolKind::Function)
@@ -197,16 +197,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             parent->startScope = static_cast<TypeInfoList*>(typeInfo)->scope;
-            node->typeInfo     = typeInfo;
             parent->typeInfo   = typeInfo;
+            node->typeInfo     = typeInfo;
         }
 
         // Struct
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             parent->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
-            node->typeInfo     = typeInfo;
             parent->typeInfo   = typeInfo;
+            node->typeInfo     = typeInfo;
         }
 
         // Pointer
@@ -216,8 +216,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             if (typePointer->pointedType->kind == TypeInfoKind::Struct)
             {
                 parent->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
-                node->typeInfo     = typePointer->pointedType;
                 parent->typeInfo   = typePointer->pointedType;
+                node->typeInfo     = typePointer->pointedType;
             }
         }
 
@@ -285,16 +285,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& scopeHierarchy   = job->cacheScopeHierarchy;
     auto& dependentSymbols = job->cacheDependentSymbols;
     auto  node             = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-    auto  parent           = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+    auto  identifierRef    = node->identifierRef;
     auto  sourceFile       = context->sourceFile;
 
     // Direct access to a tuple inside value
     if (node->flags & AST_IDENTIFIER_IS_INTEGER)
     {
-        SWAG_VERIFY(parent->startScope && parent->typeInfo, sourceFile->report({sourceFile, node->token, "invalid access by literal"}));
-        SWAG_VERIFY(parent->typeInfo->kind == TypeInfoKind::TypeList, sourceFile->report({sourceFile, node->token, format("access by literal invalid on type '%s'", parent->typeInfo->name.c_str())}));
+        SWAG_VERIFY(identifierRef->startScope && identifierRef->typeInfo, sourceFile->report({sourceFile, node->token, "invalid access by literal"}));
+        SWAG_VERIFY(identifierRef->typeInfo->kind == TypeInfoKind::TypeList, sourceFile->report({sourceFile, node->token, format("access by literal invalid on type '%s'", identifierRef->typeInfo->name.c_str())}));
         auto index    = stoi(node->name);
-        auto typeList = CastTypeInfo<TypeInfoList>(parent->typeInfo, TypeInfoKind::TypeList);
+        auto typeList = CastTypeInfo<TypeInfoList>(identifierRef->typeInfo, TypeInfoKind::TypeList);
         SWAG_VERIFY(index >= 0 && index < typeList->childs.size(), sourceFile->report({sourceFile, node->token, format("access by literal is out of range (maximum index is '%d')", typeList->childs.size() - 1)}));
 
         // Compute offset from start of tuple
@@ -307,7 +307,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         node->computedValue.reg.u32 = (uint32_t) offset;
         node->typeInfo              = typeList->childs[index];
-        parent->typeInfo            = typeList->childs[index];
+        identifierRef->typeInfo     = typeList->childs[index];
         return true;
     }
 
@@ -315,7 +315,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (job->cacheDependentSymbols.empty())
     {
         dependentSymbols.clear();
-        auto startScope = parent->startScope;
+        auto startScope = identifierRef->startScope;
         if (!startScope)
         {
             startScope = node->ownerScope;
@@ -340,13 +340,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         if (job->cacheDependentSymbols.empty())
         {
-            if (parent->startScope)
+            if (identifierRef->startScope)
             {
-                auto displayName = parent->startScope->fullname;
-                if (displayName.empty() && parent->typeInfo)
-                    displayName = parent->typeInfo->name;
+                auto displayName = identifierRef->startScope->fullname;
+                if (displayName.empty() && identifierRef->typeInfo)
+                    displayName = identifierRef->typeInfo->name;
                 if (!displayName.empty())
-                    return sourceFile->report({sourceFile, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedName(parent->startScope->kind), displayName.c_str())});
+                    return sourceFile->report({sourceFile, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedName(identifierRef->startScope->kind), displayName.c_str())});
             }
 
             return sourceFile->report({sourceFile, node->token, format("unknown identifier '%s'", node->name.c_str())});
@@ -383,15 +383,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
 
         // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
-        if (parent->resolvedSymbolName && parent->resolvedSymbolName->kind == SymbolKind::Variable)
+        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
         {
             auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
             node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
             fctCallParam->parent   = node->callParameters;
-            fctCallParam->typeInfo = parent->previousResolvedNode->typeInfo;
-            fctCallParam->token    = parent->previousResolvedNode->token;
-            Ast::removeFromParent(parent->previousResolvedNode);
-            Ast::addChild(fctCallParam, parent->previousResolvedNode);
+            fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
+            fctCallParam->token    = identifierRef->previousResolvedNode->token;
+            Ast::removeFromParent(identifierRef->previousResolvedNode);
+            Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
         }
 
         for (auto param : node->callParameters->childs)
@@ -409,7 +409,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             SWAG_ASSERT(dependentSymbols.size() == 1);
             SWAG_ASSERT(symbol->overloads.size() == 1);
-            SWAG_CHECK(setSymbolMatch(context, parent, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]));
+            SWAG_CHECK(setSymbolMatch(context, identifierRef, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]));
             return true;
         }
     }
@@ -533,6 +533,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return false;
     }
 
-    SWAG_CHECK(setSymbolMatch(context, parent, node, dependentSymbols[0], matches[0]));
+    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, dependentSymbols[0], matches[0]));
     return true;
 }

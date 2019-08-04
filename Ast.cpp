@@ -95,8 +95,9 @@ namespace Ast
             id->semanticFct = &SemanticJob::resolveIdentifier;
             id->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
             id->inheritOwnersAndFlags(job);
-            id->name  = tokens[i];
-            id->token = token;
+            id->name          = tokens[i];
+            id->token         = token;
+            id->identifierRef = idRef;
         }
 
         return idRef;

@@ -6,12 +6,13 @@
 #include "SemanticJob.h"
 #include "SourceFile.h"
 #include "Diagnostic.h"
+#include "AstNode.h"
 
 bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 {
     uint32_t flags = 0;
 
-	// This can be a number, for a tuple direct reference of its members
+    // This can be a number, for a tuple direct reference of its members
     if (token.id != TokenId::Identifier && token.id != TokenId::Intrinsic)
     {
         if (token.id != TokenId::LiteralNumber || !acceptInteger)
@@ -23,14 +24,22 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
     if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
         return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
 
-    auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent);
+    auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, nullptr);
     identifier->inheritOwnersAndFlags(this);
     identifier->flags |= flags;
-    identifier->semanticFct = &SemanticJob::resolveIdentifier;
-    identifier->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
+    identifier->semanticFct   = &SemanticJob::resolveIdentifier;
+    identifier->byteCodeFct   = &ByteCodeGenJob::emitIdentifier;
+    identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     identifier->inheritToken(token);
     SWAG_CHECK(tokenizer.getToken(token));
 
+    // Array index
+    AstNode* expr = identifier;
+    if (token.id == TokenId::SymLeftSquare)
+        SWAG_CHECK(doArrayPointerIndex(&expr));
+    Ast::addChild(parent, expr);
+
+    // Function call parameters
     if (token.id == TokenId::SymLeftParen)
     {
         auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, identifier);

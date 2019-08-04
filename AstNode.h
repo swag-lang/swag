@@ -280,6 +280,7 @@ struct AstIdentifier : public AstNode
 {
     void reset() override
     {
+        identifierRef        = nullptr;
         callParameters       = nullptr;
         fctCallStorageOffset = 0;
         AstNode::reset();
@@ -287,8 +288,9 @@ struct AstIdentifier : public AstNode
 
     AstNode* clone() override;
 
-    AstNode* callParameters;
-    uint32_t fctCallStorageOffset;
+    AstIdentifierRef* identifierRef;
+    AstNode*          callParameters;
+    uint32_t          fctCallStorageOffset;
 };
 
 struct AstFuncDecl : public AstNode

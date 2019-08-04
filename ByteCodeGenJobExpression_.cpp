@@ -22,7 +22,8 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
-    node->resultRegisterRC = node->array->resultRegisterRC;
+    node->resultRegisterRC         = node->array->resultRegisterRC;
+    node->parent->resultRegisterRC = node->resultRegisterRC;
     return true;
 }
 
@@ -81,10 +82,10 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
-	if (typeInfo->kind == TypeInfoKind::Struct)
-	{
-		return true;
-	}
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        return true;
+    }
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
@@ -173,6 +174,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
                 return internalError(context, "emitPointerDeRef, slice, size not supported");
             }
         }
+
+        node->parent->resultRegisterRC = node->resultRegisterRC;
     }
 
     // Dereference of a pointer
@@ -209,6 +212,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
                 return internalError(context, "emitPointerDeRef, pointer, size not supported");
             }
         }
+
+        node->parent->resultRegisterRC = node->resultRegisterRC;
     }
 
     // Dereference of an array
@@ -259,12 +264,16 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
                 return internalError(context, "emitPointerDeRef, array, size not supported");
             }
         }
+
+        if (node->flags & AST_TAKE_ADDRESS)
+            node->parent->typeInfo = typeInfo->pointedType;
+        node->parent->resultRegisterRC = node->resultRegisterRC;
     }
 
     // Dereference a variadic parameter
     else if (node->array->typeInfo->kind == TypeInfoKind::Variadic)
     {
-		RegisterList r0;
+        RegisterList r0;
 
         reserveRegisterRC(context, r0, 2);
         emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
@@ -274,14 +283,14 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[0], r0[1]);
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register);
 
-		// This will deref the offset of the variadic argument
+        // This will deref the offset of the variadic argument
         emitInstruction(context, ByteCodeOp::IncPointer, r0[1], node->access->resultRegisterRC, r0[1]);
         emitInstruction(context, ByteCodeOp::DeRef32, r0[1]);
-		emitInstruction(context, ByteCodeOp::IncRA64, r0[1]);
-		emitInstruction(context, ByteCodeOp::MulRAVB, r0[1])->b.u32 = sizeof(Register);
+        emitInstruction(context, ByteCodeOp::IncRA64, r0[1]);
+        emitInstruction(context, ByteCodeOp::MulRAVB, r0[1])->b.u32 = sizeof(Register);
 
-		// Point to the argument
-		emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[1], node->array->resultRegisterRC);
+        // Point to the argument
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[1], node->array->resultRegisterRC);
 
         freeRegisterRC(context, r0);
     }

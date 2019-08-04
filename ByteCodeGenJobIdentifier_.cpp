@@ -7,23 +7,25 @@
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "SourceFile.h"
+#include "Ast.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;
-    node->typeInfo         = node->childs.back()->typeInfo;
+	node->typeInfo = node->childs.back()->typeInfo;
     return true;
 }
 
 bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    auto node       = context->node;
+    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
     // Direct index in a tuple
     if (node->flags & AST_IDENTIFIER_IS_INTEGER)
     {
-        node->resultRegisterRC = node->parent->resultRegisterRC;
+        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
         if (!g_CommandLine.optimizeByteCode || node->computedValue.reg.u32 > 0)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
@@ -70,8 +72,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u32 = resolved->storageIndex;
         }
 
-        node->parent->typeInfo         = node->typeInfo;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        identifier->identifierRef->typeInfo         = node->typeInfo;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
@@ -120,8 +123,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
-        node->parent->typeInfo         = node->typeInfo;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        identifier->identifierRef->typeInfo         = node->typeInfo;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
@@ -169,15 +173,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
-        node->parent->typeInfo         = node->typeInfo;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        identifier->identifierRef->typeInfo         = node->typeInfo;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
     // Direct index in a structure
-    if (node->parent && node->parent->typeInfo && node->parent->typeInfo->kind == TypeInfoKind::Struct)
+    if (identifier->identifierRef->typeInfo->kind == TypeInfoKind::Struct)
     {
-        node->resultRegisterRC = node->parent->resultRegisterRC;
+        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
         if (!g_CommandLine.optimizeByteCode || node->resolvedSymbolOverload->storageOffset > 0)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
@@ -187,7 +192,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (!(node->flags & AST_TAKE_ADDRESS))
             emitStructDeRef(context);
 
-        node->parent->typeInfo = node->typeInfo;
+        identifier->identifierRef->typeInfo = identifier->typeInfo;
         return true;
     }
 

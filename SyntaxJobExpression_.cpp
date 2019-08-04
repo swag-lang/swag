@@ -32,6 +32,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         arrayNode->semanticFct = &SemanticJob::resolveArrayPointerIndex;
 
         Ast::addChild(arrayNode, *exprNode);
+		arrayNode->inheritLocation();
         arrayNode->array = *exprNode;
         SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
         *exprNode = arrayNode;
@@ -153,10 +154,6 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doSinglePrimaryExpression(nullptr, &exprNode));
-        if (token.id == TokenId::SymLeftSquare)
-        {
-            SWAG_CHECK(doArrayPointerIndex(&exprNode));
-        }
     }
 
     if (parent)
@@ -391,12 +388,6 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
         return syntaxError(token, format("invalid token '%s' in left expression", token.text.c_str()));
     }
 
-    // Dereference pointer
-    if (token.id == TokenId::SymLeftSquare)
-    {
-        SWAG_CHECK(doArrayPointerIndex(&exprNode));
-    }
-
     Ast::addChild(parent, exprNode);
     if (result)
         *result = exprNode;
@@ -409,7 +400,7 @@ void SyntaxJob::forceTakeAddress(AstNode* node)
     switch (node->kind)
     {
     case AstNodeKind::IdentifierRef:
-        node->childs.back()->flags |= AST_TAKE_ADDRESS;
+		forceTakeAddress(node->childs.back());
         break;
     case AstNodeKind::ArrayPointerIndex:
         forceTakeAddress(static_cast<AstPointerDeRef*>(node)->array);

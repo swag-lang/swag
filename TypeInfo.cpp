@@ -337,6 +337,8 @@ const char* TypeInfo::getKindName(TypeInfo* typeInfo)
         return "a tuple";
     case TypeInfoKind::Variadic:
         return "a variadic";
+    case TypeInfoKind::Struct:
+        return "a struct";
     }
 
     return "<type>";
@@ -362,6 +364,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "tuple";
     case TypeInfoKind::Variadic:
         return "variadic";
+    case TypeInfoKind::Struct:
+        return "struct";
     }
 
     return "<type>";
