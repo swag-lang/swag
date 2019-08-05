@@ -123,7 +123,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
-        identifier->identifierRef->typeInfo         = node->typeInfo;
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;
         return true;
@@ -173,9 +172,24 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
         }
 
-        identifier->identifierRef->typeInfo         = node->typeInfo;
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;
+        return true;
+    }
+
+    // Reference inside a struct
+    if (resolved->flags & OVERLOAD_VAR_STRUCT)
+    {
+        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
+        if (!g_CommandLine.optimizeByteCode || node->resolvedSymbolOverload->storageOffset > 0)
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
+            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+        }
+
+        if (!(node->flags & AST_TAKE_ADDRESS))
+            emitStructDeRef(context);
+
         return true;
     }
 
@@ -192,22 +206,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u64                    = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
             return true;
         }
-    }
-
-    // Direct index in a structure
-    if (identifier->identifierRef->typeInfo->kind == TypeInfoKind::Struct)
-    {
-        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        if (!g_CommandLine.optimizeByteCode || node->resolvedSymbolOverload->storageOffset > 0)
-        {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
-            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
-        }
-
-        if (!(node->flags & AST_TAKE_ADDRESS))
-            emitStructDeRef(context);
-
-        return true;
     }
 
     return internalError(context, "emitIdentifier");
