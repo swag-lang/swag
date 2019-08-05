@@ -78,6 +78,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
         auto parent = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
         if (node != parent->childs.back())
             node->flags |= AST_TAKE_ADDRESS;
+		parent->previousResolvedNode = node;
     }
 
     return true;

@@ -71,7 +71,7 @@ enum class TokenId
     CompilerElse,
     CompilerTest,
 
-	Intrinsic,
+    Intrinsic,
 
     KwdVar,
     KwdLet,
