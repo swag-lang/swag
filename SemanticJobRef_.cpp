@@ -111,7 +111,6 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
-        arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
         break;
     }
     case TypeInfoKind::Slice:
@@ -119,7 +118,6 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitSliceRef;
-        arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
         break;
     }
     default:
@@ -141,11 +139,14 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
         return sourceFile->report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
-    if (arrayType->kind == TypeInfoKind::Native && arrayType->nativeType == NativeType::String)
+    switch (arrayType->kind)
     {
-        arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
-    }
-    else if (arrayType->kind == TypeInfoKind::Pointer)
+    case TypeInfoKind::Native:
+        if (arrayType->nativeType == NativeType::String)
+            arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
+        break;
+
+    case TypeInfoKind::Pointer:
     {
         auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
         if (typePtr->ptrCount == 1)
@@ -154,29 +155,32 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         }
         else
         {
-            auto newType        = g_Pool_typeInfoPointer.alloc();
-            newType->name       = typePtr->name;
-            newType->ptrCount   = typePtr->ptrCount - 1;
-            newType->sizeOf     = typePtr->sizeOf;
+            auto newType = static_cast<TypeInfoPointer*>(typePtr->clone());
+            newType->ptrCount--;
             arrayNode->typeInfo = g_TypeMgr.registerType(newType);
         }
+        break;
     }
-    else if (arrayType->kind == TypeInfoKind::Array)
+
+    case TypeInfoKind::Array:
     {
         auto typePtr        = static_cast<TypeInfoArray*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
+        break;
     }
-    else if (arrayType->kind == TypeInfoKind::Slice)
+
+    case TypeInfoKind::Slice:
     {
         auto typePtr        = static_cast<TypeInfoSlice*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
+        break;
     }
-    else if (arrayType->kind == TypeInfoKind::Variadic)
-    {
+
+    case TypeInfoKind::Variadic:
         arrayNode->typeInfo = g_TypeMgr.typeInfoVariadicValue;
-    }
-    else
-    {
+        break;
+
+    default:
         return sourceFile->report({sourceFile, arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
     }
 
