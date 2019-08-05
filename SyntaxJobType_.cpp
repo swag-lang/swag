@@ -194,36 +194,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTemplateTypes(AstNode* parent, AstNode** result)
-{
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::TypeList, sourceFile->indexInModule, parent);
-    node->inheritOwnersAndFlags(this);
-    node->semanticFct = &SemanticJob::resolveTypeList;
-    if (result)
-        *result = node;
-
-    SWAG_CHECK(eatToken(TokenId::SymExclam));
-    if (token.id == TokenId::SymLeftParen)
-    {
-        SWAG_CHECK(eatToken());
-        while (true)
-        {
-            SWAG_CHECK(doTypeExpression(node));
-            if (token.id != TokenId::SymComma)
-                break;
-            SWAG_CHECK(eatToken());
-        }
-
-        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after types"));
-    }
-    else
-    {
-        SWAG_CHECK(doTypeExpression(node));
-    }
-
-    return true;
-}
-
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Cast, sourceFile->indexInModule, parent);

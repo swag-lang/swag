@@ -14,12 +14,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto right      = node->childs[1];
     auto sourceFile = context->sourceFile;
 
-	auto leftTypeInfo = left->typeInfo;
+    auto leftTypeInfo  = left->typeInfo;
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, sourceFile->report({sourceFile, left, format("affect operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, left, "affect not allowed on array"}));
     SWAG_VERIFY(left->flags & AST_L_VALUE, sourceFile->report({sourceFile, left, "affect operation not allowed, left expression is not a l-value"}));
-	SWAG_VERIFY(!(left->resolvedSymbolOverload->flags & OVERLOAD_CONST), sourceFile->report({ sourceFile, left, "affect operation not allowed, left expression is constant" }));
+    SWAG_VERIFY(!(left->resolvedSymbolOverload->flags & OVERLOAD_CONST), sourceFile->report({sourceFile, left, "affect operation not allowed, left expression is constant"}));
 
     node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
@@ -30,14 +30,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
-			leftTypeInfo->kind != TypeInfoKind::Lambda &&
-			leftTypeInfo->kind != TypeInfoKind::Enum)
+            leftTypeInfo->kind != TypeInfoKind::Lambda &&
+            leftTypeInfo->kind != TypeInfoKind::TypeList &&
+            leftTypeInfo->kind != TypeInfoKind::Enum)
             return sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::Slice &&
-			rightTypeInfo->kind != TypeInfoKind::Lambda &&
+            rightTypeInfo->kind != TypeInfoKind::Lambda &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
