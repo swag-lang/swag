@@ -60,8 +60,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
 {
-    auto node      = context->node;
-    auto nodeArray = CastAst<AstPointerDeRef>(node, AstNodeKind::ArrayPointerIndex);
+    auto node = context->node;
 
     if (node->flags & AST_TAKE_ADDRESS)
     {
@@ -71,10 +70,6 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
     {
         SWAG_CHECK(resolveArrayPointerDeRef(context));
     }
-
-    // Get symbol resolution
-    node->resolvedSymbolName     = nodeArray->array->resolvedSymbolName;
-    node->resolvedSymbolOverload = nodeArray->array->resolvedSymbolOverload;
 
     // If this is not the last child of the IdentifierRef, then this is a reference, and
     // we must take the address and no dereference that identifier
