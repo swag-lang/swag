@@ -7,10 +7,10 @@ struct point
 	var x: s32 = 666
 }
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var arr: [2] point
 	ptr := &arr[0]
-	if(ptr[0].x == 666){}
+	@assert(ptr[0].x == 666)
 }

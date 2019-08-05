@@ -262,8 +262,6 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             }
         }
 
-        if (node->flags & AST_TAKE_ADDRESS)
-            node->parent->typeInfo = typeInfo->pointedType;
         node->parent->resultRegisterRC = node->resultRegisterRC;
     }
 

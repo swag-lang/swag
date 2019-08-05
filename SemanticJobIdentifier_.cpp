@@ -39,11 +39,11 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         // Symbol is in fact a constant value : no need for bytecode
         if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
         {
-			if (childBack->kind != AstNodeKind::ArrayPointerIndex)
-			{
-				node->computedValue = node->resolvedSymbolOverload->computedValue;
-				node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
-			}
+            if (childBack->kind != AstNodeKind::ArrayPointerIndex)
+            {
+                node->computedValue = node->resolvedSymbolOverload->computedValue;
+                node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+            }
         }
         else if (node->resolvedSymbolName->kind == SymbolKind::Variable ||
                  node->resolvedSymbolName->kind == SymbolKind::Function)
@@ -187,6 +187,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Lambda call
         AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         auto           typeInfo   = g_TypeMgr.concreteType(identifier->typeInfo);
+
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
             // From now this is considered as a function, not a lambda
@@ -200,16 +201,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
             parent->startScope = static_cast<TypeInfoList*>(typeInfo)->scope;
-            parent->typeInfo   = typeInfo;
             node->typeInfo     = typeInfo;
+            parent->typeInfo   = typeInfo;
         }
 
         // Struct
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             parent->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
-            parent->typeInfo   = typeInfo;
             node->typeInfo     = typeInfo;
+            parent->typeInfo   = typeInfo;
         }
 
         // Pointer
@@ -217,11 +218,19 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
             if (typePointer->pointedType->kind == TypeInfoKind::Struct)
-            {
                 parent->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
-                parent->typeInfo   = typePointer->pointedType;
-                node->typeInfo     = typePointer->pointedType;
-            }
+            node->typeInfo   = typeInfo;
+            parent->typeInfo = typeInfo;
+        }
+
+        // Array
+        else if (typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            if (typeArray->pointedType->kind == TypeInfoKind::Struct)
+                parent->startScope = static_cast<TypeInfoStruct*>(typeArray->pointedType)->scope;
+            node->typeInfo   = typeInfo;
+            parent->typeInfo = typeInfo;
         }
 
         break;

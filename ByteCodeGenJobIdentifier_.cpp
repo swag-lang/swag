@@ -1,19 +1,15 @@
 #include "pch.h"
-#include "AstNode.h"
 #include "ByteCodeGenJob.h"
 #include "SymTable.h"
-#include "TypeInfo.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
-#include "SourceFile.h"
 #include "Ast.h"
 
 bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;
-    node->typeInfo         = node->childs.back()->typeInfo;
     return true;
 }
 
@@ -72,7 +68,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u32 = resolved->storageIndex;
         }
 
-        identifier->identifierRef->typeInfo         = node->typeInfo;
         node->parent->resultRegisterRC              = node->resultRegisterRC;
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         return true;
