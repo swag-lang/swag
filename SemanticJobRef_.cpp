@@ -76,21 +76,13 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
     node->resolvedSymbolName     = nodeArray->array->resolvedSymbolName;
     node->resolvedSymbolOverload = nodeArray->array->resolvedSymbolOverload;
 
+    // If this is not the last child of the IdentifierRef, then this is a reference, and
+    // we must take the address and no dereference that identifier
     if (node->parent->kind == AstNodeKind::IdentifierRef)
     {
-        auto parent      = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
-        auto typeInfo    = node->typeInfo;
-        parent->typeInfo = typeInfo;
-
-		// If this is not the last child of the IdentifierRef, then this is a reference, and 
-		// we must take the address and no dereference that identifier
+        auto parent = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
         if (node != parent->childs.back())
             node->flags |= AST_TAKE_ADDRESS;
-
-        if (typeInfo->kind == TypeInfoKind::Struct)
-        {
-            parent->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
-        }
     }
 
     return true;
