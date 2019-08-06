@@ -150,7 +150,7 @@ bool BackendC::emitFuncSignatures()
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        emitFuncSignatureInternalC(typeFunc, node && !node->fullname.empty() ? node->fullname : one->name);
+        emitFuncSignatureInternalC(typeFunc, node ? node->fullname : one->name);
         bufferC.addString(";\n");
 
         if (node)
