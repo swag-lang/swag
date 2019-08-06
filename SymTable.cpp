@@ -54,13 +54,29 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     return symbol;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue, uint32_t flags, SymbolName** resultName)
+SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile*       sourceFile,
+                                            AstNode*          node,
+                                            TypeInfo*         typeInfo,
+                                            SymbolKind        kind,
+                                            ComputedValue*    computedValue,
+                                            uint32_t          flags,
+                                            SymbolName**      resultName,
+                                            uint32_t          storageOffset,
+                                            SymbolAttributes* attributes)
 {
     scoped_lock lk(mutex);
-    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName);
+    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, attributes);
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue, uint32_t flags, SymbolName** resultName)
+SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
+                                                  AstNode*          node,
+                                                  TypeInfo*         typeInfo,
+                                                  SymbolKind        kind,
+                                                  ComputedValue*    computedValue,
+                                                  uint32_t          flags,
+                                                  SymbolName**      resultName,
+                                                  uint32_t          storageOffset,
+                                                  SymbolAttributes* attributes)
 {
     auto symbol = findNoLock(node->name);
     if (!symbol)
@@ -70,8 +86,12 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNod
 
     if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
         return nullptr;
+
     auto result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
     result->flags |= flags;
+    result->storageOffset = storageOffset;
+    if (attributes)
+        result->attributes = *attributes;
 
     // One less overload. When this reached zero, this means we known every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved

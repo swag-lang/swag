@@ -228,33 +228,26 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // Register symbol with its type
-    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Variable, isConstant ? &node->computedValue : nullptr, symbolFlags);
-    SWAG_CHECK(overload);
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
-    node->resolvedSymbolOverload = overload;
-    overload->storageOffset      = storageOffset;
-
     // Assign value
     auto module   = sourceFile->module;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        auto value              = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
-        overload->storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
+        auto value    = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
+        storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
 
         module->mutexDataSeg.lock();
         if (typeInfo->isNative(NativeType::String))
         {
-            uint8_t* ptrDest                       = module->dataSegment.data() + overload->storageOffset;
+            uint8_t* ptrDest                       = module->dataSegment.data() + storageOffset;
             *(const char**) ptrDest                = value->text.c_str();
             *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
             auto stringIndex                       = module->reserveString(value->text);
-            module->addDataSegmentInitString(overload->storageOffset, stringIndex);
+            module->addDataSegmentInitString(storageOffset, stringIndex);
         }
         else if (typeInfo->kind == TypeInfoKind::Native)
         {
-            uint8_t* ptrDest = module->dataSegment.data() + overload->storageOffset;
+            uint8_t* ptrDest = module->dataSegment.data() + storageOffset;
             switch (typeInfo->sizeOf)
             {
             case 1:
@@ -277,14 +270,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         else if (node->astAssignment && node->astAssignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
             SWAG_VERIFY(node->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "cannot evaluate expression at compile time"}));
-            auto offset = overload->storageOffset;
+            auto offset = storageOffset;
             auto result = collectLiterals(sourceFile, offset, node->astAssignment, nullptr, SegmentBuffer::Data);
             SWAG_CHECK(result);
         }
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            auto offset     = overload->storageOffset;
+            auto offset     = storageOffset;
             auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, SegmentBuffer::Data);
             SWAG_CHECK(result);
         }
@@ -295,17 +288,32 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_ASSERT(node->ownerScope);
         SWAG_ASSERT(node->ownerFct);
-        overload->storageOffset = node->ownerScope->startStackSize;
+        storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
     }
 
     // Attributes
+    SymbolAttributes attributes;
     if (context->node->parentAttributes)
     {
-        collectAttributes(context, overload->attributes, node->parentAttributes, context->node, AstNodeKind::VarDecl, node->attributeFlags);
+        collectAttributes(context, attributes, node->parentAttributes, context->node, AstNodeKind::VarDecl, node->attributeFlags);
     }
+
+    // Register symbol with its type
+    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
+                                                                  node,
+                                                                  node->typeInfo,
+                                                                  SymbolKind::Variable,
+                                                                  isConstant ? &node->computedValue : nullptr,
+                                                                  symbolFlags,
+                                                                  nullptr,
+                                                                  storageOffset,
+                                                                  &attributes);
+	SWAG_CHECK(overload);
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
+    node->resolvedSymbolOverload = overload;
 
     return true;
 }
