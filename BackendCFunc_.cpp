@@ -1001,6 +1001,8 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
 
             auto index         = ip->b.u64 - 1;
             auto numCallParams = typeFuncBC->parameters.size();
+            assert(!numCallParams || ip->b.u64);
+
             for (int idxCall = (int) numCallParams - 1; idxCall >= 0; idxCall--)
             {
                 auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;

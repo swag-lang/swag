@@ -1,4 +1,4 @@
-#module module565
+#module module567
 //#unittest pass semantic
 
 struct point1
@@ -14,14 +14,14 @@ struct point
 	var x: s32
 	var y: s32
 	var z: s32
-	var pt: point1
+	var ptx: point1
 }
 
 #[swag.printbc]
 #test
 {
 	var pt : point
-	point1.opInit(pt.pt)
+	//pt.ptx.opInit()
 	/*@assert(pt.pt.x == 0)
 	pt.pt.x = 10
 	@print(pt.pt.x)

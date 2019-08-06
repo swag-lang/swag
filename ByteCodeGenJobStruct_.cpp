@@ -41,6 +41,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     // No special value, so we can just clear the struct
     if (!(typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
     {
+		emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
         switch (typeInfo->sizeOf)
         {
         case 1:
