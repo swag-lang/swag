@@ -1,7 +1,7 @@
 #module module428
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	const RES = 6;

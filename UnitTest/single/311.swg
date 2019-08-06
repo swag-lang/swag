@@ -3,7 +3,7 @@
 
 var g: string;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	g = "toto";

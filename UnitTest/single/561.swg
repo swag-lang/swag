@@ -1,7 +1,7 @@
 #module module561
 #unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var pt: point

@@ -7,7 +7,7 @@ using swag;
 	#unittest pass backend;
 }
 
-//#[printbytecode]
+//#[printbc]
 #test
 {
 	var b = "XYZ";

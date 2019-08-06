@@ -31,7 +31,7 @@
 		return true;
 	}*/
 
-	//#[swag.printbytecode]
+	//#[swag.printbc]
 	#test
 	{
 		@assert(g == true);

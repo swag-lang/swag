@@ -3,7 +3,7 @@
 
 var g = 0
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	F(666, &T)
@@ -17,7 +17,7 @@ func T(param: s32)
 	g = param
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func F(param: s32, b: (s32))
 {
 	b(param)	

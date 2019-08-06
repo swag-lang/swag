@@ -1,7 +1,7 @@
 #module module286;
 #unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func main ()
 {
 	var a: bool;

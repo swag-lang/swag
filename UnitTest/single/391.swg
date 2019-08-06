@@ -7,7 +7,7 @@ func test (arr: [2] s32)
 	@assert(arr[1] == 2);
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	test([1, 2]);

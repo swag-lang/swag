@@ -6,7 +6,7 @@ func T(a: ..., c: s32)
 {
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	T(0, 1)

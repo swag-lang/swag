@@ -1,6 +1,6 @@
 #module module413
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var c = [1,2,3,4];

@@ -7,7 +7,7 @@
 {
 	#import module273b;
 
-	//#[swag.test, swag.printbytecode]
+	//#[swag.test, swag.printbc]
 	#test
 	{
 		module273b.other();

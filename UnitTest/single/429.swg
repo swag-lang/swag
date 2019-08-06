@@ -15,7 +15,7 @@ func T(color: COLOR)->s32
 	return res;
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var res : s32 = T(COLOR.RED);

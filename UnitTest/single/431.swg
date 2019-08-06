@@ -1,13 +1,13 @@
 #module module431
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	len(cast(const[..]u8) {0x01_02_03_04} )
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func len(buffer: const [..] u8)
 {
 	result := 0

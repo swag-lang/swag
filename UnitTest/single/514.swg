@@ -1,7 +1,7 @@
 #module module514
 #unittest pass syntax
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 struct toto
 {
 	var x, y, z: f32;

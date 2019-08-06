@@ -1,7 +1,7 @@
 #module module469
 #unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	a := &F;

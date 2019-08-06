@@ -7,7 +7,7 @@
 {
 	using swag;
 
-	//#[printbytecode]
+	//#[printbc]
 	func fact (v: s32)->s32 
 	{ 
 		if(v == 1)

@@ -1,13 +1,13 @@
 #module module375;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func a (ptr: const [..] s32, cpt: s32)
 {
 	@assert(@prop(ptr, count) == cast(u32) (cpt));
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var slice: const [..] s32;

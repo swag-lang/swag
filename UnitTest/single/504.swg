@@ -1,13 +1,13 @@
 #module module504
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func T(a: ...)
 {
 	@assert(@prop(a, count) == 3)
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	T(10, 100, 666)

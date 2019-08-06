@@ -1,7 +1,7 @@
 #module module374;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	const a = 666;

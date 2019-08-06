@@ -1,6 +1,6 @@
 #module module299;
 
-//#[printbytecode]
+//#[printbc]
 #test
 {
 	@assert(@prop("toto", count) == 4);

@@ -1,7 +1,7 @@
 #module module368;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var arr: const [..] s32 = {1,2};	

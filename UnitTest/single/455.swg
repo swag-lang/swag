@@ -1,7 +1,7 @@
 #module module455
 //#unittest pass syntax
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #unittest error
 #test
 {

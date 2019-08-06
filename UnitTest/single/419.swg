@@ -1,7 +1,7 @@
 #module module419
 #unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	let d = 6;

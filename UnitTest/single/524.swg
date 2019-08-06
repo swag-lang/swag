@@ -1,7 +1,7 @@
 #module module524
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var pt: [10] s32

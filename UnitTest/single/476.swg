@@ -3,7 +3,7 @@
 
 var g = 0
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	F(&T)

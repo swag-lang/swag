@@ -1,7 +1,7 @@
 #module module518
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 var x, y = [1,2,3]
 
 #test

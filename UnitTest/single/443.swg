@@ -7,7 +7,7 @@ func F(a: s32, b: s32)
 	@assert(b == 666)
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	F(b: 666, a: 124)

@@ -7,7 +7,7 @@ enum EN : s32
 	Green
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var val : EN

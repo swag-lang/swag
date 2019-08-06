@@ -1,7 +1,7 @@
 #module module309;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var c = "toto";

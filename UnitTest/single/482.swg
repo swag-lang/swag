@@ -1,7 +1,7 @@
 #module module482
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #unittest error
 #test
 {
@@ -11,7 +11,7 @@
 	@print(b.0)
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func T()-> {s32, s32}
 {
 	return {1,2}

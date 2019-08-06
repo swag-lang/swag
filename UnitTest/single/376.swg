@@ -1,7 +1,7 @@
 #module module376;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func a (ptr: string, cpt: s32)
 {
 	@assert(cpt == 10);
@@ -9,7 +9,7 @@ func a (ptr: string, cpt: s32)
 	@assert(ptr[3] == cast(u8) ('o'));
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	a("toto", 10);

@@ -4,7 +4,7 @@
 var g: string = "toto";
 var g1: string = "titi";
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	@assert(g == "toto");

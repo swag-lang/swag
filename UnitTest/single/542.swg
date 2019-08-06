@@ -20,7 +20,7 @@ namespace titi
 	}
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {	
 	@assert(a == false)

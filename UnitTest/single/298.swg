@@ -7,13 +7,13 @@
 {
 	using swag;
 
-	//#[printbytecode]
+	//#[printbc]
 	func test2 ()-> string
 	{
 		return "toto1";
 	}
 
-	//#[printbytecode]
+	//#[printbc]
 	#test
 	{
 		var res = test2;

@@ -3,7 +3,7 @@
 
 var g = 0
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	g = 0
@@ -18,7 +18,7 @@ func T(param: *s32)
 	g += param[0]
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func F(param: [..] s32, b: (*s32))
 {
 	var data = @prop(param, data)

@@ -3,7 +3,7 @@
 
 var g = false;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	g = false;

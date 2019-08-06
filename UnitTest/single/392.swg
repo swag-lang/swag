@@ -8,7 +8,7 @@ func test(arr: const [..] s32)
 	@assert(@prop(arr, count) == 2);
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	test({1, 2});

@@ -1,7 +1,7 @@
 #module module332;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var a: [2] s32 = [50, 60];

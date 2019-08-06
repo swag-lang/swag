@@ -1,12 +1,12 @@
 #module module500
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func T(a: ...)
 {
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	T(10, 100)

@@ -6,7 +6,7 @@ func toto(x: s32)
 	@assert(x == 666)
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	a := 666

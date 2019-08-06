@@ -1,7 +1,7 @@
 #module module459
 //#unittest pass syntax
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var c = [1, 2, 3];

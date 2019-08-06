@@ -1,7 +1,7 @@
 #module module436
 #unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	cpt := 0

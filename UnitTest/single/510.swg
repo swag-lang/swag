@@ -1,7 +1,7 @@
 #module module510
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func T(xx: string, a: ...)
 {
 	x0 := cast(s32) a[0]
@@ -12,7 +12,7 @@ func T(xx: string, a: ...)
 	@assert(x2 == 600)
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	T("true", 10, "toto", 600)

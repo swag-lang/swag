@@ -1,7 +1,7 @@
 #module module485
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var res = T()
@@ -10,7 +10,7 @@
 	@assert(res.2 == 3)
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func T()-> {s64,s64,s64}
 {
 	return {1's64,2's64,3's64}

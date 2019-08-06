@@ -1,6 +1,6 @@
 #module module404;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 //#assert true
 
 #unittest error;

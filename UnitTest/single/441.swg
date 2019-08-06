@@ -1,6 +1,6 @@
 #module module441
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #unittest error
 #test
 {

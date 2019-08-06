@@ -3,7 +3,7 @@
 
 var a = [1, 2];
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var ptr1 = &a;

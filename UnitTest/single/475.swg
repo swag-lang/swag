@@ -1,6 +1,6 @@
 #module module475
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	a := [1, 2, 3, 0]

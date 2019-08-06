@@ -1,7 +1,7 @@
 #module module490
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var res : {bool, bool} = {true, false}

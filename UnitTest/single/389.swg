@@ -1,7 +1,7 @@
 #module module389;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var cpt: const [..] s32 = {1, 2, 4};

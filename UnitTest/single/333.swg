@@ -3,7 +3,7 @@
 
 var a: [2] s32 = [50, 60];
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	@assert(a[0] == 50);

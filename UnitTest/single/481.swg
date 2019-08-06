@@ -1,7 +1,7 @@
 #module module481
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	//var array = {1,2,3}
@@ -12,13 +12,13 @@
 	@assert(c[1] == 668)
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func T(param: *s32)
 {
 	param[0] += 1
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func F(param: [..] s32, b: (*s32))
 {
 	var data = @prop(param, data)

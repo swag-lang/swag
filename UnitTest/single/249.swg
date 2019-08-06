@@ -10,7 +10,7 @@ func main (a: s32 = value())->s32
 	return a;
 }
 
-//#[printbytecode]
+//#[printbc]
 func main1 ()
 {
 	@assert(main == 55);

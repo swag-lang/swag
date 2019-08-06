@@ -1,6 +1,6 @@
 #module module402;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var c = 0xFFFFFFFF_FFFFFFFF;

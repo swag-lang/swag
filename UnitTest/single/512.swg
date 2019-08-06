@@ -1,7 +1,7 @@
 #module module512
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func T(xx: string, a: ...)
 {
 	i := 0'u32
@@ -27,7 +27,7 @@ func T(xx: string, a: ...)
 	}
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	T("%s%d", "toto", 10)

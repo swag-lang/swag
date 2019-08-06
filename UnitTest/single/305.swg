@@ -1,7 +1,7 @@
 #module module305;
 #unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	@assert("toto" == "toto");

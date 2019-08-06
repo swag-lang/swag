@@ -1,7 +1,7 @@
 #module module516
 #unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 struct toto
 {
 	var x, y: f32 = 666;

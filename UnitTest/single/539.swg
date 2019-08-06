@@ -7,7 +7,7 @@ struct point
 	var y: s32
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var pt: point

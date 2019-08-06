@@ -1,7 +1,7 @@
 #module module371;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var slice: const [..] s32;	

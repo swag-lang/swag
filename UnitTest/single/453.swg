@@ -5,7 +5,7 @@ func F(a: string = null)
 {
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	F()

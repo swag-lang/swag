@@ -1,6 +1,6 @@
 #module module398;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func test1(a: [3] s32)
 {
 	@assert(a[0] == 1);

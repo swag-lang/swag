@@ -12,7 +12,7 @@
 		return v * test1(v - 1);
 	}
 
-	//#[swag.printbytecode]
+	//#[swag.printbc]
 	func test1 (v: s32)->s32
 	{
 		if(v == 1)

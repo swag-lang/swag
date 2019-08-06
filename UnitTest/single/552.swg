@@ -2,7 +2,7 @@
 //#unittest pass semantic
 
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	a := @alloc(10'u32 * 4)

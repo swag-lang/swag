@@ -1,5 +1,5 @@
 #module module517
 #unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 var x, y = 666;

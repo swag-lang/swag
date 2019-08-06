@@ -6,7 +6,7 @@ func F(a: string = "toto")
 	@assert(a == "toto")
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	F()

@@ -1,7 +1,7 @@
 #module module430
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	len("toto");

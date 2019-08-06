@@ -1,7 +1,7 @@
 #module module502
 #unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #unittest error
 func T(xx: string, a: ...)
 {
@@ -9,7 +9,7 @@ func T(xx: string, a: ...)
 	@print(cast(s32) @prop(a, count))
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	T(true, 10, 100, 1000)

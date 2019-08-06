@@ -3,7 +3,7 @@ const char* g_Runtime = R"(
 namespace swag {
 
 attr constexpr() -> func;
-attr printbytecode() -> func;
+attr printbc() -> func;
 attr compiler() -> func;
 attr public() -> func;
 attr foreign(module: string = "") -> func;

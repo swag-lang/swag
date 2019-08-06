@@ -3,7 +3,7 @@
 var g: string = "tata";
 
 #unittest error;
-#[printbytecode]
+#[printbc]
 #test
 {
 }

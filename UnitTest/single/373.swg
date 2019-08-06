@@ -1,7 +1,7 @@
 #module module373;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var slice: [..] u8 = "titititi";

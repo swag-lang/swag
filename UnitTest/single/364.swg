@@ -1,13 +1,13 @@
 #module module364;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func test (arr: [2] s32, idx: s32, val: s32)
 {
 	@assert(arr[idx] == val);
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #unittest error;
 #test
 {

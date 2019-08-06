@@ -1,13 +1,13 @@
 #module module297;
 #unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 func test1 ()-> string
 {
 	return "toto1";
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var c = test1;

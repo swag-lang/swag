@@ -7,7 +7,7 @@ struct point
 	var y: s32
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	pt := cast(*point) @alloc(@prop(point, sizeof))

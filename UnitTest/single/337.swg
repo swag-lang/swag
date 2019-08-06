@@ -2,7 +2,7 @@
 #unittest pass semantic;
 
 #unittest error;
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var a: [4, 6] s32;

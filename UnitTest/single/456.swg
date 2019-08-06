@@ -9,7 +9,7 @@ func F(x: s32 = T)
 	@assert(x == 666)
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	F;

@@ -3,7 +3,7 @@
 
 const TOTO = 666;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var b = TOTO;

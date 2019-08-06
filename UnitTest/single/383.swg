@@ -1,7 +1,7 @@
 #module module383;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var cpt: u32 = 0;

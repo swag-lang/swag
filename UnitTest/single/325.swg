@@ -1,7 +1,7 @@
 #module module325;
 #unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #unittest error;
 #test
 {

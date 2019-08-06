@@ -1,6 +1,6 @@
 #module module400;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	const a = [1,2];

@@ -5,7 +5,7 @@
 {
 }*/
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var x: {s32, s32}

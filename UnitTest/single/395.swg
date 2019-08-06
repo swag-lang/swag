@@ -1,7 +1,7 @@
 #module module395;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var c = 666;

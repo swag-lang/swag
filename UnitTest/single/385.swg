@@ -1,7 +1,7 @@
 #module module385;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var cpt = 10'u32;

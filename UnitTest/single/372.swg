@@ -3,7 +3,7 @@
 
 var slice: const [..] s32;	
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
     slice = {1, 2, 3};	

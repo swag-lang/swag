@@ -1,7 +1,7 @@
 #module module461
 #unittest pass syntax
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var a: ()->s32;

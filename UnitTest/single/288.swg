@@ -4,7 +4,7 @@
 	#unittest pass backend;
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var a: s32 = 666;

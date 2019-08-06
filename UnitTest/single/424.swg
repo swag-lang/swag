@@ -1,7 +1,7 @@
 #module module424
 #unittest pass syntax
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	switch(5)

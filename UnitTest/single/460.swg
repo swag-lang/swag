@@ -1,7 +1,7 @@
 #module module460
 //#unittest pass syntax
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	c := [1, 2, 3];

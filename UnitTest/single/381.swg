@@ -1,7 +1,7 @@
 #module module381;
 //#unittest pass semantic;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var toto = "1234";

@@ -1,6 +1,6 @@
 #module module302;
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var str = "ABCD";

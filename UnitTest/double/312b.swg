@@ -4,7 +4,7 @@
 
 var g2: string = "tata";
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	@assert(g2 == "tata");

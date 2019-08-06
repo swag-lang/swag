@@ -6,7 +6,7 @@ struct point
 	var x = "toto"
 }
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var pt: point

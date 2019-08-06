@@ -6,7 +6,7 @@ using swag;
 	#unittest pass backend;
 }
 
-//#[printbytecode]
+//#[printbc]
 #test
 {
 	var a: s32 = 666;

@@ -3,7 +3,7 @@
 
 var g = "toto";
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 #test
 {
 	var c = @prop(g, count);

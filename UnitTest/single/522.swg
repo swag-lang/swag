@@ -1,7 +1,7 @@
 #module module522
 //#unittest pass semantic
 
-//#[swag.printbytecode]
+//#[swag.printbc]
 struct point
 {
 	var x, y: s32
