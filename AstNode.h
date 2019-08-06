@@ -628,7 +628,7 @@ struct AstStruct : public AstNode
 
     AstNode* clone() override;
 
-    ByteCode* opInit;
+    AstNode* opInit;
 };
 
 struct AstImpl : public AstNode

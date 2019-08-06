@@ -30,6 +30,8 @@ struct SyntaxJob : public Job
     bool eatSemiCol(const char* msg = nullptr);
     bool recoverError();
 
+	void generateOpInit(AstNode* node);
+
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
     bool doCompilerVersion(AstNode* parent);

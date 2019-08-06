@@ -102,5 +102,69 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
-	return true;
+
+    // Generate an empty init function so that the user can call it
+    {
+        Scoped scoped(this, newScope);
+        generateOpInit(structNode);
+    }
+
+    return true;
+}
+
+void SyntaxJob::generateOpInit(AstNode* node)
+{
+    auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+    auto funcNode   = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, structNode->sourceFileIdx, structNode->parent);
+    funcNode->inheritOwnersAndFlags(this);
+    funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
+    funcNode->name        = "opInit";
+    funcNode->flags |= AST_NO_BYTECODE;
+    structNode->opInit = funcNode;
+
+    // Register function name
+    Scope* newScope = nullptr;
+    currentScope->allocateSymTable();
+    {
+        scoped_lock lk(currentScope->symTable->mutex);
+        auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+        newScope             = Ast::newScope(funcNode->name, ScopeKind::Function, currentScope);
+        newScope->allocateSymTable();
+        funcNode->typeInfo = typeInfo;
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+    }
+
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+
+        // Parameters
+        funcNode->parameters = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, structNode->sourceFileIdx, funcNode);
+        funcNode->parameters->inheritOwnersAndFlags(this);
+        funcNode->parameters->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
+
+        // One parameter
+        auto param = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, structNode->sourceFileIdx, funcNode->parameters);
+        param->inheritOwnersAndFlags(this);
+        param->semanticFct = &SemanticJob::resolveVarDecl;
+        param->name        = "self";
+
+        auto typeNode = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, structNode->sourceFileIdx, param);
+        typeNode->inheritOwnersAndFlags(this);
+        typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
+        typeNode->typeExpression = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
+        param->astType           = typeNode;
+    }
+
+    funcNode->returnType = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, structNode->sourceFileIdx, funcNode);
+    funcNode->returnType->inheritOwnersAndFlags(this);
+    funcNode->returnType->semanticFct = &SemanticJob::resolveFuncDeclType;
+
+    // Content
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        funcNode->content = Ast::newNode(&g_Pool_astNode, AstNodeKind::Statement, structNode->sourceFileIdx, funcNode);
+        funcNode->content->inheritOwnersAndFlags(this);
+    }
 }

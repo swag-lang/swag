@@ -150,7 +150,7 @@ bool BackendC::emitFuncSignatures()
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        emitFuncSignatureInternalC(typeFunc, node ? node->fullname : one->name);
+        emitFuncSignatureInternalC(typeFunc, node && !node->fullname.empty() ? node->fullname : one->name);
         bufferC.addString(";\n");
 
         if (node)
@@ -833,6 +833,13 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
             bufferC.addString(format("r%u.b = r%u.u32 == 0;", ip->b.u32, ip->a.u32));
             break;
 
+        case ByteCodeOp::BinOpAnd:
+            bufferC.addString(format("r%u.b = r%u.b && r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BinOpOr:
+            bufferC.addString(format("r%u.b = r%u.b || r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+
         case ByteCodeOp::Jump:
             bufferC.addString(format("goto lbl%08u;", ip->a.s32 + i + 1));
             break;
@@ -1047,7 +1054,7 @@ bool BackendC::emitFunctions()
         if (one->node)
         {
             node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
-			node->computeFullName();
+            node->computeFullName();
 
             // Do we need to generate that function ?
             if (node->attributeFlags & ATTRIBUTE_COMPILER)
