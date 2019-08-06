@@ -1,4 +1,4 @@
-#module module567
+#module module568
 //#unittest pass semantic
 
 struct point1
@@ -21,12 +21,10 @@ struct point
 #test
 {
 	var pt : point
+	@assert(pt.ptx.x == 0)
+	pt.ptx.x = 10
+	//@print(pt.ptx.x)
+	@assert(pt.ptx.x == 10)
 	pt.ptx.opInit()
-	
-	/*@assert(pt.pt.x == 0)
-	pt.pt.x = 10
-	@print(pt.pt.x)
-	@assert(pt.pt.x == 10)
-	pt.pt.opInit()
-	@assert(pt.pt.x == 0)*/
+	@assert(pt.ptx.x == 0)
 }
