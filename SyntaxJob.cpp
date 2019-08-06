@@ -64,7 +64,7 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
 
 bool SyntaxJob::eatSemiCol(const char* msg)
 {
-    if (token.id != TokenId::SymSemiColon && !tokenizer.lastTokenIsEOL)
+    if (token.id != TokenId::SymSemiColon && token.id != TokenId::EndOfFile && !tokenizer.lastTokenIsEOL)
     {
         if (!msg)
             msg = "";
