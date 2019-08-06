@@ -145,6 +145,7 @@ void ByteCode::print()
         case ByteCodeOp::CopyRR0:
         case ByteCodeOp::ShiftRightU64VB:
 		case ByteCodeOp::IncRAVB:
+		case ByteCodeOp::ClearX:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 

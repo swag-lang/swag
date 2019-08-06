@@ -132,6 +132,7 @@ struct ByteCodeGenJob : public Job
     static bool emitSliceRef(ByteCodeGenContext* context);
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
+	static bool emitDefaultStruct(ByteCodeGenContext* context);
 
     static bool generateStructInit(ByteCodeGenContext* context, struct TypeInfoStruct* typeInfo, struct TypeInfoFuncAttr* typeInfoFunc);
 

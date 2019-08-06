@@ -11,6 +11,7 @@
 #include "AstNode.h"
 #include "Module.h"
 #include "ThreadManager.h"
+#include "ByteCodeGenJob.h"
 
 bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer)
 {
@@ -160,6 +161,15 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
+
+    // Byte code generation of code associated with the structure
+    node->byteCodeFct               = &ByteCodeGenJob::emitDefaultStruct;
+    node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+    node->byteCodeJob->sourceFile   = sourceFile;
+    node->byteCodeJob->originalNode = node;
+    node->byteCodeJob->nodes.push_back(node);
+    ByteCodeGenJob::setupBC(context->sourceFile->module, node);
+    g_ThreadMgr.addJob(node->byteCodeJob);
 
     return true;
 }
