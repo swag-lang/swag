@@ -17,7 +17,7 @@ struct point
 	var pt: point1
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	var pt : point

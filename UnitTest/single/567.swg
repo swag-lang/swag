@@ -21,7 +21,8 @@ struct point
 #test
 {
 	var pt : point
-	//pt.ptx.opInit()
+	pt.ptx.opInit()
+	
 	/*@assert(pt.pt.x == 0)
 	pt.pt.x = 10
 	@print(pt.pt.x)

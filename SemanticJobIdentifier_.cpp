@@ -399,9 +399,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
             node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
-            fctCallParam->parent   = node->callParameters;
-            fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
-            fctCallParam->token    = identifierRef->previousResolvedNode->token;
+            fctCallParam->parent      = node->callParameters;
+            fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
+            fctCallParam->token       = identifierRef->previousResolvedNode->token;
+            fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
             Ast::removeFromParent(identifierRef->previousResolvedNode);
             Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
         }
