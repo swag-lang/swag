@@ -1,10 +1,14 @@
 #module module562
 //#unittest pass semantic
 
-#[swag.printbytecode]
+//#[swag.printbytecode]
 #test
 {
 	var pt: point
+	@assert(pt.y == 70)
+	pt.y = 100
+	@assert(pt.y == 100)
+	pt.opInit()
 	@assert(pt.y == 70)
 }
 
