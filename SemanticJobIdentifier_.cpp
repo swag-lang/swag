@@ -285,9 +285,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
     }
 
-    // Clear cache for the next symbol resolution
-    context->job->cacheScopeHierarchy.clear();
-    context->job->cacheDependentSymbols.clear();
     return true;
 }
 
@@ -454,10 +451,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return true;
     }
 
+	if (node->semanticState == AstNodeResolveState::ProcessingChilds)
+	{
+		scopeHierarchy.clear();
+		dependentSymbols.clear();
+	}
+
     // Compute dependencies if not already done
     if (dependentSymbols.empty())
     {
-        dependentSymbols.clear();
         auto startScope = identifierRef->startScope;
         if (!startScope)
         {

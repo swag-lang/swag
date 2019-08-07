@@ -790,11 +790,7 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
 
     job->cacheDependentSymbols.clear();
     job->cacheDependentSymbols.push_back(symbol);
-    bool result = checkFunctionCall(context, left->parent, nullptr);
-	job->cacheDependentSymbols.clear();
-	if (!result)
-		return false;
-
+    SWAG_CHECK(checkFunctionCall(context, left->parent, nullptr));
     node->typeInfo = job->cacheMatches[0]->typeInfo;
 
     return true;
