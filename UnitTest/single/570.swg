@@ -1,5 +1,5 @@
 #module module570
-#unittest pass semantic
+//#unittest pass semantic
 
 type ret: {s32, s32}
 

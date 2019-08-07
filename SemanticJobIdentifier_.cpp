@@ -291,6 +291,137 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
+bool SemanticJob::checkFunctionCall(SemanticContext* context, AstNode* callParameters, AstIdentifier* node)
+{
+    auto  job              = context->job;
+    auto  sourceFile       = context->sourceFile;
+    auto& matches          = job->cacheMatches;
+    auto& badSignature     = job->cacheBadSignature;
+    auto& dependentSymbols = job->cacheDependentSymbols;
+
+    job->cacheMatches.clear();
+    job->cacheBadSignature.clear();
+
+    int numOverloads = 0;
+    for (auto oneSymbol : dependentSymbols)
+    {
+        for (auto overload : oneSymbol->overloads)
+        {
+            numOverloads++;
+
+            auto typeInfo = static_cast<TypeInfoFuncAttr*>(overload->typeInfo);
+            assert(typeInfo->kind == TypeInfoKind::FuncAttr || typeInfo->kind == TypeInfoKind::Lambda);
+            typeInfo->match(job->symMatch);
+            if (job->symMatch.result == MatchResult::Ok)
+                matches.push_back(overload);
+            else if (job->symMatch.result == MatchResult::BadSignature)
+                badSignature.push_back(overload);
+        }
+    }
+
+    auto symbol = dependentSymbols[0];
+    if (matches.size() == 0)
+    {
+        if (numOverloads == 1)
+        {
+            auto overload = symbol->overloads[0];
+            switch (job->symMatch.result)
+            {
+            case MatchResult::InvalidNamedParameter:
+            {
+                assert(callParameters);
+                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                Diagnostic diag{sourceFile, param->namedParamNode, format("unknown named parameter '%s'", param->namedParam.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            case MatchResult::DuplicatedNamedParameter:
+            {
+                assert(callParameters);
+                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                Diagnostic diag{sourceFile, param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            case MatchResult::NotEnoughParameters:
+            {
+                Diagnostic diag{sourceFile, callParameters ? callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            case MatchResult::TooManyParameters:
+            {
+                Diagnostic diag{sourceFile, callParameters ? callParameters : node, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            case MatchResult::BadSignature:
+            {
+                assert(callParameters);
+                Diagnostic diag{sourceFile,
+                                callParameters->childs[job->symMatch.badSignatureParameterIdx],
+                                format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
+                                       job->symMatch.badSignatureParameterIdx + 1,
+                                       SymTable::getNakedKindName(symbol->kind),
+                                       symbol->name.c_str(),
+                                       job->symMatch.badSignatureRequestedType->name.c_str(),
+                                       job->symMatch.badSignatureGivenType->name.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            }
+        }
+        else
+        {
+            if (badSignature.size())
+            {
+                Diagnostic diag{sourceFile,
+                                node->callParameters ? node->callParameters : node,
+                                format("none of the %d overloads could convert all the parameters types", numOverloads)};
+
+                vector<const Diagnostic*> notes;
+                for (auto overload : badSignature)
+                {
+                    auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+                    note->showRange = false;
+                    notes.push_back(note);
+                }
+
+                return sourceFile->report(diag, notes);
+            }
+            else
+            {
+                int         numParams = callParameters ? (int) node->callParameters->childs.size() : 0;
+                const char* args      = numParams <= 1 ? "parameter" : "parameters";
+                Diagnostic  diag{sourceFile,
+                                callParameters ? callParameters : node,
+                                format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
+                return sourceFile->report(diag);
+            }
+        }
+    }
+
+    if (matches.size() > 1)
+    {
+        Diagnostic diag{sourceFile,
+                        callParameters ? callParameters : node,
+                        format("ambiguous call to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+
+        vector<const Diagnostic*> notes;
+        for (auto overload : matches)
+        {
+            auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+            note->showRange = false;
+            notes.push_back(note);
+        }
+
+        sourceFile->report(diag, notes);
+        return false;
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto  job              = context->job;
@@ -324,7 +455,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     // Compute dependencies if not already done
-    if (job->cacheDependentSymbols.empty())
+    if (dependentSymbols.empty())
     {
         dependentSymbols.clear();
         auto startScope = identifierRef->startScope;
@@ -427,125 +558,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    job->cacheMatches.clear();
-    job->cacheBadSignature.clear();
-    auto& matches      = job->cacheMatches;
-    auto& badSignature = job->cacheBadSignature;
-    int   numOverloads = 0;
-    for (auto symbol : dependentSymbols)
-    {
-        for (auto overload : symbol->overloads)
-        {
-            numOverloads++;
-
-            auto typeInfo = static_cast<TypeInfoFuncAttr*>(overload->typeInfo);
-            assert(typeInfo->kind == TypeInfoKind::FuncAttr || typeInfo->kind == TypeInfoKind::Lambda);
-            typeInfo->match(job->symMatch);
-            if (job->symMatch.result == MatchResult::Ok)
-                matches.push_back(overload);
-            else if (job->symMatch.result == MatchResult::BadSignature)
-                badSignature.push_back(overload);
-        }
-    }
-
-    if (matches.size() == 0)
-    {
-        auto symbol = dependentSymbols[0];
-        if (numOverloads == 1)
-        {
-            auto overload = symbol->overloads[0];
-            switch (job->symMatch.result)
-            {
-            case MatchResult::InvalidNamedParameter:
-            {
-                auto       param = static_cast<AstFuncCallParam*>(node->callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{sourceFile, param->namedParamNode, format("unknown named parameter '%s'", param->namedParam.c_str())};
-                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
-            }
-            case MatchResult::DuplicatedNamedParameter:
-            {
-                auto       param = static_cast<AstFuncCallParam*>(node->callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{sourceFile, param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
-                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
-            }
-            case MatchResult::NotEnoughParameters:
-            {
-                Diagnostic diag{sourceFile, node->callParameters ? node->callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
-            }
-            case MatchResult::TooManyParameters:
-            {
-                Diagnostic diag{sourceFile, node->callParameters, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
-            }
-            case MatchResult::BadSignature:
-            {
-                Diagnostic diag{sourceFile,
-                                node->callParameters->childs[job->symMatch.badSignatureParameterIdx],
-                                format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
-                                       job->symMatch.badSignatureParameterIdx + 1,
-                                       SymTable::getNakedKindName(symbol->kind),
-                                       symbol->name.c_str(),
-                                       job->symMatch.badSignatureRequestedType->name.c_str(),
-                                       job->symMatch.badSignatureGivenType->name.c_str())};
-                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
-            }
-            }
-        }
-        else
-        {
-            if (badSignature.size())
-            {
-                Diagnostic diag{sourceFile,
-                                node->callParameters ? node->callParameters : node,
-                                format("none of the %d overloads could convert all the parameters types", numOverloads)};
-
-                vector<const Diagnostic*> notes;
-                for (auto overload : badSignature)
-                {
-                    auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
-                    note->showRange = false;
-                    notes.push_back(note);
-                }
-
-                return sourceFile->report(diag, notes);
-            }
-            else
-            {
-                int         numParams = node->callParameters ? (int) node->callParameters->childs.size() : 0;
-                const char* args      = numParams <= 1 ? "parameter" : "parameters";
-                Diagnostic  diag{sourceFile,
-                                node->callParameters ? node->callParameters : node,
-                                format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
-                return sourceFile->report(diag);
-            }
-        }
-    }
-
-    if (matches.size() > 1)
-    {
-        auto       symbol = dependentSymbols[0];
-        Diagnostic diag{sourceFile,
-                        node->callParameters ? node->callParameters : node,
-                        format("ambiguous call to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-
-        vector<const Diagnostic*> notes;
-        for (auto overload : matches)
-        {
-            auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
-            note->showRange = false;
-            notes.push_back(note);
-        }
-
-        sourceFile->report(diag, notes);
-        return false;
-    }
-
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, dependentSymbols[0], matches[0]));
+    SWAG_CHECK(checkFunctionCall(context, node->callParameters, node));
+    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0]));
     return true;
 }

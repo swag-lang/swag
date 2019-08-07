@@ -16,6 +16,7 @@ enum class AstNodeKind;
 enum class SymbolKind;
 struct SymbolAttributes;
 struct ByteCodeGenJob;
+struct AstIdentifier;
 
 enum class SemanticResult
 {
@@ -54,6 +55,7 @@ struct SemanticJob : public Job
     static bool forceExecuteNode(SemanticContext* context);
     static bool collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer);
     static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer);
+	static bool checkFunctionCall(SemanticContext* context, AstNode* callParameters, AstIdentifier* node);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -79,6 +81,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
+	static bool resolveUserBinaryOp(SemanticContext* context, const char* name, AstNode* left, AstNode* right);
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);

@@ -76,11 +76,16 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     for (int i = 0; i < numParams; i++)
     {
         auto callParameter = context.parameters[i];
-        auto param         = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
-        if (!param->namedParam.empty())
+
+        AstFuncCallParam* param = nullptr;
+        if (callParameter->kind == AstNodeKind::FuncCallParam)
         {
-            hasNamedParameters = true;
-            break;
+            param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            if (!param->namedParam.empty())
+            {
+                hasNamedParameters = true;
+                break;
+            }
         }
 
         if (i >= parameters.size())
@@ -107,8 +112,14 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
 
         context.doneParameters[cptResolved] = true;
-        param->resolvedParameter            = symbolParameter;
-        param->index                        = cptResolved++;
+
+        if (param)
+        {
+            param->resolvedParameter = symbolParameter;
+            param->index             = cptResolved;
+        }
+
+		cptResolved++;
     }
 
     // Named parameters
@@ -121,7 +132,10 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         for (int i = startResolved; i < numParams; i++)
         {
             callParameter = context.parameters[i];
-            auto param    = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            if (callParameter->kind != AstNodeKind::FuncCallParam)
+                continue;
+
+            auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
             if (param->namedParam.empty())
             {
                 // After the last named parameters, we must have the first default value, or nothing

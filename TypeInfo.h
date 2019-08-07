@@ -8,7 +8,7 @@ struct TypeInfo;
 struct SymbolMatchContext;
 struct Job;
 enum class Intrisic;
-struct AstFuncCallParam;
+struct AstNode;
 
 enum class TypeInfoKind
 {
@@ -259,13 +259,13 @@ enum MatchResult
 
 struct SymbolMatchContext
 {
-    int                       badSignatureParameterIdx;
-    TypeInfo*                 badSignatureRequestedType;
-    TypeInfo*                 badSignatureGivenType;
-    MatchResult               result;
-    vector<AstFuncCallParam*> parameters;
-    vector<bool>              doneParameters;
-    bool                      forLambda;
+    int              badSignatureParameterIdx;
+    TypeInfo*        badSignatureRequestedType;
+    TypeInfo*        badSignatureGivenType;
+    MatchResult      result;
+    vector<AstNode*> parameters;
+    vector<bool>     doneParameters;
+    bool             forLambda;
 
     SymbolMatchContext()
     {
@@ -505,7 +505,7 @@ struct TypeInfoStruct : public TypeInfo
 
     TypeInfo* clone() override;
 
-	int numRegisters() override
+    int numRegisters() override
     {
         return 1;
     }

@@ -7,6 +7,9 @@
 #include "SourceFile.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
+#include "SymTable.h"
+#include "Scope.h"
+#include "ThreadManager.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
@@ -760,6 +763,43 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name, AstNode* left, AstNode* right)
+{
+    auto node       = context->node;
+    auto job        = context->job;
+    auto sourceFile = context->sourceFile;
+    auto leftStruct = CastTypeInfo<TypeInfoStruct>(left->typeInfo, TypeInfoKind::Struct);
+    auto symbol     = leftStruct->scope->symTable->find(name);
+    SWAG_VERIFY(symbol, sourceFile->report({sourceFile, left->parent, format("cannot find operator '%s' in '%s'", name, leftStruct->name.c_str())}));
+
+    // Need to wait for function resolution
+    {
+        scoped_lock lkn(symbol->mutex);
+        if (symbol->cptOverloads)
+        {
+            symbol->dependentJobs.push_back(job);
+            g_ThreadMgr.addPendingJob(context->job);
+            context->result = SemanticResult::Pending;
+            return true;
+        }
+    }
+
+    job->symMatch.reset();
+    job->symMatch.parameters.push_back(left);
+    job->symMatch.parameters.push_back(right);
+
+    job->cacheDependentSymbols.clear();
+    job->cacheDependentSymbols.push_back(symbol);
+    bool result = checkFunctionCall(context, left->parent, nullptr);
+	job->cacheDependentSymbols.clear();
+	if (!result)
+		return false;
+
+    node->typeInfo = job->cacheMatches[0]->typeInfo;
+
+    return true;
+}
+
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
@@ -804,6 +844,10 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         default:
             return sourceFile->report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
+    }
+    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opEqual", left, right));
     }
 
     return true;
@@ -926,10 +970,10 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-	assert(leftTypeInfo && rightTypeInfo);
+    assert(leftTypeInfo && rightTypeInfo);
 
-    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native || leftTypeInfo->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native || rightTypeInfo->kind == TypeInfoKind::Pointer, sourceFile->report({sourceFile, right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native || leftTypeInfo->kind == TypeInfoKind::Pointer || leftTypeInfo->kind == TypeInfoKind::Struct, sourceFile->report({sourceFile, left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native || rightTypeInfo->kind == TypeInfoKind::Pointer || leftTypeInfo->kind == TypeInfoKind::Struct, sourceFile->report({sourceFile, right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
 
     node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
