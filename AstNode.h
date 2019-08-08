@@ -256,13 +256,13 @@ struct AstVarDecl : public AstNode
 {
     void reset() override
     {
-        astType       = nullptr;
-        astAssignment = nullptr;
+        type       = nullptr;
+        assignment = nullptr;
         AstNode::reset();
     }
 
-    struct AstNode* astType;
-    struct AstNode* astAssignment;
+    struct AstNode* type;
+    struct AstNode* assignment;
 };
 
 struct AstIdentifierRef : public AstNode

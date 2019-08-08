@@ -30,10 +30,10 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
     for (auto child : structNode->childs)
     {
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-        if (varDecl->astAssignment)
+        if (varDecl->assignment)
         {
             auto  typeInfo = child->typeInfo;
-            auto& value    = varDecl->astAssignment->computedValue;
+            auto& value    = varDecl->assignment->computedValue;
 
             if (typeInfo->isNative(NativeType::String))
             {
@@ -136,14 +136,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         // Var has an initialization
-        else if (varDecl->astAssignment)
+        else if (varDecl->assignment)
         {
-            SWAG_VERIFY(varDecl->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->astAssignment, "cannot evaluate initialization expression at compile time"}));
+            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
 
-            auto typeInfoAssignment = varDecl->astAssignment->typeInfo;
+            auto typeInfoAssignment = varDecl->assignment->typeInfo;
             if (typeInfoAssignment->isNative(NativeType::String))
                 structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
-            else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->astAssignment->computedValue.reg.u64)
+            else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
                 structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
         }
 

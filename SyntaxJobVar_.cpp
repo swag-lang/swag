@@ -49,22 +49,22 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(varNode, &varNode->astType));
+        SWAG_CHECK(doTypeExpression(varNode, &varNode->type));
     }
 
     if (token.id == TokenId::SymEqual)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doInitializationExpression(varNode, &varNode->astAssignment));
+        SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
     }
 
     // Be sure we will be able to have a type
-    if (!varNode->astType && !varNode->astAssignment)
+    if (!varNode->type && !varNode->assignment)
         return error(varNode->token, "variable must be initialized because no type is specified");
 
     SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
 
-    if (varNode->astAssignment)
+    if (varNode->assignment)
     {
         // When initialization is supposed to be constexpr, we just duplicate the initialization
 		assert(currentScope);
@@ -72,8 +72,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         {
             for (auto otherVar : otherVariables)
             {
-                otherVar->astAssignment = varNode->astAssignment->clone();
-                Ast::addChild(otherVar, otherVar->astAssignment);
+                otherVar->assignment = varNode->assignment->clone();
+                Ast::addChild(otherVar, otherVar->assignment);
             }
         }
         // Otherwise, we generate initialization for other variables (init to the first var)
@@ -81,7 +81,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         {
             for (auto otherVar : otherVariables)
             {
-                otherVar->astAssignment = Ast::createIdentifierRef(this, varNode->name, varNode->token, otherVar);
+                otherVar->assignment = Ast::createIdentifierRef(this, varNode->name, varNode->token, otherVar);
             }
         }
     }
@@ -89,8 +89,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     {
         for (auto otherVar : otherVariables)
         {
-            otherVar->astType = varNode->astType->clone();
-            Ast::addChild(otherVar, otherVar->astType);
+            otherVar->type = varNode->type->clone();
+            Ast::addChild(otherVar, otherVar->type);
         }
     }
 

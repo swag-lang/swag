@@ -333,19 +333,19 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             if (!covered)
             {
                 auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
-                context->node     = defaultParam->astAssignment;
+                context->node     = defaultParam->assignment;
                 SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
                 emitLiteral(context, defaultParam->typeInfo);
                 context->node = node;
-                for (int r = defaultParam->astAssignment->resultRegisterRC.size() - 1; r >= 0; r--)
+                for (int r = defaultParam->assignment->resultRegisterRC.size() - 1; r >= 0; r--)
                 {
-                    emitInstruction(context, ByteCodeOp::PushRAParam, defaultParam->astAssignment->resultRegisterRC[r], numRegisters);
+                    emitInstruction(context, ByteCodeOp::PushRAParam, defaultParam->assignment->resultRegisterRC[r], numRegisters);
                     precallStack += sizeof(Register);
                     numRegisters++;
                     numPushParams++;
                 }
 
-                freeRegisterRC(context, defaultParam->astAssignment->resultRegisterRC);
+                freeRegisterRC(context, defaultParam->assignment->resultRegisterRC);
             }
         }
     }

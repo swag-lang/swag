@@ -153,7 +153,7 @@ void SyntaxJob::generateOpInit(AstNode* node)
         typeNode->inheritOwnersAndFlags(this);
         typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
         typeNode->typeExpression = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
-        param->astType           = typeNode;
+        param->type              = typeNode;
     }
 
     funcNode->returnType = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, structNode->sourceFileIdx, funcNode);

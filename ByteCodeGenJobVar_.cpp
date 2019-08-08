@@ -15,15 +15,15 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         // User initialization
-        if (node->astAssignment)
+        if (node->assignment)
         {
             RegisterList r0;
             r0          = reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
             inst->b.s32 = resolved->storageOffset;
-            emitAffectEqual(context, r0, node->astAssignment->resultRegisterRC, node->typeInfo, node->astAssignment->typeInfo);
+            emitAffectEqual(context, r0, node->assignment->resultRegisterRC, node->typeInfo, node->assignment->typeInfo);
             freeRegisterRC(context, r0);
-            freeRegisterRC(context, node->astAssignment->resultRegisterRC);
+            freeRegisterRC(context, node->assignment->resultRegisterRC);
             return true;
         }
 

@@ -29,7 +29,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         typeNode->inheritOwnersAndFlags(this);
         typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
         typeNode->typeExpression = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
-        paramNode->astType       = typeNode;
+        paramNode->type          = typeNode;
     }
     else
     {
@@ -37,19 +37,19 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(paramNode, &paramNode->astType));
-            SWAG_CHECK(paramNode->astType);
+            SWAG_CHECK(doTypeExpression(paramNode, &paramNode->type));
+            SWAG_CHECK(paramNode->type);
         }
 
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->astAssignment));
+            SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->assignment));
         }
     }
 
     // Be sure we will be able to have a type
-    if (!paramNode->astType && !paramNode->astAssignment)
+    if (!paramNode->type && !paramNode->assignment)
         return error(paramNode->token, "parameter must be initialized because no type is specified");
 
     return true;
@@ -103,7 +103,7 @@ bool SyntaxJob::doGenericArguments(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(oneParam, &oneParam->astType));
+            SWAG_CHECK(doTypeExpression(oneParam, &oneParam->type));
         }
 
         if (token.id != TokenId::SymComma)

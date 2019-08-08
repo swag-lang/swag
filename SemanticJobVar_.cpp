@@ -106,63 +106,63 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_CONST;
 
     // A constant must be initialized
-    if (isConstant && !node->astAssignment)
+    if (isConstant && !node->assignment)
     {
         return sourceFile->report({sourceFile, node, "a constant must be initialized"});
     }
 
-    if ((symbolFlags & OVERLOAD_CONST) && !node->astAssignment)
+    if ((symbolFlags & OVERLOAD_CONST) && !node->assignment)
     {
         return sourceFile->report({sourceFile, node, "a unmutable 'let' variable must be initialized"});
     }
 
     // Value
-    if (node->astAssignment && node->astAssignment->kind != AstNodeKind::ExpressionList)
+    if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
     {
-        if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->astAssignment->flags & AST_CONST_EXPR))
+        if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
         {
-            SWAG_CHECK(executeNode(context, node->astAssignment, true));
+            SWAG_CHECK(executeNode(context, node->assignment, true));
             if (context->result == SemanticResult::Pending)
                 return true;
         }
 
-        if (node->astType && node->astType->typeInfo->kind != TypeInfoKind::Slice)
+        if (node->type && node->type->typeInfo->kind != TypeInfoKind::Slice)
         {
-            SWAG_VERIFY(node->astAssignment->typeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, node->astAssignment, "affect not allowed from an array"}));
+            SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, node->assignment, "affect not allowed from an array"}));
         }
     }
 
     // A global variable or a constant must have its value computed at that point
-    if (isConstant || (node->astAssignment && (symbolFlags & OVERLOAD_VAR_GLOBAL)))
+    if (isConstant || (node->assignment && (symbolFlags & OVERLOAD_VAR_GLOBAL)))
     {
-        SWAG_VERIFY(node->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node->astAssignment, "cannot evaluate initialization expression at compile time"}));
+        SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node->assignment, "cannot evaluate initialization expression at compile time"}));
     }
 
     // Be sure array without a size have a initializer, to deduce the size
-    if (node->astType && node->astType->typeInfo->kind == TypeInfoKind::Array)
+    if (node->type && node->type->typeInfo->kind == TypeInfoKind::Array)
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(node->astType->typeInfo, TypeInfoKind::Array);
-        SWAG_VERIFY(typeArray->count != UINT32_MAX || node->astAssignment, sourceFile->report({sourceFile, node, "missing initialization expression to deduce size of array"}));
-        SWAG_VERIFY(!node->astAssignment || node->astAssignment->kind == AstNodeKind::ExpressionList, sourceFile->report({sourceFile, node, "invalid initialization expression for an array"}));
+        auto typeArray = CastTypeInfo<TypeInfoArray>(node->type->typeInfo, TypeInfoKind::Array);
+        SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, sourceFile->report({sourceFile, node, "missing initialization expression to deduce size of array"}));
+        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList, sourceFile->report({sourceFile, node, "invalid initialization expression for an array"}));
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
         {
-            typeArray->count  = (uint32_t) node->astAssignment->childs.size();
+            typeArray->count  = (uint32_t) node->assignment->childs.size();
             typeArray->sizeOf = typeArray->count * typeArray->pointedType->sizeOf;
             typeArray->name   = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
         }
     }
 
     // Find type
-    if (node->astType && node->astAssignment)
+    if (node->type && node->assignment)
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->astType->typeInfo, node->astAssignment));
-        node->typeInfo = node->astType->typeInfo;
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->type->typeInfo, node->assignment));
+        node->typeInfo = node->type->typeInfo;
     }
-    else if (node->astAssignment)
+    else if (node->assignment)
     {
-        node->typeInfo = g_TypeMgr.concreteType(node->astAssignment->typeInfo);
+        node->typeInfo = g_TypeMgr.concreteType(node->assignment->typeInfo);
 
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeList)
@@ -176,22 +176,22 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->count       = (uint32_t) typeList->childs.size();
                 typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
                 node->typeInfo         = g_TypeMgr.registerType(typeArray);
-                SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
+                SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->assignment));
             }
             else if (typeList->listKind == TypeInfoListKind::Tuple)
             {
                 auto typeTuple   = static_cast<TypeInfoList*>(typeList->clone());
                 typeTuple->scope = Ast::newScope("", ScopeKind::TypeList, node->ownerScope);
                 node->typeInfo   = g_TypeMgr.registerType(typeTuple);
-                SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->astAssignment));
+                SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->assignment));
             }
             else
                 return internalError(context, "resolveVarDecl, invalid typelist kind");
         }
     }
-    else if (node->astType)
+    else if (node->type)
     {
-        node->typeInfo = node->astType->typeInfo;
+        node->typeInfo = node->type->typeInfo;
     }
 
     SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
@@ -212,7 +212,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->flags |= AST_NO_BYTECODE;
         if (node->typeInfo->kind != TypeInfoKind::Array)
         {
-            node->inheritComputedValue(node->astAssignment);
+            node->inheritComputedValue(node->assignment);
         }
         else
         {
@@ -233,7 +233,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        auto value    = node->astAssignment ? &node->astAssignment->computedValue : &node->computedValue;
+        auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
         storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
 
         module->mutexDataSeg.lock();
@@ -267,11 +267,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 return internalError(context, "emitVarDecl, init native, bad size");
             }
         }
-        else if (node->astAssignment && node->astAssignment->typeInfo->kind == TypeInfoKind::TypeList)
+        else if (node->assignment && node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
-            SWAG_VERIFY(node->astAssignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "cannot evaluate expression at compile time"}));
+            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "cannot evaluate expression at compile time"}));
             auto offset = storageOffset;
-            auto result = collectLiterals(sourceFile, offset, node->astAssignment, nullptr, SegmentBuffer::Data);
+            auto result = collectLiterals(sourceFile, offset, node->assignment, nullptr, SegmentBuffer::Data);
             SWAG_CHECK(result);
         }
         else if (typeInfo->kind == TypeInfoKind::Struct)

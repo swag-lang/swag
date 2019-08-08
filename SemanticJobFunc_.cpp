@@ -38,7 +38,7 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
         }
 
         // Default parameter value
-        if (nodeParam->astAssignment)
+        if (nodeParam->assignment)
         {
             if (!defaultValueDone)
             {

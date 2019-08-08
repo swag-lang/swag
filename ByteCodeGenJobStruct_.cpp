@@ -75,12 +75,12 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                 emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
             }
 
-            if (varDecl->astAssignment)
+            if (varDecl->assignment)
             {
                 if (typeVar->isNative(NativeType::String))
                 {
                     auto module      = sourceFile->module;
-                    auto stringIndex = module->reserveString(varDecl->astAssignment->computedValue.text);
+                    auto stringIndex = module->reserveString(varDecl->assignment->computedValue.text);
 
                     emitInstruction(&cxt, ByteCodeOp::CopyRARBStr, 1, 2)->c.u32 = stringIndex;
                     emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1, 0);
@@ -91,19 +91,19 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                     switch (typeVar->sizeOf)
                     {
                     case 1:
-                        emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->astAssignment->computedValue.reg.u8;
+                        emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u8;
                         emitInstruction(&cxt, ByteCodeOp::AffectOp8, 0, 1);
                         break;
                     case 2:
-                        emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->astAssignment->computedValue.reg.u16;
+                        emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u16;
                         emitInstruction(&cxt, ByteCodeOp::AffectOp16, 0, 1);
                         break;
                     case 4:
-                        emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->astAssignment->computedValue.reg.u32;
+                        emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 1)->b.u32 = varDecl->assignment->computedValue.reg.u32;
                         emitInstruction(&cxt, ByteCodeOp::AffectOp32, 0, 1);
                         break;
                     case 8:
-                        emitInstruction(&cxt, ByteCodeOp::CopyRAVB64, 1)->b.u64 = varDecl->astAssignment->computedValue.reg.u64;
+                        emitInstruction(&cxt, ByteCodeOp::CopyRAVB64, 1)->b.u64 = varDecl->assignment->computedValue.reg.u64;
                         emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1);
                         break;
                     default:

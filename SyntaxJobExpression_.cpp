@@ -425,7 +425,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         if (result)
             *result = varNode;
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doInitializationExpression(varNode, &varNode->astAssignment));
+        SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
         if (!isContextDisabled())
         {
             currentScope->allocateSymTable();
