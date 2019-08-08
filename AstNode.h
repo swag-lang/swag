@@ -31,7 +31,7 @@ enum class AstNodeResolveState
 {
     Enter,
     ProcessingChilds,
-	SecondTry,
+    SecondTry,
     PostChilds,
 };
 
@@ -67,6 +67,7 @@ enum class AstNodeKind
     FuncDeclParams,
     FuncDeclParam,
     FuncDeclType,
+	FuncDeclGenericParams,
     FuncCallParameters,
     FuncCallParam,
     FuncCall,
@@ -93,6 +94,8 @@ enum class AstNodeKind
     CompilerRun,
     CompilerImport,
     CompilerVersion,
+    GenericParams,
+    GenericParam,
 };
 
 struct AstNode : public PoolElement
@@ -298,10 +301,11 @@ struct AstFuncDecl : public AstNode
 {
     void reset() override
     {
-        stackSize  = 0;
-        parameters = nullptr;
-        returnType = nullptr;
-        content    = nullptr;
+        stackSize         = 0;
+        parameters        = nullptr;
+        genericParameters = nullptr;
+        returnType        = nullptr;
+        content           = nullptr;
         dependentJobs.clear();
         AstNode::reset();
     }
@@ -310,6 +314,7 @@ struct AstFuncDecl : public AstNode
 
     int          stackSize;
     AstNode*     parameters;
+    AstNode*     genericParameters;
     AstNode*     returnType;
     AstNode*     content;
     vector<Job*> dependentJobs;

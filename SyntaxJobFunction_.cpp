@@ -82,6 +82,39 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doGenericArguments(AstNode* parent, AstNode** result)
+{
+    auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::GenericParams, sourceFile->indexInModule, parent);
+    allParams->inheritOwnersAndFlags(this);
+    if (result)
+        *result = allParams;
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_VERIFY(token.id != TokenId::SymRightParen, syntaxError(token, "missing generic parameters"));
+
+    while (token.id != TokenId::SymRightParen)
+    {
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "missing generic name or type"));
+        auto oneParam = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::GenericParam, sourceFile->indexInModule, allParams);
+        oneParam->inheritOwnersAndFlags(this);
+        oneParam->inheritToken(token);
+		SWAG_CHECK(eatToken());
+
+        if (token.id == TokenId::SymColon)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doTypeExpression(oneParam, &oneParam->astType));
+        }
+
+        if (token.id != TokenId::SymComma)
+            break;
+        SWAG_CHECK(eatToken());
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    return true;
+}
+
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 {
     auto funcNode = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
@@ -107,6 +140,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
     else
     {
+        if (token.id == TokenId::SymLeftParen)
+            SWAG_CHECK(doGenericArguments(funcNode, &funcNode->genericParameters));
+
         isIntrinsic = token.id == TokenId::Intrinsic;
         SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("missing function name instead of '%s'", token.text.c_str())));
         Ast::assignToken(funcNode, token);
@@ -142,7 +178,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     typeNode->inheritOwnersAndFlags(this);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
-	typeNode->token = funcNode->token;
+    typeNode->token       = funcNode->token;
     if (!isTest)
     {
         if (token.id == TokenId::SymMinusGreat)

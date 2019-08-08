@@ -66,6 +66,7 @@ struct SyntaxJob : public Job
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
+	bool doGenericArguments(AstNode* parent, AstNode** result = nullptr);
     bool doFuncDecl(AstNode* parent, AstNode** result = nullptr);
     bool doFuncDeclParameter(AstNode* parent);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);

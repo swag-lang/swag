@@ -159,11 +159,12 @@ AstNode* AstIdentifier::clone()
 
 AstNode* AstFuncDecl::clone()
 {
-    auto newNode        = g_Pool_astFuncDecl.alloc();
-    newNode->stackSize  = stackSize;
-    newNode->parameters = findChildRef(parameters, newNode);
-    newNode->returnType = findChildRef(returnType, newNode);
-    newNode->content    = findChildRef(content, newNode);
+    auto newNode               = g_Pool_astFuncDecl.alloc();
+    newNode->stackSize         = stackSize;
+    newNode->parameters        = findChildRef(parameters, newNode);
+    newNode->genericParameters = findChildRef(genericParameters, newNode);
+    newNode->returnType        = findChildRef(returnType, newNode);
+    newNode->content           = findChildRef(content, newNode);
     return newNode;
 }
 
