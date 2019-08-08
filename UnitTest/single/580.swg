@@ -18,5 +18,9 @@ impl Point
 #test
 {
 	var pt: Point
-	@assert(pt == 0)
+	@assert(pt != 1)
+	pt.x = 0; pt.y = 1;
+	@assert(pt != 1)
+	pt.x = 1;
+	@assert(pt == 1)
 }

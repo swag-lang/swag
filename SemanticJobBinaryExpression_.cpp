@@ -980,7 +980,10 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     TypeManager::promote(left, right);
     left->typeInfo  = TypeManager::concreteType(left->typeInfo, MakeConcrete::FlagEnum);
     right->typeInfo = TypeManager::concreteType(right->typeInfo, MakeConcrete::FlagEnum);
-    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+
+	// Must not make types compatible for a struct
+	if(left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
+		SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
 
     node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
