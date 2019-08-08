@@ -108,7 +108,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     else
     {
         isIntrinsic = token.id == TokenId::Intrinsic;
-        SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("invalid function name '%s'", token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("missing function name instead of '%s'", token.text.c_str())));
         Ast::assignToken(funcNode, token);
     }
 
