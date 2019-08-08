@@ -270,8 +270,8 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
     {
         sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
-            AstFuncCallParam* p1 = static_cast<AstFuncCallParam*>(n1);
-            AstFuncCallParam* p2 = static_cast<AstFuncCallParam*>(n2);
+            AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+            AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
             return p1->index < p2->index;
         });
     }

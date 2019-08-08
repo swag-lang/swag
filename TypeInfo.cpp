@@ -188,13 +188,6 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
     }
 
-    // No need to sort childs if there's no named parameters, as the order is already correct
-    else if (context.parameters.size())
-    {
-        auto callParameter = context.parameters[0];
-        callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
-    }
-
     // Not enough parameters
     int firstDefault = firstDefaultValueIdx;
     if (firstDefault == -1)
