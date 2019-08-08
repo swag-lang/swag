@@ -60,16 +60,16 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto allParamsNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
-        allParamsNode->inheritOwnersAndFlags(this);
-        allParamsNode->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
-        allParamsNode->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
+        auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
+        allParams->inheritOwnersAndFlags(this);
+        allParams->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
+        allParams->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         if (result)
-            *result = allParamsNode;
+            *result = allParams;
 
         while (token.id != TokenId::SymRightParen)
         {
-            SWAG_CHECK(doFuncDeclParameter(allParamsNode));
+            SWAG_CHECK(doFuncDeclParameter(allParams));
             if (token.id == TokenId::SymComma)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma));
@@ -98,7 +98,7 @@ bool SyntaxJob::doGenericArguments(AstNode* parent, AstNode** result)
         auto oneParam = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::GenericParam, sourceFile->indexInModule, allParams);
         oneParam->inheritOwnersAndFlags(this);
         oneParam->inheritToken(token);
-		SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatToken());
 
         if (token.id == TokenId::SymColon)
         {
