@@ -54,7 +54,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitCompareOp(ByteCodeGenContext* context);
     static bool emitLocalCall(ByteCodeGenContext* context);
-    static bool emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* funcNode, AstVarDecl* varNode);
+    static bool emitLocalCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode);
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);
     static bool emitIntrinsic(ByteCodeGenContext* context);
@@ -133,6 +133,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
 	static bool emitDefaultStruct(ByteCodeGenContext* context);
+	static bool emitUserBinaryOp(ByteCodeGenContext* context);
 
     static bool generateStructInit(ByteCodeGenContext* context, struct TypeInfoStruct* typeInfo, struct TypeInfoFuncAttr* typeInfoFunc);
 

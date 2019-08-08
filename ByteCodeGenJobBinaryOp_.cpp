@@ -9,6 +9,7 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "CommandLine.h"
+#include "SymTable.h"
 
 bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
@@ -482,43 +483,69 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
 
 bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 {
-    AstNode* node = context->node;
-
-    auto r0                = node->childs[0]->resultRegisterRC;
-    auto r1                = node->childs[1]->resultRegisterRC;
-    auto r2                = reserveRegisterRC(context);
+    AstNode* node          = context->node;
+    auto     r0            = node->childs[0]->resultRegisterRC;
+    auto     r1            = node->childs[1]->resultRegisterRC;
+    auto     r2            = reserveRegisterRC(context);
     node->resultRegisterRC = r2;
 
     emitCast(context, node->childs[0]->castedTypeInfo, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo));
     emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo));
-    switch (node->token.id)
+
+    if (node->typeInfo->kind == TypeInfoKind::FuncAttr)
     {
-    case TokenId::SymEqualEqual:
-        SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
-        break;
-    case TokenId::SymExclamEqual:
-        SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
-        emitInstruction(context, ByteCodeOp::NegBool, r2);
-        break;
-    case TokenId::SymLower:
-        SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
-        break;
-    case TokenId::SymGreater:
-        SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
-        break;
-    case TokenId::SymLowerEqual:
-        SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
-        emitInstruction(context, ByteCodeOp::NegBool, r2);
-        break;
-    case TokenId::SymGreaterEqual:
-        SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
-        emitInstruction(context, ByteCodeOp::NegBool, r2);
-        break;
-    default:
-        return internalError(context, "emitCompareOpGreater, invalid token op");
+        freeRegisterRC(context, r2);
+        SWAG_CHECK(emitUserBinaryOp(context));
+        r2 = node->resultRegisterRC;
+
+        switch (node->token.id)
+        {
+        case TokenId::SymExclamEqual:
+        case TokenId::SymLowerEqual:
+        case TokenId::SymGreaterEqual:
+            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            break;
+        }
+    }
+    else
+    {
+        switch (node->token.id)
+        {
+        case TokenId::SymEqualEqual:
+            SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
+            break;
+        case TokenId::SymExclamEqual:
+            SWAG_CHECK(emitCompareOpEqual(context, r0, r1, r2));
+            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            break;
+        case TokenId::SymLower:
+            SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
+            break;
+        case TokenId::SymGreater:
+            SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
+            break;
+        case TokenId::SymLowerEqual:
+            SWAG_CHECK(emitCompareOpGreater(context, r0, r1, r2));
+            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            break;
+        case TokenId::SymGreaterEqual:
+            SWAG_CHECK(emitCompareOpLower(context, r0, r1, r2));
+            emitInstruction(context, ByteCodeOp::NegBool, r2);
+            break;
+        default:
+            return internalError(context, "emitCompareOpGreater, invalid token op");
+        }
+
+        freeRegisterRC(context, r0);
+        freeRegisterRC(context, r1);
     }
 
-    freeRegisterRC(context, r0);
-    freeRegisterRC(context, r1);
     return true;
+}
+
+bool ByteCodeGenJob::emitUserBinaryOp(ByteCodeGenContext* context)
+{
+    AstNode* node           = context->node;
+    auto     symbolOverload = node->resolvedSymbolOverload;
+    return emitLocalCall(context, node, static_cast<AstFuncDecl*>(symbolOverload->node), nullptr);
 }

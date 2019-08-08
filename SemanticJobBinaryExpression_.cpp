@@ -770,6 +770,7 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
     auto sourceFile = context->sourceFile;
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(left->typeInfo, TypeInfoKind::Struct);
     auto symbol     = leftStruct->scope->symTable->find(name);
+
     SWAG_VERIFY(symbol, sourceFile->report({sourceFile, left->parent, format("cannot find operator '%s' in '%s'", name, leftStruct->name.c_str())}));
 
     // Need to wait for function resolution
@@ -791,7 +792,10 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
     job->cacheDependentSymbols.clear();
     job->cacheDependentSymbols.push_back(symbol);
     SWAG_CHECK(checkFunctionCall(context, left->parent, nullptr));
-    node->typeInfo = job->cacheMatches[0]->typeInfo;
+
+    node->typeInfo               = job->cacheMatches[0]->typeInfo;
+    node->resolvedSymbolName     = job->cacheDependentSymbols[0];
+    node->resolvedSymbolOverload = job->cacheMatches[0];
 
     return true;
 }

@@ -148,7 +148,9 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     auto     varNode  = (AstVarDecl*) overload->node;
     SWAG_CHECK(emitIdentifier(context));
     node->resultRegisterRC = node->resultRegisterRC;
-    return emitLocalCall(context, nullptr, varNode);
+
+    auto allParams = node->childs.empty() ? nullptr : node->childs.front();
+    return emitLocalCall(context, allParams, nullptr, varNode);
 }
 
 bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
@@ -156,7 +158,9 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     AstNode* node     = context->node;
     auto     overload = node->resolvedSymbolOverload;
     auto     funcNode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-    return emitLocalCall(context, funcNode, nullptr);
+
+    auto allParams = node->childs.empty() ? nullptr : node->childs.front();
+    return emitLocalCall(context, allParams, funcNode, nullptr);
 }
 
 void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode)
@@ -193,7 +197,7 @@ void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* fu
     }
 }
 
-bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* funcNode, AstVarDecl* varNode)
+bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode)
 {
     AstNode*          node         = context->node;
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
@@ -207,9 +211,8 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstFuncDecl* fun
     if (context->result == ByteCodeResult::Pending)
         return true;
 
-    int  precallStack  = 0;
-    auto allParams     = node->childs.empty() ? nullptr : node->childs.front();
-    int  numCallParams = allParams ? (int) allParams->childs.size() : 0;
+    int precallStack  = 0;
+    int numCallParams = allParams ? (int) allParams->childs.size() : 0;
 
     // Push current used registers before the call, to restore their value after the call
     // (as a function can change everything)

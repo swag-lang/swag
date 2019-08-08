@@ -16,10 +16,11 @@ extern wstring       utf8ToUnicode(const string& s);
 extern struct Global g_Global;
 
 #define SWAG_CHECK(__expr) \
+    do                     \
     {                      \
         if (!(__expr))     \
             return false;  \
-    }
+    } while (0)
 #define SWAG_VERIFY(__expr, __err) \
     {                              \
         if (!(__expr))             \
