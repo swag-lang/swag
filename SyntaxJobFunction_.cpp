@@ -82,7 +82,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doGenericArguments(AstNode* parent, AstNode** result)
+bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
     auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::GenericParams, sourceFile->indexInModule, parent);
     allParams->inheritOwnersAndFlags(this);
@@ -141,10 +141,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     else
     {
         if (token.id == TokenId::SymLeftParen)
-            SWAG_CHECK(doGenericArguments(funcNode, &funcNode->genericParameters));
+            SWAG_CHECK(doGenericDeclParameters(funcNode, &funcNode->genericParameters));
 
+        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::Intrinsic, syntaxError(token, format("missing function name instead of '%s'", token.text.c_str())));
         isIntrinsic = token.id == TokenId::Intrinsic;
-        SWAG_VERIFY(token.id == TokenId::Identifier || isIntrinsic, syntaxError(token, format("missing function name instead of '%s'", token.text.c_str())));
         Ast::assignToken(funcNode, token);
     }
 
