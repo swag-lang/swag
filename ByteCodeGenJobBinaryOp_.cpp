@@ -492,7 +492,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     emitCast(context, node->childs[0]->castedTypeInfo, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo));
     emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo));
 
-    if (node->typeInfo->kind == TypeInfoKind::FuncAttr)
+    if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
         freeRegisterRC(context, r2); // FuncCall will allocate a register for the return value
         SWAG_CHECK(emitUserBinaryOp(context));
@@ -500,9 +500,23 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 
         switch (node->token.id)
         {
-        case TokenId::SymExclamEqual:
+        case TokenId::SymLower:
+            emitInstruction(context, ByteCodeOp::MinusToTrue, r2);
+			break;
+        case TokenId::SymGreater:
+            emitInstruction(context, ByteCodeOp::PlusToTrue, r2);
+            break;
         case TokenId::SymLowerEqual:
+            emitInstruction(context, ByteCodeOp::MinusZeroToTrue, r2);
+            break;
         case TokenId::SymGreaterEqual:
+            emitInstruction(context, ByteCodeOp::PlusZeroToTrue, r2);
+            break;
+        }
+
+        switch (node->token.id)
+        {
+        case TokenId::SymExclamEqual:
             emitInstruction(context, ByteCodeOp::NegBool, r2);
             break;
         }

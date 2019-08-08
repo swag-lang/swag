@@ -1521,6 +1521,19 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::MinusToTrue:
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 < 0 ? true : false;
+        break;
+    case ByteCodeOp::MinusZeroToTrue:
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 <= 0 ? true : false;
+        break;
+    case ByteCodeOp::PlusToTrue:
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 > 0 ? true : false;
+        break;
+    case ByteCodeOp::PlusZeroToTrue:
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 >= 0 ? true : false;
+        break;
+
     default:
         if (ip->op < ByteCodeOp::End)
             context->error(format("unknown bytecode instruction '%s'", g_ByteCodeOpNames[(int) ip->op]));

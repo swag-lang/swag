@@ -28,6 +28,11 @@ BYTECODE_OP(BoundCheckString)
 BYTECODE_OP(BoundCheckReg)
 BYTECODE_OP(MakeLambda)
 
+BYTECODE_OP(MinusToTrue)
+BYTECODE_OP(PlusToTrue)
+BYTECODE_OP(MinusZeroToTrue)
+BYTECODE_OP(PlusZeroToTrue)
+
 BYTECODE_OP(Copy)
 BYTECODE_OP(CopyRR0)
 BYTECODE_OP(CopyRAVB32)

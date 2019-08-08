@@ -946,6 +946,19 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
             bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
             break;
 
+		case ByteCodeOp::MinusToTrue:
+			bufferC.addString(format("r%u.b = r%u.s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::MinusZeroToTrue:
+			bufferC.addString(format("r%u.b = r%u.s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::PlusToTrue:
+			bufferC.addString(format("r%u.b = r%u.s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::PlusZeroToTrue:
+			bufferC.addString(format("r%u.b = r%u.s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            break;
+
         case ByteCodeOp::MakeLambda:
         {
             auto funcBC = (ByteCode*) ip->b.pointer;

@@ -848,6 +848,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserBinaryOp(context, "opEquals", left, right));
+        node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
     return true;
@@ -903,6 +904,11 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             return sourceFile->report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
+    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opCmp", left, right));
+        node->typeInfo = g_TypeMgr.typeInfoBool;
+    }
 
     return true;
 }
@@ -957,6 +963,11 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             return sourceFile->report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
+    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opCmp", left, right));
+        node->typeInfo = g_TypeMgr.typeInfoBool;
+    }
 
     return true;
 }
@@ -981,9 +992,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     left->typeInfo  = TypeManager::concreteType(left->typeInfo, MakeConcrete::FlagEnum);
     right->typeInfo = TypeManager::concreteType(right->typeInfo, MakeConcrete::FlagEnum);
 
-	// Must not make types compatible for a struct
-	if(left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
-		SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
+    // Must not make types compatible for a struct
+    if (left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
 
     node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;
     node->inheritAndFlag(left, right, AST_CONST_EXPR);
