@@ -483,26 +483,23 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
 
 bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 {
-    AstNode* node          = context->node;
-    auto     r0            = node->childs[0]->resultRegisterRC;
-    auto     r1            = node->childs[1]->resultRegisterRC;
-    auto     r2            = reserveRegisterRC(context);
-    node->resultRegisterRC = r2;
+    AstNode* node = context->node;
+    auto     r0   = node->childs[0]->resultRegisterRC;
+    auto     r1   = node->childs[1]->resultRegisterRC;
 
     emitCast(context, node->childs[0]->castedTypeInfo, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo));
     emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo));
 
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
-        freeRegisterRC(context, r2); // FuncCall will allocate a register for the return value
         SWAG_CHECK(emitUserBinaryOp(context));
-        r2 = node->resultRegisterRC;
+        auto r2 = node->resultRegisterRC;
 
         switch (node->token.id)
         {
         case TokenId::SymLower:
             emitInstruction(context, ByteCodeOp::MinusToTrue, r2);
-			break;
+            break;
         case TokenId::SymGreater:
             emitInstruction(context, ByteCodeOp::PlusToTrue, r2);
             break;
@@ -523,6 +520,9 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     }
     else
     {
+        auto r2                = reserveRegisterRC(context);
+        node->resultRegisterRC = r2;
+
         switch (node->token.id)
         {
         case TokenId::SymEqualEqual:
