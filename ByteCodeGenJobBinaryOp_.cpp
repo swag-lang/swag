@@ -494,7 +494,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 
     if (node->typeInfo->kind == TypeInfoKind::FuncAttr)
     {
-        freeRegisterRC(context, r2);
+        freeRegisterRC(context, r2); // FuncCall will allocate a register for the return value
         SWAG_CHECK(emitUserBinaryOp(context));
         r2 = node->resultRegisterRC;
 

@@ -119,7 +119,7 @@ void SyntaxJob::generateOpInit(AstNode* node)
     funcNode->inheritOwnersAndFlags(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     funcNode->name        = "opInit";
-    funcNode->flags |= AST_NO_BYTECODE | AST_BYTECODE_GENERATED;
+    funcNode->flags |= AST_NO_BYTECODE | AST_BYTECODE_GENERATED | AST_GENERATED;
     structNode->opInit = funcNode;
 
     // Register function name

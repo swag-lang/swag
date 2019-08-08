@@ -57,19 +57,64 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
     return true;
 }
 
+bool SemanticJob::checkFuncPrototype(SemanticContext* context)
+{
+    auto        node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    const auto& name       = node->name;
+    auto        sourceFile = context->sourceFile;
+
+    if (node->flags & AST_GENERATED)
+        return true;
+
+    // Check operators
+    if (name.length() < 3)
+        return true;
+
+    // A special function starts with 'op', and then there's an upper case letter
+    if (name[0] != 'o' || name[1] != 'p' || name[2] < 'A' || name[2] > 'Z')
+        return true;
+
+    SWAG_VERIFY(node->parent->kind == AstNodeKind::Impl, sourceFile->report({sourceFile, node->token, format("special function '%s' should be defined in a 'impl' scope", name.c_str())}));
+    auto implNode = CastAst<AstImpl>(node->parent, AstNodeKind::Impl);
+
+    // No need to raise an error, the semantic pass on the impl node will fail
+    auto typeStruct = implNode->identifier->typeInfo;
+    if (typeStruct->kind != TypeInfoKind::Struct)
+        return true;
+
+    if (name == "opInit")
+    {
+        // Already checked by the syntax pass
+    }
+    else if (name == "opEquals")
+    {
+        SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(node->returnType && node->returnType->typeInfo->isSame(g_TypeMgr.typeInfoBool), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), node->returnType->typeInfo->name.c_str())}));
+        auto firstType = node->parameters->childs.front()->typeInfo;
+        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+    }
+    else
+    {
+        return sourceFile->report({sourceFile, node->token, format("function '%s' does not match a special function/operator overload", name.c_str())});
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
+    SWAG_CHECK(checkFuncPrototype(context));
     node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;
 
     // Check prototype
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
     {
-        sourceFile->report({sourceFile, node->token, "function marker with the 'foreign' attribute can't have a body"});
+        sourceFile->report({sourceFile, node->token, "function with the 'foreign' attribute can't have a body"});
     }
 
     if (node->attributeFlags & ATTRIBUTE_TEST)

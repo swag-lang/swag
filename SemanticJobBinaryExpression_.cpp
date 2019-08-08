@@ -791,7 +791,7 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
 
     job->cacheDependentSymbols.clear();
     job->cacheDependentSymbols.push_back(symbol);
-    SWAG_CHECK(checkFunctionCall(context, left->parent, nullptr));
+    SWAG_CHECK(checkFuncCall(context, left->parent, nullptr));
 
     node->typeInfo               = job->cacheMatches[0]->typeInfo;
     node->resolvedSymbolName     = job->cacheDependentSymbols[0];
@@ -847,7 +847,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opEqual", left, right));
+        SWAG_CHECK(resolveUserBinaryOp(context, "opEquals", left, right));
     }
 
     return true;

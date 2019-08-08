@@ -288,7 +288,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
-bool SemanticJob::checkFunctionCall(SemanticContext* context, AstNode* callParameters, AstIdentifier* node)
+bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* callParameters, AstIdentifier* node)
 {
     auto  job              = context->job;
     auto  sourceFile       = context->sourceFile;
@@ -560,7 +560,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(checkFunctionCall(context, node->callParameters, node));
+    SWAG_CHECK(checkFuncCall(context, node->callParameters, node));
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0]));
     return true;
 }

@@ -1,5 +1,6 @@
 #module module563
 //#unittest pass semantic
+#unittest error
 
 //#[swag.printbc]
 struct point
@@ -8,7 +9,6 @@ struct point
 	var y: s32 = 70
 }
 
-#unittest error
 impl point
 {
 	func opInit(self)

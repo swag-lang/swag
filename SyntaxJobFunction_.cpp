@@ -142,6 +142,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     typeNode->inheritOwnersAndFlags(this);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
+	typeNode->token = funcNode->token;
     if (!isTest)
     {
         if (token.id == TokenId::SymMinusGreat)

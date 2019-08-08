@@ -1,4 +1,4 @@
-#module module572
+#module module573
 //#unittest pass semantic
 
 struct Point
@@ -7,7 +7,6 @@ struct Point
 	var y: s32
 }
 
-#unittest error
 //#[swag.printbc]
 #test
 {
@@ -19,10 +18,9 @@ struct Point
 	@assert(pt1 != pt2)
 }
 
-#unittest error
 impl Point
 {
-	func opEqual(self, other: Point) -> bool
+	func opEquals(self, other: Point) -> bool
 	{
 		return self.x == other.x && self.y == other.y
 	}
