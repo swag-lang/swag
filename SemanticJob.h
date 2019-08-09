@@ -39,6 +39,13 @@ struct SemanticContext
     SemanticResult result;
 };
 
+struct OneGenericMatch
+{
+    SymbolOverload*       symbolOverload;
+    vector<ComputedValue> cacheGenericMatchesParamsValues;
+    vector<TypeInfo*>     cacheGenericMatchesParamsTypes;
+};
+
 struct SemanticJob : public Job
 {
     JobResult   execute() override;
@@ -135,11 +142,6 @@ struct SemanticJob : public Job
         symMatch.reset();
     }
 
-	struct OneGenericMatch
-	{
-
-	};
-
     Module*                 module;
     SourceFile*             sourceFile;
     vector<AstNode*>        nodes;
@@ -148,9 +150,7 @@ struct SemanticJob : public Job
     set<Scope*>             scopesHere;
     set<Scope*>             scopesHereNoAlt;
     vector<SymbolOverload*> cacheMatches;
-    vector<SymbolOverload*> cacheGenericMatches;
-    vector<ComputedValue>   cacheGenericMatchesParamsValues;
-    vector<TypeInfo*>       cacheGenericMatchesParamsTypes;
+    vector<OneGenericMatch> cacheGenericMatches;
     vector<SymbolOverload*> cacheBadSignature;
     SymbolMatchContext      symMatch;
 };
