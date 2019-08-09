@@ -272,10 +272,18 @@ TypeInfo* TypeInfoFuncAttr::clone()
 {
     auto newType                  = g_Pool_typeInfoFuncAttr.alloc();
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
-    newType->genericParameters    = genericParameters;
-    newType->parameters           = parameters;
-    newType->returnType           = returnType;
-    newType->stackSize            = stackSize;
+    newType->parameters = parameters;
+    newType->returnType = returnType;
+    newType->stackSize  = stackSize;
+
+	// Generic parameters are per instance, and not shared, so need to clone them
+	for (int i = 0; i < genericParameters.size(); i++)
+    {
+        auto param = static_cast<TypeInfoFuncAttrParam*>(genericParameters[i]);
+		param = static_cast<TypeInfoFuncAttrParam*>(param->clone());
+        newType->genericParameters.push_back(param);
+    }
+
     newType->copyFrom(this);
     return newType;
 }

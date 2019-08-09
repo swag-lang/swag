@@ -269,6 +269,9 @@
     <ClCompile Include="SemanticJobRef_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="Generic.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -451,6 +454,9 @@
     </ClInclude>
     <ClInclude Include="OutputFile.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

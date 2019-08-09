@@ -3,6 +3,7 @@
 #include "Utf8.h"
 #include "SpinLock.h"
 #include "Log.h"
+#include "Register.h"
 struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;
@@ -243,9 +244,10 @@ struct TypeInfoFuncAttrParam : public TypeInfo
 
     TypeInfo* clone() override;
 
-    Utf8      namedParam;
-    TypeInfo* typeInfo;
-    int       index;
+    Utf8          namedParam;
+    TypeInfo*     typeInfo;
+    ComputedValue genericValue;
+    int           index;
 };
 
 enum MatchResult
@@ -260,14 +262,14 @@ enum MatchResult
 
 struct SymbolMatchContext
 {
-    int              badSignatureParameterIdx;
-    TypeInfo*        badSignatureRequestedType;
-    TypeInfo*        badSignatureGivenType;
-    MatchResult      result;
-    vector<AstNode*> genericParameters;
-    vector<AstNode*> parameters;
-    vector<bool>     doneParameters;
-    bool             forLambda;
+    int               badSignatureParameterIdx;
+    TypeInfo*         badSignatureRequestedType;
+    TypeInfo*         badSignatureGivenType;
+    MatchResult       result;
+    vector<AstNode*>  genericParameters;
+    vector<AstNode*>  parameters;
+    vector<bool>      doneParameters;
+    bool              forLambda;
 
     SymbolMatchContext()
     {

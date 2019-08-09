@@ -140,14 +140,18 @@ void AstNode::copyFrom(AstNode* from)
 
 AstNode* AstIdentifierRef::clone()
 {
-    auto newNode        = g_Pool_astIdentifierRef.alloc();
+    auto newNode = g_Pool_astIdentifierRef.alloc();
+    newNode->copyFrom(this);
+
     newNode->startScope = startScope;
     return newNode;
 }
 
 AstNode* AstIdentifier::clone()
 {
-    auto newNode                  = g_Pool_astIdentifier.alloc();
+    auto newNode = g_Pool_astIdentifier.alloc();
+    newNode->copyFrom(this);
+
     newNode->fctCallStorageOffset = fctCallStorageOffset;
     newNode->callParameters       = findChildRef(callParameters, newNode);
     newNode->genericParameters    = findChildRef(genericParameters, newNode);
@@ -162,7 +166,9 @@ AstNode* AstIdentifier::clone()
 
 AstNode* AstFuncDecl::clone()
 {
-    auto newNode               = g_Pool_astFuncDecl.alloc();
+    auto newNode = g_Pool_astFuncDecl.alloc();
+    newNode->copyFrom(this);
+
     newNode->stackSize         = stackSize;
     newNode->parameters        = findChildRef(parameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
@@ -173,7 +179,9 @@ AstNode* AstFuncDecl::clone()
 
 AstNode* AstAttrDecl::clone()
 {
-    auto newNode        = g_Pool_astAttrDecl.alloc();
+    auto newNode = g_Pool_astAttrDecl.alloc();
+    newNode->copyFrom(this);
+
     newNode->parameters = findChildRef(parameters, newNode);
     return newNode;
 }
@@ -187,7 +195,9 @@ AstNode* AstAttrUse::clone()
 
 AstNode* AstFuncCallParam::clone()
 {
-    auto newNode                = g_Pool_astFuncCallParam.alloc();
+    auto newNode = g_Pool_astFuncCallParam.alloc();
+    newNode->copyFrom(this);
+
     newNode->namedParam         = namedParam;
     newNode->namedParamNode     = namedParamNode;
     newNode->resolvedParameter  = resolvedParameter;
@@ -198,7 +208,9 @@ AstNode* AstFuncCallParam::clone()
 
 AstNode* AstIf::clone()
 {
-    auto newNode            = g_Pool_astIf.alloc();
+    auto newNode = g_Pool_astIf.alloc();
+    newNode->copyFrom(this);
+
     newNode->boolExpression = findChildRef(boolExpression, newNode);
     newNode->ifBlock        = findChildRef(ifBlock, newNode);
     newNode->elseBlock      = findChildRef(elseBlock, newNode);
@@ -207,6 +219,8 @@ AstNode* AstIf::clone()
 
 void AstBreakable::copyFrom(AstNode* from)
 {
+    AstNode::copyFrom(from);
+
     auto fromBreakeable = (AstBreakable*) from;
     breakableFlags      = fromBreakeable->breakableFlags;
     registerIndex       = fromBreakeable->registerIndex;
@@ -221,6 +235,8 @@ void AstBreakable::copyFrom(AstNode* from)
 AstNode* AstBreakContinue::clone()
 {
     auto newNode = g_Pool_astBreakContinue.alloc();
+    newNode->copyFrom(this);
+
     return newNode;
 }
 
@@ -228,6 +244,7 @@ AstNode* AstWhile::clone()
 {
     auto newNode = g_Pool_astWhile.alloc();
     newNode->AstBreakable::copyFrom(this);
+
     newNode->boolExpression = findChildRef(boolExpression, newNode);
     newNode->block          = findChildRef(block, newNode);
     return newNode;
@@ -237,6 +254,7 @@ AstNode* AstFor::clone()
 {
     auto newNode = g_Pool_astFor.alloc();
     newNode->AstBreakable::copyFrom(this);
+
     newNode->preExpression  = findChildRef(preExpression, newNode);
     newNode->boolExpression = findChildRef(boolExpression, newNode);
     newNode->postExpression = findChildRef(postExpression, newNode);
@@ -248,6 +266,7 @@ AstNode* AstLoop::clone()
 {
     auto newNode = g_Pool_astLoop.alloc();
     newNode->AstBreakable::copyFrom(this);
+
     newNode->expression = findChildRef(expression, newNode);
     newNode->block      = findChildRef(block, newNode);
     return newNode;
@@ -257,6 +276,7 @@ AstNode* AstSwitch::clone()
 {
     auto newNode = g_Pool_astSwitch.alloc();
     newNode->AstBreakable::copyFrom(this);
+
     newNode->expression = findChildRef(expression, newNode);
     newNode->block      = (AstSwitch*) findChildRef(block, newNode);
     for (auto expr : cases)
@@ -268,6 +288,7 @@ AstNode* AstSwitchCase::clone()
 {
     auto newNode = g_Pool_astSwitchCase.alloc();
     newNode->copyFrom(this);
+
     newNode->block       = findChildRef(block, newNode);
     newNode->ownerSwitch = (AstSwitch*) findChildRef(ownerSwitch, newNode);
     newNode->isDefault   = isDefault;
@@ -280,6 +301,7 @@ AstNode* AstSwitchCaseBlock::clone()
 {
     auto newNode = g_Pool_astSwitchCaseBlock.alloc();
     newNode->copyFrom(this);
+
     newNode->ownerCase = (AstSwitchCase*) findChildRef(ownerCase, newNode);
     newNode->isDefault = isDefault;
     return newNode;
@@ -289,6 +311,7 @@ AstNode* AstTypeExpression::clone()
 {
     auto newNode = g_Pool_astTypeExpression.alloc();
     newNode->copyFrom(this);
+
     newNode->typeExpression = findChildRef(typeExpression, newNode);
     newNode->ptrCount       = ptrCount;
     newNode->arrayDim       = arrayDim;
@@ -301,6 +324,7 @@ AstNode* AstTypeLambda::clone()
 {
     auto newNode = g_Pool_astTypeLambda.alloc();
     newNode->copyFrom(this);
+
     newNode->parameters = findChildRef(parameters, newNode);
     newNode->returnType = findChildRef(returnType, newNode);
     return newNode;
@@ -310,6 +334,7 @@ AstNode* AstPointerDeRef::clone()
 {
     auto newNode = g_Pool_astPointerDeref.alloc();
     newNode->copyFrom(this);
+
     newNode->array  = findChildRef(array, newNode);
     newNode->access = findChildRef(access, newNode);
     return newNode;
@@ -319,6 +344,7 @@ AstNode* AstProperty::clone()
 {
     auto newNode = g_Pool_astProperty.alloc();
     newNode->copyFrom(this);
+
     newNode->expression = findChildRef(expression, newNode);
     newNode->prop       = prop;
     return newNode;
@@ -328,6 +354,7 @@ AstNode* AstExpressionList::clone()
 {
     auto newNode = g_Pool_astExpressionList.alloc();
     newNode->copyFrom(this);
+
     newNode->storageOffset = storageOffset;
     newNode->listKind      = listKind;
     return newNode;
@@ -337,6 +364,7 @@ AstNode* AstStruct::clone()
 {
     auto newNode = g_Pool_astStruct.alloc();
     newNode->copyFrom(this);
+
     newNode->opInit = opInit;
     return newNode;
 }
@@ -345,6 +373,7 @@ AstNode* AstImpl::clone()
 {
     auto newNode = g_Pool_astImpl.alloc();
     newNode->copyFrom(this);
+
     newNode->structScope = structScope;
     newNode->identifier  = findChildRef(identifier, newNode);
     return newNode;

@@ -13,6 +13,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Workspace.h"
+#include "Generic.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -238,11 +239,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
-        // This is a generic
-        if (node->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
-        {
-			return internalError(context, "generic, not done");
-        }
 
         // This is for a lambda
         if (node->flags & AST_TAKE_ADDRESS)
@@ -299,11 +295,13 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* callParameter
     auto  job              = context->job;
     auto  sourceFile       = context->sourceFile;
     auto& matches          = job->cacheMatches;
+    auto& genericMatches   = job->cacheGenericMatches;
     auto& badSignature     = job->cacheBadSignature;
     auto& dependentSymbols = job->cacheDependentSymbols;
 
-    job->cacheMatches.clear();
-    job->cacheBadSignature.clear();
+    matches.clear();
+    genericMatches.clear();
+    badSignature.clear();
 
     int numOverloads = 0;
     for (auto oneSymbol : dependentSymbols)
@@ -314,12 +312,27 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* callParameter
 
             auto typeInfo = static_cast<TypeInfoFuncAttr*>(overload->typeInfo);
             assert(typeInfo->kind == TypeInfoKind::FuncAttr || typeInfo->kind == TypeInfoKind::Lambda);
+
             typeInfo->match(job->symMatch);
+
             if (job->symMatch.result == MatchResult::Ok)
-                matches.push_back(overload);
+            {
+                if (overload->flags & OVERLOAD_GENERIC)
+                    genericMatches.push_back(overload);
+                else
+                    matches.push_back(overload);
+            }
             else if (job->symMatch.result == MatchResult::BadSignature)
+            {
                 badSignature.push_back(overload);
+            }
         }
+    }
+
+    // This is a generic
+    if (genericMatches.size() == 1 && matches.size() == 0)
+    {
+        SWAG_CHECK(Generic::InstanciateFunction(context, genericMatches[0]));
     }
 
     auto symbol = dependentSymbols[0];
@@ -548,10 +561,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         if (node->genericParameters)
         {
+            int idx = 0;
             for (auto param : node->genericParameters->childs)
             {
                 auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
+                SWAG_VERIFY(oneParam->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)}));
                 job->symMatch.genericParameters.push_back(oneParam);
+                idx++;
             }
         }
 

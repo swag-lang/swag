@@ -1,13 +1,11 @@
-#module module585
+#module module586
 #unittest pass semantic
 
-#unittest error
 func(op: string) toto()
 {
 }
 
 #test
 {
-	c := 0
-	toto!(c)()
+	toto!("op")()
 }

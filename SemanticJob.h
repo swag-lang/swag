@@ -143,6 +143,9 @@ struct SemanticJob : public Job
     set<Scope*>             scopesHere;
     set<Scope*>             scopesHereNoAlt;
     vector<SymbolOverload*> cacheMatches;
+    vector<SymbolOverload*> cacheGenericMatches;
+    vector<ComputedValue>   cacheGenericMatchesParamsValues;
+    vector<TypeInfo*>       cacheGenericMatchesParamsTypes;
     vector<SymbolOverload*> cacheBadSignature;
     SymbolMatchContext      symMatch;
 };
