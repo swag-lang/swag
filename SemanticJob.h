@@ -135,6 +135,11 @@ struct SemanticJob : public Job
         symMatch.reset();
     }
 
+	struct OneGenericMatch
+	{
+
+	};
+
     Module*                 module;
     SourceFile*             sourceFile;
     vector<AstNode*>        nodes;
