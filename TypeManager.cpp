@@ -150,6 +150,9 @@ void TypeManager::setup()
 
 TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
 {
+	if (!typeInfo)
+		return typeInfo;
+
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Native:

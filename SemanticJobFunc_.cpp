@@ -13,14 +13,22 @@
 #include "Module.h"
 #include "Attribute.h"
 
-bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters)
+bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics)
 {
     if (!parameters)
         return true;
 
     bool defaultValueDone = false;
     int  index            = 0;
-    typeInfo->parameters.reserve(parameters->childs.size());
+
+    if (forGenerics)
+    {
+        typeInfo->genericParameters.reserve(parameters->childs.size());
+        typeInfo->flags |= TYPEINFO_GENERIC;
+    }
+    else
+        typeInfo->parameters.reserve(parameters->childs.size());
+
     for (auto param : parameters->childs)
     {
         auto nodeParam      = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
@@ -51,7 +59,10 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
             SWAG_VERIFY(!defaultValueDone, sourceFile->report({sourceFile, nodeParam, format("parameter '%d', missing default value", index)}));
         }
 
-        typeInfo->parameters.push_back(funcParam);
+        if (forGenerics)
+            typeInfo->genericParameters.push_back(funcParam);
+        else
+            typeInfo->parameters.push_back(funcParam);
     }
 
     return true;
@@ -113,6 +124,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+
+	// No semantic on a generic function
+	if (typeInfo->flags & TYPEINFO_GENERIC)
+		return true;
 
     SWAG_CHECK(checkFuncPrototype(context));
     node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
@@ -204,7 +219,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
     // Register parameters
-    SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode, funcNode->parameters));
+    SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode, funcNode->genericParameters, true));
+    SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode, funcNode->parameters, false));
+    if (funcNode->genericParameters)
+        funcNode->flags |= AST_GENERIC;
 
     // Collect function attributes
     SymbolAttributes attributes;

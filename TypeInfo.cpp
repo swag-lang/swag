@@ -22,6 +22,11 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
         return false;
     if (stackSize != other->stackSize)
         return false;
+    for (int i = 0; i < genericParameters.size(); i++)
+    {
+        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
+            return false;
+    }
     for (int i = 0; i < parameters.size(); i++)
     {
         if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo))
@@ -119,7 +124,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             param->index             = cptResolved;
         }
 
-		cptResolved++;
+        cptResolved++;
     }
 
     // Named parameters
@@ -248,6 +253,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
 {
     auto newType                  = g_Pool_typeInfoFuncAttr.alloc();
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
+    newType->genericParameters    = genericParameters;
     newType->parameters           = parameters;
     newType->returnType           = returnType;
     newType->stackSize            = stackSize;

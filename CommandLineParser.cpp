@@ -26,10 +26,10 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
     //cmdLine->runBackendTests = false;
-    //cmdLine->addRuntimeModule = false;
+    cmdLine->addRuntimeModule = false;
     //cmdLine->optimizeByteCode = false;
 	cmdLine->output = false;
-	cmdLine->fileFilter = "581";
+	cmdLine->fileFilter = "584";
 }
 
 void CommandLineParser::logArguments()

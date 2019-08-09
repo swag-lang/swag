@@ -84,7 +84,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
-    auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::GenericParams, sourceFile->indexInModule, parent);
+    auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
     allParams->inheritOwnersAndFlags(this);
     if (result)
         *result = allParams;
@@ -95,9 +95,11 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
     while (token.id != TokenId::SymRightParen)
     {
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "missing generic name or type"));
-        auto oneParam = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::GenericParam, sourceFile->indexInModule, allParams);
+        auto oneParam = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, allParams);
         oneParam->inheritOwnersAndFlags(this);
         oneParam->inheritToken(token);
+        oneParam->semanticFct = &SemanticJob::resolveVarDecl;
+        oneParam->flags |= AST_GENERIC;
         SWAG_CHECK(eatToken());
 
         if (token.id == TokenId::SymColon)

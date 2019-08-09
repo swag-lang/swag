@@ -94,8 +94,6 @@ enum class AstNodeKind
     CompilerRun,
     CompilerImport,
     CompilerVersion,
-    GenericParams,
-    GenericParam,
 };
 
 struct AstNode : public PoolElement

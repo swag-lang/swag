@@ -64,6 +64,7 @@ static const uint64_t TYPEINFO_CONST                  = 0x00000000'00000020;
 static const uint64_t TYPEINFO_IN_MANAGER             = 0x00000000'00000040;
 static const uint64_t TYPEINFO_VARIADIC               = 0x00000000'00000080;
 static const uint64_t TYPEINFO_STRUCT_HAS_CONSTRUCTOR = 0x00000000'00000100;
+static const uint64_t TYPEINFO_GENERIC                = 0x00000000'00000200;
 
 struct TypeInfo : public PoolElement
 {
@@ -291,6 +292,7 @@ struct TypeInfoFuncAttr : public TypeInfo
         TypeInfo::reset();
         kind                 = TypeInfoKind::FuncAttr;
         firstDefaultValueIdx = -1;
+        genericParameters.clear();
         parameters.clear();
         returnType = nullptr;
         stackSize  = 0;
@@ -318,6 +320,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     bool isSameExact(TypeInfo* from) override;
 
     int                            firstDefaultValueIdx;
+    vector<TypeInfoFuncAttrParam*> genericParameters;
     vector<TypeInfoFuncAttrParam*> parameters;
     TypeInfo*                      returnType;
     int                            stackSize;

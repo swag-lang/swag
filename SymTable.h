@@ -22,6 +22,7 @@ static const uint32_t OVERLOAD_VAR_LOCAL          = 0x00000008;
 static const uint32_t OVERLOAD_COMPUTED_VALUE     = 0x00000010;
 static const uint32_t OVERLOAD_CONST              = 0x00000020;
 static const uint32_t OVERLOAD_VAR_STRUCT         = 0x00000040;
+static const uint32_t OVERLOAD_GENERIC            = 0x00000080;
 
 struct SymbolAttributes
 {
@@ -65,7 +66,7 @@ enum class SymbolKind
     Function,
     Attribute,
     FuncParam,
-	Struct,
+    Struct,
 };
 
 struct SymbolName : public PoolElement
@@ -96,7 +97,7 @@ struct SymTable
 
     SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind);
     SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, SymbolAttributes* attributes = nullptr);
-    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, SymbolAttributes * attributes = nullptr);
+    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, SymbolAttributes* attributes = nullptr);
     bool            checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind);
     bool            checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8Crc& name);

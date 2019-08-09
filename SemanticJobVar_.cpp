@@ -194,13 +194,22 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->type->typeInfo;
     }
 
-    SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
-    SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::VariadicValue, sourceFile->report({sourceFile, node, "declaration not allowed on a variadic value, you must cast"}));
+    if (!(node->flags & AST_GENERIC))
+    {
+        SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
+        SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::VariadicValue, sourceFile->report({sourceFile, node, "declaration not allowed on a variadic value, you must cast"}));
+    }
+	else
+	{
+		symbolFlags |= OVERLOAD_GENERIC;
+	}
 
     // A constant does nothing on backend, except if it can't be stored in a register
     uint32_t storageOffset = 0;
     if (isConstant)
     {
+        assert(node->typeInfo);
+
         // Set it as const (so this is a new type)
         if (node->typeInfo->kind != TypeInfoKind::Native)
         {
@@ -311,7 +320,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                                                                   nullptr,
                                                                   storageOffset,
                                                                   &attributes);
-	SWAG_CHECK(overload);
+    SWAG_CHECK(overload);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
 

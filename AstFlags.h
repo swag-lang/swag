@@ -16,3 +16,4 @@ static const uint64_t AST_MUST_SORT_CHILDS      = 0x00000000'00002000;
 static const uint64_t AST_SLICE_INIT_EXPRESSION = 0x00000000'00004000;
 static const uint64_t AST_IDENTIFIER_IS_INTEGER = 0x00000000'00008000;
 static const uint64_t AST_GENERATED             = 0x00000000'00010000;
+static const uint64_t AST_GENERIC               = 0x00000000'00020000;
