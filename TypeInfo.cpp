@@ -291,7 +291,7 @@ void TypeInfoFuncAttr::computeName()
         {
             if (i)
                 name += ", ";
-            name += genericParameters[i]->typeInfo->name;
+            name += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
         }
 
         name += ")";
