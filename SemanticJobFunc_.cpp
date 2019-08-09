@@ -125,9 +125,9 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
-	// No semantic on a generic function
-	if (typeInfo->flags & TYPEINFO_GENERIC)
-		return true;
+    // No semantic on a generic function
+    if (typeInfo->flags & TYPEINFO_GENERIC)
+        return true;
 
     SWAG_CHECK(checkFuncPrototype(context));
     node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
@@ -240,7 +240,12 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         return sourceFile->report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 
     typeInfo->computeName();
-    funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, 0, &funcNode->resolvedSymbolName);
+
+    uint32_t symbolFlags = 0;
+    if (funcNode->flags & AST_GENERIC)
+        symbolFlags |= OVERLOAD_GENERIC;
+
+    funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
     funcNode->resolvedSymbolOverload->attributes = move(attributes);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));

@@ -264,6 +264,7 @@ struct SymbolMatchContext
     TypeInfo*        badSignatureRequestedType;
     TypeInfo*        badSignatureGivenType;
     MatchResult      result;
+    vector<AstNode*> genericParameters;
     vector<AstNode*> parameters;
     vector<bool>     doneParameters;
     bool             forLambda;
@@ -279,6 +280,7 @@ struct SymbolMatchContext
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
         result                    = MatchResult::Ok;
+        genericParameters.clear();
         parameters.clear();
         doneParameters.clear();
         forLambda = false;

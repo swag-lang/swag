@@ -61,22 +61,49 @@ bool TypeInfoFuncAttr::isSameExact(TypeInfo* from)
 
 void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 {
-    int  cptResolved  = 0;
-    bool badSignature = false;
+    context.result = MatchResult::Ok;
 
     // For a lambda
     if (context.forLambda)
-    {
-        context.result = MatchResult::Ok;
         return;
-    }
 
     // One boolean per used parameter
     context.doneParameters.clear();
     context.doneParameters.resize(parameters.size(), false);
 
-    // First we solve unnamed parameters
-    int  numParams          = (int) context.parameters.size();
+    // First we solve generic parameters
+    int numGenericParams = (int) context.genericParameters.size();
+    for (int i = 0; i < numGenericParams; i++)
+    {
+        auto callParameter = context.genericParameters[i];
+        if (i >= genericParameters.size())
+        {
+            context.result = MatchResult::TooManyParameters;
+            return;
+        }
+
+        auto symbolParameter = genericParameters[i];
+        if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
+        {
+            context.result = MatchResult::BadSignature;
+            return;
+        }
+
+        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+        if (!same)
+        {
+            context.badSignatureParameterIdx  = i;
+            context.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureGivenType     = typeInfo;
+            context.result                    = MatchResult::BadSignature;
+        }
+    }
+
+    // Then we solve unnamed parameters
+    int numParams = (int) context.parameters.size();
+
+    int  cptResolved        = 0;
     bool hasNamedParameters = false;
     for (int i = 0; i < numParams; i++)
     {
@@ -101,10 +128,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
         auto symbolParameter = parameters[i];
         if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
-        {
-            context.result = badSignature ? MatchResult::BadSignature : MatchResult::Ok;
             return;
-        }
 
         auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
         bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
@@ -113,7 +137,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             context.badSignatureParameterIdx  = i;
             context.badSignatureRequestedType = symbolParameter->typeInfo;
             context.badSignatureGivenType     = typeInfo;
-            badSignature                      = true;
+            context.result                    = MatchResult::BadSignature;
         }
 
         context.doneParameters[cptResolved] = true;
@@ -173,7 +197,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
                         context.badSignatureParameterIdx  = i;
                         context.badSignatureRequestedType = symbolParameter->typeInfo;
                         context.badSignatureGivenType     = typeInfo;
-                        badSignature                      = true;
+                        context.result                    = MatchResult::BadSignature;
                     }
 
                     param->resolvedParameter  = symbolParameter;
@@ -198,12 +222,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     if (firstDefault == -1)
         firstDefault = (int) parameters.size();
     if (cptResolved < firstDefault)
-    {
         context.result = MatchResult::NotEnoughParameters;
-        return;
-    }
-
-    context.result = badSignature ? MatchResult::BadSignature : MatchResult::Ok;
 }
 
 TypeInfo* TypeInfoNative::clone()
@@ -263,8 +282,22 @@ TypeInfo* TypeInfoFuncAttr::clone()
 
 void TypeInfoFuncAttr::computeName()
 {
-    name = format("(");
+    name.clear();
 
+    if (genericParameters.size())
+    {
+        name += "!(";
+        for (int i = 0; i < genericParameters.size(); i++)
+        {
+            if (i)
+                name += ", ";
+            name += genericParameters[i]->typeInfo->name;
+        }
+
+        name += ")";
+    }
+
+    name += format("(");
     for (int i = 0; i < parameters.size(); i++)
     {
         if (i)

@@ -238,6 +238,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
+        // This is a generic
+        if (node->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
+        {
+			return internalError(context, "generic, not done");
+        }
+
         // This is for a lambda
         if (node->flags & AST_TAKE_ADDRESS)
         {
@@ -451,11 +457,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return true;
     }
 
-	if (node->semanticState == AstNodeResolveState::ProcessingChilds)
-	{
-		scopeHierarchy.clear();
-		dependentSymbols.clear();
-	}
+    if (node->semanticState == AstNodeResolveState::ProcessingChilds)
+    {
+        scopeHierarchy.clear();
+        dependentSymbols.clear();
+    }
 
     // Compute dependencies if not already done
     if (dependentSymbols.empty())
@@ -538,6 +544,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
             Ast::removeFromParent(identifierRef->previousResolvedNode);
             Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
+        }
+
+        if (node->genericParameters)
+        {
+            for (auto param : node->genericParameters->childs)
+            {
+                auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
+                job->symMatch.genericParameters.push_back(oneParam);
+            }
         }
 
         for (auto param : node->callParameters->childs)

@@ -5,8 +5,3 @@
 func(op: string, T) toto()
 {
 }
-
-#test
-{
-	toto("op")()
-}

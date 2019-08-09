@@ -84,6 +84,14 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
         SWAG_CHECK(doArrayPointerIndex(&expr));
     Ast::addChild(parent, expr);
 
+    // Template arguments
+    if (token.id == TokenId::SymExclam)
+    {
+		SWAG_CHECK(eatToken());
+        SWAG_CHECK(doFuncCallParameters(identifier, &identifier->genericParameters));
+		identifier->genericParameters->flags |= AST_NO_BYTECODE;
+    }
+
     // Function call parameters
     if (token.id == TokenId::SymLeftParen)
         SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
