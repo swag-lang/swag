@@ -67,7 +67,7 @@ enum class AstNodeKind
     FuncDeclParams,
     FuncDeclParam,
     FuncDeclType,
-	FuncDeclGenericParams,
+    FuncDeclGenericParams,
     FuncCallParameters,
     FuncCallParam,
     FuncCall,
@@ -284,6 +284,7 @@ struct AstIdentifier : public AstNode
     {
         identifierRef        = nullptr;
         callParameters       = nullptr;
+        genericParameters    = nullptr;
         fctCallStorageOffset = 0;
         AstNode::reset();
     }
@@ -291,6 +292,7 @@ struct AstIdentifier : public AstNode
     AstNode* clone() override;
 
     AstIdentifierRef* identifierRef;
+    AstNode*          genericParameters;
     AstNode*          callParameters;
     uint32_t          fctCallStorageOffset;
 };

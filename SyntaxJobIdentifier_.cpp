@@ -8,6 +8,51 @@
 #include "Diagnostic.h"
 #include "AstNode.h"
 
+bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
+{
+    auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
+    callParams->inheritOwnersAndFlags(this);
+    *result                 = callParams;
+    callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
+    callParams->token       = move(token);
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    while (token.id != TokenId::SymRightParen)
+    {
+        while (true)
+        {
+            auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
+            param->inheritOwnersAndFlags(this);
+            param->semanticFct = &SemanticJob::resolveFuncCallParam;
+            param->token       = token;
+            AstNode* paramExpression;
+            SWAG_CHECK(doExpression(nullptr, &paramExpression));
+
+            // Name
+            if (token.id == TokenId::SymColon)
+            {
+                if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
+                    return sourceFile->report({sourceFile, paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
+                param->namedParamNode = paramExpression->childs.front();
+                param->namedParam     = param->namedParamNode->token.text;
+                SWAG_CHECK(eatToken());
+                SWAG_CHECK(doExpression(param));
+            }
+            else
+            {
+                Ast::addChild(param, paramExpression);
+            }
+
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken(TokenId::SymComma));
+        }
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    return true;
+}
+
 bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 {
     uint32_t flags = 0;
@@ -41,48 +86,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 
     // Function call parameters
     if (token.id == TokenId::SymLeftParen)
-    {
-        auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, identifier);
-        callParams->inheritOwnersAndFlags(this);
-        identifier->callParameters = callParams;
-        callParams->semanticFct    = &SemanticJob::resolveFuncCallParams;
-        callParams->token          = move(token);
-
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-        while (token.id != TokenId::SymRightParen)
-        {
-            while (true)
-            {
-                auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
-                param->inheritOwnersAndFlags(this);
-                param->semanticFct = &SemanticJob::resolveFuncCallParam;
-                param->token       = token;
-                AstNode* paramExpression;
-                SWAG_CHECK(doExpression(nullptr, &paramExpression));
-
-                // Name
-                if (token.id == TokenId::SymColon)
-                {
-                    if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                        return sourceFile->report({sourceFile, paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
-                    param->namedParamNode = paramExpression->childs.front();
-                    param->namedParam     = param->namedParamNode->token.text;
-                    SWAG_CHECK(eatToken());
-                    SWAG_CHECK(doExpression(param));
-                }
-                else
-                {
-                    Ast::addChild(param, paramExpression);
-                }
-
-                if (token.id != TokenId::SymComma)
-                    break;
-                SWAG_CHECK(eatToken(TokenId::SymComma));
-            }
-        }
-
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    }
+        SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
 
     return true;
 }

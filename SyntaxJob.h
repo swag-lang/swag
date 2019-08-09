@@ -30,8 +30,9 @@ struct SyntaxJob : public Job
     bool eatSemiCol(const char* msg = nullptr);
     bool recoverError();
 
-	void generateOpInit(AstNode* node);
+    void generateOpInit(AstNode* node);
 
+    bool doFuncCallParameters(AstNode* parent, AstNode** result);
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
     bool doCompilerVersion(AstNode* parent);
@@ -42,17 +43,17 @@ struct SyntaxJob : public Job
     bool doTopLevelInstruction(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
     bool doTypeDecl(AstNode* parent, AstNode** result = nullptr);
-	bool doTypeExpressionTuple(AstNode* parent, AstNode** result = nullptr);
+    bool doTypeExpressionTuple(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
-	void forceTakeAddress(AstNode* node);
+    void forceTakeAddress(AstNode* node);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, bool acceptInteger = false);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
-	bool doStruct(AstNode* parent, AstNode** result = nullptr);
-	bool doImpl(AstNode* parent, AstNode** result = nullptr);
+    bool doStruct(AstNode* parent, AstNode** result = nullptr);
+    bool doImpl(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpressionList(AstNode* parent, AstNode** result = nullptr);
     bool doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
@@ -66,7 +67,7 @@ struct SyntaxJob : public Job
     bool doCompareExpression(AstNode* parent, AstNode** result = nullptr);
     bool doBoolExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
-	bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
+    bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doFuncDecl(AstNode* parent, AstNode** result = nullptr);
     bool doFuncDeclParameter(AstNode* parent);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);

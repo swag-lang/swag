@@ -89,6 +89,8 @@ AstNode* AstNode::clone()
 
 AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
 {
+    if (!ref)
+        return nullptr;
     for (int i = 0; i < childs.size(); i++)
     {
         if (childs[i] == ref)
@@ -148,6 +150,7 @@ AstNode* AstIdentifier::clone()
     auto newNode                  = g_Pool_astIdentifier.alloc();
     newNode->fctCallStorageOffset = fctCallStorageOffset;
     newNode->callParameters       = findChildRef(callParameters, newNode);
+    newNode->genericParameters    = findChildRef(genericParameters, newNode);
 
     // Find the parent identifierRef
     newNode->identifierRef = static_cast<AstIdentifierRef*>(newNode->parent);
