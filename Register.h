@@ -21,4 +21,13 @@ struct ComputedValue
 {
     Register reg;
     Utf8     text;
+
+    bool operator ==(const ComputedValue& from) const
+    {
+        if (text != from.text)
+            return false;
+        if (reg.u64 != from.reg.u64)
+            return false;
+        return true;
+    }
 };

@@ -6,5 +6,5 @@ struct OneGenericMatch;
 
 struct Generic
 {
-	static bool InstanciateFunction(SemanticContext* context, OneGenericMatch& match);
+	static bool InstanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match);
 };

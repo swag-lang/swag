@@ -290,7 +290,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
-bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* callParameters, AstIdentifier* node)
+bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node)
 {
     auto  job              = context->job;
     auto  sourceFile       = context->sourceFile;
@@ -338,7 +338,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* callParameter
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
-		SWAG_CHECK(Generic::InstanciateFunction(context, genericMatches[0]));
+		SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
         return true;
     }
 
@@ -574,6 +574,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(oneParam->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)}));
                 job->symMatch.genericParameters.push_back(oneParam);
+				job->symMatch.genericParametersValues.push_back(oneParam->computedValue);
+				job->symMatch.genericParametersTypes.push_back(oneParam->typeInfo);
                 idx++;
             }
         }
@@ -598,7 +600,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(checkFuncCall(context, node->callParameters, node));
+    SWAG_CHECK(checkFuncCall(context, node->genericParameters, node->callParameters, node));
 	if (context->result == SemanticResult::Pending)
 		return true;
 

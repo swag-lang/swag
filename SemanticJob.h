@@ -62,7 +62,7 @@ struct SemanticJob : public Job
     static bool forceExecuteNode(SemanticContext* context);
     static bool collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer);
     static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer);
-    static bool checkFuncCall(SemanticContext* context, AstNode* callParameters, AstIdentifier* node);
+	static bool checkFuncCall(SemanticContext* context, AstNode* genericParameters,  AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);

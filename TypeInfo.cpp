@@ -18,8 +18,8 @@ Pool<TypeInfoStruct>        g_Pool_typeInfoStruct;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
-	if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
-		return false;
+    if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
+        return false;
     if (parameters.size() != other->parameters.size())
         return false;
     if (stackSize != other->stackSize)
@@ -29,6 +29,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
     {
         if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
             return false;
+		if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
+			return false;
     }
 
     for (int i = 0; i < parameters.size(); i++)
@@ -77,8 +79,6 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
     // First we solve generic parameters
     int numGenericParams = (int) context.genericParameters.size();
-    context.genericParametersValues.resize(numGenericParams);
-    context.genericParametersTypes.resize(numGenericParams);
     for (int i = 0; i < numGenericParams; i++)
     {
         auto callParameter = context.genericParameters[i];
@@ -104,10 +104,22 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             context.badSignatureGivenType     = typeInfo;
             context.result                    = MatchResult::BadSignature;
         }
-        else
+        else if (flags & TYPEINFO_GENERIC)
         {
             context.genericParametersValues[i] = callParameter->computedValue;
             context.genericParametersTypes[i]  = callParameter->typeInfo;
+        }
+        else if (symbolParameter->genericValue == callParameter->computedValue)
+        {
+            context.genericParametersValues[i] = callParameter->computedValue;
+            context.genericParametersTypes[i]  = callParameter->typeInfo;
+        }
+        else
+        {
+            context.badSignatureParameterIdx  = i;
+            context.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureGivenType     = typeInfo;
+            context.result                    = MatchResult::BadSignature;
         }
     }
 

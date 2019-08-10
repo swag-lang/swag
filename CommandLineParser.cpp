@@ -29,7 +29,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->addRuntimeModule = false;
     //cmdLine->optimizeByteCode = false;
 	//cmdLine->output = false;
-	cmdLine->fileFilter = "587";
+	cmdLine->fileFilter = "588";
 }
 
 void CommandLineParser::logArguments()

@@ -7,7 +7,7 @@
 #include "SourceFile.h"
 #include "ThreadManager.h"
 
-bool Generic::InstanciateFunction(SemanticContext* context, OneGenericMatch& match)
+bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto symbol     = match.symbolOverload;
     auto sourceNode = symbol->node;
@@ -26,8 +26,8 @@ bool Generic::InstanciateFunction(SemanticContext* context, OneGenericMatch& mat
         auto param = newType->genericParameters[i];
         if (param->typeInfo)
             param->typeInfo->release();
-        param->typeInfo     = match.genericMatchesParamsTypes[i];
-        param->genericValue = match.genericMatchesParamsValues[i];
+        param->typeInfo     = genericParameters->childs[i]->typeInfo;
+        param->genericValue = genericParameters->childs[i]->computedValue;
     }
 
     // Need to wait for the function to be semantic resolved
