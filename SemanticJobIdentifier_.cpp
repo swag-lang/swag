@@ -22,7 +22,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->resolvedSymbolName     = childBack->resolvedSymbolName;
     node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
     node->typeInfo               = childBack->typeInfo;
-    node->name                   = move(childBack->name);
+    node->name                   = childBack->name;
 
     // Flag inheritance
     bool isConstExpr = true;
