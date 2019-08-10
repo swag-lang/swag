@@ -3,6 +3,7 @@
 
 func(op: string) toto()
 {
+	//@print("coucou")
 }
 
 #test

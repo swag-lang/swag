@@ -259,6 +259,8 @@ struct AstVarDecl : public AstNode
         AstNode::reset();
     }
 
+    AstNode* clone() override;
+
     struct AstNode* type;
     struct AstNode* assignment;
 };

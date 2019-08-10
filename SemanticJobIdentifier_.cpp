@@ -321,8 +321,8 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* callParameter
                 {
                     OneGenericMatch match;
                     match.symbolOverload                  = overload;
-                    match.cacheGenericMatchesParamsValues = job->symMatch.genericParametersValues;
-                    match.cacheGenericMatchesParamsTypes  = job->symMatch.genericParametersTypes;
+                    match.genericMatchesParamsValues = job->symMatch.genericParametersValues;
+                    match.genericMatchesParamsTypes  = job->symMatch.genericParametersTypes;
                     genericMatches.emplace_back(match);
                 }
                 else
@@ -339,6 +339,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* callParameter
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
 		SWAG_CHECK(Generic::InstanciateFunction(context, genericMatches[0]));
+        return true;
     }
 
     auto symbol = dependentSymbols[0];
@@ -598,6 +599,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     SWAG_CHECK(checkFuncCall(context, node->callParameters, node));
+	if (context->result == SemanticResult::Pending)
+		return true;
+
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0]));
     return true;
 }

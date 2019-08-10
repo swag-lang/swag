@@ -42,8 +42,8 @@ struct SemanticContext
 struct OneGenericMatch
 {
     SymbolOverload*       symbolOverload;
-    vector<ComputedValue> cacheGenericMatchesParamsValues;
-    vector<TypeInfo*>     cacheGenericMatchesParamsTypes;
+    vector<ComputedValue> genericMatchesParamsValues;
+    vector<TypeInfo*>     genericMatchesParamsTypes;
 };
 
 struct SemanticJob : public Job

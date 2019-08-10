@@ -101,6 +101,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
     {
         for (auto job : symbol->dependentJobs)
             g_ThreadMgr.addJob(job);
+		symbol->dependentJobs.clear();
     }
 
     symbol->mutex.unlock();

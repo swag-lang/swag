@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Pool.h"
-#include "AstNode.h"
+#include "Ast.h"
 #include "Scope.h"
 
 Pool<AstNode>            g_Pool_astNode;
@@ -133,15 +133,39 @@ void AstNode::copyFrom(AstNode* from)
     bc               = from->bc;
     resultRegisterRC = from->resultRegisterRC;
 
+    static AstNode dummy;
     childs = from->childs;
     for (int i = 0; i < childs.size(); i++)
+    {
+        if (childs[i]->flags & AST_DO_NOT_CLONE)
+        {
+            childs[i] = &dummy;
+            continue;
+        }
+
         childs[i] = childs[i]->clone();
+		childs[i]->parent = this;
+    }
+}
+
+AstNode* AstVarDecl::clone()
+{
+    auto newNode = g_Pool_astVarDecl.alloc();
+    newNode->copyFrom(this);
+
+    return newNode;
 }
 
 AstNode* AstIdentifierRef::clone()
 {
     auto newNode = g_Pool_astIdentifierRef.alloc();
     newNode->copyFrom(this);
+
+	for (auto child : newNode->childs)
+	{
+		if (child->kind == AstNodeKind::Identifier)
+			static_cast<AstIdentifier*>(child)->identifierRef = newNode;
+	}
 
     newNode->startScope = startScope;
     return newNode;
@@ -155,12 +179,6 @@ AstNode* AstIdentifier::clone()
     newNode->fctCallStorageOffset = fctCallStorageOffset;
     newNode->callParameters       = findChildRef(callParameters, newNode);
     newNode->genericParameters    = findChildRef(genericParameters, newNode);
-
-    // Find the parent identifierRef
-    newNode->identifierRef = static_cast<AstIdentifierRef*>(newNode->parent);
-    while (newNode->identifierRef->kind != AstNodeKind::IdentifierRef)
-        newNode->identifierRef = static_cast<AstIdentifierRef*>(newNode->identifierRef->parent);
-
     return newNode;
 }
 
@@ -169,6 +187,7 @@ AstNode* AstFuncDecl::clone()
     auto newNode = g_Pool_astFuncDecl.alloc();
     newNode->copyFrom(this);
 
+	Ast::newScope(newNode->name, ScopeKind::Function, newNode->ownerScope);
     newNode->stackSize         = stackSize;
     newNode->parameters        = findChildRef(parameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);

@@ -88,6 +88,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
     allParams->inheritOwnersAndFlags(this);
     if (result)
         *result = allParams;
+	allParams->flags |= AST_DO_NOT_CLONE;
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, syntaxError(token, "missing generic parameters"));
