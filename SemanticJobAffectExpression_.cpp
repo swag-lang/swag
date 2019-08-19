@@ -24,10 +24,18 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
 
-	auto tokenId = node->token.id;
+    auto tokenId   = node->token.id;
+    bool forStruct = leftTypeInfo->kind == TypeInfoKind::Struct;
+
     switch (tokenId)
     {
     case TokenId::SymEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "=", left, right));
+            break;
+        }
+
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
@@ -41,17 +49,26 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::Slice &&
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
-			rightTypeInfo->kind != TypeInfoKind::Struct &&
+            rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
-        if (leftTypeInfo->kind != TypeInfoKind::Struct)
-            SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
-        else
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "=", left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
         break;
 
     case TokenId::SymLowerLowerEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "<<=", left, right));
+            break;
+        }
+
     case TokenId::SymGreaterGreaterEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", ">>=", left, right));
+            break;
+        }
+
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoU32, right));
@@ -66,6 +83,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     case TokenId::SymSlashEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "/=", left, right));
+            break;
+        }
+
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
@@ -76,9 +99,33 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     case TokenId::SymAmpersandEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "&=", left, right));
+            break;
+        }
+
     case TokenId::SymVerticalEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "|=", left, right));
+            break;
+        }
+
     case TokenId::SymCircumflexEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "^=", left, right));
+            break;
+        }
+
     case TokenId::SymTildeEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "~=", left, right));
+            break;
+        }
+
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
@@ -90,10 +137,22 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             return sourceFile->report({sourceFile, node, format("affect not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
+
         break;
 
     case TokenId::SymPlusEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "+=", left, right));
+            break;
+        }
     case TokenId::SymMinusEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "-=", left, right));
+            break;
+        }
+
         if (leftTypeInfo->kind == TypeInfoKind::Pointer)
         {
             if (rightTypeInfo->nativeType != NativeType::S32 &&
@@ -103,10 +162,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             {
                 return sourceFile->report({sourceFile, node, format("pointer operation not allowed with type '%s'", leftTypeInfo->name.c_str())});
             }
-        }
-        else if (leftTypeInfo->kind == TypeInfoKind::Struct)
-        {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", tokenId == TokenId::SymPlusEqual ? "+=" : "-=", left, right));
         }
         else
         {
@@ -121,6 +176,20 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             }
         }
         break;
+
+    case TokenId::SymPercentEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "%=", left, right));
+            break;
+        }
+
+    case TokenId::SymAsteriskEqual:
+        if (forStruct)
+        {
+            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "*=", left, right));
+            break;
+        }
 
     default:
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));

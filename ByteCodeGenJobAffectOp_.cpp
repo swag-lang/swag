@@ -455,6 +455,44 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
     }
 }
 
+bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->childs.front()->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitAffectPercentEqual, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::S8:
+        emitInstruction(context, ByteCodeOp::AffectOpPercentEqS8, r0, r1);
+        return true;
+    case NativeType::U8:
+        emitInstruction(context, ByteCodeOp::AffectOpPercentEqU8, r0, r1);
+        return true;
+    case NativeType::S16:
+        emitInstruction(context, ByteCodeOp::AffectOpPercentEqS16, r0, r1);
+        return true;
+    case NativeType::U16:
+        emitInstruction(context, ByteCodeOp::AffectOpPercentEqU16, r0, r1);
+        return true;
+    case NativeType::S32:
+        emitInstruction(context, ByteCodeOp::AffectOpPercentEqS32, r0, r1);
+        return true;
+    case NativeType::U32:
+        emitInstruction(context, ByteCodeOp::AffectOpPercentEqU32, r0, r1);
+        return true;
+    case NativeType::S64:
+        emitInstruction(context, ByteCodeOp::AffectOpPercentEqS64, r0, r1);
+        return true;
+    case NativeType::U64:
+        emitInstruction(context, ByteCodeOp::AffectOpPercentEqU64, r0, r1);
+        return true;
+    default:
+        return internalError(context, "emitAffectPercentEqual, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node     = context->node;
@@ -521,6 +559,9 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
             break;
         case TokenId::SymGreaterGreaterEqual:
             SWAG_CHECK(emitAffectShiftRightEqual(context, r0, r1));
+            break;
+        case TokenId::SymPercentEqual:
+            SWAG_CHECK(emitAffectPercentEqual(context, r0, r1));
             break;
         default:
             return internalError(context, "emitAffect, invalid token op");

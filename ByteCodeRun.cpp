@@ -1521,6 +1521,47 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
+    case ByteCodeOp::AffectOpPercentEqS8:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s8;
+        break;
+    }
+    case ByteCodeOp::AffectOpPercentEqS16:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s16;
+        break;
+    }
+    case ByteCodeOp::AffectOpPercentEqS32:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s32;
+        break;
+    }
+    case ByteCodeOp::AffectOpPercentEqS64:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].s64;
+        break;
+    }
+    case ByteCodeOp::AffectOpPercentEqU8:
+    {
+        *(uint8_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u8;
+        break;
+    }
+    case ByteCodeOp::AffectOpPercentEqU16:
+    {
+        *(uint16_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u16;
+        break;
+    }
+    case ByteCodeOp::AffectOpPercentEqU32:
+    {
+        *(uint32_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u32;
+        break;
+    }
+    case ByteCodeOp::AffectOpPercentEqU64:
+    {
+        *(uint64_t*) registersRC[ip->a.u32].pointer %= registersRC[ip->b.u32].u64;
+        break;
+    }
+
     case ByteCodeOp::MinusToTrue:
         registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 < 0 ? true : false;
         break;

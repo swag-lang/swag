@@ -283,4 +283,13 @@ BYTECODE_OP(AffectOpShiftRightEqU16)
 BYTECODE_OP(AffectOpShiftRightEqU32)
 BYTECODE_OP(AffectOpShiftRightEqU64)
 
+BYTECODE_OP(AffectOpPercentEqS8)
+BYTECODE_OP(AffectOpPercentEqS16)
+BYTECODE_OP(AffectOpPercentEqS32)
+BYTECODE_OP(AffectOpPercentEqS64)
+BYTECODE_OP(AffectOpPercentEqU8)
+BYTECODE_OP(AffectOpPercentEqU16)
+BYTECODE_OP(AffectOpPercentEqU32)
+BYTECODE_OP(AffectOpPercentEqU64)
+
 BYTECODE_OP(End)

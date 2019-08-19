@@ -741,6 +741,31 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
             break;
 
+		case ByteCodeOp::AffectOpPercentEqS8:
+            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) %%= r%u.s8;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpPercentEqS16:
+            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) %%= r%u.s16;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpPercentEqS32:
+            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) %%= r%u.s32;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpPercentEqS64:
+            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) %%= r%u.s64;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpPercentEqU8:
+            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) %%= r%u.u8;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpPercentEqU16:
+            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) %%= r%u.u16;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpPercentEqU32:
+            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) %%= r%u.u32;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::AffectOpPercentEqU64:
+            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) %%= r%u.u64;", ip->a.u32, ip->b.u32));
+            break;
+
         case ByteCodeOp::AffectOpXOrEqS8:
             bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) ^= r%u.s8;", ip->a.u32, ip->b.u32));
             break;

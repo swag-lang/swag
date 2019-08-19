@@ -32,7 +32,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         arrayNode->semanticFct = &SemanticJob::resolveArrayPointerIndex;
 
         Ast::addChild(arrayNode, *exprNode);
-		arrayNode->inheritLocation();
+        arrayNode->inheritLocation();
         arrayNode->array = *exprNode;
         SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
         *exprNode = arrayNode;
@@ -400,7 +400,7 @@ void SyntaxJob::forceTakeAddress(AstNode* node)
     switch (node->kind)
     {
     case AstNodeKind::IdentifierRef:
-		forceTakeAddress(node->childs.back());
+        forceTakeAddress(node->childs.back());
         break;
     case AstNodeKind::ArrayPointerIndex:
         forceTakeAddress(static_cast<AstPointerDeRef*>(node)->array);
@@ -442,6 +442,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
              token.id == TokenId::SymAmpersandEqual ||
              token.id == TokenId::SymVerticalEqual ||
              token.id == TokenId::SymCircumflexEqual ||
+             token.id == TokenId::SymTildeEqual ||
+             token.id == TokenId::SymPercentEqual ||
              token.id == TokenId::SymLowerLowerEqual ||
              token.id == TokenId::SymGreaterGreaterEqual)
     {
