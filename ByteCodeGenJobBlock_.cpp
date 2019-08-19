@@ -12,7 +12,7 @@
 
 bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
 {
-    auto ifNode = CastAst<AstIf>(context->node, AstNodeKind::If);
+    auto ifNode = CastAst<AstIf>(context->node, AstNodeKind::If, AstNodeKind::Else);
 
     // Resolve ByteCodeOp::JumpNotTrue expression
     auto instruction = context->bc->out + ifNode->seekJumpExpression;
@@ -36,7 +36,7 @@ bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
 {
     auto node                  = context->node;
-    auto ifNode                = CastAst<AstIf>(node->parent, AstNodeKind::If);
+    auto ifNode                = CastAst<AstIf>(node->parent, AstNodeKind::If, AstNodeKind::Else);
     ifNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
     freeRegisterRC(context, node->resultRegisterRC);
@@ -46,7 +46,7 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
 {
     auto node   = context->node;
-    auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
+    auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If, AstNodeKind::Else);
 
     // This is the end of the if block. Need to jump after the else block, if there's one
     ifNode->seekJumpAfterIf = context->bc->numInstructions;
