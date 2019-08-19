@@ -39,7 +39,7 @@ JobResult SemanticJob::execute()
             if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))
                 return JobResult::ReleaseJob;
 
-            if (!node->childs.empty())
+            if (!node->childs.empty() && !node->isDisabled())
             {
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
@@ -61,10 +61,10 @@ JobResult SemanticJob::execute()
             if (node->semanticFct)
             {
                 context.result = SemanticResult::Done;
-                if (!node->semanticFct(&context))
-                    return JobResult::ReleaseJob;
-                if (context.result == SemanticResult::Pending)
-                    return JobResult::KeepJobAlive;
+				if (!node->semanticFct(&context))
+					return JobResult::ReleaseJob;
+				if (context.result == SemanticResult::Pending)
+					return JobResult::KeepJobAlive;
             }
 
             node->semanticState = AstNodeResolveState::PostChilds;

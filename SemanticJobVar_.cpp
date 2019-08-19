@@ -106,7 +106,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_CONST;
 
     // A constant must be initialized
-    if (isConstant && !node->assignment)
+    if (isConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
     {
         return sourceFile->report({sourceFile, node, "a constant must be initialized"});
     }
@@ -133,7 +133,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // A global variable or a constant must have its value computed at that point
-    if (isConstant || (node->assignment && (symbolFlags & OVERLOAD_VAR_GLOBAL)))
+    if (node->assignment && (isConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
     {
         SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node->assignment, "cannot evaluate initialization expression at compile time"}));
     }

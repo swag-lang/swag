@@ -159,6 +159,8 @@ struct AstNode : public PoolElement
 
     void inheritComputedValue(AstNode* from)
     {
+		if (!from)
+			return;
         inheritAndFlag(from, AST_VALUE_COMPUTED);
         if (flags & AST_VALUE_COMPUTED)
         {

@@ -16,6 +16,7 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     auto funcNode   = CastAst<AstFuncDecl>(sourceNode->clone(cloneContext), AstNodeKind::FuncDecl);
     funcNode->flags &= ~AST_IS_GENERIC;
     funcNode->flags |= AST_FROM_GENERIC;
+	funcNode->content->flags &= ~AST_DISABLED;
 
     Ast::addChild(sourceNode->parent, funcNode);
 
@@ -30,6 +31,11 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
             param->typeInfo->release();
         param->typeInfo     = genericParameters->childs[i]->typeInfo;
         param->genericValue = genericParameters->childs[i]->computedValue;
+
+		auto nodeParam = funcNode->genericParameters->childs[i];
+		nodeParam->kind = AstNodeKind::ConstDecl;
+		nodeParam->computedValue = param->genericValue;
+		nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 
     // Need to wait for the function to be semantic resolved

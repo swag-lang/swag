@@ -1,16 +1,18 @@
 #module module590
-#unittest pass semantic
+//#unittest pass semantic
 
-//#[swag.printbc]
+#[swag.printbc]
 func(op: string) toto()
 {
-	/*if(op == "toto")
-	{
-	}*/
+	if(op == "toto")
+		@print("toto")
+	if(op == "toto1")
+		@print("toto1")		
 }
 
 //#[swag.printbc]
 #test
 {
 	toto!("toto")()
+	toto!("toto1")()
 }
