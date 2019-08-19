@@ -100,7 +100,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
         oneParam->inheritOwnersAndFlags(this);
         oneParam->inheritToken(token);
         oneParam->semanticFct = &SemanticJob::resolveVarDecl;
-        oneParam->flags |= AST_GENERIC;
+        oneParam->flags |= AST_IS_GENERIC;
         SWAG_CHECK(eatToken());
 
         if (token.id == TokenId::SymColon)

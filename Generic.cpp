@@ -12,7 +12,7 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     auto symbol     = match.symbolOverload;
     auto sourceNode = symbol->node;
     auto funcNode   = CastAst<AstFuncDecl>(sourceNode->clone(), AstNodeKind::FuncDecl);
-    funcNode->flags &= ~AST_GENERIC;
+    funcNode->flags &= ~AST_IS_GENERIC;
 	funcNode->flags |= AST_FROM_GENERIC;
     funcNode->genericParameters = nullptr;
 

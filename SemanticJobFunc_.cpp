@@ -222,7 +222,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode, funcNode->genericParameters, true));
     SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode, funcNode->parameters, false));
     if (funcNode->genericParameters)
-        funcNode->flags |= AST_GENERIC;
+        funcNode->flags |= AST_IS_GENERIC;
 
     // Collect function attributes
     SymbolAttributes attributes;
@@ -242,7 +242,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     typeInfo->computeName();
 
     uint32_t symbolFlags = 0;
-    if (funcNode->flags & AST_GENERIC)
+    if (funcNode->flags & AST_IS_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
 
     funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
