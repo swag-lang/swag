@@ -41,6 +41,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::Slice &&
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
+			rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
         if (leftTypeInfo->kind != TypeInfoKind::Struct)
