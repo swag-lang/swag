@@ -49,7 +49,6 @@ enum class AstNodeKind
     TypeLambda,
     Namespace,
     If,
-    Else,
     While,
     For,
     Loop,

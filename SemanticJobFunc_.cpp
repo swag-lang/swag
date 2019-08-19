@@ -306,7 +306,6 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     {
         scanNode->flags |= AST_SCOPE_HAS_RETURN;
         if (scanNode->kind == AstNodeKind::If ||
-            scanNode->kind == AstNodeKind::Else ||
             scanNode->kind == AstNodeKind::While ||
             scanNode->kind == AstNodeKind::Loop ||
             scanNode->kind == AstNodeKind::For ||

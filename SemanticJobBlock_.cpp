@@ -12,7 +12,7 @@
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
-    auto node = CastAst<AstIf>(context->node, AstNodeKind::If, AstNodeKind::Else);
+    auto node = CastAst<AstIf>(context->node, AstNodeKind::If);
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, node->boolExpression));
 
 	// Do not generate backend if 'if' is constant, and has already been evaluated
