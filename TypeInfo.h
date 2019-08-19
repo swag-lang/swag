@@ -287,8 +287,8 @@ struct SymbolMatchContext
         genericParameters.clear();
         parameters.clear();
         doneParameters.clear();
-		genericParametersValues.clear();
-		genericParametersTypes.clear();
+        genericParametersValues.clear();
+        genericParametersTypes.clear();
         forLambda = false;
     }
 };

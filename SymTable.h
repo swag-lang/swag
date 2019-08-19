@@ -44,6 +44,7 @@ struct SymbolOverload : public PoolElement
         attributes.values.clear();
         storageOffset = UINT32_MAX;
         storageIndex  = 0;
+        overloadIndex = 0;
     }
 
     TypeInfo*        typeInfo;
@@ -54,6 +55,7 @@ struct SymbolOverload : public PoolElement
     SymbolAttributes attributes;
     uint32_t         storageOffset;
     uint32_t         storageIndex;
+    uint32_t         overloadIndex;
 };
 
 enum class SymbolKind

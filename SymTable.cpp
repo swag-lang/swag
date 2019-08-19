@@ -101,7 +101,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
     {
         for (auto job : symbol->dependentJobs)
             g_ThreadMgr.addJob(job);
-		symbol->dependentJobs.clear();
+        symbol->dependentJobs.clear();
     }
 
     symbol->mutex.unlock();
@@ -187,6 +187,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(SourceFile* sourceFile, AstNode* n
         overload->flags |= OVERLOAD_COMPUTED_VALUE;
     }
 
+    overload->overloadIndex = (uint32_t) overloads.size() - 1;
     overloads.push_back(overload);
     return overload;
 }
