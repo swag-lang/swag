@@ -262,8 +262,11 @@ enum MatchResult
 {
     Ok,
     TooManyParameters,
+	TooManyGenericParameters,
     NotEnoughParameters,
+	NotEnoughGenericParameters,
     BadSignature,
+	BadGenericSignature,
     InvalidNamedParameter,
     DuplicatedNamedParameter,
 };

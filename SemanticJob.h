@@ -152,6 +152,7 @@ struct SemanticJob : public Job
     vector<SymbolOverload*> cacheMatches;
     vector<OneGenericMatch> cacheGenericMatches;
     vector<SymbolOverload*> cacheBadSignature;
+	vector<SymbolOverload*> cacheBadGenericSignature;
     SymbolMatchContext      symMatch;
 };
 

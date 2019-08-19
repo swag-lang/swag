@@ -32,6 +32,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::Slice &&
             leftTypeInfo->kind != TypeInfoKind::Lambda &&
             leftTypeInfo->kind != TypeInfoKind::TypeList &&
+			leftTypeInfo->kind != TypeInfoKind::Struct &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
             return sourceFile->report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
@@ -41,7 +42,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
-        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
+		if(leftTypeInfo->kind != TypeInfoKind::Struct)
+			SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
+		else
+			SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", left, right));
         break;
 
     case TokenId::SymLowerLowerEqual:

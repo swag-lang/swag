@@ -292,18 +292,21 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
 bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node)
 {
-    auto  job              = context->job;
-    auto  sourceFile       = context->sourceFile;
-    auto& matches          = job->cacheMatches;
-    auto& genericMatches   = job->cacheGenericMatches;
-    auto& badSignature     = job->cacheBadSignature;
-    auto& dependentSymbols = job->cacheDependentSymbols;
+    auto  job                 = context->job;
+    auto  sourceFile          = context->sourceFile;
+    auto& matches             = job->cacheMatches;
+    auto& genericMatches      = job->cacheGenericMatches;
+    auto& badSignature        = job->cacheBadSignature;
+    auto& badGenericSignature = job->cacheBadGenericSignature;
+    auto& dependentSymbols    = job->cacheDependentSymbols;
 
     matches.clear();
     genericMatches.clear();
     badSignature.clear();
+    badGenericSignature.clear();
 
-    int numOverloads = 0;
+    bool hasGenericErrors = false;
+    int  numOverloads     = 0;
     for (auto oneSymbol : dependentSymbols)
     {
         for (auto overload : oneSymbol->overloads)
@@ -313,8 +316,9 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
             typeInfo->match(job->symMatch);
 
-            if (job->symMatch.result == MatchResult::Ok)
+            switch (job->symMatch.result)
             {
+            case MatchResult::Ok:
                 if (overload->flags & OVERLOAD_GENERIC)
                 {
                     OneGenericMatch match;
@@ -325,10 +329,21 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
                 }
                 else
                     matches.push_back(overload);
-            }
-            else if (job->symMatch.result == MatchResult::BadSignature)
-            {
+                break;
+
+            case MatchResult::BadGenericSignature:
+                badGenericSignature.push_back(overload);
+                hasGenericErrors = true;
+                break;
+
+            case MatchResult::BadSignature:
                 badSignature.push_back(overload);
+                break;
+
+            case MatchResult::TooManyGenericParameters:
+            case MatchResult::NotEnoughGenericParameters:
+                hasGenericErrors = true;
+                break;
             }
         }
     }
@@ -376,12 +391,38 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
             }
+            case MatchResult::NotEnoughGenericParameters:
+            {
+                Diagnostic diag{sourceFile, genericParameters ? genericParameters : node, format("not enough generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            case MatchResult::TooManyGenericParameters:
+            {
+                Diagnostic diag{sourceFile, genericParameters ? genericParameters : node, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
             case MatchResult::BadSignature:
             {
                 assert(callParameters);
                 Diagnostic diag{sourceFile,
                                 callParameters->childs[job->symMatch.badSignatureParameterIdx],
                                 format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
+                                       job->symMatch.badSignatureParameterIdx + 1,
+                                       SymTable::getNakedKindName(symbol->kind),
+                                       symbol->name.c_str(),
+                                       job->symMatch.badSignatureRequestedType->name.c_str(),
+                                       job->symMatch.badSignatureGivenType->name.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            case MatchResult::BadGenericSignature:
+            {
+                assert(genericParameters);
+                Diagnostic diag{sourceFile,
+                                genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                                format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
                                        job->symMatch.badSignatureParameterIdx + 1,
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),
@@ -397,7 +438,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
             if (badSignature.size())
             {
                 Diagnostic diag{sourceFile,
-                                node->callParameters ? node->callParameters : node,
+                                callParameters ? callParameters : node,
                                 format("none of the %d overloads could convert all the parameters types", numOverloads)};
 
                 vector<const Diagnostic*> notes;
@@ -410,13 +451,34 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
 
                 return sourceFile->report(diag, notes);
             }
+            else if (badGenericSignature.size())
+            {
+                Diagnostic diag{sourceFile,
+                                genericParameters ? genericParameters : node,
+                                format("none of the %d overloads could convert all the generic parameters types", numOverloads)};
+
+                vector<const Diagnostic*> notes;
+                for (auto overload : badGenericSignature)
+                {
+                    auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+                    note->showRange = false;
+                    notes.push_back(note);
+                }
+
+                return sourceFile->report(diag, notes);
+            }
+            else if (hasGenericErrors)
+            {
+                int         numParams = genericParameters ? (int) genericParameters->childs.size() : 0;
+                const char* args      = numParams <= 1 ? "generic parameter" : "generic parameters";
+                Diagnostic  diag{sourceFile, genericParameters ? genericParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
+                return sourceFile->report(diag);
+            }
             else
             {
-                int         numParams = callParameters ? (int) node->callParameters->childs.size() : 0;
+                int         numParams = callParameters ? (int) callParameters->childs.size() : 0;
                 const char* args      = numParams <= 1 ? "parameter" : "parameters";
-                Diagnostic  diag{sourceFile,
-                                callParameters ? callParameters : node,
-                                format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
+                Diagnostic  diag{sourceFile, callParameters ? callParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
                 return sourceFile->report(diag);
             }
         }

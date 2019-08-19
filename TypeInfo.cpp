@@ -29,8 +29,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
     {
         if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
             return false;
-		if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
-			return false;
+        if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
+            return false;
     }
 
     for (int i = 0; i < parameters.size(); i++)
@@ -79,30 +79,31 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
     // First we solve generic parameters
     int numGenericParams = (int) context.genericParameters.size();
+
+    if (numGenericParams < genericParameters.size())
+    {
+        context.result = MatchResult::NotEnoughGenericParameters;
+        return;
+    }
+
     for (int i = 0; i < numGenericParams; i++)
     {
         auto callParameter = context.genericParameters[i];
         if (i >= genericParameters.size())
         {
-            context.result = MatchResult::TooManyParameters;
+            context.result = MatchResult::TooManyGenericParameters;
             return;
         }
 
         auto symbolParameter = genericParameters[i];
-        if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
-        {
-            context.result = MatchResult::BadSignature;
-            return;
-        }
-
-        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-        bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
         if (!same)
         {
             context.badSignatureParameterIdx  = i;
             context.badSignatureRequestedType = symbolParameter->typeInfo;
             context.badSignatureGivenType     = typeInfo;
-            context.result                    = MatchResult::BadSignature;
+            context.result                    = MatchResult::BadGenericSignature;
         }
         else if (flags & TYPEINFO_GENERIC)
         {
@@ -119,7 +120,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             context.badSignatureParameterIdx  = i;
             context.badSignatureRequestedType = symbolParameter->typeInfo;
             context.badSignatureGivenType     = typeInfo;
-            context.result                    = MatchResult::BadSignature;
+            context.result                    = MatchResult::BadGenericSignature;
         }
     }
 

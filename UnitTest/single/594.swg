@@ -1,0 +1,12 @@
+#module module594
+#unittest pass semantic
+
+#unittest error
+func(op: string) toto()
+{
+}
+
+#test
+{
+	toto!("0","0")()
+}
