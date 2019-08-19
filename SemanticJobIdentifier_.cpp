@@ -450,7 +450,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  job              = context->job;
     auto& scopeHierarchy   = job->cacheScopeHierarchy;
     auto& dependentSymbols = job->cacheDependentSymbols;
-    auto  node             = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    auto  node             = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     auto  identifierRef    = node->identifierRef;
     auto  sourceFile       = context->sourceFile;
 

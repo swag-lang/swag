@@ -143,8 +143,8 @@ void AstNode::copyFrom(AstNode* from)
             continue;
         }
 
-        childs[i] = childs[i]->clone();
-		childs[i]->parent = this;
+        childs[i]         = childs[i]->clone();
+        childs[i]->parent = this;
     }
 }
 
@@ -161,11 +161,13 @@ AstNode* AstIdentifierRef::clone()
     auto newNode = g_Pool_astIdentifierRef.alloc();
     newNode->copyFrom(this);
 
-	for (auto child : newNode->childs)
-	{
-		if (child->kind == AstNodeKind::Identifier)
-			static_cast<AstIdentifier*>(child)->identifierRef = newNode;
-	}
+    for (auto child : newNode->childs)
+    {
+        if (child->kind == AstNodeKind::Identifier || child->kind == AstNodeKind::FuncCall)
+        {
+            static_cast<AstIdentifier*>(child)->identifierRef = newNode;
+        }
+    }
 
     newNode->startScope = startScope;
     return newNode;
@@ -187,7 +189,7 @@ AstNode* AstFuncDecl::clone()
     auto newNode = g_Pool_astFuncDecl.alloc();
     newNode->copyFrom(this);
 
-	Ast::newScope(newNode->name, ScopeKind::Function, newNode->ownerScope);
+    Ast::newScope(newNode->name, ScopeKind::Function, newNode->ownerScope);
     newNode->stackSize         = stackSize;
     newNode->parameters        = findChildRef(parameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
