@@ -45,7 +45,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 		if(leftTypeInfo->kind != TypeInfoKind::Struct)
 			SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
 		else
-			SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", left, right));
+			SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "=", left, right));
         break;
 
     case TokenId::SymLowerLowerEqual:

@@ -763,7 +763,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name, AstNode* left, AstNode* right)
+bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right)
 {
     auto node       = context->node;
     auto job        = context->job;
@@ -789,9 +789,26 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
     job->symMatch.parameters.push_back(left);
     job->symMatch.parameters.push_back(right);
 
+    AstNode* genericParameters = nullptr;
+    AstNode  parameters;
+    AstNode  literal;
+    if (op)
+    {
+        literal.kind               = AstNodeKind::Literal;
+        literal.computedValue.text = op;
+        literal.typeInfo           = g_TypeMgr.typeInfoString;
+        job->symMatch.genericParameters.push_back(&literal);
+
+		parameters.kind = AstNodeKind::FuncDeclGenericParams;
+        genericParameters = &parameters;
+        Ast::addChild(&parameters, &literal);
+    }
+
     job->cacheDependentSymbols.clear();
     job->cacheDependentSymbols.push_back(symbol);
-    SWAG_CHECK(checkFuncCall(context, nullptr, left->parent, nullptr));
+    SWAG_CHECK(checkFuncCall(context, genericParameters, left->parent, nullptr));
+	if (context->result == SemanticResult::Pending)
+		return true;
 
     node->typeInfo               = job->cacheMatches[0]->typeInfo;
     node->resolvedSymbolName     = job->cacheDependentSymbols[0];
@@ -847,7 +864,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opEquals", left, right));
+        SWAG_CHECK(resolveUserBinaryOp(context, "opEquals", nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -906,7 +923,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opCmp", left, right));
+        SWAG_CHECK(resolveUserBinaryOp(context, "opCmp", nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -965,7 +982,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opCmp", left, right));
+        SWAG_CHECK(resolveUserBinaryOp(context, "opCmp", nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 

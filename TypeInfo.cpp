@@ -86,6 +86,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         return;
     }
 
+	context.genericParametersValues.resize(numGenericParams);
+	context.genericParametersTypes.resize(numGenericParams);
     for (int i = 0; i < numGenericParams; i++)
     {
         auto callParameter = context.genericParameters[i];

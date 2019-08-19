@@ -159,7 +159,6 @@ AstNode* AstIdentifierRef::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astIdentifierRef.alloc();
     newNode->copyFrom(context, this);
-    newNode->startScope = startScope;
     return newNode;
 }
 

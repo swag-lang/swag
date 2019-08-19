@@ -486,19 +486,33 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
 
     if (matches.size() > 1)
     {
-        Diagnostic diag{sourceFile,
-                        callParameters ? callParameters : node,
-                        format("ambiguous call to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-
-        vector<const Diagnostic*> notes;
-        for (auto overload : matches)
+        if (hasGenericErrors)
         {
-            auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
-            note->showRange = false;
-            notes.push_back(note);
+            Diagnostic                diag{sourceFile, genericParameters ? genericParameters : node, format("ambiguous generic call to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+            vector<const Diagnostic*> notes;
+            for (auto overload : matches)
+            {
+                auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+                note->showRange = false;
+                notes.push_back(note);
+            }
+
+            sourceFile->report(diag, notes);
+        }
+        else
+        {
+            Diagnostic                diag{sourceFile, callParameters ? callParameters : node, format("ambiguous call to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+            vector<const Diagnostic*> notes;
+            for (auto overload : matches)
+            {
+                auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+                note->showRange = false;
+                notes.push_back(note);
+            }
+
+            sourceFile->report(diag, notes);
         }
 
-        sourceFile->report(diag, notes);
         return false;
     }
 
