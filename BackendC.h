@@ -33,9 +33,9 @@ struct BackendC : public Backend
 
     const char* swagTypeToCType(TypeInfo* typeInfo);
     void        emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    void        emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, const string& name);
     void        emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool        emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, const string& name);
+    void        emitFuncSignatureInternalC(ByteCode* bc);
+    bool        emitInternalFunction(ByteCode* bc);
 
     string destFile;
 

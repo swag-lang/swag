@@ -11,4 +11,5 @@ func(op: string) toto()
 {
 	toto!("op")()
 	toto!("op1")()
+	toto!("op")()
 }

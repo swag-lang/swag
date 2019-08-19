@@ -10,6 +10,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Scope.h"
+#include "SymTable.h"
 
 const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
 {
@@ -91,8 +92,11 @@ void BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
     buffer.addString(")");
 }
 
-void BackendC::emitFuncSignatureInternalC(TypeInfoFuncAttr* typeFunc, const string& name)
+void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
 {
+    auto typeFunc = bc->callType();
+    auto name     = bc->callName();
+
     bufferC.addString("void ");
     bufferC.addString(name.c_str());
     bufferC.addString("(");
@@ -150,7 +154,7 @@ bool BackendC::emitFuncSignatures()
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        emitFuncSignatureInternalC(typeFunc, node ? node->fullname : one->name);
+        emitFuncSignatureInternalC(one);
         bufferC.addString(";\n");
 
         if (node)
@@ -171,13 +175,14 @@ bool BackendC::emitFuncSignatures()
     return true;
 }
 
-bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, const string& name)
+bool BackendC::emitInternalFunction(ByteCode* bc)
 {
-    bool ok = true;
+    bool ok       = true;
+    auto typeFunc = bc->callType();
 
     // Signature
     bufferC.addString("static ");
-    emitFuncSignatureInternalC(typeFunc, name);
+    emitFuncSignatureInternalC(bc);
     bufferC.addString(" {\n");
 
     // Generate one local variable per used register
@@ -946,17 +951,17 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
             bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
             break;
 
-		case ByteCodeOp::MinusToTrue:
-			bufferC.addString(format("r%u.b = r%u.s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+        case ByteCodeOp::MinusToTrue:
+            bufferC.addString(format("r%u.b = r%u.s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::MinusZeroToTrue:
-			bufferC.addString(format("r%u.b = r%u.s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.b = r%u.s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::PlusToTrue:
-			bufferC.addString(format("r%u.b = r%u.s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.b = r%u.s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::PlusZeroToTrue:
-			bufferC.addString(format("r%u.b = r%u.s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.b = r%u.s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::MakeLambda:
@@ -983,7 +988,7 @@ bool BackendC::emitInternalFunction(TypeInfoFuncAttr* typeFunc, ByteCode* bc, co
             // Normal function call
             if (ip->op == ByteCodeOp::LocalCall)
             {
-                bufferC.addString(format("{ %s", funcBC->node ? funcBC->node->fullname.c_str() : funcBC->name.c_str()));
+                bufferC.addString(format("{ %s", funcBC->callName().c_str()));
             }
 
             // Lambda call
@@ -1082,7 +1087,7 @@ bool BackendC::emitFunctions()
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        ok &= emitInternalFunction(typeFunc, one, node ? node->fullname : one->name);
+        ok &= emitInternalFunction(one);
 
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
         {

@@ -4,6 +4,8 @@
 #include "Log.h"
 #include "Ast.h"
 #include "SourceFile.h"
+#include "TypeInfo.h"
+#include "SymTable.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op) #__op,
@@ -18,6 +20,21 @@ int g_ByteCodeOpNamesLen[] = {
 };
 
 Pool<ByteCode> g_Pool_byteCode;
+
+string ByteCode::callName()
+{
+    auto callname = node ? node->fullname : name;
+    if (node && (node->flags & AST_FROM_GENERIC))
+		callname += "_gen" + to_string(node->resolvedSymbolOverload->overloadIndex);
+    return callname;
+}
+
+TypeInfoFuncAttr* ByteCode::callType()
+{
+    if (node)
+        return CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    return typeInfoFunc;
+}
 
 void ByteCode::print()
 {
@@ -144,8 +161,8 @@ void ByteCode::print()
         case ByteCodeOp::IncPointerVB:
         case ByteCodeOp::CopyRR0:
         case ByteCodeOp::ShiftRightU64VB:
-		case ByteCodeOp::IncRAVB:
-		case ByteCodeOp::ClearX:
+        case ByteCodeOp::IncRAVB:
+        case ByteCodeOp::ClearX:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 

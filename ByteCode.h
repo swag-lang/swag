@@ -35,6 +35,9 @@ struct ByteCode : public PoolElement
     string               name;
 
     set<int> usedRegisters;
+
+    string            callName();
+    TypeInfoFuncAttr* callType();
 };
 
 extern Pool<ByteCode> g_Pool_byteCode;
