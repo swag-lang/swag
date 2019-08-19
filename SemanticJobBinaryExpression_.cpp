@@ -789,6 +789,7 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
     job->symMatch.parameters.push_back(left);
     job->symMatch.parameters.push_back(right);
 
+	// Generic string parameter
     AstNode* genericParameters = nullptr;
     AstNode  parameters;
     AstNode  literal;
