@@ -72,7 +72,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         {
             for (auto otherVar : otherVariables)
             {
-                otherVar->assignment = varNode->assignment->clone();
+				CloneContext cloneContext;
+                otherVar->assignment = varNode->assignment->clone(cloneContext);
                 Ast::addChild(otherVar, otherVar->assignment);
             }
         }
@@ -87,9 +88,10 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     }
     else
     {
+		CloneContext cloneContext;
         for (auto otherVar : otherVariables)
         {
-            otherVar->type = varNode->type->clone();
+            otherVar->type = varNode->type->clone(cloneContext);
             Ast::addChild(otherVar, otherVar->type);
         }
     }

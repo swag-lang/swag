@@ -96,6 +96,12 @@ enum class AstNodeKind
     CompilerVersion,
 };
 
+struct CloneContext
+{
+    AstNode* parent      = nullptr;
+    Scope*   parentScope = nullptr;
+};
+
 struct AstNode : public PoolElement
 {
     void reset() override
@@ -207,8 +213,8 @@ struct AstNode : public PoolElement
     static const char* getKindName(AstNode* node);
     static const char* getNakedKindName(AstNode* node);
     AstNode*           findChildRef(AstNode* ref, AstNode* fromChild);
-    virtual AstNode*   clone();
-    void               copyFrom(AstNode* from);
+    virtual AstNode*   clone(CloneContext& context);
+    void               copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
     void               computeFullName();
 
     AstNodeKind   kind;
@@ -259,7 +265,7 @@ struct AstVarDecl : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     struct AstNode* type;
     struct AstNode* assignment;
@@ -274,7 +280,7 @@ struct AstIdentifierRef : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     Scope*   startScope;
     AstNode* previousResolvedNode;
@@ -291,7 +297,7 @@ struct AstIdentifier : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstIdentifierRef* identifierRef;
     AstNode*          genericParameters;
@@ -312,7 +318,7 @@ struct AstFuncDecl : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     int          stackSize;
     AstNode*     parameters;
@@ -330,7 +336,7 @@ struct AstAttrDecl : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* parameters;
 };
@@ -343,7 +349,7 @@ struct AstAttrUse : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     map<string, ComputedValue> values;
 };
@@ -360,7 +366,7 @@ struct AstFuncCallParam : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     Utf8                   namedParam;
     AstNode*               namedParamNode;
@@ -379,7 +385,7 @@ struct AstIf : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* boolExpression;
     AstNode* ifBlock;
@@ -391,7 +397,7 @@ struct AstIf : public AstNode
 
 struct AstBreakContinue : public AstNode
 {
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     int jumpInstruction;
 };
@@ -417,7 +423,7 @@ struct AstBreakable : public AstNode
         return breakableFlags & BREAKABLE_NEED_INDEX;
     }
 
-    void copyFrom(AstNode* from);
+    void copyFrom(CloneContext& context, AstNode* from);
 
     uint32_t                  breakableFlags;
     uint32_t                  registerIndex;
@@ -435,7 +441,7 @@ struct AstWhile : public AstBreakable
         AstBreakable::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* boolExpression;
     AstNode* block;
@@ -456,7 +462,7 @@ struct AstFor : public AstBreakable
         AstBreakable::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* preExpression;
     AstNode* boolExpression;
@@ -479,7 +485,7 @@ struct AstLoop : public AstBreakable
         AstBreakable::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* expression;
     AstNode* block;
@@ -501,7 +507,7 @@ struct AstSwitch : public AstBreakable
         breakableFlags &= ~BREAKABLE_CAN_HAVE_CONTINUE;
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode*                      expression;
     AstNode*                      block;
@@ -523,7 +529,7 @@ struct AstSwitchCase : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     vector<AstNode*> expressions;
     AstNode*         block;
@@ -544,7 +550,7 @@ struct AstSwitchCaseBlock : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     bool           isDefault;
     AstSwitchCase* ownerCase;
@@ -564,7 +570,7 @@ struct AstTypeExpression : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* typeExpression;
     int      ptrCount;
@@ -582,7 +588,7 @@ struct AstTypeLambda : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* parameters;
     AstNode* returnType;
@@ -597,7 +603,7 @@ struct AstPointerDeRef : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* array;
     AstNode* access;
@@ -611,7 +617,7 @@ struct AstProperty : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* expression;
     Property prop;
@@ -620,7 +626,7 @@ struct AstProperty : public AstNode
 struct AstExpressionList : public AstNode
 {
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     uint32_t         storageOffset;
     TypeInfoListKind listKind;
@@ -634,7 +640,7 @@ struct AstStruct : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     AstNode* opInit;
 };
@@ -648,7 +654,7 @@ struct AstImpl : public AstNode
         AstNode::reset();
     }
 
-    AstNode* clone() override;
+    AstNode* clone(CloneContext& context) override;
 
     Scope*   structScope;
     AstNode* identifier;

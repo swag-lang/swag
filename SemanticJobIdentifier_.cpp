@@ -310,9 +310,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
         {
             numOverloads++;
 
-            auto typeInfo = static_cast<TypeInfoFuncAttr*>(overload->typeInfo);
-            assert(typeInfo->kind == TypeInfoKind::FuncAttr || typeInfo->kind == TypeInfoKind::Lambda);
-
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
             typeInfo->match(job->symMatch);
 
             if (job->symMatch.result == MatchResult::Ok)
@@ -320,7 +318,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
                 if (overload->flags & OVERLOAD_GENERIC)
                 {
                     OneGenericMatch match;
-                    match.symbolOverload                  = overload;
+                    match.symbolOverload             = overload;
                     match.genericMatchesParamsValues = job->symMatch.genericParametersValues;
                     match.genericMatchesParamsTypes  = job->symMatch.genericParametersTypes;
                     genericMatches.emplace_back(match);
@@ -338,7 +336,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
-		SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
+        SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
         return true;
     }
 
@@ -574,8 +572,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(oneParam->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)}));
                 job->symMatch.genericParameters.push_back(oneParam);
-				job->symMatch.genericParametersValues.push_back(oneParam->computedValue);
-				job->symMatch.genericParametersTypes.push_back(oneParam->typeInfo);
+                job->symMatch.genericParametersValues.push_back(oneParam->computedValue);
+                job->symMatch.genericParametersTypes.push_back(oneParam->typeInfo);
                 idx++;
             }
         }
@@ -601,8 +599,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     SWAG_CHECK(checkFuncCall(context, node->genericParameters, node->callParameters, node));
-	if (context->result == SemanticResult::Pending)
-		return true;
+    if (context->result == SemanticResult::Pending)
+        return true;
 
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0]));
     return true;

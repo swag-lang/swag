@@ -4,9 +4,9 @@
 //#[swag.printbc]
 func(op: string) toto()
 {
-	if(op == "toto")
+	/*if(op == "toto")
 	{
-	}
+	}*/
 }
 
 //#[swag.printbc]

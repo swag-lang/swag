@@ -28,15 +28,34 @@ namespace Ast
 
     void addChild(AstNode* parent, AstNode* child)
     {
+		if (!child)
+			return;
+
         if (parent)
         {
-            SWAG_ASSERT(parent && child);
             parent->lock();
             parent->childs.push_back(child);
             parent->unlock();
         }
 
         child->parent = parent;
+    }
+
+    void setupScope(Scope* newScope, const string& name, ScopeKind kind, Scope* parentScope)
+    {
+        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
+        newScope->kind        = kind;
+        newScope->parentScope = parentScope;
+        newScope->name        = name;
+        newScope->fullname    = move(fullname);
+        if (parentScope)
+        {
+            newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
+            parentScope->childScopes.push_back(newScope);
+        }
+
+        if (parentScope)
+            parentScope->lockChilds.unlock();
     }
 
     Scope* newScope(const string& name, ScopeKind kind, Scope* parentScope, bool singleNamed)
@@ -59,21 +78,8 @@ namespace Ast
             }
         }
 
-        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
-        auto newScope         = g_Pool_scope.alloc();
-        newScope->kind        = kind;
-        newScope->parentScope = parentScope;
-        newScope->name        = name;
-        newScope->fullname    = move(fullname);
-        if (parentScope)
-        {
-            newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
-            parentScope->childScopes.push_back(newScope);
-        }
-
-        if (parentScope)
-            parentScope->lockChilds.unlock();
-
+        auto newScope = g_Pool_scope.alloc();
+        setupScope(newScope, name, kind, parentScope);
         return newScope;
     }
 

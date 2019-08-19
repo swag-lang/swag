@@ -126,7 +126,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     // No semantic on a generic function
-    if (typeInfo->flags & TYPEINFO_GENERIC)
+    if (node->flags & AST_IS_GENERIC)
         return true;
 
     SWAG_CHECK(checkFuncPrototype(context));
@@ -221,7 +221,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Register parameters
     SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode, funcNode->genericParameters, true));
     SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, funcNode, funcNode->parameters, false));
-    if (funcNode->genericParameters)
+    if (funcNode->genericParameters && !(funcNode->flags & AST_FROM_GENERIC))
         funcNode->flags |= AST_IS_GENERIC;
 
     // Collect function attributes

@@ -36,6 +36,7 @@ namespace Ast
         node->token = move(token);
     }
 
+    extern void     setupScope(Scope* newScope, const string& name, ScopeKind kind, Scope* parentScope);
     extern Scope*   newScope(const string& name, ScopeKind kind, Scope* parentScope, bool singleNamed = false);
     extern void     removeFromParent(AstNode* child);
     extern void     addChild(AstNode* parent, AstNode* child);

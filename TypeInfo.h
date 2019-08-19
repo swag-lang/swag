@@ -56,6 +56,14 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
     return casted;
 }
 
+template<typename T>
+inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
+{
+    T* casted = static_cast<T*>(ptr);
+    SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
+    return casted;
+}
+
 static const uint64_t TYPEINFO_ATTRIBUTE_FUNC         = 0x00000000'00000001;
 static const uint64_t TYPEINFO_ATTRIBUTE_VAR          = 0x00000000'00000002;
 static const uint64_t TYPEINFO_INTEGER                = 0x00000000'00000004;
