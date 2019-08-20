@@ -12,10 +12,31 @@
 #include "Attribute.h"
 #include "TypeManager.h"
 
+bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(&g_Pool_astIf, AstNodeKind::If, sourceFile->indexInModule, parent);
+    node->inheritOwnersAndFlags(this);
+    node->inheritToken(token);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
+    SWAG_CHECK(doEmbeddedStatement(node, &node->ifBlock));
+    node->boolExpression->semanticAfterFct = &SemanticJob::resolveCompilerIf;
+
+    if (token.id == TokenId::CompilerElse)
+    {
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doEmbeddedStatement(node, &node->elseBlock));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
-
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveCompilerAssert;

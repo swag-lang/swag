@@ -33,6 +33,7 @@ struct SyntaxJob : public Job
     void generateOpInit(AstNode* node);
 
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
+	bool doCompilerIf(AstNode* parent, AstNode** result);
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
     bool doCompilerVersion(AstNode* parent);

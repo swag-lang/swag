@@ -1,4 +1,4 @@
-#module module605
+#module module606
 //#unittest pass semantic
 
 struct Point
@@ -7,6 +7,7 @@ struct Point
 	var y: s32
 }
 
+#unittest error
 //#[swag.printbc]
 impl Point
 {
@@ -25,5 +26,5 @@ impl Point
 #test
 {
 	var x : Point
-	x += 0
+	x -= 0
 }

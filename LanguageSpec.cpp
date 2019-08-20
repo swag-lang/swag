@@ -18,6 +18,8 @@ void LanguageSpec::setup()
     keywords["#version"]  = TokenId::CompilerVersion;
     keywords["#else"]     = TokenId::CompilerElse;
     keywords["#test"]     = TokenId::CompilerTest;
+    keywords["#if"]       = TokenId::CompilerIf;
+    keywords["#else"]     = TokenId::CompilerElse;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["let"]       = TokenId::KwdLet;

@@ -122,7 +122,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             for (int i = node->arrayDim - 1; i >= 0; i--)
             {
                 auto child = node->childs[i];
-                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, child, "can't evaluate array dimension at compile time"}));
+                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, child, "array dimension cannot be evaluted at compile time"}));
                 SWAG_VERIFY(child->typeInfo->isNativeInteger(), sourceFile->report({sourceFile, child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
                 SWAG_VERIFY(child->typeInfo->sizeOf <= 4, sourceFile->report({sourceFile, child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
                 SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.maxStaticArraySize, sourceFile->report({sourceFile, child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.maxStaticArraySize, child->computedValue.reg.u32)}));

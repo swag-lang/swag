@@ -135,7 +135,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // A global variable or a constant must have its value computed at that point
     if (node->assignment && (isConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
     {
-        SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node->assignment, "cannot evaluate initialization expression at compile time"}));
+        SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node->assignment, "initialization expression cannot be evaluated at compile time"}));
     }
 
     // Be sure array without a size have a initializer, to deduce the size
@@ -278,7 +278,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else if (node->assignment && node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
-            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "cannot evaluate expression at compile time"}));
+            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "expression cannot be evaluated at compile time"}));
             auto offset = storageOffset;
             auto result = collectLiterals(sourceFile, offset, node->assignment, nullptr, SegmentBuffer::Data);
             SWAG_CHECK(result);

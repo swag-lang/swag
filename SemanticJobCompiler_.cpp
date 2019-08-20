@@ -24,7 +24,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
 
     if (onlyconstExpr)
     {
-        SWAG_VERIFY(node->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "can't evaluate expression at compile time"}));
+        SWAG_VERIFY(node->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "expression cannot be evaluated at compile time"}));
     }
 
     {
@@ -144,5 +144,31 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 
     g_Log.eol();
     g_Log.unlock();
+    return true;
+}
+
+bool SemanticJob::resolveCompilerIf(SemanticContext* context)
+{
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstIf>(context->node->parent, AstNodeKind::If);
+    SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, node->boolExpression));
+    SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->boolExpression, "expression cannot be evaluated at compile time"}));
+
+    // Do not generate backend if 'if' is constant, and has already been evaluated
+    node->boolExpression->flags |= AST_NO_BYTECODE;
+    if (node->boolExpression->computedValue.reg.b)
+    {
+		if (node->elseBlock)
+		{
+			node->elseBlock->flags |= AST_NO_BYTECODE;
+			node->elseBlock->flags |= AST_DISABLED;
+		}
+    }
+    else
+    {
+        node->ifBlock->flags |= AST_NO_BYTECODE;
+		node->ifBlock->flags |= AST_DISABLED;
+    }
+
     return true;
 }

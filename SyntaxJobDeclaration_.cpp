@@ -221,6 +221,12 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdContinue:
         SWAG_CHECK(doContinue(parent, result));
         break;
+    case TokenId::CompilerAssert:
+        SWAG_CHECK(doCompilerAssert(parent));
+        break;
+    case TokenId::CompilerIf:
+        SWAG_CHECK(doCompilerIf(parent, result));
+        break;
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
     }
