@@ -18,18 +18,18 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
-	if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "+", left, right));
-		node->typeInfo = leftTypeInfo;
-		return true;
+        node->typeInfo = leftTypeInfo;
+        return true;
     }
 
     // Pointer arithmetic
     if (leftTypeInfo->kind == TypeInfoKind::Pointer)
     {
         node->typeInfo = leftTypeInfo;
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("addition not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operator '+' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
         switch (rightTypeInfo->nativeType)
         {
         case NativeType::S32:
@@ -38,13 +38,13 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         case NativeType::U64:
             break;
         default:
-            return sourceFile->report({sourceFile, node, format("addition not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
+            return sourceFile->report({sourceFile, node, format("operator '+' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
         }
 
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", rightTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operator '+' not allowed on type '%s'", rightTypeInfo->name.c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
     leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
@@ -62,7 +62,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("operator '+' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     node->typeInfo = leftTypeInfo;
@@ -138,11 +138,18 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "-", left, right));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
     // Pointer arithmetic
     if (leftTypeInfo->kind == TypeInfoKind::Pointer)
     {
         node->typeInfo = leftTypeInfo;
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("substraction not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
+        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operator '-' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
         switch (rightTypeInfo->nativeType)
         {
         case NativeType::S32:
@@ -151,13 +158,13 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         case NativeType::U64:
             break;
         default:
-            return sourceFile->report({sourceFile, node, format("substraction not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
+            return sourceFile->report({sourceFile, node, format("operator '-' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
         }
 
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("addition not allowed on type '%s'", rightTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operator '-' not allowed on type '%s'", rightTypeInfo->name.c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
     leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
@@ -175,7 +182,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("substraction not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("operator '-' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     node->typeInfo = leftTypeInfo;
@@ -246,11 +253,18 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
 bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
+    auto node         = context->node;
+    auto sourceFile   = context->sourceFile;
+    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
-    switch (typeInfo->nativeType)
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "*", left, right));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
+    switch (leftTypeInfo->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -264,14 +278,14 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("multiplication not allowed on type '%s'", typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("operator '*' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::S8:
         {
@@ -334,11 +348,18 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
 bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
+    auto node         = context->node;
+    auto sourceFile   = context->sourceFile;
+    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
-    switch (typeInfo->nativeType)
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "/", left, right));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
+    switch (leftTypeInfo->nativeType)
     {
     case NativeType::S8:
     case NativeType::S16:
@@ -348,19 +369,19 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     case NativeType::U16:
     case NativeType::U32:
     case NativeType::U64:
-        return sourceFile->report({sourceFile, node, "integer division is not allowed"});
+        return sourceFile->report({sourceFile, node, "operator '/' not allowed on integers"});
     case NativeType::F32:
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("division not allowed on type '%s'", typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("operator '/' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::F32:
             if (right->computedValue.reg.f32 == 0)
@@ -382,11 +403,18 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
 bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
+    auto node         = context->node;
+    auto sourceFile   = context->sourceFile;
+    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
-    switch (typeInfo->nativeType)
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "|", left, right));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
+    switch (leftTypeInfo->nativeType)
     {
     case NativeType::S32:
     case NativeType::S64:
@@ -394,14 +422,14 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     case NativeType::U64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("bitmask 'or' operation not allowed on type '%s'", typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("operator '|' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::S8:
             node->computedValue.reg.s8 = left->computedValue.reg.s8 | right->computedValue.reg.s8;
@@ -437,11 +465,18 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 
 bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = TypeManager::concreteType(left->typeInfo);
+    auto node         = context->node;
+    auto sourceFile   = context->sourceFile;
+    auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
-    switch (typeInfo->nativeType)
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "&", left, right));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
+    switch (leftTypeInfo->nativeType)
     {
     case NativeType::S32:
     case NativeType::S64:
@@ -449,14 +484,14 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     case NativeType::U64:
         break;
     default:
-        return sourceFile->report({sourceFile, node, format("bitmask 'and' operation not allowed on type '%s'", typeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, node, format("operator '&' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
 
-        switch (typeInfo->nativeType)
+        switch (leftTypeInfo->nativeType)
         {
         case NativeType::S8:
             node->computedValue.reg.s8 = left->computedValue.reg.s8 & right->computedValue.reg.s8;
@@ -497,6 +532,13 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "<<", left, right));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
     switch (leftTypeInfo->nativeType)
     {
     case NativeType::S32:
@@ -505,7 +547,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     case NativeType::U64:
         break;
     default:
-        return sourceFile->report({sourceFile, left, format("shift left operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, left, format("operator '<<' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     switch (rightTypeInfo->nativeType)
@@ -549,6 +591,13 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", ">>", left, right));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
     switch (leftTypeInfo->nativeType)
     {
     case NativeType::S32:
@@ -557,7 +606,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     case NativeType::U64:
         break;
     default:
-        return sourceFile->report({sourceFile, left, format("shift right operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, left, format("operator '>>' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     switch (rightTypeInfo->nativeType)
@@ -600,6 +649,13 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     auto sourceFile   = context->sourceFile;
     auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "^", left, right));
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+
     switch (leftTypeInfo->nativeType)
     {
     case NativeType::S32:
@@ -608,7 +664,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     case NativeType::U64:
         break;
     default:
-        return sourceFile->report({sourceFile, context->node, format("xor operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        return sourceFile->report({sourceFile, context->node, format("operator '^' not allowed on type '%s'", leftTypeInfo->name.c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -796,7 +852,7 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
     job->symMatch.parameters.push_back(left);
     job->symMatch.parameters.push_back(right);
 
-	// Generic string parameter
+    // Generic string parameter
     AstNode* genericParameters = nullptr;
     AstNode  parameters;
     AstNode  literal;
@@ -807,7 +863,7 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
         literal.typeInfo           = g_TypeMgr.typeInfoString;
         job->symMatch.genericParameters.push_back(&literal);
 
-		parameters.kind = AstNodeKind::FuncDeclGenericParams;
+        parameters.kind   = AstNodeKind::FuncDeclGenericParams;
         genericParameters = &parameters;
         Ast::addChild(&parameters, &literal);
     }
@@ -815,21 +871,21 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
     job->cacheDependentSymbols.clear();
     job->cacheDependentSymbols.push_back(symbol);
     SWAG_CHECK(checkFuncCall(context, genericParameters, left->parent, nullptr));
-	if (context->result == SemanticResult::Pending)
-		return true;
+    if (context->result == SemanticResult::Pending)
+        return true;
 
     node->typeInfo               = job->cacheMatches[0]->typeInfo;
     node->resolvedSymbolName     = job->cacheDependentSymbols[0];
     node->resolvedSymbolOverload = job->cacheMatches[0];
 
-	// Allocate room on the stack to store the result of the function call
-	auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-	if (typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY)
-	{
-		node->fctCallStorageOffset = node->ownerScope->startStackSize;
-		node->ownerScope->startStackSize += typeFunc->returnType->sizeOf;
-		node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
-	}
+    // Allocate room on the stack to store the result of the function call
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    if (typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        node->fctCallStorageOffset = node->ownerScope->startStackSize;
+        node->ownerScope->startStackSize += typeFunc->returnType->sizeOf;
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+    }
 
     return true;
 }

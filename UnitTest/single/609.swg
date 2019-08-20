@@ -19,6 +19,13 @@ impl Point
 			return pt
 		}
 		
+		#if op == "-"
+		{
+			pt.x = self.x - other.x
+			pt.y = self.y - other.y
+			return pt
+		}		
+		
 		return pt
 	}
 }
@@ -31,4 +38,6 @@ impl Point
 	b.x = 10;
 	c = a + b
 	@assert(c.x == 11)
+	c = a - b
+	@assert(c.x == -9)
 }
