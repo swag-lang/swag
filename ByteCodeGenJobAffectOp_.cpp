@@ -16,7 +16,9 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo);
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->kind == TypeInfoKind::Struct ||
+        typeInfo->kind == TypeInfoKind::Array ||
+        typeInfo->kind == TypeInfoKind::TypeList)
     {
         emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
         return true;
@@ -28,21 +30,9 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Array)
-    {
-        emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
-        return true;
-    }
-
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
         emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);
-        return true;
-    }
-
-    if (typeInfo->kind == TypeInfoKind::TypeList)
-    {
-        emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
         return true;
     }
 
