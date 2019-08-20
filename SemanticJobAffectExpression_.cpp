@@ -52,14 +52,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymLowerLowerEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "<<=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "<<=", left, right));
             break;
         }
 
     case TokenId::SymGreaterGreaterEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", ">>=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", ">>=", left, right));
             break;
         }
 
@@ -79,7 +79,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymSlashEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "/=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "/=", left, right));
             break;
         }
 
@@ -95,28 +95,28 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymAmpersandEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "&=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "&=", left, right));
             break;
         }
 
     case TokenId::SymVerticalEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "|=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "|=", left, right));
             break;
         }
 
     case TokenId::SymCircumflexEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "^=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "^=", left, right));
             break;
         }
 
     case TokenId::SymTildeEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "~=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "~=", left, right));
             break;
         }
 
@@ -137,13 +137,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymPlusEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "+=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "+=", left, right));
             break;
         }
     case TokenId::SymMinusEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "-=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "-=", left, right));
             break;
         }
 
@@ -174,14 +174,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymPercentEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "%=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "%=", left, right));
             break;
         }
 
     case TokenId::SymAsteriskEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "*=", left, right));
+            SWAG_CHECK(resolveUserOp(context, "opAssign", "*=", left, right));
             break;
         }
 

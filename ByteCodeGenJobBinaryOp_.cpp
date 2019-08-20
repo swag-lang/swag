@@ -290,7 +290,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
-        SWAG_CHECK(emitUserBinaryOp(context));
+        SWAG_CHECK(emitUserOp(context));
         auto r2 = node->resultRegisterRC;
     }
     else
@@ -502,7 +502,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
-        SWAG_CHECK(emitUserBinaryOp(context));
+        SWAG_CHECK(emitUserOp(context));
         auto r2 = node->resultRegisterRC;
 
         switch (node->token.id)
@@ -567,7 +567,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitUserBinaryOp(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context)
 {
     AstNode* node           = context->node;
     auto     symbolOverload = node->resolvedSymbolOverload;

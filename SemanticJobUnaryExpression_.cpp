@@ -118,14 +118,32 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     auto node       = context->node;
     auto sourceFile = context->sourceFile;
     auto op         = node->childs[0];
+
     node->inheritLocation();
-
-    auto typeInfo = TypeManager::concreteType(op->typeInfo);
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())}));
-
     node->typeInfo = op->typeInfo;
     node->inheritAndFlag(op, AST_CONST_EXPR);
     node->byteCodeFct = &ByteCodeGenJob::emitUnaryOp;
+
+    auto typeInfo = TypeManager::concreteType(op->typeInfo);
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        switch (node->token.id)
+        {
+        case TokenId::SymExclam:
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "!", op, nullptr));
+            break;
+        case TokenId::SymMinus:
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "-", op, nullptr));
+            break;
+        case TokenId::SymTilde:
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "~", op, nullptr));
+            break;
+        }
+        node->typeInfo = typeInfo;
+        return true;
+    }
+
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())}));
 
     switch (node->token.id)
     {

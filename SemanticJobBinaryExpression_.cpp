@@ -20,7 +20,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "+", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "+", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -140,7 +140,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "-", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "-", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -259,7 +259,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "*", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "*", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -354,7 +354,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "/", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "/", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -409,7 +409,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "|", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "|", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -471,7 +471,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "&", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "&", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -534,7 +534,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "<<", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "<<", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -593,7 +593,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", ">>", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", ">>", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -651,7 +651,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "^", left, right));
+        SWAG_CHECK(resolveUserOp(context, "opBinary", "^", left, right));
         node->typeInfo = leftTypeInfo;
         return true;
     }
@@ -826,7 +826,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right)
 {
     auto node       = context->node;
     auto job        = context->job;
@@ -850,7 +850,8 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
 
     job->symMatch.reset();
     job->symMatch.parameters.push_back(left);
-    job->symMatch.parameters.push_back(right);
+    if (right) // nullptr for unary operator
+        job->symMatch.parameters.push_back(right);
 
     // Generic string parameter
     AstNode* genericParameters = nullptr;
@@ -937,7 +938,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opEquals", nullptr, left, right));
+        SWAG_CHECK(resolveUserOp(context, "opEquals", nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -996,7 +997,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opCmp", nullptr, left, right));
+        SWAG_CHECK(resolveUserOp(context, "opCmp", nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 
@@ -1055,7 +1056,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(resolveUserBinaryOp(context, "opCmp", nullptr, left, right));
+        SWAG_CHECK(resolveUserOp(context, "opCmp", nullptr, left, right));
         node->typeInfo = g_TypeMgr.typeInfoBool;
     }
 

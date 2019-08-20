@@ -5,6 +5,7 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
+#include "SymTable.h"
 
 bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0)
 {
@@ -62,6 +63,12 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
     auto     r0   = node->childs[0]->resultRegisterRC;
+
+    if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+    {
+        SWAG_CHECK(emitUserOp(context));
+		return true;
+    }
 
     node->resultRegisterRC = r0;
     switch (node->token.id)

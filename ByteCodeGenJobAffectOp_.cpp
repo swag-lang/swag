@@ -517,7 +517,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
-        SWAG_CHECK(emitUserBinaryOp(context));
+        SWAG_CHECK(emitUserOp(context));
     }
     else
     {

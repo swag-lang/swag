@@ -89,7 +89,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
-    static bool resolveUserBinaryOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right);
+    static bool resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right);
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
