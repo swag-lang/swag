@@ -74,6 +74,7 @@ static const uint64_t TYPEINFO_IN_MANAGER             = 0x00000000'00000040;
 static const uint64_t TYPEINFO_VARIADIC               = 0x00000000'00000080;
 static const uint64_t TYPEINFO_STRUCT_HAS_CONSTRUCTOR = 0x00000000'00000100;
 static const uint64_t TYPEINFO_GENERIC                = 0x00000000'00000200;
+static const uint64_t TYPEINFO_RETURN_BY_COPY         = 0x00000000'00000400;
 
 struct TypeInfo : public PoolElement
 {
@@ -262,11 +263,11 @@ enum MatchResult
 {
     Ok,
     TooManyParameters,
-	TooManyGenericParameters,
+    TooManyGenericParameters,
     NotEnoughParameters,
-	NotEnoughGenericParameters,
+    NotEnoughGenericParameters,
     BadSignature,
-	BadGenericSignature,
+    BadGenericSignature,
     InvalidNamedParameter,
     DuplicatedNamedParameter,
 };
@@ -444,6 +445,7 @@ struct TypeInfoList : public TypeInfo
         childs.clear();
         scope    = nullptr;
         listKind = TypeInfoListKind::Array;
+        flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
     bool isSame(TypeInfo* from) override
@@ -506,6 +508,7 @@ struct TypeInfoStruct : public TypeInfo
         kind       = TypeInfoKind::Struct;
         scope      = nullptr;
         structNode = nullptr;
+        flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
     bool isSame(TypeInfo* from) override

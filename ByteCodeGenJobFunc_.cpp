@@ -53,7 +53,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     if (!node->childs.empty())
     {
         auto front = node->childs.front();
-        if (front->typeInfo->kind == TypeInfoKind::TypeList)
+        if (front->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
         {
             auto inst   = emitInstruction(context, ByteCodeOp::CopyRR0, front->resultRegisterRC);
             inst->b.u32 = front->typeInfo->sizeOf;
@@ -62,10 +62,10 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         {
             for (auto child : node->childs)
             {
-				for (int r = 0; r < child->resultRegisterRC.size(); r++)
-				{
-					emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
-				}
+                for (int r = 0; r < child->resultRegisterRC.size(); r++)
+                {
+                    emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+                }
             }
         }
     }
@@ -248,7 +248,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     }
 
     // Store in RR0 the address of the stack to store the result
-    if (typeInfoFunc->returnType && typeInfoFunc->returnType->kind == TypeInfoKind::TypeList)
+    if (typeInfoFunc->returnType && (typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         auto fctCall           = CastAst<AstIdentifier>(node, AstNodeKind::FuncCall);
         node->resultRegisterRC = reserveRegisterRC(context);
@@ -262,7 +262,10 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
 
     // If we are in a function that need to keep the RR0 register alive, we need to save it
     bool rr0Saved = false;
-    if (node->ownerFct && node->ownerFct->returnType && node->ownerFct->returnType->typeInfo && node->ownerFct->returnType->typeInfo->kind == TypeInfoKind::TypeList)
+    if (node->ownerFct &&
+        node->ownerFct->returnType &&
+        node->ownerFct->returnType->typeInfo &&
+        (node->ownerFct->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
     {
         emitInstruction(context, ByteCodeOp::PushRRSaved, 0);
         rr0Saved = true;
@@ -410,7 +413,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     // Copy result in a computing register
     if (typeInfoFunc->returnType && typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-        if (typeInfoFunc->returnType->kind != TypeInfoKind::TypeList)
+        if (!(typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {
             auto numRegs = typeInfoFunc->returnType->numRegisters();
             reserveRegisterRC(context, node->resultRegisterRC, numRegs);
