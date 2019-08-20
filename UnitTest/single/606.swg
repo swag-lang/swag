@@ -18,7 +18,7 @@ impl Point
 		}
 		#else
 		{
-			#assert(false)
+			#assert(false, "invalid operator")
 		}
 	}
 }

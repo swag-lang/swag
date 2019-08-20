@@ -74,7 +74,8 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 {
-    auto expr       = context->node->childs[0];
+    auto node       = context->node;
+    auto expr       = node->childs[0];
     auto sourceFile = context->sourceFile;
     auto typeInfo   = TypeManager::concreteType(expr->typeInfo);
 
@@ -83,7 +84,16 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     SWAG_CHECK(executeNode(context, expr, true));
     if (context->result == SemanticResult::Pending)
         return true;
-    SWAG_VERIFY(expr->computedValue.reg.b, sourceFile->report({sourceFile, expr, "compiler assertion failed"}));
+
+    if (!expr->computedValue.reg.b)
+    {
+        if (!node->name.empty())
+            sourceFile->report({sourceFile, expr, format("compiler assertion failed: %s", node->name.c_str())});
+        else
+            sourceFile->report({sourceFile, expr, "compiler assertion failed"});
+        return false;
+    }
+
     return true;
 }
 
@@ -158,16 +168,16 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     node->boolExpression->flags |= AST_NO_BYTECODE;
     if (node->boolExpression->computedValue.reg.b)
     {
-		if (node->elseBlock)
-		{
-			node->elseBlock->flags |= AST_NO_BYTECODE;
-			node->elseBlock->flags |= AST_DISABLED;
-		}
+        if (node->elseBlock)
+        {
+            node->elseBlock->flags |= AST_NO_BYTECODE;
+            node->elseBlock->flags |= AST_DISABLED;
+        }
     }
     else
     {
         node->ifBlock->flags |= AST_NO_BYTECODE;
-		node->ifBlock->flags |= AST_DISABLED;
+        node->ifBlock->flags |= AST_DISABLED;
     }
 
     return true;

@@ -43,7 +43,23 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
     node->token       = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doExpression(node));
+    if (token.id == TokenId::SymLeftParen)
+    {
+		SWAG_CHECK(eatToken());
+		SWAG_CHECK(doExpression(node));
+        if (token.id == TokenId::SymComma)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "invalid #assert message"}));
+            node->name = token.text;
+			SWAG_CHECK(eatToken());
+        }
+
+		SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    }
+    else
+        SWAG_CHECK(doExpression(node));
+
     SWAG_CHECK(eatSemiCol("after '#compiler' expression"));
 
     return true;
