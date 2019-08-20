@@ -18,6 +18,13 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
+	if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserBinaryOp(context, "opBinary", "+", left, right));
+		node->typeInfo = leftTypeInfo;
+		return true;
+    }
+
     // Pointer arithmetic
     if (leftTypeInfo->kind == TypeInfoKind::Pointer)
     {
@@ -814,6 +821,15 @@ bool SemanticJob::resolveUserBinaryOp(SemanticContext* context, const char* name
     node->typeInfo               = job->cacheMatches[0]->typeInfo;
     node->resolvedSymbolName     = job->cacheDependentSymbols[0];
     node->resolvedSymbolOverload = job->cacheMatches[0];
+
+	// Allocate room on the stack to store the result of the function call
+	auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+	if (typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY)
+	{
+		node->fctCallStorageOffset = node->ownerScope->startStackSize;
+		node->ownerScope->startStackSize += typeFunc->returnType->sizeOf;
+		node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+	}
 
     return true;
 }

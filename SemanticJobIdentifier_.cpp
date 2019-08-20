@@ -275,10 +275,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // For a tuple, need to reserve room on the stack for the return result
         auto returnType = g_TypeMgr.concreteType(node->typeInfo);
-        if (returnType->kind == TypeInfoKind::TypeList)
+        if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            auto fctCall                  = CastAst<AstIdentifier>(node, AstNodeKind::FuncCall);
-            fctCall->fctCallStorageOffset = node->ownerScope->startStackSize;
+            node->fctCallStorageOffset = node->ownerScope->startStackSize;
             node->ownerScope->startStackSize += returnType->sizeOf;
             node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
         }

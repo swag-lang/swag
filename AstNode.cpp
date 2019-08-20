@@ -105,7 +105,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
 {
     ownerScope     = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable = from->ownerBreakable;
-    ownerFct       = from->ownerFct;
+    ownerFct       = context.ownerFct ? context.ownerFct : from->ownerFct;
     ownerFlags     = from->ownerFlags;
 
     typeInfo               = from->typeInfo;
@@ -125,14 +125,15 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
     byteCodeBeforeFct = from->byteCodeBeforeFct;
     byteCodeAfterFct  = from->byteCodeAfterFct;
 
-    kind             = from->kind;
-    flags            = from->flags;
-    computedValue    = from->computedValue;
-    name             = from->name;
-    fullname         = from->fullname;
-    sourceFileIdx    = from->sourceFileIdx;
-    bc               = from->bc;
-    resultRegisterRC = from->resultRegisterRC;
+    kind                 = from->kind;
+    flags                = from->flags;
+    computedValue        = from->computedValue;
+    name                 = from->name;
+    fullname             = from->fullname;
+    sourceFileIdx        = from->sourceFileIdx;
+    bc                   = from->bc;
+    resultRegisterRC     = from->resultRegisterRC;
+    fctCallStorageOffset = from->fctCallStorageOffset;
 
     parent = context.parent;
     if (parent)
@@ -152,6 +153,8 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     auto newNode = g_Pool_astVarDecl.alloc();
     newNode->copyFrom(context, this);
 
+    newNode->type       = findChildRef(type, newNode);
+    newNode->assignment = findChildRef(assignment, newNode);
     return newNode;
 }
 
@@ -167,10 +170,9 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     auto newNode = g_Pool_astIdentifier.alloc();
     newNode->copyFrom(context, this);
 
-    newNode->identifierRef        = CastAst<AstIdentifierRef>(context.parent, AstNodeKind::IdentifierRef);
-    newNode->fctCallStorageOffset = fctCallStorageOffset;
-    newNode->callParameters       = findChildRef(callParameters, newNode);
-    newNode->genericParameters    = findChildRef(genericParameters, newNode);
+    newNode->identifierRef     = CastAst<AstIdentifierRef>(context.parent, AstNodeKind::IdentifierRef);
+    newNode->callParameters    = findChildRef(callParameters, newNode);
+    newNode->genericParameters = findChildRef(genericParameters, newNode);
     return newNode;
 }
 
@@ -183,6 +185,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->stackSize = stackSize;
 
     auto cloneContext        = context;
+    cloneContext.ownerFct    = newNode;
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.parentScope->allocateSymTable();

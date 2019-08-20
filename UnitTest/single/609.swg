@@ -1,0 +1,34 @@
+#module module609
+//#unittest pass semantic
+
+struct Point
+{
+	var x: s32
+	var y: s32
+}
+
+impl Point
+{
+	func(op: string) opBinary(self, other: Point)->Point
+	{
+		var pt: Point
+		#if op == "+"
+		{
+			pt.x = self.x + other.x
+			pt.y = self.y + other.y
+			return pt
+		}
+		
+		return pt
+	}
+}
+
+//#[swag.printbc]
+#test
+{
+	var a,b,c : Point
+	a.x = 1
+	b.x = 10;
+	c = a + b
+	@assert(c.x == 11)
+}

@@ -250,10 +250,9 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     // Store in RR0 the address of the stack to store the result
     if (typeInfoFunc->returnType && (typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
-        auto fctCall           = CastAst<AstIdentifier>(node, AstNodeKind::FuncCall);
         node->resultRegisterRC = reserveRegisterRC(context);
         auto inst              = emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC);
-        inst->b.u32            = fctCall->fctCallStorageOffset;
+        inst->b.u32            = node->fctCallStorageOffset;
         emitInstruction(context, ByteCodeOp::CopyRRxRCxCall, 0, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
         copyReservedRC.push_back(node->resultRegisterRC);

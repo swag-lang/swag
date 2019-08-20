@@ -111,6 +111,13 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context)
         auto firstType = node->parameters->childs.front()->typeInfo;
         SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
     }
+    else if (name == "opBinary")
+    {
+        SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(node->returnType && node->returnType->typeInfo->isSame(typeStruct), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), node->returnType->typeInfo->name.c_str())}));
+        auto firstType = node->parameters->childs.front()->typeInfo;
+        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+    }
     else if (name == "opAssign")
     {
         SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));

@@ -97,35 +97,37 @@ enum class AstNodeKind
 
 struct CloneContext
 {
-    AstNode* parent      = nullptr;
-    Scope*   parentScope = nullptr;
+    AstFuncDecl* ownerFct    = nullptr;
+    AstNode*     parent      = nullptr;
+    Scope*       parentScope = nullptr;
 };
 
 struct AstNode : public PoolElement
 {
     void reset() override
     {
-        semanticState      = AstNodeResolveState::Enter;
-        bytecodeState      = AstNodeResolveState::Enter;
-        ownerScope         = nullptr;
-        ownerBreakable     = nullptr;
-        ownerFct           = nullptr;
-        parent             = nullptr;
-        semanticFct        = nullptr;
-        semanticBeforeFct  = nullptr;
-        semanticAfterFct   = nullptr;
-        byteCodeFct        = nullptr;
-        byteCodeBeforeFct  = nullptr;
-        byteCodeAfterFct   = nullptr;
-        typeInfo           = nullptr;
-        castedTypeInfo     = nullptr;
-        resolvedSymbolName = nullptr;
-        parentAttributes   = nullptr;
-        bc                 = nullptr;
-        sourceFileIdx      = UINT32_MAX;
-        attributeFlags     = 0;
-        flags              = 0;
-        byteCodeJob        = nullptr;
+        semanticState        = AstNodeResolveState::Enter;
+        bytecodeState        = AstNodeResolveState::Enter;
+        ownerScope           = nullptr;
+        ownerBreakable       = nullptr;
+        ownerFct             = nullptr;
+        parent               = nullptr;
+        semanticFct          = nullptr;
+        semanticBeforeFct    = nullptr;
+        semanticAfterFct     = nullptr;
+        byteCodeFct          = nullptr;
+        byteCodeBeforeFct    = nullptr;
+        byteCodeAfterFct     = nullptr;
+        typeInfo             = nullptr;
+        castedTypeInfo       = nullptr;
+        resolvedSymbolName   = nullptr;
+        parentAttributes     = nullptr;
+        bc                   = nullptr;
+        sourceFileIdx        = UINT32_MAX;
+        attributeFlags       = 0;
+        flags                = 0;
+        fctCallStorageOffset = 0;
+        byteCodeJob          = nullptr;
         resultRegisterRC.clear();
         childs.clear();
     }
@@ -158,8 +160,8 @@ struct AstNode : public PoolElement
 
     void inheritComputedValue(AstNode* from)
     {
-		if (!from)
-			return;
+        if (!from)
+            return;
         inheritAndFlag(from, AST_VALUE_COMPUTED);
         if (flags & AST_VALUE_COMPUTED)
         {
@@ -255,6 +257,7 @@ struct AstNode : public PoolElement
     uint32_t         sourceFileIdx;
     ByteCode*        bc;
     RegisterList     resultRegisterRC;
+    uint32_t         fctCallStorageOffset;
 };
 
 struct AstVarDecl : public AstNode
@@ -291,10 +294,9 @@ struct AstIdentifier : public AstNode
 {
     void reset() override
     {
-        identifierRef        = nullptr;
-        callParameters       = nullptr;
-        genericParameters    = nullptr;
-        fctCallStorageOffset = 0;
+        identifierRef     = nullptr;
+        callParameters    = nullptr;
+        genericParameters = nullptr;
         AstNode::reset();
     }
 
@@ -303,7 +305,6 @@ struct AstIdentifier : public AstNode
     AstIdentifierRef* identifierRef;
     AstNode*          genericParameters;
     AstNode*          callParameters;
-    uint32_t          fctCallStorageOffset;
 };
 
 struct AstFuncDecl : public AstNode
