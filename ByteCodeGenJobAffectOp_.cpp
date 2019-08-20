@@ -16,6 +16,12 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo);
 
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
+        return true;
+    }
+
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         emitInstruction(context, ByteCodeOp::AffectOpPointer, r0, r1);

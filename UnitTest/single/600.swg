@@ -11,7 +11,7 @@ impl Point
 {
 	func(op: string) opAssign(self, what: s32)
 	{
-		if op == "="
+		if op == "*="
 		{
 			self.x = what
 			self.y = what
@@ -34,7 +34,7 @@ impl Point
 #test
 {
 	var pt: Point
-	pt = 10
+	pt *= 10
 	@assert(pt.x == 10)
 	@assert(pt.y == 10)
 	pt += 5

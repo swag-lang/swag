@@ -30,12 +30,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     switch (tokenId)
     {
     case TokenId::SymEqual:
-        if (forStruct)
-        {
-            SWAG_CHECK(resolveUserBinaryOp(context, "opAssign", "=", left, right));
-            break;
-        }
-
         if (leftTypeInfo->kind != TypeInfoKind::Native &&
             leftTypeInfo->kind != TypeInfoKind::Pointer &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
