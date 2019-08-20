@@ -50,7 +50,9 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
         (*mapNames[indexInTable])[node->name] = symbol;
     }
 
-    symbol->cptOverloads++;
+    // Error if overload is not possible
+    if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
+        symbol->cptOverloads++;
     return symbol;
 }
 

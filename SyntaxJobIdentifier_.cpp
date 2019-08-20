@@ -87,14 +87,16 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
     // Template arguments
     if (token.id == TokenId::SymExclam)
     {
-		SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncCallParameters(identifier, &identifier->genericParameters));
-		identifier->genericParameters->flags |= AST_NO_BYTECODE;
+        identifier->genericParameters->flags |= AST_NO_BYTECODE;
     }
 
     // Function call parameters
     if (token.id == TokenId::SymLeftParen)
+    {
         SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
+    }
 
     return true;
 }
