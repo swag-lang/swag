@@ -14,6 +14,7 @@ Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
 Pool<TypeInfoList>          g_Pool_typeInfoList;
 Pool<TypeInfoNative>        g_Pool_typeInfoNative;
 Pool<TypeInfoVariadic>      g_Pool_typeInfoVariadic;
+Pool<TypeInfoGeneric>       g_Pool_typeInfoGeneric;
 Pool<TypeInfoStruct>        g_Pool_typeInfoStruct;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
@@ -383,6 +384,13 @@ TypeInfo* TypeInfoList::clone()
 TypeInfo* TypeInfoVariadic::clone()
 {
     auto newType = g_Pool_typeInfoVariadic.alloc();
+    newType->copyFrom(this);
+    return newType;
+}
+
+TypeInfo* TypeInfoGeneric::clone()
+{
+    auto newType = g_Pool_typeInfoGeneric.alloc();
     newType->copyFrom(this);
     return newType;
 }

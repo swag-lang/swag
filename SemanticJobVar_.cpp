@@ -139,7 +139,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Be sure array without a size have a initializer, to deduce the size
-    if (node->type && node->type->typeInfo->kind == TypeInfoKind::Array)
+    if (node->type && node->type->typeInfo && node->type->typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->type->typeInfo, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, sourceFile->report({sourceFile, node, "missing initialization expression to deduce size of array"}));
@@ -199,10 +199,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
         SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::VariadicValue, sourceFile->report({sourceFile, node, "declaration not allowed on a variadic value, you must cast"}));
     }
-	else
-	{
-		symbolFlags |= OVERLOAD_GENERIC;
-	}
+    else
+    {
+        symbolFlags |= OVERLOAD_GENERIC;
+		if (!node->typeInfo)
+		{
+            node->typeInfo       = g_Pool_typeInfoGeneric.alloc();
+            node->typeInfo->name = node->name;
+            node->typeInfo       = g_TypeMgr.registerType(node->typeInfo);
+		}
+    }
 
     // A constant does nothing on backend, except if it can't be stored in a register
     uint32_t storageOffset = 0;
@@ -311,10 +317,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Register symbol with its type
+    auto symbolKind = SymbolKind::Variable;
+    if (symbolFlags & OVERLOAD_GENERIC)
+        symbolKind = SymbolKind::GenericType;
+
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
                                                                   node,
                                                                   node->typeInfo,
-                                                                  SymbolKind::Variable,
+                                                                  symbolKind,
                                                                   isConstant ? &node->computedValue : nullptr,
                                                                   symbolFlags,
                                                                   nullptr,

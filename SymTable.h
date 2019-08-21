@@ -69,6 +69,7 @@ enum class SymbolKind
     Attribute,
     FuncParam,
     Struct,
+	GenericType,
 };
 
 struct SymbolName : public PoolElement

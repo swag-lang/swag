@@ -67,7 +67,19 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     auto node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     node->typeInfo = node->typeExpression ? node->typeExpression->typeInfo : node->token.literalType;
-    SWAG_VERIFY(node->typeInfo, context->job->error(context, "invalid type (yet) !"));
+
+    // This is a generic type, not yet known
+    if (!node->typeInfo && node->typeExpression && node->typeExpression->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
+    {
+        node->resolvedSymbolName     = node->typeExpression->resolvedSymbolName;
+        node->resolvedSymbolOverload = node->typeExpression->resolvedSymbolOverload;
+        node->typeInfo               = g_Pool_typeInfoGeneric.alloc();
+        node->typeInfo->name         = node->resolvedSymbolName->name;
+        node->typeInfo               = g_TypeMgr.registerType(node->typeInfo);
+    }
+
+    // Otherwise, this is strange, we should have a type
+    SWAG_VERIFY(node->typeInfo, internalError(context, "resolveTypeExpression, null type !"));
 
     // If type comes from an identifier, be sure it's a type
     if (node->typeExpression)
@@ -79,6 +91,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             auto symOver = child->resolvedSymbolOverload;
             if (symName->kind != SymbolKind::Enum &&
                 symName->kind != SymbolKind::Type &&
+                symName->kind != SymbolKind::GenericType &&
                 symName->kind != SymbolKind::Struct)
             {
                 Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type", child->name.c_str())};
@@ -148,6 +161,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrSlice->setConst();
         node->typeInfo = g_TypeMgr.registerType(ptrSlice);
     }
+
+    node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
+	node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
 
     return true;
 }

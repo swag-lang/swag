@@ -27,6 +27,7 @@ enum class TypeInfoKind
     Variadic,
     VariadicValue,
     Struct,
+    Generic,
 };
 
 enum class NativeType
@@ -499,6 +500,24 @@ struct TypeInfoVariadic : public TypeInfo
     TypeInfo* clone() override;
 };
 
+struct TypeInfoGeneric : public TypeInfo
+{
+    void reset()
+    {
+        TypeInfo::reset();
+        kind = TypeInfoKind::Generic;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (!TypeInfo::isSame(from))
+            return false;
+        return name == from->name;
+    }
+
+    TypeInfo* clone() override;
+};
+
 struct TypeInfoStruct : public TypeInfo
 {
     void reset()
@@ -551,4 +570,5 @@ extern Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
 extern Pool<TypeInfoList>          g_Pool_typeInfoList;
 extern Pool<TypeInfoNative>        g_Pool_typeInfoNative;
 extern Pool<TypeInfoVariadic>      g_Pool_typeInfoVariadic;
+extern Pool<TypeInfoGeneric>       g_Pool_typeInfoGeneric;
 extern Pool<TypeInfoStruct>        g_Pool_typeInfoStruct;

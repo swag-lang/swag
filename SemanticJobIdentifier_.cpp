@@ -183,6 +183,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         node->flags |= AST_CONST_EXPR;
         break;
 
+	case SymbolKind::GenericType:
+		break;
+
     case SymbolKind::Variable:
     {
         // Lambda call
