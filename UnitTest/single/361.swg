@@ -1,7 +1,7 @@
 #module module361;
 //#unittest pass semantic;
 
-//#unittest error;
+#unittest error;
 #test
 {
 	const a = 1;

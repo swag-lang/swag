@@ -149,7 +149,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         }
 
         Ast::addChild(exprNode, identifierRef);
-        identifierRef->flags |= AST_L_VALUE | AST_TAKE_ADDRESS;
+        identifierRef->flags |= AST_TAKE_ADDRESS;
     }
     else
     {
