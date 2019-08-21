@@ -76,6 +76,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
     // One boolean per used parameter
     context.doneParameters.clear();
+    context.mapGenericTypes.clear();
     context.doneParameters.resize(parameters.size(), false);
 
     // Solve unnamed parameters
@@ -119,6 +120,20 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
 
         context.doneParameters[cptResolved] = true;
+
+        // This is a generic type match
+        if (symbolParameter->typeInfo->kind == TypeInfoKind::Generic)
+        {
+            auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
+            if (it != context.mapGenericTypes.end() && it->second.first != typeInfo)
+            {
+				assert(false); // todo
+            }
+            else
+            {
+                context.mapGenericTypes[symbolParameter->typeInfo] = {typeInfo, i};
+            }
+        }
 
         if (param)
         {
@@ -235,9 +250,21 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
         else if ((flags & TYPEINFO_GENERIC) || (symbolParameter->genericValue == callParameter->computedValue))
         {
-            context.genericParametersCallValues[i] = callParameter->computedValue;
-            context.genericParametersCallTypes[i]  = callParameter->typeInfo;
-            context.genericParametersGenTypes[i]   = symbolParameter->typeInfo;
+            // We already have a match, and they do not match with that type, error
+            auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
+            if (it != context.mapGenericTypes.end() && it->second.first != typeInfo)
+            {
+                context.badSignatureParameterIdx  = it->second.second;
+                context.badSignatureRequestedType = typeInfo;
+                context.badSignatureGivenType     = it->second.first;
+                context.result                    = MatchResult::BadSignature;
+            }
+            else
+            {
+                context.genericParametersCallValues[i] = callParameter->computedValue;
+                context.genericParametersCallTypes[i]  = callParameter->typeInfo;
+                context.genericParametersGenTypes[i]   = symbolParameter->typeInfo;
+            }
         }
         else
         {

@@ -407,10 +407,26 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
             case MatchResult::BadSignature:
             {
                 assert(callParameters);
+                string parameter;
+                switch (job->symMatch.badSignatureParameterIdx)
+                {
+                case 0:
+                    parameter = "first parameter";
+                    break;
+                case 1:
+                    parameter = "second parameter";
+                    break;
+                case 2:
+                    parameter = "third parameter";
+                    break;
+                default:
+                    parameter = format("parameter '%d'", job->symMatch.badSignatureParameterIdx + 1);
+                    break;
+                }
                 Diagnostic diag{sourceFile,
                                 callParameters->childs[job->symMatch.badSignatureParameterIdx],
-                                format("bad type of parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
-                                       job->symMatch.badSignatureParameterIdx + 1,
+                                format("bad type of %s for %s '%s' ('%s' expected, '%s' provided)",
+                                       parameter.c_str(),
                                        SymTable::getNakedKindName(symbol->kind),
                                        symbol->name.c_str(),
                                        job->symMatch.badSignatureRequestedType->name.c_str(),

@@ -275,17 +275,18 @@ enum MatchResult
 
 struct SymbolMatchContext
 {
-    int                   badSignatureParameterIdx;
-    TypeInfo*             badSignatureRequestedType;
-    TypeInfo*             badSignatureGivenType;
-    MatchResult           result;
-    vector<AstNode*>      genericParameters;
-    vector<AstNode*>      parameters;
-    vector<bool>          doneParameters;
-    bool                  forLambda;
-    vector<ComputedValue> genericParametersCallValues;
-    vector<TypeInfo*>     genericParametersCallTypes;
-	vector<TypeInfo*>     genericParametersGenTypes;
+    int                                  badSignatureParameterIdx;
+    TypeInfo*                            badSignatureRequestedType;
+    TypeInfo*                            badSignatureGivenType;
+    MatchResult                          result;
+    vector<AstNode*>                     genericParameters;
+    vector<AstNode*>                     parameters;
+    vector<bool>                         doneParameters;
+    map<TypeInfo*, pair<TypeInfo*, int>> mapGenericTypes;
+    bool                                 forLambda;
+    vector<ComputedValue>                genericParametersCallValues;
+    vector<TypeInfo*>                    genericParametersCallTypes;
+    vector<TypeInfo*>                    genericParametersGenTypes;
 
     SymbolMatchContext()
     {
