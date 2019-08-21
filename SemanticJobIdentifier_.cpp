@@ -183,8 +183,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         node->flags |= AST_CONST_EXPR;
         break;
 
-	case SymbolKind::GenericType:
-		break;
+    case SymbolKind::GenericType:
+        break;
 
     case SymbolKind::Variable:
     {
@@ -324,9 +324,8 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
                 if (overload->flags & OVERLOAD_GENERIC)
                 {
                     OneGenericMatch match;
-                    match.symbolOverload             = overload;
-                    match.genericMatchesParamsValues = job->symMatch.genericParametersCallValues;
-                    match.genericMatchesParamsTypes  = job->symMatch.genericParametersCallTypes;
+                    match.symbolOverload = overload;
+                    match.symMatch       = &job->symMatch;
                     genericMatches.emplace_back(match);
                 }
                 else

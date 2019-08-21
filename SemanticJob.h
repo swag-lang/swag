@@ -41,9 +41,8 @@ struct SemanticContext
 
 struct OneGenericMatch
 {
-    SymbolOverload*       symbolOverload;
-    vector<ComputedValue> genericMatchesParamsValues;
-    vector<TypeInfo*>     genericMatchesParamsTypes;
+    SymbolOverload*            symbolOverload;
+    struct SymbolMatchContext* symMatch = nullptr;
 };
 
 struct SemanticJob : public Job
@@ -62,7 +61,7 @@ struct SemanticJob : public Job
     static bool forceExecuteNode(SemanticContext* context);
     static bool collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer);
     static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer);
-	static bool checkFuncCall(SemanticContext* context, AstNode* genericParameters,  AstNode* callParameters, AstIdentifier* node);
+    static bool checkFuncCall(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -115,7 +114,7 @@ struct SemanticJob : public Job
     static bool resolveXor(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
     static bool resolveCast(SemanticContext* context);
-	static bool resolveCompilerIf(SemanticContext* context);
+    static bool resolveCompilerIf(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
     static bool resolveForBefore(SemanticContext* context);
@@ -153,7 +152,7 @@ struct SemanticJob : public Job
     vector<SymbolOverload*> cacheMatches;
     vector<OneGenericMatch> cacheGenericMatches;
     vector<SymbolOverload*> cacheBadSignature;
-	vector<SymbolOverload*> cacheBadGenericSignature;
+    vector<SymbolOverload*> cacheBadGenericSignature;
     SymbolMatchContext      symMatch;
 };
 

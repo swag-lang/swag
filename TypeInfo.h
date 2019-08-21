@@ -285,6 +285,7 @@ struct SymbolMatchContext
     bool                  forLambda;
     vector<ComputedValue> genericParametersCallValues;
     vector<TypeInfo*>     genericParametersCallTypes;
+	vector<TypeInfo*>     genericParametersGenTypes;
 
     SymbolMatchContext()
     {
