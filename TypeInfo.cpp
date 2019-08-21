@@ -220,27 +220,51 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     if (cptResolved < firstDefault)
         context.result = MatchResult::NotEnoughParameters;
 
-    // First we solve generic parameters
-    int numGenericParams = (int) context.genericParameters.size();
-    if (numGenericParams < genericParameters.size())
+    // Solve generic parameters
+    int wantedNumGenericParams = (int) genericParameters.size();
+    int numGenericParams       = (int) context.genericParameters.size();
+
+	// It's valid to not specify generic parameters. They will be deduced
+    if (numGenericParams && numGenericParams < wantedNumGenericParams) 
     {
         context.result = MatchResult::NotEnoughGenericParameters;
         return;
     }
 
-    context.genericParametersCallValues.resize(numGenericParams);
-    context.genericParametersCallTypes.resize(numGenericParams);
-    context.genericParametersGenTypes.resize(numGenericParams);
+    if (numGenericParams > wantedNumGenericParams)
+    {
+        context.result = MatchResult::TooManyGenericParameters;
+        return;
+    }
+
+    context.genericParametersCallValues.resize(wantedNumGenericParams);
+    context.genericParametersCallTypes.resize(wantedNumGenericParams);
+    context.genericParametersGenTypes.resize(wantedNumGenericParams);
+
+    // Deduce type of generic parameters from actual parameters
+    if (!numGenericParams && wantedNumGenericParams)
+    {
+        for (int i = 0; i < wantedNumGenericParams; i++)
+        {
+            auto symbolParameter = genericParameters[i];
+            auto it              = context.mapGenericTypes.find(symbolParameter->typeInfo);
+            if (it == context.mapGenericTypes.end())
+            {
+                auto typeParam                        = CastTypeInfo<TypeInfoFuncAttrParam>(genericParameters[i], TypeInfoKind::FuncAttrParam);
+                context.genericParametersCallTypes[i] = typeParam->typeInfo;
+                context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
+            }
+            else
+            {
+                context.genericParametersCallTypes[i] = it->second.first;
+                context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
+            }
+        }
+    }
 
     for (int i = 0; i < numGenericParams; i++)
     {
-        auto callParameter = context.genericParameters[i];
-        if (i >= genericParameters.size())
-        {
-            context.result = MatchResult::TooManyGenericParameters;
-            return;
-        }
-
+        auto callParameter   = context.genericParameters[i];
         auto symbolParameter = genericParameters[i];
         auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
         bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);

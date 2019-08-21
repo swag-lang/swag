@@ -12,10 +12,10 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     CloneContext cloneContext;
 
     // Types replacements
-    for (int i = 0; i < match.symMatch->genericParametersCallTypes.size(); i++)
+    for (int i = 0; i < match.genericParametersCallTypes.size(); i++)
     {
-        auto callType = match.symMatch->genericParametersCallTypes[i];
-        auto genType  = match.symMatch->genericParametersGenTypes[i];
+        auto callType = match.genericParametersCallTypes[i];
+        auto genType  = match.genericParametersGenTypes[i];
         if (callType != genType)
             cloneContext.replaceTypes[genType] = callType;
     }
@@ -33,23 +33,25 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     newType->flags &= ~TYPEINFO_GENERIC;
     funcNode->typeInfo = newType;
 
-	// Replace generic types with their real values in the function parameters
+    // Replace generic types with their real values in the function parameters
     for (int i = 0; i < newType->parameters.size(); i++)
     {
         auto param = newType->parameters[i];
         auto it    = cloneContext.replaceTypes.find(param->typeInfo);
         if (it != cloneContext.replaceTypes.end())
-			param->typeInfo = it->second;
+            param->typeInfo = it->second;
     }
 
-	// Replace generic types and values in the function generic parameters
+    // Replace generic types and values in the function generic parameters
     for (int i = 0; i < newType->genericParameters.size(); i++)
     {
-        auto param = newType->genericParameters[i];
-        if (param->typeInfo)
-            param->typeInfo->release();
-        param->typeInfo     = genericParameters->childs[i]->typeInfo;
-        param->genericValue = genericParameters->childs[i]->computedValue;
+        auto param      = newType->genericParameters[i];
+        param->typeInfo = match.genericParametersCallTypes[i];
+        if (genericParameters)
+        {
+            param->typeInfo     = genericParameters->childs[i]->typeInfo;
+            param->genericValue = genericParameters->childs[i]->computedValue;
+        }
 
         auto nodeParam           = funcNode->genericParameters->childs[i];
         nodeParam->kind          = AstNodeKind::ConstDecl;

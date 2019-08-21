@@ -324,8 +324,10 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
                 if (overload->flags & OVERLOAD_GENERIC)
                 {
                     OneGenericMatch match;
-                    match.symbolOverload = overload;
-                    match.symMatch       = &job->symMatch;
+                    match.symbolOverload              = overload;
+                    match.genericParametersCallTypes  = job->symMatch.genericParametersCallTypes;
+                    match.genericParametersCallValues = job->symMatch.genericParametersCallValues;
+                    match.genericParametersGenTypes   = job->symMatch.genericParametersGenTypes;
                     genericMatches.emplace_back(match);
                 }
                 else

@@ -1,0 +1,15 @@
+#module module618
+//#unittest pass semantic
+
+//#[swag.printbc]
+//#unittest error
+func(T) Print(x: T)
+{
+	//@print(x)
+}
+
+#test
+{
+	Print(1)
+	Print("toto")
+}
