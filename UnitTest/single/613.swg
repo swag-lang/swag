@@ -5,11 +5,11 @@
 
 func(T) Print(x: T)
 {
-	@print(x)
+	//@print(x)
 }
 
 #test
 {
 	Print!(s32)(1)
-	Print!(f32)(1.0)
+	Print!(f32)(6.0)
 }
