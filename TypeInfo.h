@@ -510,6 +510,13 @@ struct TypeInfoGeneric : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (from->kind == kind)
+            return name == from->name;
+        return true;
+    }
+
+    bool isSameExact(TypeInfo* from) override
+    {
         if (!TypeInfo::isSame(from))
             return false;
         return name == from->name;

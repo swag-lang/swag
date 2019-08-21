@@ -1032,6 +1032,10 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
     if (fromType->isSame(toType))
         return true;
 
+	// To a generic type
+	if (fromType->kind != TypeInfoKind::Generic && toType->kind == TypeInfoKind::Generic)
+		return true;
+
     // Pointer to pointer, with a user cast
     if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer && (castFlags & CASTFLAG_FORCE))
         return true;
