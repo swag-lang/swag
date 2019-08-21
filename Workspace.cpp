@@ -44,8 +44,8 @@ Module* Workspace::createOrUseModule(const fs::path& path)
 
     if (g_CommandLine.stats)
         g_Stats.numModules++;
-	if (g_CommandLine.debug)
-		module->backendParameters.debugInformations = true;
+    if (g_CommandLine.debug)
+        module->backendParameters.debugInformations = true;
 
     return module;
 }
@@ -266,7 +266,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
         g_Stats.outputTime += timeAfter - timeBefore;
     }
 
-	// Call test functions
+    // Call test functions
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         if (g_CommandLine.verbose_build_pass)
@@ -280,6 +280,22 @@ bool Workspace::buildModules(const vector<Module*>& list)
                     continue;
                 g_Stats.testFunctions++;
                 module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+            }
+        }
+    }
+
+	// During unit testing, be sure we don't have remaining not raised errors
+	if (g_CommandLine.unittest)
+    {
+        for (auto module : list)
+        {
+            for (auto file : module->files)
+            {
+                if (file->unittestError)
+                {
+					file->unittestError = 0;
+					file->report({file, "missing unittest error" });
+                }
             }
         }
     }

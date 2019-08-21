@@ -9,7 +9,6 @@ enum A : u8
 	Blue;
 }
 
-#unittest error;
 enum B : u8
 {
 	Red = A.Red;

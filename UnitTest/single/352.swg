@@ -5,5 +5,5 @@
 #unittest error;
 #test
 {
-	var a = {0, 1.0};
+	var a = [0, 1.0];
 }

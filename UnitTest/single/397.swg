@@ -5,5 +5,5 @@
 #unittest error;
 #test
 {
-	var d = {{1}, 1, 2};
+	var d = [[1], 1, 2];
 }
