@@ -112,6 +112,7 @@ struct AstNode : public PoolElement
         ownerScope           = nullptr;
         ownerBreakable       = nullptr;
         ownerFct             = nullptr;
+        ownerStruct          = nullptr;
         parent               = nullptr;
         semanticFct          = nullptr;
         semanticBeforeFct    = nullptr;
@@ -191,6 +192,7 @@ struct AstNode : public PoolElement
         ownerScope     = job->currentScope;
         ownerBreakable = job->currentBreakable;
         ownerFct       = job->currentFct;
+        ownerStruct    = job->currentStruct;
         flags |= job->currentFlags;
     }
 
@@ -226,6 +228,7 @@ struct AstNode : public PoolElement
     AstBreakable* ownerBreakable;
     AstFuncDecl*  ownerFct;
     uint64_t      ownerFlags;
+    Scope*        ownerStruct;
 
     TypeInfo*       typeInfo;
     TypeInfo*       castedTypeInfo;

@@ -32,7 +32,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     implNode->structScope = newScope;
 
     {
-        Scoped scoped(this, newScope);
+        Scoped       scoped(this, newScope);
+        ScopedStruct scopedStruct(this, newScope);
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doTopLevelInstruction(implNode));

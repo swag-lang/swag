@@ -574,6 +574,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
         return true;
 
+    if (node->name == "Self")
+    {
+        SWAG_VERIFY(node->ownerStruct, sourceFile->report({sourceFile, node->token, "type 'Self' cannot be used outside an 'impl' block"}));
+        node->name = node->ownerStruct->name;
+    }
+
     if (node->semanticState == AstNodeResolveState::ProcessingChilds)
     {
         scopeHierarchy.clear();

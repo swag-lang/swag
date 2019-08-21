@@ -106,12 +106,13 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
     kind  = from->kind;
     flags = from->flags;
 
+    ownerStruct    = from->ownerStruct;
     ownerScope     = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable = from->ownerBreakable;
     ownerFct       = context.ownerFct ? context.ownerFct : from->ownerFct;
     ownerFlags     = from->ownerFlags;
 
-	// Replace a type by another one during generic instanciation
+    // Replace a type by another one during generic instanciation
     if (from->typeInfo && context.replaceTypes.size() > 0)
     {
         auto it = context.replaceTypes.find(from->typeInfo);

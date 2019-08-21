@@ -33,7 +33,7 @@ struct SyntaxJob : public Job
     void generateOpInit(AstNode* node);
 
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
-	bool doCompilerIf(AstNode* parent, AstNode** result);
+    bool doCompilerIf(AstNode* parent, AstNode** result);
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
     bool doCompilerVersion(AstNode* parent);
@@ -100,6 +100,7 @@ struct SyntaxJob : public Job
         currentScope     = nullptr;
         currentFct       = nullptr;
         currentBreakable = nullptr;
+        currentStruct    = nullptr;
     }
 
     Tokenizer     tokenizer;
@@ -111,6 +112,7 @@ struct SyntaxJob : public Job
     Scope*        currentScope;
     AstFuncDecl*  currentFct;
     AstBreakable* currentBreakable;
+    Scope*        currentStruct;
 };
 
 extern Pool<SyntaxJob> g_Pool_syntaxJob;

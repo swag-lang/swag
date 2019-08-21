@@ -76,3 +76,21 @@ struct ScopedFlags
     SyntaxJob* savedJob;
     uint64_t   savedFlags;
 };
+
+struct ScopedStruct
+{
+    ScopedStruct(SyntaxJob* job, Scope* structScope)
+    {
+        savedJob           = job;
+        savedStruct        = job->currentStruct;
+        job->currentStruct = structScope;
+    }
+
+    ~ScopedStruct()
+    {
+        savedJob->currentStruct = savedStruct;
+    }
+
+    SyntaxJob* savedJob;
+    Scope*     savedStruct;
+};
