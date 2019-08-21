@@ -1,13 +1,13 @@
-#module module614
+#module module615
 //#unittest pass semantic
 
 //#[swag.printbc]
 #unittest error
-func(T) Print(x: T)
+func(T) Print(x: T, y: T)
 {
 }
 
 #test
 {
-	Print!(string)(1)
+	Print!(s32)(1, "1")
 }

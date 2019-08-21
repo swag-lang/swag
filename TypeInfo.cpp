@@ -127,7 +127,10 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
             if (it != context.mapGenericTypes.end() && it->second.first != typeInfo)
             {
-				assert(false); // todo
+                context.badSignatureParameterIdx  = i;
+                context.badSignatureRequestedType = it->second.first;
+                context.badSignatureGivenType     = typeInfo;
+                context.result                    = MatchResult::BadSignature;
             }
             else
             {
