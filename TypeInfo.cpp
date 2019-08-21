@@ -78,56 +78,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     context.doneParameters.clear();
     context.doneParameters.resize(parameters.size(), false);
 
-    // First we solve generic parameters
-    int numGenericParams = (int) context.genericParameters.size();
-
-    if (numGenericParams < genericParameters.size())
-    {
-        context.result = MatchResult::NotEnoughGenericParameters;
-        return;
-    }
-
-	context.genericParametersValues.resize(numGenericParams);
-	context.genericParametersTypes.resize(numGenericParams);
-    for (int i = 0; i < numGenericParams; i++)
-    {
-        auto callParameter = context.genericParameters[i];
-        if (i >= genericParameters.size())
-        {
-            context.result = MatchResult::TooManyGenericParameters;
-            return;
-        }
-
-        auto symbolParameter = genericParameters[i];
-        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-        bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
-        if (!same)
-        {
-            context.badSignatureParameterIdx  = i;
-            context.badSignatureRequestedType = symbolParameter->typeInfo;
-            context.badSignatureGivenType     = typeInfo;
-            context.result                    = MatchResult::BadGenericSignature;
-        }
-        else if (flags & TYPEINFO_GENERIC)
-        {
-            context.genericParametersValues[i] = callParameter->computedValue;
-            context.genericParametersTypes[i]  = callParameter->typeInfo;
-        }
-        else if (symbolParameter->genericValue == callParameter->computedValue)
-        {
-            context.genericParametersValues[i] = callParameter->computedValue;
-            context.genericParametersTypes[i]  = callParameter->typeInfo;
-        }
-        else
-        {
-            context.badSignatureParameterIdx  = i;
-            context.badSignatureRequestedType = symbolParameter->typeInfo;
-            context.badSignatureGivenType     = typeInfo;
-            context.result                    = MatchResult::BadGenericSignature;
-        }
-    }
-
-    // Then we solve unnamed parameters
+    // Solve unnamed parameters
     int numParams = (int) context.parameters.size();
 
     int  cptResolved        = 0;
@@ -250,6 +201,54 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         firstDefault = (int) parameters.size();
     if (cptResolved < firstDefault)
         context.result = MatchResult::NotEnoughParameters;
+
+    // First we solve generic parameters
+    int numGenericParams = (int) context.genericParameters.size();
+    if (numGenericParams < genericParameters.size())
+    {
+        context.result = MatchResult::NotEnoughGenericParameters;
+        return;
+    }
+
+    context.genericParametersValues.resize(numGenericParams);
+    context.genericParametersTypes.resize(numGenericParams);
+    for (int i = 0; i < numGenericParams; i++)
+    {
+        auto callParameter = context.genericParameters[i];
+        if (i >= genericParameters.size())
+        {
+            context.result = MatchResult::TooManyGenericParameters;
+            return;
+        }
+
+        auto symbolParameter = genericParameters[i];
+        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+        if (!same)
+        {
+            context.badSignatureParameterIdx  = i;
+            context.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureGivenType     = typeInfo;
+            context.result                    = MatchResult::BadGenericSignature;
+        }
+        else if (flags & TYPEINFO_GENERIC)
+        {
+            context.genericParametersValues[i] = callParameter->computedValue;
+            context.genericParametersTypes[i]  = callParameter->typeInfo;
+        }
+        else if (symbolParameter->genericValue == callParameter->computedValue)
+        {
+            context.genericParametersValues[i] = callParameter->computedValue;
+            context.genericParametersTypes[i]  = callParameter->typeInfo;
+        }
+        else
+        {
+            context.badSignatureParameterIdx  = i;
+            context.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureGivenType     = typeInfo;
+            context.result                    = MatchResult::BadGenericSignature;
+        }
+    }
 }
 
 TypeInfo* TypeInfoNative::clone()
