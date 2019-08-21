@@ -391,6 +391,7 @@ TypeInfo* TypeInfoGeneric::clone()
 {
     auto newType = g_Pool_typeInfoGeneric.alloc();
     newType->copyFrom(this);
+    newType->rawType = rawType;
     return newType;
 }
 

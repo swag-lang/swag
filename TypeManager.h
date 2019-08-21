@@ -13,9 +13,10 @@ static const uint32_t CASTFLAG_JUST_CHECK    = 0x00000008;
 
 enum MakeConcrete
 {
-    FlagAll  = 0xFFFFFFFF,
-    FlagEnum = 0x00000001,
-    FlagFunc = 0x00000002,
+    FlagAll     = 0xFFFFFFFF,
+    FlagEnum    = 0x00000001,
+    FlagFunc    = 0x00000002,
+    FlagGeneric = 0x00000004,
 };
 
 struct TypeManager
@@ -67,7 +68,7 @@ struct TypeManager
     TypeInfoNative*   typeInfoVoid;
     TypeInfoPointer*  typeInfoNull;
     TypeInfoVariadic* typeInfoVariadic;
-	TypeInfoVariadic* typeInfoVariadicValue;
+    TypeInfoVariadic* typeInfoVariadicValue;
 
     TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
 

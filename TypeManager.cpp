@@ -150,8 +150,8 @@ void TypeManager::setup()
 
 TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
 {
-	if (!typeInfo)
-		return typeInfo;
+    if (!typeInfo)
+        return typeInfo;
 
     switch (typeInfo->kind)
     {
@@ -170,6 +170,14 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
         if (flags & MakeConcrete::FlagEnum)
             return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType);
         break;
+    case TypeInfoKind::Generic:
+        if (flags & MakeConcrete::FlagGeneric)
+        {
+            auto typeGeneric = static_cast<TypeInfoGeneric*>(typeInfo);
+            if (!typeGeneric->rawType)
+                return typeGeneric;
+            return concreteType(typeGeneric->rawType);
+        }
     }
 
     return typeInfo;
