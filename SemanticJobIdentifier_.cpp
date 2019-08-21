@@ -325,8 +325,8 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
                 {
                     OneGenericMatch match;
                     match.symbolOverload             = overload;
-                    match.genericMatchesParamsValues = job->symMatch.genericParametersValues;
-                    match.genericMatchesParamsTypes  = job->symMatch.genericParametersTypes;
+                    match.genericMatchesParamsValues = job->symMatch.genericParametersCallValues;
+                    match.genericMatchesParamsTypes  = job->symMatch.genericParametersCallTypes;
                     genericMatches.emplace_back(match);
                 }
                 else
@@ -650,8 +650,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(oneParam->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)}));
                 job->symMatch.genericParameters.push_back(oneParam);
-                job->symMatch.genericParametersValues.push_back(oneParam->computedValue);
-                job->symMatch.genericParametersTypes.push_back(oneParam->typeInfo);
+                job->symMatch.genericParametersCallValues.push_back(oneParam->computedValue);
+                job->symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
                 idx++;
             }
         }

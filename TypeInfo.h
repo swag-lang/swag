@@ -283,8 +283,8 @@ struct SymbolMatchContext
     vector<AstNode*>      parameters;
     vector<bool>          doneParameters;
     bool                  forLambda;
-    vector<ComputedValue> genericParametersValues;
-    vector<TypeInfo*>     genericParametersTypes;
+    vector<ComputedValue> genericParametersCallValues;
+    vector<TypeInfo*>     genericParametersCallTypes;
 
     SymbolMatchContext()
     {
@@ -300,8 +300,8 @@ struct SymbolMatchContext
         genericParameters.clear();
         parameters.clear();
         doneParameters.clear();
-        genericParametersValues.clear();
-        genericParametersTypes.clear();
+        genericParametersCallValues.clear();
+        genericParametersCallTypes.clear();
         forLambda = false;
     }
 };

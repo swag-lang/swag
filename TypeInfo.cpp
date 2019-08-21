@@ -210,8 +210,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         return;
     }
 
-    context.genericParametersValues.resize(numGenericParams);
-    context.genericParametersTypes.resize(numGenericParams);
+    context.genericParametersCallValues.resize(numGenericParams);
+    context.genericParametersCallTypes.resize(numGenericParams);
     for (int i = 0; i < numGenericParams; i++)
     {
         auto callParameter = context.genericParameters[i];
@@ -233,13 +233,13 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
         else if (flags & TYPEINFO_GENERIC)
         {
-            context.genericParametersValues[i] = callParameter->computedValue;
-            context.genericParametersTypes[i]  = callParameter->typeInfo;
+            context.genericParametersCallValues[i] = callParameter->computedValue;
+            context.genericParametersCallTypes[i]  = callParameter->typeInfo;
         }
         else if (symbolParameter->genericValue == callParameter->computedValue)
         {
-            context.genericParametersValues[i] = callParameter->computedValue;
-            context.genericParametersTypes[i]  = callParameter->typeInfo;
+            context.genericParametersCallValues[i] = callParameter->computedValue;
+            context.genericParametersCallTypes[i]  = callParameter->typeInfo;
         }
         else
         {
