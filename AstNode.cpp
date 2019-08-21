@@ -103,12 +103,31 @@ AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
 
 void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
 {
+    kind  = from->kind;
+    flags = from->flags;
+
     ownerScope     = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable = from->ownerBreakable;
     ownerFct       = context.ownerFct ? context.ownerFct : from->ownerFct;
     ownerFlags     = from->ownerFlags;
 
-    typeInfo               = from->typeInfo;
+	// Replace a type by another one during generic instanciation
+    if (from->typeInfo && context.replaceTypes.size() > 0)
+    {
+        auto it = context.replaceTypes.find(from->typeInfo);
+        if (it != context.replaceTypes.end())
+        {
+            typeInfo = it->second;
+            flags |= AST_FROM_GENERIC;
+        }
+        else
+            typeInfo = from->typeInfo;
+    }
+    else
+    {
+        typeInfo = from->typeInfo;
+    }
+
     castedTypeInfo         = from->castedTypeInfo;
     resolvedSymbolName     = from->resolvedSymbolName;
     resolvedSymbolOverload = from->resolvedSymbolOverload;
@@ -125,8 +144,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
     byteCodeBeforeFct = from->byteCodeBeforeFct;
     byteCodeAfterFct  = from->byteCodeAfterFct;
 
-    kind                 = from->kind;
-    flags                = from->flags;
     computedValue        = from->computedValue;
     name                 = from->name;
     fullname             = from->fullname;

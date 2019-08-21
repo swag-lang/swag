@@ -161,7 +161,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
     auto     overload = node->resolvedSymbolOverload;
     auto     funcNode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
-    auto allParams = node->childs.empty() ? nullptr : node->childs.front();
+    auto allParams = node->childs.empty() ? nullptr : node->childs.back();
     return emitLocalCall(context, allParams, funcNode, nullptr);
 }
 

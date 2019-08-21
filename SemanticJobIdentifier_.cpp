@@ -552,6 +552,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         return true;
     }
 
+	// Already solved
+	if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
+		return true;
+
     if (node->semanticState == AstNodeResolveState::ProcessingChilds)
     {
         scopeHierarchy.clear();

@@ -97,9 +97,10 @@ enum class AstNodeKind
 
 struct CloneContext
 {
-    AstFuncDecl* ownerFct    = nullptr;
-    AstNode*     parent      = nullptr;
-    Scope*       parentScope = nullptr;
+    AstFuncDecl*              ownerFct    = nullptr;
+    AstNode*                  parent      = nullptr;
+    Scope*                    parentScope = nullptr;
+    map<TypeInfo*, TypeInfo*> replaceTypes;
 };
 
 struct AstNode : public PoolElement

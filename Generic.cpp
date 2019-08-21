@@ -11,12 +11,21 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
 {
     CloneContext cloneContext;
 
+    // Types replacements
+    for (int i = 0; i < match.symMatch->genericParametersCallTypes.size(); i++)
+    {
+        auto callType = match.symMatch->genericParametersCallTypes[i];
+        auto genType  = match.symMatch->genericParametersGenTypes[i];
+        if (callType != genType)
+            cloneContext.replaceTypes[genType] = callType;
+    }
+
     auto symbol     = match.symbolOverload;
     auto sourceNode = symbol->node;
     auto funcNode   = CastAst<AstFuncDecl>(sourceNode->clone(cloneContext), AstNodeKind::FuncDecl);
     funcNode->flags &= ~AST_IS_GENERIC;
     funcNode->flags |= AST_FROM_GENERIC;
-	funcNode->content->flags &= ~AST_DISABLED;
+    funcNode->content->flags &= ~AST_DISABLED;
 
     Ast::addChild(sourceNode->parent, funcNode);
 
@@ -24,6 +33,16 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     newType->flags &= ~TYPEINFO_GENERIC;
     funcNode->typeInfo = newType;
 
+	// Replace generic types with their real values in the function parameters
+    for (int i = 0; i < newType->parameters.size(); i++)
+    {
+        auto param = newType->parameters[i];
+        auto it    = cloneContext.replaceTypes.find(param->typeInfo);
+        if (it != cloneContext.replaceTypes.end())
+			param->typeInfo = it->second;
+    }
+
+	// Replace generic types and values in the function generic parameters
     for (int i = 0; i < newType->genericParameters.size(); i++)
     {
         auto param = newType->genericParameters[i];
@@ -32,10 +51,10 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
         param->typeInfo     = genericParameters->childs[i]->typeInfo;
         param->genericValue = genericParameters->childs[i]->computedValue;
 
-		auto nodeParam = funcNode->genericParameters->childs[i];
-		nodeParam->kind = AstNodeKind::ConstDecl;
-		nodeParam->computedValue = param->genericValue;
-		nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        auto nodeParam           = funcNode->genericParameters->childs[i];
+        nodeParam->kind          = AstNodeKind::ConstDecl;
+        nodeParam->computedValue = param->genericValue;
+        nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 
     // Need to wait for the function to be semantic resolved

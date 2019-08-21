@@ -66,6 +66,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
+	// Already solved
+	if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
+		return true;
+
     node->typeInfo = node->typeExpression ? node->typeExpression->typeInfo : node->token.literalType;
 
     // This is a generic type, not yet known
