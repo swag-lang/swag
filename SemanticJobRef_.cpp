@@ -71,14 +71,17 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
         SWAG_CHECK(resolveArrayPointerDeRef(context));
     }
 
+    if (context->result == SemanticResult::Pending)
+        return true;
+
     // If this is not the last child of the IdentifierRef, then this is a reference, and
-    // we must take the address and no dereference that identifier
+    // we must take the address and not dereference that identifier
     if (node->parent->kind == AstNodeKind::IdentifierRef)
     {
         auto parent = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
         if (node != parent->childs.back())
             node->flags |= AST_TAKE_ADDRESS;
-		parent->previousResolvedNode = node;
+        parent->previousResolvedNode = node;
     }
 
     return true;
@@ -181,9 +184,30 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         arrayNode->typeInfo = g_TypeMgr.typeInfoVariadicValue;
         break;
 
-	case TypeInfoKind::Struct:
-        SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, arrayNode->array, arrayNode->access));
-		break;
+    case TypeInfoKind::Struct:
+        // Only the top level ArrayPointerIndex node will deal with the call
+        if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
+        {
+            arrayNode->typeInfo = arrayType;
+        }
+        else
+        {
+            vector<AstNode*> params;
+            arrayNode->structFlatParams.clear();
+            arrayNode->structFlatParams.push_back(arrayNode->access);
+
+            AstNode* child = arrayNode->array;
+            while (child->kind == AstNodeKind::ArrayPointerIndex)
+            {
+                auto arrayChild = CastAst<AstPointerDeRef>(child, AstNodeKind::ArrayPointerIndex);
+                arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), arrayChild->access);
+                child = arrayChild->array;
+            }
+
+            SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, arrayNode->array, arrayNode->structFlatParams));
+            arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), arrayNode->array);
+        }
+        break;
 
     default:
         return sourceFile->report({sourceFile, arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});

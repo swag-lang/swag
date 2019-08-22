@@ -293,9 +293,15 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference a struct
-    else if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+    else if (node->array->typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(emitUserOp(context));
+        if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+        {
+            AstNode allParams;
+            allParams.reset();
+            allParams.childs = node->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, &allParams));
+        }
     }
     else
     {

@@ -134,7 +134,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
 	static bool emitDefaultStruct(ByteCodeGenContext* context);
-	static bool emitUserOp(ByteCodeGenContext* context);
+	static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr);
 
     static bool generateStructInit(ByteCodeGenContext* context, struct TypeInfoStruct* typeInfo, struct TypeInfoFuncAttr* typeInfoFunc);
 

@@ -607,13 +607,15 @@ struct AstPointerDeRef : public AstNode
     {
         array  = nullptr;
         access = nullptr;
+        structFlatParams.clear();
         AstNode::reset();
     }
 
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* array;
-    AstNode* access;
+    AstNode*         array;
+    AstNode*         access;
+    vector<AstNode*> structFlatParams;
 };
 
 struct AstProperty : public AstNode

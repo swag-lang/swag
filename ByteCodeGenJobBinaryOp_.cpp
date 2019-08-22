@@ -567,9 +567,9 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams)
 {
     AstNode* node           = context->node;
     auto     symbolOverload = node->resolvedSymbolOverload;
-    return emitLocalCall(context, node, static_cast<AstFuncDecl*>(symbolOverload->node), nullptr);
+    return emitLocalCall(context, allParams ? allParams : node, static_cast<AstFuncDecl*>(symbolOverload->node), nullptr);
 }
