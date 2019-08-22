@@ -130,6 +130,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
+        node->resultRegisterRC = node->array->resultRegisterRC;
     }
 
     // Dereference of a slice
@@ -172,7 +173,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             }
         }
 
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->resultRegisterRC = node->array->resultRegisterRC;
     }
 
     // Dereference of a pointer
@@ -210,7 +211,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             }
         }
 
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->resultRegisterRC = node->array->resultRegisterRC;
     }
 
     // Dereference of an array
@@ -262,7 +263,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             }
         }
 
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->resultRegisterRC = node->array->resultRegisterRC;
     }
 
     // Dereference a variadic parameter
@@ -288,13 +289,19 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[1], node->array->resultRegisterRC);
 
         freeRegisterRC(context, r0);
+        node->resultRegisterRC = node->array->resultRegisterRC;
+    }
+
+    // Dereference a struct
+    else if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+    {
+        SWAG_CHECK(emitUserOp(context));
     }
     else
     {
         return internalError(context, "emitPointerDeRef, type not supported");
     }
 
-    node->resultRegisterRC = node->array->resultRegisterRC;
     return true;
 }
 

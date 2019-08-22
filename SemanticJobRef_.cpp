@@ -181,6 +181,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         arrayNode->typeInfo = g_TypeMgr.typeInfoVariadicValue;
         break;
 
+	case TypeInfoKind::Struct:
+        SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, arrayNode->array, arrayNode->access));
+		break;
+
     default:
         return sourceFile->report({sourceFile, arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
     }
