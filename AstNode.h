@@ -31,8 +31,9 @@ enum class AstNodeResolveState
 {
     Enter,
     ProcessingChilds,
-    SecondTry,
     PostChilds,
+    SecondTry,
+    ThirdTry,
 };
 
 enum class AstNodeKind

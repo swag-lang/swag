@@ -58,24 +58,32 @@ JobResult SemanticJob::execute()
             }
 
         case AstNodeResolveState::ProcessingChilds:
+        case AstNodeResolveState::SecondTry:
             if (node->semanticFct)
             {
                 context.result = SemanticResult::Done;
-				if (!node->semanticFct(&context))
-					return JobResult::ReleaseJob;
-				if (context.result == SemanticResult::Pending)
-					return JobResult::KeepJobAlive;
+                if (!node->semanticFct(&context))
+                    return JobResult::ReleaseJob;
+                if (context.result == SemanticResult::Pending)
+                {
+                    node->semanticState = AstNodeResolveState::SecondTry;
+                    return JobResult::KeepJobAlive;
+                }
             }
 
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
+		case AstNodeResolveState::ThirdTry:
             if (node->semanticAfterFct)
             {
                 if (!node->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
-                if (context.result == SemanticResult::Pending)
-                    return JobResult::KeepJobAlive;
+				if (context.result == SemanticResult::Pending)
+				{
+					node->semanticState = AstNodeResolveState::ThirdTry;
+					return JobResult::KeepJobAlive;
+				}
             }
 
             nodes.pop_back();

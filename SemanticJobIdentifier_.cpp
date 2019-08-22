@@ -148,6 +148,21 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
         if (!scope->symTable || scope == startScope)
             continue;
 
+        // Be sure that symbol is fully resolved, otherwise we cannot check for a ghosting
+        {
+            auto symbol = scope->symTable->find(node->name);
+            if (!symbol)
+                continue;
+            scoped_lock lock(symbol->mutex);
+            if (symbol->cptOverloads)
+            {
+                symbol->dependentJobs.push_back(context->job);
+                g_ThreadMgr.addPendingJob(context->job);
+                context->result = SemanticResult::Pending;
+                return true;
+            }
+        }
+
         SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
     }
 

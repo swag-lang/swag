@@ -284,8 +284,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
-	// During unit testing, be sure we don't have remaining not raised errors
-	if (g_CommandLine.unittest)
+    // During unit testing, be sure we don't have remaining not raised errors
+    if (g_CommandLine.unittest)
     {
         for (auto module : list)
         {
@@ -293,8 +293,9 @@ bool Workspace::buildModules(const vector<Module*>& list)
             {
                 if (file->unittestError)
                 {
-					file->unittestError = 0;
-					file->report({file, "missing unittest error" });
+                    auto nb             = file->unittestError;
+                    file->unittestError = 0;
+                    file->report({file, format("missing '%d' unittest error(s)", nb)});
                 }
             }
         }
