@@ -22,13 +22,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     SWAG_VERIFY(left->flags & AST_L_VALUE, sourceFile->report({sourceFile, left, "affect operation not allowed, left expression is not a l-value"}));
     SWAG_VERIFY(!(left->resolvedSymbolOverload->flags & OVERLOAD_CONST), sourceFile->report({sourceFile, left, "affect operation not allowed, left expression is constant"}));
 
-	// Is this an array like affectation ?
+    // Is this an array like affectation ?
     AstPointerDeRef* arrayNode = nullptr;
     if (left->kind == AstNodeKind::IdentifierRef && left->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
     {
         arrayNode = CastAst<AstPointerDeRef>(left->childs.front(), AstNodeKind::ArrayPointerIndex);
 
-		// Add self and value in list of parameters
+        // Add self and value in list of parameters
         if (node->semanticState != AstNodeResolveState::SecondTry)
         {
             arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), right);
@@ -61,20 +61,29 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return sourceFile->report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
-        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
+        if (forStruct && arrayNode)
+            SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", left, arrayNode->structFlatParams));
+        else
+            SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, leftTypeInfo, right));
         break;
 
     case TokenId::SymLowerLowerEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "<<=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "<<=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "<<=", left, right));
             break;
         }
 
     case TokenId::SymGreaterGreaterEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", ">>=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", ">>=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", ">>=", left, right));
             break;
         }
 
@@ -94,7 +103,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymSlashEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "/=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "/=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "/=", left, right));
             break;
         }
 
@@ -110,28 +122,40 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymAmpersandEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "&=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "&=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "&=", left, right));
             break;
         }
 
     case TokenId::SymVerticalEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "|=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "|=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "|=", left, right));
             break;
         }
 
     case TokenId::SymCircumflexEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "^=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "^=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "^=", left, right));
             break;
         }
 
     case TokenId::SymTildeEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "~=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "~=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "~=", left, right));
             break;
         }
 
@@ -161,7 +185,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymMinusEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "-=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "-=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "-=", left, right));
             break;
         }
 
@@ -192,14 +219,20 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymPercentEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "%=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "%=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "%=", left, right));
             break;
         }
 
     case TokenId::SymAsteriskEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "*=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "*=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "*=", left, right));
             break;
         }
 

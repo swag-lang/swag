@@ -18,6 +18,13 @@ impl Point
 			else
 				self.y += v;
 		}
+		#if op == "-="
+		{
+			if(i == 0)
+				self.x -= v;
+			else
+				self.y -= v;
+		}		
 	}
 }
 
@@ -29,4 +36,6 @@ impl Point
 	@assert(pt.y == 10)
 	pt[1] += 10
 	@assert(pt.y == 20)
+	pt[1] -= 5
+	@assert(pt.y == 15)
 }
