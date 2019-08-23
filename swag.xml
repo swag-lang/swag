@@ -28,7 +28,7 @@
             <Keywords name="Keywords2">#assert #print #run #unittest #file #line #import #version #else #module #test #if</Keywords>
             <Keywords name="Keywords3">@file @line @assert @print @sizeof @prop @alloc @free</Keywords>
             <Keywords name="Keywords4">bool s8 s16 s32 s64 u8 u16 u32 u64 f32 f64 string char self Self</Keywords>
-            <Keywords name="Keywords5">opInit opEquals opCmp opBinary opUnary opAssign opIndex</Keywords>
+            <Keywords name="Keywords5">opInit opEquals opCmp opBinary opUnary opAssign opIndex opIndexAssign</Keywords>
             <Keywords name="Keywords6">count sizeof data</Keywords>
             <Keywords name="Keywords7"></Keywords>
             <Keywords name="Keywords8"></Keywords>

@@ -113,6 +113,9 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context)
     }
     else if (name == "opBinary")
     {
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
+        auto firstGen = node->genericParameters->childs.front();
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString), sourceFile->report({sourceFile, firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
         SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(node->returnType && node->returnType->typeInfo->isSame(typeStruct), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), node->returnType->typeInfo->name.c_str())}));
         auto firstType = node->parameters->childs.front()->typeInfo;
@@ -120,6 +123,9 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context)
     }
     else if (name == "opUnary")
     {
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
+        auto firstGen = node->genericParameters->childs.front();
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString), sourceFile->report({sourceFile, firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
         SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(node->returnType && node->returnType->typeInfo->isSame(typeStruct), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), node->returnType->typeInfo->name.c_str())}));
         auto firstType = node->parameters->childs.front()->typeInfo;
@@ -127,6 +133,9 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context)
     }
     else if (name == "opAssign")
     {
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
+        auto firstGen = node->genericParameters->childs.front();
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString), sourceFile->report({sourceFile, firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
         SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(node->returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), node->returnType->typeInfo->name.c_str())}));
         auto firstType = node->parameters->childs.front()->typeInfo;
