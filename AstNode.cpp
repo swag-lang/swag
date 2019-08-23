@@ -412,12 +412,9 @@ AstNode* AstStruct::clone(CloneContext& context)
 
     newNode->opInit = opInit;
 
+    newNode->scope             = cloneContext.parentScope;
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
-
-    for (auto child : childs)
-    {
-        child->clone(cloneContext);
-    }
+    newNode->content           = content ? content->clone(cloneContext) : nullptr;
 
     return newNode;
 }

@@ -539,8 +539,8 @@ struct TypeInfoStruct : public TypeInfo
         kind       = TypeInfoKind::Struct;
         scope      = nullptr;
         structNode = nullptr;
-        flags |= TYPEINFO_RETURN_BY_COPY;
         genericParameters.clear();
+        flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
     bool      isSame(TypeInfo* from) override;

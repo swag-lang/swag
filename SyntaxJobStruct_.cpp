@@ -56,12 +56,12 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
 
-	// Generic arguments
-	if (token.id == TokenId::SymLeftParen)
-	{
-		SWAG_CHECK(doGenericDeclParameters(structNode, &structNode->genericParameters));
-		structNode->flags |= AST_IS_GENERIC;
-	}
+    // Generic arguments
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(doGenericDeclParameters(structNode, &structNode->genericParameters));
+        structNode->flags |= AST_IS_GENERIC;
+    }
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid struct name '%s'", token.text.c_str())));
     Ast::assignToken(structNode, token);
@@ -80,6 +80,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->name       = structNode->name;
             typeInfo->scope      = newScope;
             structNode->typeInfo = typeInfo;
+            structNode->scope    = newScope;
             if (!isContextDisabled())
                 currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
         }
@@ -103,9 +104,14 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     {
         Scoped scoped(this, newScope);
+
+        auto contentNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::StructContent, sourceFile->indexInModule, structNode);
+        contentNode->inheritOwnersAndFlags(this);
+        structNode->content = contentNode;
+
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
-            SWAG_CHECK(doVarDecl(structNode));
+            SWAG_CHECK(doVarDecl(contentNode));
         }
     }
 

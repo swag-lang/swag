@@ -30,6 +30,7 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
 
     auto newType = static_cast<TypeInfoStruct*>(symbol->typeInfo->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
+	newType->scope = structNode->scope;
     structNode->typeInfo = newType;
 
     // Replace generic types and values in the struct generic parameters
@@ -47,6 +48,15 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
         nodeParam->kind          = AstNodeKind::ConstDecl;
         nodeParam->computedValue = param->genericValue;
         nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+
+    // Replace generic types in the struct childs
+    for (int i = 0; i < newType->childs.size(); i++)
+    {
+        auto child = newType->childs[i];
+        auto it    = cloneContext.replaceTypes.find(child);
+        if (it != cloneContext.replaceTypes.end())
+            newType->childs[i] = it->second;
     }
 
     // Need to wait for the struct to be semantic resolved

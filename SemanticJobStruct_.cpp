@@ -27,7 +27,7 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
         ptrStart = nullptr;
 
     auto ptrDest = ptrStart;
-    for (auto child : structNode->childs)
+    for (auto child : structNode->content->childs)
     {
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         if (varDecl->assignment)
@@ -121,7 +121,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     uint32_t storageIndex  = 0;
     uint32_t structFlags   = 0;
 
-    for (auto child : node->childs)
+    for (auto child : node->content->childs)
     {
         if (child->kind != AstNodeKind::VarDecl)
             continue;
@@ -147,9 +147,12 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
         }
 
-        typeInfo->childs.push_back(child->typeInfo);
-        typeInfo->sizeOf += child->typeInfo->sizeOf;
-        typeInfo->flags |= structFlags;
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            typeInfo->childs.push_back(child->typeInfo);
+            typeInfo->sizeOf += child->typeInfo->sizeOf;
+            typeInfo->flags |= structFlags;
+        }
 
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;

@@ -696,7 +696,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 fctCallParam->token       = identifierRef->previousResolvedNode->token;
                 fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
                 Ast::removeFromParent(identifierRef->previousResolvedNode);
-				Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
+                Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
             }
 
             for (auto param : node->callParameters->childs)
@@ -729,8 +729,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
     else
     {
-        // For everything except functions and attributes (which have overloads), this is
-        // a match
+        // For everything except functions/attributes/structs (which have overloads), this is a match
         auto symbol = dependentSymbols[0];
         if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
         {

@@ -60,6 +60,7 @@ enum class AstNodeKind
     Statement,
     EnumDecl,
     StructDecl,
+    StructContent,
     Impl,
     FuncDecl,
     AttrDecl,
@@ -647,13 +648,17 @@ struct AstStruct : public AstNode
     {
         opInit            = nullptr;
         genericParameters = nullptr;
+        content           = nullptr;
+        scope             = nullptr;
         AstNode::reset();
     }
 
     AstNode* clone(CloneContext& context) override;
 
     AstNode* genericParameters;
+    AstNode* content;
     AstNode* opInit;
+    Scope*   scope;
 };
 
 struct AstImpl : public AstNode

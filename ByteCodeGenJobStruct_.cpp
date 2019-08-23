@@ -64,7 +64,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     else
     {
 
-        for (auto child : structNode->childs)
+        for (auto child : structNode->content->childs)
         {
             auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
             auto typeVar = varDecl->typeInfo;

@@ -482,6 +482,8 @@ bool TypeInfoStruct::isSame(TypeInfo* from)
         return false;
 
     auto other = static_cast<TypeInfoStruct*>(from);
+	if (genericParameters.size() != other->genericParameters.size())
+		return false;
     for (int i = 0; i < genericParameters.size(); i++)
     {
         if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
