@@ -10,6 +10,6 @@ struct(T) Point
 #test
 {
 	var pt: Point!(f32)
-	@assert(pt.x == 0)
-	@assert(pt.y == 0)
+	@assert(pt.x == 10)
+	@assert(pt.y == 20)
 }
