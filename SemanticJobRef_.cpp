@@ -124,6 +124,29 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitSliceRef;
         break;
     }
+    case TypeInfoKind::Struct:
+        // Only the top level ArrayPointerIndex node will deal with the call
+        if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
+        {
+            arrayNode->typeInfo = arrayType;
+        }
+        else
+        {
+            // Flatten all indices. self and value will be set before the call later
+            arrayNode->typeInfo = arrayType;
+            arrayNode->structFlatParams.clear();
+            arrayNode->structFlatParams.push_back(arrayNode->access);
+
+            AstNode* child = arrayNode->array;
+            while (child->kind == AstNodeKind::ArrayPointerIndex)
+            {
+                auto arrayChild = CastAst<AstPointerDeRef>(child, AstNodeKind::ArrayPointerIndex);
+                arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), arrayChild->access);
+                child = arrayChild->array;
+            }
+        }
+        break;
+
     default:
     {
         return sourceFile->report({sourceFile, arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
@@ -192,7 +215,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         }
         else
         {
-            vector<AstNode*> params;
+            // Flatten all operator parameters : self, then all indices
             arrayNode->structFlatParams.clear();
             arrayNode->structFlatParams.push_back(arrayNode->access);
 
@@ -204,8 +227,11 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
                 child = arrayChild->array;
             }
 
-            SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, arrayNode->array, arrayNode->structFlatParams));
+            // Self in first position
             arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), arrayNode->array);
+
+            // Resolve call
+            SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, arrayNode->array, arrayNode->structFlatParams));
         }
         break;
 

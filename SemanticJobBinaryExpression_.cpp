@@ -828,9 +828,11 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
 bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right)
 {
-	vector<AstNode*> params;
-	if (right)
-		params.push_back(right);
+    vector<AstNode*> params;
+    assert(left);
+    params.push_back(left);
+    if (right)
+        params.push_back(right);
     return resolveUserOp(context, name, op, left, params);
 }
 
@@ -857,9 +859,8 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     }
 
     job->symMatch.reset();
-    job->symMatch.parameters.push_back(left);
-    for (auto right : params)
-        job->symMatch.parameters.push_back(right);
+    for (auto param : params)
+        job->symMatch.parameters.push_back(param);
 
     // Generic string parameter
     AstNode* genericParameters = nullptr;

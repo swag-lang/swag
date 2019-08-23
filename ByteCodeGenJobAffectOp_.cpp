@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Global.h"
-#include "AstNode.h"
+#include "Ast.h"
 #include "ByteCodeGenJob.h"
 #include "TypeInfo.h"
 #include "SourceFile.h"
@@ -511,13 +511,25 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
 
 bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 {
-    AstNode* node = context->node;
+    AstNode* node     = context->node;
+    AstNode* leftNode = context->node->childs[0];
 
     emitCast(context, node->childs[1]->castedTypeInfo, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo));
 
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
-        SWAG_CHECK(emitUserOp(context));
+        if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
+        {
+            auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.front(), AstNodeKind::ArrayPointerIndex);
+            AstNode allParams;
+            allParams.reset();
+            allParams.childs = arrayNode->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, &allParams));
+        }
+        else
+        {
+            SWAG_CHECK(emitUserOp(context));
+        }
     }
     else
     {

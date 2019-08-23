@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Ast.h"
 #include "SemanticJob.h"
 #include "Global.h"
 #include "Diagnostic.h"
@@ -20,6 +21,20 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, sourceFile->report({sourceFile, left, "affect not allowed on array"}));
     SWAG_VERIFY(left->flags & AST_L_VALUE, sourceFile->report({sourceFile, left, "affect operation not allowed, left expression is not a l-value"}));
     SWAG_VERIFY(!(left->resolvedSymbolOverload->flags & OVERLOAD_CONST), sourceFile->report({sourceFile, left, "affect operation not allowed, left expression is constant"}));
+
+	// Is this an array like affectation ?
+    AstPointerDeRef* arrayNode = nullptr;
+    if (left->kind == AstNodeKind::IdentifierRef && left->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
+    {
+        arrayNode = CastAst<AstPointerDeRef>(left->childs.front(), AstNodeKind::ArrayPointerIndex);
+
+		// Add self and value in list of parameters
+        if (node->semanticState != AstNodeResolveState::SecondTry)
+        {
+            arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), right);
+            arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), left);
+        }
+    }
 
     node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
@@ -137,7 +152,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymPlusEqual:
         if (forStruct)
         {
-            SWAG_CHECK(resolveUserOp(context, "opAssign", "+=", left, right));
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "+=", left, arrayNode->structFlatParams));
+            else
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "+=", left, right));
             break;
         }
     case TokenId::SymMinusEqual:
