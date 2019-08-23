@@ -1,0 +1,15 @@
+#module module631
+//#unittest pass semantic
+
+struct(T) Point
+{
+	var x: T = 10
+	var y: T = 20
+}
+
+#test
+{
+	var pt: Point!(f32)
+	@assert(pt.x == 0)
+	@assert(pt.y == 0)
+}

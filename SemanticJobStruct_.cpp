@@ -174,7 +174,17 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 funcParam->name     = param->name;
                 funcParam->typeInfo = param->typeInfo;
                 typeInfo->genericParameters.push_back(funcParam);
+                typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
+        }
+    }
+
+	// Compute size of struct, now that we know the real types
+    else
+    {
+        for (auto param : typeInfo->childs)
+        {
+            typeInfo->sizeOf += param->sizeOf;
         }
     }
 
