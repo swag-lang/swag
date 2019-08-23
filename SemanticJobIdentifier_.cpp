@@ -379,6 +379,11 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
         if (numOverloads == 1)
         {
             auto overload = symbol->overloads[0];
+
+			// Be sure this is not because of an invalid special function signature
+			if(overload->node->kind == AstNodeKind::FuncDecl)
+				SWAG_CHECK(checkFuncPrototype(CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl), sourceFile));
+
             switch (job->symMatch.result)
             {
             case MatchResult::InvalidNamedParameter:

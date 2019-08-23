@@ -68,11 +68,9 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
     return true;
 }
 
-bool SemanticJob::checkFuncPrototype(SemanticContext* context)
+bool SemanticJob::checkFuncPrototype(AstFuncDecl* node, SourceFile* sourceFile)
 {
-    auto        node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    const auto& name       = node->name;
-    auto        sourceFile = context->sourceFile;
+    const auto& name = node->name;
 
     if (node->flags & AST_GENERATED)
         return true;
@@ -176,7 +174,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    SWAG_CHECK(checkFuncPrototype(context));
+    SWAG_CHECK(checkFuncPrototype(node, sourceFile));
     node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;
 
