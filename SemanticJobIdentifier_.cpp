@@ -380,9 +380,9 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
         {
             auto overload = symbol->overloads[0];
 
-			// Be sure this is not because of an invalid special function signature
-			if(overload->node->kind == AstNodeKind::FuncDecl)
-				SWAG_CHECK(checkFuncPrototype(CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl), sourceFile));
+            // Be sure this is not because of an invalid special function signature
+            if (overload->node->kind == AstNodeKind::FuncDecl)
+                SWAG_CHECK(checkFuncPrototype(CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl), sourceFile));
 
             switch (job->symMatch.result)
             {
@@ -476,10 +476,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
         {
             if (badSignature.size())
             {
-                Diagnostic diag{sourceFile,
-                                callParameters ? callParameters : node,
-                                format("none of the %d overloads could convert all the parameters types", numOverloads)};
-
+                Diagnostic                diag{sourceFile, callParameters ? callParameters : node, format("none of the %d overloads could convert all the parameters types", numOverloads)};
                 vector<const Diagnostic*> notes;
                 for (auto overload : badSignature)
                 {
@@ -492,10 +489,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
             }
             else if (badGenericSignature.size())
             {
-                Diagnostic diag{sourceFile,
-                                genericParameters ? genericParameters : node,
-                                format("none of the %d overloads could convert all the generic parameters types", numOverloads)};
-
+                Diagnostic                diag{sourceFile, genericParameters ? genericParameters : node, format("none of the %d overloads could convert all the generic parameters types", numOverloads)};
                 vector<const Diagnostic*> notes;
                 for (auto overload : badGenericSignature)
                 {

@@ -91,70 +91,62 @@ bool SemanticJob::checkFuncPrototype(AstFuncDecl* node, SourceFile* sourceFile)
     if (typeStruct->kind != TypeInfoKind::Struct)
         return true;
 
+    // Already checked by the syntax pass
     if (name == "opInit")
+        return true;
+
+    // First type must be struct
+    auto firstType = node->parameters->childs.front()->typeInfo;
+    SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+
+    // Generic operator must have one generic parameter of type string
+    if (name == "opBinary" || name == "opUnary" || name == "opAssign" || name == "opIndexAssign")
     {
-        // Already checked by the syntax pass
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
+        auto firstGen = node->genericParameters->childs.front();
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString), sourceFile->report({sourceFile, firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
     }
-    else if (name == "opEquals")
+
+    auto parameters = node->parameters;
+    auto returnType = node->returnType;
+    if (name == "opEquals")
     {
-        SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(node->returnType && node->returnType->typeInfo->isSame(g_TypeMgr.typeInfoBool), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), node->returnType->typeInfo->name.c_str())}));
-        auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(parameters && parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoBool), sourceFile->report({sourceFile, returnType, format("invalid return type for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
     }
     else if (name == "opCmp")
     {
-        SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(node->returnType && node->returnType->typeInfo->isSame(g_TypeMgr.typeInfoS32), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), node->returnType->typeInfo->name.c_str())}));
-        auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(parameters && parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoS32), sourceFile->report({sourceFile, returnType, format("invalid return type for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
     }
     else if (name == "opBinary")
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
-        auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString), sourceFile->report({sourceFile, firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
-        SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(node->returnType && node->returnType->typeInfo->isSame(typeStruct), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), node->returnType->typeInfo->name.c_str())}));
-        auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(parameters && parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(typeStruct), sourceFile->report({sourceFile, returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), returnType->typeInfo->name.c_str())}));
     }
     else if (name == "opUnary")
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
-        auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString), sourceFile->report({sourceFile, firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
-        SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(node->returnType && node->returnType->typeInfo->isSame(typeStruct), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), node->returnType->typeInfo->name.c_str())}));
-        auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(parameters && parameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(typeStruct), sourceFile->report({sourceFile, returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), returnType->typeInfo->name.c_str())}));
     }
     else if (name == "opAssign")
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
-        auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString), sourceFile->report({sourceFile, firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
-        SWAG_VERIFY(node->parameters && node->parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(node->returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), node->returnType->typeInfo->name.c_str())}));
-        auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(parameters && parameters->childs.size() == 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid), sourceFile->report({sourceFile, returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
     }
     else if (name == "opIndex")
     {
-        SWAG_VERIFY(node->parameters && node->parameters->childs.size() >= 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(!node->returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid), sourceFile->report({sourceFile, node->returnType, format("missing return type for special function '%s'", name.c_str())}));
-        auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(parameters && parameters->childs.size() >= 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(!returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid), sourceFile->report({sourceFile, returnType, format("missing return type for special function '%s'", name.c_str())}));
+        for (int i = 1; i < parameters->childs.size(); i++)
+			SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoS32), sourceFile->report({ sourceFile, parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('s32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str()) }));
     }
     else if (name == "opIndexAssign")
     {
-        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, sourceFile->report({sourceFile, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
-        auto firstGen = node->genericParameters->childs.front();
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString), sourceFile->report({sourceFile, firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
-        SWAG_VERIFY(node->parameters && node->parameters->childs.size() >= 3, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(node->returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid), sourceFile->report({sourceFile, node->returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), node->returnType->typeInfo->name.c_str())}));
-        auto firstType = node->parameters->childs.front()->typeInfo;
-        SWAG_VERIFY(firstType->isSame(typeStruct), sourceFile->report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+        SWAG_VERIFY(parameters && parameters->childs.size() >= 3, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid), sourceFile->report({sourceFile, returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
+        for (int i = 2; i < parameters->childs.size(); i++)
+            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoS32), sourceFile->report({sourceFile, parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('s32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
     }
     else
     {
