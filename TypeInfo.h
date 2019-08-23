@@ -540,35 +540,22 @@ struct TypeInfoStruct : public TypeInfo
         scope      = nullptr;
         structNode = nullptr;
         flags |= TYPEINFO_RETURN_BY_COPY;
+        genericParameters.clear();
     }
 
-    bool isSame(TypeInfo* from) override
-    {
-        if (!TypeInfo::isSame(from))
-            return false;
-        auto other = static_cast<TypeInfoStruct*>(from);
-        if (scope != other->scope)
-            return false;
-        if (childs.size() != other->childs.size())
-            return false;
-        for (int i = 0; i < childs.size(); i++)
-        {
-            if (!childs[i]->isSame(other->childs[i]))
-                return false;
-        }
-        return true;
-    }
-
+    bool      isSame(TypeInfo* from) override;
     TypeInfo* clone() override;
+    void      match(SymbolMatchContext& context);
 
     int numRegisters() override
     {
         return 1;
     }
 
-    Scope*            scope;
-    vector<TypeInfo*> childs;
-    struct AstNode*   structNode;
+    vector<TypeInfoFuncAttrParam*> genericParameters;
+    Scope*                         scope;
+    vector<TypeInfo*>              childs;
+    struct AstNode*                structNode;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;

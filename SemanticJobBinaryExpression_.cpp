@@ -880,7 +880,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
 
     job->cacheDependentSymbols.clear();
     job->cacheDependentSymbols.push_back(symbol);
-    SWAG_CHECK(checkFuncCall(context, genericParameters, left->parent, nullptr));
+    SWAG_CHECK(matchIdentifierParameters(context, genericParameters, left->parent, nullptr));
     if (context->result == SemanticResult::Pending)
         return true;
 

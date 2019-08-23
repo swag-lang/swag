@@ -157,10 +157,28 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         storageIndex++;
     }
 
+    // Add generic parameters
+    uint32_t symbolFlags = 0;
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        if (node->genericParameters)
+        {
+            typeInfo->flags |= TYPEINFO_GENERIC;
+            symbolFlags |= OVERLOAD_GENERIC;
+            for (auto param : node->genericParameters->childs)
+            {
+                auto funcParam      = g_Pool_typeInfoFuncAttrParam.alloc();
+                funcParam->name     = param->name;
+                funcParam->typeInfo = param->typeInfo;
+                typeInfo->genericParameters.push_back(funcParam);
+            }
+        }
+    }
+
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
     // Register symbol with its type
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags));
 
     // Byte code generation of code associated with the structure
     node->byteCodeFct               = &ByteCodeGenJob::emitDefaultStruct;

@@ -199,7 +199,6 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     auto newNode = g_Pool_astFuncDecl.alloc();
 
     newNode->copyFrom(context, this, false);
-
     newNode->stackSize = stackSize;
 
     auto cloneContext        = context;
@@ -404,9 +403,22 @@ AstNode* AstExpressionList::clone(CloneContext& context)
 AstNode* AstStruct::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astStruct.alloc();
-    newNode->copyFrom(context, this);
+    newNode->copyFrom(context, this, false);
+
+    auto cloneContext        = context;
+    cloneContext.parent      = newNode;
+    cloneContext.parentScope = Ast::newScope(newNode->name, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope->allocateSymTable();
 
     newNode->opInit = opInit;
+
+    newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
+
+    for (auto child : childs)
+    {
+        child->clone(cloneContext);
+    }
+
     return newNode;
 }
 

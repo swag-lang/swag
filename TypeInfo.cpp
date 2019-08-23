@@ -464,8 +464,109 @@ TypeInfo* TypeInfoStruct::clone()
     newType->scope      = scope;
     newType->childs     = childs;
     newType->structNode = structNode;
+
+    for (int i = 0; i < genericParameters.size(); i++)
+    {
+        auto param = static_cast<TypeInfoFuncAttrParam*>(genericParameters[i]);
+        param      = static_cast<TypeInfoFuncAttrParam*>(param->clone());
+        newType->genericParameters.push_back(param);
+    }
+
     newType->copyFrom(this);
     return newType;
+}
+
+bool TypeInfoStruct::isSame(TypeInfo* from)
+{
+    if (!TypeInfo::isSame(from))
+        return false;
+
+    auto other = static_cast<TypeInfoStruct*>(from);
+    for (int i = 0; i < genericParameters.size(); i++)
+    {
+        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
+            return false;
+        if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
+            return false;
+    }
+
+    if (scope != other->scope)
+        return false;
+    if (childs.size() != other->childs.size())
+        return false;
+    for (int i = 0; i < childs.size(); i++)
+    {
+        if (!childs[i]->isSame(other->childs[i]))
+            return false;
+    }
+    return true;
+}
+
+void TypeInfoStruct::match(SymbolMatchContext& context)
+{
+    context.result = MatchResult::Ok;
+    context.mapGenericTypes.clear();
+
+    // Solve generic parameters
+    int wantedNumGenericParams = (int) genericParameters.size();
+    int numGenericParams       = (int) context.genericParameters.size();
+
+    // It's valid to not specify generic parameters. They will be deduced
+    if (numGenericParams < wantedNumGenericParams)
+    {
+        context.result = MatchResult::NotEnoughGenericParameters;
+        return;
+    }
+
+    if (numGenericParams > wantedNumGenericParams)
+    {
+        context.result = MatchResult::TooManyGenericParameters;
+        return;
+    }
+
+    context.genericParametersCallValues.resize(wantedNumGenericParams);
+    context.genericParametersCallTypes.resize(wantedNumGenericParams);
+    context.genericParametersGenTypes.resize(wantedNumGenericParams);
+
+    for (int i = 0; i < numGenericParams; i++)
+    {
+        auto callParameter   = context.genericParameters[i];
+        auto symbolParameter = genericParameters[i];
+        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+        if (!same)
+        {
+            context.badSignatureParameterIdx  = i;
+            context.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureGivenType     = typeInfo;
+            context.result                    = MatchResult::BadGenericSignature;
+        }
+        else if ((flags & TYPEINFO_GENERIC) || (symbolParameter->genericValue == callParameter->computedValue))
+        {
+            // We already have a match, and they do not match with that type, error
+            auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
+            if (it != context.mapGenericTypes.end() && it->second.first != typeInfo)
+            {
+                context.badSignatureParameterIdx  = it->second.second;
+                context.badSignatureRequestedType = typeInfo;
+                context.badSignatureGivenType     = it->second.first;
+                context.result                    = MatchResult::BadSignature;
+            }
+            else
+            {
+                context.genericParametersCallValues[i] = callParameter->computedValue;
+                context.genericParametersCallTypes[i]  = callParameter->typeInfo;
+                context.genericParametersGenTypes[i]   = symbolParameter->typeInfo;
+            }
+        }
+        else
+        {
+            context.badSignatureParameterIdx  = i;
+            context.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureGivenType     = typeInfo;
+            context.result                    = MatchResult::BadGenericSignature;
+        }
+    }
 }
 
 const char* TypeInfo::getKindName(TypeInfo* typeInfo)
@@ -490,6 +591,8 @@ const char* TypeInfo::getKindName(TypeInfo* typeInfo)
         return "a variadic";
     case TypeInfoKind::Struct:
         return "a struct";
+    case TypeInfoKind::Generic:
+        return "a generic type";
     }
 
     return "<type>";
@@ -517,6 +620,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "variadic";
     case TypeInfoKind::Struct:
         return "struct";
+    case TypeInfoKind::Generic:
+        return "generic type";
     }
 
     return "<type>";

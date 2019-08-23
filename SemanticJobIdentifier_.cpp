@@ -307,7 +307,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
-bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node)
 {
     auto  job                 = context->job;
     auto  sourceFile          = context->sourceFile;
@@ -322,6 +322,7 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
     badSignature.clear();
     badGenericSignature.clear();
 
+    bool forStruct        = false;
     bool hasGenericErrors = false;
     int  numOverloads     = 0;
     for (auto oneSymbol : dependentSymbols)
@@ -330,8 +331,17 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
         {
             numOverloads++;
 
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-            typeInfo->match(job->symMatch);
+            if (overload->typeInfo->kind == TypeInfoKind::Struct)
+            {
+                forStruct     = true;
+                auto typeInfo = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+                typeInfo->match(job->symMatch);
+            }
+            else
+            {
+                auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                typeInfo->match(job->symMatch);
+            }
 
             switch (job->symMatch.result)
             {
@@ -369,7 +379,10 @@ bool SemanticJob::checkFuncCall(SemanticContext* context, AstNode* genericParame
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
-        SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
+        if (forStruct)
+            SWAG_CHECK(Generic::InstanciateStruct(context, genericParameters, genericMatches[0]));
+        else
+            SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
         return true;
     }
 
@@ -658,33 +671,50 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     job->symMatch.reset();
     job->symMatch.forLambda = (node->flags & AST_TAKE_ADDRESS);
 
-    if (node->callParameters)
+    if (node->genericParameters || node->callParameters)
     {
         auto symbol = dependentSymbols[0];
-        if (symbol->kind != SymbolKind::Attribute &&
-            symbol->kind != SymbolKind::Function &&
-            (symbol->kind != SymbolKind::Variable || symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Lambda))
-        {
-            Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-            Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-            return sourceFile->report(diag, &note);
-        }
 
-        // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
-        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+        if (node->callParameters)
         {
-            auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
-            node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
-            fctCallParam->parent      = node->callParameters;
-            fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
-            fctCallParam->token       = identifierRef->previousResolvedNode->token;
-            fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
-            Ast::removeFromParent(identifierRef->previousResolvedNode);
-            Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
+            if (symbol->kind != SymbolKind::Attribute &&
+                symbol->kind != SymbolKind::Function &&
+                (symbol->kind != SymbolKind::Variable || symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Lambda))
+            {
+                Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+                Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+
+            // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
+            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+            {
+                auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
+                node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+                fctCallParam->parent      = node->callParameters;
+                fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
+                fctCallParam->token       = identifierRef->previousResolvedNode->token;
+                fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+                Ast::removeFromParent(identifierRef->previousResolvedNode);
+				Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
+            }
+
+            for (auto param : node->callParameters->childs)
+            {
+                auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
+                job->symMatch.parameters.push_back(oneParam);
+            }
         }
 
         if (node->genericParameters)
         {
+            if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Struct)
+            {
+                Diagnostic diag{sourceFile, node->callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+                Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+
             int idx = 0;
             for (auto param : node->genericParameters->childs)
             {
@@ -695,12 +725,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 job->symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
                 idx++;
             }
-        }
-
-        for (auto param : node->callParameters->childs)
-        {
-            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
-            job->symMatch.parameters.push_back(oneParam);
         }
     }
     else
@@ -717,7 +741,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(checkFuncCall(context, node->genericParameters, node->callParameters, node));
+    SWAG_CHECK(matchIdentifierParameters(context, node->genericParameters, node->callParameters, node));
     if (context->result == SemanticResult::Pending)
         return true;
 

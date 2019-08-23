@@ -7,6 +7,67 @@
 #include "SourceFile.h"
 #include "ThreadManager.h"
 
+bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
+{
+    CloneContext cloneContext;
+
+    // Types replacements
+    for (int i = 0; i < match.genericParametersCallTypes.size(); i++)
+    {
+        auto callType = match.genericParametersCallTypes[i];
+        auto genType  = match.genericParametersGenTypes[i];
+        if (callType != genType)
+            cloneContext.replaceTypes[genType] = callType;
+    }
+
+    auto symbol     = match.symbolOverload;
+    auto sourceNode = symbol->node;
+    auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
+    structNode->flags &= ~AST_IS_GENERIC;
+    structNode->flags |= AST_FROM_GENERIC;
+    //funcNode->content->flags &= ~AST_DISABLED;
+    Ast::addChild(sourceNode->parent, structNode);
+
+    auto newType = static_cast<TypeInfoStruct*>(symbol->typeInfo->clone());
+    newType->flags &= ~TYPEINFO_GENERIC;
+    structNode->typeInfo = newType;
+
+    // Replace generic types and values in the struct generic parameters
+    for (int i = 0; i < newType->genericParameters.size(); i++)
+    {
+        auto param      = newType->genericParameters[i];
+        param->typeInfo = match.genericParametersCallTypes[i];
+        if (genericParameters)
+        {
+            param->typeInfo     = genericParameters->childs[i]->typeInfo;
+            param->genericValue = genericParameters->childs[i]->computedValue;
+        }
+
+        auto nodeParam           = structNode->genericParameters->childs[i];
+        nodeParam->kind          = AstNodeKind::ConstDecl;
+        nodeParam->computedValue = param->genericValue;
+        nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+
+    // Need to wait for the struct to be semantic resolved
+    auto  job              = context->job;
+    auto& dependentSymbols = job->cacheDependentSymbols;
+    dependentSymbols[0]->cptOverloads++;
+    dependentSymbols[0]->dependentJobs.push_back(context->job);
+    g_ThreadMgr.addPendingJob(context->job);
+    context->result = SemanticResult::Pending;
+
+    // Run semantic on that struct
+    auto sourceFile = context->sourceFile;
+    job             = g_Pool_semanticJob.alloc();
+    job->module     = sourceFile->module;
+    job->sourceFile = sourceFile;
+    job->nodes.push_back(structNode);
+    g_ThreadMgr.addJob(job);
+
+    return true;
+}
+
 bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     CloneContext cloneContext;
@@ -26,7 +87,6 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     funcNode->flags &= ~AST_IS_GENERIC;
     funcNode->flags |= AST_FROM_GENERIC;
     funcNode->content->flags &= ~AST_DISABLED;
-
     Ast::addChild(sourceNode->parent, funcNode);
 
     auto newType = static_cast<TypeInfoFuncAttr*>(symbol->typeInfo->clone());

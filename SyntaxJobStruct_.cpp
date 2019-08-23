@@ -55,6 +55,14 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         *result = structNode;
 
     SWAG_CHECK(tokenizer.getToken(token));
+
+	// Generic arguments
+	if (token.id == TokenId::SymLeftParen)
+	{
+		SWAG_CHECK(doGenericDeclParameters(structNode, &structNode->genericParameters));
+		structNode->flags |= AST_IS_GENERIC;
+	}
+
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid struct name '%s'", token.text.c_str())));
     Ast::assignToken(structNode, token);
 

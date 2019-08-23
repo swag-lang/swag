@@ -645,12 +645,14 @@ struct AstStruct : public AstNode
 {
     void reset() override
     {
-        opInit = nullptr;
+        opInit            = nullptr;
+        genericParameters = nullptr;
         AstNode::reset();
     }
 
     AstNode* clone(CloneContext& context) override;
 
+    AstNode* genericParameters;
     AstNode* opInit;
 };
 
