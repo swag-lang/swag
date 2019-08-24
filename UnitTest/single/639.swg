@@ -1,20 +1,23 @@
-#module module637
+#module module639
 //#unittest pass semantic
 
 struct(T) Point
 {
-	var x: s32 = 666
+	var x: T = 1
 }
 
 //#[swag.printbc]
 func toto(v: Point)
 {
-	@assert(v.x == 666)
+	@print(v.x)
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
 	var pt: Point!(s32)
 	toto(pt)
+	@print(" ")
+	var pt1: Point!(f32)
+	toto(pt1)
 }

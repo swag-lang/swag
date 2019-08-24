@@ -218,6 +218,7 @@ void ByteCode::print()
             g_Log.print(bc->sourceFile->path.string());
             g_Log.print(", ");
             g_Log.print(bc->node ? bc->node->name : bc->name);
+			g_Log.print(format(" (%lX)", (uint64_t) bc));
             g_Log.print("]");
             break;
         }
