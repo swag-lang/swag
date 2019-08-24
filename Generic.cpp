@@ -90,13 +90,23 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     for (int i = 0; i < match.genericParametersCallTypes.size(); i++)
     {
         auto callType = match.genericParametersCallTypes[i];
-        if (!callType)
-            continue;
-        auto genType = match.genericParametersGenTypes[i];
-        if (!genType)
-            continue;
+        auto genType  = match.genericParametersGenTypes[i];
         if (callType != genType)
             cloneContext.replaceTypes[genType] = callType;
+
+        // For a struct, each generic parameter must be swapped too
+        if (callType->kind == TypeInfoKind::Struct)
+        {
+            auto callTypeStruct = CastTypeInfo<TypeInfoStruct>(callType, TypeInfoKind::Struct);
+            auto genTypeStruct  = CastTypeInfo<TypeInfoStruct>(genType, TypeInfoKind::Struct);
+            for (int j = 0; j < callTypeStruct->genericParameters.size(); j++)
+            {
+                auto genTypeParam  = CastTypeInfo<TypeInfoFuncAttrParam>(genTypeStruct->genericParameters[j], TypeInfoKind::FuncAttrParam);
+                auto callTypeParam = CastTypeInfo<TypeInfoFuncAttrParam>(callTypeStruct->genericParameters[j], TypeInfoKind::FuncAttrParam);
+
+                cloneContext.replaceTypes[genTypeParam->typeInfo] = callTypeParam->typeInfo;
+            }
+        }
     }
 
     auto symbol     = match.symbolOverload;
@@ -110,12 +120,12 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     newType->flags &= ~TYPEINFO_GENERIC;
     funcNode->typeInfo = newType;
 
-	// Replace generic type in return value
-	{
-		auto it = cloneContext.replaceTypes.find(newType->returnType);
-		if (it != cloneContext.replaceTypes.end())
-			newType->returnType = it->second;
-	}
+    // Replace generic type in return value
+    {
+        auto it = cloneContext.replaceTypes.find(newType->returnType);
+        if (it != cloneContext.replaceTypes.end())
+            newType->returnType = it->second;
+    }
 
     // Replace generic types with their real values in the function parameters
     for (int i = 0; i < newType->parameters.size(); i++)

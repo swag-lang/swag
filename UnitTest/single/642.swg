@@ -8,7 +8,7 @@ struct(T) Point
 
 impl Point
 {
-	#[swag.printbc]
+	//#[swag.printbc]
 	func toto(self)->T
 	{
 		return self.x
@@ -20,4 +20,6 @@ impl Point
 {
 	var pt: Point!s32
 	@assert(Point.toto(pt) == 65)
+	var pt1: Point!f32
+	@assert(Point.toto(pt1) == 65.0)	
 }
