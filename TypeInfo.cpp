@@ -528,18 +528,21 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     // It's valid to not specify generic parameters. They will be deduced
     if (numGenericParams < wantedNumGenericParams)
     {
-        // A reference to a generic function without specifying the generic parameters is a match
-        if (!numGenericParams)
+        if (flags & TYPEINFO_GENERIC)
         {
-            for (int i = 0; i < wantedNumGenericParams; i++)
+            // A reference to a generic function without specifying the generic parameters is a match
+            if (!numGenericParams)
             {
-                auto symbolParameter                  = genericParameters[i];
-                context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
-                context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
-            }
+                for (int i = 0; i < wantedNumGenericParams; i++)
+                {
+                    auto symbolParameter                  = genericParameters[i];
+                    context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
+                    context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
+                }
 
-            context.result = MatchResult::Ok;
-            return;
+                context.result = MatchResult::Ok;
+                return;
+            }
         }
 
         context.result = MatchResult::NotEnoughGenericParameters;
