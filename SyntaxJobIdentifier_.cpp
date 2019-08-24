@@ -16,40 +16,52 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
     callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
     callParams->token       = move(token);
 
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    while (token.id != TokenId::SymRightParen)
+    if (token.id != TokenId::SymLeftParen)
     {
-        while (true)
+        auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
+        param->inheritOwnersAndFlags(this);
+        param->semanticFct = &SemanticJob::resolveFuncCallParam;
+        param->token       = token;
+        SWAG_CHECK(doExpression(param));
+    }
+    else
+    {
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+        while (token.id != TokenId::SymRightParen)
         {
-            auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
-            param->inheritOwnersAndFlags(this);
-            param->semanticFct = &SemanticJob::resolveFuncCallParam;
-            param->token       = token;
-            AstNode* paramExpression;
-            SWAG_CHECK(doExpression(nullptr, &paramExpression));
-
-            // Name
-            if (token.id == TokenId::SymColon)
+            while (true)
             {
-                if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return sourceFile->report({sourceFile, paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
-                param->namedParamNode = paramExpression->childs.front();
-                param->namedParam     = param->namedParamNode->token.text;
-                SWAG_CHECK(eatToken());
-                SWAG_CHECK(doExpression(param));
-            }
-            else
-            {
-                Ast::addChild(param, paramExpression);
-            }
+                auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
+                param->inheritOwnersAndFlags(this);
+                param->semanticFct = &SemanticJob::resolveFuncCallParam;
+                param->token       = token;
+                AstNode* paramExpression;
+                SWAG_CHECK(doExpression(nullptr, &paramExpression));
 
-            if (token.id != TokenId::SymComma)
-                break;
-            SWAG_CHECK(eatToken(TokenId::SymComma));
+                // Name
+                if (token.id == TokenId::SymColon)
+                {
+                    if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
+                        return sourceFile->report({sourceFile, paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
+                    param->namedParamNode = paramExpression->childs.front();
+                    param->namedParam     = param->namedParamNode->token.text;
+                    SWAG_CHECK(eatToken());
+                    SWAG_CHECK(doExpression(param));
+                }
+                else
+                {
+                    Ast::addChild(param, paramExpression);
+                }
+
+                if (token.id != TokenId::SymComma)
+                    break;
+                SWAG_CHECK(eatToken(TokenId::SymComma));
+            }
         }
+
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
 
