@@ -90,7 +90,11 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     for (int i = 0; i < match.genericParametersCallTypes.size(); i++)
     {
         auto callType = match.genericParametersCallTypes[i];
-        auto genType  = match.genericParametersGenTypes[i];
+        if (!callType)
+            continue;
+        auto genType = match.genericParametersGenTypes[i];
+        if (!genType)
+            continue;
         if (callType != genType)
             cloneContext.replaceTypes[genType] = callType;
     }

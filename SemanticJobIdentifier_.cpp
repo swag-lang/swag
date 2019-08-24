@@ -179,7 +179,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     parent->previousResolvedNode   = node;
     node->resolvedSymbolName       = symbol;
     node->resolvedSymbolOverload   = overload;
-    node->typeInfo                 = node->resolvedSymbolOverload->typeInfo;
 
     if (node->typeInfo->flags & TYPEINFO_GENERIC)
         node->flags |= AST_IS_GENERIC;
@@ -653,7 +652,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
+    {
+        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload));
         return true;
+    }
 
     if (node->name == "Self")
     {
@@ -791,6 +793,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             SWAG_ASSERT(dependentSymbols.size() == 1);
             SWAG_ASSERT(symbol->overloads.size() == 1);
+            auto overload  = dependentSymbols[0]->overloads[0];
+            node->typeInfo = overload->typeInfo;
             SWAG_CHECK(setSymbolMatch(context, identifierRef, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]));
             return true;
         }
@@ -800,6 +804,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (context->result == SemanticResult::Pending)
         return true;
 
+	auto overload  = job->cacheMatches[0];
+    node->typeInfo = overload->typeInfo;
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0]));
     return true;
 }

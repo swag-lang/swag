@@ -7,13 +7,14 @@ struct(T) Point
 }
 
 //#[swag.printbc]
-func toto(x: Point)
+func toto(v: Point)
 {
-	//@print(x.x)
+	@print(v.x)
 }
 
+//#[swag.printbc]
 #test
 {
-	var x: Point!(s32)
-	toto(x)
+	var pt: Point!(s32)
+	toto(pt)
 }

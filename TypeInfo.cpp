@@ -83,6 +83,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     // Solve unnamed parameters
     int numParams = (int) context.parameters.size();
 
+    int  maxGenericParam    = 0;
     int  cptResolved        = 0;
     bool hasNamedParameters = false;
     for (int i = 0; i < numParams; i++)
@@ -135,6 +136,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             }
             else
             {
+                maxGenericParam                                    = i;
                 context.mapGenericTypes[symbolParameter->typeInfo] = {typeInfo, i};
             }
         }
@@ -266,6 +268,17 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
                 context.genericParametersCallTypes[i] = it->second.first;
                 context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
             }
+        }
+    }
+    else if (context.mapGenericTypes.size())
+    {
+        context.genericParametersCallValues.resize(maxGenericParam + 1);
+        context.genericParametersCallTypes.resize(maxGenericParam + 1);
+        context.genericParametersGenTypes.resize(maxGenericParam + 1);
+        for (auto it : context.mapGenericTypes)
+        {
+            context.genericParametersCallTypes[it.second.second] = it.second.first;
+            context.genericParametersGenTypes[it.second.second]  = it.first;
         }
     }
 
@@ -518,12 +531,12 @@ bool TypeInfoStruct::isSameForCast(TypeInfo* from)
         return false;
     for (int i = 0; i < genericParameters.size(); i++)
     {
-		if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
-			continue;
+        if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
+            continue;
         if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
             return false;
     }
-	
+
     return true;
 }
 
