@@ -194,6 +194,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->type->typeInfo;
     }
 
+	if(node->type)
+		node->inheritOrFlag(node->type, AST_IS_GENERIC);
     if (!(node->flags & AST_IS_GENERIC))
     {
         SWAG_VERIFY(node->typeInfo, sourceFile->report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
@@ -318,7 +320,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Register symbol with its type
     auto symbolKind = SymbolKind::Variable;
-    if (symbolFlags & OVERLOAD_GENERIC)
+    if ((symbolFlags & OVERLOAD_GENERIC) && !node->type)
         symbolKind = SymbolKind::GenericType;
 
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,

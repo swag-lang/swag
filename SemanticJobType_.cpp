@@ -66,11 +66,19 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
-	// Already solved
-	if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
-		return true;
+    // Already solved
+    if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
+        return true;
 
-    node->typeInfo = node->typeExpression ? node->typeExpression->typeInfo : node->token.literalType;
+    if (node->typeExpression)
+    {
+        node->typeInfo = node->typeExpression->typeInfo;
+		node->inheritOrFlag(node->typeExpression, AST_IS_GENERIC);
+    }
+    else
+    {
+        node->typeInfo = node->token.literalType;
+    }
 
     // This is a generic type, not yet known
     if (!node->typeInfo && node->typeExpression && node->typeExpression->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
@@ -167,7 +175,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     }
 
     node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
-	node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
+    node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
 
     return true;
 }
@@ -195,7 +203,7 @@ bool SemanticJob::resolveCast(SemanticContext* context)
     node->typeInfo    = typeNode->typeInfo;
     node->byteCodeFct = &ByteCodeGenJob::emitCast;
 
-    node->inheritAndFlag(exprNode, AST_CONST_EXPR);
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR);
     node->inheritComputedValue(exprNode);
 
     return true;

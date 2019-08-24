@@ -30,6 +30,8 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     {
         if (!(child->flags & AST_CONST_EXPR))
             isConstExpr = false;
+        if (child->flags & AST_IS_GENERIC)
+            node->flags |= AST_IS_GENERIC;
     }
 
     if (isConstExpr)
@@ -179,6 +181,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     node->resolvedSymbolOverload   = overload;
     node->typeInfo                 = node->resolvedSymbolOverload->typeInfo;
 
+    if (node->typeInfo->flags & TYPEINFO_GENERIC)
+        node->flags |= AST_IS_GENERIC;
+
     switch (symbol->kind)
     {
     case SymbolKind::Namespace:
@@ -267,7 +272,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         node->kind = AstNodeKind::FuncCall;
-        node->inheritAndFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
+        node->inheritOrFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
 
         if (node->token.id == TokenId::Intrinsic)
         {
@@ -380,9 +385,22 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
         if (forStruct)
-            SWAG_CHECK(Generic::InstanciateStruct(context, genericParameters, genericMatches[0]));
+        {
+			if (genericParameters && !(node->flags & AST_IS_GENERIC))
+			{
+				SWAG_CHECK(Generic::InstanciateStruct(context, genericParameters, genericMatches[0]));
+			}
+            else
+            {
+                matches.push_back(genericMatches[0].symbolOverload);
+                node->flags |= AST_IS_GENERIC;
+            }
+        }
         else
+        {
             SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
+        }
+
         return true;
     }
 
@@ -708,6 +726,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         if (node->genericParameters)
         {
+            node->inheritOrFlag(node->genericParameters, AST_IS_GENERIC);
             if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Struct)
             {
                 Diagnostic diag{sourceFile, node->callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};

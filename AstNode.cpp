@@ -105,6 +105,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
 {
     kind  = from->kind;
     flags = from->flags;
+    flags &= ~AST_IS_GENERIC;
 
     ownerScopeStruct = context.ownerScopeStruct ? context.ownerScopeStruct : from->ownerScopeStruct;
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;

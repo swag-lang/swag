@@ -510,6 +510,7 @@ struct TypeInfoGeneric : public TypeInfo
         TypeInfo::reset();
         rawType = nullptr;
         kind    = TypeInfoKind::Generic;
+        flags |= TYPEINFO_GENERIC;
     }
 
     bool isSame(TypeInfo* from) override

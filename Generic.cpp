@@ -25,12 +25,11 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags &= ~AST_IS_GENERIC;
     structNode->flags |= AST_FROM_GENERIC;
-    //funcNode->content->flags &= ~AST_DISABLED;
     Ast::addChild(sourceNode->parent, structNode);
 
     auto newType = static_cast<TypeInfoStruct*>(symbol->typeInfo->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
-	newType->scope = structNode->scope;
+    newType->scope       = structNode->scope;
     structNode->typeInfo = newType;
 
     // Replace generic types and values in the struct generic parameters
@@ -94,7 +93,6 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     auto symbol     = match.symbolOverload;
     auto sourceNode = symbol->node;
     auto funcNode   = CastAst<AstFuncDecl>(sourceNode->clone(cloneContext), AstNodeKind::FuncDecl);
-    funcNode->flags &= ~AST_IS_GENERIC;
     funcNode->flags |= AST_FROM_GENERIC;
     funcNode->content->flags &= ~AST_DISABLED;
     Ast::addChild(sourceNode->parent, funcNode);

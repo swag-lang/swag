@@ -37,6 +37,8 @@ bool SemanticJob::setupFuncDeclParams(SourceFile* sourceFile, TypeInfoFuncAttr* 
         funcParam->typeInfo = param->typeInfo;
         funcParam->index    = index++;
 
+        parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
+
         // Variadic must be the last one
         if (nodeParam->typeInfo == g_TypeMgr.typeInfoVariadic)
         {
@@ -139,7 +141,7 @@ bool SemanticJob::checkFuncPrototype(AstFuncDecl* node, SourceFile* sourceFile)
         SWAG_VERIFY(parameters && parameters->childs.size() >= 2, sourceFile->report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(!returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid), sourceFile->report({sourceFile, returnType, format("missing return type for special function '%s'", name.c_str())}));
         for (int i = 1; i < parameters->childs.size(); i++)
-			SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoS32), sourceFile->report({ sourceFile, parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('s32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str()) }));
+            SWAG_VERIFY(parameters->childs[i]->typeInfo->isSame(g_TypeMgr.typeInfoS32), sourceFile->report({sourceFile, parameters->childs[i], format("invalid parameter '%d' for special function '%s' ('s32' expected, '%s' provided)", i + 1, name.c_str(), parameters->childs[i]->typeInfo->name.c_str())}));
     }
     else if (name == "opIndexAssign")
     {
@@ -153,6 +155,14 @@ bool SemanticJob::checkFuncPrototype(AstFuncDecl* node, SourceFile* sourceFile)
         return sourceFile->report({sourceFile, node->token, format("function '%s' does not match a special function/operator overload", name.c_str())});
     }
 
+    return true;
+}
+
+bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
+{
+    auto node = context->node;
+    node->inheritOrFlag(AST_IS_GENERIC);
+    node->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
     return true;
 }
 
@@ -219,6 +229,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         genByteCode = false;
+    if (node->attributeFlags & AST_IS_GENERIC)
+        genByteCode = false;
 
     if (genByteCode)
     {
@@ -267,6 +279,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
+    // Function is generic if parameters are
+    if (funcNode->parameters)
+        funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
+
     // Collect function attributes
     SymbolAttributes attributes;
     SWAG_CHECK(collectAttributes(context, attributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
@@ -299,7 +315,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
-    auto node         = context->node;
+    auto node = context->node;
+    node->inheritOrFlag(AST_IS_GENERIC);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParams;
     return true;
 }
@@ -310,7 +327,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
     node->inheritComputedValue(child);
-    node->inheritAndFlag(child, AST_CONST_EXPR);
+    node->inheritOrFlag(child, AST_CONST_EXPR);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
     return true;
 }

@@ -92,7 +92,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     auto arrayNode                    = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
-    arrayNode->inheritAndFlag(arrayNode->array, AST_L_VALUE);
+    arrayNode->inheritOrFlag(arrayNode->array, AST_L_VALUE);
 
     auto arrayType  = arrayNode->array->typeInfo;
     auto sourceFile = context->sourceFile;

@@ -5,6 +5,11 @@ struct(T) Point
 {
 }
 
+#[swag.printbc]
+func toto(x: Point)
+{
+}
+
 #test
 {
 }

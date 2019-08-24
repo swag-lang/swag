@@ -156,6 +156,7 @@ void SyntaxJob::setupSelfType(AstIdentifier* node)
     {
         auto allParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
         allParams->inheritOwnersAndFlags(this);
+		allParams->semanticFct = &SemanticJob::resolveFuncDeclParams;
         node->genericParameters = allParams;
 
         if (structNode->genericParameters)
@@ -198,7 +199,7 @@ void SyntaxJob::generateOpInit(AstNode* node)
         // Parameters
         funcNode->parameters = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, structNode->sourceFileIdx, funcNode);
         funcNode->parameters->inheritOwnersAndFlags(this);
-        funcNode->parameters->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
+        funcNode->parameters->semanticFct = &SemanticJob::resolveFuncDeclParams;
 
         // One parameter
         auto param = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, structNode->sourceFileIdx, funcNode->parameters);

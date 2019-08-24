@@ -154,22 +154,35 @@ struct AstNode : public PoolElement
         return flags & AST_DISABLED;
     }
 
-    void inheritAndFlag(AstNode* op, uint64_t flag)
+    void inheritOrFlag(uint64_t flag)
     {
+        for (auto child : childs)
+            flags |= child->flags & flag;
+    }
+
+    void inheritOrFlag(AstNode* op, uint64_t flag)
+    {
+		if (!op)
+			return;
         flags |= op->flags & flag;
     }
 
-    void inheritAndFlag(AstNode* left, AstNode* right, uint64_t flag)
+    void inheritAndFlag(uint64_t flag)
     {
-        if ((left->flags & flag) && (right->flags & flag))
-            flags |= flag;
+        for (auto child : childs)
+        {
+            if (!(child->flags & flag))
+                return;
+        }
+
+        flags |= flag;
     }
 
     void inheritComputedValue(AstNode* from)
     {
         if (!from)
             return;
-        inheritAndFlag(from, AST_VALUE_COMPUTED);
+        inheritOrFlag(from, AST_VALUE_COMPUTED);
         if (flags & AST_VALUE_COMPUTED)
         {
             flags |= AST_CONST_EXPR;

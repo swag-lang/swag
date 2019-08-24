@@ -702,7 +702,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
     node->inheritLocation();
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
-    node->inheritAndFlag(left, right, AST_CONST_EXPR);
+    node->inheritAndFlag(AST_CONST_EXPR);
 
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
@@ -776,7 +776,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     node->typeInfo = left->typeInfo;
 
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
-    node->inheritAndFlag(left, right, AST_CONST_EXPR);
+    node->inheritAndFlag(AST_CONST_EXPR);
 
     switch (node->token.id)
     {
@@ -805,7 +805,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, g_TypeMgr.typeInfoBool, rightNode));
 
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
-    node->inheritAndFlag(leftNode, rightNode, AST_CONST_EXPR);
+    node->inheritAndFlag(AST_CONST_EXPR);
 
     if ((leftNode->flags & AST_VALUE_COMPUTED) && (rightNode->flags & AST_VALUE_COMPUTED))
     {
@@ -1097,7 +1097,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, left, right));
 
     node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;
-    node->inheritAndFlag(left, right, AST_CONST_EXPR);
+    node->inheritAndFlag(AST_CONST_EXPR);
 
     switch (node->token.id)
     {

@@ -482,8 +482,8 @@ bool TypeInfoStruct::isSame(TypeInfo* from)
         return false;
 
     auto other = static_cast<TypeInfoStruct*>(from);
-	if (genericParameters.size() != other->genericParameters.size())
-		return false;
+    if (genericParameters.size() != other->genericParameters.size())
+        return false;
     for (int i = 0; i < genericParameters.size(); i++)
     {
         if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
@@ -513,9 +513,27 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     int wantedNumGenericParams = (int) genericParameters.size();
     int numGenericParams       = (int) context.genericParameters.size();
 
+    context.genericParametersCallValues.resize(wantedNumGenericParams);
+    context.genericParametersCallTypes.resize(wantedNumGenericParams);
+    context.genericParametersGenTypes.resize(wantedNumGenericParams);
+
     // It's valid to not specify generic parameters. They will be deduced
     if (numGenericParams < wantedNumGenericParams)
     {
+		// A reference to a generic function without specifying the generic parameters is a match
+        if (!numGenericParams)
+        {
+            for (int i = 0; i < wantedNumGenericParams; i++)
+            {
+                auto symbolParameter                  = genericParameters[i];
+                context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
+                context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
+            }
+
+            context.result = MatchResult::Ok;
+			return;
+        }
+
         context.result = MatchResult::NotEnoughGenericParameters;
         return;
     }
@@ -525,10 +543,6 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
         context.result = MatchResult::TooManyGenericParameters;
         return;
     }
-
-    context.genericParametersCallValues.resize(wantedNumGenericParams);
-    context.genericParametersCallTypes.resize(wantedNumGenericParams);
-    context.genericParametersGenTypes.resize(wantedNumGenericParams);
 
     for (int i = 0; i < numGenericParams; i++)
     {
