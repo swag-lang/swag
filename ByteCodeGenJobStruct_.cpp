@@ -185,9 +185,8 @@ bool ByteCodeGenJob::emitDefaultStruct(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset)
 {
-    auto node       = context->node;
-    auto resolved   = node->resolvedSymbolOverload;
-    auto structNode = CastAst<AstStruct>(typeInfo->structNode, AstNodeKind::StructDecl);
+    auto node     = context->node;
+    auto resolved = node->resolvedSymbolOverload;
 
     // Type
     auto typeInfoFunc = g_Pool_typeInfoFuncAttr.alloc();
