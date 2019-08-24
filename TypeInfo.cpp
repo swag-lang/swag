@@ -123,7 +123,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         context.doneParameters[cptResolved] = true;
 
         // This is a generic type match
-        if (symbolParameter->typeInfo->kind == TypeInfoKind::Generic)
+        if (symbolParameter->typeInfo->flags & TYPEINFO_GENERIC)
         {
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
             if (it != context.mapGenericTypes.end() && it->second.first != typeInfo)
@@ -406,8 +406,8 @@ void TypeInfoFuncAttr::computeName()
     name += ")";
     if (returnType)
         name += format("->%s", returnType->name.c_str());
-	else
-		name += "->void";
+    else
+        name += "->void";
 }
 
 TypeInfo* TypeInfoPointer::clone()
@@ -504,13 +504,26 @@ bool TypeInfoStruct::isSame(TypeInfo* from)
         if (!childs[i]->isSame(other->childs[i]))
             return false;
     }
+
     return true;
 }
 
-bool TypeInfoStruct::isSameExact(TypeInfo* from)
+bool TypeInfoStruct::isSameForCast(TypeInfo* from)
 {
-    if (!TypeInfoStruct::isSame(from))
+    if (!TypeInfo::isSame(from))
         return false;
+
+    auto other = static_cast<TypeInfoStruct*>(from);
+    if (genericParameters.size() != other->genericParameters.size())
+        return false;
+    for (int i = 0; i < genericParameters.size(); i++)
+    {
+		if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
+			continue;
+        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
+            return false;
+    }
+	
     return true;
 }
 

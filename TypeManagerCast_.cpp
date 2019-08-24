@@ -971,7 +971,7 @@ bool TypeManager::castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo
     else if (fromType->kind == TypeInfoKind::Array)
     {
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType))
+        if (toTypeSlice->pointedType->isSameForCast(fromTypeArray->pointedType))
         {
             if (castFlags & CASTFLAG_FORCE)
                 return true;
@@ -1029,7 +1029,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
 		return true;
     if (fromType == toType)
         return true;
-    if (fromType->isSame(toType))
+    if (fromType->isSameForCast(toType))
         return true;
 
 	// To a generic type
@@ -1072,7 +1072,7 @@ bool TypeManager::makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, Type
     // Cast to slice
     if (toType->kind == TypeInfoKind::Lambda)
     {
-        if (toType->isSame(fromType))
+        if (toType->isSameForCast(fromType))
             return true;
     }
 
