@@ -28,7 +28,7 @@ bool BackendC::emitMain()
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        bufferC.addString(format("%s();\n", node->fullname.c_str()));
+        bufferC.addString(format("%s();\n", bc->callName().c_str()));
     }
     bufferC.addString("#endif\n");
 

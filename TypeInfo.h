@@ -10,6 +10,7 @@ struct SymbolMatchContext;
 struct Job;
 enum class Intrisic;
 struct AstNode;
+struct ByteCode;
 
 enum class TypeInfoKind
 {
@@ -85,8 +86,8 @@ struct TypeInfo : public PoolElement
             return false;
         if (isConst() != from->isConst())
             return false;
-		if(name != from->name)
-			return false;
+        if (name != from->name)
+            return false;
         return true;
     }
 
@@ -95,7 +96,7 @@ struct TypeInfo : public PoolElement
         return isSame(from);
     }
 
-	virtual bool isSameForCast(TypeInfo* from)
+    virtual bool isSameForCast(TypeInfo* from)
     {
         return isSame(from);
     }
@@ -549,11 +550,12 @@ struct TypeInfoStruct : public TypeInfo
         childs.clear();
         scope      = nullptr;
         structNode = nullptr;
+        opInitBc   = nullptr;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
     bool      isSame(TypeInfo* from) override;
-	bool      isSameForCast(TypeInfo* from) override;
+    bool      isSameForCast(TypeInfo* from) override;
     TypeInfo* clone() override;
     void      match(SymbolMatchContext& context);
 
@@ -566,6 +568,7 @@ struct TypeInfoStruct : public TypeInfo
     vector<TypeInfo*>              childs;
     Scope*                         scope;
     AstNode*                       structNode;
+    ByteCode*                      opInitBc;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;

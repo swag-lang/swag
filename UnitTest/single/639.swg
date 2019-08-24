@@ -8,16 +8,15 @@ struct(T) Point
 
 //#[swag.printbc]
 func toto(v: Point)
-{
-	@print(v.x)
+{	
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	var pt: Point!(s32)
 	toto(pt)
-	@print(" ")
+	@assert(pt.x == 1)
 	var pt1: Point!(f32)
-	toto(pt1)
+	@assert(pt1.x == 1.0)
 }

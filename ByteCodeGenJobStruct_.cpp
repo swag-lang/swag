@@ -16,7 +16,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     auto structNode = CastAst<AstStruct>(typeInfo->structNode, AstNodeKind::StructDecl);
 
     structNode->lock();
-    if (structNode->opInit->bc)
+    if (typeInfo->opInitBc)
     {
         structNode->unlock();
         return true;
@@ -33,7 +33,8 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     opInit->usedRegisters.insert(2);
 
     sourceFile->module->addByteCodeFunc(opInit);
-    structNode->opInit->bc = opInit;
+    structNode->opInit->bc = opInit; // For a direct user call, @TEMP, will not work with generics
+    typeInfo->opInitBc     = opInit;
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
@@ -41,7 +42,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     // No special value, so we can just clear the struct
     if (!(typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
     {
-		emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
         switch (typeInfo->sizeOf)
         {
         case 1:
@@ -123,7 +124,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                 if (typeVar->kind == TypeInfoKind::Struct)
                 {
                     auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
-                    if (!generateStructInit(context, static_cast<TypeInfoStruct*>(typeVar), typeInfoFunc))
+                    if (!generateStructInit(context, typeVarStruct, typeInfoFunc))
                         return false;
 
                     // Function call if necessary
@@ -131,7 +132,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                     {
                         emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                         auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
-                        inst->a.pointer = (uint8_t*) static_cast<AstStruct*>(typeVarStruct->structNode)->opInit->bc;
+                        inst->a.pointer = (uint8_t*) typeVarStruct->opInitBc;
                         inst->b.u64     = 1;
                         inst->c.pointer = (uint8_t*) typeInfoFunc;
                         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
@@ -168,7 +169,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     emitInstruction(&cxt, ByteCodeOp::End);
     structNode->unlock();
 
-    //structNode->opInit->bc->print();
+    //typeInfo->opInitBc->print();
     return true;
 }
 
@@ -224,7 +225,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         // Then call
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
         inst            = emitInstruction(context, ByteCodeOp::LocalCall, 0);
-        inst->a.pointer = (uint8_t*) structNode->opInit->bc;
+        inst->a.pointer = (uint8_t*) typeInfo->opInitBc;
         inst->b.u64     = 1;
         inst->c.pointer = (uint8_t*) typeInfoFunc;
         emitInstruction(context, ByteCodeOp::IncSP, 8);

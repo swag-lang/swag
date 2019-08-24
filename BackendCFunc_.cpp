@@ -992,7 +992,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::MakeLambda:
         {
             auto funcBC = (ByteCode*) ip->b.pointer;
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->node->fullname.c_str()));
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str()));
             break;
         }
 
@@ -1118,7 +1118,7 @@ bool BackendC::emitFunctions()
         {
             emitFuncSignaturePublic(bufferC, typeFunc, node);
             bufferC.addString(" {\n");
-            bufferC.addString(format("%s();\n", node->fullname.c_str()));
+            bufferC.addString(format("%s();\n", one->callName().c_str()));
             bufferC.addString("}\n\n");
         }
     }
