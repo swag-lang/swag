@@ -603,8 +603,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     if (node->name == "Self")
     {
-        SWAG_VERIFY(node->ownerStruct, sourceFile->report({sourceFile, node->token, "type 'Self' cannot be used outside an 'impl' block"}));
-        node->name = node->ownerStruct->name;
+        SWAG_VERIFY(node->ownerScopeStruct, sourceFile->report({sourceFile, node->token, "type 'Self' cannot be used outside an 'impl' block"}));
+        node->name = node->ownerScopeStruct->name;
     }
 
     if (node->semanticState == AstNodeResolveState::ProcessingChilds)
@@ -718,8 +718,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             int idx = 0;
             for (auto param : node->genericParameters->childs)
             {
-                auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
-                SWAG_VERIFY(oneParam->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)}));
+                auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
+                if (!(oneParam->flags & AST_VALUE_COMPUTED) && oneParam->typeInfo->kind != TypeInfoKind::Generic)
+                    return sourceFile->report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)});
                 job->symMatch.genericParameters.push_back(oneParam);
                 job->symMatch.genericParametersCallValues.push_back(oneParam->computedValue);
                 job->symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
@@ -731,7 +732,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     {
         // For everything except functions/attributes/structs (which have overloads), this is a match
         auto symbol = dependentSymbols[0];
-        if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function)
+        if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Struct)
         {
             SWAG_ASSERT(dependentSymbols.size() == 1);
             SWAG_ASSERT(symbol->overloads.size() == 1);

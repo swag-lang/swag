@@ -112,7 +112,7 @@ JobResult SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     // One unnamed scope per file
-    sourceFile->scopeRoot = Ast::newScope("", ScopeKind::File, sourceFile->module->scopeRoot);
+    sourceFile->scopeRoot = Ast::newScope(nullptr, "", ScopeKind::File, sourceFile->module->scopeRoot);
     currentScope          = sourceFile->scopeRoot;
 
     // Setup root ast for file

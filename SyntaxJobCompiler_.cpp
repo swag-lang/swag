@@ -148,7 +148,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     {
         scoped_lock lk(currentScope->symTable->mutex);
         auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
-        newScope             = Ast::newScope(funcNode->name, ScopeKind::Function, currentScope);
+        newScope             = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
         int id               = g_Global.uniqueID.fetch_add(1);
         funcNode->name       = "__" + to_string(id);
         funcNode->typeInfo   = typeInfo;

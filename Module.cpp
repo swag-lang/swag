@@ -20,7 +20,7 @@ void Module::setup(Workspace* wkp, const fs::path& pth)
     makeUpper(nameUp);
 
     workspace = wkp;
-    scopeRoot = Ast::newScope("", ScopeKind::Module, nullptr);
+    scopeRoot = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     scopeRoot->allocateSymTable();
 
     astRoot   = Ast::newNode(&g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);

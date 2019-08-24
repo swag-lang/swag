@@ -143,6 +143,9 @@ struct SemanticJob : public Job
         scopesHereNoAlt.clear();
         cacheMatches.clear();
         cacheBadSignature.clear();
+		cacheGenericMatches.clear();
+		cacheBadSignature.clear();
+		cacheBadGenericSignature.clear();
         symMatch.reset();
     }
 

@@ -27,7 +27,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get or create scope
-    auto newScope = Ast::newScope(implNode->identifier->childs.front()->name, ScopeKind::Struct, currentScope, true);
+    auto newScope = Ast::newScope(implNode, implNode->identifier->childs.front()->name, ScopeKind::Struct, currentScope, true);
     newScope->allocateSymTable();
     implNode->structScope = newScope;
 
@@ -75,7 +75,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         if (!symbol)
         {
             auto typeInfo = g_Pool_typeInfoStruct.alloc();
-            newScope      = Ast::newScope(structNode->name, ScopeKind::Struct, currentScope, true);
+            newScope      = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
             newScope->allocateSymTable();
             typeInfo->name       = structNode->name;
             typeInfo->scope      = newScope;
@@ -95,6 +95,21 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         }
     }
 
+    // Dispatch owners
+    if (structNode->genericParameters)
+    {
+        scoped_lock lock(newScope->symTable->mutex);
+        Ast::visit(structNode->genericParameters, [&](AstNode* n) {
+            n->ownerScopeStruct = newScope;
+            n->ownerScope       = newScope;
+			if (n->kind == AstNodeKind::FuncDeclParam)
+			{
+				auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
+				newScope->symTable->registerSymbolNameNoLock(sourceFile, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
+			}
+        });
+    }
+
     // Raw type
     SWAG_CHECK(tokenizer.getToken(token));
 
@@ -103,7 +118,8 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     {
-        Scoped scoped(this, newScope);
+        Scoped       scoped(this, newScope);
+        ScopedStruct scopedStruct(this, newScope);
 
         auto contentNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::StructContent, sourceFile->indexInModule, structNode);
         contentNode->inheritOwnersAndFlags(this);
@@ -120,11 +136,36 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     // Generate an empty init function so that the user can call it
     {
-        Scoped scoped(this, newScope);
+        Scoped       scoped(this, newScope);
+        ScopedStruct scopedStruct(this, newScope);
+
         generateOpInit(structNode);
     }
 
     return true;
+}
+
+void SyntaxJob::setupSelfType(AstIdentifier* node)
+{
+    if (!node->ownerScopeStruct)
+        return;
+    auto structNode = CastAst<AstStruct>(node->ownerScopeStruct->owner, AstNodeKind::StructDecl);
+    node->name      = structNode->name;
+
+    if (structNode->genericParameters)
+    {
+        auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
+        allParams->inheritOwnersAndFlags(this);
+        node->genericParameters = allParams;
+
+        if (structNode->genericParameters)
+        {
+            for (auto genParam : structNode->genericParameters->childs)
+            {
+                Ast::createIdentifierRef(this, genParam->name, structNode->token, allParams);
+            }
+        }
+    }
 }
 
 void SyntaxJob::generateOpInit(AstNode* node)
@@ -143,15 +184,16 @@ void SyntaxJob::generateOpInit(AstNode* node)
     {
         scoped_lock lk(currentScope->symTable->mutex);
         auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
-        newScope             = Ast::newScope(funcNode->name, ScopeKind::Function, currentScope);
+        newScope             = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
         newScope->allocateSymTable();
         funcNode->typeInfo = typeInfo;
         currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 
     {
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
+        Scoped       scoped(this, newScope);
+        ScopedFct    scopedFct(this, funcNode);
+        ScopedStruct scopedStruct(this, structNode->scope);
 
         // Parameters
         funcNode->parameters = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, structNode->sourceFileIdx, funcNode);
@@ -167,8 +209,9 @@ void SyntaxJob::generateOpInit(AstNode* node)
         auto typeNode = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, structNode->sourceFileIdx, param);
         typeNode->inheritOwnersAndFlags(this);
         typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
-        typeNode->typeExpression = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
+        typeNode->typeExpression = Ast::createIdentifierRef(this, "Self", token, typeNode);
         param->type              = typeNode;
+        setupSelfType(CastAst<AstIdentifier>(typeNode->typeExpression->childs.front(), AstNodeKind::Identifier));
     }
 
     funcNode->returnType = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, structNode->sourceFileIdx, funcNode);

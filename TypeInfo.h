@@ -275,19 +275,6 @@ enum MatchResult
 
 struct SymbolMatchContext
 {
-    int                                  badSignatureParameterIdx;
-    TypeInfo*                            badSignatureRequestedType;
-    TypeInfo*                            badSignatureGivenType;
-    MatchResult                          result;
-    vector<AstNode*>                     genericParameters;
-    vector<AstNode*>                     parameters;
-    vector<bool>                         doneParameters;
-    map<TypeInfo*, pair<TypeInfo*, int>> mapGenericTypes;
-    bool                                 forLambda;
-    vector<ComputedValue>                genericParametersCallValues;
-    vector<TypeInfo*>                    genericParametersCallTypes;
-    vector<TypeInfo*>                    genericParametersGenTypes;
-
     SymbolMatchContext()
     {
         reset();
@@ -304,8 +291,22 @@ struct SymbolMatchContext
         doneParameters.clear();
         genericParametersCallValues.clear();
         genericParametersCallTypes.clear();
+        genericParametersGenTypes.clear();
         forLambda = false;
     }
+
+    int                                  badSignatureParameterIdx;
+    TypeInfo*                            badSignatureRequestedType;
+    TypeInfo*                            badSignatureGivenType;
+    MatchResult                          result;
+    vector<AstNode*>                     genericParameters;
+    vector<AstNode*>                     parameters;
+    vector<bool>                         doneParameters;
+    map<TypeInfo*, pair<TypeInfo*, int>> mapGenericTypes;
+    bool                                 forLambda;
+    vector<ComputedValue>                genericParametersCallValues;
+    vector<TypeInfo*>                    genericParametersCallTypes;
+    vector<TypeInfo*>                    genericParametersGenTypes;
 };
 
 struct TypeInfoFuncAttr : public TypeInfo
@@ -535,11 +536,11 @@ struct TypeInfoStruct : public TypeInfo
     void reset()
     {
         TypeInfo::reset();
+        kind = TypeInfoKind::Struct;
+        genericParameters.clear();
         childs.clear();
-        kind       = TypeInfoKind::Struct;
         scope      = nullptr;
         structNode = nullptr;
-        genericParameters.clear();
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -553,9 +554,9 @@ struct TypeInfoStruct : public TypeInfo
     }
 
     vector<TypeInfoFuncAttrParam*> genericParameters;
-    Scope*                         scope;
     vector<TypeInfo*>              childs;
-    struct AstNode*                structNode;
+    Scope*                         scope;
+    AstNode*                       structNode;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;

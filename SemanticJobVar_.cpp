@@ -181,7 +181,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             else if (typeList->listKind == TypeInfoListKind::Tuple)
             {
                 auto typeTuple   = static_cast<TypeInfoList*>(typeList->clone());
-                typeTuple->scope = Ast::newScope("", ScopeKind::TypeList, node->ownerScope);
+                typeTuple->scope = Ast::newScope(nullptr, "", ScopeKind::TypeList, node->ownerScope);
                 node->typeInfo   = g_TypeMgr.registerType(typeTuple);
                 SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->assignment));
             }

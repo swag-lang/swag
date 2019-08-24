@@ -53,7 +53,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 {
-    auto   newScope = Ast::newScope("", ScopeKind::Statement, currentScope);
+    auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
     auto node               = Ast::newNode(&g_Pool_astFor, AstNodeKind::For, sourceFile->indexInModule, parent);

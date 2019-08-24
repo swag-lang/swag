@@ -30,6 +30,7 @@ struct SyntaxJob : public Job
     bool eatSemiCol(const char* msg = nullptr);
     bool recoverError();
 
+    void setupSelfType(AstIdentifier* node);
     void generateOpInit(AstNode* node);
 
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
@@ -94,6 +95,7 @@ struct SyntaxJob : public Job
 
     void reset() override
     {
+        sourceFile       = nullptr;
         canChangeModule  = true;
         moduleSpecified  = false;
         currentFlags     = 0;
@@ -105,7 +107,7 @@ struct SyntaxJob : public Job
 
     Tokenizer     tokenizer;
     Token         token;
-    SourceFile*   sourceFile = nullptr;
+    SourceFile*   sourceFile;
     bool          canChangeModule;
     bool          moduleSpecified;
     uint64_t      currentFlags;

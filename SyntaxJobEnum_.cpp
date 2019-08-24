@@ -28,7 +28,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         if (!symbol)
         {
             auto typeInfo = g_Pool_typeInfoEnum.alloc();
-            newScope      = Ast::newScope(enumNode->name, ScopeKind::Enum, currentScope);
+            newScope      = Ast::newScope(enumNode, enumNode->name, ScopeKind::Enum, currentScope);
             newScope->allocateSymTable();
             typeInfo->name     = enumNode->name;
             typeInfo->scope    = newScope;

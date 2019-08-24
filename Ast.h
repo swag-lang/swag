@@ -36,11 +36,13 @@ namespace Ast
         node->token = move(token);
     }
 
-    extern void     setupScope(Scope* newScope, const string& name, ScopeKind kind, Scope* parentScope);
-    extern Scope*   newScope(const string& name, ScopeKind kind, Scope* parentScope, bool singleNamed = false);
+    extern Scope*   findOrCreateScopeByName(Scope* parentScope, const string& name);
+    extern void     setupScope(Scope* newScope, AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope);
+    extern Scope*   newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     extern void     removeFromParent(AstNode* child);
     extern void     addChild(AstNode* parent, AstNode* child);
     extern AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent);
+    extern void     visit(AstNode* root, const function<void(AstNode*)>& fctor);
 }; // namespace Ast
 
 template<typename T>

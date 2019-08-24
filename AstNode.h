@@ -20,6 +20,7 @@ struct Job;
 struct AstFuncDecl;
 struct AstAttrUse;
 struct TypeInfoFuncAttrParam;
+struct AstBreakable;
 enum class Property;
 enum class TypeInfoListKind;
 
@@ -99,9 +100,11 @@ enum class AstNodeKind
 
 struct CloneContext
 {
-    AstFuncDecl*              ownerFct    = nullptr;
-    AstNode*                  parent      = nullptr;
-    Scope*                    parentScope = nullptr;
+    AstBreakable*             ownerBreakable   = nullptr;
+    AstFuncDecl*              ownerFct         = nullptr;
+    AstNode*                  parent           = nullptr;
+    Scope*                    parentScope      = nullptr;
+    Scope*                    ownerScopeStruct = nullptr;
     map<TypeInfo*, TypeInfo*> replaceTypes;
 };
 
@@ -114,7 +117,7 @@ struct AstNode : public PoolElement
         ownerScope           = nullptr;
         ownerBreakable       = nullptr;
         ownerFct             = nullptr;
-        ownerStruct          = nullptr;
+        ownerScopeStruct     = nullptr;
         parent               = nullptr;
         semanticFct          = nullptr;
         semanticBeforeFct    = nullptr;
@@ -191,10 +194,10 @@ struct AstNode : public PoolElement
 
     void inheritOwnersAndFlags(SyntaxJob* job)
     {
-        ownerScope     = job->currentScope;
-        ownerBreakable = job->currentBreakable;
-        ownerFct       = job->currentFct;
-        ownerStruct    = job->currentStruct;
+        ownerScope       = job->currentScope;
+        ownerBreakable   = job->currentBreakable;
+        ownerFct         = job->currentFct;
+        ownerScopeStruct = job->currentStruct;
         flags |= job->currentFlags;
     }
 
@@ -230,7 +233,7 @@ struct AstNode : public PoolElement
     AstBreakable* ownerBreakable;
     AstFuncDecl*  ownerFct;
     uint64_t      ownerFlags;
-    Scope*        ownerStruct;
+    Scope*        ownerScopeStruct;
 
     TypeInfo*       typeInfo;
     TypeInfo*       castedTypeInfo;
@@ -254,16 +257,17 @@ struct AstNode : public PoolElement
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
 
-    uint64_t         flags;
     vector<AstNode*> childs;
-    SpinLock         mutex;
-    ComputedValue    computedValue;
-    Utf8Crc          name;
-    Utf8             fullname;
-    uint32_t         sourceFileIdx;
-    ByteCode*        bc;
-    RegisterList     resultRegisterRC;
-    uint32_t         fctCallStorageOffset;
+
+    uint64_t      flags;
+    SpinLock      mutex;
+    ComputedValue computedValue;
+    Utf8Crc       name;
+    Utf8          fullname;
+    uint32_t      sourceFileIdx;
+    ByteCode*     bc;
+    RegisterList  resultRegisterRC;
+    uint32_t      fctCallStorageOffset;
 };
 
 struct AstVarDecl : public AstNode

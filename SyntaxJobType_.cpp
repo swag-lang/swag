@@ -80,7 +80,7 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    auto newScope = Ast::newScope("", ScopeKind::TypeList, currentScope);
+    auto newScope = Ast::newScope(nullptr, "", ScopeKind::TypeList, currentScope);
     {
         Scoped scoped(this, newScope);
         while (token.id != TokenId::SymRightCurly)

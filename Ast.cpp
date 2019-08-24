@@ -28,8 +28,8 @@ namespace Ast
 
     void addChild(AstNode* parent, AstNode* child)
     {
-		if (!child)
-			return;
+        if (!child)
+            return;
 
         if (parent)
         {
@@ -41,14 +41,19 @@ namespace Ast
         child->parent = parent;
     }
 
-    void setupScope(Scope* newScope, const string& name, ScopeKind kind, Scope* parentScope)
+    void setupScope(Scope* newScope, AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope)
     {
+        if (parentScope)
+            parentScope->lockChilds.lock();
+
         Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
         newScope->kind        = kind;
         newScope->parentScope = parentScope;
+        newScope->owner       = owner;
         newScope->name        = name;
         newScope->fullname    = move(fullname);
-        if (parentScope)
+
+        if (parentScope && newScope->indexInParent >= (uint32_t) parentScope->childScopes.size())
         {
             newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
             parentScope->childScopes.push_back(newScope);
@@ -58,28 +63,55 @@ namespace Ast
             parentScope->lockChilds.unlock();
     }
 
-    Scope* newScope(const string& name, ScopeKind kind, Scope* parentScope, bool singleNamed)
+    Scope* findOrCreateScopeByName(Scope* parentScope, const string& name)
     {
-        if (parentScope)
+        assert(parentScope);
+        scoped_lock lock(parentScope->lockChilds);
+        for (auto child : parentScope->childScopes)
         {
-            parentScope->lockChilds.lock();
-
-            // A scope with the same name already exists
-            if (singleNamed)
-            {
-                for (auto child : parentScope->childScopes)
-                {
-                    if (child->name == name)
-                    {
-                        parentScope->lockChilds.unlock();
-                        return child;
-                    }
-                }
-            }
+            if (child->name == name)
+                return child;
         }
 
+        return g_Pool_scope.alloc();
+    }
+
+    Scope* newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName)
+    {
+        if (parentScope)
+            parentScope->lockChilds.lock();
+
+		if (matchName)
+		{
+			assert(parentScope);
+			for (auto child : parentScope->childScopes)
+			{
+				if (child->name == name)
+				{
+					parentScope->lockChilds.unlock();
+					return child;
+				}
+			}
+		}
+
         auto newScope = g_Pool_scope.alloc();
-        setupScope(newScope, name, kind, parentScope);
+
+        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
+        newScope->kind        = kind;
+        newScope->parentScope = parentScope;
+        newScope->owner       = owner;
+        newScope->name        = name;
+        newScope->fullname    = move(fullname);
+
+        if (parentScope && newScope->indexInParent >= (uint32_t) parentScope->childScopes.size())
+        {
+            newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
+            parentScope->childScopes.push_back(newScope);
+        }
+
+		if (parentScope)
+            parentScope->lockChilds.unlock();
+
         return newScope;
     }
 
@@ -107,5 +139,12 @@ namespace Ast
         }
 
         return idRef;
+    }
+
+    void visit(AstNode* root, const function<void(AstNode*)>& fctor)
+    {
+        fctor(root);
+        for (auto child : root->childs)
+            visit(child, fctor);
     }
 }; // namespace Ast

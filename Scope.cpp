@@ -5,6 +5,7 @@ Pool<Scope> g_Pool_scope;
 
 void Scope::allocateSymTable()
 {
+	scoped_lock lock(lockChilds);
     if (symTable)
         return;
     symTable = new SymTable(this);

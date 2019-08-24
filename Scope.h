@@ -6,6 +6,7 @@ struct SyntaxJob;
 struct Scope;
 struct SymTable;
 struct SourceFile;
+struct AstNode;
 
 enum class ScopeKind
 {
@@ -13,11 +14,11 @@ enum class ScopeKind
     File,
     Namespace,
     Enum,
-	Struct,
+    Struct,
     Function,
     Statement,
     Breakable,
-	TypeList,
+    TypeList,
 };
 
 struct Scope : public PoolElement
@@ -27,6 +28,8 @@ struct Scope : public PoolElement
         parentScope    = nullptr;
         symTable       = nullptr;
         startStackSize = 0;
+        owner          = nullptr;
+        indexInParent  = UINT32_MAX;
     }
 
     void               allocateSymTable();
@@ -43,10 +46,11 @@ struct Scope : public PoolElement
         return kind == ScopeKind::Module || kind == ScopeKind::File;
     }
 
+    AstNode*       owner;
     ScopeKind      kind;
     Scope*         parentScope;
     SymTable*      symTable;
-    uint32_t       indexInParent = UINT32_MAX;
+    uint32_t       indexInParent;
     Utf8Crc        name;
     Utf8           fullname;
     vector<Scope*> alternativeScopes;

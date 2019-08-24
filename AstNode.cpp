@@ -106,13 +106,13 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
     kind  = from->kind;
     flags = from->flags;
 
-    ownerStruct    = from->ownerStruct;
-    ownerScope     = context.parentScope ? context.parentScope : from->ownerScope;
-    ownerBreakable = from->ownerBreakable;
-    ownerFct       = context.ownerFct ? context.ownerFct : from->ownerFct;
-    ownerFlags     = from->ownerFlags;
+    ownerScopeStruct = context.ownerScopeStruct ? context.ownerScopeStruct : from->ownerScopeStruct;
+    ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
+    ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
+    ownerFct         = context.ownerFct ? context.ownerFct : from->ownerFct;
+    ownerFlags       = from->ownerFlags;
 
-    // Replace a type by another one during generic instanciation
+    // Replace a type by another one during generic instantiation
     if (from->typeInfo && context.replaceTypes.size() > 0)
     {
         auto it = context.replaceTypes.find(from->typeInfo);
@@ -204,7 +204,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     auto cloneContext        = context;
     cloneContext.ownerFct    = newNode;
     cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.parentScope->allocateSymTable();
 
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
@@ -407,8 +407,9 @@ AstNode* AstStruct::clone(CloneContext& context)
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode->name, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.parentScope->allocateSymTable();
+    cloneContext.ownerScopeStruct = cloneContext.parentScope;
 
     newNode->opInit = opInit;
 
@@ -421,10 +422,6 @@ AstNode* AstStruct::clone(CloneContext& context)
 
 AstNode* AstImpl::clone(CloneContext& context)
 {
-    auto newNode = g_Pool_astImpl.alloc();
-    newNode->copyFrom(context, this);
-
-    newNode->structScope = structScope;
-    newNode->identifier  = findChildRef(identifier, newNode);
-    return newNode;
+    assert(false);
+    return nullptr;
 }
