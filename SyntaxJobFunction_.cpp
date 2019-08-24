@@ -60,7 +60,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
+        auto allParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
         allParams->inheritOwnersAndFlags(this);
         allParams->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
         allParams->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
@@ -84,7 +84,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
-    auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
+    auto allParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
     allParams->inheritOwnersAndFlags(this);
     if (result)
         *result = allParams;

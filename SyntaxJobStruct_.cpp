@@ -154,7 +154,7 @@ void SyntaxJob::setupSelfType(AstIdentifier* node)
 
     if (structNode->genericParameters)
     {
-        auto allParams = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
+        auto allParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
         allParams->inheritOwnersAndFlags(this);
         node->genericParameters = allParams;
 
