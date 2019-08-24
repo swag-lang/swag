@@ -1,12 +1,9 @@
 #include "pch.h"
-#include "Global.h"
 #include "SourceFile.h"
 #include "Ast.h"
 #include "ByteCodeGenJob.h"
 #include "SemanticJob.h"
-#include "SourceFile.h"
 #include "Diagnostic.h"
-#include "AstNode.h"
 
 bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {

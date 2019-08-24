@@ -6,9 +6,15 @@ struct(T) Point
 	var x: T = 1
 }
 
+func(op: string) toto()
+{
+}
+
 //#[swag.printbc]
 #test
 {
 	var pt: Point!s32
 	@assert(pt.x == 1)
+	
+	toto!"toto"();
 }
