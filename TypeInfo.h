@@ -85,6 +85,8 @@ struct TypeInfo : public PoolElement
             return false;
         if (isConst() != from->isConst())
             return false;
+		if(name != from->name)
+			return false;
         return true;
     }
 

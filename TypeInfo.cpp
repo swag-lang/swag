@@ -406,6 +406,8 @@ void TypeInfoFuncAttr::computeName()
     name += ")";
     if (returnType)
         name += format("->%s", returnType->name.c_str());
+	else
+		name += "->void";
 }
 
 TypeInfo* TypeInfoPointer::clone()

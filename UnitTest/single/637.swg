@@ -9,7 +9,7 @@ struct(T) Point
 //#[swag.printbc]
 func toto(x: Point)
 {
-	@print(x.x)
+	//@print(x.x)
 }
 
 #test
