@@ -1,4 +1,4 @@
-#module module633
+#module module636
 //#unittest pass semantic
 
 struct(T) Point
@@ -12,5 +12,6 @@ func toto(x: Point)
 
 #test
 {
-	//var x: Point
+	var x: Point!(s32)
+	//toto(x)
 }

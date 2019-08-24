@@ -115,7 +115,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     typeInfo->structNode = node;
-    typeInfo->name       = format("struct %s", node->name.c_str());
+    typeInfo->name       = format("%s", node->name.c_str());
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;

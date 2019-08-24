@@ -2,6 +2,7 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 #include "Ast.h"
+#include "Scope.h"
 
 Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
@@ -486,6 +487,8 @@ bool TypeInfoStruct::isSame(TypeInfo* from)
         return false;
     for (int i = 0; i < genericParameters.size(); i++)
     {
+		if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
+			continue;
         if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
             return false;
         if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
@@ -502,6 +505,13 @@ bool TypeInfoStruct::isSame(TypeInfo* from)
             return false;
     }
     return true;
+}
+
+bool TypeInfoStruct::isSameExact(TypeInfo* from)
+{
+    if (!TypeInfoStruct::isSame(from))
+        return false;
+	return true;
 }
 
 void TypeInfoStruct::match(SymbolMatchContext& context)

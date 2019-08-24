@@ -546,6 +546,7 @@ struct TypeInfoStruct : public TypeInfo
     }
 
     bool      isSame(TypeInfo* from) override;
+	bool      isSameExact(TypeInfo* from) override;
     TypeInfo* clone() override;
     void      match(SymbolMatchContext& context);
 

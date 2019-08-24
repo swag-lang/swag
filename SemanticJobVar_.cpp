@@ -250,6 +250,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
+		SWAG_VERIFY(!(node->typeInfo->flags& TYPEINFO_GENERIC), sourceFile->report({ sourceFile, node->token, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str()) }));
+
         auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
         storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
 
@@ -303,6 +305,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
+        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), sourceFile->report({sourceFile, node->token, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         SWAG_ASSERT(node->ownerScope);
         SWAG_ASSERT(node->ownerFct);
         storageOffset = node->ownerScope->startStackSize;
