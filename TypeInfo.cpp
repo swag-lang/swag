@@ -487,14 +487,12 @@ bool TypeInfoStruct::isSame(TypeInfo* from)
         return false;
     for (int i = 0; i < genericParameters.size(); i++)
     {
-		if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
-			continue;
         if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
-            return false;
-        if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
             return false;
     }
 
+    if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
+        return false;
     if (scope != other->scope)
         return false;
     if (childs.size() != other->childs.size())
@@ -511,7 +509,7 @@ bool TypeInfoStruct::isSameExact(TypeInfo* from)
 {
     if (!TypeInfoStruct::isSame(from))
         return false;
-	return true;
+    return true;
 }
 
 void TypeInfoStruct::match(SymbolMatchContext& context)
@@ -530,7 +528,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     // It's valid to not specify generic parameters. They will be deduced
     if (numGenericParams < wantedNumGenericParams)
     {
-		// A reference to a generic function without specifying the generic parameters is a match
+        // A reference to a generic function without specifying the generic parameters is a match
         if (!numGenericParams)
         {
             for (int i = 0; i < wantedNumGenericParams; i++)
@@ -541,7 +539,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
             }
 
             context.result = MatchResult::Ok;
-			return;
+            return;
         }
 
         context.result = MatchResult::NotEnoughGenericParameters;

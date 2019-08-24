@@ -332,6 +332,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
     int  numOverloads     = 0;
     for (auto oneSymbol : dependentSymbols)
     {
+        scoped_lock lock(oneSymbol->mutex);
         for (auto overload : oneSymbol->overloads)
         {
             numOverloads++;
@@ -386,10 +387,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
     {
         if (forStruct)
         {
-			if (genericParameters && !(node->flags & AST_IS_GENERIC))
-			{
-				SWAG_CHECK(Generic::InstanciateStruct(context, genericParameters, genericMatches[0]));
-			}
+            if (genericParameters && !(node->flags & AST_IS_GENERIC))
+            {
+                SWAG_CHECK(Generic::InstanciateStruct(context, genericParameters, genericMatches[0]));
+            }
             else
             {
                 matches.push_back(genericMatches[0].symbolOverload);
@@ -409,7 +410,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
     {
         if (numOverloads == 1)
         {
+            symbol->mutex.lock();
             auto overload = symbol->overloads[0];
+            symbol->mutex.unlock();
 
             // Be sure this is not because of an invalid special function signature
             if (overload->node->kind == AstNodeKind::FuncDecl)

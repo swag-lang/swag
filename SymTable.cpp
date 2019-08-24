@@ -252,7 +252,7 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
     {
         if (it->typeInfo == typeInfo)
             return it;
-        if (it->typeInfo->isSame(typeInfo))
+        if (it->typeInfo->isSameExact(typeInfo))
             return it;
     }
 

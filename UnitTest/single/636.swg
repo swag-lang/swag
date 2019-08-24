@@ -3,15 +3,17 @@
 
 struct(T) Point
 {
+	var x: s32
 }
 
 //#[swag.printbc]
 func toto(x: Point)
 {
+	@print(x.x)
 }
 
 #test
 {
 	var x: Point!(s32)
-	//toto(x)
+	toto(x)
 }
