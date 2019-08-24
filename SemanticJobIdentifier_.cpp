@@ -322,17 +322,28 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
     auto& badGenericSignature = job->cacheBadGenericSignature;
     auto& dependentSymbols    = job->cacheDependentSymbols;
 
+anotherTry:
     matches.clear();
     genericMatches.clear();
     badSignature.clear();
     badGenericSignature.clear();
 
-    bool forStruct        = false;
-    bool hasGenericErrors = false;
-    int  numOverloads     = 0;
+    bool forStruct               = false;
+    bool hasGenericErrors        = false;
+    int  numOverloads            = 0;
+    int  numOverloadsWhenChecked = 0;
     for (auto oneSymbol : dependentSymbols)
     {
         scoped_lock lock(oneSymbol->mutex);
+        if (oneSymbol->cptOverloads)
+        {
+            oneSymbol->dependentJobs.push_back(context->job);
+            g_ThreadMgr.addPendingJob(context->job);
+            context->result = SemanticResult::Pending;
+            return true;
+        }
+
+        numOverloadsWhenChecked = (int) oneSymbol->overloads.size();
         for (auto overload : oneSymbol->overloads)
         {
             numOverloads++;
@@ -385,6 +396,26 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
+        auto oneSymbol = dependentSymbols[0];
+
+        // Be sure number of overloads has not changed since then
+        oneSymbol->mutex.lock();
+        if (numOverloadsWhenChecked != oneSymbol->overloads.size())
+        {
+            oneSymbol->mutex.unlock();
+            goto anotherTry;
+        }
+
+        // Be sure we don't have more overloads to resolve
+        if (oneSymbol->cptOverloads)
+        {
+            oneSymbol->dependentJobs.push_back(context->job);
+            g_ThreadMgr.addPendingJob(context->job);
+            context->result = SemanticResult::Pending;
+            oneSymbol->mutex.unlock();
+            return true;
+        }
+
         if (forStruct)
         {
             if (genericParameters && !(node->flags & AST_IS_GENERIC))
@@ -402,6 +433,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* g
             SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
         }
 
+        oneSymbol->mutex.unlock();
         return true;
     }
 

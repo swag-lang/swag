@@ -9,9 +9,9 @@
 
 bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
-    auto        job              = context->job;
-    auto&       dependentSymbols = job->cacheDependentSymbols;
-    scoped_lock lock(dependentSymbols[0]->mutex);
+    auto  job              = context->job;
+    auto& dependentSymbols = job->cacheDependentSymbols;
+    auto  oneSymbol        = dependentSymbols[0];
 
     CloneContext cloneContext;
 
@@ -63,8 +63,8 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     // Need to wait for the struct to be semantic resolved
-    dependentSymbols[0]->cptOverloads++;
-    dependentSymbols[0]->dependentJobs.push_back(context->job);
+    oneSymbol->cptOverloads++;
+    oneSymbol->dependentJobs.push_back(context->job);
     g_ThreadMgr.addPendingJob(context->job);
     context->result = SemanticResult::Pending;
 
@@ -81,9 +81,8 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
 
 bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
-    auto        job              = context->job;
-    auto&       dependentSymbols = job->cacheDependentSymbols;
-    scoped_lock lock(dependentSymbols[0]->mutex);
+    auto  job              = context->job;
+    auto& dependentSymbols = job->cacheDependentSymbols;
 
     CloneContext cloneContext;
 

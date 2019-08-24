@@ -35,8 +35,8 @@ SymbolName* SymTable::findNoLock(const Utf8Crc& name)
 
 SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind)
 {
-	if (node->name.empty())
-		return nullptr;
+    if (node->name.empty())
+        return nullptr;
     auto symbol = findNoLock(node->name);
     if (!symbol)
     {
@@ -53,8 +53,12 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     }
 
     // Error if overload is not possible
-    if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
-        symbol->cptOverloads++;
+    {
+        scoped_lock lock(symbol->mutex);
+        if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
+            symbol->cptOverloads++;
+    }
+
     return symbol;
 }
 
@@ -88,28 +92,29 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
     if (resultName)
         *resultName = symbol;
 
-    if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
-        return nullptr;
-
-    auto result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
-    result->flags |= flags;
-    result->storageOffset = storageOffset;
-    if (attributes)
-        result->attributes = *attributes;
-
-    // One less overload. When this reached zero, this means we known every types for the same symbol,
-    // and so we can wakeup all jobs waiting for that symbol to be solved
-    symbol->mutex.lock();
-    symbol->cptOverloads--;
-    if (symbol->cptOverloads == 0)
     {
-        for (auto job : symbol->dependentJobs)
-            g_ThreadMgr.addJob(job);
-        symbol->dependentJobs.clear();
-    }
+        scoped_lock lock(symbol->mutex);
 
-    symbol->mutex.unlock();
-    return result;
+        if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
+            return nullptr;
+        auto result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
+        result->flags |= flags;
+        result->storageOffset = storageOffset;
+        if (attributes)
+            result->attributes = *attributes;
+
+        // One less overload. When this reached zero, this means we known every types for the same symbol,
+        // and so we can wakeup all jobs waiting for that symbol to be solved
+        symbol->cptOverloads--;
+        if (symbol->cptOverloads == 0)
+        {
+            for (auto job : symbol->dependentJobs)
+                g_ThreadMgr.addJob(job);
+            symbol->dependentJobs.clear();
+        }
+
+        return result;
+    }
 }
 
 bool SymTable::checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
