@@ -398,15 +398,9 @@ anotherTry:
     {
         auto oneSymbol = dependentSymbols[0];
 
-        // Be sure number of overloads has not changed since then
         oneSymbol->mutex.lock();
-        if (numOverloadsWhenChecked != oneSymbol->overloads.size())
-        {
-            oneSymbol->mutex.unlock();
-            goto anotherTry;
-        }
 
-        // Be sure we don't have more overloads to resolve
+        // Be sure we don't have more overloads waiting to be solved
         if (oneSymbol->cptOverloads)
         {
             oneSymbol->dependentJobs.push_back(context->job);
@@ -414,6 +408,13 @@ anotherTry:
             context->result = SemanticResult::Pending;
             oneSymbol->mutex.unlock();
             return true;
+        }
+
+        // Be sure number of overloads has not changed since then
+        if (numOverloadsWhenChecked != oneSymbol->overloads.size())
+        {
+            oneSymbol->mutex.unlock();
+            goto anotherTry;
         }
 
         if (forStruct)
