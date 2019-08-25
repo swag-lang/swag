@@ -313,11 +313,11 @@ Utf8 SourceFile::getLine(long seek)
                 line += " ";
             }
         }
-		else
-		{
-			line += c;
-			column++;
-		}
+        else
+        {
+            line += c;
+            column++;
+        }
     }
 
     directMode = false;
@@ -329,6 +329,8 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 {
     if (silent > 0)
         return false;
+
+    g_Log.lock();
     module->numErrors++;
 
     // Do not raise an error if we are waiting for one, during tests
@@ -337,16 +339,15 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         unittestError--;
         if (g_CommandLine.verbose && g_CommandLine.verbose_unittest_errors)
         {
-            g_Log.lock();
             diag.report(true);
             if (g_CommandLine.errorNoteOut)
             {
                 for (auto note : notes)
                     note->report(true);
             }
-            g_Log.unlock();
         }
 
+        g_Log.unlock();
         return false;
     }
 
@@ -354,13 +355,13 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     g_Workspace.numErrors++;
 
     // Print error
-    g_Log.lock();
     diag.report();
     if (g_CommandLine.errorNoteOut)
     {
         for (auto note : notes)
             note->report();
     }
+
     g_Log.unlock();
     return false;
 }
