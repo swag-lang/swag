@@ -1,10 +1,12 @@
 #pragma once
+struct Job;
 
 struct JobThread
 {
     JobThread();
     ~JobThread();
 
+	bool executeJob(Job* job, string& exception);
     void loop();
     void notifyJob();
     void waitJob();

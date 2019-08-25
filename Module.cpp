@@ -9,6 +9,7 @@
 #include "Log.h"
 #include "ByteCode.h"
 #include "Attribute.h"
+#include "Diagnostic.h"
 
 Pool<Module> g_Pool_module;
 
@@ -97,25 +98,47 @@ void Module::freeRegisterRC(uint32_t reg)
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 {
     // Only one run at a time !
-    static SpinLock mutex;
+    static SpinLock mutexExecuteNode;
+    scoped_lock     lk(mutexExecuteNode);
+
+    auto runContext = &workspace->runContext;
+
     {
-        scoped_lock lk(mutex);
-        auto        runContext = &workspace->runContext;
+        scoped_lock lkRC(mutexRegisterRC);
+        scoped_lock lkRR(mutexRegisterRR);
+        runContext->setup(sourceFile, node, maxReservedRegisterRC, maxReservedRegisterRR, 1024);
+    }
 
-        {
-            scoped_lock lk1(mutexRegisterRC);
-            scoped_lock lk2(mutexRegisterRR);
-            runContext->setup(sourceFile, node, maxReservedRegisterRC, maxReservedRegisterRR, 1024);
-        }
+    string exception;
+    if (!executeNodeNoLock(sourceFile, node, exception))
+    {
+        if (!exception.empty())
+            sourceFile->report({sourceFile, exception});
+        return false;
+    }
 
-        SWAG_CHECK(g_Run.run(runContext));
+    if (node->resultRegisterRC.size())
+    {
+        node->computedValue.reg = runContext->registersRC[node->resultRegisterRC[0]];
+        node->flags |= AST_VALUE_COMPUTED;
+        node->typeInfo = TypeManager::concreteType(node->typeInfo);
+    }
 
-        if (node->resultRegisterRC.size())
-        {
-            node->computedValue.reg = runContext->registersRC[node->resultRegisterRC[0]];
-            node->flags |= AST_VALUE_COMPUTED;
-            node->typeInfo = TypeManager::concreteType(node->typeInfo);
-        }
+    return true;
+}
+
+bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, string& exception)
+{
+    __try
+    {
+        auto runContext = &workspace->runContext;
+        if (!g_Run.run(runContext))
+            return false;
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+        exception = "executeNode, unhandled exception";
+        return false;
     }
 
     return true;

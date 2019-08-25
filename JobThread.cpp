@@ -28,6 +28,24 @@ void JobThread::waitJob()
     condVar.wait(lk);
 }
 
+bool JobThread::executeJob(Job* job, string& exception)
+{
+    __try
+    {
+        auto result = job->execute();
+        if (result == JobResult::ReleaseJob)
+            job->release();
+        g_ThreadMgr.jobHasEnded();
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+		exception = "executeJob, unhandled exception";
+        return false;
+    }
+
+    return true;
+}
+
 void JobThread::loop()
 {
     while (!requestEnd)
@@ -40,16 +58,10 @@ void JobThread::loop()
             continue;
         }
 
-        try
+		string exception;
+        if (!executeJob(job, exception))
         {
-            auto result = job->execute();
-            if (result == JobResult::ReleaseJob)
-                job->release();
-            g_ThreadMgr.jobHasEnded();
-        }
-        catch (...)
-        {
-			g_Log.error("unhandled exception");
+            g_Log.error(exception);
         }
     }
 }
