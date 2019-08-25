@@ -116,6 +116,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     typeInfo->structNode = node;
     typeInfo->name       = format("%s", node->name.c_str());
+	if (!typeInfo->opInitFct)
+		typeInfo->opInitFct = node->defaultOpInit;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
@@ -192,15 +194,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags));
-
-    // Byte code generation of code associated with the structure
-    node->byteCodeFct               = &ByteCodeGenJob::emitDefaultStruct;
-    node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-    node->byteCodeJob->sourceFile   = sourceFile;
-    node->byteCodeJob->originalNode = node;
-    node->byteCodeJob->nodes.push_back(node);
-    ByteCodeGenJob::setupBC(context->sourceFile->module, node);
-    g_ThreadMgr.addJob(node->byteCodeJob);
 
     return true;
 }

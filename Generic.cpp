@@ -68,6 +68,12 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
     g_ThreadMgr.addPendingJob(context->job);
     context->result = SemanticResult::Pending;
 
+    // Clone opInit
+    auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
+    newType->opInitFct = newOpInit;
+    newOpInit->flags |= AST_FROM_GENERIC | AST_DISABLED;
+    Ast::addChild(structNode, newType->opInitFct);
+
     // Run semantic on that struct
     auto sourceFile = context->sourceFile;
     job             = g_Pool_semanticJob.alloc();

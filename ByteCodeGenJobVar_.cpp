@@ -62,7 +62,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
 
         if (typeInfo->kind == TypeInfoKind::Struct)
         {
-            emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct), UINT32_MAX);
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+			assert(typeStruct->opInitFct);
+            emitStructInit(context, typeStruct, UINT32_MAX);
             return true;
         }
 

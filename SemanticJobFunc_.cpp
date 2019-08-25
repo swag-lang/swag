@@ -229,6 +229,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         genByteCode = false;
+    if (node->name == "opInit")
+        genByteCode = true;
     if (node->attributeFlags & AST_IS_GENERIC)
         genByteCode = false;
 
@@ -280,9 +282,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             funcNode->flags |= AST_IS_GENERIC;
     }
 
-	// No semantic on content if function is generic
-	if(funcNode->flags & AST_IS_GENERIC)
-		funcNode->content->flags |= AST_DISABLED;
+    // No semantic on content if function is generic
+    if (funcNode->flags & AST_IS_GENERIC)
+        funcNode->content->flags |= AST_DISABLED;
 
     // Collect function attributes
     SymbolAttributes attributes;
@@ -297,11 +299,20 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (typeInfo->returnType->kind != TypeInfoKind::Native &&
         typeInfo->returnType->kind != TypeInfoKind::TypeList &&
         typeInfo->returnType->kind != TypeInfoKind::Struct &&
-		typeInfo->returnType->kind != TypeInfoKind::Generic &&
+        typeInfo->returnType->kind != TypeInfoKind::Generic &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return sourceFile->report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 
     typeInfo->computeName();
+
+    // opInit registration
+    if (funcNode->name == "opInit")
+    {
+        assert(funcNode->parameters);
+        assert(funcNode->parameters->childs.size() >= 1);
+        auto typeStruct       = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+        typeStruct->opInitFct = funcNode;
+    }
 
     uint32_t symbolFlags = 0;
     if (funcNode->flags & AST_IS_GENERIC)

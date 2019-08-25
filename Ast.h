@@ -49,7 +49,7 @@ template<typename T>
 inline T* CastAst(AstNode* ptr, AstNodeKind kind)
 {
     T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted->kind == kind);
+    SWAG_ASSERT(casted && casted->kind == kind);
     return casted;
 }
 
@@ -57,6 +57,6 @@ template<typename T>
 inline T* CastAst(AstNode* ptr, AstNodeKind kind1, AstNodeKind kind2)
 {
     T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
+    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2));
     return casted;
 }

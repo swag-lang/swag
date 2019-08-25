@@ -6,9 +6,11 @@ struct(T) Point
 	var x: T = 6
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
 	var pt: Point!s32
+	pt.x = 10
 	pt.opInit()
+	@assert(pt.x == 6)
 }

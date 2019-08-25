@@ -102,11 +102,11 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         Ast::visit(structNode->genericParameters, [&](AstNode* n) {
             n->ownerScopeStruct = newScope;
             n->ownerScope       = newScope;
-			if (n->kind == AstNodeKind::FuncDeclParam)
-			{
-				auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
-				newScope->symTable->registerSymbolNameNoLock(sourceFile, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
-			}
+            if (n->kind == AstNodeKind::FuncDeclParam)
+            {
+                auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
+                newScope->symTable->registerSymbolNameNoLock(sourceFile, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
+            }
         });
     }
 
@@ -156,7 +156,7 @@ void SyntaxJob::setupSelfType(AstIdentifier* node)
     {
         auto allParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
         allParams->inheritOwnersAndFlags(this);
-		allParams->semanticFct = &SemanticJob::resolveFuncDeclParams;
+        allParams->semanticFct  = &SemanticJob::resolveFuncDeclParams;
         node->genericParameters = allParams;
 
         if (structNode->genericParameters)
@@ -176,8 +176,8 @@ void SyntaxJob::generateOpInit(AstNode* node)
     funcNode->inheritOwnersAndFlags(this);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     funcNode->name        = "opInit";
-    funcNode->flags |= AST_NO_BYTECODE | AST_BYTECODE_GENERATED | AST_GENERATED;
-    structNode->opInit = funcNode;
+    funcNode->flags |= AST_GENERATED;
+    structNode->defaultOpInit = funcNode;
 
     // Register function name
     Scope* newScope = nullptr;

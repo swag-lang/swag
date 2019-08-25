@@ -13,6 +13,7 @@ struct RegisterList;
 struct AstFuncDecl;
 struct AstVarDecl;
 enum class ByteCodeOp : uint16_t;
+struct TypeInfoStruct;
 
 enum class ByteCodeResult
 {
@@ -120,7 +121,7 @@ struct ByteCodeGenJob : public Job
     static bool emitAffect(ByteCodeGenContext* context);
     static bool emitBeforeFuncDeclContent(ByteCodeGenContext* context);
     static bool emitVarDecl(ByteCodeGenContext* context);
-    static bool emitStructInit(ByteCodeGenContext* context, struct TypeInfoStruct* typeInfo, uint32_t regOffset);
+    static bool emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset);
     static bool emitBreak(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
@@ -132,10 +133,9 @@ struct ByteCodeGenJob : public Job
     static bool emitSliceRef(ByteCodeGenContext* context);
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
-	static bool emitDefaultStruct(ByteCodeGenContext* context);
 	static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr);
 
-    static bool generateStructInit(ByteCodeGenContext* context, struct TypeInfoStruct* typeInfo, struct TypeInfoFuncAttr* typeInfoFunc);
+    static bool generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);

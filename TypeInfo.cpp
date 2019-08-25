@@ -480,6 +480,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->scope      = scope;
     newType->childs     = childs;
     newType->structNode = structNode;
+    newType->opInitFct  = opInitFct;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {

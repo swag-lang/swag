@@ -10,13 +10,15 @@
 #include "TypeManager.h"
 #include "Scope.h"
 
-bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, TypeInfoFuncAttr* typeInfoFunc)
+bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    auto sourceFile   = context->sourceFile;
+    auto opInitFct    = CastAst<AstFuncDecl>(typeInfoStruct->opInitFct, AstNodeKind::FuncDecl);
+    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(opInitFct->typeInfo, TypeInfoKind::FuncAttr);
+    auto structNode   = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
 
     structNode->lock();
-    if (typeInfoStruct->opInitBc)
+    if (typeInfoStruct->opInitFct->bc && typeInfoStruct->opInitFct->bc->out)
     {
         structNode->unlock();
         return true;
@@ -33,8 +35,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     opInit->usedRegisters.insert(2);
 
     sourceFile->module->addByteCodeFunc(opInit);
-    structNode->opInit->bc   = opInit; // For a direct user call, @TEMP, will not work with generics
-    typeInfoStruct->opInitBc = opInit;
+    typeInfoStruct->opInitFct->bc = opInit;
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
@@ -124,7 +125,8 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                 if (typeVar->kind == TypeInfoKind::Struct)
                 {
                     auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
-                    if (!generateStructInit(context, typeVarStruct, typeInfoFunc))
+					assert(typeVarStruct->opInitFct);
+                    if (!generateStructInit(context, typeVarStruct))
                         return false;
 
                     // Function call if necessary
@@ -132,7 +134,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                     {
                         emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                         auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
-                        inst->a.pointer = (uint8_t*) typeVarStruct->opInitBc;
+                        inst->a.pointer = (uint8_t*) typeVarStruct->opInitFct->bc;
                         inst->b.u64     = 1;
                         inst->c.pointer = (uint8_t*) typeInfoFunc;
                         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
@@ -173,30 +175,13 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     return true;
 }
 
-bool ByteCodeGenJob::emitDefaultStruct(ByteCodeGenContext* context)
-{
-    auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-    auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(node->opInit->typeInfo, TypeInfoKind::FuncAttr);
-
-    SWAG_CHECK(generateStructInit(context, typeStruct, typeFunc));
-    return true;
-}
-
 bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset)
 {
     auto node     = context->node;
     auto resolved = node->resolvedSymbolOverload;
 
-    // Type
-    auto typeInfoFunc = g_Pool_typeInfoFuncAttr.alloc();
-    auto param        = g_Pool_typeInfoFuncAttrParam.alloc();
-    param->typeInfo   = typeInfoStruct;
-    typeInfoFunc->parameters.push_back(param);
-    typeInfoFunc = (TypeInfoFuncAttr*) g_TypeMgr.registerType(typeInfoFunc);
-
     // Be sure referenced function has bytecode
-    if (!generateStructInit(context, typeInfoStruct, typeInfoFunc))
+    if (!generateStructInit(context, typeInfoStruct))
         return false;
 
     // Just clear the content of the structure
@@ -224,9 +209,9 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         // Then call
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
         inst            = emitInstruction(context, ByteCodeOp::LocalCall, 0);
-        inst->a.pointer = (uint8_t*) typeInfoStruct->opInitBc;
+        inst->a.pointer = (uint8_t*) typeInfoStruct->opInitFct->bc;
         inst->b.u64     = 1;
-        inst->c.pointer = (uint8_t*) typeInfoFunc;
+        inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
         emitInstruction(context, ByteCodeOp::IncSP, 8);
     }
 

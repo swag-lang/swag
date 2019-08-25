@@ -10,6 +10,7 @@
 #include "Module.h"
 #include "Attribute.h"
 #include "Scope.h"
+#include "Ast.h"
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
@@ -91,7 +92,7 @@ void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
     node->bc->node       = node;
     node->bc->sourceFile = module->files[node->sourceFileIdx];
     node->bc->name       = node->ownerScope->fullname + "_" + node->name;
-	replaceAll(node->bc->name, '.', '_');
+    replaceAll(node->bc->name, '.', '_');
     if (node->kind == AstNodeKind::FuncDecl)
         module->addByteCodeFunc(node->bc);
 }
@@ -105,6 +106,17 @@ JobResult ByteCodeGenJob::execute()
         context.job        = this;
         context.sourceFile = sourceFile;
         context.bc         = originalNode->bc;
+        context.node       = originalNode;
+
+        // Special auto generated functions
+        if (originalNode->name == "opInit")
+        {
+
+            auto funcNode   = CastAst<AstFuncDecl>(originalNode, AstNodeKind::FuncDecl);
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+            generateStructInit(&context, typeStruct);
+            return JobResult::ReleaseJob;
+        }
 
         if (!context.bc)
         {

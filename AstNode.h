@@ -162,8 +162,8 @@ struct AstNode : public PoolElement
 
     void inheritOrFlag(AstNode* op, uint64_t flag)
     {
-		if (!op)
-			return;
+        if (!op)
+            return;
         flags |= op->flags & flag;
     }
 
@@ -663,10 +663,10 @@ struct AstStruct : public AstNode
 {
     void reset() override
     {
-        opInit            = nullptr;
         genericParameters = nullptr;
         content           = nullptr;
         scope             = nullptr;
+        defaultOpInit     = nullptr;
         AstNode::reset();
     }
 
@@ -674,8 +674,8 @@ struct AstStruct : public AstNode
 
     AstNode* genericParameters;
     AstNode* content;
-    AstNode* opInit;
     Scope*   scope;
+    AstNode* defaultOpInit;
 };
 
 struct AstImpl : public AstNode

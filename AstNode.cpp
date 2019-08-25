@@ -405,6 +405,7 @@ AstNode* AstStruct::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astStruct.alloc();
     newNode->copyFrom(context, this, false);
+    newNode->defaultOpInit = defaultOpInit;
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
@@ -412,10 +413,8 @@ AstNode* AstStruct::clone(CloneContext& context)
     cloneContext.parentScope->allocateSymTable();
     cloneContext.ownerScopeStruct = cloneContext.parentScope;
 
-    newNode->opInit = opInit;
-
-    newNode->scope             = cloneContext.parentScope;
-	newNode->scope->alternativeScopes.push_back(scope);
+    newNode->scope = cloneContext.parentScope;
+    newNode->scope->alternativeScopes.push_back(scope);
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;

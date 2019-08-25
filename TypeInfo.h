@@ -54,7 +54,7 @@ template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 {
     T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted->kind == kind);
+    SWAG_ASSERT(casted && casted->kind == kind);
     return casted;
 }
 
@@ -62,7 +62,7 @@ template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
 {
     T* casted = static_cast<T*>(ptr);
-    SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
+    SWAG_ASSERT(casted && (casted->kind == kind1 || casted->kind == kind2));
     return casted;
 }
 
@@ -550,7 +550,7 @@ struct TypeInfoStruct : public TypeInfo
         childs.clear();
         scope      = nullptr;
         structNode = nullptr;
-        opInitBc   = nullptr;
+        opInitFct  = nullptr;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -568,7 +568,7 @@ struct TypeInfoStruct : public TypeInfo
     vector<TypeInfo*>              childs;
     Scope*                         scope;
     AstNode*                       structNode;
-    ByteCode*                      opInitBc;
+    AstNode*                       opInitFct;
 };
 
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
