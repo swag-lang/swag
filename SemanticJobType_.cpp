@@ -73,7 +73,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     if (node->typeExpression)
     {
         node->typeInfo = node->typeExpression->typeInfo;
-		node->inheritOrFlag(node->typeExpression, AST_IS_GENERIC);
+        node->inheritOrFlag(node->typeExpression, AST_IS_GENERIC);
     }
     else
     {
@@ -194,12 +194,11 @@ bool SemanticJob::resolveTypeDecl(SemanticContext* context)
 
 bool SemanticJob::resolveCast(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto typeNode   = node->childs[0];
-    auto exprNode   = node->childs[1];
+    auto node     = context->node;
+    auto typeNode = node->childs[0];
+    auto exprNode = node->childs[1];
 
-    SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, typeNode->typeInfo, exprNode, CASTFLAG_FORCE));
+    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, typeNode->typeInfo, exprNode, CASTFLAG_FORCE));
     node->typeInfo    = typeNode->typeInfo;
     node->byteCodeFct = &ByteCodeGenJob::emitCast;
 

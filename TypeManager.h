@@ -5,6 +5,7 @@ struct SourceFile;
 struct TypeInfo;
 struct TypeInfoNative;
 struct TypeInfoVariadic;
+struct ErrorContext;
 
 static const uint32_t CASTFLAG_NOERROR       = 0x00000001;
 static const uint32_t CASTFLAG_FORCE         = 0x00000002;
@@ -23,28 +24,28 @@ struct TypeManager
 {
     void setup();
 
-    static bool castError(SourceFile* sourceFile, TypeInfo* requestedType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid = false);
+    static bool castError(ErrorContext* errorContext, TypeInfo* requestedType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid = false);
 
-    static bool castToNativeBool(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeU8(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeU16(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeU32(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeU64(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeS8(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeS16(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeS32(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeS64(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeF32(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToNativeF64(SourceFile* sourceFile, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeBool(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
 
-    static bool castToNative(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToArray(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToTuple(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-    static bool castToSlice(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNative(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToArray(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToTuple(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToSlice(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
 
-    static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags = 0);
-    static bool makeCompatibles(SourceFile* sourceFile, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags = 0);
-    static bool makeCompatibles(SourceFile* sourceFile, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
+    static bool makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags = 0);
+    static bool makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags = 0);
+    static bool makeCompatibles(ErrorContext* errorContext, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
 
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);

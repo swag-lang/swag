@@ -1,4 +1,4 @@
-#module module645
+#module module646
 //#unittest pass semantic
 
 struct(T) Point
@@ -10,7 +10,10 @@ struct(T) Point
 #test
 {
 	var pt: Point!s32
-	pt.x = 10
 	pt.opInit()
 	@assert(pt.x == 6)
+	
+	var pt1: Point!f32
+	pt1.opInit()
+	@assert(pt1.x == 6)
 }

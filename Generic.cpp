@@ -80,6 +80,8 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
     job->module     = sourceFile->module;
     job->sourceFile = sourceFile;
     job->nodes.push_back(structNode);
+    job->genericInstanceTree.push_back(context->node);
+    job->genericInstanceTreeFile.push_back(context->sourceFile);
     g_ThreadMgr.addJob(job);
 
     return true;
@@ -171,6 +173,8 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     job->module     = sourceFile->module;
     job->sourceFile = sourceFile;
     job->nodes.push_back(funcNode);
+    job->genericInstanceTree.push_back(context->node);
+    job->genericInstanceTreeFile.push_back(context->sourceFile);
     g_ThreadMgr.addJob(job);
 
     return true;

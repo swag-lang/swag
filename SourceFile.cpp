@@ -367,9 +367,6 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
 bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
 {
-    if (silent > 0)
-        return false;
-
     vector<const Diagnostic*> notes;
     if (note)
         notes.push_back(note);

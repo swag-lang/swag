@@ -2,6 +2,7 @@
 #include "Job.h"
 #include "Utf8.h"
 #include "TypeInfo.h"
+#include "Diagnostic.h"
 struct AstNode;
 struct Module;
 struct SourceFile;
@@ -38,6 +39,7 @@ struct SemanticContext
     SemanticJob*   job        = nullptr;
     AstNode*       node       = nullptr;
     SemanticResult result;
+    ErrorContext   errorContext;
 };
 
 struct OneGenericMatch
@@ -92,7 +94,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
     static bool resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right);
-	static bool resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, vector<AstNode*>& params);
+    static bool resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, vector<AstNode*>& params);
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
@@ -102,7 +104,7 @@ struct SemanticJob : public Job
     static bool resolveStruct(SemanticContext* context);
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);
-	static bool resolveFuncDeclParams(SemanticContext* context);
+    static bool resolveFuncDeclParams(SemanticContext* context);
     static bool resolveFuncDecl(SemanticContext* context);
     static bool resolveFuncDeclType(SemanticContext* context);
     static bool resolveFuncCallParams(SemanticContext* context);
@@ -144,10 +146,12 @@ struct SemanticJob : public Job
         scopesHereNoAlt.clear();
         cacheMatches.clear();
         cacheBadSignature.clear();
-		cacheGenericMatches.clear();
-		cacheBadSignature.clear();
-		cacheBadGenericSignature.clear();
+        cacheGenericMatches.clear();
+        cacheBadSignature.clear();
+        cacheBadGenericSignature.clear();
         symMatch.reset();
+        genericInstanceTree.clear();
+		genericInstanceTreeFile.clear();
     }
 
     Module*                 module;
@@ -162,6 +166,8 @@ struct SemanticJob : public Job
     vector<SymbolOverload*> cacheBadSignature;
     vector<SymbolOverload*> cacheBadGenericSignature;
     SymbolMatchContext      symMatch;
+    vector<AstNode*>        genericInstanceTree;
+    vector<SourceFile*>     genericInstanceTreeFile;
 };
 
 extern Pool<SemanticJob> g_Pool_semanticJob;

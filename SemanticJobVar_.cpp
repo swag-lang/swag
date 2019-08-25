@@ -157,7 +157,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Find type
     if (node->type && node->assignment)
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->type->typeInfo, node->assignment));
+        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->type->typeInfo, node->assignment));
         node->typeInfo = node->type->typeInfo;
     }
     else if (node->assignment)
@@ -176,14 +176,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->count       = (uint32_t) typeList->childs.size();
                 typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
                 node->typeInfo         = g_TypeMgr.registerType(typeArray);
-                SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->assignment));
+                SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->typeInfo, node->assignment));
             }
             else if (typeList->listKind == TypeInfoListKind::Tuple)
             {
                 auto typeTuple   = static_cast<TypeInfoList*>(typeList->clone());
                 typeTuple->scope = Ast::newScope(nullptr, "", ScopeKind::TypeList, node->ownerScope);
                 node->typeInfo   = g_TypeMgr.registerType(typeTuple);
-                SWAG_CHECK(TypeManager::makeCompatibles(context->sourceFile, node->typeInfo, node->assignment));
+                SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->typeInfo, node->assignment));
             }
             else
                 return internalError(context, "resolveVarDecl, invalid typelist kind");

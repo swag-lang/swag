@@ -364,7 +364,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // Check types
     auto returnType = funcNode->returnType->typeInfo;
-    SWAG_CHECK(g_TypeMgr.makeCompatibles(sourceFile, returnType, node->childs[0]));
+    SWAG_CHECK(g_TypeMgr.makeCompatibles(&context->errorContext, returnType, node->childs[0]));
     context->result = SemanticResult::Done;
 
     // Propagate return

@@ -1,4 +1,4 @@
-#module module645
+#module module647
 //#unittest pass semantic
 
 struct(T) Point
@@ -7,10 +7,8 @@ struct(T) Point
 }
 
 //#[swag.printbc]
+#unittest error
 #test
 {
-	var pt: Point!s32
-	pt.x = 10
-	pt.opInit()
-	@assert(pt.x == 6)
+	var pt: Point!bool
 }

@@ -23,8 +23,11 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 JobResult SemanticJob::execute()
 {
     SemanticContext context;
-    context.job        = this;
-    context.sourceFile = sourceFile;
+    context.job                                  = this;
+    context.sourceFile                           = sourceFile;
+    context.errorContext.sourceFile              = sourceFile;
+    context.errorContext.genericInstanceTree     = move(genericInstanceTree);
+    context.errorContext.genericInstanceTreeFile = move(genericInstanceTreeFile);
 
     while (!nodes.empty())
     {
@@ -74,16 +77,16 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
-		case AstNodeResolveState::ThirdTry:
+        case AstNodeResolveState::ThirdTry:
             if (node->semanticAfterFct)
             {
                 if (!node->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
-				if (context.result == SemanticResult::Pending)
-				{
-					node->semanticState = AstNodeResolveState::ThirdTry;
-					return JobResult::KeepJobAlive;
-				}
+                if (context.result == SemanticResult::Pending)
+                {
+                    node->semanticState = AstNodeResolveState::ThirdTry;
+                    return JobResult::KeepJobAlive;
+                }
             }
 
             nodes.pop_back();

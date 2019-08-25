@@ -36,7 +36,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     if (assignNode)
     {
         SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, valNode->token, "expression cannot be evaluated at compile time"}));
-        SWAG_CHECK(TypeManager::makeCompatibles(sourceFile, rawType, assignNode, CASTFLAG_CONCRETE_ENUM));
+        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, rawType, assignNode, CASTFLAG_CONCRETE_ENUM));
         enumNode->computedValue = assignNode->computedValue;
     }
     else
