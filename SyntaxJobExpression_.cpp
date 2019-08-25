@@ -332,7 +332,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
     {
         if (token.id == TokenId::SymLeftCurly)
         {
-            SWAG_CHECK(doInitializationExpression(initNode));
+            SWAG_CHECK(doExpressionListCurly(initNode));
         }
         else
         {
@@ -366,7 +366,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     {
         if (token.id == TokenId::SymLeftSquare)
         {
-            SWAG_CHECK(doInitializationExpression(initNode));
+            SWAG_CHECK(doExpressionListArray(initNode));
         }
         else
         {
