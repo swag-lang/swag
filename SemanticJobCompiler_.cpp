@@ -24,7 +24,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
 
     if (onlyconstExpr)
     {
-        SWAG_VERIFY(node->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, node, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node, "expression cannot be evaluated at compile time"}));
     }
 
     {
@@ -79,7 +79,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto typeInfo   = TypeManager::concreteType(expr->typeInfo);
 
-    SWAG_VERIFY(typeInfo == g_TypeMgr.typeInfoBool, sourceFile->report({sourceFile, expr->token, "expression should be 'bool'"}));
+    SWAG_VERIFY(typeInfo == g_TypeMgr.typeInfoBool, context->errorContext.report({sourceFile, expr->token, "expression should be 'bool'"}));
 
     SWAG_CHECK(executeNode(context, expr, true));
     if (context->result == SemanticResult::Pending)
@@ -88,9 +88,9 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     if (!expr->computedValue.reg.b)
     {
         if (!node->name.empty())
-            sourceFile->report({sourceFile, expr, format("compiler assertion failed: %s", node->name.c_str())});
+            context->errorContext.report({sourceFile, expr, format("compiler assertion failed: %s", node->name.c_str())});
         else
-            sourceFile->report({sourceFile, expr, "compiler assertion failed"});
+            context->errorContext.report({sourceFile, expr, "compiler assertion failed"});
         return false;
     }
 
@@ -162,7 +162,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstIf>(context->node->parent, AstNodeKind::If);
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression));
-    SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, node->boolExpression, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->errorContext.report({sourceFile, node->boolExpression, "expression cannot be evaluated at compile time"}));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
     node->boolExpression->flags |= AST_NO_BYTECODE;

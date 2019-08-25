@@ -22,7 +22,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     case NativeType::F64:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("minus operation not allowed on type '%s'", typeInfo->name.c_str())});
+        return context->errorContext.report({sourceFile, op->token, format("minus operation not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
@@ -57,7 +57,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
     case NativeType::Bool:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("boolean inversion not allowed on type '%s'", typeInfo->name.c_str())});
+        return context->errorContext.report({sourceFile, op->token, format("boolean inversion not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
@@ -90,7 +90,7 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
     case NativeType::U64:
         break;
     default:
-        return sourceFile->report({sourceFile, op->token, format("bit inversion operation not allowed on type '%s'", typeInfo->name.c_str())});
+        return context->errorContext.report({sourceFile, op->token, format("bit inversion operation not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
@@ -143,7 +143,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, sourceFile->report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())}));
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())}));
 
     switch (node->token.id)
     {

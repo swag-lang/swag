@@ -102,7 +102,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     {
         Diagnostic diag{sourceFile, node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->sourceFile, node->identifier->resolvedSymbolOverload->node->token.startLocation, node->identifier->resolvedSymbolOverload->node->token.endLocation, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
-        return sourceFile->report(diag, &note);
+        return context->errorContext.report(diag, &note);
     }
 
     return true;
@@ -140,7 +140,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Var has an initialization
         else if (varDecl->assignment)
         {
-            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, sourceFile->report({sourceFile, varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
+            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
 
             auto typeInfoAssignment = varDecl->assignment->typeInfo;
             if (typeInfoAssignment->isNative(NativeType::String))

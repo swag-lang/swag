@@ -14,9 +14,9 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto typeInfo   = child->typeInfo;
     auto sourceFile = context->sourceFile;
 
-    SWAG_VERIFY(child->flags & AST_L_VALUE, sourceFile->report({sourceFile, child, "cannot take address of expression"}));
+    SWAG_VERIFY(child->flags & AST_L_VALUE, context->errorContext.report({sourceFile, child, "cannot take address of expression"}));
     if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerIndex)
-        return sourceFile->report({sourceFile, child, "invalid address expression"});
+        return context->errorContext.report({sourceFile, child, "invalid address expression"});
 
     // Lambda
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
@@ -96,10 +96,10 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     auto arrayType  = arrayNode->array->typeInfo;
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(!arrayType->isConst(), sourceFile->report({sourceFile, arrayNode->array, format("type '%s' is constant and cannot be referenced", arrayType->name.c_str())}));
+    SWAG_VERIFY(!arrayType->isConst(), context->errorContext.report({sourceFile, arrayNode->array, format("type '%s' is constant and cannot be referenced", arrayType->name.c_str())}));
 
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
-        return sourceFile->report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
+        return context->errorContext.report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
     switch (arrayType->kind)
     {
@@ -149,7 +149,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     default:
     {
-        return sourceFile->report({sourceFile, arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
+        return context->errorContext.report({sourceFile, arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
     }
     }
 
@@ -164,7 +164,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
 
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
-        return sourceFile->report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
+        return context->errorContext.report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
     switch (arrayType->kind)
     {
@@ -236,7 +236,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         break;
 
     default:
-        return sourceFile->report({sourceFile, arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
+        return context->errorContext.report({sourceFile, arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
     }
 
     return true;

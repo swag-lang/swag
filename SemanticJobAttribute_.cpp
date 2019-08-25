@@ -17,9 +17,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (!checkNode)
     {
         if (typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC)
-            return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
+            return context->errorContext.report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
         if (typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR)
-            return sourceFile->report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
+            return context->errorContext.report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
         SWAG_ASSERT(false);
         return false;
     }
@@ -29,7 +29,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a function definition", oneAttribute->name.c_str())};
         Diagnostic note{sourceFile, checkNode->token, format("this is %s", AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
         Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-        return sourceFile->report(diag, &note, &note1);
+        return context->errorContext.report(diag, &note, &note1);
     }
 
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind != AstNodeKind::VarDecl && kind != AstNodeKind::Statement)
@@ -37,7 +37,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a variable definition", oneAttribute->name.c_str())};
         Diagnostic note{sourceFile, checkNode->token, format("this is %s", AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
         Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-        return sourceFile->report(diag, &note, &note1);
+        return context->errorContext.report(diag, &note, &note1);
     }
 
     return true;
@@ -62,7 +62,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             {
                 Diagnostic diag{sourceFile, forNode->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), forNode->name.c_str())};
                 Diagnostic note{sourceFile, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
-                return sourceFile->report(diag, &note);
+                return context->errorContext.report(diag, &note);
             }
 
             // Predefined attributes will mark some flags
@@ -97,7 +97,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 
     if (node->semanticState != AstNodeResolveState::SecondTry)
     {
-        SWAG_CHECK(setupFuncDeclParams(sourceFile, typeInfo, node, node->parameters, false));
+        SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
         SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(sourceFile, node, node->typeInfo, SymbolKind::Attribute));
     }
 
@@ -127,7 +127,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         {
             Diagnostic diag{sourceFile, identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
             Diagnostic note{resolved->sourceFile, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
-            sourceFile->report(diag, &note);
+            context->errorContext.report(diag, &note);
             return false;
         }
 
@@ -136,7 +136,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, sourceFile->report({sourceFile, param, "attribute parameter cannot be evaluated at compile time"}));
+                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->errorContext.report({sourceFile, param, "attribute parameter cannot be evaluated at compile time"}));
                 string attrFullName        = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->name);
                 node->values[attrFullName] = param->computedValue;
             }

@@ -118,7 +118,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     switch (node->prop)
     {
     case Property::SizeOf:
-        SWAG_VERIFY(expr->typeInfo, sourceFile->report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
         node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         node->typeInfo = g_TypeMgr.typeInfoU32;
@@ -127,7 +127,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case Property::Count:
         node->inheritComputedValue(node->expression);
         if (!resolveCountProperty(context, node, node->expression->typeInfo))
-            return sourceFile->report({sourceFile, node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
+            return context->errorContext.report({sourceFile, node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
         break;
 
     case Property::Data:
@@ -165,7 +165,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         }
         else
         {
-            return sourceFile->report({sourceFile, expr, format("'data' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
+            return context->errorContext.report({sourceFile, expr, format("'data' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
         }
 
         break;
