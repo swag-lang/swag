@@ -21,7 +21,8 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 {
-    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
@@ -31,6 +32,8 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
+        SWAG_VERIFY(child->kind != AstNodeKind::TypeExpression, context->errorContext.report({sourceFile, child, "cannot reference a type expression"}));
+
         if (!typeInfo->childs.empty())
             typeInfo->name += ", ";
         typeInfo->childs.push_back(child->typeInfo);
@@ -48,7 +51,7 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
 
-		idx++;
+        idx++;
     }
 
     typeInfo->name += "}";
@@ -72,7 +75,8 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
-    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
@@ -81,6 +85,8 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
+        SWAG_VERIFY(child->kind != AstNodeKind::TypeExpression, context->errorContext.report({sourceFile, child, "cannot reference a type expression"}));
+
         if (!typeInfo->childs.empty())
             typeInfo->name += ", ";
         typeInfo->childs.push_back(child->typeInfo);

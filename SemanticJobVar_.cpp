@@ -119,6 +119,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Value
     if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
     {
+		SWAG_VERIFY(node->assignment->kind != AstNodeKind::TypeExpression, context->errorContext.report({ sourceFile, node->assignment, "affect not allowed from a type expression" }));
+
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
         {
             SWAG_CHECK(executeNode(context, node->assignment, true));
