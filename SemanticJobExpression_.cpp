@@ -27,19 +27,35 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
     typeInfo->listKind = node->listKind;
     typeInfo->name     = "{";
 
+    int idx = 0;
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
         if (!typeInfo->childs.empty())
             typeInfo->name += ", ";
         typeInfo->childs.push_back(child->typeInfo);
+
+        if (!child->name.empty())
+        {
+            typeInfo->name += child->name;
+            typeInfo->name += ": ";
+            typeInfo->names.push_back(child->name);
+        }
+        else
+        {
+            typeInfo->names.push_back(to_string(idx));
+        }
+
         typeInfo->name += child->typeInfo->name;
+
         typeInfo->sizeOf += child->typeInfo->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
+
+		idx++;
     }
 
-    typeInfo->name += "]";
+    typeInfo->name += "}";
     node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
 

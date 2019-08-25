@@ -453,6 +453,7 @@ TypeInfo* TypeInfoList::clone()
 {
     auto newType      = g_Pool_typeInfoList.alloc();
     newType->childs   = childs;
+    newType->names    = names;
     newType->scope    = scope;
     newType->listKind = listKind;
     newType->copyFrom(this);

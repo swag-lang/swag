@@ -455,6 +455,7 @@ struct TypeInfoList : public TypeInfo
         TypeInfo::reset();
         kind = TypeInfoKind::TypeList;
         childs.clear();
+        names.clear();
         scope    = nullptr;
         listKind = TypeInfoListKind::Array;
         flags |= TYPEINFO_RETURN_BY_COPY;
@@ -469,9 +470,18 @@ struct TypeInfoList : public TypeInfo
             return false;
         if (listKind != other->listKind)
             return false;
+
         for (int i = 0; i < childs.size(); i++)
         {
             if (!childs[i]->isSame(other->childs[i]))
+                return false;
+        }
+
+        if (names.size() != other->names.size())
+            return false;
+        for (int i = 0; i < names.size(); i++)
+        {
+            if (names[i] != other->names[i])
                 return false;
         }
 
@@ -497,6 +507,7 @@ struct TypeInfoList : public TypeInfo
 
     TypeInfoListKind  listKind;
     vector<TypeInfo*> childs;
+    vector<Utf8>      names;
     Scope*            scope;
 };
 
