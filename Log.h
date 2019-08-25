@@ -2,6 +2,7 @@
 #include "Utf8.h"
 #include "CommandLine.h"
 #include "Global.h"
+#include "SpinLock.h"
 
 enum class LogColor
 {
@@ -50,7 +51,7 @@ struct Log
 
     void print(const Utf8& message)
     {
-		wcout << utf8ToUnicode(message);
+        wcout << utf8ToUnicode(message);
     }
 
     void eol()
@@ -58,7 +59,7 @@ struct Log
         wcout << L'\n';
     }
 
-	void error(const Utf8& message)
+    void error(const Utf8& message)
     {
         lock();
         setColor(LogColor::Red);
@@ -95,7 +96,7 @@ struct Log
         unlock();
     }
 
-    mutex mutexAccess;
+    SpinLock mutexAccess;
 #ifdef WIN32
     HANDLE consoleHandle     = NULL;
     WORD   defaultAttributes = 0;

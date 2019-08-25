@@ -330,7 +330,8 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (silent > 0)
         return false;
 
-    g_Log.lock();
+    scoped_lock lock(g_Log.mutexAccess);
+	numErrors++;
     module->numErrors++;
 
     // Do not raise an error if we are waiting for one, during tests
@@ -347,7 +348,6 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             }
         }
 
-        g_Log.unlock();
         return false;
     }
 
@@ -362,7 +362,6 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             note->report();
     }
 
-    g_Log.unlock();
     return false;
 }
 

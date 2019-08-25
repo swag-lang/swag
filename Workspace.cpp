@@ -3,15 +3,12 @@
 #include "ThreadManager.h"
 #include "Module.h"
 #include "Stats.h"
-#include "Diagnostic.h"
 #include "Runtime.h"
 #include "SourceFile.h"
-#include "Scope.h"
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "ByteCode.h"
-#include "Log.h"
 
 Workspace g_Workspace;
 
@@ -295,7 +292,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 {
                     auto nb             = file->unittestError;
                     file->unittestError = 0;
-                    file->report({file, format("missing '%d' unittest error(s)", nb)});
+                    file->report({file, format("missing unittest errors: %d (%d raised)", nb, file->numErrors)});
                 }
             }
         }

@@ -35,6 +35,7 @@ struct SourceFile : public PoolElement
     bool checkFormat(int bufferIndex);
 
     fs::path  path;
+    int       numErrors     = 0;
     int       unittestError = 0;
     int       silent        = 0;
     Module*   module        = nullptr;
