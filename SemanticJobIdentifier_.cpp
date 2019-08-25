@@ -618,14 +618,11 @@ anotherTry:
     return true;
 }
 
-bool SemanticJob::resolveIdentifier(SemanticContext* context)
+bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
 {
-    auto  job              = context->job;
-    auto& scopeHierarchy   = job->cacheScopeHierarchy;
-    auto& dependentSymbols = job->cacheDependentSymbols;
-    auto  node             = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    auto  identifierRef    = node->identifierRef;
-    auto  sourceFile       = context->sourceFile;
+    auto node          = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    auto identifierRef = node->identifierRef;
+    auto sourceFile    = context->sourceFile;
 
     // Direct access to a tuple inside value
     if (node->flags & AST_IDENTIFIER_IS_INTEGER)
@@ -647,8 +644,52 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         node->computedValue.reg.u32 = (uint32_t) offset;
         node->typeInfo              = typeList->childs[index];
         identifierRef->typeInfo     = typeList->childs[index];
+        eaten                       = true;
         return true;
     }
+
+    // Access to tuple by name
+    if (identifierRef && identifierRef->typeInfo && identifierRef->typeInfo->kind == TypeInfoKind::TypeList)
+    {
+        auto typeList = CastTypeInfo<TypeInfoList>(identifierRef->typeInfo, TypeInfoKind::TypeList);
+        int  offset   = 0;
+        int  index    = 0;
+        for (auto& name : typeList->names)
+        {
+            if (name == node->name)
+            {
+                node->computedValue.reg.u32 = (uint32_t) offset;
+                node->typeInfo              = typeList->childs[index];
+                identifierRef->typeInfo     = typeList->childs[index];
+                eaten                       = true;
+                node->flags |= AST_IDENTIFIER_IS_INTEGER;
+                return true;
+            }
+
+            auto typeInfo = typeList->childs[index];
+            offset += typeInfo->sizeOf;
+            index++;
+        }
+    }
+
+    eaten = false;
+    return true;
+}
+
+bool SemanticJob::resolveIdentifier(SemanticContext* context)
+{
+    // Direct access to a tuple inside value
+    bool eatenByTyple = false;
+    SWAG_CHECK(resolveTupleAccess(context, eatenByTyple));
+    if (eatenByTyple)
+        return true;
+
+    auto  job              = context->job;
+    auto& scopeHierarchy   = job->cacheScopeHierarchy;
+    auto& dependentSymbols = job->cacheDependentSymbols;
+    auto  node             = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    auto  identifierRef    = node->identifierRef;
+    auto  sourceFile       = context->sourceFile;
 
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
@@ -740,8 +781,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (!node->callParameters)
                 {
-                    node->callParameters = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, node->sourceFileIdx, node);
-					node->callParameters->token = identifierRef->previousResolvedNode->token;
+                    node->callParameters        = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, node->sourceFileIdx, node);
+                    node->callParameters->token = identifierRef->previousResolvedNode->token;
                 }
 
                 node->flags |= AST_UFCS_DONE;

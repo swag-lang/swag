@@ -99,6 +99,7 @@ struct SemanticJob : public Job
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
+	static bool resolveTupleAccess(SemanticContext* context, bool& eaten);
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveImpl(SemanticContext* context);
