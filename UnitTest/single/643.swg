@@ -3,13 +3,15 @@
 
 struct(T) Point
 {
+	var x: T
 }
 
 impl Point
 {
 	//#[swag.printbc]
-	func toto(self)
+	func toto(self)->T
 	{
+		return self.x
 	}
 }
 
@@ -17,5 +19,6 @@ impl Point
 #test
 {
 	var pt: Point!s32
-	pt.toto()
+	pt.x = 5
+	@assert(pt.toto() == 5)
 }

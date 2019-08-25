@@ -679,7 +679,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             collectScopeHiearchy(context, scopeHierarchy, startScope);
         }
         else
+        {
             scopeHierarchy.push_back(startScope);
+            scopeHierarchy.insert(scopeHierarchy.end(), startScope->alternativeScopes.begin(), startScope->alternativeScopes.end());
+        }
 
         for (auto scope : scopeHierarchy)
         {
@@ -743,16 +746,20 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
 
             // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
-            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+            if (!(node->flags & AST_UFCS_DONE))
             {
-                auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
-                node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
-                fctCallParam->parent      = node->callParameters;
-                fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
-                fctCallParam->token       = identifierRef->previousResolvedNode->token;
-                fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
-                Ast::removeFromParent(identifierRef->previousResolvedNode);
-                Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
+                if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+                {
+                    node->flags |= AST_UFCS_DONE;
+                    auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
+                    node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+                    fctCallParam->parent      = node->callParameters;
+                    fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
+                    fctCallParam->token       = identifierRef->previousResolvedNode->token;
+                    fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+                    Ast::removeFromParent(identifierRef->previousResolvedNode);
+                    Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
+                }
             }
 
             for (auto param : node->callParameters->childs)
@@ -804,7 +811,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (context->result == SemanticResult::Pending)
         return true;
 
-	auto overload  = job->cacheMatches[0];
+    auto overload  = job->cacheMatches[0];
     node->typeInfo = overload->typeInfo;
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0]));
     return true;
