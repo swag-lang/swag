@@ -19,17 +19,13 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveExpressionList(SemanticContext* context)
+bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
-
-    if (typeInfo->listKind == TypeInfoListKind::Array)
-        typeInfo->name = "[";
-    else
-        typeInfo->name = "{";
+    typeInfo->name     = "{";
 
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
@@ -43,11 +39,46 @@ bool SemanticJob::resolveExpressionList(SemanticContext* context)
             node->flags &= ~AST_CONST_EXPR;
     }
 
-    if (typeInfo->listKind == TypeInfoListKind::Array)
-        typeInfo->name += "]";
-    else
-        typeInfo->name += "}";
+    typeInfo->name += "]";
+    node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
+    node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
 
+    if (node->flags & AST_CONST_EXPR)
+        typeInfo->setConst();
+    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+
+    // Reserve
+    if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
+    {
+        node->storageOffset = node->ownerScope->startStackSize;
+        node->ownerScope->startStackSize += node->typeInfo->sizeOf;
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
+{
+    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+
+    auto typeInfo      = g_Pool_typeInfoList.alloc();
+    typeInfo->listKind = node->listKind;
+    typeInfo->name     = "[";
+
+    node->flags |= AST_CONST_EXPR;
+    for (auto child : node->childs)
+    {
+        if (!typeInfo->childs.empty())
+            typeInfo->name += ", ";
+        typeInfo->childs.push_back(child->typeInfo);
+        typeInfo->name += child->typeInfo->name;
+        typeInfo->sizeOf += child->typeInfo->sizeOf;
+        if (!(child->flags & AST_CONST_EXPR))
+            node->flags &= ~AST_CONST_EXPR;
+    }
+
+    typeInfo->name += "]";
     node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
 

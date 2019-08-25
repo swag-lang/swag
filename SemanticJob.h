@@ -85,7 +85,8 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveIndex(SemanticContext* context);
-    static bool resolveExpressionList(SemanticContext* context);
+    static bool resolveExpressionListCurly(SemanticContext* context);
+	static bool resolveExpressionListArray(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
     static bool resolveFactorExpression(SemanticContext* context);

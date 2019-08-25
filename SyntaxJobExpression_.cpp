@@ -318,7 +318,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
 {
     auto initNode = Ast::newNode(&g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->inheritOwnersAndFlags(this);
-    initNode->semanticFct = &SemanticJob::resolveExpressionList;
+    initNode->semanticFct = &SemanticJob::resolveExpressionListCurly;
     initNode->inheritToken(token);
     initNode->listKind = TypeInfoListKind::Tuple;
     SWAG_CHECK(tokenizer.getToken(token));
@@ -331,12 +331,29 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
     while (token.id != TokenId::SymRightCurly)
     {
         if (token.id == TokenId::SymLeftCurly)
-        {
             SWAG_CHECK(doExpressionListCurly(initNode));
-        }
         else
         {
-            SWAG_CHECK(doExpression(initNode));
+            AstNode* paramExpression;
+            SWAG_CHECK(doExpression(nullptr, &paramExpression));
+
+            // Name
+            if (token.id == TokenId::SymColon)
+            {
+                if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
+                    return sourceFile->report({sourceFile, paramExpression, format("invalid named value '%s'", token.text.c_str())});
+				auto name = paramExpression->childs.front()->name;
+                SWAG_CHECK(eatToken());
+                if (token.id == TokenId::SymLeftCurly)
+                    SWAG_CHECK(doExpressionListCurly(initNode, &paramExpression));
+                else
+                    SWAG_CHECK(doExpression(initNode, &paramExpression));
+				paramExpression->name = name;
+            }
+            else
+            {
+                Ast::addChild(initNode, paramExpression);
+            }
         }
 
         if (token.id != TokenId::SymComma)
@@ -352,7 +369,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
 {
     auto initNode = Ast::newNode(&g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->inheritOwnersAndFlags(this);
-    initNode->semanticFct = &SemanticJob::resolveExpressionList;
+    initNode->semanticFct = &SemanticJob::resolveExpressionListArray;
     initNode->inheritToken(token);
     initNode->listKind = TypeInfoListKind::Array;
     SWAG_CHECK(tokenizer.getToken(token));
@@ -365,13 +382,9 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
     while (token.id != TokenId::SymRightSquare)
     {
         if (token.id == TokenId::SymLeftSquare)
-        {
             SWAG_CHECK(doExpressionListArray(initNode));
-        }
         else
-        {
             SWAG_CHECK(doExpression(initNode));
-        }
 
         if (token.id != TokenId::SymComma)
             break;
