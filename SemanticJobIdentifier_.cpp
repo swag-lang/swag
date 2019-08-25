@@ -730,6 +730,33 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     job->symMatch.reset();
     job->symMatch.forLambda = (node->flags & AST_TAKE_ADDRESS);
 
+    // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
+    if (!(node->flags & AST_UFCS_DONE))
+    {
+        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+        {
+            auto symbol = dependentSymbols[0];
+            if (symbol->kind == SymbolKind::Function)
+            {
+                if (!node->callParameters)
+                {
+                    node->callParameters = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, node->sourceFileIdx, node);
+					node->callParameters->token = identifierRef->previousResolvedNode->token;
+                }
+
+                node->flags |= AST_UFCS_DONE;
+                auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
+                node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+                fctCallParam->parent      = node->callParameters;
+                fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
+                fctCallParam->token       = identifierRef->previousResolvedNode->token;
+                fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+                Ast::removeFromParent(identifierRef->previousResolvedNode);
+                Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
+            }
+        }
+    }
+
     if (node->genericParameters || node->callParameters)
     {
         auto symbol = dependentSymbols[0];
@@ -743,23 +770,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
                 Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
                 return sourceFile->report(diag, &note);
-            }
-
-            // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
-            if (!(node->flags & AST_UFCS_DONE))
-            {
-                if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
-                {
-                    node->flags |= AST_UFCS_DONE;
-                    auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
-                    node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
-                    fctCallParam->parent      = node->callParameters;
-                    fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
-                    fctCallParam->token       = identifierRef->previousResolvedNode->token;
-                    fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
-                    Ast::removeFromParent(identifierRef->previousResolvedNode);
-                    Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
-                }
             }
 
             for (auto param : node->callParameters->childs)

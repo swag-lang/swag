@@ -319,7 +319,6 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
-    node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParams;
     return true;
 }
 

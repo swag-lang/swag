@@ -40,11 +40,6 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitFuncCallParams(ByteCodeGenContext* context)
-{
-    return true;
-}
-
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
