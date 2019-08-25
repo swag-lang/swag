@@ -1,9 +1,12 @@
 #module module648
 //#unittest pass semantic
 
+var gx: s32
+
 func(T) toto()
 {
-	var x: T = 0
+	var x: T = 100
+	gx = x
 }
 
 //#[swag.printbc]
@@ -11,4 +14,5 @@ func(T) toto()
 #test
 {
 	toto!s32()
+	@assert(gx == 100)
 }

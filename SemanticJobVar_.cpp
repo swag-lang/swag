@@ -194,8 +194,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->typeInfo = node->type->typeInfo;
     }
 
-	if(node->type)
-		node->inheritOrFlag(node->type, AST_IS_GENERIC);
+    if (node->type)
+        node->inheritOrFlag(node->type, AST_IS_GENERIC);
     if (!(node->flags & AST_IS_GENERIC))
     {
         SWAG_VERIFY(node->typeInfo, context->errorContext.report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
@@ -204,12 +204,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else
     {
         symbolFlags |= OVERLOAD_GENERIC;
-		if (!node->typeInfo)
-		{
+        if (!node->typeInfo)
+        {
             node->typeInfo       = g_Pool_typeInfoGeneric.alloc();
             node->typeInfo->name = node->name;
             node->typeInfo       = g_TypeMgr.registerType(node->typeInfo);
-		}
+        }
     }
 
     // A constant does nothing on backend, except if it can't be stored in a register
@@ -250,7 +250,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-		SWAG_VERIFY(!(node->typeInfo->flags& TYPEINFO_GENERIC), context->errorContext.report({ sourceFile, node->token, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str()) }));
+        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node->token, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
 
         auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
         storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
@@ -322,14 +322,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Register symbol with its type
-    auto symbolKind = SymbolKind::Variable;
-    if ((symbolFlags & OVERLOAD_GENERIC) && !node->type)
-        symbolKind = SymbolKind::GenericType;
-
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
                                                                   node,
                                                                   node->typeInfo,
-                                                                  symbolKind,
+                                                                  (node->type || node->assignment) ? SymbolKind::Variable : SymbolKind::GenericType,
                                                                   isConstant ? &node->computedValue : nullptr,
                                                                   symbolFlags,
                                                                   nullptr,

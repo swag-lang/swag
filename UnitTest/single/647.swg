@@ -7,7 +7,7 @@ struct(T) Point
 }
 
 //#[swag.printbc]
-//#unittest error
+#unittest error
 #test
 {
 	var pt: Point!bool
