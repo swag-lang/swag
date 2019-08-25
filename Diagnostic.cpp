@@ -113,7 +113,7 @@ bool ErrorContext::report(const Diagnostic& diag, const vector<const Diagnostic*
     if (genericInstanceTree.size())
     {
         auto       first = genericInstanceTree[0];
-        Diagnostic note{genericInstanceTreeFile[0], first, format("during generic instantiation of '%s'", first->name.c_str()), DiagnosticLevel::Note};
+        Diagnostic note{genericInstanceTreeFile[0], first, format("occured during generic instantiation of '%s'", first->name.c_str()), DiagnosticLevel::Note};
         copyNotes.push_back(&note);
         return sourceFile->report(diag, copyNotes);
     }
