@@ -18,9 +18,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto leftTypeInfo  = left->typeInfo;
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->errorContext.report({sourceFile, left, format("affect operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-    SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->errorContext.report({sourceFile, left, "affect not allowed on array"}));
+    SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->errorContext.report({sourceFile, left, "affect operation not allowed on array"}));
     SWAG_VERIFY(left->flags & AST_L_VALUE, context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is not a l-value"}));
     SWAG_VERIFY(!(left->resolvedSymbolOverload->flags & OVERLOAD_CONST), context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is constant"}));
+	SWAG_VERIFY(right->kind != AstNodeKind::TypeExpression, context->errorContext.report({ sourceFile, right, "affect operation not allowed from a type expression" }));
 
     // Is this an array like affectation ?
     AstPointerDeRef* arrayNode = nullptr;
@@ -60,7 +61,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
             rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
-            return context->errorContext.report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
+            return context->errorContext.report({sourceFile, right, format("affect not allowed, '%s' is %s", rightTypeInfo->name.c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
         if (forStruct && arrayNode)
             SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", left, arrayNode->structFlatParams));
         else

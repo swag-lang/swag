@@ -626,7 +626,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     }
 }
 
-const char* TypeInfo::getKindName(TypeInfo* typeInfo)
+const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
 {
     switch (typeInfo->kind)
     {

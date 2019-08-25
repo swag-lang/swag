@@ -100,7 +100,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Struct)
     {
-        Diagnostic diag{sourceFile, node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getKindName(typeInfo))};
+        Diagnostic diag{sourceFile, node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->sourceFile, node->identifier->resolvedSymbolOverload->node->token.startLocation, node->identifier->resolvedSymbolOverload->node->token.endLocation, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
         return context->errorContext.report(diag, &note);
     }
