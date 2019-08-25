@@ -17,10 +17,10 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(opInitFct->typeInfo, TypeInfoKind::FuncAttr);
     auto structNode   = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
 
-    structNode->lock();
+	typeInfoStruct->opInitFct->lock();
     if (typeInfoStruct->opInitFct->bc && typeInfoStruct->opInitFct->bc->out)
     {
-        structNode->unlock();
+		typeInfoStruct->opInitFct->unlock();
         return true;
     }
 
@@ -174,7 +174,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
-    structNode->unlock();
+	typeInfoStruct->opInitFct->unlock();
 
     //typeInfo->opInitBc->print();
     return true;
@@ -214,7 +214,6 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         // Then call
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
         inst = emitInstruction(context, ByteCodeOp::LocalCall, 0);
-        assert(typeInfoStruct->opInitFct->bc->out);
         inst->a.pointer = (uint8_t*) typeInfoStruct->opInitFct->bc;
         inst->b.u64     = 1;
         inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
