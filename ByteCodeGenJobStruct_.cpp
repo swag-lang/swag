@@ -24,7 +24,11 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
         return true;
     }
 
-    auto opInit        = g_Pool_byteCode.alloc();
+    ByteCode* opInit;
+    if (typeInfoStruct->opInitFct->bc)
+        opInit = typeInfoStruct->opInitFct->bc;
+    else
+        opInit = g_Pool_byteCode.alloc();
     opInit->sourceFile = context->sourceFile;
     opInit->name       = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
     replaceAll(opInit->name, '.', '_');
@@ -125,7 +129,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                 if (typeVar->kind == TypeInfoKind::Struct)
                 {
                     auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
-					assert(typeVarStruct->opInitFct);
+                    assert(typeVarStruct->opInitFct);
                     if (!generateStructInit(context, typeVarStruct))
                         return false;
 
@@ -133,7 +137,8 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                     if (typeVar->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
                     {
                         emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-                        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+                        auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+                        assert(typeInfoStruct->opInitFct->bc->out);
                         inst->a.pointer = (uint8_t*) typeVarStruct->opInitFct->bc;
                         inst->b.u64     = 1;
                         inst->c.pointer = (uint8_t*) typeInfoFunc;
@@ -208,7 +213,8 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
 
         // Then call
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
-        inst            = emitInstruction(context, ByteCodeOp::LocalCall, 0);
+        inst = emitInstruction(context, ByteCodeOp::LocalCall, 0);
+        assert(typeInfoStruct->opInitFct->bc->out);
         inst->a.pointer = (uint8_t*) typeInfoStruct->opInitFct->bc;
         inst->b.u64     = 1;
         inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;

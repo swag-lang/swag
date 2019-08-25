@@ -111,98 +111,98 @@ JobResult ByteCodeGenJob::execute()
         // Special auto generated functions
         if (originalNode->name == "opInit")
         {
-
             auto funcNode   = CastAst<AstFuncDecl>(originalNode, AstNodeKind::FuncDecl);
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
             generateStructInit(&context, typeStruct);
-            return JobResult::ReleaseJob;
         }
+		else
+		{
+			if (!context.bc)
+			{
+				setupBC(sourceFile->module, originalNode);
+				context.bc = originalNode->bc;
+			}
 
-        if (!context.bc)
-        {
-            setupBC(sourceFile->module, originalNode);
-            context.bc = originalNode->bc;
-        }
+			while (!nodes.empty())
+			{
+				auto node = nodes.back();
+				context.node = node;
 
-        while (!nodes.empty())
-        {
-            auto node    = nodes.back();
-            context.node = node;
+				switch (node->bytecodeState)
+				{
+				case AstNodeResolveState::Enter:
+					node->bytecodeState = AstNodeResolveState::ProcessingChilds;
 
-            switch (node->bytecodeState)
-            {
-            case AstNodeResolveState::Enter:
-                node->bytecodeState = AstNodeResolveState::ProcessingChilds;
+					if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
+						return JobResult::ReleaseJob;
 
-                if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
-                    return JobResult::ReleaseJob;
+					if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
+					{
+						if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
+						{
+							for (int i = (int)node->childs.size() - 1; i >= 0; i--)
+							{
+								auto child = node->childs[i];
+								nodes.push_back(child);
+							}
+						}
 
-                if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
-                {
-                    if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
-                    {
-                        for (int i = (int) node->childs.size() - 1; i >= 0; i--)
-                        {
-                            auto child = node->childs[i];
-                            nodes.push_back(child);
-                        }
-                    }
+						break;
+					}
 
-                    break;
-                }
+				case AstNodeResolveState::ProcessingChilds:
+					if (!(node->flags & AST_NO_BYTECODE))
+					{
+						// Computed constexpr value. Just emit the result
+						if (node->flags & AST_VALUE_COMPUTED)
+						{
+							context.node = node;
+							if (node->typeInfo->kind == TypeInfoKind::TypeList)
+							{
+								if (!emitExpressionList(&context))
+									return JobResult::ReleaseJob;
+							}
+							else
+							{
+								if (!emitLiteral(&context))
+									return JobResult::ReleaseJob;
+							}
+						}
+						else if (node->byteCodeFct)
+						{
+							context.node = node;
+							context.result = ByteCodeResult::Done;
 
-            case AstNodeResolveState::ProcessingChilds:
-                if (!(node->flags & AST_NO_BYTECODE))
-                {
-                    // Computed constexpr value. Just emit the result
-                    if (node->flags & AST_VALUE_COMPUTED)
-                    {
-                        context.node = node;
-                        if (node->typeInfo->kind == TypeInfoKind::TypeList)
-                        {
-                            if (!emitExpressionList(&context))
-                                return JobResult::ReleaseJob;
-                        }
-                        else
-                        {
-                            if (!emitLiteral(&context))
-                                return JobResult::ReleaseJob;
-                        }
-                    }
-                    else if (node->byteCodeFct)
-                    {
-                        context.node   = node;
-                        context.result = ByteCodeResult::Done;
+							if (!node->byteCodeFct(&context))
+								return JobResult::ReleaseJob;
+							if (context.result == ByteCodeResult::Pending)
+								return JobResult::KeepJobAlive;
+						}
 
-                        if (!node->byteCodeFct(&context))
-                            return JobResult::ReleaseJob;
-                        if (context.result == ByteCodeResult::Pending)
-                            return JobResult::KeepJobAlive;
-                    }
+						if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
+							return JobResult::ReleaseJob;
+					}
 
-                    if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
-                        return JobResult::ReleaseJob;
-                }
+					nodes.pop_back();
+					break;
+				}
+			}
 
-                nodes.pop_back();
-                break;
-            }
-        }
+			emitInstruction(&context, ByteCodeOp::End);
 
-        emitInstruction(&context, ByteCodeOp::End);
+			// Print resulting bytecode
+			if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+				context.bc->print();
 
-        // Print resulting bytecode
-        if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-            context.bc->print();
-
-        // Inform dependencies that this node has bytecode
-        {
-            scoped_lock lk(originalNode->mutex);
-            originalNode->flags |= AST_BYTECODE_GENERATED;
-            for (auto job : dependentJobs)
-                g_ThreadMgr.addJob(job);
-            dependentJobs.clear();
-        }
+			// Inform dependencies that this node has bytecode
+			{
+				scoped_lock lk(originalNode->mutex);
+				originalNode->flags |= AST_BYTECODE_GENERATED;
+				for (auto job : dependentJobs)
+					g_ThreadMgr.addJob(job);
+				dependentJobs.clear();
+			}
+		}
     }
 
     // Wait for other dependent nodes to be generated

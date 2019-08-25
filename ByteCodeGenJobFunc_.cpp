@@ -393,7 +393,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     if (funcNode)
     {
         auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
-		assert(funcNode->bc);
         inst->a.pointer = (uint8_t*) funcNode->bc;
         inst->b.u64     = numRegisters;
         inst->c.pointer = (uint8_t*) typeInfoFunc;
