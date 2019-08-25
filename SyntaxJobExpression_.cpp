@@ -85,8 +85,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     }
 
     case TokenId::SymLeftCurly:
+        SWAG_CHECK(doExpressionListCurly(parent, result));
+        break;
     case TokenId::SymLeftSquare:
-        SWAG_CHECK(doExpressionList(parent, result));
+        SWAG_CHECK(doExpressionListArray(parent, result));
         break;
 
     case TokenId::LiteralNumber:
@@ -312,30 +314,23 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
     return doExpression(parent, result);
 }
 
-bool SyntaxJob::doExpressionList(AstNode* parent, AstNode** result)
+bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
 {
-    auto leftId  = token.id;
-    auto rightId = token.id == TokenId::SymLeftCurly ? TokenId::SymRightCurly : TokenId::SymRightSquare;
-
     auto initNode = Ast::newNode(&g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->inheritOwnersAndFlags(this);
     initNode->semanticFct = &SemanticJob::resolveExpressionList;
     initNode->inheritToken(token);
+    initNode->listKind = TypeInfoListKind::Tuple;
     SWAG_CHECK(tokenizer.getToken(token));
 
-    if (leftId == TokenId::SymLeftCurly)
-        initNode->listKind = TypeInfoListKind::Tuple;
-    else
-        initNode->listKind = TypeInfoListKind::Array;
-
-    if (token.id == rightId)
+    if (token.id == TokenId::SymRightCurly)
         return syntaxError(token, format("initializer list is empty"));
     if (result)
         *result = initNode;
 
-    while (token.id != rightId)
+    while (token.id != TokenId::SymRightCurly)
     {
-        if (token.id == leftId)
+        if (token.id == TokenId::SymLeftCurly)
         {
             SWAG_CHECK(doInitializationExpression(initNode));
         }
@@ -349,7 +344,41 @@ bool SyntaxJob::doExpressionList(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
-    SWAG_CHECK(eatToken(rightId));
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+    return true;
+}
+
+bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
+{
+    auto initNode = Ast::newNode(&g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
+    initNode->inheritOwnersAndFlags(this);
+    initNode->semanticFct = &SemanticJob::resolveExpressionList;
+    initNode->inheritToken(token);
+    initNode->listKind = TypeInfoListKind::Array;
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    if (token.id == TokenId::SymRightSquare)
+        return syntaxError(token, format("initializer list is empty"));
+    if (result)
+        *result = initNode;
+
+    while (token.id != TokenId::SymRightSquare)
+    {
+        if (token.id == TokenId::SymLeftSquare)
+        {
+            SWAG_CHECK(doInitializationExpression(initNode));
+        }
+        else
+        {
+            SWAG_CHECK(doExpression(initNode));
+        }
+
+        if (token.id != TokenId::SymComma)
+            break;
+        SWAG_CHECK(eatToken(TokenId::SymComma));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
     return true;
 }
 
@@ -364,7 +393,7 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(doExpressionList(parent, result));
+        SWAG_CHECK(doExpressionListCurly(parent, result));
         return true;
     }
 

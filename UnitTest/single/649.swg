@@ -4,5 +4,5 @@
 //#[swag.printbc]
 #test
 {
-	var pt = {x: 10, y: 10}
+	//var pt = {x: 10, y: 10}
 }
