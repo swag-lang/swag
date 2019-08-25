@@ -10,13 +10,13 @@
 #include "TypeManager.h"
 #include "Scope.h"
 
-bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, TypeInfoFuncAttr* typeInfoFunc)
+bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, TypeInfoFuncAttr* typeInfoFunc)
 {
     auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfo->structNode, AstNodeKind::StructDecl);
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
 
     structNode->lock();
-    if (typeInfo->opInitBc)
+    if (typeInfoStruct->opInitBc)
     {
         structNode->unlock();
         return true;
@@ -33,17 +33,17 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     opInit->usedRegisters.insert(2);
 
     sourceFile->module->addByteCodeFunc(opInit);
-    structNode->opInit->bc = opInit; // For a direct user call, @TEMP, will not work with generics
-    typeInfo->opInitBc     = opInit;
+    structNode->opInit->bc   = opInit; // For a direct user call, @TEMP, will not work with generics
+    typeInfoStruct->opInitBc = opInit;
 
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
 
     // No special value, so we can just clear the struct
-    if (!(typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
+    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
     {
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        switch (typeInfo->sizeOf)
+        switch (typeInfoStruct->sizeOf)
         {
         case 1:
             emitInstruction(&cxt, ByteCodeOp::Clear8, 0);
@@ -58,7 +58,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
             emitInstruction(&cxt, ByteCodeOp::Clear64, 0);
             break;
         default:
-            emitInstruction(&cxt, ByteCodeOp::ClearX, 0)->b.u32 = typeInfo->sizeOf;
+            emitInstruction(&cxt, ByteCodeOp::ClearX, 0)->b.u32 = typeInfoStruct->sizeOf;
             break;
         }
     }
@@ -183,7 +183,7 @@ bool ByteCodeGenJob::emitDefaultStruct(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset)
+bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset)
 {
     auto node     = context->node;
     auto resolved = node->resolvedSymbolOverload;
@@ -191,20 +191,20 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     // Type
     auto typeInfoFunc = g_Pool_typeInfoFuncAttr.alloc();
     auto param        = g_Pool_typeInfoFuncAttrParam.alloc();
-    param->typeInfo   = typeInfo;
+    param->typeInfo   = typeInfoStruct;
     typeInfoFunc->parameters.push_back(param);
     typeInfoFunc = (TypeInfoFuncAttr*) g_TypeMgr.registerType(typeInfoFunc);
 
     // Be sure referenced function has bytecode
-    if (!generateStructInit(context, typeInfo, typeInfoFunc))
+    if (!generateStructInit(context, typeInfoStruct, typeInfoFunc))
         return false;
 
     // Just clear the content of the structure
-    if (!(typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
+    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
     {
         auto inst   = emitInstruction(context, ByteCodeOp::ClearRefFromStackX);
         inst->a.u32 = resolved->storageOffset;
-        inst->b.u32 = typeInfo->sizeOf;
+        inst->b.u32 = typeInfoStruct->sizeOf;
     }
     else
     {
@@ -224,7 +224,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         // Then call
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
         inst            = emitInstruction(context, ByteCodeOp::LocalCall, 0);
-        inst->a.pointer = (uint8_t*) typeInfo->opInitBc;
+        inst->a.pointer = (uint8_t*) typeInfoStruct->opInitBc;
         inst->b.u64     = 1;
         inst->c.pointer = (uint8_t*) typeInfoFunc;
         emitInstruction(context, ByteCodeOp::IncSP, 8);
