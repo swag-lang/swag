@@ -41,10 +41,6 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
             typeInfo->name += ": ";
             typeInfo->names.push_back(child->name);
         }
-        else
-        {
-            typeInfo->names.push_back(to_string(idx));
-        }
 
         typeInfo->name += child->typeInfo->name;
 

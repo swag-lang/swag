@@ -1,0 +1,15 @@
+#module module651
+//#unittest pass syntax
+
+func toto() -> {x: s32, y: s32}
+{
+	return {1, 2}
+}
+
+//#[swag.printbc]
+#test
+{
+	res := toto()
+	@assert(res.x == 1)
+	@assert(res.y == 2)
+}
