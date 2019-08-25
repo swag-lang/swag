@@ -4,6 +4,7 @@
 #include "ThreadManager.h"
 #include "Global.h"
 #include "Job.h"
+#include "Log.h"
 
 JobThread::JobThread()
 {
@@ -39,9 +40,16 @@ void JobThread::loop()
             continue;
         }
 
-        auto result = job->execute();
-        if (result == JobResult::ReleaseJob)
-            job->release();
-        g_ThreadMgr.jobHasEnded();
+        try
+        {
+            auto result = job->execute();
+            if (result == JobResult::ReleaseJob)
+                job->release();
+            g_ThreadMgr.jobHasEnded();
+        }
+        catch (...)
+        {
+			g_Log.error("unhandled exception");
+        }
     }
 }

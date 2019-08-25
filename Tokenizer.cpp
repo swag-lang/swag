@@ -266,11 +266,14 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         }
 
         // Symbols
-        token.endLocation = location;
         if (doSymbol(c, token))
+        {
+            token.endLocation = location;
             return true;
+        }
 
         // Unknown character
+        token.endLocation = location;
         token.text        = c;
         token.id          = TokenId::Invalid;
         token.endLocation = location;

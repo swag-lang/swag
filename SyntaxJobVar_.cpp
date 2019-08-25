@@ -57,22 +57,28 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
     }
+    else if (!varNode->type)
+    {
+		return syntaxError(token, format("invalid token '%s' after variable name", token.text.c_str()));
+    }
 
     // Be sure we will be able to have a type
     if (!varNode->type && !varNode->assignment)
+    {
         return error(varNode->token, "variable must be initialized because no type is specified");
+    }
 
     SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
 
     if (varNode->assignment)
     {
         // When initialization is supposed to be constexpr, we just duplicate the initialization
-		assert(currentScope);
+        assert(currentScope);
         if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
         {
             for (auto otherVar : otherVariables)
             {
-				CloneContext cloneContext;
+                CloneContext cloneContext;
                 otherVar->assignment = varNode->assignment->clone(cloneContext);
                 Ast::addChild(otherVar, otherVar->assignment);
             }
@@ -88,7 +94,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     }
     else
     {
-		CloneContext cloneContext;
+        CloneContext cloneContext;
         for (auto otherVar : otherVariables)
         {
             otherVar->type = varNode->type->clone(cloneContext);
