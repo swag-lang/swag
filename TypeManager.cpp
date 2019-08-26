@@ -157,33 +157,43 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
     {
     case TypeInfoKind::Native:
         return typeInfo;
+
     case TypeInfoKind::FuncAttr:
         if (flags & MakeConcrete::FlagFunc)
         {
             auto returnType = static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType;
             if (!returnType)
                 return g_TypeMgr.typeInfoVoid;
-            return concreteType(returnType);
+            return concreteType(returnType, flags);
         }
         break;
+
     case TypeInfoKind::Enum:
         if (flags & MakeConcrete::FlagEnum)
-            return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType);
+            return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType, flags);
         break;
+
     case TypeInfoKind::EnumValue:
         if (flags & MakeConcrete::FlagEnum)
-            return concreteType(static_cast<TypeInfoEnumValue*>(typeInfo)->enumOwner->rawType);
-		else if (flags & MakeConcrete::FlagEnumValue)
-			return static_cast<TypeInfoEnumValue*>(typeInfo)->enumOwner;
+            return concreteType(static_cast<TypeInfoEnumValue*>(typeInfo)->enumOwner->rawType, flags);
+        else if (flags & MakeConcrete::FlagEnumValue)
+            return static_cast<TypeInfoEnumValue*>(typeInfo)->enumOwner;
         break;
+
+    case TypeInfoKind::Alias:
+        if (flags & MakeConcrete::FlagAlias)
+            return concreteType(static_cast<TypeInfoAlias*>(typeInfo)->rawType, flags);
+        break;
+
     case TypeInfoKind::Generic:
         if (flags & MakeConcrete::FlagGeneric)
         {
             auto typeGeneric = static_cast<TypeInfoGeneric*>(typeInfo);
             if (!typeGeneric->rawType)
                 return typeGeneric;
-            return concreteType(typeGeneric->rawType);
+            return concreteType(typeGeneric->rawType, flags);
         }
+        break;
     }
 
     return typeInfo;

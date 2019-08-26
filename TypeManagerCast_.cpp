@@ -1030,6 +1030,11 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (toType->kind != TypeInfoKind::Lambda && fromType->kind == TypeInfoKind::Lambda)
         fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
 
+    if (toType->kind == TypeInfoKind::Alias)
+        toType = TypeManager::concreteType(toType, MakeConcrete::FlagAlias);
+    if (fromType->kind == TypeInfoKind::Alias)
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagAlias);
+
     if (fromType->kind == TypeInfoKind::VariadicValue)
         return true;
     if (fromType == toType)

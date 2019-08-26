@@ -18,6 +18,8 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->errorContext.report({sourceFile, node, "cannot reference a type expression"});
     if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::Enum)
         return context->errorContext.report({sourceFile, node, "cannot reference an enum type"});
+    if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::Alias)
+        return context->errorContext.report({sourceFile, node, "cannot reference a type alias"});
 
     return true;
 }
@@ -201,8 +203,16 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 
 bool SemanticJob::resolveTypeDecl(SemanticContext* context)
 {
-    auto node      = context->node;
-    node->typeInfo = node->childs.front()->typeInfo;
+    auto node = context->node;
+
+    auto typeInfo     = g_Pool_typeInfoAlias.alloc();
+    typeInfo->rawType = node->childs.front()->typeInfo;
+    typeInfo->name    = node->name;
+    typeInfo->sizeOf  = typeInfo->rawType->sizeOf;
+    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
+    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
+    typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
+    node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Type));

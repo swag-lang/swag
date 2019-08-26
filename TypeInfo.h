@@ -29,6 +29,7 @@ enum class TypeInfoKind
     VariadicValue,
     Struct,
     Generic,
+    Alias,
 };
 
 enum class NativeType
@@ -588,6 +589,28 @@ struct TypeInfoStruct : public TypeInfo
     AstNode*                       opInitFct;
 };
 
+struct TypeInfoAlias : public TypeInfo
+{
+    void reset() override
+    {
+        TypeInfo::reset();
+        kind    = TypeInfoKind::Alias;
+        rawType = nullptr;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (!TypeInfo::isSame(from))
+            return false;
+        auto other = static_cast<TypeInfoAlias*>(from);
+        return rawType->isSame(other->rawType);
+    }
+
+    TypeInfo* clone() override;
+
+    TypeInfo* rawType;
+};
+
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
 extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
@@ -601,3 +624,4 @@ extern Pool<TypeInfoNative>        g_Pool_typeInfoNative;
 extern Pool<TypeInfoVariadic>      g_Pool_typeInfoVariadic;
 extern Pool<TypeInfoGeneric>       g_Pool_typeInfoGeneric;
 extern Pool<TypeInfoStruct>        g_Pool_typeInfoStruct;
+extern Pool<TypeInfoAlias>         g_Pool_typeInfoAlias;

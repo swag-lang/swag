@@ -302,6 +302,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::TypeList &&
         typeInfo->returnType->kind != TypeInfoKind::Struct &&
         typeInfo->returnType->kind != TypeInfoKind::Generic &&
+        typeInfo->returnType->kind != TypeInfoKind::Alias &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->errorContext.report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 
@@ -310,8 +311,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // opInit registration
     if (funcNode->name == "opInit")
     {
-		SWAG_ASSERT(funcNode->parameters);
-		SWAG_ASSERT(funcNode->parameters->childs.size() >= 1);
+        SWAG_ASSERT(funcNode->parameters);
+        SWAG_ASSERT(funcNode->parameters->childs.size() >= 1);
         auto typeStruct       = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
         typeStruct->opInitFct = funcNode;
     }
