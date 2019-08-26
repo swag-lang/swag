@@ -17,12 +17,9 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(opInitFct->typeInfo, TypeInfoKind::FuncAttr);
     auto structNode   = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
 
-	typeInfoStruct->opInitFct->lock();
+	scoped_lock lk(typeInfoStruct->opInitFct->mutex);
     if (typeInfoStruct->opInitFct->bc && typeInfoStruct->opInitFct->bc->out)
-    {
-		typeInfoStruct->opInitFct->unlock();
         return true;
-    }
 
     ByteCode* opInit;
     if (typeInfoStruct->opInitFct->bc)
@@ -73,7 +70,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
         for (auto child : structNode->content->childs)
         {
             auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-            auto typeVar = varDecl->typeInfo;
+            auto typeVar = g_TypeMgr.concreteType(varDecl->typeInfo);
 
             emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
             if (!g_CommandLine.optimizeByteCode || varDecl->resolvedSymbolOverload->storageOffset)
@@ -113,12 +110,12 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                         emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1);
                         break;
                     default:
-                        return internalError(context, "generateStructInit, invalid native type sizeof");
+                        return internalError(context, "generateStructInit, invalid native type sizeof", varDecl);
                     }
                 }
                 else
                 {
-                    return internalError(context, "generateStructInit, invalid assignment type");
+                    return internalError(context, "generateStructInit, invalid assignment type", varDecl);
                 }
             }
             else
@@ -174,7 +171,6 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
-	typeInfoStruct->opInitFct->unlock();
 
     //typeInfo->opInitBc->print();
     return true;
