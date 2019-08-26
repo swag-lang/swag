@@ -560,7 +560,7 @@ struct TypeInfoStruct : public TypeInfo
     }
 
     vector<TypeInfoFuncAttrParam*> genericParameters;
-    vector<TypeInfo*>              childs;
+    vector<TypeInfoFuncAttrParam*> childs;
     Scope*                         scope;
     AstNode*                       structNode;
     AstNode*                       opInitFct;

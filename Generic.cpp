@@ -57,14 +57,17 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
     for (int i = 0; i < newType->childs.size(); i++)
     {
         auto child = newType->childs[i];
-        auto it    = cloneContext.replaceTypes.find(child);
+        auto it    = cloneContext.replaceTypes.find(child->typeInfo);
         if (it != cloneContext.replaceTypes.end())
-            newType->childs[i] = it->second;
+        {
+            newType->childs[i]->typeInfo = it->second;
+            newType->childs[i]->sizeOf   = it->second->sizeOf;
+        }
     }
 
     // Need to wait for the struct to be semantic resolved
-	symbol->cptOverloads++;
-	job->waitForSymbol(context, symbol);
+    symbol->cptOverloads++;
+    job->waitForSymbol(context, symbol);
 
     // Clone opInit
     auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
@@ -161,7 +164,7 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
 
     // Need to wait for the function to be semantic resolved
     auto symbol = dependentSymbols[0];
-	symbol->cptOverloads++;
+    symbol->cptOverloads++;
     job->waitForSymbol(context, symbol);
 
     // Run semantic on that function

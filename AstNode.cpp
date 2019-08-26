@@ -30,7 +30,7 @@ Pool<AstImpl>            g_Pool_astImpl;
 
 void AstNode::computeFullName()
 {
-	SWAG_ASSERT(ownerScope);
+    SWAG_ASSERT(ownerScope);
     fullname = ownerScope->fullname + "_" + name;
     replaceAll(fullname, '.', '_');
 }
@@ -424,6 +424,6 @@ AstNode* AstStruct::clone(CloneContext& context)
 
 AstNode* AstImpl::clone(CloneContext& context)
 {
-	SWAG_ASSERT(false);
+    SWAG_ASSERT(false);
     return nullptr;
 }

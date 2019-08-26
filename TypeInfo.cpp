@@ -478,7 +478,6 @@ TypeInfo* TypeInfoStruct::clone()
 {
     auto newType        = g_Pool_typeInfoStruct.alloc();
     newType->scope      = scope;
-    newType->childs     = childs;
     newType->structNode = structNode;
     newType->opInitFct  = opInitFct;
 
@@ -487,6 +486,13 @@ TypeInfo* TypeInfoStruct::clone()
         auto param = static_cast<TypeInfoFuncAttrParam*>(genericParameters[i]);
         param      = static_cast<TypeInfoFuncAttrParam*>(param->clone());
         newType->genericParameters.push_back(param);
+    }
+
+    for (int i = 0; i < childs.size(); i++)
+    {
+        auto param = static_cast<TypeInfoFuncAttrParam*>(childs[i]);
+        param      = static_cast<TypeInfoFuncAttrParam*>(param->clone());
+        newType->childs.push_back(param);
     }
 
     newType->copyFrom(this);

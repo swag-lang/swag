@@ -116,8 +116,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     typeInfo->structNode = node;
     typeInfo->name       = format("%s", node->name.c_str());
-	if (!typeInfo->opInitFct)
-		typeInfo->opInitFct = node->defaultOpInit;
+    if (!typeInfo->opInitFct)
+        typeInfo->opInitFct = node->defaultOpInit;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
@@ -151,7 +151,12 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            typeInfo->childs.push_back(child->typeInfo);
+            auto typeParam        = g_Pool_typeInfoFuncAttrParam.alloc();
+            typeParam->namedParam = child->name;
+            typeParam->typeInfo   = child->typeInfo;
+            typeParam->sizeOf     = child->typeInfo->sizeOf;
+            typeInfo->childs.push_back(typeParam);
+
             typeInfo->sizeOf += child->typeInfo->sizeOf;
             typeInfo->flags |= structFlags;
         }
@@ -181,7 +186,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
     }
 
-	// Compute size of struct, now that we know the real types
+    // Compute size of struct, now that we know the real types
     else
     {
         for (auto param : typeInfo->childs)

@@ -801,6 +801,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             if (symbol->kind != SymbolKind::Attribute &&
                 symbol->kind != SymbolKind::Function &&
+                symbol->kind != SymbolKind::Struct &&
                 (symbol->kind != SymbolKind::Variable || symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Lambda))
             {
                 Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
