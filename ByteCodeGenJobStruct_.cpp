@@ -35,7 +35,8 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     opInit->usedRegisters.insert(1);
     opInit->usedRegisters.insert(2);
 
-    sourceFile->module->addByteCodeFunc(opInit);
+	if(!typeInfoStruct->opInitFct->bc)
+		sourceFile->module->addByteCodeFunc(opInit);
     typeInfoStruct->opInitFct->bc = opInit;
 
     ByteCodeGenContext cxt{*context};
