@@ -24,7 +24,7 @@ Pool<ByteCode> g_Pool_byteCode;
 string ByteCode::callName()
 {
     auto callname = node && !node->fullname.empty() ? node->fullname : name;
-	callname += format("_%lX", (uint64_t) this);
+    callname += format("_%lX", (uint64_t) this);
     return callname;
 }
 
@@ -120,6 +120,23 @@ void ByteCode::print()
         case ByteCodeOp::IncRA64:
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::MovRASP:
+		case ByteCodeOp::CastS8S16:
+        case ByteCodeOp::CastS16S32:
+        case ByteCodeOp::CastS32S8:
+        case ByteCodeOp::CastS32S16:
+        case ByteCodeOp::CastS32S64:
+        case ByteCodeOp::CastS32F32:
+        case ByteCodeOp::CastS64S32:
+        case ByteCodeOp::CastS64F32:
+        case ByteCodeOp::CastS64F64:
+        case ByteCodeOp::CastU32F32:
+        case ByteCodeOp::CastU64F32:
+        case ByteCodeOp::CastU64F64:
+        case ByteCodeOp::CastF32S32:
+        case ByteCodeOp::CastF32S64:
+        case ByteCodeOp::CastF32F64:
+        case ByteCodeOp::CastF64S64:
+        case ByteCodeOp::CastF64F32:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -217,7 +234,7 @@ void ByteCode::print()
             g_Log.print(bc->sourceFile->path.string());
             g_Log.print(", ");
             g_Log.print(bc->node ? bc->node->name : bc->name);
-			g_Log.print(format(" (%lX)", (uint64_t) bc));
+            g_Log.print(format(" (%lX)", (uint64_t) bc));
             g_Log.print("]");
             break;
         }

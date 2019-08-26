@@ -1,0 +1,235 @@
+#include "pch.h"
+#include "SemanticJob.h"
+#include "TypeManager.h"
+#include "ByteCodeGenJob.h"
+
+bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node         = context->node;
+    auto leftTypeInfo = left->typeInfo;
+    auto sourceFile   = context->sourceFile;
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeType::Bool:
+            node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
+            break;
+        case NativeType::F32:
+            node->computedValue.reg.b = left->computedValue.reg.f32 == right->computedValue.reg.f32;
+            break;
+        case NativeType::F64:
+            node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
+            break;
+        case NativeType::S8:
+        case NativeType::U8:
+            node->computedValue.reg.b = left->computedValue.reg.u8 == right->computedValue.reg.u8;
+            break;
+        case NativeType::S16:
+        case NativeType::U16:
+            node->computedValue.reg.b = left->computedValue.reg.u16 == right->computedValue.reg.u16;
+            break;
+        case NativeType::S32:
+        case NativeType::U32:
+        case NativeType::Char:
+            node->computedValue.reg.b = left->computedValue.reg.u32 == right->computedValue.reg.u32;
+            break;
+        case NativeType::S64:
+        case NativeType::U64:
+            node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
+            break;
+        case NativeType::String:
+            node->computedValue.reg.b = left->computedValue.text == right->computedValue.text;
+            break;
+
+        default:
+            return context->errorContext.report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        }
+    }
+    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserOp(context, "opEquals", nullptr, left, right));
+        node->typeInfo = g_TypeMgr.typeInfoBool;
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node         = context->node;
+    auto leftTypeInfo = left->typeInfo;
+    auto sourceFile   = context->sourceFile;
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeType::Bool:
+            node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
+            break;
+        case NativeType::F32:
+            node->computedValue.reg.b = left->computedValue.reg.f32 < right->computedValue.reg.f32;
+            break;
+        case NativeType::F64:
+            node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
+            break;
+        case NativeType::S8:
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 < right->computedValue.reg.s8;
+            break;
+        case NativeType::S16:
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 < right->computedValue.reg.s16;
+            break;
+        case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 < right->computedValue.reg.s32;
+            break;
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 < right->computedValue.reg.s64;
+            break;
+        case NativeType::U8:
+            node->computedValue.reg.u8 = left->computedValue.reg.u8 < right->computedValue.reg.u8;
+            break;
+        case NativeType::U16:
+            node->computedValue.reg.u16 = left->computedValue.reg.u16 < right->computedValue.reg.u16;
+            break;
+        case NativeType::U32:
+        case NativeType::Char:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 < right->computedValue.reg.u32;
+            break;
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
+            break;
+
+        default:
+            return context->errorContext.report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        }
+    }
+    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserOp(context, "opCmp", nullptr, left, right));
+        node->typeInfo = g_TypeMgr.typeInfoBool;
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node         = context->node;
+    auto leftTypeInfo = left->typeInfo;
+    auto sourceFile   = context->sourceFile;
+
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    {
+        node->flags |= AST_VALUE_COMPUTED;
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeType::Bool:
+            node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
+            break;
+        case NativeType::F32:
+            node->computedValue.reg.b = left->computedValue.reg.f32 > right->computedValue.reg.f32;
+            break;
+        case NativeType::F64:
+            node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
+            break;
+        case NativeType::S8:
+            node->computedValue.reg.s8 = left->computedValue.reg.s8 > right->computedValue.reg.s8;
+            break;
+        case NativeType::S16:
+            node->computedValue.reg.s16 = left->computedValue.reg.s16 > right->computedValue.reg.s16;
+            break;
+        case NativeType::S32:
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 > right->computedValue.reg.s32;
+            break;
+        case NativeType::S64:
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 > right->computedValue.reg.s64;
+            break;
+        case NativeType::U8:
+            node->computedValue.reg.u8 = left->computedValue.reg.u8 > right->computedValue.reg.u8;
+            break;
+        case NativeType::U16:
+            node->computedValue.reg.u16 = left->computedValue.reg.u16 > right->computedValue.reg.u16;
+            break;
+        case NativeType::U32:
+        case NativeType::Char:
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 > right->computedValue.reg.u32;
+            break;
+        case NativeType::U64:
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
+            break;
+
+        default:
+            return context->errorContext.report({sourceFile, context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+        }
+    }
+    else if (leftTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserOp(context, "opCmp", nullptr, left, right));
+        node->typeInfo = g_TypeMgr.typeInfoBool;
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveCompareExpression(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto left       = node->childs[0];
+    auto right      = node->childs[1];
+    auto sourceFile = context->sourceFile;
+
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_ASSERT(leftTypeInfo && rightTypeInfo);
+
+    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native || leftTypeInfo->kind == TypeInfoKind::Pointer || leftTypeInfo->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native || rightTypeInfo->kind == TypeInfoKind::Pointer || leftTypeInfo->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+    SWAG_CHECK(checkIsConcrete(context, left));
+    SWAG_CHECK(checkIsConcrete(context, right));
+
+    node->inheritLocation();
+    node->typeInfo = g_TypeMgr.typeInfoBool;
+    TypeManager::promote(left, right);
+    left->typeInfo  = TypeManager::concreteType(left->typeInfo, MakeConcrete::FlagEnum);
+    right->typeInfo = TypeManager::concreteType(right->typeInfo, MakeConcrete::FlagEnum);
+
+    // Must not make types compatible for a struct
+    if (left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
+        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, left, right));
+
+    node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;
+    node->inheritAndFlag(AST_CONST_EXPR);
+
+    switch (node->token.id)
+    {
+    case TokenId::SymEqualEqual:
+        SWAG_CHECK(resolveCompOpEqual(context, left, right));
+        break;
+    case TokenId::SymExclamEqual:
+        SWAG_CHECK(resolveCompOpEqual(context, left, right));
+        node->computedValue.reg.b = !node->computedValue.reg.b;
+        break;
+    case TokenId::SymLower:
+        SWAG_CHECK(resolveCompOpLower(context, left, right));
+        break;
+    case TokenId::SymGreater:
+        SWAG_CHECK(resolveCompOpGreater(context, left, right));
+        break;
+    case TokenId::SymLowerEqual:
+        SWAG_CHECK(resolveCompOpGreater(context, left, right));
+        node->computedValue.reg.b = !node->computedValue.reg.b;
+        break;
+    case TokenId::SymGreaterEqual:
+        SWAG_CHECK(resolveCompOpLower(context, left, right));
+        node->computedValue.reg.b = !node->computedValue.reg.b;
+        break;
+    default:
+        return internalError(context, "resolveCompareExpression, token not supported");
+    }
+
+    return true;
+}
