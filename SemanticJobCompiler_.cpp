@@ -16,6 +16,7 @@
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
+    auto job        = context->job;
     auto sourceFile = context->sourceFile;
 
     // No need to run, this is already baked
@@ -43,14 +44,14 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
                 g_ThreadMgr.addJob(node->byteCodeJob);
             }
 
-            context->result = SemanticResult::Pending;
+			job->setPending(context);
             return true;
         }
 
         if (!(node->flags & AST_BYTECODE_RESOLVED))
         {
-            node->byteCodeJob->dependentJobs.push_back(context->job);
-            context->result = SemanticResult::Pending;
+            node->byteCodeJob->dependentJobs.push_back(job);
+			job->setPending(context);
             return true;
         }
     }

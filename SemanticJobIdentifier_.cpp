@@ -158,10 +158,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
             scoped_lock lock(symbol->mutex);
             if (symbol->cptOverloads)
             {
-                symbol->dependentJobs.push_back(job);
-                g_ThreadMgr.addPendingJob(job);
-                context->result = SemanticResult::Pending;
-				job->waitingSymbolSolved = symbol;
+				job->waitForSymbol(context, symbol);
                 return true;
             }
         }
@@ -337,10 +334,7 @@ anotherTry:
         scoped_lock lock(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            symbol->dependentJobs.push_back(job);
-            g_ThreadMgr.addPendingJob(job);
-            context->result = SemanticResult::Pending;
-			job->waitingSymbolSolved = symbol;
+            job->waitForSymbol(context, symbol);
             return true;
         }
 
@@ -403,10 +397,7 @@ anotherTry:
         // Be sure we don't have more overloads waiting to be solved
         if (symbol->cptOverloads)
         {
-            symbol->dependentJobs.push_back(job);
-            g_ThreadMgr.addPendingJob(job);
-            context->result = SemanticResult::Pending;
-			job->waitingSymbolSolved = symbol;
+            job->waitForSymbol(context, symbol);
             symbol->mutex.unlock();
             return true;
         }
@@ -762,10 +753,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         scoped_lock lkn(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            symbol->dependentJobs.push_back(job);
-            g_ThreadMgr.addPendingJob(job);
-            context->result = SemanticResult::Pending;
-			job->waitingSymbolSolved = symbol;
+            job->waitForSymbol(context, symbol);
             return true;
         }
     }
@@ -862,8 +850,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     SWAG_CHECK(matchIdentifierParameters(context, node->genericParameters, node->callParameters, node));
-    if (context->result == SemanticResult::Pending)
-        return true;
+	if (context->result == SemanticResult::Pending)
+		return true;
 
     auto overload  = job->cacheMatches[0];
     node->typeInfo = overload->typeInfo;

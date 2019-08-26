@@ -4,20 +4,35 @@
 #include "SourceFile.h"
 #include "SymTable.h"
 #include "Global.h"
+#include "ThreadManager.h"
 
 Pool<SemanticJob> g_Pool_semanticJob;
 
 bool SemanticJob::internalError(SemanticContext* context, const char* msg)
 {
     AstNode* node = context->node;
-	context->errorContext.report({context->sourceFile, node->token, format("internal compiler error during semantic (%s)", msg)});
+    context->errorContext.report({context->sourceFile, node->token, format("internal compiler error during semantic (%s)", msg)});
     return false;
 }
 
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {
-	context->errorContext.report({context->sourceFile, context->node->token, msg});
+    context->errorContext.report({context->sourceFile, context->node->token, msg});
     return false;
+}
+
+void SemanticJob::waitForSymbol(SemanticContext* context, SymbolName* symbol)
+{
+	context->node->semanticState = AstNodeResolveState::SecondTry;
+    waitingSymbolSolved = symbol;
+    symbol->dependentJobs.push_back(this);
+	setPending(context);
+    g_ThreadMgr.addPendingJob(this);
+}
+
+void SemanticJob::setPending(SemanticContext* context)
+{
+    context->result = SemanticResult::Pending;
 }
 
 JobResult SemanticJob::execute()
@@ -64,7 +79,6 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::SecondTry:
             if (node->semanticFct)
             {
-                context.result = SemanticResult::Done;
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
                 if (context.result == SemanticResult::Pending)

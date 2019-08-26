@@ -38,7 +38,7 @@ struct SemanticContext
     SourceFile*    sourceFile = nullptr;
     SemanticJob*   job        = nullptr;
     AstNode*       node       = nullptr;
-    SemanticResult result;
+    SemanticResult result     = SemanticResult::Done;
     ErrorContext   errorContext;
 };
 
@@ -68,6 +68,8 @@ struct SemanticJob : public Job
     static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer);
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
+    void        waitForSymbol(SemanticContext* context, SymbolName* symbol);
+    void        setPending(SemanticContext* context);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

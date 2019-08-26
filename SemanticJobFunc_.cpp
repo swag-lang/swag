@@ -324,7 +324,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
     funcNode->resolvedSymbolOverload->attributes = move(attributes);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));
-
     return true;
 }
 

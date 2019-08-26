@@ -851,10 +851,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         scoped_lock lkn(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            symbol->dependentJobs.push_back(job);
-            g_ThreadMgr.addPendingJob(context->job);
-			job->waitingSymbolSolved = symbol;
-            context->result = SemanticResult::Pending;
+			job->waitForSymbol(context, symbol);
             return true;
         }
     }

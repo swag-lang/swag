@@ -23,12 +23,11 @@ enum class ByteCodeResult
 
 struct ByteCodeGenContext
 {
-    SemanticContext* semantic;
-    ByteCode*        bc;
-    ByteCodeGenJob*  job;
-    AstNode*         node;
-    ByteCodeResult   result;
-    SourceFile*      sourceFile = nullptr;
+    ByteCode*       bc;
+    ByteCodeGenJob* job;
+    AstNode*        node;
+    ByteCodeResult  result;
+    SourceFile*     sourceFile = nullptr;
 };
 
 struct ByteCodeGenJob : public Job
@@ -112,7 +111,7 @@ struct ByteCodeGenJob : public Job
     static bool emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
-	static bool emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
+    static bool emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
     static bool emitAffectXOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1);
@@ -133,7 +132,7 @@ struct ByteCodeGenJob : public Job
     static bool emitSliceRef(ByteCodeGenContext* context);
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
-	static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr);
+    static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr);
 
     static bool generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
 

@@ -194,6 +194,5 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags));
-
     return true;
 }
