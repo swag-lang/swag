@@ -17,4 +17,5 @@ struct Toto
 {
 	var pt: Toto
 	@assert(pt.x == 1)
+	@assert(pt.x == OT.A)
 }
