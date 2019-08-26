@@ -181,7 +181,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
             for (int j = startResolved; j < parameters.size(); j++)
             {
                 auto symbolParameter = parameters[j];
-                if (parameters[j]->name == param->namedParam)
+                if (parameters[j]->namedParam == param->namedParam)
                 {
                     if (context.doneParameters[j])
                     {
