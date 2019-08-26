@@ -214,8 +214,8 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a function";
     case SymbolKind::Namespace:
         return "a namespace";
-    case SymbolKind::Type:
-        return "a type";
+    case SymbolKind::TypeAlias:
+        return "a type alias";
     case SymbolKind::Variable:
         return "a variable";
     case SymbolKind::Struct:
@@ -239,8 +239,8 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "function";
     case SymbolKind::Namespace:
         return "namespace";
-    case SymbolKind::Type:
-        return "type";
+    case SymbolKind::TypeAlias:
+        return "type alias";
     case SymbolKind::Variable:
         return "variable";
     case SymbolKind::Struct:

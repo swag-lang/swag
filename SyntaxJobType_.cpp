@@ -30,7 +30,7 @@ bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
 
     currentScope->allocateSymTable();
     if (!isContextDisabled())
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, node, SymbolKind::Type);
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, node, SymbolKind::TypeAlias);
 
     return true;
 }

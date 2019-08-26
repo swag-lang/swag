@@ -61,7 +61,7 @@ struct SymbolOverload : public PoolElement
 enum class SymbolKind
 {
     Variable,
-    Type,
+    TypeAlias,
     Namespace,
     Enum,
     EnumValue,
