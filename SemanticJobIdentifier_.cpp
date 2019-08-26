@@ -445,11 +445,18 @@ anotherTry:
 
             switch (job->symMatch.result)
             {
+            case MatchResult::MissingNamedParameter:
+            {
+                SWAG_ASSERT(callParameters);
+                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                Diagnostic diag{sourceFile, param, format("parameter '%d' must be named", job->symMatch.badSignatureParameterIdx + 1)};
+                return context->errorContext.report(diag);
+            }
             case MatchResult::InvalidNamedParameter:
             {
                 SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{sourceFile, param->namedParamNode, format("unknown named parameter '%s'", param->namedParam.c_str())};
+                Diagnostic diag{sourceFile, param->namedParamNode ? param->namedParamNode : param, format("unknown named parameter '%s'", param->namedParam.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
@@ -458,8 +465,7 @@ anotherTry:
                 SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{sourceFile, param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
-                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->errorContext.report(diag);
             }
             case MatchResult::NotEnoughParameters:
             {

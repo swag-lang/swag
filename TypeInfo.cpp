@@ -171,7 +171,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
                 if (i < firstDefaultValueIdx)
                 {
                     context.badSignatureParameterIdx = i;
-                    context.result                   = InvalidNamedParameter;
+                    context.result                   = MissingNamedParameter;
                     return;
                 }
 
@@ -643,7 +643,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
             if (param->namedParam.empty())
             {
                 context.badSignatureParameterIdx = i;
-                context.result                   = InvalidNamedParameter;
+                context.result                   = MissingNamedParameter;
                 return;
             }
 

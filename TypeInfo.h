@@ -262,6 +262,7 @@ enum MatchResult
     BadSignature,
     BadGenericSignature,
     InvalidNamedParameter,
+	MissingNamedParameter,
     DuplicatedNamedParameter,
 };
 
