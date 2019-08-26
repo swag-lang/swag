@@ -158,7 +158,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
             scoped_lock lock(symbol->mutex);
             if (symbol->cptOverloads)
             {
-				job->waitForSymbol(context, symbol);
+                job->waitForSymbol(context, symbol);
                 return true;
             }
         }
@@ -447,7 +447,7 @@ anotherTry:
             {
             case MatchResult::InvalidNamedParameter:
             {
-				SWAG_ASSERT(callParameters);
+                SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{sourceFile, param->namedParamNode, format("unknown named parameter '%s'", param->namedParam.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
@@ -455,7 +455,7 @@ anotherTry:
             }
             case MatchResult::DuplicatedNamedParameter:
             {
-				SWAG_ASSERT(callParameters);
+                SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{sourceFile, param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
@@ -487,7 +487,7 @@ anotherTry:
             }
             case MatchResult::BadSignature:
             {
-				SWAG_ASSERT(callParameters);
+                SWAG_ASSERT(callParameters);
                 string parameter;
                 switch (job->symMatch.badSignatureParameterIdx)
                 {
@@ -517,7 +517,7 @@ anotherTry:
             }
             case MatchResult::BadGenericSignature:
             {
-				SWAG_ASSERT(genericParameters);
+                SWAG_ASSERT(genericParameters);
                 Diagnostic diag{sourceFile,
                                 genericParameters->childs[job->symMatch.badSignatureParameterIdx],
                                 format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
@@ -634,10 +634,12 @@ bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
             offset += typeInfo->sizeOf;
         }
 
-        node->computedValue.reg.u32 = (uint32_t) offset;
-        node->typeInfo              = typeList->childs[index];
-        identifierRef->typeInfo     = typeList->childs[index];
-        eaten                       = true;
+        node->computedValue.reg.u32  = (uint32_t) offset;
+        node->typeInfo               = typeList->childs[index];
+        node->resolvedSymbolName     = identifierRef->previousResolvedNode->resolvedSymbolName;
+        node->resolvedSymbolOverload = identifierRef->previousResolvedNode->resolvedSymbolOverload;
+        identifierRef->typeInfo      = typeList->childs[index];
+        eaten                        = true;
         return true;
     }
 
@@ -651,10 +653,12 @@ bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
         {
             if (name == node->name)
             {
-                node->computedValue.reg.u32 = (uint32_t) offset;
-                node->typeInfo              = typeList->childs[index];
-                identifierRef->typeInfo     = typeList->childs[index];
-                eaten                       = true;
+                node->computedValue.reg.u32  = (uint32_t) offset;
+                node->typeInfo               = typeList->childs[index];
+                node->resolvedSymbolName     = identifierRef->previousResolvedNode->resolvedSymbolName;
+                node->resolvedSymbolOverload = identifierRef->previousResolvedNode->resolvedSymbolOverload;
+                identifierRef->typeInfo      = typeList->childs[index];
+                eaten                        = true;
                 node->flags |= AST_IDENTIFIER_IS_INTEGER;
                 return true;
             }
@@ -850,8 +854,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     SWAG_CHECK(matchIdentifierParameters(context, node->genericParameters, node->callParameters, node));
-	if (context->result == SemanticResult::Pending)
-		return true;
+    if (context->result == SemanticResult::Pending)
+        return true;
 
     auto overload  = job->cacheMatches[0];
     node->typeInfo = overload->typeInfo;

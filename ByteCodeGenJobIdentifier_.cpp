@@ -28,7 +28,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = node->computedValue.reg.u32;
         }
 
-        emitStructDeRef(context);
+		if(!(node->flags & AST_TAKE_ADDRESS))
+			emitStructDeRef(context);
         return true;
     }
 
