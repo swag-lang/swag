@@ -942,11 +942,11 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("r%u.u32 &= 0x%x;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ClearMaskU64:
-            bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ClearMaskU32U64:
             bufferC.addString(format("r%u.u32 &= 0x%x; ", ip->a.u32, ip->b.u32));
-            bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::CastS8S16:
