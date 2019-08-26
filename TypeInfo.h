@@ -18,7 +18,7 @@ enum class TypeInfoKind
     Namespace,
     Enum,
     FuncAttr,
-    FuncAttrParam,
+    Param,
     Lambda,
     Pointer,
     Array,
@@ -220,12 +220,12 @@ struct TypeInfoEnum : public TypeInfo
     TypeInfo* rawType;
 };
 
-struct TypeInfoFuncAttrParam : public TypeInfo
+struct TypeInfoParam : public TypeInfo
 {
     void reset() override
     {
         TypeInfo::reset();
-        kind = TypeInfoKind::FuncAttrParam;
+        kind = TypeInfoKind::Param;
         namedParam.clear();
         typeInfo = nullptr;
         index    = 0;
@@ -235,7 +235,7 @@ struct TypeInfoFuncAttrParam : public TypeInfo
     {
         if (!TypeInfo::isSame(from))
             return false;
-        auto other = static_cast<TypeInfoFuncAttrParam*>(from);
+        auto other = static_cast<TypeInfoParam*>(from);
         return typeInfo->isSame(other->typeInfo);
     }
 
@@ -335,11 +335,11 @@ struct TypeInfoFuncAttr : public TypeInfo
     bool isSame(TypeInfo* from) override;
     bool isSameExact(TypeInfo* from) override;
 
-    int                            firstDefaultValueIdx;
-    vector<TypeInfoFuncAttrParam*> genericParameters;
-    vector<TypeInfoFuncAttrParam*> parameters;
-    TypeInfo*                      returnType;
-    int                            stackSize;
+    int                    firstDefaultValueIdx;
+    vector<TypeInfoParam*> genericParameters;
+    vector<TypeInfoParam*> parameters;
+    TypeInfo*              returnType;
+    int                    stackSize;
 };
 
 struct TypeInfoPointer : public TypeInfo
@@ -559,11 +559,11 @@ struct TypeInfoStruct : public TypeInfo
         return 1;
     }
 
-    vector<TypeInfoFuncAttrParam*> genericParameters;
-    vector<TypeInfoFuncAttrParam*> childs;
-    Scope*                         scope;
-    AstNode*                       structNode;
-    AstNode*                       opInitFct;
+    vector<TypeInfoParam*> genericParameters;
+    vector<TypeInfoParam*> childs;
+    Scope*                 scope;
+    AstNode*               structNode;
+    AstNode*               opInitFct;
 };
 
 struct TypeInfoAlias : public TypeInfo
@@ -588,16 +588,16 @@ struct TypeInfoAlias : public TypeInfo
     TypeInfo* rawType;
 };
 
-extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
-extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
-extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
-extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
-extern Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
-extern Pool<TypeInfoArray>         g_Pool_typeInfoArray;
-extern Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
-extern Pool<TypeInfoList>          g_Pool_typeInfoList;
-extern Pool<TypeInfoNative>        g_Pool_typeInfoNative;
-extern Pool<TypeInfoVariadic>      g_Pool_typeInfoVariadic;
-extern Pool<TypeInfoGeneric>       g_Pool_typeInfoGeneric;
-extern Pool<TypeInfoStruct>        g_Pool_typeInfoStruct;
-extern Pool<TypeInfoAlias>         g_Pool_typeInfoAlias;
+extern Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
+extern Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
+extern Pool<TypeInfoEnum>      g_Pool_typeInfoEnum;
+extern Pool<TypeInfoParam>     g_Pool_typeInfoParam;
+extern Pool<TypeInfoPointer>   g_Pool_typeInfoPointer;
+extern Pool<TypeInfoArray>     g_Pool_typeInfoArray;
+extern Pool<TypeInfoSlice>     g_Pool_typeInfoSlice;
+extern Pool<TypeInfoList>      g_Pool_typeInfoList;
+extern Pool<TypeInfoNative>    g_Pool_typeInfoNative;
+extern Pool<TypeInfoVariadic>  g_Pool_typeInfoVariadic;
+extern Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
+extern Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
+extern Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;

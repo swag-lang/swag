@@ -30,7 +30,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->optimizeByteCode = false;
     //cmdLine->output = false;
     //cmdLine->verbose_unittest_errors = true;
-    cmdLine->fileFilter = "630";
+    cmdLine->fileFilter = "677";
 }
 
 void CommandLineParser::logArguments()

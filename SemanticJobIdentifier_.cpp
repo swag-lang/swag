@@ -469,7 +469,9 @@ anotherTry:
             }
             case MatchResult::TooManyParameters:
             {
-                Diagnostic diag{sourceFile, callParameters ? callParameters : node, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                SWAG_ASSERT(callParameters);
+                auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
+                Diagnostic diag{sourceFile, param, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }

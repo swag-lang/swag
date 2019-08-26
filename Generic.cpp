@@ -110,8 +110,8 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
             auto genTypeStruct  = CastTypeInfo<TypeInfoStruct>(genType, TypeInfoKind::Struct);
             for (int j = 0; j < callTypeStruct->genericParameters.size(); j++)
             {
-                auto genTypeParam  = CastTypeInfo<TypeInfoFuncAttrParam>(genTypeStruct->genericParameters[j], TypeInfoKind::FuncAttrParam);
-                auto callTypeParam = CastTypeInfo<TypeInfoFuncAttrParam>(callTypeStruct->genericParameters[j], TypeInfoKind::FuncAttrParam);
+                auto genTypeParam  = CastTypeInfo<TypeInfoParam>(genTypeStruct->genericParameters[j], TypeInfoKind::Param);
+                auto callTypeParam = CastTypeInfo<TypeInfoParam>(callTypeStruct->genericParameters[j], TypeInfoKind::Param);
 
                 cloneContext.replaceTypes[genTypeParam->typeInfo] = callTypeParam->typeInfo;
             }

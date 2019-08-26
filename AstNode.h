@@ -19,7 +19,7 @@ struct ByteCode;
 struct Job;
 struct AstFuncDecl;
 struct AstAttrUse;
-struct TypeInfoFuncAttrParam;
+struct TypeInfoParam;
 struct AstBreakable;
 enum class Property;
 enum class TypeInfoListKind;
@@ -395,7 +395,7 @@ struct AstFuncCallParam : public AstNode
 
     Utf8                   namedParam;
     AstNode*               namedParamNode;
-    TypeInfoFuncAttrParam* resolvedParameter;
+    TypeInfoParam* resolvedParameter;
     int                    index;
     bool                   mustSortParameters;
 };

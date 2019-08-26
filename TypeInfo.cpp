@@ -4,19 +4,19 @@
 #include "Ast.h"
 #include "Scope.h"
 
-Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
-Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
-Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
-Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
-Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
-Pool<TypeInfoArray>         g_Pool_typeInfoArray;
-Pool<TypeInfoSlice>         g_Pool_typeInfoSlice;
-Pool<TypeInfoList>          g_Pool_typeInfoList;
-Pool<TypeInfoNative>        g_Pool_typeInfoNative;
-Pool<TypeInfoVariadic>      g_Pool_typeInfoVariadic;
-Pool<TypeInfoGeneric>       g_Pool_typeInfoGeneric;
-Pool<TypeInfoStruct>        g_Pool_typeInfoStruct;
-Pool<TypeInfoAlias>         g_Pool_typeInfoAlias;
+Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
+Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
+Pool<TypeInfoEnum>      g_Pool_typeInfoEnum;
+Pool<TypeInfoParam>     g_Pool_typeInfoParam;
+Pool<TypeInfoPointer>   g_Pool_typeInfoPointer;
+Pool<TypeInfoArray>     g_Pool_typeInfoArray;
+Pool<TypeInfoSlice>     g_Pool_typeInfoSlice;
+Pool<TypeInfoList>      g_Pool_typeInfoList;
+Pool<TypeInfoNative>    g_Pool_typeInfoNative;
+Pool<TypeInfoVariadic>  g_Pool_typeInfoVariadic;
+Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
+Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
+Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 {
@@ -103,7 +103,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
         if (i >= parameters.size())
         {
-            context.result = MatchResult::TooManyParameters;
+            context.badSignatureParameterIdx = i;
+            context.result                   = MatchResult::TooManyParameters;
             return;
         }
 
@@ -259,7 +260,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
                     return;
                 }
 
-                auto typeParam                        = CastTypeInfo<TypeInfoFuncAttrParam>(genericParameters[i], TypeInfoKind::FuncAttrParam);
+                auto typeParam                        = CastTypeInfo<TypeInfoParam>(genericParameters[i], TypeInfoKind::Param);
                 context.genericParametersCallTypes[i] = typeParam->typeInfo;
                 context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
             }
@@ -355,9 +356,9 @@ TypeInfo* TypeInfoAlias::clone()
     return newType;
 }
 
-TypeInfo* TypeInfoFuncAttrParam::clone()
+TypeInfo* TypeInfoParam::clone()
 {
-    auto newType        = g_Pool_typeInfoFuncAttrParam.alloc();
+    auto newType        = g_Pool_typeInfoParam.alloc();
     newType->namedParam = namedParam;
     newType->typeInfo   = typeInfo;
     newType->index      = index;
@@ -374,15 +375,15 @@ TypeInfo* TypeInfoFuncAttr::clone()
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
-        auto param = static_cast<TypeInfoFuncAttrParam*>(genericParameters[i]);
-        param      = static_cast<TypeInfoFuncAttrParam*>(param->clone());
+        auto param = static_cast<TypeInfoParam*>(genericParameters[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
         newType->genericParameters.push_back(param);
     }
 
     for (int i = 0; i < parameters.size(); i++)
     {
-        auto param = static_cast<TypeInfoFuncAttrParam*>(parameters[i]);
-        param      = static_cast<TypeInfoFuncAttrParam*>(param->clone());
+        auto param = static_cast<TypeInfoParam*>(parameters[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
         newType->parameters.push_back(param);
     }
 
@@ -483,15 +484,15 @@ TypeInfo* TypeInfoStruct::clone()
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
-        auto param = static_cast<TypeInfoFuncAttrParam*>(genericParameters[i]);
-        param      = static_cast<TypeInfoFuncAttrParam*>(param->clone());
+        auto param = static_cast<TypeInfoParam*>(genericParameters[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
         newType->genericParameters.push_back(param);
     }
 
     for (int i = 0; i < childs.size(); i++)
     {
-        auto param = static_cast<TypeInfoFuncAttrParam*>(childs[i]);
-        param      = static_cast<TypeInfoFuncAttrParam*>(param->clone());
+        auto param = static_cast<TypeInfoParam*>(childs[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
         newType->childs.push_back(param);
     }
 
@@ -551,6 +552,139 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
     context.mapGenericTypes.clear();
+
+    // One boolean per used parameter
+    context.doneParameters.clear();
+    context.mapGenericTypes.clear();
+    context.doneParameters.resize(childs.size(), false);
+
+    // Solve unnamed parameters
+    int numParams = (int) context.parameters.size();
+
+    int  maxGenericParam    = 0;
+    int  cptResolved        = 0;
+    bool hasNamedParameters = false;
+    for (int i = 0; i < numParams; i++)
+    {
+        auto callParameter = context.parameters[i];
+
+        AstFuncCallParam* param = nullptr;
+        if (callParameter->kind == AstNodeKind::FuncCallParam)
+        {
+            param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            if (!param->namedParam.empty())
+            {
+                hasNamedParameters = true;
+                break;
+            }
+        }
+
+        if (i >= childs.size())
+        {
+            context.badSignatureParameterIdx = i;
+            context.result                   = MatchResult::TooManyParameters;
+            return;
+        }
+
+        auto symbolParameter = childs[i];
+        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+        if (!same)
+        {
+            context.badSignatureParameterIdx  = i;
+            context.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureGivenType     = typeInfo;
+            context.result                    = MatchResult::BadSignature;
+        }
+
+        context.doneParameters[cptResolved] = true;
+
+        // This is a generic type match
+        if (symbolParameter->typeInfo->flags & TYPEINFO_GENERIC)
+        {
+            auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
+            if (it != context.mapGenericTypes.end() && it->second.first != typeInfo)
+            {
+                context.badSignatureParameterIdx  = i;
+                context.badSignatureRequestedType = it->second.first;
+                context.badSignatureGivenType     = typeInfo;
+                context.result                    = MatchResult::BadSignature;
+            }
+            else
+            {
+                maxGenericParam                                    = i;
+                context.mapGenericTypes[symbolParameter->typeInfo] = {typeInfo, i};
+            }
+        }
+
+        if (param)
+        {
+            param->resolvedParameter = symbolParameter;
+            param->index             = cptResolved;
+        }
+
+        cptResolved++;
+    }
+
+    // Named parameters
+    if (hasNamedParameters)
+    {
+        auto callParameter = context.parameters[0];
+        callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
+
+        auto startResolved = cptResolved;
+        for (int i = startResolved; i < numParams; i++)
+        {
+            callParameter = context.parameters[i];
+            if (callParameter->kind != AstNodeKind::FuncCallParam)
+                continue;
+
+            auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            if (param->namedParam.empty())
+            {
+                context.badSignatureParameterIdx = i;
+                context.result                   = InvalidNamedParameter;
+                return;
+            }
+
+            for (int j = startResolved; j < childs.size(); j++)
+            {
+                auto symbolParameter = childs[j];
+                if (childs[j]->namedParam == param->namedParam)
+                {
+                    if (context.doneParameters[j])
+                    {
+                        context.badSignatureParameterIdx = i;
+                        context.result                   = DuplicatedNamedParameter;
+                        return;
+                    }
+
+                    auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+                    bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+                    if (!same)
+                    {
+                        context.badSignatureParameterIdx  = i;
+                        context.badSignatureRequestedType = symbolParameter->typeInfo;
+                        context.badSignatureGivenType     = typeInfo;
+                        context.result                    = MatchResult::BadSignature;
+                    }
+
+                    param->resolvedParameter  = symbolParameter;
+                    param->index              = j;
+                    context.doneParameters[j] = true;
+                    cptResolved++;
+                    break;
+                }
+            }
+
+            if (!param->resolvedParameter)
+            {
+                context.badSignatureParameterIdx = i;
+                context.result                   = InvalidNamedParameter;
+                return;
+            }
+        }
+    }
 
     // Solve generic parameters
     int wantedNumGenericParams = (int) genericParameters.size();

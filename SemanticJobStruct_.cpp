@@ -151,7 +151,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            auto typeParam        = g_Pool_typeInfoFuncAttrParam.alloc();
+            auto typeParam        = g_Pool_typeInfoParam.alloc();
             typeParam->namedParam = child->name;
             typeParam->typeInfo   = child->typeInfo;
             typeParam->sizeOf     = child->typeInfo->sizeOf;
@@ -177,7 +177,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             symbolFlags |= OVERLOAD_GENERIC;
             for (auto param : node->genericParameters->childs)
             {
-                auto funcParam      = g_Pool_typeInfoFuncAttrParam.alloc();
+                auto funcParam      = g_Pool_typeInfoParam.alloc();
                 funcParam->name     = param->name;
                 funcParam->typeInfo = param->typeInfo;
                 typeInfo->genericParameters.push_back(funcParam);
