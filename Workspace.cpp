@@ -9,6 +9,7 @@
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "ByteCode.h"
+#include "SymTable.h"
 
 Workspace g_Workspace;
 
@@ -226,7 +227,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
             auto sourceFile  = semanticJob->sourceFile;
             if (!sourceFile->module->numErrors)
             {
-                sourceFile->report({sourceFile, node->token, format("can't resolve type of identifier '%s'", node->name.c_str())});
+                auto& name = semanticJob->waitingSymbolSolved ? semanticJob->waitingSymbolSolved->name : node->name;
+                sourceFile->report({sourceFile, node->token, format("cannot resolve type of identifier '%s'", name.c_str())});
             }
         }
 

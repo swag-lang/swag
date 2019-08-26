@@ -158,9 +158,10 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
             scoped_lock lock(symbol->mutex);
             if (symbol->cptOverloads)
             {
-                symbol->dependentJobs.push_back(context->job);
-                g_ThreadMgr.addPendingJob(context->job);
+                symbol->dependentJobs.push_back(job);
+                g_ThreadMgr.addPendingJob(job);
                 context->result = SemanticResult::Pending;
+				job->waitingSymbolSolved = symbol;
                 return true;
             }
         }
@@ -331,19 +332,20 @@ anotherTry:
     bool hasGenericErrors        = false;
     int  numOverloads            = 0;
     int  numOverloadsWhenChecked = 0;
-    for (auto oneSymbol : dependentSymbols)
+    for (auto symbol : dependentSymbols)
     {
-        scoped_lock lock(oneSymbol->mutex);
-        if (oneSymbol->cptOverloads)
+        scoped_lock lock(symbol->mutex);
+        if (symbol->cptOverloads)
         {
-            oneSymbol->dependentJobs.push_back(context->job);
-            g_ThreadMgr.addPendingJob(context->job);
+            symbol->dependentJobs.push_back(job);
+            g_ThreadMgr.addPendingJob(job);
             context->result = SemanticResult::Pending;
+			job->waitingSymbolSolved = symbol;
             return true;
         }
 
-        numOverloadsWhenChecked = (int) oneSymbol->overloads.size();
-        for (auto overload : oneSymbol->overloads)
+        numOverloadsWhenChecked = (int) symbol->overloads.size();
+        for (auto overload : symbol->overloads)
         {
             numOverloads++;
 
@@ -395,24 +397,24 @@ anotherTry:
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
-        auto oneSymbol = dependentSymbols[0];
-
-        oneSymbol->mutex.lock();
+        auto symbol = dependentSymbols[0];
+        symbol->mutex.lock();
 
         // Be sure we don't have more overloads waiting to be solved
-        if (oneSymbol->cptOverloads)
+        if (symbol->cptOverloads)
         {
-            oneSymbol->dependentJobs.push_back(context->job);
-            g_ThreadMgr.addPendingJob(context->job);
+            symbol->dependentJobs.push_back(job);
+            g_ThreadMgr.addPendingJob(job);
             context->result = SemanticResult::Pending;
-            oneSymbol->mutex.unlock();
+			job->waitingSymbolSolved = symbol;
+            symbol->mutex.unlock();
             return true;
         }
 
         // Be sure number of overloads has not changed since then
-        if (numOverloadsWhenChecked != oneSymbol->overloads.size())
+        if (numOverloadsWhenChecked != symbol->overloads.size())
         {
-            oneSymbol->mutex.unlock();
+            symbol->mutex.unlock();
             goto anotherTry;
         }
 
@@ -433,7 +435,7 @@ anotherTry:
             SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
         }
 
-        oneSymbol->mutex.unlock();
+        symbol->mutex.unlock();
         return true;
     }
 
@@ -760,9 +762,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         scoped_lock lkn(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            symbol->dependentJobs.push_back(context->job);
-            g_ThreadMgr.addPendingJob(context->job);
+            symbol->dependentJobs.push_back(job);
+            g_ThreadMgr.addPendingJob(job);
             context->result = SemanticResult::Pending;
+			job->waitingSymbolSolved = symbol;
             return true;
         }
     }

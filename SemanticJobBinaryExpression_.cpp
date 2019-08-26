@@ -853,6 +853,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         {
             symbol->dependentJobs.push_back(job);
             g_ThreadMgr.addPendingJob(context->job);
+			job->waitingSymbolSolved = symbol;
             context->result = SemanticResult::Pending;
             return true;
         }

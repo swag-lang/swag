@@ -86,7 +86,7 @@ struct SemanticJob : public Job
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveIndex(SemanticContext* context);
     static bool resolveExpressionListCurly(SemanticContext* context);
-	static bool resolveExpressionListArray(SemanticContext* context);
+    static bool resolveExpressionListArray(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
     static bool resolveFactorExpression(SemanticContext* context);
@@ -99,7 +99,7 @@ struct SemanticJob : public Job
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
-	static bool resolveTupleAccess(SemanticContext* context, bool& eaten);
+    static bool resolveTupleAccess(SemanticContext* context, bool& eaten);
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveImpl(SemanticContext* context);
@@ -153,7 +153,8 @@ struct SemanticJob : public Job
         cacheBadGenericSignature.clear();
         symMatch.reset();
         genericInstanceTree.clear();
-		genericInstanceTreeFile.clear();
+        genericInstanceTreeFile.clear();
+        waitingSymbolSolved = nullptr;
     }
 
     Module*                 module;
@@ -170,6 +171,7 @@ struct SemanticJob : public Job
     SymbolMatchContext      symMatch;
     vector<AstNode*>        genericInstanceTree;
     vector<SourceFile*>     genericInstanceTreeFile;
+    SymbolName*             waitingSymbolSolved;
 };
 
 extern Pool<SemanticJob> g_Pool_semanticJob;

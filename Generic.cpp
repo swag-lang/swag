@@ -11,7 +11,7 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
 {
     auto  job              = context->job;
     auto& dependentSymbols = job->cacheDependentSymbols;
-    auto  oneSymbol        = dependentSymbols[0];
+    auto  symbol           = dependentSymbols[0];
 
     CloneContext cloneContext;
 
@@ -24,14 +24,14 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
             cloneContext.replaceTypes[genType] = callType;
     }
 
-    auto symbol     = match.symbolOverload;
-    auto sourceNode = symbol->node;
+    auto overload   = match.symbolOverload;
+    auto sourceNode = overload->node;
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags &= ~AST_IS_GENERIC;
     structNode->flags |= AST_FROM_GENERIC;
     Ast::addChild(sourceNode->parent, structNode);
 
-    auto newType = static_cast<TypeInfoStruct*>(symbol->typeInfo->clone());
+    auto newType = static_cast<TypeInfoStruct*>(overload->typeInfo->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
     structNode->typeInfo = newType;
@@ -63,9 +63,10 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     // Need to wait for the struct to be semantic resolved
-    oneSymbol->cptOverloads++;
-    oneSymbol->dependentJobs.push_back(context->job);
-    g_ThreadMgr.addPendingJob(context->job);
+    symbol->cptOverloads++;
+    job->waitingSymbolSolved = symbol;
+    g_ThreadMgr.addPendingJob(job);
+    symbol->dependentJobs.push_back(job);
     context->result = SemanticResult::Pending;
 
     // Clone opInit

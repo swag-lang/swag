@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SymTable.h"
 #include "Diagnostic.h"
-#include "Global.h"
 #include "ThreadManager.h"
 #include "SourceFile.h"
 #include "TypeInfo.h"
@@ -108,8 +107,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
         symbol->cptOverloads--;
         if (symbol->cptOverloads == 0)
         {
-            for (auto job : symbol->dependentJobs)
-                g_ThreadMgr.addJob(job);
+			for (auto job : symbol->dependentJobs)
+				g_ThreadMgr.addJob(job);
             symbol->dependentJobs.clear();
         }
 
