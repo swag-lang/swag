@@ -17,7 +17,6 @@ enum class TypeInfoKind
     Native,
     Namespace,
     Enum,
-    EnumValue,
     FuncAttr,
     FuncAttrParam,
     Lambda,
@@ -219,28 +218,6 @@ struct TypeInfoEnum : public TypeInfo
 
     Scope*    scope;
     TypeInfo* rawType;
-};
-
-struct TypeInfoEnumValue : public TypeInfo
-{
-    void reset() override
-    {
-        TypeInfo::reset();
-        kind      = TypeInfoKind::EnumValue;
-        enumOwner = nullptr;
-    }
-
-    bool isSame(TypeInfo* from) override
-    {
-        if (!TypeInfo::isSame(from))
-            return false;
-        auto other = static_cast<TypeInfoEnumValue*>(from);
-        return enumOwner->isSame(other->enumOwner);
-    }
-
-    TypeInfo* clone() override;
-
-    TypeInfoEnum* enumOwner;
 };
 
 struct TypeInfoFuncAttrParam : public TypeInfo
@@ -614,7 +591,6 @@ struct TypeInfoAlias : public TypeInfo
 extern Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 extern Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
 extern Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
-extern Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 extern Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 extern Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
 extern Pool<TypeInfoArray>         g_Pool_typeInfoArray;

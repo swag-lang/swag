@@ -173,13 +173,6 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
             return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType, flags);
         break;
 
-    case TypeInfoKind::EnumValue:
-        if (flags & MakeConcrete::FlagEnum)
-            return concreteType(static_cast<TypeInfoEnumValue*>(typeInfo)->enumOwner->rawType, flags);
-        else if (flags & MakeConcrete::FlagEnumValue)
-            return static_cast<TypeInfoEnumValue*>(typeInfo)->enumOwner;
-        break;
-
     case TypeInfoKind::Alias:
         if (flags & MakeConcrete::FlagAlias)
             return concreteType(static_cast<TypeInfoAlias*>(typeInfo)->rawType, flags);

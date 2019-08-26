@@ -16,10 +16,9 @@ enum MakeConcrete
 {
     FlagAll       = 0xFFFFFFFF,
     FlagEnum      = 0x00000001,
-    FlagEnumValue = 0x00000002,
-    FlagFunc      = 0x00000004,
-    FlagGeneric   = 0x00000008,
-    FlagAlias     = 0x00000010,
+    FlagFunc      = 0x00000002,
+    FlagGeneric   = 0x00000004,
+    FlagAlias     = 0x00000008,
 };
 
 struct TypeManager

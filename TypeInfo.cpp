@@ -7,7 +7,6 @@
 Pool<TypeInfoFuncAttr>      g_Pool_typeInfoFuncAttr;
 Pool<TypeInfoNamespace>     g_Pool_typeInfoNamespace;
 Pool<TypeInfoEnum>          g_Pool_typeInfoEnum;
-Pool<TypeInfoEnumValue>     g_Pool_typeInfoEnumValue;
 Pool<TypeInfoFuncAttrParam> g_Pool_typeInfoFuncAttrParam;
 Pool<TypeInfoPointer>       g_Pool_typeInfoPointer;
 Pool<TypeInfoArray>         g_Pool_typeInfoArray;
@@ -348,14 +347,6 @@ TypeInfo* TypeInfoEnum::clone()
     return newType;
 }
 
-TypeInfo* TypeInfoEnumValue::clone()
-{
-    auto newType       = g_Pool_typeInfoEnumValue.alloc();
-    newType->enumOwner = enumOwner;
-    newType->copyFrom(this);
-    return newType;
-}
-
 TypeInfo* TypeInfoAlias::clone()
 {
     auto newType     = g_Pool_typeInfoAlias.alloc();
@@ -642,8 +633,6 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a namespace";
     case TypeInfoKind::Enum:
         return "an enum";
-    case TypeInfoKind::EnumValue:
-        return "an enum value";
     case TypeInfoKind::Array:
         return "an array";
     case TypeInfoKind::Pointer:
@@ -673,8 +662,6 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "namespace";
     case TypeInfoKind::Enum:
         return "enum";
-    case TypeInfoKind::EnumValue:
-        return "enum value";
     case TypeInfoKind::Array:
         return "array";
     case TypeInfoKind::Pointer:

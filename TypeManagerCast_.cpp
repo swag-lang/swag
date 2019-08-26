@@ -1015,11 +1015,6 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnum);
         fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
     }
-    else
-    {
-        toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnumValue);
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnumValue);
-    }
 
     SWAG_ASSERT(toType && fromType);
 
