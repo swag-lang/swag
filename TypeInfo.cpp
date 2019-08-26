@@ -649,6 +649,8 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a generic type";
     case TypeInfoKind::Alias:
         return "an alias type";
+    case TypeInfoKind::Native:
+        return "a type";
     }
 
     return "<type>";
@@ -678,6 +680,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "generic type";
     case TypeInfoKind::Alias:
         return "alias type";
+    case TypeInfoKind::Native:
+        return "type";
     }
 
     return "<type>";
