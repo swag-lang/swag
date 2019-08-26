@@ -241,12 +241,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-	// An enum must be initialized
-	if (node->typeInfo->kind == TypeInfoKind::Enum && !node->assignment && !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM))
-	{
-		if(!(node->flags & AST_DISABLED_INIT))
-			return context->errorContext.report({ sourceFile, node->token, "an enum variable must be initialized" });
-	}
+    // An enum must be initialized
+    if (!node->assignment && !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM) && !(node->flags & AST_DISABLED_INIT))
+    {
+        if (node->typeInfo->kind == TypeInfoKind::Enum ||
+            (node->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) node->typeInfo)->pointedType->kind == TypeInfoKind::Enum))
+        {
+            return context->errorContext.report({sourceFile, node->token, "an enum variable must be initialized"});
+        }
+    }
 
     // Assign value
     auto module   = sourceFile->module;
