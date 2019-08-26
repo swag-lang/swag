@@ -90,7 +90,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto node       = static_cast<AstVarDecl*>(context->node);
-
     bool isConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
     uint32_t symbolFlags = 0;
@@ -107,19 +106,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // A constant must be initialized
     if (isConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
-    {
         return context->errorContext.report({sourceFile, node, "a constant must be initialized"});
-    }
-
     if ((symbolFlags & OVERLOAD_CONST) && !node->assignment)
-    {
-        return context->errorContext.report({sourceFile, node, "a unmutable 'let' variable must be initialized"});
-    }
+        return context->errorContext.report({sourceFile, node, "a non mutable 'let' variable must be initialized"});
 
     // Value
     if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
     {
-		SWAG_VERIFY(node->assignment->kind != AstNodeKind::TypeExpression, context->errorContext.report({ sourceFile, node->assignment, "affect not allowed from a type expression" }));
+        SWAG_VERIFY(node->assignment->kind != AstNodeKind::TypeExpression, context->errorContext.report({sourceFile, node->assignment, "affect not allowed from a type expression"}));
 
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
         {
@@ -246,6 +240,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             SWAG_CHECK(result);
         }
     }
+
+	// An enum must be initialized
+	if (node->typeInfo->kind == TypeInfoKind::Enum && !node->assignment && !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM))
+	{
+		if(!(node->flags & AST_DISABLED_INIT))
+			return context->errorContext.report({ sourceFile, node->token, "an enum variable must be initialized" });
+	}
 
     // Assign value
     auto module   = sourceFile->module;

@@ -7,5 +7,5 @@ enum A
 	Green;
 }
 
-var a: A;
+var a: A = ?;
 

@@ -10,7 +10,7 @@ enum EN : s32
 //#[swag.printbc]
 #test
 {
-	var val : EN
+	var val : EN = ?
 	
 	using EN	
 	val = EN.Red
