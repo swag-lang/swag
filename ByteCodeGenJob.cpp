@@ -193,16 +193,16 @@ JobResult ByteCodeGenJob::execute()
 			// Print resulting bytecode
 			if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
 				context.bc->print();
-
-			// Inform dependencies that this node has bytecode
-			{
-				scoped_lock lk(originalNode->mutex);
-				originalNode->flags |= AST_BYTECODE_GENERATED;
-				for (auto job : dependentJobs)
-					g_ThreadMgr.addJob(job);
-				dependentJobs.clear();
-			}
 		}
+    }
+
+	// Inform dependencies that this node has bytecode
+    {
+        scoped_lock lk(originalNode->mutex);
+        originalNode->flags |= AST_BYTECODE_GENERATED;
+        for (auto job : dependentJobs)
+            g_ThreadMgr.addJob(job);
+        dependentJobs.clear();
     }
 
     // Wait for other dependent nodes to be generated
