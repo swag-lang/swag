@@ -21,8 +21,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
@@ -32,7 +31,7 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
-        SWAG_VERIFY(child->kind != AstNodeKind::TypeExpression, context->errorContext.report({sourceFile, child, "cannot reference a type expression"}));
+        SWAG_CHECK(checkIsConcrete(context, child));
 
         if (!typeInfo->childs.empty())
             typeInfo->name += ", ";
@@ -75,8 +74,7 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
@@ -85,7 +83,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
-        SWAG_VERIFY(child->kind != AstNodeKind::TypeExpression, context->errorContext.report({sourceFile, child, "cannot reference a type expression"}));
+        SWAG_CHECK(checkIsConcrete(context, child));
 
         if (!typeInfo->childs.empty())
             typeInfo->name += ", ";

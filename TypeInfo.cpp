@@ -350,7 +350,6 @@ TypeInfo* TypeInfoEnum::clone()
 TypeInfo* TypeInfoEnumValue::clone()
 {
     auto newType       = g_Pool_typeInfoEnumValue.alloc();
-    newType->scope     = scope;
     newType->enumOwner = enumOwner;
     newType->copyFrom(this);
     return newType;

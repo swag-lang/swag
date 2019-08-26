@@ -53,7 +53,12 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode, typeEnum, SymbolKind::EnumValue, &enumNode->computedValue));
+    auto typeEnumValue       = g_Pool_typeInfoEnumValue.alloc();
+    typeEnumValue->enumOwner = typeEnum;
+    typeEnumValue->name      = typeEnum->name;
+    typeEnumValue->sizeOf    = typeEnum->sizeOf;
+    valNode->typeInfo        = g_TypeMgr.registerType(typeEnumValue);
+    SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode, valNode->typeInfo, SymbolKind::EnumValue, &enumNode->computedValue));
 
     // Compute next value
     switch (rawType->nativeType)

@@ -68,6 +68,7 @@ struct SemanticJob : public Job
     static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer);
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
+    static bool checkIsConcrete(SemanticContext* context, AstNode* node);
     void        waitForSymbol(SemanticContext* context, SymbolName* symbol);
     void        setPending(SemanticContext* context);
 

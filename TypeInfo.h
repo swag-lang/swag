@@ -226,13 +226,19 @@ struct TypeInfoEnumValue : public TypeInfo
     {
         TypeInfo::reset();
         kind      = TypeInfoKind::EnumValue;
-        scope     = nullptr;
         enumOwner = nullptr;
+    }
+
+    bool isSame(TypeInfo* from) override
+    {
+        if (!TypeInfo::isSame(from))
+            return false;
+        auto other = static_cast<TypeInfoEnumValue*>(from);
+        return enumOwner->isSame(other->enumOwner);
     }
 
     TypeInfo* clone() override;
 
-    Scope*        scope;
     TypeInfoEnum* enumOwner;
 };
 
@@ -251,8 +257,8 @@ struct TypeInfoFuncAttrParam : public TypeInfo
     {
         if (!TypeInfo::isSame(from))
             return false;
-        auto castedFrom = static_cast<TypeInfoFuncAttrParam*>(from);
-        return typeInfo->isSame(castedFrom->typeInfo);
+        auto other = static_cast<TypeInfoFuncAttrParam*>(from);
+        return typeInfo->isSame(other->typeInfo);
     }
 
     int numRegisters() override

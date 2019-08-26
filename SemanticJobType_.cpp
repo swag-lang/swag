@@ -11,6 +11,21 @@
 #include "CommandLine.h"
 #include "TypeManager.h"
 
+bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
+{
+    auto sourceFile = context->sourceFile;
+    bool concrete   = true;
+
+    if (node->kind == AstNodeKind::TypeExpression)
+        concrete = false;
+    else if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::Enum)
+        concrete = false;
+
+    if (!concrete)
+        return context->errorContext.report({sourceFile, node, "cannot reference a type expression"});
+    return true;
+}
+
 bool SemanticJob::resolveTypeTuple(SemanticContext* context)
 {
     auto node = context->node;
@@ -32,7 +47,7 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
         {
             typeInfoList->name += child->name;
             typeInfoList->name += ": ";
-			typeInfoList->names.push_back(child->name);
+            typeInfoList->names.push_back(child->name);
         }
 
         typeInfoList->name += child->typeInfo->name;
