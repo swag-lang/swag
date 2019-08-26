@@ -2,6 +2,7 @@
 #include "OutputFile.h"
 #include "ThreadManager.h"
 #include "SavingThread.h"
+#include "Diagnostic.h"
 
 void OutputFile::flushBucket(ConcatBucket* bucket)
 {
@@ -30,7 +31,7 @@ void OutputFile::flush()
         std::unique_lock<std::mutex> lk(mutexNotify);
         if (!pendingRequests)
         {
-            assert(reqToRelease.empty());
+			SWAG_ASSERT(reqToRelease.empty());
             break;
         }
 
@@ -40,7 +41,7 @@ void OutputFile::flush()
         reqToRelease.clear();
     }
 
-    assert(!pendingRequests);
+	SWAG_ASSERT(!pendingRequests);
 }
 
 void OutputFile::notifySave(SaveThreadRequest* req)

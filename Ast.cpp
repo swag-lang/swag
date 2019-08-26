@@ -65,7 +65,7 @@ namespace Ast
 
     Scope* findOrCreateScopeByName(Scope* parentScope, const string& name)
     {
-        assert(parentScope);
+		SWAG_ASSERT(parentScope);
         scoped_lock lock(parentScope->lockChilds);
         for (auto child : parentScope->childScopes)
         {
@@ -83,7 +83,7 @@ namespace Ast
 
 		if (matchName)
 		{
-			assert(parentScope);
+			SWAG_ASSERT(parentScope);
 			for (auto child : parentScope->childScopes)
 			{
 				if (child->name == name)

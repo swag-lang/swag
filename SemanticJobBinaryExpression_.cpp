@@ -829,7 +829,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right)
 {
     vector<AstNode*> params;
-    assert(left);
+	SWAG_ASSERT(left);
     params.push_back(left);
     if (right)
         params.push_back(right);
@@ -1079,7 +1079,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-    assert(leftTypeInfo && rightTypeInfo);
+	SWAG_ASSERT(leftTypeInfo && rightTypeInfo);
 
     SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native || leftTypeInfo->kind == TypeInfoKind::Pointer || leftTypeInfo->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native || rightTypeInfo->kind == TypeInfoKind::Pointer || leftTypeInfo->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));

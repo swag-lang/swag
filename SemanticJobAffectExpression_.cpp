@@ -30,7 +30,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         arrayNode = CastAst<AstPointerDeRef>(left->childs.front(), AstNodeKind::ArrayPointerIndex);
 
         // Add self and value in list of parameters
-        if (node->semanticState != AstNodeResolveState::SecondTry)
+        if (node->semanticPass == 0)
         {
             arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), right);
             arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), left);

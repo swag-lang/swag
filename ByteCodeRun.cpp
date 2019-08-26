@@ -162,7 +162,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->push(context->ip);
         context->bc = (ByteCode*) ip->a.pointer;
         context->ip = context->bc->out;
-        assert(context->ip);
+		SWAG_ASSERT(context->ip);
         context->bp = context->sp;
         break;
     }
@@ -173,7 +173,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->push(context->ip);
         context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
         context->ip = context->bc->out;
-        assert(context->ip);
+		SWAG_ASSERT(context->ip);
         context->bp = context->sp;
         break;
     }

@@ -447,7 +447,7 @@ anotherTry:
             {
             case MatchResult::InvalidNamedParameter:
             {
-                assert(callParameters);
+				SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{sourceFile, param->namedParamNode, format("unknown named parameter '%s'", param->namedParam.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
@@ -455,7 +455,7 @@ anotherTry:
             }
             case MatchResult::DuplicatedNamedParameter:
             {
-                assert(callParameters);
+				SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{sourceFile, param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
@@ -487,7 +487,7 @@ anotherTry:
             }
             case MatchResult::BadSignature:
             {
-                assert(callParameters);
+				SWAG_ASSERT(callParameters);
                 string parameter;
                 switch (job->symMatch.badSignatureParameterIdx)
                 {
@@ -517,7 +517,7 @@ anotherTry:
             }
             case MatchResult::BadGenericSignature:
             {
-                assert(genericParameters);
+				SWAG_ASSERT(genericParameters);
                 Diagnostic diag{sourceFile,
                                 genericParameters->childs[job->symMatch.badSignatureParameterIdx],
                                 format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",

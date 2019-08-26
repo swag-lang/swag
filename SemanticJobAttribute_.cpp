@@ -95,7 +95,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
-    if (node->semanticState != AstNodeResolveState::SecondTry)
+    if (node->semanticPass == 0)
     {
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
         SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(sourceFile, node, node->typeInfo, SymbolKind::Attribute));

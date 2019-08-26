@@ -33,8 +33,6 @@ enum class AstNodeResolveState
     Enter,
     ProcessingChilds,
     PostChilds,
-    SecondTry,
-    ThirdTry,
 };
 
 enum class AstNodeKind
@@ -135,6 +133,7 @@ struct AstNode : public PoolElement
         flags                = 0;
         fctCallStorageOffset = 0;
         byteCodeJob          = nullptr;
+        semanticPass         = 0;
         resultRegisterRC.clear();
         childs.clear();
     }
@@ -267,6 +266,7 @@ struct AstNode : public PoolElement
     ByteCodeNotifyFct byteCodeBeforeFct;
     ByteCodeNotifyFct byteCodeAfterFct;
 
+    int                 semanticPass = 0;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
 

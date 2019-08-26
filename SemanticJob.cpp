@@ -23,7 +23,6 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 
 void SemanticJob::waitForSymbol(SemanticContext* context, SymbolName* symbol)
 {
-	context->node->semanticState = AstNodeResolveState::SecondTry;
     waitingSymbolSolved = symbol;
     symbol->dependentJobs.push_back(this);
 	setPending(context);
@@ -32,6 +31,7 @@ void SemanticJob::waitForSymbol(SemanticContext* context, SymbolName* symbol)
 
 void SemanticJob::setPending(SemanticContext* context)
 {
+	context->node->semanticPass++;
     context->result = SemanticResult::Pending;
 }
 
@@ -76,31 +76,23 @@ JobResult SemanticJob::execute()
             }
 
         case AstNodeResolveState::ProcessingChilds:
-        case AstNodeResolveState::SecondTry:
             if (node->semanticFct)
             {
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
                 if (context.result == SemanticResult::Pending)
-                {
-                    node->semanticState = AstNodeResolveState::SecondTry;
                     return JobResult::KeepJobAlive;
-                }
             }
 
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
-        case AstNodeResolveState::ThirdTry:
             if (node->semanticAfterFct)
             {
                 if (!node->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
                 if (context.result == SemanticResult::Pending)
-                {
-                    node->semanticState = AstNodeResolveState::ThirdTry;
                     return JobResult::KeepJobAlive;
-                }
             }
 
             nodes.pop_back();

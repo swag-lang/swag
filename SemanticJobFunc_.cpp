@@ -310,8 +310,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // opInit registration
     if (funcNode->name == "opInit")
     {
-        assert(funcNode->parameters);
-        assert(funcNode->parameters->childs.size() >= 1);
+		SWAG_ASSERT(funcNode->parameters);
+		SWAG_ASSERT(funcNode->parameters->childs.size() >= 1);
         auto typeStruct       = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
         typeStruct->opInitFct = funcNode;
     }

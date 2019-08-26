@@ -90,7 +90,7 @@ void Module::freeRegisterRC(uint32_t reg)
     scoped_lock lk(mutexRegisterRC);
 #ifdef _DEBUG
     for (auto r : availableRegistersRC)
-        assert(r != reg);
+		SWAG_ASSERT(r != reg);
 #endif
     availableRegistersRC.push_back(reg);
 }

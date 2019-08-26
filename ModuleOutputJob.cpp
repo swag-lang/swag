@@ -5,12 +5,13 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "CommandLine.h"
+#include "Diagnostic.h"
 
 Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 
 JobResult ModuleOutputJob::execute()
 {
-    assert(!module->backend);
+	SWAG_ASSERT(!module->backend);
     module->backend = new BackendC(module);
     if (!module->backend->generate())
         return JobResult::ReleaseJob;

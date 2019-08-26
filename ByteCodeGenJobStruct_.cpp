@@ -129,7 +129,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                 if (typeVar->kind == TypeInfoKind::Struct)
                 {
                     auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
-                    assert(typeVarStruct->opInitFct);
+					SWAG_ASSERT(typeVarStruct->opInitFct);
                     if (!generateStructInit(context, typeVarStruct))
                         return false;
 
@@ -138,7 +138,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                     {
                         emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                         auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
-                        assert(typeInfoStruct->opInitFct->bc->out);
+						SWAG_ASSERT(typeInfoStruct->opInitFct->bc->out);
                         inst->a.pointer = (uint8_t*) typeVarStruct->opInitFct->bc;
                         inst->b.u64     = 1;
                         inst->c.pointer = (uint8_t*) typeInfoFunc;
@@ -198,7 +198,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     }
     else
     {
-        assert(node->ownerFct);
+		SWAG_ASSERT(node->ownerFct);
         node->ownerFct->bc->maxCallParameters = max(1, node->ownerFct->bc->maxCallParameters);
 
         // Push self

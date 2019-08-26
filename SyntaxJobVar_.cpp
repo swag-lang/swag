@@ -73,7 +73,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     if (varNode->assignment)
     {
         // When initialization is supposed to be constexpr, we just duplicate the initialization
-        assert(currentScope);
+		SWAG_ASSERT(currentScope);
         if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
         {
             for (auto otherVar : otherVariables)
