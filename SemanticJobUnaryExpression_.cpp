@@ -123,6 +123,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     node->typeInfo = op->typeInfo;
     node->inheritOrFlag(op, AST_CONST_EXPR);
     node->byteCodeFct = &ByteCodeGenJob::emitUnaryOp;
+    SWAG_CHECK(checkIsConcrete(context, op));
 
     auto typeInfo = TypeManager::concreteType(op->typeInfo);
     if (typeInfo->kind == TypeInfoKind::Struct)
