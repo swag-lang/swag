@@ -96,7 +96,7 @@ struct Log
         unlock();
     }
 
-    SpinLock mutexAccess;
+    mutex mutexAccess;
 #ifdef WIN32
     HANDLE consoleHandle     = NULL;
     WORD   defaultAttributes = 0;
