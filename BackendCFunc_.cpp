@@ -741,7 +741,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
             break;
 
-		case ByteCodeOp::AffectOpPercentEqS8:
+        case ByteCodeOp::AffectOpPercentEqS8:
             bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) %%= r%u.s8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPercentEqS16:
@@ -947,6 +947,58 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::ClearMaskU32U64:
             bufferC.addString(format("r%u.u32 &= 0x%x; ", ip->a.u32, ip->b.u32));
             bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
+            break;
+
+        case ByteCodeOp::CastS8S16:
+            bufferC.addString(format("r%u.s16 = (swag_int16_t) r%u.s8; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastS16S32:
+            bufferC.addString(format("r%u.s32 = (swag_int32_t) r%u.s16; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastS32S8:
+            bufferC.addString(format("r%u.s8 = (swag_int8_t) r%u.s32; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastS32S16:
+            bufferC.addString(format("r%u.s16 = (swag_int16_t) r%u.s32; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastS32S64:
+            bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.s32; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastS32F32:
+            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.s32; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastS64S32:
+            bufferC.addString(format("r%u.s32 = (swag_int32_t) r%u.s64; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastS64F32:
+            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.s64; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastS64F64:
+            bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.s64; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastU32F32:
+			bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.u32; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastU64F32:
+			bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.u64; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastU64F64:
+			bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.u64; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastF32S32:
+			bufferC.addString(format("r%u.s32 = (swag_int32_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastF32S64:
+			bufferC.addString(format("r%u.s64 = (swag_int64_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastF32F64:
+			bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastF64S64:
+			bufferC.addString(format("r%u.s64 = (swag_int64_t) r%u.f64; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastF64F32:
+			bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.f64; ", ip->a.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::CopyRR0:
