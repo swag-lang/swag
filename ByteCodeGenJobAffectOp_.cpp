@@ -514,7 +514,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     AstNode* node     = context->node;
     AstNode* leftNode = context->node->childs[0];
 
-    emitCast(context, node->childs[1], node->childs[1]->castedTypeInfo, TypeManager::concreteType(node->childs[1]->typeInfo));
+    emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo);
 
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {

@@ -11,5 +11,5 @@
 	var a: s32 = 5
 	var b: f32 = 10
 	c := a + b
-	@print(c)
+	@assert(c == 15.0)
 }

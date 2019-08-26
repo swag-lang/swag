@@ -505,8 +505,10 @@ bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeIn
 
 bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
-    if (typeInfo == nullptr)
+    if (fromTypeInfo == nullptr)
         return true;
+	SWAG_ASSERT(typeInfo);
+
     switch (typeInfo->nativeType)
     {
     case NativeType::S8:

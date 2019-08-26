@@ -1086,14 +1086,12 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
 
 bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    auto fromType = nodeToCast->castedTypeInfo ? nodeToCast->castedTypeInfo : nodeToCast->typeInfo;
-    return makeCompatibles(errorContext, toType, fromType, nodeToCast, castFlags);
+    return makeCompatibles(errorContext, toType, nodeToCast->typeInfo, nodeToCast, castFlags);
 }
 
 bool TypeManager::makeCompatibles(ErrorContext* errorContext, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
-    auto leftType = leftNode->castedTypeInfo ? leftNode->castedTypeInfo : leftNode->typeInfo;
-    return makeCompatibles(errorContext, leftType, rightNode, castFlags);
+    return makeCompatibles(errorContext, leftNode->typeInfo, rightNode, castFlags);
 }
 
 void TypeManager::promote(AstNode* left, AstNode* right)
@@ -1124,9 +1122,11 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
 
     if (newLeftTypeInfo == leftTypeInfo)
         return;
+
     if (!(left->flags & AST_VALUE_COMPUTED))
     {
-        left->castedTypeInfo = (TypeInfo*) newLeftTypeInfo;
+		left->typeInfo = newLeftTypeInfo;
+        left->castedTypeInfo = leftTypeInfo;
         return;
     }
 
