@@ -18,8 +18,6 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->errorContext.report({sourceFile, node, "cannot reference a type expression"});
     if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::Enum)
         return context->errorContext.report({sourceFile, node, "cannot reference an enum type"});
-    if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::Alias)
-        return context->errorContext.report({sourceFile, node, "cannot reference a type alias"});
 
     return true;
 }

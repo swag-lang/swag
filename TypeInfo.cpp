@@ -658,6 +658,8 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a struct";
     case TypeInfoKind::Generic:
         return "a generic type";
+    case TypeInfoKind::Alias:
+        return "an alias type";
     }
 
     return "<type>";
@@ -687,6 +689,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "struct";
     case TypeInfoKind::Generic:
         return "generic type";
+    case TypeInfoKind::Alias:
+        return "alias type";
     }
 
     return "<type>";
