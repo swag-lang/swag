@@ -14,15 +14,11 @@
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
     auto sourceFile = context->sourceFile;
-    bool concrete   = true;
-
     if (node->kind == AstNodeKind::TypeExpression)
-        concrete = false;
-    else if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::Enum)
-        concrete = false;
-
-    if (!concrete)
         return context->errorContext.report({sourceFile, node, "cannot reference a type expression"});
+    if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::Enum)
+        return context->errorContext.report({sourceFile, node, "cannot reference an enum type"});
+
     return true;
 }
 
