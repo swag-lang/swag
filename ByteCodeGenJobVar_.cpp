@@ -12,6 +12,11 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     auto resolved = node->resolvedSymbolOverload;
     auto typeInfo = resolved->typeInfo;
 
+	if (node->type && !(node->type->flags & AST_NO_BYTECODE_CHILDS))
+	{
+
+	}
+
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         // User initialization

@@ -19,3 +19,4 @@ static const uint64_t AST_GENERATED             = 0x00000000'00010000;
 static const uint64_t AST_IS_GENERIC            = 0x00000000'00020000;
 static const uint64_t AST_FROM_GENERIC          = 0x00000000'00040000;
 static const uint64_t AST_UFCS_DONE             = 0x00000000'00080000;
+static const uint64_t AST_HAS_STRUCT_PARAMETERS = 0x00000000'00100000;

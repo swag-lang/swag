@@ -150,6 +150,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+	// No struct initialization on everything except local vars
+	if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+    {
+        SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
+    }
+
     // Find type
     if (node->type && node->assignment)
     {
@@ -341,5 +347,5 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
 
-    return true;
+	return true;
 }

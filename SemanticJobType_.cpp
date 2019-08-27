@@ -16,16 +16,16 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
     auto sourceFile = context->sourceFile;
     if (node->kind == AstNodeKind::TypeExpression)
         return context->errorContext.report({sourceFile, node, "cannot reference a type expression"});
-	if (node->resolvedSymbolName)
-	{
-		switch (node->resolvedSymbolName->kind)
-		{
-		case SymbolKind::Namespace:
-		case SymbolKind::Enum:
-		case SymbolKind::TypeAlias:
-			return context->errorContext.report({ sourceFile, node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind)) });
-		}
-	}
+    if (node->resolvedSymbolName)
+    {
+        switch (node->resolvedSymbolName->kind)
+        {
+        case SymbolKind::Namespace:
+        case SymbolKind::Enum:
+        case SymbolKind::TypeAlias:
+            return context->errorContext.report({sourceFile, node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
+        }
+    }
 
     return true;
 }
@@ -201,13 +201,14 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         node->typeInfo = g_TypeMgr.registerType(ptrSlice);
     }
 
-    node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
-	node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
+	node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
+    if (!(node->flags & AST_HAS_STRUCT_PARAMETERS))
+        node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
 
     return true;
 }
 
-bool SemanticJob::resolveTypeDecl(SemanticContext* context)
+bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
     auto node = context->node;
 

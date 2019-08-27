@@ -53,7 +53,7 @@ JobResult FileSemanticJob::execute()
             break;
 
             case AstNodeKind::VarDecl:
-            case AstNodeKind::TypeDecl:
+            case AstNodeKind::TypeAlias:
             case AstNodeKind::EnumDecl:
             case AstNodeKind::StructDecl:
             case AstNodeKind::FuncDecl:

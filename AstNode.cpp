@@ -49,7 +49,7 @@ const char* AstNode::getKindName(AstNode* node)
         return "an enum value";
     case AstNodeKind::Namespace:
         return "a namespace";
-    case AstNodeKind::TypeDecl:
+    case AstNodeKind::TypeAlias:
         return "a type";
     case AstNodeKind::FuncDeclParam:
         return "a function parameter";
@@ -72,7 +72,7 @@ const char* AstNode::getNakedKindName(AstNode* node)
         return "enum value";
     case AstNodeKind::Namespace:
         return "namespace";
-    case AstNodeKind::TypeDecl:
+    case AstNodeKind::TypeAlias:
         return "type";
     case AstNodeKind::FuncDeclParam:
         return "parameter";

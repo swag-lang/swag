@@ -111,5 +111,20 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, otherVar, SymbolKind::Variable));
     }
 
+    // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters
+    if (varNode->type && varNode->type->kind == AstNodeKind::TypeExpression)
+    {
+        auto typeExpression = CastAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
+        if (typeExpression->identifier)
+        {
+            auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+            if (identifier->callParameters)
+            {
+                typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
+				typeExpression->flags |= AST_HAS_STRUCT_PARAMETERS;
+            }
+        }
+    }
+
     return true;
 }

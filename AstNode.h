@@ -42,7 +42,7 @@ enum class AstNodeKind
     VarDecl,
     ConstDecl,
     LetDecl,
-    TypeDecl,
+    TypeAlias,
     IdentifierRef,
     Identifier,
     TypeExpression,
@@ -588,7 +588,6 @@ struct AstTypeExpression : public AstNode
     void reset() override
     {
         identifier = nullptr;
-        parameters = nullptr;
         ptrCount   = 0;
         arrayDim   = 0;
         isSlice    = false;
@@ -599,7 +598,6 @@ struct AstTypeExpression : public AstNode
     AstNode* clone(CloneContext& context) override;
 
     AstNode* identifier;
-    AstNode* parameters;
     int      ptrCount;
     int      arrayDim;
     bool     isSlice;

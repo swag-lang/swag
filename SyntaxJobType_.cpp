@@ -9,19 +9,18 @@
 #include "Diagnostic.h"
 #include "TypeManager.h"
 
-bool SyntaxJob::doTypeDecl(AstNode* parent, AstNode** result)
+bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::TypeDecl, sourceFile->indexInModule, parent);
+    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::TypeAlias, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
-    node->semanticFct = &SemanticJob::resolveTypeDecl;
+    node->semanticFct = &SemanticJob::resolveTypeAlias;
     if (result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid type name '%s'", token.text.c_str())));
-    node->name = token.text;
-    node->name.computeCrc();
-    node->token = move(token);
+    node->name  = token.text;
+    node->token = token;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymColon));
@@ -114,8 +113,6 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
-    ScopedFlags sc(this, AST_NO_BYTECODE_CHILDS);
-
     // ...
     if (token.id == TokenId::SymDotDotDot)
     {
@@ -144,6 +141,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     node->semanticFct = &SemanticJob::resolveTypeExpression;
     if (result)
         *result = node;
+    node->flags |= AST_NO_BYTECODE_CHILDS;
 
     // Const
     node->isConst = false;
@@ -203,8 +201,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::Identifier)
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
-        auto identifier  = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
-        node->parameters = identifier->callParameters;
         return true;
     }
 
