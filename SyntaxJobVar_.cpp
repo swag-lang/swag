@@ -59,7 +59,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     }
     else if (!varNode->type)
     {
-		return syntaxError(token, format("invalid token '%s' after variable name", token.text.c_str()));
+        return syntaxError(token, format("invalid token '%s' after variable name", token.text.c_str()));
     }
 
     // Be sure we will be able to have a type
@@ -73,7 +73,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     if (varNode->assignment)
     {
         // When initialization is supposed to be constexpr, we just duplicate the initialization
-		SWAG_ASSERT(currentScope);
+        SWAG_ASSERT(currentScope);
         if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
         {
             for (auto otherVar : otherVariables)
@@ -110,6 +110,22 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         for (auto otherVar : otherVariables)
             SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, otherVar, SymbolKind::Variable));
     }
+
+    /*if (varNode->type && varNode->type->childs.size() && varNode->type->childs.back()->kind == AstNodeKind::IdentifierRef)
+    {
+        auto identifierRef = CastAst<AstIdentifierRef>(varNode->type->childs.back(), AstNodeKind::IdentifierRef);
+        auto identifier    = CastAst<AstIdentifier>(identifierRef->childs.back(), AstNodeKind::Identifier);
+        if (identifier->callParameters)
+        {
+            string opInitCall       = varNode->name + ".opInit";
+            auto   newIdentifierRef = Ast::createIdentifierRef(this, opInitCall, varNode->token, varNode->parent);
+            varNode->flags |= AST_DISABLED_INIT;
+            auto         newIdentifier = CastAst<AstIdentifier>(newIdentifierRef->childs.back(), AstNodeKind::Identifier);
+            CloneContext cloneContext;
+            cloneContext.parent           = newIdentifier;
+            newIdentifier->callParameters = identifier->callParameters->clone(cloneContext);
+        }
+    }*/
 
     return true;
 }

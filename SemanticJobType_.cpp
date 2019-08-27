@@ -202,7 +202,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     }
 
     node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
-    node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
+	node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
 
     return true;
 }

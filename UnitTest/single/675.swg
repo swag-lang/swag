@@ -1,5 +1,5 @@
 #module module675
-//#unittest pass syntax
+#unittest pass syntax
 
 struct Point
 {
