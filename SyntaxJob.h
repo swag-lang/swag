@@ -30,8 +30,8 @@ struct SyntaxJob : public Job
     bool eatSemiCol(const char* msg = nullptr);
     bool recoverError();
 
-    void setupSelfType(AstIdentifier* node);
-    void generateOpInit(AstNode* node);
+    void     setupSelfType(AstIdentifier* node, const Utf8& strctName, AstNode* genericParameters);
+    AstNode* generateOpInit(AstNode* node, const Utf8& structName, AstNode* genericParameters);
 
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
     bool doCompilerIf(AstNode* parent, AstNode** result);
@@ -58,7 +58,7 @@ struct SyntaxJob : public Job
     bool doImpl(AstNode* parent, AstNode** result = nullptr);
     bool doAssignmentExpression(AstNode* parent, AstNode** result = nullptr);
     bool doExpressionListCurly(AstNode* parent, AstNode** result = nullptr);
-	bool doExpressionListArray(AstNode* parent, AstNode** result = nullptr);
+    bool doExpressionListArray(AstNode* parent, AstNode** result = nullptr);
     bool doInitializationExpression(AstNode* parent, AstNode** result = nullptr);
     bool doLiteral(AstNode* parent, AstNode** result = nullptr);
     bool doIntrinsicProp(AstNode* parent, AstNode** result = nullptr);
