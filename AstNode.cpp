@@ -353,11 +353,11 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     auto newNode = g_Pool_astTypeExpression.alloc();
     newNode->copyFrom(context, this);
 
-    newNode->typeExpression = findChildRef(typeExpression, newNode);
-    newNode->ptrCount       = ptrCount;
-    newNode->arrayDim       = arrayDim;
-    newNode->isSlice        = isSlice;
-    newNode->isConst        = isConst;
+    newNode->identifier = findChildRef(identifier, newNode);
+    newNode->ptrCount   = ptrCount;
+    newNode->arrayDim   = arrayDim;
+    newNode->isSlice    = isSlice;
+    newNode->isConst    = isConst;
     return newNode;
 }
 

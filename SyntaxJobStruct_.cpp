@@ -213,10 +213,10 @@ AstNode* SyntaxJob::generateOpInit(AstNode* node, const Utf8& structName, AstNod
 
         auto typeNode = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, param);
         typeNode->inheritOwnersAndFlags(this);
-        typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
-        typeNode->typeExpression = Ast::createIdentifierRef(this, "Self", token, typeNode);
-        param->type              = typeNode;
-        setupSelfType(CastAst<AstIdentifier>(typeNode->typeExpression->childs.front(), AstNodeKind::Identifier), structName, genericParameters);
+        typeNode->semanticFct = &SemanticJob::resolveTypeExpression;
+        typeNode->identifier  = Ast::createIdentifierRef(this, "Self", token, typeNode);
+        param->type           = typeNode;
+        setupSelfType(CastAst<AstIdentifier>(typeNode->identifier->childs.front(), AstNodeKind::Identifier), structName, genericParameters);
     }
 
     funcNode->returnType = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);

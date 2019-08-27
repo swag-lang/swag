@@ -27,9 +27,9 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         SWAG_VERIFY(currentScope->parentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "'self' can only be used in an 'impl' block"}));
         auto typeNode = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
         typeNode->inheritOwnersAndFlags(this);
-        typeNode->semanticFct    = &SemanticJob::resolveTypeExpression;
-        typeNode->typeExpression = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
-        paramNode->type          = typeNode;
+        typeNode->semanticFct = &SemanticJob::resolveTypeExpression;
+        typeNode->identifier  = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
+        paramNode->type       = typeNode;
     }
     else
     {

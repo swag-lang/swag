@@ -95,7 +95,7 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
                 auto name = typeExpression->childs.front()->childs.front()->name;
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(doTypeExpression(node, &typeExpression));
-				typeExpression->name = name;
+                typeExpression->name = name;
             }
             else
             {
@@ -202,7 +202,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::Identifier)
     {
-        SWAG_CHECK(doIdentifierRef(node, &node->typeExpression));
+        SWAG_CHECK(doIdentifierRef(node, &node->identifier));
         return true;
     }
 

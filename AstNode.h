@@ -393,11 +393,11 @@ struct AstFuncCallParam : public AstNode
 
     AstNode* clone(CloneContext& context) override;
 
-    Utf8                   namedParam;
-    AstNode*               namedParamNode;
+    Utf8           namedParam;
+    AstNode*       namedParamNode;
     TypeInfoParam* resolvedParameter;
-    int                    index;
-    bool                   mustSortParameters;
+    int            index;
+    bool           mustSortParameters;
 };
 
 struct AstIf : public AstNode
@@ -587,17 +587,17 @@ struct AstTypeExpression : public AstNode
 {
     void reset() override
     {
-        typeExpression = nullptr;
-        ptrCount       = 0;
-        arrayDim       = 0;
-        isSlice        = false;
-        isConst        = false;
+        identifier = nullptr;
+        ptrCount   = 0;
+        arrayDim   = 0;
+        isSlice    = false;
+        isConst    = false;
         AstNode::reset();
     }
 
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* typeExpression;
+    AstNode* identifier;
     int      ptrCount;
     int      arrayDim;
     bool     isSlice;

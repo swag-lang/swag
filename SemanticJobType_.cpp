@@ -97,10 +97,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
         return true;
 
-    if (node->typeExpression)
+    if (node->identifier)
     {
-        node->typeInfo = node->typeExpression->typeInfo;
-        node->inheritOrFlag(node->typeExpression, AST_IS_GENERIC);
+        node->typeInfo = node->identifier->typeInfo;
+        node->inheritOrFlag(node->identifier, AST_IS_GENERIC);
     }
     else
     {
@@ -108,10 +108,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     }
 
     // This is a generic type, not yet known
-    if (!node->typeInfo && node->typeExpression && node->typeExpression->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
+    if (!node->typeInfo && node->identifier && node->identifier->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
     {
-        node->resolvedSymbolName     = node->typeExpression->resolvedSymbolName;
-        node->resolvedSymbolOverload = node->typeExpression->resolvedSymbolOverload;
+        node->resolvedSymbolName     = node->identifier->resolvedSymbolName;
+        node->resolvedSymbolOverload = node->identifier->resolvedSymbolOverload;
         node->typeInfo               = g_Pool_typeInfoGeneric.alloc();
         node->typeInfo->name         = node->resolvedSymbolName->name;
         node->typeInfo               = g_TypeMgr.registerType(node->typeInfo);
@@ -121,7 +121,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo, internalError(context, "resolveTypeExpression, null type !"));
 
     // If type comes from an identifier, be sure it's a type
-    if (node->typeExpression)
+    if (node->identifier)
     {
         auto child = node->childs.back();
         if (child->resolvedSymbolName)
