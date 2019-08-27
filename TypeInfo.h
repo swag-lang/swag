@@ -229,6 +229,7 @@ struct TypeInfoParam : public TypeInfo
         namedParam.clear();
         typeInfo = nullptr;
         index    = 0;
+        offset   = 0;
     }
 
     bool isSame(TypeInfo* from) override
@@ -250,6 +251,7 @@ struct TypeInfoParam : public TypeInfo
     TypeInfo*     typeInfo;
     ComputedValue genericValue;
     int           index;
+	int           offset;
 };
 
 enum MatchResult
@@ -262,7 +264,7 @@ enum MatchResult
     BadSignature,
     BadGenericSignature,
     InvalidNamedParameter,
-	MissingNamedParameter,
+    MissingNamedParameter,
     DuplicatedNamedParameter,
 };
 

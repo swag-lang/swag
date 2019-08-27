@@ -399,7 +399,7 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymQuestion)
     {
-        parent->flags |= AST_DISABLED_INIT;
+        parent->flags |= AST_DISABLED_DEFAULT_INIT;
         SWAG_CHECK(eatToken(TokenId::SymQuestion));
         return true;
     }

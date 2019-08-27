@@ -113,7 +113,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Value
     if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
     {
-		SWAG_CHECK(checkIsConcrete(context, node->assignment));
+        SWAG_CHECK(checkIsConcrete(context, node->assignment));
 
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
         {
@@ -148,12 +148,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             typeArray->sizeOf = typeArray->count * typeArray->pointedType->sizeOf;
             typeArray->name   = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
         }
-    }
-
-	// No struct initialization on everything except local vars
-	if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-    {
-        SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
     }
 
     // Find type
@@ -214,6 +208,18 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    // No struct initialization on everything except local vars
+    if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+    {
+        SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
+
+        auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+        auto typeStruct     = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        if (identifier->callParameters->childs.size() == typeStruct->childs.size())
+            node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+    }
+
     // A constant does nothing on backend, except if it can't be stored in a register
     uint32_t storageOffset = 0;
     if (isConstant)
@@ -248,7 +254,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // An enum must be initialized
-    if (!node->assignment && !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM) && !(node->flags & AST_DISABLED_INIT))
+    if (!node->assignment && !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM) && !(node->flags & AST_DISABLED_DEFAULT_INIT))
     {
         if (node->typeInfo->kind == TypeInfoKind::Enum ||
             (node->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) node->typeInfo)->pointedType->kind == TypeInfoKind::Enum))
@@ -347,5 +353,5 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
 
-	return true;
+    return true;
 }

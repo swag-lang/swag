@@ -362,6 +362,7 @@ TypeInfo* TypeInfoParam::clone()
     newType->namedParam = namedParam;
     newType->typeInfo   = typeInfo;
     newType->index      = index;
+    newType->offset     = offset;
     newType->copyFrom(this);
     return newType;
 }

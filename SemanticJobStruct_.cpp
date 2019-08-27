@@ -156,6 +156,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->name       = child->typeInfo->name;
             typeParam->typeInfo   = child->typeInfo;
             typeParam->sizeOf     = child->typeInfo->sizeOf;
+            typeParam->offset     = storageOffset;
             typeInfo->childs.push_back(typeParam);
             typeInfo->sizeOf += child->typeInfo->sizeOf;
             typeInfo->flags |= structFlags;

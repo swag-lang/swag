@@ -12,6 +12,18 @@
 #include "TypeManager.h"
 #include "CommandLine.h"
 
+void ByteCodeGenJob::emitRASavedPush(ByteCodeGenContext* context, const vector<uint32_t>& regToSave)
+{
+    for (int r = 0; r < regToSave.size(); r++)
+        emitInstruction(context, ByteCodeOp::PushRASaved, regToSave[r]);
+}
+
+void ByteCodeGenJob::emitRASavedPop(ByteCodeGenContext* context, const vector<uint32_t>& regToSave)
+{
+    for (int r = (int) regToSave.size() - 1; r >= 0; r--)
+        emitInstruction(context, ByteCodeOp::PopRASaved, regToSave[r]);
+}
+
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
