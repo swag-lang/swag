@@ -203,11 +203,12 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::Identifier)
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
+        auto identifier  = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+        node->parameters = identifier->callParameters;
         return true;
     }
 
-    SWAG_CHECK(syntaxError(token, format("invalid type declaration '%s'", token.text.c_str())));
-    return true;
+    return syntaxError(token, format("invalid type declaration '%s'", token.text.c_str()));
 }
 
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
