@@ -629,6 +629,9 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
         cptResolved++;
     }
 
+	if (context.result != MatchResult::Ok)
+		return;
+
     // Named parameters
     if (hasNamedParameters)
     {
