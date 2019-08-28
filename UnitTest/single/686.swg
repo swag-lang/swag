@@ -13,5 +13,5 @@ struct Point
 	var pt : [2, 2] Point
 	/*@assert(pt[1, 1].x == 5)
 	@assert(pt[1, 1].y == 10)*/
-	//@print(pt[1, 1].x)
+	@print(pt[0, 0].x)
 }

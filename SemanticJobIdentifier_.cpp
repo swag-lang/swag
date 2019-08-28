@@ -248,8 +248,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         else if (typeInfo->kind == TypeInfoKind::Array)
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-            if (typeArray->pointedType->kind == TypeInfoKind::Struct)
-                parent->startScope = static_cast<TypeInfoStruct*>(typeArray->pointedType)->scope;
+            if (typeArray->rawType->kind == TypeInfoKind::Struct)
+                parent->startScope = static_cast<TypeInfoStruct*>(typeArray->rawType)->scope;
             node->typeInfo   = typeInfo;
             parent->typeInfo = typeInfo;
         }
