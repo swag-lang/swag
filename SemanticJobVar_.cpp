@@ -213,10 +213,22 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
 
+        // Determin if the call parameters cover everything (to avoid calling default initialisation)
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-        auto typeStruct     = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        if (identifier->callParameters->childs.size() == typeStruct->childs.size())
+
+        TypeInfoStruct* typeStruct = nullptr;
+        if (node->typeInfo->kind == TypeInfoKind::Struct)
+            typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        else if (node->typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
+            while (typeArray->pointedType->kind == TypeInfoKind::Array)
+                typeArray = CastTypeInfo<TypeInfoArray>(typeArray->pointedType, TypeInfoKind::Array);
+            typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
+        }
+
+        if (typeStruct && identifier->callParameters->childs.size() == typeStruct->childs.size())
             node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
     }
 

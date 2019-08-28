@@ -6,36 +6,6 @@
 #include "Ast.h"
 #include "TypeInfo.h"
 
-void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context)
-{
-    auto node     = static_cast<AstVarDecl*>(context->node);
-    auto resolved = node->resolvedSymbolOverload;
-
-    if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-    {
-        RegisterList r0, r1;
-        r0          = reserveRegisterRC(context);
-        r1          = reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
-        inst->b.s32 = resolved->storageOffset;
-
-        auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-        auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-        for (auto child : identifier->callParameters->childs)
-        {
-            auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-            auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
-            emitInstruction(context, ByteCodeOp::CopyRARB, r1, r0);
-            emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
-            emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child->typeInfo);
-            freeRegisterRC(context, child->resultRegisterRC);
-        }
-
-        freeRegisterRC(context, r0);
-        freeRegisterRC(context, r1);
-    }
-}
-
 bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
 {
     auto node     = static_cast<AstVarDecl*>(context->node);
@@ -78,7 +48,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         {
             if (typeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
             {
-                if (!(node->flags & AST_DISABLED_DEFAULT_INIT))
+				if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_STRUCT_PARAMETERS))
                 {
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0;
@@ -86,13 +56,12 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     emitInstruction(context, ByteCodeOp::CopyRAVB32, r0[0])->b.u32 = typeArray->count;
                     emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
                     auto seekJump = context->bc->numInstructions;
-                    emitInstruction(context, ByteCodeOp::PushRASaved, r0[0]);
-                    emitInstruction(context, ByteCodeOp::PushRASaved, r0[1]);
+                    regToSave.push_back(r0[0]);
+                    regToSave.push_back(r0[1]);
 
                     emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct), r0[1], regToSave);
+					emitStructParameters(context, r0[1]);
 
-                    emitInstruction(context, ByteCodeOp::PopRASaved, r0[1]);
-                    emitInstruction(context, ByteCodeOp::PopRASaved, r0[0]);
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
                     emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->pointedType->sizeOf;
                     emitInstruction(context, ByteCodeOp::IsNullU32, r0[0], r0[2]);
@@ -115,7 +84,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             emitStructInit(context, typeStruct, UINT32_MAX, regToSave);
         }
 
-        emitStructParameters(context);
+        emitStructParameters(context, UINT32_MAX);
         return true;
     }
 
