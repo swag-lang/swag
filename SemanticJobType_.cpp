@@ -162,6 +162,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             SWAG_ASSERT(node->arrayDim == UINT32_MAX);
             auto ptrArray         = g_Pool_typeInfoArray.alloc();
             ptrArray->count       = UINT32_MAX;
+            ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = node->typeInfo;
             ptrArray->rawType     = node->typeInfo;
             ptrArray->name        = format("[] %s", node->typeInfo->name.c_str());
@@ -172,7 +173,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         }
         else
         {
-            auto rawType = node->typeInfo;
+            auto rawType    = node->typeInfo;
+            auto totalCount = 1;
             for (int i = node->arrayDim - 1; i >= 0; i--)
             {
                 auto child = node->childs[i];
@@ -181,8 +183,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 SWAG_VERIFY(child->typeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
                 SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.maxStaticArraySize, context->errorContext.report({sourceFile, child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.maxStaticArraySize, child->computedValue.reg.u32)}));
 
-                auto ptrArray         = g_Pool_typeInfoArray.alloc();
-                ptrArray->count       = child->computedValue.reg.u32;
+                auto ptrArray   = g_Pool_typeInfoArray.alloc();
+                ptrArray->count = child->computedValue.reg.u32;
+                totalCount *= ptrArray->count;
+                ptrArray->totalCount  = totalCount;
                 ptrArray->pointedType = node->typeInfo;
                 ptrArray->rawType     = rawType;
                 ptrArray->name        = format("[%d] %s", child->computedValue.reg.u32, node->typeInfo->name.c_str());

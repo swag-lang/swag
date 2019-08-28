@@ -144,9 +144,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
         {
-            typeArray->count  = (uint32_t) node->assignment->childs.size();
-            typeArray->sizeOf = typeArray->count * typeArray->pointedType->sizeOf;
-            typeArray->name   = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
+            typeArray->count      = (uint32_t) node->assignment->childs.size();
+            typeArray->totalCount = typeArray->count;
+            typeArray->sizeOf     = typeArray->count * typeArray->pointedType->sizeOf;
+            typeArray->name       = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
         }
     }
 
@@ -171,6 +172,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->rawType     = typeArray->pointedType;
                 typeArray->sizeOf      = node->typeInfo->sizeOf;
                 typeArray->count       = (uint32_t) typeList->childs.size();
+                typeArray->totalCount  = typeArray->count;
                 typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
                 node->typeInfo         = g_TypeMgr.registerType(typeArray);
                 SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->typeInfo, node->assignment));

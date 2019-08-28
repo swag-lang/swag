@@ -439,6 +439,7 @@ TypeInfo* TypeInfoArray::clone()
     newType->pointedType = pointedType;
     newType->rawType     = rawType;
     newType->count       = count;
+    newType->totalCount  = totalCount;
     newType->copyFrom(this);
     return newType;
 }

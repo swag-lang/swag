@@ -390,6 +390,7 @@ struct TypeInfoArray : public TypeInfo
         pointedType = nullptr;
         rawType     = nullptr;
         count       = 0;
+        totalCount  = 0;
     }
 
     bool isSame(TypeInfo* from) override
@@ -407,6 +408,7 @@ struct TypeInfoArray : public TypeInfo
     TypeInfo* pointedType;
     TypeInfo* rawType;
     uint32_t  count;
+    uint32_t  totalCount;
 };
 
 struct TypeInfoSlice : public TypeInfo
