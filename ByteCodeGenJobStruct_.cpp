@@ -71,7 +71,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
         for (auto child : structNode->content->childs)
         {
             auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-            auto typeVar = g_TypeMgr.concreteType(varDecl->typeInfo);
+            auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
 
             emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
             if (!g_CommandLine.optimizeByteCode || varDecl->resolvedSymbolOverload->storageOffset)

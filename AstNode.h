@@ -193,8 +193,6 @@ struct AstNode : public PoolElement
     {
         if (childs.empty())
             return;
-        for (auto child : childs)
-            child->inheritLocation();
         if (token.startLocation.column == 0 && token.startLocation.line == 0)
             token.startLocation = childs.front()->token.startLocation;
         token.endLocation = childs.back()->token.endLocation;
@@ -202,9 +200,15 @@ struct AstNode : public PoolElement
 
     void inheritToken(Token& tkn)
     {
-        name = move(tkn.text);
+        name = tkn.text;
         name.computeCrc();
-        token = move(tkn);
+        token = tkn;
+    }
+
+    void inheritTokenLocation(Token& tkn)
+    {
+        token.startLocation = tkn.startLocation;
+        token.endLocation   = tkn.endLocation;
     }
 
     void inheritOwnersAndFlags(SyntaxJob* job)

@@ -77,7 +77,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
-	typeInfo = g_TypeMgr.concreteType(typeInfo);
+	typeInfo = TypeManager::concreteType(typeInfo);
     if (typeInfo->isNative(NativeType::String))
     {
         node->resultRegisterRC += reserveRegisterRC(context);

@@ -207,7 +207,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         // Lambda call
         AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        auto           typeInfo   = g_TypeMgr.concreteType(identifier->typeInfo);
+        auto           typeInfo   = TypeManager::concreteType(identifier->typeInfo);
 
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
@@ -294,7 +294,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // For a tuple, need to reserve room on the stack for the return result
-        auto returnType = g_TypeMgr.concreteType(node->typeInfo);
+        auto returnType = TypeManager::concreteType(node->typeInfo);
         if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
             node->fctCallStorageOffset = node->ownerScope->startStackSize;
@@ -858,8 +858,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         for (auto param : genericParameters->childs)
         {
             auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
-            if (!(oneParam->flags & AST_VALUE_COMPUTED) && oneParam->typeInfo->kind != TypeInfoKind::Generic)
-                return context->errorContext.report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)});
+            //if (!(oneParam->flags & AST_VALUE_COMPUTED) && oneParam->typeInfo->kind != TypeInfoKind::Generic)
+			//	return context->errorContext.report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)});
             symMatch.genericParameters.push_back(oneParam);
             symMatch.genericParametersCallValues.push_back(oneParam->computedValue);
             symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);

@@ -9,16 +9,16 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {
     auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
     callParams->inheritOwnersAndFlags(this);
+    callParams->inheritTokenLocation(token);
     *result                 = callParams;
     callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
-    callParams->token       = move(token);
 
     if (token.id != TokenId::SymLeftParen)
     {
         auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
         param->inheritOwnersAndFlags(this);
+        param->inheritTokenLocation(token);
         param->semanticFct = &SemanticJob::resolveFuncCallParam;
-        param->token       = token;
         SWAG_CHECK(doExpression(param));
     }
     else
@@ -30,6 +30,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
             {
                 auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
                 param->inheritOwnersAndFlags(this);
+                param->inheritTokenLocation(token);
                 param->semanticFct = &SemanticJob::resolveFuncCallParam;
                 param->token       = token;
                 AstNode* paramExpression;
@@ -80,11 +81,11 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 
     auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, nullptr);
     identifier->inheritOwnersAndFlags(this);
+    identifier->inheritToken(token);
     identifier->flags |= flags;
     identifier->semanticFct   = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct   = &ByteCodeGenJob::emitIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
-    identifier->inheritToken(token);
     SWAG_CHECK(tokenizer.getToken(token));
 
     // Array index

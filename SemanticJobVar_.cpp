@@ -159,7 +159,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (node->assignment)
     {
-        node->typeInfo = g_TypeMgr.concreteType(node->assignment->typeInfo);
+        node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo);
 
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeList)
