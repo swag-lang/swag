@@ -343,15 +343,16 @@ anotherTry:
         {
             numOverloads++;
 
-            if (overload->typeInfo->kind == TypeInfoKind::Struct)
+            auto rawTypeInfo = g_TypeMgr.concreteType(overload->typeInfo, MakeConcrete::FlagAlias);
+            if (rawTypeInfo->kind == TypeInfoKind::Struct)
             {
                 forStruct     = true;
-                auto typeInfo = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+                auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
                 typeInfo->match(job->symMatch);
             }
-            else
+            else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
             {
-                auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
                 typeInfo->match(job->symMatch);
             }
 
@@ -801,56 +802,57 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    if (node->genericParameters || node->callParameters)
+    auto  genericParameters = node->genericParameters;
+    auto  callParameters    = node->callParameters;
+    auto  symbol            = dependentSymbols[0];
+    auto& symMatch          = job->symMatch;
+
+    if (callParameters)
     {
-        auto symbol = dependentSymbols[0];
-
-        if (node->callParameters)
+        if (symbol->kind != SymbolKind::Attribute &&
+            symbol->kind != SymbolKind::Function &&
+            symbol->kind != SymbolKind::Struct &&
+            symbol->kind != SymbolKind::TypeAlias &&
+            (symbol->kind != SymbolKind::Variable || symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Lambda))
         {
-            if (symbol->kind != SymbolKind::Attribute &&
-                symbol->kind != SymbolKind::Function &&
-                symbol->kind != SymbolKind::Struct &&
-                (symbol->kind != SymbolKind::Variable || symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Lambda))
-            {
-                Diagnostic diag{sourceFile, node->callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-                Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
-            }
-
-            for (auto param : node->callParameters->childs)
-            {
-                auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
-                job->symMatch.parameters.push_back(oneParam);
-            }
+            Diagnostic diag{sourceFile, callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+            Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+            return context->errorContext.report(diag, &note);
         }
 
-        if (node->genericParameters)
+        for (auto param : callParameters->childs)
         {
-            node->inheritOrFlag(node->genericParameters, AST_IS_GENERIC);
-            if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Struct)
-            {
-                Diagnostic diag{sourceFile, node->callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-                Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
-            }
-
-            int idx = 0;
-            for (auto param : node->genericParameters->childs)
-            {
-                auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
-                if (!(oneParam->flags & AST_VALUE_COMPUTED) && oneParam->typeInfo->kind != TypeInfoKind::Generic)
-                    return context->errorContext.report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)});
-                job->symMatch.genericParameters.push_back(oneParam);
-                job->symMatch.genericParametersCallValues.push_back(oneParam->computedValue);
-                job->symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
-                idx++;
-            }
+            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
+            symMatch.parameters.push_back(oneParam);
         }
     }
-    else
+
+    if (genericParameters)
+    {
+        node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
+        if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Struct)
+        {
+            Diagnostic diag{sourceFile, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+            Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+            return context->errorContext.report(diag, &note);
+        }
+
+        int idx = 0;
+        for (auto param : genericParameters->childs)
+        {
+            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
+            if (!(oneParam->flags & AST_VALUE_COMPUTED) && oneParam->typeInfo->kind != TypeInfoKind::Generic)
+                return context->errorContext.report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)});
+            symMatch.genericParameters.push_back(oneParam);
+            symMatch.genericParametersCallValues.push_back(oneParam->computedValue);
+            symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
+            idx++;
+        }
+    }
+
+    if (symMatch.parameters.empty() && symMatch.genericParameters.empty())
     {
         // For everything except functions/attributes/structs (which have overloads), this is a match
-        auto symbol = dependentSymbols[0];
         if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Struct)
         {
             SWAG_ASSERT(dependentSymbols.size() == 1);
@@ -862,7 +864,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(matchIdentifierParameters(context, node->genericParameters, node->callParameters, node));
+    SWAG_CHECK(matchIdentifierParameters(context, genericParameters, callParameters, node));
     if (context->result == SemanticResult::Pending)
         return true;
 
