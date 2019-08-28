@@ -217,7 +217,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 
 bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
-    auto node = context->node;
+    auto sourceFile = context->sourceFile;
+    auto node       = context->node;
 
     auto typeInfo     = g_Pool_typeInfoAlias.alloc();
     typeInfo->rawType = node->childs.front()->typeInfo;
@@ -228,11 +229,11 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
-	uint32_t symbolFlags = 0;
-	if (node->typeInfo->flags & TYPEINFO_GENERIC)
-		symbolFlags |= OVERLOAD_GENERIC;
+    uint32_t symbolFlags = 0;
+    if (node->typeInfo->flags & TYPEINFO_GENERIC)
+        symbolFlags |= OVERLOAD_GENERIC;
 
-    // Register symbol with its type
+    SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, "type alias cannot be generic"}));
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::TypeAlias));
 

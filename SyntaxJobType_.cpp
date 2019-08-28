@@ -19,8 +19,7 @@ bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid type name '%s'", token.text.c_str())));
-    node->name  = token.text;
-    node->token = token;
+    node->inheritToken(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymColon));

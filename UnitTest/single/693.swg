@@ -1,4 +1,4 @@
-#module module692
+#module module693
 //#unittest pass syntax
 
 struct(T) Point
@@ -7,11 +7,5 @@ struct(T) Point
 	var y: T = 10
 }
 
-type Point2f: Point
-
-//#[swag.printbc]
 #unittest error
-#test
-{
-	var pt : Point2f(1.0, 2.0)
-}
+type Point2f: Point

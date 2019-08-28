@@ -6,6 +6,7 @@
 #include "Scope.h"
 #include "SourceFile.h"
 #include "ThreadManager.h"
+#include "TypeManager.h"
 
 bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
@@ -26,12 +27,25 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
 
     auto overload   = match.symbolOverload;
     auto sourceNode = overload->node;
-    auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
+
+    AstStruct*      structNode = nullptr;
+    TypeInfoStruct* typeStruct = nullptr;
+    if (overload->typeInfo->kind == TypeInfoKind::Struct)
+    {
+        structNode = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
+        typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+
+	structNode = CastAst<AstStruct>(structNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags &= ~AST_IS_GENERIC;
     structNode->flags |= AST_FROM_GENERIC;
     Ast::addChild(sourceNode->parent, structNode);
 
-    auto newType = static_cast<TypeInfoStruct*>(overload->typeInfo->clone());
+    auto newType = static_cast<TypeInfoStruct*>(typeStruct->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
     structNode->typeInfo = newType;

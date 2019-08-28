@@ -345,17 +345,17 @@ anotherTry:
 
             auto rawTypeInfo = overload->typeInfo;
 
-			// If to a type alias that already a generic instance, accept to not have generic
-			// parameters on the source symbol
+            // If to a type alias that already a generic instance, accept to not have generic
+            // parameters on the source symbol
             if (overload->typeInfo->kind == TypeInfoKind::Alias)
             {
                 rawTypeInfo = TypeManager::concreteType(overload->typeInfo, MakeConcrete::FlagAlias);
-				if (rawTypeInfo->kind == TypeInfoKind::Struct)
-				{
-					auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
-					if (!(typeInfo->flags & TYPEINFO_GENERIC))
-						job->symMatch.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
-				}
+                if (rawTypeInfo->kind == TypeInfoKind::Struct)
+                {
+                    auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
+                    if (!(typeInfo->flags & TYPEINFO_GENERIC))
+                        job->symMatch.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
+                }
             }
 
             if (rawTypeInfo->kind == TypeInfoKind::Struct)
@@ -787,8 +787,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     // Fill specified parameters
     job->symMatch.reset();
-	if (node->flags & AST_TAKE_ADDRESS)
-		job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
+    if (node->flags & AST_TAKE_ADDRESS)
+        job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
     // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
     if (!(node->flags & AST_UFCS_DONE))
@@ -845,7 +845,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (genericParameters)
     {
         node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
-        if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Struct)
+        if (symbol->kind != SymbolKind::Function &&
+            symbol->kind != SymbolKind::Struct &&
+            symbol->kind != SymbolKind::TypeAlias)
         {
             Diagnostic diag{sourceFile, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
             Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
