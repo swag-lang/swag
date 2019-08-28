@@ -43,6 +43,7 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
 	structNode = CastAst<AstStruct>(structNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags &= ~AST_IS_GENERIC;
     structNode->flags |= AST_FROM_GENERIC;
+	structNode->content->flags &= ~AST_DISABLED;
     Ast::addChild(sourceNode->parent, structNode);
 
     auto newType = static_cast<TypeInfoStruct*>(typeStruct->clone());

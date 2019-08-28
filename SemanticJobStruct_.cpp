@@ -158,11 +158,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             typeInfo->childs.push_back(typeParam);
-            typeInfo->sizeOf += child->typeInfo->sizeOf;
             typeInfo->flags |= structFlags;
         }
 
-		typeInfo->childs[storageIndex]->offset = storageOffset;
+        typeInfo->sizeOf += child->typeInfo->sizeOf;
+        typeInfo->childs[storageIndex]->offset       = storageOffset;
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
         storageOffset += child->typeInfo->sizeOf;
@@ -187,15 +187,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 typeInfo->genericParameters.push_back(funcParam);
                 typeInfo->sizeOf += param->typeInfo->sizeOf;
             }
-        }
-    }
-
-    // Compute size of struct, now that we know the real types
-    else
-    {
-        for (auto param : typeInfo->childs)
-        {
-            typeInfo->sizeOf += param->sizeOf;
         }
     }
 

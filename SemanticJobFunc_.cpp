@@ -344,6 +344,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->typeInfo = child->typeInfo;
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR);
+	node->inheritOrFlag(child, AST_IS_GENERIC);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
     return true;
 }

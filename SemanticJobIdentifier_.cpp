@@ -858,8 +858,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         for (auto param : genericParameters->childs)
         {
             auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
-            //if (!(oneParam->flags & AST_VALUE_COMPUTED) && oneParam->typeInfo->kind != TypeInfoKind::Generic)
-			//	return context->errorContext.report({sourceFile, oneParam, format("generic parameter '%d' cannot be evaluated at compile time", idx + 1)});
             symMatch.genericParameters.push_back(oneParam);
             symMatch.genericParametersCallValues.push_back(oneParam->computedValue);
             symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
