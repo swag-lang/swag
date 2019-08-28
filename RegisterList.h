@@ -10,6 +10,16 @@ struct RegisterList
     vector<uint32_t> registers;
     int              countResults = 0;
 
+    RegisterList()
+    {
+    }
+
+    RegisterList(uint32_t r)
+    {
+        oneResult[0] = r;
+        countResults = 1;
+    }
+
     int size()
     {
         return countResults;
@@ -35,7 +45,7 @@ struct RegisterList
             registers.push_back(r);
         else
             oneResult[countResults] = r;
-		countResults++;
+        countResults++;
     }
 
     void clear()

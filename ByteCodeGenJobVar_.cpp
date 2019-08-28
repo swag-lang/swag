@@ -31,10 +31,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     // User initialization
     if (node->assignment)
     {
-        RegisterList r0;
-        r0          = reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
-        inst->b.s32 = resolved->storageOffset;
+        RegisterList r0   = reserveRegisterRC(context);
+        auto         inst = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
+        inst->b.s32       = resolved->storageOffset;
         emitAffectEqual(context, r0, node->assignment->resultRegisterRC, node->typeInfo, node->assignment->typeInfo);
         freeRegisterRC(context, r0);
         freeRegisterRC(context, node->assignment->resultRegisterRC);
@@ -48,7 +47,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         {
             if (typeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
             {
-				if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_STRUCT_PARAMETERS))
+                if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_STRUCT_PARAMETERS))
                 {
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0;
@@ -60,7 +59,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     regToSave.push_back(r0[1]);
 
                     emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct), r0[1], regToSave);
-					emitStructParameters(context, r0[1]);
+                    emitStructParameters(context, r0[1]);
 
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
                     emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->pointedType->sizeOf;

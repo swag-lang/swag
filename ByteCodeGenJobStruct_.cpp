@@ -184,11 +184,10 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
 
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
     {
-        RegisterList r0, r1;
-        r0          = reserveRegisterRC(context);
-        r1          = reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
-        inst->b.s32 = resolved->storageOffset;
+        RegisterList r0   = reserveRegisterRC(context);
+        RegisterList r1   = reserveRegisterRC(context);
+        auto         inst = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
+        inst->b.s32       = resolved->storageOffset;
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
@@ -233,10 +232,9 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         node->ownerFct->bc->maxCallParameters = max(1, node->ownerFct->bc->maxCallParameters);
 
         // Push self
-        RegisterList r0;
-        r0          = reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
-        inst->b.s32 = resolved->storageOffset;
+        RegisterList r0   = reserveRegisterRC(context);
+        auto         inst = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
+        inst->b.s32       = resolved->storageOffset;
 
         // Offset variable reference
         if (regOffset != UINT32_MAX)
@@ -251,6 +249,8 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
         emitInstruction(context, ByteCodeOp::IncSP, 8);
         emitRASavedPop(context, regToSave);
+
+        freeRegisterRC(context, r0);
     }
 
     return true;
