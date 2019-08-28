@@ -162,6 +162,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeInfo->flags |= structFlags;
         }
 
+		typeInfo->childs[storageIndex]->offset = storageOffset;
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
         storageOffset += child->typeInfo->sizeOf;
