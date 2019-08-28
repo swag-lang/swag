@@ -43,9 +43,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        if (typeArray->pointedType->kind == TypeInfoKind::Struct)
+        if (typeArray->rawType->kind == TypeInfoKind::Struct)
         {
-            if ((typeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            if ((typeArray->rawType->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
             {
                 if (!(node->flags & AST_DISABLED_DEFAULT_INIT) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
                 {
@@ -58,12 +58,12 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     regToSave.push_back(r0[0]);
                     regToSave.push_back(r0[1]);
 
-					if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-						emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct), r0[1], regToSave);
+                    if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->rawType, TypeInfoKind::Struct), r0[1], regToSave);
                     emitStructParameters(context, r0[1]);
 
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
-                    emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->pointedType->sizeOf;
+                    emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->rawType->sizeOf;
                     emitInstruction(context, ByteCodeOp::IsNullU32, r0[0], r0[2]);
                     emitInstruction(context, ByteCodeOp::JumpNotTrue, r0[2])->b.s32 = seekJump - context->bc->numInstructions - 1;
 

@@ -7,10 +7,10 @@ struct Point
 	var y: s32
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	var pt : [5] Point(10, 50)
-	//@assert(pt[4].x == 10)
-	//@assert(pt[4].y == 50)
+	@assert(pt[4].x == 10)
+	@assert(pt[4].y == 50)
 }

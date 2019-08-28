@@ -163,6 +163,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             auto ptrArray         = g_Pool_typeInfoArray.alloc();
             ptrArray->count       = UINT32_MAX;
             ptrArray->pointedType = node->typeInfo;
+            ptrArray->rawType     = node->typeInfo;
             ptrArray->name        = format("[] %s", node->typeInfo->name.c_str());
             ptrArray->sizeOf      = 0;
             if (node->isConst)
@@ -171,6 +172,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         }
         else
         {
+            auto rawType = node->typeInfo;
             for (int i = node->arrayDim - 1; i >= 0; i--)
             {
                 auto child = node->childs[i];
@@ -182,6 +184,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 auto ptrArray         = g_Pool_typeInfoArray.alloc();
                 ptrArray->count       = child->computedValue.reg.u32;
                 ptrArray->pointedType = node->typeInfo;
+                ptrArray->rawType     = rawType;
                 ptrArray->name        = format("[%d] %s", child->computedValue.reg.u32, node->typeInfo->name.c_str());
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
                 if (node->isConst)
@@ -201,7 +204,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         node->typeInfo = g_TypeMgr.registerType(ptrSlice);
     }
 
-	node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
+    node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
     if (!(node->flags & AST_HAS_STRUCT_PARAMETERS))
         node->flags |= AST_VALUE_COMPUTED | AST_NO_BYTECODE;
 

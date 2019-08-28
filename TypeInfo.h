@@ -251,7 +251,7 @@ struct TypeInfoParam : public TypeInfo
     TypeInfo*     typeInfo;
     ComputedValue genericValue;
     int           index;
-	int           offset;
+    int           offset;
 };
 
 enum MatchResult
@@ -388,6 +388,7 @@ struct TypeInfoArray : public TypeInfo
         TypeInfo::reset();
         kind        = TypeInfoKind::Array;
         pointedType = nullptr;
+        rawType     = nullptr;
         count       = 0;
     }
 
@@ -404,6 +405,7 @@ struct TypeInfoArray : public TypeInfo
     TypeInfo* clone() override;
 
     TypeInfo* pointedType;
+    TypeInfo* rawType;
     uint32_t  count;
 };
 
