@@ -5,12 +5,13 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "TypeInfo.h"
+#include "TypeManager.h"
 
 bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
 {
     auto node     = static_cast<AstVarDecl*>(context->node);
     auto resolved = node->resolvedSymbolOverload;
-    auto typeInfo = resolved->typeInfo;
+    auto typeInfo = TypeManager::concreteType(resolved->typeInfo, MakeConcrete::FlagAlias);
 
     // If structure has parameters for construction, need to save registers that store values before a call
     vector<uint32_t> regToSave;

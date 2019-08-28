@@ -28,16 +28,19 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = node->computedValue.reg.u32;
         }
 
-		if(!(node->flags & AST_TAKE_ADDRESS))
-			emitStructDeRef(context);
+        if (!(node->flags & AST_TAKE_ADDRESS))
+            emitStructDeRef(context);
         return true;
     }
 
     auto resolved     = node->resolvedSymbolOverload;
     auto resolvedName = node->resolvedSymbolName;
-    if (resolvedName->kind == SymbolKind::Namespace || resolvedName->kind == SymbolKind::Struct)
+
+    if (resolvedName->kind == SymbolKind::Namespace ||
+        resolvedName->kind == SymbolKind::Struct ||
+        resolvedName->kind == SymbolKind::TypeAlias)
         return true;
-    if (node->resolvedSymbolName->kind != SymbolKind::Variable)
+    if (resolvedName->kind != SymbolKind::Variable)
         return internalError(context, "emitIdentifier");
 
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo);

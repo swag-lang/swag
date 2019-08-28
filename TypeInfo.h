@@ -270,6 +270,9 @@ enum MatchResult
 
 struct SymbolMatchContext
 {
+    static const uint32_t MATCH_ACCEPT_NO_GENERIC = 0x00000001;
+    static const uint32_t MATCH_FOR_LAMBDA        = 0x00000002;
+
     SymbolMatchContext()
     {
         reset();
@@ -287,9 +290,10 @@ struct SymbolMatchContext
         genericParametersCallValues.clear();
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
-        forLambda = false;
+        flags = 0;
     }
 
+    uint32_t                             flags;
     int                                  badSignatureParameterIdx;
     TypeInfo*                            badSignatureRequestedType;
     TypeInfo*                            badSignatureGivenType;
@@ -298,7 +302,6 @@ struct SymbolMatchContext
     vector<AstNode*>                     parameters;
     vector<bool>                         doneParameters;
     map<TypeInfo*, pair<TypeInfo*, int>> mapGenericTypes;
-    bool                                 forLambda;
     vector<ComputedValue>                genericParametersCallValues;
     vector<TypeInfo*>                    genericParametersCallTypes;
     vector<TypeInfo*>                    genericParametersGenTypes;

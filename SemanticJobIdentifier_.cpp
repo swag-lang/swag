@@ -343,7 +343,21 @@ anotherTry:
         {
             numOverloads++;
 
-            auto rawTypeInfo = g_TypeMgr.concreteType(overload->typeInfo, MakeConcrete::FlagAlias);
+            auto rawTypeInfo = overload->typeInfo;
+
+			// If to a type alias that already a generic instance, accept to not have generic
+			// parameters on the source symbol
+            if (overload->typeInfo->kind == TypeInfoKind::Alias)
+            {
+                rawTypeInfo = TypeManager::concreteType(overload->typeInfo, MakeConcrete::FlagAlias);
+				if (rawTypeInfo->kind == TypeInfoKind::Struct)
+				{
+					auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
+					if (!(typeInfo->flags & TYPEINFO_GENERIC))
+						job->symMatch.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
+				}
+            }
+
             if (rawTypeInfo->kind == TypeInfoKind::Struct)
             {
                 forStruct     = true;
@@ -773,7 +787,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     // Fill specified parameters
     job->symMatch.reset();
-    job->symMatch.forLambda = (node->flags & AST_TAKE_ADDRESS);
+	if (node->flags & AST_TAKE_ADDRESS)
+		job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
     // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
     if (!(node->flags & AST_UFCS_DONE))

@@ -9,10 +9,10 @@ struct(T) Point
 
 type Point2f: Point!f32
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
 	var pt : Point2f(1.0, 2.0)
-	//@assert(pt.x == 100)
-	//@assert(pt.y == 500)
+	@assert(pt.x == 1)
+	@assert(pt.y == 2)
 }

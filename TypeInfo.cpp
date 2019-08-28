@@ -72,7 +72,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     context.result = MatchResult::Ok;
 
     // For a lambda
-    if (context.forLambda)
+    if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
         return;
 
     // One boolean per used parameter
@@ -700,24 +700,21 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     // It's valid to not specify generic parameters. They will be deduced
     if (numGenericParams < wantedNumGenericParams)
     {
-        if (flags & TYPEINFO_GENERIC)
+        // A reference to a generic without specifying the generic parameters is a match
+        // (we deduce type)
+        if (!numGenericParams && ((flags & TYPEINFO_GENERIC) || (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC)))
         {
-            // A reference to a generic function without specifying the generic parameters is a match
-            if (!numGenericParams)
+            for (int i = 0; i < wantedNumGenericParams; i++)
             {
-                for (int i = 0; i < wantedNumGenericParams; i++)
-                {
-                    auto symbolParameter                  = genericParameters[i];
-                    context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
-                    context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
-                }
-
-                context.result = MatchResult::Ok;
-                return;
+                auto symbolParameter                  = genericParameters[i];
+                context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
+                context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
             }
-        }
 
-        context.result = MatchResult::NotEnoughGenericParameters;
+            context.result = MatchResult::Ok;
+        }
+        else
+            context.result = MatchResult::NotEnoughGenericParameters;
         return;
     }
 
