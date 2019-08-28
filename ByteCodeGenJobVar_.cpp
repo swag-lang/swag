@@ -45,9 +45,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         if (typeArray->pointedType->kind == TypeInfoKind::Struct)
         {
-            if (typeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
+            if ((typeArray->pointedType->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
             {
-                if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_STRUCT_PARAMETERS))
+                if (!(node->flags & AST_DISABLED_DEFAULT_INIT) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
                 {
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0;
@@ -58,7 +58,8 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     regToSave.push_back(r0[0]);
                     regToSave.push_back(r0[1]);
 
-                    emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct), r0[1], regToSave);
+					if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+						emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct), r0[1], regToSave);
                     emitStructParameters(context, r0[1]);
 
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
