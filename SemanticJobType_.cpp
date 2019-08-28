@@ -228,8 +228,12 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
     node->typeInfo = g_TypeMgr.registerType(typeInfo);
 
+	uint32_t symbolFlags = 0;
+	if (node->typeInfo->flags & TYPEINFO_GENERIC)
+		symbolFlags |= OVERLOAD_GENERIC;
+
     // Register symbol with its type
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::TypeAlias));
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::TypeAlias));
 
     return true;

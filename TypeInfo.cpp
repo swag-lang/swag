@@ -629,8 +629,8 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
         cptResolved++;
     }
 
-	if (context.result != MatchResult::Ok)
-		return;
+    if (context.result != MatchResult::Ok)
+        return;
 
     // Named parameters
     if (hasNamedParameters)
@@ -705,19 +705,25 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     {
         // A reference to a generic without specifying the generic parameters is a match
         // (we deduce type)
-        if (!numGenericParams && ((flags & TYPEINFO_GENERIC) || (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC)))
+        context.result = MatchResult::NotEnoughGenericParameters;
+        if (!numGenericParams)
         {
-            for (int i = 0; i < wantedNumGenericParams; i++)
+            if ((flags & TYPEINFO_GENERIC) || (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC))
             {
-                auto symbolParameter                  = genericParameters[i];
-                context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
-                context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
-            }
+                if (!(flags & TYPEINFO_GENERIC) || !context.parameters.size())
+                {
+                    for (int i = 0; i < wantedNumGenericParams; i++)
+                    {
+                        auto symbolParameter                  = genericParameters[i];
+                        context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
+                        context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
+                    }
 
-            context.result = MatchResult::Ok;
+                    context.result = MatchResult::Ok;
+                }
+            }
         }
-        else
-            context.result = MatchResult::NotEnoughGenericParameters;
+
         return;
     }
 
