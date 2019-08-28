@@ -1038,7 +1038,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         return true;
 
     // To a generic type
-    if (fromType->kind != TypeInfoKind::Generic && toType->kind == TypeInfoKind::Generic)
+    if (toType->kind == TypeInfoKind::Generic)
         return true;
 
     // Pointer to pointer, with a user cast
