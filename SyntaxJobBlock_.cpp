@@ -193,12 +193,26 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     node->inheritToken(token);
     if (result)
         *result = node;
-
     SWAG_CHECK(tokenizer.getToken(token));
 
     {
         ScopedBreakable scoped(this, node);
-        SWAG_CHECK(doExpression(node, &node->expression));
+        SWAG_CHECK(doExpression(nullptr, &node->expression));
+
+        if (token.id == TokenId::SymColon)
+        {
+            if (node->expression->kind != AstNodeKind::IdentifierRef || node->expression->childs.size() != 1)
+                return sourceFile->report({sourceFile, node->expression, format("invalid named index '%s'", token.text.c_str())});
+            auto name = node->expression->childs.front()->name;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doExpression(node, &node->expression));
+			node->expression->name = name;
+        }
+        else
+        {
+            Ast::addChild(node, node->expression);
+        }
+
         SWAG_CHECK(doEmbeddedStatement(node, &node->block));
     }
 
@@ -231,7 +245,7 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, parent);
     node->inheritOwnersAndFlags(this);
     node->semanticFct = &SemanticJob::resolveIndex;
-    node->token       = move(token);
+    node->inheritToken(token);
     if (result)
         *result = node;
 
