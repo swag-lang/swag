@@ -40,6 +40,12 @@ struct SemanticContext
     AstNode*       node       = nullptr;
     SemanticResult result     = SemanticResult::Done;
     ErrorContext   errorContext;
+
+    void reset()
+    {
+        errorContext.genericInstanceTree.clear();
+        errorContext.genericInstanceTreeFile.clear();
+    }
 };
 
 struct OneGenericMatch
@@ -69,8 +75,9 @@ struct SemanticJob : public Job
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
-    void        waitForSymbol(SemanticContext* context, SymbolName* symbol);
-    void        setPending(SemanticContext* context);
+
+    void waitForSymbol(SymbolName* symbol);
+    void setPending();
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -155,9 +162,8 @@ struct SemanticJob : public Job
         cacheBadSignature.clear();
         cacheBadGenericSignature.clear();
         symMatch.reset();
-        genericInstanceTree.clear();
-        genericInstanceTreeFile.clear();
         waitingSymbolSolved = nullptr;
+        context.reset();
     }
 
     Module*                 module;
@@ -172,9 +178,8 @@ struct SemanticJob : public Job
     vector<SymbolOverload*> cacheBadSignature;
     vector<SymbolOverload*> cacheBadGenericSignature;
     SymbolMatchContext      symMatch;
-    vector<AstNode*>        genericInstanceTree;
-    vector<SourceFile*>     genericInstanceTreeFile;
     SymbolName*             waitingSymbolSolved;
+    SemanticContext         context;
 };
 
 extern Pool<SemanticJob> g_Pool_semanticJob;

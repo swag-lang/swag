@@ -21,28 +21,26 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
     return false;
 }
 
-void SemanticJob::waitForSymbol(SemanticContext* context, SymbolName* symbol)
+void SemanticJob::waitForSymbol(SymbolName* symbol)
 {
     waitingSymbolSolved = symbol;
     symbol->dependentJobs.push_back(this);
-	setPending(context);
+    setPending();
     g_ThreadMgr.addPendingJob(this);
 }
 
-void SemanticJob::setPending(SemanticContext* context)
+void SemanticJob::setPending()
 {
-	context->node->semanticPass++;
-    context->result = SemanticResult::Pending;
+    context.node->semanticPass++;
+    context.result = SemanticResult::Pending;
 }
 
 JobResult SemanticJob::execute()
 {
-    SemanticContext context;
-    context.job                                  = this;
-    context.sourceFile                           = sourceFile;
-    context.errorContext.sourceFile              = sourceFile;
-    context.errorContext.genericInstanceTree     = move(genericInstanceTree);
-    context.errorContext.genericInstanceTreeFile = move(genericInstanceTreeFile);
+    context.job                     = this;
+    context.sourceFile              = sourceFile;
+    context.errorContext.sourceFile = sourceFile;
+    context.result                  = SemanticResult::Done;
 
     while (!nodes.empty())
     {

@@ -17,10 +17,10 @@ SemanticJob* FileSemanticJob::newSemanticJob(SourceFile* sourceFile)
 
 JobResult FileSemanticJob::execute()
 {
-    SemanticContext context;
     context.job                     = this;
     context.sourceFile              = sourceFile;
     context.errorContext.sourceFile = sourceFile;
+    context.result                  = SemanticResult::Done;
 
     while (!nodes.empty())
     {

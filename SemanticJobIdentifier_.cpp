@@ -158,7 +158,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
             scoped_lock lock(symbol->mutex);
             if (symbol->cptOverloads)
             {
-                job->waitForSymbol(context, symbol);
+                job->waitForSymbol(symbol);
                 return true;
             }
         }
@@ -334,7 +334,7 @@ anotherTry:
         scoped_lock lock(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            job->waitForSymbol(context, symbol);
+            job->waitForSymbol(symbol);
             return true;
         }
 
@@ -412,7 +412,7 @@ anotherTry:
         // Be sure we don't have more overloads waiting to be solved
         if (symbol->cptOverloads)
         {
-            job->waitForSymbol(context, symbol);
+            job->waitForSymbol(symbol);
             symbol->mutex.unlock();
             return true;
         }
@@ -780,7 +780,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         scoped_lock lkn(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            job->waitForSymbol(context, symbol);
+            job->waitForSymbol(symbol);
             return true;
         }
     }

@@ -40,10 +40,10 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
         SWAG_ASSERT(false);
     }
 
-	structNode = CastAst<AstStruct>(structNode->clone(cloneContext), AstNodeKind::StructDecl);
+    structNode = CastAst<AstStruct>(structNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags &= ~AST_IS_GENERIC;
     structNode->flags |= AST_FROM_GENERIC;
-	structNode->content->flags &= ~AST_DISABLED;
+    structNode->content->flags &= ~AST_DISABLED;
     Ast::addChild(sourceNode->parent, structNode);
 
     auto newType = static_cast<TypeInfoStruct*>(typeStruct->clone());
@@ -82,7 +82,7 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
 
     // Need to wait for the struct to be semantic resolved
     symbol->cptOverloads++;
-    job->waitForSymbol(context, symbol);
+    job->waitForSymbol(symbol);
 
     // Clone opInit
     auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
@@ -96,8 +96,15 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
     job->module     = sourceFile->module;
     job->sourceFile = sourceFile;
     job->nodes.push_back(structNode);
-    job->genericInstanceTree.push_back(context->node);
-    job->genericInstanceTreeFile.push_back(context->sourceFile);
+
+    // Store stack of instantiation contexts
+    auto& srcCxt  = context->errorContext;
+    auto& destCxt = job->context.errorContext;
+    destCxt.genericInstanceTree.insert(destCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.end());
+    destCxt.genericInstanceTreeFile.insert(destCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.end());
+    destCxt.genericInstanceTree.push_back(context->node);
+    destCxt.genericInstanceTreeFile.push_back(context->sourceFile);
+
     g_ThreadMgr.addJob(job);
 
     return true;
@@ -180,7 +187,7 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     // Need to wait for the function to be semantic resolved
     auto symbol = dependentSymbols[0];
     symbol->cptOverloads++;
-    job->waitForSymbol(context, symbol);
+    job->waitForSymbol(symbol);
 
     // Run semantic on that function
     auto sourceFile = context->sourceFile;
@@ -188,8 +195,15 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     job->module     = sourceFile->module;
     job->sourceFile = sourceFile;
     job->nodes.push_back(funcNode);
-    job->genericInstanceTree.push_back(context->node);
-    job->genericInstanceTreeFile.push_back(context->sourceFile);
+
+    // Store stack of instantiation contexts
+    auto& srcCxt  = context->errorContext;
+    auto& destCxt = job->context.errorContext;
+    destCxt.genericInstanceTree.insert(destCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.end());
+    destCxt.genericInstanceTreeFile.insert(destCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.end());
+    destCxt.genericInstanceTree.push_back(context->node);
+    destCxt.genericInstanceTreeFile.push_back(context->sourceFile);
+
     g_ThreadMgr.addJob(job);
 
     return true;

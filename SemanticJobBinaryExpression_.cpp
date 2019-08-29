@@ -846,7 +846,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         scoped_lock lkn(symbol->mutex);
         if (symbol->cptOverloads)
         {
-			job->waitForSymbol(context, symbol);
+			job->waitForSymbol(symbol);
             return true;
         }
     }

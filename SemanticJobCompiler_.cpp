@@ -44,14 +44,14 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
                 g_ThreadMgr.addJob(node->byteCodeJob);
             }
 
-			job->setPending(context);
+			job->setPending();
             return true;
         }
 
         if (!(node->flags & AST_BYTECODE_RESOLVED))
         {
             node->byteCodeJob->dependentJobs.push_back(job);
-			job->setPending(context);
+			job->setPending();
             return true;
         }
     }
