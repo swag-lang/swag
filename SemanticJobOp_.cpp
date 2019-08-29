@@ -166,6 +166,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     node->typeInfo               = job->cacheMatches[0]->typeInfo;
     node->resolvedSymbolName     = job->cacheDependentSymbols[0];
     node->resolvedSymbolOverload = job->cacheMatches[0];
+	SWAG_ASSERT(node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function);
 
     // Allocate room on the stack to store the result of the function call
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);

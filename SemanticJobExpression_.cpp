@@ -150,6 +150,8 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
 	else if (typeInfo->kind == TypeInfoKind::Struct)
 	{
 		SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, node, nullptr));
+		if (context->result == SemanticResult::Pending)
+			return true;
 	}
     else
     {
