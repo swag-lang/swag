@@ -74,6 +74,9 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     auto node     = context->node;
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
 
+    if (loopNode->resolvedSymbolName && loopNode->resolvedSymbolName->kind == SymbolKind::Function)
+        SWAG_CHECK(emitUserOp(context, nullptr, loopNode));
+
     // To store the 'index' of the loop
     if (loopNode->needIndex())
     {

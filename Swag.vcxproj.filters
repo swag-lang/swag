@@ -275,6 +275,9 @@
     <ClCompile Include="SemanticJobCompareExpression_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SemanticJobOp_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
