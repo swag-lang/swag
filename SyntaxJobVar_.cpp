@@ -126,5 +126,6 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         }
     }
 
+	varNode->inheritLocation();
     return true;
 }

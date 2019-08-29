@@ -719,6 +719,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
                         context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
                     }
 
+					context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
                     context.result = MatchResult::Ok;
                 }
             }

@@ -137,6 +137,16 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 Diagnostic note{symOver->sourceFile, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
+
+            /*if ((node->typeInfo->kind == TypeInfoKind::Struct) && (node->typeInfo->flags & TYPEINFO_GENERIC))
+            {
+                if (node->identifier->flags & AST_GENERIC_MATCH_WAS_PARTIAL)
+                {
+                    Diagnostic diag{context->sourceFile, child->token.startLocation, child->token.endLocation, "missing generic parameters"};
+                    Diagnostic note{symOver->sourceFile, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
+                    return context->errorContext.report(diag, &note);
+                }
+            }*/
         }
     }
 

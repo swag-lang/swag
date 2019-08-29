@@ -200,6 +200,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::Identifier)
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
+		node->inheritLocation();
         return true;
     }
 

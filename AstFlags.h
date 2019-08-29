@@ -21,3 +21,4 @@ static const uint64_t AST_FROM_GENERIC               = 0x00000000'00040000;
 static const uint64_t AST_UFCS_DONE                  = 0x00000000'00080000;
 static const uint64_t AST_HAS_STRUCT_PARAMETERS      = 0x00000000'00100000;
 static const uint64_t AST_HAS_FULL_STRUCT_PARAMETERS = 0x00000000'00200000;
+static const uint64_t AST_GENERIC_MATCH_WAS_PARTIAL  = 0x00000000'00400000;

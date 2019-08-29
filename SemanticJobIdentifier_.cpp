@@ -32,6 +32,8 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             isConstExpr = false;
         if (child->flags & AST_IS_GENERIC)
             node->flags |= AST_IS_GENERIC;
+        if (child->flags & AST_GENERIC_MATCH_WAS_PARTIAL)
+            node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
     }
 
     if (isConstExpr)
@@ -376,6 +378,7 @@ anotherTry:
                 if (overload->flags & OVERLOAD_GENERIC)
                 {
                     OneGenericMatch match;
+                    match.flags                       = job->symMatch.flags;
                     match.symbolOverload              = overload;
                     match.genericParametersCallTypes  = job->symMatch.genericParametersCallTypes;
                     match.genericParametersCallValues = job->symMatch.genericParametersCallValues;
@@ -424,21 +427,24 @@ anotherTry:
             goto anotherTry;
         }
 
+        auto& firstMatch = genericMatches[0];
         if (forStruct)
         {
             if (genericParameters && !(node->flags & AST_IS_GENERIC))
             {
-                SWAG_CHECK(Generic::InstanciateStruct(context, genericParameters, genericMatches[0]));
+                SWAG_CHECK(Generic::InstanciateStruct(context, genericParameters, firstMatch));
             }
             else
             {
-                matches.push_back(genericMatches[0].symbolOverload);
+                matches.push_back(firstMatch.symbolOverload);
                 node->flags |= AST_IS_GENERIC;
+                if (firstMatch.flags & SymbolMatchContext::MATCH_WAS_PARTIAL)
+                    node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
             }
         }
         else
         {
-            SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, genericMatches[0]));
+            SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, firstMatch));
         }
 
         symbol->mutex.unlock();

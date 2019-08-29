@@ -50,6 +50,7 @@ struct SemanticContext
 
 struct OneGenericMatch
 {
+    uint32_t              flags;
     SymbolOverload*       symbolOverload;
     vector<ComputedValue> genericParametersCallValues;
     vector<TypeInfo*>     genericParametersCallTypes;

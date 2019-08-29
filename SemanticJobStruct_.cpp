@@ -161,6 +161,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeInfo->flags |= structFlags;
         }
 
+        if (!(node->flags & AST_IS_GENERIC))
+        {
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
+        }
+
         typeInfo->sizeOf += child->typeInfo->sizeOf;
         typeInfo->childs[storageIndex]->offset       = storageOffset;
         child->resolvedSymbolOverload->storageOffset = storageOffset;
