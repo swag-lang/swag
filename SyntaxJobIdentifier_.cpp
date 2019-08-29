@@ -9,7 +9,6 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {
     auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
     callParams->inheritOwnersAndFlags(this);
-    callParams->inheritTokenLocation(token);
     *result                 = callParams;
     callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
 
@@ -60,6 +59,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
+	callParams->inheritLocation();
     return true;
 }
 

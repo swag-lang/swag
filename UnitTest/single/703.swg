@@ -14,6 +14,7 @@ struct(T, V) Array
 }
 
 //#[swag.printbc]
+#unittest error
 #test
 {
 	var arr: Array!(s32, bool)
