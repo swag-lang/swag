@@ -137,6 +137,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerIf(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
+	static bool resolveLoopBefore(SemanticContext* context);
     static bool resolveForBefore(SemanticContext* context);
     static bool resolveFor(SemanticContext* context);
     static bool resolveSwitch(SemanticContext* context);

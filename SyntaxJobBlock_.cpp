@@ -51,51 +51,6 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
-{
-    auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
-    Scoped scoped(this, newScope);
-
-    auto node               = Ast::newNode(&g_Pool_astFor, AstNodeKind::For, sourceFile->indexInModule, parent);
-    node->semanticBeforeFct = &SemanticJob::resolveForBefore;
-    node->semanticFct       = &SemanticJob::resolveFor;
-    node->inheritOwnersAndFlags(this);
-    node->inheritToken(token);
-    if (result)
-        *result = node;
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    bool hasParen = token.id == TokenId::SymLeftParen;
-    if (hasParen)
-        SWAG_CHECK(eatToken());
-
-    {
-        ScopedBreakable scopedBreakable(this, node);
-
-        // Pre statement. Do not call doScopedCurlyStatement in order to avoid
-        // creating a new scope in the case of for { i:= 0; j := 0 } for example
-        if (token.id == TokenId::SymLeftCurly)
-        {
-            SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
-        }
-        else
-        {
-            SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
-        }
-
-        SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
-        SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
-        SWAG_CHECK(doEmbeddedStatement(node, &node->postExpression));
-
-        if (hasParen)
-            SWAG_CHECK(eatToken(TokenId::SymRightParen));
-
-        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
-    }
-
-    return true;
-}
-
 bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 {
     auto switchNode         = Ast::newNode(&g_Pool_astSwitch, AstNodeKind::Switch, sourceFile->indexInModule, parent);
@@ -185,33 +140,109 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
+bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&g_Pool_astLoop, AstNodeKind::Loop, sourceFile->indexInModule, parent);
-    node->semanticFct = &SemanticJob::resolveLoop;
+    auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+    Scoped scoped(this, newScope);
+
+    auto node               = Ast::newNode(&g_Pool_astFor, AstNodeKind::For, sourceFile->indexInModule, parent);
+    node->semanticBeforeFct = &SemanticJob::resolveForBefore;
+    node->semanticFct       = &SemanticJob::resolveFor;
     node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
+
     SWAG_CHECK(tokenizer.getToken(token));
+    bool hasParen = token.id == TokenId::SymLeftParen;
+    if (hasParen)
+        SWAG_CHECK(eatToken());
 
     {
-        ScopedBreakable scoped(this, node);
+        ScopedBreakable scopedBreakable(this, node);
+
+        // Pre statement. Do not call doScopedCurlyStatement in order to avoid
+        // creating a new scope in the case of for { i:= 0; j := 0 } for example
+        if (token.id == TokenId::SymLeftCurly)
+        {
+            SWAG_CHECK(doCurlyStatement(node, &node->preExpression));
+        }
+        else
+        {
+            SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
+        }
+
+        SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
+        SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
+        SWAG_CHECK(doEmbeddedStatement(node, &node->postExpression));
+
+        if (hasParen)
+            SWAG_CHECK(eatToken(TokenId::SymRightParen));
+
+        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
+{
+    auto newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+    newScope->allocateSymTable();
+    Scoped scoped(this, newScope);
+
+    auto node               = Ast::newNode(&g_Pool_astLoop, AstNodeKind::Loop, sourceFile->indexInModule, parent);
+    node->semanticBeforeFct = &SemanticJob::resolveLoopBefore;
+    node->semanticFct       = &SemanticJob::resolveLoop;
+    node->inheritOwnersAndFlags(this);
+    node->inheritToken(token);
+    if (result)
+        *result = node;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    bool hasParen = token.id == TokenId::SymLeftParen;
+    if (hasParen)
+        SWAG_CHECK(eatToken());
+
+    {
+        ScopedBreakable scopedBreakable(this, node);
         SWAG_CHECK(doExpression(nullptr, &node->expression));
 
+        Utf8  name;
+        Token tokenName;
         if (token.id == TokenId::SymColon)
         {
             if (node->expression->kind != AstNodeKind::IdentifierRef || node->expression->childs.size() != 1)
                 return sourceFile->report({sourceFile, node->expression, format("invalid named index '%s'", token.text.c_str())});
-            auto name = node->expression->childs.front()->name;
+            name      = node->expression->childs.front()->name;
+            tokenName = token;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doExpression(node, &node->expression));
-			node->expression->name = name;
         }
         else
         {
             Ast::addChild(node, node->expression);
         }
+
+        // Creates a variable if we have a named index
+        if (!name.empty())
+        {
+            auto var         = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, node);
+            var->semanticFct = &SemanticJob::resolveVarDecl;
+            var->inheritOwnersAndFlags(this);
+            var->token = tokenName;
+            var->name  = name;
+
+            auto identifer = Ast::newNode(&g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, var);
+            identifer->inheritOwnersAndFlags(this);
+            identifer->semanticFct = &SemanticJob::resolveIndex;
+            identifer->inheritToken(token);
+
+            var->assignment = identifer;
+        }
+
+		if (hasParen)
+            SWAG_CHECK(eatToken(TokenId::SymRightParen));
 
         SWAG_CHECK(doEmbeddedStatement(node, &node->block));
     }

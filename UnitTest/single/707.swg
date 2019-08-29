@@ -1,10 +1,17 @@
 #module module707
-#unittest pass syntax
 
 //#[swag.printbc]
 #test
 {
-	loop i: 10
-	{
-	}	
+	cpt := 0'u32
+	loop(i: 2)
+	{	
+		cpt += i		
+		loop j: 4
+		{
+			cpt += j			
+		}
+	}
+	
+	@assert(cpt == 13)
 }

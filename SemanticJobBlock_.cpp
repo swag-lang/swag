@@ -57,6 +57,13 @@ bool SemanticJob::resolveForBefore(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveLoopBefore(SemanticContext* context)
+{
+    auto node                        = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
+    return true;
+}
+
 bool SemanticJob::resolveFor(SemanticContext* context)
 {
     auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
