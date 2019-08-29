@@ -13,8 +13,7 @@
 
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 {
-    auto paramNode = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
-    paramNode->inheritOwnersAndFlags(this);
+    auto paramNode = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
     paramNode->semanticFct = &SemanticJob::resolveVarDecl;
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
@@ -25,8 +24,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     {
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(currentScope->parentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "'self' can only be used in an 'impl' block"}));
-        auto typeNode = Ast::newNode(&g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
-        typeNode->inheritOwnersAndFlags(this);
+        auto typeNode = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
         typeNode->semanticFct = &SemanticJob::resolveTypeExpression;
         typeNode->identifier  = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
         paramNode->type       = typeNode;
@@ -60,8 +58,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto allParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
-        allParams->inheritOwnersAndFlags(this);
+        auto allParams = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
         allParams->semanticFct = &SemanticJob::resolveFuncDeclParams;
         allParams->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
         if (result)
@@ -84,8 +81,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 {
-    auto allParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
-    allParams->inheritOwnersAndFlags(this);
+    auto allParams = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, parent);
     if (result)
         *result = allParams;
 
@@ -95,8 +91,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
     while (token.id != TokenId::SymRightParen)
     {
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "missing generic name or type"));
-        auto oneParam = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, allParams);
-        oneParam->inheritOwnersAndFlags(this);
+        auto oneParam = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, allParams);
         oneParam->inheritToken(token);
         oneParam->semanticFct = &SemanticJob::resolveVarDecl;
         oneParam->flags |= AST_IS_GENERIC;
@@ -119,8 +114,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 {
-    auto funcNode = Ast::newNode(&g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
-    funcNode->inheritOwnersAndFlags(this);
+    auto funcNode = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     if (result)
         *result = funcNode;
@@ -187,8 +181,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
 
     // Return type
-    auto typeNode = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
-    typeNode->inheritOwnersAndFlags(this);
+    auto typeNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
     typeNode->token       = funcNode->token;
@@ -220,8 +213,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, parent);
-    node->inheritOwnersAndFlags(this);
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, parent);
     node->inheritToken(token);
     node->semanticFct = &SemanticJob::resolveReturn;
     node->byteCodeFct = &ByteCodeGenJob::emitReturn;

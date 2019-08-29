@@ -9,7 +9,7 @@ enum class ScopeKind;
 namespace Ast
 {
     template<typename T>
-    T* newNode(Pool<T>* pool, AstNodeKind kind, uint32_t sourceFileIdx, AstNode* parent = nullptr)
+    T* newNode(SyntaxJob* job, Pool<T>* pool, AstNodeKind kind, uint32_t sourceFileIdx, AstNode* parent = nullptr)
     {
         auto node           = pool->alloc();
         node->kind          = kind;
@@ -17,6 +17,11 @@ namespace Ast
         node->ownerScope    = nullptr;
         node->ownerFct      = nullptr;
         node->sourceFileIdx = sourceFileIdx;
+
+		if (job)
+		{
+			node->inheritOwnersAndFlags(job);
+		}
 
         if (parent)
         {

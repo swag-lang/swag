@@ -806,12 +806,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (!node->callParameters)
                 {
-                    node->callParameters        = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, node->sourceFileIdx, node);
+                    node->callParameters        = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParameters, node->sourceFileIdx, node);
                     node->callParameters->token = identifierRef->previousResolvedNode->token;
                 }
 
                 node->flags |= AST_UFCS_DONE;
-                auto fctCallParam = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
+                auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFileIdx, nullptr);
                 node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
                 fctCallParam->parent      = node->callParameters;
                 fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;

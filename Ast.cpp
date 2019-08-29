@@ -65,7 +65,7 @@ namespace Ast
 
     Scope* findOrCreateScopeByName(Scope* parentScope, const string& name)
     {
-		SWAG_ASSERT(parentScope);
+        SWAG_ASSERT(parentScope);
         scoped_lock lock(parentScope->lockChilds);
         for (auto child : parentScope->childScopes)
         {
@@ -81,18 +81,18 @@ namespace Ast
         if (parentScope)
             parentScope->lockChilds.lock();
 
-		if (matchName)
-		{
-			SWAG_ASSERT(parentScope);
-			for (auto child : parentScope->childScopes)
-			{
-				if (child->name == name)
-				{
-					parentScope->lockChilds.unlock();
-					return child;
-				}
-			}
-		}
+        if (matchName)
+        {
+            SWAG_ASSERT(parentScope);
+            for (auto child : parentScope->childScopes)
+            {
+                if (child->name == name)
+                {
+                    parentScope->lockChilds.unlock();
+                    return child;
+                }
+            }
+        }
 
         auto newScope = g_Pool_scope.alloc();
 
@@ -109,7 +109,7 @@ namespace Ast
             parentScope->childScopes.push_back(newScope);
         }
 
-		if (parentScope)
+        if (parentScope)
             parentScope->lockChilds.unlock();
 
         return newScope;
@@ -118,21 +118,19 @@ namespace Ast
     AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent)
     {
         auto sourceFile    = job->sourceFile;
-        auto idRef         = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
+        auto idRef         = Ast::newNode(job, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
         idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
         idRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
-        idRef->inheritOwnersAndFlags(job);
-        idRef->name  = name;
-        idRef->token = token;
+        idRef->name        = name;
+        idRef->token       = token;
 
         vector<string> tokens;
         tokenize(name.c_str(), '.', tokens);
         for (int i = 0; i < tokens.size(); i++)
         {
-            auto id         = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
-            id->semanticFct = &SemanticJob::resolveIdentifier;
-            id->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
-            id->inheritOwnersAndFlags(job);
+            auto id           = Ast::newNode(job, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, idRef);
+            id->semanticFct   = &SemanticJob::resolveIdentifier;
+            id->byteCodeFct   = &ByteCodeGenJob::emitIdentifier;
             id->name          = tokens[i];
             id->token         = token;
             id->identifierRef = idRef;

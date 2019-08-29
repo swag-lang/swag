@@ -24,7 +24,7 @@ void Module::setup(Workspace* wkp, const fs::path& pth)
     scopeRoot = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     scopeRoot->allocateSymTable();
 
-    astRoot   = Ast::newNode(&g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
+    astRoot   = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
     buildPass = g_CommandLine.buildPass;
 }
 

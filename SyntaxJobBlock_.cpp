@@ -10,9 +10,8 @@
 
 bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&g_Pool_astIf, AstNodeKind::If, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::If, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveIf;
-    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
@@ -33,9 +32,8 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(&g_Pool_astWhile, AstNodeKind::While, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astWhile, AstNodeKind::While, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveWhile;
-    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
@@ -53,9 +51,8 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 {
-    auto switchNode         = Ast::newNode(&g_Pool_astSwitch, AstNodeKind::Switch, sourceFile->indexInModule, parent);
+    auto switchNode         = Ast::newNode(this, &g_Pool_astSwitch, AstNodeKind::Switch, sourceFile->indexInModule, parent);
     switchNode->semanticFct = &SemanticJob::resolveSwitch;
-    switchNode->inheritOwnersAndFlags(this);
     switchNode->inheritToken(token);
     if (result)
         *result = switchNode;
@@ -76,11 +73,10 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             hasDefault = true;
 
         // One case
-        auto caseNode         = Ast::newNode(&g_Pool_astSwitchCase, AstNodeKind::SwitchCase, sourceFile->indexInModule, isDefault ? nullptr : switchNode);
+        auto caseNode         = Ast::newNode(this, &g_Pool_astSwitchCase, AstNodeKind::SwitchCase, sourceFile->indexInModule, isDefault ? nullptr : switchNode);
         caseNode->isDefault   = isDefault;
         caseNode->ownerSwitch = switchNode;
         caseNode->semanticFct = &SemanticJob::resolveCase;
-        caseNode->inheritOwnersAndFlags(this);
         caseNode->inheritToken(token);
         SWAG_CHECK(tokenizer.getToken(token));
         if (isDefault)
@@ -112,8 +108,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         }
 
         // Content
-        auto statement = Ast::newNode(&g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, isDefault ? nullptr : switchNode);
-        statement->inheritOwnersAndFlags(this);
+        auto statement       = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, isDefault ? nullptr : switchNode);
         statement->ownerCase = caseNode;
         caseNode->block      = statement;
         if (isDefault)
@@ -145,10 +140,9 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node               = Ast::newNode(&g_Pool_astFor, AstNodeKind::For, sourceFile->indexInModule, parent);
+    auto node               = Ast::newNode(this, &g_Pool_astFor, AstNodeKind::For, sourceFile->indexInModule, parent);
     node->semanticBeforeFct = &SemanticJob::resolveForBefore;
     node->semanticFct       = &SemanticJob::resolveFor;
-    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
@@ -191,10 +185,9 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     newScope->allocateSymTable();
     Scoped scoped(this, newScope);
 
-    auto node               = Ast::newNode(&g_Pool_astLoop, AstNodeKind::Loop, sourceFile->indexInModule, parent);
+    auto node               = Ast::newNode(this, &g_Pool_astLoop, AstNodeKind::Loop, sourceFile->indexInModule, parent);
     node->semanticBeforeFct = &SemanticJob::resolveLoopBefore;
     node->semanticFct       = &SemanticJob::resolveLoop;
-    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
@@ -227,21 +220,19 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         // Creates a variable if we have a named index
         if (!name.empty())
         {
-            auto var         = Ast::newNode(&g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, node);
+            auto var         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, node);
             var->semanticFct = &SemanticJob::resolveVarDecl;
-            var->inheritOwnersAndFlags(this);
-            var->token = tokenName;
-            var->name  = name;
+            var->token       = tokenName;
+            var->name        = name;
 
-            auto identifer = Ast::newNode(&g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, var);
-            identifer->inheritOwnersAndFlags(this);
+            auto identifer         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, var);
             identifer->semanticFct = &SemanticJob::resolveIndex;
             identifer->inheritToken(token);
 
             var->assignment = identifer;
         }
 
-		if (hasParen)
+        if (hasParen)
             SWAG_CHECK(eatToken(TokenId::SymRightParen));
 
         SWAG_CHECK(doEmbeddedStatement(node, &node->block));
@@ -254,9 +245,8 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'break' can only be used inside a breakable scope"}));
 
-    auto node         = Ast::newNode(&g_Pool_astBreakContinue, AstNodeKind::Break, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Break, sourceFile->indexInModule, parent);
     node->byteCodeFct = &ByteCodeGenJob::emitBreak;
-    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;
@@ -273,8 +263,7 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
     SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable loop"}));
     SWAG_VERIFY(currentBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable loop"}));
 
-    auto node = Ast::newNode(&g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, parent);
-    node->inheritOwnersAndFlags(this);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveIndex;
     node->inheritToken(token);
     if (result)
@@ -289,9 +278,8 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable loop"}));
     SWAG_VERIFY(currentBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable loop"}));
 
-    auto node         = Ast::newNode(&g_Pool_astBreakContinue, AstNodeKind::Continue, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Continue, sourceFile->indexInModule, parent);
     node->byteCodeFct = &ByteCodeGenJob::emitContinue;
-    node->inheritOwnersAndFlags(this);
     node->inheritToken(token);
     if (result)
         *result = node;

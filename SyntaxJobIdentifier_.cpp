@@ -7,15 +7,13 @@
 
 bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {
-    auto callParams = Ast::newNode(&g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
-    callParams->inheritOwnersAndFlags(this);
+    auto callParams         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
     *result                 = callParams;
     callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
 
     if (token.id != TokenId::SymLeftParen)
     {
-        auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
-        param->inheritOwnersAndFlags(this);
+        auto param = Ast::newNode(this, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
         param->inheritTokenLocation(token);
         param->semanticFct = &SemanticJob::resolveFuncCallParam;
         SWAG_CHECK(doExpression(param));
@@ -27,8 +25,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
         {
             while (true)
             {
-                auto param = Ast::newNode(&g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
-                param->inheritOwnersAndFlags(this);
+                auto param = Ast::newNode(this, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
                 param->inheritTokenLocation(token);
                 param->semanticFct = &SemanticJob::resolveFuncCallParam;
                 param->token       = token;
@@ -59,7 +56,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
-	callParams->inheritLocation();
+    callParams->inheritLocation();
     return true;
 }
 
@@ -79,8 +76,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
     if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
         return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
 
-    auto identifier = Ast::newNode(&g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, nullptr);
-    identifier->inheritOwnersAndFlags(this);
+    auto identifier = Ast::newNode(this, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, nullptr);
     identifier->inheritToken(token);
     identifier->flags |= flags;
     identifier->semanticFct   = &SemanticJob::resolveIdentifier;
@@ -113,8 +109,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
-    auto identifierRef = Ast::newNode(&g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
-    identifierRef->inheritOwnersAndFlags(this);
+    auto identifierRef = Ast::newNode(this, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
     identifierRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
     if (result)
