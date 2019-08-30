@@ -19,6 +19,7 @@ struct ByteCode;
 struct Job;
 struct AstFuncDecl;
 struct AstAttrUse;
+struct AstSwitch;
 struct TypeInfoParam;
 struct AstBreakable;
 enum class Property;

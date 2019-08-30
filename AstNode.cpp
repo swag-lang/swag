@@ -316,10 +316,13 @@ AstNode* AstLoop::clone(CloneContext& context)
 AstNode* AstSwitch::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astSwitch.alloc();
-    newNode->AstBreakable::copyFrom(context, this);
+
+    auto cloneContext           = context;
+    cloneContext.ownerBreakable = newNode;
+    newNode->AstBreakable::copyFrom(cloneContext, this);
 
     newNode->expression = findChildRef(expression, newNode);
-    newNode->block      = (AstSwitch*) findChildRef(block, newNode);
+    newNode->block      = findChildRef(block, newNode);
     for (auto expr : cases)
         newNode->cases.push_back((AstSwitchCase*) findChildRef(expr, newNode));
     return newNode;
@@ -331,7 +334,7 @@ AstNode* AstSwitchCase::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     newNode->block       = findChildRef(block, newNode);
-    newNode->ownerSwitch = (AstSwitch*) findChildRef(ownerSwitch, newNode);
+    newNode->ownerSwitch = CastAst<AstSwitch>(context.parent, AstNodeKind::Switch);
     newNode->isDefault   = isDefault;
     for (auto expr : expressions)
         newNode->expressions.push_back(findChildRef(expr, newNode));
@@ -343,7 +346,7 @@ AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
     auto newNode = g_Pool_astSwitchCaseBlock.alloc();
     newNode->copyFrom(context, this);
 
-    newNode->ownerCase = (AstSwitchCase*) findChildRef(ownerCase, newNode);
+    newNode->ownerCase = CastAst<AstSwitchCase>(context.parent, AstNodeKind::SwitchCase);
     newNode->isDefault = isDefault;
     return newNode;
 }

@@ -108,7 +108,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         }
 
         // Content
-        auto statement       = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, isDefault ? nullptr : switchNode);
+        auto statement       = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, caseNode);
         statement->ownerCase = caseNode;
         caseNode->block      = statement;
         if (isDefault)
@@ -126,7 +126,6 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     if (defaultCase)
     {
         Ast::addChild(switchNode, defaultCase);
-        Ast::addChild(switchNode, defaultStatement);
         switchNode->cases.push_back(defaultCase);
     }
 
