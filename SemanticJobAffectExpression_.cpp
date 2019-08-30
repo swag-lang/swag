@@ -206,6 +206,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             {
                 return context->errorContext.report({sourceFile, node, format("pointer operation not allowed with type '%s'", leftTypeInfo->name.c_str())});
             }
+
+			auto leftPtrType = CastTypeInfo<TypeInfoPointer>(leftTypeInfo, TypeInfoKind::Pointer);
+			SWAG_VERIFY(leftPtrType->pointedType->sizeOf > 0, context->errorContext.report({ sourceFile, left, format("operation not allowed on %s '%s' because size of pointed type is zero", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str()) }));
         }
         else
         {
