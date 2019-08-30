@@ -17,7 +17,7 @@ func @print(value: char);
 func @print(value: string);
 func @assert(value: bool);
 
-func @alloc(size: u32)->*u8;
-func @free(ptr: *u8);
+func @alloc(size: u32)->*void;
+func @free(ptr: *void);
 
 )";

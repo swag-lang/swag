@@ -1,0 +1,8 @@
+#module module717
+
+//#[swag.printbc]
+#test
+{
+	var ptr: *s32 = null
+	var ptr1: *void = ptr
+}

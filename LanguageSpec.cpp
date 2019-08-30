@@ -62,6 +62,7 @@ void LanguageSpec::setup()
     keywords["bool"]   = TokenId::NativeType;
     keywords["char"]   = TokenId::NativeType;
     keywords["string"] = TokenId::NativeType;
+    keywords["void"]   = TokenId::NativeType;
 
     nativeTypes["u64"]    = g_TypeMgr.typeInfoU64;
     nativeTypes["u32"]    = g_TypeMgr.typeInfoU32;
@@ -76,6 +77,7 @@ void LanguageSpec::setup()
     nativeTypes["bool"]   = g_TypeMgr.typeInfoBool;
     nativeTypes["char"]   = g_TypeMgr.typeInfoChar;
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
+    nativeTypes["void"]   = g_TypeMgr.typeInfoVoid;
 
     properties["sizeof"] = Property::SizeOf;
     properties["count"]  = Property::Count;

@@ -1041,11 +1041,18 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (toType->kind == TypeInfoKind::Generic)
         return true;
 
-    // Pointer to pointer, with a user cast
-    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer && (castFlags & CASTFLAG_FORCE))
-        return true;
-    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer && (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull))
-        return true;
+    // Pointer to pointer
+    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer)
+    {
+        if (castFlags & CASTFLAG_FORCE)
+            return true;
+        if (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull)
+            return true;
+		auto toTypePtr = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+		if (toTypePtr->pointedType == g_TypeMgr.typeInfoVoid)
+			return true;
+    }
+
     if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
         return true;
     if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeType::String))
@@ -1125,7 +1132,7 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
 
     if (!(left->flags & AST_VALUE_COMPUTED))
     {
-		left->typeInfo = newLeftTypeInfo;
+        left->typeInfo       = newLeftTypeInfo;
         left->castedTypeInfo = leftTypeInfo;
         return;
     }

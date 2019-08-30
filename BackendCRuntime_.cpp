@@ -127,12 +127,12 @@ static void __memclear(void* dst, swag_uint32_t size)
 	memset(dst, 0, size);
 }
 
-static swag_uint8_t* __alloc(swag_uint32_t size)
+static void* __alloc(swag_uint32_t size)
 {
 	return (swag_uint8_t*) malloc(size);
 }
 
-static void __free(swag_uint8_t* ptr)
+static void __free(void* ptr)
 {
 	free(ptr);
 }
