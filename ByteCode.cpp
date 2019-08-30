@@ -23,7 +23,7 @@ Pool<ByteCode> g_Pool_byteCode;
 
 string ByteCode::callName()
 {
-    auto callname = node && !node->fullname.empty() ? node->fullname : name;
+    auto callname = name.empty() ? node->fullname : name;
     callname += format("_%lX", (uint64_t) this);
     return callname;
 }
