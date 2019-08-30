@@ -299,7 +299,9 @@ AstNode* AstFor::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astFor.alloc();
 
-    auto cloneContext           = context;
+    auto cloneContext        = context;
+    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope->allocateSymTable();
     cloneContext.ownerBreakable = newNode;
     newNode->AstBreakable::copyFrom(cloneContext, context.ownerBreakable, this);
 
