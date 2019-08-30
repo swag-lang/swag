@@ -141,6 +141,13 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
                     return false;
                 }
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value < 0)
+                    return false;
+            }
 
         case NativeType::U16:
         case NativeType::U32:
@@ -155,11 +162,18 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
                 }
 
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoU8;
-                }
                 return true;
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value > UINT8_MAX)
+                    return false;
+                return true;
+            }
+
             break;
         }
     }
@@ -231,6 +245,13 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
                 }
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value < 0)
+                    return false;
+            }
 
         case NativeType::U8:
         case NativeType::U32:
@@ -245,11 +266,18 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
                 }
 
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoU16;
-                }
                 return true;
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value > UINT16_MAX)
+                    return false;
+                return true;
+            }
+
             break;
         }
     }
@@ -321,11 +349,12 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
                 }
             }
-            else if ((fromType->flags & TYPEINFO_NATIVE_VALUE) && (static_cast<TypeInfoNative*>(fromType))->value < 0)
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
             {
-                if (!(castFlags & CASTFLAG_NOERROR))
-                    errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u32'", nodeToCast->computedValue.reg.s64)});
-                return false;
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value < 0)
+                    return false;
             }
 
         case NativeType::U8:
@@ -341,24 +370,15 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                 }
 
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
-                }
                 return true;
             }
             else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
             {
-                if (static_cast<TypeInfoNative*>(fromType)->value > UINT32_MAX)
-                {
-                    if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u32'", nodeToCast->computedValue.reg.u64)});
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value > UINT32_MAX)
                     return false;
-                }
-
-                if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
-                {
-                    nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
-                }
                 return true;
             }
 
@@ -433,6 +453,13 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
                 }
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value < 0)
+                    return false;
+            }
 
         case NativeType::U8:
         case NativeType::U16:
@@ -440,11 +467,15 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoU64;
-                }
+                return true;
             }
-            return true;
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                return true;
+            }
+
+            break;
         }
     }
 
@@ -515,11 +546,18 @@ bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType,
                 }
 
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS8;
-                }
                 return true;
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value < INT8_MIN || value > INT8_MAX)
+                    return false;
+                return true;
+            }
+
             break;
         }
     }
@@ -542,17 +580,15 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
         case NativeType::U16:
         case NativeType::U32:
         case NativeType::U64:
-            if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS16;
-                }
             }
             return true;
 
         case NativeType::F32:
-            if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -563,13 +599,11 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
             return true;
 
         case NativeType::F64:
-            if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 nodeToCast->computedValue.reg.s16 = static_cast<int16_t>(nodeToCast->computedValue.reg.f64);
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS16;
-                }
             }
             return true;
         }
@@ -581,7 +615,7 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
         case NativeType::S8:
         case NativeType::S32:
         case NativeType::S64:
-            if (nodeToCast->flags & AST_VALUE_COMPUTED)
+            if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < INT16_MIN || nodeToCast->computedValue.reg.s64 > INT16_MAX)
                 {
@@ -591,11 +625,18 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
                 }
 
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS16;
-                }
                 return true;
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value < INT16_MIN || value > INT16_MAX)
+                    return false;
+                return true;
+            }
+
             break;
         }
     }
@@ -621,9 +662,7 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS32;
-                }
             }
             return true;
 
@@ -661,11 +700,18 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
                 }
 
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS32;
-                }
                 return true;
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value < INT32_MIN || value > INT32_MAX)
+                    return false;
+                return true;
+            }
+
             break;
         }
     }
@@ -691,9 +737,7 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS64;
-                }
             }
             return true;
 
@@ -731,11 +775,18 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
                 }
 
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
-                {
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS64;
-                }
                 return true;
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                SWAG_ASSERT(!nodeToCast);
+                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                if (value < INT64_MIN || value > INT64_MAX)
+                    return false;
+                return true;
+            }
+
             break;
         }
     }
@@ -763,8 +814,21 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
                 return false;
             }
 
-            nodeToCast->computedValue.reg.f32 = static_cast<float>(nodeToCast->computedValue.reg.s64);
-            nodeToCast->typeInfo              = g_TypeMgr.typeInfoF32;
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                nodeToCast->computedValue.reg.f32 = static_cast<float>(nodeToCast->computedValue.reg.s64);
+                nodeToCast->typeInfo              = g_TypeMgr.typeInfoF32;
+            }
+            return true;
+        }
+        else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+        {
+            SWAG_ASSERT(!nodeToCast);
+            auto    value = static_cast<TypeInfoNative*>(fromType)->value;
+            float   tmpF  = static_cast<float>(value);
+            int64_t tmpI  = static_cast<int64_t>(tmpF);
+            if (tmpI != value)
+                return false;
             return true;
         }
         else if (castFlags & CASTFLAG_FORCE)
@@ -788,8 +852,12 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
                 return false;
             }
 
-            nodeToCast->computedValue.reg.f32 = static_cast<float>(nodeToCast->computedValue.reg.u64);
-            nodeToCast->typeInfo              = g_TypeMgr.typeInfoF32;
+            if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                nodeToCast->computedValue.reg.f32 = static_cast<float>(nodeToCast->computedValue.reg.u64);
+                nodeToCast->typeInfo              = g_TypeMgr.typeInfoF32;
+            }
+
             return true;
         }
         else if (castFlags & CASTFLAG_FORCE)
@@ -810,8 +878,12 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
                 return false;
             }
 
-            nodeToCast->computedValue.reg.f32 = static_cast<float>(nodeToCast->computedValue.reg.f64);
-            nodeToCast->typeInfo              = g_TypeMgr.typeInfoF32;
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                nodeToCast->computedValue.reg.f32 = static_cast<float>(nodeToCast->computedValue.reg.f64);
+                nodeToCast->typeInfo              = g_TypeMgr.typeInfoF32;
+            }
+
             return true;
         }
         else if (castFlags & CASTFLAG_FORCE)
@@ -843,8 +915,21 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
                 return false;
             }
 
-            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.s64);
-            nodeToCast->typeInfo              = g_TypeMgr.typeInfoF64;
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.s64);
+                nodeToCast->typeInfo              = g_TypeMgr.typeInfoF64;
+            }
+            return true;
+        }
+        else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+        {
+            SWAG_ASSERT(!nodeToCast);
+            auto    value = static_cast<TypeInfoNative*>(fromType)->value;
+            double  tmpF  = static_cast<double>(value);
+            int64_t tmpI  = static_cast<int64_t>(tmpF);
+            if (tmpI != value)
+                return false;
             return true;
         }
         else if (castFlags & CASTFLAG_FORCE)
@@ -868,8 +953,12 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
                 return false;
             }
 
-            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.u64);
-            nodeToCast->typeInfo              = g_TypeMgr.typeInfoF64;
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.u64);
+                nodeToCast->typeInfo              = g_TypeMgr.typeInfoF64;
+            }
+
             return true;
         }
         else if (castFlags & CASTFLAG_FORCE)
@@ -880,8 +969,12 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
     case NativeType::F32:
         if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
-            nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.f32);
-            nodeToCast->typeInfo              = g_TypeMgr.typeInfoF64;
+            if (!(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                nodeToCast->computedValue.reg.f64 = static_cast<double>(nodeToCast->computedValue.reg.f32);
+                nodeToCast->typeInfo              = g_TypeMgr.typeInfoF64;
+            }
+
             return true;
         }
         else if (castFlags & CASTFLAG_FORCE)
