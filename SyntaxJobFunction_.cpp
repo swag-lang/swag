@@ -189,6 +189,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     {
         if (token.id == TokenId::SymMinusGreat)
         {
+            Scoped    scoped(this, newScope);
+            ScopedFct scopedFct(this, funcNode);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             SWAG_CHECK(doTypeExpression(typeNode));
         }
