@@ -255,7 +255,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->typeInfo = child->typeInfo;
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR);
-	node->inheritOrFlag(child, AST_IS_GENERIC);
+    node->inheritOrFlag(child, AST_IS_GENERIC);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
     return true;
 }
@@ -279,6 +279,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         return true;
 
     // Check types
+    SWAG_CHECK(checkIsConcrete(context, node->childs[0]));
     auto returnType = funcNode->returnType->typeInfo;
     SWAG_CHECK(g_TypeMgr.makeCompatibles(&context->errorContext, returnType, node->childs[0]));
     context->result = SemanticResult::Done;
