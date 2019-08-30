@@ -456,7 +456,7 @@ struct AstBreakable : public AstNode
         return breakableFlags & BREAKABLE_NEED_INDEX;
     }
 
-    void copyFrom(CloneContext& context, AstNode* from);
+    void copyFrom(CloneContext& context, AstBreakable* curParentBreakable, AstBreakable* from);
 
     uint32_t                  breakableFlags;
     uint32_t                  registerIndex;

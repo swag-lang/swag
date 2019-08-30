@@ -258,19 +258,12 @@ AstNode* AstIf::clone(CloneContext& context)
     return newNode;
 }
 
-void AstBreakable::copyFrom(CloneContext& context, AstNode* from)
+void AstBreakable::copyFrom(CloneContext& context, AstBreakable* curParentBreakable, AstBreakable* from)
 {
     AstNode::copyFrom(context, from);
-
-    auto fromBreakeable = (AstBreakable*) from;
-    breakableFlags      = fromBreakeable->breakableFlags;
-    registerIndex       = fromBreakeable->registerIndex;
-
-    parentBreakable = findChildRef(fromBreakeable->parentBreakable, this);
-    for (auto expr : fromBreakeable->breakList)
-        breakList.push_back((AstBreakContinue*) findChildRef(expr, this));
-    for (auto expr : fromBreakeable->continueList)
-        continueList.push_back((AstBreakContinue*) findChildRef(expr, this));
+    breakableFlags  = from->breakableFlags;
+    registerIndex   = from->registerIndex;
+    parentBreakable = curParentBreakable;
 }
 
 AstNode* AstBreakContinue::clone(CloneContext& context)
@@ -278,13 +271,24 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
     auto newNode = g_Pool_astBreakContinue.alloc();
     newNode->copyFrom(context, this);
 
+    if (context.ownerBreakable)
+    {
+        if (newNode->kind == AstNodeKind::Break)
+            context.ownerBreakable->breakList.push_back(newNode);
+        else if (newNode->kind == AstNodeKind::Continue)
+            context.ownerBreakable->continueList.push_back(newNode);
+    }
+
     return newNode;
 }
 
 AstNode* AstWhile::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astWhile.alloc();
-    newNode->AstBreakable::copyFrom(context, this);
+
+    auto cloneContext           = context;
+    cloneContext.ownerBreakable = newNode;
+    newNode->AstBreakable::copyFrom(context, context.ownerBreakable, this);
 
     newNode->boolExpression = findChildRef(boolExpression, newNode);
     newNode->block          = findChildRef(block, newNode);
@@ -294,7 +298,10 @@ AstNode* AstWhile::clone(CloneContext& context)
 AstNode* AstFor::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astFor.alloc();
-    newNode->AstBreakable::copyFrom(context, this);
+
+    auto cloneContext           = context;
+    cloneContext.ownerBreakable = newNode;
+    newNode->AstBreakable::copyFrom(cloneContext, context.ownerBreakable, this);
 
     newNode->preExpression  = findChildRef(preExpression, newNode);
     newNode->boolExpression = findChildRef(boolExpression, newNode);
@@ -306,7 +313,10 @@ AstNode* AstFor::clone(CloneContext& context)
 AstNode* AstLoop::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astLoop.alloc();
-    newNode->AstBreakable::copyFrom(context, this);
+
+    auto cloneContext           = context;
+    cloneContext.ownerBreakable = newNode;
+    newNode->AstBreakable::copyFrom(cloneContext, context.ownerBreakable, this);
 
     newNode->expression = findChildRef(expression, newNode);
     newNode->block      = findChildRef(block, newNode);
@@ -319,7 +329,7 @@ AstNode* AstSwitch::clone(CloneContext& context)
 
     auto cloneContext           = context;
     cloneContext.ownerBreakable = newNode;
-    newNode->AstBreakable::copyFrom(cloneContext, this);
+    newNode->AstBreakable::copyFrom(cloneContext, context.ownerBreakable, this);
 
     newNode->expression = findChildRef(expression, newNode);
     newNode->block      = findChildRef(block, newNode);
