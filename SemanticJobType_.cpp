@@ -23,6 +23,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         case SymbolKind::Namespace:
         case SymbolKind::Enum:
         case SymbolKind::TypeAlias:
+		case SymbolKind::GenericType:
             return context->errorContext.report({sourceFile, node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
         }
     }

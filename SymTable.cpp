@@ -220,9 +220,11 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a variable";
     case SymbolKind::Struct:
         return "a struct";
+    case SymbolKind::GenericType:
+        return "a generic type";
     }
 
-    return "something else";
+	return "<symbol>";
 }
 
 const char* SymTable::getNakedKindName(SymbolKind kind)
@@ -245,9 +247,11 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "variable";
     case SymbolKind::Struct:
         return "struct";
+    case SymbolKind::GenericType:
+        return "generic type";
     }
 
-    return "???";
+    return "<symbol>";
 }
 
 SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)

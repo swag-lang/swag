@@ -55,7 +55,7 @@ const char* AstNode::getKindName(AstNode* node)
         return "a function parameter";
     }
 
-    return "something else";
+    return "<node>";
 }
 
 const char* AstNode::getNakedKindName(AstNode* node)
@@ -78,7 +78,7 @@ const char* AstNode::getNakedKindName(AstNode* node)
         return "parameter";
     }
 
-    return "something else";
+    return "<node>";
 }
 
 AstNode* AstNode::clone(CloneContext& context)

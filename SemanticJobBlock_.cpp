@@ -15,10 +15,10 @@ bool SemanticJob::resolveIf(SemanticContext* context)
     auto node = CastAst<AstIf>(context->node, AstNodeKind::If);
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression));
 
-	// Do not generate backend if 'if' is constant, and has already been evaluated
+    // Do not generate backend if 'if' is constant, and has already been evaluated
     if (node->boolExpression->flags & AST_VALUE_COMPUTED)
     {
-		node->boolExpression->flags |= AST_NO_BYTECODE;
+        node->boolExpression->flags |= AST_NO_BYTECODE;
         if (node->boolExpression->computedValue.reg.b)
         {
             if (node->elseBlock)
@@ -26,7 +26,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
         }
         else
         {
-			node->ifBlock->flags |= AST_NO_BYTECODE;
+            node->ifBlock->flags |= AST_NO_BYTECODE;
         }
     }
     else
@@ -78,7 +78,9 @@ bool SemanticJob::resolveFor(SemanticContext* context)
 
 bool SemanticJob::resolveSwitch(SemanticContext* context)
 {
-    auto node                          = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
+    auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
+    SWAG_CHECK(checkIsConcrete(context, node->expression));
+
     node->typeInfo                     = node->expression->typeInfo;
     node->byteCodeFct                  = &ByteCodeGenJob::emitSwitch;
     node->expression->byteCodeAfterFct = &ByteCodeGenJob::emitSwitchAfterExpr;
@@ -90,6 +92,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
     auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     for (auto oneExpression : node->expressions)
     {
+        SWAG_CHECK(checkIsConcrete(context, oneExpression));
         SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->ownerSwitch->expression, oneExpression));
     }
 
