@@ -200,15 +200,14 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     {
         ScopedBreakable scopedBreakable(this, node);
         SWAG_CHECK(doExpression(nullptr, &node->expression));
+        Token tokenName = node->expression->token;
 
-        Utf8  name;
-        Token tokenName;
+        Utf8 name;
         if (token.id == TokenId::SymColon)
         {
             if (node->expression->kind != AstNodeKind::IdentifierRef || node->expression->childs.size() != 1)
                 return sourceFile->report({sourceFile, node->expression, format("invalid named index '%s'", token.text.c_str())});
-            name      = node->expression->childs.front()->name;
-            tokenName = token;
+            name = node->expression->childs.front()->name;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doExpression(node, &node->expression));
         }
