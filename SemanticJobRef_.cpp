@@ -109,7 +109,8 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
-        auto typePtr           = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
+        auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
+        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, arrayNode, "cannot dereference a 'void' pointer"}));
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerRef;
         break;
@@ -183,6 +184,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Pointer:
     {
         auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
+        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, arrayNode, "cannot dereference a 'void' pointer"}));
         if (typePtr->ptrCount == 1)
         {
             arrayNode->typeInfo = typePtr->pointedType;
