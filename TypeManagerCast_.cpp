@@ -26,6 +26,57 @@ bool TypeManager::castToNativeBool(ErrorContext* errorContext, TypeInfo* fromTyp
     return castError(errorContext, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
 }
 
+bool TypeManager::castToNativeChar(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+{
+    if (castFlags & CASTFLAG_FORCE)
+    {
+        switch (fromType->nativeType)
+        {
+        case NativeType::Char:
+        case NativeType::S8:
+        case NativeType::S16:
+        case NativeType::S32:
+        case NativeType::S64:
+        case NativeType::U8:
+        case NativeType::U16:
+        case NativeType::U32:
+        case NativeType::U64:
+            if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
+                }
+            }
+            return true;
+
+        case NativeType::F32:
+            if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    nodeToCast->computedValue.reg.u32 = static_cast<uint32_t>(nodeToCast->computedValue.reg.f32);
+                    nodeToCast->typeInfo              = g_TypeMgr.typeInfoU32;
+                }
+            }
+            return true;
+
+        case NativeType::F64:
+            if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    nodeToCast->computedValue.reg.u32 = static_cast<uint32_t>(nodeToCast->computedValue.reg.f64);
+                    nodeToCast->typeInfo              = g_TypeMgr.typeInfoU32;
+                }
+            }
+            return true;
+        }
+    }
+
+    return castError(errorContext, g_TypeMgr.typeInfoU32, fromType, nodeToCast, castFlags);
+}
+
 bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
@@ -270,6 +321,12 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
                 }
             }
+            else if ((fromType->flags & TYPEINFO_NATIVE_VALUE) && (static_cast<TypeInfoNative*>(fromType))->value < 0)
+            {
+                if (!(castFlags & CASTFLAG_NOERROR))
+                    errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u32'", nodeToCast->computedValue.reg.s64)});
+                return false;
+            }
 
         case NativeType::U8:
         case NativeType::U16:
@@ -289,6 +346,22 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                 }
                 return true;
             }
+            else if (fromType->flags & TYPEINFO_NATIVE_VALUE)
+            {
+                if (static_cast<TypeInfoNative*>(fromType)->value > UINT32_MAX)
+                {
+                    if (!(castFlags & CASTFLAG_NOERROR))
+                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u32'", nodeToCast->computedValue.reg.u64)});
+                    return false;
+                }
+
+                if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
+                }
+                return true;
+            }
+
             break;
         }
     }
@@ -830,8 +903,9 @@ bool TypeManager::castToNative(ErrorContext* errorContext, TypeInfo* toType, Typ
     case NativeType::U16:
         return castToNativeU16(errorContext, fromType, nodeToCast, castFlags);
     case NativeType::U32:
-    case NativeType::Char:
         return castToNativeU32(errorContext, fromType, nodeToCast, castFlags);
+    case NativeType::Char:
+        return castToNativeChar(errorContext, fromType, nodeToCast, castFlags);
     case NativeType::U64:
         return castToNativeU64(errorContext, fromType, nodeToCast, castFlags);
     case NativeType::S8:
@@ -1048,9 +1122,9 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
             return true;
         if (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull)
             return true;
-		auto toTypePtr = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-		if (toTypePtr->pointedType == g_TypeMgr.typeInfoVoid)
-			return true;
+        auto toTypePtr = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+        if (toTypePtr->pointedType == g_TypeMgr.typeInfoVoid)
+            return true;
     }
 
     if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)

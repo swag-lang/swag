@@ -77,6 +77,7 @@ static const uint64_t TYPEINFO_VARIADIC               = 0x00000000'00000080;
 static const uint64_t TYPEINFO_STRUCT_HAS_CONSTRUCTOR = 0x00000000'00000100;
 static const uint64_t TYPEINFO_GENERIC                = 0x00000000'00000200;
 static const uint64_t TYPEINFO_RETURN_BY_COPY         = 0x00000000'00000400;
+static const uint64_t TYPEINFO_NATIVE_VALUE           = 0x00000000'00000800;
 
 struct TypeInfo : public PoolElement
 {
@@ -162,7 +163,8 @@ struct TypeInfoNative : public TypeInfo
 {
     TypeInfoNative()
     {
-        kind = TypeInfoKind::Native;
+        kind  = TypeInfoKind::Native;
+        value = 0;
     }
 
     TypeInfoNative(NativeType type, const char* tname, int sof, uint64_t fl)
@@ -172,14 +174,22 @@ struct TypeInfoNative : public TypeInfo
         name       = tname;
         sizeOf     = sof;
         flags      = fl;
+        value      = 0;
     }
 
     bool isSame(TypeInfo* from) override
     {
-        return this == from;
+        if (from->kind != TypeInfoKind::Native)
+            return false;
+        auto castedFrom = static_cast<TypeInfoNative*>(from);
+        if (nativeType != castedFrom->nativeType)
+            return false;
+        return true;
     }
 
     TypeInfo* clone() override;
+
+    int64_t value;
 };
 
 struct TypeInfoNamespace : public TypeInfo

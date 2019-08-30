@@ -438,10 +438,23 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
         token.literalType = g_TypeMgr.typeInfoS64;
     }
 
+    bool hasSuffix = false;
     if (c == '\'')
     {
+        hasSuffix = true;
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
+    }
+
+    if (!hasSuffix)
+    {
+        if (token.literalType == g_TypeMgr.typeInfoS32 || token.literalType == g_TypeMgr.typeInfoS64)
+        {
+            auto newType   = static_cast<TypeInfoNative*>(token.literalType->clone());
+            newType->value = token.literalValue.s64;
+            newType->flags |= TYPEINFO_NATIVE_VALUE;
+            token.literalType = newType;
+        }
     }
 
     // Convert to 32 bits only now, after the suffix stuff
