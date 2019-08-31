@@ -79,29 +79,22 @@ static const uint64_t TYPEINFO_GENERIC                = 0x00000000'00000200;
 static const uint64_t TYPEINFO_RETURN_BY_COPY         = 0x00000000'00000400;
 static const uint64_t TYPEINFO_NATIVE_VALUE           = 0x00000000'00000800;
 
+static const uint32_t ISSAME_EXACT   = 0x00000001;
+static const uint32_t ISSAME_FORCAST = 0x00000002;
+
 struct TypeInfo : public PoolElement
 {
-    virtual bool isSame(TypeInfo* from)
+    virtual bool isSame(TypeInfo* from, uint32_t isSameFlags)
     {
-		if (this == from)
-			return true;
+        if (this == from)
+            return true;
         if (kind != from->kind)
             return false;
-        if (isConst() != from->isConst())
+        if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
             return false;
         if (name != from->name)
             return false;
         return true;
-    }
-
-    virtual bool isSameExact(TypeInfo* from)
-    {
-        return isSame(from);
-    }
-
-    virtual bool isSameForCast(TypeInfo* from)
-    {
-        return isSame(from);
     }
 
     bool isNative(NativeType native)
@@ -179,7 +172,7 @@ struct TypeInfoNative : public TypeInfo
         value      = 0;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
@@ -220,14 +213,14 @@ struct TypeInfoEnum : public TypeInfo
         rawType = nullptr;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
-        if (!TypeInfo::isSame(from))
+        if (!TypeInfo::isSame(from, isSameFlags))
             return false;
         auto castedFrom = static_cast<TypeInfoEnum*>(from);
-        return rawType->isSame(castedFrom->rawType);
+        return rawType->isSame(castedFrom->rawType, isSameFlags);
     }
 
     TypeInfo* clone() override;
@@ -248,14 +241,14 @@ struct TypeInfoParam : public TypeInfo
         offset   = 0;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
-        if (!TypeInfo::isSame(from))
+        if (!TypeInfo::isSame(from, isSameFlags))
             return false;
         auto other = static_cast<TypeInfoParam*>(from);
-        return typeInfo->isSame(other->typeInfo);
+        return typeInfo->isSame(other->typeInfo, isSameFlags);
     }
 
     int numRegisters() override
@@ -356,9 +349,8 @@ struct TypeInfoFuncAttr : public TypeInfo
     void      computeName();
 
     void match(SymbolMatchContext& context);
-    bool isSame(TypeInfoFuncAttr* from);
-    bool isSame(TypeInfo* from) override;
-    bool isSameExact(TypeInfo* from) override;
+    bool isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override;
 
     int                    firstDefaultValueIdx;
     vector<TypeInfoParam*> genericParameters;
@@ -377,16 +369,16 @@ struct TypeInfoPointer : public TypeInfo
         ptrCount    = 0;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
-        if (!TypeInfo::isSame(from))
+        if (!TypeInfo::isSame(from, isSameFlags))
             return false;
         auto castedFrom = static_cast<TypeInfoPointer*>(from);
         if (ptrCount != castedFrom->ptrCount)
             return false;
-        return pointedType->isSame(castedFrom->pointedType);
+        return pointedType->isSame(castedFrom->pointedType, isSameFlags);
     }
 
     TypeInfo* clone() override;
@@ -417,16 +409,16 @@ struct TypeInfoArray : public TypeInfo
         totalCount  = 0;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
-        if (!TypeInfo::isSame(from))
+        if (!TypeInfo::isSame(from, isSameFlags))
             return false;
         auto castedFrom = static_cast<TypeInfoArray*>(from);
         if (count != castedFrom->count)
             return false;
-        return pointedType->isSame(castedFrom->pointedType);
+        return pointedType->isSame(castedFrom->pointedType, isSameFlags);
     }
 
     TypeInfo* clone() override;
@@ -446,14 +438,14 @@ struct TypeInfoSlice : public TypeInfo
         pointedType = nullptr;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
-        if (!TypeInfo::isSame(from))
+        if (!TypeInfo::isSame(from, isSameFlags))
             return false;
         auto castedFrom = static_cast<TypeInfoSlice*>(from);
-        return pointedType->isSame(castedFrom->pointedType);
+        return pointedType->isSame(castedFrom->pointedType, isSameFlags);
     }
 
     TypeInfo* clone() override;
@@ -480,11 +472,11 @@ struct TypeInfoList : public TypeInfo
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
-        if (!TypeInfo::isSame(from))
+        if (!TypeInfo::isSame(from, isSameFlags))
             return false;
         auto other = static_cast<TypeInfoList*>(from);
         if (childs.size() != other->childs.size())
@@ -494,7 +486,7 @@ struct TypeInfoList : public TypeInfo
 
         for (int i = 0; i < childs.size(); i++)
         {
-            if (!childs[i]->isSame(other->childs[i]))
+            if (!childs[i]->isSame(other->childs[i], isSameFlags))
                 return false;
         }
 
@@ -506,18 +498,12 @@ struct TypeInfoList : public TypeInfo
                 return false;
         }
 
-        return true;
-    }
+        if (isSameFlags & ISSAME_EXACT)
+        {
+            if (scope != other->scope)
+                return false;
+        }
 
-    bool isSameExact(TypeInfo* from) override
-    {
-        if (this == from)
-            return true;
-        if (!isSame(from))
-            return false;
-        auto other = static_cast<TypeInfoList*>(from);
-        if (scope != other->scope)
-            return false;
         return true;
     }
 
@@ -555,22 +541,15 @@ struct TypeInfoGeneric : public TypeInfo
         flags |= TYPEINFO_GENERIC;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
         if (from->kind == kind)
             return name == from->name;
+        if (isSameFlags & ISSAME_EXACT)
+            return name == from->name;
         return true;
-    }
-
-    bool isSameExact(TypeInfo* from) override
-    {
-        if (this == from)
-            return true;
-        if (!TypeInfo::isSame(from))
-            return false;
-        return name == from->name;
     }
 
     TypeInfo* clone() override;
@@ -592,15 +571,14 @@ struct TypeInfoStruct : public TypeInfo
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
-    bool      isSame(TypeInfo* from) override;
-    bool      isSameForCast(TypeInfo* from) override;
-    TypeInfo* clone() override;
-    void      match(SymbolMatchContext& context);
-
     int numRegisters() override
     {
         return 1;
     }
+
+    bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
+    TypeInfo* clone() override;
+    void      match(SymbolMatchContext& context);
 
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> childs;
@@ -618,14 +596,14 @@ struct TypeInfoAlias : public TypeInfo
         rawType = nullptr;
     }
 
-    bool isSame(TypeInfo* from) override
+    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
     {
         if (this == from)
             return true;
-        if (!TypeInfo::isSame(from))
+        if (!TypeInfo::isSame(from, isSameFlags))
             return false;
         auto other = static_cast<TypeInfoAlias*>(from);
-        return rawType->isSame(other->rawType);
+        return rawType->isSame(other->rawType, isSameFlags);
     }
 
     TypeInfo* clone() override;

@@ -1138,7 +1138,7 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
     else if (fromType->kind == TypeInfoKind::Array)
     {
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        if (toTypeSlice->pointedType->isSameForCast(fromTypeArray->pointedType))
+        if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_FORCAST))
         {
             if (castFlags & CASTFLAG_FORCE)
                 return true;
@@ -1201,7 +1201,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         return true;
     if (fromType == toType)
         return true;
-    if (fromType->isSameForCast(toType))
+    if (fromType->isSame(toType, ISSAME_FORCAST))
         return true;
 
     // To a generic type
@@ -1254,7 +1254,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     // Cast to slice
     if (toType->kind == TypeInfoKind::Lambda)
     {
-        if (toType->isSameForCast(fromType))
+        if (toType->isSame(fromType, ISSAME_FORCAST))
             return true;
     }
 

@@ -18,7 +18,7 @@ Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
 Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
 Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;
 
-bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
+bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
     if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
         return false;
@@ -29,7 +29,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
-        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
+        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, isSameFlags))
             return false;
         if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
             return false;
@@ -37,37 +37,34 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 
     for (int i = 0; i < parameters.size(); i++)
     {
-        if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo))
+        if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo, isSameFlags))
             return false;
     }
     return true;
 }
 
-bool TypeInfoFuncAttr::isSame(TypeInfo* from)
+bool TypeInfoFuncAttr::isSame(TypeInfo* from, uint32_t isSameFlags)
 {
     if (this == from)
         return true;
-    if (!TypeInfo::isSame(from))
+    if (!TypeInfo::isSame(from, isSameFlags))
         return false;
+
     auto fromFunc = static_cast<TypeInfoFuncAttr*>(from);
     SWAG_ASSERT(from->kind == TypeInfoKind::FuncAttr || from->kind == TypeInfoKind::Lambda);
-    return isSame(fromFunc);
-}
+    if (!isSame(fromFunc, isSameFlags))
+        return false;
 
-bool TypeInfoFuncAttr::isSameExact(TypeInfo* from)
-{
-    if (this == from)
-        return true;
-    if (!isSame(from))
-        return false;
-    auto fromFunc = static_cast<TypeInfoFuncAttr*>(from);
+    if (isSameFlags & ISSAME_EXACT)
+    {
+        if (returnType && returnType != g_TypeMgr.typeInfoVoid && !fromFunc->returnType)
+            return false;
+        if (!returnType && fromFunc->returnType && fromFunc->returnType != g_TypeMgr.typeInfoVoid)
+            return false;
+        if (returnType && fromFunc->returnType && !returnType->isSame(fromFunc->returnType, isSameFlags))
+            return false;
+    }
 
-    if (returnType && returnType != g_TypeMgr.typeInfoVoid && !fromFunc->returnType)
-        return false;
-    if (!returnType && fromFunc->returnType && fromFunc->returnType != g_TypeMgr.typeInfoVoid)
-        return false;
-    if (returnType && fromFunc->returnType && !returnType->isSame(fromFunc->returnType))
-        return false;
     return true;
 }
 
@@ -132,7 +129,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         if (symbolParameter->typeInfo->flags & TYPEINFO_GENERIC)
         {
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSameForCast(typeInfo))
+            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_FORCAST))
             {
                 context.badSignatureParameterIdx  = i;
                 context.badSignatureRequestedType = it->second.first;
@@ -304,7 +301,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         {
             // We already have a match, and they do not match with that type, error
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSameForCast(typeInfo))
+            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_FORCAST))
             {
                 context.badSignatureParameterIdx  = it->second.second;
                 context.badSignatureRequestedType = typeInfo;
@@ -507,11 +504,11 @@ TypeInfo* TypeInfoStruct::clone()
     return newType;
 }
 
-bool TypeInfoStruct::isSame(TypeInfo* from)
+bool TypeInfoStruct::isSame(TypeInfo* from, uint32_t isSameFlags)
 {
     if (this == from)
         return true;
-    if (!TypeInfo::isSame(from))
+    if (!TypeInfo::isSame(from, isSameFlags))
         return false;
 
     auto other = static_cast<TypeInfoStruct*>(from);
@@ -519,41 +516,29 @@ bool TypeInfoStruct::isSame(TypeInfo* from)
         return false;
     for (int i = 0; i < genericParameters.size(); i++)
     {
-        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
+        if (isSameFlags & ISSAME_FORCAST)
+        {
+            if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
+                continue;
+        }
+
+        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, isSameFlags))
             return false;
     }
 
-    if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
-        return false;
-    if (scope != other->scope)
-        return false;
-    if (childs.size() != other->childs.size())
-        return false;
-    for (int i = 0; i < childs.size(); i++)
+    if (!(isSameFlags & ISSAME_FORCAST))
     {
-        if (!childs[i]->isSame(other->childs[i]))
+        if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;
-    }
-
-    return true;
-}
-
-bool TypeInfoStruct::isSameForCast(TypeInfo* from)
-{
-    if (this == from)
-        return true;
-    if (!TypeInfo::isSame(from))
-        return false;
-
-    auto other = static_cast<TypeInfoStruct*>(from);
-    if (genericParameters.size() != other->genericParameters.size())
-        return false;
-    for (int i = 0; i < genericParameters.size(); i++)
-    {
-        if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
-            continue;
-        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo))
+        if (scope != other->scope)
             return false;
+        if (childs.size() != other->childs.size())
+            return false;
+        for (int i = 0; i < childs.size(); i++)
+        {
+            if (!childs[i]->isSame(other->childs[i], isSameFlags))
+                return false;
+        }
     }
 
     return true;
@@ -614,7 +599,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
         if (symbolParameter->typeInfo->flags & TYPEINFO_GENERIC)
         {
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSameForCast(typeInfo))
+            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_FORCAST))
             {
                 context.badSignatureParameterIdx  = i;
                 context.badSignatureRequestedType = it->second.first;
@@ -727,7 +712,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
                         context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
                     }
 
-					context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
+                    context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
                     context.result = MatchResult::Ok;
                 }
             }
@@ -759,7 +744,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
         {
             // We already have a match, and they do not match with that type, error
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSameForCast(typeInfo))
+            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_FORCAST))
             {
                 context.badSignatureParameterIdx  = it->second.second;
                 context.badSignatureRequestedType = typeInfo;
