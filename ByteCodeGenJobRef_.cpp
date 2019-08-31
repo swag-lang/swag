@@ -72,12 +72,12 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     auto node     = context->node;
     auto typeInfo = node->typeInfo;
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Array)
     {
         return true;
     }
 
-	typeInfo = TypeManager::concreteType(typeInfo);
+    typeInfo = TypeManager::concreteType(typeInfo);
     if (typeInfo->isNative(NativeType::String))
     {
         node->resultRegisterRC += reserveRegisterRC(context);
