@@ -1215,9 +1215,12 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
             return true;
         if (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull)
             return true;
-        auto toTypePtr = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-        if (toTypePtr->pointedType == g_TypeMgr.typeInfoVoid)
+        auto fromTypePtr = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        auto toTypePtr   = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+        if (toTypePtr->pointedType == g_TypeMgr.typeInfoVoid && fromTypePtr->ptrCount == toTypePtr->ptrCount)
             return true;
+		if (toTypePtr->pointedType->kind == TypeInfoKind::Generic)
+			return true;
     }
 
     if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)

@@ -26,7 +26,6 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
             while (true)
             {
                 auto param = Ast::newNode(this, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
-                param->inheritTokenLocation(token);
                 param->semanticFct = &SemanticJob::resolveFuncCallParam;
                 param->token       = token;
                 AstNode* paramExpression;
@@ -47,6 +46,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
                     Ast::addChild(param, paramExpression);
                 }
 
+				param->inheritLocation();
                 if (token.id != TokenId::SymComma)
                     break;
                 SWAG_CHECK(eatToken(TokenId::SymComma));
@@ -104,6 +104,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
         SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
     }
 
+	identifier->inheritLocation();
     return true;
 }
 

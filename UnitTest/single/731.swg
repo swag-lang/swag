@@ -1,23 +1,13 @@
 #module module731
 
-struct Array
+#unittest error
+func(T) toto(x: *T)
 {
-	var ptr: *Array
-	var value: s32 = 666
-}
-
-impl Array
-{
-	#[swag.printbc]
-	func toto(self)
-	{
-		//self.ptr = &self
-	}
+	@print(t[0])
 }
 	
 #test
 {
-	var arr: Array
-	arr.toto()
-	//@assert(arr.ptr.value == 666)
+	cpt := 50
+	toto!s32(&cpt)
 }

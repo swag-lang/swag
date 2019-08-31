@@ -190,7 +190,11 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     auto newNode = g_Pool_astIdentifier.alloc();
     newNode->copyFrom(context, this);
 
-    newNode->identifierRef     = CastAst<AstIdentifierRef>(context.parent, AstNodeKind::IdentifierRef);
+    auto idRef = context.parent;
+    while (idRef->kind != AstNodeKind::IdentifierRef)
+        idRef = idRef->parent;
+    newNode->identifierRef = CastAst<AstIdentifierRef>(idRef, AstNodeKind::IdentifierRef);
+
     newNode->callParameters    = findChildRef(callParameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
     return newNode;
