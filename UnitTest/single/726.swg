@@ -14,7 +14,7 @@ impl iter
 		if(self.value != self.end)
 		{
 			self.value += 1
-			return 0;//self.arr[self.value - 1]
+			return 0//self.arr[self.value - 1]
 		}
 		
 		return 0

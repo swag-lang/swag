@@ -195,6 +195,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 nc = getChar();
                 while (nc && nc != '\n')
                     nc = getChar();
+				lastTokenIsEOL = true;
                 continue;
             }
 
