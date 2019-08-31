@@ -207,18 +207,21 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->copyFrom(context, this, false);
     newNode->stackSize = stackSize;
 
-    auto cloneContext        = context;
-    cloneContext.ownerFct    = newNode;
-    cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
-    cloneContext.parentScope->allocateSymTable();
+    auto cloneContext     = context;
+    cloneContext.ownerFct = newNode;
+    cloneContext.parent   = newNode;
+    auto parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
+    parentScope->allocateSymTable();
 
+    cloneContext.parentScope   = parentScope;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
-    newNode->content           = content ? content->clone(cloneContext) : nullptr;
 
     cloneContext.parentScope = context.parentScope;
     newNode->returnType      = returnType ? returnType->clone(cloneContext) : nullptr;
+
+    cloneContext.parentScope = parentScope;
+    newNode->content         = content ? content->clone(cloneContext) : nullptr;
 
     return newNode;
 }
