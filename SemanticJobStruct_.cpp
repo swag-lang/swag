@@ -108,6 +108,37 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::preResolveStruct(SemanticContext* context)
+{
+    auto node       = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl);
+    auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+
+    // Add generic parameters
+    uint32_t symbolFlags = 0;
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        if (node->genericParameters)
+        {
+            typeInfo->flags |= TYPEINFO_GENERIC;
+            symbolFlags |= OVERLOAD_GENERIC;
+            for (auto param : node->genericParameters->childs)
+            {
+                auto funcParam        = g_Pool_typeInfoParam.alloc();
+                funcParam->namedParam = param->name;
+                funcParam->name       = param->typeInfo->name;
+                funcParam->typeInfo   = param->typeInfo;
+                funcParam->sizeOf     = param->typeInfo->sizeOf;
+                typeInfo->genericParameters.push_back(funcParam);
+                typeInfo->sizeOf += param->typeInfo->sizeOf;
+            }
+        }
+    }
+
+    // Register symbol with its type
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE));
+	return true;
+}
+
 bool SemanticJob::resolveStruct(SemanticContext* context)
 {
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
@@ -174,30 +205,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         storageIndex++;
     }
 
-    // Add generic parameters
-    uint32_t symbolFlags = 0;
-    if (!(node->flags & AST_FROM_GENERIC))
-    {
-        if (node->genericParameters)
-        {
-            typeInfo->flags |= TYPEINFO_GENERIC;
-            symbolFlags |= OVERLOAD_GENERIC;
-            for (auto param : node->genericParameters->childs)
-            {
-                auto funcParam        = g_Pool_typeInfoParam.alloc();
-                funcParam->namedParam = param->name;
-                funcParam->name       = param->typeInfo->name;
-                funcParam->typeInfo   = param->typeInfo;
-                funcParam->sizeOf     = param->typeInfo->sizeOf;
-                typeInfo->genericParameters.push_back(funcParam);
-                typeInfo->sizeOf += param->typeInfo->sizeOf;
-            }
-        }
-    }
-
-    node->typeInfo = g_TypeMgr.registerType(typeInfo);
-
     // Register symbol with its type
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags));
+    node->typeInfo = typeInfo;
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
     return true;
 }

@@ -23,6 +23,7 @@ static const uint32_t OVERLOAD_COMPUTED_VALUE     = 0x00000010;
 static const uint32_t OVERLOAD_CONST              = 0x00000020;
 static const uint32_t OVERLOAD_VAR_STRUCT         = 0x00000040;
 static const uint32_t OVERLOAD_GENERIC            = 0x00000080;
+static const uint32_t OVERLOAD_INCOMPLETE         = 0x00000100;
 
 struct SymbolAttributes
 {
@@ -69,7 +70,7 @@ enum class SymbolKind
     Attribute,
     FuncParam,
     Struct,
-	GenericType,
+    GenericType,
 };
 
 struct SymbolName : public PoolElement

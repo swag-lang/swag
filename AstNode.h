@@ -22,6 +22,7 @@ struct AstAttrUse;
 struct AstSwitch;
 struct TypeInfoParam;
 struct AstBreakable;
+struct AstStruct;
 enum class Property;
 enum class TypeInfoListKind;
 
@@ -103,7 +104,8 @@ struct CloneContext
     AstFuncDecl*              ownerFct         = nullptr;
     AstNode*                  parent           = nullptr;
     Scope*                    parentScope      = nullptr;
-    Scope*                    ownerScopeStruct = nullptr;
+    Scope*                    ownerStructScope = nullptr;
+    AstStruct*                ownerStruct      = nullptr;
     map<TypeInfo*, TypeInfo*> replaceTypes;
 };
 
@@ -116,7 +118,7 @@ struct AstNode : public PoolElement
         ownerScope           = nullptr;
         ownerBreakable       = nullptr;
         ownerFct             = nullptr;
-        ownerScopeStruct     = nullptr;
+        ownerStructScope     = nullptr;
         parent               = nullptr;
         semanticFct          = nullptr;
         semanticBeforeFct    = nullptr;
@@ -217,7 +219,8 @@ struct AstNode : public PoolElement
         ownerScope       = job->currentScope;
         ownerBreakable   = job->currentBreakable;
         ownerFct         = job->currentFct;
-        ownerScopeStruct = job->currentStruct;
+        ownerStructScope = job->currentStructScope;
+        ownerStruct      = job->currentStruct;
         flags |= job->currentFlags;
     }
 
@@ -253,7 +256,8 @@ struct AstNode : public PoolElement
     AstBreakable* ownerBreakable;
     AstFuncDecl*  ownerFct;
     uint64_t      ownerFlags;
-    Scope*        ownerScopeStruct;
+    Scope*        ownerStructScope;
+    AstStruct*    ownerStruct;
 
     TypeInfo*       typeInfo;
     TypeInfo*       castedTypeInfo;

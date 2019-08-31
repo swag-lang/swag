@@ -11,6 +11,7 @@ struct AstIdentifierRef;
 struct Scope;
 struct Utf8;
 struct AstFuncDecl;
+struct AstStruct;
 
 struct SyntaxJob : public Job
 {
@@ -96,14 +97,15 @@ struct SyntaxJob : public Job
 
     void reset() override
     {
-        sourceFile       = nullptr;
-        canChangeModule  = true;
-        moduleSpecified  = false;
-        currentFlags     = 0;
-        currentScope     = nullptr;
-        currentFct       = nullptr;
-        currentBreakable = nullptr;
-        currentStruct    = nullptr;
+        sourceFile         = nullptr;
+        canChangeModule    = true;
+        moduleSpecified    = false;
+        currentFlags       = 0;
+        currentScope       = nullptr;
+        currentFct         = nullptr;
+        currentBreakable   = nullptr;
+        currentStructScope = nullptr;
+        currentStruct      = nullptr;
     }
 
     Tokenizer     tokenizer;
@@ -115,7 +117,8 @@ struct SyntaxJob : public Job
     Scope*        currentScope;
     AstFuncDecl*  currentFct;
     AstBreakable* currentBreakable;
-    Scope*        currentStruct;
+    Scope*        currentStructScope;
+    AstStruct*    currentStruct;
 };
 
 extern Pool<SyntaxJob> g_Pool_syntaxJob;

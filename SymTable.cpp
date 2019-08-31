@@ -94,9 +94,29 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
     {
         scoped_lock lock(symbol->mutex);
 
-        if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
-            return nullptr;
-        auto result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
+        SymbolOverload* result = nullptr;
+
+        // A structure is defined the first time as incomplete (so that it can reference itself)
+        if (symbol->kind == SymbolKind::Struct)
+        {
+            for (auto resolved : symbol->overloads)
+            {
+                if (resolved->typeInfo == typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
+                {
+                    result = resolved;
+                    result->flags &= ~OVERLOAD_INCOMPLETE;
+					break;
+                }
+            }
+        }
+
+        if (!result)
+        {
+            if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
+                return nullptr;
+            result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
+        }
+
         result->flags |= flags;
         result->storageOffset = storageOffset;
         if (attributes)
@@ -104,12 +124,15 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
 
         // One less overload. When this reached zero, this means we known every types for the same symbol,
         // and so we can wakeup all jobs waiting for that symbol to be solved
-        symbol->cptOverloads--;
-        if (symbol->cptOverloads == 0)
+        if (!(flags & OVERLOAD_INCOMPLETE))
         {
-			for (auto job : symbol->dependentJobs)
-				g_ThreadMgr.addJob(job);
-            symbol->dependentJobs.clear();
+            symbol->cptOverloads--;
+            if (symbol->cptOverloads == 0)
+            {
+                for (auto job : symbol->dependentJobs)
+                    g_ThreadMgr.addJob(job);
+                symbol->dependentJobs.clear();
+            }
         }
 
         return result;
@@ -171,7 +194,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     if (overload)
     {
         auto       firstOverload = overload;
-        Utf8       msg           = format("function '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
+        Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
@@ -224,7 +247,7 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a generic type";
     }
 
-	return "<symbol>";
+    return "<symbol>";
 }
 
 const char* SymTable::getNakedKindName(SymbolKind kind)

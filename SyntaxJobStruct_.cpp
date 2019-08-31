@@ -79,8 +79,8 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->scope      = newScope;
             structNode->typeInfo = typeInfo;
             structNode->scope    = newScope;
-            if (!isContextDisabled())
-                currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+			if (!isContextDisabled())
+				currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
         }
         else
         {
@@ -98,7 +98,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     {
         scoped_lock lock(newScope->symTable->mutex);
         Ast::visit(structNode->genericParameters, [&](AstNode* n) {
-            n->ownerScopeStruct = newScope;
+            n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
             if (n->kind == AstNodeKind::FuncDeclParam)
             {
@@ -117,10 +117,11 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     {
         Scoped       scoped(this, newScope);
-        ScopedStruct scopedStruct(this, newScope);
+        ScopedStruct scopedStruct(this, newScope, structNode);
 
         auto contentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::StructContent, sourceFile->indexInModule, structNode);
         structNode->content = contentNode;
+		contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
 
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
@@ -143,7 +144,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
 void SyntaxJob::setupSelfType(AstIdentifier* node, const Utf8& name, AstNode* genericParameters)
 {
-    if (!node->ownerScopeStruct)
+    if (!node->ownerStructScope)
         return;
     node->name = name;
 

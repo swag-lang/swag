@@ -114,6 +114,7 @@ struct SemanticJob : public Job
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveImpl(SemanticContext* context);
+	static bool preResolveStruct(SemanticContext* context);
     static bool resolveStruct(SemanticContext* context);
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);

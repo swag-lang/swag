@@ -726,8 +726,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     if (node->name == "Self")
     {
-        SWAG_VERIFY(node->ownerScopeStruct, context->errorContext.report({sourceFile, node->token, "type 'Self' cannot be used outside an 'impl' block"}));
-        node->name = node->ownerScopeStruct->name;
+        SWAG_VERIFY(node->ownerStructScope, context->errorContext.report({sourceFile, node->token, "type 'Self' cannot be used outside an 'impl' block"}));
+        node->name = node->ownerStructScope->name;
     }
 
     if (node->semanticState == AstNodeResolveState::ProcessingChilds)
@@ -786,8 +786,17 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         scoped_lock lkn(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            job->waitForSymbol(symbol);
-            return true;
+            // If a structrure is referencing itself, we will match the incomplete symbol for now
+            if (symbol->kind == SymbolKind::Struct && node->ownerStruct && node->ownerStruct->name == symbol->name)
+            {
+                int a;
+                a = 0;
+            }
+            else
+            {
+                job->waitForSymbol(symbol);
+                return true;
+            }
         }
     }
 
