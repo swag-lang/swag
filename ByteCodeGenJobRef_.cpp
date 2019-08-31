@@ -125,10 +125,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     if (node->array->typeInfo->isNative(NativeType::String))
     {
         if (g_CommandLine.debugBoundCheck)
-        {
             emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
-        }
-
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
@@ -191,7 +188,12 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (!(node->flags & AST_TAKE_ADDRESS))
+        if (typeInfo->pointedType->isNative(NativeType::String))
+        {
+            node->array->resultRegisterRC += reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::DeRefString, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+        }
+        else if (!(node->flags & AST_TAKE_ADDRESS))
         {
             switch (sizeOf)
             {
