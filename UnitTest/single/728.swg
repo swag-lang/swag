@@ -1,0 +1,13 @@
+#module module728
+
+struct Array
+{
+	var values: [] s32 = [1, 2, 3]
+}
+
+//#[swag.printbc]
+#test
+{
+	var arr: Array
+	//@assert(arr.values[0] == 1)
+}

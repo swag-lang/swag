@@ -9,6 +9,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Scope.h"
+#include "SemanticJob.h"
 
 bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
@@ -73,15 +74,29 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
             auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
             auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
 
+            // Reference to the field
             emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
             if (!g_CommandLine.optimizeByteCode || varDecl->resolvedSymbolOverload->storageOffset)
-            {
                 emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
-            }
 
             if (varDecl->assignment)
             {
-                if (typeVar->isNative(NativeType::String))
+                if (typeVar->kind == TypeInfoKind::Array)
+                {
+                    auto     typeList      = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeList);
+                    auto     module        = sourceFile->module;
+                    uint32_t storageOffset = module->reserveConstantSegment(typeVar->sizeOf);
+                    module->mutexConstantSeg.lock();
+                    auto offset = storageOffset;
+                    SemanticJob::collectLiterals(context->sourceFile, offset, varDecl->assignment, nullptr, SegmentBuffer::Constant);
+                    module->mutexConstantSeg.unlock();
+
+                    auto inst   = emitInstruction(&cxt, ByteCodeOp::RARefFromConstantSeg, 1, 2);
+                    inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
+
+                    emitInstruction(&cxt, ByteCodeOp::Copy, 0, 1)->c.u32 = typeVar->sizeOf;
+                }
+                else if (typeVar->isNative(NativeType::String))
                 {
                     auto module      = sourceFile->module;
                     auto stringIndex = module->reserveString(varDecl->assignment->computedValue.text);
