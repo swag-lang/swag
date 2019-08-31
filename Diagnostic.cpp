@@ -2,6 +2,7 @@
 #include "Diagnostic.h"
 #include "Log.h"
 #include "SourceFile.h"
+#include "SymTable.h"
 
 void Diagnostic::defaultColor(bool verboseMode) const
 {
@@ -112,8 +113,11 @@ bool ErrorContext::report(const Diagnostic& diag, const vector<const Diagnostic*
 
     if (genericInstanceTree.size())
     {
-        auto       first = genericInstanceTree[0];
-        Diagnostic note{genericInstanceTreeFile[0], first, format("occured during generic instantiation of '%s'", first->name.c_str()), DiagnosticLevel::Note};
+        auto  first = genericInstanceTree[0];
+        auto& name  = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->name;
+        if (name.empty())
+            name = first->token.text;
+        Diagnostic note{genericInstanceTreeFile[0], first, format("occurred during generic instantiation of '%s'", name.c_str()), DiagnosticLevel::Note};
         copyNotes.push_back(&note);
         return sourceFile->report(diag, copyNotes);
     }

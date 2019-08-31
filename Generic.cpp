@@ -139,13 +139,6 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     newType->flags &= ~TYPEINFO_GENERIC;
     funcNode->typeInfo = newType;
 
-    // Replace generic type in return value
-    {
-        auto it = cloneContext.replaceTypes.find(newType->returnType);
-        if (it != cloneContext.replaceTypes.end())
-            newType->returnType = it->second;
-    }
-
     // Replace generic types with their real values in the function parameters
     for (int i = 0; i < newType->parameters.size(); i++)
     {
@@ -160,6 +153,7 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     {
         auto param      = newType->genericParameters[i];
         param->typeInfo = match.genericParametersCallTypes[i];
+
         if (genericParameters)
         {
             param->typeInfo     = genericParameters->childs[i]->typeInfo;
