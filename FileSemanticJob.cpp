@@ -61,6 +61,7 @@ JobResult FileSemanticJob::execute()
             case AstNodeKind::CompilerPrint:
             case AstNodeKind::CompilerRun:
             case AstNodeKind::AttrDecl:
+			case AstNodeKind::Impl:
             {
                 auto job = newSemanticJob(sourceFile);
                 job->nodes.push_back(node);
