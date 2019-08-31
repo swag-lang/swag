@@ -83,6 +83,8 @@ struct TypeInfo : public PoolElement
 {
     virtual bool isSame(TypeInfo* from)
     {
+		if (this == from)
+			return true;
         if (kind != from->kind)
             return false;
         if (isConst() != from->isConst())
@@ -179,6 +181,8 @@ struct TypeInfoNative : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (from->kind != TypeInfoKind::Native)
             return false;
         auto castedFrom = static_cast<TypeInfoNative*>(from);
@@ -218,6 +222,8 @@ struct TypeInfoEnum : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!TypeInfo::isSame(from))
             return false;
         auto castedFrom = static_cast<TypeInfoEnum*>(from);
@@ -244,6 +250,8 @@ struct TypeInfoParam : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!TypeInfo::isSame(from))
             return false;
         auto other = static_cast<TypeInfoParam*>(from);
@@ -371,6 +379,8 @@ struct TypeInfoPointer : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!TypeInfo::isSame(from))
             return false;
         auto castedFrom = static_cast<TypeInfoPointer*>(from);
@@ -409,6 +419,8 @@ struct TypeInfoArray : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!TypeInfo::isSame(from))
             return false;
         auto castedFrom = static_cast<TypeInfoArray*>(from);
@@ -436,6 +448,8 @@ struct TypeInfoSlice : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!TypeInfo::isSame(from))
             return false;
         auto castedFrom = static_cast<TypeInfoSlice*>(from);
@@ -468,6 +482,8 @@ struct TypeInfoList : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!TypeInfo::isSame(from))
             return false;
         auto other = static_cast<TypeInfoList*>(from);
@@ -495,6 +511,8 @@ struct TypeInfoList : public TypeInfo
 
     bool isSameExact(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!isSame(from))
             return false;
         auto other = static_cast<TypeInfoList*>(from);
@@ -539,6 +557,8 @@ struct TypeInfoGeneric : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (from->kind == kind)
             return name == from->name;
         return true;
@@ -546,6 +566,8 @@ struct TypeInfoGeneric : public TypeInfo
 
     bool isSameExact(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!TypeInfo::isSame(from))
             return false;
         return name == from->name;
@@ -598,6 +620,8 @@ struct TypeInfoAlias : public TypeInfo
 
     bool isSame(TypeInfo* from) override
     {
+        if (this == from)
+            return true;
         if (!TypeInfo::isSame(from))
             return false;
         auto other = static_cast<TypeInfoAlias*>(from);

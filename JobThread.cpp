@@ -30,18 +30,18 @@ void JobThread::waitJob()
 
 bool JobThread::executeJob(Job* job, string& exception)
 {
-    __try
+    //__try
     {
         auto result = job->execute();
         if (result == JobResult::ReleaseJob)
             job->release();
         g_ThreadMgr.jobHasEnded();
     }
-    __except (EXCEPTION_EXECUTE_HANDLER)
+    /*__except (EXCEPTION_EXECUTE_HANDLER)
     {
 		exception = "executeJob, unhandled exception";
         return false;
-    }
+    }*/
 
     return true;
 }

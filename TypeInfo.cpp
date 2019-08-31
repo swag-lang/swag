@@ -45,6 +45,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other)
 
 bool TypeInfoFuncAttr::isSame(TypeInfo* from)
 {
+    if (this == from)
+        return true;
     if (!TypeInfo::isSame(from))
         return false;
     auto fromFunc = static_cast<TypeInfoFuncAttr*>(from);
@@ -54,6 +56,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* from)
 
 bool TypeInfoFuncAttr::isSameExact(TypeInfo* from)
 {
+    if (this == from)
+        return true;
     if (!isSame(from))
         return false;
     auto fromFunc = static_cast<TypeInfoFuncAttr*>(from);
@@ -505,6 +509,8 @@ TypeInfo* TypeInfoStruct::clone()
 
 bool TypeInfoStruct::isSame(TypeInfo* from)
 {
+    if (this == from)
+        return true;
     if (!TypeInfo::isSame(from))
         return false;
 
@@ -534,6 +540,8 @@ bool TypeInfoStruct::isSame(TypeInfo* from)
 
 bool TypeInfoStruct::isSameForCast(TypeInfo* from)
 {
+    if (this == from)
+        return true;
     if (!TypeInfo::isSame(from))
         return false;
 

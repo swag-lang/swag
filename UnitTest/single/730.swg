@@ -9,4 +9,5 @@ struct Array
 #test
 {
 	var arr: Array
+	arr.ptr = &arr
 }
