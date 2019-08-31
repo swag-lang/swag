@@ -2,7 +2,7 @@
 
 struct Array
 {
-	//var ptr: *Array
+	var ptr: *Array
 }
 
 //#[swag.printbc]

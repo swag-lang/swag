@@ -786,17 +786,22 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         scoped_lock lkn(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            // If a structrure is referencing itself, we will match the incomplete symbol for now
+            // If a structure is referencing itself, we will match the incomplete symbol for now
             if (symbol->kind == SymbolKind::Struct && node->ownerStruct && node->ownerStruct->name == symbol->name)
             {
-                int a;
-                a = 0;
+				SWAG_VERIFY(!node->callParameters, internalError(context, "resolveIdentifier, struct auto ref, has parameters"));
+                SWAG_VERIFY(!node->genericParameters, internalError(context, "resolveIdentifier, struct auto ref, has generic parameters"));
+				SWAG_ASSERT(symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE));
+                node->resolvedSymbolName     = symbol;
+                node->resolvedSymbolOverload = symbol->overloads[0];
+                node->typeInfo               = node->resolvedSymbolOverload->typeInfo;
             }
             else
             {
                 job->waitForSymbol(symbol);
-                return true;
             }
+
+            return true;
         }
     }
 
