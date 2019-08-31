@@ -91,7 +91,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    SWAG_CHECK(checkFuncPrototype(context, node));
     node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;
 
@@ -233,6 +232,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     uint32_t symbolFlags = 0;
     if (funcNode->flags & AST_IS_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
+
+	SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
     funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);

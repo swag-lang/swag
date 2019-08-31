@@ -68,18 +68,6 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
         nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 
-    // Replace generic types in the struct childs
-    for (int i = 0; i < newType->childs.size(); i++)
-    {
-        auto child = newType->childs[i];
-        auto it    = cloneContext.replaceTypes.find(child->typeInfo);
-        if (it != cloneContext.replaceTypes.end())
-        {
-            newType->childs[i]->typeInfo = it->second;
-            newType->childs[i]->sizeOf   = it->second->sizeOf;
-        }
-    }
-
     // Need to wait for the struct to be semantic resolved
     symbol->cptOverloads++;
     job->waitForSymbol(symbol);
