@@ -79,8 +79,8 @@ static const uint64_t TYPEINFO_GENERIC                = 0x00000000'00000200;
 static const uint64_t TYPEINFO_RETURN_BY_COPY         = 0x00000000'00000400;
 static const uint64_t TYPEINFO_NATIVE_VALUE           = 0x00000000'00000800;
 
-static const uint32_t ISSAME_EXACT   = 0x00000001;
-static const uint32_t ISSAME_CAST = 0x00000002;
+static const uint32_t ISSAME_EXACT = 0x00000001;
+static const uint32_t ISSAME_CAST  = 0x00000002;
 
 struct TypeInfo : public PoolElement
 {
@@ -275,7 +275,19 @@ struct SymbolMatchContext
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
         flags = 0;
+        resetTmp();
     }
+
+    void resetTmp()
+    {
+        cptResolved        = 0;
+        hasNamedParameters = false;
+        maxGenericParam    = 0;
+    }
+
+    uint32_t cptResolved;
+    uint32_t maxGenericParam;
+    bool     hasNamedParameters;
 
     uint32_t                             flags;
     int                                  badSignatureParameterIdx;
