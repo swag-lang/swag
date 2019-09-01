@@ -61,6 +61,29 @@ void Generic::end(SemanticContext* context, AstNode* newNode)
     g_ThreadMgr.addJob(job);
 }
 
+void Generic::updateGenericParameters(vector<TypeInfoParam*>& typeGenericParameters, vector<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
+{
+    for (int i = 0; i < typeGenericParameters.size(); i++)
+    {
+        auto param = typeGenericParameters[i];
+
+        if (callGenericParameters)
+        {
+            param->typeInfo     = callGenericParameters->childs[i]->typeInfo;
+            param->genericValue = callGenericParameters->childs[i]->computedValue;
+        }
+        else
+        {
+            param->typeInfo = match.genericParametersCallTypes[i];
+        }
+
+        auto nodeParam           = nodeGenericParameters[i];
+        nodeParam->kind          = AstNodeKind::ConstDecl;
+        nodeParam->computedValue = param->genericValue;
+        nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+}
+
 bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     CloneContext cloneContext;
@@ -68,9 +91,8 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     // Types replacements
     computeTypeReplacments(cloneContext, match);
 
-    auto overload   = match.symbolOverload;
-    auto sourceNode = overload->node;
-
+    auto            overload   = match.symbolOverload;
+    auto            sourceNode = overload->node;
     AstStruct*      structNode = nullptr;
     TypeInfoStruct* typeStruct = nullptr;
     if (overload->typeInfo->kind == TypeInfoKind::Struct)
@@ -90,32 +112,14 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     structNode->content->flags &= ~AST_DISABLED;
     Ast::addChild(sourceNode->parent, structNode);
 
-	// Make a new type
+    // Make a new type
     auto newType = static_cast<TypeInfoStruct*>(typeStruct->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
     structNode->typeInfo = newType;
 
     // Replace generic types and values in the struct generic parameters
-    for (int i = 0; i < newType->genericParameters.size(); i++)
-    {
-        auto param = newType->genericParameters[i];
-
-        if (genericParameters)
-        {
-            param->typeInfo     = genericParameters->childs[i]->typeInfo;
-            param->genericValue = genericParameters->childs[i]->computedValue;
-        }
-        else
-        {
-            param->typeInfo = match.genericParametersCallTypes[i];
-        }
-
-        auto nodeParam           = structNode->genericParameters->childs[i];
-        nodeParam->kind          = AstNodeKind::ConstDecl;
-        nodeParam->computedValue = param->genericValue;
-        nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-    }
+    updateGenericParameters(newType->genericParameters, structNode->genericParameters->childs, genericParameters, match);
 
     // Clone opInit
     auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
@@ -156,26 +160,8 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
             param->typeInfo = it->second;
     }
 
-    // Replace generic types and values in the function generic parameters
-    for (int i = 0; i < newType->genericParameters.size(); i++)
-    {
-        auto param = newType->genericParameters[i];
-
-        if (genericParameters)
-        {
-            param->typeInfo     = genericParameters->childs[i]->typeInfo;
-            param->genericValue = genericParameters->childs[i]->computedValue;
-        }
-        else
-        {
-            param->typeInfo = match.genericParametersCallTypes[i];
-        }
-
-        auto nodeParam           = funcNode->genericParameters->childs[i];
-        nodeParam->kind          = AstNodeKind::ConstDecl;
-        nodeParam->computedValue = param->genericValue;
-        nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-    }
+	// Replace generic types and values in the struct generic parameters
+    updateGenericParameters(newType->genericParameters, funcNode->genericParameters->childs, genericParameters, match);
 
     end(context, funcNode);
     return true;
