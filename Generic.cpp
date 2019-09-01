@@ -91,29 +91,16 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     // Types replacements
     computeTypeReplacments(cloneContext, match);
 
-    auto            overload   = match.symbolOverload;
-    auto            sourceNode = overload->node;
-    AstStruct*      structNode = nullptr;
-    TypeInfoStruct* typeStruct = nullptr;
-    if (overload->typeInfo->kind == TypeInfoKind::Struct)
-    {
-        structNode = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
-        typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
-
     // Clone original node
-    structNode = CastAst<AstStruct>(structNode->clone(cloneContext), AstNodeKind::StructDecl);
-    structNode->flags &= ~AST_IS_GENERIC;
+    auto overload   = match.symbolOverload;
+    auto sourceNode = overload->node;
+    auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_DISABLED;
     Ast::addChild(sourceNode->parent, structNode);
 
     // Make a new type
-    auto newType = static_cast<TypeInfoStruct*>(typeStruct->clone());
+    auto newType = static_cast<TypeInfoStruct*>(overload->typeInfo->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
     structNode->typeInfo = newType;
@@ -160,7 +147,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
             param->typeInfo = it->second;
     }
 
-	// Replace generic types and values in the struct generic parameters
+    // Replace generic types and values in the struct generic parameters
     updateGenericParameters(newType->genericParameters, funcNode->genericParameters->childs, genericParameters, match);
 
     end(context, funcNode);
