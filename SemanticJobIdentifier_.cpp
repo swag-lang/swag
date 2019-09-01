@@ -364,9 +364,18 @@ anotherTry:
             }
             else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
             {
-                auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
                 typeInfo->match(job->symMatch);
             }
+            else if (rawTypeInfo->kind == TypeInfoKind::Lambda)
+            {
+                auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::Lambda);
+                typeInfo->match(job->symMatch);
+            }
+			else
+			{
+				SWAG_ASSERT(false);
+			}
 
             switch (job->symMatch.result)
             {
