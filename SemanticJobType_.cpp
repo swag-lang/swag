@@ -162,9 +162,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     if (node->arrayDim)
     {
         // If no childs, then this is an array without a specified size
-        if (node->childs.empty())
+        if (node->arrayDim == UINT32_MAX)
         {
-            SWAG_ASSERT(node->arrayDim == UINT32_MAX);
             auto ptrArray         = g_Pool_typeInfoArray.alloc();
             ptrArray->count       = UINT32_MAX;
             ptrArray->totalCount  = UINT32_MAX;
