@@ -88,6 +88,16 @@ TypeInfo* TypeInfoEnum::clone()
     return newType;
 }
 
+bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto other = static_cast<TypeInfoEnum*>(to);
+    return rawType->isSame(other->rawType, isSameFlags);
+}
+
 TypeInfo* TypeInfoAlias::clone()
 {
     auto newType     = g_Pool_typeInfoAlias.alloc();
@@ -115,6 +125,16 @@ TypeInfo* TypeInfoParam::clone()
     newType->offset     = offset;
     newType->copyFrom(this);
     return newType;
+}
+
+bool TypeInfoParam::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto other = static_cast<TypeInfoParam*>(to);
+    return typeInfo->isSame(other->typeInfo, isSameFlags);
 }
 
 TypeInfo* TypeInfoFuncAttr::clone()
@@ -212,12 +232,34 @@ TypeInfo* TypeInfoArray::clone()
     return newType;
 }
 
+bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto other = static_cast<TypeInfoArray*>(to);
+    if (count != other->count)
+        return false;
+    return pointedType->isSame(other->pointedType, isSameFlags);
+}
+
 TypeInfo* TypeInfoSlice::clone()
 {
     auto newType         = g_Pool_typeInfoSlice.alloc();
     newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
+}
+
+bool TypeInfoSlice::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto castedFrom = static_cast<TypeInfoSlice*>(to);
+    return pointedType->isSame(castedFrom->pointedType, isSameFlags);
 }
 
 TypeInfo* TypeInfoList::clone()
