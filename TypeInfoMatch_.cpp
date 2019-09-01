@@ -35,8 +35,11 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
         }
 
         auto symbolParameter = parameters[i];
-        if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
-            return;
+		if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
+		{
+			context.cptResolved = (int) context.parameters.size();
+			return;
+		}
 
         auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
         bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
@@ -86,90 +89,16 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
         return;
 
-    // One boolean per used parameter
-    context.doneParameters.clear();
-    context.mapGenericTypes.clear();
-    context.doneParameters.resize(parameters.size(), false);
-
-    // Solve unnamed parameters
-    int numParams = (int) context.parameters.size();
-
-    int  maxGenericParam    = 0;
-    int  cptResolved        = 0;
-    bool hasNamedParameters = false;
-    for (int i = 0; i < numParams; i++)
-    {
-        auto callParameter = context.parameters[i];
-
-        AstFuncCallParam* param = nullptr;
-        if (callParameter->kind == AstNodeKind::FuncCallParam)
-        {
-            param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
-            if (!param->namedParam.empty())
-            {
-                hasNamedParameters = true;
-                break;
-            }
-        }
-
-        if (i >= parameters.size())
-        {
-            context.badSignatureParameterIdx = i;
-            context.result                   = MatchResult::TooManyParameters;
-            return;
-        }
-
-        auto symbolParameter = parameters[i];
-        if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
-            return;
-
-        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-        bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
-        if (!same)
-        {
-            context.badSignatureParameterIdx  = i;
-            context.badSignatureRequestedType = symbolParameter->typeInfo;
-            context.badSignatureGivenType     = typeInfo;
-            context.result                    = MatchResult::BadSignature;
-        }
-
-        context.doneParameters[cptResolved] = true;
-
-        // This is a generic type match
-        if (symbolParameter->typeInfo->flags & TYPEINFO_GENERIC)
-        {
-            auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_CAST))
-            {
-                context.badSignatureParameterIdx  = i;
-                context.badSignatureRequestedType = it->second.first;
-                context.badSignatureGivenType     = typeInfo;
-                context.result                    = MatchResult::BadSignature;
-            }
-            else
-            {
-                maxGenericParam                                    = i;
-                context.mapGenericTypes[symbolParameter->typeInfo] = {typeInfo, i};
-            }
-        }
-
-        if (param)
-        {
-            param->resolvedParameter = symbolParameter;
-            param->index             = cptResolved;
-        }
-
-        cptResolved++;
-    }
+    matchParameters(context, parameters);
 
     // Named parameters
-    if (hasNamedParameters)
+    if (context.hasNamedParameters)
     {
         auto callParameter = context.parameters[0];
         callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
 
-        auto startResolved = cptResolved;
-        for (int i = startResolved; i < numParams; i++)
+        auto startResolved = context.cptResolved;
+        for (int i = startResolved; i < context.parameters.size(); i++)
         {
             callParameter = context.parameters[i];
             if (callParameter->kind != AstNodeKind::FuncCallParam)
@@ -214,7 +143,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
                     param->resolvedParameter  = symbolParameter;
                     param->index              = j;
                     context.doneParameters[j] = true;
-                    cptResolved++;
+                    context.cptResolved++;
                     break;
                 }
             }
@@ -232,7 +161,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     int firstDefault = firstDefaultValueIdx;
     if (firstDefault == -1)
         firstDefault = (int) parameters.size();
-    if (cptResolved < firstDefault)
+    if (context.cptResolved < firstDefault)
         context.result = MatchResult::NotEnoughParameters;
 
     // Solve generic parameters
@@ -284,9 +213,9 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     }
     else if (context.mapGenericTypes.size())
     {
-        context.genericParametersCallValues.resize(maxGenericParam + 1);
-        context.genericParametersCallTypes.resize(maxGenericParam + 1);
-        context.genericParametersGenTypes.resize(maxGenericParam + 1);
+        context.genericParametersCallValues.resize(context.maxGenericParam + 1);
+        context.genericParametersCallTypes.resize(context.maxGenericParam + 1);
+        context.genericParametersGenTypes.resize(context.maxGenericParam + 1);
         for (auto it : context.mapGenericTypes)
         {
             context.genericParametersCallTypes[it.second.second] = it.second.first;

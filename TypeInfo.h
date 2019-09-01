@@ -285,7 +285,7 @@ struct SymbolMatchContext
         maxGenericParam    = 0;
     }
 
-    uint32_t cptResolved;
+    int      cptResolved;
     uint32_t maxGenericParam;
     bool     hasNamedParameters;
 
