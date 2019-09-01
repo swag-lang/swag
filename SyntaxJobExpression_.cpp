@@ -388,7 +388,7 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymQuestion)
     {
-        parent->flags |= AST_DISABLED_DEFAULT_INIT;
+        parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
         SWAG_CHECK(eatToken(TokenId::SymQuestion));
         return true;
     }

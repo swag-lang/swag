@@ -46,9 +46,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         if (typeArray->rawType->kind == TypeInfoKind::Struct)
         {
-            if ((typeArray->rawType->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            if ((typeArray->rawType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
             {
-                if (!(node->flags & AST_DISABLED_DEFAULT_INIT) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+                if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
                 {
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0;
@@ -59,7 +59,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     regToSave.push_back(r0[0]);
                     regToSave.push_back(r0[1]);
 
-                    if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                    if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
                         emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->rawType, TypeInfoKind::Struct), r0[1], regToSave);
                     emitStructParameters(context, r0[1]);
 
@@ -78,7 +78,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        if (!(node->flags & AST_DISABLED_DEFAULT_INIT) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+        if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             SWAG_ASSERT(typeStruct->opInitFct);
@@ -89,7 +89,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         return true;
     }
 
-    if (!(node->flags & AST_DISABLED_DEFAULT_INIT))
+    if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         switch (typeInfo->sizeOf)
         {

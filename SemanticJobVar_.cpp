@@ -268,7 +268,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // An enum must be initialized
-    if (!node->assignment && !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM) && !(node->flags & AST_DISABLED_DEFAULT_INIT))
+    if (!node->assignment && !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM) && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         if (node->typeInfo->kind == TypeInfoKind::Enum ||
             (node->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) node->typeInfo)->pointedType->kind == TypeInfoKind::Enum))

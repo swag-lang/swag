@@ -43,8 +43,12 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
 
+	// All fields are explicitly not initialized, so we are done, function is empty
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+        return true;
+
     // No special value, so we can just clear the struct
-    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
+    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
         switch (typeInfoStruct->sizeOf)
@@ -149,7 +153,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
                     return false;
 
                 // Function call if necessary
-                if (typeVar->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
+                if (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
                 {
                     emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
                     auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
@@ -235,8 +239,12 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     if (!generateStructInit(context, typeInfoStruct))
         return false;
 
+	// All fields are explicitly not initialized, so we are done
+	if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+		return true;
+
     // Just clear the content of the structure
-    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR))
+    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         auto inst   = emitInstruction(context, ByteCodeOp::ClearRefFromStackX);
         inst->a.u32 = resolved->storageOffset;

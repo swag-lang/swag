@@ -110,8 +110,8 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
 bool SemanticJob::preResolveStruct(SemanticContext* context)
 {
-    auto node       = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl);
-    auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto node     = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl);
+    auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     // Add generic parameters
     uint32_t symbolFlags = 0;
@@ -136,7 +136,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE));
-	return true;
+    return true;
 }
 
 bool SemanticJob::resolveStruct(SemanticContext* context)
@@ -152,7 +152,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
-    uint32_t structFlags   = 0;
+    uint32_t structFlags   = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
     for (auto child : node->content->childs)
     {
@@ -161,11 +161,17 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         auto varDecl = static_cast<AstVarDecl*>(child);
 
+        // Default value
+        if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+            structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+
         // Var is a struct
         if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
         {
-            if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_CONSTRUCTOR)
-                structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+            if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+            if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         }
 
         // Var has an initialization
@@ -175,9 +181,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
             auto typeInfoAssignment = varDecl->assignment->typeInfo;
             if (typeInfoAssignment->isNative(NativeType::String))
-                structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
             else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
-                structFlags |= TYPEINFO_STRUCT_HAS_CONSTRUCTOR;
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+            structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         }
 
         if (!(node->flags & AST_FROM_GENERIC))
@@ -189,7 +196,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
             typeInfo->childs.push_back(typeParam);
-            typeInfo->flags |= structFlags;
         }
 
         if (!(node->flags & AST_IS_GENERIC))
@@ -206,6 +212,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     // Register symbol with its type
+    if (!(node->flags & AST_FROM_GENERIC))
+        typeInfo->flags |= structFlags;
     node->typeInfo = typeInfo;
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
     return true;
