@@ -43,9 +43,13 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     ByteCodeGenContext cxt{*context};
     cxt.bc = opInit;
 
-	// All fields are explicitly not initialized, so we are done, function is empty
+    // All fields are explicitly not initialized, so we are done, function is empty
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+    {
+        emitInstruction(&cxt, ByteCodeOp::Ret);
+        emitInstruction(&cxt, ByteCodeOp::End);
         return true;
+    }
 
     // No special value, so we can just clear the struct
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
@@ -239,9 +243,9 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     if (!generateStructInit(context, typeInfoStruct))
         return false;
 
-	// All fields are explicitly not initialized, so we are done
-	if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
-		return true;
+    // All fields are explicitly not initialized, so we are done
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+        return true;
 
     // Just clear the content of the structure
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
