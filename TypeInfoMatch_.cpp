@@ -41,12 +41,13 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             return;
         }
 
-        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-        bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+        auto symbolTypeInfo = symbolParameter->typeInfo;
+        auto typeInfo       = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        bool same           = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
         if (!same)
         {
             context.badSignatureParameterIdx  = i;
-            context.badSignatureRequestedType = symbolParameter->typeInfo;
+            context.badSignatureRequestedType = symbolTypeInfo;
             context.badSignatureGivenType     = typeInfo;
             context.result                    = MatchResult::BadSignature;
         }
@@ -54,9 +55,9 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
         context.doneParameters[context.cptResolved] = true;
 
         // This is a generic type match
-        if (symbolParameter->typeInfo->flags & TYPEINFO_GENERIC)
+        if (symbolTypeInfo->flags & TYPEINFO_GENERIC)
         {
-            auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
+            auto it = context.mapGenericTypes.find(symbolTypeInfo);
             if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_CAST))
             {
                 context.badSignatureParameterIdx  = i;
@@ -66,8 +67,15 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             }
             else
             {
-                context.maxGenericParam                            = i;
-                context.mapGenericTypes[symbolParameter->typeInfo] = {typeInfo, i};
+                context.maxGenericParam                 = i;
+                context.mapGenericTypes[symbolTypeInfo] = {typeInfo, i};
+
+                if (symbolTypeInfo->kind == TypeInfoKind::Pointer)
+                {
+                    auto symbolPtr                                  = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
+                    auto typePtr                                    = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+                    context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
+                }
             }
         }
 
@@ -297,11 +305,11 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     int firstDefault = firstDefaultValueIdx;
     if (firstDefault == -1)
         firstDefault = (int) parameters.size();
-	if (context.cptResolved < firstDefault)
-	{
-		context.result = MatchResult::NotEnoughParameters;
-		return;
-	}
+    if (context.cptResolved < firstDefault)
+    {
+        context.result = MatchResult::NotEnoughParameters;
+        return;
+    }
 
     matchGenericParameters(context, this, genericParameters);
 }

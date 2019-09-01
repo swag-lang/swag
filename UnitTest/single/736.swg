@@ -2,7 +2,6 @@
 
 //#[swag.printbc]
 
-/*
 func(T) toto(x: *T)
 {
 	@assert(x[0] == 666)
@@ -13,5 +12,3 @@ func(T) toto(x: *T)
 	cpt := 666
 	toto(&cpt)
 }
-
-*/
