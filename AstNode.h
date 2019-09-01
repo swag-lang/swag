@@ -139,6 +139,8 @@ struct AstNode : public PoolElement
         semanticPass         = 0;
         resultRegisterRC.clear();
         childs.clear();
+        computedValue.reg.u64 = 0;
+        computedValue.text.clear();
     }
 
     void lock()
