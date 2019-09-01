@@ -207,9 +207,8 @@ struct AstNode : public PoolElement
 
     void inheritTokenName(Token& tkn)
     {
-        name = tkn.text;
-        SWAG_ASSERT(!name.empty());
-        name.computeCrc();
+        SWAG_ASSERT(!tkn.text.empty());
+        name = move(tkn.text);
     }
 
     void inheritOwnersAndFlags(SyntaxJob* job)
