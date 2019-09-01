@@ -2,12 +2,9 @@
 
 //#[swag.printbc]
 
-func(T) toto(x: [] *T)
+func(T) toto(x: [1] *T)
 {
-/*	@assert(x[0] == 1)
-	@assert(x[1] == 2)
-	@assert(x[2] == 3)
-	@assert(x[3] == 4)*/
+	@assert(x[0][0] == 1)
 }
 	
 #test

@@ -72,32 +72,46 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                     context.mapGenericTypes[symbolTypeInfo] = {typeInfo, i};
 
                     // Need to register raw type when generic type is a compound
-                    switch (symbolTypeInfo->kind)
+                    bool done = false;
+                    while (!done)
                     {
-                    case TypeInfoKind::Pointer:
-                    {
-                        auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
-                        auto typePtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+                        done = true;
+                        switch (symbolTypeInfo->kind)
+                        {
+                        case TypeInfoKind::Pointer:
+                        {
+                            auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
+                            auto typePtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
-                        context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
-                    }
-                    break;
-                    case TypeInfoKind::Array:
-                    {
-                        auto symbolPtr = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
-                        auto typePtr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+                            context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
+                            symbolTypeInfo                                  = symbolPtr->pointedType;
+                            typeInfo                                        = typePtr->pointedType;
+                            done                                            = false;
+                        }
+                        break;
+                        case TypeInfoKind::Array:
+                        {
+                            auto symbolArray = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
+                            auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
-                        context.mapGenericTypes[symbolPtr->rawType] = {typePtr->rawType, i};
-                    }
-                    break;
-                    case TypeInfoKind::Slice:
-                    {
-                        auto symbolPtr = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
-                        auto typePtr   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+                            context.mapGenericTypes[symbolArray->rawType] = {typeArray->rawType, i};
+                            symbolTypeInfo                                = symbolArray->rawType;
+                            typeInfo                                      = typeArray->rawType;
+                            done                                          = false;
+                        }
+                        break;
+                        case TypeInfoKind::Slice:
+                        {
+                            auto symbolSlice = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
+                            auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
-                        context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
-                    }
-                    break;
+                            context.mapGenericTypes[symbolSlice->pointedType] = {typeSlice->pointedType, i};
+                            symbolTypeInfo                                    = symbolSlice->pointedType;
+                            typeInfo                                          = typeSlice->pointedType;
+                            done                                              = false;
+                        }
+                        break;
+                        }
                     }
                 }
             }

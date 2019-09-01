@@ -30,7 +30,9 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
     case TypeInfoKind::FuncAttr:
         return "a function";
     case TypeInfoKind::TypeList:
-        return "a tuple";
+		if(static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Tuple)
+			return "a tuple";
+		return "an array";
     case TypeInfoKind::Variadic:
         return "a variadic";
     case TypeInfoKind::Struct:
@@ -61,7 +63,9 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
     case TypeInfoKind::FuncAttr:
         return "function";
     case TypeInfoKind::TypeList:
-        return "tuple";
+        if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Tuple)
+            return "tuple";
+		return "array";
     case TypeInfoKind::Variadic:
         return "variadic";
     case TypeInfoKind::Struct:
