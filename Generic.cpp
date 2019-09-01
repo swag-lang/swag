@@ -83,12 +83,14 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
         SWAG_ASSERT(false);
     }
 
+    // Clone original node
     structNode = CastAst<AstStruct>(structNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags &= ~AST_IS_GENERIC;
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_DISABLED;
     Ast::addChild(sourceNode->parent, structNode);
 
+	// Make a new type
     auto newType = static_cast<TypeInfoStruct*>(typeStruct->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     newType->scope       = structNode->scope;
@@ -97,12 +99,16 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     // Replace generic types and values in the struct generic parameters
     for (int i = 0; i < newType->genericParameters.size(); i++)
     {
-        auto param      = newType->genericParameters[i];
-        param->typeInfo = match.genericParametersCallTypes[i];
+        auto param = newType->genericParameters[i];
+
         if (genericParameters)
         {
             param->typeInfo     = genericParameters->childs[i]->typeInfo;
             param->genericValue = genericParameters->childs[i]->computedValue;
+        }
+        else
+        {
+            param->typeInfo = match.genericParametersCallTypes[i];
         }
 
         auto nodeParam           = structNode->genericParameters->childs[i];
@@ -128,6 +134,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     // Types replacements
     computeTypeReplacments(cloneContext, match);
 
+    // Clone original node
     auto overload   = match.symbolOverload;
     auto sourceNode = overload->node;
     auto funcNode   = CastAst<AstFuncDecl>(sourceNode->clone(cloneContext), AstNodeKind::FuncDecl);
@@ -135,6 +142,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     funcNode->content->flags &= ~AST_DISABLED;
     Ast::addChild(sourceNode->parent, funcNode);
 
+    // Generate and initialize a new type
     auto newType = static_cast<TypeInfoFuncAttr*>(overload->typeInfo->clone());
     newType->flags &= ~TYPEINFO_GENERIC;
     funcNode->typeInfo = newType;
@@ -151,13 +159,16 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     // Replace generic types and values in the function generic parameters
     for (int i = 0; i < newType->genericParameters.size(); i++)
     {
-        auto param      = newType->genericParameters[i];
-        param->typeInfo = match.genericParametersCallTypes[i];
+        auto param = newType->genericParameters[i];
 
         if (genericParameters)
         {
             param->typeInfo     = genericParameters->childs[i]->typeInfo;
             param->genericValue = genericParameters->childs[i]->computedValue;
+        }
+        else
+        {
+            param->typeInfo = match.genericParametersCallTypes[i];
         }
 
         auto nodeParam           = funcNode->genericParameters->childs[i];
