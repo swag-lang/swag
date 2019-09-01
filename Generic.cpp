@@ -138,6 +138,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typePointer              = static_cast<TypeInfoPointer*>(typePointer->clone());
             typePointer->pointedType = it->second;
             typePointer->flags &= ~TYPEINFO_GENERIC;
+			typePointer->computeName();
             *typeInfo = context->sourceFile->module->typeTable.registerType(typePointer);
             return;
         }

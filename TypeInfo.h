@@ -133,7 +133,9 @@ struct TypeInfo : public PoolElement
         return max(sizeOf, sizeof(void*)) / sizeof(void*);
     }
 
-    virtual TypeInfo* clone() = 0;
+    virtual void computeName()
+    {
+    }
 
     void copyFrom(TypeInfo* from)
     {
@@ -144,6 +146,7 @@ struct TypeInfo : public PoolElement
         sizeOf     = from->sizeOf;
     }
 
+    virtual TypeInfo*  clone() = 0;
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
@@ -346,7 +349,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     }
 
     TypeInfo* clone() override;
-    void      computeName();
+    void      computeName() override;
 
     void match(SymbolMatchContext& context);
     bool isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
@@ -381,8 +384,6 @@ struct TypeInfoPointer : public TypeInfo
         return pointedType->isSame(castedFrom->pointedType, isSameFlags);
     }
 
-    TypeInfo* clone() override;
-
     uint32_t sizeOfPointedBy()
     {
         int size;
@@ -392,6 +393,19 @@ struct TypeInfoPointer : public TypeInfo
             size = sizeof(void*);
         return size;
     }
+
+    void computeName() override
+    {
+		name.clear();
+		if (flags & TYPEINFO_CONST)
+			name = "const ";
+		for (uint32_t i = 0; i < ptrCount; i++)
+			name += "*";
+		pointedType->computeName();
+		name += pointedType->name;
+    }
+
+    TypeInfo* clone() override;
 
     TypeInfo* pointedType;
     uint32_t  ptrCount;

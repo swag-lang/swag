@@ -150,11 +150,11 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrType->ptrCount    = node->ptrCount;
         ptrType->pointedType = node->typeInfo;
         ptrType->sizeOf      = sizeof(void*);
-        ptrType->name        = "*" + node->typeInfo->name;
         if (node->isConst)
-            ptrType->setConst();
-		if (ptrType->pointedType->flags & TYPEINFO_GENERIC)
-			ptrType->flags |= TYPEINFO_GENERIC;
+            ptrType->flags |= TYPEINFO_CONST;
+        if (ptrType->pointedType->flags & TYPEINFO_GENERIC)
+            ptrType->flags |= TYPEINFO_GENERIC;
+        ptrType->computeName();
         node->typeInfo = typeTable.registerType(ptrType);
     }
 
