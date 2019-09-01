@@ -166,76 +166,76 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         return;
     }
 
-	// It's valid to not specify generic parameters. They will be deduced
-	if (myTypeInfo->kind == TypeInfoKind::Struct)
-	{
-		if (numGenericParams < wantedNumGenericParams)
-		{
-			// A reference to a generic without specifying the generic parameters is a match
-			// (we deduce type)
-			context.result = MatchResult::NotEnoughGenericParameters;
-			if (!numGenericParams)
-			{
-				if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC))
-				{
-					if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
-					{
-						for (int i = 0; i < wantedNumGenericParams; i++)
-						{
-							auto symbolParameter = genericParameters[i];
-							context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
-							context.genericParametersGenTypes[i] = symbolParameter->typeInfo;
-						}
+    // It's valid to not specify generic parameters. They will be deduced
+    if (myTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        if (numGenericParams < wantedNumGenericParams)
+        {
+            // A reference to a generic without specifying the generic parameters is a match
+            // (we deduce type)
+            context.result = MatchResult::NotEnoughGenericParameters;
+            if (!numGenericParams)
+            {
+                if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC))
+                {
+                    if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
+                    {
+                        for (int i = 0; i < wantedNumGenericParams; i++)
+                        {
+                            auto symbolParameter                  = genericParameters[i];
+                            context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
+                            context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
+                        }
 
-						context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
-						context.result = MatchResult::Ok;
-					}
-				}
-			}
+                        context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
+                        context.result = MatchResult::Ok;
+                    }
+                }
+            }
 
-			return;
-		}
-	}
-	else
-	{
-		// Deduce type of generic parameters from actual parameters
-		if (!numGenericParams && wantedNumGenericParams)
-		{
-			for (int i = 0; i < wantedNumGenericParams; i++)
-			{
-				auto symbolParameter = genericParameters[i];
-				auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-				if (it == context.mapGenericTypes.end())
-				{
-					if (myTypeInfo->flags & TYPEINFO_GENERIC)
-					{
-						context.result = MatchResult::NotEnoughGenericParameters;
-						return;
-					}
+            return;
+        }
+    }
+    else
+    {
+        // Deduce type of generic parameters from actual parameters
+        if (!numGenericParams && wantedNumGenericParams)
+        {
+            for (int i = 0; i < wantedNumGenericParams; i++)
+            {
+                auto symbolParameter = genericParameters[i];
+                auto it              = context.mapGenericTypes.find(symbolParameter->typeInfo);
+                if (it == context.mapGenericTypes.end())
+                {
+                    if (myTypeInfo->flags & TYPEINFO_GENERIC)
+                    {
+                        context.result = MatchResult::NotEnoughGenericParameters;
+                        return;
+                    }
 
-					auto typeParam = CastTypeInfo<TypeInfoParam>(genericParameters[i], TypeInfoKind::Param);
-					context.genericParametersCallTypes[i] = typeParam->typeInfo;
-					context.genericParametersGenTypes[i] = symbolParameter->typeInfo;
-				}
-				else
-				{
-					context.genericParametersCallTypes[i] = it->second.first;
-					context.genericParametersGenTypes[i] = symbolParameter->typeInfo;
-				}
-			}
-		}
-		else if (context.mapGenericTypes.size())
-		{
-			context.genericParametersCallValues.resize(context.maxGenericParam + 1);
-			context.genericParametersCallTypes.resize(context.maxGenericParam + 1);
-			context.genericParametersGenTypes.resize(context.maxGenericParam + 1);
-			for (auto it : context.mapGenericTypes)
-			{
-				context.genericParametersCallTypes[it.second.second] = it.second.first;
-				context.genericParametersGenTypes[it.second.second] = it.first;
-			}
-		}
-	}
+                    auto typeParam                        = CastTypeInfo<TypeInfoParam>(genericParameters[i], TypeInfoKind::Param);
+                    context.genericParametersCallTypes[i] = typeParam->typeInfo;
+                    context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
+                }
+                else
+                {
+                    context.genericParametersCallTypes[i] = it->second.first;
+                    context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
+                }
+            }
+        }
+        else if (context.mapGenericTypes.size())
+        {
+            context.genericParametersCallValues.resize(context.maxGenericParam + 1);
+            context.genericParametersCallTypes.resize(context.maxGenericParam + 1);
+            context.genericParametersGenTypes.resize(context.maxGenericParam + 1);
+            for (auto it : context.mapGenericTypes)
+            {
+                context.genericParametersCallTypes[it.second.second] = it.second.first;
+                context.genericParametersGenTypes[it.second.second]  = it.first;
+            }
+        }
+    }
 
     for (int i = 0; i < numGenericParams; i++)
     {
@@ -287,16 +287,23 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         return;
 
     matchParameters(context, parameters);
+    if (context.result != MatchResult::Ok)
+        return;
     matchNamedParameters(context, parameters);
+    if (context.result != MatchResult::Ok)
+        return;
 
     // Not enough parameters
     int firstDefault = firstDefaultValueIdx;
     if (firstDefault == -1)
         firstDefault = (int) parameters.size();
-    if (context.cptResolved < firstDefault)
-        context.result = MatchResult::NotEnoughParameters;
+	if (context.cptResolved < firstDefault)
+	{
+		context.result = MatchResult::NotEnoughParameters;
+		return;
+	}
 
-	matchGenericParameters(context, this, genericParameters);
+    matchGenericParameters(context, this, genericParameters);
 }
 
 void TypeInfoStruct::match(SymbolMatchContext& context)
@@ -307,5 +314,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     if (context.result != MatchResult::Ok)
         return;
     matchNamedParameters(context, childs);
-	matchGenericParameters(context, this, genericParameters);
+    if (context.result != MatchResult::Ok)
+        return;
+    matchGenericParameters(context, this, genericParameters);
 }
