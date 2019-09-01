@@ -33,12 +33,36 @@ void Generic::computeTypeReplacments(CloneContext& cloneContext, OneGenericMatch
     }
 }
 
-bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
+void Generic::end(SemanticContext* context, AstNode* newNode)
 {
     auto  job              = context->job;
     auto& dependentSymbols = job->cacheDependentSymbols;
     auto  symbol           = dependentSymbols[0];
 
+    // Need to wait for the struct to be semantic resolved
+    symbol->cptOverloads++;
+    job->waitForSymbol(symbol);
+
+    // Run semantic on that struct
+    auto sourceFile = context->sourceFile;
+    job             = g_Pool_semanticJob.alloc();
+    job->module     = sourceFile->module;
+    job->sourceFile = sourceFile;
+    job->nodes.push_back(newNode);
+
+    // Store stack of instantiation contexts
+    auto& srcCxt  = context->errorContext;
+    auto& destCxt = job->context.errorContext;
+    destCxt.genericInstanceTree.insert(destCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.end());
+    destCxt.genericInstanceTreeFile.insert(destCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.end());
+    destCxt.genericInstanceTree.push_back(context->node);
+    destCxt.genericInstanceTreeFile.push_back(context->sourceFile);
+
+    g_ThreadMgr.addJob(job);
+}
+
+bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
+{
     CloneContext cloneContext;
 
     // Types replacements
@@ -87,45 +111,22 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
         nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 
-	// Clone opInit
+    // Clone opInit
     auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
     newType->opInitFct = newOpInit;
     newOpInit->flags |= AST_FROM_GENERIC | AST_DISABLED;
     Ast::addChild(structNode, newType->opInitFct);
 
-    // Need to wait for the struct to be semantic resolved
-    symbol->cptOverloads++;
-    job->waitForSymbol(symbol);
-
-    // Run semantic on that struct
-    auto sourceFile = context->sourceFile;
-    job             = g_Pool_semanticJob.alloc();
-    job->module     = sourceFile->module;
-    job->sourceFile = sourceFile;
-    job->nodes.push_back(structNode);
-
-    // Store stack of instantiation contexts
-    auto& srcCxt  = context->errorContext;
-    auto& destCxt = job->context.errorContext;
-    destCxt.genericInstanceTree.insert(destCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.end());
-    destCxt.genericInstanceTreeFile.insert(destCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.end());
-    destCxt.genericInstanceTree.push_back(context->node);
-    destCxt.genericInstanceTreeFile.push_back(context->sourceFile);
-
-    g_ThreadMgr.addJob(job);
-
+    end(context, structNode);
     return true;
 }
 
-bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
+bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
-    auto  job              = context->job;
-    auto& dependentSymbols = job->cacheDependentSymbols;
-
     CloneContext cloneContext;
 
     // Types replacements
-	computeTypeReplacments(cloneContext, match);
+    computeTypeReplacments(cloneContext, match);
 
     auto overload   = match.symbolOverload;
     auto sourceNode = overload->node;
@@ -165,27 +166,6 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
         nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 
-    // Need to wait for the function to be semantic resolved
-    auto symbol = dependentSymbols[0];
-    symbol->cptOverloads++;
-    job->waitForSymbol(symbol);
-
-    // Run semantic on that function
-    auto sourceFile = context->sourceFile;
-    job             = g_Pool_semanticJob.alloc();
-    job->module     = sourceFile->module;
-    job->sourceFile = sourceFile;
-    job->nodes.push_back(funcNode);
-
-    // Store stack of instantiation contexts
-    auto& srcCxt  = context->errorContext;
-    auto& destCxt = job->context.errorContext;
-    destCxt.genericInstanceTree.insert(destCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.end());
-    destCxt.genericInstanceTreeFile.insert(destCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.end());
-    destCxt.genericInstanceTree.push_back(context->node);
-    destCxt.genericInstanceTreeFile.push_back(context->sourceFile);
-
-    g_ThreadMgr.addJob(job);
-
+    end(context, funcNode);
     return true;
 }

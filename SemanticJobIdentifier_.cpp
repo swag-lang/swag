@@ -428,7 +428,7 @@ anotherTry:
         {
             if (genericParameters && !(node->flags & AST_IS_GENERIC))
             {
-                SWAG_CHECK(Generic::InstanciateStruct(context, genericParameters, firstMatch));
+                SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch));
             }
             else
             {
@@ -440,7 +440,7 @@ anotherTry:
         }
         else
         {
-            SWAG_CHECK(Generic::InstanciateFunction(context, genericParameters, firstMatch));
+            SWAG_CHECK(Generic::instanciateFunction(context, genericParameters, firstMatch));
         }
 
         symbol->mutex.unlock();
