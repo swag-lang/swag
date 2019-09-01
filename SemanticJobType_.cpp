@@ -201,7 +201,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                     ptrArray->flags |= TYPEINFO_CONST;
                 if (ptrArray->rawType->flags & TYPEINFO_GENERIC)
                     ptrArray->flags |= TYPEINFO_GENERIC;
-				ptrArray->computeName();
+                ptrArray->computeName();
                 node->typeInfo = typeTable.registerType(ptrArray);
             }
         }
@@ -210,10 +210,12 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     {
         auto ptrSlice         = g_Pool_typeInfoSlice.alloc();
         ptrSlice->pointedType = node->typeInfo;
-        ptrSlice->name        = format("[..] %s", node->typeInfo->name.c_str());
         ptrSlice->sizeOf      = 2 * sizeof(void*);
         if (node->isConst)
-            ptrSlice->setConst();
+            ptrSlice->flags |= TYPEINFO_CONST;
+        if (ptrSlice->pointedType->flags & TYPEINFO_GENERIC)
+            ptrSlice->flags |= TYPEINFO_GENERIC;
+        ptrSlice->computeName();
         node->typeInfo = typeTable.registerType(ptrSlice);
     }
 
