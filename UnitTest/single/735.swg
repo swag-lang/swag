@@ -3,7 +3,7 @@
 //#[swag.printbc]
 func(T) toto(x: *T)
 {
-	//@print(x[0])
+	@print(x[0])
 }
 	
 #test
