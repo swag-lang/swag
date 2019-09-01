@@ -10,13 +10,19 @@ struct Utf8Crc : public Utf8
     Utf8Crc(const string& from)
         : Utf8(from)
     {
-		computeCrc();
+        computeCrc();
+    }
+
+    Utf8Crc(string&& from)
+        : Utf8(move(from))
+    {
+        computeCrc();
     }
 
     Utf8Crc(const char* from)
         : Utf8(from)
     {
-		computeCrc();
+        computeCrc();
     }
 
     void computeCrc()

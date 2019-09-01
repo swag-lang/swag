@@ -18,6 +18,11 @@ struct Utf8 : public string
     {
     }
 
+	Utf8(string&& from)
+        : string(move(from))
+    {
+    }
+
     void operator=(const char* txt)
     {
 		clear();
