@@ -70,11 +70,25 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                 context.maxGenericParam                 = i;
                 context.mapGenericTypes[symbolTypeInfo] = {typeInfo, i};
 
-                if (symbolTypeInfo->kind == TypeInfoKind::Pointer)
+				// Need to register raw type when generic type is a compound
+                switch (symbolTypeInfo->kind)
                 {
-                    auto symbolPtr                                  = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
-                    auto typePtr                                    = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+                case TypeInfoKind::Pointer:
+                {
+                    auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
+                    auto typePtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+
                     context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
+                }
+                break;
+                case TypeInfoKind::Array:
+                {
+                    auto symbolPtr = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
+                    auto typePtr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+
+                    context.mapGenericTypes[symbolPtr->rawType] = {typePtr->rawType, i};
+                }
+                break;
                 }
             }
         }

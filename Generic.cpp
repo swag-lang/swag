@@ -129,7 +129,10 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
         return;
     }
 
-    if (oldType->kind == TypeInfoKind::Pointer)
+	// When type is a compound, we do substitution in the raw type
+    switch (oldType->kind)
+    {
+    case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(oldType, TypeInfoKind::Pointer);
         it               = cloneContext.replaceTypes.find(typePointer->pointedType);
@@ -138,10 +141,30 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typePointer              = static_cast<TypeInfoPointer*>(typePointer->clone());
             typePointer->pointedType = it->second;
             typePointer->flags &= ~TYPEINFO_GENERIC;
-			typePointer->computeName();
+            typePointer->computeName();
             *typeInfo = context->sourceFile->module->typeTable.registerType(typePointer);
             return;
         }
+
+        break;
+    }
+
+    case TypeInfoKind::Array:
+    {
+        auto typeArray = CastTypeInfo<TypeInfoArray>(oldType, TypeInfoKind::Array);
+        it             = cloneContext.replaceTypes.find(typeArray->pointedType);
+        if (it != cloneContext.replaceTypes.end())
+        {
+            typeArray              = static_cast<TypeInfoArray*>(typeArray->clone());
+            typeArray->pointedType = it->second;
+            typeArray->flags &= ~TYPEINFO_GENERIC;
+            typeArray->computeName();
+            *typeInfo = context->sourceFile->module->typeTable.registerType(typeArray);
+            return;
+        }
+
+        break;
+    }
     }
 }
 

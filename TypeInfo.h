@@ -392,6 +392,15 @@ struct TypeInfoArray : public TypeInfo
         totalCount  = 0;
     }
 
+    void computeName() override
+    {
+		pointedType->computeName();
+		if(count == UINT32_MAX)
+			name = format("[] %s", pointedType->name.c_str());
+		else
+			name = format("[%d] %s", count, pointedType->name.c_str());
+    }
+
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
