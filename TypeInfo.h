@@ -401,6 +401,11 @@ struct TypeInfoArray : public TypeInfo
             name = format("[%d] %s", count, pointedType->name.c_str());
     }
 
+	int numRegisters() override
+    {
+        return 1;
+    }
+
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
