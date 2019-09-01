@@ -8,6 +8,31 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 
+void Generic::computeTypeReplacments(CloneContext& cloneContext, OneGenericMatch& match)
+{
+    for (int i = 0; i < match.genericParametersCallTypes.size(); i++)
+    {
+        auto callType = match.genericParametersCallTypes[i];
+        auto genType  = match.genericParametersGenTypes[i];
+        if (callType != genType)
+            cloneContext.replaceTypes[genType] = callType;
+
+        // For a struct, each generic parameter must be swapped too
+        if (callType->kind == TypeInfoKind::Struct)
+        {
+            auto callTypeStruct = CastTypeInfo<TypeInfoStruct>(callType, TypeInfoKind::Struct);
+            auto genTypeStruct  = CastTypeInfo<TypeInfoStruct>(genType, TypeInfoKind::Struct);
+            for (int j = 0; j < callTypeStruct->genericParameters.size(); j++)
+            {
+                auto genTypeParam  = CastTypeInfo<TypeInfoParam>(genTypeStruct->genericParameters[j], TypeInfoKind::Param);
+                auto callTypeParam = CastTypeInfo<TypeInfoParam>(callTypeStruct->genericParameters[j], TypeInfoKind::Param);
+
+                cloneContext.replaceTypes[genTypeParam->typeInfo] = callTypeParam->typeInfo;
+            }
+        }
+    }
+}
+
 bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto  job              = context->job;
@@ -17,13 +42,7 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
     CloneContext cloneContext;
 
     // Types replacements
-    for (int i = 0; i < match.genericParametersCallTypes.size(); i++)
-    {
-        auto callType = match.genericParametersCallTypes[i];
-        auto genType  = match.genericParametersGenTypes[i];
-        if (callType != genType)
-            cloneContext.replaceTypes[genType] = callType;
-    }
+    computeTypeReplacments(cloneContext, match);
 
     auto overload   = match.symbolOverload;
     auto sourceNode = overload->node;
@@ -68,15 +87,15 @@ bool Generic::InstanciateStruct(SemanticContext* context, AstNode* genericParame
         nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 
-    // Need to wait for the struct to be semantic resolved
-    symbol->cptOverloads++;
-    job->waitForSymbol(symbol);
-
-    // Clone opInit
+	// Clone opInit
     auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
     newType->opInitFct = newOpInit;
     newOpInit->flags |= AST_FROM_GENERIC | AST_DISABLED;
     Ast::addChild(structNode, newType->opInitFct);
+
+    // Need to wait for the struct to be semantic resolved
+    symbol->cptOverloads++;
+    job->waitForSymbol(symbol);
 
     // Run semantic on that struct
     auto sourceFile = context->sourceFile;
@@ -106,27 +125,7 @@ bool Generic::InstanciateFunction(SemanticContext* context, AstNode* genericPara
     CloneContext cloneContext;
 
     // Types replacements
-    for (int i = 0; i < match.genericParametersCallTypes.size(); i++)
-    {
-        auto callType = match.genericParametersCallTypes[i];
-        auto genType  = match.genericParametersGenTypes[i];
-        if (callType != genType)
-            cloneContext.replaceTypes[genType] = callType;
-
-        // For a struct, each generic parameter must be swapped too
-        if (callType->kind == TypeInfoKind::Struct)
-        {
-            auto callTypeStruct = CastTypeInfo<TypeInfoStruct>(callType, TypeInfoKind::Struct);
-            auto genTypeStruct  = CastTypeInfo<TypeInfoStruct>(genType, TypeInfoKind::Struct);
-            for (int j = 0; j < callTypeStruct->genericParameters.size(); j++)
-            {
-                auto genTypeParam  = CastTypeInfo<TypeInfoParam>(genTypeStruct->genericParameters[j], TypeInfoKind::Param);
-                auto callTypeParam = CastTypeInfo<TypeInfoParam>(callTypeStruct->genericParameters[j], TypeInfoKind::Param);
-
-                cloneContext.replaceTypes[genTypeParam->typeInfo] = callTypeParam->typeInfo;
-            }
-        }
-    }
+	computeTypeReplacments(cloneContext, match);
 
     auto overload   = match.symbolOverload;
     auto sourceNode = overload->node;
