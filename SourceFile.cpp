@@ -338,7 +338,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
     if (unittestError && diag.errorLevel == DiagnosticLevel::Error)
     {
         unittestError--;
-        if (g_CommandLine.verbose && g_CommandLine.verbose_unittest_errors)
+        if (g_CommandLine.verbose && g_CommandLine.verboseUnittestErrors)
         {
             diag.report(true);
             if (g_CommandLine.errorNoteOut)

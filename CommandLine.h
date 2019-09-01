@@ -20,11 +20,11 @@ struct CommandLine
     bool addRuntimeModule = true;
     bool optimizeByteCode = true;
 
-    bool verbose                 = false;
-    bool verbose_unittest_errors = false;
-    bool verbose_backend_command = false;
-    bool verbose_test            = true;
-    bool verbose_build_pass      = true;
+    bool verbose               = false;
+    bool verboseUnittestErrors = false;
+    bool verboseBackendCommand = false;
+    bool verboseTest           = true;
+    bool verboseBuildPass      = true;
 
     BuildPass   buildPass = BuildPass::Full;
     int         numCores  = 0;

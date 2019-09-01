@@ -42,7 +42,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
     si.dwFlags    = STARTF_USESTDHANDLES;
     ::ZeroMemory(&pi, sizeof(pi));
 
-    if (g_CommandLine.verbose_backend_command)
+    if (g_CommandLine.verboseBackendCommand)
         g_Log.verbose(cmdline);
 
     if (!::CreateProcessA(nullptr,
@@ -267,7 +267,7 @@ bool BackendCCompilerVS::compile()
     for (const auto& define : backendParameters.defines)
         clArguments += "/D" + define + " ";
 
-    bool verbose = g_CommandLine.verbose && g_CommandLine.verbose_backend_command;
+    bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
     string resultFile;
     switch (backendParameters.type)
@@ -279,7 +279,7 @@ bool BackendCCompilerVS::compile()
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-        if (g_CommandLine.verbose_backend_command)
+        if (g_CommandLine.verboseBackendCommand)
             libArguments += "/VERBOSE ";
         resultFile = backend->destFile + backendParameters.postFix + ".lib";
         libArguments += "/OUT:\"" + resultFile + "\" ";
@@ -335,7 +335,7 @@ bool BackendCCompilerVS::runTests()
 {
     fs::path path = backend->destFile + ".test.exe";
 
-    if (g_CommandLine.verbose_test)
+    if (g_CommandLine.verboseTest)
         g_Log.verbose(format("running tests on '%s'\n", path.string().c_str()));
     SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
     return true;

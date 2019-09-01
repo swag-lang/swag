@@ -174,7 +174,7 @@ void Workspace::enumerateModules()
 
 bool Workspace::buildModules(const vector<Module*>& list)
 {
-    if (g_CommandLine.verbose_build_pass)
+    if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("starting dependency pass...");
 
     // Dependency pass
@@ -204,7 +204,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
     g_ThreadMgr.waitEndJobs();
 
-    if (g_CommandLine.verbose_build_pass)
+    if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("starting semantic pass...");
 
     // Semantic pass
@@ -239,7 +239,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     // Output pass on all modules
     if (g_CommandLine.output)
     {
-        if (g_CommandLine.verbose_build_pass)
+        if (g_CommandLine.verboseBuildPass)
             g_Log.verbose("starting backend pass...");
 
         auto timeBefore = chrono::high_resolution_clock::now();
@@ -269,7 +269,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     // Call test functions
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
-        if (g_CommandLine.verbose_build_pass)
+        if (g_CommandLine.verboseBuildPass)
             g_Log.verbose("running bytecode test functions...");
 
         for (auto module : list)
@@ -313,7 +313,7 @@ bool Workspace::build()
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
 
-    if (g_CommandLine.verbose_build_pass)
+    if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("## syntax pass done on %d module(s)", modules.size()));
 
     // Build modules in dependency order
@@ -362,7 +362,7 @@ bool Workspace::build()
             return false;
         }
 
-        if (g_CommandLine.verbose_build_pass)
+        if (g_CommandLine.verboseBuildPass)
             g_Log.verbose(format("## starting build pass %d on %d module(s)", pass, (int) order.size()));
 
         buildModules(order);
