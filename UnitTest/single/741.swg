@@ -1,6 +1,6 @@
 #module module741
 
-func toto(x: [..] s32)
+func(T) toto(x: [..] T)
 {
 	@assert(@prop(x, count) == 1)
 	@assert(x[0] == 10)

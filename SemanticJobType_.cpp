@@ -251,7 +251,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCast(SemanticContext* context)
+bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 {
     auto node     = context->node;
     auto typeNode = node->childs[0];

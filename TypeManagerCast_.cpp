@@ -11,9 +11,9 @@ bool TypeManager::castError(ErrorContext* errorContext, TypeInfo* toType, TypeIn
     {
         assert(nodeToCast);
         if (explicitIsValid)
-            errorContext->report({errorContext->sourceFile, nodeToCast->token, format("can't implicitly cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+            errorContext->report({errorContext->sourceFile, nodeToCast->token, format("cannot cast from '%s' to '%s' (an explicit cast exists)", fromType->name.c_str(), toType->name.c_str()).c_str()});
         else
-            errorContext->report({errorContext->sourceFile, nodeToCast->token, format("can't cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+            errorContext->report({errorContext->sourceFile, nodeToCast->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
     }
 
     return false;
@@ -1140,9 +1140,6 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST))
         {
-			/*if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
-				nodeToCast->typeInfo = toType;
-			return true;*/
             if (castFlags & CASTFLAG_FORCE)
                 return true;
             else

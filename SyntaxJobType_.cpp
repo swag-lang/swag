@@ -201,7 +201,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Cast, sourceFile->indexInModule, parent);
-    node->semanticFct = &SemanticJob::resolveCast;
+    node->semanticFct = &SemanticJob::resolveExplicitCast;
     if (result)
         *result = node;
 
