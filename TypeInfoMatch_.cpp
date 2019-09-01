@@ -35,11 +35,11 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
         }
 
         auto symbolParameter = parameters[i];
-		if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
-		{
-			context.cptResolved = (int) context.parameters.size();
-			return;
-		}
+        if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
+        {
+            context.cptResolved = (int) context.parameters.size();
+            return;
+        }
 
         auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
         bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
@@ -81,6 +81,68 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
     }
 }
 
+static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoParam*>& parameters)
+{
+    if (!context.hasNamedParameters)
+        return;
+
+    auto callParameter = context.parameters[0];
+    callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
+
+    auto startResolved = context.cptResolved;
+    for (int i = startResolved; i < context.parameters.size(); i++)
+    {
+        callParameter = context.parameters[i];
+        if (callParameter->kind != AstNodeKind::FuncCallParam)
+            continue;
+
+        auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+        if (param->namedParam.empty())
+        {
+            context.badSignatureParameterIdx = i;
+            context.result                   = MissingNamedParameter;
+            return;
+        }
+
+        for (int j = startResolved; j < parameters.size(); j++)
+        {
+            auto symbolParameter = parameters[j];
+            if (parameters[j]->namedParam == param->namedParam)
+            {
+                if (context.doneParameters[j])
+                {
+                    context.badSignatureParameterIdx = i;
+                    context.result                   = DuplicatedNamedParameter;
+                    return;
+                }
+
+                auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+                bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+                if (!same)
+                {
+                    context.badSignatureParameterIdx  = i;
+                    context.badSignatureRequestedType = symbolParameter->typeInfo;
+                    context.badSignatureGivenType     = typeInfo;
+                    context.result                    = MatchResult::BadSignature;
+                }
+
+                param->resolvedParameter  = symbolParameter;
+                param->index              = j;
+                context.doneParameters[j] = true;
+                context.cptResolved++;
+                break;
+            }
+        }
+
+        if (!param->resolvedParameter)
+        {
+            context.badSignatureParameterIdx = i;
+            context.result                   = InvalidNamedParameter;
+            return;
+        }
+    }
+}
+
 void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
@@ -90,72 +152,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         return;
 
     matchParameters(context, parameters);
-
-    // Named parameters
-    if (context.hasNamedParameters)
-    {
-        auto callParameter = context.parameters[0];
-        callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
-
-        auto startResolved = context.cptResolved;
-        for (int i = startResolved; i < context.parameters.size(); i++)
-        {
-            callParameter = context.parameters[i];
-            if (callParameter->kind != AstNodeKind::FuncCallParam)
-                continue;
-
-            auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
-            if (param->namedParam.empty())
-            {
-                // After the last named parameters, we must have the first default value, or nothing
-                if (i < firstDefaultValueIdx)
-                {
-                    context.badSignatureParameterIdx = i;
-                    context.result                   = MissingNamedParameter;
-                    return;
-                }
-
-                break;
-            }
-
-            for (int j = startResolved; j < parameters.size(); j++)
-            {
-                auto symbolParameter = parameters[j];
-                if (parameters[j]->namedParam == param->namedParam)
-                {
-                    if (context.doneParameters[j])
-                    {
-                        context.badSignatureParameterIdx = i;
-                        context.result                   = DuplicatedNamedParameter;
-                        return;
-                    }
-
-                    auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-                    bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
-                    if (!same)
-                    {
-                        context.badSignatureParameterIdx  = i;
-                        context.badSignatureRequestedType = symbolParameter->typeInfo;
-                        context.badSignatureGivenType     = typeInfo;
-                        context.result                    = MatchResult::BadSignature;
-                    }
-
-                    param->resolvedParameter  = symbolParameter;
-                    param->index              = j;
-                    context.doneParameters[j] = true;
-                    context.cptResolved++;
-                    break;
-                }
-            }
-
-            if (!param->resolvedParameter)
-            {
-                context.badSignatureParameterIdx = i;
-                context.result                   = InvalidNamedParameter;
-                return;
-            }
-        }
-    }
+	matchNamedParameters(context, parameters);	    
 
     // Not enough parameters
     int firstDefault = firstDefaultValueIdx;
@@ -271,66 +268,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     matchParameters(context, childs);
     if (context.result != MatchResult::Ok)
         return;
-
-    // Named parameters
-    if (context.hasNamedParameters)
-    {
-        auto callParameter = context.parameters[0];
-        callParameter->parent->flags |= AST_MUST_SORT_CHILDS;
-
-        auto startResolved = context.cptResolved;
-        for (int i = startResolved; i < context.parameters.size(); i++)
-        {
-            callParameter = context.parameters[i];
-            if (callParameter->kind != AstNodeKind::FuncCallParam)
-                continue;
-
-            auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
-            if (param->namedParam.empty())
-            {
-                context.badSignatureParameterIdx = i;
-                context.result                   = MissingNamedParameter;
-                return;
-            }
-
-            for (int j = startResolved; j < childs.size(); j++)
-            {
-                auto symbolParameter = childs[j];
-                if (childs[j]->namedParam == param->namedParam)
-                {
-                    if (context.doneParameters[j])
-                    {
-                        context.badSignatureParameterIdx = i;
-                        context.result                   = DuplicatedNamedParameter;
-                        return;
-                    }
-
-                    auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-                    bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
-                    if (!same)
-                    {
-                        context.badSignatureParameterIdx  = i;
-                        context.badSignatureRequestedType = symbolParameter->typeInfo;
-                        context.badSignatureGivenType     = typeInfo;
-                        context.result                    = MatchResult::BadSignature;
-                    }
-
-                    param->resolvedParameter  = symbolParameter;
-                    param->index              = j;
-                    context.doneParameters[j] = true;
-                    context.cptResolved++;
-                    break;
-                }
-            }
-
-            if (!param->resolvedParameter)
-            {
-                context.badSignatureParameterIdx = i;
-                context.result                   = InvalidNamedParameter;
-                return;
-            }
-        }
-    }
+	matchNamedParameters(context, childs);
 
     // Solve generic parameters
     int wantedNumGenericParams = (int) genericParameters.size();
