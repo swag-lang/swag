@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "TypeManager.h"
-#include "Register.h"
 
 TypeManager g_TypeMgr;
 
@@ -192,7 +191,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
     return typeInfo;
 }
 
-TypeInfo* TypeManager::registerType(TypeInfo* newTypeInfo)
+TypeInfo* TypeTable::registerType(TypeInfo* newTypeInfo)
 {
     scoped_lock lk(mutexTypes);
     for (auto typeInfo : allTypes)

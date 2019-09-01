@@ -3,6 +3,8 @@
 #include "SpinLock.h"
 #include "BuildPass.h"
 #include "BackendParameters.h"
+#include "TypeManager.h"
+
 struct Utf8;
 struct SourceFile;
 struct SymTable;
@@ -39,7 +41,7 @@ struct Module : public PoolElement
     void     freeRegisterRC(uint32_t reg);
     void     reserveRegisterRR(uint32_t count);
     bool     executeNode(SourceFile* sourceFile, AstNode* node);
-	bool     executeNodeNoLock(SourceFile* sourceFile, AstNode* node, string& exception);
+    bool     executeNodeNoLock(SourceFile* sourceFile, AstNode* node, string& exception);
 
     SpinLock         mutexRegisterRC;
     SpinLock         mutexRegisterRR;
@@ -80,6 +82,8 @@ struct Module : public PoolElement
     set<string>      moduleDependenciesNames;
     vector<AstNode*> moduleDependencies;
     bool             hasBeenBuilt = false;
+
+    TypeTable typeTable;
 };
 
 extern Pool<Module> g_Pool_module;

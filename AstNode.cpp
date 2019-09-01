@@ -1,8 +1,6 @@
 #include "pch.h"
-#include "Pool.h"
 #include "Ast.h"
 #include "Scope.h"
-#include "Scoped.h"
 
 Pool<AstNode>            g_Pool_astNode;
 Pool<AstAttrDecl>        g_Pool_astAttrDecl;

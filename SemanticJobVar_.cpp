@@ -2,9 +2,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Scope.h"
-#include "TypeManager.h"
 #include "SymTable.h"
-#include "Diagnostic.h"
 #include "SourceFile.h"
 #include "Module.h"
 #include "Ast.h"
@@ -88,9 +86,10 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = static_cast<AstVarDecl*>(context->node);
-    bool isConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+    auto  node       = static_cast<AstVarDecl*>(context->node);
+    bool  isConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
     uint32_t symbolFlags = 0;
     if (node->kind == AstNodeKind::FuncDeclParam)
@@ -174,14 +173,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->count       = (uint32_t) typeList->childs.size();
                 typeArray->totalCount  = typeArray->count;
                 typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
-                node->typeInfo         = g_TypeMgr.registerType(typeArray);
+                node->typeInfo         = typeTable.registerType(typeArray);
                 SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->typeInfo, node->assignment));
             }
             else if (typeList->listKind == TypeInfoListKind::Tuple)
             {
                 auto typeTuple   = static_cast<TypeInfoList*>(typeList->clone());
                 typeTuple->scope = Ast::newScope(nullptr, "", ScopeKind::TypeList, node->ownerScope);
-                node->typeInfo   = g_TypeMgr.registerType(typeTuple);
+                node->typeInfo   = typeTable.registerType(typeTuple);
                 SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->typeInfo, node->assignment));
             }
             else
@@ -207,7 +206,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             node->typeInfo       = g_Pool_typeInfoGeneric.alloc();
             node->typeInfo->name = node->name;
-            node->typeInfo       = g_TypeMgr.registerType(node->typeInfo);
+            node->typeInfo       = typeTable.registerType(node->typeInfo);
         }
     }
 
@@ -246,7 +245,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             auto typeInfo = node->typeInfo->clone();
             typeInfo->setConst();
-            node->typeInfo = g_TypeMgr.registerType(typeInfo);
+            node->typeInfo = typeTable.registerType(typeInfo);
         }
 
         node->flags |= AST_NO_BYTECODE;

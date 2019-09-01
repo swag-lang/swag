@@ -2,7 +2,6 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "Scope.h"
 
 Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
 Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;

@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Diagnostic.h"
-#include "TypeManager.h"
 #include "SourceFile.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "LanguageSpec.h"
 #include "Scope.h"
+#include "Module.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -21,7 +20,9 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 {
-    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+    auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
@@ -59,7 +60,7 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 
     if (node->flags & AST_CONST_EXPR)
         typeInfo->setConst();
-    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+    node->typeInfo = typeTable.registerType(typeInfo);
 
     // Reserve
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
@@ -74,7 +75,9 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
-    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+    auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
@@ -100,7 +103,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 
     if (node->flags & AST_CONST_EXPR)
         typeInfo->setConst();
-    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+    node->typeInfo = typeTable.registerType(typeInfo);
 
     // Reserve
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
@@ -147,12 +150,12 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     {
         node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
     }
-	else if (typeInfo->kind == TypeInfoKind::Struct)
-	{
-		SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, node, nullptr));
-		if (context->result == SemanticResult::Pending)
-			return true;
-	}
+    else if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, node, nullptr));
+        if (context->result == SemanticResult::Pending)
+            return true;
+    }
     else
     {
         return false;
@@ -164,9 +167,10 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
 
 bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 {
-    auto node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
-    auto sourceFile = context->sourceFile;
-    auto expr       = node->expression;
+    auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+    auto  expr       = node->expression;
 
     switch (node->prop)
     {
@@ -191,7 +195,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = g_TypeMgr.typeInfoU8;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*u8";
-            node->typeInfo       = g_TypeMgr.registerType(ptrType);
+            node->typeInfo       = typeTable.registerType(ptrType);
             node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Slice)
@@ -202,7 +206,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = ptrSlice->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrSlice->pointedType->name;
-            node->typeInfo       = g_TypeMgr.registerType(ptrType);
+            node->typeInfo       = typeTable.registerType(ptrType);
             node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Array)
@@ -213,7 +217,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = ptrArray->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrArray->pointedType->name;
-            node->typeInfo       = g_TypeMgr.registerType(ptrType);
+            node->typeInfo       = typeTable.registerType(ptrType);
             node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
         }
         else

@@ -1,18 +1,18 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Diagnostic.h"
-#include "TypeManager.h"
 #include "SourceFile.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "SymTable.h"
+#include "Module.h"
 
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto child      = node->childs.front();
-    auto typeInfo   = child->typeInfo;
-    auto sourceFile = context->sourceFile;
+    auto  node       = context->node;
+    auto  child      = node->childs.front();
+    auto  typeInfo   = child->typeInfo;
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
 
     SWAG_VERIFY(child->flags & AST_L_VALUE, context->errorContext.report({sourceFile, child, "cannot take address of expression"}));
     if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerIndex)
@@ -25,7 +25,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         auto lambdaType    = child->typeInfo->clone();
         lambdaType->kind   = TypeInfoKind::Lambda;
         lambdaType->sizeOf = sizeof(void*);
-        node->typeInfo     = g_TypeMgr.registerType(lambdaType);
+        node->typeInfo     = typeTable.registerType(lambdaType);
         node->byteCodeFct  = &ByteCodeGenJob::emitMakeLambda;
     }
 
@@ -53,7 +53,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_CONST)
             ptrType->setConst();
 
-        node->typeInfo = g_TypeMgr.registerType(ptrType);
+        node->typeInfo = typeTable.registerType(ptrType);
     }
 
     return true;
@@ -163,9 +163,10 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
-    auto sourceFile        = context->sourceFile;
-    auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto arrayType         = TypeManager::concreteType(arrayNode->array->typeInfo);
+    auto  sourceFile       = context->sourceFile;
+    auto& typeTable        = sourceFile->module->typeTable;
+    auto  arrayNode        = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto  arrayType        = TypeManager::concreteType(arrayNode->array->typeInfo);
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
@@ -193,7 +194,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             auto newType = static_cast<TypeInfoPointer*>(typePtr->clone());
             newType->ptrCount--;
-            arrayNode->typeInfo = g_TypeMgr.registerType(newType);
+            arrayNode->typeInfo = typeTable.registerType(newType);
         }
         break;
     }

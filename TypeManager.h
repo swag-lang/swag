@@ -14,11 +14,11 @@ static const uint32_t CASTFLAG_JUST_CHECK    = 0x00000008;
 
 enum MakeConcrete
 {
-    FlagAll       = 0xFFFFFFFF,
-    FlagEnum      = 0x00000001,
-    FlagFunc      = 0x00000002,
-    FlagGeneric   = 0x00000004,
-    FlagAlias     = 0x00000008,
+    FlagAll     = 0xFFFFFFFF,
+    FlagEnum    = 0x00000001,
+    FlagFunc    = 0x00000002,
+    FlagGeneric = 0x00000004,
+    FlagAlias   = 0x00000008,
 };
 
 struct TypeManager
@@ -28,7 +28,7 @@ struct TypeManager
     static bool castError(ErrorContext* errorContext, TypeInfo* requestedType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid = false);
 
     static bool castToNativeBool(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
-	static bool castToNativeChar(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castToNativeChar(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
@@ -53,8 +53,6 @@ struct TypeManager
     static void      promoteOne(AstNode* left, AstNode* right);
     static TypeInfo* concreteType(TypeInfo* typeInfo, MakeConcrete flags = MakeConcrete::FlagAll);
 
-    TypeInfo* registerType(TypeInfo* typeInfo);
-
     TypeInfoNative*   typeInfoS8;
     TypeInfoNative*   typeInfoS16;
     TypeInfoNative*   typeInfoS32;
@@ -74,6 +72,11 @@ struct TypeManager
     TypeInfoVariadic* typeInfoVariadicValue;
 
     TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
+};
+
+struct TypeTable
+{
+    TypeInfo* registerType(TypeInfo* typeInfo);
 
     SpinLock          mutexTypes;
     vector<TypeInfo*> allTypes;

@@ -5,7 +5,6 @@
 #include "Workspace.h"
 #include "Scope.h"
 #include "Ast.h"
-#include "TypeManager.h"
 #include "Log.h"
 #include "ByteCode.h"
 #include "Attribute.h"

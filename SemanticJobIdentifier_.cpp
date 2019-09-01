@@ -1,8 +1,4 @@
 #include "pch.h"
-#include "Global.h"
-#include "Diagnostic.h"
-#include "ThreadManager.h"
-#include "LanguageSpec.h"
 #include "SourceFile.h"
 #include "SymTable.h"
 #include "SemanticJob.h"
@@ -11,7 +7,6 @@
 #include "Ast.h"
 #include "Attribute.h"
 #include "Module.h"
-#include "TypeManager.h"
 #include "Workspace.h"
 #include "Generic.h"
 
@@ -173,7 +168,8 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
 {
-    auto sourceFile                = context->sourceFile;
+    auto  sourceFile               = context->sourceFile;
+    auto& typeTable                = sourceFile->module->typeTable;
     parent->resolvedSymbolName     = symbol;
     parent->resolvedSymbolOverload = overload;
     parent->previousResolvedNode   = node;
@@ -216,7 +212,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             // From now this is considered as a function, not a lambda
             auto funcType     = typeInfo->clone();
             funcType->kind    = TypeInfoKind::FuncAttr;
-            node->typeInfo    = g_TypeMgr.registerType(funcType);
+            node->typeInfo    = typeTable.registerType(funcType);
             node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
         }
 
@@ -789,9 +785,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             // If a structure is referencing itself, we will match the incomplete symbol for now
             if (symbol->kind == SymbolKind::Struct && node->ownerStruct && node->ownerStruct->name == symbol->name)
             {
-				SWAG_VERIFY(!node->callParameters, internalError(context, "resolveIdentifier, struct auto ref, has parameters"));
+                SWAG_VERIFY(!node->callParameters, internalError(context, "resolveIdentifier, struct auto ref, has parameters"));
                 SWAG_VERIFY(!node->genericParameters, internalError(context, "resolveIdentifier, struct auto ref, has generic parameters"));
-				SWAG_ASSERT(symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE));
+                SWAG_ASSERT(symbol->overloads.size() == 1 && (symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE));
                 node->resolvedSymbolName     = symbol;
                 node->resolvedSymbolOverload = symbol->overloads[0];
                 node->typeInfo               = node->resolvedSymbolOverload->typeInfo;

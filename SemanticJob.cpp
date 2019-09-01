@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Diagnostic.h"
-#include "SourceFile.h"
 #include "SymTable.h"
-#include "Global.h"
 #include "ThreadManager.h"
 
 Pool<SemanticJob> g_Pool_semanticJob;

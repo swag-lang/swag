@@ -1,15 +1,11 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Global.h"
-#include "Diagnostic.h"
 #include "SourceFile.h"
 #include "SymTable.h"
 #include "Scope.h"
 #include "ByteCodeGenJob.h"
-#include "TypeManager.h"
 #include "Ast.h"
-#include "CommandLine.h"
-#include "TypeManager.h"
+#include "Module.h"
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
@@ -23,8 +19,8 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         case SymbolKind::Namespace:
         case SymbolKind::Enum:
         case SymbolKind::TypeAlias:
-		case SymbolKind::GenericType:
-		case SymbolKind::Struct:
+        case SymbolKind::GenericType:
+        case SymbolKind::Struct:
             return context->errorContext.report({sourceFile, node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
         }
     }
@@ -34,7 +30,9 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 
 bool SemanticJob::resolveTypeTuple(SemanticContext* context)
 {
-    auto node = context->node;
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+    auto  node       = context->node;
     SWAG_VERIFY(node->childs.size(), context->job->error(context, "empty tuple type"));
 
     auto typeInfoList = g_Pool_typeInfoList.alloc();
@@ -61,15 +59,17 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
     }
 
     typeInfoList->name += "}";
-    node->typeInfo = g_TypeMgr.registerType(typeInfoList);
+    node->typeInfo = typeTable.registerType(typeInfoList);
     return true;
 }
 
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
-    auto node      = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
-    auto typeInfo  = g_Pool_typeInfoFuncAttr.alloc();
-    typeInfo->kind = TypeInfoKind::Lambda;
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+    auto  node       = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
+    auto  typeInfo   = g_Pool_typeInfoFuncAttr.alloc();
+    typeInfo->kind   = TypeInfoKind::Lambda;
     if (node->returnType)
         typeInfo->returnType = node->returnType->typeInfo;
 
@@ -85,15 +85,16 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 
     typeInfo->computeName();
     typeInfo->sizeOf = sizeof(void*);
-    node->typeInfo   = g_TypeMgr.registerType(typeInfo);
+    node->typeInfo   = typeTable.registerType(typeInfo);
 
     return true;
 }
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+    auto  node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
@@ -116,7 +117,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         node->resolvedSymbolOverload = node->identifier->resolvedSymbolOverload;
         node->typeInfo               = g_Pool_typeInfoGeneric.alloc();
         node->typeInfo->name         = node->resolvedSymbolName->name;
-        node->typeInfo               = g_TypeMgr.registerType(node->typeInfo);
+        node->typeInfo               = typeTable.registerType(node->typeInfo);
     }
 
     // Otherwise, this is strange, we should have a type
@@ -152,7 +153,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrType->name        = "*" + node->typeInfo->name;
         if (node->isConst)
             ptrType->setConst();
-        node->typeInfo = g_TypeMgr.registerType(ptrType);
+        node->typeInfo = typeTable.registerType(ptrType);
     }
 
     // In fact, this is an array
@@ -171,7 +172,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrArray->sizeOf      = 0;
             if (node->isConst)
                 ptrArray->setConst();
-            node->typeInfo = g_TypeMgr.registerType(ptrArray);
+            node->typeInfo = typeTable.registerType(ptrArray);
         }
         else
         {
@@ -195,7 +196,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
                 if (node->isConst)
                     ptrArray->setConst();
-                node->typeInfo = g_TypeMgr.registerType(ptrArray);
+                node->typeInfo = typeTable.registerType(ptrArray);
             }
         }
     }
@@ -207,7 +208,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrSlice->sizeOf      = 2 * sizeof(void*);
         if (node->isConst)
             ptrSlice->setConst();
-        node->typeInfo = g_TypeMgr.registerType(ptrSlice);
+        node->typeInfo = typeTable.registerType(ptrSlice);
     }
 
     node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
@@ -219,8 +220,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 
 bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = context->node;
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
+    auto  node       = context->node;
 
     auto typeInfo     = g_Pool_typeInfoAlias.alloc();
     typeInfo->rawType = node->childs.front()->typeInfo;
@@ -229,7 +231,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
-    node->typeInfo = g_TypeMgr.registerType(typeInfo);
+    node->typeInfo = typeTable.registerType(typeInfo);
 
     uint32_t symbolFlags = 0;
     if (node->typeInfo->flags & TYPEINFO_GENERIC)
