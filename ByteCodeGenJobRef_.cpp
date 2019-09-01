@@ -69,8 +69,8 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
-	freeRegisterRC(context, node->access->resultRegisterRC);
-	return true;
+    freeRegisterRC(context, node->access->resultRegisterRC);
+    return true;
 }
 
 bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
@@ -135,7 +135,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
-		freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference of a slice
@@ -179,7 +179,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         node->resultRegisterRC = node->array->resultRegisterRC;
-		freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference of a pointer
@@ -223,7 +223,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         node->resultRegisterRC = node->array->resultRegisterRC;
-		freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference of an array
@@ -276,7 +276,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         node->resultRegisterRC = node->array->resultRegisterRC;
-		freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference a variadic parameter
@@ -303,7 +303,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, r0);
-		freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference a struct
