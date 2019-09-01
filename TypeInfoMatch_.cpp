@@ -51,52 +51,54 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             context.badSignatureGivenType     = typeInfo;
             context.result                    = MatchResult::BadSignature;
         }
-
-        context.doneParameters[context.cptResolved] = true;
-
-        // This is a generic type match
-        if (symbolTypeInfo->flags & TYPEINFO_GENERIC)
+        else
         {
-            auto it = context.mapGenericTypes.find(symbolTypeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_CAST))
+            context.doneParameters[context.cptResolved] = true;
+
+            // This is a generic type match
+            if (symbolTypeInfo->flags & TYPEINFO_GENERIC)
             {
-                context.badSignatureParameterIdx  = i;
-                context.badSignatureRequestedType = it->second.first;
-                context.badSignatureGivenType     = typeInfo;
-                context.result                    = MatchResult::BadSignature;
-            }
-            else
-            {
-                context.maxGenericParam                 = i;
-                context.mapGenericTypes[symbolTypeInfo] = {typeInfo, i};
-
-                // Need to register raw type when generic type is a compound
-                switch (symbolTypeInfo->kind)
+                auto it = context.mapGenericTypes.find(symbolTypeInfo);
+                if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_CAST))
                 {
-                case TypeInfoKind::Pointer:
-                {
-                    auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
-                    auto typePtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-
-                    context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
+                    context.badSignatureParameterIdx  = i;
+                    context.badSignatureRequestedType = it->second.first;
+                    context.badSignatureGivenType     = typeInfo;
+                    context.result                    = MatchResult::BadSignature;
                 }
-                break;
-                case TypeInfoKind::Array:
+                else
                 {
-                    auto symbolPtr = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
-                    auto typePtr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+                    context.maxGenericParam                 = i;
+                    context.mapGenericTypes[symbolTypeInfo] = {typeInfo, i};
 
-                    context.mapGenericTypes[symbolPtr->rawType] = {typePtr->rawType, i};
-                }
-                break;
-                case TypeInfoKind::Slice:
-                {
-                    auto symbolPtr = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
-                    auto typePtr   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+                    // Need to register raw type when generic type is a compound
+                    switch (symbolTypeInfo->kind)
+                    {
+                    case TypeInfoKind::Pointer:
+                    {
+                        auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
+                        auto typePtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
-                    context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
-                }
-                break;
+                        context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
+                    }
+                    break;
+                    case TypeInfoKind::Array:
+                    {
+                        auto symbolPtr = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
+                        auto typePtr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+
+                        context.mapGenericTypes[symbolPtr->rawType] = {typePtr->rawType, i};
+                    }
+                    break;
+                    case TypeInfoKind::Slice:
+                    {
+                        auto symbolPtr = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
+                        auto typePtr   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+
+                        context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
+                    }
+                    break;
+                    }
                 }
             }
         }
