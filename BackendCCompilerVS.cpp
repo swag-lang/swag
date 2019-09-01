@@ -96,19 +96,22 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                     pz = strstr(oneLine.c_str(), ": fatal error");
                 if (!pz)
                     pz = strstr(oneLine.c_str(), ": warning");
+
+				// Error
                 if (pz)
                 {
                     backend->module->numErrors++;
                     g_Workspace.numErrors++;
                     ok = false;
+
+                    g_Log.setColor(LogColor::Red);
+                    g_Log.print(oneLine + "\n");
                 }
 
-                if (pz || logAll)
+				// Messages
+                else if (logAll)
                 {
-                    if (pz)
-                        g_Log.setColor(LogColor::Red);
-                    else
-                        g_Log.setDefaultColor();
+                    g_Log.setDefaultColor();
                     g_Log.print(oneLine + "\n");
                 }
             }
@@ -125,20 +128,20 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
             switch (exit)
             {
             case 0:
-			case -1:
+            case -1:
                 break;
             case STATUS_ACCESS_VIOLATION:
                 g_Log.lock();
-				g_Log.setColor(LogColor::Red);
+                g_Log.setColor(LogColor::Red);
                 backend->module->numErrors++;
                 g_Workspace.numErrors++;
-				wcout << cmdline.c_str();
-				wcout << ": access violation during process execution\n";
-				g_Log.setDefaultColor();
+                wcout << cmdline.c_str();
+                wcout << ": access violation during process execution\n";
+                g_Log.setDefaultColor();
                 g_Log.unlock();
-				ok = false;
-				break;
-			default:
+                ok = false;
+                break;
+            default:
                 g_Log.lock();
                 g_Log.setColor(LogColor::Red);
                 backend->module->numErrors++;
