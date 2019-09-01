@@ -19,6 +19,30 @@ struct Utf8Crc : public Utf8
         computeCrc();
     }
 
+    Utf8Crc(const Utf8Crc& from)
+        : Utf8(from)
+    {
+        crc = from.crc;
+    }
+
+    Utf8Crc(Utf8Crc&& from)
+        : Utf8(move(from))
+    {
+        crc = from.crc;
+    }
+
+    void operator=(const Utf8Crc& from)
+    {
+        (Utf8&) * this = from;
+        crc            = from.crc;
+    }
+
+    void operator=(Utf8Crc&& from)
+    {
+        (Utf8&) * this = move(from);
+        crc            = from.crc;
+    }
+
     Utf8Crc(const char* from)
         : Utf8(from)
     {
