@@ -39,6 +39,8 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+	SWAG_VERIFY(token.id != TokenId::SymLeftSquare, syntaxError(token, "invalid token '['"));
+
     return true;
 }
 
