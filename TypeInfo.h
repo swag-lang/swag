@@ -462,46 +462,12 @@ struct TypeInfoList : public TypeInfo
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
-    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
-    {
-        if (this == from)
-            return true;
-        if (!TypeInfo::isSame(from, isSameFlags))
-            return false;
-        auto other = static_cast<TypeInfoList*>(from);
-        if (childs.size() != other->childs.size())
-            return false;
-        if (listKind != other->listKind)
-            return false;
-
-        for (int i = 0; i < childs.size(); i++)
-        {
-            if (!childs[i]->isSame(other->childs[i], isSameFlags))
-                return false;
-        }
-
-        if (names.size() != other->names.size())
-            return false;
-        for (int i = 0; i < names.size(); i++)
-        {
-            if (names[i] != other->names[i])
-                return false;
-        }
-
-        if (isSameFlags & ISSAME_EXACT)
-        {
-            if (scope != other->scope)
-                return false;
-        }
-
-        return true;
-    }
-
     int numRegisters() override
     {
         return 1;
     }
 
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
     TypeInfoListKind  listKind;
@@ -531,17 +497,7 @@ struct TypeInfoGeneric : public TypeInfo
         flags |= TYPEINFO_GENERIC;
     }
 
-    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
-    {
-        if (this == from)
-            return true;
-        if (from->kind == kind)
-            return name == from->name;
-        if (isSameFlags & ISSAME_EXACT)
-            return name == from->name;
-        return true;
-    }
-
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
     TypeInfo* rawType;
@@ -566,7 +522,7 @@ struct TypeInfoStruct : public TypeInfo
         return 1;
     }
 
-    bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
     void      match(SymbolMatchContext& context);
 
@@ -586,16 +542,7 @@ struct TypeInfoAlias : public TypeInfo
         rawType = nullptr;
     }
 
-    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
-    {
-        if (this == from)
-            return true;
-        if (!TypeInfo::isSame(from, isSameFlags))
-            return false;
-        auto other = static_cast<TypeInfoAlias*>(from);
-        return rawType->isSame(other->rawType, isSameFlags);
-    }
-
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
     TypeInfo* rawType;

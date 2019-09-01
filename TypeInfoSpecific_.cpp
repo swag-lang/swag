@@ -26,15 +26,15 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
     return true;
 }
 
-bool TypeInfoFuncAttr::isSame(TypeInfo* from, uint32_t isSameFlags)
+bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
-    if (this == from)
+    if (this == to)
         return true;
-    if (!TypeInfo::isSame(from, isSameFlags))
+    if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
-    auto other = static_cast<TypeInfoFuncAttr*>(from);
-    SWAG_ASSERT(from->kind == TypeInfoKind::FuncAttr || from->kind == TypeInfoKind::Lambda);
+    auto other = static_cast<TypeInfoFuncAttr*>(to);
+    SWAG_ASSERT(to->kind == TypeInfoKind::FuncAttr || to->kind == TypeInfoKind::Lambda);
     if (!isSame(other, isSameFlags))
         return false;
 
@@ -58,13 +58,13 @@ TypeInfo* TypeInfoNative::clone()
     return newType;
 }
 
-bool TypeInfoNative::isSame(TypeInfo* from, uint32_t isSameFlags)
+bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
-    if (this == from)
+    if (this == to)
         return true;
-    if (from->kind != TypeInfoKind::Native)
+    if (to->kind != TypeInfoKind::Native)
         return false;
-    auto other = static_cast<TypeInfoNative*>(from);
+    auto other = static_cast<TypeInfoNative*>(to);
     if (nativeType != other->nativeType)
         return false;
 
@@ -94,6 +94,16 @@ TypeInfo* TypeInfoAlias::clone()
     newType->rawType = rawType;
     newType->copyFrom(this);
     return newType;
+}
+
+bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto other = static_cast<TypeInfoAlias*>(to);
+    return rawType->isSame(other->rawType, isSameFlags);
 }
 
 TypeInfo* TypeInfoParam::clone()
@@ -171,14 +181,14 @@ TypeInfo* TypeInfoPointer::clone()
     return newType;
 }
 
-bool TypeInfoPointer::isSame(TypeInfo* from, uint32_t isSameFlags)
+bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
-    if (this == from)
+    if (this == to)
         return true;
-    if (!TypeInfo::isSame(from, isSameFlags))
+    if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
-    auto other = static_cast<TypeInfoPointer*>(from);
+    auto other = static_cast<TypeInfoPointer*>(to);
     if (ptrCount != other->ptrCount)
         return false;
 
@@ -221,6 +231,41 @@ TypeInfo* TypeInfoList::clone()
     return newType;
 }
 
+bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto other = static_cast<TypeInfoList*>(to);
+    if (childs.size() != other->childs.size())
+        return false;
+    if (listKind != other->listKind)
+        return false;
+
+    for (int i = 0; i < childs.size(); i++)
+    {
+        if (!childs[i]->isSame(other->childs[i], isSameFlags))
+            return false;
+    }
+
+    if (names.size() != other->names.size())
+        return false;
+    for (int i = 0; i < names.size(); i++)
+    {
+        if (names[i] != other->names[i])
+            return false;
+    }
+
+    if (isSameFlags & ISSAME_EXACT)
+    {
+        if (scope != other->scope)
+            return false;
+    }
+
+    return true;
+}
+
 TypeInfo* TypeInfoVariadic::clone()
 {
     auto newType = g_Pool_typeInfoVariadic.alloc();
@@ -234,6 +279,17 @@ TypeInfo* TypeInfoGeneric::clone()
     newType->copyFrom(this);
     newType->rawType = rawType;
     return newType;
+}
+
+bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (to->kind == kind)
+        return name == to->name;
+    if (isSameFlags & ISSAME_EXACT)
+        return name == to->name;
+    return true;
 }
 
 TypeInfo* TypeInfoStruct::clone()
@@ -261,14 +317,14 @@ TypeInfo* TypeInfoStruct::clone()
     return newType;
 }
 
-bool TypeInfoStruct::isSame(TypeInfo* from, uint32_t isSameFlags)
+bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
-    if (this == from)
+    if (this == to)
         return true;
-    if (!TypeInfo::isSame(from, isSameFlags))
+    if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
-    auto other = static_cast<TypeInfoStruct*>(from);
+    auto other = static_cast<TypeInfoStruct*>(to);
     if (genericParameters.size() != other->genericParameters.size())
         return false;
     for (int i = 0; i < genericParameters.size(); i++)
