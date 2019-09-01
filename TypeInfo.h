@@ -137,7 +137,7 @@ struct TypeInfo : public PoolElement
 
     void copyFrom(TypeInfo* from)
     {
-        flags      = from->flags;
+        flags      = from->flags & ~TYPEINFO_IN_MANAGER;
         kind       = from->kind;
         nativeType = from->nativeType;
         name       = from->name;
