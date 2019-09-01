@@ -13,19 +13,19 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-	if (isSameFlags & ISSAME_CAST)
-	{
-		if (to->kind == TypeInfoKind::Generic)
-			return true;
-	}
+    if (isSameFlags & ISSAME_CAST)
+    {
+        if (to->kind == TypeInfoKind::Generic)
+            return true;
+    }
 
     if (to->kind != TypeInfoKind::Native)
         return false;
 
-	if (isSameFlags & ISSAME_EXACT)
+    if (isSameFlags & ISSAME_EXACT)
     {
-		if ((flags & TYPEINFO_NATIVE_VALUE) != (to->flags & TYPEINFO_NATIVE_VALUE))
-			return false;
+        if ((flags & TYPEINFO_NATIVE_VALUE) != (to->flags & TYPEINFO_NATIVE_VALUE))
+            return false;
     }
 
     auto other = static_cast<TypeInfoNative*>(to);
@@ -156,6 +156,7 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
         return true;
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
+
     auto other = static_cast<TypeInfoArray*>(to);
     if (count != other->count)
         return false;

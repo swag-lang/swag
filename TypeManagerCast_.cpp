@@ -1140,6 +1140,9 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST))
         {
+			/*if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+				nodeToCast->typeInfo = toType;
+			return true;*/
             if (castFlags & CASTFLAG_FORCE)
                 return true;
             else
@@ -1339,7 +1342,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         if (castFlags & CASTFLAG_FORCE)
             return true;
     }
-
+	
     // String <=> null
     if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
         return true;

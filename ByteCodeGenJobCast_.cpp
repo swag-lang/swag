@@ -422,42 +422,7 @@ bool ByteCodeGenJob::emitCastNativeF64(ByteCodeGenContext* context, AstNode* exp
     return true;
 }
 
-bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context)
-{
-    AstNode* node         = context->node;
-    auto     typeInfo     = node->typeInfo;
-    auto     exprNode     = node->childs[1];
-    auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
-
-    if (typeInfo->kind == TypeInfoKind::Pointer && fromTypeInfo->kind == TypeInfoKind::Pointer)
-    {
-        node->resultRegisterRC = exprNode->resultRegisterRC;
-        return true;
-    }
-
-    if (typeInfo->kind == TypeInfoKind::Slice)
-    {
-        SWAG_CHECK(emitCastSlice(context, typeInfo, exprNode, fromTypeInfo));
-        return true;
-    }
-
-    if (fromTypeInfo->kind == TypeInfoKind::VariadicValue)
-    {
-        SWAG_CHECK(emitCastVariadic(context, typeInfo, exprNode, fromTypeInfo));
-        return true;
-    }
-
-    if (typeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, cast type not native");
-    if (fromTypeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
-
-    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
-    node->resultRegisterRC = exprNode->resultRegisterRC;
-    return true;
-}
-
-bool ByteCodeGenJob::emitCastVariadic(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo)
+bool ByteCodeGenJob::emitCastVariadic(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node              = context->node;
     node->typeInfo         = typeInfo;
@@ -466,7 +431,7 @@ bool ByteCodeGenJob::emitCastVariadic(ByteCodeGenContext* context, TypeInfo* typ
     return true;
 }
 
-bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* exprNode, TypeInfo* fromTypeInfo)
+bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node        = context->node;
     auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
@@ -507,7 +472,31 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 {
     if (fromTypeInfo == nullptr)
         return true;
-	SWAG_ASSERT(typeInfo);
+    SWAG_ASSERT(typeInfo);
+
+    auto node = context->node;
+    if (typeInfo->kind == TypeInfoKind::Pointer && fromTypeInfo->kind == TypeInfoKind::Pointer)
+    {
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        SWAG_CHECK(emitCastSlice(context, exprNode, typeInfo, fromTypeInfo));
+        return true;
+    }
+
+    if (fromTypeInfo->kind == TypeInfoKind::VariadicValue)
+    {
+        SWAG_CHECK(emitCastVariadic(context, exprNode, typeInfo, fromTypeInfo));
+        return true;
+    }
+
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, cast type not native");
+    if (fromTypeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
@@ -547,6 +536,17 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         break;
     }
 
-    exprNode->typeInfo = typeInfo;
+    node->resultRegisterRC = exprNode->resultRegisterRC;
+    exprNode->typeInfo     = typeInfo;
+    return true;
+}
+
+bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
+{
+    AstNode* node         = context->node;
+    auto     typeInfo     = node->typeInfo;
+    auto     exprNode     = node->childs[1];
+    auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
     return true;
 }

@@ -1,15 +1,14 @@
 #module module741
 
-//#[swag.printbc]
-
-func(T) toto(x: [..] *T)
+func toto(x: [..] s32)
 {
-	@assert(x[0,0] == 10)
+	@assert(@prop(x, count) == 1)
+	@assert(x[0] == 10)
 }
 	
+//#[swag.printbc]
 #test
 {
 	var cpt: [1] s32 = [10]
-	var ptr: [1] *s32 = [&cpt]
-	toto(ptr)
+	toto(cast([..] s32) cpt)
 }

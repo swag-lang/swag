@@ -161,7 +161,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     // In fact, this is an array
     if (node->arrayDim)
     {
-        // If no childs, then this is an array without a specified size
+        // Array without a specified size
         if (node->arrayDim == UINT32_MAX)
         {
             auto ptrArray         = g_Pool_typeInfoArray.alloc();
@@ -259,7 +259,7 @@ bool SemanticJob::resolveCast(SemanticContext* context)
 
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, typeNode->typeInfo, exprNode, CASTFLAG_FORCE));
     node->typeInfo    = typeNode->typeInfo;
-    node->byteCodeFct = &ByteCodeGenJob::emitCast;
+    node->byteCodeFct = &ByteCodeGenJob::emitExplicitCast;
 
     node->inheritOrFlag(exprNode, AST_CONST_EXPR);
     node->inheritComputedValue(exprNode);
