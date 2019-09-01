@@ -7,6 +7,7 @@
 #include "SourceFile.h"
 #include "ThreadManager.h"
 #include "TypeManager.h"
+#include "Module.h"
 
 void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatch& match)
 {
@@ -118,13 +119,28 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     return true;
 }
 
-void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo)
+void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneContext, TypeInfo** typeInfo)
 {
-    auto it = cloneContext.replaceTypes.find(*typeInfo);
+    auto oldType = *typeInfo;
+    auto it      = cloneContext.replaceTypes.find(oldType);
     if (it != cloneContext.replaceTypes.end())
     {
         *typeInfo = it->second;
         return;
+    }
+
+    if (oldType->kind == TypeInfoKind::Pointer)
+    {
+        auto typePointer = CastTypeInfo<TypeInfoPointer>(oldType, TypeInfoKind::Pointer);
+        it               = cloneContext.replaceTypes.find(typePointer->pointedType);
+        if (it != cloneContext.replaceTypes.end())
+        {
+            typePointer              = static_cast<TypeInfoPointer*>(typePointer->clone());
+            typePointer->pointedType = it->second;
+            typePointer->flags &= ~TYPEINFO_GENERIC;
+            *typeInfo = context->sourceFile->module->typeTable.registerType(typePointer);
+            return;
+        }
     }
 }
 
@@ -152,7 +168,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     for (int i = 0; i < newType->parameters.size(); i++)
     {
         auto param = newType->parameters[i];
-        doTypeSubstitution(cloneContext, &param->typeInfo);
+        doTypeSubstitution(context, cloneContext, &param->typeInfo);
     }
 
     // Replace generic types and values in the struct generic parameters

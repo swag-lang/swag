@@ -376,15 +376,13 @@ TypeInfo* TypeInfoFuncAttr::clone()
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
-        auto param = static_cast<TypeInfoParam*>(genericParameters[i]);
-        param      = static_cast<TypeInfoParam*>(param->clone());
+        auto param = static_cast<TypeInfoParam*>(genericParameters[i]->clone());
         newType->genericParameters.push_back(param);
     }
 
     for (int i = 0; i < parameters.size(); i++)
     {
-        auto param = static_cast<TypeInfoParam*>(parameters[i]);
-        param      = static_cast<TypeInfoParam*>(param->clone());
+        auto param = static_cast<TypeInfoParam*>(parameters[i]->clone());
         newType->parameters.push_back(param);
     }
 

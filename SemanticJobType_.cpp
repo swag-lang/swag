@@ -153,6 +153,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrType->name        = "*" + node->typeInfo->name;
         if (node->isConst)
             ptrType->setConst();
+		if (ptrType->pointedType->flags & TYPEINFO_GENERIC)
+			ptrType->flags |= TYPEINFO_GENERIC;
         node->typeInfo = typeTable.registerType(ptrType);
     }
 

@@ -1201,6 +1201,14 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         return true;
     if (fromType == toType)
         return true;
+
+    // Const
+    if (!toType->isConst() && fromType->isConst())
+    {
+        if (toType->kind != TypeInfoKind::Array)
+            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+    }
+
     if (fromType->isSame(toType, ISSAME_FORCAST))
         return true;
 
@@ -1219,21 +1227,16 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         auto toTypePtr   = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (toTypePtr->pointedType == g_TypeMgr.typeInfoVoid && fromTypePtr->ptrCount == toTypePtr->ptrCount)
             return true;
-		if (toTypePtr->pointedType->kind == TypeInfoKind::Generic)
-			return true;
+        if (fromTypePtr->ptrCount == toTypePtr->ptrCount && toTypePtr->pointedType->isSame(fromTypePtr->pointedType, ISSAME_FORCAST))
+            return true;
+        if (toTypePtr->pointedType->kind == TypeInfoKind::Generic)
+            return true;
     }
 
     if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
         return true;
     if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeType::String))
         return true;
-
-    // Const
-    if (!toType->isConst() && fromType->isConst())
-    {
-        if (toType->kind != TypeInfoKind::Array)
-            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
-    }
 
     // Cast to native type
     if (toType->kind == TypeInfoKind::Native)
