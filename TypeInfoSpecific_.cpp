@@ -310,8 +310,6 @@ void TypeInfoFuncAttr::computeName()
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
-    if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
-        return false;
     if (parameters.size() != other->parameters.size())
         return false;
     if (stackSize != other->stackSize)

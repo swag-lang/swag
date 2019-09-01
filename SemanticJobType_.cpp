@@ -70,8 +70,13 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
     auto  node       = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
     auto  typeInfo   = g_Pool_typeInfoFuncAttr.alloc();
     typeInfo->kind   = TypeInfoKind::Lambda;
+
     if (node->returnType)
+    {
         typeInfo->returnType = node->returnType->typeInfo;
+        if (typeInfo->returnType->flags & TYPEINFO_GENERIC)
+            typeInfo->flags |= TYPEINFO_GENERIC;
+    }
 
     if (node->parameters)
     {
@@ -79,6 +84,8 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
         {
             auto typeParam      = g_Pool_typeInfoParam.alloc();
             typeParam->typeInfo = param->typeInfo;
+            if (typeParam->typeInfo->flags & TYPEINFO_GENERIC)
+                typeInfo->flags |= TYPEINFO_GENERIC;
             typeInfo->parameters.push_back(typeParam);
         }
     }

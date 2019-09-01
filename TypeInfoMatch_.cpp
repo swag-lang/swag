@@ -72,10 +72,15 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                     context.mapGenericTypes[symbolTypeInfo] = {typeInfo, i};
 
                     // Need to register raw type when generic type is a compound
-                    bool done = false;
-                    while (!done)
+                    vector<TypeInfo*> symbolTypeInfos{symbolTypeInfo};
+                    vector<TypeInfo*> typeInfos{typeInfo};
+                    while (symbolTypeInfos.size())
                     {
-                        done = true;
+                        symbolTypeInfo = symbolTypeInfos.back();
+                        typeInfo       = typeInfos.back();
+                        symbolTypeInfos.pop_back();
+                        typeInfos.pop_back();
+
                         switch (symbolTypeInfo->kind)
                         {
                         case TypeInfoKind::Pointer:
@@ -84,9 +89,8 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                             auto typePtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
                             context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
-                            symbolTypeInfo                                  = symbolPtr->pointedType;
-                            typeInfo                                        = typePtr->pointedType;
-                            done                                            = false;
+                            symbolTypeInfos.push_back(symbolPtr->pointedType);
+                            typeInfos.push_back(typePtr->pointedType);
                         }
                         break;
                         case TypeInfoKind::Array:
@@ -95,9 +99,8 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                             auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
                             context.mapGenericTypes[symbolArray->rawType] = {typeArray->rawType, i};
-                            symbolTypeInfo                                = symbolArray->rawType;
-                            typeInfo                                      = typeArray->rawType;
-                            done                                          = false;
+                            symbolTypeInfos.push_back(symbolArray->rawType);
+                            typeInfos.push_back(typeArray->rawType);
                         }
                         break;
                         case TypeInfoKind::Slice:
@@ -106,9 +109,33 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                             auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
                             context.mapGenericTypes[symbolSlice->pointedType] = {typeSlice->pointedType, i};
-                            symbolTypeInfo                                    = symbolSlice->pointedType;
-                            typeInfo                                          = typeSlice->pointedType;
-                            done                                              = false;
+                            symbolTypeInfos.push_back(symbolSlice->pointedType);
+                            typeInfos.push_back(typeSlice->pointedType);
+                        }
+                        break;
+                        case TypeInfoKind::Lambda:
+                        {
+                            auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolTypeInfo, TypeInfoKind::Lambda);
+                            auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::Lambda);
+
+                            if (symbolLambda->returnType && (symbolLambda->returnType->flags & TYPEINFO_GENERIC))
+                            {
+                                context.mapGenericTypes[symbolLambda->returnType] = {typeLambda->returnType, i};
+                                symbolTypeInfos.push_back(symbolLambda->returnType);
+                                typeInfos.push_back(typeLambda->returnType);
+                            }
+
+                            for (int idx = 0; idx < symbolLambda->parameters.size(); idx++)
+                            {
+                                auto symbolParam = CastTypeInfo<TypeInfoParam>(symbolLambda->parameters[idx], TypeInfoKind::Param);
+                                auto typeParam   = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
+                                if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC)
+                                {
+                                    context.mapGenericTypes[symbolParam->typeInfo] = {typeParam->typeInfo, i};
+                                    symbolTypeInfos.push_back(symbolParam->typeInfo);
+                                    typeInfos.push_back(typeParam->typeInfo);
+                                }
+                            }
                         }
                         break;
                         }
