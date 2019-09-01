@@ -21,6 +21,8 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC         = node->array->resultRegisterRC;
     node->parent->resultRegisterRC = node->resultRegisterRC;
+
+    freeRegisterRC(context, node->access->resultRegisterRC);
     return true;
 }
 
@@ -44,6 +46,8 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
+
+    freeRegisterRC(context, node->access->resultRegisterRC);
     return true;
 }
 
@@ -64,7 +68,9 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
-    return true;
+
+	freeRegisterRC(context, node->access->resultRegisterRC);
+	return true;
 }
 
 bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
@@ -129,6 +135,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
+		freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference of a slice
@@ -172,6 +179,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         node->resultRegisterRC = node->array->resultRegisterRC;
+		freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference of a pointer
@@ -215,6 +223,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         node->resultRegisterRC = node->array->resultRegisterRC;
+		freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference of an array
@@ -229,7 +238,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count - 1;
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
 
-            context->sourceFile->module->freeRegisterRC(r0);
+            freeRegisterRC(context, r0);
         }
 
         // Increment pointer (if increment is not 0)
@@ -267,6 +276,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         node->resultRegisterRC = node->array->resultRegisterRC;
+		freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference a variadic parameter
@@ -291,8 +301,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // Point to the argument
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[1], node->array->resultRegisterRC);
 
-        freeRegisterRC(context, r0);
         node->resultRegisterRC = node->array->resultRegisterRC;
+        freeRegisterRC(context, r0);
+		freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
     // Dereference a struct

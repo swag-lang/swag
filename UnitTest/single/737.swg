@@ -1,7 +1,6 @@
 #module module737
 
 //#[swag.printbc]
-
 func(T) toto(x: [4] T)
 {
 	@assert(x[0] == 1)
