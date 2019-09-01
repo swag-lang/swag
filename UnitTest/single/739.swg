@@ -4,12 +4,12 @@
 
 func(T) toto(x: [1] *T)
 {
-	@assert(x[0][0] == 1)
+	@assert(x[0,0] == 10)
 }
 	
 #test
 {
-	var cpt: [] s32 = [1]
+	var cpt: [] s32 = [10]
 	var ptr: [] *s32 = [&cpt]
 	toto(ptr)
 }
