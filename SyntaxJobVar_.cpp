@@ -25,7 +25,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 
     AstVarDecl* varNode = Ast::newNode(this, &g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
     varNode->semanticFct = SemanticJob::resolveVarDecl;
-    varNode->inheritToken(token);
+    varNode->inheritTokenName(token);
     if (result)
         *result = varNode;
     SWAG_CHECK(tokenizer.getToken(token));
@@ -39,7 +39,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 
         AstVarDecl* otherVarNode = Ast::newNode(this, &g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
         otherVarNode->semanticFct = SemanticJob::resolveVarDecl;
-        otherVarNode->inheritToken(token);
+        otherVarNode->inheritTokenName(token);
         SWAG_CHECK(tokenizer.getToken(token));
         otherVariables.push_back(otherVarNode);
     }
@@ -124,6 +124,5 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         }
     }
 
-	varNode->inheritLocation();
     return true;
 }

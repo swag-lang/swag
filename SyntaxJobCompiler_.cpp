@@ -15,7 +15,6 @@
 bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 {
     auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::If, sourceFile->indexInModule, parent);
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -271,7 +270,6 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
 
     auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
-    node->inheritToken(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
     AstNode* identifier;

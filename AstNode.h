@@ -194,26 +194,22 @@ struct AstNode : public PoolElement
         }
     }
 
-    void inheritLocation()
+    void inheritLocationFromChilds()
     {
         if (childs.empty())
             return;
+		for (auto child : childs)
+			child->inheritLocationFromChilds();
         if (token.startLocation.column == 0 && token.startLocation.line == 0)
             token.startLocation = childs.front()->token.startLocation;
         token.endLocation = childs.back()->token.endLocation;
     }
 
-    void inheritToken(Token& tkn)
+    void inheritTokenName(Token& tkn)
     {
         name = tkn.text;
+        SWAG_ASSERT(!name.empty());
         name.computeCrc();
-        token = tkn;
-    }
-
-    void inheritTokenLocation(Token& tkn)
-    {
-        token.startLocation = tkn.startLocation;
-        token.endLocation   = tkn.endLocation;
     }
 
     void inheritOwnersAndFlags(SyntaxJob* job)

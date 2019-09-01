@@ -62,7 +62,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     }
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid struct name '%s'", token.text.c_str())));
-    Ast::assignToken(structNode, token);
+	structNode->inheritTokenName(token);
 
     // Add struct type and scope
     Scope* newScope = nullptr;

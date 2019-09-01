@@ -34,8 +34,7 @@ SymbolName* SymTable::findNoLock(const Utf8Crc& name)
 
 SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind)
 {
-    if (node->name.empty())
-        return nullptr;
+	SWAG_ASSERT(!node->name.empty());
     auto symbol = findNoLock(node->name);
     if (!symbol)
     {

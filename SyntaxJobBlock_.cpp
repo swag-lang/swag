@@ -12,7 +12,6 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::If, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveIf;
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -34,7 +33,6 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astWhile, AstNodeKind::While, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveWhile;
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -53,7 +51,6 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 {
     auto switchNode         = Ast::newNode(this, &g_Pool_astSwitch, AstNodeKind::Switch, sourceFile->indexInModule, parent);
     switchNode->semanticFct = &SemanticJob::resolveSwitch;
-    switchNode->inheritToken(token);
     if (result)
         *result = switchNode;
 
@@ -77,7 +74,6 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         caseNode->isDefault   = isDefault;
         caseNode->ownerSwitch = switchNode;
         caseNode->semanticFct = &SemanticJob::resolveCase;
-        caseNode->inheritToken(token);
         SWAG_CHECK(tokenizer.getToken(token));
         if (isDefault)
             defaultCase = caseNode;
@@ -142,7 +138,6 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
     auto node               = Ast::newNode(this, &g_Pool_astFor, AstNodeKind::For, sourceFile->indexInModule, parent);
     node->semanticBeforeFct = &SemanticJob::resolveForBefore;
     node->semanticFct       = &SemanticJob::resolveFor;
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -187,7 +182,6 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     auto node               = Ast::newNode(this, &g_Pool_astLoop, AstNodeKind::Loop, sourceFile->indexInModule, parent);
     node->semanticBeforeFct = &SemanticJob::resolveLoopBefore;
     node->semanticFct       = &SemanticJob::resolveLoop;
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -225,7 +219,6 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 
             auto identifer         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, var);
             identifer->semanticFct = &SemanticJob::resolveIndex;
-            identifer->inheritToken(token);
 
             var->assignment = identifer;
         }
@@ -245,7 +238,6 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 
     auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Break, sourceFile->indexInModule, parent);
     node->byteCodeFct = &ByteCodeGenJob::emitBreak;
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -263,7 +255,6 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Index, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveIndex;
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -278,7 +269,6 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 
     auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Continue, sourceFile->indexInModule, parent);
     node->byteCodeFct = &ByteCodeGenJob::emitContinue;
-    node->inheritToken(token);
     if (result)
         *result = node;
 

@@ -5,61 +5,6 @@
 #include "SemanticJob.h"
 #include "Diagnostic.h"
 
-bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
-{
-    auto callParams         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
-    *result                 = callParams;
-    callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
-
-    if (token.id != TokenId::SymLeftParen)
-    {
-        auto param = Ast::newNode(this, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
-        param->inheritTokenLocation(token);
-        param->semanticFct = &SemanticJob::resolveFuncCallParam;
-        SWAG_CHECK(doExpression(param));
-    }
-    else
-    {
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-        while (token.id != TokenId::SymRightParen)
-        {
-            while (true)
-            {
-                auto param = Ast::newNode(this, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
-                param->semanticFct = &SemanticJob::resolveFuncCallParam;
-                param->token       = token;
-                AstNode* paramExpression;
-                SWAG_CHECK(doExpression(nullptr, &paramExpression));
-
-                // Name
-                if (token.id == TokenId::SymColon)
-                {
-                    if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                        return sourceFile->report({sourceFile, paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
-                    param->namedParamNode = paramExpression->childs.front();
-                    param->namedParam     = param->namedParamNode->token.text;
-                    SWAG_CHECK(eatToken());
-                    SWAG_CHECK(doExpression(param));
-                }
-                else
-                {
-                    Ast::addChild(param, paramExpression);
-                }
-
-				param->inheritLocation();
-                if (token.id != TokenId::SymComma)
-                    break;
-                SWAG_CHECK(eatToken(TokenId::SymComma));
-            }
-        }
-
-        SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    }
-
-    callParams->inheritLocation();
-    return true;
-}
-
 bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 {
     uint32_t flags = 0;
@@ -77,7 +22,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
         return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
 
     auto identifier = Ast::newNode(this, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, nullptr);
-    identifier->inheritToken(token);
+	identifier->inheritTokenName(token);
     identifier->flags |= flags;
     identifier->semanticFct   = &SemanticJob::resolveIdentifier;
     identifier->byteCodeFct   = &ByteCodeGenJob::emitIdentifier;
@@ -104,7 +49,6 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
         SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
     }
 
-	identifier->inheritLocation();
     return true;
 }
 
@@ -123,6 +67,5 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifier(identifierRef, true));
     }
 
-    identifierRef->inheritLocation();
     return true;
 }

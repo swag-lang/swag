@@ -41,7 +41,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         }
     }
 
-    node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
 
     auto tokenId   = node->token.id;

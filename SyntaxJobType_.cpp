@@ -11,14 +11,14 @@
 
 bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::TypeAlias, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::TypeAlias, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveTypeAlias;
     if (result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid type name '%s'", token.text.c_str())));
-    node->inheritToken(token);
+    node->inheritTokenName(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymColon));
@@ -34,9 +34,8 @@ bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astTypeLambda, AstNodeKind::TypeLambda, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astTypeLambda, AstNodeKind::TypeLambda, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveTypeLambda;
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -67,9 +66,8 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
 {
     // Else this is a type expression
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveTypeTuple;
-    node->inheritToken(token);
     if (result)
         *result = node;
 
@@ -112,9 +110,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     // ...
     if (token.id == TokenId::SymDotDotDot)
     {
-        auto node = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
+        auto node         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
         node->semanticFct = &SemanticJob::resolveTypeExpression;
-        node->inheritToken(token);
         if (result)
             *result = node;
         node->token.literalType = g_TypeMgr.typeInfoVariadic;
@@ -131,7 +128,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
         return doTypeExpressionTuple(parent, result);
 
     // Else this is a type expression
-    auto node = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveTypeExpression;
     if (result)
         *result = node;
@@ -195,7 +192,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::Identifier)
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
-		node->inheritLocation();
         return true;
     }
 
@@ -204,9 +200,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Cast, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Cast, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveCast;
-    node->inheritToken(token);
     if (result)
         *result = node;
 

@@ -88,7 +88,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     AstNode* node       = context->node;
     auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParameters);
-    auto     intrinsic  = g_LangSpec.intrinsics[node->token.text];
+	SWAG_ASSERT(!node->name.empty());
+    auto     intrinsic  = g_LangSpec.intrinsics[node->name];
     switch (intrinsic)
     {
     case Intrinsic::IntrinsicPrint:

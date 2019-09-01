@@ -18,10 +18,13 @@ namespace Ast
         node->ownerFct      = nullptr;
         node->sourceFileIdx = sourceFileIdx;
 
-		if (job)
-		{
-			node->inheritOwnersAndFlags(job);
-		}
+        if (job)
+        {
+            node->token.id            = job->token.id;
+            node->token.startLocation = job->token.startLocation;
+            node->token.endLocation   = job->token.endLocation;
+            node->inheritOwnersAndFlags(job);
+        }
 
         if (parent)
         {
@@ -32,13 +35,6 @@ namespace Ast
         }
 
         return node;
-    }
-
-    inline void assignToken(AstNode* node, Token& token)
-    {
-        node->name = move(token.text);
-        node->name.computeCrc();
-        node->token = move(token);
     }
 
     extern Scope*   findOrCreateScopeByName(Scope* parentScope, const string& name);

@@ -16,7 +16,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid enum name '%s'", token.text.c_str())));
-    Ast::assignToken(enumNode, token);
+	enumNode->inheritTokenName(token);
 
     // Add enum type and scope
     Scope* newScope = nullptr;
@@ -65,8 +65,8 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     {
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
         auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumDecl, sourceFile->indexInModule, enumNode);
+		enumValue->inheritTokenName(token);
         enumValue->semanticFct = &SemanticJob::resolveEnumValue;
-        Ast::assignToken(enumValue, token);
         if (!isContextDisabled())
             currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue, SymbolKind::EnumValue);
 

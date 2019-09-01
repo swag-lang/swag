@@ -191,7 +191,6 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
-    node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);
     left->typeInfo  = TypeManager::concreteType(left->typeInfo, MakeConcrete::FlagEnum);

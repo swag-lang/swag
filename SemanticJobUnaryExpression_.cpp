@@ -121,7 +121,6 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto op         = node->childs[0];
 
-    node->inheritLocation();
     node->typeInfo = op->typeInfo;
     node->inheritOrFlag(op, AST_CONST_EXPR);
     node->byteCodeFct = &ByteCodeGenJob::emitUnaryOp;

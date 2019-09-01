@@ -695,7 +695,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto left       = node->childs[0];
     auto right      = node->childs[1];
 
-    node->inheritLocation();
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);
 
@@ -765,7 +764,6 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
 
-    node->inheritLocation();
     TypeManager::promote(left, right);
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoU32, right));
     node->typeInfo = left->typeInfo;
@@ -794,7 +792,6 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     auto leftNode  = node->childs[0];
     auto rightNode = node->childs[1];
 
-    node->inheritLocation();
     node->typeInfo = g_TypeMgr.typeInfoBool;
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, leftNode));
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, rightNode));

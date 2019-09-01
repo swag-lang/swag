@@ -13,9 +13,8 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveUsing;
-    node->inheritToken(token);
-	if (result)
-		*result = node;
+    if (result)
+        *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doIdentifierRef(node));
@@ -36,6 +35,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     {
         namespaceNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
         namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
+		namespaceNode->inheritTokenName(token);
 
         switch (token.id)
         {
@@ -50,7 +50,6 @@ bool SyntaxJob::doNamespace(AstNode* parent)
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->externalBuffer)
             SWAG_VERIFY(token.text != "swag", syntaxError(token, "the 'swag' namespace is reserved by the compiler"));
-        Ast::assignToken(namespaceNode, token);
 
         // Add/Get namespace
         currentScope->allocateSymTable();
@@ -202,9 +201,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdLoop:
         SWAG_CHECK(doLoop(parent, result));
         break;
-	case TokenId::KwdLet:
+    case TokenId::KwdLet:
     case TokenId::KwdVar:
-	case TokenId::KwdConst:
+    case TokenId::KwdConst:
         SWAG_CHECK(doVarDecl(parent, result));
         break;
     case TokenId::Identifier:
@@ -240,9 +239,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::SymSemiColon:
         SWAG_CHECK(tokenizer.getToken(token));
         break;
-	case TokenId::KwdLet:
+    case TokenId::KwdLet:
     case TokenId::KwdVar:
-	case TokenId::KwdConst:
+    case TokenId::KwdConst:
         SWAG_CHECK(doVarDecl(parent));
         break;
     case TokenId::KwdType:
@@ -270,7 +269,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         SWAG_CHECK(doAttrUse(parent));
         break;
     case TokenId::KwdFunc:
-	case TokenId::CompilerTest:
+    case TokenId::CompilerTest:
         SWAG_CHECK(doFuncDecl(parent));
         break;
     case TokenId::CompilerUnitTest:
