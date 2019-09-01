@@ -1322,8 +1322,6 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         return true;
     if (fromType->kind == TypeInfoKind::VariadicValue)
         return true;
-    if (toType->kind == TypeInfoKind::Generic)
-        return true;
 
     // Const mismatch
     if (!toType->isConst() && fromType->isConst())
@@ -1339,14 +1337,6 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer)
     {
         if (castFlags & CASTFLAG_FORCE)
-            return true;
-        if (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull)
-            return true;
-        auto fromTypePtr = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        auto toTypePtr   = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-        if (fromTypePtr->ptrCount == toTypePtr->ptrCount && toTypePtr->pointedType->isSame(fromTypePtr->pointedType, ISSAME_FORCAST))
-            return true;
-        if (toTypePtr->pointedType->kind == TypeInfoKind::Generic)
             return true;
     }
 

@@ -12,8 +12,16 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+
+	if (isSameFlags & ISSAME_FORCAST)
+	{
+		if (to->kind == TypeInfoKind::Generic)
+			return true;
+	}
+
     if (to->kind != TypeInfoKind::Native)
         return false;
+
     auto other = static_cast<TypeInfoNative*>(to);
     if (nativeType != other->nativeType)
         return false;
@@ -100,8 +108,17 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
+
+    if (isSameFlags & ISSAME_FORCAST)
+    {
+        if (this == g_TypeMgr.typeInfoNull)
+            return true;
+        if (to == g_TypeMgr.typeInfoNull)
+            return true;
+    }
 
     auto other = static_cast<TypeInfoPointer*>(to);
     if (ptrCount != other->ptrCount)
