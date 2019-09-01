@@ -229,11 +229,29 @@ bool Workspace::buildModules(const vector<Module*>& list)
             {
                 auto& name = semanticJob->waitingSymbolSolved ? semanticJob->waitingSymbolSolved->name : node->name;
                 sourceFile->report({sourceFile, node->token, format("cannot resolve type of identifier '%s'", name.c_str())});
-				sourceFile->module->numErrors = 0;
+                sourceFile->module->numErrors = 0;
             }
         }
 
         g_ThreadMgr.pendingJobs.clear();
+    }
+
+    // Call bytecode test functions
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+    {
+        if (g_CommandLine.verboseBuildPass)
+            g_Log.verbose("running bytecode test functions...");
+
+        for (auto module : list)
+        {
+            for (auto func : module->byteCodeTestFunc)
+            {
+                if (func->sourceFile->module->numErrors)
+                    continue;
+                g_Stats.testFunctions++;
+                module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+            }
+        }
     }
 
     // Output pass on all modules
@@ -264,24 +282,6 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
         auto timeAfter = chrono::high_resolution_clock::now();
         g_Stats.outputTime += timeAfter - timeBefore;
-    }
-
-    // Call test functions
-    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
-    {
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose("running bytecode test functions...");
-
-        for (auto module : list)
-        {
-            for (auto func : module->byteCodeTestFunc)
-            {
-                if (func->sourceFile->module->numErrors)
-                    continue;
-                g_Stats.testFunctions++;
-                module->executeNode(module->files[func->node->sourceFileIdx], func->node);
-            }
-        }
     }
 
     // During unit testing, be sure we don't have remaining not raised errors

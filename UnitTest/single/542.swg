@@ -23,6 +23,8 @@ namespace titi
 //#[swag.printbc]
 #test
 {	
+	a = false
+	b = false
 	@assert(a == false)
 	@assert(b == false)
 	toto.F
