@@ -1197,12 +1197,14 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (fromType->kind == TypeInfoKind::Alias)
         fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagAlias);
 
-    if (fromType->kind == TypeInfoKind::VariadicValue)
-        return true;
     if (fromType == toType)
         return true;
+    if (fromType->kind == TypeInfoKind::VariadicValue)
+        return true;
+    if (toType->kind == TypeInfoKind::Generic)
+        return true;
 
-    // Const
+    // Const mismatch
     if (!toType->isConst() && fromType->isConst())
     {
         if (toType->kind != TypeInfoKind::Array)
@@ -1210,10 +1212,6 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     }
 
     if (fromType->isSame(toType, ISSAME_FORCAST))
-        return true;
-
-    // To a generic type
-    if (toType->kind == TypeInfoKind::Generic)
         return true;
 
     // Pointer to pointer
@@ -1233,6 +1231,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
             return true;
     }
 
+	// String <=> null
     if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
         return true;
     if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeType::String))
@@ -1254,7 +1253,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (toType->kind == TypeInfoKind::Slice)
         return castToSlice(errorContext, toType, fromType, nodeToCast, castFlags);
 
-    // Cast to slice
+    // Cast to lambda
     if (toType->kind == TypeInfoKind::Lambda)
     {
         if (toType->isSame(fromType, ISSAME_FORCAST))
