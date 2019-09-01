@@ -1,56 +1,6 @@
 #include "pch.h"
 #include "TypeManager.h"
 
-bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
-{
-    if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
-        return false;
-    if (parameters.size() != other->parameters.size())
-        return false;
-    if (stackSize != other->stackSize)
-        return false;
-
-    for (int i = 0; i < genericParameters.size(); i++)
-    {
-        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, isSameFlags))
-            return false;
-        if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
-            return false;
-    }
-
-    for (int i = 0; i < parameters.size(); i++)
-    {
-        if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo, isSameFlags))
-            return false;
-    }
-    return true;
-}
-
-bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
-{
-    if (this == to)
-        return true;
-    if (!TypeInfo::isSame(to, isSameFlags))
-        return false;
-
-    auto other = static_cast<TypeInfoFuncAttr*>(to);
-    SWAG_ASSERT(to->kind == TypeInfoKind::FuncAttr || to->kind == TypeInfoKind::Lambda);
-    if (!isSame(other, isSameFlags))
-        return false;
-
-    if (isSameFlags & ISSAME_EXACT)
-    {
-        if (returnType && returnType != g_TypeMgr.typeInfoVoid && !other->returnType)
-            return false;
-        if (!returnType && other->returnType && other->returnType != g_TypeMgr.typeInfoVoid)
-            return false;
-        if (returnType && other->returnType && !returnType->isSame(other->returnType, isSameFlags))
-            return false;
-    }
-
-    return true;
-}
-
 TypeInfo* TypeInfoNative::clone()
 {
     auto newType = g_Pool_typeInfoNative.alloc();
@@ -135,61 +85,6 @@ bool TypeInfoParam::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
     auto other = static_cast<TypeInfoParam*>(to);
     return typeInfo->isSame(other->typeInfo, isSameFlags);
-}
-
-TypeInfo* TypeInfoFuncAttr::clone()
-{
-    auto newType                  = g_Pool_typeInfoFuncAttr.alloc();
-    newType->firstDefaultValueIdx = firstDefaultValueIdx;
-    newType->returnType           = returnType;
-    newType->stackSize            = stackSize;
-
-    for (int i = 0; i < genericParameters.size(); i++)
-    {
-        auto param = static_cast<TypeInfoParam*>(genericParameters[i]->clone());
-        newType->genericParameters.push_back(param);
-    }
-
-    for (int i = 0; i < parameters.size(); i++)
-    {
-        auto param = static_cast<TypeInfoParam*>(parameters[i]->clone());
-        newType->parameters.push_back(param);
-    }
-
-    newType->copyFrom(this);
-    return newType;
-}
-
-void TypeInfoFuncAttr::computeName()
-{
-    name.clear();
-
-    if (genericParameters.size())
-    {
-        name += "!(";
-        for (int i = 0; i < genericParameters.size(); i++)
-        {
-            if (i)
-                name += ", ";
-            name += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
-        }
-
-        name += ")";
-    }
-
-    name += format("(");
-    for (int i = 0; i < parameters.size(); i++)
-    {
-        if (i)
-            name += ", ";
-        name += parameters[i]->typeInfo->name;
-    }
-
-    name += ")";
-    if (returnType)
-        name += format("->%s", returnType->name.c_str());
-    else
-        name += "->void";
 }
 
 TypeInfo* TypeInfoPointer::clone()
@@ -331,6 +226,111 @@ bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t isSameFlags)
         return name == to->name;
     if (isSameFlags & ISSAME_EXACT)
         return name == to->name;
+    return true;
+}
+
+TypeInfo* TypeInfoFuncAttr::clone()
+{
+    auto newType                  = g_Pool_typeInfoFuncAttr.alloc();
+    newType->firstDefaultValueIdx = firstDefaultValueIdx;
+    newType->returnType           = returnType;
+    newType->stackSize            = stackSize;
+
+    for (int i = 0; i < genericParameters.size(); i++)
+    {
+        auto param = static_cast<TypeInfoParam*>(genericParameters[i]->clone());
+        newType->genericParameters.push_back(param);
+    }
+
+    for (int i = 0; i < parameters.size(); i++)
+    {
+        auto param = static_cast<TypeInfoParam*>(parameters[i]->clone());
+        newType->parameters.push_back(param);
+    }
+
+    newType->copyFrom(this);
+    return newType;
+}
+
+void TypeInfoFuncAttr::computeName()
+{
+    name.clear();
+
+    if (genericParameters.size())
+    {
+        name += "!(";
+        for (int i = 0; i < genericParameters.size(); i++)
+        {
+            if (i)
+                name += ", ";
+            name += genericParameters[i]->typeInfo ? genericParameters[i]->typeInfo->name : genericParameters[i]->name;
+        }
+
+        name += ")";
+    }
+
+    name += format("(");
+    for (int i = 0; i < parameters.size(); i++)
+    {
+        if (i)
+            name += ", ";
+        name += parameters[i]->typeInfo->name;
+    }
+
+    name += ")";
+    if (returnType)
+        name += format("->%s", returnType->name.c_str());
+    else
+        name += "->void";
+}
+
+bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
+{
+    if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
+        return false;
+    if (parameters.size() != other->parameters.size())
+        return false;
+    if (stackSize != other->stackSize)
+        return false;
+
+    for (int i = 0; i < genericParameters.size(); i++)
+    {
+        if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, isSameFlags))
+            return false;
+        if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
+            return false;
+    }
+
+    for (int i = 0; i < parameters.size(); i++)
+    {
+        if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo, isSameFlags))
+            return false;
+    }
+    return true;
+}
+
+bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+
+    auto other = static_cast<TypeInfoFuncAttr*>(to);
+    SWAG_ASSERT(to->kind == TypeInfoKind::FuncAttr || to->kind == TypeInfoKind::Lambda);
+    if (!isSame(other, isSameFlags))
+        return false;
+
+    if (isSameFlags & ISSAME_EXACT)
+    {
+        if (returnType && returnType != g_TypeMgr.typeInfoVoid && !other->returnType)
+            return false;
+        if (!returnType && other->returnType && other->returnType != g_TypeMgr.typeInfoVoid)
+            return false;
+        if (returnType && other->returnType && !returnType->isSame(other->returnType, isSameFlags))
+            return false;
+    }
+
     return true;
 }
 
