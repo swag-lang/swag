@@ -334,6 +334,7 @@
     <ClCompile Include="TokenizerSymbol_.cpp" />
     <ClCompile Include="TypeInfo.cpp" />
     <ClCompile Include="TypeInfoMatch_.cpp" />
+    <ClCompile Include="TypeInfoSpecific_.cpp" />
     <ClCompile Include="TypeManager.cpp" />
     <ClCompile Include="TypeManagerCast_.cpp" />
     <ClCompile Include="types.c">

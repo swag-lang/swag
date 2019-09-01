@@ -281,6 +281,9 @@
     <ClCompile Include="TypeInfoMatch_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="TypeInfoSpecific_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
