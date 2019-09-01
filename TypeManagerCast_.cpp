@@ -1175,94 +1175,6 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
     return castError(errorContext, toType, fromType, nodeToCast, castFlags, explicitIsValid);
 }
 
-bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
-{
-    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_FORCE))
-    {
-        toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnum);
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
-    }
-
-    SWAG_ASSERT(toType && fromType);
-
-    if (toType->kind == TypeInfoKind::FuncAttr)
-        toType = TypeManager::concreteType(toType, MakeConcrete::FlagFunc);
-    if (fromType->kind == TypeInfoKind::FuncAttr)
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
-    if (toType->kind != TypeInfoKind::Lambda && fromType->kind == TypeInfoKind::Lambda)
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
-
-    if (toType->kind == TypeInfoKind::Alias)
-        toType = TypeManager::concreteType(toType, MakeConcrete::FlagAlias);
-    if (fromType->kind == TypeInfoKind::Alias)
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagAlias);
-
-    if (fromType == toType)
-        return true;
-    if (fromType->kind == TypeInfoKind::VariadicValue)
-        return true;
-    if (toType->kind == TypeInfoKind::Generic)
-        return true;
-
-    // Const mismatch
-    if (!toType->isConst() && fromType->isConst())
-    {
-        if (toType->kind != TypeInfoKind::Array)
-            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
-    }
-
-    if (fromType->isSame(toType, ISSAME_FORCAST))
-        return true;
-
-    // Pointer to pointer
-    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer)
-    {
-        if (castFlags & CASTFLAG_FORCE)
-            return true;
-        if (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull)
-            return true;
-        auto fromTypePtr = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        auto toTypePtr   = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
-        if (toTypePtr->pointedType == g_TypeMgr.typeInfoVoid && fromTypePtr->ptrCount == toTypePtr->ptrCount)
-            return true;
-        if (fromTypePtr->ptrCount == toTypePtr->ptrCount && toTypePtr->pointedType->isSame(fromTypePtr->pointedType, ISSAME_FORCAST))
-            return true;
-        if (toTypePtr->pointedType->kind == TypeInfoKind::Generic)
-            return true;
-    }
-
-	// String <=> null
-    if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
-        return true;
-    if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeType::String))
-        return true;
-
-    // Cast to native type
-    if (toType->kind == TypeInfoKind::Native)
-        return castToNative(errorContext, toType, fromType, nodeToCast, castFlags);
-
-    // Cast to array
-    if (toType->kind == TypeInfoKind::Array)
-        return castToArray(errorContext, toType, fromType, nodeToCast, castFlags);
-
-    // Cast to tuple
-    if (toType->kind == TypeInfoKind::TypeList)
-        return castToTuple(errorContext, toType, fromType, nodeToCast, castFlags);
-
-    // Cast to slice
-    if (toType->kind == TypeInfoKind::Slice)
-        return castToSlice(errorContext, toType, fromType, nodeToCast, castFlags);
-
-    // Cast to lambda
-    if (toType->kind == TypeInfoKind::Lambda)
-    {
-        if (toType->isSame(fromType, ISSAME_FORCAST))
-            return true;
-    }
-
-    return castError(errorContext, toType, fromType, nodeToCast, castFlags);
-}
-
 bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
     return makeCompatibles(errorContext, toType, nodeToCast->typeInfo, nodeToCast, castFlags);
@@ -1382,4 +1294,90 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
             left->computedValue.reg.f64 = left->computedValue.reg.f32;
         break;
     }
+}
+
+bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+{
+    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_FORCE))
+    {
+        toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+    }
+
+    SWAG_ASSERT(toType && fromType);
+
+    if (toType->kind == TypeInfoKind::FuncAttr)
+        toType = TypeManager::concreteType(toType, MakeConcrete::FlagFunc);
+    if (fromType->kind == TypeInfoKind::FuncAttr)
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
+    if (toType->kind != TypeInfoKind::Lambda && fromType->kind == TypeInfoKind::Lambda)
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
+
+    if (toType->kind == TypeInfoKind::Alias)
+        toType = TypeManager::concreteType(toType, MakeConcrete::FlagAlias);
+    if (fromType->kind == TypeInfoKind::Alias)
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagAlias);
+
+    if (fromType == toType)
+        return true;
+    if (fromType->kind == TypeInfoKind::VariadicValue)
+        return true;
+    if (toType->kind == TypeInfoKind::Generic)
+        return true;
+
+    // Const mismatch
+    if (!toType->isConst() && fromType->isConst())
+    {
+        if (toType->kind != TypeInfoKind::Array)
+            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+    }
+
+    if (fromType->isSame(toType, ISSAME_FORCAST))
+        return true;
+
+    // Pointer to pointer
+    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer)
+    {
+        if (castFlags & CASTFLAG_FORCE)
+            return true;
+        if (toType == g_TypeMgr.typeInfoNull || fromType == g_TypeMgr.typeInfoNull)
+            return true;
+        auto fromTypePtr = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        auto toTypePtr   = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+        if (fromTypePtr->ptrCount == toTypePtr->ptrCount && toTypePtr->pointedType->isSame(fromTypePtr->pointedType, ISSAME_FORCAST))
+            return true;
+        if (toTypePtr->pointedType->kind == TypeInfoKind::Generic)
+            return true;
+    }
+
+    // String <=> null
+    if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
+        return true;
+    if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeType::String))
+        return true;
+
+    // Cast to native type
+    if (toType->kind == TypeInfoKind::Native)
+        return castToNative(errorContext, toType, fromType, nodeToCast, castFlags);
+
+    // Cast to array
+    if (toType->kind == TypeInfoKind::Array)
+        return castToArray(errorContext, toType, fromType, nodeToCast, castFlags);
+
+    // Cast to tuple
+    if (toType->kind == TypeInfoKind::TypeList)
+        return castToTuple(errorContext, toType, fromType, nodeToCast, castFlags);
+
+    // Cast to slice
+    if (toType->kind == TypeInfoKind::Slice)
+        return castToSlice(errorContext, toType, fromType, nodeToCast, castFlags);
+
+    // Cast to lambda
+    if (toType->kind == TypeInfoKind::Lambda)
+    {
+        if (toType->isSame(fromType, ISSAME_FORCAST))
+            return true;
+    }
+
+    return castError(errorContext, toType, fromType, nodeToCast, castFlags);
 }

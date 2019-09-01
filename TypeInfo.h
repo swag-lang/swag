@@ -173,18 +173,7 @@ struct TypeInfoNative : public TypeInfo
         value      = 0;
     }
 
-    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
-    {
-        if (this == from)
-            return true;
-        if (from->kind != TypeInfoKind::Native)
-            return false;
-        auto castedFrom = static_cast<TypeInfoNative*>(from);
-        if (nativeType != castedFrom->nativeType)
-            return false;
-        return true;
-    }
-
+    bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
     int64_t value;
@@ -370,18 +359,6 @@ struct TypeInfoPointer : public TypeInfo
         ptrCount    = 0;
     }
 
-    bool isSame(TypeInfo* from, uint32_t isSameFlags) override
-    {
-        if (this == from)
-            return true;
-        if (!TypeInfo::isSame(from, isSameFlags))
-            return false;
-        auto castedFrom = static_cast<TypeInfoPointer*>(from);
-        if (ptrCount != castedFrom->ptrCount)
-            return false;
-        return pointedType->isSame(castedFrom->pointedType, isSameFlags);
-    }
-
     uint32_t sizeOfPointedBy()
     {
         int size;
@@ -394,15 +371,16 @@ struct TypeInfoPointer : public TypeInfo
 
     void computeName() override
     {
-		name.clear();
-		if (flags & TYPEINFO_CONST)
-			name = "const ";
-		for (uint32_t i = 0; i < ptrCount; i++)
-			name += "*";
-		pointedType->computeName();
-		name += pointedType->name;
+        name.clear();
+        if (flags & TYPEINFO_CONST)
+            name = "const ";
+        for (uint32_t i = 0; i < ptrCount; i++)
+            name += "*";
+        pointedType->computeName();
+        name += pointedType->name;
     }
 
+    bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
     TypeInfo* pointedType;

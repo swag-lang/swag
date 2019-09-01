@@ -33,18 +33,18 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* from, uint32_t isSameFlags)
     if (!TypeInfo::isSame(from, isSameFlags))
         return false;
 
-    auto fromFunc = static_cast<TypeInfoFuncAttr*>(from);
+    auto other = static_cast<TypeInfoFuncAttr*>(from);
     SWAG_ASSERT(from->kind == TypeInfoKind::FuncAttr || from->kind == TypeInfoKind::Lambda);
-    if (!isSame(fromFunc, isSameFlags))
+    if (!isSame(other, isSameFlags))
         return false;
 
     if (isSameFlags & ISSAME_EXACT)
     {
-        if (returnType && returnType != g_TypeMgr.typeInfoVoid && !fromFunc->returnType)
+        if (returnType && returnType != g_TypeMgr.typeInfoVoid && !other->returnType)
             return false;
-        if (!returnType && fromFunc->returnType && fromFunc->returnType != g_TypeMgr.typeInfoVoid)
+        if (!returnType && other->returnType && other->returnType != g_TypeMgr.typeInfoVoid)
             return false;
-        if (returnType && fromFunc->returnType && !returnType->isSame(fromFunc->returnType, isSameFlags))
+        if (returnType && other->returnType && !returnType->isSame(other->returnType, isSameFlags))
             return false;
     }
 
@@ -56,6 +56,19 @@ TypeInfo* TypeInfoNative::clone()
     auto newType = g_Pool_typeInfoNative.alloc();
     newType->copyFrom(this);
     return newType;
+}
+
+bool TypeInfoNative::isSame(TypeInfo* from, uint32_t isSameFlags)
+{
+    if (this == from)
+        return true;
+    if (from->kind != TypeInfoKind::Native)
+        return false;
+    auto other = static_cast<TypeInfoNative*>(from);
+    if (nativeType != other->nativeType)
+        return false;
+
+    return true;
 }
 
 TypeInfo* TypeInfoNamespace::clone()
@@ -156,6 +169,26 @@ TypeInfo* TypeInfoPointer::clone()
     newType->ptrCount    = ptrCount;
     newType->copyFrom(this);
     return newType;
+}
+
+bool TypeInfoPointer::isSame(TypeInfo* from, uint32_t isSameFlags)
+{
+    if (this == from)
+        return true;
+    if (!TypeInfo::isSame(from, isSameFlags))
+        return false;
+
+    auto other = static_cast<TypeInfoPointer*>(from);
+    if (ptrCount != other->ptrCount)
+        return false;
+
+    if (isSameFlags & ISSAME_FORCAST)
+    {
+        if (other->pointedType == g_TypeMgr.typeInfoVoid)
+            return true;
+    }
+
+    return pointedType->isSame(other->pointedType, isSameFlags);
 }
 
 TypeInfo* TypeInfoArray::clone()
