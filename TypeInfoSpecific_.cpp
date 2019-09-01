@@ -13,7 +13,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-	if (isSameFlags & ISSAME_FOR_CAST)
+	if (isSameFlags & ISSAME_CAST)
 	{
 		if (to->kind == TypeInfoKind::Generic)
 			return true;
@@ -118,7 +118,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
-    if (isSameFlags & ISSAME_FOR_CAST)
+    if (isSameFlags & ISSAME_CAST)
     {
         if (this == g_TypeMgr.typeInfoNull)
             return true;
@@ -130,7 +130,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (ptrCount != other->ptrCount)
         return false;
 
-    if (isSameFlags & ISSAME_FOR_CAST)
+    if (isSameFlags & ISSAME_CAST)
     {
         if (other->pointedType == g_TypeMgr.typeInfoVoid)
             return true;
@@ -394,7 +394,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
     for (int i = 0; i < genericParameters.size(); i++)
     {
-        if (isSameFlags & ISSAME_FOR_CAST)
+        if (isSameFlags & ISSAME_CAST)
         {
             if (other->genericParameters[i]->typeInfo->kind == TypeInfoKind::Generic)
                 continue;
@@ -404,7 +404,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
             return false;
     }
 
-    if (!(isSameFlags & ISSAME_FOR_CAST))
+    if (!(isSameFlags & ISSAME_CAST))
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
             return false;

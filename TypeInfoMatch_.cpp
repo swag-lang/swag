@@ -63,7 +63,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         if (symbolParameter->typeInfo->flags & TYPEINFO_GENERIC)
         {
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_FOR_CAST))
+            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_CAST))
             {
                 context.badSignatureParameterIdx  = i;
                 context.badSignatureRequestedType = it->second.first;
@@ -235,7 +235,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         {
             // We already have a match, and they do not match with that type, error
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_FOR_CAST))
+            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_CAST))
             {
                 context.badSignatureParameterIdx  = it->second.second;
                 context.badSignatureRequestedType = typeInfo;
@@ -314,7 +314,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
         if (symbolParameter->typeInfo->flags & TYPEINFO_GENERIC)
         {
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_FOR_CAST))
+            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_CAST))
             {
                 context.badSignatureParameterIdx  = i;
                 context.badSignatureRequestedType = it->second.first;
@@ -459,7 +459,7 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
         {
             // We already have a match, and they do not match with that type, error
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_FOR_CAST))
+            if (it != context.mapGenericTypes.end() && !it->second.first->isSame(typeInfo, ISSAME_CAST))
             {
                 context.badSignatureParameterIdx  = it->second.second;
                 context.badSignatureRequestedType = typeInfo;

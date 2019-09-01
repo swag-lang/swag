@@ -3,7 +3,7 @@
 //#[swag.printbc]
 func(T) toto(x: *T)
 {
-	@print(x[0])
+	@assert(x[0] == 666)
 }
 	
 #test
