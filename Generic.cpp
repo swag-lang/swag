@@ -8,7 +8,7 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 
-void Generic::computeTypeReplacments(CloneContext& cloneContext, OneGenericMatch& match)
+void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatch& match)
 {
     for (int i = 0; i < match.genericParametersCallTypes.size(); i++)
     {
@@ -89,7 +89,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     CloneContext cloneContext;
 
     // Types replacements
-    computeTypeReplacments(cloneContext, match);
+    computeTypeReplacements(cloneContext, match);
 
     // Clone original node
     auto overload   = match.symbolOverload;
@@ -118,12 +118,22 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     return true;
 }
 
+void Generic::doTypeSubstitution(CloneContext& cloneContext, TypeInfo** typeInfo)
+{
+    auto it = cloneContext.replaceTypes.find(*typeInfo);
+    if (it != cloneContext.replaceTypes.end())
+    {
+        *typeInfo = it->second;
+        return;
+    }
+}
+
 bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     CloneContext cloneContext;
 
     // Types replacements
-    computeTypeReplacments(cloneContext, match);
+    computeTypeReplacements(cloneContext, match);
 
     // Clone original node
     auto overload   = match.symbolOverload;
@@ -142,9 +152,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     for (int i = 0; i < newType->parameters.size(); i++)
     {
         auto param = newType->parameters[i];
-        auto it    = cloneContext.replaceTypes.find(param->typeInfo);
-        if (it != cloneContext.replaceTypes.end())
-            param->typeInfo = it->second;
+        doTypeSubstitution(cloneContext, &param->typeInfo);
     }
 
     // Replace generic types and values in the struct generic parameters
