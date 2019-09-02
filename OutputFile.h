@@ -13,6 +13,6 @@ struct OutputFile : public Concat
     int                        pendingRequests = 0;
 
     void flushBucket(ConcatBucket* bucket) override;
-    void flush();
+    bool flush();
     void notifySave(SaveThreadRequest* req);
 };

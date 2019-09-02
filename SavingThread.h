@@ -6,6 +6,7 @@ struct SaveThreadRequest
     OutputFile* file;
     char*       buffer;
     long        bufferSize;
+    bool        ioError;
 };
 
 struct SavingThread

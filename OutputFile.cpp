@@ -16,8 +16,9 @@ void OutputFile::flushBucket(ConcatBucket* bucket)
     g_ThreadMgr.savingThread->addRequest(req);
 }
 
-void OutputFile::flush()
+bool OutputFile::flush()
 {
+    bool result = true;
     auto bucket = lastFlushedBucket ? lastFlushedBucket->nextBucket : firstBucket;
 
     while (bucket)
@@ -31,17 +32,23 @@ void OutputFile::flush()
         std::unique_lock<std::mutex> lk(mutexNotify);
         if (!pendingRequests)
         {
-			SWAG_ASSERT(reqToRelease.empty());
+            SWAG_ASSERT(reqToRelease.empty());
             break;
         }
 
         condVar.wait(lk);
         for (auto req : reqToRelease)
+        {
+            if (req->ioError)
+                result = false;
             g_ThreadMgr.savingThread->releaseRequest(req);
+        }
+
         reqToRelease.clear();
     }
 
-	SWAG_ASSERT(!pendingRequests);
+    SWAG_ASSERT(!pendingRequests);
+    return result;
 }
 
 void OutputFile::notifySave(SaveThreadRequest* req)

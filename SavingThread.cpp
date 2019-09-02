@@ -29,6 +29,7 @@ SaveThreadRequest* SavingThread::newRequest()
         req->file       = nullptr;
         req->buffer     = nullptr;
         req->bufferSize = 0;
+        req->ioError    = false;
         return req;
     }
 
@@ -59,6 +60,30 @@ void SavingThread::waitRequest()
     condVar.wait(lk);
 }
 
+std::string GetLastErrorAsString()
+{
+    //Get the error message, if any.
+    DWORD errorMessageID = ::GetLastError();
+    if (errorMessageID == 0)
+        return std::string(); //No error message has been recorded
+
+    LPSTR  messageBuffer = nullptr;
+    size_t size          = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                                 NULL,
+                                 errorMessageID,
+                                 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                                 (LPSTR) &messageBuffer,
+                                 0,
+                                 NULL);
+
+    std::string message(messageBuffer, size);
+
+    //Free the buffer.
+    LocalFree(messageBuffer);
+
+    return message;
+}
+
 void SavingThread::loop()
 {
     while (!requestEnd)
@@ -75,7 +100,9 @@ void SavingThread::loop()
         FILE* file = nullptr;
         for (int tryOpen = 0; tryOpen < 10; tryOpen++)
         {
-            fopen_s(&file, req->file->fileName.c_str(), "a+t");
+			// Seems that we need 'N' flag to avoid handle to be shared with spawned processes
+			// Without that, fopen can fail due to compiling processes
+            fopen_s(&file, req->file->fileName.c_str(), "a+tN");
             if (file)
                 break;
             Sleep(10);
@@ -89,6 +116,7 @@ void SavingThread::loop()
         else
         {
             g_Log.error(format("cannot open file '%s' for writing (error %d)", req->file->fileName.c_str(), errno));
+			req->ioError = true;
         }
 
         req->file->notifySave(req);

@@ -40,7 +40,8 @@ bool SourceFile::open()
         return true;
     openedOnce = true;
 
-    auto err = _wfopen_s(&fileHandle, path.c_str(), L"rb");
+	// Seems that we need 'N' flag to avoid handle to be shared with spawned processes
+    auto err = _wfopen_s(&fileHandle, path.c_str(), L"rbN");
     if (fileHandle == nullptr)
     {
         char buf[256];

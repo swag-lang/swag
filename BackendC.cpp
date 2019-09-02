@@ -101,9 +101,9 @@ bool BackendC::generate()
     ok &= emitMain();
     ok &= emitFooter();
 
-    bufferH.flush();
-    bufferC.flush();
-    bufferSwg.flush();
+    ok &= bufferH.flush();
+    ok &= bufferC.flush();
+    ok &= bufferSwg.flush();
 
     return ok;
 }
