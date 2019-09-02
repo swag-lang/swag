@@ -1,12 +1,17 @@
 #module module750
 
-#[swag.printbc]
+//#[swag.printbc]
 func lambda(x: f32)
 {
 	@assert(x == 666)
 }
 
-#[swag.printbc]
+func lambda1(x: s32)
+{
+	@assert(x == 666)
+}
+
+//#[swag.printbc]
 func(T) toto(x: (T))
 {
 	x(666)
@@ -16,4 +21,5 @@ func(T) toto(x: (T))
 #test
 {
 	toto(&lambda)
+	toto(&lambda1)
 }
