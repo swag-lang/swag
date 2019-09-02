@@ -46,6 +46,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto tokenId   = node->token.id;
     bool forStruct = leftTypeInfo->kind == TypeInfoKind::Struct;
 
+	SWAG_CHECK(evaluateConstExpression(context, right));
+    if (context->result == SemanticResult::Pending)
+        return true;
+
     switch (tokenId)
     {
     case TokenId::SymEqual:

@@ -230,3 +230,15 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node)
+{
+    if ((node->flags & AST_CONST_EXPR) && node->typeInfo->kind != TypeInfoKind::TypeList && node->typeInfo->kind != TypeInfoKind::Slice)
+    {
+        SWAG_CHECK(executeNode(context, node, true));
+        if (context->result == SemanticResult::Pending)
+            return true;
+    }
+
+    return true;
+}

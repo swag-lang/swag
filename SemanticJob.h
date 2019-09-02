@@ -82,6 +82,7 @@ struct SemanticJob : public Job
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
+	static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();

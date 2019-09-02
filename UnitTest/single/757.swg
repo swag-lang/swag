@@ -10,8 +10,10 @@ func toto1(x: s32)
 {
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {	
 	@print(toto)
+	x := 0
+	x = toto
 }
