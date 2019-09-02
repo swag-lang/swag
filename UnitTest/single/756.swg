@@ -1,5 +1,6 @@
 #module module756
 
+//#[swag.printbc]
 func toto(x: const [..] s32)
 {
 	@assert(@op(x, count) == 2)
