@@ -48,6 +48,12 @@ struct SemanticContext
     }
 };
 
+struct OneMatch
+{
+    SymbolOverload*        symbolOverload;
+    vector<TypeInfoParam*> solvedParameters;
+};
+
 struct OneGenericMatch
 {
     uint32_t              flags;
@@ -66,7 +72,7 @@ struct SemanticJob : public Job
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
     static void collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope);
-    static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload);
+    static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch = nullptr);
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
@@ -114,7 +120,7 @@ struct SemanticJob : public Job
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveImpl(SemanticContext* context);
-	static bool preResolveStruct(SemanticContext* context);
+    static bool preResolveStruct(SemanticContext* context);
     static bool resolveStruct(SemanticContext* context);
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);
@@ -138,7 +144,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerIf(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
-	static bool resolveLoopBefore(SemanticContext* context);
+    static bool resolveLoopBefore(SemanticContext* context);
     static bool resolveForBefore(SemanticContext* context);
     static bool resolveFor(SemanticContext* context);
     static bool resolveSwitch(SemanticContext* context);
@@ -176,7 +182,7 @@ struct SemanticJob : public Job
     vector<Scope*>          cacheScopeHierarchy;
     set<Scope*>             scopesHere;
     set<Scope*>             scopesHereNoAlt;
-    vector<SymbolOverload*> cacheMatches;
+    vector<OneMatch>        cacheMatches;
     vector<OneGenericMatch> cacheGenericMatches;
     vector<SymbolOverload*> cacheBadSignature;
     vector<SymbolOverload*> cacheBadGenericSignature;

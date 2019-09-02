@@ -275,6 +275,7 @@ struct SymbolMatchContext
         genericParametersCallValues.clear();
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
+		solvedParameters.clear();
         flags = 0;
         resetTmp();
     }
@@ -297,6 +298,7 @@ struct SymbolMatchContext
     MatchResult                          result;
     vector<AstNode*>                     genericParameters;
     vector<AstNode*>                     parameters;
+    vector<TypeInfoParam*>               solvedParameters;
     vector<bool>                         doneParameters;
     map<TypeInfo*, pair<TypeInfo*, int>> mapGenericTypes;
     vector<ComputedValue>                genericParametersCallValues;

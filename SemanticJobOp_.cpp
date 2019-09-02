@@ -153,7 +153,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         literal.typeInfo           = g_TypeMgr.typeInfoString;
         job->symMatch.genericParameters.push_back(&literal);
 
-		parameters.reset();
+        parameters.reset();
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;
         genericParameters = &parameters;
         Ast::addChild(&parameters, &literal);
@@ -165,9 +165,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     if (context->result == SemanticResult::Pending)
         return true;
 
-    node->typeInfo               = job->cacheMatches[0]->typeInfo;
+    auto overload                = job->cacheMatches[0].symbolOverload;
+    node->typeInfo               = overload->typeInfo;
     node->resolvedSymbolName     = job->cacheDependentSymbols[0];
-    node->resolvedSymbolOverload = job->cacheMatches[0];
+    node->resolvedSymbolOverload = overload;
     SWAG_ASSERT(node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function);
 
     // Allocate room on the stack to store the result of the function call

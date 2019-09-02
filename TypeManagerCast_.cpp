@@ -1040,10 +1040,10 @@ bool TypeManager::castToArray(ErrorContext* errorContext, TypeInfo* toType, Type
                 return false;
             }
 
-            SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
             for (int i = 0; i < fromSize; i++)
             {
-                SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeArray->pointedType, fromTypeList->childs[i], nodeToCast ? nodeToCast->childs[i] : nullptr, castFlags));
+                auto child = nodeToCast && fromSize == nodeToCast->childs.size() ? nodeToCast->childs[i] : nullptr;
+                SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeArray->pointedType, fromTypeList->childs[i], child, castFlags));
             }
 
             return true;
@@ -1075,10 +1075,10 @@ bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, Type
                 return false;
             }
 
-            SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
             for (int i = 0; i < fromSize; i++)
             {
-                SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeList->childs[i], fromTypeList->childs[i], nodeToCast ? nodeToCast->childs[i] : nullptr, castFlags));
+                auto child = nodeToCast && fromSize == nodeToCast->childs.size() ? nodeToCast->childs[i] : nullptr;
+                SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeList->childs[i], fromTypeList->childs[i], child, castFlags));
             }
 
             if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -1130,7 +1130,8 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         auto fromSize = fromTypeList->childs.size();
         for (int i = 0; i < fromSize; i++)
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, fromTypeList->childs[i], nodeToCast ? nodeToCast->childs[i] : nullptr, castFlags | CASTFLAG_JUST_CHECK));
+			auto child = nodeToCast && fromSize == nodeToCast->childs.size() ? nodeToCast->childs[i] : nullptr;
+            SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, fromTypeList->childs[i], child, castFlags | CASTFLAG_JUST_CHECK));
         }
 
         return true;
@@ -1339,7 +1340,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         if (castFlags & CASTFLAG_FORCE)
             return true;
     }
-	
+
     // String <=> null
     if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
         return true;

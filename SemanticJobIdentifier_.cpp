@@ -166,7 +166,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     return true;
 }
 
-bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload)
+bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch)
 {
     auto  sourceFile               = context->sourceFile;
     auto& typeTable                = sourceFile->module->typeTable;
@@ -257,6 +257,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
+        // Need to make all types compatible, in case a cast is necessary
+        AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        if (identifier->callParameters)
+        {
+            SWAG_ASSERT(oneMatch);
+            for (int i = 0; i < identifier->callParameters->childs.size(); i++)
+            {
+                auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+                if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
+                    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
+            }
+        }
 
         // This is for a lambda
         if (node->flags & AST_TAKE_ADDRESS)
@@ -372,10 +384,10 @@ anotherTry:
                 auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::Lambda);
                 typeInfo->match(job->symMatch);
             }
-			else
-			{
-				SWAG_ASSERT(false);
-			}
+            else
+            {
+                SWAG_ASSERT(false);
+            }
 
             switch (job->symMatch.result)
             {
@@ -385,13 +397,18 @@ anotherTry:
                     OneGenericMatch match;
                     match.flags                       = job->symMatch.flags;
                     match.symbolOverload              = overload;
-                    match.genericParametersCallTypes  = job->symMatch.genericParametersCallTypes;
-                    match.genericParametersCallValues = job->symMatch.genericParametersCallValues;
-                    match.genericParametersGenTypes   = job->symMatch.genericParametersGenTypes;
+                    match.genericParametersCallTypes  = move(job->symMatch.genericParametersCallTypes);
+                    match.genericParametersCallValues = move(job->symMatch.genericParametersCallValues);
+                    match.genericParametersGenTypes   = move(job->symMatch.genericParametersGenTypes);
                     genericMatches.emplace_back(match);
                 }
                 else
-                    matches.push_back(overload);
+                {
+                    OneMatch match;
+                    match.symbolOverload   = overload;
+                    match.solvedParameters = move(job->symMatch.solvedParameters);
+                    matches.emplace_back(match);
+                }
                 break;
 
             case MatchResult::BadGenericSignature:
@@ -441,7 +458,9 @@ anotherTry:
             }
             else
             {
-                matches.push_back(firstMatch.symbolOverload);
+                OneMatch oneMatch;
+                oneMatch.symbolOverload = firstMatch.symbolOverload;
+                matches.emplace_back(oneMatch);
                 node->flags |= AST_IS_GENERIC;
                 if (firstMatch.flags & SymbolMatchContext::MATCH_WAS_PARTIAL)
                     node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
@@ -616,8 +635,9 @@ anotherTry:
         {
             Diagnostic                diag{sourceFile, genericParameters ? genericParameters : node, format("ambiguous generic call to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
             vector<const Diagnostic*> notes;
-            for (auto overload : matches)
+            for (auto match : matches)
             {
+                auto overload   = match.symbolOverload;
                 auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
                 note->showRange = false;
                 notes.push_back(note);
@@ -629,8 +649,9 @@ anotherTry:
         {
             Diagnostic                diag{sourceFile, callParameters ? callParameters : node, format("ambiguous call to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
             vector<const Diagnostic*> notes;
-            for (auto overload : matches)
+            for (auto match : matches)
             {
+                auto overload   = match.symbolOverload;
                 auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
                 note->showRange = false;
                 notes.push_back(note);
@@ -908,8 +929,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (context->result == SemanticResult::Pending)
         return true;
 
-    auto overload  = job->cacheMatches[0];
-    node->typeInfo = overload->typeInfo;
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0]));
+    auto match     = job->cacheMatches[0];
+    node->typeInfo = match.symbolOverload->typeInfo;
+    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0].symbolOverload, &match));
     return true;
 }

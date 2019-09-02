@@ -8,6 +8,7 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
     context.doneParameters.clear();
     context.mapGenericTypes.clear();
     context.doneParameters.resize(parameters.size(), false);
+    context.solvedParameters.resize(parameters.size());
     context.resetTmp();
 
     // Solve unnamed parameters
@@ -146,8 +147,9 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
 
         if (param)
         {
-            param->resolvedParameter = symbolParameter;
-            param->index             = context.cptResolved;
+            context.solvedParameters[context.cptResolved] = symbolParameter;
+            param->resolvedParameter                      = symbolParameter;
+            param->index                                  = context.cptResolved;
         }
 
         context.cptResolved++;
@@ -199,9 +201,10 @@ static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoPar
                     context.result                    = MatchResult::BadSignature;
                 }
 
-                param->resolvedParameter  = symbolParameter;
-                param->index              = j;
-                context.doneParameters[j] = true;
+                context.solvedParameters[j] = symbolParameter;
+                param->resolvedParameter    = symbolParameter;
+                param->index                = j;
+                context.doneParameters[j]   = true;
                 context.cptResolved++;
                 break;
             }
