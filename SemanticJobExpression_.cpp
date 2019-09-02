@@ -235,6 +235,7 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
 {
     if ((node->flags & AST_CONST_EXPR) && node->typeInfo->kind != TypeInfoKind::TypeList && node->typeInfo->kind != TypeInfoKind::Slice)
     {
+        SWAG_CHECK(checkIsConcrete(context, node));
         SWAG_CHECK(executeNode(context, node, true));
         if (context->result == SemanticResult::Pending)
             return true;

@@ -13,7 +13,8 @@ func toto1(x: s32)
 //#[swag.printbc]
 #test
 {	
-	@print(toto)
+	//@print(toto)
 	x := 0
 	x = toto
+	@assert(x == 666)
 }

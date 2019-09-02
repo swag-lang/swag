@@ -116,7 +116,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
         {
-            SWAG_CHECK(executeNode(context, node->assignment, true));
+            SWAG_CHECK(evaluateConstExpression(context, node->assignment));
             if (context->result == SemanticResult::Pending)
                 return true;
         }
