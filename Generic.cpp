@@ -121,11 +121,15 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
 
 void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneContext, TypeInfo** typeInfo)
 {
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-
     auto oldType = *typeInfo;
-    auto it      = cloneContext.replaceTypes.find(oldType);
+    if (!oldType)
+        return;
+
+    auto      sourceFile = context->sourceFile;
+    auto      module     = sourceFile->module;
+    TypeInfo* newType    = nullptr;
+
+    auto it = cloneContext.replaceTypes.find(oldType);
     if (it != cloneContext.replaceTypes.end())
     {
         *typeInfo = it->second;
@@ -138,11 +142,12 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(oldType, TypeInfoKind::Pointer);
-        it               = cloneContext.replaceTypes.find(typePointer->pointedType);
-        if (it != cloneContext.replaceTypes.end())
+        newType          = typePointer->pointedType;
+        doTypeSubstitution(context, cloneContext, &newType);
+        if (newType != typePointer->pointedType)
         {
             typePointer              = static_cast<TypeInfoPointer*>(typePointer->clone());
-            typePointer->pointedType = it->second;
+            typePointer->pointedType = newType;
             typePointer->flags &= ~TYPEINFO_GENERIC;
             typePointer->computeName();
             *typeInfo = module->typeTable.registerType(typePointer);
@@ -154,11 +159,12 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
     case TypeInfoKind::Array:
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(oldType, TypeInfoKind::Array);
-        it             = cloneContext.replaceTypes.find(typeArray->pointedType);
-        if (it != cloneContext.replaceTypes.end())
+        newType        = typeArray->pointedType;
+        doTypeSubstitution(context, cloneContext, &newType);
+        if (newType != typeArray->pointedType)
         {
             typeArray              = static_cast<TypeInfoArray*>(typeArray->clone());
-            typeArray->pointedType = it->second;
+            typeArray->pointedType = newType;
             typeArray->flags &= ~TYPEINFO_GENERIC;
             typeArray->computeName();
             *typeInfo = module->typeTable.registerType(typeArray);
@@ -170,11 +176,12 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
     case TypeInfoKind::Slice:
     {
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(oldType, TypeInfoKind::Slice);
-        it             = cloneContext.replaceTypes.find(typeSlice->pointedType);
-        if (it != cloneContext.replaceTypes.end())
+        newType        = typeSlice->pointedType;
+        doTypeSubstitution(context, cloneContext, &newType);
+        if (newType != typeSlice->pointedType)
         {
             typeSlice              = static_cast<TypeInfoSlice*>(typeSlice->clone());
-            typeSlice->pointedType = it->second;
+            typeSlice->pointedType = newType;
             typeSlice->flags &= ~TYPEINFO_GENERIC;
             typeSlice->computeName();
             *typeInfo = module->typeTable.registerType(typeSlice);
@@ -188,19 +195,21 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
         TypeInfoFuncAttr* newLambda  = nullptr;
         auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(oldType, TypeInfoKind::Lambda);
 
-        it = cloneContext.replaceTypes.find(typeLambda->returnType);
-        if (it != cloneContext.replaceTypes.end())
+        newType = typeLambda->returnType;
+        doTypeSubstitution(context, cloneContext, &newType);
+        if (newType != typeLambda->returnType)
         {
             newLambda = static_cast<TypeInfoFuncAttr*>(typeLambda->clone());
             newLambda->flags &= ~TYPEINFO_GENERIC;
-            newLambda->returnType = it->second;
+            newLambda->returnType = newType;
         }
 
         for (int idx = 0; idx < typeLambda->parameters.size(); idx++)
         {
             auto param = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
-            it         = cloneContext.replaceTypes.find(param->typeInfo);
-            if (it != cloneContext.replaceTypes.end())
+            newType    = param->typeInfo;
+            doTypeSubstitution(context, cloneContext, &newType);
+            if (newType != param->typeInfo)
             {
                 if (!newLambda)
                 {
@@ -209,7 +218,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
                 }
 
                 auto newParam      = static_cast<TypeInfoParam*>(newLambda->parameters[idx]);
-                newParam->typeInfo = it->second;
+                newParam->typeInfo = newType;
             }
         }
 
