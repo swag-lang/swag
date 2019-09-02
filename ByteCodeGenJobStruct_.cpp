@@ -39,7 +39,6 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
 	opInit->reservedRC.insert(1);
 	opInit->reservedRC.insert(2);
 	opInit->maxReservedRegisterRC = 3;
-	opInit->registersRC = (Register*)malloc(opInit->maxReservedRegisterRC * sizeof(Register));
 
     if (!typeInfoStruct->opInitFct->bc)
         sourceFile->module->addByteCodeFunc(opInit);
@@ -239,7 +238,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
     }
 }
 
-bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset, const vector<uint32_t>& regToSave)
+bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset)
 {
     auto node     = context->node;
     auto resolved = node->resolvedSymbolOverload;
@@ -274,14 +273,12 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
             emitInstruction(context, ByteCodeOp::IncPointer, r0, regOffset, r0);
 
         // Then call
-        emitRASavedPush(context, regToSave);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
         inst            = emitInstruction(context, ByteCodeOp::LocalCall, 0);
         inst->a.pointer = (uint8_t*) typeInfoStruct->opInitFct->bc;
         inst->b.u64     = 1;
         inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
         emitInstruction(context, ByteCodeOp::IncSP, 8);
-        emitRASavedPop(context, regToSave);
 
         freeRegisterRC(context, r0);
     }

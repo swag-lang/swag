@@ -35,6 +35,21 @@ TypeInfoFuncAttr* ByteCode::callType()
     return typeInfoFunc;
 }
 
+void ByteCode::enterByteCode()
+{
+    curRC++;
+    if (curRC >= registersRC.size())
+    {
+        auto rc = (Register*) malloc(maxReservedRegisterRC * sizeof(Register));
+        registersRC.push_back(rc);
+    }
+}
+
+void ByteCode::leaveByteCode()
+{
+    curRC--;
+}
+
 void ByteCode::print()
 {
     static const wchar_t* bcNum = L"%08d ";
@@ -99,8 +114,6 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::PushRAParam:
-        case ByteCodeOp::PushRASaved:
-        case ByteCodeOp::PopRASaved:
         case ByteCodeOp::PushRRSaved:
         case ByteCodeOp::PopRRSaved:
         case ByteCodeOp::DeRef8:
@@ -120,7 +133,7 @@ void ByteCode::print()
         case ByteCodeOp::IncRA64:
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::MovRASP:
-		case ByteCodeOp::CastS8S16:
+        case ByteCodeOp::CastS8S16:
         case ByteCodeOp::CastS16S32:
         case ByteCodeOp::CastS32S8:
         case ByteCodeOp::CastS32S16:

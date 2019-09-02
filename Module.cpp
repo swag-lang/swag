@@ -80,6 +80,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     {
         scoped_lock lkRR(mutexRegisterRR);
         runContext->setup(sourceFile, node, maxReservedRegisterRR, 1024);
+		node->bc->enterByteCode();
     }
 
     string exception;
@@ -92,7 +93,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
     if (node->resultRegisterRC.size())
     {
-        node->computedValue.reg = node->bc->registersRC[node->resultRegisterRC[0]];
+        node->computedValue.reg = node->bc->registersRC[0][node->resultRegisterRC[0]];
         node->flags |= AST_VALUE_COMPUTED;
         node->typeInfo = TypeManager::concreteType(node->typeInfo);
     }

@@ -12,18 +12,6 @@
 #include "TypeManager.h"
 #include "CommandLine.h"
 
-void ByteCodeGenJob::emitRASavedPush(ByteCodeGenContext* context, const vector<uint32_t>& regToSave)
-{
-    for (int r = 0; r < regToSave.size(); r++)
-        emitInstruction(context, ByteCodeOp::PushRASaved, regToSave[r]);
-}
-
-void ByteCodeGenJob::emitRASavedPop(ByteCodeGenContext* context, const vector<uint32_t>& regToSave)
-{
-    for (int r = (int) regToSave.size() - 1; r >= 0; r--)
-        emitInstruction(context, ByteCodeOp::PopRASaved, regToSave[r]);
-}
-
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
@@ -225,37 +213,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     int precallStack  = 0;
     int numCallParams = allParams ? (int) allParams->childs.size() : 0;
 
-    // Push current used registers before the call, to restore their value after the call
-    // (as a function can change everything)
-    const auto&      reservedRC = context->bc->reservedRC;
-    vector<uint32_t> copyReservedRC;
-    for (auto it = reservedRC.begin(); it != reservedRC.end(); ++it)
-    {
-        bool isParam = false;
-        if (allParams)
-        {
-            for (int i = 0; !isParam && (i < (int) allParams->childs.size()); i++)
-            {
-                auto oneChild = allParams->childs[i];
-                for (int r = 0; r < (int) oneChild->resultRegisterRC.size(); r++)
-                {
-                    if (oneChild->resultRegisterRC[r] == *it)
-                    {
-                        // No need to store the register value, as this will be used for the parameter
-                        isParam = true;
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (!isParam)
-        {
-            copyReservedRC.push_back(*it);
-            emitInstruction(context, ByteCodeOp::PushRASaved, *it);
-        }
-    }
-
     // Store in RR0 the address of the stack to store the result
     if (typeInfoFunc->returnType && (typeInfoFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
@@ -264,8 +221,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
         inst->b.u32            = node->fctCallStorageOffset;
         emitInstruction(context, ByteCodeOp::CopyRRxRCxCall, 0, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-        copyReservedRC.push_back(node->resultRegisterRC);
-        emitInstruction(context, ByteCodeOp::PushRASaved, node->resultRegisterRC);
     }
 
     // If we are in a function that need to keep the RR0 register alive, we need to save it
@@ -443,12 +398,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     if (rr0Saved)
     {
         emitInstruction(context, ByteCodeOp::PopRRSaved, 0);
-    }
-
-    // Restore reserved registers
-    for (auto it = copyReservedRC.rbegin(); it != copyReservedRC.rend(); ++it)
-    {
-        emitInstruction(context, ByteCodeOp::PopRASaved, *it);
     }
 
     return true;

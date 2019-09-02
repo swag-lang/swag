@@ -38,8 +38,6 @@ struct ByteCodeGenJob : public Job
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 setupBC(Module* module, AstNode* node);
     static void                 askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode);
-    static void                 emitRASavedPush(ByteCodeGenContext* context, const vector<uint32_t>& regToSave);
-    static void                 emitRASavedPop(ByteCodeGenContext* context, const vector<uint32_t>& regToSave);
 
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
@@ -123,7 +121,7 @@ struct ByteCodeGenJob : public Job
     static bool emitBeforeFuncDeclContent(ByteCodeGenContext* context);
     static void emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset);
     static bool emitVarDecl(ByteCodeGenContext* context);
-    static bool emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset, const vector<uint32_t>& regToSave);
+    static bool emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo, uint32_t regOffset);
     static bool emitBreak(ByteCodeGenContext* context);
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);

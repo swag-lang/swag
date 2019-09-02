@@ -11,7 +11,6 @@ func main () -> s32
 #assert(-main == 1);
 #assert((4 * 5) * main() == -20);
 
-#[swag.printbc]
 #test
 {
 	@assert((4 * 5) * main() == -20);

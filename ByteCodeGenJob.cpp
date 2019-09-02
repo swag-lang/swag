@@ -215,10 +215,6 @@ JobResult ByteCodeGenJob::execute()
         dependentJobs.clear();
     }
 
-	// RC registers
-	if(originalNode->bc->maxReservedRegisterRC)
-		originalNode->bc->registersRC = (Register*) malloc(originalNode->bc->maxReservedRegisterRC * sizeof(Register));
-
     // Wait for other dependent nodes to be generated
     syncToDependentNodes = true;
     for (int i = (int) dependentNodes.size() - 1; i >= 0; i--)

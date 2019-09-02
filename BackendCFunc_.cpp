@@ -1019,8 +1019,6 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::RARefFromStackParam:
             bufferC.addString(format("r%u.pointer = (swag_int8_t*) &rp%u->pointer;", ip->a.u32, ip->c.u32));
             break;
-        case ByteCodeOp::PushRASaved:
-        case ByteCodeOp::PopRASaved:
         case ByteCodeOp::PushRRSaved:
         case ByteCodeOp::PopRRSaved:
             break;

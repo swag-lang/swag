@@ -23,8 +23,6 @@ struct ByteCode : public PoolElement
 {
     void print();
 
-    Register* registersRC = nullptr;
-
     static const int     ALIGN_RIGHT_OPCODE = 25;
     ByteCodeInstruction* out                = nullptr;
     uint32_t             numInstructions    = 0;
@@ -40,6 +38,11 @@ struct ByteCode : public PoolElement
     vector<uint32_t> availableRegistersRC;
     set<uint32_t>    reservedRC;
     set<int>         usedRegisters;
+
+    vector<Register*> registersRC;
+    int               curRC = -1;
+    void              enterByteCode();
+	void              leaveByteCode();
 
     string            callName();
     TypeInfoFuncAttr* callType();

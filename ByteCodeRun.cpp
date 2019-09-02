@@ -122,9 +122,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     ffi_call(&cif, FFI_FN(fn), nullptr, values);
 }
 
-inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    auto registersRC = context->bc->registersRC;
+    auto registersRC = context->bc->registersRC[context->bc->curRC];
     auto registersRR = context->registersRR;
 
     switch (ip->op)
@@ -150,6 +150,7 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
     {
         if (context->sp == context->stack + context->stackSize)
             return false;
+        context->bc->leaveByteCode();
         context->ip = context->pop<ByteCodeInstruction*>();
         context->bc = context->pop<ByteCode*>();
         context->bp = context->pop<uint8_t*>();
@@ -162,8 +163,9 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->push(context->ip);
         context->bc = (ByteCode*) ip->a.pointer;
         context->ip = context->bc->out;
-		SWAG_ASSERT(context->ip);
+        SWAG_ASSERT(context->ip);
         context->bp = context->sp;
+        context->bc->enterByteCode();
         break;
     }
     case ByteCodeOp::LambdaCall:
@@ -173,8 +175,9 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         context->push(context->ip);
         context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
         context->ip = context->bc->out;
-		SWAG_ASSERT(context->ip);
+        SWAG_ASSERT(context->ip);
         context->bp = context->sp;
+		context->bc->enterByteCode();
         break;
     }
     case ByteCodeOp::MakeLambda:
@@ -286,15 +289,9 @@ inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstructio
         break;
     }
 
-    case ByteCodeOp::PushRASaved:
     case ByteCodeOp::PushRAParam:
     {
         context->push(registersRC[ip->a.u32].u64);
-        break;
-    }
-    case ByteCodeOp::PopRASaved:
-    {
-        registersRC[ip->a.u32].u64 = context->pop<uint64_t>();
         break;
     }
     case ByteCodeOp::PushRRSaved:
@@ -1595,7 +1592,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* context)
         if (ip->op == ByteCodeOp::End)
             break;
 
-        if (!runNode(context, ip))
+        if (!executeInstruction(context, ip))
             break;
 
         // Error ?

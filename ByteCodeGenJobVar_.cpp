@@ -13,22 +13,6 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     auto resolved = node->resolvedSymbolOverload;
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, MakeConcrete::FlagAlias);
 
-    // If structure has parameters for construction, need to save registers that store values before a call
-    vector<uint32_t> regToSave;
-    if (resolved->flags & OVERLOAD_VAR_LOCAL)
-    {
-        if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-        {
-            auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-            auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-            for (auto child : identifier->callParameters->childs)
-            {
-                for (int r = 0; r < child->resultRegisterRC.size(); r++)
-                    regToSave.push_back(child->resultRegisterRC[r]);
-            }
-        }
-    }
-
     // User initialization
     if (node->assignment)
     {
@@ -56,11 +40,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     emitInstruction(context, ByteCodeOp::CopyRAVB32, r0[0])->b.u32 = typeArray->totalCount;
                     emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
                     auto seekJump = context->bc->numInstructions;
-                    regToSave.push_back(r0[0]);
-                    regToSave.push_back(r0[1]);
 
                     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->rawType, TypeInfoKind::Struct), r0[1], regToSave);
+                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->rawType, TypeInfoKind::Struct), r0[1]);
                     emitStructParameters(context, r0[1]);
 
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
@@ -82,7 +64,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             SWAG_ASSERT(typeStruct->opInitFct);
-            emitStructInit(context, typeStruct, UINT32_MAX, regToSave);
+            emitStructInit(context, typeStruct, UINT32_MAX);
         }
 
         emitStructParameters(context, UINT32_MAX);
