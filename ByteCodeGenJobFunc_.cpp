@@ -115,7 +115,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     case Intrinsic::IntrinsicAssert:
     {
         auto child0 = callParams->childs.front();
-        if (!g_CommandLine.optimizeByteCode || !child0->isConstantTrue())
+        if (!child0->isConstantTrue())
             emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
         freeRegisterRC(context, child0->resultRegisterRC);
         break;

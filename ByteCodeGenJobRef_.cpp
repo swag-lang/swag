@@ -15,8 +15,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     int  sizeOf = node->typeInfo->sizeOf;
 
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC, node->array->resultRegisterRC);
-
-    if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+    if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC         = node->array->resultRegisterRC;
@@ -42,7 +41,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
 		freeRegisterRC(context,  r0);
     }
 
-    if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+    if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
@@ -64,7 +63,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     if (g_CommandLine.debugBoundCheck)
         emitInstruction(context, ByteCodeOp::BoundCheckReg, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
-    if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+    if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
@@ -150,9 +149,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         // Increment pointer (if increment is not 0)
-        if (!g_CommandLine.optimizeByteCode || !node->access->isConstantInt0())
+        if (!node->access->isConstantInt0())
         {
-            if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+            if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
@@ -189,9 +188,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         int  sizeOf   = typeInfo->sizeOfPointedBy();
 
         // Increment pointer (if increment is not 0)
-        if (!g_CommandLine.optimizeByteCode || !node->access->isConstantInt0())
+        if (!node->access->isConstantInt0())
         {
-            if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+            if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
@@ -242,9 +241,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         // Increment pointer (if increment is not 0)
-        if (!g_CommandLine.optimizeByteCode || !node->access->isConstantInt0())
+        if (!node->access->isConstantInt0())
         {
-            if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+            if (sizeOf > 1)
                 emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }

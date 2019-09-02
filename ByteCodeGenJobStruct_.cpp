@@ -84,7 +84,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
 
         // Reference to the field
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        if (!g_CommandLine.optimizeByteCode || varDecl->resolvedSymbolOverload->storageOffset)
+        if (varDecl->resolvedSymbolOverload->storageOffset)
             emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
 
         if (varDecl->assignment)

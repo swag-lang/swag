@@ -46,7 +46,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, 
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->sizeOfPointedBy();
-        if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+        if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.u32 = sizeOf;
         emitInstruction(context, ByteCodeOp::IncPointer, r0, r1, r2);
         return true;
@@ -90,7 +90,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0,
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         int  sizeOf  = typePtr->sizeOfPointedBy();
-        if (!g_CommandLine.optimizeByteCode || sizeOf > 1)
+        if (sizeOf > 1)
             emitInstruction(context, ByteCodeOp::MulRAVB, r1)->b.s32 = sizeOf;
         emitInstruction(context, ByteCodeOp::DecPointer, r0, r1, r2);
         return true;

@@ -22,12 +22,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (node->flags & AST_IDENTIFIER_IS_INTEGER)
     {
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        if (!g_CommandLine.optimizeByteCode || node->computedValue.reg.u32 > 0)
-        {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
-            inst->b.u32 = node->computedValue.reg.u32;
-        }
-
+        if (node->computedValue.reg.u32 > 0)
+            emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC)->b.u32 = node->computedValue.reg.u32;
         if (!(node->flags & AST_TAKE_ADDRESS))
             emitStructDeRef(context);
         return true;
@@ -180,15 +176,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_STRUCT)
     {
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        if (!g_CommandLine.optimizeByteCode || node->resolvedSymbolOverload->storageOffset > 0)
-        {
-            auto inst   = emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC);
-            inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
-        }
-
+        if (node->resolvedSymbolOverload->storageOffset > 0)
+            emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC)->b.u32 = node->resolvedSymbolOverload->storageOffset;
         if (!(node->flags & AST_TAKE_ADDRESS))
             emitStructDeRef(context);
-
         return true;
     }
 
