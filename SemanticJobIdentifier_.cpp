@@ -216,9 +216,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
 
             // Need to make all types compatible, in case a cast is necessary
-            if (identifier->callParameters)
+            if (identifier->callParameters && oneMatch)
             {
-                SWAG_ASSERT(oneMatch);
                 for (int i = 0; i < identifier->callParameters->childs.size(); i++)
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
@@ -271,9 +270,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         // Need to make all types compatible, in case a cast is necessary
         AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (identifier->callParameters)
+        if (identifier->callParameters && oneMatch)
         {
-            SWAG_ASSERT(oneMatch);
             for (int i = 0; i < identifier->callParameters->childs.size(); i++)
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
@@ -315,7 +313,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-        // For a tuple, need to reserve room on the stack for the return result
+        // For a return by copy, need to reserve room on the stack for the return result
         auto returnType = TypeManager::concreteType(node->typeInfo);
         if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
