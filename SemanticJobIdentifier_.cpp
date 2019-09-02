@@ -214,6 +214,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             funcType->kind    = TypeInfoKind::FuncAttr;
             node->typeInfo    = typeTable.registerType(funcType);
             node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
+
+            // Need to make all types compatible, in case a cast is necessary
+            if (identifier->callParameters)
+            {
+                SWAG_ASSERT(oneMatch);
+                for (int i = 0; i < identifier->callParameters->childs.size(); i++)
+                {
+                    auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+                    if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
+                        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
+                }
+            }
         }
 
         // Tuple
@@ -297,9 +309,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 auto myAttributes = ownerFct->attributeFlags;
                 if (!(myAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
-                    return context->errorContext.report({sourceFile, node->token, format("can't call compiler function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->errorContext.report({sourceFile, node->token, format("cannot call compiler function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
                 if (!(myAttributes & ATTRIBUTE_TEST) && (overload->node->attributeFlags & ATTRIBUTE_TEST))
-                    return context->errorContext.report({sourceFile, node->token, format("can't call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->errorContext.report({sourceFile, node->token, format("cannot call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
             }
         }
 
