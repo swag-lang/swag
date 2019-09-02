@@ -37,7 +37,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         resolvedName->kind == SymbolKind::TypeAlias)
         return true;
     if (resolvedName->kind != SymbolKind::Variable)
-        return internalError(context, "emitIdentifier");
+        return internalError(context, "emitIdentifier, type not supported");
 
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo);
 

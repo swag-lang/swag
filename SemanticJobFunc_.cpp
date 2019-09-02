@@ -1,15 +1,11 @@
 #include "pch.h"
-#include "Global.h"
-#include "TypeManager.h"
 #include "SourceFile.h"
 #include "ThreadManager.h"
-#include "Diagnostic.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "SymTable.h"
 #include "Scope.h"
-#include "CommandLine.h"
 #include "Module.h"
 #include "Attribute.h"
 
@@ -233,7 +229,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->flags & AST_IS_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
 
-	SWAG_CHECK(checkFuncPrototype(context, funcNode));
+    SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
     funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
@@ -261,7 +257,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 
     SWAG_CHECK(evaluateConstExpression(context, node));
     if (context->result == SemanticResult::Pending)
-		return true;
+        return true;
 
     return true;
 }
