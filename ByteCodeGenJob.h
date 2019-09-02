@@ -152,17 +152,15 @@ struct ByteCodeGenJob : public Job
         dependentNodes.clear();
         collectChilds.clear();
         syncToDependentNodes = false;
-        reservedRC.clear();
     }
 
-    SourceFile*      sourceFile;
-    AstNode*         originalNode;
-    vector<AstNode*> nodes;
-    vector<Job*>     dependentJobs;
-    vector<AstNode*> dependentNodes;
-    vector<AstNode*> collectChilds;
-    bool             syncToDependentNodes;
-    set<uint32_t>    reservedRC;
+    SourceFile*        sourceFile;
+    AstNode*           originalNode;
+    vector<AstNode*>   nodes;
+    vector<Job*>       dependentJobs;
+    vector<AstNode*>   dependentNodes;
+    vector<AstNode*>   collectChilds;
+    bool               syncToDependentNodes;
 };
 
 extern Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;

@@ -68,32 +68,6 @@ void Module::reserveRegisterRR(uint32_t count)
     maxReservedRegisterRR = max(maxReservedRegisterRR, count);
 }
 
-uint32_t Module::reserveRegisterRC(ByteCode* bc)
-{
-    scoped_lock lk(mutexRegisterRC);
-    if (!availableRegistersRC.empty())
-    {
-        auto result = availableRegistersRC.back();
-        bc->usedRegisters.insert(result);
-        availableRegistersRC.pop_back();
-        return result;
-    }
-
-    auto result = maxReservedRegisterRC++;
-    bc->usedRegisters.insert(result);
-    return result;
-}
-
-void Module::freeRegisterRC(uint32_t reg)
-{
-    scoped_lock lk(mutexRegisterRC);
-#ifdef _DEBUG
-    for (auto r : availableRegistersRC)
-		SWAG_ASSERT(r != reg);
-#endif
-    availableRegistersRC.push_back(reg);
-}
-
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 {
     // Only one run at a time !
@@ -102,10 +76,10 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
     auto runContext = &workspace->runContext;
 
+    // Global setup
     {
-        scoped_lock lkRC(mutexRegisterRC);
         scoped_lock lkRR(mutexRegisterRR);
-        runContext->setup(sourceFile, node, maxReservedRegisterRC, maxReservedRegisterRR, 1024);
+        runContext->setup(sourceFile, node, maxReservedRegisterRR, 1024);
     }
 
     string exception;
@@ -118,7 +92,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
     if (node->resultRegisterRC.size())
     {
-        node->computedValue.reg = runContext->registersRC[node->resultRegisterRC[0]];
+        node->computedValue.reg = node->bc->registersRC[node->resultRegisterRC[0]];
         node->flags |= AST_VALUE_COMPUTED;
         node->typeInfo = TypeManager::concreteType(node->typeInfo);
     }

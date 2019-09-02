@@ -227,7 +227,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
 
     // Push current used registers before the call, to restore their value after the call
     // (as a function can change everything)
-    const auto&      reservedRC = context->job->reservedRC;
+    const auto&      reservedRC = context->bc->reservedRC;
     vector<uint32_t> copyReservedRC;
     for (auto it = reservedRC.begin(); it != reservedRC.end(); ++it)
     {

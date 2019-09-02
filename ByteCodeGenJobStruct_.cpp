@@ -35,6 +35,11 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     opInit->usedRegisters.insert(0);
     opInit->usedRegisters.insert(1);
     opInit->usedRegisters.insert(2);
+	opInit->reservedRC.insert(0);
+	opInit->reservedRC.insert(1);
+	opInit->reservedRC.insert(2);
+	opInit->maxReservedRegisterRC = 3;
+	opInit->registersRC = (Register*)malloc(opInit->maxReservedRegisterRC * sizeof(Register));
 
     if (!typeInfoStruct->opInitFct->bc)
         sourceFile->module->addByteCodeFunc(opInit);

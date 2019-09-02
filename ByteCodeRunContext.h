@@ -17,8 +17,6 @@ struct StackValue
 
 struct ByteCodeRunContext
 {
-    Register* registersRC    = nullptr;
-    uint32_t  numRegistersRC = 0;
     Register* registersRR    = nullptr;
     uint32_t  numRegistersRR = 0;
 
@@ -34,7 +32,7 @@ struct ByteCodeRunContext
     bool        hasError   = false;
     string      errorMsg;
 
-    void setup(SourceFile* sf, AstNode* node, uint32_t numRC, uint32_t numRR, uint32_t stackS);
+    void setup(SourceFile* sf, AstNode* node, uint32_t numRR, uint32_t stackS);
     void error(const string& msg);
 
     template<typename T>

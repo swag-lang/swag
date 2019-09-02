@@ -37,17 +37,12 @@ struct Module : public PoolElement
     Backend*            backend = nullptr;
     set<string>         compileVersion;
 
-    uint32_t reserveRegisterRC(ByteCode* bc);
-    void     freeRegisterRC(uint32_t reg);
-    void     reserveRegisterRR(uint32_t count);
-    bool     executeNode(SourceFile* sourceFile, AstNode* node);
-    bool     executeNodeNoLock(SourceFile* sourceFile, AstNode* node, string& exception);
+    void reserveRegisterRR(uint32_t count);
+    bool executeNode(SourceFile* sourceFile, AstNode* node);
+    bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, string& exception);
 
-    SpinLock         mutexRegisterRC;
-    SpinLock         mutexRegisterRR;
-    uint32_t         maxReservedRegisterRC = 0;
-    vector<uint32_t> availableRegistersRC;
-    uint32_t         maxReservedRegisterRR = 0;
+    SpinLock mutexRegisterRR;
+    uint32_t maxReservedRegisterRR = 0;
 
     uint32_t reserveString(const Utf8& str);
     void     addDataSegmentInitString(uint32_t segOffset, uint32_t strIndex);

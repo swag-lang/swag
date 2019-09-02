@@ -24,9 +24,19 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg,
 
 uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
 {
-    auto rc = context->sourceFile->module->reserveRegisterRC(context->bc);
-    context->job->reservedRC.insert(rc);
-    return rc;
+    if (!context->bc->availableRegistersRC.empty())
+    {
+        auto result = context->bc->availableRegistersRC.back();
+        context->bc->usedRegisters.insert(result);
+        context->bc->availableRegistersRC.pop_back();
+        context->bc->reservedRC.insert(result);
+        return result;
+    }
+
+    auto result = context->bc->maxReservedRegisterRC++;
+    context->bc->usedRegisters.insert(result);
+    context->bc->reservedRC.insert(result);
+    return result;
 }
 
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
@@ -34,19 +44,16 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
     rc.clear();
     while (num--)
     {
-        auto reg = context->sourceFile->module->reserveRegisterRC(context->bc);
-        context->job->reservedRC.insert(reg);
-        rc += reg;
+        rc += reserveRegisterRC(context);
     }
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
-    auto job = context->job;
     for (int i = 0; i < rc.size(); i++)
     {
-        job->reservedRC.erase(rc[i]);
-        context->sourceFile->module->freeRegisterRC(rc[i]);
+        context->bc->reservedRC.erase(rc[i]);
+        freeRegisterRC(context, rc[i]);
     }
 
     rc.clear();
@@ -54,9 +61,12 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
-    auto job = context->job;
-    job->reservedRC.erase(rc);
-    context->sourceFile->module->freeRegisterRC(rc);
+    context->bc->reservedRC.erase(rc);
+#ifdef _DEBUG
+    for (auto r : context->bc->availableRegistersRC)
+        SWAG_ASSERT(r != rc);
+#endif
+    context->bc->availableRegistersRC.push_back(rc);
 }
 
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2)
@@ -115,88 +125,88 @@ JobResult ByteCodeGenJob::execute()
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
             generateStructInit(&context, typeStruct);
         }
-		else
-		{
-			if (!context.bc)
-			{
-				setupBC(sourceFile->module, originalNode);
-				context.bc = originalNode->bc;
-			}
+        else
+        {
+            if (!context.bc)
+            {
+                setupBC(sourceFile->module, originalNode);
+                context.bc = originalNode->bc;
+            }
 
-			while (!nodes.empty())
-			{
-				auto node = nodes.back();
-				context.node = node;
+            while (!nodes.empty())
+            {
+                auto node    = nodes.back();
+                context.node = node;
 
-				switch (node->bytecodeState)
-				{
-				case AstNodeResolveState::Enter:
-					node->bytecodeState = AstNodeResolveState::ProcessingChilds;
+                switch (node->bytecodeState)
+                {
+                case AstNodeResolveState::Enter:
+                    node->bytecodeState = AstNodeResolveState::ProcessingChilds;
 
-					if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
-						return JobResult::ReleaseJob;
+                    if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
+                        return JobResult::ReleaseJob;
 
-					if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
-					{
-						if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
-						{
-							for (int i = (int)node->childs.size() - 1; i >= 0; i--)
-							{
-								auto child = node->childs[i];
-								nodes.push_back(child);
-							}
-						}
+                    if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
+                    {
+                        if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
+                        {
+                            for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+                            {
+                                auto child = node->childs[i];
+                                nodes.push_back(child);
+                            }
+                        }
 
-						break;
-					}
+                        break;
+                    }
 
-				case AstNodeResolveState::ProcessingChilds:
-					if (!(node->flags & AST_NO_BYTECODE))
-					{
-						// Computed constexpr value. Just emit the result
-						if (node->flags & AST_VALUE_COMPUTED)
-						{
-							context.node = node;
-							if (node->typeInfo->kind == TypeInfoKind::TypeList)
-							{
-								if (!emitExpressionList(&context))
-									return JobResult::ReleaseJob;
-							}
-							else
-							{
-								if (!emitLiteral(&context))
-									return JobResult::ReleaseJob;
-							}
-						}
-						else if (node->byteCodeFct)
-						{
-							context.node = node;
-							context.result = ByteCodeResult::Done;
+                case AstNodeResolveState::ProcessingChilds:
+                    if (!(node->flags & AST_NO_BYTECODE))
+                    {
+                        // Computed constexpr value. Just emit the result
+                        if (node->flags & AST_VALUE_COMPUTED)
+                        {
+                            context.node = node;
+                            if (node->typeInfo->kind == TypeInfoKind::TypeList)
+                            {
+                                if (!emitExpressionList(&context))
+                                    return JobResult::ReleaseJob;
+                            }
+                            else
+                            {
+                                if (!emitLiteral(&context))
+                                    return JobResult::ReleaseJob;
+                            }
+                        }
+                        else if (node->byteCodeFct)
+                        {
+                            context.node   = node;
+                            context.result = ByteCodeResult::Done;
 
-							if (!node->byteCodeFct(&context))
-								return JobResult::ReleaseJob;
-							if (context.result == ByteCodeResult::Pending)
-								return JobResult::KeepJobAlive;
-						}
+                            if (!node->byteCodeFct(&context))
+                                return JobResult::ReleaseJob;
+                            if (context.result == ByteCodeResult::Pending)
+                                return JobResult::KeepJobAlive;
+                        }
 
-						if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
-							return JobResult::ReleaseJob;
-					}
+                        if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
+                            return JobResult::ReleaseJob;
+                    }
 
-					nodes.pop_back();
-					break;
-				}
-			}
+                    nodes.pop_back();
+                    break;
+                }
+            }
 
-			emitInstruction(&context, ByteCodeOp::End);
+            emitInstruction(&context, ByteCodeOp::End);
 
-			// Print resulting bytecode
-			if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-				context.bc->print();
-		}
+            // Print resulting bytecode
+            if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+                context.bc->print();
+        }
     }
 
-	// Inform dependencies that this node has bytecode
+    // Inform dependencies that this node has bytecode
     {
         scoped_lock lk(originalNode->mutex);
         originalNode->flags |= AST_BYTECODE_GENERATED;
@@ -204,6 +214,10 @@ JobResult ByteCodeGenJob::execute()
             g_ThreadMgr.addJob(job);
         dependentJobs.clear();
     }
+
+	// RC registers
+	if(originalNode->bc->maxReservedRegisterRC)
+		originalNode->bc->registersRC = (Register*) malloc(originalNode->bc->maxReservedRegisterRC * sizeof(Register));
 
     // Wait for other dependent nodes to be generated
     syncToDependentNodes = true;

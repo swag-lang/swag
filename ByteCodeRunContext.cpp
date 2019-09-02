@@ -3,14 +3,8 @@
 #include "ByteCode.h"
 #include "AstNode.h"
 
-void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t numRC, uint32_t numRR, uint32_t stackS)
+void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, uint32_t numRR, uint32_t stackS)
 {
-    if (numRegistersRC < numRC)
-    {
-        numRegistersRC = numRC;
-        registersRC    = (Register*) realloc(registersRC, numRC * sizeof(Register));
-    }
-
     if (numRegistersRR < numRR)
     {
         numRegistersRR = numRR;

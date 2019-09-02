@@ -124,7 +124,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 
 inline bool ByteCodeRun::runNode(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    auto registersRC = context->registersRC;
+    auto registersRC = context->bc->registersRC;
     auto registersRR = context->registersRR;
 
     switch (ip->op)

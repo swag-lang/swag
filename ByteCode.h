@@ -23,6 +23,8 @@ struct ByteCode : public PoolElement
 {
     void print();
 
+    Register* registersRC = nullptr;
+
     static const int     ALIGN_RIGHT_OPCODE = 25;
     ByteCodeInstruction* out                = nullptr;
     uint32_t             numInstructions    = 0;
@@ -34,7 +36,10 @@ struct ByteCode : public PoolElement
     AstNode*             node               = nullptr;
     string               name;
 
-    set<int> usedRegisters;
+    uint32_t         maxReservedRegisterRC = 0;
+    vector<uint32_t> availableRegistersRC;
+    set<uint32_t>    reservedRC;
+    set<int>         usedRegisters;
 
     string            callName();
     TypeInfoFuncAttr* callType();

@@ -39,7 +39,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count - 1;
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
 
-        context->sourceFile->module->freeRegisterRC(r0);
+		freeRegisterRC(context,  r0);
     }
 
     if (!g_CommandLine.optimizeByteCode || sizeOf > 1)

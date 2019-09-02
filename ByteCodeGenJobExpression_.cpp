@@ -64,7 +64,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = offsetIdx;
             emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
             offsetIdx += oneOffset;
-            module->freeRegisterRC(child->resultRegisterRC);
+            freeRegisterRC(context, child->resultRegisterRC);
         }
 
         // Reference to the stack, and store the number of element in a register
