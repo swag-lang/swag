@@ -538,6 +538,12 @@ struct TypeInfoAlias : public TypeInfo
         rawType = nullptr;
     }
 
+	void computeName() override
+    {
+        rawType ->computeName();
+        name = rawType->name;
+    }
+
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 

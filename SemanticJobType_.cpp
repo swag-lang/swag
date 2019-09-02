@@ -153,16 +153,15 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     // In fact, this is a pointer
     if (node->ptrCount)
     {
-        auto ptrType         = g_Pool_typeInfoPointer.alloc();
-        ptrType->ptrCount    = node->ptrCount;
-        ptrType->pointedType = node->typeInfo;
-        ptrType->sizeOf      = sizeof(void*);
+        auto ptrPointer         = g_Pool_typeInfoPointer.alloc();
+        ptrPointer->ptrCount    = node->ptrCount;
+        ptrPointer->pointedType = node->typeInfo;
+        ptrPointer->sizeOf      = sizeof(void*);
         if (node->isConst)
-            ptrType->flags |= TYPEINFO_CONST;
-        if (ptrType->pointedType->flags & TYPEINFO_GENERIC)
-            ptrType->flags |= TYPEINFO_GENERIC;
-        ptrType->computeName();
-        node->typeInfo = typeTable.registerType(ptrType);
+            ptrPointer->flags |= TYPEINFO_CONST;
+        ptrPointer->flags |= (ptrPointer->pointedType->flags & TYPEINFO_GENERIC);
+        ptrPointer->computeName();
+        node->typeInfo = typeTable.registerType(ptrPointer);
     }
 
     // In fact, this is an array
@@ -178,8 +177,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrArray->rawType     = node->typeInfo;
             if (node->isConst)
                 ptrArray->flags |= TYPEINFO_CONST;
-            if (ptrArray->rawType->flags & TYPEINFO_GENERIC)
-                ptrArray->flags |= TYPEINFO_GENERIC;
+            ptrArray->flags |= (ptrArray->rawType->flags & TYPEINFO_GENERIC);
             ptrArray->sizeOf = 0;
             ptrArray->computeName();
             node->typeInfo = typeTable.registerType(ptrArray);
@@ -205,8 +203,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
                 if (node->isConst)
                     ptrArray->flags |= TYPEINFO_CONST;
-                if (ptrArray->rawType->flags & TYPEINFO_GENERIC)
-                    ptrArray->flags |= TYPEINFO_GENERIC;
+                ptrArray->flags |= (ptrArray->rawType->flags & TYPEINFO_GENERIC);
                 ptrArray->computeName();
                 node->typeInfo = typeTable.registerType(ptrArray);
             }
@@ -219,8 +216,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrSlice->sizeOf      = 2 * sizeof(void*);
         if (node->isConst)
             ptrSlice->flags |= TYPEINFO_CONST;
-        if (ptrSlice->pointedType->flags & TYPEINFO_GENERIC)
-            ptrSlice->flags |= TYPEINFO_GENERIC;
+        ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         ptrSlice->computeName();
         node->typeInfo = typeTable.registerType(ptrSlice);
     }
@@ -245,6 +241,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_RETURN_BY_COPY);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
+    typeInfo->computeName();
     node->typeInfo = typeTable.registerType(typeInfo);
 
     uint32_t symbolFlags = 0;

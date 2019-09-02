@@ -139,6 +139,23 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
     // When type is a compound, we do substitution in the raw type
     switch (oldType->kind)
     {
+    case TypeInfoKind::Alias:
+    {
+        auto typeAlias = CastTypeInfo<TypeInfoAlias>(oldType, TypeInfoKind::Alias);
+        newType        = typeAlias->rawType;
+        doTypeSubstitution(context, cloneContext, &newType);
+        if (newType != typeAlias->rawType)
+        {
+            typeAlias          = static_cast<TypeInfoAlias*>(typeAlias->clone());
+            typeAlias->rawType = newType;
+            typeAlias->flags &= ~TYPEINFO_GENERIC;
+            typeAlias->computeName();
+            *typeInfo = module->typeTable.registerType(typeAlias);
+        }
+
+        break;
+    }
+
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(oldType, TypeInfoKind::Pointer);

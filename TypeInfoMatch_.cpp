@@ -92,8 +92,9 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                             context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
                             symbolTypeInfos.push_back(symbolPtr->pointedType);
                             typeInfos.push_back(typePtr->pointedType);
+                            break;
                         }
-                        break;
+
                         case TypeInfoKind::Array:
                         {
                             auto symbolArray = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
@@ -102,8 +103,9 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                             context.mapGenericTypes[symbolArray->rawType] = {typeArray->rawType, i};
                             symbolTypeInfos.push_back(symbolArray->rawType);
                             typeInfos.push_back(typeArray->rawType);
+                            break;
                         }
-                        break;
+
                         case TypeInfoKind::Slice:
                         {
                             auto symbolSlice = CastTypeInfo<TypeInfoSlice>(symbolTypeInfo, TypeInfoKind::Slice);
@@ -112,8 +114,9 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                             context.mapGenericTypes[symbolSlice->pointedType] = {typeSlice->pointedType, i};
                             symbolTypeInfos.push_back(symbolSlice->pointedType);
                             typeInfos.push_back(typeSlice->pointedType);
+                            break;
                         }
-                        break;
+
                         case TypeInfoKind::Lambda:
                         {
                             auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolTypeInfo, TypeInfoKind::Lambda);
@@ -137,8 +140,8 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                                     typeInfos.push_back(typeParam->typeInfo);
                                 }
                             }
+                            break;
                         }
-                        break;
                         }
                     }
                 }
