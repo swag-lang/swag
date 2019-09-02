@@ -13,6 +13,8 @@
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
     auto node = CastAst<AstIf>(context->node, AstNodeKind::If);
+    SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
+
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
@@ -42,6 +44,8 @@ bool SemanticJob::resolveIf(SemanticContext* context)
 bool SemanticJob::resolveWhile(SemanticContext* context)
 {
     auto node = CastAst<AstWhile>(context->node, AstNodeKind::While);
+    SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
+
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression));
     node->byteCodeFct                       = &ByteCodeGenJob::emitWhile;
     node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitWhileBeforeExpr;
@@ -67,6 +71,8 @@ bool SemanticJob::resolveLoopBefore(SemanticContext* context)
 bool SemanticJob::resolveFor(SemanticContext* context)
 {
     auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
+    SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
+
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression));
     node->byteCodeFct                       = &ByteCodeGenJob::emitFor;
     node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitForBeforeExpr;
@@ -104,7 +110,9 @@ bool SemanticJob::resolveCase(SemanticContext* context)
 
 bool SemanticJob::resolveLoop(SemanticContext* context)
 {
-    auto node       = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    auto node = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    SWAG_CHECK(checkIsConcrete(context, node->expression));
+
     auto sourceFile = context->sourceFile;
     auto expression = node->expression;
 
