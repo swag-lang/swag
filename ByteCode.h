@@ -7,6 +7,7 @@ enum class ByteCodeOp : uint16_t;
 struct AstNode;
 struct SourceFile;
 struct TypeInfoFuncAttr;
+struct ByteCodeRunContext;
 
 struct ByteCodeInstruction
 {
@@ -38,7 +39,7 @@ struct ByteCode : public PoolElement
     vector<uint32_t>  availableRegistersRC;
     vector<Register*> registersRC;
     int               curRC = -1;
-    void              enterByteCode();
+    void              enterByteCode(ByteCodeRunContext* context);
     void              leaveByteCode();
 
     string            callName();

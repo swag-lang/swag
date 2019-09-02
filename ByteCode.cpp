@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "TypeInfo.h"
 #include "SymTable.h"
+#include "ByteCodeRunContext.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op) #__op,
@@ -35,8 +36,15 @@ TypeInfoFuncAttr* ByteCode::callType()
     return typeInfoFunc;
 }
 
-void ByteCode::enterByteCode()
+void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
+    if (curRC == (int) g_CommandLine.byteCodeMaxRecurse)
+    {
+        context->hasError = true;
+        context->errorMsg = format("recursive overflow during bytecode execution (max recursion is '--bc-max-recurse:%d')", g_CommandLine.byteCodeMaxRecurse);
+        return;
+    }
+
     curRC++;
     if (curRC >= registersRC.size())
     {

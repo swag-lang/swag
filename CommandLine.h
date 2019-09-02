@@ -27,11 +27,14 @@ struct CommandLine
     bool verboseBuildPass      = true;
 
     BuildPass   buildPass = BuildPass::Full;
-    int         numCores  = 0;
-    int         tabSize   = 4;
     string      fileFilter;
     set<string> compileVersion;
-    uint32_t    maxStaticArraySize = 32 * 1024 * 1024;
+
+    int      numCores           = 0;
+    int      tabSize            = 4;
+    uint32_t byteCodeMaxRecurse = 1024;
+    uint32_t byteCodeStackSize  = 16 * 1024;
+    uint32_t staticArrayMaxSize = 32 * 1024 * 1024;
 
     fs::path exePath;
 };

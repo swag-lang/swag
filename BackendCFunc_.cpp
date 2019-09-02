@@ -186,23 +186,25 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
     bufferC.addString(" {\n");
 
     // Generate one local variable per used register
-    int index = 0;
-    for (int r = 0; r < bc->maxReservedRegisterRC; r++)
-    {
-        if (index == 0)
-            bufferC.addString("__register ");
-        else
-            bufferC.addString(", ");
-        index = (index + 1) % 10;
-        bufferC.addString(format("r%d", r));
-        if (index == 0)
-            bufferC.addString(";\n");
-    }
+	{
+		int index = 0;
+		for (uint32_t r = 0; r < bc->maxReservedRegisterRC; r++)
+		{
+			if (index == 0)
+				bufferC.addString("__register ");
+			else
+				bufferC.addString(", ");
+			index = (index + 1) % 10;
+			bufferC.addString(format("r%d", r));
+			if (index == 0)
+				bufferC.addString(";\n");
+		}
 
-    bufferC.addString(";\n");
+		bufferC.addString(";\n");
+	}
 
     // Generate one variable per function call parameter
-    // Put in in reverse order, so that if we address one rc register, we got older one just after (usefull for variadic)
+    // Put in in reverse order, so that if we address one rc register, we got older one just after (useful for variadic)
     if (bc->maxCallParameters)
     {
         int index = 0;

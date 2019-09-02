@@ -79,8 +79,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     // Global setup
     {
         scoped_lock lkRR(mutexRegisterRR);
-        runContext->setup(sourceFile, node, maxReservedRegisterRR, 1024);
-		node->bc->enterByteCode();
+        runContext->setup(sourceFile, node, maxReservedRegisterRR, g_CommandLine.byteCodeStackSize);
+		node->bc->enterByteCode(runContext);
     }
 
     string exception;

@@ -25,14 +25,17 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
 
+    addArg("--bc-stack-size", nullptr, CommandLineType::Int, &cmdLine->byteCodeStackSize);
+    addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
+
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
     //cmdLine->optimizeByteCode = false;
     cmdLine->output = false;
     //cmdLine->verboseBackendCommand = true;
-	//cmdLine->verboseUnittestErrors = true;
-	//cmdLine->runBackendTests = false;
-    //cmdLine->fileFilter = "265";
+    //cmdLine->verboseUnittestErrors = true;
+    //cmdLine->runBackendTests = false;
+    cmdLine->fileFilter = "753";
 }
 
 void CommandLineParser::logArguments()

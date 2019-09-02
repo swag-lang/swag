@@ -165,7 +165,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->ip = context->bc->out;
         SWAG_ASSERT(context->ip);
         context->bp = context->sp;
-        context->bc->enterByteCode();
+        context->bc->enterByteCode(context);
         break;
     }
     case ByteCodeOp::LambdaCall:
@@ -177,7 +177,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->ip = context->bc->out;
         SWAG_ASSERT(context->ip);
         context->bp = context->sp;
-		context->bc->enterByteCode();
+		context->bc->enterByteCode(context);
         break;
     }
     case ByteCodeOp::MakeLambda:

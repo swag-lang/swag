@@ -46,7 +46,13 @@ struct ByteCodeRunContext
     template<typename T>
     inline void push(const T& value)
     {
-        SWAG_ASSERT(sp - sizeof(T) > stack);
+        if (sp - sizeof(T) < stack)
+        {
+            hasError = true;
+            errorMsg = format("stack overflow during bytecode execution (stack size is '--bc-stack-size:%d' bytes)", g_CommandLine.byteCodeStackSize);
+            return;
+        }
+
         sp -= sizeof(T);
         *(T*) sp = value;
     }
