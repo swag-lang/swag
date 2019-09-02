@@ -4,7 +4,7 @@
 //#[swag.printbc]
 #test
 {
-	len(cast(const[..]u8) {0x01_02_03_04} )
+	len(cast(const[..]u8) [0x01_02_03_04] )
 }
 
 //#[swag.printbc]

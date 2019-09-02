@@ -17,6 +17,7 @@ void printStats()
         wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
     wcout << "workers ........... " << g_Stats.numWorkers << "\n";
+    wcout << "instructions ...... " << g_Stats.numInstructions << "\n";
     wcout << "lines ............. " << g_Stats.numLines << "\n";
     wcout << "lines/s ........... " << (int) (g_Stats.numLines / g_Stats.totalTime.count()) << "\n";
     wcout << "files ............. " << g_Stats.numFiles << "\n";
@@ -49,7 +50,7 @@ int main(int argc, const char* argv[])
     // Log all arguments
     if (g_CommandLine.help)
     {
-		wcout << "swag version " << format("%d.%d.%d\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD).c_str();
+        wcout << "swag version " << format("%d.%d.%d\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD).c_str();
         cmdParser.logArguments();
         exit(0);
     }

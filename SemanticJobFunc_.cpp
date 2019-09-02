@@ -258,6 +258,15 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->inheritOrFlag(child, AST_CONST_EXPR);
     node->inheritOrFlag(child, AST_IS_GENERIC);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+
+	// Compiler evaluation
+    /*if (node->flags & AST_CONST_EXPR)
+    {
+        SWAG_CHECK(executeNode(context, node, true));
+        if (context->result == SemanticResult::Pending)
+            return true;
+    }*/
+
     return true;
 }
 

@@ -1,16 +1,15 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCode.h"
-#include "Global.h"
 #include "Diagnostic.h"
 #include "ThreadManager.h"
 #include "SourceFile.h"
 #include "ByteCodeOp.h"
-#include "TypeInfo.h"
 #include "Module.h"
 #include "Attribute.h"
 #include "Scope.h"
 #include "Ast.h"
+#include "Stats.h"
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
@@ -86,6 +85,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.sourceFileIdx        = node->sourceFileIdx;
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
+
+	if(g_CommandLine.stats)
+		g_Stats.numInstructions++;
     return &ins;
 }
 
