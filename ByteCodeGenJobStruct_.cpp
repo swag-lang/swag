@@ -32,12 +32,6 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     replaceAll(opInit->name, '.', '_');
     opInit->typeInfoFunc      = typeInfoFunc;
     opInit->maxCallParameters = 1;
-    opInit->usedRegisters.insert(0);
-    opInit->usedRegisters.insert(1);
-    opInit->usedRegisters.insert(2);
-	opInit->reservedRC.insert(0);
-	opInit->reservedRC.insert(1);
-	opInit->reservedRC.insert(2);
 	opInit->maxReservedRegisterRC = 3;
 
     if (!typeInfoStruct->opInitFct->bc)

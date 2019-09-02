@@ -34,15 +34,12 @@ struct ByteCode : public PoolElement
     AstNode*             node               = nullptr;
     string               name;
 
-    uint32_t         maxReservedRegisterRC = 0;
-    vector<uint32_t> availableRegistersRC;
-    set<uint32_t>    reservedRC;
-    set<int>         usedRegisters;
-
+    uint32_t          maxReservedRegisterRC = 0;
+    vector<uint32_t>  availableRegistersRC;
     vector<Register*> registersRC;
     int               curRC = -1;
     void              enterByteCode();
-	void              leaveByteCode();
+    void              leaveByteCode();
 
     string            callName();
     TypeInfoFuncAttr* callType();

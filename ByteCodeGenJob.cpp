@@ -27,16 +27,11 @@ uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
     if (!context->bc->availableRegistersRC.empty())
     {
         auto result = context->bc->availableRegistersRC.back();
-        context->bc->usedRegisters.insert(result);
         context->bc->availableRegistersRC.pop_back();
-        context->bc->reservedRC.insert(result);
         return result;
     }
 
-    auto result = context->bc->maxReservedRegisterRC++;
-    context->bc->usedRegisters.insert(result);
-    context->bc->reservedRC.insert(result);
-    return result;
+    return context->bc->maxReservedRegisterRC++;
 }
 
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
@@ -52,7 +47,6 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
 {
     for (int i = 0; i < rc.size(); i++)
     {
-        context->bc->reservedRC.erase(rc[i]);
         freeRegisterRC(context, rc[i]);
     }
 
@@ -61,7 +55,6 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
-    context->bc->reservedRC.erase(rc);
 #ifdef _DEBUG
     for (auto r : context->bc->availableRegistersRC)
         SWAG_ASSERT(r != rc);
