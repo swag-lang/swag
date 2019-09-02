@@ -145,7 +145,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typePointer->pointedType = it->second;
             typePointer->flags &= ~TYPEINFO_GENERIC;
             typePointer->computeName();
-			*typeInfo = module->typeTable.registerType(typePointer);
+            *typeInfo = module->typeTable.registerType(typePointer);
         }
 
         break;
@@ -161,7 +161,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typeArray->pointedType = it->second;
             typeArray->flags &= ~TYPEINFO_GENERIC;
             typeArray->computeName();
-			*typeInfo = module->typeTable.registerType(typeArray);
+            *typeInfo = module->typeTable.registerType(typeArray);
         }
 
         break;
@@ -177,7 +177,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typeSlice->pointedType = it->second;
             typeSlice->flags &= ~TYPEINFO_GENERIC;
             typeSlice->computeName();
-			*typeInfo = module->typeTable.registerType(typeSlice);
+            *typeInfo = module->typeTable.registerType(typeSlice);
         }
 
         break;
@@ -187,6 +187,15 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
     {
         TypeInfoFuncAttr* newLambda  = nullptr;
         auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(oldType, TypeInfoKind::Lambda);
+
+        it = cloneContext.replaceTypes.find(typeLambda->returnType);
+        if (it != cloneContext.replaceTypes.end())
+        {
+            newLambda = static_cast<TypeInfoFuncAttr*>(typeLambda->clone());
+            newLambda->flags &= ~TYPEINFO_GENERIC;
+            newLambda->returnType = it->second;
+        }
+
         for (int idx = 0; idx < typeLambda->parameters.size(); idx++)
         {
             auto param = CastTypeInfo<TypeInfoParam>(typeLambda->parameters[idx], TypeInfoKind::Param);
@@ -207,7 +216,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
         if (newLambda)
         {
             newLambda->computeName();
-			*typeInfo = module->typeTable.registerType(newLambda);
+            *typeInfo = module->typeTable.registerType(newLambda);
         }
 
         break;

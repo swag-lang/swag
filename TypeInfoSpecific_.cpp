@@ -343,7 +343,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (!isSame(other, isSameFlags))
         return false;
 
-    if (isSameFlags & ISSAME_EXACT)
+    if ((isSameFlags & ISSAME_EXACT) || (to->kind == TypeInfoKind::Lambda))
     {
         if (returnType && returnType != g_TypeMgr.typeInfoVoid && !other->returnType)
             return false;
