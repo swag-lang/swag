@@ -88,8 +88,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     AstNode* node       = context->node;
     auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParameters);
-	SWAG_ASSERT(!node->name.empty());
-    auto     intrinsic  = g_LangSpec.intrinsics[node->name];
+    SWAG_ASSERT(!node->name.empty());
+    auto intrinsic = g_LangSpec.intrinsics[node->name];
     switch (intrinsic)
     {
     case Intrinsic::IntrinsicPrint:
@@ -156,8 +156,9 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     AstNode* node     = context->node;
     auto     overload = node->resolvedSymbolOverload;
     auto     varNode  = (AstVarDecl*) overload->node;
+
     SWAG_CHECK(emitIdentifier(context));
-    node->resultRegisterRC = node->resultRegisterRC;
+    varNode->resultRegisterRC = node->resultRegisterRC;
 
     auto allParams = node->childs.empty() ? nullptr : node->childs.front();
     return emitLocalCall(context, allParams, nullptr, varNode);
@@ -413,7 +414,8 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     }
     else
     {
-        auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, node->resultRegisterRC);
+		SWAG_ASSERT(varNode);
+        auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, varNode->resultRegisterRC);
         inst->b.u64     = numRegisters;
         inst->c.pointer = (uint8_t*) typeInfoFunc;
     }
