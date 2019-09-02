@@ -20,25 +20,25 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->name                   = childBack->name;
 
     // Flag inheritance
-    bool isConstExpr = true;
+    node->flags |= AST_CONST_EXPR;
     for (auto child : node->childs)
     {
         if (!(child->flags & AST_CONST_EXPR))
-            isConstExpr = false;
+            node->flags &= ~AST_CONST_EXPR;
         if (child->flags & AST_IS_GENERIC)
             node->flags |= AST_IS_GENERIC;
         if (child->flags & AST_GENERIC_MATCH_WAS_PARTIAL)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
     }
 
-    if (isConstExpr)
-        node->flags |= AST_CONST_EXPR;
-
     if (node->resolvedSymbolOverload)
     {
         // Symbol is in fact a constant value : no need for bytecode
         if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
         {
+			if(node->resolvedSymbolName->kind != SymbolKind::GenericType)
+				node->flags |= AST_R_VALUE;
+
             if (childBack->kind != AstNodeKind::ArrayPointerIndex)
             {
                 node->computedValue = node->resolvedSymbolOverload->computedValue;
@@ -49,6 +49,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
                  node->resolvedSymbolName->kind == SymbolKind::Function)
         {
             node->flags |= AST_L_VALUE;
+            node->flags |= AST_R_VALUE;
         }
     }
 
@@ -203,6 +204,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Variable:
     {
+        node->flags |= AST_R_VALUE;
+
         // Lambda call
         AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         auto           typeInfo   = TypeManager::concreteType(identifier->typeInfo);
@@ -277,6 +280,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
+        node->flags |= AST_R_VALUE;
+
         // Need to make all types compatible, in case a cast is necessary
         AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->callParameters && oneMatch)
@@ -712,8 +717,9 @@ bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
         node->typeInfo               = typeList->childs[index];
         node->resolvedSymbolName     = identifierRef->previousResolvedNode->resolvedSymbolName;
         node->resolvedSymbolOverload = identifierRef->previousResolvedNode->resolvedSymbolOverload;
-        identifierRef->typeInfo      = typeList->childs[index];
-        eaten                        = true;
+        node->flags |= AST_R_VALUE;
+        identifierRef->typeInfo = typeList->childs[index];
+        eaten                   = true;
         return true;
     }
 
@@ -734,6 +740,7 @@ bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
                 identifierRef->typeInfo      = typeList->childs[index];
                 eaten                        = true;
                 node->flags |= AST_IDENTIFIER_IS_INTEGER;
+				node->flags |= AST_R_VALUE;
                 return true;
             }
 

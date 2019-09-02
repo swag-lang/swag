@@ -286,6 +286,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
         storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
+		node->flags |= AST_R_VALUE;
 
         module->mutexDataSeg.lock();
         if (typeInfo->isNative(NativeType::String))
@@ -344,7 +345,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
+		node->flags |= AST_R_VALUE;
     }
+	else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
+	{
+		node->flags |= AST_R_VALUE;
+	}
+	else if (isConstant)
+	{
+		node->flags |= AST_R_VALUE;
+	}
 
     // Attributes
     SymbolAttributes attributes;

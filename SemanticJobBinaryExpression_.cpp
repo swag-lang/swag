@@ -695,8 +695,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto left       = node->childs[0];
     auto right      = node->childs[1];
 
+    SWAG_CHECK(checkIsConcrete(context, left));
+    SWAG_CHECK(checkIsConcrete(context, right));
+
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);
+    node->inheritAndFlag(AST_R_VALUE);
 
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
@@ -759,6 +763,9 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     auto left       = node->childs[0];
     auto right      = node->childs[1];
 
+    SWAG_CHECK(checkIsConcrete(context, left));
+    SWAG_CHECK(checkIsConcrete(context, right));
+
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
@@ -770,6 +777,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);
+    node->inheritAndFlag(AST_R_VALUE);
 
     switch (node->token.id)
     {
@@ -788,27 +796,31 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 
 bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 {
-    auto node      = context->node;
-    auto leftNode  = node->childs[0];
-    auto rightNode = node->childs[1];
+    auto node  = context->node;
+    auto left  = node->childs[0];
+    auto right = node->childs[1];
+
+    SWAG_CHECK(checkIsConcrete(context, left));
+    SWAG_CHECK(checkIsConcrete(context, right));
 
     node->typeInfo = g_TypeMgr.typeInfoBool;
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, leftNode));
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, rightNode));
+    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, left));
+    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, right));
 
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);
+    node->inheritAndFlag(AST_R_VALUE);
 
-    if ((leftNode->flags & AST_VALUE_COMPUTED) && (rightNode->flags & AST_VALUE_COMPUTED))
+    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
         switch (node->token.id)
         {
         case TokenId::SymAmpersandAmpersand:
-            node->computedValue.reg.b = leftNode->computedValue.reg.b && rightNode->computedValue.reg.b;
+            node->computedValue.reg.b = left->computedValue.reg.b && right->computedValue.reg.b;
             break;
         case TokenId::SymVerticalVertical:
-            node->computedValue.reg.b = leftNode->computedValue.reg.b || rightNode->computedValue.reg.b;
+            node->computedValue.reg.b = left->computedValue.reg.b || right->computedValue.reg.b;
             break;
         default:
             return internalError(context, "resolveBoolExpression, token not supported");

@@ -255,6 +255,14 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->inheritOrFlag(child, AST_IS_GENERIC);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
 
+	// Can be called for generic parameters in type definition, in that case, we are a type, so no
+	// test for concrete must be done
+	if (!(node->parent->flags & AST_NO_BYTECODE))
+	{
+		SWAG_CHECK(checkIsConcrete(context, child));
+		node->flags |= AST_R_VALUE;
+	}
+
     SWAG_CHECK(evaluateConstExpression(context, node));
     if (context->result == SemanticResult::Pending)
         return true;

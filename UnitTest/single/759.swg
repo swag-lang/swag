@@ -7,8 +7,8 @@ struct Point
 	var y: f32
 }
 
-#[swag.printbc]
-func Print(x: Point)
+//#[swag.printbc]
+func Print(x: s32)
 {
 /*	@print(x.x)
 	@print(" ")
@@ -16,8 +16,9 @@ func Print(x: Point)
 	@print("\n")*/
 }
 
-#[swag.printbc]
+//#[swag.printbc]
+#unittest error
 #test
 {	
-	Print(Point(1, 1))
+	Print(s32)
 }

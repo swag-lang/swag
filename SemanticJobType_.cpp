@@ -10,20 +10,13 @@
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
     auto sourceFile = context->sourceFile;
+	if (node->flags & AST_R_VALUE)
+		return true;
+
     if (node->kind == AstNodeKind::TypeExpression)
         return context->errorContext.report({sourceFile, node, "cannot reference a type expression"});
     if (node->resolvedSymbolName)
-    {
-        switch (node->resolvedSymbolName->kind)
-        {
-        case SymbolKind::Namespace:
-        case SymbolKind::Enum:
-        case SymbolKind::TypeAlias:
-        case SymbolKind::GenericType:
-        case SymbolKind::Struct:
-            return context->errorContext.report({sourceFile, node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
-        }
-    }
+        return context->errorContext.report({sourceFile, node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
 
     return true;
 }

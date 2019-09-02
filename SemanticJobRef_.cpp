@@ -17,7 +17,9 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     SWAG_VERIFY(child->flags & AST_L_VALUE, context->errorContext.report({sourceFile, child, "cannot take address of expression"}));
     if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerIndex)
         return context->errorContext.report({sourceFile, child, "invalid address expression"});
+
     SWAG_CHECK(checkIsConcrete(context, child));
+	node->flags |= AST_R_VALUE;
 
     // Lambda
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
@@ -97,6 +99,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
+	arrayNode->flags |= AST_R_VALUE;
 
     auto arrayType  = arrayNode->array->typeInfo;
     auto sourceFile = context->sourceFile;
@@ -171,6 +174,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
+	arrayNode->flags |= AST_R_VALUE;
 
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
         return context->errorContext.report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});

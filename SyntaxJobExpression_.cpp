@@ -39,7 +39,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     }
 
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-	SWAG_VERIFY(token.id != TokenId::SymLeftSquare, syntaxError(token, "invalid token '['"));
+    SWAG_VERIFY(token.id != TokenId::SymLeftSquare, syntaxError(token, "invalid token '['"));
 
     return true;
 }
@@ -452,10 +452,13 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         AstVarDecl* varNode  = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
         varNode->name        = leftNode->childs.back()->name;
         varNode->semanticFct = &SemanticJob::resolveVarDecl;
+        
         if (result)
             *result = varNode;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
+		varNode->flags |= AST_R_VALUE;
+
         if (!isContextDisabled())
         {
             currentScope->allocateSymTable();
