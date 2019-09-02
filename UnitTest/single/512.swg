@@ -6,7 +6,7 @@ func T(xx: string, a: ...)
 {
 	i := 0'u32
 	idx := 0
-	while i < @prop(xx, count)
+	while i < @op(xx, count)
 	{
 		c := cast(char) xx[i]
 		if c == '%'

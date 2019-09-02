@@ -7,7 +7,7 @@
 	var toto = "1234";
 	
 	var cpt = 0;
-	loop(@prop(toto, count))
+	loop(@op(toto, count))
 		cpt += 1;
 		
 	@assert(cpt == 4);

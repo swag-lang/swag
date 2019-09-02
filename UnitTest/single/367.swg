@@ -5,6 +5,6 @@
 #test
 {
 	var arr: [] s32 = [1,2];
-	@assert(@prop(arr, count) == 2);
-	@assert(@prop(arr, sizeof) == 8);
+	@assert(@op(arr, count) == 2);
+	@assert(@op(arr, sizeof) == 8);
 }

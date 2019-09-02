@@ -7,8 +7,8 @@ var a = ["0", "1.0"];
 #test
 {
 	var b = ["0", "1.0"];
-	@assert(@prop(a[0], count) == 1);
-	@assert(@prop(a[1], count) == 3);
-	@assert(@prop(b[0], count) == 1);
-	@assert(@prop(b[1], count) == 3);
+	@assert(@op(a[0], count) == 1);
+	@assert(@op(a[1], count) == 3);
+	@assert(@op(b[0], count) == 1);
+	@assert(@op(b[1], count) == 3);
 }

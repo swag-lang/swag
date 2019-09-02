@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "LanguageSpec.h"
-#include "Global.h"
 #include "TypeManager.h"
 
 LanguageSpec g_LangSpec;
@@ -85,7 +84,7 @@ void LanguageSpec::setup()
 
     intrinsics["@print"]  = Intrinsic::IntrinsicPrint;
     intrinsics["@assert"] = Intrinsic::IntrinsicAssert;
-    intrinsics["@prop"]   = Intrinsic::IntrinsicProp;
+    intrinsics["@op"]     = Intrinsic::IntrinsicProp;
     intrinsics["@alloc"]  = Intrinsic::IntrinsicAlloc;
     intrinsics["@free"]   = Intrinsic::IntrinsicFree;
 }

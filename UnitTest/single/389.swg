@@ -5,7 +5,7 @@
 #test
 {
 	var cpt: const [..] s32 = {1, 2, 4};
-	var ptr = @prop(cpt, data);
+	var ptr = @op(cpt, data);
 	@assert(ptr[0] == 1);
 	@assert(ptr[1] == 2);
 	@assert(ptr[2] == 4);

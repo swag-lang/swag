@@ -21,7 +21,7 @@ func T(param: *s32)
 //#[swag.printbc]
 /*func F(param: [..] s32, b: (*s32))
 {
-	var data = @prop(param, data)
+	var data = @op(param, data)
 	loop(param)
 	{
 		b(data + index)	

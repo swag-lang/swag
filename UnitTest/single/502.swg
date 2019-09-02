@@ -5,8 +5,8 @@
 #unittest error
 func T(xx: string, a: ...)
 {
-	@assert(@prop(a, count) == 3)
-	@print(cast(s32) @prop(a, count))
+	@assert(@op(a, count) == 3)
+	@print(cast(s32) @op(a, count))
 }
 
 //#[swag.printbc]

@@ -17,7 +17,7 @@
 	#test
 	{
 		var res = test2;
-		//@prop(res, count) == 5;
+		//@op(res, count) == 5;
 		
 		//@print(res);
 		//@print(test2.count);

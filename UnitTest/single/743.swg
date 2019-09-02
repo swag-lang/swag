@@ -3,7 +3,7 @@
 //#[swag.printbc]
 func(T) toto(x: [..] T)
 {
-	@assert(@prop(x, count) == 1)
+	@assert(@op(x, count) == 1)
 	@assert(x[0] == 10)
 }
 	

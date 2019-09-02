@@ -3,6 +3,6 @@
 //#[printbc]
 #test
 {
-	@assert(@prop("toto", count) == 4);
-	@assert(@prop("totototo", count) == 8);
+	@assert(@op("toto", count) == 4);
+	@assert(@op("totototo", count) == 8);
 }

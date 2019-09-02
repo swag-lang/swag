@@ -16,7 +16,7 @@ func T(param: *s32)
 #[swag.printbc]
 func F(param: [3] s32, b: (*s32))
 {
-	var data = @prop(param, data)
+	var data = @op(param, data)
 	loop(param)
 	{
 		b(data + index)	
@@ -32,5 +32,5 @@ func F(param: [3] s32, b: (*s32))
 
 func F(param: [..] s32)
 {
-	@assert(@prop(param, count) == 3)
+	@assert(@op(param, count) == 3)
 }

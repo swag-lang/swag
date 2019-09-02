@@ -19,5 +19,5 @@ struct point
 #test
 {
 	var pt: point
-	@assert(@prop(pt, sizeof) == 20)
+	@assert(@op(pt, sizeof) == 20)
 }

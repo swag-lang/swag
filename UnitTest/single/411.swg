@@ -6,7 +6,7 @@
 	var c = [666];
 	var d: [..] s32 = cast([..]s32) c;
 	@assert(d[0] == 666);
-	@assert(@prop(d, count) == 1);
+	@assert(@op(d, count) == 1);
 	
 	//var c = {0};
 	//var d: [..] *s32 = {&c[0]};

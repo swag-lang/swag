@@ -3,10 +3,10 @@
 #test
 {
 	var str = "toto";
-	var c = @prop(str, count);
+	var c = @op(str, count);
 	@assert(c == 4);
 	
 	str = "totototo";
-	c = @prop(str, count);
+	c = @op(str, count);
 	@assert(c == 8);
 }

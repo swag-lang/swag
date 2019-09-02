@@ -3,5 +3,5 @@
 #unittest error;
 #test
 {
-	@assert(@prop(1 + 1, count) == 4);
+	@assert(@op(1 + 1, count) == 4);
 }

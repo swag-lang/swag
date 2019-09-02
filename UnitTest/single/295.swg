@@ -4,17 +4,17 @@ using swag;
 
 #run
 {
-	@assert(@prop(bool, sizeof) == 1);
-	@assert(@prop(s8, sizeof) == 1);
-	@assert(@prop(s16, sizeof) == 2);
-	@assert(@prop(s32, sizeof) == 4);
-	@assert(@prop(s64, sizeof) == 8);
-	@assert(@prop(u8, sizeof) == 1);
-	@assert(@prop(u16, sizeof) == 2);
-	@assert(@prop(u32, sizeof) == 4);
-	@assert(@prop(u64, sizeof) == 8);	
-	@assert(@prop(f32, sizeof) == 4);
-	@assert(@prop(f64, sizeof) == 8);	
-	@assert(@prop(char, sizeof) == 4);	
-	@assert(@prop(string, sizeof) == 8 + 8);	
+	@assert(@op(bool, sizeof) == 1);
+	@assert(@op(s8, sizeof) == 1);
+	@assert(@op(s16, sizeof) == 2);
+	@assert(@op(s32, sizeof) == 4);
+	@assert(@op(s64, sizeof) == 8);
+	@assert(@op(u8, sizeof) == 1);
+	@assert(@op(u16, sizeof) == 2);
+	@assert(@op(u32, sizeof) == 4);
+	@assert(@op(u64, sizeof) == 8);	
+	@assert(@op(f32, sizeof) == 4);
+	@assert(@op(f64, sizeof) == 8);	
+	@assert(@op(char, sizeof) == 4);	
+	@assert(@op(string, sizeof) == 8 + 8);	
 }
