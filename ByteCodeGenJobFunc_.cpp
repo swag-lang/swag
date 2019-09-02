@@ -36,7 +36,9 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
-    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    auto     back          = node->childs.back();
+    node->resultRegisterRC = back->resultRegisterRC;
+    emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo);
     return true;
 }
 
@@ -369,7 +371,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     }
     else
     {
-		SWAG_ASSERT(varNode);
+        SWAG_ASSERT(varNode);
         auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, varNode->resultRegisterRC);
         inst->b.u64     = numRegisters;
         inst->c.pointer = (uint8_t*) typeInfoFunc;

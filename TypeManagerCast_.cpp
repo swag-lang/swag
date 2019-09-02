@@ -1130,7 +1130,7 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         auto fromSize = fromTypeList->childs.size();
         for (int i = 0; i < fromSize; i++)
         {
-			auto child = nodeToCast && fromSize == nodeToCast->childs.size() ? nodeToCast->childs[i] : nullptr;
+            auto child = nodeToCast && fromSize == nodeToCast->childs.size() ? nodeToCast->childs[i] : nullptr;
             SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, fromTypeList->childs[i], child, castFlags | CASTFLAG_JUST_CHECK));
         }
 
@@ -1141,10 +1141,16 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST))
         {
-            if (castFlags & CASTFLAG_FORCE)
-                return true;
-            else
-                explicitIsValid = true;
+            //if (castFlags & CASTFLAG_FORCE)
+            if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK) && !(castFlags & CASTFLAG_FORCE))
+            {
+                nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
+                nodeToCast->typeInfo       = toTypeSlice;
+            }
+
+            return true;
+            //else
+            //    explicitIsValid = true;
         }
     }
     else if (fromType->isNative(NativeType::String))
