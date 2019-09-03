@@ -186,22 +186,22 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
     bufferC.addString(" {\n");
 
     // Generate one local variable per used register
-	{
-		int index = 0;
-		for (uint32_t r = 0; r < bc->maxReservedRegisterRC; r++)
-		{
-			if (index == 0)
-				bufferC.addString("__register ");
-			else
-				bufferC.addString(", ");
-			index = (index + 1) % 10;
-			bufferC.addString(format("r%d", r));
-			if (index == 0)
-				bufferC.addString(";\n");
-		}
+    {
+        int index = 0;
+        for (uint32_t r = 0; r < bc->maxReservedRegisterRC; r++)
+        {
+            if (index == 0)
+                bufferC.addString("__register ");
+            else
+                bufferC.addString(", ");
+            index = (index + 1) % 10;
+            bufferC.addString(format("r%d", r));
+            if (index == 0)
+                bufferC.addString(";\n");
+        }
 
-		bufferC.addString(";\n");
-	}
+        bufferC.addString(";\n");
+    }
 
     // Generate one variable per function call parameter
     // Put in in reverse order, so that if we address one rc register, we got older one just after (useful for variadic)
@@ -251,15 +251,40 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
     // Generate bytecode
     int  vaargsIdx = 0;
     auto ip        = bc->out;
+    int  lastLine  = -1;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
+        // Print source code
+        if (g_CommandLine.cOutputCode)
+        {
+            if (ip->startLocation.line != lastLine)
+            {
+                if (ip->startLocation.column != ip->endLocation.column)
+                {
+                    lastLine = ip->startLocation.line;
+                    auto s   = bc->sourceFile->getLine(ip->startLocation.seekStartLine);
+                    s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
+                    if (!s.empty())
+                        s.pop_back();
+                    for (int idx = 0; idx < 14; idx++)
+                        bufferC.addString(" ");
+                    bufferC.addString("/* ");
+                    bufferC.addString(s);
+                    bufferC.addString(" */\n");
+                }
+            }
+        }
+
         bufferC.addString(format("lbl%08u:; ", i));
 
-        bufferC.addString(" /* ");
-        for (int dec = g_ByteCodeOpNamesLen[(int) ip->op]; dec < ByteCode::ALIGN_RIGHT_OPCODE; dec++)
-            bufferC.addString(" ");
-        bufferC.addString(g_ByteCodeOpNames[(int) ip->op]);
-        bufferC.addString(" */ ");
+        if (g_CommandLine.cOutputByteCode)
+        {
+            bufferC.addString("/* ");
+            for (int dec = g_ByteCodeOpNamesLen[(int) ip->op]; dec < ByteCode::ALIGN_RIGHT_OPCODE; dec++)
+                bufferC.addString(" ");
+            bufferC.addString(g_ByteCodeOpNames[(int) ip->op]);
+            bufferC.addString(" */ ");
+        }
 
         switch (ip->op)
         {
@@ -976,28 +1001,28 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.s64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastU32F32:
-			bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.u32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.u32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastU64F32:
-			bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.u64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.u64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastU64F64:
-			bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.u64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.u64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF32S32:
-			bufferC.addString(format("r%u.s32 = (swag_int32_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.s32 = (swag_int32_t) r%u.f32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF32S64:
-			bufferC.addString(format("r%u.s64 = (swag_int64_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.s64 = (swag_int64_t) r%u.f32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF32F64:
-			bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.f32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF64S64:
-			bufferC.addString(format("r%u.s64 = (swag_int64_t) r%u.f64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.s64 = (swag_int64_t) r%u.f64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF64F32:
-			bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.f64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.f64; ", ip->a.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::CopyRR0:

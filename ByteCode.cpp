@@ -81,9 +81,26 @@ void ByteCode::print()
 
     g_Log.eol();
 
+	int lastLine = -1;
     for (int i = 0; i < (int) numInstructions; i++)
     {
         auto ip = out + i;
+
+		// Print source code
+		if (ip->startLocation.line != lastLine)
+		{
+			if (ip->startLocation.column != ip->endLocation.column)
+			{
+				lastLine = ip->startLocation.line;
+				auto s = sourceFile->getLine(ip->startLocation.seekStartLine);
+				s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
+				g_Log.setColor(LogColor::Magenta);
+				for (int idx = 0; idx < 9; idx++)
+					g_Log.print(" ");
+				g_Log.print(s);
+				g_Log.print("\n");
+			}
+		}
 
         // Instruction rank
         g_Log.setColor(LogColor::Cyan);

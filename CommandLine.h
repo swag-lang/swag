@@ -25,6 +25,9 @@ struct CommandLine
     bool verboseTest           = true;
     bool verboseBuildPass      = true;
 
+    bool cOutputCode     = false;
+    bool cOutputByteCode = false;
+
     BuildPass   buildPass = BuildPass::Full;
     string      fileFilter;
     set<string> compileVersion;
