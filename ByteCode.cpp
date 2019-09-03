@@ -94,7 +94,7 @@ void ByteCode::print()
 				lastLine = ip->startLocation.line;
 				auto s = sourceFile->getLine(ip->startLocation.seekStartLine);
 				s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
-				g_Log.setColor(LogColor::Magenta);
+				g_Log.setColor(LogColor::DarkYellow);
 				for (int idx = 0; idx < 9; idx++)
 					g_Log.print(" ");
 				g_Log.print(s);
