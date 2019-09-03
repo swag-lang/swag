@@ -11,4 +11,5 @@ struct Point
 {	
 	cpt := Point(10, 20)
 	@assert(cpt.x == 10)
+	@assert(cpt.y == 20)
 }

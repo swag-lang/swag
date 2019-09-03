@@ -146,6 +146,13 @@ namespace Ast
             visit(child, fctor);
     }
 
+    AstNode* clone(AstNode* source, AstNode* parent)
+    {
+        CloneContext cloneContext;
+        cloneContext.parent = parent;
+        return source->clone(cloneContext);
+    }
+
     AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent)
     {
         AstVarDecl* node  = Ast::newNode(nullptr, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
