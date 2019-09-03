@@ -22,10 +22,9 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
         return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
 
     auto identifier = Ast::newNode(this, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, nullptr);
-	identifier->inheritTokenName(token);
+    identifier->inheritTokenName(token);
     identifier->flags |= flags;
     identifier->semanticFct   = &SemanticJob::resolveIdentifier;
-    identifier->byteCodeFct   = &ByteCodeGenJob::emitIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     SWAG_CHECK(tokenizer.getToken(token));
 
@@ -54,9 +53,8 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
-    auto identifierRef = Ast::newNode(this, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
+    auto identifierRef         = Ast::newNode(this, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
     identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
-    identifierRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
     if (result)
         *result = identifierRef;
 

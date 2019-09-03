@@ -18,6 +18,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
     node->typeInfo               = childBack->typeInfo;
     node->name                   = childBack->name;
+    node->byteCodeFct            = &ByteCodeGenJob::emitIdentifierRef;
 
     // Flag inheritance
     node->flags |= AST_CONST_EXPR;
@@ -39,7 +40,6 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->computedValue = node->resolvedSymbolOverload->computedValue;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
         node->flags &= ~AST_L_VALUE;
-
     }
 
     return true;
@@ -186,8 +186,44 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     case SymbolKind::Struct:
         parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
-        if (identifier->callParameters)
-            identifier->flags |= AST_R_VALUE;
+        if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
+        {
+            identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
+
+            AstVarDecl* varNode  = Ast::newNode(nullptr, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, identifier->identifierRef->parent);
+            varNode->name        = "tt";
+            varNode->semanticFct = &SemanticJob::resolveVarDecl;
+            varNode->ownerScope  = identifier->ownerScope;
+            varNode->ownerFct    = identifier->ownerFct;
+
+            AstTypeExpression* typeNode = (AstTypeExpression*) Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, varNode);
+            typeNode->semanticFct       = &SemanticJob::resolveTypeExpression;
+            typeNode->ownerScope        = identifier->ownerScope;
+            typeNode->ownerFct          = identifier->ownerFct;
+            typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+            varNode->type = typeNode;
+
+            CloneContext cloneContext;
+            cloneContext.parent  = typeNode;
+            typeNode->identifier = identifier->identifierRef->clone(cloneContext);
+            typeNode->identifier->childs.back()->flags &= ~AST_NO_BYTECODE;
+			typeNode->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;			
+
+            AstIdentifier* idNode = (AstIdentifier*) Ast::newNode(nullptr, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, identifier->identifierRef);
+            idNode->identifierRef = identifier->identifierRef;
+            idNode->name          = varNode->name;
+            idNode->semanticFct   = &SemanticJob::resolveIdentifier;
+            idNode->ownerScope    = identifier->ownerScope;
+            idNode->ownerFct      = identifier->ownerFct;
+            idNode->flags |= AST_R_VALUE;
+            idNode->identifierRef->startScope = nullptr;
+
+            context->job->nodes.pop_back();
+            context->job->nodes.push_back(idNode);
+            context->job->nodes.push_back(varNode);
+            context->job->nodes.push_back(identifier);
+        }
+
         break;
 
     case SymbolKind::GenericType:
@@ -745,6 +781,9 @@ bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
 
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
+    auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    node->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
+
     // Direct access to a tuple inside value
     bool eatenByTyple = false;
     SWAG_CHECK(resolveTupleAccess(context, eatenByTyple));
@@ -754,7 +793,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  job              = context->job;
     auto& scopeHierarchy   = job->cacheScopeHierarchy;
     auto& dependentSymbols = job->cacheDependentSymbols;
-    auto  node             = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     auto  identifierRef    = node->identifierRef;
     auto  sourceFile       = context->sourceFile;
 
