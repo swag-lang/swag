@@ -198,8 +198,8 @@ struct AstNode : public PoolElement
     {
         if (childs.empty())
             return;
-		for (auto child : childs)
-			child->inheritLocationFromChilds();
+        for (auto child : childs)
+            child->inheritLocationFromChilds();
         if (token.startLocation.column == 0 && token.startLocation.line == 0)
             token.startLocation = childs.front()->token.startLocation;
         token.endLocation = childs.back()->token.endLocation;

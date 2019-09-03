@@ -3,10 +3,10 @@ struct OutputFile;
 
 struct SaveThreadRequest
 {
-    OutputFile* file;
-    char*       buffer;
-    long        bufferSize;
-    bool        ioError;
+    OutputFile* file       = nullptr;
+    char*       buffer     = nullptr;
+    long        bufferSize = 0;
+    bool        ioError    = false;
 };
 
 struct SavingThread
