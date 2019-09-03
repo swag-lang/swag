@@ -145,4 +145,21 @@ namespace Ast
         for (auto child : root->childs)
             visit(child, fctor);
     }
+
+    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent)
+    {
+        AstVarDecl* node  = Ast::newNode(nullptr, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
+        node->name        = name;
+        node->semanticFct = &SemanticJob::resolveVarDecl;
+        node->inheritOwners(parent);
+        return node;
+    }
+
+    AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent)
+    {
+        AstTypeExpression* node = Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
+        node->semanticFct       = &SemanticJob::resolveTypeExpression;
+        node->inheritOwners(parent);
+        return node;
+    }
 }; // namespace Ast
