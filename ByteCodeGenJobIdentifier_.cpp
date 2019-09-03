@@ -29,17 +29,18 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    auto resolved     = node->resolvedSymbolOverload;
-    auto resolvedName = node->resolvedSymbolName;
-
-    if (resolvedName->kind == SymbolKind::Namespace ||
-        resolvedName->kind == SymbolKind::Struct ||
-        resolvedName->kind == SymbolKind::TypeAlias)
+    if (!(node->flags & AST_L_VALUE) && !(node->flags & AST_R_VALUE))
         return true;
-    if (resolvedName->kind != SymbolKind::Variable)
-        return internalError(context, "emitIdentifier, type not supported");
 
+    auto resolved = node->resolvedSymbolOverload;
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo);
+
+    // Will be done in the variable declaration
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        if (node->flags & AST_IN_TYPE_VAR_DECLARATION)
+            return true;
+    }
 
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)

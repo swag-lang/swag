@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "Scope.h"
+#include "Scoped.h"
 #include "SymTable.h"
 
 bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
@@ -46,6 +47,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymColon)
     {
+		ScopedFlags scopedFlags(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doTypeExpression(varNode, &varNode->type));
     }

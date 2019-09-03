@@ -39,6 +39,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->computedValue = node->resolvedSymbolOverload->computedValue;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
         node->flags &= ~AST_L_VALUE;
+
     }
 
     return true;

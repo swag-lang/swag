@@ -1,4 +1,4 @@
-#module module762
+#module module763
 
 struct Point
 {
@@ -7,8 +7,7 @@ struct Point
 }
 
 //#[swag.printbc]
-#unittest error
 #test
 {	
-	cpt := Point
+	cpt := Point()
 }
