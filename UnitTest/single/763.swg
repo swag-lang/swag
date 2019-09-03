@@ -10,5 +10,5 @@ struct Point
 #test
 {	
 	cpt := Point(10, 20)
-	@print(cpt.x)
+	@assert(cpt.x == 10)
 }

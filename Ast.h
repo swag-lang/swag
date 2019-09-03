@@ -48,6 +48,7 @@ namespace Ast
 
     extern AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent);
     extern AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent);
+    extern AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent);
 }; // namespace Ast
 
 template<typename T>

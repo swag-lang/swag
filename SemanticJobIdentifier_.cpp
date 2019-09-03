@@ -192,8 +192,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
 
-            auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), identifier->identifierRef->parent);
-
+            auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), identifier->identifierRef->parent);
             auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
             varNode->type = typeNode;
@@ -204,12 +203,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             typeNode->identifier->childs.back()->flags &= ~AST_NO_BYTECODE;
             typeNode->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
-            AstIdentifier* idNode = (AstIdentifier*) Ast::newNode(nullptr, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, identifier->identifierRef);
-            idNode->identifierRef = identifier->identifierRef;
-            idNode->name          = varNode->name;
-            idNode->semanticFct   = &SemanticJob::resolveIdentifier;
-            idNode->inheritOwners(identifier->identifierRef);
+            auto idNode = Ast::newIdentifier(sourceFile, varNode->name, identifier->identifierRef, identifier->identifierRef);
             idNode->flags |= AST_R_VALUE;
+
             idNode->identifierRef->startScope = nullptr;
 
             context->job->nodes.pop_back();

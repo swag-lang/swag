@@ -162,4 +162,14 @@ namespace Ast
         node->inheritOwners(parent);
         return node;
     }
+
+    AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent)
+    {
+        AstIdentifier* node = Ast::newNode(nullptr, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, parent);
+        node->name          = name;
+        node->identifierRef = identifierRef;
+        node->semanticFct   = &SemanticJob::resolveIdentifier;
+        node->inheritOwners(parent);
+        return node;
+    }
 }; // namespace Ast
