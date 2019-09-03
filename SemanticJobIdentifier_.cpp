@@ -31,25 +31,19 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
     }
 
+	node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE);
+
     if (node->resolvedSymbolOverload)
     {
         // Symbol is in fact a constant value : no need for bytecode
         if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
         {
-			if(node->resolvedSymbolName->kind != SymbolKind::GenericType)
-				node->flags |= AST_R_VALUE;
-
             if (childBack->kind != AstNodeKind::ArrayPointerIndex)
             {
                 node->computedValue = node->resolvedSymbolOverload->computedValue;
                 node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+				node->flags &= ~AST_L_VALUE;
             }
-        }
-        else if (node->resolvedSymbolName->kind == SymbolKind::Variable ||
-                 node->resolvedSymbolName->kind == SymbolKind::Function)
-        {
-            node->flags |= AST_L_VALUE;
-            node->flags |= AST_R_VALUE;
         }
     }
 
@@ -167,36 +161,38 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     return true;
 }
 
-bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstNode* node, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch)
+bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch)
 {
-    auto  sourceFile               = context->sourceFile;
-    auto& typeTable                = sourceFile->module->typeTable;
-    parent->resolvedSymbolName     = symbol;
-    parent->resolvedSymbolOverload = overload;
-    parent->previousResolvedNode   = node;
-    node->resolvedSymbolName       = symbol;
-    node->resolvedSymbolOverload   = overload;
+    auto  sourceFile                   = context->sourceFile;
+    auto& typeTable                    = sourceFile->module->typeTable;
+    parent->resolvedSymbolName         = symbol;
+    parent->resolvedSymbolOverload     = overload;
+    parent->previousResolvedNode       = identifier;
+    identifier->resolvedSymbolName     = symbol;
+    identifier->resolvedSymbolOverload = overload;
 
-    if (node->typeInfo->flags & TYPEINFO_GENERIC)
-        node->flags |= AST_IS_GENERIC;
+    if (identifier->typeInfo->flags & TYPEINFO_GENERIC)
+        identifier->flags |= AST_IS_GENERIC;
 
     switch (symbol->kind)
     {
     case SymbolKind::Namespace:
-        parent->startScope = static_cast<TypeInfoNamespace*>(node->typeInfo)->scope;
-        node->flags |= AST_CONST_EXPR;
+        parent->startScope = static_cast<TypeInfoNamespace*>(identifier->typeInfo)->scope;
+        identifier->flags |= AST_CONST_EXPR;
         break;
     case SymbolKind::Enum:
-        parent->startScope = static_cast<TypeInfoEnum*>(node->typeInfo)->scope;
-        node->flags |= AST_CONST_EXPR;
+        parent->startScope = static_cast<TypeInfoEnum*>(identifier->typeInfo)->scope;
+        identifier->flags |= AST_CONST_EXPR;
         break;
     case SymbolKind::EnumValue:
-        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-        node->computedValue = node->resolvedSymbolOverload->computedValue;
+        identifier->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
+        identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
         break;
     case SymbolKind::Struct:
-        parent->startScope = static_cast<TypeInfoStruct*>(node->typeInfo)->scope;
-        node->flags |= AST_CONST_EXPR;
+        parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
+        identifier->flags |= AST_CONST_EXPR;
+		if (identifier->callParameters)
+			identifier->flags |= AST_R_VALUE;
         break;
 
     case SymbolKind::GenericType:
@@ -204,19 +200,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Variable:
     {
-        node->flags |= AST_R_VALUE;
+		identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Lambda call
-        AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        auto           typeInfo   = TypeManager::concreteType(identifier->typeInfo);
+        auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
 
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
             // From now this is considered as a function, not a lambda
-            auto funcType     = typeInfo->clone();
-            funcType->kind    = TypeInfoKind::FuncAttr;
-            node->typeInfo    = typeTable.registerType(funcType);
-            node->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
+            auto funcType           = typeInfo->clone();
+            funcType->kind          = TypeInfoKind::FuncAttr;
+            identifier->typeInfo    = typeTable.registerType(funcType);
+            identifier->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
 
             // Need to make all types compatible, in case a cast is necessary
             if (identifier->callParameters && oneMatch)
@@ -230,29 +225,29 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
 
             // For a return by copy, need to reserve room on the stack for the return result
-            auto returnType = TypeManager::concreteType(node->typeInfo);
+            auto returnType = TypeManager::concreteType(identifier->typeInfo);
             if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
-                node->fctCallStorageOffset = node->ownerScope->startStackSize;
-                node->ownerScope->startStackSize += returnType->sizeOf;
-                node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+                identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
+                identifier->ownerScope->startStackSize += returnType->sizeOf;
+                identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
             }
         }
 
         // Tuple
         else if (typeInfo->kind == TypeInfoKind::TypeList)
         {
-            parent->startScope = static_cast<TypeInfoList*>(typeInfo)->scope;
-            node->typeInfo     = typeInfo;
-            parent->typeInfo   = typeInfo;
+            parent->startScope   = static_cast<TypeInfoList*>(typeInfo)->scope;
+            identifier->typeInfo = typeInfo;
+            parent->typeInfo     = typeInfo;
         }
 
         // Struct
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
-            parent->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
-            node->typeInfo     = typeInfo;
-            parent->typeInfo   = typeInfo;
+            parent->startScope   = static_cast<TypeInfoStruct*>(typeInfo)->scope;
+            identifier->typeInfo = typeInfo;
+            parent->typeInfo     = typeInfo;
         }
 
         // Pointer
@@ -261,8 +256,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
             if (typePointer->pointedType->kind == TypeInfoKind::Struct)
                 parent->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
-            node->typeInfo   = typeInfo;
-            parent->typeInfo = typeInfo;
+            identifier->typeInfo = typeInfo;
+            parent->typeInfo     = typeInfo;
         }
 
         // Array
@@ -271,8 +266,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             if (typeArray->rawType->kind == TypeInfoKind::Struct)
                 parent->startScope = static_cast<TypeInfoStruct*>(typeArray->rawType)->scope;
-            node->typeInfo   = typeInfo;
-            parent->typeInfo = typeInfo;
+            identifier->typeInfo = typeInfo;
+            parent->typeInfo     = typeInfo;
         }
 
         break;
@@ -280,10 +275,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
-        node->flags |= AST_R_VALUE;
+		identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Need to make all types compatible, in case a cast is necessary
-        AstIdentifier* identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->callParameters && oneMatch)
         {
             for (int i = 0; i < identifier->callParameters->childs.size(); i++)
@@ -295,45 +289,45 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         // This is for a lambda
-        if (node->flags & AST_TAKE_ADDRESS)
+        if (identifier->flags & AST_TAKE_ADDRESS)
         {
             // The makePointer will deal with the real make lambda thing
-            node->flags |= AST_NO_BYTECODE;
+            identifier->flags |= AST_NO_BYTECODE;
             break;
         }
 
-        node->kind = AstNodeKind::FuncCall;
-        node->inheritOrFlag(node->resolvedSymbolOverload->node, AST_CONST_EXPR);
+        identifier->kind = AstNodeKind::FuncCall;
+        identifier->inheritOrFlag(identifier->resolvedSymbolOverload->node, AST_CONST_EXPR);
 
-        if (node->token.id == TokenId::Intrinsic)
+        if (identifier->token.id == TokenId::Intrinsic)
         {
-            node->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+            identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
         }
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
         {
-            node->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
+            identifier->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
         }
         else
         {
-            node->byteCodeFct = &ByteCodeGenJob::emitLocalCall;
-            auto ownerFct     = node->ownerFct;
+            identifier->byteCodeFct = &ByteCodeGenJob::emitLocalCall;
+            auto ownerFct           = identifier->ownerFct;
             if (ownerFct)
             {
                 auto myAttributes = ownerFct->attributeFlags;
                 if (!(myAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
-                    return context->errorContext.report({sourceFile, node->token, format("cannot call compiler function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->errorContext.report({sourceFile, identifier->token, format("cannot call compiler function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
                 if (!(myAttributes & ATTRIBUTE_TEST) && (overload->node->attributeFlags & ATTRIBUTE_TEST))
-                    return context->errorContext.report({sourceFile, node->token, format("cannot call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->errorContext.report({sourceFile, identifier->token, format("cannot call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
             }
         }
 
         // For a return by copy, need to reserve room on the stack for the return result
-        auto returnType = TypeManager::concreteType(node->typeInfo);
+        auto returnType = TypeManager::concreteType(identifier->typeInfo);
         if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            node->fctCallStorageOffset = node->ownerScope->startStackSize;
-            node->ownerScope->startStackSize += returnType->sizeOf;
-            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+            identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
+            identifier->ownerScope->startStackSize += returnType->sizeOf;
+            identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
         }
 
         break;
@@ -717,7 +711,7 @@ bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
         node->typeInfo               = typeList->childs[index];
         node->resolvedSymbolName     = identifierRef->previousResolvedNode->resolvedSymbolName;
         node->resolvedSymbolOverload = identifierRef->previousResolvedNode->resolvedSymbolOverload;
-        node->flags |= AST_R_VALUE;
+        node->flags |= AST_L_VALUE | AST_R_VALUE;
         identifierRef->typeInfo = typeList->childs[index];
         eaten                   = true;
         return true;
@@ -740,7 +734,7 @@ bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
                 identifierRef->typeInfo      = typeList->childs[index];
                 eaten                        = true;
                 node->flags |= AST_IDENTIFIER_IS_INTEGER;
-				node->flags |= AST_R_VALUE;
+                node->flags |= AST_R_VALUE;
                 return true;
             }
 
