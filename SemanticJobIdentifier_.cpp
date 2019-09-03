@@ -31,20 +31,14 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
     }
 
-	node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE);
+    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE);
 
-    if (node->resolvedSymbolOverload)
+    if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
     {
         // Symbol is in fact a constant value : no need for bytecode
-        if (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
-        {
-            if (childBack->kind != AstNodeKind::ArrayPointerIndex)
-            {
-                node->computedValue = node->resolvedSymbolOverload->computedValue;
-                node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
-				node->flags &= ~AST_L_VALUE;
-            }
-        }
+        node->computedValue = node->resolvedSymbolOverload->computedValue;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+        node->flags &= ~AST_L_VALUE;
     }
 
     return true;
@@ -191,8 +185,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     case SymbolKind::Struct:
         parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
-		if (identifier->callParameters)
-			identifier->flags |= AST_R_VALUE;
+        if (identifier->callParameters)
+            identifier->flags |= AST_R_VALUE;
         break;
 
     case SymbolKind::GenericType:
@@ -200,7 +194,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Variable:
     {
-		identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+        identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Lambda call
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
@@ -275,7 +269,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     case SymbolKind::Function:
     {
-		identifier->flags |= AST_L_VALUE | AST_R_VALUE;
+        identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters && oneMatch)
