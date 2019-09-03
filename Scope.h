@@ -25,11 +25,11 @@ struct Scope : public PoolElement
 {
     void reset() override
     {
-        parentScope    = nullptr;
-        symTable       = nullptr;
-        startStackSize = 0;
-        owner          = nullptr;
-        indexInParent  = UINT32_MAX;
+        parentScope     = nullptr;
+        symTable        = nullptr;
+        startStackSize  = 0;
+        owner           = nullptr;
+        indexInParent   = UINT32_MAX;
     }
 
     void               allocateSymTable();

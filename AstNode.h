@@ -194,6 +194,15 @@ struct AstNode : public PoolElement
         }
     }
 
+    void inheritOwners(AstNode* op)
+    {
+        ownerStructScope = op->ownerStructScope;
+        ownerStruct      = op->ownerStruct;
+        ownerScope       = op->ownerScope;
+        ownerFct         = op->ownerFct;
+        ownerBreakable   = op->ownerBreakable;
+    }
+
     void inheritLocationFromChilds()
     {
         if (childs.empty())

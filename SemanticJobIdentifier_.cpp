@@ -186,20 +186,20 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     case SymbolKind::Struct:
         parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
+
+        // A struct with parameters is in fact the creation of a temporary local variable
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION))
         {
             identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
 
             AstVarDecl* varNode  = Ast::newNode(nullptr, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, identifier->identifierRef->parent);
-            varNode->name        = "tt";
+            varNode->name        = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
             varNode->semanticFct = &SemanticJob::resolveVarDecl;
-            varNode->ownerScope  = identifier->ownerScope;
-            varNode->ownerFct    = identifier->ownerFct;
+            varNode->inheritOwners(identifier);
 
             AstTypeExpression* typeNode = (AstTypeExpression*) Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, varNode);
             typeNode->semanticFct       = &SemanticJob::resolveTypeExpression;
-            typeNode->ownerScope        = identifier->ownerScope;
-            typeNode->ownerFct          = identifier->ownerFct;
+            typeNode->inheritOwners(identifier);
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
             varNode->type = typeNode;
 
@@ -207,14 +207,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             cloneContext.parent  = typeNode;
             typeNode->identifier = identifier->identifierRef->clone(cloneContext);
             typeNode->identifier->childs.back()->flags &= ~AST_NO_BYTECODE;
-			typeNode->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;			
+            typeNode->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
             AstIdentifier* idNode = (AstIdentifier*) Ast::newNode(nullptr, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, identifier->identifierRef);
             idNode->identifierRef = identifier->identifierRef;
             idNode->name          = varNode->name;
             idNode->semanticFct   = &SemanticJob::resolveIdentifier;
-            idNode->ownerScope    = identifier->ownerScope;
-            idNode->ownerFct      = identifier->ownerFct;
+            idNode->inheritOwners(identifier);
             idNode->flags |= AST_R_VALUE;
             idNode->identifierRef->startScope = nullptr;
 
