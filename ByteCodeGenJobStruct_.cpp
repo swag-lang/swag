@@ -14,6 +14,24 @@ bool ByteCodeGenJob::emitStructCopy(ByteCodeGenContext* context, RegisterList& r
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
     emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
+
+    if (typeInfoStruct->opPostCopyFct)
+    {
+        /*emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
+        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
+        inst->a.pointer = (uint8_t*) typeInfoStruct->opPostCopyFct->bc;
+        inst->b.u64     = 1;
+        inst->c.pointer = (uint8_t*) typeInfoStruct->opPostCopyFct->typeInfo;
+        emitInstruction(context, ByteCodeOp::IncSP, 8);*/
+
+        AstNode allParams;
+        allParams.reset();
+        allParams.childs.push_back(context->node);
+        context->node->resultRegisterRC = r0;
+        SWAG_CHECK(emitLocalCall(context, &allParams, static_cast<AstFuncDecl*>(typeInfoStruct->opPostCopyFct), nullptr));
+        r0.clear();
+    }
+
     return true;
 }
 

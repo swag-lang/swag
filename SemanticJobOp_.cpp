@@ -169,14 +169,17 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     if (context->result == SemanticResult::Pending)
         return true;
 
-    auto overload                = job->cacheMatches[0].symbolOverload;
-    node->typeInfo               = overload->typeInfo;
-    node->resolvedSymbolName     = job->cacheDependentSymbols[0];
-    node->resolvedSymbolOverload = overload;
-    SWAG_ASSERT(node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function);
+    auto overload = job->cacheMatches[0].symbolOverload;
+    if (!optionnal)
+    {
+        node->typeInfo               = overload->typeInfo;
+        node->resolvedSymbolName     = job->cacheDependentSymbols[0];
+        node->resolvedSymbolOverload = overload;
+        SWAG_ASSERT(node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function);
+    }
 
     // Allocate room on the stack to store the result of the function call
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
     if (typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         node->fctCallStorageOffset = node->ownerScope->startStackSize;

@@ -358,10 +358,11 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoStruct::clone()
 {
-    auto newType        = g_Pool_typeInfoStruct.alloc();
-    newType->scope      = scope;
-    newType->structNode = structNode;
-    newType->opInitFct  = opInitFct;
+    auto newType           = g_Pool_typeInfoStruct.alloc();
+    newType->scope         = scope;
+    newType->structNode    = structNode;
+    newType->opInitFct     = opInitFct;
+    newType->opPostCopyFct = opPostCopyFct;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {

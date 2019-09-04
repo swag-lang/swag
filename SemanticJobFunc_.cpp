@@ -216,13 +216,21 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     typeInfo->computeName();
 
-    // opInit registration
+    // Special functions registration
     if (funcNode->name == "opInit")
     {
         SWAG_ASSERT(funcNode->parameters);
-        SWAG_ASSERT(funcNode->parameters->childs.size() >= 1);
+        SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
         auto typeStruct       = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
         typeStruct->opInitFct = funcNode;
+    }
+    else if (funcNode->name == "opPostCopy")
+    {
+        SWAG_ASSERT(funcNode->parameters);
+        SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
+        auto typeStruct           = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+        typeStruct->opPostCopyFct = funcNode;
+        typeStruct->flags |= TYPEINFO_STRUCT_HAS_POST_COPY;
     }
 
     uint32_t symbolFlags = 0;
@@ -255,13 +263,13 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->inheritOrFlag(child, AST_IS_GENERIC);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
 
-	// Can be called for generic parameters in type definition, in that case, we are a type, so no
-	// test for concrete must be done
-	if (!(node->parent->flags & AST_NO_BYTECODE))
-	{
-		SWAG_CHECK(checkIsConcrete(context, child));
-		node->flags |= AST_R_VALUE;
-	}
+    // Can be called for generic parameters in type definition, in that case, we are a type, so no
+    // test for concrete must be done
+    if (!(node->parent->flags & AST_NO_BYTECODE))
+    {
+        SWAG_CHECK(checkIsConcrete(context, child));
+        node->flags |= AST_R_VALUE;
+    }
 
     SWAG_CHECK(evaluateConstExpression(context, node));
     if (context->result == SemanticResult::Pending)
