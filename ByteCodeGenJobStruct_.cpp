@@ -11,6 +11,13 @@
 #include "Scope.h"
 #include "SemanticJob.h"
 
+bool ByteCodeGenJob::emitStructCopy(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
+{
+    TypeInfoStruct* typeInfoStruct                            = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
+    return true;
+}
+
 bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     auto sourceFile   = context->sourceFile;
@@ -30,9 +37,9 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
     opInit->sourceFile = context->sourceFile;
     opInit->name       = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
     replaceAll(opInit->name, '.', '_');
-    opInit->typeInfoFunc      = typeInfoFunc;
-    opInit->maxCallParameters = 1;
-	opInit->maxReservedRegisterRC = 3;
+    opInit->typeInfoFunc          = typeInfoFunc;
+    opInit->maxCallParameters     = 1;
+    opInit->maxReservedRegisterRC = 3;
 
     if (!typeInfoStruct->opInitFct->bc)
         sourceFile->module->addByteCodeFunc(opInit);

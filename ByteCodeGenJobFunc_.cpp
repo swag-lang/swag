@@ -50,12 +50,20 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     if (!node->childs.empty())
     {
         auto front = node->childs.front();
-        if (front->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+        if (front->typeInfo->kind == TypeInfoKind::Struct)
         {
-			auto r0 = reserveRegisterRC(context);
-			emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+			RegisterList r0;
+			reserveRegisterRC(context, r0, 1);
+            emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+			SWAG_CHECK(emitStructCopy(context, r0, front->resultRegisterRC, front->typeInfo, front));
+            freeRegisterRC(context, r0);
+        }
+        else if (front->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+        {
+            auto r0 = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
             emitInstruction(context, ByteCodeOp::Copy, r0, front->resultRegisterRC)->c.u32 = front->typeInfo->sizeOf;
-			freeRegisterRC(context, r0);
+            freeRegisterRC(context, r0);
         }
         else
         {

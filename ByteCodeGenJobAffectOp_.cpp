@@ -19,7 +19,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
 	if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
+		SWAG_CHECK(emitStructCopy(context, r0, r1, typeInfo, from));
         return true;
     }
 
