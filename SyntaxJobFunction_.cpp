@@ -231,7 +231,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
-    typeNode->token       = funcNode->token;
     if (!isTest)
     {
         if (token.id == TokenId::SymMinusGreat)

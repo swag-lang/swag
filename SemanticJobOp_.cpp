@@ -37,10 +37,6 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     if (typeStruct->kind != TypeInfoKind::Struct)
         return true;
 
-    // Already checked by the syntax pass
-    if (name == "opInit")
-        return true;
-
     // First type must be struct
     auto firstType = node->parameters->childs.front()->typeInfo;
     SWAG_VERIFY(firstType->isSame(typeStruct, 0), context->errorContext.report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
@@ -75,6 +71,11 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
         SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType && returnType->typeInfo->isSame(typeStruct, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), returnType->typeInfo->name.c_str())}));
     }
+    else if (name == "opPostCopy")
+    {
+        SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
+    }
     else if (name == "opCount")
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
@@ -107,23 +108,26 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     return true;
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right, bool optionnal)
 {
     vector<AstNode*> params;
     SWAG_ASSERT(left);
     params.push_back(left);
     if (right)
         params.push_back(right);
-    return resolveUserOp(context, name, op, left, params);
+    return resolveUserOp(context, name, op, left, params, optionnal);
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, vector<AstNode*>& params)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, vector<AstNode*>& params, bool optionnal)
 {
     auto node       = context->node;
     auto job        = context->job;
     auto sourceFile = context->sourceFile;
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(left->typeInfo, TypeInfoKind::Struct);
     auto symbol     = leftStruct->scope->symTable->find(name);
+
+    if (!symbol && optionnal)
+        return true;
 
     SWAG_VERIFY(symbol, context->errorContext.report({sourceFile, left->parent, format("cannot find operator '%s' in '%s'", name, leftStruct->name.c_str())}));
 

@@ -18,10 +18,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo, MakeConcrete::FlagAlias);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
-	SWAG_CHECK(checkIsConcrete(context, left));
+    SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
-	SWAG_VERIFY(left->resolvedSymbolName, context->errorContext.report({ sourceFile, left, format("affect operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str()) }));
+    SWAG_VERIFY(left->resolvedSymbolName, context->errorContext.report({sourceFile, left, format("affect operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->errorContext.report({sourceFile, left, format("affect operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->errorContext.report({sourceFile, left, "affect operation not allowed on array"}));
     SWAG_VERIFY(left->flags & AST_L_VALUE, context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is not a l-value"}));
@@ -46,7 +46,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     auto tokenId   = node->token.id;
     bool forStruct = leftTypeInfo->kind == TypeInfoKind::Struct;
 
-	SWAG_CHECK(evaluateConstExpression(context, right));
+    SWAG_CHECK(evaluateConstExpression(context, right));
     if (context->result == SemanticResult::Pending)
         return true;
 
@@ -69,8 +69,16 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return context->errorContext.report({sourceFile, right, format("affect not allowed, '%s' is %s", rightTypeInfo->name.c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
-        if (forStruct && arrayNode)
-            SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", left, arrayNode->structFlatParams));
+        if (forStruct)
+        {
+            if (arrayNode)
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", left, arrayNode->structFlatParams));
+            else
+            {
+				SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, left, nullptr, true));
+				SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right));
+            }
+        }
         else
             SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right));
         break;
@@ -210,8 +218,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 return context->errorContext.report({sourceFile, node, format("pointer operation not allowed with type '%s'", leftTypeInfo->name.c_str())});
             }
 
-			auto leftPtrType = CastTypeInfo<TypeInfoPointer>(leftTypeInfo, TypeInfoKind::Pointer);
-			SWAG_VERIFY(leftPtrType->pointedType->sizeOf > 0, context->errorContext.report({ sourceFile, left, format("operation not allowed on %s '%s' because size of pointed type is zero", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str()) }));
+            auto leftPtrType = CastTypeInfo<TypeInfoPointer>(leftTypeInfo, TypeInfoKind::Pointer);
+            SWAG_VERIFY(leftPtrType->pointedType->sizeOf > 0, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s' because size of pointed type is zero", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         }
         else
         {
