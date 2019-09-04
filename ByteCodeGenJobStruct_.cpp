@@ -59,7 +59,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     auto opPostCopy            = g_Pool_byteCode.alloc();
     typeInfoStruct->opPostCopy = opPostCopy;
     opPostCopy->sourceFile     = sourceFile;
-    opPostCopy->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opPostCopy";
+    opPostCopy->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opPostCopyGenerated";
     replaceAll(opPostCopy->name, '.', '_');
     opPostCopy->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
     opPostCopy->maxCallParameters     = 1;
