@@ -322,14 +322,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         memcpy(dst, src, size);
         break;
     }
-    case ByteCodeOp::CopyRR0:
-    {
-        void*    dst  = registersRR[0].pointer;
-        void*    src  = registersRC[ip->a.u32].pointer;
-        uint32_t size = ip->b.u32;
-        memcpy(dst, src, size);
-        break;
-    }
     case ByteCodeOp::CopyRARBStr:
     {
         auto module = context->sourceFile->module;
@@ -386,7 +378,8 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRR[ip->a.u32] = registersRC[ip->b.u32];
         break;
     }
-    case ByteCodeOp::CopyRCxRRx:
+	case ByteCodeOp::CopyRCxRRx:
+    case ByteCodeOp::CopyRCxRRxCall:
     {
         registersRC[ip->a.u32] = registersRR[ip->b.u32];
         break;

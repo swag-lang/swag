@@ -1025,16 +1025,16 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.f64; ", ip->a.u32, ip->a.u32));
             break;
 
-        case ByteCodeOp::CopyRR0:
-            bufferC.addString(format("__memcpy(rr0->pointer, r%u.pointer, %u);", ip->a.u32, ip->b.u32));
-            break;
         case ByteCodeOp::CopyRRxRCx:
             bufferC.addString(format("*rr%u = r%u;", ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::CopyRCxRRx:
+            bufferC.addString(format("r%u = *rr%u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRRxRCxCall:
             bufferC.addString(format("rt%u = r%u;", ip->a.u32, ip->b.u32));
             break;
-        case ByteCodeOp::CopyRCxRRx:
+        case ByteCodeOp::CopyRCxRRxCall:
             bufferC.addString(format("r%u = rt%u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromStackParam64:

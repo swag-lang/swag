@@ -52,8 +52,10 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         auto front = node->childs.front();
         if (front->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            auto inst   = emitInstruction(context, ByteCodeOp::CopyRR0, front->resultRegisterRC);
-            inst->b.u32 = front->typeInfo->sizeOf;
+			auto r0 = reserveRegisterRC(context);
+			emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+            emitInstruction(context, ByteCodeOp::Copy, r0, front->resultRegisterRC)->c.u32 = front->typeInfo->sizeOf;
+			freeRegisterRC(context, r0);
         }
         else
         {
@@ -386,7 +388,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             reserveRegisterRC(context, node->resultRegisterRC, numRegs);
             context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
             for (int idx = 0; idx < node->resultRegisterRC.size(); idx++)
-                emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC[idx], idx);
+                emitInstruction(context, ByteCodeOp::CopyRCxRRxCall, node->resultRegisterRC[idx], idx);
         }
     }
 
@@ -490,7 +492,7 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::CopyRCxRRx, node->resultRegisterRC, 0);
+        emitInstruction(context, ByteCodeOp::CopyRCxRRxCall, node->resultRegisterRC, 0);
     }
 
     return true;

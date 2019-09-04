@@ -189,7 +189,7 @@ void ByteCode::print()
         case ByteCodeOp::BoundCheckReg:
         case ByteCodeOp::CopyRARB:
         case ByteCodeOp::CopyRRxRCx:
-        case ByteCodeOp::CopyRCxRRx:
+        case ByteCodeOp::CopyRCxRRxCall:
         case ByteCodeOp::CopyRRxRCxCall:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
@@ -199,6 +199,7 @@ void ByteCode::print()
         case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::CopyRARBStr:
         case ByteCodeOp::DeRefPointer:
+		case ByteCodeOp::Copy:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
@@ -213,7 +214,6 @@ void ByteCode::print()
         case ByteCodeOp::RARefFromStack:
         case ByteCodeOp::AffectOp64Null:
         case ByteCodeOp::IncPointerVB:
-        case ByteCodeOp::CopyRR0:
         case ByteCodeOp::ShiftRightU64VB:
         case ByteCodeOp::IncRAVB:
         case ByteCodeOp::ClearX:
