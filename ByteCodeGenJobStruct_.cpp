@@ -4,16 +4,15 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "TypeInfo.h"
 #include "SourceFile.h"
 #include "Module.h"
-#include "TypeManager.h"
 #include "Scope.h"
 #include "SemanticJob.h"
 
 bool ByteCodeGenJob::emitStructCopy(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
 {
-    TypeInfoStruct* typeInfoStruct                            = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+
     emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
     return true;
 }

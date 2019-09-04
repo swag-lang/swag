@@ -1,14 +1,9 @@
 #include "pch.h"
-#include "Global.h"
 #include "Ast.h"
 #include "ByteCodeGenJob.h"
-#include "TypeInfo.h"
-#include "SourceFile.h"
 #include "Module.h"
-#include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
-#include "CommandLine.h"
 #include "SymTable.h"
 
 bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
