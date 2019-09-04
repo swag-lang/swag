@@ -12,11 +12,12 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     auto      typeInfo     = TypeManager::concreteType(forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo);
     TypeInfo* fromTypeInfo = from ? from->typeInfo : nullptr;
 
-	if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->kind == TypeInfoKind::Struct)
     {
-		SWAG_CHECK(emitStructCopy(context, r0, r1, typeInfo, from));
+        SWAG_CHECK(prepareEmitStructCopyMove(context, typeInfo, from));
         if (context->result == ByteCodeResult::Pending)
             return true;
+        SWAG_CHECK(emitStructCopyMove(context, r0, r1, typeInfo, from));
         return true;
     }
 
@@ -516,7 +517,6 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     AstNode* leftNode = context->node->childs[0];
 
     emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo);
-
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
         if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)

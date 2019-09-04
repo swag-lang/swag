@@ -49,20 +49,23 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     // Copy result to RR0... registers
     if (!node->childs.empty())
     {
-        auto front = node->childs.front();
-        if (front->typeInfo->kind == TypeInfoKind::Struct)
+        auto returnExpression = node->childs.front();
+        if (returnExpression->typeInfo->kind == TypeInfoKind::Struct)
         {
-			RegisterList r0;
-			reserveRegisterRC(context, r0, 1);
+            SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo, returnExpression));
+            if (context->result == ByteCodeResult::Pending)
+                return true;
+            RegisterList r0;
+            reserveRegisterRC(context, r0, 1);
             emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
-			SWAG_CHECK(emitStructCopy(context, r0, front->resultRegisterRC, front->typeInfo, front));
+            SWAG_CHECK(emitStructCopyMove(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
             freeRegisterRC(context, r0);
         }
-        else if (front->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+        else if (returnExpression->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
         {
             auto r0 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
-            emitInstruction(context, ByteCodeOp::Copy, r0, front->resultRegisterRC)->c.u32 = front->typeInfo->sizeOf;
+            emitInstruction(context, ByteCodeOp::Copy, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
             freeRegisterRC(context, r0);
         }
         else

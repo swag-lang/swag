@@ -77,9 +77,10 @@ static const uint64_t TYPEINFO_VARIADIC                 = 0x00000000'00000080;
 static const uint64_t TYPEINFO_STRUCT_HAS_INIT_VALUES   = 0x00000000'00000100;
 static const uint64_t TYPEINFO_STRUCT_ALL_UNINITIALIZED = 0x00000000'00000200;
 static const uint64_t TYPEINFO_STRUCT_NO_POST_COPY      = 0x00000000'00000400;
-static const uint64_t TYPEINFO_GENERIC                  = 0x00000000'00000800;
-static const uint64_t TYPEINFO_RETURN_BY_COPY           = 0x00000000'00001000;
-static const uint64_t TYPEINFO_NATIVE_VALUE             = 0x00000000'00002000;
+static const uint64_t TYPEINFO_STRUCT_NO_POST_MOVE      = 0x00000000'00000800;
+static const uint64_t TYPEINFO_GENERIC                  = 0x00000000'00001000;
+static const uint64_t TYPEINFO_RETURN_BY_COPY           = 0x00000000'00002000;
+static const uint64_t TYPEINFO_NATIVE_VALUE             = 0x00000000'00004000;
 
 static const uint32_t ISSAME_EXACT = 0x00000001;
 static const uint32_t ISSAME_CAST  = 0x00000002;
@@ -513,6 +514,8 @@ struct TypeInfoStruct : public TypeInfo
         opInitFct         = nullptr;
         opUserPostCopyFct = nullptr;
         opPostCopy        = nullptr;
+        opUserPostMoveFct = nullptr;
+        opPostMove        = nullptr;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -532,6 +535,8 @@ struct TypeInfoStruct : public TypeInfo
     AstNode*               opInitFct;
     AstNode*               opUserPostCopyFct;
     ByteCode*              opPostCopy;
+    AstNode*               opUserPostMoveFct;
+    ByteCode*              opPostMove;
 };
 
 struct TypeInfoAlias : public TypeInfo

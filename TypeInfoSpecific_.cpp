@@ -364,6 +364,8 @@ TypeInfo* TypeInfoStruct::clone()
     newType->opInitFct         = opInitFct;
     newType->opUserPostCopyFct = opUserPostCopyFct;
     newType->opPostCopy        = opPostCopy;
+    newType->opUserPostMoveFct = opUserPostMoveFct;
+    newType->opPostMove        = opPostMove;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
