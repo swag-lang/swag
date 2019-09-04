@@ -6,15 +6,6 @@ struct Point
 	var y: s32
 }
 
-impl Point
-{
-	func opAffect(self, other: Self)
-	{
-		self.x = other.x + 1
-		self.y = other.y + 1
-	}
-}
-
 //#[swag.printbc]
 #test
 {	
@@ -23,4 +14,13 @@ impl Point
 	pt1 = pt2
 	@assert(pt1.x == 11)
 	@assert(pt1.y == 21)
+}
+
+impl Point
+{
+	func opClone(self, other: Self)
+	{
+		self.x = other.x + 1
+		self.y = other.y + 1
+	}
 }

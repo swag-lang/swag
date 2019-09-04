@@ -1,0 +1,26 @@
+#module module772
+
+struct Point
+{
+	var x: s32
+	var y: s32
+}
+
+//#[swag.printbc]
+#test
+{	
+	var pt1: Point
+	pt1 = 1
+	@assert(pt1.x == 1)
+	@assert(pt1.y == 2)
+}
+
+#unittest error
+impl Point
+{
+	func opAffect(self, other: Self)
+	{
+		self.x = other
+		self.y = other + 1
+	}
+}

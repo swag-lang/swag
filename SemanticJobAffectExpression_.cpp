@@ -75,9 +75,16 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", left, arrayNode->structFlatParams));
             else
             {
-				SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, left, right, true));
-				SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, left, nullptr, true));
-				SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right));
+                if (rightTypeInfo->kind == TypeInfoKind::Struct)
+                {
+                    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right));
+                    SWAG_CHECK(resolveUserOp(context, "opClone", nullptr, left, right, true));
+                    SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, left, nullptr, true));
+                }
+                else
+                {
+                    SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, left, right));
+                }
             }
         }
         else
