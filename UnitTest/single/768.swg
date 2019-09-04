@@ -22,6 +22,8 @@ impl Point
 	{
 		//@print("postcopy!\n")
 		test += 1
+		self.x = 2
+		self.y = 4
 	}
 }
 
@@ -34,4 +36,8 @@ impl Point
 	test = 0
 	pt2 = pt1
 	@assert(test == 2)
+	@assert(pt2.pt.x == 2)
+	@assert(pt2.pt.y == 4)
+	@assert(pt2.pt1.x == 2)
+	@assert(pt2.pt1.y == 4)	
 }
