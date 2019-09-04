@@ -6,13 +6,13 @@ struct Point
 	var y: s32
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 func toto()->Point
 {
 	return Point(10, 20)
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {	
 	var cpt : Point = toto()

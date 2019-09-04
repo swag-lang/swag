@@ -11,14 +11,19 @@
 #include "CommandLine.h"
 #include "SymTable.h"
 
-bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo);
+    AstNode*  node         = context->node;
+    auto      typeInfo     = TypeManager::concreteType(forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo);
+    TypeInfo* fromTypeInfo = from ? from->typeInfo : nullptr;
 
-    if (typeInfo->kind == TypeInfoKind::Struct ||
-        typeInfo->kind == TypeInfoKind::Array ||
-        typeInfo->kind == TypeInfoKind::TypeList)
+	if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::TypeList)
     {
         emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
         return true;

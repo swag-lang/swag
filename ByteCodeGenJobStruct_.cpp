@@ -223,7 +223,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
             auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
             emitInstruction(context, ByteCodeOp::CopyRARB, r1, r0);
             emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
-            emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child->typeInfo);
+            emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
             freeRegisterRC(context, child->resultRegisterRC);
         }
 
