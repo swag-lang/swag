@@ -116,7 +116,7 @@ JobResult ByteCodeGenJob::execute()
         {
             auto funcNode   = CastAst<AstFuncDecl>(originalNode, AstNodeKind::FuncDecl);
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
-            generateStructInit(&context, typeStruct);
+            generateStruct_opInit(&context, typeStruct);
         }
         else
         {

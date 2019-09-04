@@ -15,7 +15,7 @@ bool ByteCodeGenJob::emitStructCopy(ByteCodeGenContext* context, RegisterList& r
 
     emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
 
-    if (typeInfoStruct->opPostCopyFct)
+    if (typeInfoStruct->opUserPostCopyFct)
     {
         /*emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
         auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
@@ -28,14 +28,14 @@ bool ByteCodeGenJob::emitStructCopy(ByteCodeGenContext* context, RegisterList& r
         allParams.reset();
         allParams.childs.push_back(context->node);
         context->node->resultRegisterRC = r0;
-        SWAG_CHECK(emitLocalCall(context, &allParams, static_cast<AstFuncDecl*>(typeInfoStruct->opPostCopyFct), nullptr));
+        SWAG_CHECK(emitLocalCall(context, &allParams, static_cast<AstFuncDecl*>(typeInfoStruct->opUserPostCopyFct), nullptr));
         r0.clear();
     }
 
     return true;
 }
 
-bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     auto sourceFile   = context->sourceFile;
     auto opInitFct    = CastAst<AstFuncDecl>(typeInfoStruct->opInitFct, AstNodeKind::FuncDecl);
@@ -175,7 +175,7 @@ bool ByteCodeGenJob::generateStructInit(ByteCodeGenContext* context, TypeInfoStr
             {
                 auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
                 SWAG_ASSERT(typeVarStruct->opInitFct);
-                if (!generateStructInit(context, typeVarStruct))
+                if (!generateStruct_opInit(context, typeVarStruct))
                     return false;
 
                 // Function call if necessary
@@ -262,7 +262,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     auto resolved = node->resolvedSymbolOverload;
 
     // Be sure referenced function has bytecode
-    if (!generateStructInit(context, typeInfoStruct))
+    if (!generateStruct_opInit(context, typeInfoStruct))
         return false;
 
     // All fields are explicitly not initialized, so we are done

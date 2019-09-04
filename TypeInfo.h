@@ -528,7 +528,7 @@ struct TypeInfoStruct : public TypeInfo
     Scope*                 scope;
     AstNode*               structNode;
     AstNode*               opInitFct;
-    AstNode*               opPostCopyFct;
+    AstNode*               opUserPostCopyFct;
 };
 
 struct TypeInfoAlias : public TypeInfo

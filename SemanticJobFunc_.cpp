@@ -229,7 +229,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         SWAG_ASSERT(funcNode->parameters);
         SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
         auto typeStruct           = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
-        typeStruct->opPostCopyFct = funcNode;
+        typeStruct->opUserPostCopyFct = funcNode;
         typeStruct->flags |= TYPEINFO_STRUCT_HAS_POST_COPY;
     }
 

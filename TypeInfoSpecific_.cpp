@@ -362,7 +362,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->scope         = scope;
     newType->structNode    = structNode;
     newType->opInitFct     = opInitFct;
-    newType->opPostCopyFct = opPostCopyFct;
+    newType->opUserPostCopyFct = opUserPostCopyFct;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
