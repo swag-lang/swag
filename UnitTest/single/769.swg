@@ -8,13 +8,10 @@ struct Point
 
 impl Point
 {
-	func(op: string) opAssign(self, other: Self)
+	func opAffect(self, other: Self)
 	{
-		#if op == "="
-		{
-			self.x = other.x + 1
-			self.y = other.y + 1
-		}
+		self.x = other.x + 1
+		self.y = other.y + 1
 	}
 }
 

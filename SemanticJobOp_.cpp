@@ -91,6 +91,11 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
         SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
     }
+    else if (name == "opAffect")
+    {
+        SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+        SWAG_VERIFY(returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
+    }
     else if (name == "opIndex")
     {
         SWAG_VERIFY(parameters && parameters->childs.size() >= 2, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
