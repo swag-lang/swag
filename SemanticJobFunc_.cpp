@@ -231,6 +231,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         auto typeStruct           = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
         typeStruct->opUserPostCopyFct = funcNode;
     }
+    else if (funcNode->name == "opPostMove")
+    {
+        SWAG_ASSERT(funcNode->parameters);
+        SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
+        auto typeStruct               = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+        typeStruct->opUserPostMoveFct = funcNode;
+    }
 
     uint32_t symbolFlags = 0;
     if (funcNode->flags & AST_IS_GENERIC)

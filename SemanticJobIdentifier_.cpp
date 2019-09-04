@@ -32,7 +32,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
     }
 
-    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE);
+    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT);
 
     if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
     {
@@ -192,23 +192,24 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
 
-			// Declare a variable
+            // Declare a variable
             auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), identifier->identifierRef->parent);
             auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
-            varNode->type = typeNode;
+            varNode->type        = typeNode;
             typeNode->identifier = Ast::clone(identifier->identifierRef, typeNode);
-            typeNode->identifier->childs.back()->flags &= ~AST_NO_BYTECODE;
-            typeNode->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
+            auto back            = typeNode->identifier->childs.back();
+            back->flags &= ~AST_NO_BYTECODE;
+            back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
-			// And make a reference to that variable
+            // And make a reference to that variable
             auto idNode = Ast::newIdentifier(sourceFile, varNode->name, identifier->identifierRef, identifier->identifierRef);
-            idNode->flags |= AST_R_VALUE;
+            idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
 
-			// Reset parsing
+            // Reset parsing
             identifier->identifierRef->startScope = nullptr;
 
-			// Add the 2 nodes to the semantic
+            // Add the 2 nodes to the semantic
             context->job->nodes.pop_back();
             context->job->nodes.push_back(idNode);
             context->job->nodes.push_back(varNode);

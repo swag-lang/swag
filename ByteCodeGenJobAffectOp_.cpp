@@ -513,8 +513,9 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
 
 bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
 {
-    AstNode* node     = context->node;
-    AstNode* leftNode = context->node->childs[0];
+    AstNode* node      = context->node;
+    AstNode* leftNode  = context->node->childs[0];
+    AstNode* rightNode = context->node->childs[1];
 
     emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo);
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
@@ -540,7 +541,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         switch (node->token.id)
         {
         case TokenId::SymEqual:
-            SWAG_CHECK(emitAffectEqual(context, r0, r1));
+            SWAG_CHECK(emitAffectEqual(context, r0, r1, nullptr, rightNode));
             if (context->result == ByteCodeResult::Pending)
                 return true;
             break;
