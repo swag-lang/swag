@@ -76,7 +76,7 @@ static const uint64_t TYPEINFO_IN_MANAGER               = 0x00000000'00000040;
 static const uint64_t TYPEINFO_VARIADIC                 = 0x00000000'00000080;
 static const uint64_t TYPEINFO_STRUCT_HAS_INIT_VALUES   = 0x00000000'00000100;
 static const uint64_t TYPEINFO_STRUCT_ALL_UNINITIALIZED = 0x00000000'00000200;
-static const uint64_t TYPEINFO_STRUCT_HAS_POST_COPY     = 0x00000000'00000400;
+static const uint64_t TYPEINFO_STRUCT_NO_POST_COPY      = 0x00000000'00000400;
 static const uint64_t TYPEINFO_GENERIC                  = 0x00000000'00000800;
 static const uint64_t TYPEINFO_RETURN_BY_COPY           = 0x00000000'00001000;
 static const uint64_t TYPEINFO_NATIVE_VALUE             = 0x00000000'00002000;
@@ -508,9 +508,11 @@ struct TypeInfoStruct : public TypeInfo
         kind = TypeInfoKind::Struct;
         genericParameters.clear();
         childs.clear();
-        scope      = nullptr;
-        structNode = nullptr;
-        opInitFct  = nullptr;
+        scope             = nullptr;
+        structNode        = nullptr;
+        opInitFct         = nullptr;
+        opUserPostCopyFct = nullptr;
+        opPostCopy        = nullptr;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -529,6 +531,7 @@ struct TypeInfoStruct : public TypeInfo
     AstNode*               structNode;
     AstNode*               opInitFct;
     AstNode*               opUserPostCopyFct;
+    ByteCode*              opPostCopy;
 };
 
 struct TypeInfoAlias : public TypeInfo

@@ -8,28 +8,123 @@
 #include "Module.h"
 #include "Scope.h"
 #include "SemanticJob.h"
+#include "Module.h"
+
+bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+{
+    scoped_lock lk(typeInfoStruct->opInitFct->mutex);
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_COPY)
+        return true;
+    if (typeInfoStruct->opPostCopy)
+        return true;
+
+    auto sourceFile = context->sourceFile;
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+
+    // Do we need a postcopy ?
+    bool needPostCopy = false;
+
+    // Need to wait for function full semantic resolve
+    if (typeInfoStruct->opUserPostCopyFct)
+    {
+        needPostCopy = true;
+        askForByteCode(context, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct);
+        if (context->result == ByteCodeResult::Pending)
+            return true;
+    }
+
+    if (!needPostCopy)
+    {
+        for (auto child : structNode->content->childs)
+        {
+            auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+            auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+            if (typeVar->kind != TypeInfoKind::Struct)
+                continue;
+            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            generateStruct_opPostCopy(context, typeStructVar);
+            if (context->result == ByteCodeResult::Pending)
+                return true;
+            if (typeStructVar->opPostCopy)
+                needPostCopy = true;
+        }
+    }
+
+    if (!needPostCopy)
+    {
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
+        return true;
+    }
+
+    auto opPostCopy            = g_Pool_byteCode.alloc();
+    typeInfoStruct->opPostCopy = opPostCopy;
+    opPostCopy->sourceFile     = sourceFile;
+    opPostCopy->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opPostCopy";
+    replaceAll(opPostCopy->name, '.', '_');
+    opPostCopy->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
+    opPostCopy->maxCallParameters     = 1;
+    opPostCopy->maxReservedRegisterRC = 3;
+    sourceFile->module->addByteCodeFunc(opPostCopy);
+
+    ByteCodeGenContext cxt{*context};
+    cxt.bc = opPostCopy;
+
+    for (auto child : structNode->content->childs)
+    {
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+        if (typeVar->kind != TypeInfoKind::Struct)
+            continue;
+
+        // Reference to the field
+        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+        if (varDecl->resolvedSymbolOverload->storageOffset)
+            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+
+        // Call postcopy
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        inst->a.pointer = (uint8_t*) typeStructVar->opPostCopy;
+        inst->b.u64     = 1;
+        inst->c.pointer = (uint8_t*) opPostCopy->typeInfoFunc;
+        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+    }
+
+    // Then call user postcopy if defined
+    if (typeInfoStruct->opUserPostCopyFct)
+    {
+		emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        inst->a.pointer = (uint8_t*) typeInfoStruct->opUserPostCopyFct->bc;
+        inst->b.u64     = 1;
+        inst->c.pointer = (uint8_t*) opPostCopy->typeInfoFunc;
+        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+    }
+
+    emitInstruction(&cxt, ByteCodeOp::Ret);
+    emitInstruction(&cxt, ByteCodeOp::End);
+    return true;
+}
 
 bool ByteCodeGenJob::emitStructCopy(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
+    SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));
+    if (context->result == ByteCodeResult::Pending)
+        return true;
+
     emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
-
-    if (typeInfoStruct->opUserPostCopyFct)
+    if (typeInfoStruct->opPostCopy)
     {
-        /*emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
-        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
-        inst->a.pointer = (uint8_t*) typeInfoStruct->opPostCopyFct->bc;
+		emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+        inst->a.pointer = (uint8_t*) typeInfoStruct->opPostCopy;
         inst->b.u64     = 1;
-        inst->c.pointer = (uint8_t*) typeInfoStruct->opPostCopyFct->typeInfo;
-        emitInstruction(context, ByteCodeOp::IncSP, 8);*/
-
-        AstNode allParams;
-        allParams.reset();
-        allParams.childs.push_back(context->node);
-        context->node->resultRegisterRC = r0;
-        SWAG_CHECK(emitLocalCall(context, &allParams, static_cast<AstFuncDecl*>(typeInfoStruct->opUserPostCopyFct), nullptr));
-        r0.clear();
+        inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
+        emitInstruction(context, ByteCodeOp::IncSP, 8);
     }
 
     return true;

@@ -135,6 +135,7 @@ struct ByteCodeGenJob : public Job
     static bool emitDataProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
 
+	static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
 	static bool emitStructCopy(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 

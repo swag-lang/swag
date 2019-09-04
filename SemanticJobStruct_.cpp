@@ -170,8 +170,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         {
             if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-            if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_POST_COPY)
-                structFlags |= TYPEINFO_STRUCT_HAS_POST_COPY;
             if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
                 structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         }
