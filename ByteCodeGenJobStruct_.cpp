@@ -212,22 +212,45 @@ bool ByteCodeGenJob::prepareEmitStructCopyMove(ByteCodeGenContext* context, Type
     SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));
     if (context->result == ByteCodeResult::Pending)
         return true;
+    SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
+    if (context->result == ByteCodeResult::Pending)
+        return true;
     return true;
 }
 
 bool ByteCodeGenJob::emitStructCopyMove(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-	
+
+    bool mustCopy                                             = true;
     emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
-    if (typeInfoStruct->opPostCopy)
+
+    // A copy
+    if (mustCopy)
     {
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
-        inst->a.pointer = (uint8_t*) typeInfoStruct->opPostCopy;
-        inst->b.u64     = 1;
-        inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
-        emitInstruction(context, ByteCodeOp::IncSP, 8);
+        if (typeInfoStruct->opPostCopy)
+        {
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+            inst->a.pointer = (uint8_t*) typeInfoStruct->opPostCopy;
+            inst->b.u64     = 1;
+            inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
+            emitInstruction(context, ByteCodeOp::IncSP, 8);
+        }
+    }
+
+    // A move
+    else
+    {
+        if (typeInfoStruct->opPostMove)
+        {
+            emitInstruction(context, ByteCodeOp::PushRAParam, r1);
+            auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+            inst->a.pointer = (uint8_t*) typeInfoStruct->opPostMove;
+            inst->b.u64     = 1;
+            inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
+            emitInstruction(context, ByteCodeOp::IncSP, 8);
+        }
     }
 
     return true;
