@@ -520,68 +520,72 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo);
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
-        if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
+		// Do not call opClone if a move semantic can be used instead
+        if (node->token.id != TokenId::SymEqual || !(rightNode->flags & AST_TRANSIENT))
         {
-            auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.front(), AstNodeKind::ArrayPointerIndex);
-            AstNode allParams;
-            allParams.reset();
-            allParams.childs = arrayNode->structFlatParams;
-            SWAG_CHECK(emitUserOp(context, &allParams));
-        }
-        else
-        {
-            SWAG_CHECK(emitUserOp(context));
+            if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
+            {
+                auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.front(), AstNodeKind::ArrayPointerIndex);
+                AstNode allParams;
+                allParams.reset();
+                allParams.childs = arrayNode->structFlatParams;
+                SWAG_CHECK(emitUserOp(context, &allParams));
+            }
+            else
+            {
+                SWAG_CHECK(emitUserOp(context));
+            }
+
+            return true;
         }
     }
-    else
+
+    auto r0 = node->childs[0]->resultRegisterRC;
+    auto r1 = node->childs[1]->resultRegisterRC;
+
+    switch (node->token.id)
     {
-        auto r0 = node->childs[0]->resultRegisterRC;
-        auto r1 = node->childs[1]->resultRegisterRC;
-
-        switch (node->token.id)
-        {
-        case TokenId::SymEqual:
-            SWAG_CHECK(emitAffectEqual(context, r0, r1, nullptr, rightNode));
-            if (context->result == ByteCodeResult::Pending)
-                return true;
-            break;
-        case TokenId::SymPlusEqual:
-            SWAG_CHECK(emitAffectPlusEqual(context, r0, r1));
-            break;
-        case TokenId::SymMinusEqual:
-            SWAG_CHECK(emitAffectMinusEqual(context, r0, r1));
-            break;
-        case TokenId::SymAsteriskEqual:
-            SWAG_CHECK(emitAffectMulEqual(context, r0, r1));
-            break;
-        case TokenId::SymSlashEqual:
-            SWAG_CHECK(emitAffectDivEqual(context, r0, r1));
-            break;
-        case TokenId::SymAmpersandEqual:
-            SWAG_CHECK(emitAffectAndEqual(context, r0, r1));
-            break;
-        case TokenId::SymVerticalEqual:
-            SWAG_CHECK(emitAffectOrEqual(context, r0, r1));
-            break;
-        case TokenId::SymCircumflexEqual:
-            SWAG_CHECK(emitAffectXOrEqual(context, r0, r1));
-            break;
-        case TokenId::SymLowerLowerEqual:
-            SWAG_CHECK(emitAffectShiftLeftEqual(context, r0, r1));
-            break;
-        case TokenId::SymGreaterGreaterEqual:
-            SWAG_CHECK(emitAffectShiftRightEqual(context, r0, r1));
-            break;
-        case TokenId::SymPercentEqual:
-            SWAG_CHECK(emitAffectPercentEqual(context, r0, r1));
-            break;
-        default:
-            return internalError(context, "emitAffect, invalid token op");
-        }
-
-        freeRegisterRC(context, r0);
-        freeRegisterRC(context, r1);
+    case TokenId::SymEqual:
+        SWAG_CHECK(emitAffectEqual(context, r0, r1, nullptr, rightNode));
+        if (context->result == ByteCodeResult::Pending)
+            return true;
+        break;
+    case TokenId::SymPlusEqual:
+        SWAG_CHECK(emitAffectPlusEqual(context, r0, r1));
+        break;
+    case TokenId::SymMinusEqual:
+        SWAG_CHECK(emitAffectMinusEqual(context, r0, r1));
+        break;
+    case TokenId::SymAsteriskEqual:
+        SWAG_CHECK(emitAffectMulEqual(context, r0, r1));
+        break;
+    case TokenId::SymSlashEqual:
+        SWAG_CHECK(emitAffectDivEqual(context, r0, r1));
+        break;
+    case TokenId::SymAmpersandEqual:
+        SWAG_CHECK(emitAffectAndEqual(context, r0, r1));
+        break;
+    case TokenId::SymVerticalEqual:
+        SWAG_CHECK(emitAffectOrEqual(context, r0, r1));
+        break;
+    case TokenId::SymCircumflexEqual:
+        SWAG_CHECK(emitAffectXOrEqual(context, r0, r1));
+        break;
+    case TokenId::SymLowerLowerEqual:
+        SWAG_CHECK(emitAffectShiftLeftEqual(context, r0, r1));
+        break;
+    case TokenId::SymGreaterGreaterEqual:
+        SWAG_CHECK(emitAffectShiftRightEqual(context, r0, r1));
+        break;
+    case TokenId::SymPercentEqual:
+        SWAG_CHECK(emitAffectPercentEqual(context, r0, r1));
+        break;
+    default:
+        return internalError(context, "emitAffect, invalid token op");
     }
+
+    freeRegisterRC(context, r0);
+    freeRegisterRC(context, r1);
 
     return true;
 }
