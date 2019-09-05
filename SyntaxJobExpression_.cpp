@@ -74,13 +74,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::SymLeftParen:
-    {
-        auto saveLocation = token.startLocation;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doExpression(parent, result));
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
         break;
-    }
 
     case TokenId::SymLeftCurly:
         SWAG_CHECK(doExpressionListCurly(parent, result));
@@ -94,6 +91,17 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::LiteralString:
         SWAG_CHECK(doLiteral(parent, result));
         break;
+
+    case TokenId::KwdMove:
+    {
+        AstNode* id;
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doIdentifierRef(parent, &id));
+        if (result)
+            *result = id;
+        id->flags |= AST_FORCE_MOVE;
+    }
+    break;
 
     case TokenId::Identifier:
         SWAG_CHECK(doIdentifierRef(parent, result));
@@ -176,7 +184,6 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
         auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::SingleOp, sourceFile->indexInModule, parent);
         node->semanticFct = &SemanticJob::resolveUnaryOp;
         node->token       = move(token);
-
         if (result)
             *result = node;
         SWAG_CHECK(tokenizer.getToken(token));
@@ -452,12 +459,12 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         AstVarDecl* varNode  = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
         varNode->name        = leftNode->childs.back()->name;
         varNode->semanticFct = &SemanticJob::resolveVarDecl;
-        
+
         if (result)
             *result = varNode;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
-		varNode->flags |= AST_R_VALUE;
+        varNode->flags |= AST_R_VALUE;
 
         if (!isContextDisabled())
         {

@@ -43,6 +43,7 @@ void LanguageSpec::setup()
     keywords["continue"]  = TokenId::KwdContinue;
     keywords["loop"]      = TokenId::KwdLoop;
     keywords["index"]     = TokenId::KwdIndex;
+    keywords["move"]      = TokenId::KwdMove;
     keywords["switch"]    = TokenId::KwdSwitch;
     keywords["case"]      = TokenId::KwdCase;
     keywords["default"]   = TokenId::KwdDefault;

@@ -97,6 +97,7 @@ enum class TokenId
     KwdContinue,
     KwdLoop,
     KwdIndex,
+	KwdMove,
     KwdSwitch,
     KwdCase,
     KwdDefault,

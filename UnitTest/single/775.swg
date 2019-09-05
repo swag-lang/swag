@@ -12,7 +12,7 @@ impl Point
 {
 	func opPostCopy(self)
 	{
-		//@assert(false)
+		@assert(false)
 	}
 	
 	func opPostMove(self)
