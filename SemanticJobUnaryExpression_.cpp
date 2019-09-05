@@ -143,7 +143,9 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
             SWAG_CHECK(resolveUserOp(context, "opUnary", "~", op, nullptr));
             break;
         }
+
         node->typeInfo = typeInfo;
+        node->flags |= AST_TRANSIENT;
         return true;
     }
 

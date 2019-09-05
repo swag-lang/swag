@@ -706,6 +706,10 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     TypeManager::promote(left, right);
 
+	// Must do move and not copy
+	if(leftTypeInfo->kind == TypeInfoKind::Struct)
+		node->flags |= AST_TRANSIENT;
+
     switch (node->token.id)
     {
     case TokenId::SymPlus:

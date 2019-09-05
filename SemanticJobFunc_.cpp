@@ -312,6 +312,17 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     SWAG_CHECK(g_TypeMgr.makeCompatibles(&context->errorContext, returnType, node->childs[0]));
     context->result = SemanticResult::Done;
 
+	// When returning a struct, we need to know of postcopy or postmove are here, and wait for them to resolve
+	if (returnType && returnType->kind == TypeInfoKind::Struct)
+	{
+		SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, funcNode->returnType, nullptr, true));
+		if (context->result == SemanticResult::Pending)
+			return true;
+		SWAG_CHECK(resolveUserOp(context, "opPostMove", nullptr, funcNode->returnType, nullptr, true));
+		if (context->result == SemanticResult::Pending)
+			return true;
+	}
+
     // Propagate return
     auto scanNode = node->parent;
     while (scanNode && scanNode != node->ownerFct->parent)
