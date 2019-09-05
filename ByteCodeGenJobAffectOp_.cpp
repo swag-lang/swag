@@ -520,24 +520,20 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo);
     if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
     {
-		// Do not call opClone if a move semantic can be used instead
-        if (node->token.id != TokenId::SymEqual || !(rightNode->flags & AST_TRANSIENT))
+        if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
         {
-            if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
-            {
-                auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.front(), AstNodeKind::ArrayPointerIndex);
-                AstNode allParams;
-                allParams.reset();
-                allParams.childs = arrayNode->structFlatParams;
-                SWAG_CHECK(emitUserOp(context, &allParams));
-            }
-            else
-            {
-                SWAG_CHECK(emitUserOp(context));
-            }
-
-            return true;
+            auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.front(), AstNodeKind::ArrayPointerIndex);
+            AstNode allParams;
+            allParams.reset();
+            allParams.childs = arrayNode->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, &allParams));
         }
+        else
+        {
+            SWAG_CHECK(emitUserOp(context));
+        }
+
+        return true;
     }
 
     auto r0 = node->childs[0]->resultRegisterRC;

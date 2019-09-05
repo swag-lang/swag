@@ -78,7 +78,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (rightTypeInfo->kind == TypeInfoKind::Struct)
                 {
                     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right));
-                    SWAG_CHECK(resolveUserOp(context, "opClone", nullptr, left, right, true));
                     SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, left, nullptr, true));
                 }
                 else
