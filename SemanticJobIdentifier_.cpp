@@ -251,6 +251,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto returnType = TypeManager::concreteType(identifier->typeInfo);
             if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
             {
+                identifier->flags |= AST_TRANSIENT;
                 identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
                 identifier->ownerScope->startStackSize += returnType->sizeOf;
                 identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
@@ -348,6 +349,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
         if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
+            identifier->flags |= AST_TRANSIENT;
             identifier->fctCallStorageOffset = identifier->ownerScope->startStackSize;
             identifier->ownerScope->startStackSize += returnType->sizeOf;
             identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);

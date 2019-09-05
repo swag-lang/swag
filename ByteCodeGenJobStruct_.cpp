@@ -222,7 +222,7 @@ bool ByteCodeGenJob::emitStructCopyMove(ByteCodeGenContext* context, RegisterLis
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
-    bool mustCopy = from->flags & AST_TRANSIENT ? false : true;
+    bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
 
     // Shallow copy
     emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfoStruct->sizeOf;

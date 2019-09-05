@@ -25,3 +25,4 @@ static const uint64_t AST_HAS_FULL_STRUCT_PARAMETERS = 0x00000000'00400000;
 static const uint64_t AST_GENERIC_MATCH_WAS_PARTIAL  = 0x00000000'00800000;
 static const uint64_t AST_IN_TYPE_VAR_DECLARATION    = 0x00000000'01000000;
 static const uint64_t AST_TRANSIENT                  = 0x00000000'02000000;
+static const uint64_t AST_FORCE_MOVE                 = 0x00000000'04000000;
