@@ -1,13 +1,5 @@
 #module module774
 
-struct Point
-{
-	var x: s32
-	var y: s32
-}
-
-var cpt: s32 = 0
-
 impl Point
 {
 	func opPostCopy(self)
@@ -15,11 +7,20 @@ impl Point
 		@assert(false)
 	}
 	
+	//#[swag.semsleep(100)]
 	func opPostMove(self)
 	{
 		cpt += 1
 	}
 }
+
+struct Point
+{
+	var x: s32
+	var y: s32
+}
+
+var cpt: s32 = 0
 
 //#[swag.printbc]
 func toto()->Point

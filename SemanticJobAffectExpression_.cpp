@@ -79,6 +79,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 {
                     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right));
                     SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, left, nullptr, true));
+                    if (context->result == SemanticResult::Pending)
+                        return true;
+                    SWAG_CHECK(resolveUserOp(context, "opPostMove", nullptr, left, nullptr, true));
+                    if (context->result == SemanticResult::Pending)
+                        return true;
                 }
                 else
                 {

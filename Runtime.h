@@ -7,6 +7,7 @@ attr printbc() -> func;
 attr compiler() -> func;
 attr public() -> func;
 attr foreign(module: string = "") -> func;
+attr semsleep(time: s32) -> func;
 }
 
 func @print(value: s32);
