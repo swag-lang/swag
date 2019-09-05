@@ -216,7 +216,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     typeInfo->computeName();
 
-	ComputedValue value;
+    ComputedValue value;
     if (attributes.getValue("swag.semsleep.s32", value))
         this_thread::sleep_for(chrono::milliseconds(value.reg.u32));
 
@@ -232,7 +232,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         SWAG_ASSERT(funcNode->parameters);
         SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
-        auto typeStruct           = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+        auto typeStruct               = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
         typeStruct->opUserPostCopyFct = funcNode;
     }
     else if (funcNode->name == "opPostMove")
@@ -307,21 +307,26 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         return true;
 
     // Check types
-    SWAG_CHECK(checkIsConcrete(context, node->childs[0]));
+    auto child = node->childs[0];
+    SWAG_CHECK(checkIsConcrete(context, child));
     auto returnType = funcNode->returnType->typeInfo;
-    SWAG_CHECK(g_TypeMgr.makeCompatibles(&context->errorContext, returnType, node->childs[0]));
+    SWAG_CHECK(g_TypeMgr.makeCompatibles(&context->errorContext, returnType, child));
     context->result = SemanticResult::Done;
 
-	// When returning a struct, we need to know of postcopy or postmove are here, and wait for them to resolve
-	if (returnType && returnType->kind == TypeInfoKind::Struct)
-	{
-		SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, funcNode->returnType, nullptr, true));
-		if (context->result == SemanticResult::Pending)
-			return true;
-		SWAG_CHECK(resolveUserOp(context, "opPostMove", nullptr, funcNode->returnType, nullptr, true));
-		if (context->result == SemanticResult::Pending)
-			return true;
-	}
+    // When returning a struct, we need to know of postcopy or postmove are here, and wait for them to resolve
+    if (returnType && returnType->kind == TypeInfoKind::Struct)
+    {
+        SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, funcNode->returnType, nullptr, true));
+        if (context->result == SemanticResult::Pending)
+            return true;
+        SWAG_CHECK(resolveUserOp(context, "opPostMove", nullptr, funcNode->returnType, nullptr, true));
+        if (context->result == SemanticResult::Pending)
+            return true;
+    }
+
+    // If we are returning a local variable, we can do a move
+    if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
+		child->flags |= AST_FORCE_MOVE;
 
     // Propagate return
     auto scanNode = node->parent;
