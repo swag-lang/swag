@@ -36,6 +36,6 @@ func toto()->Point
 	var pt: Point
 	pt = toto() // one move
 	
-	@print(cpt)
+	//@print(cpt)
 	@assert(cpt == 2)
 }
