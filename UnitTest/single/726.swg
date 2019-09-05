@@ -2,9 +2,9 @@
 
 struct iter
 {
-	var value: s32
-	var end: s32
-	var arr: *Array
+	value: s32
+	end: s32
+	arr: *Array
 }
 
 impl iter

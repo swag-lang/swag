@@ -2,8 +2,8 @@
 
 struct Point
 {
-	var x: s32
-	var y: s32
+	x: s32
+	y: s32
 }
 
 impl Point

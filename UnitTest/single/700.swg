@@ -3,13 +3,13 @@
 
 struct(T) Point
 {
-	var x: T = 5
-	var y: T = 100
+	x: T = 5
+	y: T = 100
 }
 
 struct Array
 {
-	var pt: Point!s32
+	pt: Point!s32
 }
 
 //#[swag.printbc]

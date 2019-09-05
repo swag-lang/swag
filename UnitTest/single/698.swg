@@ -3,8 +3,8 @@
 
 struct Point
 {
-	var x: s32 = 5
-	var y: s32 = 10
+	x: s32 = 5
+	y: s32 = 10
 }
 
 

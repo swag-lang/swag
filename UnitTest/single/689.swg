@@ -3,8 +3,8 @@
 
 struct(T) Point
 {
-	var x: T = 5
-	var y: T = 10
+	x: T = 5
+	y: T = 10
 }
 
 //#[swag.printbc]

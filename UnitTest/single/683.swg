@@ -3,8 +3,8 @@
 
 struct Point
 {
-	var x: s32 = 100
-	var y: s32 = 100
+	x: s32 = 100
+	y: s32 = 100
 }
 
 //#[swag.printbc]

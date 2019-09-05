@@ -9,7 +9,7 @@ enum OT
 
 struct Toto
 {
-	var x: OT = OT.A
+	x: OT = OT.A
 }
 
 //#[swag.printbc]

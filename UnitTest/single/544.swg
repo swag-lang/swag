@@ -3,8 +3,8 @@
 
 struct point
 {
-	var x: s32
-	var y: s32
+	x: s32
+	y: s32
 }
 
 var pt: point;

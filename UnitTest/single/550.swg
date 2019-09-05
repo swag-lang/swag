@@ -3,15 +3,15 @@
 
 struct point1
 {
-	var x = 10
-	var y = 20
+	x = 10
+	y = 20
 }
 
 struct point
 {
-	var pt: point1
-	var x = "10"
-	var y = "20"
+	pt: point1
+	x = "10"
+	y = "20"
 }
 
 //#[swag.printbc]

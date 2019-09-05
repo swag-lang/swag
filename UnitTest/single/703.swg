@@ -3,14 +3,14 @@
 
 struct(T) Point
 {
-	var x: T = 5
-	var y: T = 100
+	x: T = 5
+	y: T = 100
 }
 
 struct(T, V) Array
 {
-	var pt1: Point!T
-	var pt2: Point!V
+	pt1: Point!T
+	pt2: Point!V
 }
 
 //#[swag.printbc]

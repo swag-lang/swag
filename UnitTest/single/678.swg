@@ -3,9 +3,9 @@
 
 struct Point
 {
-	var x: f32
-	var y: f32
-	var z: f32
+	x: f32
+	y: f32
+	z: f32
 }
 
 #unittest error

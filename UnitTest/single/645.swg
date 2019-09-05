@@ -3,7 +3,7 @@
 
 struct(T) Point
 {
-	var x: T = 6
+	x: T = 6
 }
 
 //#[swag.printbc]

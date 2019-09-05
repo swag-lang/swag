@@ -3,17 +3,17 @@
 
 struct point1
 {
-	var x: s32
-	var y: s32
-	var z: s32 = 1
+	x: s32
+	y: s32
+	z: s32 = 1
 }
 
 //#[swag.printbc]
 struct point
 {
-	var pt: point1
-	var pt1: point1
-	var pt2: point1
+	pt: point1
+	pt1: point1
+	pt2: point1
 }
 
 //#[swag.printbc]

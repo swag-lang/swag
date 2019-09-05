@@ -4,16 +4,16 @@ var test: s32
 
 struct Point
 {
-	var x: s32 = 1
-	var y: s32
+	x: s32 = 1
+	y: s32
 }
 
 struct Point1
 {
-	var x: s32 = 1
-	var y: s32
-	var pt: Point
-	var pt1: Point
+	x: s32 = 1
+	y: s32
+	pt: Point
+	pt1: Point
 }
 
 impl Point

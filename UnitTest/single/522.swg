@@ -4,7 +4,7 @@
 //#[swag.printbc]
 struct point
 {
-	var x, y: s32
+	x, y: s32
 }
 
 #test

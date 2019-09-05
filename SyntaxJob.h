@@ -12,6 +12,7 @@ struct Scope;
 struct Utf8;
 struct AstFuncDecl;
 struct AstStruct;
+enum class AstNodeKind;
 
 struct SyntaxJob : public Job
 {
@@ -45,6 +46,7 @@ struct SyntaxJob : public Job
     bool doCompilerImport(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent);
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
+	bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doTypeAlias(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpressionTuple(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);

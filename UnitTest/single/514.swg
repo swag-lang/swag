@@ -4,6 +4,6 @@
 //#[swag.printbc]
 struct toto
 {
-	var x, y, z: f32;
-	var z : f32 = 0;
+	x, y, z: f32;
+	z : f32 = 0;
 }

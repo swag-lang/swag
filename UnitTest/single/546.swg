@@ -3,7 +3,7 @@
 
 struct point
 {
-	var x = "toto"
+	x: string = "toto"
 }
 
 //#[swag.printbc]

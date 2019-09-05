@@ -3,7 +3,7 @@
 
 struct Point
 {
-	var c: u32 = 5
+	c: u32 = 5
 }
 
 impl Point

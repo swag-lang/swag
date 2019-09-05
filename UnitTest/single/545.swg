@@ -3,15 +3,15 @@
 
 struct point1
 {
-	var x: s32 = 10
-	var y: s32 = 20
+	x: s32 = 10
+	y: s32 = 20
 }
 
 struct point
 {
-	var pt: point1
-	var x: s32 = 30
-	var y: s32 = 40
+	pt: point1
+	x: s32 = 30
+	y: s32 = 40
 }
 
 var pt: point;

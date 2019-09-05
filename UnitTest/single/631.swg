@@ -3,8 +3,8 @@
 
 struct(T) Point
 {
-	var x: T = 10
-	var y: T = 20
+	x: T = 10
+	y: T = 20
 }
 
 #test

@@ -3,7 +3,7 @@
 
 struct(T) Point
 {
-	var x: T
+	x: T
 }
 
 impl Point

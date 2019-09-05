@@ -2,8 +2,8 @@
 
 struct Array
 {
-	var ptr: *Array
-	var value: s32 = 666
+	ptr: *Array
+	value: s32 = 666
 }
 
 //#[swag.printbc]

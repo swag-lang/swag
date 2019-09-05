@@ -4,8 +4,8 @@ var test: s32
 
 struct Point
 {
-	var x: s32 = 1
-	var y: s32
+	x: s32 = 1
+	y: s32
 }
 
 impl Point

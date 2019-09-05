@@ -2,14 +2,14 @@
 
 struct Point1
 {
-	var x: s32
+	x: s32
 }
 
 struct Point
 {
-	var x: s32 = ?
-	var y: s32 = ?
-	var pt: Point1
+	x: s32 = ?
+	y: s32 = ?
+	pt: Point1
 }
 
 //#[swag.printbc]

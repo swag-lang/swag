@@ -3,7 +3,7 @@
 
 struct point
 {
-	var x = "toto"
+	x = "toto"
 }
 
 var pt: point

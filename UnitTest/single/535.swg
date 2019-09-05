@@ -3,8 +3,8 @@
 
 struct point
 {
-	var x = 10
-	var y = 200
+	x: s32 = 10
+	y: s32 = 200
 }
 
 impl point

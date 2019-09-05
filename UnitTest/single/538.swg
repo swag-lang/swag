@@ -3,16 +3,16 @@
 
 struct point1
 {
-	var x: s32 = 666
-	var y: s32
-	var z: s32 = 100
+	x: s32 = 666
+	y: s32
+	z: s32 = 100
 }
 
 struct point
 {
-	var in: point1
-	var x: s32 = 10
-	var y: s32
+	in: point1
+	x: s32 = 10
+	y: s32
 }
 
 //#[swag.printbc]

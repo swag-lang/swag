@@ -22,9 +22,15 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doVarDecl(parent, result, kind));
+    return true;
+}
+
+bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
+{
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
 
-    AstVarDecl* varNode = Ast::newNode(this, &g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
+    AstVarDecl* varNode  = Ast::newNode(this, &g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
     varNode->semanticFct = SemanticJob::resolveVarDecl;
     varNode->inheritTokenName(token);
     if (result)
@@ -38,7 +44,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
 
-        AstVarDecl* otherVarNode = Ast::newNode(this, &g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
+        AstVarDecl* otherVarNode  = Ast::newNode(this, &g_Pool_astVarDecl, kind, sourceFile->indexInModule, parent);
         otherVarNode->semanticFct = SemanticJob::resolveVarDecl;
         otherVarNode->inheritTokenName(token);
         SWAG_CHECK(tokenizer.getToken(token));
@@ -47,7 +53,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymColon)
     {
-		ScopedFlags scopedFlags(this, AST_IN_TYPE_VAR_DECLARATION);
+        ScopedFlags scopedFlags(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doTypeExpression(varNode, &varNode->type));
     }

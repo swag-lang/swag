@@ -2,7 +2,7 @@
 
 struct iter
 {
-	var arr: Array
+	arr: Array
 }
 
 struct Array
