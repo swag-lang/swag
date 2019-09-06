@@ -82,6 +82,46 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     return fn;
 }
 
+ffi_type* ByteCodeRun::ffiFromTypeinfo(TypeInfo* typeInfo)
+{
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+        return &ffi_type_pointer;
+
+    if (typeInfo->isNative(NativeType::String))
+        return nullptr;
+
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return nullptr;
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeType::U8:
+        return &ffi_type_uint8;
+    case NativeType::S8:
+        return &ffi_type_sint8;
+    case NativeType::U16:
+        return &ffi_type_uint16;
+    case NativeType::S16:
+        return &ffi_type_sint16;
+    case NativeType::S32:
+        return &ffi_type_sint32;
+    case NativeType::U32:
+        return &ffi_type_uint32;
+    case NativeType::S64:
+        return &ffi_type_sint64;
+    case NativeType::U64:
+        return &ffi_type_uint64;
+    case NativeType::F32:
+        return &ffi_type_float;
+    case NativeType::F64:
+        return &ffi_type_double;
+    case NativeType::Bool:
+        return &ffi_type_uint8;
+    }
+
+    return nullptr;
+}
+
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     if (!ip->c.pointer)
@@ -90,6 +130,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         return;
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
 
+    // Function call parameters
     ffi_cif cif;
     ffiArgs.resize(typeInfoFunc->parameters.size());
     ffiArgsValues.resize(typeInfoFunc->parameters.size());
@@ -98,89 +139,79 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     for (int i = 0; i < typeInfoFunc->parameters.size(); i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
-        if (typeParam->kind == TypeInfoKind::Pointer)
+        ffiArgs[i]     = ffiFromTypeinfo(typeParam);
+        if (!ffiArgs[i])
         {
-            ffiArgs[i]       = &ffi_type_pointer;
-            ffiArgsValues[i] = &sp->pointer;
-        }
-        else if (typeParam->isNative(NativeType::String))
-        {
-            context->errorMsg = format("ffi failed to pass unknown typed argument '%s'", typeParam->name.c_str());
+            context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
             return;
         }
-        else if (typeParam->kind == TypeInfoKind::Native)
+
+        switch (typeParam->sizeOf)
         {
-            switch (typeParam->nativeType)
-            {
-            case NativeType::U8:
-                ffiArgs[i]       = &ffi_type_uint8;
-                ffiArgsValues[i] = &sp->u8;
-                break;
-            case NativeType::S8:
-                ffiArgs[i]       = &ffi_type_sint8;
-                ffiArgsValues[i] = &sp->s8;
-                break;
-            case NativeType::U16:
-                ffiArgs[i]       = &ffi_type_uint16;
-                ffiArgsValues[i] = &sp->u16;
-                break;
-            case NativeType::S16:
-                ffiArgs[i]       = &ffi_type_sint16;
-                ffiArgsValues[i] = &sp->s16;
-                break;
-            case NativeType::S32:
-                ffiArgs[i]       = &ffi_type_sint32;
-                ffiArgsValues[i] = &sp->s32;
-                break;
-            case NativeType::U32:
-                ffiArgs[i]       = &ffi_type_uint32;
-                ffiArgsValues[i] = &sp->u32;
-                break;
-            case NativeType::S64:
-                ffiArgs[i]       = &ffi_type_sint64;
-                ffiArgsValues[i] = &sp->s64;
-                break;
-            case NativeType::U64:
-                ffiArgs[i]       = &ffi_type_uint64;
-                ffiArgsValues[i] = &sp->u64;
-                break;
-            case NativeType::F32:
-                ffiArgs[i]       = &ffi_type_float;
-                ffiArgsValues[i] = &sp->f32;
-                break;
-            case NativeType::F64:
-                ffiArgs[i]       = &ffi_type_double;
-                ffiArgsValues[i] = &sp->f64;
-                break;
-            case NativeType::Bool:
-                ffiArgs[i]       = &ffi_type_uint8;
-                ffiArgsValues[i] = &sp->b;
-                break;
-            default:
-                context->errorMsg = format("ffi failed to pass unknown typed argument '%s'", typeParam->name.c_str());
-                return;
-            }
-        }
-        else
-        {
-            context->errorMsg = format("ffi failed to pass unknown typed argument '%s'", typeParam->name.c_str());
+        case 1:
+            ffiArgsValues[i] = &sp->u8;
+            break;
+        case 2:
+            ffiArgsValues[i] = &sp->u16;
+            break;
+        case 4:
+            ffiArgsValues[i] = &sp->u32;
+            break;
+        case 8:
+            ffiArgsValues[i] = &sp->u64;
+            break;
+        default:
+            context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
             return;
         }
 
         sp++;
     }
 
-    auto typeResult = &ffi_type_uint32;
+    // Function return type
+    ffi_type* typeResult = &ffi_type_void;
+    if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        typeResult = ffiFromTypeinfo(typeInfoFunc->returnType);
+        if (!typeResult)
+        {
+            context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->name.c_str());
+            return;
+        }
+    }
 
     // Initialize the cif
     ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (int) typeInfoFunc->parameters.size(), typeResult, &ffiArgs[0]);
 
-    // Make the call
+    // Store result
     Register result;
     result.pointer = 0;
-    ffi_call(&cif, FFI_FN(ip->c.pointer), &result, &ffiArgsValues[0]);
 
-    // Store result
+    void* resultPtr = nullptr;
+    if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        switch (typeInfoFunc->returnType->sizeOf)
+        {
+        case 1:
+            resultPtr = &result.u8;
+            break;
+        case 2:
+            resultPtr = &result.u16;
+            break;
+        case 4:
+            resultPtr = &result.u32;
+            break;
+        case 8:
+            resultPtr = &result.u64;
+            break;
+        default:
+            context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->name.c_str());
+            return;
+        }
+    }
+
+    // Make the call
+    ffi_call(&cif, FFI_FN(ip->c.pointer), resultPtr, &ffiArgsValues[0]);
     context->registersRR[0] = result;
 }
 
