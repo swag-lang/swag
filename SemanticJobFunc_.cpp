@@ -90,6 +90,13 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;
 
+    // Reserve one RR register for each return value
+    int countRR = 0;
+    if (typeInfo->returnType != g_TypeMgr.typeInfoVoid)
+        countRR += typeInfo->returnType->numRegisters();
+    countRR += (int) typeInfo->parameters.size();
+    context->sourceFile->module->reserveRegisterRR(countRR);
+
     // Check prototype
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
     {
@@ -326,7 +333,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // If we are returning a local variable, we can do a move
     if (child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL))
-		child->flags |= AST_FORCE_MOVE;
+        child->flags |= AST_FORCE_MOVE;
 
     // Propagate return
     auto scanNode = node->parent;
