@@ -1,13 +1,22 @@
 #module module778
 
-#[swag.foreign]
-func GetStdHandle(handle: u32)->u32;
+namespace Windows
+{
+	#[swag.foreign]
+	{
+	func GetStdHandle(handle: u32)->u32;
+	func WriteFile(hFile: u32, lpBuffer: *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *void, lpOverlapped: *void);
+	}
+}
 
-const STD_INPUT_HANDLE: u32 = cast(u32) -10
+const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {	
-	h := GetStdHandle(STD_INPUT_HANDLE)
-	@print(cast(s32) h)
+	h := Windows.GetStdHandle(STD_OUTPUT_HANDLE)
+	//@print(cast(s32) h)
+	
+	ptr := @op("toto", data)
+	Windows.WriteFile(h, ptr, 4, null, null);
 }

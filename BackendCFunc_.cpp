@@ -100,7 +100,41 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip)
     }
 
     bufferC.addString(format("%s", nodeFunc->name.c_str()));
-    bufferC.addString("();");
+
+    bufferC.addString("(");
+
+    auto index         = 0;
+    auto numCallParams = typeFuncBC->parameters.size();
+    for (int idxCall = (int) numCallParams - 1; idxCall >= 0; idxCall--)
+    {
+        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+        typeParam      = TypeManager::concreteType(typeParam);
+        index += typeParam->numRegisters();
+    }
+
+    index--;
+    for (int idxCall = (int) numCallParams - 1; idxCall >= 0; idxCall--)
+    {
+        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+        typeParam      = TypeManager::concreteType(typeParam);
+        for (int j = 0; j < typeParam->numRegisters(); j++)
+        {
+            if ((idxCall != (int) numCallParams - 1) || j)
+                bufferC.addString(", ");
+            bufferC.addString(format("rc%u", index));
+
+            switch (typeParam->nativeType)
+            {
+            case NativeType::U32:
+                bufferC.addString(".u32");
+                break;
+            }
+
+            index -= 1;
+        }
+    }
+
+    bufferC.addString(");");
 }
 
 void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)

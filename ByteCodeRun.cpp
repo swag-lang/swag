@@ -89,18 +89,30 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     ffiArgs.resize(typeInfoFunc->parameters.size());
     ffiArgsValues.resize(typeInfoFunc->parameters.size());
 
-    auto sp = context->sp;
+    Register* sp = (Register*) context->sp;
     for (int i = 0; i < typeInfoFunc->parameters.size(); i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
-        switch (typeParam->nativeType)
+        if (typeParam->kind == TypeInfoKind::Pointer)
         {
-        case NativeType::U32:
-            ffiArgs[i]       = &ffi_type_uint32;
-            ffiArgsValues[i] = sp;
-            sp += sizeof(uint32_t);
-            break;
+            ffiArgs[i]       = &ffi_type_pointer;
+            ffiArgsValues[i] = &sp->pointer;
         }
+        else
+        {
+            switch (typeParam->nativeType)
+            {
+            case NativeType::U32:
+                ffiArgs[i]       = &ffi_type_uint32;
+                ffiArgsValues[i] = &sp->u32;
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
+            }
+        }
+
+        sp++;
     }
 
     auto typeResult = &ffi_type_uint32;
