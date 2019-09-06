@@ -9,4 +9,5 @@ const STD_INPUT_HANDLE: u32 = cast(u32) -10
 #test
 {	
 	h := GetStdHandle(STD_INPUT_HANDLE)
+	@print(cast(s32) h)
 }

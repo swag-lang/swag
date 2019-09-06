@@ -502,6 +502,9 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
         }
     }
 
+	// Remember the number of parameters, to allocate registers in backend
+    context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
+
     auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
     inst->a.pointer = (uint8_t*) funcNode;
     inst->b.pointer = (uint8_t*) typeInfoFunc;

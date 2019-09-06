@@ -52,6 +52,57 @@ const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
     }
 }
 
+void BackendC::emitForeignCall(ByteCodeInstruction* ip)
+{
+    auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+    if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        switch (typeFuncBC->returnType->nativeType)
+        {
+        case NativeType::S8:
+            bufferC.addString("rt0.us = ");
+            break;
+        case NativeType::U8:
+            bufferC.addString("rt0.u8 = ");
+            break;
+        case NativeType::S16:
+            bufferC.addString("rt0.s16 = ");
+            break;
+        case NativeType::U16:
+            bufferC.addString("rt0.u16 = ");
+            break;
+        case NativeType::S32:
+            bufferC.addString("rt0.s32 = ");
+            break;
+        case NativeType::U32:
+            bufferC.addString("rt0.u32 = ");
+            break;
+        case NativeType::S64:
+            bufferC.addString("rt0.s64 = ");
+            break;
+        case NativeType::U64:
+            bufferC.addString("rt0.u32 = ");
+            break;
+        case NativeType::Bool:
+            bufferC.addString("rt0.b = ");
+            break;
+        case NativeType::F32:
+            bufferC.addString("rt0.f32 = ");
+            break;
+        case NativeType::F64:
+            bufferC.addString("rt0.f64 = ");
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
+    bufferC.addString(format("%s", nodeFunc->name.c_str()));
+    bufferC.addString("();");
+}
+
 void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
@@ -1138,12 +1189,8 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         break;
 
         case ByteCodeOp::ForeignCall:
-        {
-            auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-            bufferC.addString(format("%s_%s", nodeFunc->ownerScope->name.c_str(), nodeFunc->name.c_str()));
-            bufferC.addString("();");
-        }
-        break;
+            emitForeignCall(ip);
+            break;
 
         default:
             ok = false;

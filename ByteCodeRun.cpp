@@ -83,19 +83,16 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         ip->c.pointer = (uint8_t*) ffiGetFuncAddress(context, ip);
     if (!ip->c.pointer)
         return;
-    auto funcNode     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
 
     ffi_cif cif;
     ffiArgs.resize(typeInfoFunc->parameters.size());
     ffiArgsValues.resize(typeInfoFunc->parameters.size());
 
-    auto sp          = context->sp;
-    auto registersRC = context->bc->registersRC[context->bc->curRC];
+    auto sp = context->sp;
     for (int i = 0; i < typeInfoFunc->parameters.size(); i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
-        auto nodeParam = funcNode->parameters->childs[i];
         switch (typeParam->nativeType)
         {
         case NativeType::U32:
@@ -113,8 +110,11 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 
     // Make the call
     Register result;
-	result.pointer = 0;
+    result.pointer = 0;
     ffi_call(&cif, FFI_FN(ip->c.pointer), &result, &ffiArgsValues[0]);
+
+    // Store result
+    context->registersRR[0] = result;
 }
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)

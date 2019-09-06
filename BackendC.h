@@ -8,6 +8,7 @@ struct TypeInfoFuncAttr;
 struct TypeInfo;
 struct BackendParameters;
 struct ByteCode;
+struct ByteCodeInstruction;
 
 struct BackendC : public Backend
 {
@@ -32,6 +33,7 @@ struct BackendC : public Backend
     bool emitGlobalInit();
 
     const char* swagTypeToCType(TypeInfo* typeInfo);
+    void        emitForeignCall(ByteCodeInstruction* ip);
     void        emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void        emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void        emitFuncSignatureInternalC(ByteCode* bc);
