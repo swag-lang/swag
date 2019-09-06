@@ -117,55 +117,58 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
         typeParam      = TypeManager::concreteType(typeParam);
-        for (int j = 0; j < typeParam->numRegisters(); j++)
+        if (idxCall)
+            bufferC.addString(", ");
+
+        // Access to the content of the register
+        if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            if (idxCall || j)
-                bufferC.addString(", ");
             bufferC.addString(format("rc%u", index));
-
-			// Access to the content of the register
-			if (typeParam->kind == TypeInfoKind::Pointer)
-			{
-				bufferC.addString(".pointer");
-			}
-			else if (typeParam->isNative(NativeType::String))
-			{
-
-			}
-			else if (typeParam->kind == TypeInfoKind::Native)
-			{
-				switch (typeParam->nativeType)
-				{
-				case NativeType::S8:
-					bufferC.addString(".s8");
-					break;
-				case NativeType::U8:
-					bufferC.addString(".u8");
-					break;
-				case NativeType::S16:
-					bufferC.addString(".s16");
-					break;
-				case NativeType::U16:
-					bufferC.addString(".u16");
-					break;
-				case NativeType::S32:
-					bufferC.addString(".s32");
-					break;
-				case NativeType::U32:
-					bufferC.addString(".u32");
-					break;
-				case NativeType::S64:
-					bufferC.addString(".s64");
-					break;
-				case NativeType::U64:
-					bufferC.addString(".u64");
-					break;
-				default:
-					break;
-				}
-			}
-
+            bufferC.addString(".pointer");
             index -= 1;
+        }
+        else if (typeParam->isNative(NativeType::String))
+        {
+			bufferC.addString(format("rc%u.pointer", index));
+            index -= 2;
+        }
+        else if (typeParam->kind == TypeInfoKind::Native)
+        {
+            bufferC.addString(format("rc%u", index));
+            index -= 1;
+
+            switch (typeParam->nativeType)
+            {
+            case NativeType::Bool:
+                bufferC.addString(".b");
+                break;
+            case NativeType::S8:
+                bufferC.addString(".s8");
+                break;
+            case NativeType::U8:
+                bufferC.addString(".u8");
+                break;
+            case NativeType::S16:
+                bufferC.addString(".s16");
+                break;
+            case NativeType::U16:
+                bufferC.addString(".u16");
+                break;
+            case NativeType::S32:
+                bufferC.addString(".s32");
+                break;
+            case NativeType::U32:
+                bufferC.addString(".u32");
+                break;
+            case NativeType::S64:
+                bufferC.addString(".s64");
+                break;
+            case NativeType::U64:
+                bufferC.addString(".u64");
+                break;
+            default:
+                break;
+            }
         }
     }
 
