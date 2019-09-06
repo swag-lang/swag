@@ -1,43 +1,16 @@
 #include "pch.h"
 #include "ByteCodeRun.h"
-#include "ByteCodeRunContext.h"
 #include "Diagnostic.h"
 #include "SourceFile.h"
 #include "ByteCode.h"
-#include "Log.h"
 #include "Module.h"
 #include "ByteCodeOp.h"
 #include "Ast.h"
 #include "ByteCodeModuleManager.h"
-#include "ffi.h"
 #include "SymTable.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "ModuleCompileJob.h"
-
-#if 0
-float toto(float a)
-{
-	return a / 3;
-}
-
-void testffi()
-{
-	ffi_cif   cif;
-	ffi_type* args[10];
-	void*     values[10];
-	float     f;
-
-	args[0] = &ffi_type_float;
-	values[0] = &f;
-
-	/* Initialize the cif */
-	ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 1, &ffi_type_float, args);
-	f = 666;
-	float result = 0;
-	ffi_call(&cif, FFI_FN(toto), &result, values);
-}
-#endif
 
 ByteCodeRun g_Run;
 
@@ -59,7 +32,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     {
         if (!hasModuleName || g_ModuleMgr.isModuleLoaded(moduleName.text))
         {
-            context->error(format("can't resolve external function call to '%s'", funcName.c_str()));
+            context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
             return nullptr;
         }
 
@@ -67,7 +40,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         auto externalModule = context->sourceFile->module->workspace->getModuleByName(moduleName.text);
         if (!externalModule)
         {
-            context->error(format("can't resolve external function call to '%s'", funcName.c_str()));
+            context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
             return nullptr;
         }
 
@@ -75,7 +48,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         // from the compiler
         if (externalModule->backendParameters.type == BackendType::Dll)
         {
-            context->error(format("can't resolve external function call to '%s'", funcName.c_str()));
+            context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
             return nullptr;
         }
 
@@ -96,7 +69,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
         if (!externalModule)
         {
-            context->error(format("can't resolve external function call to '%s'", funcName.c_str()));
+            context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));
             return nullptr;
         }
     }
@@ -106,20 +79,42 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    auto fn = ffiGetFuncAddress(context, ip);
-    if (!fn)
+    if (!ip->c.pointer)
+        ip->c.pointer = (uint8_t*) ffiGetFuncAddress(context, ip);
+    if (!ip->c.pointer)
         return;
+    auto funcNode     = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
 
-    ffi_cif   cif;
-    ffi_type* args[10];
-    void*     values[10];
+    ffi_cif cif;
+    ffiArgs.resize(typeInfoFunc->parameters.size());
+    ffiArgsValues.resize(typeInfoFunc->parameters.size());
 
-    args[0] = &ffi_type_void;
-    //values[0] = &f;
+    auto sp          = context->sp;
+    auto registersRC = context->bc->registersRC[context->bc->curRC];
+    for (int i = 0; i < typeInfoFunc->parameters.size(); i++)
+    {
+        auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
+        auto nodeParam = funcNode->parameters->childs[i];
+        switch (typeParam->nativeType)
+        {
+        case NativeType::U32:
+            ffiArgs[i]       = &ffi_type_uint32;
+            ffiArgsValues[i] = sp;
+            sp += sizeof(uint32_t);
+            break;
+        }
+    }
+
+    auto typeResult = &ffi_type_uint32;
 
     // Initialize the cif
-    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 0, &ffi_type_void, args);
-    ffi_call(&cif, FFI_FN(fn), nullptr, values);
+    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (int) typeInfoFunc->parameters.size(), typeResult, &ffiArgs[0]);
+
+    // Make the call
+    Register result;
+	result.pointer = 0;
+    ffi_call(&cif, FFI_FN(ip->c.pointer), &result, &ffiArgsValues[0]);
 }
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
@@ -177,7 +172,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->ip = context->bc->out;
         SWAG_ASSERT(context->ip);
         context->bp = context->sp;
-		context->bc->enterByteCode(context);
+        context->bc->enterByteCode(context);
         break;
     }
     case ByteCodeOp::MakeLambda:
@@ -378,7 +373,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRR[ip->a.u32] = registersRC[ip->b.u32];
         break;
     }
-	case ByteCodeOp::CopyRCxRRx:
+    case ByteCodeOp::CopyRCxRRx:
     case ByteCodeOp::CopyRCxRRxCall:
     {
         registersRC[ip->a.u32] = registersRR[ip->b.u32];
