@@ -82,8 +82,8 @@ static const uint64_t TYPEINFO_GENERIC                  = 0x00000000'00001000;
 static const uint64_t TYPEINFO_RETURN_BY_COPY           = 0x00000000'00002000;
 static const uint64_t TYPEINFO_NATIVE_VALUE             = 0x00000000'00004000;
 
-static const uint32_t ISSAME_EXACT = 0x00000001;
-static const uint32_t ISSAME_CAST  = 0x00000002;
+static const uint32_t ISSAME_EXACT   = 0x00000001;
+static const uint32_t ISSAME_CAST    = 0x00000002;
 
 struct TypeInfo : public PoolElement
 {
@@ -93,8 +93,13 @@ struct TypeInfo : public PoolElement
             return true;
         if (kind != from->kind)
             return false;
-        if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
-            return false;
+
+        if (isSameFlags & ISSAME_EXACT)
+        {
+            if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
+                return false;
+        }
+
         return true;
     }
 
