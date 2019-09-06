@@ -26,8 +26,13 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
 
     auto funcName = nodeFunc->resolvedSymbolName->fullName;
     replaceAll(funcName, '.', '_');
-
     auto fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
+    if (!fn)
+    {
+        funcName = nodeFunc->resolvedSymbolName->name;
+        fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
+    }
+
     if (!fn)
     {
         if (!hasModuleName || g_ModuleMgr.isModuleLoaded(moduleName.text))
@@ -98,18 +103,68 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             ffiArgs[i]       = &ffi_type_pointer;
             ffiArgsValues[i] = &sp->pointer;
         }
-        else
+        else if (typeParam->isNative(NativeType::String))
+        {
+            context->errorMsg = format("ffi failed to pass unknown typed argument '%s'", typeParam->name.c_str());
+            return;
+        }
+        else if (typeParam->kind == TypeInfoKind::Native)
         {
             switch (typeParam->nativeType)
             {
+            case NativeType::U8:
+                ffiArgs[i]       = &ffi_type_uint8;
+                ffiArgsValues[i] = &sp->u8;
+                break;
+            case NativeType::S8:
+                ffiArgs[i]       = &ffi_type_sint8;
+                ffiArgsValues[i] = &sp->s8;
+                break;
+            case NativeType::U16:
+                ffiArgs[i]       = &ffi_type_uint16;
+                ffiArgsValues[i] = &sp->u16;
+                break;
+            case NativeType::S16:
+                ffiArgs[i]       = &ffi_type_sint16;
+                ffiArgsValues[i] = &sp->s16;
+                break;
+            case NativeType::S32:
+                ffiArgs[i]       = &ffi_type_sint32;
+                ffiArgsValues[i] = &sp->s32;
+                break;
             case NativeType::U32:
                 ffiArgs[i]       = &ffi_type_uint32;
                 ffiArgsValues[i] = &sp->u32;
                 break;
-            default:
-                SWAG_ASSERT(false);
+            case NativeType::S64:
+                ffiArgs[i]       = &ffi_type_sint64;
+                ffiArgsValues[i] = &sp->s64;
                 break;
+            case NativeType::U64:
+                ffiArgs[i]       = &ffi_type_uint64;
+                ffiArgsValues[i] = &sp->u64;
+                break;
+            case NativeType::F32:
+                ffiArgs[i]       = &ffi_type_float;
+                ffiArgsValues[i] = &sp->f32;
+                break;
+            case NativeType::F64:
+                ffiArgs[i]       = &ffi_type_double;
+                ffiArgsValues[i] = &sp->f64;
+                break;
+            case NativeType::Bool:
+                ffiArgs[i]       = &ffi_type_uint8;
+                ffiArgsValues[i] = &sp->b;
+                break;
+            default:
+                context->errorMsg = format("ffi failed to pass unknown typed argument '%s'", typeParam->name.c_str());
+                return;
             }
+        }
+        else
+        {
+            context->errorMsg = format("ffi failed to pass unknown typed argument '%s'", typeParam->name.c_str());
+            return;
         }
 
         sp++;

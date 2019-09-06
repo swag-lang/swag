@@ -15,8 +15,5 @@ const STD_OUTPUT_HANDLE: u32 = cast(u32) -11
 #test
 {	
 	h := Windows.GetStdHandle(STD_OUTPUT_HANDLE)
-	//@print(cast(s32) h)
-	
-	ptr := @op("toto", data)
-	Windows.WriteFile(h, ptr, 4, null, null);
+	Windows.WriteFile(h, @op("toto", data), 4, null, null);
 }
