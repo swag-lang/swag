@@ -30,6 +30,7 @@ func toto()->Point
 //#[swag.printbc]
 #test
 {	
+	cpt = 0
 	toto();
 	@assert(cpt == 1)
 }

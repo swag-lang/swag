@@ -26,6 +26,7 @@ impl Point
 //#[swag.printbc]
 #test
 {	
+	cpt = 0
 	var pt1: Point
 	pt1	= Point(1, 2)
 	@assert(cpt == 1)
