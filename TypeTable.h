@@ -6,9 +6,8 @@ struct AstNode;
 
 struct TypeTable
 {
-    TypeInfo*   registerType(TypeInfo* typeInfo);
-    void        makeConcreteTypeInfo(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo* concreteTypeInfo);
-    const char* getConcreteTypeInfoName(TypeInfo* typeInfo);
+    TypeInfo* registerType(TypeInfo* typeInfo);
+    bool      makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** concreteTypeInfo, uint32_t* storage);
 
     SpinLock                                  mutexTypes;
     vector<TypeInfo*>                         allTypes;

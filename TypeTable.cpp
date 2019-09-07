@@ -5,6 +5,7 @@
 #include "SemanticJob.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Workspace.h"
 
 TypeInfo* TypeTable::registerType(TypeInfo* newTypeInfo)
 {
@@ -46,35 +47,35 @@ struct ConcreteTypeInfoPointer
     ConcreteTypeInfo* pointedType;
 };
 
-const char* TypeTable::getConcreteTypeInfoName(TypeInfo* typeInfo)
+bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** concreteTypeInfo, uint32_t* storage)
 {
+    auto            sourceFile = context->sourceFile;
+    auto&           swagScope  = sourceFile->module->workspace->swagScope;
+    TypeInfoStruct* typeStruct = nullptr;
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Native:
-        return "swag.TypeInfoNative";
+        typeStruct = swagScope.regTypeInfoNative;
+        break;
     case TypeInfoKind::Pointer:
-        return "swag.TypeInfoPointer";
+        typeStruct = swagScope.regTypeInfoPointer;
+        break;
+    default:
+        context->errorContext.report({sourceFile, context->node, "errororor"});
+        return false;
     }
-
-    return nullptr;
-}
-
-void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo* concreteTypeInfo)
-{
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(concreteTypeInfo, TypeInfoKind::Struct);
 
     scoped_lock lk(mutexTypes);
     auto        it = concreteTypes.find(typeInfo);
     if (it != concreteTypes.end())
     {
-        node->typeInfo              = it->second.first;  // Concrete type info
-        node->computedValue.reg.u64 = it->second.second; // Index of the structure in the constant segment
-        return;
+        *concreteTypeInfo = it->second.first;
+        *storage          = it->second.second;
+        return true;
     }
 
     // Build structure content
     uint32_t storageOffset = 0;
-    auto     sourceFile    = context->sourceFile;
     storageOffset          = sourceFile->module->reserveConstantSegment(typeStruct->sizeOf);
 
     {
@@ -111,10 +112,8 @@ void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, Ty
     typePtr->sizeOf = sizeof(void*);
 
     // Register type and value
-    concreteTypes[concreteTypeInfo] = {typePtr, storageOffset};
-    if (node)
-    {
-        node->typeInfo              = typePtr;
-        node->computedValue.reg.u64 = storageOffset;
-    }
+    concreteTypes[typeInfo] = {typePtr, storageOffset};
+    *concreteTypeInfo       = typePtr;
+    *storage                = storageOffset;
+	return true;
 }

@@ -100,7 +100,6 @@ struct SemanticJob : public Job
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeAlias(SemanticContext* context);
     static bool resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
-	static bool resolveAfterTypeOfProperty(SemanticContext* context);
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveIndex(SemanticContext* context);

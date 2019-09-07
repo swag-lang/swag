@@ -293,6 +293,9 @@
     <ClCompile Include="SemanticJobProperty_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="SwagScope.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -480,6 +483,9 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="TypeTable.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="SwagScope.h">
       <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>

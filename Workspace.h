@@ -1,6 +1,7 @@
 #pragma once
 #include "SpinLock.h"
 #include "ByteCodeRunContext.h"
+#include "swagScope.h"
 struct Module;
 struct Scope;
 
@@ -24,6 +25,7 @@ struct Workspace
     map<string, Module*>   mapModulesNames;
     ByteCodeRunContext     runContext;
     Module*                runtimeModule;
+    SwagScope              swagScope;
 };
 
 extern Workspace g_Workspace;

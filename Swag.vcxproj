@@ -200,6 +200,7 @@
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />
     <ClInclude Include="SourceLocation.h" />
+    <ClInclude Include="SwagScope.h" />
     <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleSemanticJob.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="SemanticJob.cpp" />
     <ClCompile Include="SemanticJobType_.cpp" />
     <ClCompile Include="Stats.cpp" />
+    <ClCompile Include="SwagScope.cpp" />
     <ClCompile Include="SymTable.cpp" />
     <ClCompile Include="SyntaxJobAttribute_.cpp" />
     <ClCompile Include="SyntaxJobBlock_.cpp" />

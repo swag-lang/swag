@@ -6,6 +6,7 @@
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "Workspace.h"
 
 bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
@@ -56,17 +57,6 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     return true;
 }
 
-bool SemanticJob::resolveAfterTypeOfProperty(SemanticContext* context)
-{
-    auto  node       = CastAst<AstProperty>(context->node->parent, AstNodeKind::IntrinsicProp);
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    auto  expr       = node->expression;
-    node->typeInfo   = expr->typeInfo;
-    typeTable.makeConcreteTypeInfo(context, node, node->typeInfo, node->childs.back()->typeInfo);
-    return true;
-}
-
 bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 {
     auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
@@ -86,14 +76,17 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case Property::TypeOf:
     {
         SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
-        auto concreteStructName = typeTable.getConcreteTypeInfoName(expr->typeInfo);
-        SWAG_VERIFY(concreteStructName, context->errorContext.report({sourceFile, expr, format("cannot get concrete typeinfo of '%s'", expr->typeInfo->name.c_str())}));
-        auto idRef = Ast::newIdentifierRef(sourceFile, concreteStructName, node);
-        context->job->nodes.pop_back();
-        context->job->nodes.push_back(idRef);
-        context->job->nodes.push_back(node);
-        idRef->semanticAfterFct = &SemanticJob::resolveAfterTypeOfProperty;
-        node->byteCodeFct       = &ByteCodeGenJob::emitTypeOfProperty;
+        auto&       swagScope = sourceFile->module->workspace->swagScope;
+        scoped_lock lock(swagScope.mutex);
+        if (!swagScope.fullySolved)
+        {
+            swagScope.dependentJobs.push_back(context->job);
+            context->result = SemanticResult::Pending;
+            return true;
+        }
+
+        typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32);
+        node->byteCodeFct = &ByteCodeGenJob::emitTypeOfProperty;
         return true;
     }
 

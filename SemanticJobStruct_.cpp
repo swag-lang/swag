@@ -12,6 +12,7 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "ByteCodeGenJob.h"
+#include "Workspace.h"
 
 bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer)
 {
@@ -216,5 +217,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         typeInfo->flags |= structFlags;
     node->typeInfo = typeInfo;
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
+    sourceFile->module->workspace->swagScope.registerType(node->typeInfo);
     return true;
 }
