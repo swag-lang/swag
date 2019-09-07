@@ -179,4 +179,25 @@ namespace Ast
         node->inheritOwners(parent);
         return node;
     }
+
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent)
+    {
+        AstIdentifierRef* node = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
+        node->name             = name;
+        node->semanticFct      = &SemanticJob::resolveIdentifierRef;
+        node->inheritOwners(parent);
+
+        vector<string> tokens;
+        tokenize(name.c_str(), '.', tokens);
+        for (int i = 0; i < tokens.size(); i++)
+        {
+            auto id         = Ast::newNode(nullptr, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, node);
+            id->semanticFct = &SemanticJob::resolveIdentifier;
+            id->name          = tokens[i];
+            id->identifierRef = node;
+            id->inheritOwners(node);
+        }
+
+        return node;
+    }
 }; // namespace Ast

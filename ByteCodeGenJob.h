@@ -133,6 +133,7 @@ struct ByteCodeGenJob : public Job
     static bool emitSliceRef(ByteCodeGenContext* context);
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
+	static bool emitTypeOfProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
 
 	static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);

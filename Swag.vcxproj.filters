@@ -287,6 +287,12 @@
     <ClCompile Include="TypeTable.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeGenJobProperty_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
+    <ClCompile Include="SemanticJobProperty_.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
