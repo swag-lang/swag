@@ -44,7 +44,7 @@ const char* TypeTable::getConcreteTypeInfoName(TypeInfo* typeInfo)
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Native:
-        return "Swag.TypeInfoNative";
+        return "swag.TypeInfoNative";
     }
 
     return nullptr;
