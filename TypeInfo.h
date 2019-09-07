@@ -14,6 +14,7 @@ struct ByteCode;
 
 enum class TypeInfoKind
 {
+    Invalid,
     Native,
     Namespace,
     Enum,
@@ -33,6 +34,7 @@ enum class TypeInfoKind
 
 enum class NativeTypeKind
 {
+    Void,
     S8,
     S16,
     S32,
@@ -46,7 +48,6 @@ enum class NativeTypeKind
     Bool,
     Char,
     String,
-    Void,
     Count,
 };
 
@@ -82,8 +83,8 @@ static const uint64_t TYPEINFO_GENERIC                  = 0x00000000'00001000;
 static const uint64_t TYPEINFO_RETURN_BY_COPY           = 0x00000000'00002000;
 static const uint64_t TYPEINFO_NATIVE_VALUE             = 0x00000000'00004000;
 
-static const uint32_t ISSAME_EXACT   = 0x00000001;
-static const uint32_t ISSAME_CAST    = 0x00000002;
+static const uint32_t ISSAME_EXACT = 0x00000001;
+static const uint32_t ISSAME_CAST  = 0x00000002;
 
 struct TypeInfo : public PoolElement
 {
@@ -156,11 +157,11 @@ struct TypeInfo : public PoolElement
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
-    uint64_t     flags;
-    TypeInfoKind kind;
-    NativeTypeKind   nativeType;
-    Utf8         name;
-    int          sizeOf;
+    uint64_t       flags;
+    TypeInfoKind   kind;
+    NativeTypeKind nativeType;
+    Utf8           name;
+    int            sizeOf;
 };
 
 struct TypeInfoNative : public TypeInfo

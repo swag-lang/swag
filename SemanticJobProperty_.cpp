@@ -62,8 +62,7 @@ bool SemanticJob::resolveAfterTypeOfProperty(SemanticContext* context)
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
     auto  expr       = node->expression;
-
-    node->typeInfo = expr->typeInfo;
+    node->typeInfo   = expr->typeInfo;
     typeTable.makeConcreteTypeInfo(context, node, node->childs.back()->typeInfo);
     return true;
 }
@@ -87,7 +86,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case Property::TypeOf:
     {
         SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
-        auto idRef = Ast::newIdentifierRef(sourceFile, typeTable.getConcreteTypeInfoName(expr->typeInfo), node);
+        auto concreteStructName = typeTable.getConcreteTypeInfoName(expr->typeInfo);
+        SWAG_VERIFY(concreteStructName, context->errorContext.report({sourceFile, expr, format("cannot get concrete typeinfo of '%s'", expr->typeInfo->name.c_str())}));
+        auto idRef = Ast::newIdentifierRef(sourceFile, concreteStructName, node);
         context->job->nodes.pop_back();
         context->job->nodes.push_back(idRef);
         context->job->nodes.push_back(node);

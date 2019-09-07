@@ -27,19 +27,27 @@ TypeInfo* TypeTable::registerType(TypeInfo* newTypeInfo)
     return newTypeInfo;
 }
 
-enum ConcreteTypeInfoKind : uint32_t
-{
-    Native = 666,
-};
-
 struct ConcreteTypeInfo
 {
-    ConcreteTypeInfoKind kind;
+    TypeInfoKind kind;
+    uint32_t     sizeOf;
+};
+
+struct ConcreteTypeInfoNative
+{
+    ConcreteTypeInfo base;
+    NativeTypeKind   nativeKind;
 };
 
 const char* TypeTable::getConcreteTypeInfoName(TypeInfo* typeInfo)
 {
-    return "Swag.TypeInfoNative";
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Native:
+        return "Swag.TypeInfoNative";
+    }
+
+    return nullptr;
 }
 
 void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
@@ -64,7 +72,18 @@ void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, Ty
     {
         scoped_lock       lock(sourceFile->module->mutexConstantSeg);
         ConcreteTypeInfo* concreteTypeInfo = (ConcreteTypeInfo*) &sourceFile->module->constantSegment[storageOffset];
-        concreteTypeInfo->kind             = ConcreteTypeInfoKind::Native;
+        concreteTypeInfo->kind             = realTypeInfo->kind;
+        concreteTypeInfo->sizeOf           = realTypeInfo->sizeOf;
+
+        switch (realTypeInfo->kind)
+        {
+        case TypeInfoKind::Native:
+        {
+            auto realType        = (ConcreteTypeInfoNative*) concreteTypeInfo;
+            realType->nativeKind = realTypeInfo->nativeType;
+            break;
+        }
+        }
     }
 
     // Build pointer type to structure
