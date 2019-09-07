@@ -9,6 +9,7 @@
 #include "ByteCode.h"
 #include "Attribute.h"
 #include "Diagnostic.h"
+#include "TypeManager.h"
 
 Pool<Module> g_Pool_module;
 

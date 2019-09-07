@@ -220,6 +220,7 @@
     <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="Tokenizer.h" />
     <ClInclude Include="TypeManager.h" />
+    <ClInclude Include="TypeTable.h" />
     <ClInclude Include="Utf8.h" />
     <ClInclude Include="Utf8Crc.h" />
     <ClInclude Include="Version.h" />
@@ -341,6 +342,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TypeTable.cpp" />
     <ClCompile Include="Utf8.cpp" />
     <ClCompile Include="Workspace.cpp" />
   </ItemGroup>

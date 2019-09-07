@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "SymTable.h"
 #include "Module.h"
+#include "TypeManager.h"
 
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {

@@ -9,6 +9,7 @@
 #include "Module.h"
 #include "Workspace.h"
 #include "Generic.h"
+#include "TypeManager.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {

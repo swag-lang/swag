@@ -80,6 +80,7 @@ void LanguageSpec::setup()
     nativeTypes["void"]   = g_TypeMgr.typeInfoVoid;
 
     properties["sizeof"] = Property::SizeOf;
+    properties["typeof"] = Property::TypeOf;
     properties["count"]  = Property::Count;
     properties["data"]   = Property::Data;
 

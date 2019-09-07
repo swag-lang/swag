@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Ast.h"
+#include "TypeManager.h"
 
 bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer)
 {

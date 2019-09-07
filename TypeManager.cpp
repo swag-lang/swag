@@ -190,24 +190,3 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
 
     return typeInfo;
 }
-
-TypeInfo* TypeTable::registerType(TypeInfo* newTypeInfo)
-{
-    scoped_lock lk(mutexTypes);
-    for (auto typeInfo : allTypes)
-    {
-        if (typeInfo->isSame(newTypeInfo, ISSAME_EXACT))
-        {
-            if ((newTypeInfo != typeInfo) && !(newTypeInfo->flags & TYPEINFO_IN_MANAGER))
-            {
-                newTypeInfo->release();
-            }
-
-            return typeInfo;
-        }
-    }
-
-    newTypeInfo->flags |= TYPEINFO_IN_MANAGER;
-    allTypes.push_back(newTypeInfo);
-    return newTypeInfo;
-}

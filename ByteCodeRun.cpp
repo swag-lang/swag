@@ -11,6 +11,7 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "ModuleCompileJob.h"
+#include "TypeManager.h"
 
 ByteCodeRun g_Run;
 

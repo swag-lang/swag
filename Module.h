@@ -3,7 +3,7 @@
 #include "SpinLock.h"
 #include "BuildPass.h"
 #include "BackendParameters.h"
-#include "TypeManager.h"
+#include "TypeTable.h"
 
 struct Utf8;
 struct SourceFile;

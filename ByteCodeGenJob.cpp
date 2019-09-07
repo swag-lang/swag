@@ -10,6 +10,7 @@
 #include "Scope.h"
 #include "Ast.h"
 #include "Stats.h"
+#include "TypeManager.h"
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 

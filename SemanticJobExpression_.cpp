@@ -6,6 +6,7 @@
 #include "LanguageSpec.h"
 #include "Scope.h"
 #include "Module.h"
+#include "TypeManager.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -183,6 +184,13 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         node->typeInfo = g_TypeMgr.typeInfoU32;
+        break;
+
+    case Property::TypeOf:
+        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
+        node->typeInfo                  = typeTable.makeConcreteTypeInfo(expr->typeInfo);
+        node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
+        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         break;
 
     case Property::Count:

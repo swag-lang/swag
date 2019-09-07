@@ -5,6 +5,7 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "SymTable.h"
+#include "TypeManager.h"
 
 bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {

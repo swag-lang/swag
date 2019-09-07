@@ -62,7 +62,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
     const auto& name = identifier->childs.back()->name;
     auto        it   = g_LangSpec.properties.find(name);
     if (it == g_LangSpec.properties.end())
-        return syntaxError(token, format("invalid property '%s'", name.c_str()));
+        return syntaxError(identifier->token, format("invalid property '%s'", name.c_str()));
 
     node->prop = it->second;
     SWAG_CHECK(eatToken(TokenId::SymRightParen));

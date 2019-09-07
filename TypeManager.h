@@ -74,12 +74,4 @@ struct TypeManager
     TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
 };
 
-struct TypeTable
-{
-    TypeInfo* registerType(TypeInfo* typeInfo);
-
-    SpinLock          mutexTypes;
-    vector<TypeInfo*> allTypes;
-};
-
 extern TypeManager g_TypeMgr;

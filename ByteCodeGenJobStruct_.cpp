@@ -9,6 +9,7 @@
 #include "Scope.h"
 #include "SemanticJob.h"
 #include "Module.h"
+#include "TypeManager.h"
 
 bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {

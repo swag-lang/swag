@@ -284,6 +284,9 @@
     <ClCompile Include="TypeInfoSpecific_.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="TypeTable.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -468,6 +471,9 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="Generic.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeTable.h">
       <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
