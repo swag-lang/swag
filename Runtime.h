@@ -68,5 +68,12 @@ namespace swag
 		base: 		TypeInfo
 		nativeKind:	TypeInfoNativeKind = TypeInfoNativeKind.Void
 	}
+
+	struct TypeInfoPointer
+	{
+		base: 			TypeInfo
+		ptrCount:		u32
+		pointedType:	*TypeInfo
+	}
 }
 )";

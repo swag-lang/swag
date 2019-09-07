@@ -63,7 +63,7 @@ bool SemanticJob::resolveAfterTypeOfProperty(SemanticContext* context)
     auto& typeTable  = sourceFile->module->typeTable;
     auto  expr       = node->expression;
     node->typeInfo   = expr->typeInfo;
-    typeTable.makeConcreteTypeInfo(context, node, node->childs.back()->typeInfo);
+    typeTable.makeConcreteTypeInfo(context, node, node->typeInfo, node->childs.back()->typeInfo);
     return true;
 }
 

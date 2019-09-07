@@ -39,24 +39,32 @@ struct ConcreteTypeInfoNative
     NativeTypeKind   nativeKind;
 };
 
+struct ConcreteTypeInfoPointer
+{
+    ConcreteTypeInfo  base;
+    uint32_t          ptrCount;
+    ConcreteTypeInfo* pointedType;
+};
+
 const char* TypeTable::getConcreteTypeInfoName(TypeInfo* typeInfo)
 {
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Native:
         return "swag.TypeInfoNative";
+    case TypeInfoKind::Pointer:
+        return "swag.TypeInfoPointer";
     }
 
     return nullptr;
 }
 
-void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo* concreteTypeInfo)
 {
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(concreteTypeInfo, TypeInfoKind::Struct);
 
     scoped_lock lk(mutexTypes);
-    auto        realTypeInfo = node->typeInfo;
-    auto        it           = concreteTypes.find(realTypeInfo);
+    auto        it = concreteTypes.find(typeInfo);
     if (it != concreteTypes.end())
     {
         node->typeInfo              = it->second.first;  // Concrete type info
@@ -71,16 +79,24 @@ void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, Ty
 
     {
         scoped_lock       lock(sourceFile->module->mutexConstantSeg);
-        ConcreteTypeInfo* concreteTypeInfo = (ConcreteTypeInfo*) &sourceFile->module->constantSegment[storageOffset];
-        concreteTypeInfo->kind             = realTypeInfo->kind;
-        concreteTypeInfo->sizeOf           = realTypeInfo->sizeOf;
+        ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) &sourceFile->module->constantSegment[storageOffset];
 
-        switch (realTypeInfo->kind)
+        concreteTypeInfoValue->kind   = typeInfo->kind;
+        concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
+
+        switch (typeInfo->kind)
         {
         case TypeInfoKind::Native:
         {
-            auto realType        = (ConcreteTypeInfoNative*) concreteTypeInfo;
-            realType->nativeKind = realTypeInfo->nativeType;
+            auto concreteType        = (ConcreteTypeInfoNative*) concreteTypeInfoValue;
+            concreteType->nativeKind = typeInfo->nativeType;
+            break;
+        }
+        case TypeInfoKind::Pointer:
+        {
+            auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
+            auto realType          = (TypeInfoPointer*) typeInfo;
+            concreteType->ptrCount = realType->ptrCount;
             break;
         }
         }
@@ -95,7 +111,10 @@ void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, Ty
     typePtr->sizeOf = sizeof(void*);
 
     // Register type and value
-    concreteTypes[typeInfo]     = {typePtr, storageOffset};
-    node->typeInfo              = typePtr;
-    node->computedValue.reg.u64 = storageOffset;
+    concreteTypes[concreteTypeInfo] = {typePtr, storageOffset};
+    if (node)
+    {
+        node->typeInfo              = typePtr;
+        node->computedValue.reg.u64 = storageOffset;
+    }
 }
