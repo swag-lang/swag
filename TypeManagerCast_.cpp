@@ -32,15 +32,15 @@ bool TypeManager::castToNativeChar(ErrorContext* errorContext, TypeInfo* fromTyp
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -50,7 +50,7 @@ bool TypeManager::castToNativeChar(ErrorContext* errorContext, TypeInfo* fromTyp
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -61,7 +61,7 @@ bool TypeManager::castToNativeChar(ErrorContext* errorContext, TypeInfo* fromTyp
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -83,15 +83,15 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -101,7 +101,7 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -112,7 +112,7 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -128,10 +128,10 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
     {
         switch (fromType->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < 0)
@@ -149,9 +149,9 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
                     return false;
             }
 
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.u64 > UINT8_MAX)
@@ -187,15 +187,15 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -205,7 +205,7 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -216,7 +216,7 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -232,10 +232,10 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < 0)
@@ -253,9 +253,9 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
             }
 
-        case NativeType::U8:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.u64 > UINT16_MAX)
@@ -291,15 +291,15 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -309,7 +309,7 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -320,7 +320,7 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -336,10 +336,10 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < 0)
@@ -357,9 +357,9 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
             }
 
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.u64 > UINT32_MAX)
@@ -395,15 +395,15 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -413,7 +413,7 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -424,7 +424,7 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -440,10 +440,10 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < 0)
@@ -461,9 +461,9 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
             }
 
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -488,15 +488,15 @@ bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType,
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -506,7 +506,7 @@ bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType,
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -517,7 +517,7 @@ bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType,
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -533,9 +533,9 @@ bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType,
     {
         switch (fromType->nativeType)
         {
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < INT8_MIN || nodeToCast->computedValue.reg.s64 > INT8_MAX)
@@ -571,15 +571,15 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -587,7 +587,7 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -598,7 +598,7 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 nodeToCast->computedValue.reg.s16 = static_cast<int16_t>(nodeToCast->computedValue.reg.f64);
@@ -612,9 +612,9 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S32:
-        case NativeType::S64:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < INT16_MIN || nodeToCast->computedValue.reg.s64 > INT16_MAX)
@@ -650,15 +650,15 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -666,7 +666,7 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 nodeToCast->computedValue.reg.s32 = static_cast<int32_t>(nodeToCast->computedValue.reg.f32);
@@ -674,7 +674,7 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 nodeToCast->computedValue.reg.s32 = static_cast<int32_t>(nodeToCast->computedValue.reg.f64);
@@ -687,9 +687,9 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S64:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < INT32_MIN || nodeToCast->computedValue.reg.s64 > INT32_MAX)
@@ -725,15 +725,15 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::Char:
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -741,7 +741,7 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 nodeToCast->computedValue.reg.s64 = static_cast<int64_t>(nodeToCast->computedValue.reg.f32);
@@ -749,7 +749,7 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
 
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 nodeToCast->computedValue.reg.s64 = static_cast<int64_t>(nodeToCast->computedValue.reg.f64);
@@ -762,9 +762,9 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
     {
         switch (fromType->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
             if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
             {
                 if (nodeToCast->computedValue.reg.s64 < INT64_MIN || nodeToCast->computedValue.reg.s64 > INT64_MAX)
@@ -798,10 +798,10 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
 {
     switch (fromType->nativeType)
     {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
     {
         if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
@@ -836,10 +836,10 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
         break;
     }
 
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
     {
         if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
@@ -865,7 +865,7 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
         break;
     }
 
-    case NativeType::F64:
+    case NativeTypeKind::F64:
     {
         if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
@@ -899,10 +899,10 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
 {
     switch (fromType->nativeType)
     {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
     {
         if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
@@ -937,10 +937,10 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
         break;
     }
 
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
     {
         if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
@@ -966,7 +966,7 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
         break;
     }
 
-    case NativeType::F32:
+    case NativeTypeKind::F32:
         if (nodeToCast && nodeToCast->flags & AST_VALUE_COMPUTED)
         {
             if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -989,29 +989,29 @@ bool TypeManager::castToNative(ErrorContext* errorContext, TypeInfo* toType, Typ
 {
     switch (toType->nativeType)
     {
-    case NativeType::Bool:
+    case NativeTypeKind::Bool:
         return castToNativeBool(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::U8:
+    case NativeTypeKind::U8:
         return castToNativeU8(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::U16:
+    case NativeTypeKind::U16:
         return castToNativeU16(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::U32:
+    case NativeTypeKind::U32:
         return castToNativeU32(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::Char:
+    case NativeTypeKind::Char:
         return castToNativeChar(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::U64:
+    case NativeTypeKind::U64:
         return castToNativeU64(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::S8:
+    case NativeTypeKind::S8:
         return castToNativeS8(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::S16:
+    case NativeTypeKind::S16:
         return castToNativeS16(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::S32:
+    case NativeTypeKind::S32:
         return castToNativeS32(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::S64:
+    case NativeTypeKind::S64:
         return castToNativeS64(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::F32:
+    case NativeTypeKind::F32:
         return castToNativeF32(errorContext, fromType, nodeToCast, castFlags);
-    case NativeType::F64:
+    case NativeTypeKind::F64:
         return castToNativeF64(errorContext, fromType, nodeToCast, castFlags);
     }
 
@@ -1153,9 +1153,9 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
             //    explicitIsValid = true;
         }
     }
-    else if (fromType->isNative(NativeType::String))
+    else if (fromType->isNative(NativeTypeKind::String))
     {
-        if (toTypeSlice->pointedType->isNative(NativeType::U8))
+        if (toTypeSlice->pointedType->isNative(NativeTypeKind::U8))
             return true;
     }
     else if (fromType == g_TypeMgr.typeInfoNull)
@@ -1208,9 +1208,9 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     // This types do not have a promotion
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::Bool:
-    case NativeType::Char:
-    case NativeType::String:
+    case NativeTypeKind::Bool:
+    case NativeTypeKind::Char:
+    case NativeTypeKind::String:
         return;
     }
 
@@ -1232,72 +1232,72 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     auto newLeft   = newLeftTypeInfo->nativeType;
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::U8:
-        if (newLeft == NativeType::U32)
+    case NativeTypeKind::U8:
+        if (newLeft == NativeTypeKind::U32)
             left->computedValue.reg.u32 = left->computedValue.reg.u8;
-        else if (newLeft == NativeType::U64)
+        else if (newLeft == NativeTypeKind::U64)
             left->computedValue.reg.u64 = left->computedValue.reg.u8;
-        else if (newLeft == NativeType::F32)
+        else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u8);
-        else if (newLeft == NativeType::F64)
+        else if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.u8);
         break;
-    case NativeType::U16:
-        if (newLeft == NativeType::U32)
+    case NativeTypeKind::U16:
+        if (newLeft == NativeTypeKind::U32)
             left->computedValue.reg.u32 = left->computedValue.reg.u16;
-        else if (newLeft == NativeType::U64)
+        else if (newLeft == NativeTypeKind::U64)
             left->computedValue.reg.u64 = left->computedValue.reg.u16;
-        else if (newLeft == NativeType::F32)
+        else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u16);
-        else if (newLeft == NativeType::F64)
+        else if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.u16);
         break;
-    case NativeType::U32:
-        if (newLeft == NativeType::U64)
+    case NativeTypeKind::U32:
+        if (newLeft == NativeTypeKind::U64)
             left->computedValue.reg.u64 = left->computedValue.reg.u32;
-        else if (newLeft == NativeType::F32)
+        else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.u32);
-        else if (newLeft == NativeType::F64)
+        else if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.u32);
         break;
-    case NativeType::U64:
-        if (newLeft == NativeType::F64)
+    case NativeTypeKind::U64:
+        if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.u64);
         break;
-    case NativeType::S8:
-        if (newLeft == NativeType::S32)
+    case NativeTypeKind::S8:
+        if (newLeft == NativeTypeKind::S32)
             left->computedValue.reg.s32 = left->computedValue.reg.s8;
-        else if (newLeft == NativeType::S64)
+        else if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s8;
-        else if (newLeft == NativeType::F32)
+        else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s8);
-        else if (newLeft == NativeType::F64)
+        else if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.s8);
         break;
-    case NativeType::S16:
-        if (newLeft == NativeType::S32)
+    case NativeTypeKind::S16:
+        if (newLeft == NativeTypeKind::S32)
             left->computedValue.reg.s32 = left->computedValue.reg.s16;
-        else if (newLeft == NativeType::S64)
+        else if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s16;
-        else if (newLeft == NativeType::F32)
+        else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s16);
-        else if (newLeft == NativeType::F64)
+        else if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.s16);
         break;
-    case NativeType::S32:
-        if (newLeft == NativeType::S64)
+    case NativeTypeKind::S32:
+        if (newLeft == NativeTypeKind::S64)
             left->computedValue.reg.s64 = left->computedValue.reg.s32;
-        else if (newLeft == NativeType::F32)
+        else if (newLeft == NativeTypeKind::F32)
             left->computedValue.reg.f32 = static_cast<float>(left->computedValue.reg.s32);
-        else if (newLeft == NativeType::F64)
+        else if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.s32);
         break;
-    case NativeType::S64:
-        if (newLeft == NativeType::F64)
+    case NativeTypeKind::S64:
+        if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = static_cast<double>(left->computedValue.reg.s64);
         break;
-    case NativeType::F32:
-        if (newLeft == NativeType::F64)
+    case NativeTypeKind::F32:
+        if (newLeft == NativeTypeKind::F64)
             left->computedValue.reg.f64 = left->computedValue.reg.f32;
         break;
     }
@@ -1348,9 +1348,9 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     }
 
     // String <=> null
-    if (toType->isNative(NativeType::String) && fromType == g_TypeMgr.typeInfoNull)
+    if (toType->isNative(NativeTypeKind::String) && fromType == g_TypeMgr.typeInfoNull)
         return true;
-    if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeType::String))
+    if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeTypeKind::String))
         return true;
 
     // Cast to native type

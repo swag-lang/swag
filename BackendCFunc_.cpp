@@ -18,33 +18,33 @@ const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
 
     switch (typeInfo->nativeType)
     {
-    case NativeType::Bool:
+    case NativeTypeKind::Bool:
         return "swag_bool";
-    case NativeType::S8:
+    case NativeTypeKind::S8:
         return "swag_int8_t";
-    case NativeType::S16:
+    case NativeTypeKind::S16:
         return "swag_int16_t";
-    case NativeType::S32:
+    case NativeTypeKind::S32:
         return "swag_int32_t";
-    case NativeType::S64:
+    case NativeTypeKind::S64:
         return "swag_int64_t";
-    case NativeType::U8:
+    case NativeTypeKind::U8:
         return "swag_uint8_t";
-    case NativeType::U16:
+    case NativeTypeKind::U16:
         return "swag_uint16_t";
-    case NativeType::U32:
+    case NativeTypeKind::U32:
         return "swag_uint32_t";
-    case NativeType::U64:
+    case NativeTypeKind::U64:
         return "swag_uint64_t";
-    case NativeType::F32:
+    case NativeTypeKind::F32:
         return "swag_float32_t";
-    case NativeType::F64:
+    case NativeTypeKind::F64:
         return "swag_float64_t";
-    case NativeType::Char:
+    case NativeTypeKind::Char:
         return "swag_char_t";
-    case NativeType::String:
+    case NativeTypeKind::String:
         return "const char*";
-    case NativeType::Void:
+    case NativeTypeKind::Void:
         return "void";
     default:
         SWAG_ASSERT(false);
@@ -60,37 +60,37 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip)
     {
         switch (typeFuncBC->returnType->nativeType)
         {
-        case NativeType::S8:
+        case NativeTypeKind::S8:
             bufferC.addString("rt0.s8 = ");
             break;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             bufferC.addString("rt0.u8 = ");
             break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
             bufferC.addString("rt0.s16 = ");
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             bufferC.addString("rt0.u16 = ");
             break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             bufferC.addString("rt0.s32 = ");
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             bufferC.addString("rt0.u32 = ");
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             bufferC.addString("rt0.s64 = ");
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             bufferC.addString("rt0.u32 = ");
             break;
-        case NativeType::Bool:
+        case NativeTypeKind::Bool:
             bufferC.addString("rt0.b = ");
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             bufferC.addString("rt0.f32 = ");
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             bufferC.addString("rt0.f64 = ");
             break;
         default:
@@ -127,7 +127,7 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip)
             bufferC.addString(".pointer");
             index -= 1;
         }
-        else if (typeParam->isNative(NativeType::String))
+        else if (typeParam->isNative(NativeTypeKind::String))
         {
 			bufferC.addString(format("rc%u.pointer", index));
             index -= 2;
@@ -139,31 +139,31 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip)
 
             switch (typeParam->nativeType)
             {
-            case NativeType::Bool:
+            case NativeTypeKind::Bool:
                 bufferC.addString(".b");
                 break;
-            case NativeType::S8:
+            case NativeTypeKind::S8:
                 bufferC.addString(".s8");
                 break;
-            case NativeType::U8:
+            case NativeTypeKind::U8:
                 bufferC.addString(".u8");
                 break;
-            case NativeType::S16:
+            case NativeTypeKind::S16:
                 bufferC.addString(".s16");
                 break;
-            case NativeType::U16:
+            case NativeTypeKind::U16:
                 bufferC.addString(".u16");
                 break;
-            case NativeType::S32:
+            case NativeTypeKind::S32:
                 bufferC.addString(".s32");
                 break;
-            case NativeType::U32:
+            case NativeTypeKind::U32:
                 bufferC.addString(".u32");
                 break;
-            case NativeType::S64:
+            case NativeTypeKind::S64:
                 bufferC.addString(".s64");
                 break;
-            case NativeType::U64:
+            case NativeTypeKind::U64:
                 bufferC.addString(".u64");
                 break;
             default:

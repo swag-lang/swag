@@ -27,10 +27,10 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, node, format("operator '+' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
         switch (rightTypeInfo->nativeType)
         {
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             break;
         default:
             return context->errorContext.report({sourceFile, node, format("operator '+' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
@@ -45,16 +45,16 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
-    case NativeType::F32:
-    case NativeType::F64:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::F32:
+    case NativeTypeKind::F64:
         break;
     default:
         return context->errorContext.report({sourceFile, node, format("operator '+' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -67,7 +67,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S8:
+        case NativeTypeKind::S8:
         {
             auto result = left->computedValue.reg.s8 + right->computedValue.reg.s8;
             if (result < INT8_MIN || result > INT8_MAX)
@@ -75,7 +75,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->computedValue.reg.s8 = left->computedValue.reg.s8 + right->computedValue.reg.s8;
         }
         break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
         {
             auto result = left->computedValue.reg.s16 + right->computedValue.reg.s16;
             if (result < INT16_MIN || result > INT16_MAX)
@@ -83,7 +83,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->computedValue.reg.s16 = left->computedValue.reg.s16 + right->computedValue.reg.s16;
         }
         break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
         {
             auto result = left->computedValue.reg.s32 + right->computedValue.reg.s32;
             if (result < INT32_MIN || result > INT32_MAX)
@@ -91,31 +91,31 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             node->computedValue.reg.s32 = left->computedValue.reg.s32 + right->computedValue.reg.s32;
         }
         break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 + right->computedValue.reg.s64;
             break;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             if (left->computedValue.reg.u64 + right->computedValue.reg.u64 > UINT8_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u8'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             if (left->computedValue.reg.u64 + right->computedValue.reg.u64 > UINT16_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u16'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             if (left->computedValue.reg.u64 + right->computedValue.reg.u64 > UINT32_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 + right->computedValue.reg.u64;
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             node->computedValue.reg.f32 = left->computedValue.reg.f32 + right->computedValue.reg.f32;
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 + right->computedValue.reg.f64;
             break;
         default:
@@ -147,10 +147,10 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, node, format("operator '-' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())}));
         switch (rightTypeInfo->nativeType)
         {
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             break;
         default:
             return context->errorContext.report({sourceFile, node, format("operator '-' not allowed on a pointer with type '%s'", leftTypeInfo->name.c_str())});
@@ -165,16 +165,16 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
-    case NativeType::F32:
-    case NativeType::F64:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::F32:
+    case NativeTypeKind::F64:
         break;
     default:
         return context->errorContext.report({sourceFile, node, format("operator '-' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -187,7 +187,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S8:
+        case NativeTypeKind::S8:
         {
             auto result = left->computedValue.reg.s8 - right->computedValue.reg.s8;
             if (result < INT8_MIN || result > INT8_MAX)
@@ -195,7 +195,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             node->computedValue.reg.s8 = left->computedValue.reg.s8 - right->computedValue.reg.s8;
         }
         break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
         {
             auto result = left->computedValue.reg.s16 - right->computedValue.reg.s16;
             if (result < INT16_MIN || result > INT16_MAX)
@@ -203,7 +203,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             node->computedValue.reg.s16 = left->computedValue.reg.s16 - right->computedValue.reg.s16;
         }
         break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
         {
             auto result = left->computedValue.reg.s32 - right->computedValue.reg.s32;
             if (result < INT32_MIN || result > INT32_MAX)
@@ -211,31 +211,31 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             node->computedValue.reg.s32 = left->computedValue.reg.s32 - right->computedValue.reg.s32;
         }
         break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 - right->computedValue.reg.s64;
             break;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             if (left->computedValue.reg.u64 - right->computedValue.reg.u64 > UINT8_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u8'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             if (left->computedValue.reg.u64 - right->computedValue.reg.u64 > UINT16_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u16'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             if (left->computedValue.reg.u64 - right->computedValue.reg.u64 > UINT32_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 - right->computedValue.reg.u64;
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             node->computedValue.reg.f32 = left->computedValue.reg.f32 - right->computedValue.reg.f32;
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 - right->computedValue.reg.f64;
             break;
         default:
@@ -261,16 +261,16 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
-    case NativeType::F32:
-    case NativeType::F64:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
+    case NativeTypeKind::F32:
+    case NativeTypeKind::F64:
         break;
     default:
         return context->errorContext.report({sourceFile, node, format("operator '*' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -282,7 +282,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S8:
+        case NativeTypeKind::S8:
         {
             auto result = left->computedValue.reg.s8 * right->computedValue.reg.s8;
             if (result < INT8_MIN || result > INT8_MAX)
@@ -290,7 +290,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.s8 = (int8_t) result;
         }
         break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
         {
             auto result = left->computedValue.reg.s16 * right->computedValue.reg.s16;
             if (result < INT16_MIN || result > INT16_MAX)
@@ -298,7 +298,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.s16 = (int16_t) result;
         }
         break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
         {
             auto result = left->computedValue.reg.s32 * right->computedValue.reg.s32;
             if (result < INT32_MIN || result > INT32_MAX)
@@ -306,31 +306,31 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
             node->computedValue.reg.s32 = result;
         }
         break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 * right->computedValue.reg.s64;
             break;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             if (left->computedValue.reg.u64 * right->computedValue.reg.u64 > UINT8_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u8'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             if (left->computedValue.reg.u64 * right->computedValue.reg.u64 > UINT16_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u16'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             if (left->computedValue.reg.u64 * right->computedValue.reg.u64 > UINT32_MAX)
                 return context->errorContext.report({sourceFile, left->token.startLocation, right->token.endLocation, "operation overflow for type 'u32'"});
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 * right->computedValue.reg.u64;
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             node->computedValue.reg.f32 = left->computedValue.reg.f32 * right->computedValue.reg.f32;
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             node->computedValue.reg.f64 = left->computedValue.reg.f64 * right->computedValue.reg.f64;
             break;
         default:
@@ -356,17 +356,17 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
         return context->errorContext.report({sourceFile, node, "operator '/' not allowed on integers"});
-    case NativeType::F32:
-    case NativeType::F64:
+    case NativeTypeKind::F32:
+    case NativeTypeKind::F64:
         break;
     default:
         return context->errorContext.report({sourceFile, node, format("operator '/' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -378,12 +378,12 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             if (right->computedValue.reg.f32 == 0)
                 return context->errorContext.report({sourceFile, right->token, "division by zero"});
             node->computedValue.reg.f32 = left->computedValue.reg.f32 / right->computedValue.reg.f32;
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             if (right->computedValue.reg.f64 == 0)
                 return context->errorContext.report({sourceFile, right->token, "division by zero"});
             node->computedValue.reg.f64 = left->computedValue.reg.f64 / right->computedValue.reg.f64;
@@ -411,10 +411,10 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
         break;
     default:
         return context->errorContext.report({sourceFile, node, format("operator '|' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -426,28 +426,28 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S8:
+        case NativeTypeKind::S8:
             node->computedValue.reg.s8 = left->computedValue.reg.s8 | right->computedValue.reg.s8;
             break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
             node->computedValue.reg.s16 = left->computedValue.reg.s16 | right->computedValue.reg.s16;
             break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 | right->computedValue.reg.s32;
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 | right->computedValue.reg.s64;
             break;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             node->computedValue.reg.u8 = left->computedValue.reg.u8 | right->computedValue.reg.u8;
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             node->computedValue.reg.u16 = left->computedValue.reg.u16 | right->computedValue.reg.u16;
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 | right->computedValue.reg.u32;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 | right->computedValue.reg.u64;
             break;
         default:
@@ -473,10 +473,10 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
         break;
     default:
         return context->errorContext.report({sourceFile, node, format("operator '&' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -488,28 +488,28 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S8:
+        case NativeTypeKind::S8:
             node->computedValue.reg.s8 = left->computedValue.reg.s8 & right->computedValue.reg.s8;
             break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
             node->computedValue.reg.s16 = left->computedValue.reg.s16 & right->computedValue.reg.s16;
             break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 & right->computedValue.reg.s32;
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 & right->computedValue.reg.s64;
             break;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             node->computedValue.reg.u8 = left->computedValue.reg.u8 & right->computedValue.reg.u8;
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             node->computedValue.reg.u16 = left->computedValue.reg.u16 & right->computedValue.reg.u16;
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 & right->computedValue.reg.u32;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 & right->computedValue.reg.u64;
             break;
         default:
@@ -536,10 +536,10 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
         break;
     default:
         return context->errorContext.report({sourceFile, left, format("operator '<<' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -547,7 +547,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
 
     switch (rightTypeInfo->nativeType)
     {
-    case NativeType::U32:
+    case NativeTypeKind::U32:
         break;
     default:
         return context->errorContext.report({sourceFile, right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->name.c_str())});
@@ -559,16 +559,16 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 << right->computedValue.reg.u32;
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 << right->computedValue.reg.u32;
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 << right->computedValue.reg.u32;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 << right->computedValue.reg.u32;
             break;
         default:
@@ -595,10 +595,10 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
         break;
     default:
         return context->errorContext.report({sourceFile, left, format("operator '>>' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -606,7 +606,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
 
     switch (rightTypeInfo->nativeType)
     {
-    case NativeType::U32:
+    case NativeTypeKind::U32:
         break;
     default:
         return context->errorContext.report({sourceFile, right, format("shift operand must be 'u32' and not '%s'", rightTypeInfo->name.c_str())});
@@ -618,16 +618,16 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 >> right->computedValue.reg.u32;
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 >> right->computedValue.reg.u32;
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 >> right->computedValue.reg.u32;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 >> right->computedValue.reg.u32;
             break;
         default:
@@ -653,10 +653,10 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
 
     switch (leftTypeInfo->nativeType)
     {
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
         break;
     default:
         return context->errorContext.report({sourceFile, context->node, format("operator '^' not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -668,16 +668,16 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
 
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 ^ right->computedValue.reg.s32;
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 ^ right->computedValue.reg.s64;
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 ^ right->computedValue.reg.u32;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 ^ right->computedValue.reg.u64;
             break;
         default:

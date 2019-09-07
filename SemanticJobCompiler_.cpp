@@ -109,43 +109,43 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
     TypeInfo* typeInfo = TypeManager::concreteType(expr->typeInfo);
     switch (typeInfo->nativeType)
     {
-    case NativeType::Bool:
+    case NativeTypeKind::Bool:
         g_Log.print(expr->computedValue.reg.b ? "true" : "false");
         break;
-    case NativeType::S8:
+    case NativeTypeKind::S8:
         g_Log.print(to_string(expr->computedValue.reg.s8));
         break;
-    case NativeType::S16:
+    case NativeTypeKind::S16:
         g_Log.print(to_string(expr->computedValue.reg.s16));
         break;
-    case NativeType::S32:
+    case NativeTypeKind::S32:
         g_Log.print(to_string(expr->computedValue.reg.s32));
         break;
-    case NativeType::S64:
+    case NativeTypeKind::S64:
         g_Log.print(to_string(expr->computedValue.reg.s64));
         break;
-    case NativeType::U8:
+    case NativeTypeKind::U8:
         g_Log.print(to_string(expr->computedValue.reg.u8));
         break;
-    case NativeType::U16:
+    case NativeTypeKind::U16:
         g_Log.print(to_string(expr->computedValue.reg.u16));
         break;
-    case NativeType::U32:
+    case NativeTypeKind::U32:
         g_Log.print(to_string(expr->computedValue.reg.u32));
         break;
-    case NativeType::U64:
+    case NativeTypeKind::U64:
         g_Log.print(to_string(expr->computedValue.reg.u64));
         break;
-    case NativeType::F32:
+    case NativeTypeKind::F32:
         g_Log.print(to_string(expr->computedValue.reg.f32));
         break;
-    case NativeType::F64:
+    case NativeTypeKind::F64:
         g_Log.print(to_string(expr->computedValue.reg.f64));
         break;
-    case NativeType::Char:
+    case NativeTypeKind::Char:
         g_Log.print(to_string(expr->computedValue.reg.ch));
         break;
-    case NativeType::String:
+    case NativeTypeKind::String:
         g_Log.print(expr->computedValue.text);
         break;
     default:

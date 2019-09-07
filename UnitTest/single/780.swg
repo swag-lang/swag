@@ -2,19 +2,32 @@
 
 namespace Swag
 {
-struct TypeInfo
-{
-	kind: s32
-}
+	enum TypeInfoKind
+	{
+		Invalid
+		Native
+	}
 
-struct TypeInfoNative
-{
-	base: TypeInfo
-}
+	enum TypeInfoNativeKind
+	{
+		Void
+		NativeU32
+	}
+
+	struct TypeInfo
+	{
+		kind: TypeInfoKind = TypeInfoKind.Invalid
+	}
+
+	struct TypeInfoNative
+	{
+		base: 		TypeInfo
+		nativeKind:	TypeInfoNativeKind = TypeInfoNativeKind.Void
+	}
 }
 
 #test
 {
 	t := @op(u32, typeof)
-	@print(t.kind)
+	@print(cast(s32) t.kind)
 }

@@ -98,43 +98,43 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
     {
         switch (typeInfo->nativeType)
         {
-        case NativeType::Bool:
+        case NativeTypeKind::Bool:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.b = node->computedValue.reg.b;
             return true;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u8 = node->computedValue.reg.u8;
             return true;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u16 = node->computedValue.reg.u16;
             return true;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = node->computedValue.reg.u32;
             return true;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = node->computedValue.reg.u64;
             return true;
-        case NativeType::S8:
+        case NativeTypeKind::S8:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s8 = node->computedValue.reg.s8;
             return true;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s16 = node->computedValue.reg.s16;
             return true;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s32 = node->computedValue.reg.s32;
             return true;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.s64 = node->computedValue.reg.s64;
             return true;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.f32 = node->computedValue.reg.f32;
             return true;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.f64 = node->computedValue.reg.f64;
             return true;
-        case NativeType::Char:
+        case NativeTypeKind::Char:
             emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = node->computedValue.reg.u32;
             return true;
-        case NativeType::String:
+        case NativeTypeKind::String:
         {
             auto r1    = reserveRegisterRC(context);
             auto index = context->sourceFile->module->reserveString(node->computedValue.text);
@@ -149,7 +149,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
     else if (typeInfo == g_TypeMgr.typeInfoNull)
     {
         emitInstruction(context, ByteCodeOp::ClearRA, r0);
-        if (toType && (toType->kind == TypeInfoKind::Slice || toType->isNative(NativeType::String)))
+        if (toType && (toType->kind == TypeInfoKind::Slice || toType->isNative(NativeTypeKind::String)))
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[1]);

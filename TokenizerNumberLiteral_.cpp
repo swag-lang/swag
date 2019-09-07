@@ -21,65 +21,65 @@ bool Tokenizer::doNumberSuffix(Token& token)
     getIdentifier(tokenSuffix, c, offset);
 
     SWAG_CHECK(tokenSuffix.id == TokenId::NativeType || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
-    SWAG_CHECK(tokenSuffix.literalType->nativeType != NativeType::Bool || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
-    SWAG_CHECK(tokenSuffix.literalType->nativeType != NativeType::String || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
+    SWAG_CHECK(tokenSuffix.literalType->nativeType != NativeTypeKind::Bool || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
+    SWAG_CHECK(tokenSuffix.literalType->nativeType != NativeTypeKind::String || error(tokenSuffix, format("invalid literal number suffix '%s'", tokenSuffix.text.c_str())));
 
     switch (token.literalType->nativeType)
     {
-    case NativeType::F32:
-    case NativeType::F64:
+    case NativeTypeKind::F32:
+    case NativeTypeKind::F64:
         switch (tokenSuffix.literalType->nativeType)
         {
-        case NativeType::F32:
-        case NativeType::F64:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
             break;
         default:
             return error(token, format("can't convert floating point number '%Lf' to '%s'", token.literalValue.f64, tokenSuffix.literalType->name.c_str()));
         }
         break;
 
-    case NativeType::S32:
-    case NativeType::S64:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
         switch (tokenSuffix.literalType->nativeType)
         {
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             if (token.literalValue.u64 > UINT8_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'u8'", token.literalValue.u64));
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             if (token.literalValue.u64 > UINT16_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'u16'", token.literalValue.u64));
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             if (token.literalValue.u64 > UINT32_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'u32'", token.literalValue.u64));
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             break;
 
-        case NativeType::S8:
+        case NativeTypeKind::S8:
             if (token.literalValue.s64 < INT8_MIN || token.literalValue.s64 > INT8_MAX)
                 return error(token, format("literal number '%I64d' is not in the range of 's8'", token.literalValue.s64));
             break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
             if (token.literalValue.s64 < INT16_MIN || token.literalValue.s64 > INT16_MAX)
                 return error(token, format("literal number '%I64d' is not in the range of 's16'", token.literalValue.s64));
             break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             if (token.literalValue.s64 < INT32_MIN || token.literalValue.s64 > INT32_MAX)
                 return error(token, format("literal number '%I64d' is not in the range of 's32'", token.literalValue.s64));
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             if (token.literalValue.s64 < INT64_MIN || token.literalValue.s64 > INT64_MAX)
                 return error(token, format("literal number '%I64d' is not in the range of 's64'", token.literalValue.s64));
             break;
 
-        case NativeType::Char:
+        case NativeTypeKind::Char:
             if (token.literalValue.u64 > UINT32_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'char'", token.literalValue.u64));
             break;
 
-        case NativeType::F32:
+        case NativeTypeKind::F32:
         {
             float   tmpF = static_cast<float>(token.literalValue.s64);
             int64_t tmp  = static_cast<int64_t>(tmpF);
@@ -88,7 +88,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
             token.literalValue.f32 = tmpF;
             break;
         }
-        case NativeType::F64:
+        case NativeTypeKind::F64:
         {
             double  tmpF = static_cast<double>(token.literalValue.s64);
             int64_t tmp  = static_cast<int64_t>(tmpF);
@@ -104,41 +104,41 @@ bool Tokenizer::doNumberSuffix(Token& token)
 
         break;
 
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
         switch (tokenSuffix.literalType->nativeType)
         {
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             if (token.literalValue.u64 > UINT8_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'u8'", token.literalValue.u64));
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             if (token.literalValue.u64 > UINT16_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'u16'", token.literalValue.u64));
             break;
-        case NativeType::U32:
+        case NativeTypeKind::U32:
             if (token.literalValue.u64 > UINT32_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'u32'", token.literalValue.u64));
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             break;
 
-        case NativeType::S8:
+        case NativeTypeKind::S8:
             if (token.literalValue.u64 > UINT8_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 's8'", token.literalValue.u64));
             break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
             if (token.literalValue.u64 > UINT16_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 's16'", token.literalValue.u64));
             break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             if (token.literalValue.u64 > UINT32_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 's32'", token.literalValue.u64));
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             break;
 
-        case NativeType::Char:
+        case NativeTypeKind::Char:
             if (token.literalValue.u64 > UINT32_MAX)
                 return error(token, format("literal number '%I64u' is not in the range of 'char'", token.literalValue.u64));
             break;
@@ -217,8 +217,8 @@ bool Tokenizer::doBinLiteral(Token& token)
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.literalType->nativeType != NativeType::F32, error(token, "can't convert a binary literal number to 'f32'"));
-        SWAG_VERIFY(token.literalType->nativeType != NativeType::F64, error(token, "can't convert a binary literal number to 'f64'"));
+        SWAG_VERIFY(token.literalType->nativeType != NativeTypeKind::F32, error(token, "can't convert a binary literal number to 'f32'"));
+        SWAG_VERIFY(token.literalType->nativeType != NativeTypeKind::F64, error(token, "can't convert a binary literal number to 'f64'"));
     }
 
     return true;
@@ -292,8 +292,8 @@ bool Tokenizer::doHexLiteral(Token& token)
     {
         treatChar(c, offset);
         SWAG_CHECK(doNumberSuffix(token));
-        SWAG_VERIFY(token.literalType->nativeType != NativeType::F32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
-        SWAG_VERIFY(token.literalType->nativeType != NativeType::F64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
+        SWAG_VERIFY(token.literalType->nativeType != NativeTypeKind::F32, error(token, "can't convert an hexadecimal literal number to 'f32'"));
+        SWAG_VERIFY(token.literalType->nativeType != NativeTypeKind::F64, error(token, "can't convert an hexadecimal literal number to 'f64'"));
     }
 
     return true;
@@ -427,7 +427,7 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
     }
 
     // Really compute the floating point value, with as much precision as we can
-    if (token.literalType->nativeType == NativeType::F32 || token.literalType->nativeType == NativeType::F64)
+    if (token.literalType->nativeType == NativeTypeKind::F32 || token.literalType->nativeType == NativeTypeKind::F64)
     {
         token.literalValue.f64 = (double) (token.literalValue.u64) + (tokenFrac.literalValue.u64 / (double) fractPart);
         if (tokenExponent.literalValue.s64)
@@ -458,7 +458,7 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
     }
 
     // Convert to 32 bits only now, after the suffix stuff
-    if (token.literalType->nativeType == NativeType::F32)
+    if (token.literalType->nativeType == NativeTypeKind::F32)
     {
         token.literalValue.f32 = static_cast<float>(token.literalValue.f64);
     }

@@ -127,15 +127,15 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             {
                 switch (typeInfo->nativeType)
                 {
-                case NativeType::S8:
+                case NativeTypeKind::S8:
                     if (expression->computedValue.reg.s8 < 0)
                         return context->errorContext.report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s8)});
                     break;
-                case NativeType::S16:
+                case NativeTypeKind::S16:
                     if (expression->computedValue.reg.s16 < 0)
                         return context->errorContext.report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s16)});
                     break;
-                case NativeType::S32:
+                case NativeTypeKind::S32:
                     if (expression->computedValue.reg.s32 < 0)
                         return context->errorContext.report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s32)});
                     break;

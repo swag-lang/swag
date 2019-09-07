@@ -88,7 +88,7 @@ ffi_type* ByteCodeRun::ffiFromTypeinfo(TypeInfo* typeInfo)
     if (typeInfo->kind == TypeInfoKind::Pointer)
         return &ffi_type_pointer;
 
-    if (typeInfo->isNative(NativeType::String))
+    if (typeInfo->isNative(NativeTypeKind::String))
         return nullptr;
 
     if (typeInfo->kind != TypeInfoKind::Native)
@@ -96,27 +96,27 @@ ffi_type* ByteCodeRun::ffiFromTypeinfo(TypeInfo* typeInfo)
 
     switch (typeInfo->nativeType)
     {
-    case NativeType::U8:
+    case NativeTypeKind::U8:
         return &ffi_type_uint8;
-    case NativeType::S8:
+    case NativeTypeKind::S8:
         return &ffi_type_sint8;
-    case NativeType::U16:
+    case NativeTypeKind::U16:
         return &ffi_type_uint16;
-    case NativeType::S16:
+    case NativeTypeKind::S16:
         return &ffi_type_sint16;
-    case NativeType::S32:
+    case NativeTypeKind::S32:
         return &ffi_type_sint32;
-    case NativeType::U32:
+    case NativeTypeKind::U32:
         return &ffi_type_uint32;
-    case NativeType::S64:
+    case NativeTypeKind::S64:
         return &ffi_type_sint64;
-    case NativeType::U64:
+    case NativeTypeKind::U64:
         return &ffi_type_uint64;
-    case NativeType::F32:
+    case NativeTypeKind::F32:
         return &ffi_type_float;
-    case NativeType::F64:
+    case NativeTypeKind::F64:
         return &ffi_type_double;
-    case NativeType::Bool:
+    case NativeTypeKind::Bool:
         return &ffi_type_uint8;
     }
 

@@ -88,22 +88,22 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0 = callParams->childs[0];
         switch (TypeManager::concreteType(child0->typeInfo)->nativeType)
         {
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintS32, child0->resultRegisterRC);
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintS64, child0->resultRegisterRC);
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintF32, child0->resultRegisterRC);
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegisterRC);
             break;
-        case NativeType::Char:
+        case NativeTypeKind::Char:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintChar, child0->resultRegisterRC);
             break;
-        case NativeType::String:
+        case NativeTypeKind::String:
             emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC);
             break;
         default:

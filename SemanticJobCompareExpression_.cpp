@@ -14,33 +14,33 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         node->flags |= AST_VALUE_COMPUTED;
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::Bool:
+        case NativeTypeKind::Bool:
             node->computedValue.reg.b = left->computedValue.reg.b == right->computedValue.reg.b;
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             node->computedValue.reg.b = left->computedValue.reg.f32 == right->computedValue.reg.f32;
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             node->computedValue.reg.b = left->computedValue.reg.f64 == right->computedValue.reg.f64;
             break;
-        case NativeType::S8:
-        case NativeType::U8:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
             node->computedValue.reg.b = left->computedValue.reg.u8 == right->computedValue.reg.u8;
             break;
-        case NativeType::S16:
-        case NativeType::U16:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
             node->computedValue.reg.b = left->computedValue.reg.u16 == right->computedValue.reg.u16;
             break;
-        case NativeType::S32:
-        case NativeType::U32:
-        case NativeType::Char:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.b = left->computedValue.reg.u32 == right->computedValue.reg.u32;
             break;
-        case NativeType::S64:
-        case NativeType::U64:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.b = left->computedValue.reg.u64 == right->computedValue.reg.u64;
             break;
-        case NativeType::String:
+        case NativeTypeKind::String:
             node->computedValue.reg.b = left->computedValue.text == right->computedValue.text;
             break;
 
@@ -68,38 +68,38 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
         node->flags |= AST_VALUE_COMPUTED;
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::Bool:
+        case NativeTypeKind::Bool:
             node->computedValue.reg.b = left->computedValue.reg.b < right->computedValue.reg.b;
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             node->computedValue.reg.b = left->computedValue.reg.f32 < right->computedValue.reg.f32;
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             node->computedValue.reg.b = left->computedValue.reg.f64 < right->computedValue.reg.f64;
             break;
-        case NativeType::S8:
+        case NativeTypeKind::S8:
             node->computedValue.reg.s8 = left->computedValue.reg.s8 < right->computedValue.reg.s8;
             break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
             node->computedValue.reg.s16 = left->computedValue.reg.s16 < right->computedValue.reg.s16;
             break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 < right->computedValue.reg.s32;
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 < right->computedValue.reg.s64;
             break;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             node->computedValue.reg.u8 = left->computedValue.reg.u8 < right->computedValue.reg.u8;
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             node->computedValue.reg.u16 = left->computedValue.reg.u16 < right->computedValue.reg.u16;
             break;
-        case NativeType::U32:
-        case NativeType::Char:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 < right->computedValue.reg.u32;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 < right->computedValue.reg.u64;
             break;
 
@@ -127,38 +127,38 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
         node->flags |= AST_VALUE_COMPUTED;
         switch (leftTypeInfo->nativeType)
         {
-        case NativeType::Bool:
+        case NativeTypeKind::Bool:
             node->computedValue.reg.b = left->computedValue.reg.b > right->computedValue.reg.b;
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             node->computedValue.reg.b = left->computedValue.reg.f32 > right->computedValue.reg.f32;
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             node->computedValue.reg.b = left->computedValue.reg.f64 > right->computedValue.reg.f64;
             break;
-        case NativeType::S8:
+        case NativeTypeKind::S8:
             node->computedValue.reg.s8 = left->computedValue.reg.s8 > right->computedValue.reg.s8;
             break;
-        case NativeType::S16:
+        case NativeTypeKind::S16:
             node->computedValue.reg.s16 = left->computedValue.reg.s16 > right->computedValue.reg.s16;
             break;
-        case NativeType::S32:
+        case NativeTypeKind::S32:
             node->computedValue.reg.s32 = left->computedValue.reg.s32 > right->computedValue.reg.s32;
             break;
-        case NativeType::S64:
+        case NativeTypeKind::S64:
             node->computedValue.reg.s64 = left->computedValue.reg.s64 > right->computedValue.reg.s64;
             break;
-        case NativeType::U8:
+        case NativeTypeKind::U8:
             node->computedValue.reg.u8 = left->computedValue.reg.u8 > right->computedValue.reg.u8;
             break;
-        case NativeType::U16:
+        case NativeTypeKind::U16:
             node->computedValue.reg.u16 = left->computedValue.reg.u16 > right->computedValue.reg.u16;
             break;
-        case NativeType::U32:
-        case NativeType::Char:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
             node->computedValue.reg.u32 = left->computedValue.reg.u32 > right->computedValue.reg.u32;
             break;
-        case NativeType::U64:
+        case NativeTypeKind::U64:
             node->computedValue.reg.u64 = left->computedValue.reg.u64 > right->computedValue.reg.u64;
             break;
 

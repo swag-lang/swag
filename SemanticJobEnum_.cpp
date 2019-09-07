@@ -44,11 +44,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     {
         switch (rawType->nativeType)
         {
-        case NativeType::Bool:
-        case NativeType::Char:
-        case NativeType::String:
-        case NativeType::F32:
-        case NativeType::F64:
+        case NativeTypeKind::Bool:
+        case NativeTypeKind::Char:
+        case NativeTypeKind::String:
+        case NativeTypeKind::F32:
+        case NativeTypeKind::F64:
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' of type '%s' must be initialized", valNode->name.c_str(), rawType->name.c_str())});
         }
     }
@@ -59,42 +59,42 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     // Compute next value
     switch (rawType->nativeType)
     {
-    case NativeType::U8:
+    case NativeTypeKind::U8:
         if (enumNode->computedValue.reg.u8 == UINT8_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u8'", valNode->name.c_str())});
         enumNode->computedValue.reg.u8++;
         break;
-    case NativeType::U16:
+    case NativeTypeKind::U16:
         if (enumNode->computedValue.reg.u16 == UINT16_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u16'", valNode->name.c_str())});
         enumNode->computedValue.reg.u16++;
         break;
-    case NativeType::U32:
+    case NativeTypeKind::U32:
         if (enumNode->computedValue.reg.u32 == UINT32_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u32'", valNode->name.c_str())});
         enumNode->computedValue.reg.u32++;
         break;
-    case NativeType::U64:
+    case NativeTypeKind::U64:
         if (enumNode->computedValue.reg.u64 == UINT64_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u64'", valNode->name.c_str())});
         enumNode->computedValue.reg.u64++;
         break;
-    case NativeType::S8:
+    case NativeTypeKind::S8:
         if (enumNode->computedValue.reg.s8 <= INT8_MIN || enumNode->computedValue.reg.s8 >= INT8_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 's8'", valNode->name.c_str())});
         enumNode->computedValue.reg.s8++;
         break;
-    case NativeType::S16:
+    case NativeTypeKind::S16:
         if (enumNode->computedValue.reg.s16 <= INT16_MIN || enumNode->computedValue.reg.s16 >= INT16_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 's16'", valNode->name.c_str())});
         enumNode->computedValue.reg.s16++;
         break;
-    case NativeType::S32:
+    case NativeTypeKind::S32:
         if (enumNode->computedValue.reg.s32 <= INT32_MIN || enumNode->computedValue.reg.s32 >= INT32_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 's32'", valNode->name.c_str())});
         enumNode->computedValue.reg.s32++;
         break;
-    case NativeType::S64:
+    case NativeTypeKind::S64:
         if (enumNode->computedValue.reg.s64 <= INT64_MIN || enumNode->computedValue.reg.s64 >= INT64_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 's64'", valNode->name.c_str())});
         enumNode->computedValue.reg.s64++;

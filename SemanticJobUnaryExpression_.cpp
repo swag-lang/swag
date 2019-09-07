@@ -14,12 +14,12 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 
     switch (typeInfo->nativeType)
     {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::F32:
-    case NativeType::F64:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::F32:
+    case NativeTypeKind::F64:
         break;
     default:
         return context->errorContext.report({sourceFile, op->token, format("minus operation not allowed on type '%s'", typeInfo->name.c_str())});
@@ -29,18 +29,18 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     {
         switch (typeInfo->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
             op->computedValue.reg.s64 = -op->computedValue.reg.s64;
             if (typeInfo->flags & TYPEINFO_NATIVE_VALUE)
                 static_cast<TypeInfoNative*>(typeInfo)->value = -static_cast<TypeInfoNative*>(typeInfo)->value;
             break;
-        case NativeType::F32:
+        case NativeTypeKind::F32:
             op->computedValue.reg.f32 = -op->computedValue.reg.f32;
             break;
-        case NativeType::F64:
+        case NativeTypeKind::F64:
             op->computedValue.reg.f64 = -op->computedValue.reg.f64;
             break;
         }
@@ -56,7 +56,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 
     switch (typeInfo->nativeType)
     {
-    case NativeType::Bool:
+    case NativeTypeKind::Bool:
         break;
     default:
         return context->errorContext.report({sourceFile, op->token, format("boolean inversion not allowed on type '%s'", typeInfo->name.c_str())});
@@ -66,7 +66,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
     {
         switch (typeInfo->nativeType)
         {
-        case NativeType::Bool:
+        case NativeTypeKind::Bool:
             op->computedValue.reg.b = !op->computedValue.reg.b;
             break;
         }
@@ -82,14 +82,14 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
 
     switch (typeInfo->nativeType)
     {
-    case NativeType::S8:
-    case NativeType::S16:
-    case NativeType::S32:
-    case NativeType::S64:
-    case NativeType::U8:
-    case NativeType::U16:
-    case NativeType::U32:
-    case NativeType::U64:
+    case NativeTypeKind::S8:
+    case NativeTypeKind::S16:
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U8:
+    case NativeTypeKind::U16:
+    case NativeTypeKind::U32:
+    case NativeTypeKind::U64:
         break;
     default:
         return context->errorContext.report({sourceFile, op->token, format("bit inversion operation not allowed on type '%s'", typeInfo->name.c_str())});
@@ -99,14 +99,14 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
     {
         switch (typeInfo->nativeType)
         {
-        case NativeType::S8:
-        case NativeType::S16:
-        case NativeType::S32:
-        case NativeType::S64:
-        case NativeType::U8:
-        case NativeType::U16:
-        case NativeType::U32:
-        case NativeType::U64:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::S16:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U8:
+        case NativeTypeKind::U16:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::U64:
             op->computedValue.reg.u64 = ~op->computedValue.reg.u64;
             break;
         }

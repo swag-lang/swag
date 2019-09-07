@@ -183,7 +183,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     switch (arrayType->kind)
     {
     case TypeInfoKind::Native:
-        if (arrayType->nativeType == NativeType::String)
+        if (arrayType->nativeType == NativeTypeKind::String)
             arrayNode->typeInfo = g_TypeMgr.typeInfoU8;
         break;
 

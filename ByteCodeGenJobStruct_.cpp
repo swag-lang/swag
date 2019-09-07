@@ -354,7 +354,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
                 emitInstruction(&cxt, ByteCodeOp::Copy, 0, 1)->c.u32 = typeVar->sizeOf;
             }
-            else if (typeVar->isNative(NativeType::String))
+            else if (typeVar->isNative(NativeTypeKind::String))
             {
                 auto module      = sourceFile->module;
                 auto stringIndex = module->reserveString(varDecl->assignment->computedValue.text);

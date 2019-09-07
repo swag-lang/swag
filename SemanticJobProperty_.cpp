@@ -9,7 +9,7 @@
 
 bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    if (typeInfo->isNative(NativeType::String))
+    if (typeInfo->isNative(NativeTypeKind::String))
     {
         if (node->flags & AST_VALUE_COMPUTED)
         {
@@ -103,7 +103,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         break;
 
     case Property::Data:
-        if (expr->typeInfo->isNative(NativeType::String))
+        if (expr->typeInfo->isNative(NativeTypeKind::String))
         {
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;

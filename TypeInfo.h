@@ -31,7 +31,7 @@ enum class TypeInfoKind
     Alias,
 };
 
-enum class NativeType
+enum class NativeTypeKind
 {
     S8,
     S16,
@@ -103,7 +103,7 @@ struct TypeInfo : public PoolElement
         return true;
     }
 
-    bool isNative(NativeType native)
+    bool isNative(NativeTypeKind native)
     {
         return (kind == TypeInfoKind::Native) && (nativeType == native);
     }
@@ -121,7 +121,7 @@ struct TypeInfo : public PoolElement
     void reset() override
     {
         flags      = 0;
-        nativeType = NativeType::Void;
+        nativeType = NativeTypeKind::Void;
         name.clear();
         sizeOf = 0;
     }
@@ -158,7 +158,7 @@ struct TypeInfo : public PoolElement
 
     uint64_t     flags;
     TypeInfoKind kind;
-    NativeType   nativeType;
+    NativeTypeKind   nativeType;
     Utf8         name;
     int          sizeOf;
 };
@@ -171,7 +171,7 @@ struct TypeInfoNative : public TypeInfo
         value = 0;
     }
 
-    TypeInfoNative(NativeType type, const char* tname, int sof, uint64_t fl)
+    TypeInfoNative(NativeTypeKind type, const char* tname, int sof, uint64_t fl)
     {
         kind       = TypeInfoKind::Native;
         nativeType = type;

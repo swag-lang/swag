@@ -52,7 +52,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
         }
-        else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
+        else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC[1]);
@@ -88,7 +88,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
+        else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
@@ -138,7 +138,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (typeInfo->isNative(NativeType::String) || typeInfo->kind == TypeInfoKind::Slice)
+        else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;

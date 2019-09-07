@@ -35,7 +35,7 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
             auto  typeInfo = child->typeInfo;
             auto& value    = varDecl->assignment->computedValue;
 
-            if (typeInfo->isNative(NativeType::String))
+            if (typeInfo->isNative(NativeTypeKind::String))
             {
                 Register* storedV  = (Register*) ptrDest;
                 storedV[0].pointer = (uint8_t*) value.text.c_str();
@@ -180,7 +180,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
 
             auto typeInfoAssignment = varDecl->assignment->typeInfo;
-            if (typeInfoAssignment->isNative(NativeType::String))
+            if (typeInfoAssignment->isNative(NativeTypeKind::String))
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
             else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;

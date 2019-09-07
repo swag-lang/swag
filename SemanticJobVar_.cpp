@@ -35,7 +35,7 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
         if (!ptrDest)
             continue;
 
-        if (child->typeInfo->isNative(NativeType::String))
+        if (child->typeInfo->isNative(NativeTypeKind::String))
         {
             Register* storedV  = (Register*) ptrDest;
             storedV[0].pointer = (uint8_t*) child->computedValue.text.c_str();
@@ -290,7 +290,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 		node->flags |= AST_R_VALUE;
 
         module->mutexDataSeg.lock();
-        if (typeInfo->isNative(NativeType::String))
+        if (typeInfo->isNative(NativeTypeKind::String))
         {
             uint8_t* ptrDest                       = module->dataSegment.data() + storageOffset;
             *(const char**) ptrDest                = value->text.c_str();

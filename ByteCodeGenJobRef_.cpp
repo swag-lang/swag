@@ -83,7 +83,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     }
 
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (typeInfo->isNative(NativeType::String))
+    if (typeInfo->isNative(NativeTypeKind::String))
     {
         node->resultRegisterRC += reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::DeRefString, node->resultRegisterRC[0], node->resultRegisterRC[1]);
@@ -127,7 +127,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
 
     // Dereference of a string constant
-    if (node->array->typeInfo->isNative(NativeType::String))
+    if (node->array->typeInfo->isNative(NativeTypeKind::String))
     {
         if (g_CommandLine.debugBoundCheck)
             emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
@@ -195,7 +195,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (typeInfo->pointedType->isNative(NativeType::String))
+        if (typeInfo->pointedType->isNative(NativeTypeKind::String))
         {
             node->array->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::DeRefString, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
@@ -248,7 +248,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (typeInfo->pointedType->isNative(NativeType::String))
+        if (typeInfo->pointedType->isNative(NativeTypeKind::String))
         {
             node->array->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::DeRefString, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);

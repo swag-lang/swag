@@ -71,7 +71,7 @@ struct TypeManager
     TypeInfoVariadic* typeInfoVariadic;
     TypeInfoVariadic* typeInfoVariadicValue;
 
-    TypeInfoNative* promoteMatrix[(int) NativeType::Count][(int) NativeType::Count];
+    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
 };
 
 extern TypeManager g_TypeMgr;
