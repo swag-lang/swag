@@ -81,7 +81,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     {
         scoped_lock lkRR(mutexRegisterRR);
         runContext->setup(sourceFile, node, maxReservedRegisterRR, g_CommandLine.byteCodeStackSize);
-		node->bc->enterByteCode(runContext);
+        node->bc->enterByteCode(runContext);
     }
 
     string exception;
@@ -180,7 +180,12 @@ int Module::reserveDataSegment(int size)
 int Module::reserveConstantSegment(int size)
 {
     scoped_lock lk(mutexConstantSeg);
-    int         result = (int) constantSegment.size();
+    return reserveConstantSegmentNoLock(size);
+}
+
+int Module::reserveConstantSegmentNoLock(int size)
+{
+    int result = (int) constantSegment.size();
     constantSegment.resize((int) constantSegment.size() + size, 0);
     return result;
 }

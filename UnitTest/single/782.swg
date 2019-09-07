@@ -9,4 +9,8 @@
 	@assert(t.sizeOf == @op(*void, sizeof))
 	
 	ptr := cast(const *TypeInfoPointer) t;
+	@assert(ptr.ptrCount == 1)
+	
+	ptr1 := ptr.pointedType;
+	@assert(ptr1.kind == TypeInfoKind.Native)
 }

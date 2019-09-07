@@ -43,12 +43,25 @@ struct ConcreteTypeInfoNative
 struct ConcreteTypeInfoPointer
 {
     ConcreteTypeInfo  base;
-    uint32_t          ptrCount;
     ConcreteTypeInfo* pointedType;
+    uint32_t          ptrCount;
 };
 
-bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** concreteTypeInfo, uint32_t* storage)
+bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
 {
+    // Already computed
+    if (lock)
+        mutexTypes.lock();
+    auto it = concreteTypes.find(typeInfo);
+    if (it != concreteTypes.end())
+    {
+        *ptrTypeInfo = it->second.first;
+        *storage     = it->second.second;
+        if (lock)
+            mutexTypes.unlock();
+        return true;
+    }
+
     auto            sourceFile = context->sourceFile;
     auto&           swagScope  = sourceFile->module->workspace->swagScope;
     TypeInfoStruct* typeStruct = nullptr;
@@ -61,47 +74,46 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         typeStruct = swagScope.regTypeInfoPointer;
         break;
     default:
-        context->errorContext.report({sourceFile, context->node, "errororor"});
+        context->errorContext.report({sourceFile, context->node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
         return false;
     }
 
-    scoped_lock lk(mutexTypes);
-    auto        it = concreteTypes.find(typeInfo);
-    if (it != concreteTypes.end())
-    {
-        *concreteTypeInfo = it->second.first;
-        *storage          = it->second.second;
-        return true;
-    }
+    if (lock)
+        sourceFile->module->mutexConstantSeg.lock();
 
     // Build structure content
     uint32_t storageOffset = 0;
-    storageOffset          = sourceFile->module->reserveConstantSegment(typeStruct->sizeOf);
+    storageOffset          = sourceFile->module->reserveConstantSegmentNoLock(typeStruct->sizeOf);
 
+    ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) &sourceFile->module->constantSegment[storageOffset];
+
+    concreteTypeInfoValue->kind   = typeInfo->kind;
+    concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
+
+    switch (typeInfo->kind)
     {
-        scoped_lock       lock(sourceFile->module->mutexConstantSeg);
-        ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) &sourceFile->module->constantSegment[storageOffset];
-
-        concreteTypeInfoValue->kind   = typeInfo->kind;
-        concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
-
-        switch (typeInfo->kind)
-        {
-        case TypeInfoKind::Native:
-        {
-            auto concreteType        = (ConcreteTypeInfoNative*) concreteTypeInfoValue;
-            concreteType->nativeKind = typeInfo->nativeType;
-            break;
-        }
-        case TypeInfoKind::Pointer:
-        {
-            auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
-            auto realType          = (TypeInfoPointer*) typeInfo;
-            concreteType->ptrCount = realType->ptrCount;
-            break;
-        }
-        }
+    case TypeInfoKind::Native:
+    {
+        auto concreteType        = (ConcreteTypeInfoNative*) concreteTypeInfoValue;
+        concreteType->nativeKind = typeInfo->nativeType;
+        break;
     }
+    case TypeInfoKind::Pointer:
+    {
+        auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
+        auto realType          = (TypeInfoPointer*) typeInfo;
+        concreteType->ptrCount = realType->ptrCount;
+        TypeInfo* typePtr;
+        uint32_t  tmp;
+        SWAG_CHECK(makeConcreteTypeInfo(context, realType->pointedType, &typePtr, &tmp, false));
+        concreteType              = (ConcreteTypeInfoPointer*) &sourceFile->module->constantSegment[storageOffset];
+        concreteType->pointedType = (ConcreteTypeInfo*) &sourceFile->module->constantSegment[tmp];
+        break;
+    }
+    }
+
+    if (lock)
+        sourceFile->module->mutexConstantSeg.unlock();
 
     // Build pointer type to structure
     auto typePtr = g_Pool_typeInfoPointer.alloc();
@@ -113,7 +125,11 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
 
     // Register type and value
     concreteTypes[typeInfo] = {typePtr, storageOffset};
-    *concreteTypeInfo       = typePtr;
+    *ptrTypeInfo            = typePtr;
     *storage                = storageOffset;
-	return true;
+
+    if (lock)
+        mutexTypes.unlock();
+
+    return true;
 }

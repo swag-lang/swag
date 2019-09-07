@@ -72,8 +72,8 @@ namespace swag
 	struct TypeInfoPointer
 	{
 		base: 			TypeInfo
-		ptrCount:		u32
 		pointedType:	*TypeInfo
+		ptrCount:		u32
 	}
 }
 )";
