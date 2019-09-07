@@ -39,7 +39,7 @@ struct ConcreteTypeInfo
 
 const char* TypeTable::getConcreteTypeInfoName(TypeInfo* typeInfo)
 {
-    return "TypeInfoNative";
+    return "Swag.TypeInfoNative";
 }
 
 void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)

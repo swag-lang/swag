@@ -1,5 +1,7 @@
 #module module780
 
+namespace Swag
+{
 struct TypeInfo
 {
 	kind: s32
@@ -8,6 +10,7 @@ struct TypeInfo
 struct TypeInfoNative
 {
 	base: TypeInfo
+}
 }
 
 #test
