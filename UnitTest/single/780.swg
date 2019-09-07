@@ -1,8 +1,13 @@
 #module module780
 
-struct TypeInfoNative
+struct TypeInfo
 {
 	kind: s32
+}
+
+struct TypeInfoNative
+{
+	base: TypeInfo
 }
 
 #test

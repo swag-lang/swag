@@ -39,16 +39,16 @@ struct ConcreteTypeInfo
 
 const char* TypeTable::getConcreteTypeInfoName(TypeInfo* typeInfo)
 {
-	return "TypeInfoNative";
+    return "TypeInfoNative";
 }
 
-void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, TypeInfo* typeStruct)
+void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    SWAG_ASSERT(typeStruct && typeStruct->kind == TypeInfoKind::Struct);
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
     scoped_lock lk(mutexTypes);
-    auto        typeInfo = node->typeInfo;
-    auto        it       = concreteTypes.find(typeInfo);
+    auto        realTypeInfo = node->typeInfo;
+    auto        it           = concreteTypes.find(realTypeInfo);
     if (it != concreteTypes.end())
     {
         node->typeInfo              = it->second.first;  // Concrete type info
@@ -71,7 +71,7 @@ void TypeTable::makeConcreteTypeInfo(SemanticContext* context, AstNode* node, Ty
     auto typePtr = g_Pool_typeInfoPointer.alloc();
     typePtr->flags |= TYPEINFO_CONST;
     typePtr->ptrCount    = 1;
-    typePtr->pointedType = typeStruct;
+    typePtr->pointedType = ((TypeInfoParam*) typeStruct->childs[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
     typePtr->computeName();
     typePtr->sizeOf = sizeof(void*);
 

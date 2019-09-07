@@ -31,13 +31,19 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->flags |= AST_IS_GENERIC;
         if (child->flags & AST_GENERIC_MATCH_WAS_PARTIAL)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
+
+        if (child != childBack &&
+            child->resolvedSymbolOverload &&
+            child->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Pointer &&
+            child->resolvedSymbolOverload->typeInfo->isConst())
+            node->flags |= AST_CONST;
     }
 
     node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT);
 
+    // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
     {
-        // Symbol is in fact a constant value : no need for bytecode
         node->computedValue = node->resolvedSymbolOverload->computedValue;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
         node->flags &= ~AST_L_VALUE;
