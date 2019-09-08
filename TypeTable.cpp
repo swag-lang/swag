@@ -106,6 +106,10 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         uint32_t  tmpStorageOffset;
         SWAG_CHECK(makeConcreteTypeInfo(context, realType->pointedType, &typePtr, &tmpStorageOffset, false));
         concreteType->pointedType = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
+
+		// We have a pointer in the constant segment, so we need to register it for backend
+        uint32_t fromOffset       = storageOffset + (uint32_t) ((uint64_t) &concreteType->pointedType - (uint64_t) concreteTypeInfoValue);
+        module->constantSegment.addInitPtr(fromOffset, tmpStorageOffset);
         break;
     }
     }

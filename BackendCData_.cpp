@@ -73,14 +73,18 @@ bool BackendC::emitGlobalInit()
 {
     // Data segment
     bufferC.addString("static void initDataSeg() {\n");
-    for (auto& k : module->dataSegment.strBufferInit)
+    for (auto& k : module->dataSegment.initString)
         bufferC.addString(format("*(void**) (__dataseg + %d) = __string%d;\n", k.second, k.first));
+    for (auto& k : module->dataSegment.initPtr)
+        bufferC.addString(format("*(void**) (__dataseg + %d) = __dataseg + %d;\n", k.first, k.second));
     bufferC.addString("}\n\n");
 
     // Constant segment
     bufferC.addString("static void initConstantSeg() {\n");
-    for (auto& k : module->constantSegment.strBufferInit)
+    for (auto& k : module->constantSegment.initString)
         bufferC.addString(format("*(void**) (__constantseg + %d) = __string%d;\n", k.second, k.first));
+    for (auto& k : module->constantSegment.initPtr)
+		bufferC.addString(format("*(void**) (__constantseg + %d) = __constantseg + %d;\n", k.first, k.second));  
     bufferC.addString("}\n\n");
 
     // Main init fct

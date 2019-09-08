@@ -22,7 +22,9 @@ struct DataSegment
     vector<DataSegmentHeader> buckets;
     SpinLock                  mutex;
 
-    void                    addInitString(uint64_t segOffset, uint32_t strIndex);
-    SpinLock                mutexPtr;
-    map<uint32_t, uint64_t> strBufferInit;
+    void                             addInitString(uint32_t segOffset, uint32_t strIndex);
+    void                             addInitPtr(uint32_t fromOffset, uint32_t toOffset);
+    SpinLock                         mutexPtr;
+    map<uint32_t, uint32_t>          initString;
+    vector<pair<uint32_t, uint32_t>> initPtr;
 };
