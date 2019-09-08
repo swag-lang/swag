@@ -125,9 +125,9 @@ ffi_type* ByteCodeRun::ffiFromTypeinfo(TypeInfo* typeInfo)
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    if (!ip->c.pointer)
-        ip->c.pointer = (uint8_t*) ffiGetFuncAddress(context, ip);
-    if (!ip->c.pointer)
+    if (!ip->cache.pointer)
+        ip->cache.pointer = (uint8_t*) ffiGetFuncAddress(context, ip);
+    if (!ip->cache.pointer)
         return;
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
 
@@ -212,7 +212,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     }
 
     // Make the call
-    ffi_call(&cif, FFI_FN(ip->c.pointer), resultPtr, &ffiArgsValues[0]);
+    ffi_call(&cif, FFI_FN(ip->cache.pointer), resultPtr, &ffiArgsValues[0]);
     context->registersRR[0] = result;
 }
 
