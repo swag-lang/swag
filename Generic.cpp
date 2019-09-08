@@ -71,7 +71,7 @@ void Generic::updateGenericParameters(vector<TypeInfoParam*>& typeGenericParamet
         if (callGenericParameters)
         {
             param->typeInfo     = callGenericParameters->childs[i]->typeInfo;
-            param->genericValue = callGenericParameters->childs[i]->computedValue;
+            param->value = callGenericParameters->childs[i]->computedValue;
         }
         else
         {
@@ -80,7 +80,7 @@ void Generic::updateGenericParameters(vector<TypeInfoParam*>& typeGenericParamet
 
         auto nodeParam           = nodeGenericParameters[i];
         nodeParam->kind          = AstNodeKind::ConstDecl;
-        nodeParam->computedValue = param->genericValue;
+        nodeParam->computedValue = param->value;
         nodeParam->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
 }

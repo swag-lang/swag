@@ -329,7 +329,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             context.badSignatureGivenType     = typeInfo;
             context.result                    = MatchResult::BadGenericSignature;
         }
-        else if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (symbolParameter->genericValue == callParameter->computedValue))
+        else if ((myTypeInfo->flags & TYPEINFO_GENERIC) || (symbolParameter->value == callParameter->computedValue))
         {
             // We already have a match, and they do not match with that type, error
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);

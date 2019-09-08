@@ -310,7 +310,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
     {
         if (!genericParameters[i]->typeInfo->isSame(other->genericParameters[i]->typeInfo, isSameFlags))
             return false;
-        if (!(genericParameters[i]->genericValue == other->genericParameters[i]->genericValue))
+        if (!(genericParameters[i]->value == other->genericParameters[i]->value))
             return false;
     }
 

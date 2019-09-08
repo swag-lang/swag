@@ -57,10 +57,12 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     valNode->typeInfo = typeEnum;
     SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode, valNode->typeInfo, SymbolKind::EnumValue, &enumNode->computedValue));
 
-    auto typeParam          = g_Pool_typeInfoParam.alloc();
-    typeParam->namedParam   = valNode->name;
-    typeParam->typeInfo     = rawType;
-    typeParam->genericValue = enumNode->computedValue;
+	// Store each value in the enum type
+    auto typeParam        = g_Pool_typeInfoParam.alloc();
+    typeParam->namedParam = valNode->name;
+    typeParam->typeInfo   = rawType;
+    typeParam->value      = enumNode->computedValue;
+    typeParam->index      = (uint32_t) typeEnum->values.size();
     typeEnum->values.push_back(typeParam);
 
     // Compute next value

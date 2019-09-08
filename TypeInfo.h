@@ -224,7 +224,7 @@ struct TypeInfoParam : public TypeInfo
 
     Utf8          namedParam;
     TypeInfo*     typeInfo;
-    ComputedValue genericValue;
+    ComputedValue value;
     int           index;
     int           offset;
 };
