@@ -4,6 +4,7 @@
 #include "BuildPass.h"
 #include "BackendParameters.h"
 #include "TypeTable.h"
+#include "DataSegment.h"
 
 struct Utf8;
 struct SourceFile;

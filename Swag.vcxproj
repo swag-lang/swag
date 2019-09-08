@@ -183,6 +183,7 @@
     <ClInclude Include="CommandLineParser.h" />
     <ClInclude Include="Concat.h" />
     <ClInclude Include="ConcatBucket.h" />
+    <ClInclude Include="DataSegment.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="ffi.h" />
     <ClInclude Include="fficonfig.h" />
@@ -262,6 +263,7 @@
     <ClCompile Include="Concat.cpp">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
     </ClCompile>
+    <ClCompile Include="DataSegment.cpp" />
     <ClCompile Include="Diagnostic.cpp" />
     <ClCompile Include="ffi.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

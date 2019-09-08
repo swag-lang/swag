@@ -296,6 +296,9 @@
     <ClCompile Include="SwagScope.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="DataSegment.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -487,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="SwagScope.h">
       <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSegment.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
