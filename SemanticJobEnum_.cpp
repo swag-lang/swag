@@ -4,19 +4,24 @@
 #include "SymTable.h"
 #include "Scope.h"
 
+bool SemanticJob::resolveEnum(SemanticContext* context)
+{
+    auto enumNode = context->node;
+    auto typeInfo = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
+    SWAG_CHECK(enumNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode, typeInfo, SymbolKind::Enum));
+
+    return true;
+}
+
 bool SemanticJob::resolveEnumType(SemanticContext* context)
 {
     auto typeNode = context->node;
     auto enumNode = context->node->parent;
 
-    // Enum raw type
-    auto rawTypeInfo = typeNode->childs.empty() ? g_TypeMgr.typeInfoS32 : typeNode->childs[0]->typeInfo;
-
-    // Register symbol with its type
+    auto rawTypeInfo  = typeNode->childs.empty() ? g_TypeMgr.typeInfoS32 : typeNode->childs[0]->typeInfo;
     auto typeInfo     = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     typeInfo->rawType = rawTypeInfo;
     typeInfo->sizeOf  = rawTypeInfo->sizeOf;
-    SWAG_CHECK(enumNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode, typeInfo, SymbolKind::Enum));
 
     return true;
 }
@@ -51,6 +56,12 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
     valNode->typeInfo = typeEnum;
     SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context->sourceFile, valNode, valNode->typeInfo, SymbolKind::EnumValue, &enumNode->computedValue));
+
+    auto typeParam          = g_Pool_typeInfoParam.alloc();
+    typeParam->namedParam   = valNode->name;
+    typeParam->typeInfo     = rawType;
+    typeParam->genericValue = enumNode->computedValue;
+    typeEnum->values.push_back(typeParam);
 
     // Compute next value
     switch (rawType->nativeType)

@@ -13,6 +13,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     auto enumNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumDecl, sourceFile->indexInModule, parent);
     if (result)
         *result = enumNode;
+	enumNode->semanticFct = &SemanticJob::resolveEnum;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid enum name '%s'", token.text.c_str())));

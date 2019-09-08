@@ -77,7 +77,7 @@ struct SemanticJob : public Job
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
-	static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
+    static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();
@@ -118,6 +118,7 @@ struct SemanticJob : public Job
     static bool resolveImpl(SemanticContext* context);
     static bool preResolveStruct(SemanticContext* context);
     static bool resolveStruct(SemanticContext* context);
+    static bool resolveEnum(SemanticContext* context);
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);
     static bool resolveFuncDeclParams(SemanticContext* context);
