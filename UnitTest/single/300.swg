@@ -3,5 +3,5 @@
 #unittest error;
 #test
 {
-	@assert(@op(1 + 1, count) == 4);
+	@assert(@countof(1 + 1) == 4);
 }

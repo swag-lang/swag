@@ -48,23 +48,14 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astProperty, AstNodeKind::IntrinsicProp, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveIntrinsicProperty;
-    node->token       = move(token);
+    node->inheritTokenName(token);
+    node->prop = g_LangSpec.properties[node->name];
     if (result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     SWAG_CHECK(doExpression(node, &node->expression));
-    SWAG_CHECK(eatToken(TokenId::SymComma));
-
-    AstNode* identifier;
-    SWAG_CHECK(doIdentifierRef(nullptr, &identifier));
-    const auto& name = identifier->childs.back()->name;
-    auto        it   = g_LangSpec.properties.find(name);
-    if (it == g_LangSpec.properties.end())
-        return syntaxError(identifier->token, format("invalid property '%s'", name.c_str()));
-
-    node->prop = it->second;
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }

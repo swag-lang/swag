@@ -10,7 +10,7 @@ func T(xx: string, a: ...)
 	/*
 	i := 0'u32
 	idx := 0
-	while(i < @op(xx, count))
+	while(i < @countof(xx))
 	{
 		c := xx[i]
 		if(c == cast(u8) '%')

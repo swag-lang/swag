@@ -14,5 +14,5 @@ func len(buffer: const [..] u8)
 	result := 0'u32
 	loop(buffer)
 		result += 1;
-	@assert(result == @op(buffer, count));
+	@assert(result == @countof(buffer));
 }

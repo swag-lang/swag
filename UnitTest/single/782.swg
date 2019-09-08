@@ -4,9 +4,9 @@
 {
 	using swag
 	
-	t := @op(*u32, typeof)
+	t := @typeof(*u32)
 	@assert(t.kind == TypeInfoKind.Pointer)
-	@assert(t.sizeOf == @op(*void, sizeof))
+	@assert(t.sizeOf == @sizeof(*void))
 	
 	ptr := cast(const *TypeInfoPointer) t;
 	@assert(ptr.ptrCount == 1)

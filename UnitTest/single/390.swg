@@ -4,5 +4,5 @@
 //#[swag.printbc]
 #test
 {
-	@assert(@op({1, 2}, count) == 2);
+	@assert(@countof({1, 2}) == 2);
 }

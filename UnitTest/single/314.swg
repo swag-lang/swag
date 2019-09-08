@@ -2,7 +2,7 @@
 
 func len (str: string)->u32
 {
-	var p = @op(str, data);
+	var p = @dataof(str);
 	var l = 0'u32;
 	while p[0] != 0
 	{
@@ -10,7 +10,7 @@ func len (str: string)->u32
 		p += 1;
 	}
 	
-	@assert(l == @op(str, count));
+	@assert(l == @countof(str));
 	return l;
 }
 

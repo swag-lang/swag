@@ -7,5 +7,5 @@
 	var a : f32
 	var b : f64
 	c := a + b
-	@assert(@op(c, sizeof) == 8)
+	@assert(@sizeof(c) == 8)
 }

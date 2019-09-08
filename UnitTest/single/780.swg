@@ -4,7 +4,7 @@
 {
 	using swag
 	
-	t := @op(u32, typeof)
+	t := @typeof(u32)
 	@assert(t.kind == TypeInfoKind.Native)
 	@assert(t.sizeOf == 4)
 	

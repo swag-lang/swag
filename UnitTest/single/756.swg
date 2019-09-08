@@ -3,7 +3,7 @@
 //#[swag.printbc]
 func toto(x: const [..] s32)
 {
-	@assert(@op(x, count) == 2)
+	@assert(@countof(x) == 2)
 }
 
 //#[swag.printbc]

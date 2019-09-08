@@ -4,7 +4,7 @@
 //#[swag.printbc]
 func a (ptr: const [..] s32, cpt: s32)
 {
-	@assert(@op(ptr, count) == cast(u32) (cpt));
+	@assert(@countof(ptr) == cast(u32) (cpt));
 }
 
 //#[swag.printbc]

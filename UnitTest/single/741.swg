@@ -2,7 +2,7 @@
 
 func(T) toto(x: [..] T)
 {
-	@assert(@op(x, count) == 1)
+	@assert(@countof(x) == 1)
 	@assert(x[0] == 10)
 }
 	

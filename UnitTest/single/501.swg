@@ -5,7 +5,7 @@
 func T(a: ...)
 {
 	var xx: s32;
-	@assert(@op(a, count) == 3)
+	@assert(@countof(a) == 3)
 }
 
 //#[swag.printbc]

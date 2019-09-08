@@ -6,6 +6,6 @@ var g = "toto";
 //#[swag.printbc]
 #test
 {
-	var c = @op(g, count);
+	var c = @countof(g);
 	@assert(c == 4);
 }

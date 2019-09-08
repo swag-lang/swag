@@ -16,8 +16,8 @@ enum class Property
 {
     SizeOf,
 	TypeOf,
-    Count,
-    Data,
+    CountOf,
+    DataOf,
 };
 
 enum class Intrinsic

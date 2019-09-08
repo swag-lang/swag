@@ -7,6 +7,6 @@ var b = [1,2,3,4,5,6];
 //#[swag.printbc]
 #test
 {
-	@assert(@op(a, count) == 2);
-	@assert(@op(b, count) == 6);
+	@assert(@countof(a) == 2);
+	@assert(@countof(b) == 6);
 }

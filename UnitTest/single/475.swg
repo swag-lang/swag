@@ -6,7 +6,7 @@
 	a := [1, 2, 3, 0]
 	b := F1(&a[0]);
 	@assert(b == 3)
-	b = F1(@op(a, data))
+	b = F1(@dataof(a))
 	@assert(b == 3)
 }
 

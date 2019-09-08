@@ -90,13 +90,13 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         return true;
     }
 
-    case Property::Count:
+    case Property::CountOf:
         node->inheritComputedValue(node->expression);
         if (!resolveCountProperty(context, node, node->expression->typeInfo))
             return context->errorContext.report({sourceFile, node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
         break;
 
-    case Property::Data:
+    case Property::DataOf:
         if (expr->typeInfo->isNative(NativeTypeKind::String))
         {
             auto ptrType         = g_Pool_typeInfoPointer.alloc();

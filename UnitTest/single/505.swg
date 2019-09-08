@@ -4,7 +4,7 @@
 //#[swag.printbc]
 func T(xx: bool, yy: string, a: ...)
 {
-	@assert(@op(a, count) == 3)
+	@assert(@countof(a) == 3)
 }
 
 //#[swag.printbc]

@@ -79,14 +79,18 @@ void LanguageSpec::setup()
     nativeTypes["string"] = g_TypeMgr.typeInfoString;
     nativeTypes["void"]   = g_TypeMgr.typeInfoVoid;
 
-    properties["sizeof"] = Property::SizeOf;
-    properties["typeof"] = Property::TypeOf;
-    properties["count"]  = Property::Count;
-    properties["data"]   = Property::Data;
+    properties["@sizeof"]  = Property::SizeOf;
+    properties["@typeof"]  = Property::TypeOf;
+    properties["@countof"] = Property::CountOf;
+    properties["@dataof"]  = Property::DataOf;
+
+    intrinsics["@sizeof"]  = Intrinsic::IntrinsicProp;
+    intrinsics["@countof"] = Intrinsic::IntrinsicProp;
+    intrinsics["@dataof"]  = Intrinsic::IntrinsicProp;
+    intrinsics["@typeof"]  = Intrinsic::IntrinsicProp;
 
     intrinsics["@print"]  = Intrinsic::IntrinsicPrint;
     intrinsics["@assert"] = Intrinsic::IntrinsicAssert;
-    intrinsics["@op"]     = Intrinsic::IntrinsicProp;
     intrinsics["@alloc"]  = Intrinsic::IntrinsicAlloc;
     intrinsics["@free"]   = Intrinsic::IntrinsicFree;
 }
