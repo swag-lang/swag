@@ -157,18 +157,6 @@ uint32_t Module::reserveString(const Utf8& str)
     return result;
 }
 
-void Module::addDataSegmentInitString(uint64_t segOffset, uint32_t strIndex)
-{
-    scoped_lock lk(mutexString);
-    strBufferDataSegInit[strIndex] = segOffset;
-}
-
-void Module::addConstantSegmentInitString(uint64_t segOffset, uint32_t strIndex)
-{
-    scoped_lock lk(mutexString);
-    strBufferConstantSegInit[strIndex] = segOffset;
-}
-
 void Module::error(const Utf8& msg)
 {
     g_Log.lock();

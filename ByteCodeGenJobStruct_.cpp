@@ -346,7 +346,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 uint32_t    storageOffset = module->constantSegment.reserve(typeVar->sizeOf);
                 scoped_lock lock(module->constantSegment.mutex);
                 auto        offset = storageOffset;
-                SemanticJob::collectLiterals(context->sourceFile, offset, varDecl->assignment, nullptr, SegmentBuffer::Constant);
+                SemanticJob::collectLiterals(context->sourceFile, offset, varDecl->assignment, nullptr, &module->constantSegment);
 
                 auto inst   = emitInstruction(&cxt, ByteCodeOp::RARefFromConstantSeg, 1, 2);
                 inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();

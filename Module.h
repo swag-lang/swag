@@ -45,14 +45,10 @@ struct Module : public PoolElement
     SpinLock mutexRegisterRR;
     uint32_t maxReservedRegisterRR = 0;
 
-    uint32_t                reserveString(const Utf8& str);
-    void                    addDataSegmentInitString(uint64_t segOffset, uint32_t strIndex);
-    void                    addConstantSegmentInitString(uint64_t segOffset, uint32_t strIndex);
-    SpinLock                mutexString;
-    vector<Utf8>            strBuffer;
-    map<uint32_t, uint64_t> strBufferDataSegInit;
-    map<uint32_t, uint64_t> strBufferConstantSegInit;
-    map<Utf8, uint32_t>     mapStrBuffer;
+    uint32_t            reserveString(const Utf8& str);
+    SpinLock            mutexString;
+    vector<Utf8>        strBuffer;
+    map<Utf8, uint32_t> mapStrBuffer;
 
     DataSegment dataSegment;
     DataSegment constantSegment;

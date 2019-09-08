@@ -60,3 +60,9 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     SWAG_ASSERT(false);
     return nullptr;
 }
+
+void DataSegment::addInitString(uint64_t segOffset, uint32_t strIndex)
+{
+    scoped_lock lk(mutexPtr);
+    strBufferInit[strIndex] = segOffset;
+}

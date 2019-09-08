@@ -14,20 +14,13 @@
 #include "ByteCodeGenJob.h"
 #include "Workspace.h"
 
-bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, SegmentBuffer buffer)
+bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment)
 {
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
     auto       module     = sourceFile->module;
 
-    uint8_t* ptrStart;
-    if (buffer == SegmentBuffer::Constant)
-        ptrStart = module->constantSegment.addressNoLock(offset);
-    else if (buffer == SegmentBuffer::Data)
-        ptrStart = module->dataSegment.addressNoLock(offset);
-    else
-        ptrStart = nullptr;
-
-    auto ptrDest = ptrStart;
+    uint8_t* ptrStart = segment ? segment->addressNoLock(offset) : nullptr;
+    auto     ptrDest  = ptrStart;
     for (auto child : structNode->content->childs)
     {
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
@@ -43,7 +36,7 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
                 storedV[1].u64     = value.text.length();
 
                 auto stringIndex = module->reserveString(value.text);
-                module->addDataSegmentInitString(offset, stringIndex);
+				segment->addInitString(offset, stringIndex);
 
                 ptrDest += 2 * sizeof(Register);
                 offset += 2 * sizeof(Register);
@@ -84,7 +77,7 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
         else if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, buffer));
+            SWAG_CHECK(collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, segment));
             ptrDest = ptrStart + offset;
         }
     }

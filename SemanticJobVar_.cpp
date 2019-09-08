@@ -8,23 +8,16 @@
 #include "Ast.h"
 #include "TypeManager.h"
 
-bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, SegmentBuffer buffer)
+bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, DataSegment* segment)
 {
     auto module = sourceFile->module;
 
-    uint8_t* ptrDest;
-    if (buffer == SegmentBuffer::Constant)
-        ptrDest = module->constantSegment.addressNoLock(offset);
-    else if (buffer == SegmentBuffer::Data)
-        ptrDest = module->dataSegment.addressNoLock(offset);
-    else
-        ptrDest = nullptr;
-
+    uint8_t* ptrDest = segment ? segment->addressNoLock(offset) : nullptr;
     for (auto child : node->childs)
     {
         if (child->kind == AstNodeKind::ExpressionList)
         {
-            SWAG_CHECK(collectLiterals(sourceFile, offset, child, orderedChilds, buffer));
+            SWAG_CHECK(collectLiterals(sourceFile, offset, child, orderedChilds, segment));
             continue;
         }
 
@@ -42,10 +35,7 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
             storedV[1].u64     = child->computedValue.text.length();
 
             auto stringIndex = module->reserveString(child->computedValue.text);
-            if (buffer == SegmentBuffer::Constant)
-                module->addConstantSegmentInitString(offset, stringIndex);
-            else
-                module->addDataSegmentInitString(offset, stringIndex);
+            segment->addInitString(offset, stringIndex);
 
             ptrDest += 2 * sizeof(Register);
             offset += 2 * sizeof(Register);
@@ -262,7 +252,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             storageOffset  = module->constantSegment.reserve(typeArray->sizeOf);
             scoped_lock lock(module->constantSegment.mutex);
             auto        offset = storageOffset;
-            auto        result = SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, SegmentBuffer::Constant);
+            auto        result = SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, &module->constantSegment);
             SWAG_CHECK(result);
         }
     }
@@ -295,7 +285,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             *(const char**) ptrDest                = value->text.c_str();
             *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
             auto stringIndex                       = module->reserveString(value->text);
-            module->addDataSegmentInitString(storageOffset, stringIndex);
+            module->dataSegment.addInitString(storageOffset, stringIndex);
         }
         else if (typeInfo->kind == TypeInfoKind::Native)
         {
@@ -322,14 +312,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node, "expression cannot be evaluated at compile time"}));
             auto offset = storageOffset;
-            auto result = collectLiterals(sourceFile, offset, node->assignment, nullptr, SegmentBuffer::Data);
+            auto result = collectLiterals(sourceFile, offset, node->assignment, nullptr, &module->dataSegment);
             SWAG_CHECK(result);
         }
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             auto offset     = storageOffset;
-            auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, SegmentBuffer::Data);
+            auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, &module->dataSegment);
             SWAG_CHECK(result);
         }
     }

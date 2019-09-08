@@ -15,11 +15,14 @@ struct DataSegmentHeader
 
 struct DataSegment
 {
+    uint32_t                  reserve(uint32_t size);
+    uint32_t                  reserveNoLock(uint32_t size);
+    uint8_t*                  address(uint32_t location);
+    uint8_t*                  addressNoLock(uint32_t location);
     vector<DataSegmentHeader> buckets;
     SpinLock                  mutex;
 
-    uint32_t reserve(uint32_t size);
-    uint32_t reserveNoLock(uint32_t size);
-    uint8_t* address(uint32_t location);
-	uint8_t* addressNoLock(uint32_t location);
+    void                    addInitString(uint64_t segOffset, uint32_t strIndex);
+    SpinLock                mutexPtr;
+    map<uint32_t, uint64_t> strBufferInit;
 };
