@@ -75,6 +75,13 @@ struct ConcreteTypeInfoFunc
     ConcreteTypeInfo*   returnType;
 };
 
+struct ConcreteTypeInfoEnum
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice values;
+    ConcreteTypeInfo*   rawype;
+};
+
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
 
 bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
@@ -127,6 +134,9 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         break;
     case TypeInfoKind::FuncAttr:
         typeStruct = swagScope.regTypeInfoFunc;
+        break;
+    case TypeInfoKind::Enum:
+        typeStruct = swagScope.regTypeInfoEnum;
         break;
     default:
         context->errorContext.report({sourceFile, context->node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
@@ -183,33 +193,63 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     }
     case TypeInfoKind::Struct:
     {
-        auto concreteType          = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
-        auto realType              = (TypeInfoStruct*) typeInfo;
-        concreteType->fields.count = realType->childs.size();
+        auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoStruct*) typeInfo;
 
-        uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->childs.size() * sizeof(void*));
-        ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
-        concreteType->fields.buffer     = addrArray;
-        module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
-        for (int field = 0; field < concreteType->fields.count; field++)
-            SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + field, realType->childs[field]));
+        concreteType->fields.buffer = nullptr;
+        concreteType->fields.count  = realType->childs.size();
+        if (concreteType->fields.count)
+        {
+            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->childs.size() * sizeof(void*));
+            ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
+            concreteType->fields.buffer     = addrArray;
+            module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
+            for (int field = 0; field < concreteType->fields.count; field++)
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + field, realType->childs[field]));
+        }
 
         break;
     }
     case TypeInfoKind::FuncAttr:
     {
-        auto concreteType              = (ConcreteTypeInfoFunc*) concreteTypeInfoValue;
-        auto realType                  = (TypeInfoFuncAttr*) typeInfo;
-        concreteType->parameters.count = realType->parameters.size();
+        auto concreteType = (ConcreteTypeInfoFunc*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoFuncAttr*) typeInfo;
 
-        uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->parameters.size() * sizeof(void*));
-        ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
-        concreteType->parameters.buffer = addrArray;
-        module->constantSegment.addInitPtr(OFFSETOF(concreteType->parameters.buffer), storageArray);
-        for (int param = 0; param < concreteType->parameters.count; param++)
-            SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + param, realType->parameters[param]));
+        concreteType->parameters.buffer = nullptr;
+        concreteType->parameters.count  = realType->parameters.size();
+        if (concreteType->parameters.count)
+        {
+            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->parameters.size() * sizeof(void*));
+            ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
+            concreteType->parameters.buffer = addrArray;
+            module->constantSegment.addInitPtr(OFFSETOF(concreteType->parameters.buffer), storageArray);
+            for (int param = 0; param < concreteType->parameters.count; param++)
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + param, realType->parameters[param]));
+        }
 
-		SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType));
+        break;
+    }
+    case TypeInfoKind::Enum:
+    {
+        auto concreteType = (ConcreteTypeInfoEnum*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoEnum*) typeInfo;
+
+        concreteType->values.buffer = nullptr;
+        concreteType->values.count  = realType->values.size();
+        if (concreteType->values.count)
+        {
+            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->values.size() * sizeof(void*));
+            ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
+            concreteType->values.buffer     = addrArray;
+            module->constantSegment.addInitPtr(OFFSETOF(concreteType->values.buffer), storageArray);
+            for (int param = 0; param < concreteType->values.count; param++)
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + param, realType->values[param]));
+        }
+
+        concreteType->rawype = nullptr;
+        if (realType->rawType)
+            SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawype, realType->rawType));
         break;
     }
     }

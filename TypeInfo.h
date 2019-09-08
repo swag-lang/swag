@@ -202,23 +202,6 @@ struct TypeInfoNamespace : public TypeInfo
     Scope* scope;
 };
 
-struct TypeInfoEnum : public TypeInfo
-{
-    void reset() override
-    {
-        TypeInfo::reset();
-        kind    = TypeInfoKind::Enum;
-        scope   = nullptr;
-        rawType = nullptr;
-    }
-
-    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
-    TypeInfo* clone() override;
-
-    Scope*    scope;
-    TypeInfo* rawType;
-};
-
 struct TypeInfoParam : public TypeInfo
 {
     void reset() override
@@ -244,6 +227,25 @@ struct TypeInfoParam : public TypeInfo
     ComputedValue genericValue;
     int           index;
     int           offset;
+};
+
+struct TypeInfoEnum : public TypeInfo
+{
+    void reset() override
+    {
+        TypeInfo::reset();
+        kind    = TypeInfoKind::Enum;
+        scope   = nullptr;
+        rawType = nullptr;
+        values.clear();
+    }
+
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
+    TypeInfo* clone() override;
+
+    vector<TypeInfoParam*> values;
+    Scope*                 scope;
+    TypeInfo*              rawType;
 };
 
 enum MatchResult

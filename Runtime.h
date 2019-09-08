@@ -97,5 +97,12 @@ namespace swag
 		parameters:		const [..] *TypeInfoParam
 		returnType:		*TypeInfo
 	}
+
+	struct TypeInfoEnum
+	{
+		base: 			TypeInfo
+		values:			const [..] *TypeInfoParam
+		rawType:		*TypeInfo
+	}
 }
 )";

@@ -1,10 +1,6 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Global.h"
 #include "TypeManager.h"
-#include "Diagnostic.h"
-#include "TypeInfo.h"
-#include "SourceFile.h"
 #include "SymTable.h"
 #include "Scope.h"
 

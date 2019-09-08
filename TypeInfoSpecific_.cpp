@@ -43,15 +43,6 @@ TypeInfo* TypeInfoNamespace::clone()
     return newType;
 }
 
-TypeInfo* TypeInfoEnum::clone()
-{
-    auto newType     = g_Pool_typeInfoEnum.alloc();
-    newType->scope   = scope;
-    newType->rawType = rawType;
-    newType->copyFrom(this);
-    return newType;
-}
-
 bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
@@ -354,6 +345,23 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
     }
 
     return true;
+}
+
+TypeInfo* TypeInfoEnum::clone()
+{
+    auto newType     = g_Pool_typeInfoEnum.alloc();
+    newType->scope   = scope;
+    newType->rawType = rawType;
+
+    for (int i = 0; i < values.size(); i++)
+    {
+        auto param = static_cast<TypeInfoParam*>(values[i]);
+        param      = static_cast<TypeInfoParam*>(param->clone());
+        newType->values.push_back(param);
+    }
+
+    newType->copyFrom(this);
+    return newType;
 }
 
 TypeInfo* TypeInfoStruct::clone()
