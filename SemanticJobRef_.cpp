@@ -201,6 +201,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             newType->ptrCount--;
             arrayNode->typeInfo = typeTable.registerType(newType);
         }
+
+		setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
     }
 
@@ -208,6 +210,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         auto typePtr        = static_cast<TypeInfoArray*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
+		setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
     }
 
@@ -215,19 +218,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         auto typePtr        = static_cast<TypeInfoSlice*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
-
-        if (arrayNode->parent->kind == AstNodeKind::IdentifierRef)
-        {
-			auto nodeId = (AstIdentifierRef*) arrayNode->parent;
-			nodeId->typeInfo = typePtr->pointedType;
-            if (typePtr->pointedType->kind == TypeInfoKind::Pointer)
-            {
-                auto typePointer = CastTypeInfo<TypeInfoPointer>(typePtr->pointedType, TypeInfoKind::Pointer);
-                if (typePointer->pointedType->kind == TypeInfoKind::Struct)
-					nodeId->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
-            }
-        }
-
+		setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
     }
 

@@ -163,7 +163,25 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     return true;
 }
 
-//bool SemanticJob::computeScope(SemanticContext* context, AstNode* parent, TypeInfo* typeInfo)
+void SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    if (node->parent->kind != AstNodeKind::IdentifierRef)
+        return;
+    auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+
+    identifierRef->typeInfo = typeInfo;
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Pointer:
+    {
+        auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        if (typePointer->pointedType->kind == TypeInfoKind::Struct)
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
+        break;
+    }
+    }
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch)
 {
     auto  sourceFile                   = context->sourceFile;
@@ -235,6 +253,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Lambda call
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
+        setupIdentifierRef(context, identifier, typeInfo);
 
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
