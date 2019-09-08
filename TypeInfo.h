@@ -67,21 +67,21 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
     return casted;
 }
 
-static const uint64_t TYPEINFO_ATTRIBUTE_FUNC           = 0x00000000'00000001;
-static const uint64_t TYPEINFO_ATTRIBUTE_VAR            = 0x00000000'00000002;
-static const uint64_t TYPEINFO_INTEGER                  = 0x00000000'00000004;
-static const uint64_t TYPEINFO_FLOAT                    = 0x00000000'00000008;
-static const uint64_t TYPEINFO_UNSIGNED                 = 0x00000000'00000010;
-static const uint64_t TYPEINFO_CONST                    = 0x00000000'00000020;
-static const uint64_t TYPEINFO_IN_MANAGER               = 0x00000000'00000040;
-static const uint64_t TYPEINFO_VARIADIC                 = 0x00000000'00000080;
-static const uint64_t TYPEINFO_STRUCT_HAS_INIT_VALUES   = 0x00000000'00000100;
-static const uint64_t TYPEINFO_STRUCT_ALL_UNINITIALIZED = 0x00000000'00000200;
-static const uint64_t TYPEINFO_STRUCT_NO_POST_COPY      = 0x00000000'00000400;
-static const uint64_t TYPEINFO_STRUCT_NO_POST_MOVE      = 0x00000000'00000800;
-static const uint64_t TYPEINFO_GENERIC                  = 0x00000000'00001000;
-static const uint64_t TYPEINFO_RETURN_BY_COPY           = 0x00000000'00002000;
-static const uint64_t TYPEINFO_NATIVE_VALUE             = 0x00000000'00004000;
+static const uint32_t TYPEINFO_ATTRIBUTE_FUNC           = 0x00000001;
+static const uint32_t TYPEINFO_ATTRIBUTE_VAR            = 0x00000002;
+static const uint32_t TYPEINFO_INTEGER                  = 0x00000004;
+static const uint32_t TYPEINFO_FLOAT                    = 0x00000008;
+static const uint32_t TYPEINFO_UNSIGNED                 = 0x00000010;
+static const uint32_t TYPEINFO_CONST                    = 0x00000020;
+static const uint32_t TYPEINFO_IN_MANAGER               = 0x00000040;
+static const uint32_t TYPEINFO_VARIADIC                 = 0x00000080;
+static const uint32_t TYPEINFO_STRUCT_HAS_INIT_VALUES   = 0x00000100;
+static const uint32_t TYPEINFO_STRUCT_ALL_UNINITIALIZED = 0x00000200;
+static const uint32_t TYPEINFO_STRUCT_NO_POST_COPY      = 0x00000400;
+static const uint32_t TYPEINFO_STRUCT_NO_POST_MOVE      = 0x00000800;
+static const uint32_t TYPEINFO_GENERIC                  = 0x00001000;
+static const uint32_t TYPEINFO_RETURN_BY_COPY           = 0x00002000;
+static const uint32_t TYPEINFO_NATIVE_VALUE             = 0x00004000;
 
 static const uint32_t ISSAME_EXACT = 0x00000001;
 static const uint32_t ISSAME_CAST  = 0x00000002;
@@ -157,7 +157,7 @@ struct TypeInfo : public PoolElement
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
-    uint64_t       flags;
+    uint32_t       flags;
     TypeInfoKind   kind;
     NativeTypeKind nativeType;
     Utf8           name;
@@ -172,7 +172,7 @@ struct TypeInfoNative : public TypeInfo
         value = 0;
     }
 
-    TypeInfoNative(NativeTypeKind type, const char* tname, int sof, uint64_t fl)
+    TypeInfoNative(NativeTypeKind type, const char* tname, int sof, uint32_t fl)
     {
         kind       = TypeInfoKind::Native;
         nativeType = type;
