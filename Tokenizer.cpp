@@ -9,13 +9,14 @@
 
 void Tokenizer::setFile(SourceFile* file)
 {
-    seek                   = 0;
-    location.column        = 0;
-    location.line          = 0;
-    location.seekStartLine = 0;
-    endReached             = false;
-    cacheChar              = 0;
-    sourceFile             = file;
+    seek            = 0;
+    location.column = 0;
+    location.line   = 0;
+    endReached      = false;
+    cacheChar       = 0;
+    sourceFile      = file;
+    for (int i = 0; i < REPORT_NUM_CODE_LINES; i++)
+        location.seekStartLine[i] = -1;
 }
 
 inline void Tokenizer::treatChar(char32_t c, unsigned offset)
@@ -41,7 +42,9 @@ inline void Tokenizer::treatChar(char32_t c, unsigned offset)
             g_Stats.numLines++;
         location.column = 0;
         location.line++;
-        location.seekStartLine = seek;
+        for (int i = 0; i < REPORT_NUM_CODE_LINES - 1; i++)
+            location.seekStartLine[i] = location.seekStartLine[i + 1];
+        location.seekStartLine[REPORT_NUM_CODE_LINES - 1] = seek;
     }
 }
 
@@ -195,7 +198,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 nc = getChar();
                 while (nc && nc != '\n')
                     nc = getChar();
-				lastTokenIsEOL = true;
+                lastTokenIsEOL = true;
                 continue;
             }
 

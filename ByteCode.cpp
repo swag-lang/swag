@@ -92,7 +92,7 @@ void ByteCode::print()
 			if (ip->startLocation.column != ip->endLocation.column)
 			{
 				lastLine = ip->startLocation.line;
-				auto s = sourceFile->getLine(ip->startLocation.seekStartLine);
+				auto s = sourceFile->getLine(ip->startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
 				s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
 				g_Log.setColor(LogColor::DarkYellow);
 				for (int idx = 0; idx < 9; idx++)

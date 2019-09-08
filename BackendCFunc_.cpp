@@ -385,7 +385,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
                 if (ip->startLocation.column != ip->endLocation.column)
                 {
                     lastLine = ip->startLocation.line;
-                    auto s   = bc->sourceFile->getLine(ip->startLocation.seekStartLine);
+                    auto s   = bc->sourceFile->getLine(ip->startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
                     s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
                     if (!s.empty())
                         s.pop_back();

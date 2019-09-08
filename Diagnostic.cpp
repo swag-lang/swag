@@ -55,23 +55,31 @@ void Diagnostic::report(bool verboseMode) const
     // Source code
     if (hasFile && hasLocation && printSource && g_CommandLine.errorSourceOut)
     {
-        // Remove blanks at the start of the source line
-        auto        tmpLine = sourceFile->getLine(startLocation.seekStartLine);
-        int         offset  = 0;
-        const char* buf     = tmpLine.c_str();
-        while (*buf == ' ')
+        int  offset = 0;
+        Utf8 line;
+        for (int i = 0; i < REPORT_NUM_CODE_LINES; i++)
         {
-            buf++;
-            offset++;
+            if (startLocation.seekStartLine[i] == -1)
+                continue;
+
+            // Remove blanks at the start of the source line
+            auto        tmpLine = sourceFile->getLine(startLocation.seekStartLine[i]);
+            const char* buf     = tmpLine.c_str();
+            offset              = 0;
+            while (*buf == ' ')
+            {
+                buf++;
+                offset++;
+            }
+
+            // Indent
+            line = "  ";
+            line += buf;
+            offset -= 2;
+
+            g_Log.print(line);
+            g_Log.eol();
         }
-
-        // Indent
-        Utf8 line = "  ";
-        line += buf;
-        offset -= 2;
-
-        g_Log.print(line);
-        g_Log.eol();
 
         if (showRange)
         {
