@@ -65,6 +65,23 @@ struct ConcreteTypeInfoStruct
     ConcreteStringSlice fields;
 };
 
+#define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) &(__field) - (uint64_t) concreteTypeInfoValue))
+
+bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, ConcreteTypeInfo* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
+{
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+
+    TypeInfo* typePtr;
+    uint32_t  tmpStorageOffset;
+    SWAG_CHECK(makeConcreteTypeInfo(context, typeInfo, &typePtr, &tmpStorageOffset, false));
+    *result = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
+
+    // We have a pointer in the constant segment, so we need to register it for backend setup
+    module->constantSegment.addInitPtr(OFFSETOF(*result), tmpStorageOffset);
+	return true;
+}
+
 bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
 {
     // Already computed
@@ -110,8 +127,6 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
-#define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) &__field - (uint64_t) concreteTypeInfoValue))
-
     auto stringIndex = module->reserveString(typeInfo->name);
     module->constantSegment.addInitString(OFFSETOF(concreteTypeInfoValue->name), stringIndex);
 
@@ -133,14 +148,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
         auto realType          = (TypeInfoPointer*) typeInfo;
         concreteType->ptrCount = realType->ptrCount;
-
-        TypeInfo* typePtr;
-        uint32_t  tmpStorageOffset;
-        SWAG_CHECK(makeConcreteTypeInfo(context, realType->pointedType, &typePtr, &tmpStorageOffset, false));
-        concreteType->pointedType = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
-
-        // We have a pointer in the constant segment, so we need to register it for backend setup
-        module->constantSegment.addInitPtr(OFFSETOF(concreteType->pointedType), tmpStorageOffset);
+		SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }
     case TypeInfoKind::Param:
