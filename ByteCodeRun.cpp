@@ -723,7 +723,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicAssert:
     {
         if (!registersRC[ip->a.u32].b)
-            context->error("intrinsic @assert failed");
+            context->error("intrinsic assertion failed");
         break;
     }
     case ByteCodeOp::IntrinsicAlloc:
