@@ -41,13 +41,15 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     // Reserve space in constant segment, except if expression is not constexpr, because in that case,
     // each affectation will be done one by one
     auto     typeList      = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
-    uint32_t storageOffset = isConstExpr ? module->reserveConstantSegment(typeList->sizeOf) : 0;
+    uint32_t storageOffset = isConstExpr ? module->constantSegment.reserve(typeList->sizeOf) : 0;
     job->collectChilds.clear();
-    module->mutexConstantSeg.lock();
-    auto offset = storageOffset;
-    auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, isConstExpr ? nullptr : &job->collectChilds, isConstExpr ? SegmentBuffer::Constant : SegmentBuffer::None);
-    module->mutexConstantSeg.unlock();
-    SWAG_CHECK(result);
+
+    {
+        scoped_lock lock(module->constantSegment.mutex);
+        auto        offset = storageOffset;
+        auto        result = SemanticJob::collectLiterals(context->sourceFile, offset, node, isConstExpr ? nullptr : &job->collectChilds, isConstExpr ? SegmentBuffer::Constant : SegmentBuffer::None);
+        SWAG_CHECK(result);
+    }
 
     reserveRegisterRC(context, node->resultRegisterRC, 2);
 

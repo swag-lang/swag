@@ -551,35 +551,35 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module               = context->sourceFile->module;
         auto offset               = ip->b.u32;
-        registersRC[ip->a.u32].u8 = *(uint8_t*) (&module->dataSegment[offset]);
+        registersRC[ip->a.u32].u8 = *(uint8_t*) (module->dataSegment.address(offset));
         break;
     }
     case ByteCodeOp::RAFromDataSeg16:
     {
         auto module                = context->sourceFile->module;
         auto offset                = ip->b.u32;
-        registersRC[ip->a.u32].u16 = *(uint16_t*) (&module->dataSegment[offset]);
+        registersRC[ip->a.u32].u16 = *(uint16_t*) (module->dataSegment.address(offset));
         break;
     }
     case ByteCodeOp::RAFromDataSeg32:
     {
         auto module                = context->sourceFile->module;
         auto offset                = ip->b.u32;
-        registersRC[ip->a.u32].u32 = *(uint32_t*) (&module->dataSegment[offset]);
+        registersRC[ip->a.u32].u32 = *(uint32_t*) (module->dataSegment.address(offset));
         break;
     }
     case ByteCodeOp::RAFromDataSeg64:
     {
         auto module                = context->sourceFile->module;
         auto offset                = ip->b.u32;
-        registersRC[ip->a.u32].u64 = *(uint64_t*) (&module->dataSegment[offset]);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (module->dataSegment.address(offset));
         break;
     }
     case ByteCodeOp::RARefFromDataSeg:
     {
         auto module                    = context->sourceFile->module;
         auto offset                    = ip->b.u32;
-        registersRC[ip->a.u32].pointer = &module->dataSegment[offset];
+        registersRC[ip->a.u32].pointer = module->dataSegment.address(offset);
         break;
     }
     case ByteCodeOp::RARefFromConstantSeg:
@@ -587,7 +587,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto module                    = context->sourceFile->module;
         auto offset                    = (uint32_t)(ip->c.u64 >> 32);
         auto count                     = (uint32_t)(ip->c.u64 & 0xFFFFFFFF);
-        registersRC[ip->a.u32].pointer = &module->constantSegment[offset];
+        registersRC[ip->a.u32].pointer = module->constantSegment.address(offset);
         registersRC[ip->b.u32].u64     = count;
         break;
     }

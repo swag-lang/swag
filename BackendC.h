@@ -9,6 +9,7 @@ struct TypeInfo;
 struct BackendParameters;
 struct ByteCode;
 struct ByteCodeInstruction;
+struct DataSegment;
 
 struct BackendC : public Backend
 {
@@ -24,8 +25,7 @@ struct BackendC : public Backend
     bool emitHeader();
     bool emitFooter();
     bool emitRuntime();
-    bool emitDataSegment();
-    bool emitConstantSegment();
+    bool emitDataSegment(DataSegment* dataSegment);
     bool emitStrings();
     bool emitMain();
     bool emitFunctions();

@@ -21,9 +21,9 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
 
     uint8_t* ptrStart;
     if (buffer == SegmentBuffer::Constant)
-        ptrStart = &module->constantSegment[offset];
+        ptrStart = module->constantSegment.addressNoLock(offset);
     else if (buffer == SegmentBuffer::Data)
-        ptrStart = &module->dataSegment[offset];
+        ptrStart = module->dataSegment.addressNoLock(offset);
     else
         ptrStart = nullptr;
 

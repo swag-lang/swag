@@ -239,7 +239,7 @@ bool ByteCodeGenJob::emitStructCopyMove(ByteCodeGenContext* context, RegisterLis
             inst->b.u64     = 1;
             inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
             emitInstruction(context, ByteCodeOp::IncSP, 8);
-			context->bc->maxCallParameters = max(context->bc->maxCallParameters, 1);
+            context->bc->maxCallParameters = max(context->bc->maxCallParameters, 1);
         }
     }
 
@@ -254,7 +254,7 @@ bool ByteCodeGenJob::emitStructCopyMove(ByteCodeGenContext* context, RegisterLis
             inst->b.u64     = 1;
             inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
             emitInstruction(context, ByteCodeOp::IncSP, 8);
-			context->bc->maxCallParameters = max(context->bc->maxCallParameters, 1);
+            context->bc->maxCallParameters = max(context->bc->maxCallParameters, 1);
         }
     }
 
@@ -341,13 +341,12 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             if (typeVar->kind == TypeInfoKind::Array)
             {
-                auto     typeList      = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeList);
-                auto     module        = sourceFile->module;
-                uint32_t storageOffset = module->reserveConstantSegment(typeVar->sizeOf);
-                module->mutexConstantSeg.lock();
-                auto offset = storageOffset;
+                auto        typeList      = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeList);
+                auto        module        = sourceFile->module;
+                uint32_t    storageOffset = module->constantSegment.reserve(typeVar->sizeOf);
+                scoped_lock lock(module->constantSegment.mutex);
+                auto        offset = storageOffset;
                 SemanticJob::collectLiterals(context->sourceFile, offset, varDecl->assignment, nullptr, SegmentBuffer::Constant);
-                module->mutexConstantSeg.unlock();
 
                 auto inst   = emitInstruction(&cxt, ByteCodeOp::RARefFromConstantSeg, 1, 2);
                 inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();

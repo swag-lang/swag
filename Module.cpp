@@ -157,37 +157,16 @@ uint32_t Module::reserveString(const Utf8& str)
     return result;
 }
 
-void Module::addDataSegmentInitString(uint32_t segOffset, uint32_t strIndex)
+void Module::addDataSegmentInitString(uint64_t segOffset, uint32_t strIndex)
 {
     scoped_lock lk(mutexString);
     strBufferDataSegInit[strIndex] = segOffset;
 }
 
-void Module::addConstantSegmentInitString(uint32_t segOffset, uint32_t strIndex)
+void Module::addConstantSegmentInitString(uint64_t segOffset, uint32_t strIndex)
 {
     scoped_lock lk(mutexString);
     strBufferConstantSegInit[strIndex] = segOffset;
-}
-
-int Module::reserveDataSegment(int size)
-{
-    scoped_lock lk(mutexDataSeg);
-    int         result = (int) dataSegment.size();
-    dataSegment.resize((int) dataSegment.size() + size, 0);
-    return result;
-}
-
-int Module::reserveConstantSegment(int size)
-{
-    scoped_lock lk(mutexConstantSeg);
-    return reserveConstantSegmentNoLock(size);
-}
-
-int Module::reserveConstantSegmentNoLock(int size)
-{
-    int result = (int) constantSegment.size();
-    constantSegment.resize((int) constantSegment.size() + size, 0);
-    return result;
 }
 
 void Module::error(const Utf8& msg)

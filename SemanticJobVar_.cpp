@@ -14,9 +14,9 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
 
     uint8_t* ptrDest;
     if (buffer == SegmentBuffer::Constant)
-        ptrDest = &module->constantSegment[offset];
+        ptrDest = module->constantSegment.addressNoLock(offset);
     else if (buffer == SegmentBuffer::Data)
-        ptrDest = &module->dataSegment[offset];
+        ptrDest = module->dataSegment.addressNoLock(offset);
     else
         ptrDest = nullptr;
 
@@ -259,11 +259,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             // Reserve space in constant segment
             auto module    = sourceFile->module;
             auto typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
-            storageOffset  = module->reserveConstantSegment(typeArray->sizeOf);
-            module->mutexConstantSeg.lock();
-            auto offset = storageOffset;
-            auto result = SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, SegmentBuffer::Constant);
-            module->mutexConstantSeg.unlock();
+            storageOffset  = module->constantSegment.reserve(typeArray->sizeOf);
+            scoped_lock lock(module->constantSegment.mutex);
+            auto        offset = storageOffset;
+            auto        result = SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, SegmentBuffer::Constant);
             SWAG_CHECK(result);
         }
     }
@@ -286,13 +285,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
 
         auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
-        storageOffset = sourceFile->module->reserveDataSegment(typeInfo->sizeOf);
-		node->flags |= AST_R_VALUE;
+        storageOffset = module->dataSegment.reserve(typeInfo->sizeOf);
+        node->flags |= AST_R_VALUE;
 
-        module->mutexDataSeg.lock();
+        scoped_lock lock(module->dataSegment.mutex);
         if (typeInfo->isNative(NativeTypeKind::String))
         {
-            uint8_t* ptrDest                       = module->dataSegment.data() + storageOffset;
+            uint8_t* ptrDest                       = module->dataSegment.addressNoLock(storageOffset);
             *(const char**) ptrDest                = value->text.c_str();
             *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
             auto stringIndex                       = module->reserveString(value->text);
@@ -300,7 +299,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else if (typeInfo->kind == TypeInfoKind::Native)
         {
-            uint8_t* ptrDest = module->dataSegment.data() + storageOffset;
+            uint8_t* ptrDest = module->dataSegment.addressNoLock(storageOffset);
             switch (typeInfo->sizeOf)
             {
             case 1:
@@ -316,7 +315,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 *(uint64_t*) ptrDest = value->reg.u64;
                 break;
             default:
-                module->mutexDataSeg.unlock();
                 return internalError(context, "emitVarDecl, init native, bad size");
             }
         }
@@ -334,8 +332,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, SegmentBuffer::Data);
             SWAG_CHECK(result);
         }
-
-        module->mutexDataSeg.unlock();
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
@@ -346,16 +342,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
-		node->flags |= AST_R_VALUE;
+        node->flags |= AST_R_VALUE;
     }
-	else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
-	{
-		node->flags |= AST_R_VALUE;
-	}
-	else if (isConstant)
-	{
-		node->flags |= AST_R_VALUE;
-	}
+    else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
+    {
+        node->flags |= AST_R_VALUE;
+    }
+    else if (isConstant)
+    {
+        node->flags |= AST_R_VALUE;
+    }
 
     // Attributes
     SymbolAttributes attributes;

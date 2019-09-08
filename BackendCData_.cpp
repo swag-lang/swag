@@ -6,51 +6,34 @@
 #include "Module.h"
 #include "ByteCode.h"
 
-bool BackendC::emitDataSegment()
+bool BackendC::emitDataSegment(DataSegment* dataSegment)
 {
-    emitSeparator(bufferC, "DATA SEGMENT");
-    if (module->dataSegment.size())
+    if (dataSegment == &module->dataSegment)
+        emitSeparator(bufferC, "DATA SEGMENT");
+    else
+        emitSeparator(bufferC, "CONTANT SEGMENT");
+
+    if (dataSegment->buckets.size())
     {
-        int count = (int) module->dataSegment.size();
-        bufferC.addString(format("static swag_uint8_t __dataseg[%d] = {\n", count));
+        if (dataSegment == &module->dataSegment)
+            bufferC.addString("static swag_uint8_t __dataseg[] = {\n");
+        else
+            bufferC.addString("static swag_uint8_t __constantseg[] = {\n");
 
-        const uint8_t* pz  = (const uint8_t*) &module->dataSegment[0];
-        int            cpt = 0;
-        while (count--)
+        for (int bucket = 0; bucket < dataSegment->buckets.size(); bucket++)
         {
-            bufferC.addString(to_string(*pz));
-            bufferC.addString(",");
-            pz++;
-            cpt = (cpt + 1) % 20;
-            if (cpt == 0)
-                bufferC.addString("\n");
-        }
-
-        bufferC.addString("\n};\n");
-    }
-
-    bufferC.addString("\n");
-    return true;
-}
-
-bool BackendC::emitConstantSegment()
-{
-    emitSeparator(bufferC, "CONSTANT SEGMENT");
-    if (module->constantSegment.size())
-    {
-        int count = (int) module->constantSegment.size();
-        bufferC.addString(format("static swag_uint8_t __constantseg[%d] = {\n", count));
-
-        const uint8_t* pz  = (const uint8_t*) &module->constantSegment[0];
-        int            cpt = 0;
-        while (count--)
-        {
-            bufferC.addString(to_string(*pz));
-            bufferC.addString(",");
-            pz++;
-            cpt = (cpt + 1) % 20;
-            if (cpt == 0)
-                bufferC.addString("\n");
+            int  count = (int) dataSegment->buckets[bucket].count;
+            auto pz    = dataSegment->buckets[bucket].buffer;
+            int  cpt   = 0;
+            while (count--)
+            {
+                bufferC.addString(to_string(*pz));
+                bufferC.addString(",");
+                pz++;
+                cpt = (cpt + 1) % 20;
+                if (cpt == 0)
+                    bufferC.addString("\n");
+            }
         }
 
         bufferC.addString("\n};\n");
@@ -88,7 +71,7 @@ bool BackendC::emitStrings()
 
 bool BackendC::emitGlobalInit()
 {
-	// Data segment
+    // Data segment
     bufferC.addString("static void initDataSeg() {\n");
     for (auto& k : module->strBufferDataSegInit)
     {
@@ -96,7 +79,7 @@ bool BackendC::emitGlobalInit()
     }
     bufferC.addString("}\n\n");
 
-	// Constant segment
+    // Constant segment
     bufferC.addString("static void initConstantSeg() {\n");
     for (auto& k : module->strBufferConstantSegInit)
     {
@@ -104,12 +87,12 @@ bool BackendC::emitGlobalInit()
     }
     bufferC.addString("}\n\n");
 
-	// Main init fct
+    // Main init fct
     bufferC.addString(format("void %s_globalInit() {\n", module->name.c_str()));
     bufferC.addString("initDataSeg();\n");
-	bufferC.addString("initConstantSeg();\n");
+    bufferC.addString("initConstantSeg();\n");
     bufferC.addString("}\n\n");
 
-	bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit();\n", module->name.c_str()));
+    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit();\n", module->name.c_str()));
     return true;
 }

@@ -63,7 +63,8 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     }
 
     auto            sourceFile = context->sourceFile;
-    auto&           swagScope  = sourceFile->module->workspace->swagScope;
+    auto            module     = sourceFile->module;
+    auto&           swagScope  = module->workspace->swagScope;
     TypeInfoStruct* typeStruct = nullptr;
     switch (typeInfo->kind)
     {
@@ -79,13 +80,11 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     }
 
     if (lock)
-        sourceFile->module->mutexConstantSeg.lock();
+        module->constantSegment.mutex.lock();
 
     // Build structure content
-    uint32_t storageOffset = 0;
-    storageOffset          = sourceFile->module->reserveConstantSegmentNoLock(typeStruct->sizeOf);
-
-    ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) &sourceFile->module->constantSegment[storageOffset];
+    uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
+    ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
     concreteTypeInfoValue->kind   = typeInfo->kind;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
@@ -104,16 +103,15 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto realType          = (TypeInfoPointer*) typeInfo;
         concreteType->ptrCount = realType->ptrCount;
         TypeInfo* typePtr;
-        uint32_t  tmp;
-        SWAG_CHECK(makeConcreteTypeInfo(context, realType->pointedType, &typePtr, &tmp, false));
-        concreteType              = (ConcreteTypeInfoPointer*) &sourceFile->module->constantSegment[storageOffset];
-        concreteType->pointedType = (ConcreteTypeInfo*) &sourceFile->module->constantSegment[tmp];
+        uint32_t  tmpStorageOffset;
+        SWAG_CHECK(makeConcreteTypeInfo(context, realType->pointedType, &typePtr, &tmpStorageOffset, false));
+        concreteType->pointedType = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
         break;
     }
     }
 
     if (lock)
-        sourceFile->module->mutexConstantSeg.unlock();
+        module->constantSegment.mutex.unlock();
 
     // Build pointer type to structure
     auto typePtr = g_Pool_typeInfoPointer.alloc();

@@ -19,6 +19,7 @@ struct SymbolAttributes;
 struct ByteCodeGenJob;
 struct AstIdentifier;
 struct AstFuncDecl;
+struct DataSegmentLocation;
 
 enum class SemanticResult
 {
