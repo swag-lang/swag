@@ -230,14 +230,17 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->startScope = static_cast<TypeInfoNamespace*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
         break;
+
     case SymbolKind::Enum:
         parent->startScope = static_cast<TypeInfoEnum*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
         break;
+
     case SymbolKind::EnumValue:
         identifier->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
         identifier->computedValue = identifier->resolvedSymbolOverload->computedValue;
         break;
+
     case SymbolKind::Struct:
         parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
@@ -280,10 +283,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
-        // Lambda call
+		// Setup parent if necessary
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
         setupIdentifierRef(context, identifier, typeInfo);
 
+		// Lambda call
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
             // From now this is considered as a function, not a lambda
@@ -312,52 +316,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->ownerScope->startStackSize += returnType->sizeOf;
                 identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
             }
-        }
-
-        // Tuple
-        else if (typeInfo->kind == TypeInfoKind::TypeList)
-        {
-            parent->startScope   = static_cast<TypeInfoList*>(typeInfo)->scope;
-            identifier->typeInfo = typeInfo;
-            parent->typeInfo     = typeInfo;
-        }
-
-        // Struct
-        else if (typeInfo->kind == TypeInfoKind::Struct)
-        {
-            parent->startScope   = static_cast<TypeInfoStruct*>(typeInfo)->scope;
-            identifier->typeInfo = typeInfo;
-            parent->typeInfo     = typeInfo;
-        }
-
-        // Pointer
-        else if (typeInfo->kind == TypeInfoKind::Pointer)
-        {
-            auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-            if (typePointer->pointedType->kind == TypeInfoKind::Struct)
-                parent->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
-            identifier->typeInfo = typeInfo;
-            parent->typeInfo     = typeInfo;
-        }
-
-        // Array
-        else if (typeInfo->kind == TypeInfoKind::Array)
-        {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-            if (typeArray->rawType->kind == TypeInfoKind::Struct)
-                parent->startScope = static_cast<TypeInfoStruct*>(typeArray->rawType)->scope;
-            identifier->typeInfo = typeInfo;
-            parent->typeInfo     = typeInfo;
-        }
-
-        // Slice
-        else if (typeInfo->kind == TypeInfoKind::Slice)
-        {
-            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-            if (typeSlice->pointedType->kind == TypeInfoKind::Struct)
-                parent->startScope = static_cast<TypeInfoStruct*>(typeSlice->pointedType)->scope;
-            identifier->typeInfo = typeInfo;
-            parent->typeInfo     = typeInfo;
         }
 
         break;
