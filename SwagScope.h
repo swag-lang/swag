@@ -11,6 +11,8 @@ struct SwagScope
     TypeInfoStruct* regTypeInfo        = nullptr;
     TypeInfoStruct* regTypeInfoNative  = nullptr;
     TypeInfoStruct* regTypeInfoPointer = nullptr;
+    TypeInfoStruct* regTypeInfoStruct  = nullptr;
+    TypeInfoStruct* regTypeInfoParam   = nullptr;
 
     bool         fullySolved = false;
     uint32_t     cptSolved   = 0;

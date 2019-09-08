@@ -28,17 +28,17 @@ TypeInfo* TypeTable::registerType(TypeInfo* newTypeInfo)
     return newTypeInfo;
 }
 
-struct ConcreteString
+struct ConcreteStringSlice
 {
-    const char* text;
-    uint64_t    len;
+    void*    buffer;
+    uint64_t count;
 };
 
 struct ConcreteTypeInfo
 {
-    ConcreteString name;
-    TypeInfoKind   kind;
-    uint32_t       sizeOf;
+    ConcreteStringSlice name;
+    TypeInfoKind        kind;
+    uint32_t            sizeOf;
 };
 
 struct ConcreteTypeInfoNative
@@ -52,6 +52,17 @@ struct ConcreteTypeInfoPointer
     ConcreteTypeInfo  base;
     ConcreteTypeInfo* pointedType;
     uint32_t          ptrCount;
+};
+
+struct ConcreteTypeInfoParam
+{
+    ConcreteTypeInfo base;
+};
+
+struct ConcreteTypeInfoStruct
+{
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice fields;
 };
 
 bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
@@ -81,6 +92,12 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     case TypeInfoKind::Pointer:
         typeStruct = swagScope.regTypeInfoPointer;
         break;
+    case TypeInfoKind::Struct:
+        typeStruct = swagScope.regTypeInfoStruct;
+        break;
+    case TypeInfoKind::Param:
+        typeStruct = swagScope.regTypeInfoParam;
+        break;
     default:
         context->errorContext.report({sourceFile, context->node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
         return false;
@@ -98,10 +115,10 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     auto stringIndex = module->reserveString(typeInfo->name);
     module->constantSegment.addInitString(OFFSETOF(concreteTypeInfoValue->name), stringIndex);
 
-    concreteTypeInfoValue->name.text = typeInfo->name.c_str();
-    concreteTypeInfoValue->name.len  = typeInfo->name.size();
-    concreteTypeInfoValue->kind      = typeInfo->kind;
-    concreteTypeInfoValue->sizeOf    = typeInfo->sizeOf;
+    concreteTypeInfoValue->name.buffer = (void*) typeInfo->name.c_str();
+    concreteTypeInfoValue->name.count  = typeInfo->name.size();
+    concreteTypeInfoValue->kind        = typeInfo->kind;
+    concreteTypeInfoValue->sizeOf      = typeInfo->sizeOf;
 
     switch (typeInfo->kind)
     {
@@ -116,6 +133,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
         auto realType          = (TypeInfoPointer*) typeInfo;
         concreteType->ptrCount = realType->ptrCount;
+
         TypeInfo* typePtr;
         uint32_t  tmpStorageOffset;
         SWAG_CHECK(makeConcreteTypeInfo(context, realType->pointedType, &typePtr, &tmpStorageOffset, false));
@@ -123,6 +141,19 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
 
         // We have a pointer in the constant segment, so we need to register it for backend setup
         module->constantSegment.addInitPtr(OFFSETOF(concreteType->pointedType), tmpStorageOffset);
+        break;
+    }
+    case TypeInfoKind::Param:
+    {
+        auto concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoParam*) typeInfo;
+        break;
+    }
+    case TypeInfoKind::Struct:
+    {
+        auto concreteType          = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
+        auto realType              = (TypeInfoStruct*) typeInfo;
+        concreteType->fields.count = realType->childs.size();
         break;
     }
     }

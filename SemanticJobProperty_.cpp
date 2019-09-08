@@ -85,7 +85,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             return true;
         }
 
-        typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32);
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->byteCodeFct = &ByteCodeGenJob::emitTypeOfProperty;
         return true;
     }

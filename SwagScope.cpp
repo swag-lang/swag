@@ -17,20 +17,32 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         regTypeInfo = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
-	else if (typeInfo->name == "TypeInfoNative")
+    else if (typeInfo->name == "TypeInfoNative")
     {
         SWAG_ASSERT(!regTypeInfoNative);
         regTypeInfoNative = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
-	else if (typeInfo->name == "TypeInfoPointer")
+    else if (typeInfo->name == "TypeInfoPointer")
     {
         SWAG_ASSERT(!regTypeInfoPointer);
         regTypeInfoPointer = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
+    else if (typeInfo->name == "TypeInfoStruct")
+    {
+        SWAG_ASSERT(!regTypeInfoStruct);
+        regTypeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        cptSolved++;
+    }
+    else if (typeInfo->name == "TypeInfoParam")
+    {
+        SWAG_ASSERT(!regTypeInfoParam);
+        regTypeInfoParam = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        cptSolved++;
+    }
 
-    if (cptSolved == 3)
+    if (cptSolved == 5)
     {
         fullySolved = true;
         for (auto job : dependentJobs)

@@ -38,7 +38,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count - 1;
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
 
-		freeRegisterRC(context,  r0);
+        freeRegisterRC(context, r0);
     }
 
     if (sizeOf > 1)
@@ -86,13 +86,20 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     if (typeInfo->isNative(NativeTypeKind::String))
     {
         node->resultRegisterRC += reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::DeRefString, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+		node->resultRegisterRC += reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         return true;
     }
 
@@ -198,7 +205,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (typeInfo->pointedType->isNative(NativeTypeKind::String))
         {
             node->array->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::DeRefString, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
         }
         else if (!(node->flags & AST_TAKE_ADDRESS))
         {
@@ -251,7 +258,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (typeInfo->pointedType->isNative(NativeTypeKind::String))
         {
             node->array->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::DeRefString, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
         }
         else if (!(node->flags & AST_TAKE_ADDRESS) && typeInfo->pointedType->kind != TypeInfoKind::Array)
         {

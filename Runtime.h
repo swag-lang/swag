@@ -76,5 +76,16 @@ namespace swag
 		pointedType:	*TypeInfo
 		ptrCount:		u32
 	}
+
+	struct TypeInfoParam
+	{
+		base: 			TypeInfo
+	}
+
+	struct TypeInfoStruct
+	{
+		base: 		TypeInfo
+		fields:		const [..] *TypeInfoParam
+	}
 }
 )";

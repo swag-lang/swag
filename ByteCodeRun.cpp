@@ -345,7 +345,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             registersRC[ip->b.u32].pointer = *(uint8_t**) (ptr + ip->c.u32);
         break;
     }
-    case ByteCodeOp::DeRefString:
+    case ByteCodeOp::DeRefStringSlice:
     {
         auto ptr = registersRC[ip->a.u32].pointer;
         if (ptr == nullptr)
