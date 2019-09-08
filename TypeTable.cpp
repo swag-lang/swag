@@ -28,10 +28,17 @@ TypeInfo* TypeTable::registerType(TypeInfo* newTypeInfo)
     return newTypeInfo;
 }
 
+struct ConcreteString
+{
+    const char* text;
+    uint64_t    len;
+};
+
 struct ConcreteTypeInfo
 {
-    TypeInfoKind kind;
-    uint32_t     sizeOf;
+    ConcreteString name;
+    TypeInfoKind   kind;
+    uint32_t       sizeOf;
 };
 
 struct ConcreteTypeInfoNative
@@ -86,8 +93,15 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
-    concreteTypeInfoValue->kind   = typeInfo->kind;
-    concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
+#define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) &__field - (uint64_t) concreteTypeInfoValue))
+
+    auto stringIndex = module->reserveString(typeInfo->name);
+    module->constantSegment.addInitString(OFFSETOF(concreteTypeInfoValue->name), stringIndex);
+
+    concreteTypeInfoValue->name.text = typeInfo->name.c_str();
+    concreteTypeInfoValue->name.len  = typeInfo->name.size();
+    concreteTypeInfoValue->kind      = typeInfo->kind;
+    concreteTypeInfoValue->sizeOf    = typeInfo->sizeOf;
 
     switch (typeInfo->kind)
     {
@@ -107,9 +121,8 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         SWAG_CHECK(makeConcreteTypeInfo(context, realType->pointedType, &typePtr, &tmpStorageOffset, false));
         concreteType->pointedType = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
 
-		// We have a pointer in the constant segment, so we need to register it for backend
-        uint32_t fromOffset       = storageOffset + (uint32_t) ((uint64_t) &concreteType->pointedType - (uint64_t) concreteTypeInfoValue);
-        module->constantSegment.addInitPtr(fromOffset, tmpStorageOffset);
+        // We have a pointer in the constant segment, so we need to register it for backend setup
+        module->constantSegment.addInitPtr(OFFSETOF(concreteType->pointedType), tmpStorageOffset);
         break;
     }
     }

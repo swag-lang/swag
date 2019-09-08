@@ -13,4 +13,7 @@
 	
 	ptr1 := ptr.pointedType;
 	@assert(ptr1.kind == TypeInfoKind.Native)
+	
+	ptr2 := cast(const *TypeInfoNative) ptr1;
+	@assert(ptr2.nativeKind == TypeInfoNativeKind.U32)
 }

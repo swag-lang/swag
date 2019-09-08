@@ -59,6 +59,7 @@ namespace swag
 
 	struct TypeInfo
 	{
+		name:	string
 		kind: 	TypeInfoKind = TypeInfoKind.Invalid
 		sizeOf: u32
 	}
