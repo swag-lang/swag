@@ -15,8 +15,9 @@ void Tokenizer::setFile(SourceFile* file)
     endReached      = false;
     cacheChar       = 0;
     sourceFile      = file;
-    for (int i = 0; i < REPORT_NUM_CODE_LINES; i++)
+    for (int i = 0; i < REPORT_NUM_CODE_LINES - 1; i++)
         location.seekStartLine[i] = -1;
+	location.seekStartLine[REPORT_NUM_CODE_LINES - 1] = 0;
 }
 
 inline void Tokenizer::treatChar(char32_t c, unsigned offset)

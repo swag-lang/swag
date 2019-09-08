@@ -50,40 +50,48 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.print(textMsg);
     g_Log.eol();
     if (!verboseMode)
-        g_Log.setColor(LogColor::Gray);
+        g_Log.setColor(LogColor::Cyan);
 
     // Source code
     if (hasFile && hasLocation && printSource && g_CommandLine.errorSourceOut)
     {
-        int  offset = 0;
-        Utf8 line;
+        // Get all lines of code
+        vector<Utf8> lines;
         for (int i = 0; i < REPORT_NUM_CODE_LINES; i++)
         {
             if (startLocation.seekStartLine[i] == -1)
                 continue;
+            lines.push_back(sourceFile->getLine(startLocation.seekStartLine[i]));
+        }
 
-            // Remove blanks at the start of the source line
-            auto        tmpLine = sourceFile->getLine(startLocation.seekStartLine[i]);
-            const char* buf     = tmpLine.c_str();
-            offset              = 0;
+        // Compute the minimal number of blanks at the start (to unindent)
+        uint32_t minOffset = UINT32_MAX;
+        for (auto& line : lines)
+        {
+            const char* buf = line.c_str();
+
+            uint32_t offset = 0;
             while (*buf == ' ')
             {
                 buf++;
                 offset++;
             }
 
-            // Indent
-            line = "  ";
-            line += buf;
-            offset -= 2;
+            minOffset = min(minOffset, offset);
+        }
 
-            g_Log.print(line);
+		// Print all lines
+        for (auto& line : lines)
+        {
+            g_Log.print("  ");
+            g_Log.print(line.c_str() + minOffset);
             g_Log.eol();
         }
 
         if (showRange)
         {
-            for (int i = 0; i < startLocation.column - offset; i++)
+            minOffset -= 2;
+            for (int i = 0; i < startLocation.column - (int) minOffset; i++)
                 g_Log.print(" ");
 
             int range = 1;
@@ -92,7 +100,7 @@ void Diagnostic::report(bool verboseMode) const
             else if (endLocation.line == startLocation.line)
                 range = endLocation.column - startLocation.column;
             else
-                range = (int) line.length() - startLocation.column - offset;
+                range = (int) lines.back().length() - startLocation.column - minOffset;
             range = max(1, range);
             if (!verboseMode)
                 g_Log.setColor(LogColor::Green);

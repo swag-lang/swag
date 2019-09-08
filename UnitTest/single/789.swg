@@ -3,7 +3,7 @@
 //#[swag.printbc]
 #test
 {
-	pt = ["A"]
+	pt := ["A"]
 	var slice: [..] *string = [&pt[0]]
 	
 	str := slice[0, 0]
