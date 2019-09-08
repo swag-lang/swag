@@ -13,8 +13,7 @@ func toto(x: s32)
 	
 	ptr := cast(const *TypeInfoFunc) t
 	@assert(@countof(ptr.parameters) == 1)
-	
-	//@print(cast(s32) ptr.parameters[0].offsetOf)
+	@assert(ptr.parameters[0].namedParam == "x")
 	
 	/*@print(ptr.base.name)
 	@print(" ")
