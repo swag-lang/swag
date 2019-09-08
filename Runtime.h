@@ -80,6 +80,7 @@ namespace swag
 	struct TypeInfoParam
 	{
 		base: 			TypeInfo
+		namedParam:		string
 	}
 
 	struct TypeInfoStruct

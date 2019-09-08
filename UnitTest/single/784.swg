@@ -17,4 +17,8 @@ struct Point
 	
 	ptr := cast(const *TypeInfoStruct) t;
 	@assert(@countof(ptr.fields) == 3)
+	
+	ptr0 := ptr.fields[0]
+	@assert(ptr0.base.kind == TypeInfoKind.Param)
+	@print(ptr0.namedParam)
 }

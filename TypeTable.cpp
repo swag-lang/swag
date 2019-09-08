@@ -56,7 +56,8 @@ struct ConcreteTypeInfoPointer
 
 struct ConcreteTypeInfoParam
 {
-    ConcreteTypeInfo base;
+    ConcreteTypeInfo    base;
+    ConcreteStringSlice namedParam;
 };
 
 struct ConcreteTypeInfoStruct
@@ -65,9 +66,9 @@ struct ConcreteTypeInfoStruct
     ConcreteStringSlice fields;
 };
 
-#define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) &(__field) - (uint64_t) concreteTypeInfoValue))
+#define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
 
-bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, ConcreteTypeInfo* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
+bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -79,7 +80,7 @@ bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, ConcreteTypeIn
 
     // We have a pointer in the constant segment, so we need to register it for backend setup
     module->constantSegment.addInitPtr(OFFSETOF(*result), tmpStorageOffset);
-	return true;
+    return true;
 }
 
 bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
@@ -148,13 +149,20 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
         auto realType          = (TypeInfoPointer*) typeInfo;
         concreteType->ptrCount = realType->ptrCount;
-		SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }
     case TypeInfoKind::Param:
     {
         auto concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
         auto realType     = (TypeInfoParam*) typeInfo;
+        if (!realType->namedParam.empty())
+        {
+            stringIndex = module->reserveString(realType->namedParam);
+            module->constantSegment.addInitString(OFFSETOF(concreteType->namedParam), stringIndex);
+            concreteType->namedParam.buffer = (void*) realType->namedParam.c_str();
+            concreteType->namedParam.count  = realType->namedParam.size();
+        }
         break;
     }
     case TypeInfoKind::Struct:
@@ -162,6 +170,16 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType          = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
         auto realType              = (TypeInfoStruct*) typeInfo;
         concreteType->fields.count = realType->childs.size();
+
+        uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->childs.size() * sizeof(void*));
+        ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
+        concreteType->fields.buffer     = addrArray;
+        module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
+        for (int field = 0; field < concreteType->fields.count; field++)
+        {
+            SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + field, realType->childs[field]));
+        }
+
         break;
     }
     }
