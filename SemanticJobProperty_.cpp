@@ -76,6 +76,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case Property::TypeOf:
     {
         SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
+		expr->flags |= AST_NO_BYTECODE;
         auto&       swagScope = sourceFile->module->workspace->swagScope;
         scoped_lock lock(swagScope.mutex);
         if (!swagScope.fullySolved)

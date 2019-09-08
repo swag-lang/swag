@@ -41,8 +41,14 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         regTypeInfoParam = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
+    else if (typeInfo->name == "TypeInfoFunc")
+    {
+        SWAG_ASSERT(!regTypeInfoFunc);
+        regTypeInfoFunc = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        cptSolved++;
+    }
 
-    if (cptSolved == 5)
+    if (cptSolved == 6)
     {
         fullySolved = true;
         for (auto job : dependentJobs)

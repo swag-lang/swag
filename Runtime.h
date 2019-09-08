@@ -81,12 +81,21 @@ namespace swag
 	{
 		base: 			TypeInfo
 		namedParam:		string
+		pointedType:	*TypeInfo
+		offsetOf:		u32
 	}
 
 	struct TypeInfoStruct
 	{
 		base: 		TypeInfo
 		fields:		const [..] *TypeInfoParam
+	}
+
+	struct TypeInfoFunc
+	{
+		base: 			TypeInfo
+		parameters:		const [..] *TypeInfoParam
+		returnType:		*TypeInfo
 	}
 }
 )";
