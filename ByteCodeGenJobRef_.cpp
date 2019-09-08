@@ -163,25 +163,22 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (!(node->flags & AST_TAKE_ADDRESS))
+        switch (sizeOf)
         {
-            switch (sizeOf)
-            {
-            case 1:
-                emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
-                break;
-            case 2:
-                emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
-                break;
-            case 4:
-                emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
-                break;
-            case 8:
-                emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
-                break;
-            default:
-                return internalError(context, "emitPointerDeRef, slice, size not supported");
-            }
+        case 1:
+            emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitPointerDeRef, slice, size not supported");
         }
 
         node->resultRegisterRC = node->array->resultRegisterRC;

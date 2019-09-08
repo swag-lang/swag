@@ -20,7 +20,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         return context->errorContext.report({sourceFile, child, "invalid address expression"});
 
     SWAG_CHECK(checkIsConcrete(context, child));
-	node->flags |= AST_R_VALUE;
+    node->flags |= AST_R_VALUE;
 
     // Lambda
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
@@ -100,7 +100,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
-	arrayNode->flags |= AST_R_VALUE;
+    arrayNode->flags |= AST_R_VALUE;
 
     auto arrayType  = arrayNode->array->typeInfo;
     auto sourceFile = context->sourceFile;
@@ -175,7 +175,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
-	arrayNode->flags |= AST_R_VALUE;
+    arrayNode->flags |= AST_R_VALUE;
 
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
         return context->errorContext.report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
@@ -215,6 +215,19 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         auto typePtr        = static_cast<TypeInfoSlice*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
+
+        if (arrayNode->parent->kind == AstNodeKind::IdentifierRef)
+        {
+			auto nodeId = (AstIdentifierRef*) arrayNode->parent;
+			nodeId->typeInfo = typePtr->pointedType;
+            if (typePtr->pointedType->kind == TypeInfoKind::Pointer)
+            {
+                auto typePointer = CastTypeInfo<TypeInfoPointer>(typePtr->pointedType, TypeInfoKind::Pointer);
+                if (typePointer->pointedType->kind == TypeInfoKind::Struct)
+					nodeId->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
+            }
+        }
+
         break;
     }
 

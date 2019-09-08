@@ -163,6 +163,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     return true;
 }
 
+//bool SemanticJob::computeScope(SemanticContext* context, AstNode* parent, TypeInfo* typeInfo)
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch)
 {
     auto  sourceFile                   = context->sourceFile;
@@ -297,6 +298,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             if (typeArray->rawType->kind == TypeInfoKind::Struct)
                 parent->startScope = static_cast<TypeInfoStruct*>(typeArray->rawType)->scope;
+            identifier->typeInfo = typeInfo;
+            parent->typeInfo     = typeInfo;
+        }
+
+        // Slice
+        else if (typeInfo->kind == TypeInfoKind::Slice)
+        {
+            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+            if (typeSlice->pointedType->kind == TypeInfoKind::Struct)
+                parent->startScope = static_cast<TypeInfoStruct*>(typeSlice->pointedType)->scope;
             identifier->typeInfo = typeInfo;
             parent->typeInfo     = typeInfo;
         }
