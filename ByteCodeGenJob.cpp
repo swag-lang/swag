@@ -80,9 +80,10 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     SWAG_ASSERT(bc->out);
     ByteCodeInstruction& ins = bc->out[bc->numInstructions++];
     ins.op                   = op;
-    ins.a.u32                = r0;
-    ins.b.u32                = r1;
-    ins.c.u32                = r2;
+    ins.a.u64                = r0;
+    ins.b.u64                = r1;
+    ins.c.u64                = r2;
+    ins.cache.u64            = 0;
     ins.sourceFileIdx        = node->sourceFileIdx;
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
@@ -233,7 +234,7 @@ JobResult ByteCodeGenJob::execute()
             g_ThreadMgr.addJob(job);
     }
 
-	if (g_CommandLine.stats)
+    if (g_CommandLine.stats)
         g_Stats.numInstructions += originalNode->bc->numInstructions;
 
     return JobResult::ReleaseJob;

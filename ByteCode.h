@@ -14,6 +14,7 @@ struct ByteCodeInstruction
     Register       a;
     Register       b;
     Register       c;
+	Register       cache;
     uint32_t       sourceFileIdx;
     SourceLocation startLocation;
     SourceLocation endLocation;
