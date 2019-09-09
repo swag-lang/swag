@@ -11,43 +11,43 @@ void SwagScope::registerType(TypeInfo* typeInfo)
     if (typeInfo->kind != TypeInfoKind::Struct)
         return;
 
-    if (typeInfo->name == "TypeInfo")
+    if (typeInfo->name == "typeinfo")
     {
         SWAG_ASSERT(!regTypeInfo);
         regTypeInfo = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
-    else if (typeInfo->name == "TypeInfoNative")
+    else if (typeInfo->name == "typeinfo_native")
     {
         SWAG_ASSERT(!regTypeInfoNative);
         regTypeInfoNative = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
-    else if (typeInfo->name == "TypeInfoPointer")
+    else if (typeInfo->name == "typeinfo_pointer")
     {
         SWAG_ASSERT(!regTypeInfoPointer);
         regTypeInfoPointer = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
-    else if (typeInfo->name == "TypeInfoStruct")
+    else if (typeInfo->name == "typeinfo_struct")
     {
         SWAG_ASSERT(!regTypeInfoStruct);
         regTypeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
-    else if (typeInfo->name == "TypeInfoParam")
+    else if (typeInfo->name == "typeinfo_param")
     {
         SWAG_ASSERT(!regTypeInfoParam);
         regTypeInfoParam = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
-    else if (typeInfo->name == "TypeInfoFunc")
+    else if (typeInfo->name == "typeinfo_func")
     {
         SWAG_ASSERT(!regTypeInfoFunc);
         regTypeInfoFunc = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
-    else if (typeInfo->name == "TypeInfoEnum")
+    else if (typeInfo->name == "typeinfo_enum")
     {
         SWAG_ASSERT(!regTypeInfoEnum);
 		regTypeInfoEnum = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);

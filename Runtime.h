@@ -19,7 +19,7 @@ namespace swag
 	attr foreign(module: string = "") -> func;
 	attr semsleep(time: s32) -> func;
 
-	enum TypeInfoKind
+	enum typeinfo_kind
 	{
 		Invalid
 		Native
@@ -39,7 +39,7 @@ namespace swag
 		Alias		
 	}
 
-	enum TypeInfoNativeKind
+	enum typeinfo_native_kind
 	{
 		Void
 		S8
@@ -57,53 +57,53 @@ namespace swag
 		String
 	}
 
-	struct TypeInfo
+	struct typeinfo
 	{
 		name:	string
-		kind: 	TypeInfoKind = TypeInfoKind.Invalid
-		sizeOf: u32
+		kind: 	typeinfo_kind = typeinfo_kind.Invalid
+		sizeof: u32
 	}
 
-	struct TypeInfoNative
+	struct typeinfo_native
 	{
-		base: 		TypeInfo
-		nativeKind:	TypeInfoNativeKind = TypeInfoNativeKind.Void
+		base: 			typeinfo
+		native_kind:	typeinfo_native_kind = typeinfo_native_kind.Void
 	}
 
-	struct TypeInfoPointer
+	struct typeinfo_pointer
 	{
-		base: 			TypeInfo
-		pointedType:	*TypeInfo
-		ptrCount:		u32
+		base: 			typeinfo
+		pointed_type:	*typeinfo
+		ptr_count:		u32
 	}
 
-	struct TypeInfoParam
+	struct typeinfo_param
 	{
-		base: 			TypeInfo
-		namedParam:		string
-		pointedType:	*TypeInfo
+		base: 			typeinfo
+		named_param:	string
+		pointed_type:	*typeinfo
 		value:			*void
-		offsetOf:		u32
+		offset:			u32
 	}
 
-	struct TypeInfoStruct
+	struct typeinfo_struct
 	{
-		base: 		TypeInfo
-		fields:		const [..] *TypeInfoParam
+		base: 		typeinfo
+		fields:		const [..] *typeinfo_param
 	}
 
-	struct TypeInfoFunc
+	struct typeinfo_func
 	{
-		base: 			TypeInfo
-		parameters:		const [..] *TypeInfoParam
-		returnType:		*TypeInfo
+		base: 			typeinfo
+		parameters:		const [..] *typeinfo_param
+		return_type:	*typeinfo
 	}
 
-	struct TypeInfoEnum
+	struct typeinfo_enum
 	{
-		base: 		TypeInfo
-		values:		const [..] *TypeInfoParam
-		rawType:	*TypeInfo
+		base: 		typeinfo
+		values:		const [..] *typeinfo_param
+		raw_type:	*typeinfo
 	}
 }
 )";

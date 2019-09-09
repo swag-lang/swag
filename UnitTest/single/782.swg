@@ -5,15 +5,15 @@
 	using swag
 	
 	t := @typeof(*u32)
-	@assert(t.kind == TypeInfoKind.Pointer)
-	@assert(t.sizeOf == @sizeof(*void))
+	@assert(t.kind == typeinfo_kind.Pointer)
+	@assert(t.sizeof == @sizeof(*void))
 	
-	ptr := cast(const *TypeInfoPointer) t;
-	@assert(ptr.ptrCount == 1)
+	ptr := cast(const *typeinfo_pointer) t;
+	@assert(ptr.ptr_count == 1)
 	
-	ptr1 := ptr.pointedType;
-	@assert(ptr1.kind == TypeInfoKind.Native)
+	ptr1 := ptr.pointed_type;
+	@assert(ptr1.kind == typeinfo_kind.Native)
 	
-	ptr2 := cast(const *TypeInfoNative) ptr1;
-	@assert(ptr2.nativeKind == TypeInfoNativeKind.U32)
+	ptr2 := cast(const *typeinfo_native) ptr1;
+	@assert(ptr2.native_kind == typeinfo_native_kind.U32)
 }
