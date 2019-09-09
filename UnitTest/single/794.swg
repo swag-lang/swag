@@ -11,7 +11,13 @@ func(T) toto()
 {
 	#if @typeof(T) == @typeof(Point)
 	{
+		cpt |= 1
 	}
+	
+	#if @typeof(T) != @typeof(Point)
+	{
+		cpt |= 2
+	}	
 }
 
 
@@ -20,5 +26,6 @@ func(T) toto()
 {
 	cpt = 0
 	toto!Point()
-	@assert(cpt == 1)
+	toto!s32()	
+	@assert(cpt == 3)
 }

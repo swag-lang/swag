@@ -48,13 +48,3 @@ bool ByteCodeGenJob::emitDataProperty(ByteCodeGenContext* context)
 
     return true;
 }
-
-bool ByteCodeGenJob::emitTypeOfProperty(ByteCodeGenContext* context)
-{
-    auto node = context->node;
-
-    reserveRegisterRC(context, node->resultRegisterRC, 2);
-    auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-    inst->c.u64 = ((uint64_t) node->computedValue.reg.u32 << 32) | (uint32_t) 1;
-    return true;
-}

@@ -9,7 +9,12 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     auto leftTypeInfo = left->typeInfo;
     auto sourceFile   = context->sourceFile;
 
-    if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
+    if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
+    {
+		node->flags |= AST_VALUE_COMPUTED;
+		node->computedValue.reg.b = left->typeInfo == right->typeInfo;
+    }
+    else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
         node->flags |= AST_VALUE_COMPUTED;
         switch (leftTypeInfo->nativeType)
@@ -210,7 +215,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;
     node->inheritAndFlag(AST_CONST_EXPR);
-	node->inheritAndFlag(AST_R_VALUE);
+    node->inheritAndFlag(AST_R_VALUE);
 
     switch (node->token.id)
     {
