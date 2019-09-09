@@ -59,6 +59,7 @@ struct ConcreteTypeInfoParam
     ConcreteTypeInfo    base;
     ConcreteStringSlice namedParam;
     ConcreteTypeInfo*   pointedType;
+    void*               ptrValue;
     uint32_t            offsetOf;
 };
 
@@ -189,6 +190,45 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         }
 
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
+
+        // Value
+        if (realType->flags & TYPEINFO_DEFINED_VALUE)
+        {
+            concreteType->ptrValue = nullptr;
+            if (realType->typeInfo->isNative(NativeTypeKind::String))
+            {
+                auto tmpStorageOffset = module->constantSegment.reserveNoLock(2 * sizeof(void*));
+                stringIndex           = module->reserveString(realType->value.text);
+                module->constantSegment.addInitString(tmpStorageOffset, stringIndex);
+
+                concreteType->ptrValue                  = module->constantSegment.addressNoLock(tmpStorageOffset);
+                *(const char**) concreteType->ptrValue  = realType->value.text.c_str();
+                ((uint64_t*) concreteType->ptrValue)[1] = realType->value.text.size();
+                module->constantSegment.addInitPtr(OFFSETOF(concreteType->ptrValue), tmpStorageOffset);
+            }
+            else
+            {
+                auto tmpStorageOffset  = module->constantSegment.reserveNoLock(realType->typeInfo->sizeOf);
+                concreteType->ptrValue = module->constantSegment.addressNoLock(tmpStorageOffset);
+                module->constantSegment.addInitPtr(OFFSETOF(concreteType->ptrValue), tmpStorageOffset);
+                switch (realType->typeInfo->sizeOf)
+                {
+                case 1:
+                    *(uint8_t*) concreteType->ptrValue = realType->value.reg.u8;
+                    break;
+                case 2:
+                    *(uint16_t*) concreteType->ptrValue = realType->value.reg.u16;
+                    break;
+                case 4:
+                    *(uint32_t*) concreteType->ptrValue = realType->value.reg.u32;
+                    break;
+                case 8:
+                    *(uint64_t*) concreteType->ptrValue = realType->value.reg.u64;
+                    break;
+                }
+            }
+        }
+
         break;
     }
     case TypeInfoKind::Struct:

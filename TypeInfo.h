@@ -82,6 +82,7 @@ static const uint32_t TYPEINFO_STRUCT_NO_POST_MOVE      = 0x00000800;
 static const uint32_t TYPEINFO_GENERIC                  = 0x00001000;
 static const uint32_t TYPEINFO_RETURN_BY_COPY           = 0x00002000;
 static const uint32_t TYPEINFO_NATIVE_VALUE             = 0x00004000;
+static const uint32_t TYPEINFO_DEFINED_VALUE            = 0x00008000;
 
 static const uint32_t ISSAME_EXACT = 0x00000001;
 static const uint32_t ISSAME_CAST  = 0x00000002;

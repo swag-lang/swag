@@ -1,10 +1,10 @@
-#module module786
+#module module790
 
-enum TOTO
+enum TOTO : string
 {
-	R = 100
-	G = 200
-	B = 300
+	R = "str100"
+	G = "str200"
+	B = "str300"
 }
 
 //#[swag.printbc]
@@ -19,6 +19,6 @@ enum TOTO
 	ptr1 := ptr.values[1]
 	@assert(ptr1.namedParam == "G")
 	
-	ptrVal := cast(*s32) ptr1.ptrValue;
-	@assert(ptrVal[0] == 200)
+	ptrVal := cast(*string) ptr1.ptrValue;
+	@assert(ptrVal[0] == "str200")
 }

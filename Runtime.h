@@ -82,6 +82,7 @@ namespace swag
 		base: 			TypeInfo
 		namedParam:		string
 		pointedType:	*TypeInfo
+		ptrValue:		*void
 		offsetOf:		u32
 	}
 
