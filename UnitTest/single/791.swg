@@ -2,6 +2,10 @@
 
 var cpt: u32 = 0
 
+struct Point
+{
+}
+
 //#[swag.printbc]
 func(T) toto()
 {
@@ -10,6 +14,8 @@ func(T) toto()
 		cpt |= 1
 	if(t == @typeof(f32))
 		cpt |= 2
+	//if(t == @typeof(Point))
+	//	cpt |= 4		
 }
 
 
@@ -19,5 +25,6 @@ func(T) toto()
 	cpt = 0
 	toto!s32()
 	toto!f32()
+	//toto!Point()
 	@assert(cpt == 3)
 }
