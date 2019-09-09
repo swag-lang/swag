@@ -19,6 +19,6 @@ enum TOTO
 	ptr1 := ptr.values[1]
 	@assert(ptr1.namedParam == "G")
 	
-	ptrVal := cast(*s32) ptr1.ptrValue;
+	ptrVal := cast(*s32) ptr1.value;
 	@assert(ptrVal[0] == 200)
 }

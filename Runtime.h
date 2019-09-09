@@ -82,7 +82,7 @@ namespace swag
 		base: 			TypeInfo
 		namedParam:		string
 		pointedType:	*TypeInfo
-		ptrValue:		*void
+		value:			*void
 		offsetOf:		u32
 	}
 
@@ -101,9 +101,9 @@ namespace swag
 
 	struct TypeInfoEnum
 	{
-		base: 			TypeInfo
-		values:			const [..] *TypeInfoParam
-		rawType:		*TypeInfo
+		base: 		TypeInfo
+		values:		const [..] *TypeInfoParam
+		rawType:	*TypeInfo
 	}
 }
 )";
