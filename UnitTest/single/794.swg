@@ -26,6 +26,7 @@ func(T) toto()
 {
 	cpt = 0
 	toto!Point()
+	@assert(cpt == 1)
 	toto!s32()	
 	@assert(cpt == 3)
 }

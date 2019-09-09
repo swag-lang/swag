@@ -80,12 +80,16 @@ void Diagnostic::report(bool verboseMode) const
             minOffset = min(minOffset, offset);
         }
 
-		// Print all lines
+        // Print all lines
         for (auto& line : lines)
         {
-            g_Log.print("  ");
-            g_Log.print(line.c_str() + minOffset);
-            g_Log.eol();
+            const char* pz = line.c_str() + minOffset;
+            if (*pz && *pz != '\n' && *pz != '\r')
+            {
+                g_Log.print("  ");
+                g_Log.print(line.c_str() + minOffset);
+                g_Log.eol();
+            }
         }
 
         if (showRange)

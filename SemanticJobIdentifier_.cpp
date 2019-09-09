@@ -283,11 +283,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     {
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
-		// Setup parent if necessary
+        // Setup parent if necessary
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
         setupIdentifierRef(context, identifier, typeInfo);
 
-		// Lambda call
+        // Lambda call
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)
         {
             // From now this is considered as a function, not a lambda
@@ -479,12 +479,16 @@ anotherTry:
                 break;
 
             case MatchResult::BadGenericSignature:
-                badGenericSignature.push_back(overload);
-                hasGenericErrors = true;
+                if (overload->typeInfo->flags & TYPEINFO_GENERIC)
+                {
+                    badGenericSignature.push_back(overload);
+                    hasGenericErrors = true;
+                }
                 break;
 
             case MatchResult::BadSignature:
                 badSignature.push_back(overload);
+                break;
                 break;
 
             case MatchResult::TooManyGenericParameters:
@@ -638,16 +642,41 @@ anotherTry:
             case MatchResult::BadGenericSignature:
             {
                 SWAG_ASSERT(genericParameters);
-                Diagnostic diag{sourceFile,
-                                genericParameters->childs[job->symMatch.badSignatureParameterIdx],
-                                format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
-                                       job->symMatch.badSignatureParameterIdx + 1,
-                                       SymTable::getNakedKindName(symbol->kind),
-                                       symbol->name.c_str(),
-                                       job->symMatch.badSignatureRequestedType->name.c_str(),
-                                       job->symMatch.badSignatureGivenType->name.c_str())};
-                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                if (job->symMatch.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
+                {
+                    Diagnostic diag{sourceFile,
+                                    genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                                    format("bad generic parameter '%d' for %s '%s' (type expected, value provided)",
+                                           job->symMatch.badSignatureParameterIdx + 1,
+                                           SymTable::getNakedKindName(symbol->kind),
+                                           symbol->name.c_str())};
+                    Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                    return context->errorContext.report(diag, &note);
+                }
+                else if (job->symMatch.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
+                {
+                    Diagnostic diag{sourceFile,
+                                    genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                                    format("bad generic parameter '%d' for %s '%s' (value expected, type provided)",
+                                           job->symMatch.badSignatureParameterIdx + 1,
+                                           SymTable::getNakedKindName(symbol->kind),
+                                           symbol->name.c_str())};
+                    Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                    return context->errorContext.report(diag, &note);
+                }
+                else
+                {
+                    Diagnostic diag{sourceFile,
+                                    genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                                    format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
+                                           job->symMatch.badSignatureParameterIdx + 1,
+                                           SymTable::getNakedKindName(symbol->kind),
+                                           symbol->name.c_str(),
+                                           job->symMatch.badSignatureRequestedType->name.c_str(),
+                                           job->symMatch.badSignatureGivenType->name.c_str())};
+                    Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                    return context->errorContext.report(diag, &note);
+                }
             }
             }
         }

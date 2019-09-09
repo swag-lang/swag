@@ -321,7 +321,35 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         auto callParameter   = context.genericParameters[i];
         auto symbolParameter = genericParameters[i];
         auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-        bool same            = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+
+        if (myTypeInfo->flags & TYPEINFO_GENERIC)
+        {
+            auto firstChild = callParameter->childs.empty() ? nullptr : callParameter->childs.front();
+            if (firstChild)
+            {
+                if ((symbolParameter->typeInfo->kind == TypeInfoKind::Generic) && (firstChild->kind == AstNodeKind::Literal))
+                {
+                    context.badSignatureParameterIdx  = i;
+                    context.badSignatureRequestedType = symbolParameter->typeInfo;
+                    context.badSignatureGivenType     = typeInfo;
+                    context.result                    = MatchResult::BadGenericSignature;
+                    context.flags |= SymbolMatchContext::MATCH_ERROR_VALUE_TYPE;
+                    continue;
+                }
+
+                if ((symbolParameter->typeInfo->kind != TypeInfoKind::Generic) && (firstChild->kind != AstNodeKind::Literal))
+                {
+                    context.badSignatureParameterIdx  = i;
+                    context.badSignatureRequestedType = symbolParameter->typeInfo;
+                    context.badSignatureGivenType     = typeInfo;
+                    context.result                    = MatchResult::BadGenericSignature;
+                    context.flags |= SymbolMatchContext::MATCH_ERROR_TYPE_VALUE;
+                    continue;
+                }
+            }
+        }
+
+        bool same = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
         if (!same)
         {
             context.badSignatureParameterIdx  = i;
