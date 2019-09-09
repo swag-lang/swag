@@ -1340,6 +1340,10 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (fromType->isSame(toType, ISSAME_CAST))
         return true;
 
+	// Always match against a generic
+    if (toType->kind == TypeInfoKind::Generic)
+        return true;
+
     // Pointer to pointer
     if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer)
     {

@@ -231,14 +231,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         assert(node->typeInfo);
 
-        // Set it as const (so this is a new type)
-        if (node->typeInfo->kind != TypeInfoKind::Native)
-        {
-            auto typeInfo = node->typeInfo->clone();
-            typeInfo->setConst();
-            node->typeInfo = typeTable.registerType(typeInfo);
-        }
-
         node->flags |= AST_NO_BYTECODE;
         if (node->typeInfo->kind != TypeInfoKind::Array)
         {

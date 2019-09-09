@@ -19,7 +19,7 @@ void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatc
             cloneContext.replaceTypes[genType] = callType;
 
         // For a struct, each generic parameter must be swapped too
-        if (callType->kind == TypeInfoKind::Struct)
+        if (callType->kind == TypeInfoKind::Struct && genType->kind == TypeInfoKind::Struct)
         {
             auto callTypeStruct = CastTypeInfo<TypeInfoStruct>(callType, TypeInfoKind::Struct);
             auto genTypeStruct  = CastTypeInfo<TypeInfoStruct>(genType, TypeInfoKind::Struct);
@@ -70,8 +70,8 @@ void Generic::updateGenericParameters(vector<TypeInfoParam*>& typeGenericParamet
 
         if (callGenericParameters)
         {
-            param->typeInfo     = callGenericParameters->childs[i]->typeInfo;
-            param->value = callGenericParameters->childs[i]->computedValue;
+            param->typeInfo = callGenericParameters->childs[i]->typeInfo;
+            param->value    = callGenericParameters->childs[i]->computedValue;
         }
         else
         {
