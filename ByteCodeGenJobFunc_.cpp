@@ -205,8 +205,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
     if (funcNode)
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-    else
-        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(varNode->typeInfo, TypeInfoKind::Lambda);
+	else
+	{
+		auto typeVar = TypeManager::concreteType(varNode->typeInfo, MakeConcrete::FlagAlias);
+		typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
+	}
 
     // Be sure referenced function has bytecode
     askForByteCode(context, funcNode);

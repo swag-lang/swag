@@ -11,6 +11,8 @@
 #include "Generic.h"
 #include "TypeManager.h"
 
+thread_local int toto = 0;
+
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
     auto node                    = static_cast<AstIdentifierRef*>(context->node);
@@ -20,6 +22,8 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->typeInfo               = childBack->typeInfo;
     node->name                   = childBack->name;
     node->byteCodeFct            = &ByteCodeGenJob::emitIdentifierRef;
+
+	toto = 1;
 
     // Flag inheritance
     node->flags |= AST_CONST_EXPR;
@@ -974,7 +978,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             symbol->kind != SymbolKind::Function &&
             symbol->kind != SymbolKind::Struct &&
             symbol->kind != SymbolKind::TypeAlias &&
-            (symbol->kind != SymbolKind::Variable || symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Lambda))
+            (symbol->kind != SymbolKind::Variable || TypeManager::concreteType(symbol->overloads[0]->typeInfo, MakeConcrete::FlagAlias)->kind != TypeInfoKind::Lambda))
         {
             Diagnostic diag{sourceFile, callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
             Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
