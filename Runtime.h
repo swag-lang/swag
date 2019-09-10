@@ -9,6 +9,7 @@ func @print(value: string);
 func @assert(value: bool);
 func @alloc(size: u32)->*void;
 func @free(ptr: *void);
+func @memcpy(dst: *void, src: *void, size: u32);
 
 namespace swag 
 {

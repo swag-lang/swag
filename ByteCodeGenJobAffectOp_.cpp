@@ -24,7 +24,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Array || typeInfo->kind == TypeInfoKind::TypeList)
     {
-        emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfo->sizeOf;
+        emitInstruction(context, ByteCodeOp::CopyVC, r0, r1)->c.u32 = typeInfo->sizeOf;
         return true;
     }
 

@@ -53,7 +53,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         {
             auto r0 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
-            emitInstruction(context, ByteCodeOp::Copy, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
+            emitInstruction(context, ByteCodeOp::CopyVC, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
             freeRegisterRC(context, r0);
         }
         else
@@ -134,6 +134,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
         break;
     }
+    case Intrinsic::IntrinsicMemCpy:
+    {
+        auto childDest = callParams->childs[0];
+        auto childSrc  = callParams->childs[1];
+        auto childSize = callParams->childs[2];
+        emitInstruction(context, ByteCodeOp::Copy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        break;
+    }
 
     default:
         return internalError(context, "emitIntrinsic, unknown intrinsic");
@@ -205,11 +213,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
     if (funcNode)
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-	else
-	{
-		auto typeVar = TypeManager::concreteType(varNode->typeInfo, MakeConcrete::FlagAlias);
-		typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
-	}
+    else
+    {
+        auto typeVar = TypeManager::concreteType(varNode->typeInfo, MakeConcrete::FlagAlias);
+        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
+    }
 
     // Be sure referenced function has bytecode
     askForByteCode(context, funcNode);
@@ -505,7 +513,7 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
         }
     }
 
-	// Remember the number of parameters, to allocate registers in backend
+    // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
 
     auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);

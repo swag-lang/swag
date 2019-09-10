@@ -199,7 +199,7 @@ void ByteCode::print()
         case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::CopyRARBStr:
         case ByteCodeOp::DeRefPointer:
-		case ByteCodeOp::Copy:
+		case ByteCodeOp::CopyVC:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 

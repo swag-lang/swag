@@ -11,8 +11,6 @@
 #include "Generic.h"
 #include "TypeManager.h"
 
-thread_local int toto = 0;
-
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
     auto node                    = static_cast<AstIdentifierRef*>(context->node);
@@ -22,8 +20,6 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->typeInfo               = childBack->typeInfo;
     node->name                   = childBack->name;
     node->byteCodeFct            = &ByteCodeGenJob::emitIdentifierRef;
-
-	toto = 1;
 
     // Flag inheritance
     node->flags |= AST_CONST_EXPR;

@@ -526,7 +526,10 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::Copy:
-            bufferC.addString(format("__memcpy(r%u.pointer, r%u.pointer, %d);", ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("__memcpy(r%u.pointer, r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32, ip->c.u32));
+            break;
+        case ByteCodeOp::CopyVC:
+            bufferC.addString(format("__memcpy(r%u.pointer, r%u.pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::CopyRAVB32:
             bufferC.addString(format("r%u.u32 = 0x%x;", ip->a.u32, ip->b.u32));

@@ -27,6 +27,7 @@ enum class Intrinsic
     IntrinsicProp,
     IntrinsicAlloc,
     IntrinsicFree,
+	IntrinsicMemCpy,
 };
 
 struct LanguageSpec

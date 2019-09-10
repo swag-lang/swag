@@ -408,11 +408,19 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->decSP(ip->a.u32);
         break;
     }
-    case ByteCodeOp::Copy:
+    case ByteCodeOp::CopyVC:
     {
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;
         uint32_t size = ip->c.u32;
+        memcpy(dst, src, size);
+        break;
+    }
+    case ByteCodeOp::Copy:
+    {
+        void*    dst  = registersRC[ip->a.u32].pointer;
+        void*    src  = registersRC[ip->b.u32].pointer;
+        uint32_t size = registersRC[ip->c.u32].u32;
         memcpy(dst, src, size);
         break;
     }

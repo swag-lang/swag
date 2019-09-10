@@ -226,7 +226,7 @@ bool ByteCodeGenJob::emitStructCopyMove(ByteCodeGenContext* context, RegisterLis
     bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
 
     // Shallow copy
-    emitInstruction(context, ByteCodeOp::Copy, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
+    emitInstruction(context, ByteCodeOp::CopyVC, r0, r1)->c.u32 = typeInfoStruct->sizeOf;
 
     // A copy
     if (mustCopy)
@@ -351,7 +351,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 auto inst   = emitInstruction(&cxt, ByteCodeOp::RARefFromConstantSeg, 1, 2);
                 inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
 
-                emitInstruction(&cxt, ByteCodeOp::Copy, 0, 1)->c.u32 = typeVar->sizeOf;
+                emitInstruction(&cxt, ByteCodeOp::CopyVC, 0, 1)->c.u32 = typeVar->sizeOf;
             }
             else if (typeVar->isNative(NativeTypeKind::String))
             {

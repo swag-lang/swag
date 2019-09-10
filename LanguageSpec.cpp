@@ -93,6 +93,7 @@ void LanguageSpec::setup()
     intrinsics["@assert"] = Intrinsic::IntrinsicAssert;
     intrinsics["@alloc"]  = Intrinsic::IntrinsicAlloc;
     intrinsics["@free"]   = Intrinsic::IntrinsicFree;
+	intrinsics["@memcpy"] = Intrinsic::IntrinsicMemCpy;
 }
 
 string LanguageSpec::tokenToName(TokenId id)
