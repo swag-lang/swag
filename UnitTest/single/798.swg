@@ -15,7 +15,8 @@ impl Utf8
 			return;
 			
 		newPtr := @alloc(size)
-		@memcpy(newPtr, buffer, self.size)
+		if self.buffer != null
+			@memcpy(newPtr, self.buffer, self.size)
 		self.size = size;
 		@free(self.buffer)
 		self.buffer = cast(*u8) newPtr;

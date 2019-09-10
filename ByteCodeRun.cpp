@@ -421,6 +421,19 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;
         uint32_t size = registersRC[ip->c.u32].u32;
+
+		if (!dst)
+        {
+            context->error("destination pointer of copy is null");
+			break;
+        }
+
+		if (!src)
+        {
+            context->error("source pointer of copy is null");
+            break;
+        }
+
         memcpy(dst, src, size);
         break;
     }
@@ -1702,7 +1715,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* context)
         {
             SWAG_ASSERT(ip->sourceFileIdx < context->sourceFile->module->files.size());
             auto sourceFile = context->sourceFile->module->files[ip->sourceFileIdx];
-            return context->sourceFile->report({sourceFile, ip->startLocation, ip->endLocation, context->errorMsg});
+            return context->sourceFile->report({sourceFile, ip->startLocation, ip->endLocation, "error during bytecode execution, " + context->errorMsg});
         }
     }
 

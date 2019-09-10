@@ -177,6 +177,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_STRUCT)
     {
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
+		SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("cannot reference identifier '%s'", identifier->name.c_str()).c_str()));
         if (node->resolvedSymbolOverload->storageOffset > 0)
             emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC)->b.u32 = node->resolvedSymbolOverload->storageOffset;
         if (!(node->flags & AST_TAKE_ADDRESS))

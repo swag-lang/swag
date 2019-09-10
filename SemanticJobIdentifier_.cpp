@@ -163,11 +163,21 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     return true;
 }
 
-void SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     if (node->parent->kind != AstNodeKind::IdentifierRef)
-        return;
+        return true;
+
     auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+
+	// Be sure we do not reference a structure field, without a corresponding concrete variable
+    auto sourceFile = context->sourceFile;
+    auto overload   = node->resolvedSymbolOverload;
+    if (!identifierRef->typeInfo && overload && (overload->flags & OVERLOAD_VAR_STRUCT))
+    {
+        context->errorContext.report({sourceFile, node, format("cannot reference structure identifier '%s'", node->name.c_str())});
+        return false;
+    }
 
     identifierRef->typeInfo = typeInfo;
     switch (typeInfo->kind)
@@ -209,6 +219,8 @@ void SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         break;
     }
     }
+
+    return true;
 }
 
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch)
@@ -285,7 +297,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Setup parent if necessary
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
-        setupIdentifierRef(context, identifier, typeInfo);
+        SWAG_CHECK(setupIdentifierRef(context, identifier, typeInfo));
 
         // Lambda call
         if (typeInfo->kind == TypeInfoKind::Lambda && identifier->callParameters)

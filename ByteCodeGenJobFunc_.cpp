@@ -132,6 +132,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         auto child0 = callParams->childs.front();
         emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
+		freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
     case Intrinsic::IntrinsicMemCpy:
@@ -140,6 +141,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
         emitInstruction(context, ByteCodeOp::Copy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        freeRegisterRC(context, childDest->resultRegisterRC);
+        freeRegisterRC(context, childSrc->resultRegisterRC);
+        freeRegisterRC(context, childSize->resultRegisterRC);
         break;
     }
 
