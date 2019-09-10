@@ -170,12 +170,13 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
 
-	// Be sure we do not reference a structure field, without a corresponding concrete variable
+    // Be sure we do not reference a structure field, without a corresponding concrete variable
     auto sourceFile = context->sourceFile;
     auto overload   = node->resolvedSymbolOverload;
     if (!identifierRef->typeInfo && overload && (overload->flags & OVERLOAD_VAR_STRUCT))
     {
-        context->errorContext.report({sourceFile, node, format("cannot reference structure identifier '%s'", node->name.c_str())});
+        Diagnostic diag{sourceFile, node, format("cannot reference structure identifier '%s'", node->name.c_str())};
+        context->errorContext.report(diag);
         return false;
     }
 

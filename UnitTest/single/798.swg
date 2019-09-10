@@ -9,15 +9,15 @@ struct Utf8
 
 impl Utf8
 {
-	func reserveSize(self, size: u32)
+	func reserveSize(using self, newSize: u32)
 	{
-		if(self.size >= size)
+		if(self.size >= newSize)
 			return;
 			
-		newPtr := @alloc(size)
+		newPtr := @alloc(newSize)
 		if self.buffer != null
 			@memcpy(newPtr, self.buffer, self.size)
-		self.size = size;
+		self.size = newSize;
 		@free(self.buffer)
 		self.buffer = cast(*u8) newPtr;
 	}

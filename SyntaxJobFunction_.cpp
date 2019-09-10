@@ -64,6 +64,13 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     auto paramNode         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
     paramNode->semanticFct = &SemanticJob::resolveVarDecl;
 
+	// Using variable
+    if (token.id == TokenId::KwdUsing)
+    {
+        SWAG_CHECK(eatToken());
+		paramNode->flags |= AST_DECL_USING;
+    }
+
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
     paramNode->inheritTokenName(token);
 
@@ -118,7 +125,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
             if (token.id == TokenId::SymComma)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma));
-                SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
+                SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
             }
         }
     }
