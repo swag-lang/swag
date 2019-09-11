@@ -52,7 +52,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, Scope* startScope)
+void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope)
 {
     auto  job       = context->job;
     auto& here      = job->scopesHere;
@@ -106,6 +106,8 @@ void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>&
                     }
                 }
             }
+
+            scopesVars.insert(scopesVars.end(), scope->alternativeScopesVars.begin(), scope->alternativeScopesVars.end());
         }
 
         // If we are on a module, add all files
@@ -133,7 +135,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     if (startScope->kind == ScopeKind::Struct)
         return true;
 
-    SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, startScope);
+    SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, startScope);
     for (auto scope : job->cacheScopeHierarchy)
     {
         // No ghosting with struct
@@ -850,11 +852,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (eatenByTyple)
         return true;
 
-    auto  job              = context->job;
-    auto& scopeHierarchy   = job->cacheScopeHierarchy;
-    auto& dependentSymbols = job->cacheDependentSymbols;
-    auto  identifierRef    = node->identifierRef;
-    auto  sourceFile       = context->sourceFile;
+    auto  job                = context->job;
+    auto& scopeHierarchy     = job->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto& dependentSymbols   = job->cacheDependentSymbols;
+    auto  identifierRef      = node->identifierRef;
+    auto  sourceFile         = context->sourceFile;
 
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
@@ -872,6 +875,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (node->semanticState == AstNodeResolveState::ProcessingChilds)
     {
         scopeHierarchy.clear();
+		scopeHierarchyVars.clear();
         dependentSymbols.clear();
     }
 
@@ -882,14 +886,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (!startScope)
         {
             startScope = node->ownerScope;
-            collectScopeHiearchy(context, scopeHierarchy, startScope);
+            collectScopeHiearchy(context, scopeHierarchy, scopeHierarchyVars, startScope);
         }
         else
         {
             scopeHierarchy.push_back(startScope);
             scopeHierarchy.insert(scopeHierarchy.end(), startScope->alternativeScopes.begin(), startScope->alternativeScopes.end());
+            scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->alternativeScopesVars.begin(), startScope->alternativeScopesVars.end());
         }
 
+        // Search symbol in all the scopes of the hierarchy
         for (auto scope : scopeHierarchy)
         {
             if (scope->symTable)
@@ -1024,6 +1030,23 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
+    // If there a using variable associated with the resolved symbol ?
+    AstNode* dependentVar = nullptr;
+    for (auto& dep : scopeHierarchyVars)
+    {
+        if (dep.scope == symbol->ownerTable->scope)
+        {
+            if (dependentVar)
+            {
+                Diagnostic diag{sourceFile, dep.node, "cannot use 'using' on two variables with the same type"};
+                Diagnostic note{sourceFile, dependentVar, "this is the other definition", DiagnosticLevel::Note};
+                return context->errorContext.report(diag, &note);
+            }
+
+            dependentVar = dep.node;
+        }
+    }
+
     if (symMatch.parameters.empty() && symMatch.genericParameters.empty())
     {
         // For everything except functions/attributes/structs (which have overloads), this is a match
@@ -1031,9 +1054,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             SWAG_ASSERT(dependentSymbols.size() == 1);
             SWAG_ASSERT(symbol->overloads.size() == 1);
-            auto overload  = dependentSymbols[0]->overloads[0];
+            auto overload  = symbol->overloads[0];
             node->typeInfo = overload->typeInfo;
-            SWAG_CHECK(setSymbolMatch(context, identifierRef, node, dependentSymbols[0], dependentSymbols[0]->overloads[0]));
+            SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, symbol->overloads[0]));
             return true;
         }
     }
@@ -1042,8 +1065,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (context->result == SemanticResult::Pending)
         return true;
 
-    auto match     = job->cacheMatches[0];
+    auto& match    = job->cacheMatches[0];
     node->typeInfo = match.symbolOverload->typeInfo;
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, job->cacheDependentSymbols[0], job->cacheMatches[0].symbolOverload, &match));
+    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, match.symbolOverload, &match));
     return true;
 }

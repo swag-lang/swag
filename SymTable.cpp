@@ -34,7 +34,7 @@ SymbolName* SymTable::findNoLock(const Utf8Crc& name)
 
 SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind)
 {
-	SWAG_ASSERT(!node->name.empty());
+    SWAG_ASSERT(!node->name.empty());
     auto symbol = findNoLock(node->name);
     if (!symbol)
     {
@@ -44,6 +44,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
         symbol->kind                       = kind;
         symbol->defaultOverload.sourceFile = sourceFile;
         symbol->defaultOverload.node       = node;
+        symbol->ownerTable                 = this;
         int indexInTable                   = node->name.crc % HASH_SIZE;
         if (!mapNames[indexInTable])
             mapNames[indexInTable] = new map<Utf8Crc, SymbolName*>();
@@ -104,7 +105,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
                 {
                     result = resolved;
                     result->flags &= ~OVERLOAD_INCOMPLETE;
-					break;
+                    break;
                 }
             }
         }

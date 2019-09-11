@@ -81,12 +81,13 @@ void Diagnostic::report(bool verboseMode) const
         }
 
         // Print all lines
+		g_Log.eol();
         for (auto& line : lines)
         {
             const char* pz = line.c_str() + minOffset;
             if (*pz && *pz != '\n' && *pz != '\r')
             {
-                g_Log.print("  ");
+                g_Log.print("   >  ");
                 g_Log.print(line.c_str() + minOffset);
                 g_Log.eol();
             }
@@ -94,7 +95,7 @@ void Diagnostic::report(bool verboseMode) const
 
         if (showRange)
         {
-            minOffset -= 2;
+            minOffset -= 6;
             for (int i = 0; i < startLocation.column - (int) minOffset; i++)
                 g_Log.print(" ");
 
@@ -112,6 +113,8 @@ void Diagnostic::report(bool verboseMode) const
                 g_Log.print("^");
             g_Log.eol();
         }
+
+        g_Log.eol();
     }
 
     g_Log.setDefaultColor();

@@ -14,6 +14,7 @@ struct Job;
 struct TypeInfoFuncAttr;
 struct ByteCodeGenJob;
 struct AstNode;
+struct SymTable;
 
 static const uint32_t OVERLOAD_BYTECODE_GENERATED = 0x00000001;
 static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
@@ -83,11 +84,13 @@ struct SymbolName : public PoolElement
     int                     cptOverloads;
     vector<SymbolOverload*> overloads;
     vector<Job*>            dependentJobs;
+    SymTable*               ownerTable;
 
     void reset() override
     {
         name.clear();
         cptOverloads = 0;
+		ownerTable = nullptr;
         overloads.clear();
     }
 
