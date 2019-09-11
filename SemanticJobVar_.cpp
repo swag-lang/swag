@@ -335,10 +335,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->flags |= AST_R_VALUE;
     }
 
-    if (node->kind == AstNodeKind::FuncDeclParam)
-    {
-    }
-
     // A using
     if (node->flags & AST_DECL_USING)
     {
