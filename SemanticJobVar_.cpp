@@ -335,10 +335,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->flags |= AST_R_VALUE;
     }
 
-	// A using
+    // A using
     if (node->flags & AST_DECL_USING)
     {
-		SWAG_VERIFY(node->typeInfo->kind == TypeInfoKind::Struct, context->errorContext.report({ sourceFile, node, format("cannot use 'using' on variable because type '%s' is not a struct", node->typeInfo->name.c_str()) }));
+        SWAG_VERIFY(node->typeInfo->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, node, format("cannot use 'using' on variable because type '%s' is not a struct", node->typeInfo->name.c_str())}));
+        SWAG_VERIFY(node->ownerScope->kind == ScopeKind::Function, context->errorContext.report({sourceFile, node, format("cannot use 'using' on variable in scope '%s'", Scope::getNakedName(node->ownerScope->kind))}));
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
+        node->ownerScope->alternativeScopesVars.push_back({node, typeStruct->scope});
     }
 
     // Attributes
