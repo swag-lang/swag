@@ -32,11 +32,13 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         if (child->flags & AST_GENERIC_MATCH_WAS_PARTIAL)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
 
-        if (child != childBack &&
-            child->resolvedSymbolOverload &&
-            child->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Pointer &&
-            child->resolvedSymbolOverload->typeInfo->isConst())
-            node->flags |= AST_CONST;
+		if (child != childBack && child->resolvedSymbolOverload)
+		{
+			if (child->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Pointer && child->resolvedSymbolOverload->typeInfo->isConst())
+				node->flags |= AST_CONST;
+			if (child->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Struct && child->resolvedSymbolOverload->typeInfo->isConst())
+				node->flags |= AST_CONST;
+		}
     }
 
     node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT);
@@ -242,12 +244,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     // Symbol is linked to a using var
     if (dependentVar && !parent->typeInfo && parent->kind == AstNodeKind::IdentifierRef)
     {
-        auto idRef       = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
-        auto idNode      = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
-		Ast::addChildFront(idRef, idNode);
-        auto copyContext = *context;
-        copyContext.node = idNode;
-		idNode->semanticState = AstNodeResolveState::ProcessingChilds;
+        auto idRef  = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+        auto idNode = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
+        Ast::addChildFront(idRef, idNode);
+        auto copyContext      = *context;
+        copyContext.node      = idNode;
+        idNode->semanticState = AstNodeResolveState::ProcessingChilds;
         SWAG_CHECK(resolveIdentifier(&copyContext));
     }
 

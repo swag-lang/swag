@@ -11,8 +11,8 @@
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
     auto sourceFile = context->sourceFile;
-	if (node->flags & AST_R_VALUE)
-		return true;
+    if (node->flags & AST_R_VALUE)
+        return true;
 
     if (node->kind == AstNodeKind::TypeExpression)
         return context->errorContext.report({sourceFile, node, "cannot reference a type expression"});
@@ -142,6 +142,14 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 return context->errorContext.report(diag, &note);
             }
         }
+    }
+
+	// Const struct
+    if (node->isConst && node->typeInfo->kind == TypeInfoKind::Struct)
+    {
+		auto copyType = node->typeInfo->clone();
+		copyType->setConst();
+		node->typeInfo = sourceFile->module->typeTable.registerType(copyType);
     }
 
     // In fact, this is a pointer

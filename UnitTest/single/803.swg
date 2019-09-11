@@ -8,17 +8,17 @@ struct Point
 
 //#unittest error
 //#[swag.printbc]
-func toto(using pt: Point)
+func toto(pt: Point)
 {
-	x = 10
-	y = 20
+	pt.x = 10
+	pt.y = 20
 }
 
 //#[swag.printbc]
 #test
 {
-	var pt: Point
+	/*var pt: Point
 	toto(pt)
 	@assert(pt.x == 10)
-	@assert(pt.y == 20)
+	@assert(pt.y == 20)*/
 }

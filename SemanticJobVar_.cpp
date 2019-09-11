@@ -77,10 +77,10 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    auto  node       = static_cast<AstVarDecl*>(context->node);
-    bool  isConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
+    auto  sourceFile         = context->sourceFile;
+    auto& typeTable          = sourceFile->module->typeTable;
+    auto  node               = static_cast<AstVarDecl*>(context->node);
+    bool  isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
     uint32_t symbolFlags = 0;
     if (node->kind == AstNodeKind::FuncDeclParam)
@@ -89,15 +89,15 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if (node->ownerScope->kind == ScopeKind::Struct)
         symbolFlags |= OVERLOAD_VAR_STRUCT;
-    else if (!isConstant)
+    else if (!isCompilerConstant)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
     if (node->kind == AstNodeKind::LetDecl)
         symbolFlags |= OVERLOAD_CONST;
 
     // A constant must be initialized
-    if (isConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
+    if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
         return context->errorContext.report({sourceFile, node, "a constant must be initialized"});
-    if ((symbolFlags & OVERLOAD_CONST) && !node->assignment)
+    if ((symbolFlags & OVERLOAD_CONST) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
         return context->errorContext.report({sourceFile, node, "a non mutable 'let' variable must be initialized"});
 
     // Value
@@ -119,7 +119,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // A global variable or a constant must have its value computed at that point
-    if (node->assignment && (isConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
+    if (node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
     {
         SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node->assignment, "initialization expression cannot be evaluated at compile time"}));
     }
@@ -227,7 +227,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // A constant does nothing on backend, except if it can't be stored in a register
     uint32_t storageOffset = 0;
-    if (isConstant)
+    if (isCompilerConstant)
     {
         assert(node->typeInfo);
 
@@ -330,9 +330,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         node->flags |= AST_R_VALUE;
     }
-    else if (isConstant)
+    else if (isCompilerConstant)
     {
         node->flags |= AST_R_VALUE;
+    }
+
+    if (node->kind == AstNodeKind::FuncDeclParam)
+    {
     }
 
     // A using
@@ -357,7 +361,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                                                                   node,
                                                                   node->typeInfo,
                                                                   (node->type || node->assignment) ? SymbolKind::Variable : SymbolKind::GenericType,
-                                                                  isConstant ? &node->computedValue : nullptr,
+                                                                  isCompilerConstant ? &node->computedValue : nullptr,
                                                                   symbolFlags,
                                                                   nullptr,
                                                                   storageOffset,
