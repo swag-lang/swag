@@ -32,12 +32,15 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         if (child->flags & AST_GENERIC_MATCH_WAS_PARTIAL)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
 
-		if (child != childBack && child->resolvedSymbolOverload)
+		if (child != childBack && child->resolvedSymbolOverload && child->resolvedSymbolOverload->typeInfo->isConst())
 		{
-			if (child->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Pointer && child->resolvedSymbolOverload->typeInfo->isConst())
+			switch (child->resolvedSymbolOverload->typeInfo->kind)
+			{
+			case TypeInfoKind::Pointer:
+			case TypeInfoKind::Struct:
 				node->flags |= AST_CONST;
-			if (child->resolvedSymbolOverload->typeInfo->kind == TypeInfoKind::Struct && child->resolvedSymbolOverload->typeInfo->isConst())
-				node->flags |= AST_CONST;
+				break;
+			}
 		}
     }
 
