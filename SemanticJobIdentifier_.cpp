@@ -226,7 +226,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     return true;
 }
 
-bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch)
+bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
     auto  sourceFile                   = context->sourceFile;
     auto& typeTable                    = sourceFile->module->typeTable;
@@ -238,6 +238,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     if (identifier->typeInfo->flags & TYPEINFO_GENERIC)
         identifier->flags |= AST_IS_GENERIC;
+
+    // Symbol is linked to a using var
+    if (dependentVar && !parent->typeInfo && parent->kind == AstNodeKind::IdentifierRef)
+    {
+        auto idRef       = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+        auto idNode      = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
+		Ast::addChildFront(idRef, idNode);
+        auto copyContext = *context;
+        copyContext.node = idNode;
+		idNode->semanticState = AstNodeResolveState::ProcessingChilds;
+        SWAG_CHECK(resolveIdentifier(&copyContext));
+    }
 
     switch (symbol->kind)
     {
@@ -862,7 +874,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
     {
-        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload));
+        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
         return true;
     }
 
@@ -875,7 +887,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (node->semanticState == AstNodeResolveState::ProcessingChilds)
     {
         scopeHierarchy.clear();
-		scopeHierarchyVars.clear();
+        scopeHierarchyVars.clear();
         dependentSymbols.clear();
     }
 
@@ -977,7 +989,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 fctCallParam->token       = identifierRef->previousResolvedNode->token;
                 fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
                 Ast::removeFromParent(identifierRef->previousResolvedNode);
-                Ast::addChild(fctCallParam, identifierRef->previousResolvedNode);
+                Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
             }
         }
     }
@@ -1056,7 +1068,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             SWAG_ASSERT(symbol->overloads.size() == 1);
             auto overload  = symbol->overloads[0];
             node->typeInfo = overload->typeInfo;
-            SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, symbol->overloads[0]));
+            SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, symbol->overloads[0], nullptr, dependentVar));
             return true;
         }
     }
@@ -1067,6 +1079,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     auto& match    = job->cacheMatches[0];
     node->typeInfo = match.symbolOverload->typeInfo;
-    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, match.symbolOverload, &match));
+    SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, match.symbolOverload, &match, dependentVar));
     return true;
 }

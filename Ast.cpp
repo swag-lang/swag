@@ -26,7 +26,22 @@ namespace Ast
         parent->unlock();
     }
 
-    void addChild(AstNode* parent, AstNode* child)
+	void addChildFront(AstNode* parent, AstNode* child)
+    {
+        if (!child)
+            return;
+
+        if (parent)
+        {
+            parent->lock();
+            parent->childs.insert(parent->childs.begin(), child);
+            parent->unlock();
+        }
+
+        child->parent = parent;
+    }
+
+    void addChildBack(AstNode* parent, AstNode* child)
     {
         if (!child)
             return;
@@ -176,7 +191,7 @@ namespace Ast
         node->name          = name;
         node->identifierRef = identifierRef;
         node->semanticFct   = &SemanticJob::resolveIdentifier;
-        node->inheritOwners(parent);
+        node->inheritOwners(parent ? parent : identifierRef);
         return node;
     }
 

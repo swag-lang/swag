@@ -92,7 +92,7 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
             }
             else
             {
-                Ast::addChild(node, typeExpression);
+                Ast::addChildBack(node, typeExpression);
             }
 
             if (token.id != TokenId::SymComma)

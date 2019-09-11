@@ -6,12 +6,16 @@ struct Point
 }
 
 //#unittest error
-func toto(using pt: Point)
+//#[swag.printbc]
+func toto(using pt: *Point)
 {
-	x = 0
+	x = 10
 }
 
 //#[swag.printbc]
 #test
 {
+	var pt: Point
+	toto(pt)
+	@assert(pt.x == 10)
 }

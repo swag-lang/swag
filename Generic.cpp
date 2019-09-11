@@ -98,7 +98,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
     structNode->content->flags &= ~AST_DISABLED;
-    Ast::addChild(sourceNode->parent, structNode);
+    Ast::addChildBack(sourceNode->parent, structNode);
 
     // Make a new type
     auto newType = static_cast<TypeInfoStruct*>(overload->typeInfo->clone());
@@ -113,7 +113,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
     newType->opInitFct = newOpInit;
     newOpInit->flags |= AST_FROM_GENERIC | AST_DISABLED;
-    Ast::addChild(structNode, newType->opInitFct);
+    Ast::addChildBack(structNode, newType->opInitFct);
 
     end(context, structNode);
     return true;
@@ -263,7 +263,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     auto funcNode   = CastAst<AstFuncDecl>(sourceNode->clone(cloneContext), AstNodeKind::FuncDecl);
     funcNode->flags |= AST_FROM_GENERIC;
     funcNode->content->flags &= ~AST_DISABLED;
-    Ast::addChild(sourceNode->parent, funcNode);
+    Ast::addChildBack(sourceNode->parent, funcNode);
 
     // Generate and initialize a new type
     auto newType = static_cast<TypeInfoFuncAttr*>(overload->typeInfo->clone());

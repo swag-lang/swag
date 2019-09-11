@@ -155,7 +155,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
 
     parent = context.parent;
     if (parent)
-        Ast::addChild(parent, this);
+        Ast::addChildBack(parent, this);
 
     if (cloneChilds)
     {

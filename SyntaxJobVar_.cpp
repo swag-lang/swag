@@ -86,7 +86,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
             {
                 CloneContext cloneContext;
                 otherVar->assignment = varNode->assignment->clone(cloneContext);
-                Ast::addChild(otherVar, otherVar->assignment);
+                Ast::addChildBack(otherVar, otherVar->assignment);
             }
         }
         // Otherwise, we generate initialization for other variables (init to the first var)
@@ -104,7 +104,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         for (auto otherVar : otherVariables)
         {
             otherVar->type = varNode->type->clone(cloneContext);
-            Ast::addChild(otherVar, otherVar->type);
+            Ast::addChildBack(otherVar, otherVar->type);
         }
     }
 

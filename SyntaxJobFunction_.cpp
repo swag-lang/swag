@@ -44,7 +44,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
                 }
                 else
                 {
-                    Ast::addChild(param, paramExpression);
+                    Ast::addChildBack(param, paramExpression);
                 }
 
                 if (token.id != TokenId::SymComma)

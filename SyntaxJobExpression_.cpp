@@ -29,7 +29,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         arrayNode->token       = token;
         arrayNode->semanticFct = &SemanticJob::resolveArrayPointerIndex;
 
-        Ast::addChild(arrayNode, *exprNode);
+        Ast::addChildBack(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
         SWAG_CHECK(doExpression(arrayNode, &arrayNode->access));
         *exprNode = arrayNode;
@@ -146,7 +146,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
             SWAG_CHECK(doArrayPointerIndex(&identifierRef));
         }
 
-        Ast::addChild(exprNode, identifierRef);
+        Ast::addChildBack(exprNode, identifierRef);
         identifierRef->flags |= AST_TAKE_ADDRESS;
     }
     else
@@ -155,7 +155,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     }
 
     if (parent)
-        Ast::addChild(parent, exprNode);
+        Ast::addChildBack(parent, exprNode);
     if (result)
         *result = exprNode;
     return true;
@@ -210,7 +210,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
             binaryNode->semanticFct = &SemanticJob::resolveFactorExpression;
         binaryNode->token = move(token);
 
-        Ast::addChild(binaryNode, leftNode);
+        Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doFactorExpression(binaryNode));
         leftNode = binaryNode;
@@ -218,7 +218,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
     }
 
     if (!isBinary)
-        Ast::addChild(parent, leftNode);
+        Ast::addChildBack(parent, leftNode);
     if (result)
         *result = leftNode;
 
@@ -242,7 +242,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         binaryNode->semanticFct = &SemanticJob::resolveCompareExpression;
         binaryNode->token       = move(token);
 
-        Ast::addChild(binaryNode, leftNode);
+        Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doFactorExpression(binaryNode));
         leftNode = binaryNode;
@@ -250,7 +250,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     }
 
     if (!isBinary)
-        Ast::addChild(parent, leftNode);
+        Ast::addChildBack(parent, leftNode);
     if (result)
         *result = leftNode;
 
@@ -269,7 +269,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
         binaryNode->semanticFct = &SemanticJob::resolveBoolExpression;
         binaryNode->token       = move(token);
 
-        Ast::addChild(binaryNode, leftNode);
+        Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doCompareExpression(binaryNode));
         leftNode = binaryNode;
@@ -277,7 +277,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     }
 
     if (!isBinary)
-        Ast::addChild(parent, leftNode);
+        Ast::addChildBack(parent, leftNode);
     if (result)
         *result = leftNode;
 
@@ -341,7 +341,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
             }
             else
             {
-                Ast::addChild(initNode, paramExpression);
+                Ast::addChildBack(initNode, paramExpression);
             }
         }
 
@@ -417,7 +417,7 @@ bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
         return syntaxError(token, format("invalid token '%s' in left expression", token.text.c_str()));
     }
 
-    Ast::addChild(parent, exprNode);
+    Ast::addChildBack(parent, exprNode);
     if (result)
         *result = exprNode;
     return true;
@@ -482,7 +482,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         affectNode->semanticFct = &SemanticJob::resolveAffect;
         affectNode->token       = move(token);
 
-        Ast::addChild(affectNode, leftNode);
+        Ast::addChildBack(affectNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doExpression(affectNode, &leftNode));
 
@@ -494,7 +494,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     }
     else
     {
-        Ast::addChild(parent, leftNode);
+        Ast::addChildBack(parent, leftNode);
         if (result)
             *result = leftNode;
     }

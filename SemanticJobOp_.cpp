@@ -171,7 +171,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
         parameters.reset();
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;
         genericParameters = &parameters;
-        Ast::addChild(&parameters, &literal);
+        Ast::addChildBack(&parameters, &literal);
     }
 
     job->cacheDependentSymbols.clear();

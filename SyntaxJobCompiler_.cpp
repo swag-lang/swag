@@ -107,9 +107,9 @@ bool SyntaxJob::doCompilerVersion(AstNode* parent)
     }
 
     if (versionValidated)
-        Ast::addChild(node, node->ifBlock);
+        Ast::addChildBack(node, node->ifBlock);
     else if (node->elseBlock)
-        Ast::addChild(node, node->elseBlock);
+        Ast::addChildBack(node, node->elseBlock);
 
     return true;
 }

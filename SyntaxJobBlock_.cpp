@@ -121,7 +121,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
     // Add the default case as the last one
     if (defaultCase)
     {
-        Ast::addChild(switchNode, defaultCase);
+        Ast::addChildBack(switchNode, defaultCase);
         switchNode->cases.push_back(defaultCase);
     }
 
@@ -206,7 +206,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         }
         else
         {
-            Ast::addChild(node, node->expression);
+            Ast::addChildBack(node, node->expression);
         }
 
         // Creates a variable if we have a named index

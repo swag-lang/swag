@@ -32,7 +32,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
     AstNode* expr = identifier;
     if (token.id == TokenId::SymLeftSquare)
         SWAG_CHECK(doArrayPointerIndex(&expr));
-    Ast::addChild(parent, expr);
+    Ast::addChildBack(parent, expr);
 
     // Template arguments
     if (token.id == TokenId::SymExclam)
