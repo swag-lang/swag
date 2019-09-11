@@ -3,13 +3,15 @@
 struct Point
 {
 	x: s32
+	y: s32
 }
 
 //#unittest error
 //#[swag.printbc]
-func toto(using pt: *Point)
+func toto(using pt: Point)
 {
 	x = 10
+	y = 20
 }
 
 //#[swag.printbc]
@@ -18,4 +20,5 @@ func toto(using pt: *Point)
 	var pt: Point
 	toto(pt)
 	@assert(pt.x == 10)
+	@assert(pt.y == 20)
 }
