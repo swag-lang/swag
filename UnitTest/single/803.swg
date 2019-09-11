@@ -8,10 +8,10 @@ struct Point
 
 //#unittest error
 //#[swag.printbc]
-func toto(pt: Point)
+func toto(using pt: Point)
 {
-	pt.x = 10
-	pt.y = 20
+	x = 10
+	y = 20
 }
 
 //#[swag.printbc]
