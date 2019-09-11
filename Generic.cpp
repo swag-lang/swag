@@ -15,7 +15,17 @@ void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatc
     {
         auto callType = match.genericParametersCallTypes[i];
         auto genType  = match.genericParametersGenTypes[i];
-        if (callType != genType)
+
+        // Cast from struct to pointer
+        if (callType->kind == TypeInfoKind::Struct && genType->kind == TypeInfoKind::Pointer)
+        {
+            auto genTypePointer                                    = CastTypeInfo<TypeInfoPointer>(genType, TypeInfoKind::Pointer);
+            cloneContext.replaceTypes[genTypePointer->pointedType] = callType;
+            genType                                                = genTypePointer->pointedType;
+        }
+
+		// Else replace 1 to 1
+        else if (callType != genType)
             cloneContext.replaceTypes[genType] = callType;
 
         // For a struct, each generic parameter must be swapped too

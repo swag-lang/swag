@@ -116,8 +116,9 @@ JobResult ByteCodeGenJob::execute()
         // Special auto generated functions
         if (originalNode->name == "opInit")
         {
-            auto funcNode   = CastAst<AstFuncDecl>(originalNode, AstNodeKind::FuncDecl);
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+            auto funcNode    = CastAst<AstFuncDecl>(originalNode, AstNodeKind::FuncDecl);
+            auto typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             generateStruct_opInit(&context, typeStruct);
         }
         else

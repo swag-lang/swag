@@ -20,5 +20,5 @@ impl Point
 {
 	var pt: Point!s32
 	pt.x = 5
-	@assert(pt.toto == 5)
+	@assert(pt.toto() == 5)
 }

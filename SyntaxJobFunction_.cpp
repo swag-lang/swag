@@ -64,11 +64,11 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     auto paramNode         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
     paramNode->semanticFct = &SemanticJob::resolveVarDecl;
 
-	// Using variable
+    // Using variable
     if (token.id == TokenId::KwdUsing)
     {
         SWAG_CHECK(eatToken());
-		paramNode->flags |= AST_DECL_USING;
+        paramNode->flags |= AST_DECL_USING;
     }
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
@@ -80,6 +80,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(currentScope->parentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "'self' can only be used in an 'impl' block"}));
         auto typeNode         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
+        typeNode->ptrCount    = 1;
         typeNode->semanticFct = &SemanticJob::resolveTypeExpression;
         typeNode->identifier  = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
         paramNode->type       = typeNode;

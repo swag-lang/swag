@@ -233,21 +233,24 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         SWAG_ASSERT(funcNode->parameters);
         SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
-        auto typeStruct       = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+        auto typePointer      = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+        auto typeStruct       = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         typeStruct->opInitFct = funcNode;
     }
     else if (funcNode->name == "opPostCopy")
     {
         SWAG_ASSERT(funcNode->parameters);
         SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
-        auto typeStruct               = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+        auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+        auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         typeStruct->opUserPostCopyFct = funcNode;
     }
     else if (funcNode->name == "opPostMove")
     {
         SWAG_ASSERT(funcNode->parameters);
         SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
-        auto typeStruct               = CastTypeInfo<TypeInfoStruct>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Struct);
+        auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+        auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         typeStruct->opUserPostMoveFct = funcNode;
     }
 

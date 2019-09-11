@@ -87,11 +87,20 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                         case TypeInfoKind::Pointer:
                         {
                             auto symbolPtr = CastTypeInfo<TypeInfoPointer>(symbolTypeInfo, TypeInfoKind::Pointer);
-                            auto typePtr   = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+                            if (typeInfo->kind == TypeInfoKind::Pointer)
+                            {
+                                auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
-                            context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
-                            symbolTypeInfos.push_back(symbolPtr->pointedType);
-                            typeInfos.push_back(typePtr->pointedType);
+                                context.mapGenericTypes[symbolPtr->pointedType] = {typePtr->pointedType, i};
+                                symbolTypeInfos.push_back(symbolPtr->pointedType);
+                                typeInfos.push_back(typePtr->pointedType);
+                            }
+                            else if (typeInfo->kind == TypeInfoKind::Struct)
+                            {
+                                context.mapGenericTypes[symbolPtr->pointedType] = {typeInfo, i};
+                                symbolTypeInfos.push_back(symbolPtr->pointedType);
+                                typeInfos.push_back(typeInfo);
+                            }
                             break;
                         }
 

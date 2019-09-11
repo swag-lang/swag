@@ -1340,7 +1340,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (fromType->isSame(toType, ISSAME_CAST))
         return true;
 
-	// Always match against a generic
+    // Always match against a generic
     if (toType->kind == TypeInfoKind::Generic)
         return true;
 
@@ -1349,6 +1349,22 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     {
         if (castFlags & CASTFLAG_FORCE)
             return true;
+    }
+
+    // Struct to pointer
+    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Struct)
+    {
+        auto typePtr = static_cast<TypeInfoPointer*>(toType);
+        if (typePtr->ptrCount == 1 && typePtr->pointedType->isSame(fromType, ISSAME_CAST))
+        {
+            if (castFlags & CASTFLAG_JUST_CHECK)
+            {
+				nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
+				nodeToCast->typeInfo = toType;
+            }
+
+            return true;
+        }
     }
 
     // String <=> null

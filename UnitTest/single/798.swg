@@ -9,7 +9,7 @@ struct Utf8
 
 impl Utf8
 {
-	func reserveSize(using self, newSize: u32)
+	func reserveSize(self, newSize: u32)
 	{
 		if(self.size >= newSize)
 			return;

@@ -11,7 +11,7 @@
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
-    auto implNode = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile->indexInModule, parent);
+    auto implNode         = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile->indexInModule, parent);
     implNode->semanticFct = &SemanticJob::resolveImpl;
     if (result)
         *result = implNode;
@@ -47,7 +47,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 {
-    auto structNode = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);
+    auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);
     structNode->semanticFct = &SemanticJob::resolveStruct;
     if (result)
         *result = structNode;
@@ -62,7 +62,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     }
 
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid struct name '%s'", token.text.c_str())));
-	structNode->inheritTokenName(token);
+    structNode->inheritTokenName(token);
 
     // Add struct type and scope
     Scope* newScope = nullptr;
@@ -79,8 +79,8 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->scope      = newScope;
             structNode->typeInfo = typeInfo;
             structNode->scope    = newScope;
-			if (!isContextDisabled())
-				currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+            if (!isContextDisabled())
+                currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
         }
         else
         {
@@ -119,9 +119,9 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope, structNode);
 
-        auto contentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::StructContent, sourceFile->indexInModule, structNode);
-        structNode->content = contentNode;
-		contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
+        auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::StructContent, sourceFile->indexInModule, structNode);
+        structNode->content            = contentNode;
+        contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
 
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
@@ -150,7 +150,7 @@ void SyntaxJob::setupSelfType(AstIdentifier* node, const Utf8& name, AstNode* ge
 
     if (genericParameters)
     {
-        auto allParams = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
+        auto allParams          = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
         allParams->semanticFct  = &SemanticJob::resolveFuncDeclParams;
         node->genericParameters = allParams;
 
@@ -167,13 +167,13 @@ void SyntaxJob::setupSelfType(AstIdentifier* node, const Utf8& name, AstNode* ge
 AstNode* SyntaxJob::generateOpInit(AstNode* node, const Utf8& structName, AstNode* genericParameters)
 {
     // Generate impl
-    auto implNode = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile->indexInModule, node);
+    auto implNode        = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile->indexInModule, node);
     implNode->identifier = Ast::createIdentifierRef(this, structName, node->token, implNode);
     auto structScope     = Ast::newScope(implNode, structName, ScopeKind::Struct, currentScope, true);
     structScope->allocateSymTable();
     implNode->structScope = structScope;
 
-    auto funcNode = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, implNode);
+    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, implNode);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     funcNode->name        = "opInit";
     funcNode->flags |= AST_GENERATED;
@@ -196,22 +196,23 @@ AstNode* SyntaxJob::generateOpInit(AstNode* node, const Utf8& structName, AstNod
         ScopedStruct scopedStruct(this, structScope);
 
         // Parameters
-        funcNode->parameters = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, funcNode);
+        funcNode->parameters              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, funcNode);
         funcNode->parameters->semanticFct = &SemanticJob::resolveFuncDeclParams;
 
         // One parameter
-        auto param = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, funcNode->parameters);
+        auto param         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, funcNode->parameters);
         param->semanticFct = &SemanticJob::resolveVarDecl;
         param->name        = "self";
 
-        auto typeNode = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, param);
+        auto typeNode         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, param);
+        typeNode->ptrCount    = 1;
         typeNode->semanticFct = &SemanticJob::resolveTypeExpression;
         typeNode->identifier  = Ast::createIdentifierRef(this, "Self", token, typeNode);
         param->type           = typeNode;
         setupSelfType(CastAst<AstIdentifier>(typeNode->identifier->childs.front(), AstNodeKind::Identifier), structName, genericParameters);
     }
 
-    funcNode->returnType = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
+    funcNode->returnType              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
     funcNode->returnType->semanticFct = &SemanticJob::resolveFuncDeclType;
 
     // Content
