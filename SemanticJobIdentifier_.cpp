@@ -38,7 +38,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 			{
 			case TypeInfoKind::Pointer:
 			case TypeInfoKind::Struct:
-				node->flags |= AST_CONST;
+				node->flags |= AST_IS_CONST;
 				break;
 			}
 		}
