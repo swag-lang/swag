@@ -29,19 +29,10 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->flags &= ~AST_CONST_EXPR;
         if (child->flags & AST_IS_GENERIC)
             node->flags |= AST_IS_GENERIC;
+        if (child->flags & AST_IS_CONST)
+            node->flags |= AST_IS_CONST;
         if (child->flags & AST_GENERIC_MATCH_WAS_PARTIAL)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
-
-		if (child != childBack && child->resolvedSymbolOverload && child->resolvedSymbolOverload->typeInfo->isConst())
-		{
-			switch (child->resolvedSymbolOverload->typeInfo->kind)
-			{
-			case TypeInfoKind::Pointer:
-			case TypeInfoKind::Struct:
-				node->flags |= AST_IS_CONST;
-				break;
-			}
-		}
     }
 
     node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT);
@@ -187,7 +178,15 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         return false;
     }
 
+	// If type of previous one was const, then we force this node to be const (cannot change it)
+	if (identifierRef->typeInfo && identifierRef->typeInfo->isConst())
+		node->flags |= AST_IS_CONST;
+	if(identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->flags & AST_IS_CONST))
+		node->flags |= AST_IS_CONST;
+
     identifierRef->typeInfo = typeInfo;
+	identifierRef->previousResolvedNode = node;
+
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Pointer:

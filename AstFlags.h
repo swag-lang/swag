@@ -26,6 +26,6 @@ static const uint64_t AST_GENERIC_MATCH_WAS_PARTIAL  = 0x00000000'00800000;
 static const uint64_t AST_IN_TYPE_VAR_DECLARATION    = 0x00000000'01000000;
 static const uint64_t AST_TRANSIENT                  = 0x00000000'02000000;
 static const uint64_t AST_FORCE_MOVE                 = 0x00000000'04000000;
-static const uint64_t AST_IS_CONST                      = 0x00000000'08000000;
+static const uint64_t AST_IS_CONST                   = 0x00000000'08000000;
 static const uint64_t AST_VALUE_IS_TYPEINFO          = 0x00000000'10000000;
 static const uint64_t AST_DECL_USING                 = 0x00000000'20000000;

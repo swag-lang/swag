@@ -8,7 +8,7 @@ struct Point
 
 impl Point
 {
-	func toto(x: Self)
+	func toto(x: *Self)
 	{
 		x.x = 0
 	}

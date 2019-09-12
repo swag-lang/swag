@@ -605,11 +605,12 @@ struct AstTypeExpression : public AstNode
 {
     void reset() override
     {
-        identifier = nullptr;
-        ptrCount   = 0;
-        arrayDim   = 0;
-        isSlice    = false;
-        isConst    = false;
+        identifier       = nullptr;
+        ptrCount         = 0;
+        arrayDim         = 0;
+        isSlice          = false;
+        isConst          = false;
+        forFuncParameter = false;
         AstNode::reset();
     }
 
@@ -620,6 +621,7 @@ struct AstTypeExpression : public AstNode
     int      arrayDim;
     bool     isSlice;
     bool     isConst;
+    bool     forFuncParameter;
 };
 
 struct AstTypeLambda : public AstNode

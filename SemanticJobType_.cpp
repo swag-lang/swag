@@ -144,14 +144,6 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         }
     }
 
-	// Const struct
-    if (node->isConst && node->typeInfo->kind == TypeInfoKind::Struct)
-    {
-		auto copyType = node->typeInfo->clone();
-		copyType->setConst();
-		node->typeInfo = sourceFile->module->typeTable.registerType(copyType);
-    }
-
     // In fact, this is a pointer
     if (node->ptrCount)
     {
@@ -164,6 +156,21 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrPointer->flags |= (ptrPointer->pointedType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
         node->typeInfo = typeTable.registerType(ptrPointer);
+    }
+
+    // Const struct
+    else
+    {
+        // A struct function parameter is const
+        if (node->forFuncParameter && node->typeInfo->kind == TypeInfoKind::Struct)
+            node->isConst = true;
+
+        if (node->isConst && node->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto copyType = node->typeInfo->clone();
+            copyType->setConst();
+            node->typeInfo = typeTable.registerType(copyType);
+        }
     }
 
     // In fact, this is an array

@@ -6,7 +6,7 @@ struct Point
 	y: s32
 }
 
-//#unittest error
+#unittest error
 //#[swag.printbc]
 func toto(using pt: Point)
 {

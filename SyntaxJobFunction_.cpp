@@ -92,7 +92,6 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         {
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(paramNode, &paramNode->type));
-            SWAG_CHECK(paramNode->type);
         }
 
         if (token.id == TokenId::SymEqual)
@@ -101,6 +100,9 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->assignment));
         }
     }
+
+    if (paramNode->type && paramNode->type->kind == AstNodeKind::TypeExpression)
+        ((AstTypeExpression*) paramNode->type)->forFuncParameter = true;
 
     // Be sure we will be able to have a type
     if (!paramNode->type && !paramNode->assignment)
