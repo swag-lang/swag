@@ -140,6 +140,7 @@ struct AstNode : public PoolElement
         fctCallStorageOffset         = 0;
         byteCodeJob                  = nullptr;
         semanticPass                 = 0;
+        byteCodePass                 = 0;
         resultRegisterRC.clear();
         childs.clear();
         computedValue.reg.u64 = 0;
@@ -290,6 +291,7 @@ struct AstNode : public PoolElement
     ByteCodeNotifyFct byteCodeAfterFct;
 
     int                 semanticPass = 0;
+    int                 byteCodePass = 0;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
 

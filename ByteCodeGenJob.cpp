@@ -102,12 +102,16 @@ void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
         module->addByteCodeFunc(node->bc);
 }
 
+void ByteCodeGenJob::setPending()
+{
+    context.node->semanticPass++;
+    context.result = ByteCodeResult::Pending;
+}
+
 JobResult ByteCodeGenJob::execute()
 {
     if (!syncToDependentNodes)
     {
-        ByteCodeGenContext context;
-
         context.job        = this;
         context.sourceFile = sourceFile;
         context.bc         = originalNode->bc;

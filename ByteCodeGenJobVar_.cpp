@@ -16,21 +16,31 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     // Initialize the struct, whatever, before the assignment
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+        if (node->byteCodePass == 0)
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            SWAG_ASSERT(typeStruct->opInitFct);
-            emitStructInit(context, typeStruct, UINT32_MAX);
-        }
+            if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+            {
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+                SWAG_ASSERT(typeStruct->opInitFct);
+                emitStructInit(context, typeStruct, UINT32_MAX);
+            }
 
-        emitStructParameters(context, UINT32_MAX);
+            emitStructParameters(context, UINT32_MAX);
+        }
 
         if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
         {
-            RegisterList r0                                                 = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.s32 = resolved->storageOffset;
-            node->type->resultRegisterRC                                    = r0;
-            return emitLocalCall(context, node, static_cast<AstFuncDecl*>(node->resolvedUserOpSymbolOverload->node), nullptr);
+            if (node->byteCodePass == 0)
+            {
+                RegisterList r0                                                 = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.s32 = resolved->storageOffset;
+                node->type->resultRegisterRC                                    = r0;
+            }
+
+            SWAG_CHECK(emitLocalCall(context, node, static_cast<AstFuncDecl*>(node->resolvedUserOpSymbolOverload->node), nullptr));
+			if (context->result == ByteCodeResult::Pending)
+				node->byteCodePass++;
+			return true;
         }
     }
 

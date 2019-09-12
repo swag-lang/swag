@@ -33,6 +33,7 @@ struct ByteCodeGenContext
 struct ByteCodeGenJob : public Job
 {
     JobResult execute() override;
+    void      setPending();
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
@@ -71,7 +72,7 @@ struct ByteCodeGenJob : public Job
     static bool emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0);
     static bool emitExplicitCast(ByteCodeGenContext* context);
-	static bool emitCastNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
+    static bool emitCastNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeS32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
@@ -136,7 +137,7 @@ struct ByteCodeGenJob : public Job
     static bool emitDataProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
 
-	static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
+    static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool prepareEmitStructCopyMove(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* from);
@@ -157,13 +158,14 @@ struct ByteCodeGenJob : public Job
         syncToDependentNodes = false;
     }
 
-    SourceFile*      sourceFile;
-    AstNode*         originalNode;
-    vector<AstNode*> nodes;
-    vector<Job*>     dependentJobs;
-    vector<AstNode*> dependentNodes;
-    vector<AstNode*> collectChilds;
-    bool             syncToDependentNodes;
+    ByteCodeGenContext context;
+    SourceFile*        sourceFile;
+    AstNode*           originalNode;
+    vector<AstNode*>   nodes;
+    vector<Job*>       dependentJobs;
+    vector<AstNode*>   dependentNodes;
+    vector<AstNode*>   collectChilds;
+    bool               syncToDependentNodes;
 };
 
 extern Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;

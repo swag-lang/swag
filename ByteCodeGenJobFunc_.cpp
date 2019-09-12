@@ -190,7 +190,7 @@ void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* fu
         if (!(funcNode->flags & AST_FULL_RESOLVE))
         {
             funcNode->dependentJobs.push_back(context->job);
-            context->result = ByteCodeResult::Pending;
+			context->job->setPending();
             return;
         }
 

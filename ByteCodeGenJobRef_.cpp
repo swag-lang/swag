@@ -347,7 +347,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
         if (!(funcNode->flags & AST_FULL_RESOLVE))
         {
             funcNode->dependentJobs.push_back(context->job);
-            context->result = ByteCodeResult::Pending;
+			context->job->setPending();
             return true;
         }
 
