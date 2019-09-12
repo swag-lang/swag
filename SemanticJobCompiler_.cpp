@@ -9,19 +9,18 @@
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
 {
-    auto job        = context->job;
-    auto sourceFile = context->sourceFile;
-
     // No need to run, this is already baked
     if (node->flags & AST_VALUE_COMPUTED)
         return true;
 
+    auto sourceFile = context->sourceFile;
     if (onlyconstExpr)
     {
         SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node, "expression cannot be evaluated at compile time"}));
     }
 
     {
+        auto job = context->job;
         // Need to generate bytecode, if not already done or running
         scoped_lock lk(node->mutex);
         if (!(node->flags & AST_BYTECODE_GENERATED))
