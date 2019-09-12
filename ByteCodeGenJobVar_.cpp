@@ -13,6 +13,19 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     auto resolved = node->resolvedSymbolOverload;
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, MakeConcrete::FlagAlias);
 
+    // Initialize the struct, whatever, before the assignment
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+            SWAG_ASSERT(typeStruct->opInitFct);
+            emitStructInit(context, typeStruct, UINT32_MAX);
+        }
+
+        emitStructParameters(context, UINT32_MAX);
+    }
+
     // User initialization
     if (node->assignment)
     {
@@ -60,18 +73,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         }
     }
 
+	// No default init for structures, it has been done before
     if (typeInfo->kind == TypeInfoKind::Struct)
-    {
-        if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-        {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            SWAG_ASSERT(typeStruct->opInitFct);
-            emitStructInit(context, typeStruct, UINT32_MAX);
-        }
-
-        emitStructParameters(context, UINT32_MAX);
         return true;
-    }
 
     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {

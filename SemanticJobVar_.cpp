@@ -97,12 +97,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
         return context->errorContext.report({sourceFile, node, "a constant must be initialized"});
 
-	if ((symbolFlags & OVERLOAD_CONST) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
-	{
-		// This is ok to not have an initialization for structs, as they are initialized by default
-		if(!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)
-			return context->errorContext.report({ sourceFile, node, "a non mutable 'let' variable must be initialized" });
-	}
+    if ((symbolFlags & OVERLOAD_CONST) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
+    {
+        // This is ok to not have an initialization for structs, as they are initialized by default
+        if (!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)
+            return context->errorContext.report({sourceFile, node, "a non mutable 'let' variable must be initialized"});
+    }
 
     // Value
     if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
@@ -148,7 +148,22 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Find type
     if (node->type && node->assignment)
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->type->typeInfo, node->assignment, CASTFLAG_UNCONST));
+        // Do not cast for structs, as we can have special assignment with different types
+        if (node->type->typeInfo->kind != TypeInfoKind::Struct)
+        {
+            SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->type->typeInfo, node->assignment, CASTFLAG_UNCONST));
+        }
+        else
+        {
+            auto rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
+            if (!rightConcreteType->isSame(node->type->typeInfo, 0))
+            {
+                SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, node->type, node->assignment));
+                if (context->result == SemanticResult::Pending)
+                    return true;
+            }
+        }
+
         node->typeInfo = node->type->typeInfo;
     }
     else if (node->assignment)
