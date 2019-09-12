@@ -97,8 +97,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // A constant must be initialized
     if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
         return context->errorContext.report({sourceFile, node, "a constant must be initialized"});
-    if ((symbolFlags & OVERLOAD_CONST) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
-        return context->errorContext.report({sourceFile, node, "a non mutable 'let' variable must be initialized"});
+
+	if ((symbolFlags & OVERLOAD_CONST) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
+	{
+		// This is ok to not have an initialization for structs, as they are initialized by default
+		if(!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)
+			return context->errorContext.report({ sourceFile, node, "a non mutable 'let' variable must be initialized" });
+	}
 
     // Value
     if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
