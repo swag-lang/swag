@@ -418,8 +418,11 @@ AstNode* AstExpressionList::clone(CloneContext& context)
     auto newNode = g_Pool_astExpressionList.alloc();
     newNode->copyFrom(context, this);
 
-    newNode->storageOffset = storageOffset;
-    newNode->listKind      = listKind;
+    newNode->storageOffset    = storageOffset;
+    newNode->listKind         = listKind;
+    newNode->isConst          = isConst;
+    newNode->forFuncParameter = forFuncParameter;
+
     return newNode;
 }
 

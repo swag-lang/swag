@@ -44,7 +44,12 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
 
         auto symbolTypeInfo = symbolParameter->typeInfo;
         auto typeInfo       = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-        bool same           = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, CASTFLAG_NOERROR);
+
+        uint32_t castFlags = CASTFLAG_NOERROR;
+        if (context.flags & SymbolMatchContext::MATCH_UNCONST)
+            castFlags |= CASTFLAG_UNCONST;
+
+        bool same = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, castFlags);
         if (!same)
         {
             context.badSignatureParameterIdx  = i;

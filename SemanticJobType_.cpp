@@ -26,12 +26,15 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
 {
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
-    auto  node       = context->node;
+    auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     SWAG_VERIFY(node->childs.size(), context->job->error(context, "empty tuple type"));
 
-    auto typeInfoList = g_Pool_typeInfoList.alloc();
-    typeInfoList->flags |= TYPEINFO_CONST;
-    typeInfoList->scope    = node->childs.front()->ownerScope;
+    auto typeInfoList   = g_Pool_typeInfoList.alloc();
+    typeInfoList->scope = node->childs.front()->ownerScope;
+    if (node->forFuncParameter)
+        node->isConst = true;
+    if (node->isConst)
+        typeInfoList->setConst();
     typeInfoList->listKind = TypeInfoListKind::Tuple;
 
     typeInfoList->name = "{";
@@ -167,9 +170,12 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 
         if (node->isConst && node->typeInfo->kind == TypeInfoKind::Struct)
         {
-            auto copyType = node->typeInfo->clone();
-            copyType->setConst();
-            node->typeInfo = typeTable.registerType(copyType);
+            if (!node->typeInfo->isConst())
+            {
+                auto copyType = node->typeInfo->clone();
+                copyType->setConst();
+                node->typeInfo = typeTable.registerType(copyType);
+            }
         }
     }
 

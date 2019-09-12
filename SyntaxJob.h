@@ -48,7 +48,7 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
 	bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doTypeAlias(AstNode* parent, AstNode** result = nullptr);
-    bool doTypeExpressionTuple(AstNode* parent, AstNode** result = nullptr);
+    bool doTypeExpressionTuple(AstNode* parent, AstNode** result, bool isConst);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     void forceTakeAddress(AstNode* node);
@@ -75,6 +75,7 @@ struct SyntaxJob : public Job
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doFuncDecl(AstNode* parent, AstNode** result = nullptr);
+	void setForFuncParameter(AstNode* node);
     bool doFuncDeclParameter(AstNode* parent);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);

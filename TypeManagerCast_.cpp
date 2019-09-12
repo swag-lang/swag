@@ -1332,7 +1332,14 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
 
     // Const mismatch
     if (!toType->isConst() && fromType->isConst())
-        return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+    {
+        if (!(castFlags & CASTFLAG_UNCONST))
+            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+
+        // We can affect a const to an unconst if type is bycopy, and we are in an affectation
+        if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
+            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+    }
 
     if (fromType->isSame(toType, ISSAME_CAST))
         return true;
@@ -1356,8 +1363,8 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         {
             if (castFlags & CASTFLAG_JUST_CHECK)
             {
-				nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
-				nodeToCast->typeInfo = toType;
+                nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
+                nodeToCast->typeInfo       = toType;
             }
 
             return true;

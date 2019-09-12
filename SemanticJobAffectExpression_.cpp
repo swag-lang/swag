@@ -77,7 +77,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             {
                 if (rightTypeInfo->kind == TypeInfoKind::Struct)
                 {
-                    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right));
+                    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right, CASTFLAG_UNCONST));
                     SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, left, nullptr, true));
                     if (context->result == SemanticResult::Pending)
                         return true;

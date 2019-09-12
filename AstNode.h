@@ -672,9 +672,18 @@ struct AstProperty : public AstNode
 
 struct AstExpressionList : public AstNode
 {
+    void reset() override
+    {
+        storageOffset    = 0;
+        isConst          = false;
+        forFuncParameter = false;
+        AstNode::reset();
+    }
 
     AstNode* clone(CloneContext& context) override;
 
+    bool             isConst;
+    bool             forFuncParameter;
     uint32_t         storageOffset;
     TypeInfoListKind listKind;
 };

@@ -144,7 +144,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Find type
     if (node->type && node->assignment)
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->type->typeInfo, node->assignment));
+        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->type->typeInfo, node->assignment, CASTFLAG_UNCONST));
         node->typeInfo = node->type->typeInfo;
     }
     else if (node->assignment)

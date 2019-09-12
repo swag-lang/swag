@@ -11,6 +11,7 @@ static const uint32_t CASTFLAG_NOERROR       = 0x00000001;
 static const uint32_t CASTFLAG_FORCE         = 0x00000002;
 static const uint32_t CASTFLAG_CONCRETE_ENUM = 0x00000004;
 static const uint32_t CASTFLAG_JUST_CHECK    = 0x00000008;
+static const uint32_t CASTFLAG_UNCONST       = 0x00000010;
 
 enum MakeConcrete
 {

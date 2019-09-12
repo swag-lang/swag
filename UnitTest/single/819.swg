@@ -1,4 +1,4 @@
-#module module818
+#module module819
 
 func toto(x: {s32, s32})
 {
@@ -9,6 +9,6 @@ func toto(x: {s32, s32})
 //#[swag.printbc]
 #test
 {
-	const aa = {10,20}
+	var aa = {10,20}
 	toto(aa)
 }

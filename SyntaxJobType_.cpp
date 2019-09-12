@@ -63,13 +63,14 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result)
+bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool isConst)
 {
     // Else this is a type expression
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveTypeTuple;
     if (result)
         *result = node;
+    node->isConst = isConst;
 
     SWAG_CHECK(eatToken());
 
@@ -123,9 +124,17 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
         return doTypeExpressionLambda(parent, result);
 
+    // Const keyword
+    bool isConst = false;
+    if (token.id == TokenId::KwdConst)
+    {
+        isConst = true;
+        SWAG_CHECK(tokenizer.getToken(token));
+    }
+
     // This is a tuple
     if (token.id == TokenId::SymLeftCurly)
-        return doTypeExpressionTuple(parent, result);
+        return doTypeExpressionTuple(parent, result, isConst);
 
     // Else this is a type expression
     auto node         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
@@ -133,14 +142,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;
-
-    // Const
-    node->isConst = false;
-    if (token.id == TokenId::KwdConst)
-    {
-        node->isConst = true;
-        SWAG_CHECK(tokenizer.getToken(token));
-    }
+    node->isConst = isConst;
 
     // Array
     node->arrayDim = 0;

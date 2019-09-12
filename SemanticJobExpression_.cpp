@@ -58,10 +58,7 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
     typeInfo->name += "}";
     node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
-
-    if (node->flags & AST_CONST_EXPR)
-        typeInfo->setConst();
-    node->typeInfo = typeTable.registerType(typeInfo);
+    node->typeInfo          = typeTable.registerType(typeInfo);
 
     // Reserve
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)

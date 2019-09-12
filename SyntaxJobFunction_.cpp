@@ -59,6 +59,17 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
+void SyntaxJob::setForFuncParameter(AstNode* node)
+{
+    if (node)
+    {
+        if (node->kind == AstNodeKind::TypeExpression)
+            ((AstTypeExpression*) node)->forFuncParameter = true;
+        if (node->kind == AstNodeKind::ExpressionList)
+            ((AstExpressionList*) node)->forFuncParameter = true;
+    }
+}
+
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 {
     auto paramNode         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
@@ -101,8 +112,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         }
     }
 
-    if (paramNode->type && paramNode->type->kind == AstNodeKind::TypeExpression)
-        ((AstTypeExpression*) paramNode->type)->forFuncParameter = true;
+    setForFuncParameter(paramNode->type);
 
     // Be sure we will be able to have a type
     if (!paramNode->type && !paramNode->assignment)
@@ -248,7 +258,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
             Scoped    scoped(this, newScope);
             ScopedFct scopedFct(this, funcNode);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
-            SWAG_CHECK(doTypeExpression(typeNode));
+            AstNode* typeExpression;
+            SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
+			setForFuncParameter(typeExpression);
         }
     }
 
