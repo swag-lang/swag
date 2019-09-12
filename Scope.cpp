@@ -27,6 +27,8 @@ const char* Scope::getNakedName(ScopeKind kind)
         return "file";
     case ScopeKind::Module:
         return "global";
+	case ScopeKind::Statement:
+		return "statement";
 
     default:
         return "???";
