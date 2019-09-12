@@ -1,17 +1,10 @@
 #include "pch.h"
-#include "Global.h"
-#include "Diagnostic.h"
 #include "SourceFile.h"
-#include "SymTable.h"
 #include "SemanticJob.h"
-#include "TypeInfo.h"
 #include "Ast.h"
-#include "Scope.h"
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "Module.h"
-#include "Log.h"
-#include "Workspace.h"
 #include "ByteCodeGenJob.h"
 
 bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
