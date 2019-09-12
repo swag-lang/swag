@@ -37,6 +37,9 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
     node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT);
 
+    if (childBack->flags & AST_IS_CONST_ASSIGN)
+        node->flags |= AST_IS_CONST;
+
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
     {
@@ -48,127 +51,14 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope)
-{
-    auto  job       = context->job;
-    auto& here      = job->scopesHere;
-    auto& hereNoAlt = job->scopesHereNoAlt;
-
-    here.clear();
-    hereNoAlt.clear();
-    scopes.clear();
-    if (!startScope)
-        return;
-
-    scopes.push_back(startScope);
-    here.insert(startScope);
-
-    // Can be null because of g_CommandLine.addRuntimeModule to false
-    if (context->sourceFile->module->workspace->runtimeModule)
-    {
-        auto runTime = context->sourceFile->module->workspace->runtimeModule->scopeRoot;
-        scopes.push_back(runTime);
-        here.insert(runTime);
-        hereNoAlt.insert(runTime);
-    }
-
-    for (int i = 0; i < scopes.size(); i++)
-    {
-        auto scope = scopes[i];
-
-        // Add parent scope
-        if (scope->parentScope)
-        {
-            if (here.find(scope->parentScope) == here.end())
-            {
-                scopes.push_back(scope->parentScope);
-                here.insert(scope->parentScope);
-            }
-        }
-
-        // Add current alternative scopes, made by 'using'.
-        if (!scope->alternativeScopes.empty())
-        {
-            // Can we add alternative scopes for that specific scope ?
-            if (hereNoAlt.find(scope) == hereNoAlt.end())
-            {
-                for (int j = 0; j < scope->alternativeScopes.size(); j++)
-                {
-                    auto altScope = scope->alternativeScopes[j];
-                    if (here.find(altScope) == here.end())
-                    {
-                        scopes.push_back(altScope);
-                        here.insert(altScope);
-                    }
-                }
-            }
-
-            scopesVars.insert(scopesVars.end(), scope->alternativeScopesVars.begin(), scope->alternativeScopesVars.end());
-        }
-
-        // If we are on a module, add all files
-        if (scope->kind == ScopeKind::Module)
-        {
-            for (auto child : scope->childScopes)
-            {
-                if (here.find(child) == here.end())
-                {
-                    scopes.push_back(child);
-                    here.insert(child);
-                    hereNoAlt.insert(child);
-                }
-            }
-        }
-    }
-}
-
-bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind)
-{
-    auto sourceFile = context->sourceFile;
-    auto job        = context->job;
-
-    // No ghosting from struct
-    if (startScope->kind == ScopeKind::Struct)
-        return true;
-
-    SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, startScope);
-    for (auto scope : job->cacheScopeHierarchy)
-    {
-        // No ghosting with struct
-        if (scope->kind == ScopeKind::Struct)
-            continue;
-
-        // Do not check if this is the same scope
-        if (!scope->symTable || scope == startScope)
-            continue;
-
-        // Be sure that symbol is fully resolved, otherwise we cannot check for a ghosting
-        {
-            auto symbol = scope->symTable->find(node->name);
-            if (!symbol)
-                continue;
-            scoped_lock lock(symbol->mutex);
-            if (symbol->cptOverloads)
-            {
-                job->waitForSymbol(symbol);
-                return true;
-            }
-        }
-
-        SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
-    }
-
-    return true;
-}
-
 bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->flags |= AST_IS_CONST;
     auto overload = node->resolvedSymbolOverload;
-	if (overload && overload->flags & OVERLOAD_CONST)
-		node->flags |= AST_IS_CONST;
+    if (overload && overload->flags & OVERLOAD_CONST)
+        node->flags |= AST_IS_CONST_ASSIGN;
 
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
@@ -1084,5 +974,118 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto& match    = job->cacheMatches[0];
     node->typeInfo = match.symbolOverload->typeInfo;
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, match.symbolOverload, &match, dependentVar));
+    return true;
+}
+
+void SemanticJob::collectScopeHiearchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope)
+{
+    auto  job       = context->job;
+    auto& here      = job->scopesHere;
+    auto& hereNoAlt = job->scopesHereNoAlt;
+
+    here.clear();
+    hereNoAlt.clear();
+    scopes.clear();
+    if (!startScope)
+        return;
+
+    scopes.push_back(startScope);
+    here.insert(startScope);
+
+    // Can be null because of g_CommandLine.addRuntimeModule to false
+    if (context->sourceFile->module->workspace->runtimeModule)
+    {
+        auto runTime = context->sourceFile->module->workspace->runtimeModule->scopeRoot;
+        scopes.push_back(runTime);
+        here.insert(runTime);
+        hereNoAlt.insert(runTime);
+    }
+
+    for (int i = 0; i < scopes.size(); i++)
+    {
+        auto scope = scopes[i];
+
+        // Add parent scope
+        if (scope->parentScope)
+        {
+            if (here.find(scope->parentScope) == here.end())
+            {
+                scopes.push_back(scope->parentScope);
+                here.insert(scope->parentScope);
+            }
+        }
+
+        // Add current alternative scopes, made by 'using'.
+        if (!scope->alternativeScopes.empty())
+        {
+            // Can we add alternative scopes for that specific scope ?
+            if (hereNoAlt.find(scope) == hereNoAlt.end())
+            {
+                for (int j = 0; j < scope->alternativeScopes.size(); j++)
+                {
+                    auto altScope = scope->alternativeScopes[j];
+                    if (here.find(altScope) == here.end())
+                    {
+                        scopes.push_back(altScope);
+                        here.insert(altScope);
+                    }
+                }
+            }
+
+            scopesVars.insert(scopesVars.end(), scope->alternativeScopesVars.begin(), scope->alternativeScopesVars.end());
+        }
+
+        // If we are on a module, add all files
+        if (scope->kind == ScopeKind::Module)
+        {
+            for (auto child : scope->childScopes)
+            {
+                if (here.find(child) == here.end())
+                {
+                    scopes.push_back(child);
+                    here.insert(child);
+                    hereNoAlt.insert(child);
+                }
+            }
+        }
+    }
+}
+
+bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind)
+{
+    auto sourceFile = context->sourceFile;
+    auto job        = context->job;
+
+    // No ghosting from struct
+    if (startScope->kind == ScopeKind::Struct)
+        return true;
+
+    SemanticJob::collectScopeHiearchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, startScope);
+    for (auto scope : job->cacheScopeHierarchy)
+    {
+        // No ghosting with struct
+        if (scope->kind == ScopeKind::Struct)
+            continue;
+
+        // Do not check if this is the same scope
+        if (!scope->symTable || scope == startScope)
+            continue;
+
+        // Be sure that symbol is fully resolved, otherwise we cannot check for a ghosting
+        {
+            auto symbol = scope->symTable->find(node->name);
+            if (!symbol)
+                continue;
+            scoped_lock lock(symbol->mutex);
+            if (symbol->cptOverloads)
+            {
+                job->waitForSymbol(symbol);
+                return true;
+            }
+        }
+
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
+    }
+
     return true;
 }
