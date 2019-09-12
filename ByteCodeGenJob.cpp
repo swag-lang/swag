@@ -163,16 +163,8 @@ JobResult ByteCodeGenJob::execute()
                         if (node->flags & AST_VALUE_COMPUTED)
                         {
                             context.node = node;
-                            if (node->typeInfo->kind == TypeInfoKind::TypeList)
-                            {
-                                if (!emitExpressionList(&context))
-                                    return JobResult::ReleaseJob;
-                            }
-                            else
-                            {
-                                if (!emitLiteral(&context))
-                                    return JobResult::ReleaseJob;
-                            }
+                            if (!emitLiteral(&context))
+                                return JobResult::ReleaseJob;
                         }
                         else if (node->byteCodeFct)
                         {

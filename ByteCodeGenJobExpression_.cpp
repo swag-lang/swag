@@ -171,6 +171,14 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
         auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
     }
+    else if (typeInfo->kind == TypeInfoKind::TypeList)
+    {
+        auto     typeList      = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeList);
+        uint32_t storageOffset = node->computedValue.reg.u32;
+        node->resultRegisterRC += reserveRegisterRC(context);
+        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
+    }
     else
     {
         return internalError(context, "emitLiteral, type not native");

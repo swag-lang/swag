@@ -81,26 +81,26 @@ void ByteCode::print()
 
     g_Log.eol();
 
-	int lastLine = -1;
+    int lastLine = -1;
     for (int i = 0; i < (int) numInstructions; i++)
     {
         auto ip = out + i;
 
-		// Print source code
-		if (ip->startLocation.line != lastLine)
-		{
-			if (ip->startLocation.column != ip->endLocation.column)
-			{
-				lastLine = ip->startLocation.line;
-				auto s = sourceFile->getLine(ip->startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
-				s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
-				g_Log.setColor(LogColor::DarkYellow);
-				for (int idx = 0; idx < 9; idx++)
-					g_Log.print(" ");
-				g_Log.print(s);
-				g_Log.print("\n");
-			}
-		}
+        // Print source code
+        if (ip->startLocation.line != lastLine)
+        {
+            if (ip->startLocation.column != ip->endLocation.column)
+            {
+                lastLine = ip->startLocation.line;
+                auto s   = sourceFile->getLine(ip->startLocation.seekStartLine[REPORT_NUM_CODE_LINES - 1]);
+                s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
+                g_Log.setColor(LogColor::DarkYellow);
+                for (int idx = 0; idx < 9; idx++)
+                    g_Log.print(" ");
+                g_Log.print(s);
+                g_Log.print("\n");
+            }
+        }
 
         // Instruction rank
         g_Log.setColor(LogColor::Cyan);
@@ -196,11 +196,14 @@ void ByteCode::print()
 
         case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOp64:
-        case ByteCodeOp::RARefFromConstantSeg:
         case ByteCodeOp::CopyRARBStr:
         case ByteCodeOp::DeRefPointer:
-		case ByteCodeOp::CopyVC:
+        case ByteCodeOp::CopyVC:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
+            break;
+
+        case ByteCodeOp::RARefFromConstantSeg:
+            wprintf(L"RA: %u RB: %u VC: { %u, %u } ", ip->a.u32, ip->b.u32, (uint32_t) (ip->c.u64 >> 32), (uint32_t) (ip->c.u64 & 0xFFFFFFFF));
             break;
 
         case ByteCodeOp::RARefFromStackParam:

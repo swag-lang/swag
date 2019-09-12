@@ -232,16 +232,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         assert(node->typeInfo);
 
         node->flags |= AST_NO_BYTECODE;
-        if (node->typeInfo->kind != TypeInfoKind::Array)
-        {
-            node->inheritComputedValue(node->assignment);
-        }
-        else
+        if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::TypeList)
         {
             // Reserve space in constant segment
-            auto module    = sourceFile->module;
-            auto typeArray = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
-            storageOffset  = module->constantSegment.reserve(typeArray->sizeOf);
+            auto module   = sourceFile->module;
+            storageOffset = module->constantSegment.reserve(node->typeInfo->sizeOf);
             scoped_lock lock(module->constantSegment.mutex);
             auto        offset = storageOffset;
             SWAG_CHECK(SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, &module->constantSegment));
@@ -251,6 +246,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeConst->setConst();
                 node->typeInfo = typeTable.registerType(typeConst);
             }
+        }
+        else
+        {
+            node->inheritComputedValue(node->assignment);
         }
     }
 
