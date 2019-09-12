@@ -1332,10 +1332,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
 
     // Const mismatch
     if (!toType->isConst() && fromType->isConst())
-    {
-        if (toType->kind != TypeInfoKind::Array)
-            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
-    }
+        return castError(errorContext, toType, fromType, nodeToCast, castFlags);
 
     if (fromType->isSame(toType, ISSAME_CAST))
         return true;

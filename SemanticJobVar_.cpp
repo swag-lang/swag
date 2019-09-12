@@ -244,8 +244,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             storageOffset  = module->constantSegment.reserve(typeArray->sizeOf);
             scoped_lock lock(module->constantSegment.mutex);
             auto        offset = storageOffset;
-            auto        result = SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, &module->constantSegment);
-            SWAG_CHECK(result);
+            SWAG_CHECK(SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, &module->constantSegment));
+            if (!node->typeInfo->isConst())
+            {
+                auto typeConst = node->typeInfo->clone();
+                typeConst->setConst();
+                node->typeInfo = typeTable.registerType(typeConst);
+            }
         }
     }
 
@@ -337,7 +342,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // A using on a variable
     if (node->flags & AST_DECL_USING)
-		SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
+        SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
 
     // Attributes
     SymbolAttributes attributes;
