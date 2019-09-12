@@ -316,7 +316,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a struct
     else if (node->array->typeInfo->kind == TypeInfoKind::Struct)
     {
-        if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+        if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
         {
             AstNode allParams;
             allParams.reset();

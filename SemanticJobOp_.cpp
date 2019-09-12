@@ -187,10 +187,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     auto overload = job->cacheMatches[0].symbolOverload;
     if (!optionnal)
     {
-        node->typeInfo               = overload->typeInfo;
-        node->resolvedSymbolName     = job->cacheDependentSymbols[0];
-        node->resolvedSymbolOverload = overload;
-        SWAG_ASSERT(node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function);
+        node->typeInfo                     = overload->typeInfo;
+        node->resolvedUserOpSymbolName     = job->cacheDependentSymbols[0];
+        node->resolvedUserOpSymbolOverload = overload;
+        SWAG_ASSERT(node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function);
     }
 
     // Allocate room on the stack to store the result of the function call

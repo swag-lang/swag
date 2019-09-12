@@ -11,7 +11,7 @@ impl Utf8
 {
 	func reserveSize(using self, newSize: u32)
 	{
-		if(size >= newSize)
+		if size >= newSize
 			return;
 			
 		newPtr := @alloc(newSize)
@@ -34,5 +34,5 @@ impl Utf8
 #test
 {
 	var str: Utf8 = "toto"
-	//@assert(str.size == 4)
+	@assert(str.length == 4)
 }

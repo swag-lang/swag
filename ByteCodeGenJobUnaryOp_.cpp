@@ -64,7 +64,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
     AstNode* node = context->node;
     auto     r0   = node->childs[0]->resultRegisterRC;
 
-    if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+    if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
 		return true;

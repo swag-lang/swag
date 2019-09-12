@@ -519,7 +519,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     AstNode* rightNode = context->node->childs[1];
 
     emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo);
-    if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+    if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
         {

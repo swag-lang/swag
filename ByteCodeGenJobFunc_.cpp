@@ -132,7 +132,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         auto child0 = callParams->childs.front();
         emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
-		freeRegisterRC(context, child0->resultRegisterRC);
+        freeRegisterRC(context, child0->resultRegisterRC);
         break;
     }
     case Intrinsic::IntrinsicMemCpy:
@@ -216,7 +216,9 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     AstNode*          node         = context->node;
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
     if (funcNode)
+    {
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    }
     else
     {
         auto typeVar = TypeManager::concreteType(varNode->typeInfo, MakeConcrete::FlagAlias);

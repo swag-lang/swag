@@ -113,30 +113,33 @@ struct AstNode : public PoolElement
 {
     void reset() override
     {
-        semanticState        = AstNodeResolveState::Enter;
-        bytecodeState        = AstNodeResolveState::Enter;
-        ownerScope           = nullptr;
-        ownerBreakable       = nullptr;
-        ownerFct             = nullptr;
-        ownerStructScope     = nullptr;
-        parent               = nullptr;
-        semanticFct          = nullptr;
-        semanticBeforeFct    = nullptr;
-        semanticAfterFct     = nullptr;
-        byteCodeFct          = nullptr;
-        byteCodeBeforeFct    = nullptr;
-        byteCodeAfterFct     = nullptr;
-        typeInfo             = nullptr;
-        castedTypeInfo       = nullptr;
-        resolvedSymbolName   = nullptr;
-        parentAttributes     = nullptr;
-        bc                   = nullptr;
-        sourceFileIdx        = UINT32_MAX;
-        attributeFlags       = 0;
-        flags                = 0;
-        fctCallStorageOffset = 0;
-        byteCodeJob          = nullptr;
-        semanticPass         = 0;
+        semanticState                = AstNodeResolveState::Enter;
+        bytecodeState                = AstNodeResolveState::Enter;
+        ownerScope                   = nullptr;
+        ownerBreakable               = nullptr;
+        ownerFct                     = nullptr;
+        ownerStructScope             = nullptr;
+        parent                       = nullptr;
+        semanticFct                  = nullptr;
+        semanticBeforeFct            = nullptr;
+        semanticAfterFct             = nullptr;
+        byteCodeFct                  = nullptr;
+        byteCodeBeforeFct            = nullptr;
+        byteCodeAfterFct             = nullptr;
+        typeInfo                     = nullptr;
+        castedTypeInfo               = nullptr;
+        resolvedSymbolName           = nullptr;
+        resolvedSymbolOverload       = nullptr;
+        resolvedUserOpSymbolName     = nullptr;
+        resolvedUserOpSymbolOverload = nullptr;
+        parentAttributes             = nullptr;
+        bc                           = nullptr;
+        sourceFileIdx                = UINT32_MAX;
+        attributeFlags               = 0;
+        flags                        = 0;
+        fctCallStorageOffset         = 0;
+        byteCodeJob                  = nullptr;
+        semanticPass                 = 0;
         resultRegisterRC.clear();
         childs.clear();
         computedValue.reg.u64 = 0;
@@ -269,6 +272,8 @@ struct AstNode : public PoolElement
     TypeInfo*       castedTypeInfo;
     SymbolName*     resolvedSymbolName;
     SymbolOverload* resolvedSymbolOverload;
+    SymbolName*     resolvedUserOpSymbolName;
+    SymbolOverload* resolvedUserOpSymbolOverload;
     ByteCodeGenJob* byteCodeJob;
 
     AstNode*    parent;

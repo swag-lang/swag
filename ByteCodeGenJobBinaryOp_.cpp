@@ -291,7 +291,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     auto r0 = node->childs[0]->resultRegisterRC;
     auto r1 = node->childs[1]->resultRegisterRC;
 
-    if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+    if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
         auto r2 = node->resultRegisterRC;
@@ -503,7 +503,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo);
     emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo);
 
-    if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Function)
+    if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
         auto r2 = node->resultRegisterRC;
@@ -573,6 +573,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, AstNode* forNode)
 {
     AstNode* node           = forNode ? forNode : context->node;
-    auto     symbolOverload = node->resolvedSymbolOverload;
+    auto     symbolOverload = node->resolvedUserOpSymbolOverload;
+    SWAG_ASSERT(symbolOverload);
     return emitLocalCall(context, allParams ? allParams : node, static_cast<AstFuncDecl*>(symbolOverload->node), nullptr);
 }

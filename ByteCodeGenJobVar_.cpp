@@ -24,15 +24,23 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         }
 
         emitStructParameters(context, UINT32_MAX);
+
+        if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+        {
+            RegisterList r0                                                 = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.s32 = resolved->storageOffset;
+            node->type->resultRegisterRC                                    = r0;
+            return emitLocalCall(context, node, static_cast<AstFuncDecl*>(node->resolvedUserOpSymbolOverload->node), nullptr);
+        }
     }
 
     // User initialization
     if (node->assignment)
     {
-        RegisterList r0        = reserveRegisterRC(context);
-        auto         inst      = emitInstruction(context, ByteCodeOp::RARefFromStack, r0);
-        inst->b.s32            = resolved->storageOffset;
-        node->resultRegisterRC = node->assignment->resultRegisterRC;
+        RegisterList r0 = reserveRegisterRC(context);
+
+        emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.s32 = resolved->storageOffset;
+        node->resultRegisterRC                                          = node->assignment->resultRegisterRC;
         SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
         emitAffectEqual(context, r0, node->resultRegisterRC, node->typeInfo, node->assignment);
         freeRegisterRC(context, r0);
@@ -73,7 +81,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         }
     }
 
-	// No default init for structures, it has been done before
+    // No default init for structures, it has been done before
     if (typeInfo->kind == TypeInfoKind::Struct)
         return true;
 
