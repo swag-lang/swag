@@ -129,7 +129,7 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip)
         }
         else if (typeParam->isNative(NativeTypeKind::String))
         {
-			bufferC.addString(format("rc%u.pointer", index));
+            bufferC.addString(format("rc%u.pointer", index));
             index -= 2;
         }
         else if (typeParam->kind == TypeInfoKind::Native)
@@ -1099,6 +1099,18 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
             break;
 
+        case ByteCodeOp::CastBool8:
+            bufferC.addString(format("r%u.b = r%u.u8 ? 1 : 0; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastBool16:
+            bufferC.addString(format("r%u.b = r%u.u16 ? 1 : 0; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastBool32:
+            bufferC.addString(format("r%u.b = r%u.u32 ? 1 : 0; ", ip->a.u32, ip->a.u32));
+            break;
+        case ByteCodeOp::CastBool64:
+            bufferC.addString(format("r%u.b = r%u.u64 ? 1 : 0; ", ip->a.u32, ip->a.u32));
+            break;
         case ByteCodeOp::CastS8S16:
             bufferC.addString(format("r%u.s16 = (swag_int16_t) r%u.s8; ", ip->a.u32, ip->a.u32));
             break;

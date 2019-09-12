@@ -35,8 +35,10 @@ bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
 {
-    auto node                  = context->node;
-    auto ifNode                = CastAst<AstIf>(node->parent, AstNodeKind::If);
+    auto node   = context->node;
+    auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
+
+    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
     ifNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
     freeRegisterRC(context, node->resultRegisterRC);
@@ -151,6 +153,8 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto whileNode = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+
+    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
 
     // To store the 'index' of the loop
     if (whileNode->needIndex())

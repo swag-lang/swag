@@ -422,13 +422,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         void*    src  = registersRC[ip->b.u32].pointer;
         uint32_t size = registersRC[ip->c.u32].u32;
 
-		if (!dst)
+        if (!dst)
         {
             context->error("destination pointer of copy is null");
-			break;
+            break;
         }
 
-		if (!src)
+        if (!src)
         {
             context->error("source pointer of copy is null");
             break;
@@ -1160,6 +1160,26 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         registersRC[ip->a.u32].u32 &= ip->b.u32;
         registersRC[ip->a.u32].u64 &= 0xFFFFFFFF | (((uint64_t) ip->c.u32) << 32);
+        break;
+    }
+    case ByteCodeOp::CastBool8:
+    {
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].u8 ? true : false;
+        break;
+    }
+    case ByteCodeOp::CastBool16:
+    {
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].u16 ? true : false;
+        break;
+    }
+    case ByteCodeOp::CastBool32:
+    {
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].u32 ? true : false;
+        break;
+    }
+    case ByteCodeOp::CastBool64:
+    {
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].u64 ? true : false;
         break;
     }
     case ByteCodeOp::CastS32F32:

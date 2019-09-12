@@ -175,6 +175,10 @@ void ByteCode::print()
         case ByteCodeOp::CastF32F64:
         case ByteCodeOp::CastF64S64:
         case ByteCodeOp::CastF64F32:
+		case ByteCodeOp::CastBool8:
+		case ByteCodeOp::CastBool16:
+		case ByteCodeOp::CastBool32:
+		case ByteCodeOp::CastBool64:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 

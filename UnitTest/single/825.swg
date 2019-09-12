@@ -1,0 +1,11 @@
+#module module825
+
+//#[swag.printbc]
+#test
+{
+	var x : *s32 = null
+	if x 
+		@assert(false)
+	else
+		@assert(true)
+}

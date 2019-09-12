@@ -7,8 +7,49 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 
+bool ByteCodeGenJob::emitCastNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+{
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
+        return true;
+    }
+
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeTypeKind::U8:
+    case NativeTypeKind::S8:
+        emitInstruction(context, ByteCodeOp::CastBool8, exprNode->resultRegisterRC);
+        break;
+    case NativeTypeKind::U16:
+    case NativeTypeKind::S16:
+        emitInstruction(context, ByteCodeOp::CastBool16, exprNode->resultRegisterRC);
+        break;
+    case NativeTypeKind::U32:
+    case NativeTypeKind::S32:
+        emitInstruction(context, ByteCodeOp::CastBool32, exprNode->resultRegisterRC);
+        break;
+    case NativeTypeKind::S64:
+    case NativeTypeKind::U64:
+        emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
+        break;
+    default:
+        context->node = exprNode;
+        internalError(context, "emitCastNativeBool, invalid source type");
+        break;
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitCastNativeU8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -40,6 +81,9 @@ bool ByteCodeGenJob::emitCastNativeU8(ByteCodeGenContext* context, AstNode* expr
 
 bool ByteCodeGenJob::emitCastNativeU16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -81,6 +125,9 @@ bool ByteCodeGenJob::emitCastNativeU16(ByteCodeGenContext* context, AstNode* exp
 
 bool ByteCodeGenJob::emitCastNativeU32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -122,6 +169,9 @@ bool ByteCodeGenJob::emitCastNativeU32(ByteCodeGenContext* context, AstNode* exp
 
 bool ByteCodeGenJob::emitCastNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::S8:
@@ -164,6 +214,9 @@ bool ByteCodeGenJob::emitCastNativeU64(ByteCodeGenContext* context, AstNode* exp
 }
 bool ByteCodeGenJob::emitCastNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -195,6 +248,9 @@ bool ByteCodeGenJob::emitCastNativeS8(ByteCodeGenContext* context, AstNode* expr
 
 bool ByteCodeGenJob::emitCastNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -236,6 +292,9 @@ bool ByteCodeGenJob::emitCastNativeS16(ByteCodeGenContext* context, AstNode* exp
 
 bool ByteCodeGenJob::emitCastNativeS32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -277,6 +336,9 @@ bool ByteCodeGenJob::emitCastNativeS32(ByteCodeGenContext* context, AstNode* exp
 
 bool ByteCodeGenJob::emitCastNativeS64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -324,6 +386,9 @@ bool ByteCodeGenJob::emitCastNativeS64(ByteCodeGenContext* context, AstNode* exp
 
 bool ByteCodeGenJob::emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -371,6 +436,9 @@ bool ByteCodeGenJob::emitCastNativeF32(ByteCodeGenContext* context, AstNode* exp
 
 bool ByteCodeGenJob::emitCastNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitCast, expression type not native", exprNode);
+
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::U8:
@@ -495,11 +563,12 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitCast, cast type not native");
-    if (fromTypeInfo->kind != TypeInfoKind::Native)
-        return internalError(context, "emitCast, expression type not native", exprNode);
 
     switch (typeInfo->nativeType)
     {
+    case NativeTypeKind::Bool:
+        SWAG_CHECK(emitCastNativeBool(context, exprNode, fromTypeInfo));
+        break;
     case NativeTypeKind::S8:
         SWAG_CHECK(emitCastNativeS8(context, exprNode, fromTypeInfo));
         break;

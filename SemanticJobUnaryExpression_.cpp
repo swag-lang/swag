@@ -1,9 +1,5 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Global.h"
-#include "Diagnostic.h"
-#include "TypeInfo.h"
-#include "SourceFile.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 
@@ -51,17 +47,9 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 {
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = TypeManager::concreteType(op->typeInfo);
+    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, op, CASTFLAG_AUTO_BOOL));
 
-    switch (typeInfo->nativeType)
-    {
-    case NativeTypeKind::Bool:
-        break;
-    default:
-        return context->errorContext.report({sourceFile, op->token, format("boolean inversion not allowed on type '%s'", typeInfo->name.c_str())});
-    }
-
+    auto typeInfo = TypeManager::concreteType(op->typeInfo);
     if (op->flags & AST_VALUE_COMPUTED)
     {
         switch (typeInfo->nativeType)

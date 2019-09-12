@@ -2,7 +2,6 @@
 #include "SemanticJob.h"
 #include "SourceFile.h"
 #include "SymTable.h"
-#include "Scope.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Module.h"

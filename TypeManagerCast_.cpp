@@ -23,6 +23,108 @@ bool TypeManager::castToNativeBool(ErrorContext* errorContext, TypeInfo* fromTyp
 {
     if (fromType == g_TypeMgr.typeInfoBool)
         return true;
+
+    // Automatic cast to a bool is done only if requested, on specific nodes (like if or while expressions)
+    if (!(castFlags & CASTFLAG_AUTO_BOOL))
+        return castError(errorContext, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
+
+    if (fromType->kind == TypeInfoKind::Pointer)
+    {
+        if (!(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            nodeToCast->typeInfo       = g_TypeMgr.typeInfoBool;
+            nodeToCast->castedTypeInfo = fromType;
+            return true;
+        }
+    }
+
+    if (fromType->kind == TypeInfoKind::Native)
+    {
+        switch (fromType->nativeType)
+        {
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            if (nodeToCast)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    if (nodeToCast->flags & AST_VALUE_COMPUTED)
+                    {
+                        nodeToCast->computedValue.reg.b = nodeToCast->computedValue.reg.u8;
+                        nodeToCast->typeInfo            = g_TypeMgr.typeInfoBool;
+                    }
+                    else
+                    {
+                        nodeToCast->typeInfo       = g_TypeMgr.typeInfoBool;
+                        nodeToCast->castedTypeInfo = fromType;
+                    }
+                }
+            }
+            return true;
+
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            if (nodeToCast)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    if (nodeToCast->flags & AST_VALUE_COMPUTED)
+                    {
+                        nodeToCast->computedValue.reg.b = nodeToCast->computedValue.reg.u16;
+                        nodeToCast->typeInfo            = g_TypeMgr.typeInfoBool;
+                    }
+                    else
+                    {
+                        nodeToCast->typeInfo       = g_TypeMgr.typeInfoBool;
+                        nodeToCast->castedTypeInfo = fromType;
+                    }
+                }
+            }
+            return true;
+
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            if (nodeToCast)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    if (nodeToCast->flags & AST_VALUE_COMPUTED)
+                    {
+                        nodeToCast->computedValue.reg.b = nodeToCast->computedValue.reg.u32;
+                        nodeToCast->typeInfo            = g_TypeMgr.typeInfoBool;
+                    }
+                    else
+                    {
+                        nodeToCast->typeInfo       = g_TypeMgr.typeInfoBool;
+                        nodeToCast->castedTypeInfo = fromType;
+                    }
+                }
+            }
+            return true;
+
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+            if (nodeToCast)
+            {
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    if (nodeToCast->flags & AST_VALUE_COMPUTED)
+                    {
+                        nodeToCast->computedValue.reg.b = nodeToCast->computedValue.reg.u64;
+                        nodeToCast->typeInfo            = g_TypeMgr.typeInfoBool;
+                    }
+                    else
+                    {
+                        nodeToCast->typeInfo       = g_TypeMgr.typeInfoBool;
+                        nodeToCast->castedTypeInfo = fromType;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
     return castError(errorContext, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
 }
 
@@ -1100,9 +1202,9 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
 
-		// Can only cast array to slice
-		if (fromTypeList->listKind != TypeInfoListKind::Array)
-			return castError(errorContext, toType, fromType, nodeToCast, castFlags, explicitIsValid);
+        // Can only cast array to slice
+        if (fromTypeList->listKind != TypeInfoListKind::Array)
+            return castError(errorContext, toType, fromType, nodeToCast, castFlags, explicitIsValid);
 
         // Special case when typelist is one pointer and one int
         if (fromTypeList->childs.size() == 2)
