@@ -23,6 +23,11 @@ const char* Scope::getNakedName(ScopeKind kind)
         return "tuple";
     case ScopeKind::Struct:
         return "struct";
+    case ScopeKind::File:
+        return "file";
+    case ScopeKind::Module:
+        return "global";
+
     default:
         return "???";
     }
