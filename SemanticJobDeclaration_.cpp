@@ -13,6 +13,34 @@ bool SemanticJob::resolveNamespace(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
+{
+    auto sourceFile = context->sourceFile;
+    auto node       = context->node;
+    SWAG_VERIFY(node->ownerScope->kind == ScopeKind::Function, context->errorContext.report({sourceFile, node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedName(node->ownerScope->kind))}));
+    if (typeInfoVar->kind == TypeInfoKind::Struct)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
+        node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
+        node->ownerScope->alternativeScopesVars.push_back({ varNode, typeStruct->scope});
+    }
+    else if (typeInfoVar->kind == TypeInfoKind::Pointer)
+    {
+        auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
+        SWAG_VERIFY(typePointer->ptrCount == 1, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
+        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+        node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
+        node->ownerScope->alternativeScopesVars.push_back({ varNode, typeStruct->scope});
+    }
+    else
+    {
+        return context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", node->typeInfo->name.c_str())});
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveUsing(SemanticContext* context)
 {
     auto job   = context->job;
@@ -20,6 +48,11 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
 
     node->flags |= AST_NO_BYTECODE;
+    if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
+    {
+        SWAG_CHECK(resolveUsingVar(context, idref->resolvedSymbolOverload->node, idref->resolvedSymbolOverload->typeInfo));
+        return true;
+    }
 
     Scope* scope = nullptr;
     switch (idref->resolvedSymbolOverload->typeInfo->kind)
