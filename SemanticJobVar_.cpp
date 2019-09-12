@@ -84,7 +84,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     uint32_t symbolFlags = 0;
     if (node->kind == AstNodeKind::FuncDeclParam)
-        symbolFlags |= OVERLOAD_VAR_FUNC_PARAM;
+        symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST;
     else if (node->ownerScope->isGlobal())
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if (node->ownerScope->kind == ScopeKind::Struct)

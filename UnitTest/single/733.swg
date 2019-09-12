@@ -3,7 +3,7 @@
 //#[swag.printbc]
 func(T) toto(x: T)
 {
-	var c: *T;
+	var c: const *T;
 	c = &x
 	@assert(c[0] == "toto")
 }
