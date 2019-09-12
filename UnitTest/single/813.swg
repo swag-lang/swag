@@ -1,0 +1,8 @@
+#module module813
+
+#test
+{
+	let a = [1, 2]
+	a[0] = 10
+	@assert(a[0] == 10)
+}

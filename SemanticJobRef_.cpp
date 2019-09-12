@@ -104,7 +104,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     auto arrayType  = arrayNode->array->typeInfo;
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(!arrayType->isConst(), context->errorContext.report({sourceFile, arrayNode->access, format("type '%s' is constant and cannot be changed", arrayType->name.c_str())}));
+    SWAG_VERIFY(!arrayType->isConst(), context->errorContext.report({sourceFile, arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
 
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
         return context->errorContext.report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
@@ -202,7 +202,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             arrayNode->typeInfo = typeTable.registerType(newType);
         }
 
-		setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+        setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
     }
 
@@ -210,7 +210,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         auto typePtr        = static_cast<TypeInfoArray*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
-		setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+        setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
     }
 
@@ -218,7 +218,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         auto typePtr        = static_cast<TypeInfoSlice*>(arrayType);
         arrayNode->typeInfo = typePtr->pointedType;
-		setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
+        setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);
         break;
     }
 

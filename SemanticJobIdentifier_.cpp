@@ -163,6 +163,13 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
 
 bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
+    // If type of previous one was const, then we force this node to be const (cannot change it)
+    if (node->parent->typeInfo && node->parent->typeInfo->isConst())
+        node->flags |= AST_IS_CONST;
+    auto overload = node->resolvedSymbolOverload;
+	if (overload && overload->flags & OVERLOAD_CONST)
+		node->flags |= AST_IS_CONST;
+
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
 
@@ -170,7 +177,6 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     // Be sure we do not reference a structure field, without a corresponding concrete variable
     auto sourceFile = context->sourceFile;
-    auto overload   = node->resolvedSymbolOverload;
     if (!identifierRef->typeInfo && overload && (overload->flags & OVERLOAD_VAR_STRUCT))
     {
         Diagnostic diag{sourceFile, node, format("cannot reference structure identifier '%s'", node->name.c_str())};
@@ -178,14 +184,8 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         return false;
     }
 
-	// If type of previous one was const, then we force this node to be const (cannot change it)
-	if (identifierRef->typeInfo && identifierRef->typeInfo->isConst())
-		node->flags |= AST_IS_CONST;
-	if(identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->flags & AST_IS_CONST))
-		node->flags |= AST_IS_CONST;
-
-    identifierRef->typeInfo = typeInfo;
-	identifierRef->previousResolvedNode = node;
+    identifierRef->typeInfo             = typeInfo;
+    identifierRef->previousResolvedNode = node;
 
     switch (typeInfo->kind)
     {

@@ -25,7 +25,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->errorContext.report({sourceFile, left, format("affect operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->errorContext.report({sourceFile, left, "affect operation not allowed on array"}));
     SWAG_VERIFY(left->flags & AST_L_VALUE, context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is not a l-value"}));
-    SWAG_VERIFY(!(left->resolvedSymbolOverload->flags & OVERLOAD_CONST), context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is immutable"}));
 	SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->errorContext.report({ sourceFile, left, "affect operation not allowed, left expression is immutable" }));
 
     // Is this an array like affectation ?

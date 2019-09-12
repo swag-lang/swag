@@ -17,9 +17,9 @@ impl Utf8
 		newPtr := @alloc(newSize)
 		if buffer != null
 			@memcpy(newPtr, buffer, size)
-		size = newSize;
+		size = newSize
 		@free(buffer)
-		buffer = cast(*u8) newPtr;
+		buffer = cast(*u8) newPtr
 	}
 	
 	func opAffect(using self, from: string)
