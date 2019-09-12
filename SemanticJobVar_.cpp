@@ -335,14 +335,29 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->flags |= AST_R_VALUE;
     }
 
-    // A using
+    // A using on a variable
     if (node->flags & AST_DECL_USING)
     {
-        SWAG_VERIFY(node->typeInfo->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, node, format("cannot use 'using' on variable because type '%s' is not a struct", node->typeInfo->name.c_str())}));
-        SWAG_VERIFY(node->ownerScope->kind == ScopeKind::Function, context->errorContext.report({sourceFile, node, format("cannot use 'using' on variable in scope '%s'", Scope::getNakedName(node->ownerScope->kind))}));
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-        node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
-        node->ownerScope->alternativeScopesVars.push_back({node, typeStruct->scope});
+        SWAG_VERIFY(node->ownerScope->kind == ScopeKind::Function, context->errorContext.report({sourceFile, node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedName(node->ownerScope->kind))}));
+        if (node->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
+            node->ownerScope->alternativeScopesVars.push_back({node, typeStruct->scope});
+        }
+        else if (node->typeInfo->kind == TypeInfoKind::Pointer)
+        {
+            auto typePointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
+            SWAG_VERIFY(typePointer->ptrCount == 1, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
+            SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", node->typeInfo->name.c_str())}));
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
+            node->ownerScope->alternativeScopesVars.push_back({node, typeStruct->scope});
+        }
+        else
+        {
+            return context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", node->typeInfo->name.c_str())});
+        }
     }
 
     // Attributes
