@@ -1100,6 +1100,10 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
 
+		// Can only cast array to slice
+		if (fromTypeList->listKind != TypeInfoListKind::Array)
+			return castError(errorContext, toType, fromType, nodeToCast, castFlags, explicitIsValid);
+
         // Special case when typelist is one pointer and one int
         if (fromTypeList->childs.size() == 2)
         {
