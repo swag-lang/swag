@@ -3,6 +3,7 @@
 //#[swag.printbc]
 #test
 {
-	@print("enter")
-	defer @print("leave")
+	a := 0
+	defer @assert(a == 1)
+	a += 1
 }

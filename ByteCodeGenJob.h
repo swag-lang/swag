@@ -20,6 +20,7 @@ enum class ByteCodeResult
 {
     Done,
     Pending,
+	NewChilds,
 };
 
 struct ByteCodeGenContext

@@ -8,6 +8,7 @@
 #include "SourceFile.h"
 #include "ByteCode.h"
 #include "Ast.h"
+#include "Scope.h"
 #include "SymTable.h"
 
 bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
@@ -438,5 +439,24 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
 {
-	return true;
+    if (!scope)
+        return true;
+    if (scope->deferedNodes.size() == 0)
+        return true;
+
+    auto node = context->node;
+    if (node->byteCodePass)
+        return true;
+    context->result = ByteCodeResult::NewChilds;
+
+    auto job = context->job;
+    for (int i = (int) scope->deferedNodes.size() - 1; i >= 0; i--)
+    {
+        auto child           = scope->deferedNodes[i];
+        child->bytecodeState = AstNodeResolveState::Enter;
+        child->flags &= ~AST_NO_BYTECODE;
+        job->nodes.push_back(child);
+    }
+
+    return true;
 }

@@ -142,6 +142,7 @@ JobResult ByteCodeGenJob::execute()
                 {
                 case AstNodeResolveState::Enter:
                     node->bytecodeState = AstNodeResolveState::ProcessingChilds;
+					context.result = ByteCodeResult::Done;
 
                     if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
                         return JobResult::ReleaseJob;
@@ -179,6 +180,12 @@ JobResult ByteCodeGenJob::execute()
                                 return JobResult::ReleaseJob;
                             if (context.result == ByteCodeResult::Pending)
                                 return JobResult::KeepJobAlive;
+							if (context.result == ByteCodeResult::NewChilds)
+							{
+								node->bytecodeState = AstNodeResolveState::Enter;
+								node->byteCodePass++;
+								continue;
+							}
                         }
 
                         if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))

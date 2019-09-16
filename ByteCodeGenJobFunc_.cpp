@@ -15,6 +15,9 @@
 bool ByteCodeGenJob::emitLeaveFunc(ByteCodeGenContext* context, AstFuncDecl* funcNode)
 {
     SWAG_CHECK(emitLeaveScope(context, funcNode->scope));
+    if (context->result != ByteCodeResult::Done)
+        return true;
+
     if (funcNode->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
@@ -76,7 +79,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     }
 
     SWAG_ASSERT(node->ownerFct);
-	SWAG_CHECK(emitLeaveFunc(context, node->ownerFct));
+    SWAG_CHECK(emitLeaveFunc(context, node->ownerFct));
     return true;
 }
 
