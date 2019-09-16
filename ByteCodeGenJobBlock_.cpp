@@ -112,17 +112,31 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     auto node     = context->node;
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
 
-    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
-    auto diff   = loopNode->seekJumpBeforeExpression - context->bc->numInstructions;
-    inst->a.s32 = diff;
+    if (node->byteCodePass == 0)
+    {
+        loopNode->seekBeforeLeaveScope = context->bc->numInstructions;
+        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        if (context->result != ByteCodeResult::Done)
+            return true;
+    }
+
+    int  seekBeforeJump = context->bc->numInstructions;
+    auto inst           = emitInstruction(context, ByteCodeOp::Jump);
+    auto diff           = loopNode->seekJumpBeforeExpression - context->bc->numInstructions;
+    inst->a.s32         = diff;
 
     loopNode->seekJumpAfterBlock = context->bc->numInstructions;
 
     // Resolve all continue instructions
     for (auto continueNode : loopNode->continueList)
     {
-        inst        = context->bc->out + continueNode->jumpInstruction;
-        diff        = loopNode->seekJumpBeforeExpression - continueNode->jumpInstruction - 1;
+        inst = context->bc->out + continueNode->jumpInstruction;
+
+        // If there's something to do when leaving the scope, jump to it, else jump directly to the expression
+        if (loopNode->seekBeforeLeaveScope == seekBeforeJump)
+            diff = loopNode->seekJumpBeforeExpression - continueNode->jumpInstruction - 1;
+        else
+            diff = loopNode->seekBeforeLeaveScope - continueNode->jumpInstruction - 1;
         inst->a.s32 = diff;
     }
 
@@ -450,7 +464,7 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
     context->result = ByteCodeResult::NewChilds;
 
     auto job = context->job;
-    for (int i = (int) scope->deferedNodes.size() - 1; i >= 0; i--)
+    for (int i = 0; i < (int) scope->deferedNodes.size(); i++)
     {
         auto child           = scope->deferedNodes[i];
         child->bytecodeState = AstNodeResolveState::Enter;

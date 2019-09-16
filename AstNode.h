@@ -96,6 +96,7 @@ enum class AstNodeKind
     CompilerRun,
     CompilerImport,
     CompilerVersion,
+	Defer,
 };
 
 struct CloneContext
@@ -532,8 +533,9 @@ struct AstLoop : public AstBreakable
 {
     void reset() override
     {
-        expression = nullptr;
-        block      = nullptr;
+        expression           = nullptr;
+        block                = nullptr;
+        seekBeforeLeaveScope = 0;
         AstBreakable::reset();
     }
 
@@ -545,6 +547,7 @@ struct AstLoop : public AstBreakable
     int seekJumpBeforeExpression;
     int seekJumpExpression;
     int seekJumpAfterBlock;
+    int seekBeforeLeaveScope;
 };
 
 struct AstSwitch : public AstBreakable

@@ -142,7 +142,7 @@ JobResult ByteCodeGenJob::execute()
                 {
                 case AstNodeResolveState::Enter:
                     node->bytecodeState = AstNodeResolveState::ProcessingChilds;
-					context.result = ByteCodeResult::Done;
+                    context.result      = ByteCodeResult::Done;
 
                     if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
                         return JobResult::ReleaseJob;
@@ -153,8 +153,8 @@ JobResult ByteCodeGenJob::execute()
                         {
                             for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                             {
-                                auto child = node->childs[i];
-								child->bytecodeState = AstNodeResolveState::Enter;
+                                auto child           = node->childs[i];
+                                child->bytecodeState = AstNodeResolveState::Enter;
                                 nodes.push_back(child);
                             }
                         }
@@ -181,15 +181,20 @@ JobResult ByteCodeGenJob::execute()
                                 return JobResult::ReleaseJob;
                             if (context.result == ByteCodeResult::Pending)
                                 return JobResult::KeepJobAlive;
-							if (context.result == ByteCodeResult::NewChilds)
-							{
-								node->byteCodePass++;
-								continue;
-							}
+                            if (context.result == ByteCodeResult::NewChilds)
+                            {
+                                node->byteCodePass++;
+                                continue;
+                            }
                         }
 
                         if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
                             return JobResult::ReleaseJob;
+                        if (context.result == ByteCodeResult::NewChilds)
+                        {
+                            node->byteCodePass++;
+                            continue;
+                        }
                     }
 
                     nodes.pop_back();

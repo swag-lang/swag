@@ -437,6 +437,15 @@ void SyntaxJob::forceTakeAddress(AstNode* node)
     }
 }
 
+bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Defer, sourceFile->indexInModule, parent);
+    if (result)
+        *result = node;
+	SWAG_CHECK(doAffectExpression(node, nullptr));
+	return true;
+}
+
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 {
     AstNode* affectExpression = nullptr;
@@ -516,9 +525,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 
     if (mustDefer)
     {
-		SWAG_ASSERT(affectExpression->ownerScope);
-		affectExpression->ownerScope->deferedNodes.push_back(affectExpression);
-		affectExpression->flags |= AST_DEFER | AST_NO_BYTECODE;
+        SWAG_ASSERT(affectExpression->ownerScope);
+        affectExpression->ownerScope->deferedNodes.push_back(affectExpression);
+        affectExpression->flags |= AST_DEFER | AST_NO_BYTECODE;
     }
 
     return true;
