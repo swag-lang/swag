@@ -12,8 +12,9 @@ struct Module;
 struct RegisterList;
 struct AstFuncDecl;
 struct AstVarDecl;
-enum class ByteCodeOp : uint16_t;
 struct TypeInfoStruct;
+struct Scope;
+enum class ByteCodeOp : uint16_t;
 
 enum class ByteCodeResult
 {
@@ -62,6 +63,7 @@ struct ByteCodeGenJob : public Job
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);
     static bool emitIdentifier(ByteCodeGenContext* context);
+	static bool emitLeaveFunc(ByteCodeGenContext* context, AstFuncDecl* funcNode);
     static bool emitLocalFuncDecl(ByteCodeGenContext* context);
     static bool emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0);
     static bool emitUnaryOp(ByteCodeGenContext* context);
@@ -136,6 +138,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
+    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope);
 
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);

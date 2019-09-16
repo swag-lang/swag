@@ -210,6 +210,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     cloneContext.parent   = newNode;
     auto parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
     parentScope->allocateSymTable();
+    newNode->scope = parentScope;
 
     cloneContext.parentScope   = parentScope;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;

@@ -64,6 +64,7 @@ struct Scope : public PoolElement
     vector<Scope*>           childScopes;
     int                      startStackSize;
     SpinLock                 lockChilds;
+    vector<AstNode*>         deferedNodes;
 };
 
 extern Pool<Scope> g_Pool_scope;

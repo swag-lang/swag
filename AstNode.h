@@ -364,6 +364,7 @@ struct AstFuncDecl : public AstNode
         genericParameters = nullptr;
         returnType        = nullptr;
         content           = nullptr;
+        scope             = nullptr;
         dependentJobs.clear();
         AstNode::reset();
     }
@@ -376,6 +377,7 @@ struct AstFuncDecl : public AstNode
     AstNode*     returnType;
     AstNode*     content;
     vector<Job*> dependentJobs;
+    Scope*       scope;
 };
 
 struct AstAttrDecl : public AstNode

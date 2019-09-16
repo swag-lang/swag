@@ -435,3 +435,8 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC, node->ownerBreakable->registerIndex);
     return true;
 }
+
+bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
+{
+	return true;
+}

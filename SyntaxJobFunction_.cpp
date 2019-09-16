@@ -225,6 +225,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         newScope             = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
         newScope->allocateSymTable();
         funcNode->typeInfo = typeInfo;
+        funcNode->scope    = newScope;
         if (!isContextDisabled())
             currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
@@ -260,7 +261,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
-			setForFuncParameter(typeExpression);
+            setForFuncParameter(typeExpression);
         }
     }
 

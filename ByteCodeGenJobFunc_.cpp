@@ -12,12 +12,19 @@
 #include "TypeManager.h"
 #include "CommandLine.h"
 
+bool ByteCodeGenJob::emitLeaveFunc(ByteCodeGenContext* context, AstFuncDecl* funcNode)
+{
+    SWAG_CHECK(emitLeaveScope(context, funcNode->scope));
+    if (funcNode->stackSize)
+        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
+    emitInstruction(context, ByteCodeOp::Ret);
+    return true;
+}
+
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    if (node->stackSize)
-        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->stackSize;
-    emitInstruction(context, ByteCodeOp::Ret);
+    emitLeaveFunc(context, node);
     return true;
 }
 
@@ -69,9 +76,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     }
 
     SWAG_ASSERT(node->ownerFct);
-    if (node->ownerFct->stackSize)
-        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->ownerFct->stackSize;
-    emitInstruction(context, ByteCodeOp::Ret);
+	SWAG_CHECK(emitLeaveFunc(context, node->ownerFct));
     return true;
 }
 
@@ -190,7 +195,7 @@ void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* fu
         if (!(funcNode->flags & AST_FULL_RESOLVE))
         {
             funcNode->dependentJobs.push_back(context->job);
-			context->job->setPending();
+            context->job->setPending();
             return;
         }
 
