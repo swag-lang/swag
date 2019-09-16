@@ -16,9 +16,14 @@
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto funcNode = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    SWAG_CHECK(emitLeaveScope(context, funcNode->scope));
-    if (context->result != ByteCodeResult::Done)
-        return true;
+
+    if ((funcNode->flags & AST_LEAVE_SCOPE_1) == 0)
+    {
+		funcNode->flags |= AST_LEAVE_SCOPE_1;
+        SWAG_CHECK(emitLeaveScope(context, funcNode->scope));
+        if (context->result != ByteCodeResult::Done)
+            return true;
+    }
 
     if (funcNode->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
@@ -37,10 +42,12 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
-    AstNode* node = context->node;
+    AstNode* node     = context->node;
+    auto     funcNode = node->ownerFct;
+    SWAG_ASSERT(funcNode);
 
     // Copy result to RR0... registers
-    if (node->byteCodePass == 0)
+    if ((node->flags & AST_LEAVE_SCOPE_1) == 0)
     {
         if (!node->childs.empty())
         {
@@ -74,23 +81,22 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 }
             }
         }
+
+        node->flags |= AST_LEAVE_SCOPE_1;
+
+        // Leave all scopes
+        auto scope = node->ownerScope;
+        while (true)
+        {
+            SWAG_CHECK(emitLeaveScope(context, scope));
+            if (scope == funcNode->scope)
+                break;
+            scope = scope->parentScope;
+        }
+
+        if (context->result != ByteCodeResult::Done)
+            return true;
     }
-
-    auto funcNode = node->ownerFct;
-    SWAG_ASSERT(funcNode);
-
-	// Leave all scopes
-    auto scope = node->ownerScope;
-    while (true)
-    {
-        SWAG_CHECK(emitLeaveScope(context, scope));
-		if (scope == funcNode->scope)
-			break;
-		scope = scope->parentScope;
-    }
-
-    if (context->result != ByteCodeResult::Done)
-        return true;
 
     if (funcNode->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;

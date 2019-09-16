@@ -305,6 +305,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto funcNode   = node->ownerFct;
     auto sourceFile = context->sourceFile;
 
+	// Return must be the last of its block
+    if (node->parent->childs.back() != node)
+    {
+		auto idx = Ast::findChildIndex(node->parent, node);
+        return context->errorContext.report({sourceFile, node->parent->childs[idx + 1], "unreachable code"});
+    }
+
     // Check return type
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
     {

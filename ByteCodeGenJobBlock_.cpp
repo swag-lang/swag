@@ -112,39 +112,53 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     auto node     = context->node;
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
 
-    if (node->byteCodePass == 0)
+    if ((node->flags & AST_LEAVE_SCOPE_1) == 0)
     {
-        loopNode->seekBeforeLeaveScope = context->bc->numInstructions;
+        node->flags |= AST_LEAVE_SCOPE_1;
+        loopNode->seekBeforeLeaveScopeContinue = context->bc->numInstructions;
         SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
         if (context->result != ByteCodeResult::Done)
             return true;
     }
 
-    int  seekBeforeJump = context->bc->numInstructions;
-    auto inst           = emitInstruction(context, ByteCodeOp::Jump);
-    auto diff           = loopNode->seekJumpBeforeExpression - context->bc->numInstructions;
-    inst->a.s32         = diff;
-
-    loopNode->seekJumpAfterBlock = context->bc->numInstructions;
-
-    // Resolve all continue instructions
-    for (auto continueNode : loopNode->continueList)
+    if ((node->flags & AST_LEAVE_SCOPE_2) == 0)
     {
-        inst = context->bc->out + continueNode->jumpInstruction;
+        int  seekBeforeJump = context->bc->numInstructions;
+        auto inst           = emitInstruction(context, ByteCodeOp::Jump);
+        auto diff           = loopNode->seekJumpBeforeExpression - context->bc->numInstructions;
+        inst->a.s32         = diff;
 
-        // If there's something to do when leaving the scope, jump to it, else jump directly to the expression
-        if (loopNode->seekBeforeLeaveScope == seekBeforeJump)
-            diff = loopNode->seekJumpBeforeExpression - continueNode->jumpInstruction - 1;
-        else
-            diff = loopNode->seekBeforeLeaveScope - continueNode->jumpInstruction - 1;
-        inst->a.s32 = diff;
+        loopNode->seekJumpAfterBlock = context->bc->numInstructions;
+
+        // Resolve all continue instructions
+        for (auto continueNode : loopNode->continueList)
+        {
+            inst = context->bc->out + continueNode->jumpInstruction;
+
+            // If there's something to do when leaving the scope, jump to it, else jump directly to the expression
+            if (loopNode->seekBeforeLeaveScopeContinue == seekBeforeJump)
+                diff = loopNode->seekJumpBeforeExpression - continueNode->jumpInstruction - 1;
+            else
+                diff = loopNode->seekBeforeLeaveScopeContinue - continueNode->jumpInstruction - 1;
+            inst->a.s32 = diff;
+        }
+    }
+
+    // Leave scope for breaks
+    if ((node->flags & AST_LEAVE_SCOPE_2) == 0)
+    {
+        node->flags |= AST_LEAVE_SCOPE_2;
+        loopNode->seekBeforeLeaveScopeBreak = context->bc->numInstructions;
+        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        if (context->result != ByteCodeResult::Done)
+            return true;
     }
 
     // Resolve all break instructions
     for (auto breakNode : loopNode->breakList)
     {
-        inst        = context->bc->out + breakNode->jumpInstruction;
-        diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
+        auto inst   = context->bc->out + breakNode->jumpInstruction;
+        auto diff   = loopNode->seekBeforeLeaveScopeBreak - breakNode->jumpInstruction - 1;
         inst->a.s32 = diff;
     }
 
@@ -458,9 +472,6 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
     if (scope->deferedNodes.size() == 0)
         return true;
 
-    auto node = context->node;
-    if (node->byteCodePass)
-        return true;
     context->result = ByteCodeResult::NewChilds;
 
     auto job = context->job;

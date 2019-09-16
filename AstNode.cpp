@@ -26,6 +26,17 @@ Pool<AstExpressionList>  g_Pool_astExpressionList;
 Pool<AstStruct>          g_Pool_astStruct;
 Pool<AstImpl>            g_Pool_astImpl;
 
+void AstNode::inheritLocationFromChilds()
+{
+    if (childs.empty())
+        return;
+    for (auto child : childs)
+        child->inheritLocationFromChilds();
+    if (token.startLocation.column == 0 && token.startLocation.line == 0)
+        token.startLocation = childs.front()->token.startLocation;
+    token.endLocation = childs.back()->token.endLocation;
+}
+
 void AstNode::computeFullName()
 {
     SWAG_ASSERT(ownerScope);

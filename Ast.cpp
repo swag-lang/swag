@@ -8,6 +8,17 @@
 
 namespace Ast
 {
+    int findChildIndex(AstNode* parent, AstNode* child)
+    {
+        for (int i = 0; i < parent->childs.size(); i++)
+        {
+            if (parent->childs[i] == child)
+                return i;
+        }
+
+        return -1;
+    }
+
     void removeFromParent(AstNode* child)
     {
         auto parent = child->parent;
@@ -26,7 +37,7 @@ namespace Ast
         parent->unlock();
     }
 
-	void addChildFront(AstNode* parent, AstNode* child)
+    void addChildFront(AstNode* parent, AstNode* child)
     {
         if (!child)
             return;
@@ -184,8 +195,8 @@ namespace Ast
         tokenize(name.c_str(), '.', tokens);
         for (int i = 0; i < tokens.size(); i++)
         {
-            auto id         = Ast::newNode(nullptr, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, node);
-            id->semanticFct = &SemanticJob::resolveIdentifier;
+            auto id           = Ast::newNode(nullptr, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, node);
+            id->semanticFct   = &SemanticJob::resolveIdentifier;
             id->name          = tokens[i];
             id->identifierRef = node;
             id->inheritOwners(node);

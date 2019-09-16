@@ -96,7 +96,7 @@ enum class AstNodeKind
     CompilerRun,
     CompilerImport,
     CompilerVersion,
-	Defer,
+    Defer,
 };
 
 struct CloneContext
@@ -208,17 +208,6 @@ struct AstNode : public PoolElement
         ownerBreakable   = op->ownerBreakable;
     }
 
-    void inheritLocationFromChilds()
-    {
-        if (childs.empty())
-            return;
-        for (auto child : childs)
-            child->inheritLocationFromChilds();
-        if (token.startLocation.column == 0 && token.startLocation.line == 0)
-            token.startLocation = childs.front()->token.startLocation;
-        token.endLocation = childs.back()->token.endLocation;
-    }
-
     void inheritTokenName(Token& tkn)
     {
         SWAG_ASSERT(!tkn.text.empty());
@@ -255,6 +244,7 @@ struct AstNode : public PoolElement
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
     }
 
+    void               inheritLocationFromChilds();
     static const char* getKindName(AstNode* node);
     static const char* getNakedKindName(AstNode* node);
     AstNode*           findChildRef(AstNode* ref, AstNode* fromChild);
@@ -533,9 +523,8 @@ struct AstLoop : public AstBreakable
 {
     void reset() override
     {
-        expression           = nullptr;
-        block                = nullptr;
-        seekBeforeLeaveScope = 0;
+        expression = nullptr;
+        block      = nullptr;
         AstBreakable::reset();
     }
 
@@ -547,7 +536,8 @@ struct AstLoop : public AstBreakable
     int seekJumpBeforeExpression;
     int seekJumpExpression;
     int seekJumpAfterBlock;
-    int seekBeforeLeaveScope;
+    int seekBeforeLeaveScopeContinue;
+    int seekBeforeLeaveScopeBreak;
 };
 
 struct AstSwitch : public AstBreakable

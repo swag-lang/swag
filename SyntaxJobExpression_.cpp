@@ -442,22 +442,19 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Defer, sourceFile->indexInModule, parent);
     if (result)
         *result = node;
-	SWAG_CHECK(doAffectExpression(node, nullptr));
-	return true;
+
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(doAffectExpression(node, nullptr));
+
+    auto expr = node->childs.front();
+    node->ownerScope->deferedNodes.push_back(expr);
+    expr->flags |= AST_NO_BYTECODE;
+
+    return true;
 }
 
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 {
-    AstNode* affectExpression = nullptr;
-    bool     mustDefer        = false;
-
-    // Defer statement
-    if (token.id == TokenId::KwdDefer)
-    {
-        SWAG_CHECK(tokenizer.getToken(token));
-        mustDefer = true;
-    }
-
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpression(nullptr, &leftNode));
 
@@ -472,7 +469,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 
         if (result)
             *result = varNode;
-        affectExpression = varNode;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
         varNode->flags |= AST_R_VALUE;
@@ -508,7 +504,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 
         if (result)
             *result = affectNode;
-        affectExpression = affectNode;
 
         auto left = affectNode->childs.front();
         forceTakeAddress(left);
@@ -518,17 +513,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         Ast::addChildBack(parent, leftNode);
         if (result)
             *result = leftNode;
-        affectExpression = leftNode;
     }
 
     SWAG_CHECK(eatSemiCol("after left expression"));
-
-    if (mustDefer)
-    {
-        SWAG_ASSERT(affectExpression->ownerScope);
-        affectExpression->ownerScope->deferedNodes.push_back(affectExpression);
-        affectExpression->flags |= AST_DEFER | AST_NO_BYTECODE;
-    }
-
     return true;
 }
