@@ -30,9 +30,10 @@ impl Utf8
 	}
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	var str: Utf8 = "toto"
 	@assert(str.length == 4)
+	@assert(str.size == 5)
 }

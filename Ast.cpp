@@ -56,28 +56,6 @@ namespace Ast
         child->parent = parent;
     }
 
-    void setupScope(Scope* newScope, AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope)
-    {
-        if (parentScope)
-            parentScope->lockChilds.lock();
-
-        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
-        newScope->kind        = kind;
-        newScope->parentScope = parentScope;
-        newScope->owner       = owner;
-        newScope->name        = name;
-        newScope->fullname    = move(fullname);
-
-        if (parentScope && newScope->indexInParent >= (uint32_t) parentScope->childScopes.size())
-        {
-            newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
-            parentScope->childScopes.push_back(newScope);
-        }
-
-        if (parentScope)
-            parentScope->lockChilds.unlock();
-    }
-
     Scope* findOrCreateScopeByName(Scope* parentScope, const string& name)
     {
         SWAG_ASSERT(parentScope);
