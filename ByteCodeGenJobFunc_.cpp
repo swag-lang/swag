@@ -12,8 +12,9 @@
 #include "TypeManager.h"
 #include "CommandLine.h"
 
-bool ByteCodeGenJob::emitLeaveFunc(ByteCodeGenContext* context, AstFuncDecl* funcNode)
+bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
+    auto funcNode = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     SWAG_CHECK(emitLeaveScope(context, funcNode->scope));
     if (context->result != ByteCodeResult::Done)
         return true;
@@ -21,13 +22,6 @@ bool ByteCodeGenJob::emitLeaveFunc(ByteCodeGenContext* context, AstFuncDecl* fun
     if (funcNode->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
-    return true;
-}
-
-bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
-{
-    auto node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    emitLeaveFunc(context, node);
     return true;
 }
 
@@ -45,41 +39,51 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     AstNode* node = context->node;
 
     // Copy result to RR0... registers
-    if (!node->childs.empty())
+    if (node->byteCodePass == 0)
     {
-        auto returnExpression = node->childs.front();
-        if (returnExpression->typeInfo->kind == TypeInfoKind::Struct)
+        if (!node->childs.empty())
         {
-            SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo, returnExpression));
-            if (context->result == ByteCodeResult::Pending)
-                return true;
-            RegisterList r0;
-            reserveRegisterRC(context, r0, 1);
-            emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
-            SWAG_CHECK(emitStructCopyMove(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
-            freeRegisterRC(context, r0);
-        }
-        else if (returnExpression->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
-        {
-            auto r0 = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
-            emitInstruction(context, ByteCodeOp::CopyVC, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
-            freeRegisterRC(context, r0);
-        }
-        else
-        {
-            for (auto child : node->childs)
+            auto returnExpression = node->childs.front();
+            if (returnExpression->typeInfo->kind == TypeInfoKind::Struct)
             {
-                for (int r = 0; r < child->resultRegisterRC.size(); r++)
+                SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo, returnExpression));
+                if (context->result == ByteCodeResult::Pending)
+                    return true;
+                RegisterList r0;
+                reserveRegisterRC(context, r0, 1);
+                emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+                SWAG_CHECK(emitStructCopyMove(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
+                freeRegisterRC(context, r0);
+            }
+            else if (returnExpression->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+            {
+                auto r0 = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+                emitInstruction(context, ByteCodeOp::CopyVC, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
+                freeRegisterRC(context, r0);
+            }
+            else
+            {
+                for (auto child : node->childs)
                 {
-                    emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+                    for (int r = 0; r < child->resultRegisterRC.size(); r++)
+                    {
+                        emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+                    }
                 }
             }
         }
     }
 
-    SWAG_ASSERT(node->ownerFct);
-    SWAG_CHECK(emitLeaveFunc(context, node->ownerFct));
+    auto funcNode = node->ownerFct;
+    SWAG_ASSERT(funcNode);
+    SWAG_CHECK(emitLeaveScope(context, funcNode->scope));
+    if (context->result != ByteCodeResult::Done)
+        return true;
+
+    if (funcNode->stackSize)
+        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
+    emitInstruction(context, ByteCodeOp::Ret);
     return true;
 }
 

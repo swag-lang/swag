@@ -64,7 +64,6 @@ struct ByteCodeGenJob : public Job
     static bool emitReturn(ByteCodeGenContext* context);
     static bool emitIdentifierRef(ByteCodeGenContext* context);
     static bool emitIdentifier(ByteCodeGenContext* context);
-	static bool emitLeaveFunc(ByteCodeGenContext* context, AstFuncDecl* funcNode);
     static bool emitLocalFuncDecl(ByteCodeGenContext* context);
     static bool emitUnaryOpMinus(ByteCodeGenContext* context, uint32_t r0);
     static bool emitUnaryOp(ByteCodeGenContext* context);

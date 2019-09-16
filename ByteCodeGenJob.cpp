@@ -154,6 +154,7 @@ JobResult ByteCodeGenJob::execute()
                             for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                             {
                                 auto child = node->childs[i];
+								child->bytecodeState = AstNodeResolveState::Enter;
                                 nodes.push_back(child);
                             }
                         }
@@ -182,7 +183,6 @@ JobResult ByteCodeGenJob::execute()
                                 return JobResult::KeepJobAlive;
 							if (context.result == ByteCodeResult::NewChilds)
 							{
-								node->bytecodeState = AstNodeResolveState::Enter;
 								node->byteCodePass++;
 								continue;
 							}
