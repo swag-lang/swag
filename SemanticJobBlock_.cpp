@@ -163,3 +163,19 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     node->byteCodeFct = &ByteCodeGenJob::emitIndex;
     return true;
 }
+
+bool SemanticJob::resolveBreak(SemanticContext* context)
+{
+    SWAG_CHECK(checkUnreachableCode(context));
+    auto node         = context->node;
+    node->byteCodeFct = &ByteCodeGenJob::emitBreak;
+    return true;
+}
+
+bool SemanticJob::resolveContinue(SemanticContext* context)
+{
+    SWAG_CHECK(checkUnreachableCode(context));
+    auto node         = context->node;
+    node->byteCodeFct = &ByteCodeGenJob::emitContinue;
+    return true;
+}

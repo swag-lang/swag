@@ -463,9 +463,10 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     {
         SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected"));
 
-        AstVarDecl* varNode  = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
-        varNode->name        = leftNode->childs.back()->name;
-        varNode->semanticFct = &SemanticJob::resolveVarDecl;
+        AstVarDecl* varNode          = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
+        varNode->name                = leftNode->childs.back()->name;
+        varNode->token.startLocation = leftNode->token.startLocation;
+        varNode->semanticFct         = &SemanticJob::resolveVarDecl;
 
         if (result)
             *result = varNode;

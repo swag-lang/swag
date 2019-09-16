@@ -232,22 +232,6 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
-{
-    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'break' can only be used inside a breakable scope"}));
-
-    auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Break, sourceFile->indexInModule, parent);
-    node->byteCodeFct = &ByteCodeGenJob::emitBreak;
-    if (result)
-        *result = node;
-
-    auto breakable = static_cast<AstBreakable*>(currentBreakable);
-    breakable->breakList.push_back(node);
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    return true;
-}
-
 bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable loop"}));
@@ -262,13 +246,29 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
+{
+    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'break' can only be used inside a breakable scope"}));
+
+    auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Break, sourceFile->indexInModule, parent);
+    node->semanticFct = &SemanticJob::resolveBreak;
+    if (result)
+        *result = node;
+
+    auto breakable = static_cast<AstBreakable*>(currentBreakable);
+    breakable->breakList.push_back(node);
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}
+
 bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable loop"}));
     SWAG_VERIFY(currentBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable loop"}));
 
     auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Continue, sourceFile->indexInModule, parent);
-    node->byteCodeFct = &ByteCodeGenJob::emitContinue;
+    node->semanticFct = &SemanticJob::resolveContinue;
     if (result)
         *result = node;
 

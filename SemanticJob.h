@@ -79,6 +79,7 @@ struct SemanticJob : public Job
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
+	static bool checkUnreachableCode(SemanticContext* context);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();
@@ -99,6 +100,8 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveIndex(SemanticContext* context);
+	static bool resolveBreak(SemanticContext* context);
+	static bool resolveContinue(SemanticContext* context);
     static bool resolveExpressionListCurly(SemanticContext* context);
     static bool resolveExpressionListArray(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
