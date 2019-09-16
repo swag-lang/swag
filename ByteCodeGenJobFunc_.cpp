@@ -11,6 +11,7 @@
 #include "SymTable.h"
 #include "TypeManager.h"
 #include "CommandLine.h"
+#include "Scope.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -77,7 +78,17 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 
     auto funcNode = node->ownerFct;
     SWAG_ASSERT(funcNode);
-    SWAG_CHECK(emitLeaveScope(context, funcNode->scope));
+
+	// Leave all scopes
+    auto scope = node->ownerScope;
+    while (true)
+    {
+        SWAG_CHECK(emitLeaveScope(context, scope));
+		if (scope == funcNode->scope)
+			break;
+		scope = scope->parentScope;
+    }
+
     if (context->result != ByteCodeResult::Done)
         return true;
 
