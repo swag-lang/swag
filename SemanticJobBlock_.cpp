@@ -50,7 +50,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     node->byteCodeFct                       = &ByteCodeGenJob::emitWhile;
     node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitWhileBeforeExpr;
     node->boolExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitWhileAfterExpr;
-    node->block->byteCodeAfterFct           = &ByteCodeGenJob::emitWhileAfterBlock;
+    node->block->byteCodeAfterFct           = &ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }
 

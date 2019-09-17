@@ -1,12 +1,12 @@
 #module module839
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	i := 0
 	while(i < 10)
 	{
-		defer @print(i)
+		defer @assert(i != 0)
 		i += 1
 	}
 }
