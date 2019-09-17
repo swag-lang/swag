@@ -229,36 +229,27 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         this_thread::sleep_for(chrono::milliseconds(value.reg.u32));
 
     // Special functions registration
-    if (funcNode->name == "opInit")
+    if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
     {
-        if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
+        if (funcNode->name == "opInit")
         {
             auto typePointer      = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto typeStruct       = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             typeStruct->opInitFct = funcNode;
         }
-    }
-    else if (funcNode->name == "opPostCopy")
-    {
-        if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
+        else if (funcNode->name == "opPostCopy")
         {
             auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             typeStruct->opUserPostCopyFct = funcNode;
         }
-    }
-    else if (funcNode->name == "opPostMove")
-    {
-        if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
+        else if (funcNode->name == "opPostMove")
         {
             auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             typeStruct->opUserPostMoveFct = funcNode;
         }
-    }
-    else if (funcNode->name == "opDrop")
-    {
-        if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
+        else if (funcNode->name == "opDrop")
         {
             auto typePointer          = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
