@@ -149,7 +149,16 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
         return doScopedCurlyStatement(parent, result);
-    return doEmbeddedInstruction(parent, result);
+
+    // One single line, but we need a scope too
+    auto     newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+    AstNode* statement;
+    Scoped   scoped(this, newScope);
+    SWAG_CHECK(doEmbeddedInstruction(parent, &statement));
+    statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
+    if (result)
+        *result = statement;
+    return true;
 }
 
 bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
