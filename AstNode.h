@@ -478,8 +478,6 @@ struct AstBreakable : public AstNode
     int seekJumpBeforeExpression;
     int seekJumpExpression;
     int seekJumpAfterBlock;
-    int seekBeforeLeaveScopeContinue;
-    int seekBeforeLeaveScopeBreak;
 
     uint32_t                  breakableFlags;
     uint32_t                  registerIndex;
