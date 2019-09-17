@@ -394,10 +394,13 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context)
 {
-    if ((context->node->flags & AST_LEAVE_SCOPE_DONE) == 0)
+    auto node = context->node;
+    if ((node->flags & AST_LEAVE_SCOPE_DONE) == 0)
     {
-        context->node->flags |= AST_LEAVE_SCOPE_DONE;
-        return emitDeferredStatements(context, context->node->ownerScope);
+        node->flags |= AST_LEAVE_SCOPE_DONE;
+        SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
+        if (context->result != ByteCodeResult::Done)
+            return true;
     }
 
     return true;
