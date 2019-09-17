@@ -79,7 +79,8 @@ struct SemanticJob : public Job
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
-	static bool checkUnreachableCode(SemanticContext* context);
+    static bool checkUnreachableCode(SemanticContext* context);
+    static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();
@@ -100,8 +101,8 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
     static bool resolveIndex(SemanticContext* context);
-	static bool resolveBreak(SemanticContext* context);
-	static bool resolveContinue(SemanticContext* context);
+    static bool resolveBreak(SemanticContext* context);
+    static bool resolveContinue(SemanticContext* context);
     static bool resolveExpressionListCurly(SemanticContext* context);
     static bool resolveExpressionListArray(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
@@ -134,7 +135,7 @@ struct SemanticJob : public Job
     static bool resolveAttrUse(SemanticContext* context);
     static bool resolveReturn(SemanticContext* context);
     static bool resolveNamespace(SemanticContext* context);
-	static bool resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar);
+    static bool resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar);
     static bool resolveUsing(SemanticContext* context);
     static bool resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right);
@@ -143,7 +144,7 @@ struct SemanticJob : public Job
     static bool resolveXor(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
     static bool resolveExplicitCast(SemanticContext* context);
-	static bool resolveExplicitAutoCast(SemanticContext* context);
+    static bool resolveExplicitAutoCast(SemanticContext* context);
     static bool resolveCompilerIf(SemanticContext* context);
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
@@ -166,7 +167,7 @@ struct SemanticJob : public Job
         nodes.clear();
         cacheDependentSymbols.clear();
         cacheScopeHierarchy.clear();
-		cacheScopeHierarchyVars.clear();
+        cacheScopeHierarchyVars.clear();
         scopesHere.clear();
         scopesHereNoAlt.clear();
         cacheMatches.clear();

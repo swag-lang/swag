@@ -14,4 +14,5 @@ impl Point
 //#[swag.printbc]
 #test
 {
+	var pt: Point
 }

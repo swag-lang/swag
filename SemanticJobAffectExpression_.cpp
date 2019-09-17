@@ -25,7 +25,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->errorContext.report({sourceFile, left, format("affect operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
     SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->errorContext.report({sourceFile, left, "affect operation not allowed on array"}));
     SWAG_VERIFY(left->flags & AST_L_VALUE, context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is not a l-value"}));
-	SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->errorContext.report({ sourceFile, left, "affect operation not allowed, left expression is immutable" }));
+    SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is immutable"}));
 
     // Is this an array like affectation ?
     AstPointerDeRef* arrayNode = nullptr;
@@ -78,10 +78,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (rightTypeInfo->kind == TypeInfoKind::Struct)
                 {
                     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, leftTypeInfo, right, CASTFLAG_UNCONST));
-                    SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, left, nullptr, true));
-                    if (context->result == SemanticResult::Pending)
-                        return true;
-                    SWAG_CHECK(resolveUserOp(context, "opPostMove", nullptr, left, nullptr, true));
+                    SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == SemanticResult::Pending)
                         return true;
                 }

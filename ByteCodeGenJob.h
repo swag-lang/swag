@@ -142,7 +142,8 @@ struct ByteCodeGenJob : public Job
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
-    static bool prepareEmitStructCopyMove(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* from);
+    static bool prepareEmitStructDrop(ByteCodeGenContext* context, TypeInfo* typeInfo);
+    static bool prepareEmitStructCopyMove(ByteCodeGenContext* context, TypeInfo* typeInfo);
     static bool emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);

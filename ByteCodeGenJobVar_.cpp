@@ -16,6 +16,10 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     // Initialize the struct, whatever, before the assignment
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
+		SWAG_CHECK(prepareEmitStructDrop(context, typeInfo));
+		if (context->result == ByteCodeResult::Pending)
+			return true;
+
         if (node->byteCodePass == 0)
         {
             if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))

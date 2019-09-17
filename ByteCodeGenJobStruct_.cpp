@@ -303,7 +303,16 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     return true;
 }
 
-bool ByteCodeGenJob::prepareEmitStructCopyMove(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* from)
+bool ByteCodeGenJob::prepareEmitStructDrop(ByteCodeGenContext* context, TypeInfo* typeInfo)
+{
+    TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    SWAG_CHECK(generateStruct_opDrop(context, typeInfoStruct));
+    if (context->result == ByteCodeResult::Pending)
+        return true;
+    return true;
+}
+
+bool ByteCodeGenJob::prepareEmitStructCopyMove(ByteCodeGenContext* context, TypeInfo* typeInfo)
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));

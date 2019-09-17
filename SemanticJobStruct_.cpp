@@ -14,6 +14,17 @@
 #include "ByteCodeGenJob.h"
 #include "Workspace.h"
 
+bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
+{
+    SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, node, nullptr, true));
+    if (context->result == SemanticResult::Pending)
+        return true;
+    SWAG_CHECK(resolveUserOp(context, "opPostMove", nullptr, node, nullptr, true));
+    if (context->result == SemanticResult::Pending)
+        return true;
+    return true;
+}
+
 bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment)
 {
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
@@ -36,7 +47,7 @@ bool SemanticJob::collectStructLiterals(SemanticContext* context, SourceFile* so
                 storedV[1].u64     = value.text.length();
 
                 auto stringIndex = module->reserveString(value.text);
-				segment->addInitString(offset, stringIndex);
+                segment->addInitString(offset, stringIndex);
 
                 ptrDest += 2 * sizeof(Register);
                 offset += 2 * sizeof(Register);

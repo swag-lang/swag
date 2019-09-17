@@ -54,7 +54,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             auto returnExpression = node->childs.front();
             if (returnExpression->typeInfo->kind == TypeInfoKind::Struct)
             {
-                SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo, returnExpression));
+                SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo));
                 if (context->result == ByteCodeResult::Pending)
                     return true;
                 RegisterList r0;
