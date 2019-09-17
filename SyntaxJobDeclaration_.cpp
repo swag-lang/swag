@@ -35,7 +35,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     {
         namespaceNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
         namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
-		namespaceNode->inheritTokenName(token);
+        namespaceNode->inheritTokenName(token);
 
         switch (token.id)
         {

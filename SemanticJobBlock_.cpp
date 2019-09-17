@@ -1,13 +1,7 @@
 #include "pch.h"
-#include "Global.h"
-#include "Diagnostic.h"
-#include "SourceFile.h"
-#include "SymTable.h"
 #include "SemanticJob.h"
-#include "TypeInfo.h"
 #include "Ast.h"
 #include "TypeManager.h"
-#include "Scope.h"
 #include "ByteCodeGenJob.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)

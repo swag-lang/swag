@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "SymTable.h"
-#include "Global.h"
-#include "Scope.h"
 #include "Ast.h"
-#include "TypeInfo.h"
+#include "ByteCodeGenJob.h"
 
 bool SemanticJob::resolveNamespace(SemanticContext* context)
 {
@@ -22,7 +20,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
-        node->ownerScope->alternativeScopesVars.push_back({ varNode, typeStruct->scope});
+        node->ownerScope->alternativeScopesVars.push_back({varNode, typeStruct->scope});
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
@@ -31,7 +29,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
-        node->ownerScope->alternativeScopesVars.push_back({ varNode, typeStruct->scope});
+        node->ownerScope->alternativeScopesVars.push_back({varNode, typeStruct->scope});
     }
     else
     {
@@ -87,5 +85,6 @@ bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
 {
     auto node                        = context->node;
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
+    node->byteCodeAfterFct           = &ByteCodeGenJob::emitLeaveScope;
     return true;
 }
