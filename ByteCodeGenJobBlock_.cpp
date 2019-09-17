@@ -422,14 +422,7 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context, Scope* scope)
 bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context)
 {
     auto node = context->node;
-    if ((node->flags & AST_EMIT_DEFERRED_DONE) == 0)
-    {
-        node->flags |= AST_EMIT_DEFERRED_DONE;
-        SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
-        if (context->result != ByteCodeResult::Done)
-            return true;
-    }
-
+	SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
     return true;
 }
 
