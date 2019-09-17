@@ -51,6 +51,15 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
     auto node   = context->node;
     auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
 
+	// Leave scope
+    if ((node->flags & AST_LEAVE_SCOPE_1) == 0)
+    {
+        node->flags |= AST_LEAVE_SCOPE_1;
+        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        if (context->result != ByteCodeResult::Done)
+            return true;
+    }
+
     // This is the end of the if block. Need to jump after the else block, if there's one
     ifNode->seekJumpAfterIf = context->bc->numInstructions;
     if (ifNode->elseBlock)
