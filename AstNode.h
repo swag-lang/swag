@@ -214,6 +214,12 @@ struct AstNode : public PoolElement
         name = move(tkn.text);
     }
 
+    void inheritTokenLocation(Token& tkn)
+    {
+        token.startLocation = tkn.startLocation;
+        token.endLocation   = tkn.endLocation;
+    }
+
     void inheritOwnersAndFlags(SyntaxJob* job)
     {
         ownerScope       = job->currentScope;
@@ -468,7 +474,7 @@ struct AstBreakable : public AstNode
 
     void copyFrom(CloneContext& context, AstBreakable* curParentBreakable, AstBreakable* from);
 
-	int seekJumpBeforeContinue;
+    int seekJumpBeforeContinue;
     int seekJumpBeforeExpression;
     int seekJumpExpression;
     int seekJumpAfterBlock;
