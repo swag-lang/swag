@@ -253,6 +253,14 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         typeStruct->opUserPostMoveFct = funcNode;
     }
+    else if (funcNode->name == "opDrop")
+    {
+        SWAG_ASSERT(funcNode->parameters);
+        SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
+        auto typePointer          = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+        auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+        typeStruct->opUserDropFct = funcNode;
+    }
 
     uint32_t symbolFlags = 0;
     if (funcNode->flags & AST_IS_GENERIC)
@@ -341,7 +349,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     SWAG_CHECK(g_TypeMgr.makeCompatibles(&context->errorContext, returnType, child));
     context->result = SemanticResult::Done;
 
-    // When returning a struct, we need to know of postcopy or postmove are here, and wait for them to resolve
+    // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
     if (returnType && returnType->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, funcNode->returnType, nullptr, true));

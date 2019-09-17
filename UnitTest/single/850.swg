@@ -1,9 +1,17 @@
 #module module850
 
+struct Point
+{
+}
+
+impl Point
+{
+	func opDrop(self)
+	{
+	}
+}
+
 //#[swag.printbc]
 #test
 {
-	a := acast 1
-	@assert(a == 1)
-	@assert(@typeof(a) == @typeof(s32))
 }

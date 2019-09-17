@@ -529,6 +529,8 @@ struct TypeInfoStruct : public TypeInfo
         opPostCopy        = nullptr;
         opUserPostMoveFct = nullptr;
         opPostMove        = nullptr;
+        opUserDropFct     = nullptr;
+        opDrop            = nullptr;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -550,6 +552,8 @@ struct TypeInfoStruct : public TypeInfo
     ByteCode*              opPostCopy;
     AstNode*               opUserPostMoveFct;
     ByteCode*              opPostMove;
+    AstNode*               opUserDropFct;
+    ByteCode*              opDrop;
 };
 
 struct TypeInfoAlias : public TypeInfo

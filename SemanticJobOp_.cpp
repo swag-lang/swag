@@ -74,12 +74,7 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
         SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType && returnType->typeInfo->isSame(typeStruct, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), returnType->typeInfo->name.c_str())}));
     }
-    else if (name == "opPostCopy")
-    {
-        SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
-    }
-    else if (name == "opPostMove")
+    else if (name == "opPostCopy" || name == "opPostMove" || name == "opDrop")
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
@@ -98,7 +93,7 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType->typeInfo->isSame(g_TypeMgr.typeInfoVoid, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('void' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
-        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, 0), context->errorContext.report({sourceFile, parameters->childs[1], format("invalid parameter '2' for special function '%s' (cannot be of type '%s', use 'opClone' instead)", name.c_str(), typeStruct->name.c_str())}));
+        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, 0), context->errorContext.report({sourceFile, parameters->childs[1], format("invalid parameter '2' for special function '%s' (cannot be of type '%s')", name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == "opIndex")
     {
