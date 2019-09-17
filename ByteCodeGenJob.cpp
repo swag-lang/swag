@@ -182,19 +182,13 @@ JobResult ByteCodeGenJob::execute()
                             if (context.result == ByteCodeResult::Pending)
                                 return JobResult::KeepJobAlive;
                             if (context.result == ByteCodeResult::NewChilds)
-                            {
-                                node->byteCodePass++;
                                 continue;
-                            }
                         }
 
                         if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
                             return JobResult::ReleaseJob;
                         if (context.result == ByteCodeResult::NewChilds)
-                        {
-                            node->byteCodePass++;
                             continue;
-                        }
                     }
 
                     nodes.pop_back();
