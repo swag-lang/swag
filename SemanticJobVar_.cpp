@@ -170,9 +170,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo);
 
-		// We need to decide which integer type it is
-		if (node->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
-			node->typeInfo = g_TypeMgr.typeInfoS32;
+        // We need to decide which integer type it is
+        if (node->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+            node->typeInfo = g_TypeMgr.typeInfoS32;
 
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeList)
@@ -286,9 +286,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // Assign value
     auto module   = sourceFile->module;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
+
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
@@ -344,6 +344,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
+        // For a struct, need to wait for special functions to be found
+        if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            SWAG_CHECK(waitForStructUserOps(context, node));
+            if (context->result == SemanticResult::Pending)
+                return true;
+        }
+
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         SWAG_ASSERT(node->ownerScope);
         SWAG_ASSERT(node->ownerFct);
