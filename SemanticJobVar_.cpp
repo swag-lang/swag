@@ -170,6 +170,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo);
 
+		// We need to decide which integer type it is
+		if (node->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+			node->typeInfo = g_TypeMgr.typeInfoS32;
+
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeList)
         {
