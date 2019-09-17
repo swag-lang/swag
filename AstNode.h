@@ -468,6 +468,12 @@ struct AstBreakable : public AstNode
 
     void copyFrom(CloneContext& context, AstBreakable* curParentBreakable, AstBreakable* from);
 
+    int seekJumpBeforeExpression;
+    int seekJumpExpression;
+    int seekJumpAfterBlock;
+    int seekBeforeLeaveScopeContinue;
+    int seekBeforeLeaveScopeBreak;
+
     uint32_t                  breakableFlags;
     uint32_t                  registerIndex;
     AstNode*                  parentBreakable;
@@ -488,10 +494,6 @@ struct AstWhile : public AstBreakable
 
     AstNode* boolExpression;
     AstNode* block;
-
-    int seekJumpBeforeExpression;
-    int seekJumpExpression;
-    int seekJumpAfterBlock;
 };
 
 struct AstFor : public AstBreakable
@@ -512,9 +514,6 @@ struct AstFor : public AstBreakable
     AstNode* postExpression;
     AstNode* block;
 
-    int seekJumpBeforeExpression;
-    int seekJumpExpression;
-    int seekJumpAfterBlock;
     int seekJumpToBlock;
     int seekJumpBeforePost;
 };
@@ -532,12 +531,6 @@ struct AstLoop : public AstBreakable
 
     AstNode* expression;
     AstNode* block;
-
-    int seekJumpBeforeExpression;
-    int seekJumpExpression;
-    int seekJumpAfterBlock;
-    int seekBeforeLeaveScopeContinue;
-    int seekBeforeLeaveScopeBreak;
 };
 
 struct AstSwitch : public AstBreakable
@@ -557,10 +550,6 @@ struct AstSwitch : public AstBreakable
     AstNode*                      expression;
     AstNode*                      block;
     vector<struct AstSwitchCase*> cases;
-
-    int seekJumpBeforeExpression;
-    int seekJumpExpression;
-    int seekJumpAfterBlock;
 };
 
 struct AstSwitchCase : public AstNode
@@ -580,10 +569,6 @@ struct AstSwitchCase : public AstNode
     AstNode*         block;
     AstSwitch*       ownerSwitch;
     bool             isDefault;
-
-    int seekJumpBeforeExpression;
-    int seekJumpExpression;
-    int seekJumpAfterBlock;
 };
 
 struct AstSwitchCaseBlock : public AstNode
