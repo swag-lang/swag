@@ -90,6 +90,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 
     auto r0                            = reserveRegisterRC(context);
     loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
+    loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
     emitInstruction(context, ByteCodeOp::IsNullU32, node->resultRegisterRC, r0);
     loopNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpTrue, r0);
@@ -125,7 +126,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         int  seekBeforeJump = context->bc->numInstructions;
         auto inst           = emitInstruction(context, ByteCodeOp::Jump);
-        auto diff           = loopNode->seekJumpBeforeExpression - context->bc->numInstructions;
+        auto diff           = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
         inst->a.s32         = diff;
 
         loopNode->seekJumpAfterBlock = context->bc->numInstructions;
@@ -137,7 +138,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
 
             // If there's something to do when leaving the scope, jump to it, else jump directly to the expression
             if (loopNode->seekBeforeLeaveScopeContinue == seekBeforeJump)
-                diff = loopNode->seekJumpBeforeExpression - continueNode->jumpInstruction - 1;
+                diff = loopNode->seekJumpBeforeContinue - continueNode->jumpInstruction - 1;
             else
                 diff = loopNode->seekBeforeLeaveScopeContinue - continueNode->jumpInstruction - 1;
             inst->a.s32 = diff;
@@ -181,6 +182,7 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
     }
 
     whileNode->seekJumpBeforeExpression = context->bc->numInstructions;
+    whileNode->seekJumpBeforeContinue   = whileNode->seekJumpBeforeExpression;
     return true;
 }
 

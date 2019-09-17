@@ -468,6 +468,7 @@ struct AstBreakable : public AstNode
 
     void copyFrom(CloneContext& context, AstBreakable* curParentBreakable, AstBreakable* from);
 
+	int seekJumpBeforeContinue;
     int seekJumpBeforeExpression;
     int seekJumpExpression;
     int seekJumpAfterBlock;
