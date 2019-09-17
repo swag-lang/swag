@@ -51,7 +51,7 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
     auto node   = context->node;
     auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
 
-	// Leave scope
+    // Leave scope
     if ((node->flags & AST_LEAVE_SCOPE_1) == 0)
     {
         node->flags |= AST_LEAVE_SCOPE_1;
@@ -387,6 +387,17 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     auto node              = context->node;
     node->resultRegisterRC = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC, node->ownerBreakable->registerIndex);
+    return true;
+}
+
+bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context)
+{
+    if ((context->node->flags & AST_LEAVE_SCOPE_1) == 0)
+    {
+        context->node->flags |= AST_LEAVE_SCOPE_1;
+        return emitLeaveScope(context, context->node->ownerScope);
+    }
+
     return true;
 }
 

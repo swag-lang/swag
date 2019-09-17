@@ -36,6 +36,8 @@ bool SemanticJob::resolveIf(SemanticContext* context)
         node->byteCodeFct                      = &ByteCodeGenJob::emitIf;
         node->boolExpression->byteCodeAfterFct = &ByteCodeGenJob::emitIfAfterExpr;
         node->ifBlock->byteCodeAfterFct        = &ByteCodeGenJob::emitIfAfterIf;
+		if (node->elseBlock)
+			node->elseBlock->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
     }
 
     return true;
