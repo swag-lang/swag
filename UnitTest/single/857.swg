@@ -21,7 +21,8 @@ impl Point
 {
 	{
 		var pt: Point(1)
+		var pt1: Point(1)
 	}
 	
-	@print(G)
+	@assert(G == 2)
 }
