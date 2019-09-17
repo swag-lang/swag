@@ -47,7 +47,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression, CASTFLAG_AUTO_BOOL));
-    node->byteCodeFct                       = &ByteCodeGenJob::emitWhile;
+    node->byteCodeFct                       = &ByteCodeGenJob::emitLoop;
     node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitWhileBeforeExpr;
     node->boolExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitWhileAfterExpr;
     node->block->byteCodeAfterFct           = &ByteCodeGenJob::emitLoopAfterBlock;
@@ -74,7 +74,7 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression));
-    node->byteCodeFct                       = &ByteCodeGenJob::emitFor;
+    node->byteCodeFct                       = &ByteCodeGenJob::emitLoop;
     node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitForBeforeExpr;
     node->boolExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitForAfterExpr;
     node->postExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitForAfterPost;
