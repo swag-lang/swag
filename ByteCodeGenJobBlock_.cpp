@@ -55,7 +55,7 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
     if ((node->flags & AST_LEAVE_SCOPE_1) == 0)
     {
         node->flags |= AST_LEAVE_SCOPE_1;
-        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
         if (context->result != ByteCodeResult::Done)
             return true;
     }
@@ -126,7 +126,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         node->flags |= AST_LEAVE_SCOPE_1;
         loopNode->seekBeforeLeaveScopeContinue = context->bc->numInstructions;
-        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
         if (context->result != ByteCodeResult::Done)
             return true;
     }
@@ -159,7 +159,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     {
         node->flags |= AST_LEAVE_SCOPE_2;
         loopNode->seekBeforeLeaveScopeBreak = context->bc->numInstructions;
-        SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+        SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
         if (context->result != ByteCodeResult::Done)
             return true;
     }
@@ -390,18 +390,18 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context)
 {
     if ((context->node->flags & AST_LEAVE_SCOPE_1) == 0)
     {
         context->node->flags |= AST_LEAVE_SCOPE_1;
-        return emitLeaveScope(context, context->node->ownerScope);
+        return emitDeferredStatements(context, context->node->ownerScope);
     }
 
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
+bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* scope)
 {
     if (!scope)
         return true;

@@ -85,6 +85,6 @@ bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
 {
     auto node                        = context->node;
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
-    node->byteCodeAfterFct           = &ByteCodeGenJob::emitLeaveScope;
+    node->byteCodeAfterFct           = &ByteCodeGenJob::emitDeferredStatements;
     return true;
 }
