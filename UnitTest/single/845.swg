@@ -1,6 +1,6 @@
 #module module845
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	var a : *u8 = cast(*u8) @alloc(10)

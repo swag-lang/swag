@@ -61,7 +61,7 @@ void Diagnostic::report(bool verboseMode) const
         {
             if (startLocation.seekStartLine[i] == -1)
                 continue;
-            if (errorLevel == DiagnosticLevel::Note && i != REPORT_NUM_CODE_LINES - 1)
+            if (!showRange && i != REPORT_NUM_CODE_LINES - 1)
                 continue;
             lines.push_back(sourceFile->getLine(startLocation.seekStartLine[i]));
         }

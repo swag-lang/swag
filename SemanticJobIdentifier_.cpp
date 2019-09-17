@@ -650,7 +650,7 @@ anotherTry:
     {
         if (hasGenericErrors)
         {
-            Diagnostic                diag{sourceFile, genericParameters ? genericParameters : node, format("ambiguous generic resolution to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+            Diagnostic                diag{sourceFile, node->token, format("ambiguous generic resolution to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
             vector<const Diagnostic*> notes;
             for (auto match : matches)
             {
@@ -664,7 +664,7 @@ anotherTry:
         }
         else
         {
-            Diagnostic                diag{sourceFile, callParameters ? callParameters : node, format("ambiguous resolution of %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+            Diagnostic                diag{sourceFile, node->token, format("ambiguous resolution of %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
             vector<const Diagnostic*> notes;
             for (auto match : matches)
             {
