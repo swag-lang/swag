@@ -239,7 +239,8 @@ bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::Jump);
 
     // This is the start of the post statement
-    forNode->seekJumpBeforePost = context->bc->numInstructions;
+    forNode->seekJumpBeforePost     = context->bc->numInstructions;
+    forNode->seekJumpBeforeContinue = forNode->seekJumpBeforePost;
     return true;
 }
 
@@ -256,37 +257,6 @@ bool ByteCodeGenJob::emitForAfterPost(ByteCodeGenContext* context)
     inst        = context->bc->out + forNode->seekJumpToBlock;
     auto diff   = context->bc->numInstructions - forNode->seekJumpToBlock - 1;
     inst->a.s32 = diff;
-
-    return true;
-}
-
-bool ByteCodeGenJob::emitForAfterBlock(ByteCodeGenContext* context)
-{
-    auto node    = context->node;
-    auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
-
-    // Jump to the post expression
-    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
-    auto diff   = forNode->seekJumpBeforePost - context->bc->numInstructions;
-    inst->a.s32 = diff;
-
-    forNode->seekJumpAfterBlock = context->bc->numInstructions;
-
-    // Resolve all continue instructions
-    for (auto continueNode : forNode->continueList)
-    {
-        inst        = context->bc->out + continueNode->jumpInstruction;
-        diff        = forNode->seekJumpBeforePost - continueNode->jumpInstruction - 1;
-        inst->a.s32 = diff;
-    }
-
-    // Resolve all break instructions
-    for (auto breakNode : forNode->breakList)
-    {
-        inst        = context->bc->out + breakNode->jumpInstruction;
-        diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
-        inst->a.s32 = diff;
-    }
 
     return true;
 }

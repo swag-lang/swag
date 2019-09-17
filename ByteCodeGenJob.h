@@ -98,7 +98,6 @@ struct ByteCodeGenJob : public Job
     static bool emitForBeforeExpr(ByteCodeGenContext* context);
     static bool emitForAfterExpr(ByteCodeGenContext* context);
     static bool emitForAfterPost(ByteCodeGenContext* context);
-    static bool emitForAfterBlock(ByteCodeGenContext* context);
     static bool emitSwitch(ByteCodeGenContext* context);
     static bool emitSwitchAfterExpr(ByteCodeGenContext* context);
     static bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);

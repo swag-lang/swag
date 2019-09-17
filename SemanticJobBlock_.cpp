@@ -78,7 +78,7 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitForBeforeExpr;
     node->boolExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitForAfterExpr;
     node->postExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitForAfterPost;
-    node->block->byteCodeAfterFct           = &ByteCodeGenJob::emitForAfterBlock;
+    node->block->byteCodeAfterFct           = &ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }
 
