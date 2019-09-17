@@ -90,6 +90,7 @@ enum class TokenId
     KwdReturn,
     KwdUsing,
     KwdCast,
+	KwdAutoCast,
     KwdIf,
     KwdElse,
     KwdWhile,

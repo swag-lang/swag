@@ -170,6 +170,13 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
+	// Cast
+    if (token.id == TokenId::KwdAutoCast)
+    {
+        SWAG_CHECK(doAutoCast(parent, result));
+        return true;
+    }
+
     if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam || token.id == TokenId::SymTilde)
     {
         auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::SingleOp, sourceFile->indexInModule, parent);

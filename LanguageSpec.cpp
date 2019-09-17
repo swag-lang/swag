@@ -36,6 +36,7 @@ void LanguageSpec::setup()
     keywords["return"]    = TokenId::KwdReturn;
     keywords["using"]     = TokenId::KwdUsing;
     keywords["cast"]      = TokenId::KwdCast;
+    keywords["acast"]     = TokenId::KwdAutoCast;
     keywords["if"]        = TokenId::KwdIf;
     keywords["else"]      = TokenId::KwdElse;
     keywords["while"]     = TokenId::KwdWhile;
