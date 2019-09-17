@@ -30,7 +30,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
             op->computedValue.reg.s64 = -op->computedValue.reg.s64;
-            if (typeInfo->flags & TYPEINFO_NATIVE_VALUE)
+            if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
                 static_cast<TypeInfoNative*>(typeInfo)->value = -static_cast<TypeInfoNative*>(typeInfo)->value;
             break;
         case NativeTypeKind::F32:

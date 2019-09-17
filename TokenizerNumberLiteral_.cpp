@@ -452,7 +452,7 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
         {
             auto newType   = static_cast<TypeInfoNative*>(token.literalType->clone());
             newType->value = token.literalValue.s64;
-            newType->flags |= TYPEINFO_NATIVE_VALUE;
+            newType->flags |= TYPEINFO_UNTYPED_INTEGER;
             token.literalType = newType;
         }
     }
