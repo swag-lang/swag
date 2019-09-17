@@ -6,10 +6,106 @@
 #include "Ast.h"
 #include "SourceFile.h"
 #include "Module.h"
-#include "Scope.h"
 #include "SemanticJob.h"
-#include "Module.h"
 #include "TypeManager.h"
+
+bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+{
+    scoped_lock lk(typeInfoStruct->opInitFct->mutex);
+    if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
+        return true;
+    if (typeInfoStruct->opDrop)
+        return true;
+
+    auto sourceFile = context->sourceFile;
+    auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+
+    // Do we need a drop ?
+    bool needDrop = false;
+
+    // Need to wait for function full semantic resolve
+    if (typeInfoStruct->opUserDropFct)
+    {
+        needDrop = true;
+        askForByteCode(context, (AstFuncDecl*) typeInfoStruct->opUserDropFct);
+        if (context->result == ByteCodeResult::Pending)
+            return true;
+    }
+
+    if (!needDrop)
+    {
+        for (auto child : structNode->content->childs)
+        {
+            auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+            auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+            if (typeVar->kind != TypeInfoKind::Struct)
+                continue;
+            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            generateStruct_opDrop(context, typeStructVar);
+            if (context->result == ByteCodeResult::Pending)
+                return true;
+            if (typeStructVar->opDrop)
+                needDrop = true;
+        }
+    }
+
+    if (!needDrop)
+    {
+        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
+        return true;
+    }
+
+    auto opDrop            = g_Pool_byteCode.alloc();
+    typeInfoStruct->opDrop = opDrop;
+    opDrop->sourceFile     = sourceFile;
+    opDrop->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opDropGenerated";
+    replaceAll(opDrop->name, '.', '_');
+    opDrop->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
+    opDrop->maxCallParameters     = 1;
+    opDrop->maxReservedRegisterRC = 3;
+    sourceFile->module->addByteCodeFunc(opDrop);
+
+    ByteCodeGenContext cxt{*context};
+    cxt.bc = opDrop;
+
+    for (auto child : structNode->content->childs)
+    {
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+        if (typeVar->kind != TypeInfoKind::Struct)
+            continue;
+
+        // Reference to the field
+        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+        if (varDecl->resolvedSymbolOverload->storageOffset)
+            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+
+        // Call drop
+        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        inst->a.pointer = (uint8_t*) typeStructVar->opDrop;
+        inst->b.u64     = 1;
+        inst->c.pointer = (uint8_t*) opDrop->typeInfoFunc;
+        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+    }
+
+    // Then call user drop if defined
+    if (typeInfoStruct->opUserDropFct)
+    {
+        emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        inst->a.pointer = (uint8_t*) typeInfoStruct->opUserDropFct->bc;
+        inst->b.u64     = 1;
+        inst->c.pointer = (uint8_t*) opDrop->typeInfoFunc;
+        emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
+    }
+
+    emitInstruction(&cxt, ByteCodeOp::Ret);
+    emitInstruction(&cxt, ByteCodeOp::End);
+    return true;
+}
 
 bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
@@ -22,7 +118,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
 
-    // Do we need a postcopy ?
+    // Do we need a postmove ?
     bool needPostMove = false;
 
     // Need to wait for function full semantic resolve
@@ -219,7 +315,7 @@ bool ByteCodeGenJob::prepareEmitStructCopyMove(ByteCodeGenContext* context, Type
     return true;
 }
 
-bool ByteCodeGenJob::emitStructCopyMove(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
+bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 

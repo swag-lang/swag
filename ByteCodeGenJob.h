@@ -20,7 +20,7 @@ enum class ByteCodeResult
 {
     Done,
     Pending,
-	NewChilds,
+    NewChilds,
 };
 
 struct ByteCodeGenContext
@@ -74,7 +74,7 @@ struct ByteCodeGenJob : public Job
     static bool emitXor(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0);
     static bool emitExplicitCast(ByteCodeGenContext* context);
-	static bool emitExplicitAutoCast(ByteCodeGenContext* context);
+    static bool emitExplicitAutoCast(ByteCodeGenContext* context);
     static bool emitCastNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
@@ -135,14 +135,15 @@ struct ByteCodeGenJob : public Job
     static bool emitCountProperty(ByteCodeGenContext* context);
     static bool emitDataProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
-	static bool emitLeaveScope(ByteCodeGenContext* context);
+    static bool emitLeaveScope(ByteCodeGenContext* context);
     static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope);
 
+    static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool prepareEmitStructCopyMove(ByteCodeGenContext* context, TypeInfo* typeInfo, AstNode* from);
-    static bool emitStructCopyMove(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
+    static bool emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
