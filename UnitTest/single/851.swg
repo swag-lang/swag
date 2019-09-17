@@ -1,13 +1,12 @@
-#module module850
+#module module851
 
-#unittest error
 struct Point
 {
 }
 
 impl Point
 {
-	func opDrop(self, x: s32)
+	func opDrop(self)
 	{
 	}
 }

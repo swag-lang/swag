@@ -231,35 +231,39 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Special functions registration
     if (funcNode->name == "opInit")
     {
-        SWAG_ASSERT(funcNode->parameters);
-        SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
-        auto typePointer      = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-        auto typeStruct       = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-        typeStruct->opInitFct = funcNode;
+        if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
+        {
+            auto typePointer      = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto typeStruct       = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            typeStruct->opInitFct = funcNode;
+        }
     }
     else if (funcNode->name == "opPostCopy")
     {
-        SWAG_ASSERT(funcNode->parameters);
-        SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
-        auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-        auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-        typeStruct->opUserPostCopyFct = funcNode;
+        if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
+        {
+            auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            typeStruct->opUserPostCopyFct = funcNode;
+        }
     }
     else if (funcNode->name == "opPostMove")
     {
-        SWAG_ASSERT(funcNode->parameters);
-        SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
-        auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-        auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-        typeStruct->opUserPostMoveFct = funcNode;
+        if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
+        {
+            auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            typeStruct->opUserPostMoveFct = funcNode;
+        }
     }
     else if (funcNode->name == "opDrop")
     {
-        SWAG_ASSERT(funcNode->parameters);
-        SWAG_ASSERT(funcNode->parameters->childs.size() == 1);
-        auto typePointer          = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-        auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-        typeStruct->opUserDropFct = funcNode;
+        if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
+        {
+            auto typePointer          = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            typeStruct->opUserDropFct = funcNode;
+        }
     }
 
     uint32_t symbolFlags = 0;
