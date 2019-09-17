@@ -136,7 +136,7 @@ struct ByteCodeGenJob : public Job
     static bool emitDataProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context);
-    static bool emitDrop(ByteCodeGenContext* context);
+    static bool emitDrop(ByteCodeGenContext* context, Scope* scope);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
     static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope);
 

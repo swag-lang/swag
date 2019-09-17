@@ -383,10 +383,11 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context, Scope* scope)
 {
-    auto node  = context->node;
-    auto table = node->ownerScope->symTable;
+	if (!scope)
+		return true;
+    auto table = scope->symTable;
     if (!table)
         return true;
 
@@ -470,7 +471,7 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
     if ((node->flags & AST_EMIT_DROP_DONE) == 0)
     {
         node->flags |= AST_EMIT_DROP_DONE;
-        SWAG_CHECK(emitDrop(context));
+        SWAG_CHECK(emitDrop(context, scope));
         if (context->result != ByteCodeResult::Done)
             return true;
     }
