@@ -154,17 +154,8 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
         }
     }
 
-    // Leave scope for breaks
-    if ((node->flags & AST_LEAVE_SCOPE_2) == 0)
-    {
-        node->flags |= AST_LEAVE_SCOPE_2;
-        loopNode->seekBeforeLeaveScopeBreak = context->bc->numInstructions;
-        SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
-        if (context->result != ByteCodeResult::Done)
-            return true;
-    }
-
     // Resolve all break instructions
+    loopNode->seekBeforeLeaveScopeBreak = context->bc->numInstructions;
     for (auto breakNode : loopNode->breakList)
     {
         auto inst   = context->bc->out + breakNode->jumpInstruction;
@@ -366,8 +357,19 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
 {
-    auto node                  = context->node;
-    auto breakNode             = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
+    auto node      = context->node;
+    auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
+
+    if ((breakNode->flags & AST_LEAVE_SCOPE_1) == 0)
+    {
+        breakNode->flags |= AST_LEAVE_SCOPE_1;
+        Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
+        for (auto scope : context->job->collectScopes)
+            SWAG_CHECK(emitDeferredStatements(context, scope));
+        if (context->result != ByteCodeResult::Done)
+            return true;
+    }
+
     breakNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
     return true;
