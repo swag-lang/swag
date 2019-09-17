@@ -1290,12 +1290,32 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
 
 bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    return makeCompatibles(errorContext, toType, nodeToCast->typeInfo, nodeToCast, castFlags);
+    SWAG_CHECK(makeCompatibles(errorContext, toType, nodeToCast->typeInfo, nodeToCast, castFlags));
+    if (nodeToCast && (nodeToCast->typeInfo->flags & TYPEINFO_AUTO_CAST) && !nodeToCast->castedTypeInfo)
+    {
+        if (!(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
+            nodeToCast->typeInfo       = toType;
+        }
+    }
+
+    return true;
 }
 
 bool TypeManager::makeCompatibles(ErrorContext* errorContext, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
-    return makeCompatibles(errorContext, leftNode->typeInfo, rightNode, castFlags);
+    SWAG_CHECK(makeCompatibles(errorContext, leftNode->typeInfo, rightNode, castFlags));
+    if ((rightNode->typeInfo->flags & TYPEINFO_AUTO_CAST) && !rightNode->castedTypeInfo)
+    {
+        if (!(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            rightNode->castedTypeInfo = rightNode->typeInfo;
+            rightNode->typeInfo       = leftNode->typeInfo;
+        }
+    }
+
+    return true;
 }
 
 void TypeManager::promote(AstNode* left, AstNode* right)
@@ -1450,6 +1470,9 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (fromType->isSame(toType, ISSAME_CAST))
         return true;
 
+    if (fromType->flags & TYPEINFO_AUTO_CAST)
+        castFlags |= CASTFLAG_FORCE;
+
     // Always match against a generic
     if (toType->kind == TypeInfoKind::Generic)
         return true;
@@ -1459,8 +1482,6 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     {
         if (castFlags & CASTFLAG_FORCE)
             return true;
-		if (fromType->flags & TYPEINFO_AUTO_CAST)
-			return true;
     }
 
     // Struct to pointer
