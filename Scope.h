@@ -41,6 +41,7 @@ struct Scope : public PoolElement
     void               allocateSymTable();
     static string      makeFullName(const string& parentName, const string& name);
     static const char* getNakedName(ScopeKind kind);
+    static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);
 
     bool isGlobal()
     {

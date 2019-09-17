@@ -158,6 +158,7 @@ struct ByteCodeGenJob : public Job
         dependentJobs.clear();
         dependentNodes.clear();
         collectChilds.clear();
+		collectScopes.clear();
         syncToDependentNodes = false;
     }
 
@@ -168,6 +169,7 @@ struct ByteCodeGenJob : public Job
     vector<Job*>       dependentJobs;
     vector<AstNode*>   dependentNodes;
     vector<AstNode*>   collectChilds;
+    vector<Scope*>     collectScopes;
     bool               syncToDependentNodes;
 };
 

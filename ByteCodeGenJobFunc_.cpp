@@ -19,7 +19,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 
     if ((funcNode->flags & AST_LEAVE_SCOPE_1) == 0)
     {
-		funcNode->flags |= AST_LEAVE_SCOPE_1;
+        funcNode->flags |= AST_LEAVE_SCOPE_1;
         SWAG_CHECK(emitDeferredStatements(context, funcNode->scope));
         if (context->result != ByteCodeResult::Done)
             return true;
@@ -85,15 +85,9 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         node->flags |= AST_LEAVE_SCOPE_1;
 
         // Leave all scopes
-        auto scope = node->ownerScope;
-        while (true)
-        {
+        Scope::collectScopeFrom(node->ownerScope, funcNode->scope, context->job->collectScopes);
+        for (auto scope : context->job->collectScopes)
             SWAG_CHECK(emitDeferredStatements(context, scope));
-            if (scope == funcNode->scope)
-                break;
-            scope = scope->parentScope;
-        }
-
         if (context->result != ByteCodeResult::Done)
             return true;
     }
