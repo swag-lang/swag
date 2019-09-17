@@ -48,19 +48,14 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
 {
-    auto node   = context->node;
-    auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
+    auto node = context->node;
 
-    // Leave scope
-    if ((node->flags & AST_LEAVE_SCOPE_DONE) == 0)
-    {
-        node->flags |= AST_LEAVE_SCOPE_DONE;
-        SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
-        if (context->result != ByteCodeResult::Done)
-            return true;
-    }
+    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    if (context->result != ByteCodeResult::Done)
+        return true;
 
     // This is the end of the if block. Need to jump after the else block, if there's one
+    auto ifNode             = CastAst<AstIf>(node->parent, AstNodeKind::If);
     ifNode->seekJumpAfterIf = context->bc->numInstructions;
     if (ifNode->elseBlock)
         emitInstruction(context, ByteCodeOp::Jump);
@@ -119,16 +114,12 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
 {
-    auto node     = context->node;
-    auto loopNode = static_cast<AstBreakable*>(node->parent);
+    auto node = context->node;
+    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    if (context->result != ByteCodeResult::Done)
+        return true;
 
-    if ((node->flags & AST_LEAVE_SCOPE_DONE) == 0)
-    {
-        node->flags |= AST_LEAVE_SCOPE_DONE;
-        SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
-        if (context->result != ByteCodeResult::Done)
-            return true;
-    }
+    auto loopNode = static_cast<AstBreakable*>(node->parent);
 
     auto inst   = emitInstruction(context, ByteCodeOp::Jump);
     auto diff   = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
@@ -349,9 +340,9 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
     auto node      = context->node;
     auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
 
-    if ((breakNode->flags & AST_LEAVE_SCOPE_DONE) == 0)
+    if ((breakNode->flags & AST_EMIT_DEFERRED_DONE) == 0)
     {
-        breakNode->flags |= AST_LEAVE_SCOPE_DONE;
+        breakNode->flags |= AST_EMIT_DEFERRED_DONE;
         Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
         for (auto scope : context->job->collectScopes)
             SWAG_CHECK(emitDeferredStatements(context, scope));
@@ -369,9 +360,9 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     auto node      = context->node;
     auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
-    if ((breakNode->flags & AST_LEAVE_SCOPE_DONE) == 0)
+    if ((breakNode->flags & AST_EMIT_DEFERRED_DONE) == 0)
     {
-        breakNode->flags |= AST_LEAVE_SCOPE_DONE;
+        breakNode->flags |= AST_EMIT_DEFERRED_DONE;
         Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
         for (auto scope : context->job->collectScopes)
             SWAG_CHECK(emitDeferredStatements(context, scope));
@@ -392,12 +383,47 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
+{
+    auto node  = context->node;
+    auto table = node->ownerScope->symTable;
+    if (!table)
+        return true;
+
+    scoped_lock lock(table->mutex);
+
+    for (int i = (int) table->allStructs.size() - 1; i >= 0; i--)
+    {
+        auto one = table->allStructs[i];
+        SWAG_CHECK(prepareEmitStructDrop(context, one->typeInfo));
+        if (context->result == ByteCodeResult::Pending)
+            return true;
+
+        auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
+        if (typeInfoStruct->opDrop)
+        {
+            auto r0                                                         = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.u32 = one->storageOffset;
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+            inst->a.pointer = (uint8_t*) typeInfoStruct->opDrop;
+            inst->b.u64     = 1;
+            inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
+            emitInstruction(context, ByteCodeOp::IncSP, 8);
+            context->bc->maxCallParameters = max(context->bc->maxCallParameters, 1);
+            freeRegisterRC(context, r0);
+        }
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context)
 {
     auto node = context->node;
-    if ((node->flags & AST_LEAVE_SCOPE_DONE) == 0)
+    if ((node->flags & AST_EMIT_DEFERRED_DONE) == 0)
     {
-        node->flags |= AST_LEAVE_SCOPE_DONE;
+        node->flags |= AST_EMIT_DEFERRED_DONE;
         SWAG_CHECK(emitDeferredStatements(context, node->ownerScope));
         if (context->result != ByteCodeResult::Done)
             return true;
@@ -410,18 +436,43 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
 {
     if (!scope)
         return true;
-    if (scope->deferedNodes.size() == 0)
-        return true;
 
-    context->result = ByteCodeResult::NewChilds;
-
-    auto job = context->job;
-    for (int i = 0; i < (int) scope->deferedNodes.size(); i++)
+    if (scope->deferedNodes.size())
     {
-        auto child           = scope->deferedNodes[i];
-        child->bytecodeState = AstNodeResolveState::Enter;
-        child->flags &= ~AST_NO_BYTECODE;
-        job->nodes.push_back(child);
+        context->result = ByteCodeResult::NewChilds;
+        auto job        = context->job;
+        for (int i = 0; i < (int) scope->deferedNodes.size(); i++)
+        {
+            auto child           = scope->deferedNodes[i];
+            child->bytecodeState = AstNodeResolveState::Enter;
+            child->flags &= ~AST_NO_BYTECODE;
+            job->nodes.push_back(child);
+        }
+    }
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
+{
+    auto node = context->node;
+
+    // Emit all 'defer' statements
+    if ((node->flags & AST_EMIT_DEFERRED_DONE) == 0)
+    {
+        node->flags |= AST_EMIT_DEFERRED_DONE;
+        SWAG_CHECK(emitDeferredStatements(context, scope));
+        if (context->result != ByteCodeResult::Done)
+            return true;
+    }
+
+    // Emit all drops
+    if ((node->flags & AST_EMIT_DROP_DONE) == 0)
+    {
+        node->flags |= AST_EMIT_DROP_DONE;
+        SWAG_CHECK(emitDrop(context));
+        if (context->result != ByteCodeResult::Done)
+            return true;
     }
 
     return true;

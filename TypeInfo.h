@@ -555,6 +555,7 @@ struct TypeInfoStruct : public TypeInfo
     ByteCode*              opPostMove;
     AstNode*               opUserDropFct;
     ByteCode*              opDrop;
+    SpinLock               mutex;
 };
 
 struct TypeInfoAlias : public TypeInfo

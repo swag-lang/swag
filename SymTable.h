@@ -90,7 +90,7 @@ struct SymbolName : public PoolElement
     {
         name.clear();
         cptOverloads = 0;
-		ownerTable = nullptr;
+        ownerTable   = nullptr;
         overloads.clear();
     }
 
@@ -117,6 +117,7 @@ struct SymTable
     SpinLock                   mutex;
     Scope*                     scope;
     map<Utf8Crc, SymbolName*>* mapNames[HASH_SIZE];
+    vector<SymbolOverload*>    allStructs;
 };
 
 extern Pool<SymbolOverload> g_Pool_symOverload;

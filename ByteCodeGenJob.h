@@ -136,7 +136,9 @@ struct ByteCodeGenJob : public Job
     static bool emitDataProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context);
+    static bool emitDrop(ByteCodeGenContext* context);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
+    static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
@@ -158,7 +160,7 @@ struct ByteCodeGenJob : public Job
         dependentJobs.clear();
         dependentNodes.clear();
         collectChilds.clear();
-		collectScopes.clear();
+        collectScopes.clear();
         syncToDependentNodes = false;
     }
 

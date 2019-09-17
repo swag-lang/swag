@@ -11,12 +11,13 @@
 
 bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->opInitFct->mutex);
+    scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
         return true;
     if (typeInfoStruct->opDrop)
         return true;
 
+    SWAG_ASSERT(typeInfoStruct->structNode);
     auto sourceFile = context->sourceFile;
     auto structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
 
@@ -105,13 +106,13 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
 
-	//opDrop->print();
+    //opDrop->print();
     return true;
 }
 
 bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->opInitFct->mutex);
+    scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
         return true;
     if (typeInfoStruct->opPostMove)
@@ -209,7 +210,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
 bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-    scoped_lock lk(typeInfoStruct->opInitFct->mutex);
+    scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_COPY)
         return true;
     if (typeInfoStruct->opPostCopy)

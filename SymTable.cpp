@@ -115,6 +115,10 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
             if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
                 return nullptr;
             result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
+
+			// Remember all variables of type struct
+            if (symbol->kind == SymbolKind::Variable && typeInfo->kind == TypeInfoKind::Struct)
+                allStructs.push_back(result);
         }
 
         result->flags |= flags;

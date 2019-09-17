@@ -30,4 +30,5 @@ static const uint64_t AST_IS_CONST                   = 0x00000000'08000000;
 static const uint64_t AST_IS_CONST_ASSIGN            = 0x00000000'10000000;
 static const uint64_t AST_VALUE_IS_TYPEINFO          = 0x00000000'20000000;
 static const uint64_t AST_DECL_USING                 = 0x00000000'40000000;
-static const uint64_t AST_LEAVE_SCOPE_DONE           = 0x00000000'80000000;
+static const uint64_t AST_EMIT_DEFERRED_DONE         = 0x00000000'80000000;
+static const uint64_t AST_EMIT_DROP_DONE             = 0x00000001'00000000;

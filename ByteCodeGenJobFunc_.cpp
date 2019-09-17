@@ -15,18 +15,14 @@
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
-    auto funcNode = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
 
-    if ((funcNode->flags & AST_LEAVE_SCOPE_DONE) == 0)
-    {
-        funcNode->flags |= AST_LEAVE_SCOPE_DONE;
-        SWAG_CHECK(emitDeferredStatements(context, funcNode->scope));
-        if (context->result != ByteCodeResult::Done)
-            return true;
-    }
+    SWAG_CHECK(emitLeaveScope(context, node->scope));
+    if (context->result != ByteCodeResult::Done)
+        return true;
 
-    if (funcNode->stackSize)
-        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
+    if (node->stackSize)
+        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->stackSize;
     emitInstruction(context, ByteCodeOp::Ret);
     return true;
 }
@@ -47,7 +43,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode);
 
     // Copy result to RR0... registers
-    if ((node->flags & AST_LEAVE_SCOPE_DONE) == 0)
+    if ((node->flags & AST_EMIT_DEFERRED_DONE) == 0)
     {
         if (!node->childs.empty())
         {
@@ -82,7 +78,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
         }
 
-        node->flags |= AST_LEAVE_SCOPE_DONE;
+        node->flags |= AST_EMIT_DEFERRED_DONE;
 
         // Leave all scopes
         Scope::collectScopeFrom(node->ownerScope, funcNode->scope, context->job->collectScopes);
