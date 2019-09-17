@@ -3,7 +3,7 @@
 //#[swag.printbc]
 #test
 {
-	var a : *u8 = cast(*u8) @alloc(10)
+	var a : *u8 = cast @alloc(10)
 	defer @free(a)
 	
 	a[0] = 1

@@ -208,9 +208,13 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
-    SWAG_CHECK(doTypeExpression(node));
-    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
+        SWAG_CHECK(doTypeExpression(node));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after type expression"));
+    }
+
     SWAG_CHECK(doUnaryExpression(node));
     return true;
 }

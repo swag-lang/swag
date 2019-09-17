@@ -612,10 +612,24 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
 bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
 {
-    AstNode* node         = context->node;
-    auto     typeInfo     = node->typeInfo;
-    auto     exprNode     = node->childs[1];
-    auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
-    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
+    AstNode* node     = context->node;
+    auto     typeInfo = node->typeInfo;
+
+	// Specfic cast, with a type defined
+    if (node->childs.size() == 2)
+    {
+        auto exprNode     = node->childs[1];
+        auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+        SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
+    }
+
+	// Automatic cast
+    else
+    {
+        auto exprNode     = node->childs[0];
+        auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+        SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
+    }
+
     return true;
 }

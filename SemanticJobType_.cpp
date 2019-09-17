@@ -271,17 +271,32 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 
 bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 {
-    auto node     = context->node;
-    auto typeNode = node->childs[0];
-    auto exprNode = node->childs[1];
+    auto     node       = context->node;
+    auto     sourceFile = context->sourceFile;
+    AstNode* exprNode   = nullptr;
 
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, typeNode->typeInfo, exprNode, CASTFLAG_FORCE));
-    node->typeInfo    = typeNode->typeInfo;
+    // Explicit cast, with a type
+    if (node->childs.size() == 2)
+    {
+        auto typeNode = node->childs[0];
+        exprNode      = node->childs[1];
+
+        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, typeNode->typeInfo, exprNode, CASTFLAG_FORCE));
+        node->typeInfo = typeNode->typeInfo;
+    }
+
+    // Automatic cast, without a type
+    else
+    {
+        exprNode       = node->childs[0];
+        auto cloneType = TypeManager::concreteType(exprNode->typeInfo)->clone();
+        cloneType->flags |= TYPEINFO_AUTO_CAST;
+        node->typeInfo = sourceFile->module->typeTable.registerType(cloneType);
+    }
+
     node->byteCodeFct = &ByteCodeGenJob::emitExplicitCast;
-
     node->inheritOrFlag(exprNode, AST_CONST_EXPR);
     node->inheritComputedValue(exprNode);
-
     return true;
 }
 

@@ -1442,7 +1442,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         if (!(castFlags & CASTFLAG_UNCONST))
             return castError(errorContext, toType, fromType, nodeToCast, castFlags);
 
-        // We can affect a const to an unconst if type is bycopy, and we are in an affectation
+        // We can affect a const to an unconst if type is by copy, and we are in an affectation
         if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
             return castError(errorContext, toType, fromType, nodeToCast, castFlags);
     }
@@ -1459,6 +1459,8 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     {
         if (castFlags & CASTFLAG_FORCE)
             return true;
+		if (fromType->flags & TYPEINFO_AUTO_CAST)
+			return true;
     }
 
     // Struct to pointer
