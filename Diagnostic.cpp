@@ -61,6 +61,8 @@ void Diagnostic::report(bool verboseMode) const
         {
             if (startLocation.seekStartLine[i] == -1)
                 continue;
+            if (errorLevel == DiagnosticLevel::Note && i != REPORT_NUM_CODE_LINES - 1)
+                continue;
             lines.push_back(sourceFile->getLine(startLocation.seekStartLine[i]));
         }
 
@@ -81,7 +83,7 @@ void Diagnostic::report(bool verboseMode) const
         }
 
         // Print all lines
-		g_Log.eol();
+        g_Log.eol();
         for (auto& line : lines)
         {
             const char* pz = line.c_str() + minOffset;
