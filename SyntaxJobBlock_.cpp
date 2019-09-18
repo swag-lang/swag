@@ -107,9 +107,10 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
         Scoped scoped(this, newScope);
 
-        auto statement       = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, caseNode);
-        statement->ownerCase = caseNode;
-        caseNode->block      = statement;
+        auto statement               = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, caseNode);
+        statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
+        statement->ownerCase         = caseNode;
+        caseNode->block              = statement;
         if (isDefault)
             defaultStatement = statement;
 

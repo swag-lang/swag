@@ -4,7 +4,7 @@
 //#[swag.printbc]
 #test
 {
-	a := 0
+	a := 1
 	switch a
 	{	
 	case 0:
@@ -12,4 +12,6 @@
 	case 1:
 		b := 0
 	}
+	
+	@assert(a == 1)
 }
