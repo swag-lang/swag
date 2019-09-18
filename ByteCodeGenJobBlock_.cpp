@@ -325,6 +325,10 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     if (blockNode->ownerCase->isDefault)
         return true;
 
+    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    if (context->result != ByteCodeResult::Done)
+        return true;
+
     // Jump to exit the switch
     auto inst   = emitInstruction(context, ByteCodeOp::Jump);
     inst->a.s32 = blockNode->ownerCase->ownerSwitch->seekJumpExpression - context->bc->numInstructions;
@@ -385,8 +389,8 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context, Scope* scope)
 {
-	if (!scope)
-		return true;
+    if (!scope)
+        return true;
     auto table = scope->symTable;
     if (!table)
         return true;
@@ -422,7 +426,7 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context, Scope* scope)
 bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context)
 {
     auto node = context->node;
-	SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
     return true;
 }
 

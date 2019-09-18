@@ -95,30 +95,28 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         }
 
         if (isDefault)
-        {
             SWAG_CHECK(eatToken(TokenId::SymColon, "after 'default' expression"));
-        }
         else
-        {
             SWAG_CHECK(eatToken(TokenId::SymColon, "after 'case' expression"));
-        }
 
         // Content
-        auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
-        Scoped scoped(this, newScope);
-
-        auto statement               = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, caseNode);
-        statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
-        statement->ownerCase         = caseNode;
-        caseNode->block              = statement;
-        if (isDefault)
-            defaultStatement = statement;
-
-        // Instructions
-        ScopedBreakable scopedBreakable(this, switchNode);
-        while (token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly)
         {
-            SWAG_CHECK(doEmbeddedInstruction(statement));
+            auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+            Scoped scoped(this, newScope);
+
+            auto statement               = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, caseNode);
+            statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
+            statement->ownerCase         = caseNode;
+            caseNode->block              = statement;
+            if (isDefault)
+                defaultStatement = statement;
+
+            // Instructions
+            ScopedBreakable scopedBreakable(this, switchNode);
+            while (token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly)
+            {
+                SWAG_CHECK(doEmbeddedInstruction(statement));
+            }
         }
     }
 
