@@ -1,4 +1,4 @@
-#module module857
+#module module858
 
 var G: s32
 
@@ -19,10 +19,11 @@ impl Point
 //#[swag.printbc]
 #test
 {
+	loop(10)
 	{
 		var pt: Point(1)
-		var pt1: Point(1)
 	}
 	
-	@assert(G == 2)
+	//@print(G)
+	@assert(G == 10)
 }

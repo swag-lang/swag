@@ -104,6 +104,9 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
         }
 
         // Content
+        auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+        Scoped scoped(this, newScope);
+
         auto statement       = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile->indexInModule, caseNode);
         statement->ownerCase = caseNode;
         caseNode->block      = statement;
@@ -111,7 +114,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
             defaultStatement = statement;
 
         // Instructions
-        ScopedBreakable scoped(this, switchNode);
+        ScopedBreakable scopedBreakable(this, switchNode);
         while (token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doEmbeddedInstruction(statement));
