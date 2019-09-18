@@ -1,9 +1,9 @@
-#module module860
+#module module861
 
 //#[swag.printbc]
 #test
 {
-	a := 0
+	a := 30
 	switch a
 	{	
 	case 0:
@@ -14,7 +14,10 @@
 		//defer @print("1")
 		defer a += 2
 		a = 0
+	default:
+		defer a += 3
+		a = 0
 	}
 	
-	@assert(a == 1)
+	@assert(a == 3)
 }

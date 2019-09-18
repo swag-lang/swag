@@ -318,15 +318,15 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
 {
-    auto node      = context->node;
+    auto node = context->node;
+    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
+    if (context->result != ByteCodeResult::Done)
+        return true;
+
     auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::Statement);
 
     // For the default case, do nothing, fallback to the end of the switch
     if (blockNode->ownerCase->isDefault)
-        return true;
-
-    SWAG_CHECK(emitLeaveScope(context, node->ownerScope));
-    if (context->result != ByteCodeResult::Done)
         return true;
 
     // Jump to exit the switch
