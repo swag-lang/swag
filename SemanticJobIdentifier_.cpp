@@ -953,14 +953,17 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
+    auto overload = symbol->overloads[0];
     if (symMatch.parameters.empty() && symMatch.genericParameters.empty())
     {
         // For everything except functions/attributes/structs (which have overloads), this is a match
-        if (symbol->kind != SymbolKind::Attribute && symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Struct)
+        if (symbol->kind != SymbolKind::Attribute &&
+            symbol->kind != SymbolKind::Function &&
+            symbol->kind != SymbolKind::Struct &&
+            overload->typeInfo->kind != TypeInfoKind::Lambda)
         {
             SWAG_ASSERT(dependentSymbols.size() == 1);
             SWAG_ASSERT(symbol->overloads.size() == 1);
-            auto overload  = symbol->overloads[0];
             node->typeInfo = overload->typeInfo;
             SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, symbol->overloads[0], nullptr, dependentVar));
             return true;
