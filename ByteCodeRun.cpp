@@ -268,6 +268,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(context->bc);
         context->push(context->ip);
         context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
+
+        if (!context->bc)
+        {
+            context->error("dereferencing a null pointer");
+            break;
+        }
+
         context->ip = context->bc->out;
         SWAG_ASSERT(context->ip);
         context->bp = context->sp;
