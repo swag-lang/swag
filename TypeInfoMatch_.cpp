@@ -162,11 +162,11 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             }
         }
 
+        context.solvedParameters[context.cptResolved] = symbolParameter;
         if (param)
         {
-            context.solvedParameters[context.cptResolved] = symbolParameter;
-            param->resolvedParameter                      = symbolParameter;
-            param->index                                  = context.cptResolved;
+            param->resolvedParameter = symbolParameter;
+            param->index             = context.cptResolved;
         }
 
         context.cptResolved++;

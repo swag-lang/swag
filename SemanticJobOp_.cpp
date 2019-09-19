@@ -129,15 +129,15 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
 
 bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, vector<AstNode*>& params, bool optionnal)
 {
-    auto node       = context->node;
-    auto job        = context->job;
-    auto sourceFile = context->sourceFile;
     auto leftType   = TypeManager::concreteType(left->typeInfo);
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
     auto symbol     = leftStruct->scope->symTable->find(name);
-
     if (!symbol && optionnal)
         return true;
+
+    auto node       = context->node;
+    auto job        = context->job;
+    auto sourceFile = context->sourceFile;
 
     SWAG_VERIFY(symbol, context->errorContext.report({sourceFile, left->parent, format("cannot find operator '%s' in '%s'", name, leftStruct->name.c_str())}));
 
@@ -180,7 +180,15 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     if (context->result == SemanticResult::Pending)
         return true;
 
-    auto overload = job->cacheMatches[0].symbolOverload;
+    // Make the real cast for all the call parameters
+    auto& oneMatch = job->cacheMatches[0];
+    for (int i = 0; i < params.size(); i++)
+    {
+        if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
+            SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch.solvedParameters[i]->typeInfo, params[i], CASTFLAG_UNCONST));
+    }
+
+    auto overload = oneMatch.symbolOverload;
     if (!optionnal)
     {
         node->typeInfo                     = overload->typeInfo;

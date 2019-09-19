@@ -5,7 +5,6 @@
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "SymTable.h"
-#include "Scope.h"
 #include "Module.h"
 #include "Attribute.h"
 #include "TypeManager.h"
@@ -341,7 +340,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, child));
     auto returnType = funcNode->returnType->typeInfo;
-    SWAG_CHECK(g_TypeMgr.makeCompatibles(&context->errorContext, returnType, child));
+    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, returnType, child));
     context->result = SemanticResult::Done;
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
