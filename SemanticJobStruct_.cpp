@@ -1,17 +1,9 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Global.h"
-#include "TypeManager.h"
-#include "Diagnostic.h"
-#include "TypeInfo.h"
 #include "SourceFile.h"
 #include "SymTable.h"
-#include "Scope.h"
 #include "Ast.h"
-#include "AstNode.h"
 #include "Module.h"
-#include "ThreadManager.h"
-#include "ByteCodeGenJob.h"
 #include "Workspace.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)

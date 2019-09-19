@@ -358,6 +358,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+        // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
+		node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
         node->flags |= AST_R_VALUE;
     }
