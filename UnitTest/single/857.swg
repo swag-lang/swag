@@ -19,6 +19,8 @@ impl Point
 //#[swag.printbc]
 #test
 {
+	G = 0
+	
 	{
 		var pt: Point(1)
 		var pt1: Point(1)
