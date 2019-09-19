@@ -46,23 +46,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
         node->parameters = params;
         while (true)
         {
-			AstNode* typeExpression;
-            SWAG_CHECK(doTypeExpression(nullptr, &typeExpression));
-
-			if (token.id == TokenId::SymColon)
-            {
-                if (typeExpression->childs.size() != 1 || typeExpression->childs.front()->kind != AstNodeKind::IdentifierRef)
-                    return sourceFile->report({sourceFile, typeExpression, format("invalid named type '%s'", token.text.c_str())});
-                auto name = typeExpression->childs.front()->childs.front()->name;
-                SWAG_CHECK(eatToken());
-                SWAG_CHECK(doTypeExpression(params, &typeExpression));
-                typeExpression->name = name;
-            }
-            else
-            {
-                Ast::addChildBack(params, typeExpression);
-            }
-
+            SWAG_CHECK(doTypeExpression(params));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());

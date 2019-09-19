@@ -180,6 +180,57 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
+{
+    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
+    funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
+    if (result)
+        *result = funcNode;
+    int id         = g_Global.uniqueID.fetch_add(1);
+    funcNode->name = "__lambda" + to_string(id);
+
+    scoped_lock lk(currentScope->symTable->mutex);
+    auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+    auto        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
+    newScope->allocateSymTable();
+    funcNode->typeInfo = typeInfo;
+    funcNode->scope    = newScope;
+    currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters));
+    }
+
+    funcNode->computeFullName();
+
+    // Return type
+    auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
+    funcNode->returnType  = typeNode;
+    typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
+    if (token.id == TokenId::SymMinusGreat)
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
+        AstNode* typeExpression;
+        SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
+        setForFuncParameter(typeExpression);
+    }
+
+    // Body
+    {
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+        funcNode->content->token = token;
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 {
     auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
@@ -203,10 +254,9 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
     else
     {
+        // Generic parameters
         if (token.id == TokenId::SymLeftParen)
-        {
             SWAG_CHECK(doGenericDeclParameters(funcNode, &funcNode->genericParameters));
-        }
 
         SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::Intrinsic, syntaxError(token, format("missing function name instead of '%s'", token.text.c_str())));
         isIntrinsic = token.id == TokenId::Intrinsic;

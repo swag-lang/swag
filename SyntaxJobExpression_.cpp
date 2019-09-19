@@ -118,6 +118,21 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(parent, result));
         break;
 
+    case TokenId::KwdFunc:
+    {
+        AstNode* lambda;
+        SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda));
+        auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule, parent);
+		exprNode->inheritTokenLocation(lambda->token);
+        exprNode->semanticFct  = &SemanticJob::resolveMakePointer;
+        AstNode* identifierRef = Ast::createIdentifierRef(this, lambda->name, token, exprNode);
+		identifierRef->inheritTokenLocation(lambda->token);
+        forceTakeAddress(identifierRef);
+        if (result)
+            *result = exprNode;
+        break;
+    }
+
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
     }
@@ -170,7 +185,7 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
-	// Cast
+    // Cast
     if (token.id == TokenId::KwdAutoCast)
     {
         SWAG_CHECK(doAutoCast(parent, result));
