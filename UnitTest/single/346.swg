@@ -1,5 +1,5 @@
 #module module346;
-#unittest pass semantic;
+//#unittest pass semantic;
 
 //#[swag.printbc]
 #test

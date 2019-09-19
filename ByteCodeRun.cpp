@@ -901,7 +901,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     }
     case ByteCodeOp::CompareOpEqualString:
     {
-        registersRC[ip->c.u32].b = !strcmp((const char*) registersRC[ip->a.u32].pointer, (const char*) registersRC[ip->b.u32].pointer);
+        if (!registersRC[ip->a.u32].pointer || !registersRC[ip->b.u32].pointer)
+            registersRC[ip->c.u32].b = registersRC[ip->a.u32].pointer == registersRC[ip->b.u32].pointer;
+        else
+            registersRC[ip->c.u32].b = !strcmp((const char*) registersRC[ip->a.u32].pointer, (const char*) registersRC[ip->b.u32].pointer);
         break;
     }
     case ByteCodeOp::IsNullString:

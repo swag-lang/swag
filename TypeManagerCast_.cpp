@@ -1247,7 +1247,6 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST))
         {
-            //if (castFlags & CASTFLAG_FORCE)
             if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK) && !(castFlags & CASTFLAG_FORCE))
             {
                 nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
@@ -1255,8 +1254,6 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
             }
 
             return true;
-            //else
-            //    explicitIsValid = true;
         }
     }
     else if (fromType->isNative(NativeTypeKind::String))
@@ -1501,8 +1498,17 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     }
 
     // String <=> null
-    if (toType->isNative(NativeTypeKind::String) && fromType == g_TypeMgr.typeInfoNull)
-        return true;
+	if (toType->isNative(NativeTypeKind::String) && fromType == g_TypeMgr.typeInfoNull)
+	{
+		if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+		{
+			nodeToCast->typeInfo = toType;
+			nodeToCast->castedTypeInfo = g_TypeMgr.typeInfoNull;
+		}
+
+		return true;
+	}
+
     if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeTypeKind::String))
         return true;
 

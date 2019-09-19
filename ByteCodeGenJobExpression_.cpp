@@ -93,6 +93,15 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
+    // We have null, and we want a string
+    if (node->typeInfo->nativeType == NativeTypeKind::String && node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr.typeInfoNull)
+    {
+        reserveRegisterRC(context, node->resultRegisterRC, 2);
+        emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[0]);
+        emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[1]);
+        return true;
+    }
+
     auto r0                = reserveRegisterRC(context);
     node->resultRegisterRC = r0;
 

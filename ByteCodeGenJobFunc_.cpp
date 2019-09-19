@@ -342,8 +342,10 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
                 auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
                 SWAG_ASSERT(defaultParam->assignment);
                 context->node = defaultParam->assignment;
+
                 SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
                 emitLiteral(context, defaultParam->typeInfo);
+
                 context->node = node;
                 for (int r = defaultParam->assignment->resultRegisterRC.size() - 1; r >= 0; r--)
                 {

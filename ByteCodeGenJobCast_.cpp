@@ -490,6 +490,21 @@ bool ByteCodeGenJob::emitCastNativeF64(ByteCodeGenContext* context, AstNode* exp
     return true;
 }
 
+bool ByteCodeGenJob::emitCastNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
+{
+    auto node = context->node;
+
+    if (fromTypeInfo == g_TypeMgr.typeInfoNull)
+    {
+		node->resultRegisterRC += reserveRegisterRC(context);
+		emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
+        return true;
+    }
+
+    internalError(context, "emitCastNativeString, invalid type");
+    return false;
+}
+
 bool ByteCodeGenJob::emitCastVariadic(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node              = context->node;
@@ -599,6 +614,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         break;
     case NativeTypeKind::F64:
         SWAG_CHECK(emitCastNativeF64(context, exprNode, fromTypeInfo));
+        break;
+    case NativeTypeKind::String:
+        SWAG_CHECK(emitCastNativeString(context, exprNode, fromTypeInfo));
         break;
     default:
         internalError(context, "emitCast, invalid cast type");
