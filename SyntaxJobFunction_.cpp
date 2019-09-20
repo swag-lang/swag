@@ -325,8 +325,23 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
-        funcNode->content->token = token;
+
+        // One single return expression
+        if (token.id == TokenId::SymEqualGreater)
+        {
+            SWAG_CHECK(eatToken());
+            auto returnNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, funcNode);
+            returnNode->semanticFct = &SemanticJob::resolveReturn;
+            funcNode->content       = returnNode;
+            SWAG_CHECK(doExpression(returnNode));
+        }
+
+		// Normal curly statement
+        else
+        {
+            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+            funcNode->content->token = token;
+        }
     }
 
     return true;
@@ -336,7 +351,6 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveReturn;
-    node->byteCodeFct = &ByteCodeGenJob::emitReturn;
     if (result)
         *result = node;
 

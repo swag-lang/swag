@@ -324,6 +324,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto funcNode   = node->ownerFct;
     auto sourceFile = context->sourceFile;
 
+    node->byteCodeFct = &ByteCodeGenJob::emitReturn;
+
     // Check return type
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
     {

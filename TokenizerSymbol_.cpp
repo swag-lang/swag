@@ -105,6 +105,12 @@ bool Tokenizer::doSymbol(char32_t c, Token& token)
             token.text += c;
             treatChar(c, offset);
         }
+        else if (c == '>')
+        {
+            token.id = TokenId::SymEqualGreater;
+            token.text += c;
+            treatChar(c, offset);
+        }
         return true;
 
     case '-':

@@ -23,6 +23,7 @@ enum class TokenId
     SymAt,
     SymEqual,
     SymEqualEqual,
+	SymEqualGreater,
     SymMinus,
     SymMinusEqual,
     SymMinusGreat,
