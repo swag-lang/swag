@@ -10,25 +10,29 @@
 
 bool ByteCodeGenJob::emitTrinaryOp(ByteCodeGenContext* context)
 {
-	auto node = context->node;
-	auto child0 = node->childs[0];
-	auto child1 = node->childs[1];
-	auto child2 = node->childs[2];
+    auto node   = context->node;
+    auto child0 = node->childs[0];
+    auto child1 = node->childs[1];
+    auto child2 = node->childs[2];
 
-	emitInstruction(context, ByteCodeOp::JumpNotTrue, child0->resultRegisterRC)->b.s32 = 2;
+    reserveRegisterRC(context, node->resultRegisterRC, child1->resultRegisterRC.size());
 
-	// If true
-	emitInstruction(context, ByteCodeOp::CopyRARB, child0->resultRegisterRC, child1->resultRegisterRC);
-	emitInstruction(context, ByteCodeOp::Jump)->a.s32 = 1;
+    emitInstruction(context, ByteCodeOp::JumpNotTrue, child0->resultRegisterRC)->b.s32 = node->resultRegisterRC.size() + 1;
 
-	// If false
-	emitInstruction(context, ByteCodeOp::CopyRARB, child0->resultRegisterRC, child2->resultRegisterRC);
+    // If true
+    for (int r = 0; r < node->resultRegisterRC.size(); r++)
+        emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC[r], child1->resultRegisterRC[r]);
+    emitInstruction(context, ByteCodeOp::Jump)->a.s32 = node->resultRegisterRC.size();
 
+    // If false
+    for (int r = 0; r < node->resultRegisterRC.size(); r++)
+        emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC[r], child2->resultRegisterRC[r]);
+
+    freeRegisterRC(context, child0->resultRegisterRC);
     freeRegisterRC(context, child1->resultRegisterRC);
-	freeRegisterRC(context, child2->resultRegisterRC);
+    freeRegisterRC(context, child2->resultRegisterRC);
 
-	node->resultRegisterRC = child0->resultRegisterRC;
-	return true;
+    return true;
 }
 
 bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
