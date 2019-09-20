@@ -7,6 +7,8 @@
 #include "Register.h"
 #include "AstFlags.h"
 #include "RegisterList.h"
+#include "SymTable.h"
+
 struct SemanticContext;
 struct ByteCodeGenContext;
 struct Scope;
@@ -368,13 +370,14 @@ struct AstFuncDecl : public AstNode
 
     AstNode* clone(CloneContext& context) override;
 
-    int          stackSize;
-    AstNode*     parameters;
-    AstNode*     genericParameters;
-    AstNode*     returnType;
-    AstNode*     content;
-    vector<Job*> dependentJobs;
-    Scope*       scope;
+    int              stackSize;
+    AstNode*         parameters;
+    AstNode*         genericParameters;
+    AstNode*         returnType;
+    AstNode*         content;
+    vector<Job*>     dependentJobs;
+    Scope*           scope;
+    SymbolAttributes collectAttributes;
 };
 
 struct AstAttrDecl : public AstNode

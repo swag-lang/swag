@@ -204,8 +204,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         funcNode->content->flags |= AST_DISABLED;
 
     // Collect function attributes
-    SymbolAttributes attributes;
-    SWAG_CHECK(collectAttributes(context, attributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
+    SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
 
@@ -224,7 +223,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     typeInfo->computeName();
 
     ComputedValue value;
-    if (attributes.getValue("swag.semsleep.s32", value))
+    if (funcNode->collectAttributes.getValue("swag.semsleep.s32", value))
         this_thread::sleep_for(chrono::milliseconds(value.reg.u32));
 
     // Special functions registration
@@ -264,7 +263,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
-    funcNode->resolvedSymbolOverload->attributes = move(attributes);
+    funcNode->resolvedSymbolOverload->attributes = move(funcNode->collectAttributes);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));
     return true;
 }
@@ -329,7 +328,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Check return type
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
     {
-        Diagnostic diag{sourceFile, node->childs[0], format("function '%s' does not have a return type", funcNode->name.c_str())};
+        Diagnostic diag{sourceFile, node, format("function '%s' does not have a return type", funcNode->name.c_str())};
         Diagnostic note{sourceFile, funcNode->token, format("this is the definition of '%s'", funcNode->name.c_str()), DiagnosticLevel::Note};
         return context->errorContext.report(diag, &note);
     }

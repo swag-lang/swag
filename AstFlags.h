@@ -32,3 +32,4 @@ static const uint64_t AST_VALUE_IS_TYPEINFO          = 0x00000000'20000000;
 static const uint64_t AST_DECL_USING                 = 0x00000000'40000000;
 static const uint64_t AST_EMIT_DEFERRED_DONE         = 0x00000000'80000000;
 static const uint64_t AST_EMIT_DROP_DONE             = 0x00000001'00000000;
+static const uint64_t AST_SHORT_LAMBDA               = 0x00000002'00000000;

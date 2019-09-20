@@ -333,10 +333,11 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
             auto returnNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, funcNode);
             returnNode->semanticFct = &SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
+            funcNode->flags |= AST_SHORT_LAMBDA;
             SWAG_CHECK(doExpression(returnNode));
         }
 
-		// Normal curly statement
+        // Normal curly statement
         else
         {
             SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
