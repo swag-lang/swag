@@ -8,6 +8,29 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 
+bool ByteCodeGenJob::emitTrinaryOp(ByteCodeGenContext* context)
+{
+	auto node = context->node;
+	auto child0 = node->childs[0];
+	auto child1 = node->childs[1];
+	auto child2 = node->childs[2];
+
+	emitInstruction(context, ByteCodeOp::JumpNotTrue, child0->resultRegisterRC)->b.s32 = 2;
+
+	// If true
+	emitInstruction(context, ByteCodeOp::CopyRARB, child0->resultRegisterRC, child1->resultRegisterRC);
+	emitInstruction(context, ByteCodeOp::Jump)->a.s32 = 1;
+
+	// If false
+	emitInstruction(context, ByteCodeOp::CopyRARB, child0->resultRegisterRC, child2->resultRegisterRC);
+
+    freeRegisterRC(context, child1->resultRegisterRC);
+	freeRegisterRC(context, child2->resultRegisterRC);
+
+	node->resultRegisterRC = child0->resultRegisterRC;
+	return true;
+}
+
 bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
 {
     auto node = context->node;

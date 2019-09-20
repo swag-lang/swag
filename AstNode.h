@@ -98,6 +98,7 @@ enum class AstNodeKind
     CompilerRun,
     CompilerImport,
     CompilerVersion,
+	QuestionExpression,
     Defer,
 };
 

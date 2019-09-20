@@ -162,6 +162,7 @@ struct SemanticJob : public Job
     static bool resolveArrayPointerIndex(SemanticContext* context);
     static bool resolveArrayPointerRef(SemanticContext* context);
     static bool resolveTypeList(SemanticContext* context);
+	static bool resolveTrinaryOp(SemanticContext* context);
 
     void reset() override
     {

@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "Scope.h"
 #include "Module.h"
+#include "TypeManager.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
@@ -122,6 +123,23 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
         if (context->result == SemanticResult::Pending)
             return true;
     }
+
+    return true;
+}
+
+bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
+{
+	auto node = context->node;
+	SWAG_ASSERT(node->childs.size() == 3);
+
+	SWAG_CHECK(checkIsConcrete(context, node->childs[0]));
+	SWAG_CHECK(checkIsConcrete(context, node->childs[1]));
+	SWAG_CHECK(checkIsConcrete(context, node->childs[2]));
+
+    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->childs[0]));
+	SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->childs[2], node->childs[1]));
+	node->typeInfo = node->childs[1]->typeInfo;
+	node->byteCodeFct = &ByteCodeGenJob::emitTrinaryOp;
 
     return true;
 }

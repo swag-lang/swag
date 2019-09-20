@@ -140,6 +140,7 @@ struct ByteCodeGenJob : public Job
     static bool emitDrop(ByteCodeGenContext* context, Scope* scope);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
     static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope);
+	static bool emitTrinaryOp(ByteCodeGenContext* context);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);

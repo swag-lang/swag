@@ -123,10 +123,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         AstNode* lambda;
         SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda));
         auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule, parent);
-		exprNode->inheritTokenLocation(lambda->token);
+        exprNode->inheritTokenLocation(lambda->token);
         exprNode->semanticFct  = &SemanticJob::resolveMakePointer;
         AstNode* identifierRef = Ast::createIdentifierRef(this, lambda->name, token, exprNode);
-		identifierRef->inheritTokenLocation(lambda->token);
+        identifierRef->inheritTokenLocation(lambda->token);
         forceTakeAddress(identifierRef);
         if (result)
             *result = exprNode;
@@ -308,18 +308,40 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
 {
+    AstNode* boolExpression;
+
     if (token.id == TokenId::CompilerRun)
     {
-        SWAG_CHECK(tokenizer.getToken(token));
-        AstNode* expr;
-        SWAG_CHECK(doBoolExpression(parent, &expr));
-        if (result)
-            *result = expr;
-        expr->semanticAfterFct = &SemanticJob::forceExecuteNode;
-        return true;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doBoolExpression(nullptr, &boolExpression));
+        boolExpression->semanticAfterFct = &SemanticJob::forceExecuteNode;
+    }
+    else
+    {
+        SWAG_CHECK(doBoolExpression(nullptr, &boolExpression));
     }
 
-    return doBoolExpression(parent, result);
+    if (token.id == TokenId::SymQuestion)
+    {
+		SWAG_CHECK(eatToken());
+        auto triNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::QuestionExpression, sourceFile->indexInModule, parent);
+		triNode->semanticFct = &SemanticJob::resolveTrinaryOp;
+        if (result)
+            *result = triNode;
+        Ast::addChildBack(triNode, boolExpression);
+
+		SWAG_CHECK(doBoolExpression(triNode));
+		SWAG_CHECK(eatToken(TokenId::SymColon));
+		SWAG_CHECK(doBoolExpression(triNode));
+    }
+    else
+    {
+        Ast::addChildBack(parent, boolExpression);
+        if (result)
+            *result = boolExpression;
+    }
+
+    return true;
 }
 
 bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
