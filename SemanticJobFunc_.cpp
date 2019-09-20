@@ -255,8 +255,14 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-	SWAG_CHECK(checkFuncPrototype(context, funcNode));
-	SWAG_CHECK(registerFuncSymbol(context, funcNode));
+    SWAG_CHECK(checkFuncPrototype(context, funcNode));
+
+    // For a short lambda without a specified return type, we need to defer the symbol registration, as we
+    // need to infer it from the lambda expression
+	if (!(funcNode->flags & AST_SHORT_LAMBDA) || (funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
+		SWAG_CHECK(registerFuncSymbol(context, funcNode));
+	else
+		funcNode = funcNode;
     return true;
 }
 
@@ -270,7 +276,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
     funcNode->resolvedSymbolOverload->attributes = move(funcNode->collectAttributes);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));
-	return true;
+    return true;
 }
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
@@ -333,9 +339,20 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Check return type
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
     {
-        Diagnostic diag{sourceFile, node, format("function '%s' does not have a return type", funcNode->name.c_str())};
-        Diagnostic note{sourceFile, funcNode->token, format("this is the definition of '%s'", funcNode->name.c_str()), DiagnosticLevel::Note};
-        return context->errorContext.report(diag, &note);
+		// This is a short lambda without a specified return type. We now have it
+        if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
+        {
+			auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+			typeInfoFunc->returnType = node->childs.front()->typeInfo;
+			funcNode->returnType->typeInfo = typeInfoFunc->returnType;
+			SWAG_CHECK(registerFuncSymbol(context, funcNode));
+        }
+		else
+		{
+			Diagnostic diag{ sourceFile, node, format("function '%s' does not have a return type", funcNode->name.c_str()) };
+			Diagnostic note{ sourceFile, funcNode->token, format("this is the definition of '%s'", funcNode->name.c_str()), DiagnosticLevel::Note };
+			return context->errorContext.report(diag, &note);
+		}
     }
 
     // Nothing to return

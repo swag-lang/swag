@@ -218,14 +218,31 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         AstNode* typeExpression;
         SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
         setForFuncParameter(typeExpression);
+		typeNode->flags |= AST_FUNC_RETURN_DEFINED;
     }
 
     // Body
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
-        funcNode->content->token = token;
+
+        // One single return expression
+        if (token.id == TokenId::SymEqualGreater)
+        {
+            SWAG_CHECK(eatToken());
+            auto returnNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, funcNode);
+            returnNode->semanticFct = &SemanticJob::resolveReturn;
+            funcNode->content       = returnNode;
+            funcNode->flags |= AST_SHORT_LAMBDA;
+            SWAG_CHECK(doExpression(returnNode));
+        }
+
+        // Normal curly statement
+        else
+        {
+            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+            funcNode->content->token = token;
+        }
     }
 
     return true;
@@ -306,6 +323,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     {
         if (token.id == TokenId::SymMinusGreat)
         {
+			typeNode->flags |= AST_FUNC_RETURN_DEFINED;
             Scoped    scoped(this, newScope);
             ScopedFct scopedFct(this, funcNode);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));

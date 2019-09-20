@@ -1,8 +1,10 @@
 #module module877
 
-//func toto(x: s32) => x * x
-
 //#[swag.printbc]
 #test
 {
+	@assert(toto(4) == 16)
 }
+
+func toto(x: s32) => x * x
+
