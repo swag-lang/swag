@@ -899,11 +899,20 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             symbol->kind != SymbolKind::Function &&
             symbol->kind != SymbolKind::Struct &&
             symbol->kind != SymbolKind::TypeAlias &&
-            (symbol->kind != SymbolKind::Variable || TypeManager::concreteType(symbol->overloads[0]->typeInfo, MakeConcrete::FlagAlias)->kind != TypeInfoKind::Lambda))
+            TypeManager::concreteType(symbol->overloads[0]->typeInfo, MakeConcrete::FlagAlias)->kind != TypeInfoKind::Lambda)
         {
-            Diagnostic diag{sourceFile, callParameters->token, format("identifier '%s' is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
-            Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-            return context->errorContext.report(diag, &note);
+            if (symbol->kind == SymbolKind::Variable)
+            {
+                Diagnostic diag{sourceFile, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
+                Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return context->errorContext.report(diag, &note);
+            }
+            else
+            {
+                Diagnostic diag{sourceFile, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
+                Diagnostic note{sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
+                return context->errorContext.report(diag, &note);
+            }
         }
 
         for (auto param : callParameters->childs)

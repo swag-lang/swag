@@ -262,8 +262,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // need to infer it from the lambda expression
 	if (!(funcNode->flags & AST_SHORT_LAMBDA) || (funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
 		SWAG_CHECK(registerFuncSymbol(context, funcNode));
-	else
-		funcNode = funcNode;
     return true;
 }
 
