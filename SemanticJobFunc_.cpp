@@ -217,6 +217,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Struct &&
         typeInfo->returnType->kind != TypeInfoKind::Generic &&
         typeInfo->returnType->kind != TypeInfoKind::Alias &&
+		typeInfo->returnType->kind != TypeInfoKind::Lambda &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->errorContext.report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 
