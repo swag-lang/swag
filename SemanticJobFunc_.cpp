@@ -255,17 +255,22 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
+	SWAG_CHECK(checkFuncPrototype(context, funcNode));
+	SWAG_CHECK(registerFuncSymbol(context, funcNode));
+    return true;
+}
+
+bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode)
+{
     uint32_t symbolFlags = 0;
     if (funcNode->flags & AST_IS_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
 
-    SWAG_CHECK(checkFuncPrototype(context, funcNode));
-
-    funcNode->resolvedSymbolOverload = typeNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
+    funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
     funcNode->resolvedSymbolOverload->attributes = move(funcNode->collectAttributes);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode->ownerScope, funcNode, SymbolKind::Function));
-    return true;
+	return true;
 }
 
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
