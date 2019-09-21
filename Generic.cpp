@@ -280,6 +280,9 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     newType->flags &= ~TYPEINFO_GENERIC;
     funcNode->typeInfo = newType;
 
+	// Replace return type
+	doTypeSubstitution(context, cloneContext, &newType->returnType);
+
     // Replace generic types with their real values in the function parameters
     for (int i = 0; i < newType->parameters.size(); i++)
     {

@@ -34,6 +34,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
     auto resolved = node->resolvedSymbolOverload;
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo);
+    SWAG_ASSERT(typeInfo->kind != TypeInfoKind::Generic);
 
 	// Will be done in the variable declaration
     if (typeInfo->kind == TypeInfoKind::Struct)

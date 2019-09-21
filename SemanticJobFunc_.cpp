@@ -205,9 +205,22 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             funcNode->flags |= AST_IS_GENERIC;
     }
 
-    // No semantic on content if function is generic
-    if (funcNode->flags & AST_IS_GENERIC)
+	// Short lambda with a return type we must deduce
+	// In that case, symbol registration will not be done at the end of that function but once the return expression
+	// has been evaluated, and the type deduced
+    bool shortLambda = false;
+    if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
+        shortLambda = true;
+
+	// No semantic on content if function is generic, except if this is a short lambda, and we must deduce the return type
+	// (because we need to parse the content of the function in order to deduce that type)
+    if ((funcNode->flags & AST_IS_GENERIC) && !shortLambda)
         funcNode->content->flags |= AST_DISABLED;
+
+	// We do want to do a full semantic pass on content for a short lambda with returned type inferred, se we need
+	// to remove the AST_FROM_GENERIC flag, otherwise, some stuff won't be done (because typeinfo has been set on nodes)
+    else if ((funcNode->flags & AST_FROM_GENERIC) && shortLambda)
+        Ast::visit(funcNode->content, [](AstNode* x) { x->flags &= ~AST_FROM_GENERIC; });
 
     // Collect function attributes
     SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
@@ -266,7 +279,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
-    if (!(funcNode->flags & AST_SHORT_LAMBDA) || (funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
+    if (!shortLambda)
         SWAG_CHECK(registerFuncSymbol(context, funcNode));
     return true;
 }
@@ -341,16 +354,22 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     node->byteCodeFct = &ByteCodeGenJob::emitReturn;
 
+    // Nothing to return
+    if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
+        return true;
+
     // Check return type
+    bool lateRegister = false;
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
     {
         // This is a short lambda without a specified return type. We now have it
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
         {
-            auto typeInfoFunc              = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-            typeInfoFunc->returnType       = node->childs.front()->typeInfo;
+            auto typeInfoFunc        = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+            typeInfoFunc->returnType = node->childs.front()->typeInfo;
+            typeInfoFunc->computeName();
             funcNode->returnType->typeInfo = typeInfoFunc->returnType;
-            SWAG_CHECK(registerFuncSymbol(context, funcNode));
+            lateRegister                   = true;
         }
         else
         {
@@ -359,10 +378,6 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             return context->errorContext.report(diag, &note);
         }
     }
-
-    // Nothing to return
-    if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
-        return true;
 
     // Check types
     auto child = node->childs[0];
@@ -402,6 +417,10 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         scanNode->flags |= AST_FCT_HAS_RETURN;
         scanNode = scanNode->parent;
     }
+
+    // Register symbol now that we have inferred the return type
+    if (lateRegister)
+        SWAG_CHECK(registerFuncSymbol(context, funcNode));
 
     return true;
 }

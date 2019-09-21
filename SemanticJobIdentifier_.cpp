@@ -774,8 +774,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
     {
-        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
-        return true;
+		SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
+		return true;
     }
 
     if (node->name == "Self")
