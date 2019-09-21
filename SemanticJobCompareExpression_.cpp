@@ -11,8 +11,8 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
 
     if ((left->flags & AST_VALUE_IS_TYPEINFO) && (right->flags & AST_VALUE_IS_TYPEINFO))
     {
-		node->flags |= AST_VALUE_COMPUTED;
-		node->computedValue.reg.b = left->typeInfo == right->typeInfo;
+        node->flags |= AST_VALUE_COMPUTED;
+        node->computedValue.reg.b = left->typeInfo == right->typeInfo;
     }
     else if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
     {
@@ -190,6 +190,18 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     SWAG_ASSERT(leftTypeInfo && rightTypeInfo);
+
+    // Keep it generic if it's generic on one side
+    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = rightTypeInfo;
+        return true;
+    }
 
     SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native ||
                     leftTypeInfo->kind == TypeInfoKind::Pointer ||

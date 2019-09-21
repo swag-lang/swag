@@ -706,9 +706,15 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     TypeManager::promote(left, right);
 
+	// Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
     {
         node->typeInfo = leftTypeInfo;
+        return true;
+    }
+    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = rightTypeInfo;
         return true;
     }
 
