@@ -114,7 +114,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             otherVariables.push_back(otherVarNode);
         }
 
-		// Type
+        // Type
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
@@ -149,7 +149,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             }
         }
 
-		// Assignment
+        // Assignment
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
@@ -403,7 +403,8 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
-            auto returnNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, funcNode);
+            auto stmt               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, funcNode);
+            auto returnNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile->indexInModule, stmt);
             returnNode->semanticFct = &SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
