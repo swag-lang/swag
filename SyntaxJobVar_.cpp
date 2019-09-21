@@ -71,7 +71,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     // Be sure we will be able to have a type
     if (!varNode->type && !varNode->assignment)
     {
-        return error(varNode->token, "variable must be initialized because no type is specified");
+        return error(varNode->token, "variable must have a type or must be initialized");
     }
 
     SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
