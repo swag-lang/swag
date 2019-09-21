@@ -47,15 +47,32 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 {
+    auto typeInfo = TypeManager::concreteType(op->typeInfo);
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, op, CASTFLAG_AUTO_BOOL));
 
-    auto typeInfo = TypeManager::concreteType(op->typeInfo);
     if (op->flags & AST_VALUE_COMPUTED)
     {
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
             op->computedValue.reg.b = !op->computedValue.reg.b;
+            break;
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            op->computedValue.reg.b = op->computedValue.reg.u8 ? false : true;
+            break;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            op->computedValue.reg.b = op->computedValue.reg.u16 ? false : true;
+            break;
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            op->computedValue.reg.b = op->computedValue.reg.u32 ? false : true;
+            break;
+		case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+            op->computedValue.reg.b = op->computedValue.reg.u64 ? false : true;
             break;
         }
     }
@@ -152,6 +169,8 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         break;
     }
 
+    node->typeInfo = op->typeInfo;
+	node->castedTypeInfo = op->castedTypeInfo;
     node->inheritComputedValue(op);
     return true;
 }

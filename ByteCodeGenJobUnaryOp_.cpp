@@ -61,16 +61,18 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, uint32_t r0)
 
 bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
 {
-    AstNode* node = context->node;
-    auto     r0   = node->childs[0]->resultRegisterRC;
+    AstNode* node          = context->node;
+    auto     r0            = node->childs[0]->resultRegisterRC;
+    node->resultRegisterRC = r0;
+
+    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
 
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
-		return true;
+        return true;
     }
 
-    node->resultRegisterRC = r0;
     switch (node->token.id)
     {
     case TokenId::SymExclam:
