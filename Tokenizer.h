@@ -79,7 +79,7 @@ enum class TokenId
     KwdLet,
     KwdConst,
     KwdNamespace,
-    KwdType,
+    KwdTypeAlias,
     KwdEnum,
     KwdImpl,
     KwdStruct,

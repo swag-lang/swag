@@ -1,4 +1,4 @@
 #module module569
 #unittest pass semantic
 
-type ret: {s32, s32}
+typealias ret: {s32, s32}

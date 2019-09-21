@@ -89,7 +89,7 @@ const char* AstNode::getNakedKindName(AstNode* node)
     case AstNodeKind::Namespace:
         return "namespace";
     case AstNodeKind::TypeAlias:
-        return "type";
+        return "typealias";
     case AstNodeKind::FuncDeclParam:
         return "parameter";
     }

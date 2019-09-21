@@ -7,7 +7,7 @@ struct Point
 	y: s32
 }
 
-type toto: s32
+typealias toto: s32
 
 #unittest error
 impl Point

@@ -3,10 +3,10 @@
 
 namespace A
 {
-	type tt1: bool;
+	typealias tt1: bool;
 }
 
 namespace A
 {
-	type tt: bool;
+	typealias tt: bool;
 }

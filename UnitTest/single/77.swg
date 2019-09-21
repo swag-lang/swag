@@ -1,8 +1,8 @@
 ﻿#module module77;
 #unittest pass semantic;
 
-type a: u32;
-type b: f32;
-type c: bool;
-type d: string;
-type e: char;
+typealias a: u32;
+typealias b: f32;
+typealias c: bool;
+typealias d: string;
+typealias e: char;

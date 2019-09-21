@@ -1,7 +1,7 @@
 #module module669
 //#unittest pass syntax
 
-type toto: bool
+typealias toto: bool
 
 //#[swag.printbc]
 #unittest error

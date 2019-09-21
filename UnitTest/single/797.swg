@@ -1,6 +1,6 @@
 #module module797
 
-type alloc: (u32)->*void
+typealias alloc: (u32)->*void
 var cpt: u32 = 0
 
 func toto(a: alloc)->*void

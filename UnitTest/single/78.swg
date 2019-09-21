@@ -1,7 +1,7 @@
 ﻿#module module78;
 #unittest pass semantic;
 
-type str: string;
+typealias str: string;
 var a: str = "coucou";
 
 #unittest error;

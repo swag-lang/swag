@@ -259,7 +259,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::KwdConst:
         SWAG_CHECK(doVarDecl(parent));
         break;
-    case TokenId::KwdType:
+    case TokenId::KwdTypeAlias:
         SWAG_CHECK(doTypeAlias(parent));
         break;
     case TokenId::KwdNamespace:

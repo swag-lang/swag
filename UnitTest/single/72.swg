@@ -1,8 +1,8 @@
 ﻿#module module72;
 #unittest pass semantic;
 
-type myType: u32;
-type myType1: bool;
+typealias myType: u32;
+typealias myType1: bool;
 
 #unittest error;
-type myType: f32;
+typealias myType: f32;

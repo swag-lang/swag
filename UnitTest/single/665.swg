@@ -1,7 +1,7 @@
 #module module665
 //#unittest pass syntax
 
-type toto: s32
+typealias toto: s32
 
 //#[swag.printbc]
 #test
