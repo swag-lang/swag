@@ -1,16 +1,12 @@
 #include "pch.h"
 #include "ThreadManager.h"
 #include "LanguageSpec.h"
-#include "Module.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "ByteCodeGenJob.h"
 #include "SourceFile.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "SymTable.h"
-#include "TypeManager.h"
-#include "CommandLine.h"
 #include "Scope.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)

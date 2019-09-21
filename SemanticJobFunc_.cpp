@@ -39,7 +39,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
 
         // Variadic must be the last one
-        if (nodeParam->typeInfo == g_TypeMgr.typeInfoVariadic)
+        if (nodeParam->typeInfo->kind == TypeInfoKind::Variadic || nodeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {
             typeInfo->flags |= TYPEINFO_VARIADIC;
             if (index != parameters->childs.size())
