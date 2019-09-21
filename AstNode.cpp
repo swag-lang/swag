@@ -32,9 +32,16 @@ void AstNode::inheritLocationFromChilds()
         return;
     for (auto child : childs)
         child->inheritLocationFromChilds();
+
+    auto front = childs.front();
     if (token.startLocation.column == 0 && token.startLocation.line == 0)
-        token.startLocation = childs.front()->token.startLocation;
-    token.endLocation = childs.back()->token.endLocation;
+        token.startLocation = front->token.startLocation;
+    if (token.startLocation.line != front->token.endLocation.line || token.startLocation.column > front->token.endLocation.column)
+        token.startLocation = front->token.startLocation;
+
+    auto back = childs.back();
+    if (token.endLocation.line != back->token.endLocation.line || token.endLocation.column < back->token.endLocation.column)
+        token.endLocation = back->token.endLocation;
 }
 
 void AstNode::computeFullName()

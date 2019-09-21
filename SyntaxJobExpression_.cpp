@@ -420,9 +420,11 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
         if (token.id != TokenId::SymComma)
             break;
         SWAG_CHECK(eatToken(TokenId::SymComma));
-    }
+	}
 
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+    initNode->token.endLocation = token.startLocation;
+
     return true;
 }
 

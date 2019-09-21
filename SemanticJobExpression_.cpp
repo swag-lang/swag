@@ -80,17 +80,14 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
-    typeInfo->name     = "[";
+    SWAG_ASSERT(node->childs.size());
+    typeInfo->name = format("[%u] %s", node->childs.size(), node->childs.front()->typeInfo->name.c_str());
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkIsConcrete(context, child));
-
-        if (!typeInfo->childs.empty())
-            typeInfo->name += ", ";
         typeInfo->childs.push_back(child->typeInfo);
-        typeInfo->name += child->typeInfo->name;
         typeInfo->sizeOf += child->typeInfo->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
@@ -98,7 +95,6 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
             node->flags &= ~AST_R_VALUE;
     }
 
-    typeInfo->name += "]";
     node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
     node->typeInfo          = typeTable.registerType(typeInfo);
@@ -129,17 +125,17 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
 
 bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
 {
-	auto node = context->node;
-	SWAG_ASSERT(node->childs.size() == 3);
+    auto node = context->node;
+    SWAG_ASSERT(node->childs.size() == 3);
 
-	SWAG_CHECK(checkIsConcrete(context, node->childs[0]));
-	SWAG_CHECK(checkIsConcrete(context, node->childs[1]));
-	SWAG_CHECK(checkIsConcrete(context, node->childs[2]));
+    SWAG_CHECK(checkIsConcrete(context, node->childs[0]));
+    SWAG_CHECK(checkIsConcrete(context, node->childs[1]));
+    SWAG_CHECK(checkIsConcrete(context, node->childs[2]));
 
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->childs[0]));
-	SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->childs[2], node->childs[1]));
-	node->typeInfo = node->childs[1]->typeInfo;
-	node->byteCodeFct = &ByteCodeGenJob::emitTrinaryOp;
+    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->childs[2], node->childs[1]));
+    node->typeInfo    = node->childs[1]->typeInfo;
+    node->byteCodeFct = &ByteCodeGenJob::emitTrinaryOp;
 
     return true;
 }
