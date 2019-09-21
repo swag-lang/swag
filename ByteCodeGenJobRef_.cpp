@@ -231,6 +231,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         auto typeInfo = CastTypeInfo<TypeInfoArray>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Array);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
+
         if (g_CommandLine.debugBoundCheck)
         {
             auto r0 = reserveRegisterRC(context);
