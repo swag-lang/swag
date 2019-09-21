@@ -1144,6 +1144,10 @@ bool TypeManager::castToArray(ErrorContext* errorContext, TypeInfo* toType, Type
                 return false;
             }
 
+            // Need to recompute total size, as the size of each element can have been changed by the cast
+            if (nodeToCast)
+                fromTypeList->sizeOf = 0;
+
             while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
                 nodeToCast = nodeToCast->childs.front();
             SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
@@ -1151,6 +1155,8 @@ bool TypeManager::castToArray(ErrorContext* errorContext, TypeInfo* toType, Type
             {
                 auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
                 SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeArray->pointedType, fromTypeList->childs[i], child, castFlags));
+                if (child && child->typeInfo)
+                    fromTypeList->sizeOf += child->typeInfo->sizeOf;
             }
 
             return true;
@@ -1182,6 +1188,10 @@ bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, Type
                 return false;
             }
 
+			// Need to recompute total size, as the size of each element can have been changed by the cast
+            if (nodeToCast)
+                fromTypeList->sizeOf = 0;
+
             while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
                 nodeToCast = nodeToCast->childs.front();
             SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
@@ -1189,10 +1199,9 @@ bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, Type
             {
                 auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
                 SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeList->childs[i], fromTypeList->childs[i], child, castFlags));
+                if (child && child->typeInfo)
+                    fromTypeList->sizeOf += child->typeInfo->sizeOf;
             }
-
-            if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
-                nodeToCast->typeInfo = toTypeList;
 
             return true;
         }
