@@ -194,10 +194,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-		if (typeInfo->pointedType->isNative(NativeTypeKind::String))
+        if (typeInfo->pointedType->isNative(NativeTypeKind::String))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
         else if (!(node->flags & AST_TAKE_ADDRESS) || typeInfo->pointedType->kind == TypeInfoKind::Pointer)
-			SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access->resultRegisterRC);
@@ -263,8 +263,17 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     else if (node->array->typeInfo->kind == TypeInfoKind::Variadic)
     {
         RegisterList r0;
-
         reserveRegisterRC(context, r0, 2);
+
+        if (g_CommandLine.debugBoundCheck)
+        {
+            emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef64, r0);
+			emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u32 = 0;
+			emitInstruction(context, ByteCodeOp::DecRA, r0);
+            emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
+        }
+
         emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
         emitInstruction(context, ByteCodeOp::ShiftRightU64VB, r0)->b.u32 = 32;
@@ -289,15 +298,15 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a typed variadic parameter
     else if (node->array->typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-		if (g_CommandLine.debugBoundCheck)
-		{
-			auto r0 = reserveRegisterRC(context);
-			emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
-			emitInstruction(context, ByteCodeOp::DeRef32, r0);
-			emitInstruction(context, ByteCodeOp::DecRA, r0);
-			emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
-			freeRegisterRC(context, r0);
-		}
+        if (g_CommandLine.debugBoundCheck)
+        {
+            auto r0 = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef32, r0);
+            emitInstruction(context, ByteCodeOp::DecRA, r0);
+            emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
+            freeRegisterRC(context, r0);
+        }
 
         auto rawType = ((TypeInfoVariadic*) node->array->typeInfo)->rawType;
 
