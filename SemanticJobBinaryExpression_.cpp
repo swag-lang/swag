@@ -698,13 +698,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
-    node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
-    node->inheritAndFlag(AST_CONST_EXPR);
-    node->inheritAndFlag(AST_R_VALUE);
-
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+	auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-    TypeManager::promote(left, right);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
@@ -717,6 +712,11 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         node->typeInfo = rightTypeInfo;
         return true;
     }
+
+    node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
+    node->inheritAndFlag(AST_CONST_EXPR);
+    node->inheritAndFlag(AST_R_VALUE);
+    TypeManager::promote(left, right);
 
     // Must do move and not copy
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -834,9 +834,10 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
-    // Keep it generic if it's generic on one side
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+	auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+
+    // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
     {
         node->typeInfo = leftTypeInfo;
