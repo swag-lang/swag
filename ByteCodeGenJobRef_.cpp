@@ -260,8 +260,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             node->array->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
         }
-        else if ((!(node->flags & AST_TAKE_ADDRESS) && typeInfo->pointedType->kind != TypeInfoKind::Array) ||
-                 (typeInfo->pointedType->kind == TypeInfoKind::Pointer))
+        else if ((!(node->flags & AST_TAKE_ADDRESS) && typeInfo->pointedType->kind != TypeInfoKind::Array) || (typeInfo->pointedType->kind == TypeInfoKind::Pointer))
         {
             switch (sizeOf)
             {
@@ -295,11 +294,11 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
         emitInstruction(context, ByteCodeOp::ShiftRightU64VB, r0)->b.u32 = 32;
-        emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);
-        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[0], r0[1]);
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register);
+        emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);           // Offset from variable to the list of offsets (number of variadic arguments * register)
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[0], r0[1]); // r0[1] now points to the list of offsets
 
         // This will deref the offset of the variadic argument
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register);
         emitInstruction(context, ByteCodeOp::IncPointer, r0[1], node->access->resultRegisterRC, r0[1]);
         emitInstruction(context, ByteCodeOp::DeRef32, r0[1]);
         emitInstruction(context, ByteCodeOp::IncRA64, r0[1]);
@@ -310,6 +309,37 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, r0);
+        freeRegisterRC(context, node->access->resultRegisterRC);
+    }
+
+    // Dereference a typed variadic parameter
+    else if (node->array->typeInfo->kind == TypeInfoKind::TypedVariadic)
+    {
+        auto rawType = ((TypeInfoVariadic*) node->array->typeInfo)->rawType;
+
+        emitInstruction(context, ByteCodeOp::IncPointerVB, node->array->resultRegisterRC)->b.u32 = sizeof(Register);
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32     = sizeof(Register) * rawType->numRegisters();
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+
+        switch (rawType->sizeOf)
+        {
+        case 1:
+            emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
+            break;
+        default:
+            return internalError(context, "emitPointerDeRef, typedvariadic, size not supported");
+        }
+
+        node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access->resultRegisterRC);
     }
 
@@ -347,7 +377,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
         if (!(funcNode->flags & AST_FULL_RESOLVE))
         {
             funcNode->dependentJobs.push_back(context->job);
-			context->job->setPending();
+            context->job->setPending();
             return true;
         }
 

@@ -39,9 +39,15 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
 
         // Variadic must be the last one
-        if (nodeParam->typeInfo->kind == TypeInfoKind::Variadic || nodeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+        if (nodeParam->typeInfo->kind == TypeInfoKind::Variadic)
         {
             typeInfo->flags |= TYPEINFO_VARIADIC;
+            if (index != parameters->childs.size())
+                return context->errorContext.report({sourceFile, nodeParam, "variadic argument should be the last one"});
+        }
+        else if (nodeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+        {
+            typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())
                 return context->errorContext.report({sourceFile, nodeParam, "variadic argument should be the last one"});
         }
@@ -217,7 +223,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Struct &&
         typeInfo->returnType->kind != TypeInfoKind::Generic &&
         typeInfo->returnType->kind != TypeInfoKind::Alias &&
-		typeInfo->returnType->kind != TypeInfoKind::Lambda &&
+        typeInfo->returnType->kind != TypeInfoKind::Lambda &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->errorContext.report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 
@@ -260,8 +266,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
-	if (!(funcNode->flags & AST_SHORT_LAMBDA) || (funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
-		SWAG_CHECK(registerFuncSymbol(context, funcNode));
+    if (!(funcNode->flags & AST_SHORT_LAMBDA) || (funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
+        SWAG_CHECK(registerFuncSymbol(context, funcNode));
     return true;
 }
 
@@ -338,20 +344,20 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Check return type
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
     {
-		// This is a short lambda without a specified return type. We now have it
+        // This is a short lambda without a specified return type. We now have it
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
         {
-			auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-			typeInfoFunc->returnType = node->childs.front()->typeInfo;
-			funcNode->returnType->typeInfo = typeInfoFunc->returnType;
-			SWAG_CHECK(registerFuncSymbol(context, funcNode));
+            auto typeInfoFunc              = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+            typeInfoFunc->returnType       = node->childs.front()->typeInfo;
+            funcNode->returnType->typeInfo = typeInfoFunc->returnType;
+            SWAG_CHECK(registerFuncSymbol(context, funcNode));
         }
-		else
-		{
-			Diagnostic diag{ sourceFile, node, format("function '%s' does not have a return type", funcNode->name.c_str()) };
-			Diagnostic note{ sourceFile, funcNode->token, format("this is the definition of '%s'", funcNode->name.c_str()), DiagnosticLevel::Note };
-			return context->errorContext.report(diag, &note);
-		}
+        else
+        {
+            Diagnostic diag{sourceFile, node, format("function '%s' does not have a return type", funcNode->name.c_str())};
+            Diagnostic note{sourceFile, funcNode->token, format("this is the definition of '%s'", funcNode->name.c_str()), DiagnosticLevel::Note};
+            return context->errorContext.report(diag, &note);
+        }
     }
 
     // Nothing to return
