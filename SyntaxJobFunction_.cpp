@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "Attribute.h"
 #include "SymTable.h"
+#include "TypeManager.h"
 
 bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {
@@ -102,7 +103,35 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(paramNode, &paramNode->type));
+
+            // ...
+            if (token.id == TokenId::SymDotDotDot)
+            {
+                paramNode->type                    = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
+                paramNode->type->semanticFct       = &SemanticJob::resolveTypeExpression;
+                paramNode->type->token.literalType = g_TypeMgr.typeInfoVariadic;
+                SWAG_CHECK(tokenizer.getToken(token));
+            }
+            else
+            {
+				AstNode* typeExpression;
+                SWAG_CHECK(doTypeExpression(nullptr, &typeExpression));
+
+                // type...
+                if (token.id == TokenId::SymDotDotDot)
+                {
+                    paramNode->type                    = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
+                    paramNode->type->semanticFct       = &SemanticJob::resolveTypeExpression;
+                    paramNode->type->token.literalType = g_TypeMgr.typeInfoVariadic;
+                    SWAG_CHECK(tokenizer.getToken(token));
+					Ast::addChildBack(paramNode->type, typeExpression);
+                }
+				else
+				{
+					Ast::addChildBack(paramNode, typeExpression);
+					paramNode->type = typeExpression;
+				}
+            }
         }
 
         if (token.id == TokenId::SymEqual)
@@ -135,8 +164,8 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
         while (token.id != TokenId::SymRightParen)
         {
             SWAG_CHECK(doFuncDeclParameter(allParams));
-			if (token.id == TokenId::SymRightParen)
-				break;
+            if (token.id == TokenId::SymRightParen)
+                break;
             SWAG_CHECK(eatToken(TokenId::SymComma));
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
         }
@@ -217,7 +246,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         AstNode* typeExpression;
         SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
         setForFuncParameter(typeExpression);
-		typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+        typeNode->flags |= AST_FUNC_RETURN_DEFINED;
     }
 
     // Body
@@ -322,7 +351,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     {
         if (token.id == TokenId::SymMinusGreat)
         {
-			typeNode->flags |= AST_FUNC_RETURN_DEFINED;
+            typeNode->flags |= AST_FUNC_RETURN_DEFINED;
             Scoped    scoped(this, newScope);
             ScopedFct scopedFct(this, funcNode);
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));

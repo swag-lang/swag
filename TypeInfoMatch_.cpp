@@ -12,7 +12,8 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
     context.resetTmp();
 
     // Solve unnamed parameters
-    int numParams = (int) context.parameters.size();
+    bool isAfterVariadic = false;
+    int  numParams       = (int) context.parameters.size();
     for (int i = 0; i < numParams; i++)
     {
         auto callParameter = context.parameters[i];
@@ -28,22 +29,29 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             }
         }
 
-        if (i >= parameters.size())
+        if (i >= parameters.size() && !isAfterVariadic)
         {
             context.badSignatureParameterIdx = i;
             context.result                   = MatchResult::TooManyParameters;
             return;
         }
 
-        auto symbolParameter = parameters[i];
-        if (symbolParameter->typeInfo == g_TypeMgr.typeInfoVariadic)
+        auto symbolParameter = isAfterVariadic ? parameters.back() : parameters[i];
+        auto symbolTypeInfo  = symbolParameter->typeInfo;
+
+        if (symbolTypeInfo->kind == TypeInfoKind::Variadic)
         {
             context.cptResolved = (int) context.parameters.size();
             return;
         }
 
-        auto symbolTypeInfo = symbolParameter->typeInfo;
-        auto typeInfo       = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        if (symbolTypeInfo->kind == TypeInfoKind::TypedVariadic)
+        {
+            symbolTypeInfo  = ((TypeInfoVariadic*) symbolTypeInfo)->rawType;
+            isAfterVariadic = true;
+        }
+
+        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
 
         uint32_t castFlags = CASTFLAG_NOERROR;
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
@@ -59,7 +67,8 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
         }
         else
         {
-            context.doneParameters[context.cptResolved] = true;
+            if (context.cptResolved < context.doneParameters.size())
+                context.doneParameters[context.cptResolved] = true;
 
             // This is a generic type match
             if (symbolTypeInfo->flags & TYPEINFO_GENERIC)
@@ -162,7 +171,9 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             }
         }
 
-        context.solvedParameters[context.cptResolved] = symbolParameter;
+        if (context.cptResolved < context.solvedParameters.size())
+            context.solvedParameters[context.cptResolved] = symbolParameter;
+
         if (param)
         {
             param->resolvedParameter = symbolParameter;

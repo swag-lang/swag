@@ -35,6 +35,7 @@ namespace swag
 		TypeList
 		Variadic
 		VariadicValue
+		TypedVariadic
 		Struct
 		Generic
 		Alias		

@@ -1224,8 +1224,8 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
             else
             {
                 auto typePointer = static_cast<TypeInfoPointer*>(fromTypeList->childs.front());
-				if (!TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, typePointer->pointedType, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
-					forcedInit = false;
+                if (!TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, typePointer->pointedType, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
+                    forcedInit = false;
             }
 
             // And must and with an U32, which is the slice count
@@ -1459,8 +1459,11 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
 
     if (fromType == toType)
         return true;
+
     if (fromType->kind == TypeInfoKind::VariadicValue)
         return true;
+    if (toType->kind == TypeInfoKind::TypedVariadic)
+        toType = ((TypeInfoVariadic*) toType)->rawType;
 
     // Const mismatch
     if (!toType->isConst() && fromType->isConst())

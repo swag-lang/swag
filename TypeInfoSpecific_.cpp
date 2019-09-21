@@ -222,7 +222,22 @@ TypeInfo* TypeInfoVariadic::clone()
 {
     auto newType = g_Pool_typeInfoVariadic.alloc();
     newType->copyFrom(this);
+    newType->rawType = rawType;
     return newType;
+}
+
+bool TypeInfoVariadic::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto other = static_cast<TypeInfoVariadic*>(to);
+    if (rawType && !other->rawType)
+        return false;
+    if (!rawType && other->rawType)
+        return false;
+    if (rawType == other->rawType)
+        return true;
+    return rawType->isSame(other->rawType, isSameFlags);
 }
 
 TypeInfo* TypeInfoGeneric::clone()

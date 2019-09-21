@@ -15,7 +15,7 @@ bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
     {
         node->resultRegisterRC = expr->resultRegisterRC[1];
     }
-    else if (typeInfo->kind == TypeInfoKind::Variadic)
+    else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         node->resultRegisterRC = expr->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);

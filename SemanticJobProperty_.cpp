@@ -38,7 +38,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         node->computedValue.reg.u64 = (uint32_t) typeList->childs.size();
     }
-    else if (typeInfo->kind == TypeInfoKind::Variadic)
+    else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
     }

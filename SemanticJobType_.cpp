@@ -111,6 +111,15 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     else
     {
         node->typeInfo = node->token.literalType;
+
+        // Typed variadic ?
+        if (node->typeInfo->kind == TypeInfoKind::Variadic && !node->childs.empty())
+        {
+            auto typeVariadic     = (TypeInfoVariadic*) node->typeInfo->clone();
+            typeVariadic->kind    = TypeInfoKind::TypedVariadic;
+            typeVariadic->rawType = node->childs.front()->typeInfo;
+            node->typeInfo        = typeTable.registerType(typeVariadic);
+        }
     }
 
     // This is a generic type, not yet known

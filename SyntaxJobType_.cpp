@@ -108,18 +108,6 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool is
 
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 {
-    // ...
-    if (token.id == TokenId::SymDotDotDot)
-    {
-        auto node         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
-        node->semanticFct = &SemanticJob::resolveTypeExpression;
-        if (result)
-            *result = node;
-        node->token.literalType = g_TypeMgr.typeInfoVariadic;
-        SWAG_CHECK(tokenizer.getToken(token));
-        return true;
-    }
-
     // This is a function
     if (token.id == TokenId::SymLeftParen)
         return doTypeExpressionLambda(parent, result);

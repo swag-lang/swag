@@ -253,7 +253,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                 if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
+                {
                     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
+                }
             }
         }
 

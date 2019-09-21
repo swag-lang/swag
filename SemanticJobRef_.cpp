@@ -226,6 +226,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         arrayNode->typeInfo = g_TypeMgr.typeInfoVariadicValue;
         break;
 
+    case TypeInfoKind::TypedVariadic:
+    {
+        auto typeVariadic   = static_cast<TypeInfoVariadic*>(arrayType);
+        arrayNode->typeInfo = typeVariadic->rawType;
+        break;
+    }
+
     case TypeInfoKind::Struct:
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)

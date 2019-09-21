@@ -12,6 +12,7 @@ enum class Intrisic;
 struct AstNode;
 struct ByteCode;
 
+// Do not forget to synchronize runtime.h !
 enum class TypeInfoKind
 {
     Invalid,
@@ -27,6 +28,7 @@ enum class TypeInfoKind
     TypeList,
     Variadic,
     VariadicValue,
+	TypedVariadic,
     Struct,
     Generic,
     Alias,
@@ -493,10 +495,14 @@ struct TypeInfoVariadic : public TypeInfo
     void reset()
     {
         TypeInfo::reset();
-        kind = TypeInfoKind::Variadic;
+        rawType = nullptr;
+        kind    = TypeInfoKind::Variadic;
     }
 
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
+
+    TypeInfo* rawType;
 };
 
 struct TypeInfoGeneric : public TypeInfo
