@@ -243,10 +243,10 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value < 0)
                     return false;
             }
@@ -267,10 +267,10 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoU8;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value > UINT8_MAX)
                     return false;
                 return true;
@@ -347,10 +347,10 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value < 0)
                     return false;
             }
@@ -371,10 +371,10 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoU16;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value > UINT16_MAX)
                     return false;
                 return true;
@@ -451,10 +451,10 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value < 0)
                     return false;
             }
@@ -475,10 +475,10 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoU32;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value > UINT32_MAX)
                     return false;
                 return true;
@@ -555,10 +555,10 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
                     return false;
                 }
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value < 0)
                     return false;
             }
@@ -572,7 +572,7 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoU64;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 return true;
             }
@@ -651,10 +651,10 @@ bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType,
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS8;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value < INT8_MIN || value > INT8_MAX)
                     return false;
                 return true;
@@ -730,10 +730,10 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS16;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value < INT16_MIN || value > INT16_MAX)
                     return false;
                 return true;
@@ -805,10 +805,10 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS32;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value < INT32_MIN || value > INT32_MAX)
                     return false;
                 return true;
@@ -880,10 +880,10 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
                     nodeToCast->typeInfo = g_TypeMgr.typeInfoS64;
                 return true;
             }
-            else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+            else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
             {
                 SWAG_ASSERT(!nodeToCast);
-                auto value = static_cast<TypeInfoNative*>(fromType)->value;
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
                 if (value < INT64_MIN || value > INT64_MAX)
                     return false;
                 return true;
@@ -923,10 +923,10 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
         }
-        else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+        else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
         {
             SWAG_ASSERT(!nodeToCast);
-            auto    value = static_cast<TypeInfoNative*>(fromType)->value;
+            auto    value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
             float   tmpF  = static_cast<float>(value);
             int64_t tmpI  = static_cast<int64_t>(tmpF);
             if (tmpI != value)
@@ -1024,10 +1024,10 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
             }
             return true;
         }
-        else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+        else if (fromType->flags & TYPEINFO_UNTYPED_VALUE)
         {
             SWAG_ASSERT(!nodeToCast);
-            auto    value = static_cast<TypeInfoNative*>(fromType)->value;
+            auto    value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
             double  tmpF  = static_cast<double>(value);
             int64_t tmpI  = static_cast<int64_t>(tmpF);
             if (tmpI != value)

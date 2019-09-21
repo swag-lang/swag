@@ -84,7 +84,7 @@ static const uint32_t TYPEINFO_STRUCT_NO_POST_MOVE      = 0x00000800;
 static const uint32_t TYPEINFO_STRUCT_NO_DROP           = 0x00001000;
 static const uint32_t TYPEINFO_GENERIC                  = 0x00002000;
 static const uint32_t TYPEINFO_RETURN_BY_COPY           = 0x00004000;
-static const uint32_t TYPEINFO_UNTYPED_INTEGER          = 0x00008000;
+static const uint32_t TYPEINFO_UNTYPED_VALUE            = 0x00008000;
 static const uint32_t TYPEINFO_DEFINED_VALUE            = 0x00010000;
 static const uint32_t TYPEINFO_AUTO_CAST                = 0x00020000;
 static const uint32_t TYPEINFO_TYPED_VARIADIC           = 0x00040000;
@@ -174,24 +174,27 @@ struct TypeInfoNative : public TypeInfo
 {
     TypeInfoNative()
     {
-        kind  = TypeInfoKind::Native;
-        value = 0;
+        kind         = TypeInfoKind::Native;
+        valueInteger = 0;
     }
 
     TypeInfoNative(NativeTypeKind type, const char* tname, int sof, uint32_t fl)
     {
-        kind       = TypeInfoKind::Native;
-        nativeType = type;
-        name       = tname;
-        sizeOf     = sof;
-        flags      = fl;
-        value      = 0;
+        kind         = TypeInfoKind::Native;
+        nativeType   = type;
+        name         = tname;
+        sizeOf       = sof;
+        flags        = fl;
+        valueInteger = 0;
     }
 
     bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    int64_t value;
+    union {
+        int32_t valueInteger;
+        float   valueFloat;
+    };
 };
 
 struct TypeInfoNamespace : public TypeInfo

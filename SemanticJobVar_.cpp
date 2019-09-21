@@ -173,7 +173,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 		SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->errorContext.report({ sourceFile, node->assignment, "type of expression is 'void'" }));
 
         // We need to decide which integer type it is
-        if (node->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+        if (node->typeInfo->flags & TYPEINFO_UNTYPED_VALUE)
             node->typeInfo = g_TypeMgr.typeInfoS32;
 
         // Convert from initialization list to array

@@ -446,13 +446,14 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
         SWAG_CHECK(doNumberSuffix(token));
     }
 
+	// A type with flag TYPEINFO_UNTYPED_VALUE has no real type yet, and can be casted automaticly when used
     if (!hasSuffix)
     {
-        if (token.literalType == g_TypeMgr.typeInfoS32 || token.literalType == g_TypeMgr.typeInfoS64)
+        if (token.literalType->nativeType == NativeTypeKind::S32)
         {
             auto newType   = static_cast<TypeInfoNative*>(token.literalType->clone());
-            newType->value = token.literalValue.s64;
-            newType->flags |= TYPEINFO_UNTYPED_INTEGER;
+            newType->valueInteger = token.literalValue.s32;
+            newType->flags |= TYPEINFO_UNTYPED_VALUE;
             token.literalType = newType;
         }
     }
