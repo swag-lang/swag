@@ -129,6 +129,37 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     return internalError(context, "emitStructDeRef, invalid type");
 }
 
+bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
+{
+    if (typeInfo->isNative(NativeTypeKind::String))
+    {
+        r0 += reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
+    }
+    else
+    {
+        switch (typeInfo->sizeOf)
+        {
+        case 1:
+            emitInstruction(context, ByteCodeOp::DeRef8, r0);
+            break;
+        case 2:
+            emitInstruction(context, ByteCodeOp::DeRef16, r0);
+            break;
+        case 4:
+            emitInstruction(context, ByteCodeOp::DeRef32, r0);
+            break;
+        case 8:
+            emitInstruction(context, ByteCodeOp::DeRef64, r0);
+            break;
+        default:
+            return internalError(context, "emitTypeDeRef, size not supported");
+        }
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
@@ -320,25 +351,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IncPointerVB, node->array->resultRegisterRC)->b.u32 = sizeof(Register);
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32     = sizeof(Register) * rawType->numRegisters();
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
-
-        switch (rawType->sizeOf)
-        {
-        case 1:
-            emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
-            break;
-        case 2:
-            emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
-            break;
-        case 4:
-            emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
-            break;
-        case 8:
-            emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
-            break;
-        default:
-            return internalError(context, "emitPointerDeRef, typedvariadic, size not supported");
-        }
-
+        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access->resultRegisterRC);
     }
