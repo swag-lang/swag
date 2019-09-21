@@ -99,7 +99,22 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     }
     else
     {
+        // Multiple declaration
+        vector<AstVarDecl*> otherVariables;
         SWAG_CHECK(tokenizer.getToken(token));
+        while (token.id == TokenId::SymComma)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid parameter name '%s'", token.text.c_str())));
+
+            AstVarDecl* otherVarNode  = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
+            otherVarNode->semanticFct = SemanticJob::resolveVarDecl;
+            otherVarNode->inheritTokenName(token);
+            SWAG_CHECK(tokenizer.getToken(token));
+            otherVariables.push_back(otherVarNode);
+        }
+
+		// Type
         if (token.id == TokenId::SymColon)
         {
             SWAG_CHECK(eatToken());
@@ -114,7 +129,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             }
             else
             {
-				AstNode* typeExpression;
+                AstNode* typeExpression;
                 SWAG_CHECK(doTypeExpression(nullptr, &typeExpression));
 
                 // type...
@@ -124,20 +139,32 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
                     paramNode->type->semanticFct       = &SemanticJob::resolveTypeExpression;
                     paramNode->type->token.literalType = g_TypeMgr.typeInfoVariadic;
                     SWAG_CHECK(tokenizer.getToken(token));
-					Ast::addChildBack(paramNode->type, typeExpression);
+                    Ast::addChildBack(paramNode->type, typeExpression);
                 }
-				else
-				{
-					Ast::addChildBack(paramNode, typeExpression);
-					paramNode->type = typeExpression;
-				}
+                else
+                {
+                    Ast::addChildBack(paramNode, typeExpression);
+                    paramNode->type = typeExpression;
+                }
             }
         }
 
+		// Assignment
         if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->assignment));
+        }
+
+        // Propagate types and assignment to multiple declarations
+        for (auto one : otherVariables)
+        {
+            CloneContext cloneContext;
+            cloneContext.parent = one;
+            if (paramNode->type)
+                one->type = paramNode->type->clone(cloneContext);
+            if (paramNode->assignment)
+                one->assignment = paramNode->assignment->clone(cloneContext);
         }
     }
 
