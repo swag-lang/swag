@@ -24,7 +24,9 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_EXACT)
     {
-        if ((flags & TYPEINFO_UNTYPED_VALUE) != (to->flags & TYPEINFO_UNTYPED_VALUE))
+        if ((flags & TYPEINFO_UNTYPED_INTEGER) != (to->flags & TYPEINFO_UNTYPED_INTEGER))
+            return false;
+        if ((flags & TYPEINFO_UNTYPED_FLOAT) != (to->flags & TYPEINFO_UNTYPED_FLOAT))
             return false;
     }
 

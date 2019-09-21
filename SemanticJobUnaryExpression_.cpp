@@ -30,11 +30,13 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
             op->computedValue.reg.s64 = -op->computedValue.reg.s64;
-            if (typeInfo->flags & TYPEINFO_UNTYPED_VALUE)
+            if (typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
                 static_cast<TypeInfoNative*>(typeInfo)->valueInteger = -static_cast<TypeInfoNative*>(typeInfo)->valueInteger;
             break;
         case NativeTypeKind::F32:
             op->computedValue.reg.f32 = -op->computedValue.reg.f32;
+            if (typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+                static_cast<TypeInfoNative*>(typeInfo)->valueFloat = -static_cast<TypeInfoNative*>(typeInfo)->valueFloat;
             break;
         case NativeTypeKind::F64:
             op->computedValue.reg.f64 = -op->computedValue.reg.f64;
@@ -70,7 +72,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
         case NativeTypeKind::Char:
             op->computedValue.reg.b = op->computedValue.reg.u32 ? false : true;
             break;
-		case NativeTypeKind::S64:
+        case NativeTypeKind::S64:
         case NativeTypeKind::U64:
             op->computedValue.reg.b = op->computedValue.reg.u64 ? false : true;
             break;
@@ -169,8 +171,8 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         break;
     }
 
-    node->typeInfo = op->typeInfo;
-	node->castedTypeInfo = op->castedTypeInfo;
+    node->typeInfo       = op->typeInfo;
+    node->castedTypeInfo = op->castedTypeInfo;
     node->inheritComputedValue(op);
     return true;
 }

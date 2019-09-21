@@ -170,11 +170,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo);
 
-		SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->errorContext.report({ sourceFile, node->assignment, "type of expression is 'void'" }));
+        SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, node->assignment, "type of expression is 'void'"}));
 
-        // We need to decide which integer type it is
-        if (node->typeInfo->flags & TYPEINFO_UNTYPED_VALUE)
+        // We need to decide which integer/float type it is
+        if (node->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
             node->typeInfo = g_TypeMgr.typeInfoS32;
+        else if (node->typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+            node->typeInfo = g_TypeMgr.typeInfoF32;
 
         // Convert from initialization list to array
         if (node->typeInfo->kind == TypeInfoKind::TypeList)
@@ -361,7 +363,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
         // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
-		node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
         node->flags |= AST_R_VALUE;
     }

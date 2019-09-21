@@ -84,10 +84,11 @@ static const uint32_t TYPEINFO_STRUCT_NO_POST_MOVE      = 0x00000800;
 static const uint32_t TYPEINFO_STRUCT_NO_DROP           = 0x00001000;
 static const uint32_t TYPEINFO_GENERIC                  = 0x00002000;
 static const uint32_t TYPEINFO_RETURN_BY_COPY           = 0x00004000;
-static const uint32_t TYPEINFO_UNTYPED_VALUE            = 0x00008000;
-static const uint32_t TYPEINFO_DEFINED_VALUE            = 0x00010000;
-static const uint32_t TYPEINFO_AUTO_CAST                = 0x00020000;
-static const uint32_t TYPEINFO_TYPED_VARIADIC           = 0x00040000;
+static const uint32_t TYPEINFO_UNTYPED_INTEGER          = 0x00008000;
+static const uint32_t TYPEINFO_UNTYPED_FLOAT            = 0x00010000;
+static const uint32_t TYPEINFO_DEFINED_VALUE            = 0x00020000;
+static const uint32_t TYPEINFO_AUTO_CAST                = 0x00040000;
+static const uint32_t TYPEINFO_TYPED_VARIADIC           = 0x00080000;
 
 static const uint32_t ISSAME_EXACT = 0x00000001;
 static const uint32_t ISSAME_CAST  = 0x00000002;
