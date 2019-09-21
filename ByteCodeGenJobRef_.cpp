@@ -196,6 +196,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (!(node->flags & AST_TAKE_ADDRESS) || typeInfo->pointedType->kind == TypeInfoKind::Pointer)
         {
+			//SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
             switch (sizeOf)
             {
             case 1:
@@ -234,30 +235,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         if (typeInfo->pointedType->isNative(NativeTypeKind::String))
-        {
-            node->array->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
-        }
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
         else if (!(node->flags & AST_TAKE_ADDRESS))
-        {
-            switch (sizeOf)
-            {
-            case 1:
-                emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
-                break;
-            case 2:
-                emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
-                break;
-            case 4:
-                emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
-                break;
-            case 8:
-                emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
-                break;
-            default:
-                return internalError(context, "emitPointerDeRef, pointer, size not supported");
-            }
-        }
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access->resultRegisterRC);
@@ -287,30 +267,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         }
 
         if (typeInfo->pointedType->isNative(NativeTypeKind::String))
-        {
-            node->array->resultRegisterRC += reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
-        }
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
         else if ((!(node->flags & AST_TAKE_ADDRESS) && typeInfo->pointedType->kind != TypeInfoKind::Array) || (typeInfo->pointedType->kind == TypeInfoKind::Pointer))
-        {
-            switch (sizeOf)
-            {
-            case 1:
-                emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
-                break;
-            case 2:
-                emitInstruction(context, ByteCodeOp::DeRef16, node->array->resultRegisterRC);
-                break;
-            case 4:
-                emitInstruction(context, ByteCodeOp::DeRef32, node->array->resultRegisterRC);
-                break;
-            case 8:
-                emitInstruction(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC);
-                break;
-            default:
-                return internalError(context, "emitPointerDeRef, array, size not supported");
-            }
-        }
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access->resultRegisterRC);
