@@ -318,7 +318,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);
 
-        //emitInstruction(context, ByteCodeOp::IncPointerVB, node->array->resultRegisterRC)->b.u32 = sizeof(Register);
+		// Offset pointer to the parameter
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register) * rawType->numRegisters();
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));
