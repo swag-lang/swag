@@ -220,11 +220,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             // Need to make all types compatible, in case a cast is necessary
             if (identifier->callParameters && oneMatch)
             {
-                for (int i = 0; i < identifier->callParameters->childs.size(); i++)
+				auto maxParams = identifier->callParameters->childs.size();
+                for (int i = 0; i < maxParams; i++)
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                     if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
                         SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
+                    else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters.back()->typeInfo, nodeCall));
                 }
             }
 
@@ -249,13 +252,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters && oneMatch)
         {
-            for (int i = 0; i < identifier->callParameters->childs.size(); i++)
+			auto maxParams = identifier->callParameters->childs.size();
+            for (int i = 0; i < maxParams; i++)
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                 if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
-                {
                     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
-                }
+                else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters.back()->typeInfo, nodeCall));
             }
         }
 

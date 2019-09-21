@@ -8,7 +8,7 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
     context.doneParameters.clear();
     context.mapGenericTypes.clear();
     context.doneParameters.resize(parameters.size(), false);
-    context.solvedParameters.resize(parameters.size());
+    context.solvedParameters.resize(parameters.size(), nullptr);
     context.resetTmp();
 
     // Solve unnamed parameters
