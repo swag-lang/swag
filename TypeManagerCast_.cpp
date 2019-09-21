@@ -1080,7 +1080,7 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
             return true;
         }
         else if (fromType->flags & TYPEINFO_UNTYPED_FLOAT)
-			return true;
+            return true;
         else if (castFlags & CASTFLAG_FORCE)
             return true;
         break;
@@ -1241,6 +1241,10 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
             }
         }
 
+        // Need to recompute total size, as the size of each element can have been changed by the cast
+        if (nodeToCast)
+            fromTypeList->sizeOf = 0;
+
         auto fromSize = fromTypeList->childs.size();
         while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
             nodeToCast = nodeToCast->childs.front();
@@ -1249,6 +1253,8 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         {
             auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
             SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, fromTypeList->childs[i], child, castFlags));
+            if (child && child->typeInfo)
+                fromTypeList->sizeOf += child->typeInfo->sizeOf;
         }
 
         return true;
