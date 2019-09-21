@@ -1,11 +1,10 @@
 #module module913
 
 //#[swag.printbc]
-func(T) sum(x, y: T) => x > y
+func(T) sum(x: T, y: u32) => x >> y
 
 //#[swag.printbc]
 #test
 {
-	@assert(sum(1, 3) == false)
-	@assert(sum(3, 1) == true)
+	@assert(sum(0b100, 1) == 0b10)
 }

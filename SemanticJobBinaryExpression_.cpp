@@ -706,7 +706,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     TypeManager::promote(left, right);
 
-	// Keep it generic if it's generic on one side
+    // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
     {
         node->typeInfo = leftTypeInfo;
@@ -784,8 +784,23 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+
+    // Keep it generic if it's generic on one side
+    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = rightTypeInfo;
+        return true;
+    }
+
+    if (leftTypeInfo->kind != TypeInfoKind::Native)
+        return context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
+    if (rightTypeInfo->kind != TypeInfoKind::Native)
+        return context->errorContext.report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
 
     TypeManager::promote(left, right);
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoU32, right));
@@ -818,6 +833,20 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
+
+    // Keep it generic if it's generic on one side
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = rightTypeInfo;
+        return true;
+    }
 
     node->typeInfo = g_TypeMgr.typeInfoBool;
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, left));
