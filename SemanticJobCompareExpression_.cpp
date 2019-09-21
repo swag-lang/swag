@@ -203,15 +203,10 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native ||
-                    leftTypeInfo->kind == TypeInfoKind::Pointer ||
-                    leftTypeInfo->kind == TypeInfoKind::Struct,
-                context->errorContext.report({sourceFile, left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native ||
-                    rightTypeInfo->kind == TypeInfoKind::Pointer ||
-                    leftTypeInfo->kind == TypeInfoKind::Struct,
-                context->errorContext.report({sourceFile, right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+    if (leftTypeInfo->kind != TypeInfoKind::Native && leftTypeInfo->kind != TypeInfoKind::Pointer && leftTypeInfo->kind != TypeInfoKind::Struct)
+        return context->errorContext.report({sourceFile, left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
+    if (rightTypeInfo->kind != TypeInfoKind::Native && rightTypeInfo->kind != TypeInfoKind::Pointer && rightTypeInfo->kind != TypeInfoKind::Struct)
+        return context->errorContext.report({sourceFile, right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
