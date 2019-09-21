@@ -135,11 +135,10 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
         while (token.id != TokenId::SymRightParen)
         {
             SWAG_CHECK(doFuncDeclParameter(allParams));
-            if (token.id == TokenId::SymComma)
-            {
-                SWAG_CHECK(eatToken(TokenId::SymComma));
-                SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
-            }
+			if (token.id == TokenId::SymRightParen)
+				break;
+            SWAG_CHECK(eatToken(TokenId::SymComma));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
         }
     }
 

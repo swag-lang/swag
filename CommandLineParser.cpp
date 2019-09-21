@@ -36,7 +36,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->verboseBackendCommand = true;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->runBackendTests = false;
-    cmdLine->fileFilter = "896";
+    cmdLine->fileFilter = "897";
 }
 
 void CommandLineParser::logArguments()
