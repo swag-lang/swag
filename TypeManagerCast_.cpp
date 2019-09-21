@@ -1142,9 +1142,12 @@ bool TypeManager::castToArray(ErrorContext* errorContext, TypeInfo* toType, Type
                 return false;
             }
 
+            while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
+                nodeToCast = nodeToCast->childs.front();
+            SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
             for (int i = 0; i < fromSize; i++)
             {
-                auto child = nodeToCast && fromSize == nodeToCast->childs.size() ? nodeToCast->childs[i] : nullptr;
+                auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
                 SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeArray->pointedType, fromTypeList->childs[i], child, castFlags));
             }
 
@@ -1177,9 +1180,12 @@ bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, Type
                 return false;
             }
 
+            while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
+                nodeToCast = nodeToCast->childs.front();
+            SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
             for (int i = 0; i < fromSize; i++)
             {
-                auto child = nodeToCast && fromSize == nodeToCast->childs.size() ? nodeToCast->childs[i] : nullptr;
+                auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
                 SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeList->childs[i], fromTypeList->childs[i], child, castFlags));
             }
 
@@ -1218,8 +1224,8 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
             else
             {
                 auto typePointer = static_cast<TypeInfoPointer*>(fromTypeList->childs.front());
-                if (!TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, typePointer->pointedType, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
-                    forcedInit = false;
+				if (!TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, typePointer->pointedType, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
+					forcedInit = false;
             }
 
             // And must and with an U32, which is the slice count
@@ -1234,10 +1240,13 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         }
 
         auto fromSize = fromTypeList->childs.size();
+        while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
+            nodeToCast = nodeToCast->childs.front();
+        SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
         for (int i = 0; i < fromSize; i++)
         {
-            auto child = nodeToCast && fromSize == nodeToCast->childs.size() ? nodeToCast->childs[i] : nullptr;
-            SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, fromTypeList->childs[i], child, castFlags | CASTFLAG_JUST_CHECK));
+            auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
+            SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, fromTypeList->childs[i], child, castFlags));
         }
 
         return true;
@@ -1498,16 +1507,16 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     }
 
     // String <=> null
-	if (toType->isNative(NativeTypeKind::String) && fromType == g_TypeMgr.typeInfoNull)
-	{
-		if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
-		{
-			nodeToCast->typeInfo = toType;
-			nodeToCast->castedTypeInfo = g_TypeMgr.typeInfoNull;
-		}
+    if (toType->isNative(NativeTypeKind::String) && fromType == g_TypeMgr.typeInfoNull)
+    {
+        if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            nodeToCast->typeInfo       = toType;
+            nodeToCast->castedTypeInfo = g_TypeMgr.typeInfoNull;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
     if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeTypeKind::String))
         return true;
