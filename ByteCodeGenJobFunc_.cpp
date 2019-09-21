@@ -393,13 +393,15 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
 
         freeRegisterRC(context, r0);
     }
-    else  if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
+    else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
     {
-        auto r0          = reserveRegisterRC(context);
-        auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+        auto r0           = reserveRegisterRC(context);
+        auto numVariadic  = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+        auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+        auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters()) + 1;
 
         // Store number of extra parameters
-        emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64  = numVariadic;
+        emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64  = numVariadic | (offset << 32);
         emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
 
         // Store address on the stack of those parameters. This must be the last push

@@ -269,8 +269,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
-			emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u32 = 0;
-			emitInstruction(context, ByteCodeOp::DecRA, r0);
+            emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u32 = 0;
+            emitInstruction(context, ByteCodeOp::DecRA, r0);
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
         }
 
@@ -298,24 +298,34 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference a typed variadic parameter
     else if (node->array->typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
+        auto r0 = reserveRegisterRC(context);
+
         if (g_CommandLine.debugBoundCheck)
         {
-            auto r0 = reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
-            emitInstruction(context, ByteCodeOp::DeRef32, r0);
+            emitInstruction(context, ByteCodeOp::DeRef64, r0);
+            emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u32 = 0;
             emitInstruction(context, ByteCodeOp::DecRA, r0);
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
-            freeRegisterRC(context, r0);
         }
 
         auto rawType = ((TypeInfoVariadic*) node->array->typeInfo)->rawType;
 
-        emitInstruction(context, ByteCodeOp::IncPointerVB, node->array->resultRegisterRC)->b.u32 = sizeof(Register);
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32     = sizeof(Register) * rawType->numRegisters();
+        // Offset from variadic named parameter to the first parameter on the stack
+        emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::DeRef64, r0);
+        emitInstruction(context, ByteCodeOp::ShiftRightU64VB, r0)->b.u32 = 32;
+        emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);
+
+        //emitInstruction(context, ByteCodeOp::IncPointerVB, node->array->resultRegisterRC)->b.u32 = sizeof(Register);
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register) * rawType->numRegisters();
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));
         node->resultRegisterRC = node->array->resultRegisterRC;
+
         freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, r0);
     }
 
     // Dereference a struct
