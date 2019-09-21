@@ -1,9 +1,10 @@
 #module module902
 
 //#[swag.printbc]
+#unittest error
 func arithmeticMean(numbers: s32...)
 {
-	//@assert(numbers[1] == 0)
+	cpt := numbers[1]
 }
 
 //#[swag.printbc]
