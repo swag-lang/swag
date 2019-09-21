@@ -151,8 +151,6 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
     auto node      = context->node;
     auto whileNode = CastAst<AstWhile>(node->parent, AstNodeKind::While);
 
-    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
-
     // To store the 'index' of the loop
     if (whileNode->needIndex())
     {
@@ -168,9 +166,10 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
 {
-    auto node      = context->node;
-    auto whileNode = CastAst<AstWhile>(node->parent, AstNodeKind::While);
+    auto node = context->node;
+    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
 
+    auto whileNode                = CastAst<AstWhile>(node->parent, AstNodeKind::While);
     whileNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
 
