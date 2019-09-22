@@ -33,11 +33,10 @@ bool ByteCodeGenJob::emitDataProperty(ByteCodeGenContext* context)
     auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
-    {
-        node->resultRegisterRC = node->expression->resultRegisterRC[0];
-    }
-    else if (typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->isNative(NativeTypeKind::String) ||
+        typeInfo->isNative(NativeTypeKind::Any) ||
+        typeInfo->kind == TypeInfoKind::Slice ||
+        typeInfo->kind == TypeInfoKind::Array)
     {
         node->resultRegisterRC = node->expression->resultRegisterRC[0];
     }

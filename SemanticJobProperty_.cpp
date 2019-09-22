@@ -92,12 +92,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     }
 
     case Property::CountOf:
-        node->inheritComputedValue(node->expression);
-        if (!resolveCountProperty(context, node, node->expression->typeInfo))
+        SWAG_CHECK(checkIsConcrete(context, expr));
+        node->inheritComputedValue(expr);
+        if (!resolveCountProperty(context, node, expr->typeInfo))
             return context->errorContext.report({sourceFile, node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
         break;
 
     case Property::DataOf:
+        SWAG_CHECK(checkIsConcrete(context, expr));
         if (expr->typeInfo->isNative(NativeTypeKind::String))
         {
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
@@ -127,6 +129,16 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = ptrArray->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrArray->pointedType->name;
+            node->typeInfo       = typeTable.registerType(ptrType);
+            node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
+        }
+        else if (expr->typeInfo->isNative(NativeTypeKind::Any))
+        {
+            auto ptrType         = g_Pool_typeInfoPointer.alloc();
+            ptrType->ptrCount    = 1;
+            ptrType->pointedType = g_TypeMgr.typeInfoVoid;
+            ptrType->sizeOf      = sizeof(void*);
+            ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
             node->typeInfo       = typeTable.registerType(ptrType);
             node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
         }
