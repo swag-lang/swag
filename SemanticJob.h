@@ -77,6 +77,7 @@ struct SemanticJob : public Job
     static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
+	static bool dealWithAny(SemanticContext* context, AstNode* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool checkUnreachableCode(SemanticContext* context);

@@ -113,13 +113,6 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
     SWAG_CHECK(emitLiteral(context, nullptr));
-
-    // Convert from literal to any
-    auto node = context->node;
-    if (node->typeInfo->isNative(NativeTypeKind::Any))
-    {
-    }
-
     return true;
 }
 

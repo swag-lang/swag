@@ -171,6 +171,8 @@ JobResult ByteCodeGenJob::execute()
                             context.node = node;
                             if (!emitLiteral(&context))
                                 return JobResult::ReleaseJob;
+                            if (!emitCast(&context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo))
+                                return JobResult::ReleaseJob;
                         }
                         else if (node->byteCodeFct)
                         {

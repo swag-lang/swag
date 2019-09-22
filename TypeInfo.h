@@ -51,7 +51,7 @@ enum class NativeTypeKind
     Bool,
     Char,
     String,
-	Any,
+    Any,
     Count,
 };
 

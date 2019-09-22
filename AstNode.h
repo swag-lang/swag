@@ -98,7 +98,7 @@ enum class AstNodeKind
     CompilerRun,
     CompilerImport,
     CompilerVersion,
-	QuestionExpression,
+    QuestionExpression,
     Defer,
 };
 
@@ -145,6 +145,8 @@ struct AstNode : public PoolElement
         byteCodeJob                  = nullptr;
         semanticPass                 = 0;
         byteCodePass                 = 0;
+        concreteTypeInfo             = nullptr;
+        concreteTypeInfoStorage      = 0;
         resultRegisterRC.clear();
         childs.clear();
         computedValue.reg.u64 = 0;
@@ -276,6 +278,9 @@ struct AstNode : public PoolElement
     SymbolName*     resolvedUserOpSymbolName;
     SymbolOverload* resolvedUserOpSymbolOverload;
     ByteCodeGenJob* byteCodeJob;
+
+    TypeInfo* concreteTypeInfo;
+    uint32_t  concreteTypeInfoStorage;
 
     AstNode*    parent;
     uint32_t    childParentIdx;

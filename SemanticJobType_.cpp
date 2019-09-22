@@ -6,6 +6,28 @@
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "Workspace.h"
+
+bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* node)
+{
+    auto sourceFile = context->sourceFile;
+
+    if (!node->typeInfo->isNative(NativeTypeKind::Any))
+        return true;
+
+    auto&       swagScope = sourceFile->module->workspace->swagScope;
+    scoped_lock lock(swagScope.mutex);
+    if (!swagScope.fullySolved)
+    {
+        swagScope.dependentJobs.push_back(context->job);
+        context->result = SemanticResult::Pending;
+        return true;
+    }
+
+    auto& typeTable = sourceFile->module->typeTable;
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, node, node->typeInfo, &node->concreteTypeInfo, &node->concreteTypeInfoStorage));
+    return true;
+}
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {

@@ -4,6 +4,8 @@
 #include "Global.h"
 #include "TypeInfo.h"
 #include "SourceFile.h"
+#include "TypeTable.h"
+#include "Module.h"
 
 bool TypeManager::castError(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid)
 {
@@ -1481,8 +1483,16 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         return true;
 
     // Everything can be casted to type 'any'
-    if (toType->isNative(NativeTypeKind::Any) && (castFlags & CASTFLAG_JUST_CHECK))
-        return true;
+	if (toType->isNative(NativeTypeKind::Any))
+	{
+		if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+		{
+			nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
+			nodeToCast->typeInfo = toType;
+		}
+
+		return true;
+	}
 
     if (fromType->kind == TypeInfoKind::TypedVariadic)
         fromType = ((TypeInfoVariadic*) fromType)->rawType;

@@ -6,6 +6,9 @@
 #include "Scope.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "SourceFile.h"
+#include "Module.h"
+#include "Workspace.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
