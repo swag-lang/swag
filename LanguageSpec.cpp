@@ -85,6 +85,7 @@ void LanguageSpec::setup()
 
     properties["@sizeof"]  = Property::SizeOf;
     properties["@typeof"]  = Property::TypeOf;
+    properties["@kindof"]  = Property::KindOf;
     properties["@countof"] = Property::CountOf;
     properties["@dataof"]  = Property::DataOf;
 
@@ -92,6 +93,7 @@ void LanguageSpec::setup()
     intrinsics["@countof"] = Intrinsic::IntrinsicProp;
     intrinsics["@dataof"]  = Intrinsic::IntrinsicProp;
     intrinsics["@typeof"]  = Intrinsic::IntrinsicProp;
+    intrinsics["@kindof"]  = Intrinsic::IntrinsicProp;
 
     intrinsics["@print"]  = Intrinsic::IntrinsicPrint;
     intrinsics["@assert"] = Intrinsic::IntrinsicAssert;

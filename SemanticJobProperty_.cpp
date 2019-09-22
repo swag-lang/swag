@@ -57,6 +57,20 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     return true;
 }
 
+bool SemanticJob::waitForSwagScope(SemanticContext* context)
+{
+    auto        sourceFile = context->sourceFile;
+    auto&       swagScope  = sourceFile->module->workspace->swagScope;
+    scoped_lock lock(swagScope.mutex);
+    if (!swagScope.fullySolved)
+    {
+        swagScope.dependentJobs.push_back(context->job);
+        context->result = SemanticResult::Pending;
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 {
     auto  node       = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
@@ -76,20 +90,24 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case Property::TypeOf:
     {
         SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
-        expr->flags |= AST_NO_BYTECODE;
-        auto&       swagScope = sourceFile->module->workspace->swagScope;
-        scoped_lock lock(swagScope.mutex);
-        if (!swagScope.fullySolved)
-        {
-            swagScope.dependentJobs.push_back(context->job);
-            context->result = SemanticResult::Pending;
+        SWAG_CHECK(waitForSwagScope(context));
+        if (context->result == SemanticResult::Pending)
             return true;
-        }
-
+        expr->flags |= AST_NO_BYTECODE;
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, context->node, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
         return true;
     }
+
+    case Property::KindOf:
+        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(expr->typeInfo->isNative(NativeTypeKind::Any), context->errorContext.report({sourceFile, expr, "expression is not of type 'any'"}));
+        SWAG_CHECK(checkIsConcrete(context, expr));
+        SWAG_CHECK(waitForSwagScope(context));
+        if (context->result == SemanticResult::Pending)
+            return true;
+        node->byteCodeFct = &ByteCodeGenJob::emitKindOfProperty;
+        return true;
 
     case Property::CountOf:
         SWAG_CHECK(checkIsConcrete(context, expr));

@@ -5,6 +5,11 @@
 #include "Ast.h"
 #include "ByteCode.h"
 
+bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
+{
+    return internalError(context, "emitKindOfProperty, type not supported");
+}
+
 bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
 {
     auto node     = context->node;

@@ -10,21 +10,15 @@
 
 bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* node)
 {
-    auto sourceFile = context->sourceFile;
-
     if (!node->typeInfo->isNative(NativeTypeKind::Any))
         return true;
 
-    auto&       swagScope = sourceFile->module->workspace->swagScope;
-    scoped_lock lock(swagScope.mutex);
-    if (!swagScope.fullySolved)
-    {
-        swagScope.dependentJobs.push_back(context->job);
-        context->result = SemanticResult::Pending;
+    SWAG_CHECK(waitForSwagScope(context));
+    if (context->result == SemanticResult::Pending)
         return true;
-    }
 
-    auto& typeTable = sourceFile->module->typeTable;
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, node, node->typeInfo, &node->concreteTypeInfo, &node->concreteTypeInfoStorage));
     return true;
 }

@@ -29,7 +29,7 @@
             <Keywords name="Keywords3">@file @line @assert @print @sizeof @op @alloc @free @memcpy</Keywords>
             <Keywords name="Keywords4">bool s8 s16 s32 s64 u8 u16 u32 u64 f32 f64 string char self Self void any</Keywords>
             <Keywords name="Keywords5">opInit opEquals opCmp opBinary opUnary opAssign opIndex opIndexAssign opCount opPostCopy opPostMove opAffect opDrop</Keywords>
-            <Keywords name="Keywords6">@countof @sizeof @dataof @typeof</Keywords>
+            <Keywords name="Keywords6">@countof @sizeof @dataof @typeof @kindof</Keywords>
             <Keywords name="Keywords7">typeinfo typeinfo_native typeinfo_struct typeinfo_enum typeinfo_func typeinfo_kind typeinfo_native_kind</Keywords>
             <Keywords name="Keywords8">S8 U8 S16 U16 S32 U32 S64 U64 Void Bool F32 F64 named_param sizeof raw_type pointed_type values value parameters base return_type fields offset ptr_count kind native_kind name Char String Invalid Native Namespace Enum FuncAttr Param Lambda Pointer Array Slice TypeList Variadic VariadicValue Struct Generic Alias</Keywords>
             <Keywords name="Delimiters">00( 00[ 00{ 01 02) 02] 02} 03&quot; 04 05&quot; 06#[ 07 08] 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>

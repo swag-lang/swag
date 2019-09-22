@@ -18,6 +18,7 @@ enum class Property
 	TypeOf,
     CountOf,
     DataOf,
+	KindOf,
 };
 
 enum class Intrinsic
