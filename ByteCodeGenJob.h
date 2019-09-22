@@ -157,7 +157,7 @@ struct ByteCodeGenJob : public Job
     static void     freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, AstNode* node);
-    static void     replaceContiguousRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
+    static void     reserveContiguousRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
 
     void reset() override
     {

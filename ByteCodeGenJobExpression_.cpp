@@ -186,7 +186,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
             return true;
         case NativeTypeKind::String:
         {
-            replaceContiguousRegisterRC(context, node->resultRegisterRC, 2);
+            reserveContiguousRegisterRC(context, node->resultRegisterRC, 2);
             auto index  = context->sourceFile->module->reserveString(node->computedValue.text);
             auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
             inst->c.u32 = index;

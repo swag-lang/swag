@@ -43,16 +43,34 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
     }
 }
 
-void ByteCodeGenJob::replaceContiguousRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
+void ByteCodeGenJob::reserveContiguousRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     freeRegisterRC(context, rc);
+
+	// Take the 2 lasts if we can. This can avoid allocating too many registers
+	// If too many registers are reserved, then we can be more clever by scanning
+	// the full array of available free registers to find 'x' contiguous
+    auto& available = context->bc->availableRegistersRC;
+    auto  n         = context->bc->availableRegistersRC.size();
+    if (n >= 2 && num == 2)
+    {
+        if (available[n - 1] == available[n - 2] - 1)
+        {
+			rc += available[n - 1];
+			rc += available[n - 2];
+			context->bc->availableRegistersRC.pop_back();
+			context->bc->availableRegistersRC.pop_back();
+			return;
+        }
+    }
+
     while (num--)
         rc += context->bc->maxReservedRegisterRC++;
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
-	auto n = rc.size();
+    auto n = rc.size();
     for (int i = n - 1; i >= 0; i--)
     {
         freeRegisterRC(context, rc[i]);
@@ -72,8 +90,8 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
 {
-	freeRegisterRC(context, node->resultRegisterRC);
-	freeRegisterRC(context, node->additionalRegisterRC);
+    freeRegisterRC(context, node->resultRegisterRC);
+    freeRegisterRC(context, node->additionalRegisterRC);
 }
 
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2)

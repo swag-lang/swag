@@ -12,7 +12,7 @@ bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exp
     SWAG_ASSERT(exprNode->concreteTypeInfo);
 
     RegisterList r0;
-    reserveRegisterRC(context, r0, 2);
+    reserveContiguousRegisterRC(context, r0, 2);
 
     // Registers must be contiguous, as we generate a pointer to the first register
     auto numRegs = exprNode->resultRegisterRC.size();
