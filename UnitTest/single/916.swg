@@ -11,7 +11,7 @@ func average(nums: f64...)
     sum(nums)
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
 	average(10, 20, 30)

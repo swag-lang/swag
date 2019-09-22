@@ -83,12 +83,6 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
     }
 
     typeInfo = TypeManager::concreteType(typeInfo);
-    if (typeInfo->isNative(NativeTypeKind::String))
-    {
-        node->resultRegisterRC += reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-        return true;
-    }
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
@@ -103,30 +97,8 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Native)
-    {
-        switch (typeInfo->sizeOf)
-        {
-        case 1:
-            emitInstruction(context, ByteCodeOp::DeRef8, node->resultRegisterRC);
-            break;
-        case 2:
-            emitInstruction(context, ByteCodeOp::DeRef16, node->resultRegisterRC);
-            break;
-        case 4:
-            emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);
-            break;
-        case 8:
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC);
-            break;
-        default:
-            return internalError(context, "emitStructDeRef, native, size not supported");
-        }
-
-        return true;
-    }
-
-    return internalError(context, "emitStructDeRef, invalid type");
+	SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, typeInfo));
+	return true;
 }
 
 bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
@@ -135,26 +107,25 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     {
         r0 += reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
+		return true;
     }
-    else
+
+    switch (typeInfo->sizeOf)
     {
-        switch (typeInfo->sizeOf)
-        {
-        case 1:
-            emitInstruction(context, ByteCodeOp::DeRef8, r0);
-            break;
-        case 2:
-            emitInstruction(context, ByteCodeOp::DeRef16, r0);
-            break;
-        case 4:
-            emitInstruction(context, ByteCodeOp::DeRef32, r0);
-            break;
-        case 8:
-            emitInstruction(context, ByteCodeOp::DeRef64, r0);
-            break;
-        default:
-            return internalError(context, "emitTypeDeRef, size not supported");
-        }
+    case 1:
+        emitInstruction(context, ByteCodeOp::DeRef8, r0);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::DeRef16, r0);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::DeRef32, r0);
+        break;
+    case 8:
+        emitInstruction(context, ByteCodeOp::DeRef64, r0);
+        break;
+    default:
+        return internalError(context, "emitTypeDeRef, size not supported");
     }
 
     return true;
