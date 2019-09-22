@@ -125,7 +125,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             return internalError(context, "emitIntrinsic, @print invalid type");
         }
 
-        freeRegisterRC(context, child0->resultRegisterRC);
+        freeRegisterRC(context, child0);
         break;
     }
     case Intrinsic::IntrinsicAssert:
@@ -133,7 +133,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto child0 = callParams->childs.front();
         if (!child0->isConstantTrue())
             emitInstruction(context, ByteCodeOp::IntrinsicAssert, child0->resultRegisterRC);
-        freeRegisterRC(context, child0->resultRegisterRC);
+        freeRegisterRC(context, child0);
         break;
     }
     case Intrinsic::IntrinsicAlloc:
@@ -147,7 +147,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
         auto child0 = callParams->childs.front();
         emitInstruction(context, ByteCodeOp::IntrinsicFree, child0->resultRegisterRC);
-        freeRegisterRC(context, child0->resultRegisterRC);
+        freeRegisterRC(context, child0);
         break;
     }
     case Intrinsic::IntrinsicMemCpy:
@@ -156,9 +156,9 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
         emitInstruction(context, ByteCodeOp::Copy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
-        freeRegisterRC(context, childDest->resultRegisterRC);
-        freeRegisterRC(context, childSrc->resultRegisterRC);
-        freeRegisterRC(context, childSize->resultRegisterRC);
+        freeRegisterRC(context, childDest);
+        freeRegisterRC(context, childSrc);
+        freeRegisterRC(context, childSize);
         break;
     }
 
@@ -328,7 +328,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
                         numPushParams++;
                     }
 
-                    freeRegisterRC(context, param->resultRegisterRC);
+                    freeRegisterRC(context, param);
                     covered = true;
                     break;
                 }
@@ -353,7 +353,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
                     numPushParams++;
                 }
 
-                freeRegisterRC(context, defaultParam->assignment->resultRegisterRC);
+                freeRegisterRC(context, defaultParam->assignment);
             }
         }
     }
@@ -378,7 +378,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
                     numPushParams++;
                 }
 
-                freeRegisterRC(context, param->resultRegisterRC);
+                freeRegisterRC(context, param);
             }
         }
     }
@@ -584,7 +584,7 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
                 numRegisters++;
             }
 
-            freeRegisterRC(context, param->resultRegisterRC);
+            freeRegisterRC(context, param);
         }
     }
 

@@ -43,6 +43,13 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
     }
 }
 
+void ByteCodeGenJob::replaceContiguousRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
+{
+    freeRegisterRC(context, rc);
+    while (num--)
+        rc += context->bc->maxReservedRegisterRC++;
+}
+
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
     for (int i = 0; i < rc.size(); i++)
@@ -60,6 +67,12 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
         SWAG_ASSERT(r != rc);
 #endif
     context->bc->availableRegistersRC.push_back(rc);
+}
+
+void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
+{
+	freeRegisterRC(context, node->resultRegisterRC);
+	freeRegisterRC(context, node->additionalRegisterRC);
 }
 
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2)

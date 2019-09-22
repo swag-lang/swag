@@ -21,7 +21,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     node->resultRegisterRC         = node->array->resultRegisterRC;
     node->parent->resultRegisterRC = node->resultRegisterRC;
 
-    freeRegisterRC(context, node->access->resultRegisterRC);
+    freeRegisterRC(context, node->access);
     return true;
 }
 
@@ -46,7 +46,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
-    freeRegisterRC(context, node->access->resultRegisterRC);
+    freeRegisterRC(context, node->access);
     return true;
 }
 
@@ -68,7 +68,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
 
-    freeRegisterRC(context, node->access->resultRegisterRC);
+    freeRegisterRC(context, node->access);
     return true;
 }
 
@@ -143,7 +143,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
         node->resultRegisterRC = node->array->resultRegisterRC;
-        freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access);
     }
 
     // Dereference of a slice
@@ -171,7 +171,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
-        freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access);
     }
 
     // Dereference of a pointer
@@ -194,7 +194,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
-        freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access);
     }
 
     // Dereference of an array
@@ -227,7 +227,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
-        freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access);
     }
 
     // Dereference a variadic parameter
@@ -263,7 +263,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, r0);
-        freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access);
     }
 
     // Dereference a typed variadic parameter
@@ -295,7 +295,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));
         node->resultRegisterRC = node->array->resultRegisterRC;
 
-        freeRegisterRC(context, node->access->resultRegisterRC);
+        freeRegisterRC(context, node->access);
         freeRegisterRC(context, r0);
     }
 
@@ -352,7 +352,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
         }
     }
 
-    freeRegisterRC(context, front->resultRegisterRC);
+    freeRegisterRC(context, front);
     node->resultRegisterRC = reserveRegisterRC(context);
     auto inst              = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer        = (uint8_t*) funcNode->bc;

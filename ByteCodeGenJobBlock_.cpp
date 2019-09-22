@@ -42,7 +42,7 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
     SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
     ifNode->seekJumpExpression = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::JumpNotTrue, node->resultRegisterRC);
-    freeRegisterRC(context, node->resultRegisterRC);
+    freeRegisterRC(context, node);
     return true;
 }
 
@@ -72,7 +72,7 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
     auto diff          = loopNode->seekJumpAfterBlock - loopNode->seekJumpExpression;
     instruction->b.s32 = diff - 1;
 
-    freeRegisterRC(context, loopNode->resultRegisterRC);
+    freeRegisterRC(context, loopNode);
     return true;
 }
 

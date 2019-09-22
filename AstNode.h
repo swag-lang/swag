@@ -310,6 +310,7 @@ struct AstNode : public PoolElement
     uint32_t      sourceFileIdx;
     ByteCode*     bc;
     RegisterList  resultRegisterRC;
+    RegisterList  additionalRegisterRC;
     uint32_t      fctCallStorageOffset;
 };
 

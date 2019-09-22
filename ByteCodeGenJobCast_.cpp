@@ -14,17 +14,16 @@ bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exp
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);
 
-	// Registers must be contiguous, as we generate a pointer to the first register
-	auto numRegs = exprNode->resultRegisterRC.size();
+    // Registers must be contiguous, as we generate a pointer to the first register
+    auto numRegs = exprNode->resultRegisterRC.size();
     SWAG_ASSERT(numRegs != 2 || exprNode->resultRegisterRC[1] == exprNode->resultRegisterRC[0] + 1);
-	SWAG_ASSERT(numRegs <= 2);
+    SWAG_ASSERT(numRegs <= 2);
 
     emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
 
-    //freeRegisterRC(context, exprNode->resultRegisterRC);
-
-    exprNode->resultRegisterRC = r0;
+    exprNode->additionalRegisterRC = exprNode->resultRegisterRC;
+    exprNode->resultRegisterRC     = r0;
     return true;
 }
 

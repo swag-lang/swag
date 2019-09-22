@@ -86,8 +86,8 @@ struct ByteCodeGenJob : public Job
     static bool emitCastNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
     static bool emitCastNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo);
-	static bool emitCastNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
-	static bool emitCastNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
+    static bool emitCastNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
+    static bool emitCastNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitCastSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     static bool emitCastVariadic(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     static bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
@@ -129,7 +129,7 @@ struct ByteCodeGenJob : public Job
     static bool emitContinue(ByteCodeGenContext* context);
     static bool emitMakePointer(ByteCodeGenContext* context);
     static bool emitMakeLambda(ByteCodeGenContext* context);
-	static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo);
+    static bool emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo);
     static bool emitPointerDeRef(ByteCodeGenContext* context);
     static bool emitStructDeRef(ByteCodeGenContext* context);
     static bool emitPointerRef(ByteCodeGenContext* context);
@@ -142,7 +142,7 @@ struct ByteCodeGenJob : public Job
     static bool emitDrop(ByteCodeGenContext* context, Scope* scope);
     static bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope);
     static bool emitLeaveScope(ByteCodeGenContext* context, Scope* scope);
-	static bool emitTrinaryOp(ByteCodeGenContext* context);
+    static bool emitTrinaryOp(ByteCodeGenContext* context);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
@@ -156,6 +156,8 @@ struct ByteCodeGenJob : public Job
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
     static void     freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
+    static void     freeRegisterRC(ByteCodeGenContext* context, AstNode* node);
+    static void     replaceContiguousRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
 
     void reset() override
     {

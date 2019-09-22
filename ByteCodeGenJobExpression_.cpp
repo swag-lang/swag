@@ -28,9 +28,9 @@ bool ByteCodeGenJob::emitTrinaryOp(ByteCodeGenContext* context)
     for (int r = 0; r < node->resultRegisterRC.size(); r++)
         emitInstruction(context, ByteCodeOp::CopyRARB, node->resultRegisterRC[r], child2->resultRegisterRC[r]);
 
-    freeRegisterRC(context, child0->resultRegisterRC);
-    freeRegisterRC(context, child1->resultRegisterRC);
-    freeRegisterRC(context, child2->resultRegisterRC);
+    freeRegisterRC(context, child0);
+    freeRegisterRC(context, child1);
+    freeRegisterRC(context, child2);
 
     return true;
 }
@@ -93,7 +93,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = offsetIdx;
             emitAffectEqual(context, node->resultRegisterRC, child->resultRegisterRC);
             offsetIdx += oneOffset;
-            freeRegisterRC(context, child->resultRegisterRC);
+            freeRegisterRC(context, child);
         }
 
         // Reference to the stack, and store the number of element in a register

@@ -58,7 +58,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
         emitAffectEqual(context, r0, node->resultRegisterRC, node->typeInfo, node->assignment);
         freeRegisterRC(context, r0);
-        freeRegisterRC(context, node->resultRegisterRC);
+        freeRegisterRC(context, node);
         return true;
     }
 
