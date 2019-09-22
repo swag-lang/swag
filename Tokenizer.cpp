@@ -17,7 +17,7 @@ void Tokenizer::setFile(SourceFile* file)
     sourceFile      = file;
     for (int i = 0; i < REPORT_NUM_CODE_LINES - 1; i++)
         location.seekStartLine[i] = -1;
-	location.seekStartLine[REPORT_NUM_CODE_LINES - 1] = 0;
+    location.seekStartLine[REPORT_NUM_CODE_LINES - 1] = 0;
 }
 
 inline void Tokenizer::treatChar(char32_t c, unsigned offset)
@@ -226,6 +226,15 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 return true;
             }
 
+			// Raw string literal
+            if (c == '#' && nc == '"')
+            {
+                treatChar(nc, offset);
+                token.text = nc;
+                SWAG_CHECK(doStringLiteral(token, true));
+                return true;
+            }
+
             getIdentifier(token, nc, offset);
             token.endLocation = location;
 
@@ -255,12 +264,6 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
         if (c == '"')
         {
             SWAG_CHECK(doStringLiteral(token, false));
-            return true;
-        }
-
-        if (c == '`')
-        {
-            SWAG_CHECK(doStringLiteral(token, true));
             return true;
         }
 

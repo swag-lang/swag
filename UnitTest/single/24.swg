@@ -1,7 +1,7 @@
 #unittest pass lexer;
 
 "totototoθθθθ"
-`tototot
-oθθθθ`
+#"tototot
+oθθθθ"#
 
 print("toto")

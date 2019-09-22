@@ -155,8 +155,16 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             // End marker
             if (!raw && c == '"')
                 break;
-            if (raw && c == '`')
-                break;
+
+			if (raw && c == '"')
+			{
+				auto nc = getCharNoSeek(offset);
+				if (nc == '#')
+				{
+					treatChar(nc, offset);
+					break;
+				}
+			}
 
             token.endLocation = location;
             token.text += c;
