@@ -19,7 +19,8 @@ bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* node)
 
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, node, node->typeInfo, &node->concreteTypeInfo, &node->concreteTypeInfoStorage));
+    SWAG_ASSERT(node->castedTypeInfo);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, node, node->castedTypeInfo, &node->concreteTypeInfo, &node->concreteTypeInfoStorage));
     return true;
 }
 

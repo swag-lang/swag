@@ -3,11 +3,12 @@
 //#[swag.printbc]
 func average(x: any)
 {
-	//tt := @kindof(x)
+	tt := @kindof(x)
+	@assert(tt == @typeof(s32))
 }
 
 //#[swag.printbc]
 #test
 {
-	average("toto")
+	average(0's32)
 }

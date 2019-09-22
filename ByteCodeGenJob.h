@@ -135,8 +135,8 @@ struct ByteCodeGenJob : public Job
     static bool emitPointerRef(ByteCodeGenContext* context);
     static bool emitArrayRef(ByteCodeGenContext* context);
     static bool emitSliceRef(ByteCodeGenContext* context);
-    static bool emitCountProperty(ByteCodeGenContext* context);
-    static bool emitDataProperty(ByteCodeGenContext* context);
+    static bool emitCountOfProperty(ByteCodeGenContext* context);
+    static bool emitDataOfProperty(ByteCodeGenContext* context);
 	static bool emitKindOfProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context);

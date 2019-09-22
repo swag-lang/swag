@@ -19,7 +19,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         }
         else
         {
-            node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+            node->byteCodeFct = &ByteCodeGenJob::emitCountOfProperty;
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
@@ -30,7 +30,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+        node->byteCodeFct = &ByteCodeGenJob::emitCountOfProperty;
     }
     else if (typeInfo->kind == TypeInfoKind::TypeList)
     {
@@ -40,7 +40,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        node->byteCodeFct = &ByteCodeGenJob::emitCountProperty;
+        node->byteCodeFct = &ByteCodeGenJob::emitCountOfProperty;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -88,7 +88,6 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         break;
 
     case Property::TypeOf:
-    {
         SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
         SWAG_CHECK(waitForSwagScope(context));
         if (context->result == SemanticResult::Pending)
@@ -97,7 +96,6 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, context->node, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
         return true;
-    }
 
     case Property::KindOf:
         SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
@@ -106,6 +104,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(waitForSwagScope(context));
         if (context->result == SemanticResult::Pending)
             return true;
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, context->node, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->byteCodeFct = &ByteCodeGenJob::emitKindOfProperty;
         return true;
 
@@ -126,7 +125,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*u8";
             node->typeInfo       = typeTable.registerType(ptrType);
-            node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
+            node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Slice)
         {
@@ -137,7 +136,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrSlice->pointedType->name;
             node->typeInfo       = typeTable.registerType(ptrType);
-            node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
+            node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Array)
         {
@@ -148,7 +147,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrArray->pointedType->name;
             node->typeInfo       = typeTable.registerType(ptrType);
-            node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
+            node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->isNative(NativeTypeKind::Any))
         {
@@ -158,7 +157,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
             node->typeInfo       = typeTable.registerType(ptrType);
-            node->byteCodeFct    = &ByteCodeGenJob::emitDataProperty;
+            node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
         }
         else
         {

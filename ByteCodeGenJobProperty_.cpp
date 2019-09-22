@@ -3,14 +3,16 @@
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "ByteCode.h"
 
 bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
 {
-    return internalError(context, "emitKindOfProperty, type not supported");
+    auto node              = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
+    node->resultRegisterRC = node->expression->resultRegisterRC[1];
+	//emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC);
+    return true;
 }
 
-bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitCountOfProperty(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto expr     = node->childs.front();
@@ -33,7 +35,7 @@ bool ByteCodeGenJob::emitCountProperty(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitDataProperty(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitDataOfProperty(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     auto typeInfo = TypeManager::concreteType(node->expression->typeInfo);
