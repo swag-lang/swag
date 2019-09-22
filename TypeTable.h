@@ -1,5 +1,6 @@
 #pragma once
 #include "SpinLock.h"
+#include "TypeList.h"
 struct TypeInfo;
 struct ErrorContext;
 struct AstNode;
@@ -7,9 +8,13 @@ struct ConcreteTypeInfo;
 
 struct TypeTable
 {
+    TypeTable();
     TypeInfo* registerType(TypeInfo* typeInfo);
     bool      makeConcreteSubTypeInfo(ErrorContext* errorContext, AstNode* node, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo);
     bool      makeConcreteTypeInfo(ErrorContext* errorContext, AstNode* node, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock = true);
+
+    TypeList exactList;
+    TypeList concreteList;
 
     SpinLock                                  mutexTypes;
     vector<TypeInfo*>                         allTypes;

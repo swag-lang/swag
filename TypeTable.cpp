@@ -1,31 +1,23 @@
 #include "pch.h"
 #include "TypeTable.h"
-#include "TypeInfo.h"
-#include "TypeManager.h"
 #include "SemanticJob.h"
 #include "SourceFile.h"
 #include "Module.h"
 #include "Workspace.h"
 
+TypeTable::TypeTable()
+{
+    exactList.hereFlag         = TYPEINFO_IN_EXACT_LIST;
+    exactList.sameFlags        = ISSAME_EXACT;
+    exactList.releaseIfHere    = true;
+    concreteList.hereFlag      = TYPEINFO_IN_CONCRETE_LIST;
+    concreteList.sameFlags     = ISSAME_EXACT | ISSAME_CONCRETE;
+    concreteList.releaseIfHere = false;
+}
+
 TypeInfo* TypeTable::registerType(TypeInfo* newTypeInfo)
 {
-    scoped_lock lk(mutexTypes);
-    for (auto typeInfo : allTypes)
-    {
-        if (typeInfo->isSame(newTypeInfo, ISSAME_EXACT))
-        {
-            if ((newTypeInfo != typeInfo) && !(newTypeInfo->flags & TYPEINFO_IN_MANAGER))
-            {
-                newTypeInfo->release();
-            }
-
-            return typeInfo;
-        }
-    }
-
-    newTypeInfo->flags |= TYPEINFO_IN_MANAGER;
-    allTypes.push_back(newTypeInfo);
-    return newTypeInfo;
+    return exactList.registerType(newTypeInfo);
 }
 
 struct ConcreteStringSlice
@@ -102,6 +94,9 @@ bool TypeTable::makeConcreteSubTypeInfo(ErrorContext* errorContext, AstNode* nod
 
 bool TypeTable::makeConcreteTypeInfo(ErrorContext* errorContext, AstNode* node, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
 {
+	if(lock)
+		typeInfo = concreteList.registerType(typeInfo);
+
     // Already computed
     if (lock)
         mutexTypes.lock();

@@ -77,7 +77,7 @@ static const uint32_t TYPEINFO_INTEGER                  = 0x00000004;
 static const uint32_t TYPEINFO_FLOAT                    = 0x00000008;
 static const uint32_t TYPEINFO_UNSIGNED                 = 0x00000010;
 static const uint32_t TYPEINFO_CONST                    = 0x00000020;
-static const uint32_t TYPEINFO_IN_MANAGER               = 0x00000040;
+static const uint32_t TYPEINFO_IN_EXACT_LIST            = 0x00000040;
 static const uint32_t TYPEINFO_VARIADIC                 = 0x00000080;
 static const uint32_t TYPEINFO_STRUCT_HAS_INIT_VALUES   = 0x00000100;
 static const uint32_t TYPEINFO_STRUCT_ALL_UNINITIALIZED = 0x00000200;
@@ -91,9 +91,11 @@ static const uint32_t TYPEINFO_UNTYPED_FLOAT            = 0x00010000;
 static const uint32_t TYPEINFO_DEFINED_VALUE            = 0x00020000;
 static const uint32_t TYPEINFO_AUTO_CAST                = 0x00040000;
 static const uint32_t TYPEINFO_TYPED_VARIADIC           = 0x00080000;
+static const uint32_t TYPEINFO_IN_CONCRETE_LIST         = 0x00100000;
 
-static const uint32_t ISSAME_EXACT = 0x00000001;
-static const uint32_t ISSAME_CAST  = 0x00000002;
+static const uint32_t ISSAME_EXACT    = 0x00000001;
+static const uint32_t ISSAME_CAST     = 0x00000002;
+static const uint32_t ISSAME_CONCRETE = 0x00000004;
 
 struct TypeInfo : public PoolElement
 {
@@ -155,7 +157,7 @@ struct TypeInfo : public PoolElement
 
     void copyFrom(TypeInfo* from)
     {
-        flags      = from->flags & ~TYPEINFO_IN_MANAGER;
+        flags      = from->flags & ~TYPEINFO_IN_EXACT_LIST;
         kind       = from->kind;
         nativeType = from->nativeType;
         name       = from->name;

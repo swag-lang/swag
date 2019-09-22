@@ -22,7 +22,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (to->kind != TypeInfoKind::Native)
         return false;
 
-    if (isSameFlags & ISSAME_EXACT)
+    if ((isSameFlags & ISSAME_EXACT) && !(isSameFlags & ISSAME_CONCRETE))
     {
         if ((flags & TYPEINFO_UNTYPED_INTEGER) != (to->flags & TYPEINFO_UNTYPED_INTEGER))
             return false;

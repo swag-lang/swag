@@ -299,6 +299,9 @@
     <ClCompile Include="DataSegment.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="TypeList.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -493,6 +496,9 @@
     </ClInclude>
     <ClInclude Include="DataSegment.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeList.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
