@@ -364,6 +364,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             auto param = allParams->childs[i];
             if (param->typeInfo && (param->typeInfo->kind == TypeInfoKind::Variadic || param->typeInfo->kind == TypeInfoKind::TypedVariadic))
             {
+				SWAG_ASSERT(i == numCallParams - 1);
             }
             else
             {

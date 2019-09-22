@@ -18,7 +18,6 @@ namespace swag
 	attr compiler() -> func;
 	attr public() -> func;
 	attr foreign(module: string = "") -> func;
-	attr semsleep(time: s32) -> func;
 
 	enum typeinfo_kind
 	{

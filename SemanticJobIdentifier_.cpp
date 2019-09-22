@@ -220,7 +220,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             // Need to make all types compatible, in case a cast is necessary
             if (identifier->callParameters && oneMatch)
             {
-				auto maxParams = identifier->callParameters->childs.size();
+                auto maxParams = identifier->callParameters->childs.size();
                 for (int i = 0; i < maxParams; i++)
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
@@ -252,7 +252,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters && oneMatch)
         {
-			auto maxParams = identifier->callParameters->childs.size();
+            auto maxParams = identifier->callParameters->childs.size();
             for (int i = 0; i < maxParams; i++)
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
@@ -774,8 +774,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
     {
-		SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
-		return true;
+        SWAG_CHECK(setSymbolMatch(context, identifierRef, node, node->resolvedSymbolName, node->resolvedSymbolOverload, nullptr, nullptr));
+        return true;
     }
 
     if (node->name == "Self")
@@ -921,10 +921,20 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
         }
 
-        for (auto param : callParameters->childs)
+        auto childCount = callParameters->childs.size();
+        for (int i = 0; i < childCount; i++)
         {
-            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam);
+            auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatch.parameters.push_back(oneParam);
+
+            // Variadic parameter must be the last one
+			if (i != childCount - 1)
+			{
+				if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+				{
+					return context->errorContext.report({ sourceFile, oneParam, "variadic argument must be the last one" });
+				}
+			}
         }
     }
 
