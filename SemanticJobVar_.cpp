@@ -256,7 +256,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     uint32_t storageOffset = 0;
     if (isCompilerConstant)
     {
-        assert(node->typeInfo);
+        SWAG_ASSERT(node->typeInfo);
 
         node->flags |= AST_NO_BYTECODE;
         if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::TypeList)
@@ -290,6 +290,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+	SWAG_ASSERT(node->typeInfo);
     auto module   = sourceFile->module;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 

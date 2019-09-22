@@ -47,20 +47,20 @@ void ByteCodeGenJob::reserveContiguousRegisterRC(ByteCodeGenContext* context, Re
 {
     freeRegisterRC(context, rc);
 
-	// Take the 2 lasts if we can. This can avoid allocating too many registers
-	// If too many registers are reserved, then we can be more clever by scanning
-	// the full array of available free registers to find 'x' contiguous
+    // Take the 2 lasts if we can. This can avoid allocating too many registers
+    // If too many registers are reserved, then we can be more clever by scanning
+    // the full array of available free registers to find 'x' contiguous
     auto& available = context->bc->availableRegistersRC;
     auto  n         = context->bc->availableRegistersRC.size();
     if (n >= 2 && num == 2)
     {
         if (available[n - 1] == available[n - 2] - 1)
         {
-			rc += available[n - 1];
-			rc += available[n - 2];
-			context->bc->availableRegistersRC.pop_back();
-			context->bc->availableRegistersRC.pop_back();
-			return;
+            rc += available[n - 1];
+            rc += available[n - 2];
+            context->bc->availableRegistersRC.pop_back();
+            context->bc->availableRegistersRC.pop_back();
+            return;
         }
     }
 
@@ -205,6 +205,8 @@ JobResult ByteCodeGenJob::execute()
                                 return JobResult::ReleaseJob;
                             if (!emitCast(&context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo))
                                 return JobResult::ReleaseJob;
+                            // To be sure that cast is treated once
+                            node->castedTypeInfo = nullptr;
                         }
                         else if (node->byteCodeFct)
                         {
