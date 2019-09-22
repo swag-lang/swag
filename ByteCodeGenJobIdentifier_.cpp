@@ -36,7 +36,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo);
     SWAG_ASSERT(typeInfo->kind != TypeInfoKind::Generic);
 
-	// Will be done in the variable declaration
+    // Will be done in the variable declaration
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         if (node->flags & AST_IN_TYPE_VAR_DECLARATION)
@@ -65,7 +65,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else
         {
-			SWAG_ASSERT(typeInfo->numRegisters() == 1);
+            SWAG_ASSERT(typeInfo->numRegisters() == 1);
             auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
@@ -90,7 +90,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromDataSeg, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
+        else if (typeInfo->numRegisters() == 2)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::RAFromDataSeg64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
@@ -140,9 +140,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             emitInstruction(context, ByteCodeOp::RARefFromStack, node->resultRegisterRC)->b.u32 = resolved->storageOffset;
         }
-        else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
+        else if (typeInfo->numRegisters() == 2)
         {
-            node->resultRegisterRC += reserveRegisterRC(context);
+            reserveContiguousRegisterRC(context, node->resultRegisterRC, 2);
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
         }
@@ -179,7 +179,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_STRUCT)
     {
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-		SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->name.c_str()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->name.c_str()).c_str()));
         if (node->resolvedSymbolOverload->storageOffset > 0)
             emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC)->b.u32 = node->resolvedSymbolOverload->storageOffset;
         if (!(node->flags & AST_TAKE_ADDRESS))

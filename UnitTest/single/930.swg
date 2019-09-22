@@ -1,0 +1,9 @@
+#module module930
+
+//#[swag.printbc]
+#test
+{
+	var x: any
+	x = 666
+	@assert(@kindof(x) == @typeof(s32))
+}

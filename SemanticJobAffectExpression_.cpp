@@ -278,5 +278,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     }
 
     node->byteCodeFct = &ByteCodeGenJob::emitAffect;
+
+    SWAG_CHECK(dealWithAny(context, left, right));
+    if (context->result == SemanticResult::Pending)
+        return true;
+
     return true;
 }

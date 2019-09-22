@@ -105,6 +105,10 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
         }
         return true;
+	case NativeTypeKind::Any:
+        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
+        emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+		return true;
     default:
         return internalError(context, "emitAffectEqual, type not supported");
     }

@@ -8,9 +8,9 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* node)
+bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNode* castedNode)
 {
-    if (!node->typeInfo->isNative(NativeTypeKind::Any))
+    if (!anyNode->typeInfo->isNative(NativeTypeKind::Any))
         return true;
 
     SWAG_CHECK(waitForSwagScope(context));
@@ -19,8 +19,8 @@ bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* node)
 
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
-    SWAG_ASSERT(node->castedTypeInfo);
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, node, node->castedTypeInfo, &node->concreteTypeInfo, &node->concreteTypeInfoStorage));
+    SWAG_ASSERT(castedNode->castedTypeInfo);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, anyNode, castedNode->castedTypeInfo, &castedNode->concreteTypeInfo, &castedNode->concreteTypeInfoStorage));
     return true;
 }
 
