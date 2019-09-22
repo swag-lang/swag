@@ -619,8 +619,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         SWAG_CHECK(emitCastNativeString(context, exprNode, fromTypeInfo));
         break;
     default:
-        internalError(context, "emitCast, invalid cast type");
-        break;
+        return internalError(context, "emitCast, invalid cast type");
     }
 
     node->resultRegisterRC = exprNode->resultRegisterRC;

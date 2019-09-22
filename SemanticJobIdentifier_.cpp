@@ -928,13 +928,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             symMatch.parameters.push_back(oneParam);
 
             // Variadic parameter must be the last one
-			if (i != childCount - 1)
-			{
-				if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
-				{
-					return context->errorContext.report({ sourceFile, oneParam, "variadic argument must be the last one" });
-				}
-			}
+            if (i != childCount - 1)
+            {
+                if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                {
+                    return context->errorContext.report({sourceFile, oneParam, "variadic argument must be the last one"});
+                }
+            }
         }
     }
 
@@ -950,14 +950,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             return context->errorContext.report(diag, &note);
         }
 
-        int idx = 0;
-        for (auto param : genericParameters->childs)
+        auto childCount = genericParameters->childs.size();
+        for (int i = 0; i < childCount; i++)
         {
-            auto oneParam = CastAst<AstFuncCallParam>(param, AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
+            auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam, AstNodeKind::IdentifierRef);
             symMatch.genericParameters.push_back(oneParam);
             symMatch.genericParametersCallValues.push_back(oneParam->computedValue);
             symMatch.genericParametersCallTypes.push_back(oneParam->typeInfo);
-            idx++;
         }
     }
 

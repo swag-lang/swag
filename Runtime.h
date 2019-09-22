@@ -56,6 +56,7 @@ namespace swag
 		Bool
 		Char
 		String
+		Any
 	}
 
 	struct typeinfo

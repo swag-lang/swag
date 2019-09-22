@@ -68,6 +68,7 @@ struct TypeManager
     TypeInfoNative*   typeInfoF64;
     TypeInfoNative*   typeInfoChar;
     TypeInfoNative*   typeInfoString;
+    TypeInfoNative*   typeInfoAny;
     TypeInfoNative*   typeInfoVoid;
     TypeInfoPointer*  typeInfoNull;
     TypeInfoVariadic* typeInfoVariadic;

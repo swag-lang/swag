@@ -279,10 +279,11 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
         });
     }
 
-    int  numRegisters = 0;
+    // For a untyped variadic, we need to store the offset (in # registers) of each additional parameter,
+    // in order to be able to index them
+    int numRegisters = 0;
     if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
     {
-        // Store the offset (in registers) of each additional parameter
         int offset = 0;
         for (int i = 0; i < numCallParams; i++)
         {
@@ -290,8 +291,9 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             offset += typeParam->numRegisters();
         }
 
-        auto r0 = reserveRegisterRC(context);
-        for (int i = (int) numCallParams - 1; i >= (int) typeInfoFunc->parameters.size() - 1; i--)
+        auto r0            = reserveRegisterRC(context);
+        int  numFuncParams = (int) typeInfoFunc->parameters.size();
+        for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
         {
             auto typeParam = allParams->childs[i]->typeInfo;
             offset -= typeParam->numRegisters();
@@ -364,7 +366,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             auto param = allParams->childs[i];
             if (param->typeInfo && (param->typeInfo->kind == TypeInfoKind::Variadic || param->typeInfo->kind == TypeInfoKind::TypedVariadic))
             {
-				SWAG_ASSERT(i == numCallParams - 1);
+                SWAG_ASSERT(i == numCallParams - 1);
             }
             else
             {
@@ -395,53 +397,53 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
         emitInstruction(context, ByteCodeOp::PushRAParam, r1[0])->b.u32 = numRegisters;
         emitInstruction(context, ByteCodeOp::PushRAParam, r1[1])->b.u32 = numRegisters + 1;
         freeRegisterRC(context, r1);
-		precallStack += 2 * sizeof(Register);
+        precallStack += 2 * sizeof(Register);
         numRegisters += 2;
         numPushParams += 2;
     }
 
     // Variadic parameter is on top of stack
     else
-	{
-		if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
-		{
-			auto r0 = reserveRegisterRC(context);
-			auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+    {
+        if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
+        {
+            auto r0          = reserveRegisterRC(context);
+            auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
 
-			// Store number of extra parameters
-			emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | ((numPushParams + 1) << 32);
-			emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
+            // Store number of extra parameters
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64  = numVariadic | ((numPushParams + 1) << 32);
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
 
-			// Store address on the stack of those parameters. This must be the last push
-			emitInstruction(context, ByteCodeOp::MovRASP, r0)->b.u32 = numRegisters + 1;
-			emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters + 1;
+            // Store address on the stack of those parameters. This must be the last push
+            emitInstruction(context, ByteCodeOp::MovRASP, r0)->b.u32     = numRegisters + 1;
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters + 1;
 
-			precallStack += 2 * sizeof(Register);
-			numRegisters += 2;
+            precallStack += 2 * sizeof(Register);
+            numRegisters += 2;
 
-			freeRegisterRC(context, r0);
-		}
-		else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
-		{
-			auto r0 = reserveRegisterRC(context);
-			auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
-			auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
-			auto offset = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters()) + 1;
+            freeRegisterRC(context, r0);
+        }
+        else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
+        {
+            auto r0           = reserveRegisterRC(context);
+            auto numVariadic  = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+            auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+            auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters()) + 1;
 
-			// Store number of extra parameters
-			emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | (offset << 32);
-			emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
+            // Store number of extra parameters
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64  = numVariadic | (offset << 32);
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
 
-			// Store address on the stack of those parameters. This must be the last push
-			emitInstruction(context, ByteCodeOp::MovRASP, r0)->b.u32 = numRegisters + 1;
-			emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters + 1;
+            // Store address on the stack of those parameters. This must be the last push
+            emitInstruction(context, ByteCodeOp::MovRASP, r0)->b.u32     = numRegisters + 1;
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters + 1;
 
-			precallStack += 2 * sizeof(Register);
-			numRegisters += 2;
+            precallStack += 2 * sizeof(Register);
+            numRegisters += 2;
 
-			freeRegisterRC(context, r0);
-		}
-	}
+            freeRegisterRC(context, r0);
+        }
+    }
 
     // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);

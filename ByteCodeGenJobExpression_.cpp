@@ -112,13 +112,28 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
-    return emitLiteral(context, nullptr);
+    SWAG_CHECK(emitLiteral(context, nullptr));
+
+    // Convert from literal to any
+    auto node = context->node;
+    if (node->typeInfo->isNative(NativeTypeKind::Any))
+    {
+    }
+
+    return true;
 }
 
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
 {
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
+
+    // If we need a cast to an any, then first resolve literal with its real type
+    if (typeInfo->isNative(NativeTypeKind::Any))
+    {
+        SWAG_ASSERT(node->castedTypeInfo);
+        typeInfo = node->castedTypeInfo;
+    }
 
     // We have null, and we want a string
     if (node->typeInfo->nativeType == NativeTypeKind::String && node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr.typeInfoNull)

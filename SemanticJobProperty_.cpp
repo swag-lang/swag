@@ -86,7 +86,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             return true;
         }
 
-        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, context->node, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
         return true;
     }

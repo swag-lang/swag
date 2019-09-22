@@ -85,14 +85,14 @@ struct ConcreteTypeInfoEnum
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
 
-bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
+bool TypeTable::makeConcreteSubTypeInfo(ErrorContext* errorContext, AstNode* node, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
 {
-    auto sourceFile = context->sourceFile;
+    auto sourceFile = errorContext->sourceFile;
     auto module     = sourceFile->module;
 
     TypeInfo* typePtr;
     uint32_t  tmpStorageOffset;
-    SWAG_CHECK(makeConcreteTypeInfo(context, typeInfo, &typePtr, &tmpStorageOffset, false));
+    SWAG_CHECK(makeConcreteTypeInfo(errorContext, node, typeInfo, &typePtr, &tmpStorageOffset, false));
     *result = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
 
     // We have a pointer in the constant segment, so we need to register it for backend setup
@@ -100,7 +100,7 @@ bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concrete
     return true;
 }
 
-bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
+bool TypeTable::makeConcreteTypeInfo(ErrorContext* errorContext, AstNode* node, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
 {
     // Already computed
     if (lock)
@@ -115,7 +115,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         return true;
     }
 
-    auto            sourceFile = context->sourceFile;
+    auto            sourceFile = errorContext->sourceFile;
     auto            module     = sourceFile->module;
     auto&           swagScope  = module->workspace->swagScope;
     TypeInfoStruct* typeStruct = nullptr;
@@ -140,7 +140,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         typeStruct = swagScope.regTypeInfoEnum;
         break;
     default:
-        context->errorContext.report({sourceFile, context->node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
+        errorContext->report({sourceFile, node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
         return false;
     }
 
@@ -172,7 +172,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
         auto realType          = (TypeInfoPointer*) typeInfo;
         concreteType->ptrCount = realType->ptrCount;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(errorContext, node, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }
     case TypeInfoKind::Param:
@@ -189,7 +189,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
             concreteType->namedParam.count  = realType->namedParam.size();
         }
 
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
+        SWAG_CHECK(makeConcreteSubTypeInfo(errorContext, node, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
 
         // Value
         if (realType->flags & TYPEINFO_DEFINED_VALUE)
@@ -245,7 +245,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
             concreteType->fields.buffer     = addrArray;
             module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
             for (int field = 0; field < concreteType->fields.count; field++)
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + field, realType->childs[field]));
+                SWAG_CHECK(makeConcreteSubTypeInfo(errorContext, node, addrArray, storageArray, addrArray + field, realType->childs[field]));
         }
 
         break;
@@ -264,10 +264,10 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
             concreteType->parameters.buffer = addrArray;
             module->constantSegment.addInitPtr(OFFSETOF(concreteType->parameters.buffer), storageArray);
             for (int param = 0; param < concreteType->parameters.count; param++)
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + param, realType->parameters[param]));
+                SWAG_CHECK(makeConcreteSubTypeInfo(errorContext, node, addrArray, storageArray, addrArray + param, realType->parameters[param]));
         }
 
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(errorContext, node, concreteTypeInfoValue, storageOffset, &concreteType->returnType, realType->returnType));
         break;
     }
     case TypeInfoKind::Enum:
@@ -284,12 +284,12 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
             concreteType->values.buffer     = addrArray;
             module->constantSegment.addInitPtr(OFFSETOF(concreteType->values.buffer), storageArray);
             for (int param = 0; param < concreteType->values.count; param++)
-                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + param, realType->values[param]));
+                SWAG_CHECK(makeConcreteSubTypeInfo(errorContext, node, addrArray, storageArray, addrArray + param, realType->values[param]));
         }
 
         concreteType->rawType = nullptr;
         if (realType->rawType)
-            SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType->rawType));
+            SWAG_CHECK(makeConcreteSubTypeInfo(errorContext, node, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType->rawType));
         break;
     }
     }

@@ -1480,6 +1480,10 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (fromType->kind == TypeInfoKind::VariadicValue)
         return true;
 
+    // Everything can be casted to type 'any'
+    if (toType->isNative(NativeTypeKind::Any) && (castFlags & CASTFLAG_JUST_CHECK))
+        return true;
+
     if (fromType->kind == TypeInfoKind::TypedVariadic)
         fromType = ((TypeInfoVariadic*) fromType)->rawType;
     if (toType->kind == TypeInfoKind::TypedVariadic)
@@ -1519,7 +1523,7 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
         auto typePtr = static_cast<TypeInfoPointer*>(toType);
         if (typePtr->ptrCount == 1 && typePtr->pointedType->isSame(fromType, ISSAME_CAST))
         {
-            if (castFlags & CASTFLAG_JUST_CHECK)
+            if (nodeToCast && (castFlags & CASTFLAG_JUST_CHECK))
             {
                 nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
                 nodeToCast->typeInfo       = toType;

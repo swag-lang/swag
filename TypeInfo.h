@@ -34,6 +34,7 @@ enum class TypeInfoKind
     Alias,
 };
 
+// Do not forget to synchronize runtime.h !
 enum class NativeTypeKind
 {
     Void,
@@ -50,6 +51,7 @@ enum class NativeTypeKind
     Bool,
     Char,
     String,
+	Any,
     Count,
 };
 

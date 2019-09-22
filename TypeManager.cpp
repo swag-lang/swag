@@ -19,6 +19,7 @@ void TypeManager::setup()
     typeInfoChar   = new TypeInfoNative(NativeTypeKind::Char, "char", 4, 0);
     typeInfoVoid   = new TypeInfoNative(NativeTypeKind::Void, "void", 0, 0);
     typeInfoString = new TypeInfoNative(NativeTypeKind::String, "string", 2 * sizeof(Register), 0);
+    typeInfoAny    = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
 
     typeInfoVariadic = new TypeInfoVariadic();
     typeInfoVariadic->reset();
