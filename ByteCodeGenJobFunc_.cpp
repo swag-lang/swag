@@ -395,18 +395,38 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     }
     else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
     {
-        auto r0           = reserveRegisterRC(context);
-        auto numVariadic  = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
-        auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
-        auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters()) + 1;
+        auto r0 = reserveRegisterRC(context);
 
-        // Store number of extra parameters
-        emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64  = numVariadic | (offset << 32);
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
+        auto lastParam = allParams->childs.back();
 
-        // Store address on the stack of those parameters. This must be the last push
-        emitInstruction(context, ByteCodeOp::MovRASP, r0)->b.u32     = numRegisters + 1;
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters + 1;
+		// Pass a variadic parameter to another function
+        if (lastParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+        {
+			RegisterList r1;
+			reserveRegisterRC(context, r1, 2);
+			emitInstruction(context, ByteCodeOp::CopyRARB, r1[0], r0);
+			emitInstruction(context, ByteCodeOp::DeRef64, r1[0]);
+			emitInstruction(context, ByteCodeOp::IncPointerVB, r0)->b.s32 = -8;
+			emitInstruction(context, ByteCodeOp::CopyRARB, r1[1], r0);
+			emitInstruction(context, ByteCodeOp::DeRef64, r1[1]);
+			emitInstruction(context, ByteCodeOp::PushRAParam, r1[0])->b.u32 = numRegisters;
+			emitInstruction(context, ByteCodeOp::PushRAParam, r1[1])->b.u32 = numRegisters + 1;
+			freeRegisterRC(context, r1);
+        }
+		else
+		{
+			auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+			auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
+			auto offset = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters()) + 1;
+
+			// Store number of extra parameters
+			emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = numVariadic | (offset << 32);
+			emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
+
+			// Store address on the stack of those parameters. This must be the last push
+			emitInstruction(context, ByteCodeOp::MovRASP, r0)->b.u32 = numRegisters + 1;
+			emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters + 1;
+		}
 
         precallStack += 2 * sizeof(Register);
         numRegisters += 2;

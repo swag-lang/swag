@@ -294,7 +294,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::IncPointerVB:
     {
-        registersRC[ip->a.u32].pointer += ip->b.u32;
+        registersRC[ip->a.u32].pointer += ip->b.s32;
         break;
     }
     case ByteCodeOp::IncPointer:
