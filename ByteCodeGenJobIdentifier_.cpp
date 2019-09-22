@@ -53,7 +53,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;
         }
-        else if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
+        else if (typeInfo->numRegisters() == 2)
         {
             node->resultRegisterRC += reserveRegisterRC(context);
             auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC[1]);
@@ -65,6 +65,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else
         {
+			SWAG_ASSERT(typeInfo->numRegisters() == 1);
             auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC);
             inst->b.u32 = resolved->storageOffset;
             inst->c.u32 = resolved->storageIndex;

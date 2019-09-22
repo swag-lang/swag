@@ -507,7 +507,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAAddrFromConstantSeg:
-            bufferC.addString(format("r%u.pointer = __constantseg + %u; ", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromConstantSeg:
             bufferC.addString(format("r%u.pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32)));
@@ -548,7 +548,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("r%u = r%u; ", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRARBAddr:
-            bufferC.addString(format("r%u.pointer = &r%u; ", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &r%u; ", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ClearRA:
             bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));

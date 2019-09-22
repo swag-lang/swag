@@ -7,6 +7,27 @@
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 
+bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
+{
+    SWAG_ASSERT(exprNode->concreteTypeInfo);
+
+    RegisterList r0;
+    reserveRegisterRC(context, r0, 2);
+
+	// Registers must be contiguous, as we generate a pointer to the first register
+	auto numRegs = exprNode->resultRegisterRC.size();
+    SWAG_ASSERT(numRegs != 2 || exprNode->resultRegisterRC[1] == exprNode->resultRegisterRC[0] + 1);
+	SWAG_ASSERT(numRegs <= 2);
+
+    emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC);
+    emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
+
+    //freeRegisterRC(context, exprNode->resultRegisterRC);
+
+    exprNode->resultRegisterRC = r0;
+    return true;
+}
+
 bool ByteCodeGenJob::emitCastNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->kind == TypeInfoKind::Pointer)
@@ -487,29 +508,6 @@ bool ByteCodeGenJob::emitCastNativeF64(ByteCodeGenContext* context, AstNode* exp
         break;
     }
 
-    return true;
-}
-
-bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
-{
-    SWAG_ASSERT(exprNode->concreteTypeInfo);
-
-    RegisterList r0;
-    reserveRegisterRC(context, r0, 2);
-
-    if (exprNode->resultRegisterRC.size() == 1)
-    {
-		emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC);
-    }
-    else
-    {
-        return internalError(context, "emitCastNativeAny, invalid type");
-    }
-
-    emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
-
-    freeRegisterRC(context, exprNode->resultRegisterRC);
-    exprNode->resultRegisterRC = r0;
     return true;
 }
 
