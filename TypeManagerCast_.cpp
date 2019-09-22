@@ -1188,7 +1188,7 @@ bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, Type
                 return false;
             }
 
-			// Need to recompute total size, as the size of each element can have been changed by the cast
+            // Need to recompute total size, as the size of each element can have been changed by the cast
             if (nodeToCast)
                 fromTypeList->sizeOf = 0;
 
@@ -1479,6 +1479,9 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
 
     if (fromType->kind == TypeInfoKind::VariadicValue)
         return true;
+
+    if (fromType->kind == TypeInfoKind::TypedVariadic)
+        fromType = ((TypeInfoVariadic*) fromType)->rawType;
     if (toType->kind == TypeInfoKind::TypedVariadic)
         toType = ((TypeInfoVariadic*) toType)->rawType;
 

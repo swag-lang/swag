@@ -1,20 +1,18 @@
 #module module916
-/*
-typealias Double: f64
 
-func sum(nums: Double...) -> Double {
-    var result: Double = 0.0
-    loop nums {
-        result += nums[index]
-    }
-    return result
+func sum(nums: f64...)
+{
+	@print(cast(s32) @countof(nums))
 }
 
-func average(nums: Double...) -> Double {
-    return sum(nums) / @countof(nums)
+#[swag.printbc]
+func average(nums: f64...)
+{
+    sum(nums)
 }
-*/
+
 //#[swag.printbc]
 #test
 {
+	average(10, 20, 30)
 }
