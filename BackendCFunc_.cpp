@@ -506,6 +506,9 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::RARefFromDataSeg:
             bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.u32));
             break;
+        case ByteCodeOp::RAAddrFromConstantSeg:
+            bufferC.addString(format("r%u.pointer = __constantseg + %u; ", ip->a.u32, ip->b.u32));
+            break;
         case ByteCodeOp::RARefFromConstantSeg:
             bufferC.addString(format("r%u.pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32)));
             bufferC.addString(format("r%u.u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF));

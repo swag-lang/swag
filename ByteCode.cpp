@@ -223,6 +223,7 @@ void ByteCode::print()
         case ByteCodeOp::ShiftRightU64VB:
         case ByteCodeOp::IncRAVB:
         case ByteCodeOp::ClearX:
+		case ByteCodeOp::RAAddrFromConstantSeg:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 

@@ -490,14 +490,27 @@ bool ByteCodeGenJob::emitCastNativeF64(ByteCodeGenContext* context, AstNode* exp
     return true;
 }
 
+bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
+{
+    SWAG_ASSERT(exprNode->concreteTypeInfo);
+    exprNode->resultRegisterRC += reserveRegisterRC(context);
+
+    auto inst   = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, exprNode->resultRegisterRC[1]);
+    inst->b.u64 = exprNode->concreteTypeInfoStorage;
+
+    return true;
+
+    //return internalError(context, "emitCastNativeAny, invalid type");
+}
+
 bool ByteCodeGenJob::emitCastNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
     auto node = context->node;
 
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-		node->resultRegisterRC += reserveRegisterRC(context);
-		emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
+        node->resultRegisterRC += reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
         return true;
     }
 
@@ -617,6 +630,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         break;
     case NativeTypeKind::String:
         SWAG_CHECK(emitCastNativeString(context, exprNode, fromTypeInfo));
+        break;
+    case NativeTypeKind::Any:
+        SWAG_CHECK(emitCastNativeAny(context, exprNode, fromTypeInfo));
         break;
     default:
         return internalError(context, "emitCast, invalid cast type");

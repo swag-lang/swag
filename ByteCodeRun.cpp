@@ -615,6 +615,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = ip->cache.pointer;
         break;
     }
+    case ByteCodeOp::RAAddrFromConstantSeg:
+    {
+        auto module = context->sourceFile->module;
+        auto offset = ip->b.u32;
+        if (!ip->cache.pointer)
+            ip->cache.pointer = module->constantSegment.address(offset);
+        registersRC[ip->a.u32].pointer = ip->cache.pointer;
+        break;
+    }
     case ByteCodeOp::RARefFromConstantSeg:
     {
         auto module = context->sourceFile->module;
