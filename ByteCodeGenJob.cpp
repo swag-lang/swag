@@ -52,7 +52,8 @@ void ByteCodeGenJob::replaceContiguousRegisterRC(ByteCodeGenContext* context, Re
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
-    for (int i = 0; i < rc.size(); i++)
+	auto n = rc.size();
+    for (int i = n - 1; i >= 0; i--)
     {
         freeRegisterRC(context, rc[i]);
     }

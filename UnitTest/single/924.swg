@@ -4,12 +4,12 @@
 func average(x: any)
 {
 	tx:= cast(*string) @dataof(x)
-	@print(tx[0])
+	@assert(tx[0] == "toto")
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	average("toto")
-	//average("titi")
+	average("toto")
 }
