@@ -6,8 +6,8 @@ TypeInfo* TypeList::registerType(TypeInfo* newTypeInfo)
 {
     scoped_lock lk(mutexTypes);
 
-	// @Speed
-    for (auto typeInfo : allTypes)
+    auto& oneList = allTypes[(uint32_t) newTypeInfo->kind];
+    for (auto typeInfo : oneList)
     {
         if (typeInfo->isSame(newTypeInfo, sameFlags))
         {
@@ -22,6 +22,6 @@ TypeInfo* TypeList::registerType(TypeInfo* newTypeInfo)
     }
 
     newTypeInfo->flags |= hereFlag;
-    allTypes.push_back(newTypeInfo);
+    oneList.push_back(newTypeInfo);
     return newTypeInfo;
 }
