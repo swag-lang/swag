@@ -2,6 +2,7 @@
 
 func average(x: any)
 {
+	t := @dataof(any)
 }
 
 #[swag.printbc]

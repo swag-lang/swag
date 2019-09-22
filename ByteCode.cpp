@@ -191,6 +191,7 @@ void ByteCode::print()
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::BoundCheckReg:
         case ByteCodeOp::CopyRARB:
+		case ByteCodeOp::CopyRARBAddr:
         case ByteCodeOp::CopyRRxRCx:
         case ByteCodeOp::CopyRCxRRxCall:
         case ByteCodeOp::CopyRRxRCxCall:

@@ -458,6 +458,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32] = registersRC[ip->b.u32];
         break;
     }
+    case ByteCodeOp::CopyRARBAddr:
+    {
+        registersRC[ip->a.u32].pointer = (uint8_t*) (registersRC + ip->b.u32);
+        break;
+    }
     case ByteCodeOp::CopyRAVB32:
     {
         registersRC[ip->a.u32].u32 = ip->b.u32;

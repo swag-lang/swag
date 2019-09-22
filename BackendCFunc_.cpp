@@ -547,6 +547,9 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::CopyRARB:
             bufferC.addString(format("r%u = r%u; ", ip->a.u32, ip->b.u32));
             break;
+        case ByteCodeOp::CopyRARBAddr:
+            bufferC.addString(format("r%u.pointer = &r%u; ", ip->a.u32, ip->b.u32));
+            break;
         case ByteCodeOp::ClearRA:
             bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));
             break;

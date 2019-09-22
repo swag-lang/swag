@@ -142,9 +142,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
 
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
-        node->resultRegisterRC += reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-        inst->c.u64 = ((uint64_t) node->computedValue.reg.u32 << 32) | (uint32_t) 1;
+        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC[0])->b.u32 = node->computedValue.reg.u32;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
     {
