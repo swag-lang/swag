@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
-#include "SymTable.h"
 #include "SourceFile.h"
 #include "Module.h"
 #include "Ast.h"
@@ -333,12 +332,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
     }
 
+    SWAG_ASSERT(node->typeInfo);
+
     // A constant does nothing on backend, except if it can't be stored in a register
     uint32_t storageOffset = 0;
     if (isCompilerConstant)
     {
-        SWAG_ASSERT(node->typeInfo);
-
         node->flags |= AST_NO_BYTECODE;
         if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::TypeList)
         {
@@ -370,8 +369,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             return context->errorContext.report({sourceFile, node->token, "an enum variable must be initialized"});
         }
     }
-
-    SWAG_ASSERT(node->typeInfo);
 
     SWAG_CHECK(dealWithAny(context, node->assignment, node->assignment));
     if (context->result == SemanticResult::Pending)
