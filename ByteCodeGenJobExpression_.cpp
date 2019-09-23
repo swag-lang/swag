@@ -74,8 +74,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     {
         scoped_lock lock(module->constantSegment.mutex);
         auto        offset = storageOffset;
-        auto        result = SemanticJob::collectLiterals(context->sourceFile, offset, node, isConstExpr ? nullptr : &job->collectChilds, isConstExpr ? &module->constantSegment : nullptr);
-        SWAG_CHECK(result);
+		SWAG_CHECK(SemanticJob::collectLiterals(context->sourceFile, offset, node, isConstExpr ? nullptr : &job->collectChilds, isConstExpr ? &module->constantSegment : nullptr));
     }
 
     reserveRegisterRC(context, node->resultRegisterRC, 2);

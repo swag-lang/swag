@@ -6,77 +6,8 @@
 #include "Ast.h"
 #include "TypeManager.h"
 
-bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, DataSegment* segment)
+bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    auto module = sourceFile->module;
-
-    uint8_t* ptrDest = segment ? segment->addressNoLock(offset) : nullptr;
-    for (auto child : node->childs)
-    {
-        if (child->kind == AstNodeKind::ExpressionList)
-        {
-            SWAG_CHECK(collectLiterals(sourceFile, offset, child, orderedChilds, segment));
-            continue;
-        }
-
-        if (orderedChilds)
-            orderedChilds->push_back(child);
-
-        // We do not want to store the result in the constant/data buffer
-        if (!ptrDest)
-            continue;
-
-        if (child->typeInfo->isNative(NativeTypeKind::String))
-        {
-            Register* storedV  = (Register*) ptrDest;
-            storedV[0].pointer = (uint8_t*) child->computedValue.text.c_str();
-            storedV[1].u64     = child->computedValue.text.length();
-
-            auto stringIndex = module->reserveString(child->computedValue.text);
-            segment->addInitString(offset, stringIndex);
-
-            ptrDest += 2 * sizeof(Register);
-            offset += 2 * sizeof(Register);
-        }
-        else
-        {
-            switch (child->typeInfo->sizeOf)
-            {
-            case 1:
-                *(uint8_t*) ptrDest = child->computedValue.reg.u8;
-                ptrDest += 1;
-                offset += 1;
-                break;
-            case 2:
-                *(uint16_t*) ptrDest = child->computedValue.reg.u16;
-                ptrDest += 2;
-                offset += 2;
-                break;
-            case 4:
-                *(uint32_t*) ptrDest = child->computedValue.reg.u32;
-                ptrDest += 4;
-                offset += 4;
-                break;
-            case 8:
-                *(uint64_t*) ptrDest = child->computedValue.reg.u64;
-                ptrDest += 8;
-                offset += 8;
-                break;
-
-            default:
-                sourceFile->report({sourceFile, node, "collectLiterals, invalid type size"});
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
-bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
-{
-    scoped_lock lock(seg->mutex);
-
     auto sourceFile  = context->sourceFile;
     auto module      = sourceFile->module;
     storageOffset    = seg->reserveNoLock(typeInfo->sizeOf);
@@ -98,7 +29,7 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffs
 
         // Store value in constant segment
         uint32_t storageOffsetValue;
-        SWAG_CHECK(storeToSegment(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
+        SWAG_CHECK(storeToSegmentNoLock(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
 
         // Then reference that value and the concrete type info
         auto ptrStorage                     = module->constantSegment.address(storageOffsetValue);
@@ -154,10 +85,79 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffs
     return true;
 }
 
+bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, DataSegment* segment)
+{
+    auto module = sourceFile->module;
+
+    uint8_t* ptrDest = segment ? segment->addressNoLock(offset) : nullptr;
+    for (auto child : node->childs)
+    {
+        if (child->kind == AstNodeKind::ExpressionList)
+        {
+            SWAG_CHECK(collectLiterals(sourceFile, offset, child, orderedChilds, segment));
+            continue;
+        }
+
+        // Collect all childs
+        if (orderedChilds)
+            orderedChilds->push_back(child);
+
+        // We do not want to store the result in the buffer
+        if (!ptrDest)
+            continue;
+
+        if (child->typeInfo->isNative(NativeTypeKind::String))
+        {
+            Register* storedV  = (Register*) ptrDest;
+            storedV[0].pointer = (uint8_t*) child->computedValue.text.c_str();
+            storedV[1].u64     = child->computedValue.text.length();
+
+            auto stringIndex = module->reserveString(child->computedValue.text);
+            segment->addInitString(offset, stringIndex);
+
+            ptrDest += 2 * sizeof(Register);
+            offset += 2 * sizeof(Register);
+        }
+        else
+        {
+            switch (child->typeInfo->sizeOf)
+            {
+            case 1:
+                *(uint8_t*) ptrDest = child->computedValue.reg.u8;
+                ptrDest += 1;
+                offset += 1;
+                break;
+            case 2:
+                *(uint16_t*) ptrDest = child->computedValue.reg.u16;
+                ptrDest += 2;
+                offset += 2;
+                break;
+            case 4:
+                *(uint32_t*) ptrDest = child->computedValue.reg.u32;
+                ptrDest += 4;
+                offset += 4;
+                break;
+            case 8:
+                *(uint64_t*) ptrDest = child->computedValue.reg.u64;
+                ptrDest += 8;
+                offset += 8;
+                break;
+
+            default:
+                sourceFile->report({sourceFile, node, "collectLiterals, invalid type size"});
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto  sourceFile         = context->sourceFile;
-    auto& typeTable          = sourceFile->module->typeTable;
+    auto  module             = sourceFile->module;
+    auto& typeTable          = module->typeTable;
     auto  node               = static_cast<AstVarDecl*>(context->node);
     bool  isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
@@ -313,7 +313,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
 
-        // Determin if the call parameters cover everything (to avoid calling default initialisation)
+        // Determine if the call parameters cover everything (to avoid calling default initialisation)
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
 
@@ -342,10 +342,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::TypeList)
         {
             // Reserve space in constant segment
-            auto module   = sourceFile->module;
-            storageOffset = module->constantSegment.reserve(node->typeInfo->sizeOf);
             scoped_lock lock(module->constantSegment.mutex);
-            auto        offset = storageOffset;
+            storageOffset = module->constantSegment.reserveNoLock(node->typeInfo->sizeOf);
+            auto offset   = storageOffset;
             SWAG_CHECK(SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, &module->constantSegment));
             if (!node->typeInfo->isConst())
             {
@@ -374,7 +373,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (context->result == SemanticResult::Pending)
         return true;
 
-    auto module   = sourceFile->module;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
@@ -382,7 +380,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
         auto value = node->assignment ? &node->assignment->computedValue : &node->computedValue;
-        SWAG_CHECK(storeToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
+
+        scoped_lock lock(module->dataSegment.mutex);
+        SWAG_CHECK(storeToSegmentNoLock(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
