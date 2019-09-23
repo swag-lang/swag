@@ -5,6 +5,7 @@
 //#[swag.printbc]
 #test
 {
-	let result: [] f32 = [1, 2, 3, 4, 5]
-	@assert(result[0] == 1.0)
+	/*t := x[0]
+	type := @kindof(t)
+	@print(type.name)*/
 }

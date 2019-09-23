@@ -103,7 +103,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
 {
-    if (typeInfo->isNative(NativeTypeKind::String))
+    if (typeInfo->numRegisters() == 2)
     {
         r0 += reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);

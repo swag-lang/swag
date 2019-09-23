@@ -146,7 +146,7 @@ struct AstNode : public PoolElement
         semanticPass                 = 0;
         byteCodePass                 = 0;
         concreteTypeInfo             = nullptr;
-        concreteTypeInfoStorage      = 0;
+        concreteTypeInfoStorage      = UINT32_MAX;
         resultRegisterRC.clear();
         childs.clear();
         computedValue.reg.u64 = 0;
