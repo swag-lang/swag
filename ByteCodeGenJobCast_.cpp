@@ -9,8 +9,8 @@
 
 bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
-	if (!exprNode->concreteTypeInfo)
-		return true;
+    if (!exprNode->concreteTypeInfo)
+        return true;
 
     RegisterList r0;
     reserveContiguousRegisterRC(context, r0, 2);
@@ -517,7 +517,8 @@ bool ByteCodeGenJob::emitCastNativeString(ByteCodeGenContext* context, AstNode* 
 
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        node->resultRegisterRC += reserveRegisterRC(context);
+        reserveContiguousRegisterRC(context, node->resultRegisterRC, 2);
+		emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[0]);
         emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
         return true;
     }
