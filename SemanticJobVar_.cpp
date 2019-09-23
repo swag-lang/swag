@@ -117,37 +117,31 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
 
             ptrDest += 2 * sizeof(Register);
             offset += 2 * sizeof(Register);
+            continue;
         }
-        else
-        {
-            switch (child->typeInfo->sizeOf)
-            {
-            case 1:
-                *(uint8_t*) ptrDest = child->computedValue.reg.u8;
-                ptrDest += 1;
-                offset += 1;
-                break;
-            case 2:
-                *(uint16_t*) ptrDest = child->computedValue.reg.u16;
-                ptrDest += 2;
-                offset += 2;
-                break;
-            case 4:
-                *(uint32_t*) ptrDest = child->computedValue.reg.u32;
-                ptrDest += 4;
-                offset += 4;
-                break;
-            case 8:
-                *(uint64_t*) ptrDest = child->computedValue.reg.u64;
-                ptrDest += 8;
-                offset += 8;
-                break;
 
-            default:
-                sourceFile->report({sourceFile, node, "collectLiterals, invalid type size"});
-                return false;
-            }
+        switch (child->typeInfo->sizeOf)
+        {
+        case 1:
+            *(uint8_t*) ptrDest = child->computedValue.reg.u8;
+            break;
+        case 2:
+            *(uint16_t*) ptrDest = child->computedValue.reg.u16;
+            break;
+        case 4:
+            *(uint32_t*) ptrDest = child->computedValue.reg.u32;
+            break;
+        case 8:
+            *(uint64_t*) ptrDest = child->computedValue.reg.u64;
+            break;
+
+        default:
+            sourceFile->report({sourceFile, node, "collectLiterals, invalid type size"});
+            return false;
         }
+
+        ptrDest += child->typeInfo->sizeOf;
+        offset += child->typeInfo->sizeOf;
     }
 
     return true;
