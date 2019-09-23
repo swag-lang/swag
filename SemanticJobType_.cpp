@@ -53,15 +53,16 @@ bool SemanticJob::postProcessLeftRightAny(SemanticContext* context, AstNode* lef
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
     SWAG_ASSERT(right->castedTypeInfo);
+
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, left, right->castedTypeInfo, &right->concreteTypeInfo, &right->concreteTypeInfoStorage));
     return true;
 }
 
 bool SemanticJob::postProcessLeftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
+    SWAG_CHECK(postProcessLeftRightAny(context, left, right));
     SWAG_CHECK(postProcessLeftRightSeg(context, left, right));
-	SWAG_CHECK(postProcessLeftRightAny(context, left, right));
-	return true;
+    return true;
 }
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)

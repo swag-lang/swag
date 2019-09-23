@@ -312,7 +312,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(postProcessLeftRight(context, node->assignment, node->assignment));
+    SWAG_CHECK(postProcessLeftRight(context, node, node->assignment));
     if (context->result == SemanticResult::Pending)
         return true;
 
