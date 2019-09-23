@@ -449,15 +449,12 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         {
             if (typeVar->kind == TypeInfoKind::Array)
             {
-                auto        typeList      = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeList);
-                auto        module        = sourceFile->module;
-                uint32_t    storageOffset = module->constantSegment.reserve(typeVar->sizeOf);
-                scoped_lock lock(module->constantSegment.mutex);
-                auto        offset = storageOffset;
-                SemanticJob::collectLiterals(context->sourceFile, offset, varDecl->assignment, nullptr, &module->constantSegment);
+                auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
+                auto typeList = CastTypeInfo<TypeInfoList>(varDecl->assignment->typeInfo, TypeInfoKind::TypeList);
 
-                auto inst   = emitInstruction(&cxt, ByteCodeOp::RARefFromConstantSeg, 1, 2);
-                inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
+                auto inst = emitInstruction(&cxt, ByteCodeOp::RARefFromConstantSeg, 1, 2);
+                SWAG_ASSERT(exprList->storageOffsetSegment != UINT32_MAX);
+                inst->c.u64 = ((uint64_t) exprList->storageOffsetSegment << 32) | (uint32_t) typeList->childs.size();
 
                 emitInstruction(&cxt, ByteCodeOp::CopyVC, 0, 1)->c.u32 = typeVar->sizeOf;
             }
