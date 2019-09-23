@@ -13,6 +13,20 @@ struct DataSegmentHeader
     uint32_t size;
 };
 
+enum class SegmentKind
+{
+    Me,
+    Data,
+    Constant,
+};
+
+struct DataSegmentRef
+{
+    uint32_t    sourceOffset;
+    uint32_t    destOffset;
+    SegmentKind destSeg;
+};
+
 struct DataSegment
 {
     uint32_t                  reserve(uint32_t size);
@@ -22,9 +36,9 @@ struct DataSegment
     vector<DataSegmentHeader> buckets;
     SpinLock                  mutex;
 
-    void                             addInitString(uint32_t segOffset, uint32_t strIndex);
-    void                             addInitPtr(uint32_t fromOffset, uint32_t toOffset);
-    SpinLock                         mutexPtr;
-    map<uint32_t, uint32_t>          initString;
-    vector<pair<uint32_t, uint32_t>> initPtr;
+    void                    addInitString(uint32_t segOffset, uint32_t strIndex);
+    void                    addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg = SegmentKind::Me);
+    SpinLock                mutexPtr;
+    map<uint32_t, uint32_t> initString;
+    vector<DataSegmentRef>  initPtr;
 };

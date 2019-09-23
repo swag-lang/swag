@@ -20,7 +20,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
         last = &buckets.back();
 
     if (last)
-    {        
+    {
         if (last->count + size <= last->size)
         {
             result = last->totalCountBefore + last->count;
@@ -30,9 +30,9 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     }
 
     DataSegmentHeader bucket;
-    bucket.size   = max(size, BUCKET_SIZE);
-    bucket.buffer = (uint8_t*) calloc(1, bucket.size);
-    bucket.count  = size;
+    bucket.size             = max(size, BUCKET_SIZE);
+    bucket.buffer           = (uint8_t*) calloc(1, bucket.size);
+    bucket.count            = size;
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
     buckets.emplace_back(bucket);
 
@@ -42,7 +42,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
 uint8_t* DataSegment::address(uint32_t location)
 {
     scoped_lock lock(mutex);
-	return addressNoLock(location);
+    return addressNoLock(location);
 }
 
 uint8_t* DataSegment::addressNoLock(uint32_t location)
@@ -67,8 +67,13 @@ void DataSegment::addInitString(uint32_t segOffset, uint32_t strIndex)
     initString[strIndex] = segOffset;
 }
 
-void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset)
+void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg)
 {
+    DataSegmentRef ref;
+    ref.sourceOffset = fromOffset;
+    ref.destOffset   = toOffset;
+    ref.destSeg      = seg;
+
     scoped_lock lk(mutexPtr);
-	initPtr.push_back({fromOffset, toOffset});
+    initPtr.push_back(ref);
 }

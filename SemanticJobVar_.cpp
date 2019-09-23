@@ -316,6 +316,17 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto stringIndex                       = module->reserveString(value->text);
             module->dataSegment.addInitString(storageOffset, stringIndex);
         }
+        else if (typeInfo->isNative(NativeTypeKind::Any))
+        {
+            auto ptrDest                        = module->dataSegment.addressNoLock(storageOffset);
+            auto storageOffsetValue             = module->constantSegment.reserve(node->assignment->castedTypeInfo->sizeOf);
+            auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);
+            *(uint32_t*) ptrStorage             = value->reg.u32;
+            *(void**) ptrDest                   = ptrStorage;
+            *(void**) (ptrDest + sizeof(void*)) = module->constantSegment.address(node->assignment->concreteTypeInfoStorage);
+            module->dataSegment.addInitPtr(storageOffset, storageOffsetValue, SegmentKind::Constant);
+            module->dataSegment.addInitPtr(storageOffset + 8, node->assignment->concreteTypeInfoStorage, SegmentKind::Constant);
+        }
         else if (typeInfo->kind == TypeInfoKind::Native)
         {
             uint8_t* ptrDest = module->dataSegment.addressNoLock(storageOffset);
@@ -334,7 +345,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 *(uint64_t*) ptrDest = value->reg.u64;
                 break;
             default:
-                return internalError(context, "emitVarDecl, init native, bad size");
+                return internalError(context, "resolveVarDecl, init native, bad size");
             }
         }
         else if (node->assignment && node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
