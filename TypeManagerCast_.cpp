@@ -1484,16 +1484,18 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return true;
 
     // Everything can be casted to type 'any'
-	if (toType->isNative(NativeTypeKind::Any))
-	{
-		if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
-		{
-			nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
-			nodeToCast->typeInfo = toType;
-		}
+    if (toType->isNative(NativeTypeKind::Any))
+    {
+        if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
+            nodeToCast->typeInfo       = toType;
+            auto& typeTable            = context->sourceFile->module->typeTable;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, context->node, nodeToCast->castedTypeInfo, &nodeToCast->concreteTypeInfo, &nodeToCast->concreteTypeInfoStorage));
+        }
 
-		return true;
-	}
+        return true;
+    }
 
     if (fromType->kind == TypeInfoKind::TypedVariadic)
         fromType = ((TypeInfoVariadic*) fromType)->rawType;
