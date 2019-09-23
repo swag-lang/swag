@@ -9,7 +9,8 @@
 
 bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
-    SWAG_ASSERT(exprNode->concreteTypeInfo);
+	if (!exprNode->concreteTypeInfo)
+		return true;
 
     RegisterList r0;
     reserveContiguousRegisterRC(context, r0, 2);

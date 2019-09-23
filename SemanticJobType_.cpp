@@ -13,6 +13,10 @@ bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNod
     if (!anyNode->typeInfo->isNative(NativeTypeKind::Any))
         return true;
 
+	// From any to any, nothing to do
+    if (castedNode->typeInfo->isNative(NativeTypeKind::Any) && !castedNode->castedTypeInfo)
+        return true;
+
     SWAG_CHECK(waitForSwagScope(context));
     if (context->result == SemanticResult::Pending)
         return true;

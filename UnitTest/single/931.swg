@@ -1,11 +1,5 @@
 #module module931
 
-func(T) valueof(x: any)->T
-{
-	ptr := cast(*T) @dataof(x)
-	return ptr[0]
-}
-
 //#[swag.printbc]
 #test
 {
