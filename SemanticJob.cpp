@@ -5,9 +5,10 @@
 
 Pool<SemanticJob> g_Pool_semanticJob;
 
-bool SemanticJob::internalError(SemanticContext* context, const char* msg)
+bool SemanticJob::internalError(SemanticContext* context, const char* msg, AstNode* node)
 {
-    AstNode* node = context->node;
+    if (!node)
+        node = context->node;
     context->errorContext.report({context->sourceFile, node->token, format("internal compiler error during semantic (%s)", msg)});
     return false;
 }

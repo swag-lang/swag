@@ -62,7 +62,7 @@ struct SemanticJob : public Job
 {
     JobResult   execute() override;
     static bool error(SemanticContext* context, const Utf8& msg);
-    static bool internalError(SemanticContext* context, const char* msg);
+    static bool internalError(SemanticContext* context, const char* msg, AstNode* node = nullptr);
 
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);

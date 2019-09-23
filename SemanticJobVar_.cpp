@@ -46,29 +46,6 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Native)
-    {
-        switch (typeInfo->sizeOf)
-        {
-        case 1:
-            *(uint8_t*) ptrDest = value->reg.u8;
-            break;
-        case 2:
-            *(uint16_t*) ptrDest = value->reg.u16;
-            break;
-        case 4:
-            *(uint32_t*) ptrDest = value->reg.u32;
-            break;
-        case 8:
-            *(uint64_t*) ptrDest = value->reg.u64;
-            break;
-        default:
-            return internalError(context, "storeToSegment, init native, bad size");
-        }
-
-        return true;
-    }
-
     if (assignment && assignment->typeInfo->kind == TypeInfoKind::TypeList)
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
@@ -87,15 +64,27 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
         return true;
     }
 
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        *(uint8_t*) ptrDest = value->reg.u8;
+        break;
+    case 2:
+        *(uint16_t*) ptrDest = value->reg.u16;
+        break;
+    case 4:
+        *(uint32_t*) ptrDest = value->reg.u32;
+        break;
+    case 8:
+        *(uint64_t*) ptrDest = value->reg.u64;
+        break;
+    }
+
     return true;
 }
 
 bool SemanticJob::collectLiterals(SemanticContext* context, uint32_t& offset, AstNode* node, DataSegment* segment)
 {
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-
-    uint8_t* ptrDest = segment ? segment->addressNoLock(offset) : nullptr;
     for (auto child : node->childs)
     {
         if (child->kind == AstNodeKind::ExpressionList)
@@ -104,41 +93,7 @@ bool SemanticJob::collectLiterals(SemanticContext* context, uint32_t& offset, As
             continue;
         }
 
-        if (child->typeInfo->isNative(NativeTypeKind::String))
-        {
-            Register* storedV  = (Register*) ptrDest;
-            storedV[0].pointer = (uint8_t*) child->computedValue.text.c_str();
-            storedV[1].u64     = child->computedValue.text.length();
-
-            auto stringIndex = module->reserveString(child->computedValue.text);
-            segment->addInitString(offset, stringIndex);
-
-            ptrDest += 2 * sizeof(Register);
-            offset += 2 * sizeof(Register);
-            continue;
-        }
-
-        switch (child->typeInfo->sizeOf)
-        {
-        case 1:
-            *(uint8_t*) ptrDest = child->computedValue.reg.u8;
-            break;
-        case 2:
-            *(uint16_t*) ptrDest = child->computedValue.reg.u16;
-            break;
-        case 4:
-            *(uint32_t*) ptrDest = child->computedValue.reg.u32;
-            break;
-        case 8:
-            *(uint64_t*) ptrDest = child->computedValue.reg.u64;
-            break;
-
-        default:
-            internalError(context, "collectLiterals, invalid type size");
-            return false;
-        }
-
-        ptrDest += child->typeInfo->sizeOf;
+        SWAG_CHECK(storeToSegmentNoLock(context, offset, segment, &child->computedValue, child->typeInfo, child));
         offset += child->typeInfo->sizeOf;
     }
 

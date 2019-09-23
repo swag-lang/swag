@@ -26,7 +26,9 @@ bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNod
         if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
         {
             scoped_lock lock(module->dataSegment.mutex);
-            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, &listNode->computedValue, anyNode->typeInfo, castedNode));
+            auto        typeInfo = castedNode ? castedNode->typeInfo : anyNode->typeInfo;
+            typeInfo             = TypeManager::concreteType(typeInfo);
+            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, &listNode->computedValue, typeInfo, castedNode));
         }
     }
 
