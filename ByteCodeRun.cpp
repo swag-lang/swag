@@ -527,7 +527,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::MovRASP:
-        registersRC[ip->a.u32].pointer = context->sp;
+        registersRC[ip->a.u32].pointer = context->sp - ip->b.u32;
         break;
 
     case ByteCodeOp::RAFromStack8:

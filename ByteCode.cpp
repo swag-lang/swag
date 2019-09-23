@@ -157,7 +157,6 @@ void ByteCode::print()
         case ByteCodeOp::IncRA:
         case ByteCodeOp::IncRA64:
         case ByteCodeOp::LambdaCall:
-        case ByteCodeOp::MovRASP:
         case ByteCodeOp::CastS8S16:
         case ByteCodeOp::CastS16S32:
         case ByteCodeOp::CastS32S8:
@@ -175,10 +174,10 @@ void ByteCode::print()
         case ByteCodeOp::CastF32F64:
         case ByteCodeOp::CastF64S64:
         case ByteCodeOp::CastF64F32:
-		case ByteCodeOp::CastBool8:
-		case ByteCodeOp::CastBool16:
-		case ByteCodeOp::CastBool32:
-		case ByteCodeOp::CastBool64:
+        case ByteCodeOp::CastBool8:
+        case ByteCodeOp::CastBool16:
+        case ByteCodeOp::CastBool32:
+        case ByteCodeOp::CastBool64:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -191,7 +190,7 @@ void ByteCode::print()
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::BoundCheckReg:
         case ByteCodeOp::CopyRARB:
-		case ByteCodeOp::CopyRARBAddr:
+        case ByteCodeOp::CopyRARBAddr:
         case ByteCodeOp::CopyRRxRCx:
         case ByteCodeOp::CopyRCxRRxCall:
         case ByteCodeOp::CopyRRxRCxCall:
@@ -207,7 +206,7 @@ void ByteCode::print()
             break;
 
         case ByteCodeOp::RARefFromConstantSeg:
-            wprintf(L"RA: %u RB: %u VC: { %u, %u } ", ip->a.u32, ip->b.u32, (uint32_t) (ip->c.u64 >> 32), (uint32_t) (ip->c.u64 & 0xFFFFFFFF));
+            wprintf(L"RA: %u RB: %u VC: { %u, %u } ", ip->a.u32, ip->b.u32, (uint32_t)(ip->c.u64 >> 32), (uint32_t)(ip->c.u64 & 0xFFFFFFFF));
             break;
 
         case ByteCodeOp::RARefFromStackParam:
@@ -224,11 +223,12 @@ void ByteCode::print()
         case ByteCodeOp::ShiftRightU64VB:
         case ByteCodeOp::IncRAVB:
         case ByteCodeOp::ClearX:
-		case ByteCodeOp::RAAddrFromConstantSeg:
+        case ByteCodeOp::RAAddrFromConstantSeg:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;
 
         case ByteCodeOp::RAFromStackParam64:
+        case ByteCodeOp::MovRASP:
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 

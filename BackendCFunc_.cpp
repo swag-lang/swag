@@ -1216,7 +1216,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
 
         case ByteCodeOp::MovRASP:
             bufferC.addString(format("__register vaargs%u[] = {", vaargsIdx));
-            for (int j = ip->b.u32 - 1; j >= 0; j--)
+            for (int j = ip->c.u32 - 1; j >= 0; j--)
                 bufferC.addString(format("rc%u, ", j));
             bufferC.addString(format(" }; r%u.pointer = (swag_int8_t*) &vaargs%u;", ip->a.u32, vaargsIdx));
             vaargsIdx++;
