@@ -86,7 +86,6 @@ struct SemanticJob : public Job
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
-    static bool waitForSwagScope(SemanticContext* context);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();

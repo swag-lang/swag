@@ -46,10 +46,6 @@ bool SemanticJob::postProcessLeftRightAny(SemanticContext* context, AstNode* lef
     if (right->typeInfo->isNative(NativeTypeKind::Any) && !right->castedTypeInfo)
         return true;
 
-    SWAG_CHECK(waitForSwagScope(context));
-    if (context->result == SemanticResult::Pending)
-        return true;
-
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
     SWAG_ASSERT(right->castedTypeInfo);

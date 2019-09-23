@@ -207,10 +207,18 @@ bool Workspace::buildModules(const vector<Module*>& list)
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("starting semantic pass...");
 
-    // Semantic pass
+    // Semantic pass on runtime module first
+    auto job    = g_Pool_moduleSemanticJob.alloc();
+    job->module = runtimeModule;
+    g_ThreadMgr.addJob(job);
+    g_ThreadMgr.waitEndJobs();
+
+    // Semantic pass on all other modules
     for (auto module : list)
     {
-        auto job    = g_Pool_moduleSemanticJob.alloc();
+        if (module == runtimeModule)
+            continue;
+        job         = g_Pool_moduleSemanticJob.alloc();
         job->module = module;
         g_ThreadMgr.addJob(job);
     }
