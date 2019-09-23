@@ -1173,9 +1173,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
                 if (!(castFlags & CASTFLAG_NOERROR))
                 {
                     if (toTypeArray->count > fromTypeList->childs.size())
-                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
                     else
-                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
                 }
 
                 return false;
@@ -1203,9 +1203,9 @@ bool TypeManager::castToTuple(SemanticContext* context, TypeInfo* toType, TypeIn
                 if (!(castFlags & CASTFLAG_NOERROR))
                 {
                     if (toTypeList->childs.size() > fromTypeList->childs.size())
-                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
                     else
-                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
                 }
 
                 return false;

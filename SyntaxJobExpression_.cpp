@@ -323,16 +323,16 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymQuestion)
     {
-		SWAG_CHECK(eatToken());
-        auto triNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::QuestionExpression, sourceFile->indexInModule, parent);
-		triNode->semanticFct = &SemanticJob::resolveTrinaryOp;
+        SWAG_CHECK(eatToken());
+        auto triNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::QuestionExpression, sourceFile->indexInModule, parent);
+        triNode->semanticFct = &SemanticJob::resolveTrinaryOp;
         if (result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);
 
-		SWAG_CHECK(doBoolExpression(triNode));
-		SWAG_CHECK(eatToken(TokenId::SymColon));
-		SWAG_CHECK(doBoolExpression(triNode));
+        SWAG_CHECK(doBoolExpression(triNode));
+        SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(doBoolExpression(triNode));
     }
     else
     {
@@ -394,6 +394,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
+	initNode->childs.back()->token.endLocation = token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
@@ -420,10 +421,10 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
         if (token.id != TokenId::SymComma)
             break;
         SWAG_CHECK(eatToken(TokenId::SymComma));
-	}
+    }
 
+    initNode->childs.back()->token.endLocation = token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-    initNode->token.endLocation = token.startLocation;
 
     return true;
 }
