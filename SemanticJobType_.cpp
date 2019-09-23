@@ -61,6 +61,8 @@ bool SemanticJob::postProcessLeftRightAny(SemanticContext* context, AstNode* lef
 bool SemanticJob::postProcessLeftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
     SWAG_CHECK(postProcessLeftRightAny(context, left, right));
+    if (context->result == SemanticResult::Pending)
+        return true;
     SWAG_CHECK(postProcessLeftRightSeg(context, left, right));
     return true;
 }
