@@ -94,9 +94,15 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffs
 
     if (typeInfo->isNative(NativeTypeKind::Any))
     {
-        auto storageOffsetValue             = module->constantSegment.reserve(assignment->castedTypeInfo->sizeOf);
+        if (!assignment->castedTypeInfo)
+            return internalError(context, "storeToSegment, cannot resolve any");
+
+        // Store value in constant segment
+        uint32_t storageOffsetValue;
+        SWAG_CHECK(storeToSegment(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
+
+        // Then reference that value and the concrete type info
         auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);
-        *(uint32_t*) ptrStorage             = value->reg.u32;
         *(void**) ptrDest                   = ptrStorage;
         *(void**) (ptrDest + sizeof(void*)) = module->constantSegment.address(assignment->concreteTypeInfoStorage);
 
@@ -122,7 +128,7 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffs
             *(uint64_t*) ptrDest = value->reg.u64;
             break;
         default:
-            return internalError(context, "resolveVarDecl, init native, bad size");
+            return internalError(context, "storeToSegment, init native, bad size");
         }
 
         return true;
