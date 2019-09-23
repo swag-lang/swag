@@ -32,11 +32,11 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->cOutputByteCode = true;
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
-    //cmdLine->output = false;
+    cmdLine->output = false;
     //cmdLine->verboseBackendCommand = true;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->runBackendTests = false;
-    cmdLine->fileFilter = "935";
+    //cmdLine->fileFilter = "935";
 }
 
 void CommandLineParser::logArguments()

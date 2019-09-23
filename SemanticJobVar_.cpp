@@ -303,13 +303,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
 
-        auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
-        storageOffset = module->dataSegment.reserve(typeInfo->sizeOf);
+        auto value = node->assignment ? &node->assignment->computedValue : &node->computedValue;
         node->flags |= AST_R_VALUE;
 
         scoped_lock lock(module->dataSegment.mutex);
         if (typeInfo->isNative(NativeTypeKind::String))
         {
+            storageOffset                          = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
             uint8_t* ptrDest                       = module->dataSegment.addressNoLock(storageOffset);
             *(const char**) ptrDest                = value->text.c_str();
             *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
@@ -318,6 +318,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else if (typeInfo->isNative(NativeTypeKind::Any))
         {
+            storageOffset                       = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
             auto ptrDest                        = module->dataSegment.addressNoLock(storageOffset);
             auto storageOffsetValue             = module->constantSegment.reserve(node->assignment->castedTypeInfo->sizeOf);
             auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);
@@ -329,6 +330,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else if (typeInfo->kind == TypeInfoKind::Native)
         {
+            storageOffset    = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
             uint8_t* ptrDest = module->dataSegment.addressNoLock(storageOffset);
             switch (typeInfo->sizeOf)
             {
@@ -350,6 +352,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else if (node->assignment && node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
+            storageOffset = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
             SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node, "expression cannot be evaluated at compile time"}));
             auto offset = storageOffset;
             auto result = collectLiterals(sourceFile, offset, node->assignment, nullptr, &module->dataSegment);
@@ -357,11 +360,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
         else if (typeInfo->kind == TypeInfoKind::Struct)
         {
+            storageOffset   = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             auto offset     = storageOffset;
             auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, &module->dataSegment);
             SWAG_CHECK(result);
         }
+		else
+		{
+			storageOffset = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
+		}
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
