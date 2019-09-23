@@ -35,30 +35,8 @@ bool SemanticJob::postProcessLeftRightSeg(SemanticContext* context, AstNode* lef
     return true;
 }
 
-bool SemanticJob::postProcessLeftRightAny(SemanticContext* context, AstNode* left, AstNode* right)
-{
-    if (!left || !right)
-        return true;
-    if (!left->typeInfo->isNative(NativeTypeKind::Any))
-        return true;
-
-    // From any to any, nothing to do
-    if (right->typeInfo->isNative(NativeTypeKind::Any) && !right->castedTypeInfo)
-        return true;
-
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    SWAG_ASSERT(right->castedTypeInfo);
-
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, left, right->castedTypeInfo, &right->concreteTypeInfo, &right->concreteTypeInfoStorage));
-    return true;
-}
-
 bool SemanticJob::postProcessLeftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    SWAG_CHECK(postProcessLeftRightAny(context, left, right));
-    if (context->result == SemanticResult::Pending)
-        return true;
     SWAG_CHECK(postProcessLeftRightSeg(context, left, right));
     return true;
 }
