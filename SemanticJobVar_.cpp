@@ -312,10 +312,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(postProcessLeftRight(context, node, node->assignment));
-    if (context->result == SemanticResult::Pending)
-        return true;
-
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)

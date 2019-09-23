@@ -8,39 +8,6 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool SemanticJob::postProcessLeftRightSeg(SemanticContext* context, AstNode* left, AstNode* right)
-{
-    auto sourceFile = context->sourceFile;
-    auto module     = sourceFile->module;
-
-    // Allocate room on constant segment
-    auto listNode = right;
-    if (listNode && listNode->typeInfo->kind == TypeInfoKind::TypeList && (listNode->flags & AST_CONST_EXPR))
-    {
-        AstExpressionList* exprList = nullptr;
-        if (listNode->kind == AstNodeKind::FuncCallParam)
-            listNode = listNode->childs.front();
-        if (listNode->kind == AstNodeKind::ExpressionList)
-            exprList = CastAst<AstExpressionList>(listNode, AstNodeKind::ExpressionList);
-
-        if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
-        {
-            scoped_lock lock(module->dataSegment.mutex);
-            auto        typeInfo = right ? right->typeInfo : left->typeInfo;
-            typeInfo             = TypeManager::concreteType(typeInfo);
-            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, &listNode->computedValue, typeInfo, right));
-        }
-    }
-
-    return true;
-}
-
-bool SemanticJob::postProcessLeftRight(SemanticContext* context, AstNode* left, AstNode* right)
-{
-    SWAG_CHECK(postProcessLeftRightSeg(context, left, right));
-    return true;
-}
-
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
     auto sourceFile = context->sourceFile;
