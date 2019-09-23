@@ -7,5 +7,5 @@ var x: [] any = [6]
 {
 	t := x[0]
 	type := @kindof(t)
-	@print(type.name)
+	@assert(type.name == "s32")
 }

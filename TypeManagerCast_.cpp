@@ -1491,7 +1491,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
             nodeToCast->typeInfo       = toType;
             auto& typeTable            = context->sourceFile->module->typeTable;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, context->node, nodeToCast->castedTypeInfo, &nodeToCast->concreteTypeInfo, &nodeToCast->concreteTypeInfoStorage));
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeToCast->castedTypeInfo, &nodeToCast->concreteTypeInfo, &nodeToCast->concreteTypeInfoStorage));
         }
 
         return true;
