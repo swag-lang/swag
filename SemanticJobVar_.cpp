@@ -89,8 +89,10 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffs
         *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
         auto stringIndex                       = module->reserveString(value->text);
         seg->addInitString(storageOffset, stringIndex);
+        return true;
     }
-    else if (typeInfo->isNative(NativeTypeKind::Any))
+
+    if (typeInfo->isNative(NativeTypeKind::Any))
     {
         auto storageOffsetValue             = module->constantSegment.reserve(assignment->castedTypeInfo->sizeOf);
         auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);
@@ -100,8 +102,10 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffs
 
         seg->addInitPtr(storageOffset, storageOffsetValue, SegmentKind::Constant);
         seg->addInitPtr(storageOffset + 8, assignment->concreteTypeInfoStorage, SegmentKind::Constant);
+        return true;
     }
-    else if (typeInfo->kind == TypeInfoKind::Native)
+
+    if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->sizeOf)
         {
@@ -120,20 +124,26 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffs
         default:
             return internalError(context, "resolveVarDecl, init native, bad size");
         }
+
+        return true;
     }
-    else if (assignment && assignment->typeInfo->kind == TypeInfoKind::TypeList)
+
+    if (assignment && assignment->typeInfo->kind == TypeInfoKind::TypeList)
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
         auto offset = storageOffset;
         auto result = collectLiterals(sourceFile, offset, assignment, nullptr, seg);
         SWAG_CHECK(result);
+        return true;
     }
-    else if (typeInfo->kind == TypeInfoKind::Struct)
+
+    if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         auto offset     = storageOffset;
         auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, seg);
         SWAG_CHECK(result);
+        return true;
     }
 
     return true;
