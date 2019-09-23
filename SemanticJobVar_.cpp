@@ -6,12 +6,17 @@
 #include "Ast.h"
 #include "TypeManager.h"
 
-bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
+bool SemanticJob::reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    auto sourceFile  = context->sourceFile;
-    auto module      = sourceFile->module;
-    storageOffset    = seg->reserveNoLock(typeInfo->sizeOf);
-    uint8_t* ptrDest = seg->addressNoLock(storageOffset);
+    storageOffset = seg->reserveNoLock(typeInfo->sizeOf);
+    return storeToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
+}
+
+bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
+{
+    auto     sourceFile = context->sourceFile;
+    auto     module     = sourceFile->module;
+    uint8_t* ptrDest    = seg->addressNoLock(storageOffset);
 
     if (typeInfo->isNative(NativeTypeKind::String))
     {
@@ -29,7 +34,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t& stora
 
         // Store value in constant segment
         uint32_t storageOffsetValue;
-        SWAG_CHECK(storeToSegmentNoLock(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
+        SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
 
         // Then reference that value and the concrete type info
         auto ptrStorage                     = module->constantSegment.address(storageOffsetValue);
@@ -376,7 +381,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         auto value = node->assignment ? &node->assignment->computedValue : &node->computedValue;
 
         scoped_lock lock(module->dataSegment.mutex);
-        SWAG_CHECK(storeToSegmentNoLock(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
+        SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
