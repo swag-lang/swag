@@ -261,7 +261,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
                     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters.back()->typeInfo, nodeCall));
 
-				SWAG_CHECK(dealWithAny(context, nodeCall, nodeCall));
+				SWAG_CHECK(postProcessLeftRight(context, nodeCall, nodeCall));
 				if (context->result == SemanticResult::Pending)
 					return true;
             }

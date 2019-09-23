@@ -74,17 +74,18 @@ struct SemanticJob : public Job
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool forceExecuteNode(SemanticContext* context);
     static bool collectLiterals(SemanticContext* context, uint32_t& offset, AstNode* node, DataSegment* segment);
-	static bool reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-	static bool storeToSegmentNoLock(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool storeToSegmentNoLock(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
-	static bool dealWithAny(SemanticContext* context, AstNode* anyNode, AstNode* castedNode);
+    static bool postProcessLeftRightSeg(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool postProcessLeftRight(SemanticContext* context, AstNode* anyNode, AstNode* castedNode);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
-	static bool waitForSwagScope(SemanticContext* context);
+    static bool waitForSwagScope(SemanticContext* context);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();
@@ -133,7 +134,7 @@ struct SemanticJob : public Job
     static bool resolveFuncDeclParams(SemanticContext* context);
     static bool resolveFuncDecl(SemanticContext* context);
     static bool resolveFuncDeclType(SemanticContext* context);
-	static bool registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode);
+    static bool registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode);
     static bool resolveFuncCallParams(SemanticContext* context);
     static bool resolveFuncCallParam(SemanticContext* context);
     static bool resolveAttrDecl(SemanticContext* context);
@@ -166,7 +167,7 @@ struct SemanticJob : public Job
     static bool resolveArrayPointerIndex(SemanticContext* context);
     static bool resolveArrayPointerRef(SemanticContext* context);
     static bool resolveTypeList(SemanticContext* context);
-	static bool resolveTrinaryOp(SemanticContext* context);
+    static bool resolveTrinaryOp(SemanticContext* context);
 
     void reset() override
     {

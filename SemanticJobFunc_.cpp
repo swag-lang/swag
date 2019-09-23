@@ -382,7 +382,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, returnType, child));
 
 	// Deal with post cast (any, constant segments...)
-	SWAG_CHECK(dealWithAny(context, funcNode->returnType, child));
+	SWAG_CHECK(postProcessLeftRight(context, funcNode->returnType, child));
     if (context->result == SemanticResult::Pending)
         return true;
 

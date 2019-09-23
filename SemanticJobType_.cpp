@@ -8,13 +8,13 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 
-bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNode* castedNode)
+bool SemanticJob::postProcessLeftRightSeg(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
     // Allocate room on constant segment
-    auto listNode = castedNode;
+    auto listNode = right;
     if (listNode && listNode->typeInfo->kind == TypeInfoKind::TypeList && (listNode->flags & AST_CONST_EXPR))
     {
         AstExpressionList* exprList = nullptr;
@@ -26,19 +26,27 @@ bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNod
         if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
         {
             scoped_lock lock(module->dataSegment.mutex);
-            auto        typeInfo = castedNode ? castedNode->typeInfo : anyNode->typeInfo;
+            auto        typeInfo = right ? right->typeInfo : left->typeInfo;
             typeInfo             = TypeManager::concreteType(typeInfo);
-            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, &listNode->computedValue, typeInfo, castedNode));
+            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, &listNode->computedValue, typeInfo, right));
         }
     }
 
-    if (!anyNode || !castedNode)
+    return true;
+}
+
+bool SemanticJob::postProcessLeftRight(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    SWAG_CHECK(postProcessLeftRightSeg(context, left, right));
+
+    auto sourceFile = context->sourceFile;
+    if (!left || !right)
         return true;
-    if (!anyNode->typeInfo->isNative(NativeTypeKind::Any))
+    if (!left->typeInfo->isNative(NativeTypeKind::Any))
         return true;
 
     // From any to any, nothing to do
-    if (castedNode->typeInfo->isNative(NativeTypeKind::Any) && !castedNode->castedTypeInfo)
+    if (right->typeInfo->isNative(NativeTypeKind::Any) && !right->castedTypeInfo)
         return true;
 
     SWAG_CHECK(waitForSwagScope(context));
@@ -46,8 +54,8 @@ bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNod
         return true;
 
     auto& typeTable = sourceFile->module->typeTable;
-    SWAG_ASSERT(castedNode->castedTypeInfo);
-    SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, anyNode, castedNode->castedTypeInfo, &castedNode->concreteTypeInfo, &castedNode->concreteTypeInfoStorage));
+    SWAG_ASSERT(right->castedTypeInfo);
+    SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, left, right->castedTypeInfo, &right->concreteTypeInfo, &right->concreteTypeInfoStorage));
     return true;
 }
 
