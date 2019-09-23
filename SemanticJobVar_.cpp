@@ -102,7 +102,7 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffs
         SWAG_CHECK(storeToSegment(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
 
         // Then reference that value and the concrete type info
-        auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);
+        auto ptrStorage                     = module->constantSegment.address(storageOffsetValue);
         *(void**) ptrDest                   = ptrStorage;
         *(void**) (ptrDest + sizeof(void*)) = module->constantSegment.address(assignment->concreteTypeInfoStorage);
 
