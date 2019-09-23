@@ -9,7 +9,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
     auto node = CastAst<AstIf>(context->node, AstNodeKind::If);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
     if (node->boolExpression->flags & AST_VALUE_COMPUTED)
@@ -40,7 +40,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     auto node = CastAst<AstWhile>(context->node, AstNodeKind::While);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, node->boolExpression, CASTFLAG_AUTO_BOOL));
     node->byteCodeFct                       = &ByteCodeGenJob::emitLoop;
     node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitWhileBeforeExpr;
     node->boolExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitWhileAfterExpr;
@@ -67,7 +67,7 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, node->boolExpression));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, node->boolExpression));
     node->byteCodeFct                       = &ByteCodeGenJob::emitLoop;
     node->boolExpression->byteCodeBeforeFct = &ByteCodeGenJob::emitForBeforeExpr;
     node->boolExpression->byteCodeAfterFct  = &ByteCodeGenJob::emitForAfterExpr;
@@ -93,7 +93,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
     for (auto oneExpression : node->expressions)
     {
         SWAG_CHECK(checkIsConcrete(context, oneExpression));
-        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->ownerSwitch->expression, oneExpression));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression));
     }
 
     node->typeInfo                 = node->ownerSwitch->expression->typeInfo;

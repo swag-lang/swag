@@ -379,7 +379,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, child));
     auto returnType = funcNode->returnType->typeInfo;
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, returnType, child));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, child));
 
 	// Deal with post cast (any, constant segments...)
 	SWAG_CHECK(postProcessLeftRight(context, funcNode->returnType, child));

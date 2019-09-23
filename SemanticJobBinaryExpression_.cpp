@@ -40,7 +40,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     }
 
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, node, format("operator '+' not allowed on type '%s'", rightTypeInfo->name.c_str())}));
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, left, right));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
     leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
@@ -160,7 +160,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     }
 
     SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, node, format("operator '-' not allowed on type '%s'", rightTypeInfo->name.c_str())}));
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, left, right));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
     leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
@@ -733,35 +733,35 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     case TokenId::SymAsterisk:
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBinaryOpMul(context, left, right));
         break;
     case TokenId::SymSlash:
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
         break;
     case TokenId::SymVertical:
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBitmaskOr(context, left, right));
         break;
     case TokenId::SymAmpersand:
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveBitmaskAnd(context, left, right));
         break;
     case TokenId::SymCircumflex:
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = left->typeInfo;
         SWAG_CHECK(resolveXor(context, left, right));
         break;
@@ -803,7 +803,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
         return context->errorContext.report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
 
     TypeManager::promote(left, right);
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoU32, right));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, right));
     node->typeInfo = left->typeInfo;
 
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
@@ -850,8 +850,8 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     }
 
     node->typeInfo = g_TypeMgr.typeInfoBool;
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, left));
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, g_TypeMgr.typeInfoBool, right));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, left));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, right));
 
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);

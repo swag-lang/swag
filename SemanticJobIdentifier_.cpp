@@ -225,9 +225,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                     if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
-                        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
+                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
                     else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
-                        SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters.back()->typeInfo, nodeCall));
+                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters.back()->typeInfo, nodeCall));
                 }
             }
 
@@ -257,9 +257,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
                 if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
-                    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
                 else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
-                    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch->solvedParameters.back()->typeInfo, nodeCall));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters.back()->typeInfo, nodeCall));
 
 				SWAG_CHECK(postProcessLeftRight(context, nodeCall, nodeCall));
 				if (context->result == SemanticResult::Pending)

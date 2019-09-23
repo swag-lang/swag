@@ -185,7 +185,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     for (int i = 0; i < params.size(); i++)
     {
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
-            SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, oneMatch.solvedParameters[i]->typeInfo, params[i], CASTFLAG_UNCONST));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[i]->typeInfo, params[i], CASTFLAG_UNCONST));
     }
 
     auto overload = oneMatch.symbolOverload;

@@ -6,29 +6,30 @@
 #include "SourceFile.h"
 #include "TypeTable.h"
 #include "Module.h"
+#include "SemanticJob.h"
 
-bool TypeManager::castError(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid)
+bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid)
 {
     if (!(castFlags & CASTFLAG_NOERROR))
     {
         assert(nodeToCast);
         if (explicitIsValid)
-            errorContext->report({errorContext->sourceFile, nodeToCast->token, format("cannot cast from '%s' to '%s' (an explicit cast exists)", fromType->name.c_str(), toType->name.c_str()).c_str()});
+            context->errorContext.report({context->sourceFile, nodeToCast->token, format("cannot cast from '%s' to '%s' (an explicit cast exists)", fromType->name.c_str(), toType->name.c_str()).c_str()});
         else
-            errorContext->report({errorContext->sourceFile, nodeToCast->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+            context->errorContext.report({context->sourceFile, nodeToCast->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
     }
 
     return false;
 }
 
-bool TypeManager::castToNativeBool(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (fromType == g_TypeMgr.typeInfoBool)
         return true;
 
     // Automatic cast to a bool is done only if requested, on specific nodes (like if or while expressions)
     if (!(castFlags & CASTFLAG_AUTO_BOOL))
-        return castError(errorContext, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
+        return castError(context, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
 
     if (fromType->kind == TypeInfoKind::Pointer)
     {
@@ -127,10 +128,10 @@ bool TypeManager::castToNativeBool(ErrorContext* errorContext, TypeInfo* fromTyp
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoBool, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeChar(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -178,10 +179,10 @@ bool TypeManager::castToNativeChar(ErrorContext* errorContext, TypeInfo* fromTyp
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoU32, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoU32, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -241,7 +242,7 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
                 if (nodeToCast->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u8'", nodeToCast->computedValue.reg.s64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u8'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -261,7 +262,7 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
                 if (nodeToCast->computedValue.reg.u64 > UINT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u8'", nodeToCast->computedValue.reg.u64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u8'", nodeToCast->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -282,10 +283,10 @@ bool TypeManager::castToNativeU8(ErrorContext* errorContext, TypeInfo* fromType,
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoU8, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoU8, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -345,7 +346,7 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
                 if (nodeToCast->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u16'", nodeToCast->computedValue.reg.s64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u16'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -365,7 +366,7 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
                 if (nodeToCast->computedValue.reg.u64 > UINT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u16'", nodeToCast->computedValue.reg.u64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u16'", nodeToCast->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -386,10 +387,10 @@ bool TypeManager::castToNativeU16(ErrorContext* errorContext, TypeInfo* fromType
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoU16, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoU16, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -449,7 +450,7 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                 if (nodeToCast->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u32'", nodeToCast->computedValue.reg.s64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u32'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -469,7 +470,7 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
                 if (nodeToCast->computedValue.reg.u64 > UINT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u32'", nodeToCast->computedValue.reg.u64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u32'", nodeToCast->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -490,10 +491,10 @@ bool TypeManager::castToNativeU32(ErrorContext* errorContext, TypeInfo* fromType
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoU32, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoU32, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -553,7 +554,7 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
                 if (nodeToCast->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u64'", nodeToCast->computedValue.reg.s64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u64'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -583,10 +584,10 @@ bool TypeManager::castToNativeU64(ErrorContext* errorContext, TypeInfo* fromType
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoU64, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoU64, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -645,7 +646,7 @@ bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType,
                 if (nodeToCast->computedValue.reg.s64 < INT8_MIN || nodeToCast->computedValue.reg.s64 > INT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's8'", nodeToCast->computedValue.reg.s64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's8'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -666,10 +667,10 @@ bool TypeManager::castToNativeS8(ErrorContext* errorContext, TypeInfo* fromType,
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoS8, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoS8, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -724,7 +725,7 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
                 if (nodeToCast->computedValue.reg.s64 < INT16_MIN || nodeToCast->computedValue.reg.s64 > INT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's16'", nodeToCast->computedValue.reg.s64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's16'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -745,10 +746,10 @@ bool TypeManager::castToNativeS16(ErrorContext* errorContext, TypeInfo* fromType
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoS16, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoS16, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -799,7 +800,7 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
                 if (nodeToCast->computedValue.reg.s64 < INT32_MIN || nodeToCast->computedValue.reg.s64 > INT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's32'", nodeToCast->computedValue.reg.s64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's32'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -820,10 +821,10 @@ bool TypeManager::castToNativeS32(ErrorContext* errorContext, TypeInfo* fromType
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoS32, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoS32, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_FORCE)
     {
@@ -874,7 +875,7 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
                 if (nodeToCast->computedValue.reg.s64 < INT64_MIN || nodeToCast->computedValue.reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NOERROR))
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's64'", nodeToCast->computedValue.reg.s64)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's64'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -895,10 +896,10 @@ bool TypeManager::castToNativeS64(ErrorContext* errorContext, TypeInfo* fromType
         }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoS64, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoS64, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     switch (fromType->nativeType)
     {
@@ -914,7 +915,7 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
             if (tmpI != nodeToCast->computedValue.reg.s64)
             {
                 if (!(castFlags & CASTFLAG_NOERROR))
-                    errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f32'", nodeToCast->computedValue.reg.s64)});
+                    context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f32'", nodeToCast->computedValue.reg.s64)});
                 return false;
             }
 
@@ -952,7 +953,7 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
             if (tmpI != nodeToCast->computedValue.reg.u64)
             {
                 if (!(castFlags & CASTFLAG_NOERROR))
-                    errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
+                    context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
                 return false;
             }
 
@@ -978,7 +979,7 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
             if (tmpD != nodeToCast->computedValue.reg.f64)
             {
                 if (!(castFlags & CASTFLAG_NOERROR))
-                    errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%Lf' is truncated in 'f32'", nodeToCast->computedValue.reg.f64)});
+                    context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%Lf' is truncated in 'f32'", nodeToCast->computedValue.reg.f64)});
                 return false;
             }
 
@@ -996,10 +997,10 @@ bool TypeManager::castToNativeF32(ErrorContext* errorContext, TypeInfo* fromType
     }
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoF32, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoF32, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     switch (fromType->nativeType)
     {
@@ -1015,7 +1016,7 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
             if (tmpI != nodeToCast->computedValue.reg.s64)
             {
                 if (!(castFlags & CASTFLAG_NOERROR))
-                    errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f64'", nodeToCast->computedValue.reg.s64)});
+                    context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f64'", nodeToCast->computedValue.reg.s64)});
                 return false;
             }
 
@@ -1053,7 +1054,7 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
             if (tmpI != nodeToCast->computedValue.reg.u64)
             {
                 if (!(castFlags & CASTFLAG_NOERROR))
-                    errorContext->report({errorContext->sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
+                    context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
                 return false;
             }
 
@@ -1088,43 +1089,43 @@ bool TypeManager::castToNativeF64(ErrorContext* errorContext, TypeInfo* fromType
         break;
     }
 
-    return castError(errorContext, g_TypeMgr.typeInfoF64, fromType, nodeToCast, castFlags);
+    return castError(context, g_TypeMgr.typeInfoF64, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToNative(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     switch (toType->nativeType)
     {
     case NativeTypeKind::Bool:
-        return castToNativeBool(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeBool(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::U8:
-        return castToNativeU8(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeU8(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::U16:
-        return castToNativeU16(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeU16(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::U32:
-        return castToNativeU32(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeU32(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::Char:
-        return castToNativeChar(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeChar(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::U64:
-        return castToNativeU64(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeU64(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::S8:
-        return castToNativeS8(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeS8(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::S16:
-        return castToNativeS16(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeS16(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::S32:
-        return castToNativeS32(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeS32(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::S64:
-        return castToNativeS64(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeS64(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::F32:
-        return castToNativeF32(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeF32(context, fromType, nodeToCast, castFlags);
     case NativeTypeKind::F64:
-        return castToNativeF64(errorContext, fromType, nodeToCast, castFlags);
+        return castToNativeF64(context, fromType, nodeToCast, castFlags);
     }
 
-    return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+    return castError(context, toType, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToArray(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
     if (fromType->kind == TypeInfoKind::TypeList)
@@ -1138,9 +1139,9 @@ bool TypeManager::castToArray(ErrorContext* errorContext, TypeInfo* toType, Type
                 if (!(castFlags & CASTFLAG_NOERROR))
                 {
                     if (toTypeArray->count > fromTypeList->childs.size())
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
                     else
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
                 }
 
                 return false;
@@ -1156,7 +1157,7 @@ bool TypeManager::castToArray(ErrorContext* errorContext, TypeInfo* toType, Type
             for (int i = 0; i < fromSize; i++)
             {
                 auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
-                SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeArray->pointedType, fromTypeList->childs[i], child, castFlags));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeArray->pointedType, fromTypeList->childs[i], child, castFlags));
                 if (child && child->typeInfo)
                     fromTypeList->sizeOf += child->typeInfo->sizeOf;
             }
@@ -1165,10 +1166,10 @@ bool TypeManager::castToArray(ErrorContext* errorContext, TypeInfo* toType, Type
         }
     }
 
-    return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+    return castError(context, toType, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToTuple(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     TypeInfoList* toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::TypeList);
     if (fromType->kind == TypeInfoKind::TypeList)
@@ -1182,9 +1183,9 @@ bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, Type
                 if (!(castFlags & CASTFLAG_NOERROR))
                 {
                     if (toTypeList->childs.size() > fromTypeList->childs.size())
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("can't cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
                     else
-                        errorContext->report({errorContext->sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
+                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("can't cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
                 }
 
                 return false;
@@ -1200,7 +1201,7 @@ bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, Type
             for (int i = 0; i < fromSize; i++)
             {
                 auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
-                SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeList->childs[i], fromTypeList->childs[i], child, castFlags));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeList->childs[i], fromTypeList->childs[i], child, castFlags));
                 if (child && child->typeInfo)
                     fromTypeList->sizeOf += child->typeInfo->sizeOf;
             }
@@ -1209,10 +1210,10 @@ bool TypeManager::castToTuple(ErrorContext* errorContext, TypeInfo* toType, Type
         }
     }
 
-    return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+    return castError(context, toType, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     TypeInfoSlice* toTypeSlice     = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
     bool           explicitIsValid = false;
@@ -1223,7 +1224,7 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
 
         // Can only cast array to slice
         if (fromTypeList->listKind != TypeInfoListKind::Array)
-            return castError(errorContext, toType, fromType, nodeToCast, castFlags, explicitIsValid);
+            return castError(context, toType, fromType, nodeToCast, castFlags, explicitIsValid);
 
         // Special case when typelist is one pointer and one int
         if (fromTypeList->childs.size() == 2)
@@ -1237,12 +1238,12 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
             else
             {
                 auto typePointer = static_cast<TypeInfoPointer*>(fromTypeList->childs.front());
-                if (!TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, typePointer->pointedType, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
+                if (!TypeManager::makeCompatibles(context, toTypeSlice->pointedType, typePointer->pointedType, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
                     forcedInit = false;
             }
 
             // And must and with an U32, which is the slice count
-            if (forcedInit && !TypeManager::makeCompatibles(errorContext, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nodeToCast ? nodeToCast->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
+            if (forcedInit && !TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nodeToCast ? nodeToCast->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
                 forcedInit = false;
             if (forcedInit)
             {
@@ -1263,7 +1264,7 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         for (int i = 0; i < fromSize; i++)
         {
             auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
-            SWAG_CHECK(TypeManager::makeCompatibles(errorContext, toTypeSlice->pointedType, fromTypeList->childs[i], child, castFlags));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeSlice->pointedType, fromTypeList->childs[i], child, castFlags));
             if (child && child->typeInfo)
                 fromTypeList->sizeOf += child->typeInfo->sizeOf;
         }
@@ -1310,12 +1311,12 @@ bool TypeManager::castToSlice(ErrorContext* errorContext, TypeInfo* toType, Type
         }
     }
 
-    return castError(errorContext, toType, fromType, nodeToCast, castFlags, explicitIsValid);
+    return castError(context, toType, fromType, nodeToCast, castFlags, explicitIsValid);
 }
 
-bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    SWAG_CHECK(makeCompatibles(errorContext, toType, nodeToCast->typeInfo, nodeToCast, castFlags));
+    SWAG_CHECK(makeCompatibles(context, toType, nodeToCast->typeInfo, nodeToCast, castFlags));
     if (nodeToCast && (nodeToCast->typeInfo->flags & TYPEINFO_AUTO_CAST) && !nodeToCast->castedTypeInfo)
     {
         if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -1328,9 +1329,9 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     return true;
 }
 
-bool TypeManager::makeCompatibles(ErrorContext* errorContext, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
+bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
 {
-    SWAG_CHECK(makeCompatibles(errorContext, leftNode->typeInfo, rightNode, castFlags));
+    SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, rightNode, castFlags));
     if ((rightNode->typeInfo->flags & TYPEINFO_AUTO_CAST) && !rightNode->castedTypeInfo)
     {
         if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -1454,7 +1455,7 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     }
 }
 
-bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
+bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_FORCE))
     {
@@ -1503,11 +1504,11 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
     if (!toType->isConst() && fromType->isConst())
     {
         if (!(castFlags & CASTFLAG_UNCONST))
-            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+            return castError(context, toType, fromType, nodeToCast, castFlags);
 
         // We can affect a const to an unconst if type is by copy, and we are in an affectation
         if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
-            return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+            return castError(context, toType, fromType, nodeToCast, castFlags);
     }
 
     if (fromType->isSame(toType, ISSAME_CAST))
@@ -1560,19 +1561,19 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
 
     // Cast to native type
     if (toType->kind == TypeInfoKind::Native)
-        return castToNative(errorContext, toType, fromType, nodeToCast, castFlags);
+        return castToNative(context, toType, fromType, nodeToCast, castFlags);
 
     // Cast to array
     if (toType->kind == TypeInfoKind::Array)
-        return castToArray(errorContext, toType, fromType, nodeToCast, castFlags);
+        return castToArray(context, toType, fromType, nodeToCast, castFlags);
 
     // Cast to tuple
     if (toType->kind == TypeInfoKind::TypeList)
-        return castToTuple(errorContext, toType, fromType, nodeToCast, castFlags);
+        return castToTuple(context, toType, fromType, nodeToCast, castFlags);
 
     // Cast to slice
     if (toType->kind == TypeInfoKind::Slice)
-        return castToSlice(errorContext, toType, fromType, nodeToCast, castFlags);
+        return castToSlice(context, toType, fromType, nodeToCast, castFlags);
 
     // Cast to lambda
     if (toType->kind == TypeInfoKind::Lambda)
@@ -1581,5 +1582,5 @@ bool TypeManager::makeCompatibles(ErrorContext* errorContext, TypeInfo* toType, 
             return true;
     }
 
-    return castError(errorContext, toType, fromType, nodeToCast, castFlags);
+    return castError(context, toType, fromType, nodeToCast, castFlags);
 }

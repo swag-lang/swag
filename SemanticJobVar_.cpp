@@ -179,7 +179,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Do not cast for structs, as we can have special assignment with different types
         if (node->type->typeInfo->kind != TypeInfoKind::Struct)
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->type->typeInfo, node->assignment, CASTFLAG_UNCONST));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, node->assignment, CASTFLAG_UNCONST));
         }
         else
         {
@@ -220,14 +220,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->totalCount  = typeArray->count;
                 typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
                 node->typeInfo         = typeTable.registerType(typeArray);
-                SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->typeInfo, node->assignment));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
             }
             else if (typeList->listKind == TypeInfoListKind::Tuple)
             {
                 auto typeTuple   = static_cast<TypeInfoList*>(typeList->clone());
                 typeTuple->scope = Ast::newScope(nullptr, "", ScopeKind::TypeList, node->ownerScope);
                 node->typeInfo   = typeTable.registerType(typeTuple);
-                SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, node->typeInfo, node->assignment));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
             }
             else
                 return internalError(context, "resolveVarDecl, invalid typelist kind");

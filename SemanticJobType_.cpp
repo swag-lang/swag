@@ -340,7 +340,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     auto typeNode = node->childs[0];
     auto exprNode = node->childs[1];
 
-    SWAG_CHECK(TypeManager::makeCompatibles(&context->errorContext, typeNode->typeInfo, exprNode, CASTFLAG_FORCE));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, exprNode, CASTFLAG_FORCE));
     node->typeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = &ByteCodeGenJob::emitExplicitCast;
