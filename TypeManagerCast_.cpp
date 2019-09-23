@@ -1126,6 +1126,35 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     return castError(context, toType, fromType, nodeToCast, castFlags);
 }
 
+bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
+{
+    auto fromSize = fromTypeList->childs.size();
+    while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
+        nodeToCast = nodeToCast->childs.front();
+    SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
+
+    // Need to recompute total size, as the size of each element can have been changed by the cast
+    if (nodeToCast)
+    {
+        fromTypeList->sizeOf = 0;
+        nodeToCast->flags |= AST_CONST_EXPR;
+    }
+
+    for (int i = 0; i < fromSize; i++)
+    {
+        auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
+        SWAG_CHECK(TypeManager::makeCompatibles(context, toType, fromTypeList->childs[i], child, castFlags));
+        if (child)
+        {
+            fromTypeList->sizeOf += child->typeInfo->sizeOf;
+            if (!(child->flags & AST_CONST_EXPR))
+                nodeToCast->flags &= ~AST_CONST_EXPR;
+        }
+    }
+
+    return true;
+}
+
 bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
@@ -1148,29 +1177,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
                 return false;
             }
 
-            while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
-                nodeToCast = nodeToCast->childs.front();
-            SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
-
-            // Need to recompute total size, as the size of each element can have been changed by the cast
-            if (nodeToCast)
-            {
-                fromTypeList->sizeOf = 0;
-                nodeToCast->flags |= AST_CONST_EXPR;
-            }
-
-            for (int i = 0; i < fromSize; i++)
-            {
-                auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
-                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeArray->pointedType, fromTypeList->childs[i], child, castFlags));
-                if (child)
-                {
-                    fromTypeList->sizeOf += child->typeInfo->sizeOf;
-                    if (!(child->flags & AST_CONST_EXPR))
-                        nodeToCast->flags &= ~AST_CONST_EXPR;
-                }
-            }
-
+            SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeArray->pointedType, nodeToCast, castFlags));
             return true;
         }
     }
@@ -1270,30 +1277,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             }
         }
 
-        auto fromSize = fromTypeList->childs.size();
-        while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
-            nodeToCast = nodeToCast->childs.front();
-        SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
-
-        // Need to recompute total size, as the size of each element can have been changed by the cast
-        if (nodeToCast)
-        {
-            fromTypeList->sizeOf = 0;
-            nodeToCast->flags |= AST_CONST_EXPR;
-        }
-
-        for (int i = 0; i < fromSize; i++)
-        {
-            auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
-            SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeSlice->pointedType, fromTypeList->childs[i], child, castFlags));
-            if (child)
-            {
-                fromTypeList->sizeOf += child->typeInfo->sizeOf;
-                if (!(child->flags & AST_CONST_EXPR))
-                    nodeToCast->flags &= ~AST_CONST_EXPR;
-            }
-        }
-
+		SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeSlice->pointedType, nodeToCast, castFlags));
         return true;
     }
     else if (fromType->kind == TypeInfoKind::Array)
