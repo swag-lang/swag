@@ -1140,10 +1140,14 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         nodeToCast->flags |= AST_CONST_EXPR;
     }
 
+    TypeInfoList* toTypeList = nullptr;
+    if (toType->kind == TypeInfoKind::TypeList)
+        toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::TypeList);
+
     for (int i = 0; i < fromSize; i++)
     {
         auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
-        SWAG_CHECK(TypeManager::makeCompatibles(context, toType, fromTypeList->childs[i], child, castFlags));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeList ? toTypeList->childs[i] : toType, fromTypeList->childs[i], child, castFlags));
         if (child)
         {
             fromTypeList->sizeOf += child->typeInfo->sizeOf;
@@ -1207,29 +1211,7 @@ bool TypeManager::castToTuple(SemanticContext* context, TypeInfo* toType, TypeIn
                 return false;
             }
 
-            while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
-                nodeToCast = nodeToCast->childs.front();
-            SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
-
-            // Need to recompute total size, as the size of each element can have been changed by the cast
-            if (nodeToCast)
-            {
-                fromTypeList->sizeOf = 0;
-                nodeToCast->flags |= AST_CONST_EXPR;
-            }
-
-            for (int i = 0; i < fromSize; i++)
-            {
-                auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
-                SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeList->childs[i], fromTypeList->childs[i], child, castFlags));
-                if (child)
-                {
-                    fromTypeList->sizeOf += child->typeInfo->sizeOf;
-                    if (!(child->flags & AST_CONST_EXPR))
-                        nodeToCast->flags &= ~AST_CONST_EXPR;
-                }
-            }
-
+            SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeList, nodeToCast, castFlags));
             return true;
         }
     }
@@ -1277,7 +1259,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             }
         }
 
-		SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeSlice->pointedType, nodeToCast, castFlags));
+        SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeSlice->pointedType, nodeToCast, castFlags));
         return true;
     }
     else if (fromType->kind == TypeInfoKind::Array)
