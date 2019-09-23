@@ -80,6 +80,7 @@ struct SemanticJob : public Job
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool postProcessLeftRightSeg(SemanticContext* context, AstNode* left, AstNode* right);
+	static bool postProcessLeftRightAny(SemanticContext* context, AstNode* left, AstNode* right);
     static bool postProcessLeftRight(SemanticContext* context, AstNode* anyNode, AstNode* castedNode);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);

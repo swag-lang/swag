@@ -35,11 +35,8 @@ bool SemanticJob::postProcessLeftRightSeg(SemanticContext* context, AstNode* lef
     return true;
 }
 
-bool SemanticJob::postProcessLeftRight(SemanticContext* context, AstNode* left, AstNode* right)
+bool SemanticJob::postProcessLeftRightAny(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    SWAG_CHECK(postProcessLeftRightSeg(context, left, right));
-
-    auto sourceFile = context->sourceFile;
     if (!left || !right)
         return true;
     if (!left->typeInfo->isNative(NativeTypeKind::Any))
@@ -53,10 +50,18 @@ bool SemanticJob::postProcessLeftRight(SemanticContext* context, AstNode* left, 
     if (context->result == SemanticResult::Pending)
         return true;
 
-    auto& typeTable = sourceFile->module->typeTable;
+    auto  sourceFile = context->sourceFile;
+    auto& typeTable  = sourceFile->module->typeTable;
     SWAG_ASSERT(right->castedTypeInfo);
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, left, right->castedTypeInfo, &right->concreteTypeInfo, &right->concreteTypeInfoStorage));
     return true;
+}
+
+bool SemanticJob::postProcessLeftRight(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    SWAG_CHECK(postProcessLeftRightSeg(context, left, right));
+	SWAG_CHECK(postProcessLeftRightAny(context, left, right));
+	return true;
 }
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
