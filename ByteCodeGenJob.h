@@ -90,7 +90,6 @@ struct ByteCodeGenJob : public Job
     static bool emitCastNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitCastNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitCastSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
-    static bool emitCastVariadic(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     static bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     static bool emitFuncCallParam(ByteCodeGenContext* context);
     static bool emitFuncDeclParams(ByteCodeGenContext* context);

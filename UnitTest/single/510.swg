@@ -1,19 +1,25 @@
 #module module510
 //#unittest pass semantic
 
-//#[swag.printbc]
-func T(xx: string, a: ...)
+func(T) valueof(x: any)->T
 {
-	x0 := cast(s32) a[0]
+	ptr := cast(*T) @dataof(x)
+	return ptr[0]
+}
+
+//#[swag.printbc]
+func toto(xx: string, a: ...)
+{
+	x0 := valueof!s32(a[0])
 	@assert(x0 == 10)
-	x1 := cast(string) a[1]
+	x1 := valueof!string(a[1])
 	@assert(x1 == "toto")
-	x2 := cast(s32) a[2]
+	x2 := valueof!s32(a[2])
 	@assert(x2 == 600)
 }
 
 //#[swag.printbc]
 #test
 {
-	T("true", 10, "toto", 600)
+	toto("true", 10, "toto", 600)
 }

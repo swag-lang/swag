@@ -27,7 +27,6 @@ enum class TypeInfoKind
 	Slice,
 	TypeList,
 	Variadic,
-	VariadicValue,
 	TypedVariadic,
 	Struct,
 	Generic,

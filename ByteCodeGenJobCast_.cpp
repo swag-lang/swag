@@ -528,15 +528,6 @@ bool ByteCodeGenJob::emitCastNativeString(ByteCodeGenContext* context, AstNode* 
     return false;
 }
 
-bool ByteCodeGenJob::emitCastVariadic(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
-{
-    auto node              = context->node;
-    node->typeInfo         = typeInfo;
-    node->resultRegisterRC = exprNode->resultRegisterRC;
-    emitStructDeRef(context);
-    return true;
-}
-
 bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node        = context->node;
@@ -590,12 +581,6 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
         SWAG_CHECK(emitCastSlice(context, exprNode, typeInfo, fromTypeInfo));
-        return true;
-    }
-
-    if (fromTypeInfo->kind == TypeInfoKind::VariadicValue)
-    {
-        SWAG_CHECK(emitCastVariadic(context, exprNode, typeInfo, fromTypeInfo));
         return true;
     }
 

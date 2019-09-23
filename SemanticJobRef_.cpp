@@ -223,7 +223,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Variadic:
-        arrayNode->typeInfo = g_TypeMgr.typeInfoVariadicValue;
+        arrayNode->typeInfo = g_TypeMgr.typeInfoAny;
         break;
 
     case TypeInfoKind::TypedVariadic:

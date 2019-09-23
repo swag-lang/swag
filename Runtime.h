@@ -33,7 +33,6 @@ namespace swag
 		Slice
 		TypeList
 		Variadic
-		VariadicValue
 		TypedVariadic
 		Struct
 		Generic

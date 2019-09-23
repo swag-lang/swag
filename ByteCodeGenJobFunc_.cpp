@@ -284,23 +284,38 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     int numRegisters = 0;
     if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
     {
-        int offset = 0;
-        for (int i = 0; i < numCallParams; i++)
-        {
-            auto typeParam = allParams->childs[i]->typeInfo;
-            offset += typeParam->numRegisters();
-        }
-
         auto r0            = reserveRegisterRC(context);
-        int  numFuncParams = (int) typeInfoFunc->parameters.size();
+        auto numFuncParams = (int) typeInfoFunc->parameters.size();
+        auto numVariadic   = (uint32_t)(numCallParams - numFuncParams) + 1;
+        int  offset        = numVariadic * 2 * sizeof(Register);
         for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
         {
-            auto typeParam = allParams->childs[i]->typeInfo;
-            offset -= typeParam->numRegisters();
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32  = offset;
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
-            precallStack += sizeof(Register);
-            numRegisters++;
+            auto child     = allParams->childs[i];
+            auto typeParam = child->typeInfo;
+
+            // Be sure to point to the first register of the type, if it has many
+            offset += (typeParam->numRegisters() - 1) * sizeof(Register);
+
+            ByteCodeInstruction* inst;
+
+            // Store concrete type info
+            inst        = emitInstruction(context, ByteCodeOp::CopyRAVB64, r0);
+            inst->b.u64 = 0x666;
+            inst        = emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            inst->b.u32 = numRegisters;
+
+            // Store address of value on the stack
+            inst        = emitInstruction(context, ByteCodeOp::MovRASP, r0);
+            inst->b.u32 = offset;
+            inst->c.u32 = child->resultRegisterRC[0];
+            inst        = emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+            inst->b.u32 = numRegisters + 1;
+
+            precallStack += 2 * sizeof(Register);
+            numRegisters += 2;
+
+            offset -= 2 * sizeof(Register);
+            offset += sizeof(Register);
         }
 
         freeRegisterRC(context, r0);
@@ -415,8 +430,8 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
 
             // Store address on the stack of those parameters. This must be the last push
-            emitInstruction(context, ByteCodeOp::MovRASP, r0)->c.u32     = numRegisters + 1;
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters + 1;
+            emitInstruction(context, ByteCodeOp::MovRASPVaargs, r0)->c.u32 = numRegisters + 1;
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32   = numRegisters + 1;
 
             precallStack += 2 * sizeof(Register);
             numRegisters += 2;
@@ -435,8 +450,8 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters;
 
             // Store address on the stack of those parameters. This must be the last push
-            emitInstruction(context, ByteCodeOp::MovRASP, r0)->c.u32     = numRegisters + 1;
-            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32 = numRegisters + 1;
+            emitInstruction(context, ByteCodeOp::MovRASPVaargs, r0)->c.u32 = numRegisters + 1;
+            emitInstruction(context, ByteCodeOp::PushRAParam, r0)->b.u32   = numRegisters + 1;
 
             precallStack += 2 * sizeof(Register);
             numRegisters += 2;

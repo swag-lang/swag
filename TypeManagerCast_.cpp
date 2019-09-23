@@ -1486,9 +1486,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType == toType)
         return true;
 
-    if (fromType->kind == TypeInfoKind::VariadicValue)
-        return true;
-
     // Everything can be casted to type 'any'
     if (toType->isNative(NativeTypeKind::Any))
     {

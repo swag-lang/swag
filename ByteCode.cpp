@@ -229,6 +229,7 @@ void ByteCode::print()
 
         case ByteCodeOp::RAFromStackParam64:
         case ByteCodeOp::MovRASP:
+		case ByteCodeOp::MovRASPVaargs:
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 

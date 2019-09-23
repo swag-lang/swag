@@ -243,7 +243,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (!(node->flags & AST_IS_GENERIC))
     {
         SWAG_VERIFY(node->typeInfo, context->errorContext.report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
-        SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::VariadicValue, context->errorContext.report({sourceFile, node, "declaration not allowed with a variadic type, you must cast to the wanted type"}));
     }
     else
     {

@@ -97,8 +97,8 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
-	SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, typeInfo));
-	return true;
+    SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, typeInfo));
+    return true;
 }
 
 bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
@@ -107,7 +107,7 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     {
         r0 += reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
-		return true;
+        return true;
     }
 
     switch (typeInfo->sizeOf)
@@ -247,22 +247,22 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef64, r0);
+        // Get total number of pushed arguments
         emitInstruction(context, ByteCodeOp::ShiftRightU64VB, r0)->b.u32 = 32;
-        emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);           // Offset from variable to the list of offsets (number of variadic arguments * register)
-        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[0], r0[1]); // r0[1] now points to the list of offsets
+        // Offset from variadic on top of stack to the list of 'any' (number of total pushed arguments * register)
+        emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32 = sizeof(Register);
+        // r0[1] now points to the list of any
+        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[0], r0[1]);
 
-        // This will deref the offset of the variadic argument
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register);
-        emitInstruction(context, ByteCodeOp::IncPointer, r0[1], node->access->resultRegisterRC, r0[1]);
-        emitInstruction(context, ByteCodeOp::DeRef32, r0[1]);
-        emitInstruction(context, ByteCodeOp::IncRA64, r0[1]);
-        emitInstruction(context, ByteCodeOp::MulRAVB, r0[1])->b.u32 = sizeof(Register);
+		// Now we point to the first 'any' of the argument list
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register); 
+        emitInstruction(context, ByteCodeOp::IncPointer, r0[1], node->access->resultRegisterRC, r0[0]);
 
-        // Point to the argument
-        emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[1], node->array->resultRegisterRC);
+		// Deref the any
+        emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
 
-        node->resultRegisterRC = node->array->resultRegisterRC;
-        freeRegisterRC(context, r0);
+        node->resultRegisterRC = r0;
+        freeRegisterRC(context, node->array);
         freeRegisterRC(context, node->access);
     }
 
@@ -289,7 +289,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::MulRAVB, r0)->b.u32         = sizeof(Register);
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0, node->array->resultRegisterRC);
 
-		// Offset pointer to the parameter
+        // Offset pointer to the parameter
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeof(Register) * rawType->numRegisters();
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));

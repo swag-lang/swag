@@ -1,8 +1,14 @@
 #module module512
 //#unittest pass semantic
 
+func(T) valueof(x: any)->T
+{
+	ptr := cast(*T) @dataof(x)
+	return ptr[0]
+}
+
 //#[swag.printbc]
-func T(xx: string, a: ...)
+func toto(xx: string, a: ...)
 {
 	i := 0'u32
 	idx := 0
@@ -15,10 +21,10 @@ func T(xx: string, a: ...)
 			switch cast(char) xx[i]
 			{
 			case 'd':
-				@assert(cast(s32) a[idx] == 10)
+				@assert(valueof!s32(a[idx]) == 10)
 				idx += 1
 			case 's':
-				@assert(cast(string) a[idx] == "toto")	
+				@assert(valueof!string(a[idx]) == "toto")	
 				idx += 1				
 			}
 		}
@@ -30,5 +36,5 @@ func T(xx: string, a: ...)
 //#[swag.printbc]
 #test
 {
-	T("%s%d", "toto", 10)
+	toto("%s%d", "toto", 10)
 }
