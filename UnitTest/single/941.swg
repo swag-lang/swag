@@ -1,10 +1,10 @@
-#module module939
-
-var x: [] any = [6]
+#module module941
 
 //#[swag.printbc]
 #test
 {
+	const x: [] any = [6]
+
 	t := x[0]
 	type := @kindof(t)
 	@assert(type.name == "s32")
