@@ -1148,15 +1148,17 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
                 return false;
             }
 
-            // Need to recompute total size, as the size of each element can have been changed by the cast
-            if (nodeToCast)
-                fromTypeList->sizeOf = 0;
-
             while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
                 nodeToCast = nodeToCast->childs.front();
             SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
 
-            bool isConstExpr = true;
+            // Need to recompute total size, as the size of each element can have been changed by the cast
+            if (nodeToCast)
+            {
+                fromTypeList->sizeOf = 0;
+                nodeToCast->flags |= AST_CONST_EXPR;
+            }
+
             for (int i = 0; i < fromSize; i++)
             {
                 auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
@@ -1165,18 +1167,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
                 {
                     fromTypeList->sizeOf += child->typeInfo->sizeOf;
                     if (!(child->flags & AST_CONST_EXPR))
-                        isConstExpr = false;
-                }
-            }
-
-            if (isConstExpr && nodeToCast)
-            {
-                auto module   = context->sourceFile->module;
-                auto exprList = CastAst<AstExpressionList>(nodeToCast, AstNodeKind::ExpressionList);
-                if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
-                {
-                    scoped_lock lock(module->dataSegment.mutex);
-                    SWAG_CHECK(SemanticJob::reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, toType, exprList));
+                        nodeToCast->flags &= ~AST_CONST_EXPR;
                 }
             }
 
@@ -1209,15 +1200,17 @@ bool TypeManager::castToTuple(SemanticContext* context, TypeInfo* toType, TypeIn
                 return false;
             }
 
-            // Need to recompute total size, as the size of each element can have been changed by the cast
-            if (nodeToCast)
-                fromTypeList->sizeOf = 0;
-
             while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
                 nodeToCast = nodeToCast->childs.front();
             SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
 
-            bool isConstExpr = true;
+            // Need to recompute total size, as the size of each element can have been changed by the cast
+            if (nodeToCast)
+            {
+                fromTypeList->sizeOf = 0;
+                nodeToCast->flags |= AST_CONST_EXPR;
+            }
+
             for (int i = 0; i < fromSize; i++)
             {
                 auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
@@ -1226,18 +1219,7 @@ bool TypeManager::castToTuple(SemanticContext* context, TypeInfo* toType, TypeIn
                 {
                     fromTypeList->sizeOf += child->typeInfo->sizeOf;
                     if (!(child->flags & AST_CONST_EXPR))
-                        isConstExpr = false;
-                }
-            }
-
-            if (isConstExpr && nodeToCast)
-            {
-                auto module   = context->sourceFile->module;
-                auto exprList = CastAst<AstExpressionList>(nodeToCast, AstNodeKind::ExpressionList);
-                if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
-                {
-                    scoped_lock lock(module->dataSegment.mutex);
-                    SWAG_CHECK(SemanticJob::reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, toType, exprList));
+                        nodeToCast->flags &= ~AST_CONST_EXPR;
                 }
             }
 
@@ -1288,16 +1270,18 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             }
         }
 
-        // Need to recompute total size, as the size of each element can have been changed by the cast
-        if (nodeToCast)
-            fromTypeList->sizeOf = 0;
-
         auto fromSize = fromTypeList->childs.size();
         while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
             nodeToCast = nodeToCast->childs.front();
         SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
 
-        bool isConstExpr = true;
+        // Need to recompute total size, as the size of each element can have been changed by the cast
+        if (nodeToCast)
+        {
+            fromTypeList->sizeOf = 0;
+            nodeToCast->flags |= AST_CONST_EXPR;
+        }
+
         for (int i = 0; i < fromSize; i++)
         {
             auto child = nodeToCast ? nodeToCast->childs[i] : nullptr;
@@ -1306,18 +1290,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             {
                 fromTypeList->sizeOf += child->typeInfo->sizeOf;
                 if (!(child->flags & AST_CONST_EXPR))
-                    isConstExpr = false;
-            }
-        }
-
-        if (isConstExpr && nodeToCast)
-        {
-            auto module   = context->sourceFile->module;
-            auto exprList = CastAst<AstExpressionList>(nodeToCast, AstNodeKind::ExpressionList);
-            if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
-            {
-                scoped_lock lock(module->dataSegment.mutex);
-                SWAG_CHECK(SemanticJob::reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, fromType, exprList));
+                    nodeToCast->flags &= ~AST_CONST_EXPR;
             }
         }
 
@@ -1364,69 +1337,6 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     }
 
     return castError(context, toType, fromType, nodeToCast, castFlags, explicitIsValid);
-}
-
-bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
-{
-    SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, rightNode, castFlags));
-    if ((rightNode->typeInfo->flags & TYPEINFO_AUTO_CAST) && !rightNode->castedTypeInfo)
-    {
-        if (!(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            rightNode->castedTypeInfo = rightNode->typeInfo;
-            rightNode->typeInfo       = leftNode->typeInfo;
-        }
-    }
-
-    return true;
-}
-
-bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
-{
-    SWAG_CHECK(makeCompatibles(context, toType, nodeToCast->typeInfo, nodeToCast, castFlags));
-
-    if (nodeToCast && (nodeToCast->typeInfo->flags & TYPEINFO_AUTO_CAST) && !nodeToCast->castedTypeInfo)
-    {
-        if (!(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
-            nodeToCast->typeInfo       = toType;
-        }
-    }
-
-    if (nodeToCast && nodeToCast->typeInfo->kind == TypeInfoKind::TypeList)
-    {
-        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
-        auto          fromSize     = fromTypeList->childs.size();
-
-        while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
-            nodeToCast = nodeToCast->childs.empty() ? nullptr : nodeToCast->childs.front();
-		if (nodeToCast)
-		{
-			SWAG_ASSERT(fromSize == nodeToCast->childs.size());
-
-			bool isConstExpr = true;
-			for (int i = 0; i < fromSize; i++)
-			{
-				auto child = nodeToCast->childs[i];
-				if (!(child->flags & AST_CONST_EXPR))
-					isConstExpr = false;
-			}
-
-			if (isConstExpr && nodeToCast)
-			{
-				auto module = context->sourceFile->module;
-				auto exprList = CastAst<AstExpressionList>(nodeToCast, AstNodeKind::ExpressionList);
-				if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
-				{
-					scoped_lock lock(module->dataSegment.mutex);
-					SWAG_CHECK(SemanticJob::reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, toType, exprList));
-				}
-			}
-		}
-    }
-
-    return true;
 }
 
 void TypeManager::promote(AstNode* left, AstNode* right)
@@ -1538,6 +1448,51 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
             left->computedValue.reg.f64 = left->computedValue.reg.f32;
         break;
     }
+}
+
+bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
+{
+    SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, rightNode, castFlags));
+    return true;
+}
+
+bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
+{
+    SWAG_CHECK(makeCompatibles(context, toType, nodeToCast->typeInfo, nodeToCast, castFlags));
+    if (!nodeToCast)
+        return true;
+
+    if ((nodeToCast->typeInfo->flags & TYPEINFO_AUTO_CAST) && !nodeToCast->castedTypeInfo)
+    {
+        if (!(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
+            nodeToCast->typeInfo       = toType;
+        }
+    }
+
+    if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && !(nodeToCast->flags & AST_SLICE_INIT_EXPRESSION))
+    {
+        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
+        auto          fromSize     = fromTypeList->childs.size();
+
+        while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
+            nodeToCast = nodeToCast->childs.empty() ? nullptr : nodeToCast->childs.front();
+
+        if (nodeToCast && (nodeToCast->flags & AST_CONST_EXPR))
+        {
+            SWAG_ASSERT(fromSize == nodeToCast->childs.size());
+            auto module   = context->sourceFile->module;
+            auto exprList = CastAst<AstExpressionList>(nodeToCast, AstNodeKind::ExpressionList);
+            if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
+            {
+                scoped_lock lock(module->dataSegment.mutex);
+                SWAG_CHECK(SemanticJob::reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, nodeToCast->typeInfo, exprList));
+            }
+        }
+    }
+
+    return true;
 }
 
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
