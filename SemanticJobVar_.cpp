@@ -74,6 +74,71 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
     return true;
 }
 
+bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
+{
+    scoped_lock lock(seg->mutex);
+
+    auto sourceFile  = context->sourceFile;
+    auto module      = sourceFile->module;
+    storageOffset    = seg->reserveNoLock(typeInfo->sizeOf);
+    uint8_t* ptrDest = seg->addressNoLock(storageOffset);
+
+    if (typeInfo->isNative(NativeTypeKind::String))
+    {
+        *(const char**) ptrDest                = value->text.c_str();
+        *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
+        auto stringIndex                       = module->reserveString(value->text);
+        seg->addInitString(storageOffset, stringIndex);
+    }
+    else if (typeInfo->isNative(NativeTypeKind::Any))
+    {
+        auto storageOffsetValue             = module->constantSegment.reserve(assignment->castedTypeInfo->sizeOf);
+        auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);
+        *(uint32_t*) ptrStorage             = value->reg.u32;
+        *(void**) ptrDest                   = ptrStorage;
+        *(void**) (ptrDest + sizeof(void*)) = module->constantSegment.address(assignment->concreteTypeInfoStorage);
+
+        seg->addInitPtr(storageOffset, storageOffsetValue, SegmentKind::Constant);
+        seg->addInitPtr(storageOffset + 8, assignment->concreteTypeInfoStorage, SegmentKind::Constant);
+    }
+    else if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->sizeOf)
+        {
+        case 1:
+            *(uint8_t*) ptrDest = value->reg.u8;
+            break;
+        case 2:
+            *(uint16_t*) ptrDest = value->reg.u16;
+            break;
+        case 4:
+            *(uint32_t*) ptrDest = value->reg.u32;
+            break;
+        case 8:
+            *(uint64_t*) ptrDest = value->reg.u64;
+            break;
+        default:
+            return internalError(context, "resolveVarDecl, init native, bad size");
+        }
+    }
+    else if (assignment && assignment->typeInfo->kind == TypeInfoKind::TypeList)
+    {
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
+        auto offset = storageOffset;
+        auto result = collectLiterals(sourceFile, offset, assignment, nullptr, seg);
+        SWAG_CHECK(result);
+    }
+    else if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        auto offset     = storageOffset;
+        auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, seg);
+        SWAG_CHECK(result);
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto  sourceFile         = context->sourceFile;
@@ -302,74 +367,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
-
-        auto value = node->assignment ? &node->assignment->computedValue : &node->computedValue;
         node->flags |= AST_R_VALUE;
-
-        scoped_lock lock(module->dataSegment.mutex);
-        if (typeInfo->isNative(NativeTypeKind::String))
-        {
-            storageOffset                          = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
-            uint8_t* ptrDest                       = module->dataSegment.addressNoLock(storageOffset);
-            *(const char**) ptrDest                = value->text.c_str();
-            *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
-            auto stringIndex                       = module->reserveString(value->text);
-            module->dataSegment.addInitString(storageOffset, stringIndex);
-        }
-        else if (typeInfo->isNative(NativeTypeKind::Any))
-        {
-            storageOffset                       = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
-            auto ptrDest                        = module->dataSegment.addressNoLock(storageOffset);
-            auto storageOffsetValue             = module->constantSegment.reserve(node->assignment->castedTypeInfo->sizeOf);
-            auto ptrStorage                     = module->constantSegment.addressNoLock(storageOffsetValue);
-            *(uint32_t*) ptrStorage             = value->reg.u32;
-            *(void**) ptrDest                   = ptrStorage;
-            *(void**) (ptrDest + sizeof(void*)) = module->constantSegment.address(node->assignment->concreteTypeInfoStorage);
-            module->dataSegment.addInitPtr(storageOffset, storageOffsetValue, SegmentKind::Constant);
-            module->dataSegment.addInitPtr(storageOffset + 8, node->assignment->concreteTypeInfoStorage, SegmentKind::Constant);
-        }
-        else if (typeInfo->kind == TypeInfoKind::Native)
-        {
-            storageOffset    = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
-            uint8_t* ptrDest = module->dataSegment.addressNoLock(storageOffset);
-            switch (typeInfo->sizeOf)
-            {
-            case 1:
-                *(uint8_t*) ptrDest = value->reg.u8;
-                break;
-            case 2:
-                *(uint16_t*) ptrDest = value->reg.u16;
-                break;
-            case 4:
-                *(uint32_t*) ptrDest = value->reg.u32;
-                break;
-            case 8:
-                *(uint64_t*) ptrDest = value->reg.u64;
-                break;
-            default:
-                return internalError(context, "resolveVarDecl, init native, bad size");
-            }
-        }
-        else if (node->assignment && node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
-        {
-            storageOffset = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
-            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node, "expression cannot be evaluated at compile time"}));
-            auto offset = storageOffset;
-            auto result = collectLiterals(sourceFile, offset, node->assignment, nullptr, &module->dataSegment);
-            SWAG_CHECK(result);
-        }
-        else if (typeInfo->kind == TypeInfoKind::Struct)
-        {
-            storageOffset   = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            auto offset     = storageOffset;
-            auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, &module->dataSegment);
-            SWAG_CHECK(result);
-        }
-		else
-		{
-			storageOffset = module->dataSegment.reserveNoLock(typeInfo->sizeOf);
-		}
+        auto value = node->assignment ? &node->assignment->computedValue : &node->computedValue;
+        SWAG_CHECK(storeToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
