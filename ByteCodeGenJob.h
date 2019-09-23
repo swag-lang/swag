@@ -41,6 +41,7 @@ struct ByteCodeGenJob : public Job
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 setupBC(Module* module, AstNode* node);
     static void                 askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode);
+    static void                 collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds);
 
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
@@ -137,7 +138,7 @@ struct ByteCodeGenJob : public Job
     static bool emitSliceRef(ByteCodeGenContext* context);
     static bool emitCountOfProperty(ByteCodeGenContext* context);
     static bool emitDataOfProperty(ByteCodeGenContext* context);
-	static bool emitKindOfProperty(ByteCodeGenContext* context);
+    static bool emitKindOfProperty(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context);
     static bool emitDrop(ByteCodeGenContext* context, Scope* scope);

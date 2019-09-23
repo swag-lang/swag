@@ -337,14 +337,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     uint32_t storageOffset = 0;
     if (isCompilerConstant)
     {
-        node->flags |= AST_NO_BYTECODE;
         if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::TypeList)
         {
-            // Reserve space in constant segment
-            scoped_lock lock(module->constantSegment.mutex);
-            storageOffset = module->constantSegment.reserveNoLock(node->typeInfo->sizeOf);
-            auto offset   = storageOffset;
-            SWAG_CHECK(SemanticJob::collectLiterals(context->sourceFile, offset, node, nullptr, &module->constantSegment));
+            // Be sure type is now constant
             if (!node->typeInfo->isConst())
             {
                 auto typeConst = node->typeInfo->clone();
@@ -402,7 +397,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
+
         node->flags |= AST_R_VALUE;
+        if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList && (node->assignment->flags & AST_CONST_EXPR))
+        {
+            auto        exprList = CastAst<AstExpressionList>(node->assignment, AstNodeKind::ExpressionList);
+            scoped_lock lock(module->dataSegment.mutex);
+            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, &node->assignment->computedValue, typeInfo, node->assignment));
+        }
     }
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
     {
@@ -410,7 +412,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (isCompilerConstant)
     {
+        node->flags |= AST_NO_BYTECODE;
         node->flags |= AST_R_VALUE;
+        if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList)
+        {
+            scoped_lock lock(module->dataSegment.mutex);
+            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, storageOffset, &module->constantSegment, &node->assignment->computedValue, typeInfo, node->assignment));
+        }
     }
 
     // A using on a variable

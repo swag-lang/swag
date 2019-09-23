@@ -10,12 +10,32 @@
 
 bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNode* castedNode)
 {
-	if (!anyNode || !castedNode)
-		return true;
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+
+    // Allocate room on constant segment
+    auto listNode = castedNode;
+    if (listNode && listNode->typeInfo->kind == TypeInfoKind::TypeList && (listNode->flags & AST_CONST_EXPR))
+    {
+        AstExpressionList* exprList = nullptr;
+        if (listNode->kind == AstNodeKind::FuncCallParam)
+            listNode = listNode->childs.front();
+        if (listNode->kind == AstNodeKind::ExpressionList)
+            exprList = CastAst<AstExpressionList>(listNode, AstNodeKind::ExpressionList);
+
+        if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
+        {
+            scoped_lock lock(module->dataSegment.mutex);
+            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, &listNode->computedValue, anyNode->typeInfo, castedNode));
+        }
+    }
+
+    if (!anyNode || !castedNode)
+        return true;
     if (!anyNode->typeInfo->isNative(NativeTypeKind::Any))
         return true;
 
-	// From any to any, nothing to do
+    // From any to any, nothing to do
     if (castedNode->typeInfo->isNative(NativeTypeKind::Any) && !castedNode->castedTypeInfo)
         return true;
 
@@ -23,8 +43,7 @@ bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNod
     if (context->result == SemanticResult::Pending)
         return true;
 
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
+    auto& typeTable = sourceFile->module->typeTable;
     SWAG_ASSERT(castedNode->castedTypeInfo);
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(&context->errorContext, anyNode, castedNode->castedTypeInfo, &castedNode->concreteTypeInfo, &castedNode->concreteTypeInfoStorage));
     return true;

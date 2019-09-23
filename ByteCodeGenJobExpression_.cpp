@@ -49,9 +49,20 @@ bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
     return true;
 }
 
+void ByteCodeGenJob::collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds)
+{
+    for (auto child : node->childs)
+    {
+        if (child->kind == AstNodeKind::ExpressionList)
+            collectLiteralsChilds(child, orderedChilds);
+        else
+            orderedChilds->push_back(child);
+    }
+}
+
 bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     // This is a special expression list which initialize the pointer and the count of a slice
     if (node->flags & AST_SLICE_INIT_EXPRESSION)
@@ -61,26 +72,16 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         return true;
     }
 
-    auto module      = context->sourceFile->module;
-    auto job         = context->job;
-    bool isConstExpr = node->flags & AST_CONST_EXPR;
-
-    // Reserve space in constant segment, except if expression is not constexpr, because in that case,
-    // each affectation will be done one by one
-    auto     typeList      = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
-    uint32_t storageOffset = isConstExpr ? module->constantSegment.reserve(typeList->sizeOf) : 0;
-    job->collectChilds.clear();
-
-    {
-        scoped_lock lock(module->constantSegment.mutex);
-        auto        offset = storageOffset;
-		SWAG_CHECK(SemanticJob::collectLiterals(context->sourceFile, offset, node, isConstExpr ? nullptr : &job->collectChilds, isConstExpr ? &module->constantSegment : nullptr));
-    }
+    auto job      = context->job;
+    auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
 
     reserveRegisterRC(context, node->resultRegisterRC, 2);
 
-    if (!isConstExpr)
+    if (!(node->flags & AST_CONST_EXPR))
     {
+        job->collectChilds.clear();
+        collectLiteralsChilds(node, &job->collectChilds);
+
         // Must be called only on the real node !
         auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
@@ -102,8 +103,9 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     else
     {
         // Emit a reference to the buffer
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-        inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
+        auto inst = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        SWAG_ASSERT(node->storageOffsetSegment != UINT32_MAX); // Be sure it has been reserved
+        inst->c.u64 = ((uint64_t) node->storageOffsetSegment << 32) | (uint32_t) typeList->childs.size();
     }
 
     return true;

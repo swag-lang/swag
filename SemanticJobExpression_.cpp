@@ -24,7 +24,8 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 {
     auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
+    auto  module     = sourceFile->module;
+    auto& typeTable  = module->typeTable;
     auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
@@ -78,7 +79,8 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
     auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
+    auto  module     = sourceFile->module;
+    auto& typeTable  = module->typeTable;
     auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();

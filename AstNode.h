@@ -676,9 +676,10 @@ struct AstExpressionList : public AstNode
 {
     void reset() override
     {
-        storageOffset    = 0;
-        isConst          = false;
-        forFuncParameter = false;
+        storageOffset        = 0;
+        storageOffsetSegment = UINT32_MAX;
+        isConst              = false;
+        forFuncParameter     = false;
         AstNode::reset();
     }
 
@@ -687,6 +688,7 @@ struct AstExpressionList : public AstNode
     bool             isConst;
     bool             forFuncParameter;
     uint32_t         storageOffset;
+    uint32_t         storageOffsetSegment;
     TypeInfoListKind listKind;
 };
 
