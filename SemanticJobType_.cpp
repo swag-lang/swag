@@ -10,6 +10,8 @@
 
 bool SemanticJob::dealWithAny(SemanticContext* context, AstNode* anyNode, AstNode* castedNode)
 {
+	if (!anyNode || !castedNode)
+		return true;
     if (!anyNode->typeInfo->isNative(NativeTypeKind::Any))
         return true;
 

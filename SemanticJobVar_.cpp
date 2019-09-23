@@ -290,7 +290,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-	SWAG_ASSERT(node->typeInfo);
+    SWAG_ASSERT(node->typeInfo);
+
+    SWAG_CHECK(dealWithAny(context, node->assignment, node->assignment));
+    if (context->result == SemanticResult::Pending)
+        return true;
+
     auto module   = sourceFile->module;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
@@ -384,9 +389,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Attributes
     SymbolAttributes attributes;
     if (context->node->parentAttributes)
-    {
         collectAttributes(context, attributes, node->parentAttributes, context->node, AstNodeKind::VarDecl, node->attributeFlags);
-    }
 
     // Register symbol with its type
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
