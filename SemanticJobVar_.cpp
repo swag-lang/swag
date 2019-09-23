@@ -73,7 +73,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
         auto offset = storageOffset;
-        auto result = collectLiterals(sourceFile, offset, assignment, nullptr, seg);
+        auto result = collectLiterals(context, offset, assignment, seg);
         SWAG_CHECK(result);
         return true;
     }
@@ -90,26 +90,19 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
     return true;
 }
 
-bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstNode* node, vector<AstNode*>* orderedChilds, DataSegment* segment)
+bool SemanticJob::collectLiterals(SemanticContext* context, uint32_t& offset, AstNode* node, DataSegment* segment)
 {
-    auto module = sourceFile->module;
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
 
     uint8_t* ptrDest = segment ? segment->addressNoLock(offset) : nullptr;
     for (auto child : node->childs)
     {
         if (child->kind == AstNodeKind::ExpressionList)
         {
-            SWAG_CHECK(collectLiterals(sourceFile, offset, child, orderedChilds, segment));
+            SWAG_CHECK(collectLiterals(context, offset, child, segment));
             continue;
         }
-
-        // Collect all childs
-        if (orderedChilds)
-            orderedChilds->push_back(child);
-
-        // We do not want to store the result in the buffer
-        if (!ptrDest)
-            continue;
 
         if (child->typeInfo->isNative(NativeTypeKind::String))
         {
@@ -141,7 +134,7 @@ bool SemanticJob::collectLiterals(SourceFile* sourceFile, uint32_t& offset, AstN
             break;
 
         default:
-            sourceFile->report({sourceFile, node, "collectLiterals, invalid type size"});
+            internalError(context, "collectLiterals, invalid type size");
             return false;
         }
 
