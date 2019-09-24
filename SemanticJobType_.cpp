@@ -289,7 +289,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     node->typeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = &ByteCodeGenJob::emitExplicitCast;
-    node->inheritOrFlag(exprNode, AST_CONST_EXPR);
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);
     node->inheritComputedValue(exprNode);
     return true;
 }
@@ -305,7 +305,7 @@ bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
     node->typeInfo = sourceFile->module->typeTable.registerType(cloneType);
 
     node->byteCodeFct = &ByteCodeGenJob::emitExplicitAutoCast;
-    node->inheritOrFlag(exprNode, AST_CONST_EXPR);
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);
     node->inheritComputedValue(exprNode);
     return true;
 }

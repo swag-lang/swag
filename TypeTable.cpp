@@ -130,6 +130,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         typeStruct = swagScope.regTypeInfoParam;
         break;
     case TypeInfoKind::FuncAttr:
+	case TypeInfoKind::Lambda:
         typeStruct = swagScope.regTypeInfoFunc;
         break;
     case TypeInfoKind::Enum:

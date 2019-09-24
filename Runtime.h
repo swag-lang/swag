@@ -74,7 +74,7 @@ namespace swag
 	struct typeinfo_pointer
 	{
 		base: 			typeinfo
-		pointed_type:	*typeinfo
+		pointed_type:	const *typeinfo
 		ptr_count:		u32
 	}
 
@@ -82,7 +82,7 @@ namespace swag
 	{
 		base: 			typeinfo
 		named_param:	string
-		pointed_type:	*typeinfo
+		pointed_type:	const *typeinfo
 		value:			*void
 		offset:			u32
 	}
@@ -97,14 +97,14 @@ namespace swag
 	{
 		base: 			typeinfo
 		parameters:		const [..] *typeinfo_param
-		return_type:	*typeinfo
+		return_type:	const *typeinfo
 	}
 
 	struct typeinfo_enum
 	{
 		base: 		typeinfo
 		values:		const [..] *typeinfo_param
-		raw_type:	*typeinfo
+		raw_type:	const *typeinfo
 	}
 
 	struct typeinfo_variadic
