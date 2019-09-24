@@ -178,6 +178,7 @@ void ByteCode::print()
         case ByteCodeOp::CastBool16:
         case ByteCodeOp::CastBool32:
         case ByteCodeOp::CastBool64:
+        case ByteCodeOp::MovRASPVaargs:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -229,7 +230,6 @@ void ByteCode::print()
 
         case ByteCodeOp::RAFromStackParam64:
         case ByteCodeOp::MovRASP:
-		case ByteCodeOp::MovRASPVaargs:
             wprintf(L"RA: %u VB: { %u } VC: { %u }", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 

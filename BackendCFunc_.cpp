@@ -1195,7 +1195,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         {
             bufferC.addString(format("__register vaargs%u[] = { 0, ", vaargsIdx));
             int idxParam = (int) pushRAParams.size() - 1;
-            for (int j = ip->c.u32 - 1; j >= 0; j--)
+            while (idxParam >= 0)
                 bufferC.addString(format("r%u, ", pushRAParams[idxParam--]));
             bufferC.addString(" }; ");
             bufferC.addString(format("r%u.pointer = sizeof(__register) + (swag_int8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
