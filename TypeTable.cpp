@@ -250,6 +250,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
 
         break;
     }
+	case TypeInfoKind::Lambda:
     case TypeInfoKind::FuncAttr:
     {
         auto concreteType = (ConcreteTypeInfoFunc*) concreteTypeInfoValue;
