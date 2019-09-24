@@ -1214,19 +1214,16 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
         }
 
-		case ByteCodeOp::MovRASP:
-			bufferC.addString(format("__register vaargs%u = r%u; ", vaargsIdx, ip->c.u32));
-            bufferC.addString(format("r%u.pointer = (swag_int8_t*) &vaargs%u;", ip->a.u32, vaargsIdx));
-			vaargsIdx++;
+        case ByteCodeOp::MovRASP:
+            bufferC.addString(format("r%u.pointer = (swag_int8_t*) &r%u;", ip->a.u32, ip->c.u32));
             break;
-
         case ByteCodeOp::MovRASPVaargs:
             bufferC.addString(format("__register vaargs%u[] = { r%u, ", vaargsIdx, ip->a.u32));
             for (int j = ip->c.u32 - 1; j >= 0; j--)
                 bufferC.addString(format("rc%u, ", j));
-			bufferC.addString(" }; ");
+            bufferC.addString(" }; ");
             bufferC.addString(format("r%u.pointer = sizeof(__register) + (swag_int8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
-			bufferC.addString(format("vaargs%u[0].pointer = r%u.pointer;", vaargsIdx, ip->a.u32));
+            bufferC.addString(format("vaargs%u[0].pointer = r%u.pointer;", vaargsIdx, ip->a.u32));
             vaargsIdx++;
             break;
 

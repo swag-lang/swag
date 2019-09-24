@@ -344,7 +344,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
                         numPushParams++;
                     }
 
-                    freeRegisterRC(context, param);
                     covered = true;
                     break;
                 }
@@ -393,8 +392,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
                     numRegisters++;
                     numPushParams++;
                 }
-
-                freeRegisterRC(context, param);
             }
         }
     }
@@ -460,6 +457,15 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             freeRegisterRC(context, r0);
         }
     }
+
+	// Free all registers now that the call can really be done
+	if (allParams)
+	{
+		for (auto child : allParams->childs)
+		{
+			freeRegisterRC(context, child);
+		}
+	}
 
     // Remember the number of parameters, to allocate registers in backend
     context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
