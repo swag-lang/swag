@@ -8,13 +8,14 @@ struct SwagScope
 {
     void registerType(TypeInfo* typeInfo);
 
-    TypeInfoStruct* regTypeInfo        = nullptr;
-    TypeInfoStruct* regTypeInfoNative  = nullptr;
-    TypeInfoStruct* regTypeInfoPointer = nullptr;
-    TypeInfoStruct* regTypeInfoStruct  = nullptr;
-    TypeInfoStruct* regTypeInfoParam   = nullptr;
-    TypeInfoStruct* regTypeInfoFunc    = nullptr;
-    TypeInfoStruct* regTypeInfoEnum    = nullptr;
+    TypeInfoStruct* regTypeInfo         = nullptr;
+    TypeInfoStruct* regTypeInfoNative   = nullptr;
+    TypeInfoStruct* regTypeInfoPointer  = nullptr;
+    TypeInfoStruct* regTypeInfoStruct   = nullptr;
+    TypeInfoStruct* regTypeInfoParam    = nullptr;
+    TypeInfoStruct* regTypeInfoFunc     = nullptr;
+    TypeInfoStruct* regTypeInfoEnum     = nullptr;
+    TypeInfoStruct* regTypeInfoVariadic = nullptr;
 
     bool         fullySolved = false;
     uint32_t     cptSolved   = 0;

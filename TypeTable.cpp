@@ -135,6 +135,9 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     case TypeInfoKind::Enum:
         typeStruct = swagScope.regTypeInfoEnum;
         break;
+    case TypeInfoKind::Variadic:
+        typeStruct = swagScope.regTypeInfoVariadic;
+        break;
     default:
         context->errorContext.report({sourceFile, node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
         return false;

@@ -279,8 +279,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
         });
     }
 
-    // For a untyped variadic, we need to store the offset (in # registers) of each additional parameter,
-    // in order to be able to index them
+    // For a untyped variadic, we need to store all parameters as 'any'
     RegisterList toFree;
     if (allParams && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
     {
@@ -300,8 +299,8 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             // Store concrete type info
             auto r0 = reserveRegisterRC(context);
             toFree += r0;
-            inst        = emitInstruction(context, ByteCodeOp::CopyRAVB64, r0);
-            inst->b.u64 = 0x666;
+            SWAG_ASSERT(child->concreteTypeInfoStorage != UINT32_MAX);
+            emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0)->b.u64 = child->concreteTypeInfoStorage;
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
 
             // Store address of value on the stack

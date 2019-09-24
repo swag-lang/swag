@@ -106,5 +106,11 @@ namespace swag
 		values:		const [..] *typeinfo_param
 		raw_type:	*typeinfo
 	}
+
+	struct typeinfo_variadic
+	{
+		base: 		typeinfo
+	}
 }
+
 )";
