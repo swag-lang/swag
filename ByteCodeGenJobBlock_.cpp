@@ -411,8 +411,7 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context, Scope* scope)
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
             inst->a.pointer = (uint8_t*) typeInfoStruct->opDrop;
-            inst->b.u64     = 1;
-            inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
+            inst->b.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
             emitInstruction(context, ByteCodeOp::IncSP, 8);
             freeRegisterRC(context, r0);
         }

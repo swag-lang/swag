@@ -1208,7 +1208,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::LocalCall:
         {
             auto              funcBC     = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->c.pointer;
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
             // Normal function call
             if (ip->op == ByteCodeOp::LocalCall)
