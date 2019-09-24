@@ -29,7 +29,6 @@ struct ByteCode : public PoolElement
     ByteCodeInstruction* out                = nullptr;
     uint32_t             numInstructions    = 0;
     uint32_t             maxInstructions    = 0;
-    int                  maxCallParameters  = 0;
     int                  maxCallResults     = 0;
     SourceFile*          sourceFile         = nullptr;
     TypeInfoFuncAttr*    typeInfoFunc       = nullptr;

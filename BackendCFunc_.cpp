@@ -100,28 +100,18 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     }
 
     bufferC.addString(format("%s", nodeFunc->name.c_str()));
-
     bufferC.addString("(");
 
-    auto index         = 0;
-    auto numCallParams = typeFuncBC->parameters.size();
-    for (int idxCall = (int) numCallParams - 1; idxCall >= 0; idxCall--)
-    {
-        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-        typeParam      = TypeManager::concreteType(typeParam);
-        index += typeParam->numRegisters();
-    }
-
-    index -= 1;
-    for (int idxCall = 0; idxCall < (int) numCallParams; idxCall++)
+    int numCallParams = (int) typeFuncBC->parameters.size();
+    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
         typeParam      = TypeManager::concreteType(typeParam);
         if (idxCall)
             bufferC.addString(", ");
 
-		index = pushParams.back();
-		pushParams.pop_back();
+        auto index = pushParams.back();
+        pushParams.pop_back();
 
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Pointer)
@@ -322,26 +312,6 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
                 bufferC.addString(", ");
             index = (index + 1) % 10;
             bufferC.addString(format("r%d", r));
-            if (index == 0)
-                bufferC.addString(";\n");
-        }
-
-        bufferC.addString(";\n");
-    }
-
-    // Generate one variable per function call parameter
-    // Put in in reverse order, so that if we address one rc register, we got older one just after (useful for variadic)
-    if (bc->maxCallParameters)
-    {
-        int index = 0;
-        for (int i = bc->maxCallParameters - 1; i >= 0; i--)
-        {
-            if (index == 0)
-                bufferC.addString("__register ");
-            else
-                bufferC.addString(", ");
-            bufferC.addString(format("rc%u", i));
-            index = (index + 1) % 10;
             if (index == 0)
                 bufferC.addString(";\n");
         }
@@ -1217,7 +1187,6 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
 
         case ByteCodeOp::PushRAParam:
             pushRAParams.push_back(ip->a.u32);
-            //bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
             break;
         case ByteCodeOp::MovRASP:
             bufferC.addString(format("r%u.pointer = (swag_int8_t*) &r%u;", ip->a.u32, ip->c.u32));
@@ -1273,11 +1242,8 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
                 bufferC.addString(format("&rt%d", j));
             }
 
-            auto index         = ip->b.u64 - 1;
-            auto numCallParams = typeFuncBC->parameters.size();
-            assert(!numCallParams || ip->b.u64);
-
-            for (int idxCall = (int) numCallParams - 1; idxCall >= 0; idxCall--)
+            int numCallParams = (int) typeFuncBC->parameters.size();
+            for (int idxCall = numCallParams - 1; idxCall >= 0; idxCall--)
             {
                 auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
                 typeParam      = TypeManager::concreteType(typeParam);
@@ -1285,10 +1251,9 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
                 {
                     if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
                         bufferC.addString(", ");
-                    index = pushRAParams.back();
+                    auto index = pushRAParams.back();
                     pushRAParams.pop_back();
                     bufferC.addString(format("&r%u", index));
-                    index -= 1;
                 }
             }
 

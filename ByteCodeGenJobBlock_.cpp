@@ -414,7 +414,6 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context, Scope* scope)
             inst->b.u64     = 1;
             inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
             emitInstruction(context, ByteCodeOp::IncSP, 8);
-            context->bc->maxCallParameters = max(context->bc->maxCallParameters, 1);
             freeRegisterRC(context, r0);
         }
     }

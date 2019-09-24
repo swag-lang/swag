@@ -467,9 +467,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     // Free all registers now that the call can really be done
     freeRegisterRC(context, toFree);
 
-    // Remember the number of parameters, to allocate registers in backend
-    context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
-
     if (funcNode)
     {
         auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
@@ -609,9 +606,6 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
             freeRegisterRC(context, param);
         }
     }
-
-    // Remember the number of parameters, to allocate registers in backend
-    context->bc->maxCallParameters = max(context->bc->maxCallParameters, numRegisters);
 
     auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
     inst->a.pointer = (uint8_t*) funcNode;

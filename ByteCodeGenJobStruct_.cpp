@@ -62,7 +62,6 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     opDrop->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opDropGenerated";
     replaceAll(opDrop->name, '.', '_');
     opDrop->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
-    opDrop->maxCallParameters     = 1;
     opDrop->maxReservedRegisterRC = 3;
     sourceFile->module->addByteCodeFunc(opDrop);
 
@@ -162,7 +161,6 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     opPostMove->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opPostMoveGenerated";
     replaceAll(opPostMove->name, '.', '_');
     opPostMove->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
-    opPostMove->maxCallParameters     = 1;
     opPostMove->maxReservedRegisterRC = 3;
     sourceFile->module->addByteCodeFunc(opPostMove);
 
@@ -260,7 +258,6 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     opPostCopy->name           = structNode->ownerScope->fullname + "_" + structNode->name + "_opPostCopyGenerated";
     replaceAll(opPostCopy->name, '.', '_');
     opPostCopy->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
-    opPostCopy->maxCallParameters     = 1;
     opPostCopy->maxReservedRegisterRC = 3;
     sourceFile->module->addByteCodeFunc(opPostCopy);
 
@@ -347,7 +344,6 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
             inst->b.u64     = 1;
             inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
             emitInstruction(context, ByteCodeOp::IncSP, 8);
-            context->bc->maxCallParameters = max(context->bc->maxCallParameters, 1);
         }
     }
 
@@ -362,7 +358,6 @@ bool ByteCodeGenJob::emitStructCopyMoveCall(ByteCodeGenContext* context, Registe
             inst->b.u64     = 1;
             inst->c.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
             emitInstruction(context, ByteCodeOp::IncSP, 8);
-            context->bc->maxCallParameters = max(context->bc->maxCallParameters, 1);
         }
     }
 
@@ -389,7 +384,6 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     opInit->name       = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
     replaceAll(opInit->name, '.', '_');
     opInit->typeInfoFunc          = typeInfoFunc;
-    opInit->maxCallParameters     = 1;
     opInit->maxReservedRegisterRC = 3;
 
     if (!typeInfoStruct->opInitFct->bc)
@@ -609,7 +603,6 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     else
     {
         SWAG_ASSERT(node->ownerFct);
-        node->ownerFct->bc->maxCallParameters = max(1, node->ownerFct->bc->maxCallParameters);
 
         // Push self
         RegisterList r0   = reserveRegisterRC(context);
