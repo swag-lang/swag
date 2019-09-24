@@ -20,12 +20,12 @@ struct RegisterList
         countResults = 1;
     }
 
-    int size()
+    int size() const
     {
         return countResults;
     }
 
-    uint32_t operator[](int index)
+    uint32_t operator[](int index) const
     {
         SWAG_ASSERT(index < countResults);
         if (index < MAX_STATIC)
@@ -37,6 +37,12 @@ struct RegisterList
     {
         oneResult[0] = r;
         countResults = 1;
+    }
+
+    void operator+=(const RegisterList& other)
+    {
+        for (int i = 0; i < (int) other.size(); i++)
+            *this += other[i];
     }
 
     void operator+=(uint32_t r)

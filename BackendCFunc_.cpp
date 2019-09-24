@@ -52,7 +52,7 @@ const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
     }
 }
 
-void BackendC::emitForeignCall(ByteCodeInstruction* ip)
+void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams)
 {
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
@@ -120,21 +120,24 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip)
         if (idxCall)
             bufferC.addString(", ");
 
+		index = pushParams.back();
+		pushParams.pop_back();
+
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            bufferC.addString(format("rc%u", index));
+            bufferC.addString(format("r%u", index));
             bufferC.addString(".pointer");
             index -= 1;
         }
         else if (typeParam->isNative(NativeTypeKind::String))
         {
-            bufferC.addString(format("rc%u.pointer", index));
+            bufferC.addString(format("r%u.pointer", index));
             index -= 2;
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            bufferC.addString(format("rc%u", index));
+            bufferC.addString(format("r%u", index));
             index -= 1;
 
             switch (typeParam->nativeType)
@@ -372,9 +375,10 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
     }
 
     // Generate bytecode
-    int  vaargsIdx = 0;
-    auto ip        = bc->out;
-    int  lastLine  = -1;
+    int              vaargsIdx = 0;
+    auto             ip        = bc->out;
+    int              lastLine  = -1;
+    vector<uint32_t> pushRAParams;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         // Print source code
@@ -1190,9 +1194,6 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::PushRRSaved:
         case ByteCodeOp::PopRRSaved:
             break;
-        case ByteCodeOp::PushRAParam:
-            bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
-            break;
 
         case ByteCodeOp::MinusToTrue:
             bufferC.addString(format("r%u.b = r%u.s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
@@ -1214,18 +1215,25 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
         }
 
+        case ByteCodeOp::PushRAParam:
+            pushRAParams.push_back(ip->a.u32);
+            //bufferC.addString(format("rc%u = r%u;", ip->b.u32, ip->a.u32));
+            break;
         case ByteCodeOp::MovRASP:
             bufferC.addString(format("r%u.pointer = (swag_int8_t*) &r%u;", ip->a.u32, ip->c.u32));
             break;
         case ByteCodeOp::MovRASPVaargs:
-            bufferC.addString(format("__register vaargs%u[] = { r%u, ", vaargsIdx, ip->a.u32));
+        {
+            bufferC.addString(format("__register vaargs%u[] = { 0, ", vaargsIdx));
+            int idxParam = (int) pushRAParams.size() - 1;
             for (int j = ip->c.u32 - 1; j >= 0; j--)
-                bufferC.addString(format("rc%u, ", j));
+                bufferC.addString(format("r%u, ", pushRAParams[idxParam--]));
             bufferC.addString(" }; ");
             bufferC.addString(format("r%u.pointer = sizeof(__register) + (swag_int8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
             bufferC.addString(format("vaargs%u[0].pointer = r%u.pointer;", vaargsIdx, ip->a.u32));
             vaargsIdx++;
             break;
+        }
 
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LocalCall:
@@ -1277,17 +1285,20 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
                 {
                     if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
                         bufferC.addString(", ");
-                    bufferC.addString(format("&rc%u", index));
+                    index = pushRAParams.back();
+                    pushRAParams.pop_back();
+                    bufferC.addString(format("&r%u", index));
                     index -= 1;
                 }
             }
 
+            pushRAParams.clear();
             bufferC.addString("); }");
         }
         break;
 
         case ByteCodeOp::ForeignCall:
-            emitForeignCall(ip);
+            emitForeignCall(ip, pushRAParams);
             break;
 
         default:
