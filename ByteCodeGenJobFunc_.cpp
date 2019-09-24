@@ -323,14 +323,15 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
 
     // Push missing default parameters
     uint64_t numPushParams = 0;
-    if (numCallParams < typeInfoFunc->parameters.size())
+    int      numTypeParams = (int) typeInfoFunc->parameters.size();
+    if (numCallParams < numTypeParams)
     {
         // Push all parameters, from end to start
-        for (int i = (int) typeInfoFunc->parameters.size() - 1; i >= 0; i--)
+        for (int i = numTypeParams - 1; i >= 0; i--)
         {
             // Determine if this parameter has been covered by the call
             bool covered = false;
-            for (int j = 0; allParams && j < allParams->childs.size(); j++)
+            for (int j = 0; j < numCallParams; j++)
             {
                 auto param = static_cast<AstFuncCallParam*>(allParams->childs[j]);
                 if (param->index == i)
@@ -423,7 +424,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
         if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
         {
             auto r0          = reserveRegisterRC(context);
-            auto numVariadic = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+            auto numVariadic = (uint32_t)(numCallParams - numTypeParams) + 1;
 
             // Store number of extra parameters
             emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64  = numVariadic | ((numPushParams + 1) << 32);
@@ -441,7 +442,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
         else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
         {
             auto r0           = reserveRegisterRC(context);
-            auto numVariadic  = (uint32_t)(numCallParams - typeInfoFunc->parameters.size()) + 1;
+            auto numVariadic  = (uint32_t)(numCallParams - numTypeParams) + 1;
             auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
             auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters()) + 1;
 
