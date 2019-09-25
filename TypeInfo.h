@@ -15,23 +15,23 @@ struct ByteCode;
 // Do not forget to synchronize runtime.h !
 enum class TypeInfoKind
 {
-	Invalid,
-	Native,
-	Namespace,
-	Enum,
-	FuncAttr,
-	Param,
-	Lambda,
-	Pointer,
-	Array,
-	Slice,
-	TypeList,
-	Variadic,
-	TypedVariadic,
-	Struct,
-	Generic,
-	Alias,
-	Count,
+    Invalid,
+    Native,
+    Namespace,
+    Enum,
+    FuncAttr,
+    Param,
+    Lambda,
+    Pointer,
+    Array,
+    Slice,
+    TypeList,
+    Variadic,
+    TypedVariadic,
+    Struct,
+    Generic,
+    Alias,
+    Count,
 };
 
 // Do not forget to synchronize runtime.h !
@@ -284,6 +284,7 @@ struct SymbolMatchContext
     static const uint32_t MATCH_ERROR_VALUE_TYPE  = 0x00000008;
     static const uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
     static const uint32_t MATCH_UNCONST           = 0x00000020;
+    static const uint32_t MATCH_TYPEOF            = 0x00000040;
 
     SymbolMatchContext()
     {

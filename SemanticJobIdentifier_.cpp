@@ -265,7 +265,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
                 if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
                 {
-					SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeCall->typeInfo, &nodeCall->concreteTypeInfo, &nodeCall->concreteTypeInfoStorage));
+                    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeCall->typeInfo, &nodeCall->concreteTypeInfo, &nodeCall->concreteTypeInfoStorage));
                 }
             }
         }
@@ -388,6 +388,12 @@ anotherTry:
             else
             {
                 SWAG_ASSERT(false);
+            }
+
+            // This is fine to match a lambda variable without call parameters
+            if (!callParameters && job->symMatch.result == MatchResult::NotEnoughParameters && symbol->kind == SymbolKind::Variable)
+            {
+                job->symMatch.result = MatchResult::Ok;
             }
 
             switch (job->symMatch.result)
