@@ -209,11 +209,15 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     {
         // This is fine to compare two lambdas
     }
-    else if (leftTypeInfo->kind != TypeInfoKind::Native && leftTypeInfo->kind != TypeInfoKind::Pointer && leftTypeInfo->kind != TypeInfoKind::Struct)
+    else if (leftTypeInfo->kind != TypeInfoKind::Native &&
+             leftTypeInfo->kind != TypeInfoKind::Pointer &&
+             leftTypeInfo->kind != TypeInfoKind::Struct)
     {
         return context->errorContext.report({sourceFile, left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
     }
-    else if (rightTypeInfo->kind != TypeInfoKind::Native && rightTypeInfo->kind != TypeInfoKind::Pointer && rightTypeInfo->kind != TypeInfoKind::Struct)
+    else if (rightTypeInfo->kind != TypeInfoKind::Native &&
+             rightTypeInfo->kind != TypeInfoKind::Pointer &&
+             rightTypeInfo->kind != TypeInfoKind::Struct)
     {
         return context->errorContext.report({sourceFile, right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
     }
