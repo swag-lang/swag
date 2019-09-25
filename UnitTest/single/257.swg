@@ -9,6 +9,6 @@
 
 	#test
 	{
-		@assert(test1 == 666);
+		@assert(test1() == 666);
 	}
 }

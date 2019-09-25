@@ -6,5 +6,5 @@ func toto1 ()->bool { return true; }
 
 #test
 {
-	@assert(toto == toto1);
+	@assert(toto() == toto1());
 }

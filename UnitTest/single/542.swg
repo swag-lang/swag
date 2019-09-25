@@ -27,8 +27,8 @@ namespace titi
 	b = false
 	@assert(a == false)
 	@assert(b == false)
-	toto.F
-	titi.F
+	toto.F()
+	titi.F()
 	@assert(a == true)
 	@assert(b == true)
 }

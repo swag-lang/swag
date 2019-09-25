@@ -16,4 +16,4 @@ func main ()
 	@assert(b == 0b0110);
 }
 
-#run main;
+#run main();

@@ -15,6 +15,6 @@ func toto1(x: s32)
 {	
 	//@print(toto)
 	x := 0
-	x = toto
+	x = toto()
 	@assert(x == 666)
 }

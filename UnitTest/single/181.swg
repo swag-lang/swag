@@ -10,4 +10,4 @@ using swag;
 #[constexpr]
 func mask () -> s32 { return 1; }
 
-#assert mask | 2 == 3;
+#assert mask() | 2 == 3;

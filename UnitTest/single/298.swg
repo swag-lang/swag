@@ -16,7 +16,7 @@
 	//#[printbc]
 	#test
 	{
-		var res = test2;
+		var res = test2();
 		//@op(res, count) == 5;
 		
 		//@print(res);

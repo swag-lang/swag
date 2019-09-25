@@ -12,7 +12,7 @@ func main (a: s32 = #run value())->s32
 //#[printbc]
 func main1 ()
 {
-	@assert(main == 55);
+	@assert(main() == 55);
 }
 
-#run main1;
+#run main1();

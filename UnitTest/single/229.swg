@@ -11,4 +11,4 @@ func main ()
 	@assert(b == 555);
 }
 
-#run main;
+#run main();

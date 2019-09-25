@@ -268,6 +268,7 @@ enum MatchResult
     TooManyParameters,
     TooManyGenericParameters,
     NotEnoughParameters,
+	MissingParameters,
     NotEnoughGenericParameters,
     BadSignature,
     BadGenericSignature,

@@ -18,9 +18,9 @@ func main (a: s32, b: s32 = 0)->s32
 
 func main1 ()
 {
-	@assert(main == 6);
+	@assert(main() == 6);
 	@assert(main(5) == 5);
 	@assert(main(5, 7) == 7);
 }
 
-#run main1;
+#run main1();

@@ -391,12 +391,22 @@ anotherTry:
                 SWAG_ASSERT(false);
             }
 
+            // We need () for a function call !
+            if (!callParameters && job->symMatch.result == MatchResult::Ok && symbol->kind == SymbolKind::Function)
+            {
+                auto grandParent = node->parent->parent;
+                if (grandParent->kind != AstNodeKind::MakePointer)
+                {
+                    job->symMatch.result = MatchResult::MissingParameters;
+                }
+            }
+
             // Function type without call parameters
             if (!callParameters && job->symMatch.result == MatchResult::NotEnoughParameters)
             {
                 if (symbol->kind == SymbolKind::Variable)
                     job->symMatch.result = MatchResult::Ok;
-                else if(symbol->kind == SymbolKind::Function && node->parent->childs.size() == 1)
+                else if (symbol->kind == SymbolKind::Function && node->parent->childs.size() == 1)
                 {
                     auto grandParent = node->parent->parent;
                     if (grandParent->kind == AstNodeKind::IntrinsicProp)
@@ -538,6 +548,12 @@ anotherTry:
             case MatchResult::NotEnoughParameters:
             {
                 Diagnostic diag{sourceFile, callParameters ? callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
+                return context->errorContext.report(diag, &note);
+            }
+            case MatchResult::MissingParameters:
+            {
+                Diagnostic diag{sourceFile, callParameters ? callParameters : node, format("missing function call '()' to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }

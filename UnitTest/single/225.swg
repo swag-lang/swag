@@ -22,4 +22,4 @@ func main ()
 	@assert(b2 == 4.0);
 }
 
-#run main;
+#run main();

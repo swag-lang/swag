@@ -20,6 +20,6 @@ func(T) toto()
 #test
 {
 	cpt = 0
-	toto!Point()
+	toto!(Point)()
 	@assert(cpt == 1)
 }

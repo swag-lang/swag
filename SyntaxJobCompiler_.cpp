@@ -35,24 +35,24 @@ bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
     if (token.id == TokenId::SymLeftParen)
     {
-		SWAG_CHECK(eatToken());
-		SWAG_CHECK(doExpression(node));
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doExpression(node));
         if (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "invalid #assert message"}));
             node->name = token.text;
-			SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatToken());
         }
 
-		SWAG_CHECK(eatToken(TokenId::SymRightParen));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
     else
         SWAG_CHECK(doExpression(node));
@@ -66,7 +66,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
 
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
@@ -79,7 +79,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 
 bool SyntaxJob::doCompilerVersion(AstNode* parent)
 {
-    auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerVersion, sourceFile->indexInModule, parent);
+    auto node   = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerVersion, sourceFile->indexInModule, parent);
     node->token = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -118,7 +118,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
 
-    auto runNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent);
+    auto runNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent);
     runNode->semanticFct = &SemanticJob::resolveCompilerRun;
     runNode->token       = move(token);
 
@@ -127,11 +127,11 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
         return doExpression(runNode);
 
     // Generated function
-    auto funcNode = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
+    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
 
-    auto typeNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
+    auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
 
     // Register function name
@@ -155,7 +155,10 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     }
 
     // Generate a call
-    Ast::createIdentifierRef(this, funcNode->name, runNode->token, runNode);
+    auto idRef         = (AstIdentifierRef*) Ast::createIdentifierRef(this, funcNode->name, runNode->token, runNode);
+    auto id            = (AstIdentifier*) idRef->childs.front();
+    id->callParameters = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, id);
+
     return true;
 }
 

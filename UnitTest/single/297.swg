@@ -10,6 +10,6 @@ func test1 ()-> string
 //#[swag.printbc]
 #test
 {
-	var c = test1;
+	var c = test1();
 	@assert(c == "toto1");
 }

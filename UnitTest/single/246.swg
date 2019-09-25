@@ -11,7 +11,7 @@ func main (a: s32 = 6)
 //#[printbc]
 func main1 ()
 {
-	main;
+	main();
 }
 
-#run main1;
+#run main1();

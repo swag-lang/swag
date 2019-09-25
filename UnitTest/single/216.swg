@@ -17,4 +17,4 @@ func main ()
 	@assert(true);
 }
 
-#run main;
+#run main();

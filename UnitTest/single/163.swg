@@ -10,4 +10,4 @@ namespace A.B
 	}
 }
 
-#run main;
+#run main();

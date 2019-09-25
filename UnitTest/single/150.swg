@@ -1,7 +1,7 @@
 #module module150;
 #unittest pass semantic;
 
-#run main;
+#run main();
 
 func main ()
 {

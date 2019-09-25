@@ -15,4 +15,4 @@ func main ()
 	@assert(a == 5);
 }
 
-#run main;
+#run main();

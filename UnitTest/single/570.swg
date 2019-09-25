@@ -10,7 +10,7 @@ func toto()->ret
 
 #test
 {
-	a:= toto
+	a:= toto()
 	@assert(a.0 == 1)
 	@assert(a.1 == 2)
 }

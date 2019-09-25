@@ -14,4 +14,4 @@ func main ()
 	@assert(a == 676);
 }
 
-#run main;
+#run main();
