@@ -5,7 +5,7 @@
 #include "SemanticJob.h"
 #include "Diagnostic.h"
 
-bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
+bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger, bool acceptParameters)
 {
     uint32_t flags = 0;
 
@@ -35,17 +35,20 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger)
     Ast::addChildBack(parent, expr);
 
     // Template arguments
-    if (token.id == TokenId::SymExclam)
+    if (acceptParameters)
     {
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doFuncCallParameters(identifier, &identifier->genericParameters));
-        identifier->genericParameters->flags |= AST_NO_BYTECODE;
-    }
+        if (token.id == TokenId::SymExclam)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->genericParameters));
+            identifier->genericParameters->flags |= AST_NO_BYTECODE;
+        }
 
-    // Function call parameters
-    if (token.id == TokenId::SymLeftParen)
-    {
-        SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
+        // Function call parameters
+        if (token.id == TokenId::SymLeftParen)
+        {
+            SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
+        }
     }
 
     return true;

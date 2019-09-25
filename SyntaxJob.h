@@ -54,7 +54,7 @@ struct SyntaxJob : public Job
     void forceTakeAddress(AstNode* node);
 	bool doDefer(AstNode* parent, AstNode** result = nullptr);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doIdentifier(AstNode* parent, bool acceptInteger = false);
+    bool doIdentifier(AstNode* parent, bool acceptInteger = false, bool acceptParameters = true);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);

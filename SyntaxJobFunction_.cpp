@@ -18,7 +18,26 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
     {
         auto param         = Ast::newNode(this, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, callParams);
         param->semanticFct = &SemanticJob::resolveFuncCallParam;
-        SWAG_CHECK(doExpression(param));
+        switch (token.id)
+        {
+        case TokenId::Identifier:
+        {
+            auto identifierRef         = Ast::newNode(this, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, param);
+            identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
+            SWAG_CHECK(doIdentifier(identifierRef, false, false));
+            break;
+        }
+        case TokenId::LiteralCharacter:
+        case TokenId::LiteralNumber:
+        case TokenId::LiteralString:
+            SWAG_CHECK(doLiteral(param));
+            break;
+        case TokenId::NativeType:
+            SWAG_CHECK(doTypeExpression(param));
+            break;
+        default:
+            return sourceFile->report({sourceFile, param, format("invalid generic argument '%s'", token.text.c_str())});
+        }
     }
     else
     {
