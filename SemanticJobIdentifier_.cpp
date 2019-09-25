@@ -10,6 +10,7 @@
 #include "Workspace.h"
 #include "Generic.h"
 #include "TypeManager.h"
+#include "LanguageSpec.h"
 
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
@@ -390,10 +391,21 @@ anotherTry:
                 SWAG_ASSERT(false);
             }
 
-            // This is fine to match a lambda variable without call parameters
-            if (!callParameters && job->symMatch.result == MatchResult::NotEnoughParameters && symbol->kind == SymbolKind::Variable)
+            // Function type without call parameters
+            if (!callParameters && job->symMatch.result == MatchResult::NotEnoughParameters)
             {
-                job->symMatch.result = MatchResult::Ok;
+                if (symbol->kind == SymbolKind::Variable)
+                    job->symMatch.result = MatchResult::Ok;
+                else if(symbol->kind == SymbolKind::Function && node->parent->childs.size() == 1)
+                {
+                    auto grandParent = node->parent->parent;
+                    if (grandParent->kind == AstNodeKind::IntrinsicProp)
+                    {
+                        auto prop = CastAst<AstProperty>(grandParent, AstNodeKind::IntrinsicProp);
+                        if (prop->prop == Property::TypeOf)
+                            job->symMatch.result = MatchResult::Ok;
+                    }
+                }
             }
 
             switch (job->symMatch.result)
