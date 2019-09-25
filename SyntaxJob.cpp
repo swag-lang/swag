@@ -106,6 +106,11 @@ bool SyntaxJob::recoverError()
 
 JobResult SyntaxJob::execute()
 {
+#ifdef SWAG_HAS_ASSERT
+    g_diagnosticInfos.pass       = "SyntaxJob";
+    g_diagnosticInfos.sourceFile = sourceFile;
+#endif
+
     if (g_CommandLine.stats && !sourceFile->externalBuffer)
         g_Stats.numFiles++;
 

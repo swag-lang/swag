@@ -81,7 +81,7 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& r
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
-#ifdef _DEBUG
+#ifdef SWAG_HAS_ASSERT
     for (auto r : context->bc->availableRegistersRC)
         SWAG_ASSERT(r != rc);
 #endif
@@ -142,6 +142,12 @@ void ByteCodeGenJob::setPending()
 
 JobResult ByteCodeGenJob::execute()
 {
+#ifdef SWAG_HAS_ASSERT
+    g_diagnosticInfos.pass       = "ByteCodeGenJob";
+    g_diagnosticInfos.sourceFile = sourceFile;
+    g_diagnosticInfos.node       = originalNode;
+#endif
+
     if (!syncToDependentNodes)
     {
         context.job        = this;

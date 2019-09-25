@@ -40,10 +40,18 @@ JobResult SemanticJob::execute()
     context.errorContext.sourceFile = sourceFile;
     context.result                  = SemanticResult::Done;
 
+#ifdef SWAG_HAS_ASSERT
+    g_diagnosticInfos.pass       = "SemanticJob";
+    g_diagnosticInfos.sourceFile = sourceFile;
+#endif
+
     while (!nodes.empty())
     {
         auto node    = nodes.back();
         context.node = node;
+#ifdef SWAG_HAS_ASSERT
+        g_diagnosticInfos.node = node;
+#endif
 
         switch (node->semanticState)
         {

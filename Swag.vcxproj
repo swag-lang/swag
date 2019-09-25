@@ -104,7 +104,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);FFI_BUILDING</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assert.h" />
     <ClInclude Include="Ast.h" />
     <ClInclude Include="AstFlags.h" />
     <ClInclude Include="AstNode.h" />
@@ -230,6 +231,7 @@
     <ClInclude Include="Workspace.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assert.cpp" />
     <ClCompile Include="Ast.cpp" />
     <ClCompile Include="AstNode.cpp" />
     <ClCompile Include="BackendC.cpp" />

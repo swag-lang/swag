@@ -1,5 +1,6 @@
 #pragma once
 #include "Utf8.h"
+#include "Assert.h"
 
 struct Global
 {
@@ -28,14 +29,4 @@ extern struct Global g_Global;
             __err;                 \
             return false;          \
         }                          \
-    }
-
-#define SWAG_ASSERT(__expr)                                                                  \
-    {                                                                                        \
-        if (!(__expr))                                                                       \
-        {                                                                                    \
-            g_Log.error(format("assertion failed: %s:%d: %s", __FILE__, __LINE__, #__expr)); \
-            assert(false);                                                                   \
-            exit(-1);                                                                        \
-        }                                                                                    \
     }

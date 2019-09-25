@@ -39,7 +39,7 @@ bool JobThread::executeJob(Job* job, string& exception)
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-		exception = "executeJob, unhandled exception";
+        exception = "executeJob, unhandled exception";
         return false;
     }
 
@@ -58,10 +58,12 @@ void JobThread::loop()
             continue;
         }
 
-		string exception;
+        string exception;
         if (!executeJob(job, exception))
-        {
             g_Log.error(exception);
-        }
+
+#ifdef SWAG_HAS_ASSERT
+        g_diagnosticInfos.clear();
+#endif
     }
 }

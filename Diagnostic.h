@@ -61,7 +61,7 @@ struct Diagnostic
         , hasRangeLocation{true}
         , printSource{true}
     {
-		node->inheritLocationFromChilds();
+        node->inheritLocationFromChilds();
         startLocation = node->token.startLocation;
         endLocation   = node->token.endLocation;
     }
