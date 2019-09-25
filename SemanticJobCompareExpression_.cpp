@@ -203,10 +203,20 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return true;
     }
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native && leftTypeInfo->kind != TypeInfoKind::Pointer && leftTypeInfo->kind != TypeInfoKind::Struct)
+    if (leftTypeInfo->kind == TypeInfoKind::Lambda &&
+        rightTypeInfo->kind == TypeInfoKind::Lambda &&
+        (node->token.id == TokenId::SymEqualEqual || node->token.id == TokenId::SymExclamEqual))
+    {
+        // This is fine to compare two lambdas
+    }
+    else if (leftTypeInfo->kind != TypeInfoKind::Native && leftTypeInfo->kind != TypeInfoKind::Pointer && leftTypeInfo->kind != TypeInfoKind::Struct)
+    {
         return context->errorContext.report({sourceFile, left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
-    if (rightTypeInfo->kind != TypeInfoKind::Native && rightTypeInfo->kind != TypeInfoKind::Pointer && rightTypeInfo->kind != TypeInfoKind::Struct)
+    }
+    else if (rightTypeInfo->kind != TypeInfoKind::Native && rightTypeInfo->kind != TypeInfoKind::Pointer && rightTypeInfo->kind != TypeInfoKind::Struct)
+    {
         return context->errorContext.report({sourceFile, right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
+    }
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
@@ -216,7 +226,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     left->typeInfo  = TypeManager::concreteType(left->typeInfo, MakeConcrete::FlagEnum);
     right->typeInfo = TypeManager::concreteType(right->typeInfo, MakeConcrete::FlagEnum);
 
-    // Must not make types compatible for a struct
+    // Must not make types compatible for a struct, as we can compare a struct with whatever
     if (left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
 

@@ -29,6 +29,8 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a pointer";
     case TypeInfoKind::FuncAttr:
         return "a function";
+    case TypeInfoKind::Lambda:
+        return "a lambda";
     case TypeInfoKind::TypeList:
         if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Tuple)
             return "a tuple";
@@ -63,6 +65,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "pointer";
     case TypeInfoKind::FuncAttr:
         return "function";
+    case TypeInfoKind::Lambda:
+        return "lambda";
     case TypeInfoKind::TypeList:
         if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Tuple)
             return "tuple";

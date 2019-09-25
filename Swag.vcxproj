@@ -243,6 +243,7 @@
     <ClCompile Include="ByteCodeGenJobBinaryOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobBlock_.cpp" />
     <ClCompile Include="ByteCodeGenJobCast_.cpp" />
+    <ClCompile Include="ByteCodeGenJobCompareOp_.cpp" />
     <ClCompile Include="ByteCodeGenJobFunc_.cpp" />
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp" />
     <ClCompile Include="ByteCodeGenJobExpression_.cpp" />

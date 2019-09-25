@@ -302,6 +302,9 @@
     <ClCompile Include="TypeList.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeGenJobCompareOp_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
