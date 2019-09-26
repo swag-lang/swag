@@ -110,6 +110,11 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         return true;
     }
 
+    if (typeInfo->kind == TypeInfoKind::TypeList)
+    {
+		return true;
+	}
+
     switch (typeInfo->sizeOf)
     {
     case 1:
@@ -254,11 +259,11 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // r0[1] now points to the list of any
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, r0[0], r0[1]);
 
-		// Now we point to the first 'any' of the argument list
-        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register); 
+        // Now we point to the first 'any' of the argument list
+        emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = 2 * sizeof(Register);
         emitInstruction(context, ByteCodeOp::IncPointer, r0[1], node->access->resultRegisterRC, r0[0]);
 
-		// Deref the any
+        // Deref the any
         emitInstruction(context, ByteCodeOp::DeRefStringSlice, r0[0], r0[1]);
 
         node->resultRegisterRC = r0;

@@ -184,6 +184,11 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
         return true;
     }
+    else if (token.id == TokenId::SymLeftCurly)
+    {
+		SWAG_CHECK(doTypeExpressionTuple(node, &node->identifier, isConst));
+        return true;
+    }
 
     return syntaxError(token, format("invalid type declaration '%s'", token.text.c_str()));
 }

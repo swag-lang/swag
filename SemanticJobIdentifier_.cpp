@@ -780,7 +780,7 @@ bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
                 identifierRef->typeInfo      = typeList->childs[index];
                 eaten                        = true;
                 node->flags |= AST_IDENTIFIER_IS_INTEGER;
-                node->flags |= AST_R_VALUE;
+                node->flags |= AST_L_VALUE | AST_R_VALUE;
                 return true;
             }
 

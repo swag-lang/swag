@@ -121,7 +121,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     if (varNode->type && varNode->type->kind == AstNodeKind::TypeExpression)
     {
         auto typeExpression = CastAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
-        if (typeExpression->identifier)
+        if (typeExpression->identifier && typeExpression->identifier->kind == AstNodeKind::IdentifierRef)
         {
             auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
             if (identifier->callParameters)
