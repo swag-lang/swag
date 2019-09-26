@@ -40,6 +40,22 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         return context->errorContext.report(diag, &note, &note1);
     }
 
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) && kind != AstNodeKind::StructDecl && kind != AstNodeKind::Statement)
+    {
+        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a struct definition", oneAttribute->name.c_str())};
+        Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
+        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        return context->errorContext.report(diag, &note, &note1);
+    }
+
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) && kind != AstNodeKind::EnumDecl && kind != AstNodeKind::Statement)
+    {
+        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to an enum definition", oneAttribute->name.c_str())};
+        Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
+        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+        return context->errorContext.report(diag, &note, &note1);
+    }
+
     return true;
 }
 
