@@ -92,6 +92,7 @@ static const uint32_t TYPEINFO_DEFINED_VALUE            = 0x00020000;
 static const uint32_t TYPEINFO_AUTO_CAST                = 0x00040000;
 static const uint32_t TYPEINFO_TYPED_VARIADIC           = 0x00080000;
 static const uint32_t TYPEINFO_IN_CONCRETE_LIST         = 0x00100000;
+static const uint32_t TYPEINFO_ATTRIBUTE_STRUCT         = 0x00200000;
 
 static const uint32_t ISSAME_EXACT    = 0x00000001;
 static const uint32_t ISSAME_CAST     = 0x00000002;
@@ -268,7 +269,7 @@ enum MatchResult
     TooManyParameters,
     TooManyGenericParameters,
     NotEnoughParameters,
-	MissingParameters,
+    MissingParameters,
     NotEnoughGenericParameters,
     BadSignature,
     BadGenericSignature,

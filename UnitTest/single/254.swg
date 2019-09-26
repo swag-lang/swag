@@ -1,7 +1,7 @@
 #module module254;
 using swag;
 
-#unittest error;
+//#unittest error;
 
 #[test]
 func main ()

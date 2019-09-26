@@ -1,10 +1,10 @@
 #module module959
 
-attr PR() -> var
+attr PR(x: s32) -> var
 
 struct toto
 {
-	#[PR]
+	#[PR(666)]
 	x: s32
 }
 

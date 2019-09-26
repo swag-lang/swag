@@ -125,7 +125,10 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
-            SWAG_CHECK(doVarDecl(contentNode, nullptr, AstNodeKind::VarDecl));
+            if (token.id == TokenId::SymAttrStart)
+                SWAG_CHECK(doAttrUse(contentNode));
+            else
+                SWAG_CHECK(doVarDecl(contentNode, nullptr, AstNodeKind::VarDecl));
         }
     }
 

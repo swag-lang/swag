@@ -9,7 +9,7 @@
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
-    auto attrNode = Ast::newNode(this, &g_Pool_astAttrDecl, AstNodeKind::AttrDecl, sourceFile->indexInModule, parent);
+    auto attrNode         = Ast::newNode(this, &g_Pool_astAttrDecl, AstNodeKind::AttrDecl, sourceFile->indexInModule, parent);
     attrNode->semanticFct = &SemanticJob::resolveAttrDecl;
     if (result)
         *result = attrNode;
@@ -17,7 +17,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
 
-	attrNode->inheritTokenName(token);
+    attrNode->inheritTokenName(token);
     attrNode->typeInfo = g_Pool_typeInfoFuncAttr.alloc();
 
     // Parameters
@@ -38,17 +38,21 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
             SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute type 'var' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_VAR;
             break;
+        case TokenId::KwdStruct:
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute type 'struct' already defined"));
+            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_STRUCT;
+            break;
         default:
             return error(token, format("invalid attribute type '%s'", token.text.c_str()));
         }
 
         SWAG_CHECK(tokenizer.getToken(token));
-		if (token.id != TokenId::SymComma)
-			break;
+        if (token.id != TokenId::SymComma)
+            break;
         SWAG_CHECK(eatToken());
     }
 
-	SWAG_CHECK(eatSemiCol("after attribute definition"));
+    SWAG_CHECK(eatSemiCol("after attribute definition"));
     SWAG_VERIFY(attrNode->typeInfo->flags, syntaxError(token, "missing attribute type"));
 
     // Register attribute
@@ -64,7 +68,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 {
-    auto attrBlockNode = Ast::newNode(this, &g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile->indexInModule, parent);
+    auto attrBlockNode         = Ast::newNode(this, &g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile->indexInModule, parent);
     attrBlockNode->semanticFct = &SemanticJob::resolveAttrUse;
     if (result)
         *result = attrBlockNode;

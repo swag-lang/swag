@@ -69,6 +69,8 @@ const char* AstNode::getKindName(AstNode* node)
         return "a type";
     case AstNodeKind::FuncDeclParam:
         return "a function parameter";
+    case AstNodeKind::StructDecl:
+        return "a structure";
     }
 
     return "<node>";
@@ -92,6 +94,8 @@ const char* AstNode::getNakedKindName(AstNode* node)
         return "typealias";
     case AstNodeKind::FuncDeclParam:
         return "parameter";
+    case AstNodeKind::StructDecl:
+        return "structure";
     }
 
     return "<node>";

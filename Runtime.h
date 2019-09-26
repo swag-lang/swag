@@ -17,6 +17,7 @@ namespace swag
 	attr printbc() -> func
 	attr compiler() -> func
 	attr public() -> func
+	attr test() -> func
 	attr foreign(module: string = "") -> func
 
 	enum typeinfo_kind
@@ -110,6 +111,12 @@ namespace swag
 	struct typeinfo_variadic
 	{
 		base: 		typeinfo
+	}
+
+	struct typeinfo_attributes
+	{
+		attributes: const [..] *typeinfo_func
+		//map<string, ComputedValue> values;
 	}
 }
 
