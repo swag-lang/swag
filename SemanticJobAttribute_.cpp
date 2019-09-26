@@ -84,15 +84,15 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             // Predefined attributes will mark some flags
             if (child->name == "constexpr")
                 flags |= ATTRIBUTE_CONSTEXPR;
-            if (child->name == "printbc")
+            else if (child->name == "printbc")
                 flags |= ATTRIBUTE_PRINTBYTECODE;
-            if (child->name == "test")
+			else if (child->name == "test")
                 flags |= ATTRIBUTE_TEST;
-            if (child->name == "compiler")
+			else if (child->name == "compiler")
                 flags |= ATTRIBUTE_COMPILER;
-            if (child->name == "public")
+			else if (child->name == "public")
                 flags |= ATTRIBUTE_PUBLIC;
-            if (child->name == "foreign")
+			else if (child->name == "foreign")
                 flags |= ATTRIBUTE_FOREIGN;
 
             result.attributes.insert(typeInfo);

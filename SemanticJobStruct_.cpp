@@ -134,8 +134,13 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
         }
     }
 
+    // Attributes
+    SymbolAttributes attributes;
+    if (node->parentAttributes)
+        SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, context->node, AstNodeKind::StructDecl, node->attributeFlags));
+
     // Register symbol with its type
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE));
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0, &attributes));
     return true;
 }
 
