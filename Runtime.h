@@ -13,11 +13,11 @@ func @memcpy(dst: *void, src: *void, size: u32);
 
 namespace swag 
 {
-	attr constexpr() -> func;
-	attr printbc() -> func;
-	attr compiler() -> func;
-	attr public() -> func;
-	attr foreign(module: string = "") -> func;
+	attr constexpr() -> func
+	attr printbc() -> func
+	attr compiler() -> func
+	attr public() -> func
+	attr foreign(module: string = "") -> func
 
 	enum typeinfo_kind
 	{

@@ -26,7 +26,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
     // Return type
     SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
-    while (token.id != TokenId::SymSemiColon)
+    while (true)
     {
         switch (token.id)
         {
@@ -43,13 +43,12 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(tokenizer.getToken(token));
-        if (token.id != TokenId::SymSemiColon)
-        {
-            SWAG_CHECK(eatToken(TokenId::SymComma));
-            SWAG_VERIFY(token.id != TokenId::SymSemiColon, syntaxError(token, "missing attribute type"));
-        }
+		if (token.id != TokenId::SymComma)
+			break;
+        SWAG_CHECK(eatToken());
     }
 
+	SWAG_CHECK(eatSemiCol("after attribute definition"));
     SWAG_VERIFY(attrNode->typeInfo->flags, syntaxError(token, "missing attribute type"));
 
     // Register attribute
