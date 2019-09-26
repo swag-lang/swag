@@ -180,6 +180,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
         return context->errorContext.report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
+    arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
+
     switch (arrayType->kind)
     {
     case TypeInfoKind::Native:

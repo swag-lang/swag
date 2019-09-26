@@ -7,6 +7,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Workspace.h"
+#include "Diagnostic.h"
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
@@ -27,7 +28,7 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
     auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-    SWAG_VERIFY(node->childs.size(), context->job->error(context, "empty tuple type"));
+    SWAG_VERIFY(node->childs.size(), context->errorContext.report({sourceFile, node, "empty tuple"}));
 
     auto typeInfoList   = g_Pool_typeInfoList.alloc();
     typeInfoList->scope = node->childs.front()->ownerScope;
@@ -51,8 +52,11 @@ bool SemanticJob::resolveTypeTuple(SemanticContext* context)
             typeInfoList->names.push_back(child->name);
         }
 
-        typeInfoList->name += child->typeInfo->name;
-        typeInfoList->sizeOf += child->typeInfo->sizeOf;
+        auto childType = child->typeInfo;
+        typeInfoList->name += childType->name;
+        typeInfoList->sizeOf += childType->sizeOf;
+
+        SWAG_VERIFY(childType->kind != TypeInfoKind::Struct, context->errorContext.report({sourceFile, child, "structures in tuples are not supported"}));
     }
 
     typeInfoList->name += "}";
