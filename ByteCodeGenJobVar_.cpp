@@ -16,9 +16,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     // Initialize the struct, whatever, before the assignment
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-		SWAG_CHECK(prepareEmitStructDrop(context, typeInfo));
-		if (context->result == ByteCodeResult::Pending)
-			return true;
+        SWAG_CHECK(prepareEmitStructDrop(context, typeInfo));
+        if (context->result == ByteCodeResult::Pending)
+            return true;
 
         if (node->byteCodePass == 0)
         {
@@ -42,9 +42,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             }
 
             SWAG_CHECK(emitLocalCall(context, node, static_cast<AstFuncDecl*>(node->resolvedUserOpSymbolOverload->node), nullptr));
-			if (context->result == ByteCodeResult::Pending)
-				node->byteCodePass++;
-			return true;
+            if (context->result == ByteCodeResult::Pending)
+                node->byteCodePass++;
+            return true;
         }
     }
 
@@ -83,7 +83,8 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     emitStructParameters(context, r0[1]);
 
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
-                    emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->rawType->sizeOf;
+                    if (typeArray->rawType->sizeOf)
+                        emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->rawType->sizeOf;
                     emitInstruction(context, ByteCodeOp::IsNullU32, r0[0], r0[2]);
                     emitInstruction(context, ByteCodeOp::JumpNotTrue, r0[2])->b.s32 = seekJump - context->bc->numInstructions - 1;
 

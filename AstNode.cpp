@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Scope.h"
+#include "ByteCodeGenJob.h"
 
 Pool<AstNode>            g_Pool_astNode;
 Pool<AstAttrDecl>        g_Pool_astAttrDecl;
@@ -25,6 +26,16 @@ Pool<AstProperty>        g_Pool_astProperty;
 Pool<AstExpressionList>  g_Pool_astExpressionList;
 Pool<AstStruct>          g_Pool_astStruct;
 Pool<AstImpl>            g_Pool_astImpl;
+
+void AstNode::setPassThrough()
+{
+    semanticAfterFct  = nullptr;
+    semanticBeforeFct = nullptr;
+    semanticFct       = nullptr;
+    byteCodeAfterFct  = nullptr;
+    byteCodeBeforeFct = nullptr;
+    byteCodeFct       = &ByteCodeGenJob::emitPassThrough;
+}
 
 void AstNode::inheritLocationFromChilds()
 {

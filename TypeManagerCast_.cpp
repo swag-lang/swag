@@ -1428,6 +1428,12 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     auto sourceFile = context->sourceFile;
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
 
+    if (nodeToCast->kind == AstNodeKind::FuncCallParam)
+    {
+        nodeToCast->setPassThrough();
+        nodeToCast = nodeToCast->childs.front();
+    }
+
     // Declare a variable
     auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), nodeToCast->parent);
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
@@ -1445,7 +1451,8 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     // Make parameters
     auto identifier            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     identifier->callParameters = Ast::newFuncCallParameters(sourceFile, identifier);
-    for (int i = 0; i < nodeToCast->childs.size() - 1; i++)
+    int countChilds            = (int) nodeToCast->childs.size() - 1;
+    for (int i = 0; i < countChilds; i++)
     {
         auto         oneChild = nodeToCast->childs[i];
         auto         oneParam = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
@@ -1462,13 +1469,8 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     context->job->nodes.push_back(varNode);
     context->job->nodes.push_back(b);
 
-    nodeToCast->typeInfo          = toType;
-    nodeToCast->semanticAfterFct  = nullptr;
-    nodeToCast->semanticBeforeFct = nullptr;
-    nodeToCast->semanticFct       = nullptr;
-    nodeToCast->byteCodeAfterFct  = nullptr;
-    nodeToCast->byteCodeBeforeFct = nullptr;
-    nodeToCast->byteCodeFct       = &ByteCodeGenJob::emitPassThrough;
+    nodeToCast->typeInfo = toType;
+    nodeToCast->setPassThrough();
 }
 
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
@@ -1523,6 +1525,16 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
+    // convert {...} expression list to a structure : this will create a variable, with parameters
+    if (fromType->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
+    {
+        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
+        if (typeList->listKind == TypeInfoListKind::Tuple)
+        {
+            return true;
+        }
+    }
+
     if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_FORCE))
     {
         toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnum);

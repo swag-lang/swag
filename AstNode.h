@@ -64,7 +64,7 @@ enum class AstNodeKind
     EnumDecl,
     StructDecl,
     StructContent,
-	TupleContent,
+    TupleContent,
     Impl,
     FuncDecl,
     AttrDecl,
@@ -256,6 +256,7 @@ struct AstNode : public PoolElement
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
     }
 
+    void               setPassThrough();
     void               inheritLocationFromChilds();
     static const char* getKindName(AstNode* node);
     static const char* getNakedKindName(AstNode* node);
