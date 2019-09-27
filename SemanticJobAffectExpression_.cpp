@@ -82,6 +82,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     if (context->result == SemanticResult::Pending)
                         return true;
                 }
+                else if (rightTypeInfo->kind == TypeInfoKind::TypeList)
+                {
+					SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, right, CASTFLAG_UNCONST));
+                }
                 else
                 {
                     SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, left, right));

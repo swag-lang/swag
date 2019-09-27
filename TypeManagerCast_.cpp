@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "Ast.h"
 #include "SemanticJob.h"
+#include "ByteCodeGenJob.h"
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid)
 {
@@ -1422,8 +1423,66 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
     return true;
 }
 
+void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast)
+{
+    auto sourceFile = context->sourceFile;
+
+    // Declare a variable
+    auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), nodeToCast->parent);
+    auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
+    typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+    varNode->type        = typeNode;
+    typeNode->identifier = Ast::newIdentifierRef(sourceFile, toType->name, typeNode);
+    auto back            = typeNode->identifier->childs.back();
+    back->flags &= ~AST_NO_BYTECODE;
+    back->flags |= AST_IN_TYPE_VAR_DECLARATION;
+
+    // And make a reference to that variable
+    auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, nodeToCast);
+    identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT;
+
+    // Make parameters
+    auto identifier            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+    identifier->callParameters = Ast::newFuncCallParameters(sourceFile, identifier);
+    for (int i = 0; i < nodeToCast->childs.size() - 1; i++)
+    {
+        auto         oneChild = nodeToCast->childs[i];
+        auto         oneParam = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+        CloneContext cloneContext;
+        cloneContext.parent = oneParam;
+        oneChild->clone(cloneContext);
+        oneChild->flags |= AST_NO_BYTECODE | AST_DISABLED;
+    }
+
+    // Add the 2 nodes to the semantic
+    auto b = context->job->nodes.back();
+    context->job->nodes.pop_back();
+    context->job->nodes.push_back(identifierRef);
+    context->job->nodes.push_back(varNode);
+    context->job->nodes.push_back(b);
+
+    nodeToCast->typeInfo          = toType;
+    nodeToCast->semanticAfterFct  = nullptr;
+    nodeToCast->semanticBeforeFct = nullptr;
+    nodeToCast->semanticFct       = nullptr;
+    nodeToCast->byteCodeAfterFct  = nullptr;
+    nodeToCast->byteCodeBeforeFct = nullptr;
+    nodeToCast->byteCodeFct       = &ByteCodeGenJob::emitPassThrough;
+}
+
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
+	// convert {...} expression list to a structure : this will create a variable, with parameters
+    if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
+    {
+        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
+        if (typeList->listKind == TypeInfoListKind::Tuple)
+        {
+			convertExpressionListToVarDecl(context, toType, nodeToCast);
+            return true;
+        }
+    }
+
     SWAG_CHECK(makeCompatibles(context, toType, nodeToCast->typeInfo, nodeToCast, castFlags));
     if (!nodeToCast)
         return true;
@@ -1439,8 +1498,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
     if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && !(nodeToCast->flags & AST_SLICE_INIT_EXPRESSION))
     {
-        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
-        auto          fromSize     = fromTypeList->childs.size();
+        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
+        auto          fromSize = typeList->childs.size();
 
         while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
             nodeToCast = nodeToCast->childs.empty() ? nullptr : nodeToCast->childs.front();

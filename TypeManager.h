@@ -42,11 +42,13 @@ struct TypeManager
     static bool castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
 
-	static bool castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags);
+    static bool castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToTuple(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
     static bool castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags);
+
+    static void convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast);
 
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags = 0);

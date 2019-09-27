@@ -157,6 +157,22 @@ namespace Ast
         return source->clone(cloneContext);
     }
 
+    AstNode* newFuncCallParameters(SourceFile* sourceFile, AstNode* parent)
+    {
+        AstNode* node     = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
+        node->semanticFct = &SemanticJob::resolveFuncCallParams;
+        node->inheritOwners(parent);
+        return node;
+    }
+
+    AstFuncCallParam* newFuncCallParam(SourceFile* sourceFile, AstNode* parent)
+    {
+        AstFuncCallParam* node = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, parent);
+        node->semanticFct      = &SemanticJob::resolveFuncCallParam;
+        node->inheritOwners(parent);
+        return node;
+    }
+
     AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent)
     {
         AstVarDecl* node  = Ast::newNode(nullptr, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);

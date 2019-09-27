@@ -43,6 +43,13 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
     }
 }
 
+bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
+{
+	auto node = context->node;
+	node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    return true;
+}
+
 void ByteCodeGenJob::reserveContiguousRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     freeRegisterRC(context, rc);

@@ -556,15 +556,18 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
 
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-        for (auto child : identifier->callParameters->childs)
-        {
-            auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-            auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
-            emitInstruction(context, ByteCodeOp::CopyRARB, r1, r0);
-            emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
-            emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
-            freeRegisterRC(context, child);
-        }
+		if (identifier->callParameters)
+		{
+			for (auto child : identifier->callParameters->childs)
+			{
+				auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+				auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
+				emitInstruction(context, ByteCodeOp::CopyRARB, r1, r0);
+				emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
+				emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
+				freeRegisterRC(context, child);
+			}
+		}
 
         freeRegisterRC(context, r0);
         freeRegisterRC(context, r1);

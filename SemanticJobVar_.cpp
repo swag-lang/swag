@@ -275,7 +275,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
         }
 
-        if (typeStruct && identifier->callParameters->childs.size() == typeStruct->childs.size())
+        if (typeStruct && identifier->callParameters && identifier->callParameters->childs.size() == typeStruct->childs.size())
             node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
     }
 
