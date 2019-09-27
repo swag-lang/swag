@@ -1,0 +1,18 @@
+#module module965
+
+struct Point
+{
+	x: f32
+	y: f32
+}
+
+func toto()->Point
+{
+	return {1, 2}
+}
+
+//#[swag.printbc]
+#test
+{
+	pt := toto()
+}

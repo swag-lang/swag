@@ -1426,13 +1426,14 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
 void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast)
 {
     auto sourceFile = context->sourceFile;
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
 
     // Declare a variable
     auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), nodeToCast->parent);
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
     varNode->type        = typeNode;
-    typeNode->identifier = Ast::newIdentifierRef(sourceFile, toType->name, typeNode);
+    typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->structNode->name, typeNode);
     auto back            = typeNode->identifier->childs.back();
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
@@ -1472,13 +1473,13 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
 
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
-	// convert {...} expression list to a structure : this will create a variable, with parameters
+    // convert {...} expression list to a structure : this will create a variable, with parameters
     if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
     {
         TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
         if (typeList->listKind == TypeInfoListKind::Tuple)
         {
-			convertExpressionListToVarDecl(context, toType, nodeToCast);
+            convertExpressionListToVarDecl(context, toType, nodeToCast);
             return true;
         }
     }
