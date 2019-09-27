@@ -65,6 +65,110 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool isConst)
 {
+#if 0
+    auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, nullptr);
+    structNode->semanticFct = &SemanticJob::resolveStruct;
+
+    auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::TupleContent, sourceFile->indexInModule, structNode);
+    structNode->content            = contentNode;
+    contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
+
+    auto curly = token;
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+
+    string name = "__tuple_";
+    int    idx  = 0;
+    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+    {
+        auto paramNode         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, contentNode);
+        paramNode->semanticFct = &SemanticJob::resolveVarDecl;
+
+        AstTypeExpression* typeExpression = nullptr;
+        AstNode*           expression;
+        SWAG_CHECK(doTypeExpression(nullptr, &expression));
+
+        // Name
+        if (token.id == TokenId::SymColon)
+        {
+            typeExpression = (AstTypeExpression*) expression;
+            if (!typeExpression->identifier || typeExpression->identifier->kind != AstNodeKind::IdentifierRef || typeExpression->identifier->childs.size() != 1)
+                return sourceFile->report({sourceFile, expression, format("invalid named field '%s'", token.text.c_str())});
+            paramNode->name = typeExpression->identifier->childs.front()->name;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doTypeExpression(paramNode, &paramNode->type));
+            expression = paramNode->type;
+            name += paramNode->name + "_";
+        }
+        else
+        {
+            Ast::addChildBack(paramNode, expression);
+            paramNode->type = expression;
+            paramNode->name = format("val%u", idx);
+        }
+
+        idx++;
+
+        // Name
+        typeExpression = (AstTypeExpression*) expression;
+        for (int i = 0; i < typeExpression->ptrCount; i++)
+            name += "*";
+        name += typeExpression->token.text;
+        if (typeExpression->identifier)
+            name += typeExpression->identifier->childs.back()->name;
+
+        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s'", token.text.c_str())));
+        if (token.id == TokenId::SymRightCurly)
+            break;
+        SWAG_CHECK(tokenizer.getToken(token));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
+
+    // Compute structure name
+    structNode->name = move(name);
+
+    // Reference to that struct
+    auto identifier = Ast::createIdentifierRef(this, structNode->name, token, parent);
+    if (result)
+        *result = identifier;
+
+    // Add struct type and scope
+    currentScope->allocateSymTable();
+    scoped_lock lk(currentScope->symTable->mutex);
+    auto        symbol = currentScope->symTable->findNoLock(structNode->name);
+    if (symbol)
+    {
+        // Must release struct node, it's useless
+    }
+    else
+    {
+        auto typeInfo = g_Pool_typeInfoStruct.alloc();
+        auto newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
+        newScope->allocateSymTable();
+        typeInfo->name       = structNode->name;
+        typeInfo->scope      = newScope;
+        structNode->typeInfo = typeInfo;
+        structNode->scope    = newScope;
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+        Ast::addChildBack(sourceFile->astRoot, structNode);
+
+        Ast::visit(structNode->content, [&](AstNode* n) {
+            n->ownerStructScope = newScope;
+            n->ownerScope       = newScope;
+        });
+
+        // Generate an empty init function so that the user can call it
+        {
+            Scoped       scoped(this, newScope);
+            ScopedStruct scopedStruct(this, newScope);
+            structNode->defaultOpInit = generateOpInit(structNode->parent, structNode->name, structNode->genericParameters);
+        }
+    }
+
+    return true;
+#endif
+
+#if 1
     // Else this is a type expression
     auto node         = Ast::newNode(this, &g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     node->semanticFct = &SemanticJob::resolveTypeTuple;
@@ -104,6 +208,7 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool is
 
     SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
     return true;
+#endif
 }
 
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
@@ -186,7 +291,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     }
     else if (token.id == TokenId::SymLeftCurly)
     {
-		SWAG_CHECK(doTypeExpressionTuple(node, &node->identifier, isConst));
+        SWAG_CHECK(doTypeExpressionTuple(node, &node->identifier, isConst));
         return true;
     }
 

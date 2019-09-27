@@ -110,10 +110,12 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::TypeList)
+    if (typeInfo->kind == TypeInfoKind::TypeList || 
+		typeInfo->kind == TypeInfoKind::Struct || 
+		typeInfo->kind == TypeInfoKind::Array)
     {
-		return true;
-	}
+        return true;
+    }
 
     switch (typeInfo->sizeOf)
     {
