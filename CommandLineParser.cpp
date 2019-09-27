@@ -28,16 +28,16 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--bc-stack-size", nullptr, CommandLineType::Int, &cmdLine->byteCodeStackSize);
     addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
 
-	cmdLine->cOutputCode     = true;
-    
-	cmdLine->cOutputByteCode = true;
+    cmdLine->cOutputCode = true;
+
+    cmdLine->cOutputByteCode = true;
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
     cmdLine->output = false;
     //cmdLine->verboseBackendCommand = true;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->runBackendTests = false;
-    cmdLine->fileFilter = "966";
+    cmdLine->fileFilter = "580";
 }
 
 void CommandLineParser::logArguments()

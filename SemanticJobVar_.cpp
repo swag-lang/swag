@@ -177,7 +177,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->type && node->assignment)
     {
         // Do not cast for structs, as we can have special assignment with different types
-        if (node->type->typeInfo->kind != TypeInfoKind::Struct)
+        if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, node->assignment, CASTFLAG_UNCONST));
         }

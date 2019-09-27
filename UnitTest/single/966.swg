@@ -9,10 +9,10 @@ struct Point
 func toto(pt: Point)
 {
 	@assert(pt.x == 1)
-	//@assert(pt.y == 2)
+	@assert(pt.y == 2)
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	toto(Point(1.0, 2.0))

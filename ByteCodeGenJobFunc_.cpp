@@ -26,7 +26,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
-    auto     back          = node->childs.back();
+    auto     back          = node->childs.front();
     node->resultRegisterRC = back->resultRegisterRC;
     emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo);
     return true;
