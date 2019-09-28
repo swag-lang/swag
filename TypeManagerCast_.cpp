@@ -1432,6 +1432,8 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     {
         nodeToCast->setPassThrough();
         nodeToCast = nodeToCast->childs.front();
+		if (nodeToCast->kind != AstNodeKind::ExpressionList)
+			return;
     }
 
     // Declare a variable
@@ -1445,13 +1447,18 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
     // And make a reference to that variable
-    auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, nodeToCast);
+    auto parent = nodeToCast;
+    if (nodeToCast->parent->kind == AstNodeKind::FuncCallParam)
+        parent = nodeToCast->parent;
+    auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, parent);
     identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT;
 
     // Make parameters
     auto identifier            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     identifier->callParameters = Ast::newFuncCallParameters(sourceFile, identifier);
-    int countChilds            = (int) nodeToCast->childs.size() - 1;
+    int countChilds            = (int) nodeToCast->childs.size();
+    if (parent == nodeToCast)
+        countChilds--;
     for (int i = 0; i < countChilds; i++)
     {
         auto         oneChild = nodeToCast->childs[i];
@@ -1476,9 +1483,10 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
-    if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
+    auto fromType = concreteType(nodeToCast->typeInfo, MakeConcrete::FlagAlias);
+    if (fromType->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
     {
-        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
+        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
         if (typeList->listKind == TypeInfoListKind::Tuple)
         {
             convertExpressionListToVarDecl(context, toType, nodeToCast);
@@ -1526,9 +1534,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
-    if (fromType->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
+    auto realFromType = concreteType(fromType, MakeConcrete::FlagAlias);
+    auto realToType   = concreteType(toType, MakeConcrete::FlagAlias);
+    if (realFromType->kind == TypeInfoKind::TypeList && realToType->kind == TypeInfoKind::Struct)
     {
-        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
+        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(realFromType, TypeInfoKind::TypeList);
         if (typeList->listKind == TypeInfoListKind::Tuple)
         {
             return true;

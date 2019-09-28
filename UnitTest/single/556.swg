@@ -10,6 +10,6 @@
 {
 	var x: {s32, s32}
 	x = {1, 2}
-	@assert(x.0 == 1)
-	@assert(x.1 == 2)
+	@assert(x.val0 == 1)
+	@assert(x.val1 == 2)
 }

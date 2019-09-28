@@ -5,9 +5,9 @@
 #test
 {
 	var res = T()
-	@assert(res.0 == true)
-	@assert(res.1 == 2)
-	@assert(res.2 == false)
+	@assert(res.val0 == true)
+	@assert(res.val1 == 2)
+	@assert(res.val2 == false)
 }
 
 //#[swag.printbc]

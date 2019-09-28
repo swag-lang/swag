@@ -2,8 +2,8 @@
 
 func toto(x: {s32, s32})
 {
-	@assert(x.0 == 10)
-	@assert(x.1 == 20)
+	@assert(x.val0 == 10)
+	@assert(x.val1 == 20)
 }
 
 //#[swag.printbc]

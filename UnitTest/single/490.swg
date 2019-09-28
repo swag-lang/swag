@@ -5,6 +5,6 @@
 #test
 {
 	var res : {bool, bool} = {true, false}
-	@assert(res.0 == true)
-	@assert(res.1 == false)
+	@assert(res.val0 == true)
+	@assert(res.val1 == false)
 }

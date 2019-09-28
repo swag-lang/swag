@@ -65,7 +65,6 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool isConst)
 {
-#if 0
     auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, nullptr);
     structNode->semanticFct = &SemanticJob::resolveStruct;
 
@@ -133,9 +132,10 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool is
         *result = identifier;
 
     // Add struct type and scope
-    currentScope->allocateSymTable();
-    scoped_lock lk(currentScope->symTable->mutex);
-    auto        symbol = currentScope->symTable->findNoLock(structNode->name);
+    auto rootScope = sourceFile->scopeRoot;
+    rootScope->allocateSymTable();
+    scoped_lock lk(rootScope->symTable->mutex);
+    auto        symbol = rootScope->symTable->findNoLock(structNode->name);
     if (symbol)
     {
         // Must release struct node, it's useless
@@ -143,14 +143,16 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool is
     else
     {
         auto typeInfo = g_Pool_typeInfoStruct.alloc();
-        auto newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
+        auto newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         newScope->allocateSymTable();
         typeInfo->name       = structNode->name;
         typeInfo->scope      = newScope;
         structNode->typeInfo = typeInfo;
         structNode->scope    = newScope;
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+        rootScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+
         Ast::addChildBack(sourceFile->astRoot, structNode);
+		structNode->inheritOwners(sourceFile->astRoot);
 
         Ast::visit(structNode->content, [&](AstNode* n) {
             n->ownerStructScope = newScope;
@@ -166,49 +168,6 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool is
     }
 
     return true;
-#endif
-
-#if 1
-    // Else this is a type expression
-    auto node         = Ast::newNode(this, &g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
-    node->semanticFct = &SemanticJob::resolveTypeTuple;
-    if (result)
-        *result = node;
-    node->isConst = isConst;
-
-    SWAG_CHECK(eatToken());
-
-    auto newScope = Ast::newScope(nullptr, "", ScopeKind::TypeList, currentScope);
-    {
-        Scoped scoped(this, newScope);
-        while (token.id != TokenId::SymRightCurly)
-        {
-            AstNode* typeExpression;
-            SWAG_CHECK(doTypeExpression(nullptr, &typeExpression));
-
-            if (token.id == TokenId::SymColon)
-            {
-                if (typeExpression->childs.size() != 1 || typeExpression->childs.front()->kind != AstNodeKind::IdentifierRef)
-                    return sourceFile->report({sourceFile, typeExpression, format("invalid named type '%s'", token.text.c_str())});
-                auto name = typeExpression->childs.front()->childs.front()->name;
-                SWAG_CHECK(eatToken());
-                SWAG_CHECK(doTypeExpression(node, &typeExpression));
-                typeExpression->name = name;
-            }
-            else
-            {
-                Ast::addChildBack(node, typeExpression);
-            }
-
-            if (token.id != TokenId::SymComma)
-                break;
-            SWAG_CHECK(eatToken());
-        }
-    }
-
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
-    return true;
-#endif
 }
 
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
