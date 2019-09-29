@@ -53,14 +53,14 @@ namespace Ast
 
     extern AstNode* clone(AstNode* source, AstNode* parent);
 
-    extern AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent);
-    extern AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent);
-    extern AstNode*           newFuncCallParameters(SourceFile* sourceFile, AstNode* parent);
-    extern AstFuncCallParam*  newFuncCallParam(SourceFile* sourceFile, AstNode* parent);
-    extern AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent);
-    extern AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent);
-    extern AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent);
-    extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent);
+    extern AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstNode*           newFuncCallParameters(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstFuncCallParam*  newFuncCallParam(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
 }; // namespace Ast
 
 template<typename T>
