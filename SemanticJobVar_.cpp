@@ -113,26 +113,26 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
     contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
     structNode->content            = contentNode;
 
-    auto   typeList = (TypeInfoList*) varDecl->typeInfo;
-    string name     = "__tuple_";
+    auto typeList = (TypeInfoList*) varDecl->typeInfo;
+    Utf8 name     = "__tuple_";
+    Utf8 varName;
     for (int idx = 0; idx < typeList->childs.size(); idx++)
     {
-        auto childType         = typeList->childs[idx];
-        auto paramNode         = Ast::newNode(nullptr, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, contentNode);
-        paramNode->semanticFct = &SemanticJob::resolveVarDecl;
+        auto childType = typeList->childs[idx];
 
         if (idx < typeList->names.size())
         {
-            name += typeList->names[idx] + "_";
-            paramNode->name = typeList->names[idx];
+            varName = typeList->names[idx];
+            name += varName + "_";
         }
         else
         {
-            paramNode->name = format("val%u", idx);
+            varName = format("val%u", idx);
         }
 
         name += childType->name;
 
+        auto paramNode              = Ast::newVarDecl(sourceFile, varName, contentNode);
         auto typeExpression         = Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
         typeExpression->semanticFct = &SemanticJob::resolveTypeExpression;
         typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
