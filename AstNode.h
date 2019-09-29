@@ -207,6 +207,8 @@ struct AstNode : public PoolElement
 
     void inheritOwners(AstNode* op)
     {
+		if (!op)
+			return;
         ownerStructScope = op->ownerStructScope;
         ownerStruct      = op->ownerStruct;
         ownerScope       = op->ownerScope;

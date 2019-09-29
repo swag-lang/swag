@@ -106,9 +106,8 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
 {
     varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
 
-    auto       sourceFile   = context->sourceFile;
-    AstStruct* structNode   = Ast::newNode(nullptr, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, nullptr);
-    structNode->semanticFct = &SemanticJob::resolveStruct;
+    auto       sourceFile = context->sourceFile;
+    AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
 
     auto contentNode               = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::TupleContent, sourceFile->indexInModule, structNode);
     structNode->content            = contentNode;
@@ -155,9 +154,9 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
         }
         else if (childType->kind == TypeInfoKind::Enum)
         {
-			auto typeInfoEnum = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Enum);
-			typeExpression->identifier = Ast::newIdentifierRef(sourceFile, typeInfoEnum->name, typeExpression);
-			paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+            auto typeInfoEnum          = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Enum);
+            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, typeInfoEnum->name, typeExpression);
+            paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
         }
         else
         {

@@ -47,7 +47,9 @@ namespace Ast
 
     extern AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent);
 
-    extern AstNode*           clone(AstNode* source, AstNode* parent);
+    extern AstNode* clone(AstNode* source, AstNode* parent);
+
+    extern AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent);
     extern AstNode*           newFuncCallParameters(SourceFile* sourceFile, AstNode* parent);
     extern AstFuncCallParam*  newFuncCallParam(SourceFile* sourceFile, AstNode* parent);
     extern AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent);
