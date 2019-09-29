@@ -456,14 +456,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
-
         node->flags |= AST_R_VALUE;
-        if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList && (node->assignment->flags & AST_CONST_EXPR))
-        {
-            auto        exprList = CastAst<AstExpressionList>(node->assignment, AstNodeKind::ExpressionList);
-            scoped_lock lock(module->dataSegment.mutex);
-            SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, exprList->storageOffsetSegment, &module->constantSegment, &node->assignment->computedValue, typeInfo, node->assignment));
-        }
     }
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
     {
