@@ -1393,7 +1393,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
     return true;
 }
 
-void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast)
+bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast)
 {
     auto sourceFile = context->sourceFile;
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
@@ -1402,8 +1402,8 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     {
         nodeToCast->setPassThrough();
         nodeToCast = nodeToCast->childs.front();
-		if (nodeToCast->kind != AstNodeKind::ExpressionList)
-			return;
+        if (nodeToCast->kind != AstNodeKind::ExpressionList)
+            return true;
     }
 
     // Declare a variable
@@ -1426,10 +1426,10 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     // Make parameters
     auto identifier            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     identifier->callParameters = Ast::newFuncCallParameters(sourceFile, identifier);
-    int countChilds            = (int) nodeToCast->childs.size();
+    int countParams            = (int) nodeToCast->childs.size();
     if (parent == nodeToCast)
-        countChilds--;
-    for (int i = 0; i < countChilds; i++)
+        countParams--;
+    for (int i = 0; i < countParams; i++)
     {
         auto         oneChild = nodeToCast->childs[i];
         auto         oneParam = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
@@ -1437,6 +1437,15 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
         cloneContext.parent = oneParam;
         oneChild->clone(cloneContext);
         oneChild->flags |= AST_NO_BYTECODE | AST_DISABLED;
+    }
+
+    // For a tuple initialization, every parameters must be covered
+    if (typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    {
+        if (countParams != typeStruct->childs.size())
+        {
+            return context->errorContext.report({sourceFile, identifier, format("not enough parameters in tuple initialization ('%d' expected, '%d' provided)", typeStruct->childs.size(), countParams)});
+        }
     }
 
     // Add the 2 nodes to the semantic
@@ -1448,6 +1457,7 @@ void TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
 
     nodeToCast->typeInfo = toType;
     nodeToCast->setPassThrough();
+    return true;
 }
 
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
@@ -1459,7 +1469,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
         if (typeList->listKind == TypeInfoListKind::Curly)
         {
-            convertExpressionListToVarDecl(context, toType, nodeToCast);
+            SWAG_CHECK(convertExpressionListToVarDecl(context, toType, nodeToCast));
             return true;
         }
     }

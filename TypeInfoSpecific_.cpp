@@ -418,8 +418,11 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         return true;
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
+    if ((flags & TYPEINFO_STRUCT_IS_TUPLE) != (to->flags & TYPEINFO_STRUCT_IS_TUPLE))
+        return false;
 
     auto other = static_cast<TypeInfoStruct*>(to);
+
     if (genericParameters.size() != other->genericParameters.size())
         return false;
     for (int i = 0; i < genericParameters.size(); i++)

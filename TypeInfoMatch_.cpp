@@ -45,12 +45,12 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             return;
         }
 
-		auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
 
         if (symbolTypeInfo->kind == TypeInfoKind::TypedVariadic)
         {
-			if(typeInfo->kind != TypeInfoKind::TypedVariadic)
-				symbolTypeInfo  = ((TypeInfoVariadic*) symbolTypeInfo)->rawType;
+            if (typeInfo->kind != TypeInfoKind::TypedVariadic)
+                symbolTypeInfo = ((TypeInfoVariadic*) symbolTypeInfo)->rawType;
             isAfterVariadic = true;
         }
 
@@ -442,7 +442,6 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 void TypeInfoStruct::match(SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
-
     matchParameters(context, childs);
     if (context.result != MatchResult::Ok)
         return;

@@ -65,8 +65,8 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result, bool isConst)
 {
-    auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, nullptr);
-    structNode->semanticFct = &SemanticJob::resolveStruct;
+    auto structNode = Ast::newStructDecl(sourceFile, nullptr);
+    structNode->flags |= AST_STRUCT_TUPLE;
 
     auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::TupleContent, sourceFile->indexInModule, structNode);
     structNode->content            = contentNode;
@@ -145,8 +145,9 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         auto typeInfo = g_Pool_typeInfoStruct.alloc();
         auto newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         newScope->allocateSymTable();
-        typeInfo->name       = structNode->name;
-        typeInfo->scope      = newScope;
+        typeInfo->name  = structNode->name;
+        typeInfo->scope = newScope;
+        typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo = typeInfo;
         structNode->scope    = newScope;
         rootScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
