@@ -48,13 +48,13 @@ struct SyntaxJob : public Job
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
 	bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doTypeAlias(AstNode* parent, AstNode** result = nullptr);
-    bool doTypeExpressionTuple(AstNode* parent, AstNode** result, bool isConst);
+    bool convertExpressionListToStruct(AstNode* parent, AstNode** result, bool isConst);
     bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     void forceTakeAddress(AstNode* node);
 	bool doDefer(AstNode* parent, AstNode** result = nullptr);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
-    bool doIdentifier(AstNode* parent, bool acceptInteger = false, bool acceptParameters = true);
+    bool doIdentifier(AstNode* parent, bool acceptParameters = true);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);

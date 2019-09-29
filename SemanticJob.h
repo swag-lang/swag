@@ -26,6 +26,7 @@ enum class SemanticResult
 {
     Done,
     Pending,
+	NewChilds,
 };
 
 struct SemanticContext
@@ -83,6 +84,7 @@ struct SemanticJob : public Job
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
+	static bool convertAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();
@@ -119,7 +121,6 @@ struct SemanticJob : public Job
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
-    static bool resolveTupleAccess(SemanticContext* context, bool& eaten);
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveImpl(SemanticContext* context);

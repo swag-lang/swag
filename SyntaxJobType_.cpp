@@ -63,7 +63,7 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool isConst)
+bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result, bool isConst)
 {
     auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, nullptr);
     structNode->semanticFct = &SemanticJob::resolveStruct;
@@ -152,7 +152,7 @@ bool SyntaxJob::doTypeExpressionTuple(AstNode* parent, AstNode** result, bool is
         rootScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
 
         Ast::addChildBack(sourceFile->astRoot, structNode);
-		structNode->inheritOwners(sourceFile->astRoot);
+        structNode->inheritOwners(sourceFile->astRoot);
 
         Ast::visit(structNode->content, [&](AstNode* n) {
             n->ownerStructScope = newScope;
@@ -186,7 +186,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
 
     // This is a tuple
     if (token.id == TokenId::SymLeftCurly)
-        return doTypeExpressionTuple(parent, result, isConst);
+        return convertExpressionListToStruct(parent, result, isConst);
 
     // Else this is a type expression
     auto node         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
@@ -250,7 +250,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     }
     else if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(doTypeExpressionTuple(node, &node->identifier, isConst));
+        SWAG_CHECK(convertExpressionListToStruct(node, &node->identifier, isConst));
         return true;
     }
 

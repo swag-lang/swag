@@ -5,25 +5,14 @@
 #include "SemanticJob.h"
 #include "Diagnostic.h"
 
-bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptInteger, bool acceptParameters)
+bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
 {
-    uint32_t flags = 0;
-
-    // This can be a number, for a tuple direct reference of its members
-    if (token.id != TokenId::Identifier && token.id != TokenId::Intrinsic)
-    {
-        if (token.id != TokenId::LiteralNumber || !acceptInteger)
-            return syntaxError(token, format("invalid identifier '%s'", token.text.c_str()));
-        flags |= AST_IDENTIFIER_IS_INTEGER;
-    }
-
     // An identifier that starts with '__' is reserved for internal usage !
     if (token.text.length() > 1 && token.text[0] == '_' && token.text[1] == '_')
         return error(token, format("identifier '%s' starts with '__', and this is reserved by the language", token.text.c_str()));
 
     auto identifier = Ast::newNode(this, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, nullptr);
     identifier->inheritTokenName(token);
-    identifier->flags |= flags;
     identifier->semanticFct   = &SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     SWAG_CHECK(tokenizer.getToken(token));
@@ -65,7 +54,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
     while (token.id == TokenId::SymDot)
     {
         SWAG_CHECK(eatToken(TokenId::SymDot));
-        SWAG_CHECK(doIdentifier(identifierRef, true));
+        SWAG_CHECK(doIdentifier(identifierRef));
     }
 
     return true;

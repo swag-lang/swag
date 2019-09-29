@@ -25,7 +25,6 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
             {
                 auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-                SWAG_ASSERT(typeStruct->opInitFct);
                 emitStructInit(context, typeStruct, UINT32_MAX);
             }
 

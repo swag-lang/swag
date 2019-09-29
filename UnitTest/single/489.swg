@@ -5,6 +5,6 @@
 #test
 {
 	res := {1, 2}
-	@assert(res.0 == 1)
-	@assert(res.1 == 2)
+	@assert(res.val0 == 1)
+	@assert(res.val1 == 2)
 }

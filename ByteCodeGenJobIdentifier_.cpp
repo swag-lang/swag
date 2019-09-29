@@ -15,25 +15,13 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 {
-    auto node       = context->node;
-    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-
-    // Direct index in a tuple
-    if (node->flags & AST_IDENTIFIER_IS_INTEGER)
-    {
-        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        if (node->computedValue.reg.u32 > 0)
-            emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC)->b.u32 = node->computedValue.reg.u32;
-        if (!(node->flags & AST_TAKE_ADDRESS))
-            emitStructDeRef(context);
-        return true;
-    }
-
+    auto node = context->node;
     if (!(node->flags & AST_L_VALUE) && !(node->flags & AST_R_VALUE))
         return true;
 
-    auto resolved = node->resolvedSymbolOverload;
-    auto typeInfo = TypeManager::concreteType(resolved->typeInfo);
+    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+    auto resolved   = node->resolvedSymbolOverload;
+    auto typeInfo   = TypeManager::concreteType(resolved->typeInfo);
     SWAG_ASSERT(typeInfo->kind != TypeInfoKind::Generic);
 
     // Will be done in the variable declaration

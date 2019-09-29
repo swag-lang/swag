@@ -24,7 +24,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
         {
             auto identifierRef         = Ast::newNode(this, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, param);
             identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
-            SWAG_CHECK(doIdentifier(identifierRef, false, false));
+            SWAG_CHECK(doIdentifier(identifierRef, false));
             break;
         }
         case TokenId::LiteralCharacter:

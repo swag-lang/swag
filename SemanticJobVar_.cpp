@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
+#include "ThreadManager.h"
 
 bool SemanticJob::reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
@@ -35,7 +36,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
         // Store value in constant segment
         uint32_t storageOffsetValue;
         SWAG_CHECK(reserveAndStoreToSegmentNoLock(context, storageOffsetValue, &module->constantSegment, value, assignment->castedTypeInfo, assignment));
-		SWAG_ASSERT(assignment->concreteTypeInfoStorage != UINT32_MAX);
+        SWAG_ASSERT(assignment->concreteTypeInfoStorage != UINT32_MAX);
 
         // Then reference that value and the concrete type info
         auto ptrStorage                     = module->constantSegment.address(storageOffsetValue);
@@ -98,6 +99,120 @@ bool SemanticJob::collectLiterals(SemanticContext* context, uint32_t& offset, As
         offset += child->typeInfo->sizeOf;
     }
 
+    return true;
+}
+
+bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl)
+{
+    varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+
+    auto       sourceFile   = context->sourceFile;
+    AstStruct* structNode   = Ast::newNode(nullptr, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, nullptr);
+    structNode->semanticFct = &SemanticJob::resolveStruct;
+
+    auto contentNode               = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::TupleContent, sourceFile->indexInModule, structNode);
+    structNode->content            = contentNode;
+    contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
+
+    auto   typeList = (TypeInfoList*) varDecl->typeInfo;
+    string name     = "__tuple_";
+    for (int idx = 0; idx < typeList->childs.size(); idx++)
+    {
+        auto childType         = typeList->childs[idx];
+        auto paramNode         = Ast::newNode(nullptr, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, contentNode);
+        paramNode->semanticFct = &SemanticJob::resolveVarDecl;
+
+        if (idx < typeList->names.size())
+        {
+            name += typeList->names[idx] + "_";
+            paramNode->name = typeList->names[idx];
+        }
+        else
+        {
+            paramNode->name = format("val%u", idx);
+        }
+
+        name += childType->name;
+
+        auto typeExpression         = Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
+        typeExpression->semanticFct = &SemanticJob::resolveTypeExpression;
+        typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
+        paramNode->type = typeExpression;
+
+        if (childType->kind == TypeInfoKind::Native)
+        {
+            typeExpression->token.id          = TokenId::NativeType;
+            typeExpression->token.literalType = childType;
+        }
+        else if (childType->kind == TypeInfoKind::Pointer)
+        {
+            auto typeInfoPointer     = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
+            typeExpression->ptrCount = typeInfoPointer->ptrCount;
+            if (typeInfoPointer->pointedType->kind != TypeInfoKind::Native)
+                return internalError(context, "convertAssignementToStruct, bad pointer type");
+            typeExpression->token.id          = TokenId::NativeType;
+            typeExpression->token.literalType = typeInfoPointer->pointedType;
+        }
+        else if (childType->kind == TypeInfoKind::Enum)
+        {
+			auto typeInfoEnum = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Enum);
+			typeExpression->identifier = Ast::newIdentifierRef(sourceFile, typeInfoEnum->name, typeExpression);
+			paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+        }
+        else
+        {
+            return internalError(context, "convertAssignementToStruct, bad type");
+        }
+    }
+
+    // Compute structure name
+    structNode->name = move(name);
+
+    // Reference to that struct
+    auto typeExpression         = Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, varDecl);
+    typeExpression->semanticFct = &SemanticJob::resolveTypeExpression;
+    typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
+    typeExpression->inheritOwners(varDecl);
+    typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
+    varDecl->type              = typeExpression;
+
+    // Add struct type and scope
+    auto rootScope = sourceFile->scopeRoot;
+    rootScope->allocateSymTable();
+    scoped_lock lk(rootScope->symTable->mutex);
+    auto        symbol = rootScope->symTable->findNoLock(structNode->name);
+    if (symbol)
+    {
+        // Must release struct node, it's useless
+    }
+    else
+    {
+        auto typeInfo = g_Pool_typeInfoStruct.alloc();
+        auto newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
+        newScope->allocateSymTable();
+        typeInfo->name       = structNode->name;
+        typeInfo->scope      = newScope;
+        structNode->typeInfo = typeInfo;
+        structNode->scope    = newScope;
+        symbol               = rootScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+
+        Ast::addChildBack(sourceFile->astRoot, structNode);
+        structNode->inheritOwners(sourceFile->astRoot);
+
+        Ast::visit(structNode->content, [&](AstNode* n) {
+            n->ownerStructScope = newScope;
+            n->ownerScope       = newScope;
+        });
+
+        auto job        = g_Pool_semanticJob.alloc();
+        job->module     = sourceFile->module;
+        job->sourceFile = sourceFile;
+        job->nodes.push_back(structNode);
+        g_ThreadMgr.addJob(job);
+    }
+
+    context->job->nodes.push_back(typeExpression);
+    context->result = SemanticResult::NewChilds;
     return true;
 }
 
@@ -173,9 +288,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+    {
+        SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
+    }
+
     // Find type
     if (node->type && node->assignment)
     {
+        SWAG_ASSERT(node->type->typeInfo);
+
         // Do not cast for structs, as we can have special assignment with different types
         if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
@@ -224,10 +346,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
             else if (typeList->listKind == TypeInfoListKind::Tuple)
             {
-                auto typeTuple   = static_cast<TypeInfoList*>(typeList->clone());
-                typeTuple->scope = Ast::newScope(nullptr, "", ScopeKind::TypeList, node->ownerScope);
-                node->typeInfo   = typeTable.registerType(typeTuple);
-                SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
+                SWAG_CHECK(convertAssignementToStruct(context, node));
+                return true;
             }
             else
                 return internalError(context, "resolveVarDecl, invalid typelist kind");
@@ -258,9 +378,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // No struct initialization on everything except local vars
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
     {
-        SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
-
-        // Determine if the call parameters cover everything (to avoid calling default initialisation)
+        // Determine if the call parameters cover everything (to avoid calling default initialization)
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
 

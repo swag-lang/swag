@@ -57,6 +57,7 @@ JobResult SemanticJob::execute()
         {
         case AstNodeResolveState::Enter:
             node->semanticState = AstNodeResolveState::ProcessingChilds;
+            context.result      = SemanticResult::Done;
 
             if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))
                 return JobResult::ReleaseJob;
@@ -86,6 +87,8 @@ JobResult SemanticJob::execute()
                     return JobResult::ReleaseJob;
                 if (context.result == SemanticResult::Pending)
                     return JobResult::KeepJobAlive;
+                if (context.result == SemanticResult::NewChilds)
+                    continue;
             }
 
             node->semanticState = AstNodeResolveState::PostChilds;

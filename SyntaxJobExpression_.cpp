@@ -148,7 +148,6 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymAmpersand)
     {
         exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule);
-        exprNode->inheritTokenName(token);
         exprNode->semanticFct = &SemanticJob::resolveMakePointer;
         SWAG_CHECK(tokenizer.getToken(token));
 

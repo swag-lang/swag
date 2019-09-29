@@ -581,15 +581,18 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     auto resolved = node->resolvedSymbolOverload;
 
     // Be sure referenced function has bytecode
-    if (!generateStruct_opInit(context, typeInfoStruct))
-        return false;
+	if (typeInfoStruct->opInitFct)
+	{
+		if (!generateStruct_opInit(context, typeInfoStruct))
+			return false;
+	}
 
     // All fields are explicitly not initialized, so we are done
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
         return true;
 
     // Just clear the content of the structure
-    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
+    if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || !typeInfoStruct->opInitFct)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::ClearRefFromStackX);
         inst->a.u32 = resolved->storageOffset;

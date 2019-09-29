@@ -730,80 +730,10 @@ anotherTry:
     return true;
 }
 
-bool SemanticJob::resolveTupleAccess(SemanticContext* context, bool& eaten)
-{
-    auto node          = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    auto identifierRef = node->identifierRef;
-    auto sourceFile    = context->sourceFile;
-
-    // Direct access to a tuple inside value
-    if (node->flags & AST_IDENTIFIER_IS_INTEGER)
-    {
-        SWAG_VERIFY(identifierRef->startScope && identifierRef->typeInfo, context->errorContext.report({sourceFile, node->token, "invalid access by literal"}));
-        SWAG_VERIFY(identifierRef->typeInfo->kind == TypeInfoKind::TypeList, context->errorContext.report({sourceFile, node->token, format("access by literal invalid on type '%s'", identifierRef->typeInfo->name.c_str())}));
-        auto index    = stoi(node->name);
-        auto typeList = CastTypeInfo<TypeInfoList>(identifierRef->typeInfo, TypeInfoKind::TypeList);
-        SWAG_VERIFY(index >= 0 && index < typeList->childs.size(), context->errorContext.report({sourceFile, node->token, format("access by literal is out of range (maximum index is '%d')", typeList->childs.size() - 1)}));
-
-        // Compute offset from start of tuple
-        int offset = 0;
-        for (int i = 0; i < index; i++)
-        {
-            auto typeInfo = typeList->childs[i];
-            offset += typeInfo->sizeOf;
-        }
-
-        node->computedValue.reg.u32  = (uint32_t) offset;
-        node->typeInfo               = typeList->childs[index];
-        node->resolvedSymbolName     = identifierRef->previousResolvedNode->resolvedSymbolName;
-        node->resolvedSymbolOverload = identifierRef->previousResolvedNode->resolvedSymbolOverload;
-        node->flags |= AST_L_VALUE | AST_R_VALUE;
-        identifierRef->typeInfo = typeList->childs[index];
-        eaten                   = true;
-        return true;
-    }
-
-    // Access to tuple by name
-    if (identifierRef && identifierRef->typeInfo && identifierRef->typeInfo->kind == TypeInfoKind::TypeList)
-    {
-        auto typeList = CastTypeInfo<TypeInfoList>(identifierRef->typeInfo, TypeInfoKind::TypeList);
-        int  offset   = 0;
-        int  index    = 0;
-        for (auto& name : typeList->names)
-        {
-            if (name == node->name)
-            {
-                node->computedValue.reg.u32  = (uint32_t) offset;
-                node->typeInfo               = typeList->childs[index];
-                node->resolvedSymbolName     = identifierRef->previousResolvedNode->resolvedSymbolName;
-                node->resolvedSymbolOverload = identifierRef->previousResolvedNode->resolvedSymbolOverload;
-                identifierRef->typeInfo      = typeList->childs[index];
-                eaten                        = true;
-                node->flags |= AST_IDENTIFIER_IS_INTEGER;
-                node->flags |= AST_L_VALUE | AST_R_VALUE;
-                return true;
-            }
-
-            auto typeInfo = typeList->childs[index];
-            offset += typeInfo->sizeOf;
-            index++;
-        }
-    }
-
-    eaten = false;
-    return true;
-}
-
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     node->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
-
-    // Direct access to a tuple inside value
-    bool eatenByTyple = false;
-    SWAG_CHECK(resolveTupleAccess(context, eatenByTyple));
-    if (eatenByTyple)
-        return true;
 
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;

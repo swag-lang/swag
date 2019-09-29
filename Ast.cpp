@@ -157,6 +157,14 @@ namespace Ast
         return source->clone(cloneContext);
     }
 
+    AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent)
+    {
+        AstStruct* node   = Ast::newNode(nullptr, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);
+        node->semanticFct = &SemanticJob::resolveStruct;
+        node->inheritOwners(parent);
+        return node;
+    }
+
     AstNode* newFuncCallParameters(SourceFile* sourceFile, AstNode* parent)
     {
         AstNode* node     = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
