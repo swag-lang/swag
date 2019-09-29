@@ -2,7 +2,6 @@
 #include "Module.h"
 #include "ModuleSemanticJob.h"
 #include "ThreadManager.h"
-#include "Global.h"
 #include "SourceFile.h"
 #include "FileSemanticJob.h"
 

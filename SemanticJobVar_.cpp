@@ -137,13 +137,16 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
         typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
         paramNode->type = typeExpression;
 
-        // Convert type to syntax
-        if (childType->kind == TypeInfoKind::Native)
+        // Convert typeinfo to TypeExpression
+        switch (childType->kind)
+        {
+        case TypeInfoKind::Native:
         {
             typeExpression->token.id          = TokenId::NativeType;
             typeExpression->token.literalType = childType;
+            break;
         }
-        else if (childType->kind == TypeInfoKind::Pointer)
+        case TypeInfoKind::Pointer:
         {
             auto typeInfoPointer     = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
             typeExpression->ptrCount = typeInfoPointer->ptrCount;
@@ -151,15 +154,16 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
                 return internalError(context, "convertAssignementToStruct, bad pointer type");
             typeExpression->token.id          = TokenId::NativeType;
             typeExpression->token.literalType = typeInfoPointer->pointedType;
+            break;
         }
-        else if (childType->kind == TypeInfoKind::Enum)
+        case TypeInfoKind::Enum:
         {
             auto typeInfoEnum          = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Enum);
             typeExpression->identifier = Ast::newIdentifierRef(sourceFile, typeInfoEnum->name, typeExpression);
             paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+            break;
         }
-        else
-        {
+        default:
             return internalError(context, "convertAssignementToStruct, bad type");
         }
     }
