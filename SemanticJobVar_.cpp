@@ -72,7 +72,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         auto offset     = storageOffset;
-        auto result     = collectStructLiterals(context, sourceFile, offset, typeStruct->structNode, seg);
+        auto result     = collectStructLiteralsNoLock(context, sourceFile, offset, typeStruct->structNode, seg);
         SWAG_CHECK(result);
         return true;
     }
@@ -91,6 +91,77 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
     case 8:
         *(uint64_t*) ptrDest = value->reg.u64;
         break;
+    }
+
+    return true;
+}
+
+bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment)
+{
+    AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+    auto       module     = sourceFile->module;
+
+    uint8_t* ptrStart = segment ? segment->addressNoLock(offset) : nullptr;
+    auto     ptrDest  = ptrStart;
+    for (auto child : structNode->content->childs)
+    {
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        if (varDecl->assignment)
+        {
+            auto  typeInfo = child->typeInfo;
+            auto& value    = varDecl->assignment->computedValue;
+
+            if (typeInfo->isNative(NativeTypeKind::String))
+            {
+                Register* storedV  = (Register*) ptrDest;
+                storedV[0].pointer = (uint8_t*) value.text.c_str();
+                storedV[1].u64     = value.text.length();
+
+                auto stringIndex = module->reserveString(value.text);
+                segment->addInitString(offset, stringIndex);
+
+                ptrDest += 2 * sizeof(Register);
+                offset += 2 * sizeof(Register);
+            }
+            else if (typeInfo->kind == TypeInfoKind::Native)
+            {
+                switch (typeInfo->sizeOf)
+                {
+                case 1:
+                    *(uint8_t*) ptrDest = value.reg.u8;
+                    ptrDest += 1;
+                    offset += 1;
+                    break;
+                case 2:
+                    *(uint16_t*) ptrDest = value.reg.u16;
+                    ptrDest += 2;
+                    offset += 2;
+                    break;
+                case 4:
+                    *(uint32_t*) ptrDest = value.reg.u32;
+                    ptrDest += 4;
+                    offset += 4;
+                    break;
+                case 8:
+                    *(uint64_t*) ptrDest = value.reg.u64;
+                    ptrDest += 8;
+                    offset += 8;
+                    break;
+                default:
+                    return internalError(context, "collectStructLiterals, invalid native type sizeof");
+                }
+            }
+            else
+            {
+                return internalError(context, "collectStructLiterals, invalid type");
+            }
+        }
+        else if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
+            SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeStruct->structNode, segment));
+            ptrDest = ptrStart + offset;
+        }
     }
 
     return true;

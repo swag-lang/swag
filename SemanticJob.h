@@ -80,7 +80,7 @@ struct SemanticJob : public Job
     static bool collectLiteralsToSegmentNoLock(SemanticContext* context, uint32_t& offset, AstNode* node, DataSegment* segment);
     static bool reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool storeToSegmentNoLock(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool collectStructLiterals(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
+    static bool collectStructLiteralsNoLock(SemanticContext* context, SourceFile* sourceFile, uint32_t& offset, AstNode* node, DataSegment* segment);
     static bool matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);
     static bool checkIsConcrete(SemanticContext* context, AstNode* node);
