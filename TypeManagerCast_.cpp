@@ -1190,36 +1190,6 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
     return castError(context, toType, fromType, nodeToCast, castFlags);
 }
 
-bool TypeManager::castToTuple(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
-{
-    TypeInfoList* toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::TypeList);
-    if (fromType->kind == TypeInfoKind::TypeList)
-    {
-        TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-        if (fromTypeList->listKind == TypeInfoListKind::Curly)
-        {
-            auto fromSize = fromTypeList->childs.size();
-            if (toTypeList->childs.size() != fromSize)
-            {
-                if (!(castFlags & CASTFLAG_NOERROR))
-                {
-                    if (toTypeList->childs.size() > fromTypeList->childs.size())
-                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
-                    else
-                        context->errorContext.report({context->errorContext.sourceFile, nodeToCast, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeList->childs.size())});
-                }
-
-                return false;
-            }
-
-            SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeList, nodeToCast, castFlags));
-            return true;
-        }
-    }
-
-    return castError(context, toType, fromType, nodeToCast, castFlags);
-}
-
 bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
     TypeInfoSlice* toTypeSlice     = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
@@ -1653,10 +1623,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Cast to array
     if (toType->kind == TypeInfoKind::Array)
         return castToArray(context, toType, fromType, nodeToCast, castFlags);
-
-    // Cast to tuple
-    if (toType->kind == TypeInfoKind::TypeList)
-        return castToTuple(context, toType, fromType, nodeToCast, castFlags);
 
     // Cast to slice
     if (toType->kind == TypeInfoKind::Slice)
