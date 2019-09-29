@@ -70,15 +70,6 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
         return true;
     }
 
-    if (assignment && assignment->typeInfo && assignment->typeInfo->kind == TypeInfoKind::TypeList)
-    {
-        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
-        auto offset = storageOffset;
-        auto result = collectLiteralsToSegmentNoLock(context, offset, assignment, seg);
-        SWAG_CHECK(result);
-        return true;
-    }
-
     if (assignment && assignment->kind == AstNodeKind::FuncCallParams)
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
