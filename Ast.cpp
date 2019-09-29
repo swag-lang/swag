@@ -157,6 +157,13 @@ namespace Ast
         return source->clone(cloneContext);
     }
 
+    AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent)
+    {
+        AstNode* node = Ast::newNode(nullptr, &g_Pool_astNode, kind, sourceFile->indexInModule, parent);
+        node->inheritOwners(parent);
+        return node;
+    }
+
     AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent)
     {
         AstStruct* node   = Ast::newNode(nullptr, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);

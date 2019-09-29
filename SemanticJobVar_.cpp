@@ -109,9 +109,9 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
     auto       sourceFile = context->sourceFile;
     AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
 
-    auto contentNode               = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::TupleContent, sourceFile->indexInModule, structNode);
-    structNode->content            = contentNode;
+    auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
     contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
+    structNode->content            = contentNode;
 
     auto   typeList = (TypeInfoList*) varDecl->typeInfo;
     string name     = "__tuple_";

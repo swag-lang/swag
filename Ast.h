@@ -49,6 +49,7 @@ namespace Ast
 
     extern AstNode* clone(AstNode* source, AstNode* parent);
 
+    extern AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent);
     extern AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent);
     extern AstNode*           newFuncCallParameters(SourceFile* sourceFile, AstNode* parent);
     extern AstFuncCallParam*  newFuncCallParam(SourceFile* sourceFile, AstNode* parent);
