@@ -222,14 +222,16 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
         if (idx < typeList->names.size())
         {
             varName = typeList->names[idx];
-            structName += varName + "_";
+            structName += varName;
         }
         else
         {
             varName = format("val%u", idx);
         }
 
+		structName += "_";
         structName += childType->name;
+		structName += "_";
 
         auto paramNode      = Ast::newVarDecl(sourceFile, varName, contentNode);
         auto typeExpression = Ast::newTypeExpression(sourceFile, paramNode);

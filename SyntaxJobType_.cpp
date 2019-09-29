@@ -94,7 +94,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
             expression = structFieldNode->type;
-            name += structFieldNode->name + "_";
+            name += structFieldNode->name;
         }
         else
         {
@@ -106,12 +106,14 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         idx++;
 
         // Name
+        name += "_";
         typeExpression = (AstTypeExpression*) expression;
         for (int i = 0; i < typeExpression->ptrCount; i++)
             name += "*";
         name += typeExpression->token.text;
         if (typeExpression->identifier)
             name += typeExpression->identifier->childs.back()->name;
+		name += "_";
 
         SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s'", token.text.c_str())));
         if (token.id == TokenId::SymRightCurly)

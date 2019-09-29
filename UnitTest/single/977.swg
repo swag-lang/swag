@@ -1,11 +1,11 @@
 #module module977
 //#unittest pass semantic
 
-let pt = {1, 2}
+let pt = {x: 1, y: 2}
 
 #test
 {
-	@assert(pt.val0 == 1)
-	@assert(pt.val1 == 2)
+	@assert(pt.x == 1)
+	@assert(pt.y == 2)
 }
 
