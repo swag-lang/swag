@@ -113,8 +113,8 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
     contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
     structNode->content            = contentNode;
 
-    auto typeList = (TypeInfoList*) varDecl->typeInfo;
-    Utf8 name     = "__tuple_";
+    auto typeList   = (TypeInfoList*) varDecl->typeInfo;
+    Utf8 structName = "__tuple_";
     Utf8 varName;
     for (int idx = 0; idx < typeList->childs.size(); idx++)
     {
@@ -123,21 +123,21 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
         if (idx < typeList->names.size())
         {
             varName = typeList->names[idx];
-            name += varName + "_";
+            structName += varName + "_";
         }
         else
         {
             varName = format("val%u", idx);
         }
 
-        name += childType->name;
+        structName += childType->name;
 
-        auto paramNode              = Ast::newVarDecl(sourceFile, varName, contentNode);
-        auto typeExpression         = Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, paramNode);
-        typeExpression->semanticFct = &SemanticJob::resolveTypeExpression;
+        auto paramNode      = Ast::newVarDecl(sourceFile, varName, contentNode);
+        auto typeExpression = Ast::newTypeExpression(sourceFile, paramNode);
         typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
         paramNode->type = typeExpression;
 
+        // Convert type to syntax
         if (childType->kind == TypeInfoKind::Native)
         {
             typeExpression->token.id          = TokenId::NativeType;
@@ -165,13 +165,11 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
     }
 
     // Compute structure name
-    structNode->name = move(name);
+    structNode->name = move(structName);
 
     // Reference to that struct
-    auto typeExpression         = Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, varDecl);
-    typeExpression->semanticFct = &SemanticJob::resolveTypeExpression;
+    auto typeExpression = Ast::newTypeExpression(sourceFile, varDecl);
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
-    typeExpression->inheritOwners(varDecl);
     typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
     varDecl->type              = typeExpression;
 
