@@ -78,7 +78,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
 bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 {
     auto node = context->node;
-    node->inheritOrFlag(AST_IS_GENERIC);
+    node->inheritOrFlag(AST_IS_GENERIC);	
     node->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
     return true;
 }
@@ -297,6 +297,7 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
+	node->inheritAndFlag(AST_CONST_EXPR);
     return true;
 }
 

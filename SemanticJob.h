@@ -77,6 +77,7 @@ struct SemanticJob : public Job
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool forceExecuteNode(SemanticContext* context);
 	static bool reserveAndStoreToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+	static bool storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool collectLiteralsToSegmentNoLock(SemanticContext* context, uint32_t& offset, AstNode* node, DataSegment* segment);
     static bool reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool storeToSegmentNoLock(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);

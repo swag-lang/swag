@@ -18,6 +18,17 @@ bool SemanticJob::reserveAndStoreToSegment(SemanticContext* context, uint32_t& s
     return reserveAndStoreToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
 }
 
+bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
+{
+    auto sourceFile = context->sourceFile;
+
+    // Need to lock both data segments, as both can be modified if 'seg' is a data
+    scoped_lock lockConstant(sourceFile->module->constantSegment.mutex);
+    scoped_lock lockData(sourceFile->module->dataSegment.mutex);
+
+    return storeToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
+}
+
 bool SemanticJob::reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
     storageOffset = seg->reserveNoLock(typeInfo->sizeOf);
@@ -59,7 +70,25 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
         return true;
     }
 
-    if (assignment && assignment->typeInfo->kind == TypeInfoKind::TypeList)
+    if (assignment && assignment->typeInfo && assignment->typeInfo->kind == TypeInfoKind::TypeList)
+    {
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
+        auto offset = storageOffset;
+        auto result = collectLiteralsToSegmentNoLock(context, offset, assignment, seg);
+        SWAG_CHECK(result);
+        return true;
+    }
+
+    if (assignment && assignment->kind == AstNodeKind::FuncCallParams)
+    {
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
+        auto offset = storageOffset;
+        auto result = collectLiteralsToSegmentNoLock(context, offset, assignment, seg);
+        SWAG_CHECK(result);
+        return true;
+    }
+
+    if (assignment && assignment->kind == AstNodeKind::ExpressionList)
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, assignment, "expression cannot be evaluated at compile time"}));
         auto offset = storageOffset;
@@ -166,6 +195,9 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(SemanticContext* context, uint3
 {
     for (auto child : node->childs)
     {
+        if (child->flags & AST_DONT_COLLECT)
+            continue;
+
         if (child->kind == AstNodeKind::ExpressionList)
         {
             SWAG_CHECK(collectLiteralsToSegmentNoLock(context, offset, child, segment));
@@ -362,12 +394,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // No struct initialization on everything except local vars
-    if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-    {
-        SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
-    }
-
     // Find type
     if (node->type && node->assignment)
     {
@@ -510,7 +536,27 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
         auto value = node->assignment ? &node->assignment->computedValue : &node->computedValue;
-        SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
+        if (node->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            // First collect values from the structure default init
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, nullptr));
+
+            // Then collect values from the type parameters
+            if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            {
+                auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+                auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+                SWAG_CHECK(storeToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, identifier->callParameters));
+            }
+
+            // Then collect values from the assignment
+            if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList)
+                SWAG_CHECK(storeToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
+        }
+        else
+        {
+            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
+        }
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {

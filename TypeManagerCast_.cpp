@@ -1412,6 +1412,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
     varNode->type        = typeNode;
     typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->structNode->name, typeNode);
+	typeNode->identifier->flags |= AST_GENERATED;
     auto back            = typeNode->identifier->childs.back();
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
@@ -1421,7 +1422,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     if (nodeToCast->parent->kind == AstNodeKind::FuncCallParam)
         parent = nodeToCast->parent;
     auto identifierRef = Ast::newIdentifierRef(sourceFile, varNode->name, parent);
-    identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT;
+    identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT | AST_DONT_COLLECT;
 
     // Make parameters
     auto identifier            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);

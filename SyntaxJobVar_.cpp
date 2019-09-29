@@ -74,7 +74,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         return error(varNode->token, "variable must have a type or must be initialized");
     }
 
-	SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
+    SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
 
     if (varNode->assignment)
     {
