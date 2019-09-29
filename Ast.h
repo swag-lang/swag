@@ -25,6 +25,10 @@ namespace Ast
             node->token.endLocation   = job->token.endLocation;
             node->inheritOwnersAndFlags(job);
         }
+		else
+		{
+			node->inheritOwners(parent);
+		}
 
         if (parent)
         {
