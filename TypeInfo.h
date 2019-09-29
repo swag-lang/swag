@@ -471,8 +471,8 @@ struct TypeInfoSlice : public TypeInfo
 
 enum class TypeInfoListKind
 {
-    Array,
-    Tuple,
+    Bracket,
+    Curly,
 };
 
 struct TypeInfoList : public TypeInfo
@@ -484,7 +484,7 @@ struct TypeInfoList : public TypeInfo
         childs.clear();
         names.clear();
         scope    = nullptr;
-        listKind = TypeInfoListKind::Array;
+        listKind = TypeInfoListKind::Bracket;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 

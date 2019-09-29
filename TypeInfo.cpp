@@ -32,7 +32,7 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
     case TypeInfoKind::Lambda:
         return "a lambda";
     case TypeInfoKind::TypeList:
-        if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Tuple)
+        if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Curly)
             return "a tuple";
         return "an array";
     case TypeInfoKind::Variadic:
@@ -68,7 +68,7 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
     case TypeInfoKind::Lambda:
         return "lambda";
     case TypeInfoKind::TypeList:
-        if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Tuple)
+        if (static_cast<TypeInfoList*>(typeInfo)->listKind == TypeInfoListKind::Curly)
             return "tuple";
         return "array";
     case TypeInfoKind::Variadic:

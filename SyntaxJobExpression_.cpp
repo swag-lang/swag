@@ -352,7 +352,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
 {
     auto initNode         = Ast::newNode(this, &g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->semanticFct = &SemanticJob::resolveExpressionListCurly;
-    initNode->listKind    = TypeInfoListKind::Tuple;
+    initNode->listKind    = TypeInfoListKind::Curly;
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightCurly)
@@ -402,7 +402,7 @@ bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
 {
     auto initNode         = Ast::newNode(this, &g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile->indexInModule, parent);
     initNode->semanticFct = &SemanticJob::resolveExpressionListArray;
-    initNode->listKind    = TypeInfoListKind::Array;
+    initNode->listKind    = TypeInfoListKind::Bracket;
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (token.id == TokenId::SymRightSquare)

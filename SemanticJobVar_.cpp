@@ -332,7 +332,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->kind == TypeInfoKind::TypeList)
         {
             auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeList);
-            if (typeList->listKind == TypeInfoListKind::Array)
+            if (typeList->listKind == TypeInfoListKind::Bracket)
             {
                 auto typeArray         = g_Pool_typeInfoArray.alloc();
                 typeArray->pointedType = typeList->childs.front();
@@ -344,7 +344,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 node->typeInfo         = typeTable.registerType(typeArray);
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
             }
-            else if (typeList->listKind == TypeInfoListKind::Tuple)
+            else if (typeList->listKind == TypeInfoListKind::Curly)
             {
                 SWAG_CHECK(convertAssignementToStruct(context, node));
                 return true;

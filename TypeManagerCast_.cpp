@@ -1166,7 +1166,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
     if (fromType->kind == TypeInfoKind::TypeList)
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-        if (fromTypeList->listKind == TypeInfoListKind::Array)
+        if (fromTypeList->listKind == TypeInfoListKind::Bracket)
         {
             auto fromSize = fromTypeList->childs.size();
             if (toTypeArray->count != fromSize)
@@ -1196,7 +1196,7 @@ bool TypeManager::castToTuple(SemanticContext* context, TypeInfo* toType, TypeIn
     if (fromType->kind == TypeInfoKind::TypeList)
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-        if (fromTypeList->listKind == TypeInfoListKind::Tuple)
+        if (fromTypeList->listKind == TypeInfoListKind::Curly)
         {
             auto fromSize = fromTypeList->childs.size();
             if (toTypeList->childs.size() != fromSize)
@@ -1230,7 +1230,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
 
         // Can only cast array to slice
-        if (fromTypeList->listKind != TypeInfoListKind::Array)
+        if (fromTypeList->listKind != TypeInfoListKind::Bracket)
             return castError(context, toType, fromType, nodeToCast, castFlags, explicitIsValid);
 
         // Special case when typelist is one pointer and one int
@@ -1487,7 +1487,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     if (fromType->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
     {
         TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
-        if (typeList->listKind == TypeInfoListKind::Tuple)
+        if (typeList->listKind == TypeInfoListKind::Curly)
         {
             convertExpressionListToVarDecl(context, toType, nodeToCast);
             return true;
@@ -1539,7 +1539,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (realFromType->kind == TypeInfoKind::TypeList && realToType->kind == TypeInfoKind::Struct)
     {
         TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(realFromType, TypeInfoKind::TypeList);
-        if (typeList->listKind == TypeInfoListKind::Tuple)
+        if (typeList->listKind == TypeInfoListKind::Curly)
         {
             return true;
         }
