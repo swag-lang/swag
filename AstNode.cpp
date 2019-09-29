@@ -67,6 +67,7 @@ const char* AstNode::getKindName(AstNode* node)
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
+	case AstNodeKind::LetDecl:
         return "a variable";
     case AstNodeKind::FuncDecl:
         return "a function";
@@ -92,6 +93,7 @@ const char* AstNode::getNakedKindName(AstNode* node)
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
+	case AstNodeKind::LetDecl:
         return "variable";
     case AstNodeKind::FuncDecl:
         return "function";

@@ -32,7 +32,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         return context->errorContext.report(diag, &note, &note1);
     }
 
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind != AstNodeKind::VarDecl && kind != AstNodeKind::Statement)
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind != AstNodeKind::VarDecl && kind != AstNodeKind::LetDecl && kind != AstNodeKind::Statement)
     {
         Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a variable definition", oneAttribute->name.c_str())};
         Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};

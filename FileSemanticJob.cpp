@@ -51,7 +51,9 @@ JobResult FileSemanticJob::execute()
             }
             break;
 
-            case AstNodeKind::VarDecl:
+            case AstNodeKind::VarDecl:		
+			case AstNodeKind::LetDecl:
+			case AstNodeKind::ConstDecl:
             case AstNodeKind::TypeAlias:
             case AstNodeKind::EnumDecl:
             case AstNodeKind::StructDecl:
