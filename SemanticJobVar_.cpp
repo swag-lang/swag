@@ -5,7 +5,6 @@
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
-#include "ThreadManager.h"
 
 bool SemanticJob::reserveAndStoreToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {

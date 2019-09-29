@@ -1412,8 +1412,8 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
     varNode->type        = typeNode;
     typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->structNode->name, typeNode);
-	typeNode->identifier->flags |= AST_GENERATED;
-    auto back            = typeNode->identifier->childs.back();
+    typeNode->identifier->flags |= AST_GENERATED;
+    auto back = typeNode->identifier->childs.back();
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
@@ -1502,7 +1502,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
             auto module   = context->sourceFile->module;
             auto exprList = CastAst<AstExpressionList>(nodeToCast, AstNodeKind::ExpressionList);
             if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
+            {
                 SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, nodeToCast->typeInfo, exprList));
+            }
         }
     }
 
