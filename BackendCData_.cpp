@@ -11,7 +11,7 @@ bool BackendC::emitDataSegment(DataSegment* dataSegment)
     if (dataSegment == &module->dataSegment)
         emitSeparator(bufferC, "DATA SEGMENT");
     else
-        emitSeparator(bufferC, "CONTANT SEGMENT");
+        emitSeparator(bufferC, "CONSTANT SEGMENT");
 
     if (dataSegment->buckets.size())
     {
