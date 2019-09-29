@@ -13,8 +13,6 @@ uint32_t DataSegment::reserve(uint32_t size)
 
 uint32_t DataSegment::reserveNoLock(uint32_t size)
 {
-    uint32_t result;
-
     DataSegmentHeader* last = nullptr;
     if (buckets.size())
         last = &buckets.back();
@@ -23,7 +21,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     {
         if (last->count + size <= last->size)
         {
-            result = last->totalCountBefore + last->count;
+            uint32_t result = last->totalCountBefore + last->count;
             last->count += size;
             return result;
         }
@@ -35,7 +33,6 @@ uint32_t DataSegment::reserveNoLock(uint32_t size)
     bucket.count            = size;
     bucket.totalCountBefore = last ? last->totalCountBefore + last->count : 0;
     buckets.emplace_back(bucket);
-
     return bucket.totalCountBefore;
 }
 
