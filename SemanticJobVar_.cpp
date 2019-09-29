@@ -129,27 +129,22 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
                 {
                 case 1:
                     *(uint8_t*) ptrDest = value.reg.u8;
-                    ptrDest += 1;
-                    offset += 1;
                     break;
                 case 2:
                     *(uint16_t*) ptrDest = value.reg.u16;
-                    ptrDest += 2;
-                    offset += 2;
                     break;
                 case 4:
                     *(uint32_t*) ptrDest = value.reg.u32;
-                    ptrDest += 4;
-                    offset += 4;
                     break;
                 case 8:
                     *(uint64_t*) ptrDest = value.reg.u64;
-                    ptrDest += 8;
-                    offset += 8;
                     break;
                 default:
                     return internalError(context, "collectStructLiterals, invalid native type sizeof");
                 }
+
+                ptrDest += typeInfo->sizeOf;
+                offset += typeInfo->sizeOf;
             }
             else
             {
@@ -367,6 +362,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+    // No struct initialization on everything except local vars
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
     {
         SWAG_VERIFY(symbolFlags & OVERLOAD_VAR_LOCAL, context->errorContext.report({sourceFile, node->type, "cannot initialize a struct with parameters here (only local variables are supported)"}));
@@ -454,7 +450,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // No struct initialization on everything except local vars
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
     {
         // Determine if the call parameters cover everything (to avoid calling default initialization)
