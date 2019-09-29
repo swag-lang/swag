@@ -13,6 +13,16 @@ bool SemanticJob::internalError(SemanticContext* context, const char* msg, AstNo
     return false;
 }
 
+SemanticJob* SemanticJob::newJob(SourceFile* sourceFile, AstNode* rootNode, bool run)
+{
+    auto job        = g_Pool_semanticJob.alloc();
+    job->sourceFile = sourceFile;
+    job->nodes.push_back(rootNode);
+    if (run)
+        g_ThreadMgr.addJob(job);
+    return job;
+}
+
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {
     context->errorContext.report({context->sourceFile, context->node->token, msg});

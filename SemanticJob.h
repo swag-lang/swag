@@ -26,7 +26,7 @@ enum class SemanticResult
 {
     Done,
     Pending,
-	NewChilds,
+    NewChilds,
 };
 
 struct SemanticContext
@@ -61,9 +61,11 @@ struct OneGenericMatch
 
 struct SemanticJob : public Job
 {
-    JobResult   execute() override;
-    static bool error(SemanticContext* context, const Utf8& msg);
-    static bool internalError(SemanticContext* context, const char* msg, AstNode* node = nullptr);
+    JobResult execute() override;
+
+    static SemanticJob* newJob(SourceFile* sourceFile, AstNode* rootNode, bool run);
+    static bool         error(SemanticContext* context, const Utf8& msg);
+    static bool         internalError(SemanticContext* context, const char* msg, AstNode* node = nullptr);
 
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags);
@@ -84,7 +86,7 @@ struct SemanticJob : public Job
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
-	static bool convertAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl);
+    static bool convertAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();
@@ -184,7 +186,6 @@ struct SemanticJob : public Job
         context.reset();
     }
 
-    Module*                  module;
     SourceFile*              sourceFile;
     vector<AstNode*>         nodes;
     vector<SymbolName*>      cacheDependentSymbols;

@@ -24,7 +24,7 @@ void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatc
             genType                                                = genTypePointer->pointedType;
         }
 
-		// Else replace 1 to 1
+        // Else replace 1 to 1
         else if (callType != genType)
             cloneContext.replaceTypes[genType] = callType;
 
@@ -56,20 +56,17 @@ void Generic::end(SemanticContext* context, AstNode* newNode)
 
     // Run semantic on that struct
     auto sourceFile = context->sourceFile;
-    job             = g_Pool_semanticJob.alloc();
-    job->module     = sourceFile->module;
-    job->sourceFile = sourceFile;
-    job->nodes.push_back(newNode);
+    auto newJob     = SemanticJob::newJob(sourceFile, newNode, false);
 
     // Store stack of instantiation contexts
     auto& srcCxt  = context->errorContext;
-    auto& destCxt = job->context.errorContext;
+    auto& destCxt = newJob->context.errorContext;
     destCxt.genericInstanceTree.insert(destCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.end());
     destCxt.genericInstanceTreeFile.insert(destCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.end());
     destCxt.genericInstanceTree.push_back(context->node);
     destCxt.genericInstanceTreeFile.push_back(context->sourceFile);
 
-    g_ThreadMgr.addJob(job);
+    g_ThreadMgr.addJob(newJob);
 }
 
 void Generic::updateGenericParameters(vector<TypeInfoParam*>& typeGenericParameters, vector<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match)
@@ -280,8 +277,8 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     newType->flags &= ~TYPEINFO_GENERIC;
     funcNode->typeInfo = newType;
 
-	// Replace return type
-	doTypeSubstitution(context, cloneContext, &newType->returnType);
+    // Replace return type
+    doTypeSubstitution(context, cloneContext, &newType->returnType);
 
     // Replace generic types with their real values in the function parameters
     for (int i = 0; i < newType->parameters.size(); i++)

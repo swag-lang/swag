@@ -10,7 +10,6 @@ Pool<FileSemanticJob> g_Pool_fileSemanticJob;
 SemanticJob* FileSemanticJob::newSemanticJob(SourceFile* sourceFile)
 {
     auto job        = g_Pool_semanticJob.alloc();
-    job->module     = sourceFile->module;
     job->sourceFile = sourceFile;
     return job;
 }
@@ -61,7 +60,7 @@ JobResult FileSemanticJob::execute()
             case AstNodeKind::CompilerPrint:
             case AstNodeKind::CompilerRun:
             case AstNodeKind::AttrDecl:
-			case AstNodeKind::Impl:
+            case AstNodeKind::Impl:
             {
                 auto job = newSemanticJob(sourceFile);
                 job->nodes.push_back(node);

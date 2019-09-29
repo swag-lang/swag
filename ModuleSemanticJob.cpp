@@ -16,7 +16,6 @@ JobResult ModuleSemanticJob::execute()
             continue;
 
         auto job        = g_Pool_fileSemanticJob.alloc();
-        job->module     = module;
         job->sourceFile = file;
         job->nodes.push_back(file->astRoot);
         g_ThreadMgr.addJob(job);

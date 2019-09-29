@@ -201,11 +201,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
             n->ownerScope       = newScope;
         });
 
-        auto job        = g_Pool_semanticJob.alloc();
-        job->module     = sourceFile->module;
-        job->sourceFile = sourceFile;
-        job->nodes.push_back(structNode);
-        g_ThreadMgr.addJob(job);
+        SemanticJob::newJob(sourceFile, structNode, true);
     }
 
     context->job->nodes.push_back(typeExpression);
