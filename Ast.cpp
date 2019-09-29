@@ -160,7 +160,6 @@ namespace Ast
     AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent)
     {
         AstNode* node = Ast::newNode(nullptr, &g_Pool_astNode, kind, sourceFile->indexInModule, parent);
-        node->inheritOwners(parent);
         return node;
     }
 
@@ -168,7 +167,6 @@ namespace Ast
     {
         AstStruct* node   = Ast::newNode(nullptr, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);
         node->semanticFct = &SemanticJob::resolveStruct;
-        node->inheritOwners(parent);
         return node;
     }
 
@@ -176,7 +174,6 @@ namespace Ast
     {
         AstNode* node     = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
         node->semanticFct = &SemanticJob::resolveFuncCallParams;
-        node->inheritOwners(parent);
         return node;
     }
 
@@ -184,7 +181,6 @@ namespace Ast
     {
         AstFuncCallParam* node = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile->indexInModule, parent);
         node->semanticFct      = &SemanticJob::resolveFuncCallParam;
-        node->inheritOwners(parent);
         return node;
     }
 
@@ -193,7 +189,6 @@ namespace Ast
         AstVarDecl* node  = Ast::newNode(nullptr, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, parent);
         node->name        = name;
         node->semanticFct = &SemanticJob::resolveVarDecl;
-        node->inheritOwners(parent);
         return node;
     }
 
@@ -201,7 +196,6 @@ namespace Ast
     {
         AstTypeExpression* node = Ast::newNode(nullptr, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
         node->semanticFct       = &SemanticJob::resolveTypeExpression;
-        node->inheritOwners(parent);
         return node;
     }
 
@@ -211,7 +205,8 @@ namespace Ast
         node->name          = name;
         node->identifierRef = identifierRef;
         node->semanticFct   = &SemanticJob::resolveIdentifier;
-        node->inheritOwners(parent ? parent : identifierRef);
+        if (identifierRef)
+            node->inheritOwners(identifierRef);
         return node;
     }
 
@@ -220,7 +215,6 @@ namespace Ast
         AstIdentifierRef* node = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
         node->name             = name;
         node->semanticFct      = &SemanticJob::resolveIdentifierRef;
-        node->inheritOwners(parent);
 
         vector<string> tokens;
         tokenize(name.c_str(), '.', tokens);
