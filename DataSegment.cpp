@@ -2,6 +2,7 @@
 #include "Global.h"
 #include "DataSegment.h"
 #include "Log.h"
+#include "RaceCondition.h"
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
@@ -13,6 +14,10 @@ uint32_t DataSegment::reserve(uint32_t size)
 
 uint32_t DataSegment::reserveNoLock(uint32_t size)
 {
+#ifdef SWAG_HAS_ASSERT
+    RaceCondition rc(&raceCondition);
+#endif
+
     DataSegmentHeader* last = nullptr;
     if (buckets.size())
         last = &buckets.back();
@@ -44,6 +49,10 @@ uint8_t* DataSegment::address(uint32_t location)
 
 uint8_t* DataSegment::addressNoLock(uint32_t location)
 {
+#ifdef SWAG_HAS_ASSERT
+    RaceCondition rc(&raceCondition);
+#endif
+
     SWAG_ASSERT(buckets.size());
     for (int i = 0; i < buckets.size(); i++)
     {

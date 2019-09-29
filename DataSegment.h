@@ -4,6 +4,7 @@
 #include "BuildPass.h"
 #include "BackendParameters.h"
 #include "TypeTable.h"
+#include "RaceCondition.h"
 
 struct DataSegmentHeader
 {
@@ -41,4 +42,7 @@ struct DataSegment
     SpinLock                mutexPtr;
     map<uint32_t, uint32_t> initString;
     vector<DataSegmentRef>  initPtr;
+#ifdef SWAG_HAS_ASSERT
+    RaceCondition::Instance raceCondition;
+#endif
 };

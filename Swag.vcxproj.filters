@@ -308,6 +308,9 @@
     <ClCompile Include="Assert.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="RaceCondition.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -508,6 +511,9 @@
     </ClInclude>
     <ClInclude Include="Assert.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="RaceCondition.h">
+      <Filter>Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
