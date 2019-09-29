@@ -66,7 +66,6 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result, bool isConst)
 {
     auto structNode = Ast::newStructDecl(sourceFile, nullptr);
-    structNode->flags |= AST_STRUCT_TUPLE;
 
     auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::TupleContent, sourceFile->indexInModule, structNode);
     structNode->content            = contentNode;
