@@ -464,8 +464,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (isCompilerConstant)
     {
-        node->flags |= AST_NO_BYTECODE;
-        node->flags |= AST_R_VALUE;
+        node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
         if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList)
         {
             scoped_lock lock(module->dataSegment.mutex);
