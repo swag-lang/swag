@@ -65,9 +65,9 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result, bool isConst)
 {
-    auto structNode = Ast::newStructDecl(sourceFile, nullptr);
+    auto structNode = Ast::newStructDecl(sourceFile, nullptr, this);
 
-    auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::TupleContent, sourceFile->indexInModule, structNode);
+    auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content            = contentNode;
     contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
 
@@ -78,8 +78,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     int    idx  = 0;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        auto paramNode         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile->indexInModule, contentNode);
-        paramNode->semanticFct = &SemanticJob::resolveVarDecl;
+        auto paramNode = Ast::newVarDecl(sourceFile, "", contentNode, nullptr);
 
         AstTypeExpression* typeExpression = nullptr;
         AstNode*           expression;
@@ -126,7 +125,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     structNode->name = move(name);
 
     // Reference to that struct
-    auto identifier = Ast::createIdentifierRef(this, structNode->name, token, parent);
+    auto identifier = Ast::newIdentifierRef(sourceFile, structNode->name, parent, this);
     if (result)
         *result = identifier;
 

@@ -119,6 +119,20 @@ namespace Ast
         return newScope;
     }
 
+    void visit(AstNode* root, const function<void(AstNode*)>& fctor)
+    {
+        fctor(root);
+        for (auto child : root->childs)
+            visit(child, fctor);
+    }
+
+    AstNode* clone(AstNode* source, AstNode* parent)
+    {
+        CloneContext cloneContext;
+        cloneContext.parent = parent;
+        return source->clone(cloneContext);
+    }
+
     AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent)
     {
         auto sourceFile    = job->sourceFile;
@@ -141,20 +155,6 @@ namespace Ast
         }
 
         return idRef;
-    }
-
-    void visit(AstNode* root, const function<void(AstNode*)>& fctor)
-    {
-        fctor(root);
-        for (auto child : root->childs)
-            visit(child, fctor);
-    }
-
-    AstNode* clone(AstNode* source, AstNode* parent)
-    {
-        CloneContext cloneContext;
-        cloneContext.parent = parent;
-        return source->clone(cloneContext);
     }
 
     AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob)
@@ -215,14 +215,18 @@ namespace Ast
         AstIdentifierRef* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile->indexInModule, parent);
         node->name             = name;
         node->semanticFct      = &SemanticJob::resolveIdentifierRef;
+        if (syntaxJob)
+            node->inheritTokenLocation(syntaxJob->token);
 
-        vector<string> tokens;
-        tokenize(name.c_str(), '.', tokens);
-        for (int i = 0; i < tokens.size(); i++)
+        vector<string> subNames;
+        tokenize(name.c_str(), '.', subNames);
+        for (int i = 0; i < subNames.size(); i++)
         {
-            auto id           = Ast::newNode(syntaxJob, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, node);
-            id->semanticFct   = &SemanticJob::resolveIdentifier;
-            id->name          = tokens[i];
+            auto id         = Ast::newNode(syntaxJob, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile->indexInModule, node);
+            id->semanticFct = &SemanticJob::resolveIdentifier;
+            id->name        = move(subNames[i]);
+            if (syntaxJob)
+                id->inheritTokenLocation(syntaxJob->token);
             id->identifierRef = node;
             id->inheritOwners(node);
         }
