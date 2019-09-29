@@ -1425,7 +1425,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
 
     // Make parameters
     auto identifier            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
-    identifier->callParameters = Ast::newFuncCallParameters(sourceFile, identifier);
+    identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
     int countParams            = (int) nodeToCast->childs.size();
     if (parent == nodeToCast)
         countParams--;

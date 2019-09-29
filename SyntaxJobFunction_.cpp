@@ -10,7 +10,7 @@
 
 bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 {
-    auto callParams         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
+    auto callParams         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, parent);
     *result                 = callParams;
     callParams->semanticFct = &SemanticJob::resolveFuncCallParams;
 

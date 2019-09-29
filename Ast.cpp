@@ -170,9 +170,9 @@ namespace Ast
         return node;
     }
 
-    AstNode* newFuncCallParameters(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    AstNode* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstNode* node     = Ast::newNode(syntaxJob, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, parent);
+        AstNode* node     = Ast::newNode(syntaxJob, &g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, parent);
         node->semanticFct = &SemanticJob::resolveFuncCallParams;
         return node;
     }

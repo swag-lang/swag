@@ -78,7 +78,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     int    idx  = 0;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        auto paramNode = Ast::newVarDecl(sourceFile, "", contentNode, nullptr);
+        auto structFieldNode = Ast::newVarDecl(sourceFile, "", contentNode, nullptr);
 
         AstTypeExpression* typeExpression = nullptr;
         AstNode*           expression;
@@ -90,17 +90,17 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             typeExpression = (AstTypeExpression*) expression;
             if (!typeExpression->identifier || typeExpression->identifier->kind != AstNodeKind::IdentifierRef || typeExpression->identifier->childs.size() != 1)
                 return sourceFile->report({sourceFile, expression, format("invalid named field '%s'", token.text.c_str())});
-            paramNode->name = typeExpression->identifier->childs.front()->name;
+            structFieldNode->name = typeExpression->identifier->childs.front()->name;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doTypeExpression(paramNode, &paramNode->type));
-            expression = paramNode->type;
-            name += paramNode->name + "_";
+            SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
+            expression = structFieldNode->type;
+            name += structFieldNode->name + "_";
         }
         else
         {
-            Ast::addChildBack(paramNode, expression);
-            paramNode->type = expression;
-            paramNode->name = format("val%u", idx);
+            Ast::addChildBack(structFieldNode, expression);
+            structFieldNode->type = expression;
+            structFieldNode->name = format("val%u", idx);
         }
 
         idx++;
@@ -188,8 +188,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
         return convertExpressionListToStruct(parent, result, isConst);
 
     // Else this is a type expression
-    auto node         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, parent);
-    node->semanticFct = &SemanticJob::resolveTypeExpression;
+    auto node = Ast::newTypeExpression(sourceFile, parent, this);
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;

@@ -93,7 +93,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     AstNode* node       = context->node;
-    auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParameters);
+    auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
     SWAG_ASSERT(!node->name.empty());
     auto intrinsic = g_LangSpec.intrinsics[node->name];
     switch (intrinsic)

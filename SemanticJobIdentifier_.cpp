@@ -846,7 +846,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (!node->callParameters)
                 {
-                    node->callParameters        = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParameters, node->sourceFileIdx, node);
+                    node->callParameters        = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParams, node->sourceFileIdx, node);
                     node->callParameters->token = identifierRef->previousResolvedNode->token;
                 }
 

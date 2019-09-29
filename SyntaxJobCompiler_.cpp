@@ -157,7 +157,7 @@ bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
     // Generate a call
     auto idRef         = (AstIdentifierRef*) Ast::createIdentifierRef(this, funcNode->name, runNode->token, runNode);
     auto id            = (AstIdentifier*) idRef->childs.front();
-    id->callParameters = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParameters, sourceFile->indexInModule, id);
+    id->callParameters = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, id);
 
     return true;
 }

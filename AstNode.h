@@ -73,7 +73,7 @@ enum class AstNodeKind
     FuncDeclParam,
     FuncDeclType,
     FuncDeclGenericParams,
-    FuncCallParameters,
+    FuncCallParams,
     FuncCallParam,
     FuncCall,
     FuncContent,
