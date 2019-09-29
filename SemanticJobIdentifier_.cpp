@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "SourceFile.h"
-#include "SymTable.h"
 #include "SemanticJob.h"
-#include "Scope.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Attribute.h"
