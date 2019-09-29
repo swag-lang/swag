@@ -23,47 +23,6 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool SemanticJob::resolveTypeTuple(SemanticContext* context)
-{
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-    SWAG_VERIFY(node->childs.size(), context->errorContext.report({sourceFile, node, "empty tuple"}));
-
-    auto typeInfoList   = g_Pool_typeInfoList.alloc();
-    typeInfoList->scope = node->childs.front()->ownerScope;
-    if (node->forFuncParameter)
-        node->isConst = true;
-    if (node->isConst)
-        typeInfoList->setConst();
-    typeInfoList->listKind = TypeInfoListKind::Tuple;
-
-    typeInfoList->name = "{";
-    for (auto child : node->childs)
-    {
-        if (!typeInfoList->childs.empty())
-            typeInfoList->name += ", ";
-        typeInfoList->childs.push_back(child->typeInfo);
-
-        if (!child->name.empty())
-        {
-            typeInfoList->name += child->name;
-            typeInfoList->name += ": ";
-            typeInfoList->names.push_back(child->name);
-        }
-
-        auto childType = child->typeInfo;
-        typeInfoList->name += childType->name;
-        typeInfoList->sizeOf += childType->sizeOf;
-
-        SWAG_VERIFY(childType->kind != TypeInfoKind::Struct, context->errorContext.report({sourceFile, child, "structures in tuples are not supported"}));
-    }
-
-    typeInfoList->name += "}";
-    node->typeInfo = typeTable.registerType(typeInfoList);
-    return true;
-}
-
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
     auto  sourceFile = context->sourceFile;

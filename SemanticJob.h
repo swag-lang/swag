@@ -98,7 +98,6 @@ struct SemanticJob : public Job
     static bool resolveUnaryOp(SemanticContext* context);
     static bool resolveTypeExpression(SemanticContext* context);
     static bool resolveTypeLambda(SemanticContext* context);
-    static bool resolveTypeTuple(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeAlias(SemanticContext* context);
     static bool resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
