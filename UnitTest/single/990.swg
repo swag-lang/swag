@@ -19,7 +19,7 @@ struct Point
 	t := cast(const *typeinfo_struct) @typeof(Point)
 	@assert(@countof(t.fields) == 2)
 	
-	/*loop t.fields
+	loop t.fields
 	{
-	}*/
+	}
 }

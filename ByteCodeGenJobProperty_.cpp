@@ -14,7 +14,7 @@ bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitCountOfProperty(ByteCodeGenContext* context)
 {
     auto node     = context->node;
-    auto expr     = node->childs.front();
+    auto expr     = node->childs.back();
     auto typeInfo = TypeManager::concreteType(expr->typeInfo);
 
     if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)

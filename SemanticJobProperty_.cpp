@@ -16,6 +16,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         {
             node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
             node->computedValue.reg.u64 = node->computedValue.text.length();
+			node->typeInfo = g_TypeMgr.typeInfoU32;
         }
         else
         {
@@ -27,6 +28,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         auto typeArray              = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue.reg.u64 = typeArray->count;
+        node->typeInfo              = g_TypeMgr.typeInfoU32;
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
@@ -37,6 +39,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeList);
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         node->computedValue.reg.u64 = (uint32_t) typeList->childs.size();
+		node->typeInfo = g_TypeMgr.typeInfoU32;
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
@@ -47,14 +50,14 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, node, nullptr));
         if (context->result == SemanticResult::Pending)
             return true;
+		node->typeInfo = g_TypeMgr.typeInfoU32;
     }
     else
     {
         return false;
     }
 
-	node->typeInfo = g_TypeMgr.typeInfoU32;
-	return true;
+    return true;
 }
 
 bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
@@ -93,7 +96,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->inheritComputedValue(expr);
         if (!resolveCountProperty(context, node, expr->typeInfo))
             return context->errorContext.report({sourceFile, node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
-		node->typeInfo = g_TypeMgr.typeInfoU32;
+        node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
 
     case Property::DataOf:

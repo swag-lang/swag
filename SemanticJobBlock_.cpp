@@ -142,7 +142,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
         }
     }
 
-    node->typeInfo                     = expression->typeInfo;
+    node->typeInfo                     = g_TypeMgr.typeInfoU32;
     node->byteCodeFct                  = &ByteCodeGenJob::emitLoop;
     node->expression->byteCodeAfterFct = &ByteCodeGenJob::emitLoopAfterExpr;
     node->block->byteCodeAfterFct      = &ByteCodeGenJob::emitLoopAfterBlock;
