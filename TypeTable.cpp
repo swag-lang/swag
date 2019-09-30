@@ -121,7 +121,7 @@ bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttribute
     for (auto& one : attributes.values)
     {
         auto ptrString = (ConcreteStringSlice*) ptr;
-        makeConcreteString(context, ptrString, one.first, curOffset);
+        SWAG_CHECK(makeConcreteString(context, ptrString, one.first, curOffset));
         curOffset += sizeof(ConcreteStringSlice);
         ptr += sizeof(ConcreteStringSlice);
 
@@ -135,14 +135,22 @@ bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttribute
     return true;
 }
 
-void TypeTable::makeConcreteString(SemanticContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer)
+bool TypeTable::makeConcreteString(SemanticContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer)
 {
+    if (str.empty())
+    {
+        result->buffer = nullptr;
+        result->count  = 0;
+        return true;
+    }
+
     auto sourceFile  = context->sourceFile;
     auto module      = sourceFile->module;
     auto stringIndex = module->reserveString(str);
     module->constantSegment.addInitString(offsetInBuffer, stringIndex);
     result->buffer = (void*) str.c_str();
     result->count  = str.size();
+    return true;
 }
 
 bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
@@ -204,13 +212,9 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
-    auto stringIndex = module->reserveString(typeInfo->name);
-    module->constantSegment.addInitString(OFFSETOF(concreteTypeInfoValue->name), stringIndex);
-
-    concreteTypeInfoValue->name.buffer = (void*) typeInfo->name.c_str();
-    concreteTypeInfoValue->name.count  = typeInfo->name.size();
-    concreteTypeInfoValue->kind        = typeInfo->kind;
-    concreteTypeInfoValue->sizeOf      = typeInfo->sizeOf;
+    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->name, OFFSETOF(concreteTypeInfoValue->name)));
+    concreteTypeInfoValue->kind   = typeInfo->kind;
+    concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
 
     switch (typeInfo->kind)
     {
@@ -234,14 +238,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto realType          = (TypeInfoParam*) typeInfo;
         concreteType->offsetOf = realType->offset;
 
-        if (!realType->namedParam.empty())
-        {
-            stringIndex = module->reserveString(realType->namedParam);
-            module->constantSegment.addInitString(OFFSETOF(concreteType->namedParam), stringIndex);
-            concreteType->namedParam.buffer = (void*) realType->namedParam.c_str();
-            concreteType->namedParam.count  = realType->namedParam.size();
-        }
-
+        SWAG_CHECK(makeConcreteString(context, &concreteType->namedParam, realType->namedParam, OFFSETOF(concreteType->namedParam)));
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
 
         // Value
@@ -251,7 +248,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
             if (realType->typeInfo->isNative(NativeTypeKind::String))
             {
                 auto tmpStorageOffset = module->constantSegment.reserveNoLock(2 * sizeof(void*));
-                stringIndex           = module->reserveString(realType->value.text);
+                auto stringIndex      = module->reserveString(realType->value.text);
                 module->constantSegment.addInitString(tmpStorageOffset, stringIndex);
 
                 concreteType->value                  = module->constantSegment.addressNoLock(tmpStorageOffset);
