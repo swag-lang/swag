@@ -6,7 +6,6 @@
 #include "ByteCodeOp.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "SemanticJob.h"
 
 bool ByteCodeGenJob::emitTrinaryOp(ByteCodeGenContext* context)
 {
