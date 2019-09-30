@@ -253,15 +253,14 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
             auto typeInfoPointer     = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
             typeExpression->ptrCount = typeInfoPointer->ptrCount;
             if (typeInfoPointer->pointedType->kind != TypeInfoKind::Native)
-                return internalError(context, "convertAssignementToStruct, bad pointer type");
+                return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", typeInfoPointer->pointedType->name.c_str()).c_str(), varDecl->assignment->childs[idx]);
             typeExpression->token.id          = TokenId::NativeType;
             typeExpression->token.literalType = typeInfoPointer->pointedType;
             break;
         }
         case TypeInfoKind::Enum:
         {
-            auto typeInfoEnum          = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Enum);
-            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, typeInfoEnum->name, typeExpression);
+            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
             paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
             break;
         }
