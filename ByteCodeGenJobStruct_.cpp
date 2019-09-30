@@ -24,6 +24,18 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     // Do we need a drop ?
     bool needDrop = false;
 
+    // Need to be sure that function has been solved
+    {
+        scoped_lock lockTable(typeInfoStruct->scope->symTable->mutex);
+        auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opDrop");
+        if (symbol && symbol->cptOverloads)
+        {
+            symbol->dependentJobs.push_back(context->job);
+            context->result = ByteCodeResult::Pending;
+            return true;
+        }
+    }
+
     // Need to wait for function full semantic resolve
     if (typeInfoStruct->opUserDropFct)
     {
@@ -121,6 +133,18 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     // Do we need a postmove ?
     bool needPostMove = false;
 
+    // Need to be sure that function has been solved
+    {
+        scoped_lock lockTable(typeInfoStruct->scope->symTable->mutex);
+        auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opPostMove");
+        if (symbol && symbol->cptOverloads)
+        {
+            symbol->dependentJobs.push_back(context->job);
+            context->result = ByteCodeResult::Pending;
+            return true;
+        }
+    }
+
     // Need to wait for function full semantic resolve
     if (typeInfoStruct->opUserPostMoveFct)
     {
@@ -215,6 +239,18 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     // Do we need a postcopy ?
     bool needPostCopy = false;
+
+    // Need to be sure that function has been solved
+    {
+        scoped_lock lockTable(typeInfoStruct->scope->symTable->mutex);
+        auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opPostCopy");
+        if (symbol && symbol->cptOverloads)
+        {
+            symbol->dependentJobs.push_back(context->job);
+            context->result = ByteCodeResult::Pending;
+            return true;
+        }
+    }
 
     // Need to wait for function full semantic resolve
     if (typeInfoStruct->opUserPostCopyFct)
@@ -581,11 +617,11 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     auto resolved = node->resolvedSymbolOverload;
 
     // Be sure referenced function has bytecode
-	if (typeInfoStruct->opInitFct)
-	{
-		if (!generateStruct_opInit(context, typeInfoStruct))
-			return false;
-	}
+    if (typeInfoStruct->opInitFct)
+    {
+        if (!generateStruct_opInit(context, typeInfoStruct))
+            return false;
+    }
 
     // All fields are explicitly not initialized, so we are done
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)

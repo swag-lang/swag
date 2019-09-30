@@ -78,7 +78,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
 bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 {
     auto node = context->node;
-    node->inheritOrFlag(AST_IS_GENERIC);	
+    node->inheritOrFlag(AST_IS_GENERIC);
     node->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
     return true;
 }
@@ -205,20 +205,20 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             funcNode->flags |= AST_IS_GENERIC;
     }
 
-	// Short lambda with a return type we must deduce
-	// In that case, symbol registration will not be done at the end of that function but once the return expression
-	// has been evaluated, and the type deduced
+    // Short lambda with a return type we must deduce
+    // In that case, symbol registration will not be done at the end of that function but once the return expression
+    // has been evaluated, and the type deduced
     bool shortLambda = false;
     if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
         shortLambda = true;
 
-	// No semantic on content if function is generic, except if this is a short lambda, and we must deduce the return type
-	// (because we need to parse the content of the function in order to deduce that type)
+    // No semantic on content if function is generic, except if this is a short lambda, and we must deduce the return type
+    // (because we need to parse the content of the function in order to deduce that type)
     if ((funcNode->flags & AST_IS_GENERIC) && !shortLambda)
         funcNode->content->flags |= AST_DISABLED;
 
-	// We do want to do a full semantic pass on content for a short lambda with returned type inferred, se we need
-	// to remove the AST_FROM_GENERIC flag, otherwise, some stuff won't be done (because typeinfo has been set on nodes)
+    // We do want to do a full semantic pass on content for a short lambda with returned type inferred, se we need
+    // to remove the AST_FROM_GENERIC flag, otherwise, some stuff won't be done (because typeinfo has been set on nodes)
     else if ((funcNode->flags & AST_FROM_GENERIC) && shortLambda)
         Ast::visit(funcNode->content, [](AstNode* x) { x->flags &= ~AST_FROM_GENERIC; });
 
@@ -242,35 +242,39 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     typeInfo->computeName();
 
-	ComputedValue v;
-	if (funcNode->collectAttributes.getValue("swag.waitsem.s32", v))
-		this_thread::sleep_for(chrono::milliseconds(v.reg.s32));
+    ComputedValue v;
+    if (funcNode->collectAttributes.getValue("swag.waitsem.s32", v))
+        this_thread::sleep_for(chrono::milliseconds(v.reg.s32));
 
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
     {
         if (funcNode->name == "opInit")
         {
-            auto typePointer      = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto typeStruct       = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            scoped_lock lk(typeStruct->mutex);
             typeStruct->opInitFct = funcNode;
         }
         else if (funcNode->name == "opPostCopy")
         {
-            auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserPostCopyFct = funcNode;
         }
         else if (funcNode->name == "opPostMove")
         {
-            auto typePointer              = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto typeStruct               = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserPostMoveFct = funcNode;
         }
         else if (funcNode->name == "opDrop")
         {
-            auto typePointer          = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto typeStruct           = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
+            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+            scoped_lock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
         }
     }
@@ -301,7 +305,7 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
-	node->inheritAndFlag(AST_CONST_EXPR);
+    node->inheritAndFlag(AST_CONST_EXPR);
     return true;
 }
 

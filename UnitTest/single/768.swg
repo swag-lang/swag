@@ -33,7 +33,7 @@ struct Point1
 
 impl Point
 {
-	#[swag.waitsem(100)]
+	//#[swag.waitsem(100)]
 	func opPostCopy(self)
 	{
 		//@print("postcopy!\n")
