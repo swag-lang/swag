@@ -86,13 +86,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_CONSTEXPR;
             else if (child->name == "printbc")
                 flags |= ATTRIBUTE_PRINTBYTECODE;
-			else if (child->name == "test")
+            else if (child->name == "test")
                 flags |= ATTRIBUTE_TEST;
-			else if (child->name == "compiler")
+            else if (child->name == "compiler")
                 flags |= ATTRIBUTE_COMPILER;
-			else if (child->name == "public")
+            else if (child->name == "public")
                 flags |= ATTRIBUTE_PUBLIC;
-			else if (child->name == "foreign")
+            else if (child->name == "foreign")
                 flags |= ATTRIBUTE_FOREIGN;
 
             result.attributes.insert(typeInfo);
@@ -128,6 +128,9 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     auto        nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
     AstNodeKind kind          = nextStatement ? nextStatement->kind : AstNodeKind::Module;
 
+    ComputedValue dummy;
+    dummy.reg.b = true;
+
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkAttribute(context, child, nextStatement, kind));
@@ -147,13 +150,17 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             return false;
         }
 
+		// Register attribute itself
+        node->values[identifierRef->resolvedSymbolName->fullName] = dummy;
+
+		// And all its parameters
         if (identifier->callParameters)
         {
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->errorContext.report({sourceFile, param, "attribute parameter cannot be evaluated at compile time"}));
-                string attrFullName        = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->name);
+                string attrFullName        = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->namedParam);
                 node->values[attrFullName] = param->computedValue;
             }
         }
