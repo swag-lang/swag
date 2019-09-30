@@ -49,7 +49,7 @@ struct SyntaxJob : public Job
 	bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doTypeAlias(AstNode* parent, AstNode** result = nullptr);
     bool convertExpressionListToStruct(AstNode* parent, AstNode** result, bool isConst);
-    bool doTypeExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doTypeExpression(AstNode* parent, AstNode** result = nullptr, bool inTypeVarDecl = false);
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     void forceTakeAddress(AstNode* node);
 	bool doDefer(AstNode* parent, AstNode** result = nullptr);

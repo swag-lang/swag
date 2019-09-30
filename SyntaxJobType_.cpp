@@ -171,7 +171,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     return true;
 }
 
-bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     // This is a function
     if (token.id == TokenId::SymLeftParen)
@@ -246,6 +246,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::Identifier)
     {
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
+		if (inTypeVarDecl)
+			node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
         return true;
     }
     else if (token.id == TokenId::SymLeftCurly)

@@ -53,9 +53,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
 
     if (token.id == TokenId::SymColon)
     {
-        ScopedFlags scopedFlags(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(varNode, &varNode->type));
+        SWAG_CHECK(doTypeExpression(varNode, &varNode->type, true));
     }
 
     if (token.id == TokenId::SymEqual)
