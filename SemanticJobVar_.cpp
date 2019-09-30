@@ -366,14 +366,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->kind == AstNodeKind::LetDecl)
         symbolFlags |= OVERLOAD_CONST;
 
-    // A constant must be initialized
-    if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
-        return context->errorContext.report({sourceFile, node, "a constant must be initialized"});
-
-    if ((symbolFlags & OVERLOAD_CONST) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
+	// Check for missing initialization
+    // This is ok to not have an initialization for structs, as they are initialized by default
+    if (!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)
     {
-        // This is ok to not have an initialization for structs, as they are initialized by default
-        if (!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)
+        if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
+            return context->errorContext.report({sourceFile, node, "a constant must be initialized"});
+        if ((symbolFlags & OVERLOAD_CONST) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
             return context->errorContext.report({sourceFile, node, "a non mutable 'let' variable must be initialized"});
     }
 
@@ -503,11 +502,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-	// We should have a type here !
-	SWAG_VERIFY(node->typeInfo, context->errorContext.report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
+    // We should have a type here !
+    SWAG_VERIFY(node->typeInfo, context->errorContext.report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
-	// i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
+    // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
