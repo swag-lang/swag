@@ -1,12 +1,11 @@
-#module module977
+#module module978
 //#unittest pass semantic
 
-let pt = {x: 1, y: 2}
-
+//#[swag.printbc]
 #test
 {
+	const pt = {x: 1, y: 2}
 	@assert(pt.x == 1)
 	@assert(pt.y == 2)
-	//pt.x = 0
 }
 

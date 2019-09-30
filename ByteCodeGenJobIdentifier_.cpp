@@ -188,6 +188,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u64                    = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
             return true;
         }
+
+        if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            node->resultRegisterRC         = reserveRegisterRC(context);
+            node->parent->resultRegisterRC = node->resultRegisterRC;
+            auto inst                      = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
+            inst->b.u32                    = node->resolvedSymbolOverload->storageOffset;
+            return true;
+        }
     }
 
     return internalError(context, "emitIdentifier");
