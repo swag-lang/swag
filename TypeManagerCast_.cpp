@@ -12,7 +12,7 @@
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags, bool explicitIsValid)
 {
-    if (!(castFlags & CASTFLAG_NOERROR))
+    if (!(castFlags & CASTFLAG_NO_ERROR))
     {
         assert(nodeToCast);
         if (explicitIsValid)
@@ -135,7 +135,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 
 bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -186,7 +186,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
 
 bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -243,7 +243,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (nodeToCast->computedValue.reg.s64 < 0)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u8'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
@@ -263,7 +263,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (nodeToCast->computedValue.reg.u64 > UINT8_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u8'", nodeToCast->computedValue.reg.u64)});
                     return false;
                 }
@@ -290,7 +290,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 
 bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -347,7 +347,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (nodeToCast->computedValue.reg.s64 < 0)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u16'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
@@ -367,7 +367,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (nodeToCast->computedValue.reg.u64 > UINT16_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u16'", nodeToCast->computedValue.reg.u64)});
                     return false;
                 }
@@ -394,7 +394,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -451,7 +451,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (nodeToCast->computedValue.reg.s64 < 0)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u32'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
@@ -471,7 +471,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (nodeToCast->computedValue.reg.u64 > UINT32_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is not in the range of 'u32'", nodeToCast->computedValue.reg.u64)});
                     return false;
                 }
@@ -498,7 +498,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -555,7 +555,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (nodeToCast->computedValue.reg.s64 < 0)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is negative and not in the range of 'u64'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
@@ -591,7 +591,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -647,7 +647,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (nodeToCast->computedValue.reg.s64 < INT8_MIN || nodeToCast->computedValue.reg.s64 > INT8_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's8'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
@@ -674,7 +674,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 
 bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -726,7 +726,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (nodeToCast->computedValue.reg.s64 < INT16_MIN || nodeToCast->computedValue.reg.s64 > INT16_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's16'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
@@ -753,7 +753,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -801,7 +801,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (nodeToCast->computedValue.reg.s64 < INT32_MIN || nodeToCast->computedValue.reg.s64 > INT32_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's32'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
@@ -828,7 +828,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* nodeToCast, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_FORCE)
+    if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
         {
@@ -876,7 +876,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (nodeToCast->computedValue.reg.s64 < INT64_MIN || nodeToCast->computedValue.reg.s64 > INT64_MAX)
                 {
-                    if (!(castFlags & CASTFLAG_NOERROR))
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is not in the range of 's64'", nodeToCast->computedValue.reg.s64)});
                     return false;
                 }
@@ -916,7 +916,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
             int64_t tmpI = static_cast<int64_t>(tmpF);
             if (tmpI != nodeToCast->computedValue.reg.s64)
             {
-                if (!(castFlags & CASTFLAG_NOERROR))
+                if (!(castFlags & CASTFLAG_NO_ERROR))
                     context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f32'", nodeToCast->computedValue.reg.s64)});
                 return false;
             }
@@ -938,7 +938,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 return false;
             return true;
         }
-        else if (castFlags & CASTFLAG_FORCE)
+        else if (castFlags & CASTFLAG_EXPLICIT)
             return true;
         break;
     }
@@ -954,7 +954,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
             uint64_t tmpI = static_cast<uint64_t>(tmpF);
             if (tmpI != nodeToCast->computedValue.reg.u64)
             {
-                if (!(castFlags & CASTFLAG_NOERROR))
+                if (!(castFlags & CASTFLAG_NO_ERROR))
                     context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
                 return false;
             }
@@ -967,7 +967,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
             return true;
         }
-        else if (castFlags & CASTFLAG_FORCE)
+        else if (castFlags & CASTFLAG_EXPLICIT)
             return true;
         break;
     }
@@ -980,7 +980,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
             double tmpD = static_cast<double>(tmpF);
             if (tmpD != nodeToCast->computedValue.reg.f64)
             {
-                if (!(castFlags & CASTFLAG_NOERROR))
+                if (!(castFlags & CASTFLAG_NO_ERROR))
                     context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%Lf' is truncated in 'f32'", nodeToCast->computedValue.reg.f64)});
                 return false;
             }
@@ -993,7 +993,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
             return true;
         }
-        else if (castFlags & CASTFLAG_FORCE)
+        else if (castFlags & CASTFLAG_EXPLICIT)
             return true;
         break;
     }
@@ -1017,7 +1017,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
             int64_t tmpI = static_cast<int64_t>(tmpF);
             if (tmpI != nodeToCast->computedValue.reg.s64)
             {
-                if (!(castFlags & CASTFLAG_NOERROR))
+                if (!(castFlags & CASTFLAG_NO_ERROR))
                     context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64d' is truncated in 'f64'", nodeToCast->computedValue.reg.s64)});
                 return false;
             }
@@ -1039,7 +1039,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
                 return false;
             return true;
         }
-        else if (castFlags & CASTFLAG_FORCE)
+        else if (castFlags & CASTFLAG_EXPLICIT)
             return true;
         break;
     }
@@ -1055,7 +1055,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
             uint64_t tmpI = static_cast<uint64_t>(tmpF);
             if (tmpI != nodeToCast->computedValue.reg.u64)
             {
-                if (!(castFlags & CASTFLAG_NOERROR))
+                if (!(castFlags & CASTFLAG_NO_ERROR))
                     context->errorContext.report({context->errorContext.sourceFile, nodeToCast->token, format("value '%I64u' is truncated in 'f64'", nodeToCast->computedValue.reg.u64)});
                 return false;
             }
@@ -1068,7 +1068,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
 
             return true;
         }
-        else if (castFlags & CASTFLAG_FORCE)
+        else if (castFlags & CASTFLAG_EXPLICIT)
             return true;
         break;
     }
@@ -1086,7 +1086,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
         }
         else if (fromType->flags & TYPEINFO_UNTYPED_FLOAT)
             return true;
-        else if (castFlags & CASTFLAG_FORCE)
+        else if (castFlags & CASTFLAG_EXPLICIT)
             return true;
         break;
     }
@@ -1135,9 +1135,9 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
 
     // Need to recompute total size, as the size of each element can have been changed by the cast
-	int newSizeof = 0;
+    int newSizeof = 0;
 
-	// Compute if expression is constexpr
+    // Compute if expression is constexpr
     if (nodeToCast)
         nodeToCast->flags |= AST_CONST_EXPR;
 
@@ -1151,14 +1151,14 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeList ? toTypeList->childs[i] : toType, fromTypeList->childs[i], child, castFlags));
         if (child)
         {
-			newSizeof += child->typeInfo->sizeOf;
+            newSizeof += child->typeInfo->sizeOf;
             if (!(child->flags & AST_CONST_EXPR))
                 nodeToCast->flags &= ~AST_CONST_EXPR;
         }
     }
 
-	if(nodeToCast && (fromTypeList->sizeOf != newSizeof))
-		fromTypeList->sizeOf = newSizeof;
+    if (nodeToCast && (fromTypeList->sizeOf != newSizeof))
+        fromTypeList->sizeOf = newSizeof;
     return true;
 }
 
@@ -1173,7 +1173,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             auto fromSize = fromTypeList->childs.size();
             if (toTypeArray->count != fromSize)
             {
-                if (!(castFlags & CASTFLAG_NOERROR))
+                if (!(castFlags & CASTFLAG_NO_ERROR))
                 {
                     if (toTypeArray->count > fromTypeList->childs.size())
                         context->errorContext.report({context->errorContext.sourceFile, nodeToCast, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
@@ -1217,12 +1217,12 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             else
             {
                 auto typePointer = static_cast<TypeInfoPointer*>(fromTypeList->childs.front());
-                if (!TypeManager::makeCompatibles(context, toTypeSlice->pointedType, typePointer->pointedType, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
+                if (!TypeManager::makeCompatibles(context, toTypeSlice->pointedType, typePointer->pointedType, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
                     forcedInit = false;
             }
 
             // And must and with an U32, which is the slice count
-            if (forcedInit && !TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nodeToCast ? nodeToCast->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NOERROR))
+            if (forcedInit && !TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, fromTypeList->childs.back(), nodeToCast ? nodeToCast->childs.back() : nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
                 forcedInit = false;
             if (forcedInit)
             {
@@ -1240,7 +1240,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST))
         {
-            if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK) && !(castFlags & CASTFLAG_FORCE))
+            if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK) && !(castFlags & CASTFLAG_EXPLICIT))
             {
                 nodeToCast->castedTypeInfo = nodeToCast->typeInfo;
                 nodeToCast->typeInfo       = toTypeSlice;
@@ -1267,7 +1267,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             int d = fromTypeSlice->pointedType->sizeOf;
             if ((d / s) * s == d)
             {
-                if (castFlags & CASTFLAG_FORCE)
+                if (castFlags & CASTFLAG_EXPLICIT)
                     return true;
                 else
                     explicitIsValid = true;
@@ -1490,22 +1490,26 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         }
     }
 
-    if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && !(nodeToCast->flags & AST_SLICE_INIT_EXPRESSION))
+	// Store constant expression in the constant segment
+    if (!(castFlags & CASTFLAG_NO_CONVERT))
     {
-        TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
-        auto          fromSize = typeList->childs.size();
-
-        while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
-            nodeToCast = nodeToCast->childs.empty() ? nullptr : nodeToCast->childs.front();
-
-        if (nodeToCast && (nodeToCast->flags & AST_CONST_EXPR))
+        if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && !(nodeToCast->flags & AST_SLICE_INIT_EXPRESSION))
         {
-            SWAG_ASSERT(fromSize == nodeToCast->childs.size());
-            auto module   = context->sourceFile->module;
-            auto exprList = CastAst<AstExpressionList>(nodeToCast, AstNodeKind::ExpressionList);
-            if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
+            TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(nodeToCast->typeInfo, TypeInfoKind::TypeList);
+            auto          fromSize = typeList->childs.size();
+
+            while (nodeToCast && nodeToCast->kind != AstNodeKind::ExpressionList)
+                nodeToCast = nodeToCast->childs.empty() ? nullptr : nodeToCast->childs.front();
+
+            if (nodeToCast && (nodeToCast->flags & AST_CONST_EXPR))
             {
-                SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, nodeToCast->typeInfo, exprList));
+                SWAG_ASSERT(fromSize == nodeToCast->childs.size());
+                auto module   = context->sourceFile->module;
+                auto exprList = CastAst<AstExpressionList>(nodeToCast, AstNodeKind::ExpressionList);
+                if (exprList && exprList->storageOffsetSegment == UINT32_MAX)
+                {
+                    SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, exprList->storageOffsetSegment, &module->constantSegment, nullptr, nodeToCast->typeInfo, exprList));
+                }
             }
         }
     }
@@ -1527,7 +1531,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_FORCE))
+    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT))
     {
         toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnum);
         fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
@@ -1584,7 +1588,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return true;
 
     if (fromType->flags & TYPEINFO_AUTO_CAST)
-        castFlags |= CASTFLAG_FORCE;
+        castFlags |= CASTFLAG_EXPLICIT;
 
     // Always match against a generic
     if (toType->kind == TypeInfoKind::Generic)
@@ -1593,7 +1597,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Pointer to pointer
     if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Pointer)
     {
-        if (castFlags & CASTFLAG_FORCE)
+        if (castFlags & CASTFLAG_EXPLICIT)
             return true;
     }
 
