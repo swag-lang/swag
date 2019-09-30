@@ -1157,7 +1157,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         }
     }
 
-	if(fromTypeList->sizeOf != newSizeof)
+	if(nodeToCast && (fromTypeList->sizeOf != newSizeof))
 		fromTypeList->sizeOf = newSizeof;
     return true;
 }
