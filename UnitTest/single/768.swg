@@ -16,17 +16,6 @@ struct Point1
 	pt1: Point
 }
 
-impl Point
-{
-	func opPostCopy(self)
-	{
-		//@print("postcopy!\n")
-		test += 1
-		self.x = 2
-		self.y = 4
-	}
-}
-
 //#[swag.printbc]
 #test
 {	
@@ -40,4 +29,16 @@ impl Point
 	@assert(pt2.pt.y == 4)
 	@assert(pt2.pt1.x == 2)
 	@assert(pt2.pt1.y == 4)	
+}
+
+impl Point
+{
+	#[swag.waitsem(100)]
+	func opPostCopy(self)
+	{
+		//@print("postcopy!\n")
+		test += 1
+		self.x = 2
+		self.y = 4
+	}
 }

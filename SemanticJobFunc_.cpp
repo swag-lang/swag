@@ -242,6 +242,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     typeInfo->computeName();
 
+	ComputedValue v;
+	if (funcNode->collectAttributes.getValue("swag.waitsem.s32", v))
+		this_thread::sleep_for(chrono::milliseconds(v.reg.s32));
+
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
     {

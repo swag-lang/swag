@@ -19,6 +19,7 @@ namespace swag
 	attr public() -> func
 	attr test() -> func
 	attr foreign(module: string = "") -> func
+	attr waitsem(ms: s32) -> func
 
 	enum typeinfo_kind
 	{
