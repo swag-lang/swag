@@ -31,7 +31,6 @@ struct ConcreteTypeInfo
     ConcreteStringSlice name;
     TypeInfoKind        kind;
     uint32_t            sizeOf;
-	ConcreteStringSlice attributes;
 };
 
 struct ConcreteTypeInfoNative
@@ -54,6 +53,7 @@ struct ConcreteTypeInfoParam
     ConcreteTypeInfo*   pointedType;
     void*               value;
     uint32_t            offsetOf;
+    ConcreteStringSlice attributes;
 };
 
 struct ConcreteTypeInfoStruct

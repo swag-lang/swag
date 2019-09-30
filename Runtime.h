@@ -65,8 +65,6 @@ namespace swag
 		name:	string
 		kind: 	typeinfo_kind = typeinfo_kind.Invalid
 		sizeof: u32
-
-		attributes: const [..] { string, any }
 	}
 
 	struct typeinfo_native
@@ -89,6 +87,7 @@ namespace swag
 		pointed_type:	const *typeinfo
 		value:			*void
 		offset:			u32
+		attributes:		const [..] { string, any }
 	}
 
 	struct typeinfo_struct
