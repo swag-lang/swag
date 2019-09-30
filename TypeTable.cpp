@@ -234,12 +234,13 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     }
     case TypeInfoKind::Param:
     {
-        auto concreteType      = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
-        auto realType          = (TypeInfoParam*) typeInfo;
-        concreteType->offsetOf = realType->offset;
+        auto concreteType = (ConcreteTypeInfoParam*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoParam*) typeInfo;
 
+        concreteType->offsetOf = realType->offset;
         SWAG_CHECK(makeConcreteString(context, &concreteType->namedParam, realType->namedParam, OFFSETOF(concreteType->namedParam)));
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
+        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
 
         // Value
         if (realType->flags & TYPEINFO_DEFINED_VALUE)
@@ -283,7 +284,6 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto realType     = (TypeInfoStruct*) typeInfo;
 
         SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
-
         concreteType->fields.buffer = nullptr;
         concreteType->fields.count  = realType->childs.size();
         if (concreteType->fields.count)
@@ -304,6 +304,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType = (ConcreteTypeInfoFunc*) concreteTypeInfoValue;
         auto realType     = (TypeInfoFuncAttr*) typeInfo;
 
+        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
         concreteType->parameters.buffer = nullptr;
         concreteType->parameters.count  = realType->parameters.size();
         if (concreteType->parameters.count)
@@ -324,6 +325,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType = (ConcreteTypeInfoEnum*) concreteTypeInfoValue;
         auto realType     = (TypeInfoEnum*) typeInfo;
 
+        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
         concreteType->values.buffer = nullptr;
         concreteType->values.count  = realType->values.size();
         if (concreteType->values.count)

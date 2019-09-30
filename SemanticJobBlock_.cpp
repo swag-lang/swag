@@ -110,9 +110,9 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto expression = node->expression;
 
-    if (!resolveCountProperty(context, node->expression, expression->typeInfo))
+    if (!resolveCountProperty(context, expression, expression->typeInfo))
     {
-        auto typeInfo = node->expression->typeInfo;
+        auto typeInfo = expression->typeInfo;
         SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({sourceFile, expression, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
         SWAG_VERIFY(typeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, expression, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
         if (expression->flags & AST_VALUE_COMPUTED)

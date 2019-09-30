@@ -53,8 +53,8 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         return false;
     }
 
-    node->typeInfo = g_TypeMgr.typeInfoU32;
-    return true;
+	node->typeInfo = g_TypeMgr.typeInfoU32;
+	return true;
 }
 
 bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
@@ -93,6 +93,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         node->inheritComputedValue(expr);
         if (!resolveCountProperty(context, node, expr->typeInfo))
             return context->errorContext.report({sourceFile, node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
+		node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
 
     case Property::DataOf:

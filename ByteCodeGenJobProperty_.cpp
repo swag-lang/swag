@@ -8,7 +8,6 @@ bool ByteCodeGenJob::emitKindOfProperty(ByteCodeGenContext* context)
 {
     auto node              = CastAst<AstProperty>(context->node, AstNodeKind::IntrinsicProp);
     node->resultRegisterRC = node->expression->resultRegisterRC[1];
-	//emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC);
     return true;
 }
 
@@ -21,18 +20,17 @@ bool ByteCodeGenJob::emitCountOfProperty(ByteCodeGenContext* context)
     if (typeInfo->isNative(NativeTypeKind::String) || typeInfo->kind == TypeInfoKind::Slice)
     {
         node->resultRegisterRC = expr->resultRegisterRC[1];
+        return true;
     }
-    else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
+
+    if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         node->resultRegisterRC = expr->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::DeRef32, node->resultRegisterRC);
-    }
-    else
-    {
-        return internalError(context, "emitCountProperty, type not supported");
+        return true;
     }
 
-    return true;
+    return internalError(context, "emitCountProperty, type not supported");
 }
 
 bool ByteCodeGenJob::emitDataOfProperty(ByteCodeGenContext* context)
@@ -46,11 +44,8 @@ bool ByteCodeGenJob::emitDataOfProperty(ByteCodeGenContext* context)
         typeInfo->kind == TypeInfoKind::Array)
     {
         node->resultRegisterRC = node->expression->resultRegisterRC[0];
-    }
-    else
-    {
-        return internalError(context, "emitDataProperty, type not supported");
+        return true;
     }
 
-    return true;
+    return internalError(context, "emitDataProperty, type not supported");
 }
