@@ -1135,11 +1135,11 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     SWAG_ASSERT(!nodeToCast || fromSize == nodeToCast->childs.size());
 
     // Need to recompute total size, as the size of each element can have been changed by the cast
+	int newSizeof = 0;
+
+	// Compute if expression is constexpr
     if (nodeToCast)
-    {
-        fromTypeList->sizeOf = 0;
         nodeToCast->flags |= AST_CONST_EXPR;
-    }
 
     TypeInfoList* toTypeList = nullptr;
     if (toType->kind == TypeInfoKind::TypeList)
@@ -1151,12 +1151,14 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         SWAG_CHECK(TypeManager::makeCompatibles(context, toTypeList ? toTypeList->childs[i] : toType, fromTypeList->childs[i], child, castFlags));
         if (child)
         {
-            fromTypeList->sizeOf += child->typeInfo->sizeOf;
+			newSizeof += child->typeInfo->sizeOf;
             if (!(child->flags & AST_CONST_EXPR))
                 nodeToCast->flags &= ~AST_CONST_EXPR;
         }
     }
 
+	if(fromTypeList->sizeOf != newSizeof)
+		fromTypeList->sizeOf = newSizeof;
     return true;
 }
 
