@@ -95,6 +95,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             SWAG_CHECK(doTypeExpression(structFieldNode, &structFieldNode->type));
             expression = structFieldNode->type;
             name += structFieldNode->name;
+            name += "_";
         }
         else
         {
@@ -106,7 +107,6 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         idx++;
 
         // Name
-        name += "_";
         typeExpression = (AstTypeExpression*) expression;
         for (int i = 0; i < typeExpression->ptrCount; i++)
             name += "*";

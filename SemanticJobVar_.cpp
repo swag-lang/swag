@@ -223,13 +223,13 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
         {
             varName = typeList->names[idx];
             structName += varName;
+            structName += "_";
         }
         else
         {
             varName = format("val%u", idx);
         }
 
-        structName += "_";
         structName += childType->name;
         structName += "_";
 
