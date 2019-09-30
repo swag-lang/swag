@@ -94,6 +94,7 @@ namespace swag
 	{
 		base: 		typeinfo
 		fields:		const [..] *typeinfo_param
+		attributes:	const [..] { string, any }
 	}
 
 	struct typeinfo_func
@@ -101,6 +102,7 @@ namespace swag
 		base: 			typeinfo
 		parameters:		const [..] *typeinfo_param
 		return_type:	const *typeinfo
+		attributes:		const [..] { string, any }
 	}
 
 	struct typeinfo_enum
@@ -108,6 +110,7 @@ namespace swag
 		base: 		typeinfo
 		values:		const [..] *typeinfo_param
 		raw_type:	const *typeinfo
+		attributes:	const [..] { string, any }
 	}
 
 	struct typeinfo_variadic

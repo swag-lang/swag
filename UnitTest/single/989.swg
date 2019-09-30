@@ -1,12 +1,15 @@
 #module module989
 //#unittest pass semantic
+using swag
 
-attr NC() -> var
+attr NC() -> struct
+attr NC0() -> struct
 attr NC1() -> var
 
+#[NC, NC0]
 struct Point
 {
-	#[NC]
+	#[NC1]
 	x: s32
 	
 	#[NC1]
@@ -16,5 +19,6 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	t := @typeof(Point)
+	t := cast(const *typeinfo_struct) @typeof(Point)
+	@assert(@countof(t.attributes) == 2)
 }

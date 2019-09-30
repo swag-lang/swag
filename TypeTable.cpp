@@ -60,6 +60,7 @@ struct ConcreteTypeInfoStruct
 {
     ConcreteTypeInfo    base;
     ConcreteStringSlice fields;
+	ConcreteStringSlice attributes;
 };
 
 struct ConcreteTypeInfoFunc
@@ -67,6 +68,7 @@ struct ConcreteTypeInfoFunc
     ConcreteTypeInfo    base;
     ConcreteStringSlice parameters;
     ConcreteTypeInfo*   returnType;
+	ConcreteStringSlice attributes;
 };
 
 struct ConcreteTypeInfoEnum
@@ -74,6 +76,7 @@ struct ConcreteTypeInfoEnum
     ConcreteTypeInfo    base;
     ConcreteStringSlice values;
     ConcreteTypeInfo*   rawType;
+	ConcreteStringSlice attributes;
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
@@ -90,6 +93,15 @@ bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concrete
 
     // We have a pointer in the constant segment, so we need to register it for backend setup
     module->constantSegment.addInitPtr(OFFSETOF(*result), tmpStorageOffset);
+    return true;
+}
+
+bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result)
+{
+    if (attributes.values.size() == 0)
+        return true;
+    result->buffer = nullptr;
+    result->count  = (uint32_t) attributes.values.size();
     return true;
 }
 
@@ -131,7 +143,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         typeStruct = swagScope.regTypeInfoParam;
         break;
     case TypeInfoKind::FuncAttr:
-	case TypeInfoKind::Lambda:
+    case TypeInfoKind::Lambda:
         typeStruct = swagScope.regTypeInfoFunc;
         break;
     case TypeInfoKind::Enum:
@@ -191,6 +203,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         }
 
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
+        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes));
 
         // Value
         if (realType->flags & TYPEINFO_DEFINED_VALUE)
@@ -237,6 +250,8 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
         auto realType     = (TypeInfoStruct*) typeInfo;
 
+        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes));
+
         concreteType->fields.buffer = nullptr;
         concreteType->fields.count  = realType->childs.size();
         if (concreteType->fields.count)
@@ -251,7 +266,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
 
         break;
     }
-	case TypeInfoKind::Lambda:
+    case TypeInfoKind::Lambda:
     case TypeInfoKind::FuncAttr:
     {
         auto concreteType = (ConcreteTypeInfoFunc*) concreteTypeInfoValue;
