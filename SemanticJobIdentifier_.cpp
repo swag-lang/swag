@@ -194,9 +194,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             context->job->nodes.push_back(identifier);
         }
 
-        break;
+        // Need to make all types compatible, in case a cast is necessary
+        if (identifier->callParameters && oneMatch)
+        {
+            auto maxParams = identifier->callParameters->childs.size();
+            for (int i = 0; i < maxParams; i++)
+            {
+                auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+                if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nodeCall));
+            }
+        }
 
-    case SymbolKind::GenericType:
         break;
 
     case SymbolKind::Variable:
