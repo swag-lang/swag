@@ -433,6 +433,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->sizeOf      = node->typeInfo->sizeOf;
                 typeArray->count       = (uint32_t) typeList->childs.size();
                 typeArray->totalCount  = typeArray->count;
+				if (isCompilerConstant)
+					typeArray->flags |= TYPEINFO_CONST;
                 typeArray->computeName();
                 node->typeInfo = typeTable.registerType(typeArray);
 
@@ -500,7 +502,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     uint32_t storageOffset = 0;
     if (isCompilerConstant)
     {
-        if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::TypeList)
+        if (node->typeInfo->kind == TypeInfoKind::Array)
         {
             // Be sure type is now constant
             if (!node->typeInfo->isConst())

@@ -429,10 +429,13 @@ struct TypeInfoArray : public TypeInfo
     void computeName() override
     {
         pointedType->computeName();
+		name.clear();
+		if (flags & TYPEINFO_CONST)
+			name = "const ";
         if (count == UINT32_MAX)
-            name = format("[] %s", pointedType->name.c_str());
+            name += format("[] %s", pointedType->name.c_str());
         else
-            name = format("[%d] %s", count, pointedType->name.c_str());
+            name += format("[%d] %s", count, pointedType->name.c_str());
     }
 
     int numRegisters() override
