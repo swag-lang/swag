@@ -65,6 +65,8 @@ namespace swag
 		name:	string
 		kind: 	typeinfo_kind = typeinfo_kind.Invalid
 		sizeof: u32
+
+		attributes: const [..] { string, any }
 	}
 
 	struct typeinfo_native
@@ -112,12 +114,6 @@ namespace swag
 	struct typeinfo_variadic
 	{
 		base: 		typeinfo
-	}
-
-	struct typeinfo_attributes
-	{
-		attributes: const [..] *typeinfo_func
-		//map<string, ComputedValue> values;
 	}
 }
 

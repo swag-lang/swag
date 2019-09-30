@@ -31,6 +31,7 @@ struct ConcreteTypeInfo
     ConcreteStringSlice name;
     TypeInfoKind        kind;
     uint32_t            sizeOf;
+	ConcreteStringSlice attributes;
 };
 
 struct ConcreteTypeInfoNative
@@ -147,7 +148,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     if (lock)
         module->constantSegment.mutex.lock();
 
-    // Build structure content
+    // Build concrete structure content
     uint32_t          storageOffset         = module->constantSegment.reserveNoLock(typeStruct->sizeOf);
     ConcreteTypeInfo* concreteTypeInfoValue = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(storageOffset);
 
