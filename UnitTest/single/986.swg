@@ -4,8 +4,8 @@
 //#[swag.printbc]
 #test
 {
-	/*pair := {"toto", {10, 20}}
-	@assert(pair.val1.x == 10)
-	@assert(pair.val1.y == 20)*/
+	pair := {"toto", {10, 20}}
+	@assert(pair.val1.val0 == 10)
+	@assert(pair.val1.val1 == 20)
 }
 

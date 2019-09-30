@@ -263,6 +263,13 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
             paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
             break;
         }
+        case TypeInfoKind::TypeList:
+        {
+            AstStruct* inStructNode;
+            SWAG_CHECK(convertAssignementToStruct(context, assignment->childs[idx], &inStructNode));
+            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->name, typeExpression);
+            break;
+        }
         default:
             return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", childType->name.c_str()).c_str(), assignment->childs[idx]);
         }
@@ -302,7 +309,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         SemanticJob::newJob(sourceFile, structNode, true);
     }
 
-	return true;
+    return true;
 }
 
 bool SemanticJob::convertVarAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl)
