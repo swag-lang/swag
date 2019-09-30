@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Attribute.h"
 
-bool SymbolAttributes::getValue(const string& fullName, ComputedValue& value)
+bool SymbolAttributes::getValue(const Utf8& fullName, ComputedValue& value)
 {
     auto it = values.find(fullName);
     if (it == values.end())

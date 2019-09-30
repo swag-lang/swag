@@ -33,6 +33,12 @@ struct ConcreteTypeInfo
     uint32_t            sizeOf;
 };
 
+struct ConcreteAny
+{
+    ConcreteTypeInfo* type;
+    void*             value;
+};
+
 struct ConcreteTypeInfoNative
 {
     ConcreteTypeInfo base;
@@ -60,7 +66,7 @@ struct ConcreteTypeInfoStruct
 {
     ConcreteTypeInfo    base;
     ConcreteStringSlice fields;
-	ConcreteStringSlice attributes;
+    ConcreteStringSlice attributes;
 };
 
 struct ConcreteTypeInfoFunc
@@ -68,7 +74,7 @@ struct ConcreteTypeInfoFunc
     ConcreteTypeInfo    base;
     ConcreteStringSlice parameters;
     ConcreteTypeInfo*   returnType;
-	ConcreteStringSlice attributes;
+    ConcreteStringSlice attributes;
 };
 
 struct ConcreteTypeInfoEnum
@@ -76,7 +82,7 @@ struct ConcreteTypeInfoEnum
     ConcreteTypeInfo    base;
     ConcreteStringSlice values;
     ConcreteTypeInfo*   rawType;
-	ConcreteStringSlice attributes;
+    ConcreteStringSlice attributes;
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
@@ -96,13 +102,47 @@ bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concrete
     return true;
 }
 
-bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result)
+bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttributes& attributes, ConcreteStringSlice* result, uint32_t offset)
 {
     if (attributes.values.size() == 0)
         return true;
-    result->buffer = nullptr;
-    result->count  = (uint32_t) attributes.values.size();
+
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+
+    result->count = (uint32_t) attributes.values.size();
+
+    uint32_t storageOffset = module->constantSegment.reserveNoLock((uint32_t)(result->count * (sizeof(ConcreteStringSlice) + sizeof(ConcreteAny))));
+    uint8_t* ptr           = module->constantSegment.addressNoLock(storageOffset);
+    result->buffer         = ptr;
+    module->constantSegment.addInitPtr(offset, storageOffset);
+
+    uint32_t curOffset = storageOffset;
+    for (auto& one : attributes.values)
+    {
+        auto ptrString = (ConcreteStringSlice*) ptr;
+        makeConcreteString(context, ptrString, one.first, curOffset);
+        curOffset += sizeof(ConcreteStringSlice);
+        ptr += sizeof(ConcreteStringSlice);
+
+        auto ptrAny   = (ConcreteAny*) ptr;
+        ptrAny->type  = nullptr;
+        ptrAny->value = nullptr;
+        curOffset += sizeof(ConcreteAny);
+        ptr += sizeof(ConcreteAny);
+    }
+
     return true;
+}
+
+void TypeTable::makeConcreteString(SemanticContext* context, ConcreteStringSlice* result, const Utf8& str, uint32_t offsetInBuffer)
+{
+    auto sourceFile  = context->sourceFile;
+    auto module      = sourceFile->module;
+    auto stringIndex = module->reserveString(str);
+    module->constantSegment.addInitString(offsetInBuffer, stringIndex);
+    result->buffer = (void*) str.c_str();
+    result->count  = str.size();
 }
 
 bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
@@ -203,7 +243,6 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         }
 
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->typeInfo));
-        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes));
 
         // Value
         if (realType->flags & TYPEINFO_DEFINED_VALUE)
@@ -250,7 +289,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
         auto realType     = (TypeInfoStruct*) typeInfo;
 
-        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes));
+        SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
 
         concreteType->fields.buffer = nullptr;
         concreteType->fields.count  = realType->childs.size();

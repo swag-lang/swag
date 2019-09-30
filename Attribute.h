@@ -11,10 +11,10 @@ static const uint64_t ATTRIBUTE_FOREIGN       = 0x00000000'00000020;
 struct TypeInfoFuncAttr;
 struct SymbolAttributes
 {
-    set<TypeInfoFuncAttr*>     attributes;
-    map<string, ComputedValue> values;
+    set<TypeInfoFuncAttr*>   attributes;
+    map<Utf8, ComputedValue> values;
 
-    bool getValue(const string& fullName, ComputedValue& value);
+    bool getValue(const Utf8& fullName, ComputedValue& value);
 
     void reset()
     {
