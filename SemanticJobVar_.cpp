@@ -531,7 +531,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     uint32_t storageOffset = 0;
     if (isCompilerConstant)
     {
-        if (node->typeInfo->kind == TypeInfoKind::Array)
+        if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
         {
             // Be sure type is now constant
             if (!node->typeInfo->isConst())
