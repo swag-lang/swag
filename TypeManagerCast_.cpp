@@ -1491,7 +1491,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     }
 
 	// Store constant expression in the constant segment
-    if (!(castFlags & CASTFLAG_NO_CONVERT))
+    if (!(castFlags & CASTFLAG_NO_COLLECT))
     {
         if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && !(nodeToCast->flags & AST_SLICE_INIT_EXPRESSION))
         {

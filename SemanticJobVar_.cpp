@@ -435,7 +435,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->totalCount  = typeArray->count;
                 typeArray->computeName();
                 node->typeInfo = typeTable.registerType(typeArray);
-                SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
+
+				// For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
+				if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+					SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment, CASTFLAG_NO_COLLECT));
+				else
+					SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
             }
             else if (typeList->listKind == TypeInfoListKind::Curly)
             {
