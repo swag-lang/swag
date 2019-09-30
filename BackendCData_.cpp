@@ -9,14 +9,14 @@
 bool BackendC::emitDataSegment(DataSegment* dataSegment)
 {
     if (dataSegment == &module->mutableSegment)
-        emitSeparator(bufferC, "DATA SEGMENT");
+        emitSeparator(bufferC, "MUTABLE SEGMENT");
     else
         emitSeparator(bufferC, "CONSTANT SEGMENT");
 
     if (dataSegment->buckets.size())
     {
         if (dataSegment == &module->mutableSegment)
-            bufferC.addString("static swag_uint8_t __dataseg[] = {\n");
+            bufferC.addString("static swag_uint8_t __mutableseg[] = {\n");
         else
             bufferC.addString("static swag_uint8_t __constantseg[] = {\n");
 
@@ -75,16 +75,16 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("static void initDataSeg() {\n");
 	for (auto& k : module->mutableSegment.initString)
 	{
-		bufferC.addString(format("*(void**) (__dataseg + %d) = __string%d;\n", k.second, k.first));
+		bufferC.addString(format("*(void**) (__mutableseg + %d) = __string%d;\n", k.second, k.first));
 	}
 
     for (auto& k : module->mutableSegment.initPtr)
     {
 		auto kind = k.destSeg;
 		if(kind == SegmentKind::Me || kind == SegmentKind::Data)
-			bufferC.addString(format("*(void**) (__dataseg + %d) = __dataseg + %d;\n", k.sourceOffset, k.destOffset));
+			bufferC.addString(format("*(void**) (__mutableseg + %d) = __mutableseg + %d;\n", k.sourceOffset, k.destOffset));
 		else
-			bufferC.addString(format("*(void**) (__dataseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
+			bufferC.addString(format("*(void**) (__mutableseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
     }
 
     bufferC.addString("}\n\n");

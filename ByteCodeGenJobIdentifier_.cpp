@@ -31,6 +31,32 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             return true;
     }
 
+	// Reference to a constant
+    if (resolved->flags & OVERLOAD_COMPUTED_VALUE)
+    {
+        if (typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            reserveRegisterRC(context, node->resultRegisterRC, 2);
+            node->parent->resultRegisterRC = node->resultRegisterRC;
+            auto inst                      = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+            auto storageOffset             = node->resolvedSymbolOverload->storageOffset;
+            inst->c.u64                    = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
+            return true;
+        }
+
+        if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            node->resultRegisterRC         = reserveRegisterRC(context);
+            node->parent->resultRegisterRC = node->resultRegisterRC;
+            auto inst                      = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
+            inst->b.u32                    = node->resolvedSymbolOverload->storageOffset;
+            return true;
+        }
+
+		return internalError(context, "emitIdentifier, invalid constant type");
+    }
+
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
@@ -173,30 +199,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (!(node->flags & AST_TAKE_ADDRESS))
             emitStructDeRef(context);
         return true;
-    }
-
-    // Reference to a constant array
-    if (resolved->flags & OVERLOAD_COMPUTED_VALUE)
-    {
-        if (typeInfo->kind == TypeInfoKind::Array)
-        {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-            reserveRegisterRC(context, node->resultRegisterRC, 2);
-            node->parent->resultRegisterRC = node->resultRegisterRC;
-            auto inst                      = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-            auto storageOffset             = node->resolvedSymbolOverload->storageOffset;
-            inst->c.u64                    = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
-            return true;
-        }
-
-        if (typeInfo->kind == TypeInfoKind::Struct)
-        {
-            node->resultRegisterRC         = reserveRegisterRC(context);
-            node->parent->resultRegisterRC = node->resultRegisterRC;
-            auto inst                      = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
-            inst->b.u32                    = node->resolvedSymbolOverload->storageOffset;
-            return true;
-        }
     }
 
     return internalError(context, "emitIdentifier");

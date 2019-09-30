@@ -434,16 +434,16 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
 
         case ByteCodeOp::RAFromDataSeg8:
-            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg16:
-            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg32:
-            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg64:
-            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__dataseg + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::Clear8:
@@ -478,7 +478,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             bufferC.addString(format("__memclear(stack + %u, %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromDataSeg:
-            bufferC.addString(format("r%u.pointer = __dataseg + %u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.pointer = __mutableseg + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAAddrFromConstantSeg:
             bufferC.addString(format("r%u.pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32));

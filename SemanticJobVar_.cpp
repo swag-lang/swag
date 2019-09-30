@@ -366,7 +366,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->kind == AstNodeKind::LetDecl)
         symbolFlags |= OVERLOAD_CONST;
 
-	// Check for missing initialization
+    // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default
     if (!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)
     {
@@ -559,7 +559,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
-    if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+    if (isCompilerConstant)
+    {
+        node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
+        SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
+    }
+    else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
@@ -588,11 +593,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->flags |= AST_R_VALUE;
-    }
-    else if (isCompilerConstant)
-    {
-        node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
-        SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
     }
 
     // A using on a variable
