@@ -247,14 +247,10 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
             concreteType->value = nullptr;
             if (realType->typeInfo->isNative(NativeTypeKind::String))
             {
-                auto tmpStorageOffset = module->constantSegment.reserveNoLock(2 * sizeof(void*));
-                auto stringIndex      = module->reserveString(realType->value.text);
-                module->constantSegment.addInitString(tmpStorageOffset, stringIndex);
-
-                concreteType->value                  = module->constantSegment.addressNoLock(tmpStorageOffset);
-                *(const char**) concreteType->value  = realType->value.text.c_str();
-                ((uint64_t*) concreteType->value)[1] = realType->value.text.size();
+                auto tmpStorageOffset = module->constantSegment.reserveNoLock(sizeof(ConcreteStringSlice));
+                concreteType->value   = module->constantSegment.addressNoLock(tmpStorageOffset);
                 module->constantSegment.addInitPtr(OFFSETOF(concreteType->value), tmpStorageOffset);
+                SWAG_CHECK(makeConcreteString(context, (ConcreteStringSlice*) concreteType->value, realType->value.text, tmpStorageOffset));
             }
             else
             {
