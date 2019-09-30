@@ -215,7 +215,8 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
     auto typeList   = (TypeInfoList*) varDecl->typeInfo;
     Utf8 structName = "__tuple_";
     Utf8 varName;
-    for (int idx = 0; idx < typeList->childs.size(); idx++)
+    int  numChilds = (int) typeList->childs.size();
+    for (int idx = 0; idx < numChilds; idx++)
     {
         auto childType = typeList->childs[idx];
 
@@ -265,7 +266,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
             break;
         }
         default:
-            return internalError(context, "convertAssignementToStruct, bad type");
+            return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", childType->name.c_str()).c_str(), varDecl->assignment->childs[idx]);
         }
     }
 
