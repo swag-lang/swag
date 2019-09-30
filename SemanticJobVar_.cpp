@@ -229,9 +229,9 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
             varName = format("val%u", idx);
         }
 
-		structName += "_";
+        structName += "_";
         structName += childType->name;
-		structName += "_";
+        structName += "_";
 
         auto paramNode      = Ast::newVarDecl(sourceFile, varName, contentNode);
         auto typeExpression = Ast::newTypeExpression(sourceFile, paramNode);
@@ -433,8 +433,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->sizeOf      = node->typeInfo->sizeOf;
                 typeArray->count       = (uint32_t) typeList->childs.size();
                 typeArray->totalCount  = typeArray->count;
-                typeArray->name        = format("[%d] %s", typeArray->count, typeArray->pointedType->name.c_str());
-                node->typeInfo         = typeTable.registerType(typeArray);
+                typeArray->computeName();
+                node->typeInfo = typeTable.registerType(typeArray);
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
             }
             else if (typeList->listKind == TypeInfoListKind::Curly)
