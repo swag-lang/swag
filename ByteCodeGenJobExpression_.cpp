@@ -132,7 +132,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
     // We have null, and we want a string
     if (node->typeInfo->nativeType == NativeTypeKind::String && node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        reserveContiguousRegisterRC(context, node->resultRegisterRC, 2);
+        reserveRegisterRC(context, node->resultRegisterRC, 2);
         emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[0]);
         emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[1]);
         return true;
@@ -187,7 +187,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
             return true;
         case NativeTypeKind::String:
         {
-            reserveContiguousRegisterRC(context, node->resultRegisterRC, 2);
+			node->resultRegisterRC += reserveRegisterRC(context);
             auto index  = context->sourceFile->module->reserveString(node->computedValue.text);
             auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
             inst->c.u32 = index;

@@ -31,7 +31,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             return true;
     }
 
-	// Reference to a constant
+    // Reference to a constant
     if (resolved->flags & OVERLOAD_COMPUTED_VALUE)
     {
         if (typeInfo->kind == TypeInfoKind::Array)
@@ -54,7 +54,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             return true;
         }
 
-		return internalError(context, "emitIdentifier, invalid constant type");
+        return internalError(context, "emitIdentifier, invalid constant type");
     }
 
     // Function parameter : it's a register on the stack
@@ -156,7 +156,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->numRegisters() == 2)
         {
-            reserveContiguousRegisterRC(context, node->resultRegisterRC, 2);
+            node->resultRegisterRC += reserveRegisterRC(context);
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
         }

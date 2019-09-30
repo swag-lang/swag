@@ -13,15 +13,13 @@ bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exp
         return true;
 
     RegisterList r0;
-    reserveContiguousRegisterRC(context, r0, 2);
+    reserveRegisterRC(context, r0, 2);
 
-    // Registers must be contiguous, as we generate a pointer to the first register
     auto numRegs = exprNode->resultRegisterRC.size();
-    SWAG_ASSERT(numRegs != 2 || exprNode->resultRegisterRC[1] == exprNode->resultRegisterRC[0] + 1);
     SWAG_ASSERT(numRegs <= 2);
 
     emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC);
-	SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
+    SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
     emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
 
     exprNode->additionalRegisterRC = exprNode->resultRegisterRC;
@@ -518,8 +516,8 @@ bool ByteCodeGenJob::emitCastNativeString(ByteCodeGenContext* context, AstNode* 
 
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        reserveContiguousRegisterRC(context, node->resultRegisterRC, 2);
-		emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[0]);
+        reserveRegisterRC(context, node->resultRegisterRC, 2);
+        emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[0]);
         emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
         return true;
     }
