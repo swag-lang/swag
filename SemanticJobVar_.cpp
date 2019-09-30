@@ -318,6 +318,9 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
 {
     auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    if (typeInfo->sizeOf == 0)
+        return true;
+
     if (node->typeInfo->kind == TypeInfoKind::Struct)
     {
         // First collect values from the structure default init
@@ -489,11 +492,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (node->type)
         node->inheritOrFlag(node->type, AST_IS_GENERIC);
-    if (!(node->flags & AST_IS_GENERIC))
-    {
-        SWAG_VERIFY(node->typeInfo, context->errorContext.report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
-    }
-    else
+    if (node->flags & AST_IS_GENERIC)
     {
         symbolFlags |= OVERLOAD_GENERIC;
         if (!node->typeInfo)
@@ -504,9 +503,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
+	// We should have a type here !
+	SWAG_VERIFY(node->typeInfo, context->errorContext.report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
+
+    // Determine if the call parameters cover everything (to avoid calling default initialization)
+	// i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
     {
-        // Determine if the call parameters cover everything (to avoid calling default initialization)
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
 
@@ -524,8 +527,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (typeStruct && identifier->callParameters && identifier->callParameters->childs.size() == typeStruct->childs.size())
             node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
     }
-
-    SWAG_ASSERT(node->typeInfo);
 
     // A constant does nothing on backend, except if it can't be stored in a register
     uint32_t storageOffset = 0;
@@ -592,13 +593,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (isCompilerConstant)
     {
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
-        if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList)
-        {
-            auto exprList = CastAst<AstExpressionList>(node->assignment, AstNodeKind::ExpressionList);
-            storageOffset = exprList->storageOffsetSegment;
-            if (storageOffset == UINT32_MAX)
-                SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &node->assignment->computedValue, typeInfo, node->assignment));
-        }
+        SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->constantSegment));
     }
 
     // A using on a variable
