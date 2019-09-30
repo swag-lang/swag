@@ -8,11 +8,11 @@
 #include "AstFlags.h"
 #include "RegisterList.h"
 #include "SymTable.h"
+#include "Attribute.h"
 
 struct SemanticContext;
 struct ByteCodeGenContext;
 struct Scope;
-struct Attribute;
 struct TypeInfo;
 struct SymbolOverload;
 struct SymbolName;

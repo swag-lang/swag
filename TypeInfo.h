@@ -4,6 +4,7 @@
 #include "SpinLock.h"
 #include "Log.h"
 #include "Register.h"
+#include "Attribute.h"
 struct Scope;
 struct TypeInfo;
 struct SymbolMatchContext;
@@ -11,6 +12,7 @@ struct Job;
 enum class Intrisic;
 struct AstNode;
 struct ByteCode;
+struct TypeInfoFuncAttr;
 
 // Do not forget to synchronize runtime.h !
 enum class TypeInfoKind
@@ -229,6 +231,7 @@ struct TypeInfoParam : public TypeInfo
         typeInfo = nullptr;
         index    = 0;
         offset   = 0;
+        attributes.reset();
     }
 
     int numRegisters() override
@@ -239,11 +242,12 @@ struct TypeInfoParam : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    Utf8          namedParam;
-    TypeInfo*     typeInfo;
-    ComputedValue value;
-    int           index;
-    int           offset;
+    Utf8             namedParam;
+    TypeInfo*        typeInfo;
+    ComputedValue    value;
+    int              index;
+    int              offset;
+    SymbolAttributes attributes;
 };
 
 struct TypeInfoEnum : public TypeInfo
@@ -255,6 +259,7 @@ struct TypeInfoEnum : public TypeInfo
         scope   = nullptr;
         rawType = nullptr;
         values.clear();
+		attributes.reset();
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -263,6 +268,7 @@ struct TypeInfoEnum : public TypeInfo
     vector<TypeInfoParam*> values;
     Scope*                 scope;
     TypeInfo*              rawType;
+    SymbolAttributes       attributes;
 };
 
 enum MatchResult
@@ -348,6 +354,7 @@ struct TypeInfoFuncAttr : public TypeInfo
         parameters.clear();
         returnType = nullptr;
         stackSize  = 0;
+        attributes.reset();
     }
 
     int numParamsRegisters()
@@ -374,6 +381,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     vector<TypeInfoParam*> parameters;
     TypeInfo*              returnType;
     int                    stackSize;
+    SymbolAttributes       attributes;
 };
 
 struct TypeInfoPointer : public TypeInfo
@@ -429,9 +437,9 @@ struct TypeInfoArray : public TypeInfo
     void computeName() override
     {
         pointedType->computeName();
-		name.clear();
-		if (flags & TYPEINFO_CONST)
-			name = "const ";
+        name.clear();
+        if (flags & TYPEINFO_CONST)
+            name = "const ";
         if (count == UINT32_MAX)
             name += format("[] %s", pointedType->name.c_str());
         else
@@ -554,6 +562,7 @@ struct TypeInfoStruct : public TypeInfo
         opPostMove        = nullptr;
         opUserDropFct     = nullptr;
         opDrop            = nullptr;
+        attributes.reset();
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -578,6 +587,7 @@ struct TypeInfoStruct : public TypeInfo
     AstNode*               opUserDropFct;
     ByteCode*              opDrop;
     SpinLock               mutex;
+    SymbolAttributes       attributes;
 };
 
 struct TypeInfoAlias : public TypeInfo

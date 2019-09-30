@@ -7,7 +7,6 @@
 #include "ByteCodeOp.h"
 #include "Ast.h"
 #include "ByteCodeModuleManager.h"
-#include "SymTable.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "ModuleCompileJob.h"
@@ -18,10 +17,11 @@ ByteCodeRun g_Run;
 void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
 
     // Load module if specified
     ComputedValue moduleName;
-    bool          hasModuleName = nodeFunc->resolvedSymbolOverload->attributes.getValue("swag.foreign.module", moduleName);
+    bool          hasModuleName = typeFunc->attributes.getValue("swag.foreign.module", moduleName);
     if (hasModuleName)
         g_ModuleMgr.loadModule(context, moduleName.text);
 
@@ -527,7 +527,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
     case ByteCodeOp::MovRASP:
-	case ByteCodeOp::MovRASPVaargs:
+    case ByteCodeOp::MovRASPVaargs:
         registersRC[ip->a.u32].pointer = context->sp - ip->b.u32;
         break;
 

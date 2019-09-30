@@ -7,6 +7,9 @@ attr toto1() -> func;
 #unittest error;
 #[toto1]
 {
-	#[toto]
-	var b: bool;
+	struct T
+	{
+		#[toto]
+		b: bool;
+	}
 }

@@ -311,6 +311,9 @@
     <ClCompile Include="RaceCondition.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="Attribute.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

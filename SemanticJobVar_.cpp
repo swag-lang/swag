@@ -619,11 +619,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->flags & AST_DECL_USING)
         SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
 
-    // Attributes
-    SymbolAttributes attributes;
-    if (context->node->parentAttributes)
-        collectAttributes(context, attributes, node->parentAttributes, context->node, AstNodeKind::VarDecl, node->attributeFlags);
-
     // Register symbol with its type
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
                                                                   node,
@@ -632,8 +627,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                                                                   isCompilerConstant ? &node->computedValue : nullptr,
                                                                   symbolFlags,
                                                                   nullptr,
-                                                                  storageOffset,
-                                                                  &attributes);
+                                                                  storageOffset);
     SWAG_CHECK(overload);
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;

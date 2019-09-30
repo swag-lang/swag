@@ -7,7 +7,8 @@ attr toto() -> var;
 #[toto]
 {
 	#[toto]
+	struct TT
 	{
-		var b: bool;
+		b: bool;
 	}
 }

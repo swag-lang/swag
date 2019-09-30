@@ -80,6 +80,7 @@ TypeInfo* TypeInfoParam::clone()
     newType->typeInfo   = typeInfo;
     newType->index      = index;
     newType->offset     = offset;
+    newType->attributes = attributes;
     newType->copyFrom(this);
     return newType;
 }
@@ -267,6 +268,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
     newType->returnType           = returnType;
     newType->stackSize            = stackSize;
+    newType->attributes           = attributes;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
@@ -366,9 +368,10 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoEnum::clone()
 {
-    auto newType     = g_Pool_typeInfoEnum.alloc();
-    newType->scope   = scope;
-    newType->rawType = rawType;
+    auto newType        = g_Pool_typeInfoEnum.alloc();
+    newType->scope      = scope;
+    newType->rawType    = rawType;
+    newType->attributes = attributes;
 
     for (int i = 0; i < values.size(); i++)
     {
@@ -393,6 +396,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->opPostMove        = opPostMove;
     newType->opUserDropFct     = opUserDropFct;
     newType->opDrop            = opDrop;
+    newType->attributes        = attributes;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {

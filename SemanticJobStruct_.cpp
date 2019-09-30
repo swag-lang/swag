@@ -64,12 +64,11 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     }
 
     // Attributes
-    SymbolAttributes attributes;
     if (node->parentAttributes)
-        SWAG_CHECK(collectAttributes(context, attributes, node->parentAttributes, context->node, AstNodeKind::StructDecl, node->attributeFlags));
+        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, context->node, AstNodeKind::StructDecl, node->attributeFlags));
 
     // Register symbol with its type
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0, &attributes));
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
     return true;
 }
 
@@ -129,6 +128,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeParam->typeInfo   = child->typeInfo;
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
+            if (child->parentAttributes)
+                SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
             typeInfo->childs.push_back(typeParam);
         }
 

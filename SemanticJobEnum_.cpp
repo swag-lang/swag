@@ -22,6 +22,8 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     auto typeInfo     = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     typeInfo->rawType = rawTypeInfo;
     typeInfo->sizeOf  = rawTypeInfo->sizeOf;
+    if (enumNode->parentAttributes)
+        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, enumNode->parentAttributes, enumNode, AstNodeKind::EnumDecl, enumNode->attributeFlags));
 
     return true;
 }

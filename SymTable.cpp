@@ -61,29 +61,27 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     return symbol;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile*       sourceFile,
-                                            AstNode*          node,
-                                            TypeInfo*         typeInfo,
-                                            SymbolKind        kind,
-                                            ComputedValue*    computedValue,
-                                            uint32_t          flags,
-                                            SymbolName**      resultName,
-                                            uint32_t          storageOffset,
-                                            SymbolAttributes* attributes)
+SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile*    sourceFile,
+                                            AstNode*       node,
+                                            TypeInfo*      typeInfo,
+                                            SymbolKind     kind,
+                                            ComputedValue* computedValue,
+                                            uint32_t       flags,
+                                            SymbolName**   resultName,
+                                            uint32_t       storageOffset)
 {
     scoped_lock lk(mutex);
-    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, attributes);
+    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName, storageOffset);
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
-                                                  AstNode*          node,
-                                                  TypeInfo*         typeInfo,
-                                                  SymbolKind        kind,
-                                                  ComputedValue*    computedValue,
-                                                  uint32_t          flags,
-                                                  SymbolName**      resultName,
-                                                  uint32_t          storageOffset,
-                                                  SymbolAttributes* attributes)
+SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
+                                                  AstNode*       node,
+                                                  TypeInfo*      typeInfo,
+                                                  SymbolKind     kind,
+                                                  ComputedValue* computedValue,
+                                                  uint32_t       flags,
+                                                  SymbolName**   resultName,
+                                                  uint32_t       storageOffset)
 {
     auto symbol = findNoLock(node->name);
     if (!symbol)
@@ -116,15 +114,13 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*       sourceFile,
                 return nullptr;
             result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
 
-			// Remember all variables of type struct
+            // Remember all variables of type struct
             if (symbol->kind == SymbolKind::Variable && typeInfo->kind == TypeInfoKind::Struct)
                 allStructs.push_back(result);
         }
 
         result->flags |= flags;
         result->storageOffset = storageOffset;
-        if (attributes)
-            result->attributes = *attributes;
 
         // One less overload. When this reached zero, this means we known every types for the same symbol,
         // and so we can wakeup all jobs waiting for that symbol to be solved
@@ -292,13 +288,4 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
     }
 
     return nullptr;
-}
-
-bool SymbolAttributes::getValue(const string& fullName, ComputedValue& value)
-{
-    auto it = values.find(fullName);
-    if (it == values.end())
-        return false;
-    value = it->second;
-    return true;
 }

@@ -3,5 +3,8 @@
 
 attr toto() -> var;
 #unittest error;
-#[toto, toto]
-var b: bool;
+struct TT
+{
+	#[toto, toto]
+	b: bool;
+}
