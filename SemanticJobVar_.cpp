@@ -531,19 +531,19 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     uint32_t storageOffset = 0;
     if (isCompilerConstant)
     {
-        if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
+        node->inheritComputedValue(node->assignment);
+        if (symbolFlags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_LOCAL))
         {
-            // Be sure type is now constant
-            if (!node->typeInfo->isConst())
+            if (node->typeInfo->kind == TypeInfoKind::Array || node->typeInfo->kind == TypeInfoKind::Struct)
             {
-                auto typeConst = node->typeInfo->clone();
-                typeConst->setConst();
-                node->typeInfo = typeTable.registerType(typeConst);
+                // Be sure type is now constant
+                if (!node->typeInfo->isConst())
+                {
+                    auto typeConst = node->typeInfo->clone();
+                    typeConst->setConst();
+                    node->typeInfo = typeTable.registerType(typeConst);
+                }
             }
-        }
-        else
-        {
-            node->inheritComputedValue(node->assignment);
         }
     }
 
