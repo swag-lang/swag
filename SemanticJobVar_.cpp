@@ -314,6 +314,35 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
     return true;
 }
 
+bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg)
+{
+    auto value    = node->assignment ? &node->assignment->computedValue : &node->computedValue;
+    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    if (node->typeInfo->kind == TypeInfoKind::Struct)
+    {
+        // First collect values from the structure default init
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, seg, value, typeInfo, nullptr));
+
+        // Then collect values from the type parameters
+        if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+        {
+            auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+            auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+            SWAG_CHECK(storeToSegment(context, storageOffset, seg, value, typeInfo, identifier->callParameters));
+        }
+
+        // Then collect values from the assignment
+        if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList)
+            SWAG_CHECK(storeToSegment(context, storageOffset, seg, value, typeInfo, node->assignment));
+    }
+    else
+    {
+        SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, seg, value, typeInfo, node->assignment));
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto  sourceFile         = context->sourceFile;
@@ -534,29 +563,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
-
-        auto value = node->assignment ? &node->assignment->computedValue : &node->computedValue;
-        if (node->typeInfo->kind == TypeInfoKind::Struct)
-        {
-            // First collect values from the structure default init
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, nullptr));
-
-            // Then collect values from the type parameters
-            if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-            {
-                auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-                auto identifier     = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-                SWAG_CHECK(storeToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, identifier->callParameters));
-            }
-
-            // Then collect values from the assignment
-            if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList)
-                SWAG_CHECK(storeToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
-        }
-        else
-        {
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->dataSegment, value, typeInfo, node->assignment));
-        }
+        SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->dataSegment));
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
