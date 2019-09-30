@@ -433,16 +433,16 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeArray->sizeOf      = node->typeInfo->sizeOf;
                 typeArray->count       = (uint32_t) typeList->childs.size();
                 typeArray->totalCount  = typeArray->count;
-				if (isCompilerConstant)
-					typeArray->flags |= TYPEINFO_CONST;
+                if (isCompilerConstant)
+                    typeArray->flags |= TYPEINFO_CONST;
                 typeArray->computeName();
                 node->typeInfo = typeTable.registerType(typeArray);
 
-				// For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
-				if (symbolFlags & OVERLOAD_VAR_GLOBAL)
-					SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment, CASTFLAG_NO_COLLECT));
-				else
-					SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
+                // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
+                if (symbolFlags & OVERLOAD_VAR_GLOBAL)
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment, CASTFLAG_NO_COLLECT));
+                else
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
             }
             else if (typeList->listKind == TypeInfoListKind::Curly)
             {
@@ -534,6 +534,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
+
         auto value = node->assignment ? &node->assignment->computedValue : &node->computedValue;
         if (node->typeInfo->kind == TypeInfoKind::Struct)
         {
@@ -573,8 +574,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += typeInfo->sizeOf;
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
-        // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1); // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
         node->byteCodeFct         = &ByteCodeGenJob::emitVarDecl;
         node->flags |= AST_R_VALUE;
     }
@@ -586,7 +586,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
         if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList)
-            SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &node->assignment->computedValue, typeInfo, node->assignment));
+        {
+            auto exprList = CastAst<AstExpressionList>(node->assignment, AstNodeKind::ExpressionList);
+            storageOffset = exprList->storageOffsetSegment;
+            if (storageOffset == UINT32_MAX)
+                SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, &module->constantSegment, &node->assignment->computedValue, typeInfo, node->assignment));
+        }
     }
 
     // A using on a variable
