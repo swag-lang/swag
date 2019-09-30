@@ -263,6 +263,11 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
             paramNode->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
             break;
         }
+        case TypeInfoKind::Struct:
+        {
+            typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
+            break;
+        }
         case TypeInfoKind::TypeList:
         {
             AstStruct* inStructNode;

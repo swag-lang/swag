@@ -170,8 +170,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             identifier->flags |= AST_R_VALUE | AST_GENERATED | AST_NO_BYTECODE;
 
+            auto varParent = identifier->identifierRef->parent;
+            while (varParent->kind == AstNodeKind::ExpressionList)
+                varParent = varParent->parent;
+
             // Declare a variable
-            auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), identifier->identifierRef->parent);
+            auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), varParent);
             auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
             varNode->type        = typeNode;
@@ -181,11 +185,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
             // And make a reference to that variable
-            auto idNode = Ast::newIdentifier(sourceFile, varNode->name, identifier->identifierRef, identifier->identifierRef);
+            auto identifierRef = identifier->identifierRef;
+            sourceFile->module->deferReleaseChilds(identifierRef);
+            auto idNode = Ast::newIdentifier(sourceFile, varNode->name, identifierRef, identifierRef);
             idNode->flags |= AST_R_VALUE | AST_TRANSIENT;
 
             // Reset parsing
-            identifier->identifierRef->startScope = nullptr;
+            identifierRef->startScope = nullptr;
 
             // Add the 2 nodes to the semantic
             context->job->nodes.pop_back();

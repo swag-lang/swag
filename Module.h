@@ -24,6 +24,7 @@ struct Module : public PoolElement
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
     void internalError(const Utf8& msg);
+	void deferReleaseChilds(AstNode* node);
 
     fs::path            path;
     string              name;

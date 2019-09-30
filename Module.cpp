@@ -186,3 +186,14 @@ void Module::internalError(const Utf8& msg)
     g_Workspace.numErrors++;
     numErrors++;
 }
+
+void Module::deferReleaseChilds(AstNode* node)
+{
+    for (auto child : node->childs)
+    {
+        deferReleaseChilds(child);
+        //child->release();
+    }
+
+    node->childs.clear();
+}
