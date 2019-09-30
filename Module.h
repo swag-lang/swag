@@ -50,7 +50,7 @@ struct Module : public PoolElement
     vector<Utf8>        strBuffer;
     map<Utf8, uint32_t> mapStrBuffer;
 
-    DataSegment dataSegment;
+    DataSegment mutableSegment;
     DataSegment constantSegment;
 
     void setBuildPass(BuildPass buildP);

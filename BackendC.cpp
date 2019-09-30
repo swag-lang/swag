@@ -92,7 +92,7 @@ bool BackendC::generate()
     bool ok = true;
     ok &= emitHeader();
     ok &= emitRuntime();
-    ok &= emitDataSegment(&module->dataSegment);
+    ok &= emitDataSegment(&module->mutableSegment);
     ok &= emitDataSegment(&module->constantSegment);
     ok &= emitStrings();
     ok &= emitFuncSignatures();

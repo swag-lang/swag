@@ -8,14 +8,14 @@
 
 bool BackendC::emitDataSegment(DataSegment* dataSegment)
 {
-    if (dataSegment == &module->dataSegment)
+    if (dataSegment == &module->mutableSegment)
         emitSeparator(bufferC, "DATA SEGMENT");
     else
         emitSeparator(bufferC, "CONSTANT SEGMENT");
 
     if (dataSegment->buckets.size())
     {
-        if (dataSegment == &module->dataSegment)
+        if (dataSegment == &module->mutableSegment)
             bufferC.addString("static swag_uint8_t __dataseg[] = {\n");
         else
             bufferC.addString("static swag_uint8_t __constantseg[] = {\n");
@@ -73,12 +73,12 @@ bool BackendC::emitGlobalInit()
 {
     // Data segment
     bufferC.addString("static void initDataSeg() {\n");
-	for (auto& k : module->dataSegment.initString)
+	for (auto& k : module->mutableSegment.initString)
 	{
 		bufferC.addString(format("*(void**) (__dataseg + %d) = __string%d;\n", k.second, k.first));
 	}
 
-    for (auto& k : module->dataSegment.initPtr)
+    for (auto& k : module->mutableSegment.initPtr)
     {
 		auto kind = k.destSeg;
 		if(kind == SegmentKind::Me || kind == SegmentKind::Data)

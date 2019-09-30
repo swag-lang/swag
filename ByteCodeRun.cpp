@@ -585,7 +585,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         if (!ip->cache.pointer)
-            ip->cache.pointer = module->dataSegment.address(ip->b.u32);
+            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
         registersRC[ip->a.u32].u8 = *(uint8_t*) (ip->cache.pointer);
         break;
     }
@@ -593,7 +593,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         if (!ip->cache.pointer)
-            ip->cache.pointer = module->dataSegment.address(ip->b.u32);
+            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
         registersRC[ip->a.u32].u16 = *(uint16_t*) (ip->cache.pointer);
         break;
     }
@@ -601,7 +601,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         if (!ip->cache.pointer)
-            ip->cache.pointer = module->dataSegment.address(ip->b.u32);
+            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
         registersRC[ip->a.u32].u32 = *(uint32_t*) (ip->cache.pointer);
         break;
     }
@@ -609,7 +609,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         if (!ip->cache.pointer)
-            ip->cache.pointer = module->dataSegment.address(ip->b.u32);
+            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->cache.pointer);
         break;
     }
@@ -617,7 +617,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         auto module = context->sourceFile->module;
         if (!ip->cache.pointer)
-            ip->cache.pointer = module->dataSegment.address(ip->b.u32);
+            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
         registersRC[ip->a.u32].pointer = ip->cache.pointer;
         break;
     }

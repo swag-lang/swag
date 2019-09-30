@@ -12,7 +12,7 @@ bool SemanticJob::reserveAndStoreToSegment(SemanticContext* context, uint32_t& s
 
     // Need to lock both data segments, as both can be modified if 'seg' is a data
     scoped_lock lockConstant(sourceFile->module->constantSegment.mutex);
-    scoped_lock lockData(sourceFile->module->dataSegment.mutex);
+    scoped_lock lockData(sourceFile->module->mutableSegment.mutex);
 
     return reserveAndStoreToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
 }
@@ -23,7 +23,7 @@ bool SemanticJob::storeToSegment(SemanticContext* context, uint32_t storageOffse
 
     // Need to lock both data segments, as both can be modified if 'seg' is a data
     scoped_lock lockConstant(sourceFile->module->constantSegment.mutex);
-    scoped_lock lockData(sourceFile->module->dataSegment.mutex);
+    scoped_lock lockData(sourceFile->module->mutableSegment.mutex);
 
     return storeToSegmentNoLock(context, storageOffset, seg, value, typeInfo, assignment);
 }
@@ -401,7 +401,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node->assignment, "initialization expression cannot be evaluated at compile time"}));
     }
 
-    // Be sure array without a size have a initializer, to deduce the size
+    // Be sure array without a size have an initializer, to deduce the size
     if (node->type && node->type->typeInfo && node->type->typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->type->typeInfo, TypeInfoKind::Array);
@@ -564,7 +564,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
-        SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->dataSegment));
+        SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
     }
     else if (symbolFlags & OVERLOAD_VAR_LOCAL)
     {
