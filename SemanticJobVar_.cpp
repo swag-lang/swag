@@ -201,18 +201,17 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(SemanticContext* context, uint3
     return true;
 }
 
-bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl)
+bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result)
 {
-    varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
-
     auto       sourceFile = context->sourceFile;
     AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
+    *result               = structNode;
 
     auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
     contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
     structNode->content            = contentNode;
 
-    auto typeList   = (TypeInfoList*) varDecl->typeInfo;
+    auto typeList   = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeList);
     Utf8 structName = "__tuple_";
     Utf8 varName;
     int  numChilds = (int) typeList->childs.size();
@@ -253,7 +252,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
             auto typeInfoPointer     = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
             typeExpression->ptrCount = typeInfoPointer->ptrCount;
             if (typeInfoPointer->pointedType->kind != TypeInfoKind::Native)
-                return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", typeInfoPointer->pointedType->name.c_str()).c_str(), varDecl->assignment->childs[idx]);
+                return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", typeInfoPointer->pointedType->name.c_str()).c_str(), assignment->childs[idx]);
             typeExpression->token.id          = TokenId::NativeType;
             typeExpression->token.literalType = typeInfoPointer->pointedType;
             break;
@@ -265,18 +264,12 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
             break;
         }
         default:
-            return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", childType->name.c_str()).c_str(), varDecl->assignment->childs[idx]);
+            return internalError(context, format("convertAssignementToStruct, cannot convert type '%s'", childType->name.c_str()).c_str(), assignment->childs[idx]);
         }
     }
 
     // Compute structure name
     structNode->name = move(structName);
-
-    // Reference to that struct
-    auto typeExpression = Ast::newTypeExpression(sourceFile, varDecl);
-    typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
-    typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
-    varDecl->type              = typeExpression;
 
     // Add struct type and scope
     auto rootScope = sourceFile->scopeRoot;
@@ -309,6 +302,21 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstVarDec
         SemanticJob::newJob(sourceFile, structNode, true);
     }
 
+	return true;
+}
+
+bool SemanticJob::convertVarAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl)
+{
+    auto       sourceFile = context->sourceFile;
+    AstStruct* structNode;
+    SWAG_CHECK(convertAssignementToStruct(context, varDecl->assignment, &structNode));
+
+    // Reference to that struct
+    varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+    auto typeExpression = Ast::newTypeExpression(sourceFile, varDecl);
+    typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
+    typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
+    varDecl->type              = typeExpression;
     context->job->nodes.push_back(typeExpression);
     context->result = SemanticResult::NewChilds;
     return true;
@@ -477,7 +485,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
             else if (typeList->listKind == TypeInfoListKind::Curly)
             {
-                SWAG_CHECK(convertAssignementToStruct(context, node));
+                SWAG_CHECK(convertVarAssignementToStruct(context, node));
                 return true;
             }
             else

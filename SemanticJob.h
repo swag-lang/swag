@@ -88,7 +88,8 @@ struct SemanticJob : public Job
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
-    static bool convertAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl);
+	static bool convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result);
+    static bool convertVarAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl);
 	static bool collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg);
 
     void waitForSymbol(SymbolName* symbol);
