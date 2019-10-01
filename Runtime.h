@@ -86,8 +86,8 @@ namespace swag
 		named_param:	string
 		pointed_type:	const *typeinfo
 		value:			*void
-		offset:			u32
 		attributes:		const [..] { string, any }
+		offset:			u32
 	}
 
 	struct typeinfo_struct

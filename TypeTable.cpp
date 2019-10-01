@@ -58,8 +58,8 @@ struct ConcreteTypeInfoParam
     ConcreteStringSlice namedParam;
     ConcreteTypeInfo*   pointedType;
     void*               value;
-    uint32_t            offsetOf;
     ConcreteStringSlice attributes;
+    uint32_t            offsetOf;
 };
 
 struct ConcreteTypeInfoStruct

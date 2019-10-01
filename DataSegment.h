@@ -37,11 +37,11 @@ struct DataSegment
     vector<DataSegmentHeader> buckets;
     SpinLock                  mutex;
 
-    void                    addInitString(uint32_t segOffset, uint32_t strIndex);
-    void                    addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg = SegmentKind::Me);
-    SpinLock                mutexPtr;
-    map<uint32_t, uint32_t> initString;
-    vector<DataSegmentRef>  initPtr;
+    void                            addInitString(uint32_t segOffset, uint32_t strIndex);
+    void                            addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg = SegmentKind::Me);
+    SpinLock                        mutexPtr;
+    map<uint32_t, vector<uint32_t>> initString;
+    vector<DataSegmentRef>          initPtr;
 #ifdef SWAG_HAS_ASSERT
     RaceCondition::Instance raceCondition;
 #endif

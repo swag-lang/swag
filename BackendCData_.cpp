@@ -73,18 +73,19 @@ bool BackendC::emitGlobalInit()
 {
     // Data segment
     bufferC.addString("static void initDataSeg() {\n");
-	for (auto& k : module->mutableSegment.initString)
-	{
-		bufferC.addString(format("*(void**) (__mutableseg + %d) = __string%d;\n", k.second, k.first));
-	}
+    for (auto& k : module->mutableSegment.initString)
+    {
+        for (auto& o : k.second)
+            bufferC.addString(format("*(void**) (__mutableseg + %d) = __string%d;\n", o, k.first));
+    }
 
     for (auto& k : module->mutableSegment.initPtr)
     {
-		auto kind = k.destSeg;
-		if(kind == SegmentKind::Me || kind == SegmentKind::Data)
-			bufferC.addString(format("*(void**) (__mutableseg + %d) = __mutableseg + %d;\n", k.sourceOffset, k.destOffset));
-		else
-			bufferC.addString(format("*(void**) (__mutableseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
+        auto kind = k.destSeg;
+        if (kind == SegmentKind::Me || kind == SegmentKind::Data)
+            bufferC.addString(format("*(void**) (__mutableseg + %d) = __mutableseg + %d;\n", k.sourceOffset, k.destOffset));
+        else
+            bufferC.addString(format("*(void**) (__mutableseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
     }
 
     bufferC.addString("}\n\n");
@@ -92,13 +93,16 @@ bool BackendC::emitGlobalInit()
     // Constant segment
     bufferC.addString("static void initConstantSeg() {\n");
     for (auto& k : module->constantSegment.initString)
-        bufferC.addString(format("*(void**) (__constantseg + %d) = __string%d;\n", k.second, k.first));
+    {
+        for (auto& o : k.second)
+            bufferC.addString(format("*(void**) (__constantseg + %d) = __string%d;\n", o, k.first));
+    }
 
-	for (auto& k : module->constantSegment.initPtr)
-	{
-		SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
-		bufferC.addString(format("*(void**) (__constantseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
-	}
+    for (auto& k : module->constantSegment.initPtr)
+    {
+        SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
+        bufferC.addString(format("*(void**) (__constantseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
+    }
 
     bufferC.addString("}\n\n");
 

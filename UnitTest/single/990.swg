@@ -21,5 +21,7 @@ struct Point
 	
 	loop t.fields
 	{
+		p := cast(const *typeinfo_param) t.fields[index]
+		@assert(p.named_param == (index == 0 ? "x" : "y"))
 	}
 }

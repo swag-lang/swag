@@ -71,7 +71,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
 void DataSegment::addInitString(uint32_t segOffset, uint32_t strIndex)
 {
     scoped_lock lk(mutexPtr);
-    initString[strIndex] = segOffset;
+    initString[strIndex].push_back(segOffset);
 }
 
 void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg)
