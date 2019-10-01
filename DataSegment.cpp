@@ -68,6 +68,34 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     return nullptr;
 }
 
+uint32_t DataSegment::addComputedValueNoLock(TypeInfo* typeInfo, ComputedValue& computedValue)
+{
+    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+    SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);
+    SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::String);
+
+    scoped_lock lk(mutexPtr);
+    auto        storageOffset = reserveNoLock(typeInfo->sizeOf);
+    auto        addr          = addressNoLock(storageOffset);
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        *(uint8_t*) addr = computedValue.reg.u8;
+        break;
+    case 2:
+        *(uint16_t*) addr = computedValue.reg.u16;
+        break;
+    case 4:
+        *(uint32_t*) addr = computedValue.reg.u32;
+        break;
+    case 8:
+        *(uint64_t*) addr = computedValue.reg.u64;
+        break;
+    }
+
+    return storageOffset;
+}
+
 void DataSegment::addInitString(uint32_t segOffset, uint32_t strIndex)
 {
     scoped_lock lk(mutexPtr);

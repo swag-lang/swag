@@ -34,6 +34,7 @@ struct DataSegment
     uint32_t                  reserveNoLock(uint32_t size);
     uint8_t*                  address(uint32_t location);
     uint8_t*                  addressNoLock(uint32_t location);
+    uint32_t                  addComputedValueNoLock(TypeInfo* typeInfo, ComputedValue& computedValue);
     vector<DataSegmentHeader> buckets;
     SpinLock                  mutex;
 

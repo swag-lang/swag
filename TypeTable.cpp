@@ -131,9 +131,18 @@ bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttribute
         curOffset += sizeof(ConcreteStringSlice);
         ptr += sizeof(ConcreteStringSlice);
 
-        auto ptrAny = (ConcreteAny*) ptr;
-        ptrAny->value = nullptr;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, curOffset + sizeof(void*), &ptrAny->type, one.second.first));
+        auto ptrAny        = (ConcreteAny*) ptr;
+        auto typeAttribute = one.second.first;
+		if (typeAttribute->kind == TypeInfoKind::Native)
+		{
+			auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(typeAttribute, one.second.second);
+			ptrAny->value = module->constantSegment.addressNoLock(storageOffsetValue);
+			module->constantSegment.addInitPtr(curOffset, storageOffsetValue);
+		}
+		else
+			ptrAny->value = nullptr;
+
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, curOffset + sizeof(void*), &ptrAny->type, typeAttribute));
         curOffset += sizeof(ConcreteAny);
         ptr += sizeof(ConcreteAny);
     }

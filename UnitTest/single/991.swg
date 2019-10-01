@@ -20,4 +20,6 @@ struct Point
 	
 	ptr := @kindof(p.attributes[1].val1)
 	@assert(ptr.name == "s32")
+	ptr1 := cast(*s32) @dataof(p.attributes[1].val1)
+	@assert(ptr1[0] == 666)
 }
