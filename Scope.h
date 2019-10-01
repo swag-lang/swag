@@ -16,6 +16,7 @@ enum class ScopeKind
     Enum,
     Struct,
     Function,
+	Attribute,
     Statement,
     Breakable,
     TypeList,

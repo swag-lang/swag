@@ -24,7 +24,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 	currentScope->allocateSymTable();
     scoped_lock lk(currentScope->symTable->mutex);
     auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
-    auto        newScope = Ast::newScope(attrNode, attrNode->name, ScopeKind::Function, currentScope);
+    auto        newScope = Ast::newScope(attrNode, attrNode->name, ScopeKind::Attribute, currentScope);
     newScope->allocateSymTable();
     attrNode->typeInfo = typeInfo;
     currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode, SymbolKind::Attribute);

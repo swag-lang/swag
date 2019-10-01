@@ -36,6 +36,13 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         funcParam->sizeOf     = param->typeInfo->sizeOf;
         funcParam->index      = index++;
 
+        // Not everything is possible for types for attributes
+        if (param->ownerScope->kind == ScopeKind::Attribute)
+        {
+            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->errorContext.report({sourceFile, nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
+        }
+
         parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
 
         // Variadic must be the last one
