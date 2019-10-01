@@ -6,6 +6,7 @@
 #include "SymTable.h"
 #include "SemanticJob.h"
 #include "Ast.h"
+#include "Scoped.h"
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
@@ -18,11 +19,22 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid attribute name '%s'", token.text.c_str())));
 
     attrNode->inheritTokenName(token);
-    attrNode->typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+
+    // Register attribute
+	currentScope->allocateSymTable();
+    scoped_lock lk(currentScope->symTable->mutex);
+    auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
+    auto        newScope = Ast::newScope(attrNode, attrNode->name, ScopeKind::Function, currentScope);
+    newScope->allocateSymTable();
+    attrNode->typeInfo = typeInfo;
+    currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode, SymbolKind::Attribute);
 
     // Parameters
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
+    {
+        Scoped scoped(this, newScope);
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
+    }
 
     // Return type
     SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
@@ -58,14 +70,6 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatSemiCol("after attribute definition"));
     SWAG_VERIFY(attrNode->typeInfo->flags, syntaxError(token, "missing attribute type"));
-
-    // Register attribute
-    currentScope->allocateSymTable();
-    {
-        scoped_lock lk(currentScope->symTable->mutex);
-        if (!isContextDisabled())
-            currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode, SymbolKind::Attribute);
-    }
 
     return true;
 }
