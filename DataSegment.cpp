@@ -75,21 +75,59 @@ uint32_t DataSegment::addComputedValueNoLock(TypeInfo* typeInfo, ComputedValue& 
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::String);
 
     scoped_lock lk(mutexPtr);
-    auto        storageOffset = reserveNoLock(typeInfo->sizeOf);
-    auto        addr          = addressNoLock(storageOffset);
     switch (typeInfo->sizeOf)
     {
     case 1:
-        *(uint8_t*) addr = computedValue.reg.u8;
+    {
+        auto it = storedValues8.find(computedValue.reg.u8);
+        if (it != storedValues8.end())
+            return it->second;
+        break;
+    }
+
+    case 2:
+    {
+        auto it = storedValues16.find(computedValue.reg.u16);
+        if (it != storedValues16.end())
+            return it->second;
+        break;
+    }
+
+    case 4:
+    {
+        auto it = storedValues32.find(computedValue.reg.u32);
+        if (it != storedValues32.end())
+            return it->second;
+        break;
+    }
+    case 8:
+    {
+        auto it = storedValues64.find(computedValue.reg.u64);
+        if (it != storedValues64.end())
+            return it->second;
+        break;
+    }
+    }
+
+    auto storageOffset = reserveNoLock(typeInfo->sizeOf);
+    auto addr          = addressNoLock(storageOffset);
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        *(uint8_t*) addr                    = computedValue.reg.u8;
+        storedValues8[computedValue.reg.u8] = storageOffset;
         break;
     case 2:
-        *(uint16_t*) addr = computedValue.reg.u16;
+        *(uint16_t*) addr                     = computedValue.reg.u16;
+        storedValues16[computedValue.reg.u16] = storageOffset;
         break;
     case 4:
-        *(uint32_t*) addr = computedValue.reg.u32;
+        *(uint32_t*) addr                     = computedValue.reg.u32;
+        storedValues32[computedValue.reg.u32] = storageOffset;
         break;
     case 8:
-        *(uint64_t*) addr = computedValue.reg.u64;
+        *(uint64_t*) addr                     = computedValue.reg.u64;
+        storedValues64[computedValue.reg.u64] = storageOffset;
         break;
     }
 

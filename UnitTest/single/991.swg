@@ -3,10 +3,11 @@
 using swag
 
 attr NC1(x: s32) -> var
+attr NC2(y: s32) -> var
 
 struct Point
 {
-	#[NC1(666)]
+	#[NC1(666), NC2(666)]
 	x: s32
 }
 
