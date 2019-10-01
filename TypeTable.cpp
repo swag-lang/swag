@@ -35,8 +35,8 @@ struct ConcreteTypeInfo
 
 struct ConcreteAny
 {
-    ConcreteTypeInfo* type;
     void*             value;
+    ConcreteTypeInfo* type;
 };
 
 struct ConcreteTypeInfoNative
@@ -89,6 +89,12 @@ struct ConcreteTypeInfoEnum
 
 bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
 {
+    if (!typeInfo)
+    {
+        *result = nullptr;
+        return true;
+    }
+
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
@@ -98,7 +104,7 @@ bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concrete
     *result = (ConcreteTypeInfo*) module->constantSegment.addressNoLock(tmpStorageOffset);
 
     // We have a pointer in the constant segment, so we need to register it for backend setup
-    module->constantSegment.addInitPtr(OFFSETOF(*result), tmpStorageOffset);
+    module->constantSegment.addInitPtr(concreteTypeInfoValue ? OFFSETOF(*result) : storageOffset, tmpStorageOffset);
     return true;
 }
 
@@ -125,9 +131,9 @@ bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttribute
         curOffset += sizeof(ConcreteStringSlice);
         ptr += sizeof(ConcreteStringSlice);
 
-        auto ptrAny   = (ConcreteAny*) ptr;
-        ptrAny->type  = nullptr;
+        auto ptrAny = (ConcreteAny*) ptr;
         ptrAny->value = nullptr;
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, curOffset + sizeof(void*), &ptrAny->type, one.second.first));
         curOffset += sizeof(ConcreteAny);
         ptr += sizeof(ConcreteAny);
     }

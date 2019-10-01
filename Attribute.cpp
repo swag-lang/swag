@@ -6,6 +6,6 @@ bool SymbolAttributes::getValue(const Utf8& fullName, ComputedValue& value)
     auto it = values.find(fullName);
     if (it == values.end())
         return false;
-    value = it->second;
+    value = it->second.second;
     return true;
 }

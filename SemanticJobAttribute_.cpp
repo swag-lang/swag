@@ -150,10 +150,10 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             return false;
         }
 
-		// Register attribute itself
-        node->values[identifierRef->resolvedSymbolName->fullName] = dummy;
+        // Register attribute itself
+        node->values[resolvedName->fullName] = {resolved->typeInfo, dummy};
 
-		// And all its parameters
+        // And all its parameters
         if (identifier->callParameters)
         {
             for (auto one : identifier->callParameters->childs)
@@ -161,7 +161,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
                 SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->errorContext.report({sourceFile, param, "attribute parameter cannot be evaluated at compile time"}));
                 string attrFullName        = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->namedParam);
-                node->values[attrFullName] = param->computedValue;
+                node->values[attrFullName] = {param->typeInfo, param->computedValue};
             }
         }
     }

@@ -207,8 +207,8 @@ struct AstNode : public PoolElement
 
     void inheritOwners(AstNode* op)
     {
-		if (!op)
-			return;
+        if (!op)
+            return;
         ownerStructScope = op->ownerStructScope;
         ownerStruct      = op->ownerStruct;
         ownerScope       = op->ownerScope;
@@ -414,7 +414,7 @@ struct AstAttrUse : public AstNode
 
     AstNode* clone(CloneContext& context) override;
 
-    map<string, ComputedValue> values;
+    map<Utf8, pair<TypeInfo*, ComputedValue>> values;
 };
 
 struct AstFuncCallParam : public AstNode
