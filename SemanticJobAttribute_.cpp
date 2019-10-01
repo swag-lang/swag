@@ -59,7 +59,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint64_t& flags)
+bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
 {
     if (!attrUse)
         return true;

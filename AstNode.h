@@ -288,8 +288,8 @@ struct AstNode : public PoolElement
 
     AstNode*    parent;
     uint32_t    childParentIdx;
+    uint32_t    attributeFlags;
     AstAttrUse* parentAttributes;
-    uint64_t    attributeFlags;
     Token       token;
 
     SemanticFct       semanticFct;
