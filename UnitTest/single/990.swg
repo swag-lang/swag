@@ -23,5 +23,7 @@ struct Point
 	{
 		p := cast(const *typeinfo_param) t.fields[index]
 		@assert(p.named_param == (index == 0 ? "x" : "y"))
+		@assert(@countof(p.attributes) == 1)
+		@assert(p.attributes[0].val0 == "NC1")
 	}
 }
