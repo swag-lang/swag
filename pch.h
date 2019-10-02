@@ -19,7 +19,10 @@ using namespace std;
 namespace fs = std::experimental::filesystem;
 #pragma warning(disable: 4100)
 
+#ifndef SWAG_IS_FINAL
 #define SWAG_HAS_ASSERT
+#endif
+
 #define FFI_BUILDING
 
 #endif

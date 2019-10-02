@@ -29,5 +29,5 @@ extern void                         swag_assert(const char* expr, const char* fi
     }
 
 #else
-#define SWAG_ASSERT(__expr)
+#define SWAG_ASSERT(__expr) {}
 #endif
