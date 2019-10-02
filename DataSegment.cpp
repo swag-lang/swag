@@ -3,6 +3,8 @@
 #include "DataSegment.h"
 #include "Log.h"
 #include "RaceCondition.h"
+#include "SourceFile.h"
+#include "Module.h"
 
 static const uint32_t BUCKET_SIZE = 16 * 1024;
 
@@ -68,13 +70,27 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     return nullptr;
 }
 
-uint32_t DataSegment::addComputedValueNoLock(TypeInfo* typeInfo, ComputedValue& computedValue)
+uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue)
 {
     SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);
-    SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::String);
 
-    scoped_lock lk(mutexPtr);
+    if (typeInfo->nativeType == NativeTypeKind::String)
+    {
+        auto stringIndex = sourceFile->module->reserveString(computedValue.text);
+        auto it          = storedValuesStr.find(stringIndex);
+        if (it != storedValuesStr.end())
+            return it->second;
+        auto storageOffset    = reserveNoLock(2 * sizeof(uint64_t));
+        auto addr             = addressNoLock(storageOffset);
+        ((uint64_t*) addr)[0] = (uint64_t) computedValue.text.c_str();
+        ((uint64_t*) addr)[1] = (uint32_t) computedValue.text.size();
+        addInitString(storageOffset, stringIndex);
+        storedValuesStr[stringIndex] = storageOffset;
+        return storageOffset;
+    }
+
+    scoped_lock lk(mutex);
     switch (typeInfo->sizeOf)
     {
     case 1:

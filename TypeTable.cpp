@@ -135,7 +135,7 @@ bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttribute
         auto typeAttribute = one.second.first;
 		if (typeAttribute->kind == TypeInfoKind::Native)
 		{
-			auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(typeAttribute, one.second.second);
+			auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, typeAttribute, one.second.second);
 			ptrAny->value = module->constantSegment.addressNoLock(storageOffsetValue);
 			module->constantSegment.addInitPtr(curOffset, storageOffsetValue);
 		}

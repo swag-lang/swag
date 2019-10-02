@@ -37,11 +37,12 @@ struct DataSegment
     vector<DataSegmentHeader> buckets;
     SpinLock                  mutex;
 
-    uint32_t                addComputedValueNoLock(TypeInfo* typeInfo, ComputedValue& computedValue);
+    uint32_t                addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue);
     map<uint8_t, uint32_t>  storedValues8;
     map<uint16_t, uint32_t> storedValues16;
     map<uint32_t, uint32_t> storedValues32;
     map<uint64_t, uint32_t> storedValues64;
+    map<uint32_t, uint32_t> storedValuesStr;
 
     void                            addInitString(uint32_t segOffset, uint32_t strIndex);
     void                            addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg = SegmentKind::Me);
