@@ -106,6 +106,7 @@ enum class TokenId
     KwdDefault,
     KwdFor,
 	KwdDefer,
+	KwdIs,
 
     Identifier,
     LiteralNumber,

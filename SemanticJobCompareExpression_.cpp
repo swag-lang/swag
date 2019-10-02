@@ -180,6 +180,54 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     return true;
 }
 
+bool SemanticJob::resolveIsExpression(SemanticContext* context)
+{
+    auto node  = context->node;
+    auto left  = node->childs[0];
+    auto right = node->childs[1];
+
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_ASSERT(leftTypeInfo && rightTypeInfo);
+
+    // Keep it generic if it's generic on one side
+    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = rightTypeInfo;
+        return true;
+    }
+
+    SWAG_CHECK(checkIsConcrete(context, left));
+    node->typeInfo = g_TypeMgr.typeInfoBool;
+
+    if (leftTypeInfo->isNative(NativeTypeKind::Any))
+    {
+        node->byteCodeFct = &ByteCodeGenJob::emitIs;
+    }
+    else if (leftTypeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+    {
+        node->computedValue.reg.b = rightTypeInfo == g_TypeMgr.typeInfoF32;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+    else if (leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+    {
+        node->computedValue.reg.b = rightTypeInfo == g_TypeMgr.typeInfoS32;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+	else
+    {
+        node->computedValue.reg.b = leftTypeInfo == rightTypeInfo;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 {
     auto node       = context->node;

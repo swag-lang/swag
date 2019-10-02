@@ -286,6 +286,18 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         leftNode = binaryNode;
         isBinary = true;
     }
+    else if (token.id == TokenId::KwdIs)
+    {
+        auto binaryNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile->indexInModule, parent);
+        binaryNode->semanticFct = &SemanticJob::resolveIsExpression;
+        binaryNode->token       = move(token);
+
+        Ast::addChildBack(binaryNode, leftNode);
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doTypeExpression(binaryNode));
+        leftNode = binaryNode;
+        isBinary = true;
+    }
 
     if (!isBinary)
         Ast::addChildBack(parent, leftNode);

@@ -233,3 +233,8 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 
     return true;
 }
+
+bool ByteCodeGenJob::emitIs(ByteCodeGenContext* context)
+{
+	return internalError(context, "emitIs, not done");
+}
