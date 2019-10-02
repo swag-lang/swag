@@ -16,17 +16,21 @@ bool ByteCodeGenJob::emitCastNativeAny(ByteCodeGenContext* context, AstNode* exp
     auto numRegs = exprNode->resultRegisterRC.size();
     SWAG_ASSERT(numRegs <= 2);
 
-	// Make a pointer to the value
-	if (fromTypeInfo->kind == TypeInfoKind::Native)
-	{
-		emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC);
-	}
-	else
-	{
-		return internalError(context, "emitCastNativeAny, invalid type", exprNode);
-	}
+    // Make a pointer to the value
+    if (fromTypeInfo->kind == TypeInfoKind::Native)
+    {
+        emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC);
+    }
+    else if (fromTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
+    }
+    else
+    {
+        return internalError(context, "emitCastNativeAny, invalid type", exprNode);
+    }
 
-	// Get concrete typeinfo from constant segment
+    // Get concrete typeinfo from constant segment
     SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
     emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = exprNode->concreteTypeInfoStorage;
 
