@@ -66,6 +66,8 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     typeParam->typeInfo   = rawType;
     typeParam->value      = enumNode->computedValue;
     typeParam->index      = (uint32_t) typeEnum->values.size();
+    if (valNode->parentAttributes)
+        SWAG_CHECK(collectAttributes(context, typeParam->attributes, valNode->parentAttributes, valNode, AstNodeKind::EnumValue, valNode->attributeFlags));
     typeEnum->values.push_back(typeParam);
 
     // Compute next value

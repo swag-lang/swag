@@ -90,7 +90,6 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
         return storageOffset;
     }
 
-    scoped_lock lk(mutex);
     switch (typeInfo->sizeOf)
     {
     case 1:
