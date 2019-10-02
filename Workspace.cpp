@@ -297,7 +297,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     // During unit testing, be sure we don't have remaining not raised errors
-    if (g_CommandLine.unittest)
+    if (g_CommandLine.unittest && g_CommandLine.runByteCodeTests)
     {
         for (auto module : list)
         {

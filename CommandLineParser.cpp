@@ -29,14 +29,12 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
 
     cmdLine->cOutputCode = true;
-
     cmdLine->cOutputByteCode = true;
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
     cmdLine->output = false;
     //cmdLine->verboseBackendCommand = true;
     //cmdLine->verboseUnittestErrors = true;
-    //cmdLine->runBackendTests = false;
 	//cmdLine->debugBoundCheck = false;
     cmdLine->fileFilter = "995";
 }
