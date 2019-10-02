@@ -28,7 +28,7 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
     AstNode* node          = context->node;
     auto     back          = node->childs.front();
     node->resultRegisterRC = back->resultRegisterRC;
-    emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo);
+	SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
     return true;
 }
 
