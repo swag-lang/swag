@@ -245,7 +245,7 @@ bool ByteCodeGenJob::emitIs(ByteCodeGenContext* context)
 		node->resultRegisterRC = reserveRegisterRC(context);
 		auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
 		inst->b.u32 = right->computedValue.reg.u32;
-		emitInstruction(context, ByteCodeOp::CompareOpEqual64, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
+		emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
 		freeRegisterRC(context, right);
 	}
 	else
