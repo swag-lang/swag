@@ -58,6 +58,10 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
             SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) == 0, syntaxError(token, "attribute type 'enum' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_ENUM;
             break;
+        case TokenId::KwdEnumValue:
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) == 0, syntaxError(token, "attribute type 'enumvalue' already defined"));
+            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_ENUMVALUE;
+            break;
         default:
             return error(token, format("invalid attribute type '%s'", token.text.c_str()));
         }

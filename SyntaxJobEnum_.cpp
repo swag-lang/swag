@@ -13,11 +13,11 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     auto enumNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumDecl, sourceFile->indexInModule, parent);
     if (result)
         *result = enumNode;
-	enumNode->semanticFct = &SemanticJob::resolveEnum;
+    enumNode->semanticFct = &SemanticJob::resolveEnum;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid enum name '%s'", token.text.c_str())));
-	enumNode->inheritTokenName(token);
+    enumNode->inheritTokenName(token);
 
     // Add enum type and scope
     Scope* newScope = nullptr;
@@ -49,7 +49,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 
     // Raw type
     SWAG_CHECK(tokenizer.getToken(token));
-    auto typeNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumType, sourceFile->indexInModule, enumNode);
+    auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumType, sourceFile->indexInModule, enumNode);
     typeNode->semanticFct = &SemanticJob::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
@@ -64,21 +64,25 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     currentScope    = newScope;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
-        auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumDecl, sourceFile->indexInModule, enumNode);
-		enumValue->inheritTokenName(token);
-        enumValue->semanticFct = &SemanticJob::resolveEnumValue;
-        if (!isContextDisabled())
+        if (token.id == TokenId::SymAttrStart)
+            SWAG_CHECK(doAttrUse(enumNode));
+        else
+        {
+            SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
+            auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile->indexInModule, enumNode);
+            enumValue->inheritTokenName(token);
+            enumValue->semanticFct = &SemanticJob::resolveEnumValue;
             currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue, SymbolKind::EnumValue);
 
-        SWAG_CHECK(tokenizer.getToken(token));
-        if (token.id == TokenId::SymEqual)
-        {
-            SWAG_CHECK(eatToken(TokenId::SymEqual));
-            SWAG_CHECK(doExpression(enumValue));
-        }
+            SWAG_CHECK(tokenizer.getToken(token));
+            if (token.id == TokenId::SymEqual)
+            {
+                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_CHECK(doExpression(enumValue));
+            }
 
-        SWAG_CHECK(eatSemiCol("after enum value"));
+            SWAG_CHECK(eatSemiCol("after enum value"));
+        }
     }
 
     currentScope = savedScope;
