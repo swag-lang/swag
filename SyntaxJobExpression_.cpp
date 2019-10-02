@@ -7,6 +7,7 @@
 #include "LanguageSpec.h"
 #include "Global.h"
 #include "SymTable.h"
+#include "TypeManager.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
@@ -147,21 +148,37 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     // Take pointer
     if (token.id == TokenId::SymAmpersand)
     {
-        exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule);
+        exprNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MakePointer, sourceFile->indexInModule);
         exprNode->semanticFct = &SemanticJob::resolveMakePointer;
-        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(eatToken());
 
         AstNode* identifierRef;
         SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef));
         forceTakeAddress(identifierRef);
 
         if (token.id == TokenId::SymLeftSquare)
-        {
             SWAG_CHECK(doArrayPointerIndex(&identifierRef));
-        }
 
         Ast::addChildBack(exprNode, identifierRef);
         identifierRef->flags |= AST_TAKE_ADDRESS;
+    }
+
+    // Dereference pointer
+    else if (token.id == TokenId::SymDot)
+    {
+        SWAG_CHECK(eatToken());
+
+        auto arrayNode         = Ast::newNode(this, &g_Pool_astPointerDeref, AstNodeKind::ArrayPointerIndex, sourceFile->indexInModule);
+        arrayNode->semanticFct = &SemanticJob::resolveArrayPointerIndex;
+        SWAG_CHECK(doSinglePrimaryExpression(arrayNode, &arrayNode->array));
+
+        auto literal                   = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Literal, sourceFile->indexInModule, arrayNode);
+        literal->computedValue.reg.u64 = 0;
+        literal->token.literalType     = g_TypeMgr.typeInfoS32;
+        literal->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        literal->semanticFct = &SemanticJob::resolveLiteral;
+        arrayNode->access    = literal;
+        exprNode             = arrayNode;
     }
     else
     {
@@ -393,7 +410,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymComma));
     }
 
-	initNode->childs.back()->token.endLocation = token.endLocation;
+    initNode->childs.back()->token.endLocation = token.endLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
