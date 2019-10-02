@@ -236,5 +236,22 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitIs(ByteCodeGenContext* context)
 {
-	return internalError(context, "emitIs, not done");
+    AstNode* node  = context->node;
+    AstNode* left  = node->childs[0];
+    AstNode* right = node->childs[1];
+
+	if (left->typeInfo->isNative(NativeTypeKind::Any))
+	{
+		node->resultRegisterRC = reserveRegisterRC(context);
+		auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
+		inst->b.u32 = right->computedValue.reg.u32;
+		emitInstruction(context, ByteCodeOp::CompareOpEqual64, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
+		freeRegisterRC(context, right);
+	}
+	else
+	{
+		return internalError(context, "emitIs, invalid type");
+	}
+
+    return true;
 }

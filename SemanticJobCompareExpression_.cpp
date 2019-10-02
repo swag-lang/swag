@@ -2,6 +2,9 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
+#include "SourceFile.h"
+#include "Module.h"
+#include "TypeTable.h"
 
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
@@ -182,9 +185,10 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
 
 bool SemanticJob::resolveIsExpression(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto left  = node->childs[0];
-    auto right = node->childs[1];
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto left       = node->childs[0];
+    auto right      = node->childs[1];
 
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
@@ -204,10 +208,14 @@ bool SemanticJob::resolveIsExpression(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, left));
     node->typeInfo = g_TypeMgr.typeInfoBool;
+    right->flags |= AST_NO_BYTECODE;
 
     if (leftTypeInfo->isNative(NativeTypeKind::Any))
     {
         node->byteCodeFct = &ByteCodeGenJob::emitIs;
+        auto& typeTable   = sourceFile->module->typeTable;
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, right->typeInfo, &right->typeInfo, &right->computedValue.reg.u32));
+        right->flags |= AST_VALUE_IS_TYPEINFO;
     }
     else if (leftTypeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
     {
@@ -219,7 +227,7 @@ bool SemanticJob::resolveIsExpression(SemanticContext* context)
         node->computedValue.reg.b = rightTypeInfo == g_TypeMgr.typeInfoS32;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
     }
-	else
+    else
     {
         node->computedValue.reg.b = leftTypeInfo == rightTypeInfo;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
