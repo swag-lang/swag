@@ -141,8 +141,8 @@ void ByteCode::print()
         case ByteCodeOp::IntrinsicAssert:
             if (ip->c.pointer)
             {
-                auto         size = strlen((const char*) ip->c.pointer);
-                std::wstring wc(size + 1, L'#');
+                auto    size = strlen((const char*) ip->c.pointer);
+                wstring wc(size + 1, L'#');
                 mbstowcs_s(nullptr, &wc[0], size + 1, (const char*) ip->c.pointer, size);
                 wprintf(L"RA: %u { \"%s\" }", ip->a.u32, wc.c_str());
             }
