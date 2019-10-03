@@ -409,7 +409,7 @@ bool ByteCodeGenJob::emitCastNativeS64(ByteCodeGenContext* context, AstNode* exp
         break;
     default:
         context->node = exprNode;
-        internalError(context, "emitCastNativeS32, invalid source type");
+        internalError(context, "emitCastNativeS64, invalid source type");
         break;
     }
 
@@ -581,7 +581,28 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return true;
     SWAG_ASSERT(typeInfo);
 
+    // Cast from any to something real
     auto node = context->node;
+    if (fromTypeInfo->isNative(NativeTypeKind::Any))
+    {
+        auto r0 = reserveRegisterRC(context);
+        if (g_CommandLine.debugAnycast)
+        {
+            auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0);
+            SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);
+            inst->b.u32 = exprNode->concreteTypeInfoStorage;
+            emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, exprNode->resultRegisterRC[1], r0);
+            inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, r0);
+            inst->c.pointer = (uint8_t*) "invalid cast";
+        }
+
+        SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+        exprNode->typeInfo     = typeInfo;
+        freeRegisterRC(context, r0);
+        return true;
+    }
+
     if (typeInfo->kind == TypeInfoKind::Pointer && fromTypeInfo->kind == TypeInfoKind::Pointer)
     {
         node->resultRegisterRC = exprNode->resultRegisterRC;

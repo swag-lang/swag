@@ -1030,7 +1030,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-            bufferC.addString(format("__assert(r%u.b, \"%s\", %d, 0);", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            bufferC.addString(format("__assert(r%u.b, \"%s\", %d, %s);", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1, ip->c.pointer));
             break;
         case ByteCodeOp::IntrinsicAlloc:
             bufferC.addString(format("r%u.pointer = (swag_uint8_t*) __alloc(r%u.u32);", ip->a.u32, ip->b.u32));

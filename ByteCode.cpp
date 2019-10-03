@@ -138,6 +138,18 @@ void ByteCode::print()
             wprintf(L"VA: { %u } VB: { %u }", ip->a.u32, ip->b.u32);
             break;
 
+        case ByteCodeOp::IntrinsicAssert:
+            if (ip->c.pointer)
+            {
+                auto         size = strlen((const char*) ip->c.pointer);
+                std::wstring wc(size + 1, L'#');
+                mbstowcs_s(nullptr, &wc[0], size + 1, (const char*) ip->c.pointer, size);
+                wprintf(L"RA: %u { \"%s\" }", ip->a.u32, wc.c_str());
+            }
+            else
+                wprintf(L"RA: %u ", ip->a.u32);
+            break;
+
         case ByteCodeOp::PushRAParam:
         case ByteCodeOp::PushRRSaved:
         case ByteCodeOp::PopRRSaved:
@@ -145,7 +157,6 @@ void ByteCode::print()
         case ByteCodeOp::DeRef16:
         case ByteCodeOp::DeRef32:
         case ByteCodeOp::DeRef64:
-        case ByteCodeOp::IntrinsicAssert:
         case ByteCodeOp::IntrinsicPrintChar:
         case ByteCodeOp::IntrinsicPrintF32:
         case ByteCodeOp::IntrinsicPrintF64:
