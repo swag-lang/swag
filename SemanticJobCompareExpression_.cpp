@@ -288,7 +288,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever
     if (left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_BIJECTIF));
 
     node->byteCodeFct = &ByteCodeGenJob::emitCompareOp;
     node->inheritAndFlag(AST_CONST_EXPR);

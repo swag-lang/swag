@@ -14,6 +14,7 @@ static const uint32_t CASTFLAG_JUST_CHECK    = 0x00000008;
 static const uint32_t CASTFLAG_UNCONST       = 0x00000010;
 static const uint32_t CASTFLAG_AUTO_BOOL     = 0x00000020;
 static const uint32_t CASTFLAG_NO_COLLECT    = 0x00000040;
+static const uint32_t CASTFLAG_BIJECTIF      = 0x00000080;
 
 enum MakeConcrete
 {
@@ -50,7 +51,7 @@ struct TypeManager
 
     static bool convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* fromNode);
 
-	static bool makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
+    static bool makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags = 0);
 
