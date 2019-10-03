@@ -1389,12 +1389,6 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     }
 }
 
-bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
-{
-    SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, rightNode, castFlags));
-    return true;
-}
-
 bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast)
 {
     auto sourceFile = context->sourceFile;
@@ -1463,6 +1457,12 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     return true;
 }
 
+bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint32_t castFlags)
+{
+    SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, rightNode, castFlags));
+    return true;
+}
+
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* nodeToCast, uint32_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
@@ -1490,7 +1490,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
         }
     }
 
-	// Store constant expression in the constant segment
+    // Store constant expression in the constant segment
     if (!(castFlags & CASTFLAG_NO_COLLECT))
     {
         if (nodeToCast->typeInfo->kind == TypeInfoKind::TypeList && !(nodeToCast->flags & AST_SLICE_INIT_EXPRESSION))
@@ -1555,6 +1555,17 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return true;
 
     // Everything can be casted to type 'any'
+    if (fromType->isNative(NativeTypeKind::Any) && (castFlags & CASTFLAG_EXPLICIT))
+    {
+        if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            auto& typeTable = context->sourceFile->module->typeTable;
+            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &nodeToCast->concreteTypeInfo, &nodeToCast->concreteTypeInfoStorage));
+        }
+
+        return true;
+    }
+
     if (toType->isNative(NativeTypeKind::Any))
     {
         if (nodeToCast && !(castFlags & CASTFLAG_JUST_CHECK))
