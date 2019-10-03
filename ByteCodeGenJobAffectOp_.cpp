@@ -105,10 +105,10 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
         }
         return true;
-	case NativeTypeKind::Any:
+    case NativeTypeKind::Any:
         emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
         emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
-		return true;
+        return true;
     default:
         return internalError(context, "emitAffectEqual, type not supported");
     }
@@ -523,6 +523,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     AstNode* rightNode = context->node->childs[1];
 
     SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+
+    if (leftNode->typeInfo->isNative(NativeTypeKind::Any))
+    {
+		leftNode->typeInfo = rightNode->typeInfo;
+    }
+
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         if (leftNode->kind == AstNodeKind::IdentifierRef && leftNode->childs.front()->kind == AstNodeKind::ArrayPointerIndex)

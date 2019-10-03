@@ -10,15 +10,12 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 
-bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags, bool explicitIsValid)
+bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
         assert(fromNode);
-        if (explicitIsValid)
-            context->errorContext.report({context->sourceFile, fromNode->token, format("cannot cast from '%s' to '%s' (an explicit cast exists)", fromType->name.c_str(), toType->name.c_str()).c_str()});
-        else
-            context->errorContext.report({context->sourceFile, fromNode->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
+        context->errorContext.report({context->sourceFile, fromNode->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
     }
 
     return false;
@@ -1194,16 +1191,14 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
 
 bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    TypeInfoSlice* toTypeSlice     = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
-    bool           explicitIsValid = false;
-
+    TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
     if (fromType->kind == TypeInfoKind::TypeList)
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
 
         // Can only cast array to slice
         if (fromTypeList->listKind != TypeInfoListKind::Bracket)
-            return castError(context, toType, fromType, fromNode, castFlags, explicitIsValid);
+            return castError(context, toType, fromType, fromNode, castFlags);
 
         // Special case when typelist is one pointer and one int
         if (fromTypeList->childs.size() == 2)
@@ -1269,13 +1264,11 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             {
                 if (castFlags & CASTFLAG_EXPLICIT)
                     return true;
-                else
-                    explicitIsValid = true;
             }
         }
     }
 
-    return castError(context, toType, fromType, fromNode, castFlags, explicitIsValid);
+    return castError(context, toType, fromType, fromNode, castFlags);
 }
 
 void TypeManager::promote(AstNode* left, AstNode* right)
