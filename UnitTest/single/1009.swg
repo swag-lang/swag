@@ -1,6 +1,7 @@
 #module module1009
 using swag
 
+#unittest error
 //#[swag.printbc]
 #test
 {

@@ -27,6 +27,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     SWAG_VERIFY(left->flags & AST_L_VALUE, context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is not a l-value"}));
     SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->errorContext.report({sourceFile, left, "affect operation not allowed, left expression is immutable"}));
 
+    // No direct operations on any, except affect any to any
+    if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
+    {
+        return context->errorContext.report({sourceFile, node, format("'%s' operation not allowed on type 'any'", node->token.text.c_str())});
+    }
+
     // Is this an array like affectation ?
     AstPointerDeRef* arrayNode = nullptr;
     if (left->kind == AstNodeKind::IdentifierRef && left->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
@@ -84,7 +90,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else if (rightTypeInfo->kind == TypeInfoKind::TypeList)
                 {
-					SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
                 }
                 else
                 {
