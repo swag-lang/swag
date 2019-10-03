@@ -50,7 +50,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 {
     auto typeInfo = TypeManager::concreteType(op->typeInfo);
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, op, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, op, CASTFLAG_AUTO_BOOL));
 
     if (op->flags & AST_VALUE_COMPUTED)
     {

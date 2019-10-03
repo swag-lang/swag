@@ -803,7 +803,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
         return context->errorContext.report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
 
     TypeManager::promote(left, right);
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, right));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right));
     node->typeInfo = left->typeInfo;
 
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
@@ -850,8 +850,8 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     }
 
     node->typeInfo = g_TypeMgr.typeInfoBool;
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, left));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, right));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, left));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, right));
 
     node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);

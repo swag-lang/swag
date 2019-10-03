@@ -396,7 +396,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, child));
     auto returnType = funcNode->returnType->typeInfo;
-    SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, child));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child));
 
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
     if (returnType && returnType->kind == TypeInfoKind::Struct)

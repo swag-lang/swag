@@ -58,7 +58,7 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
         if (context.flags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
 
-        bool same = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, castFlags);
+        bool same = TypeManager::makeCompatibles(nullptr, symbolTypeInfo, typeInfo, nullptr, nullptr, castFlags);
         if (!same)
         {
             context.badSignatureParameterIdx  = i;
@@ -221,7 +221,7 @@ static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoPar
                 }
 
                 auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
-                bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NO_ERROR);
+                bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
                 if (!same)
                 {
                     context.badSignatureParameterIdx  = i;
@@ -375,7 +375,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             }
         }
 
-        bool same = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, CASTFLAG_NO_ERROR);
+        bool same = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
         if (!same)
         {
             context.badSignatureParameterIdx  = i;

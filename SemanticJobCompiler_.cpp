@@ -71,7 +71,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     auto expr       = node->childs[0];
     auto sourceFile = context->sourceFile;
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, expr, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(executeNode(context, expr, true));
     if (context->result == SemanticResult::Pending)
         return true;
@@ -152,7 +152,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstIf>(context->node->parent, AstNodeKind::If);
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, node->boolExpression, CASTFLAG_AUTO_BOOL));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
     SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->errorContext.report({sourceFile, node->boolExpression, "expression cannot be evaluated at compile time"}));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated

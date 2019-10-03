@@ -445,7 +445,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Do not cast for structs, as we can have special assignment with different types
         if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, node->assignment, CASTFLAG_UNCONST));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_UNCONST));
         }
         else
         {
@@ -491,9 +491,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
                 // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
                 if (symbolFlags & OVERLOAD_VAR_GLOBAL)
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment, CASTFLAG_NO_COLLECT));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, CASTFLAG_NO_COLLECT));
                 else
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, node->assignment));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment));
             }
             else if (typeList->listKind == TypeInfoListKind::Curly)
             {

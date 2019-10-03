@@ -77,14 +77,14 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             {
                 if (rightTypeInfo->kind == TypeInfoKind::Struct)
                 {
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, right, CASTFLAG_UNCONST));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_UNCONST));
                     SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == SemanticResult::Pending)
                         return true;
                 }
                 else if (rightTypeInfo->kind == TypeInfoKind::TypeList)
                 {
-					SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, right, CASTFLAG_UNCONST));
+					SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_UNCONST));
                 }
                 else
                 {
@@ -93,7 +93,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             }
         }
         else
-            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, right));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right));
         break;
 
     case TokenId::SymLowerLowerEqual:
@@ -118,7 +118,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::Char ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -141,7 +141,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right));
         if (leftTypeInfo->nativeType != NativeTypeKind::F32 && leftTypeInfo->nativeType != NativeTypeKind::F64)
         {
             return context->errorContext.report({sourceFile, node, format("affect not allowed on type '%s'", leftTypeInfo->name.c_str())});
@@ -190,7 +190,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::Char ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
@@ -238,7 +238,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
             SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, right));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right));
             if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
                 leftTypeInfo->nativeType == NativeTypeKind::Char ||
                 leftTypeInfo->nativeType == NativeTypeKind::String)
@@ -271,7 +271,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     default:
         SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
         SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::Char ||
             leftTypeInfo->nativeType == NativeTypeKind::String)

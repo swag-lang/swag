@@ -137,7 +137,7 @@ bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->childs[1]));
     SWAG_CHECK(checkIsConcrete(context, node->childs[2]));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, node->childs[0]));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->childs[0]));
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->childs[2], node->childs[1]));
     node->typeInfo    = node->childs[1]->typeInfo;
     node->byteCodeFct = &ByteCodeGenJob::emitTrinaryOp;
