@@ -21,20 +21,17 @@ namespace Ast
 
     void removeFromParent(AstNode* child)
     {
-        auto parent = child->parent;
-        parent->lock();
+        auto        parent = child->parent;
+        scoped_lock lk(parent->mutex);
         for (int i = 0; i < parent->childs.size(); i++)
         {
             if (parent->childs[i] == child)
             {
                 parent->childs.erase(parent->childs.begin() + i);
                 child->parent = nullptr;
-                parent->unlock();
                 return;
             }
         }
-
-        parent->unlock();
     }
 
     void addChildFront(AstNode* parent, AstNode* child)
@@ -44,9 +41,8 @@ namespace Ast
 
         if (parent)
         {
-            parent->lock();
+            scoped_lock lk(parent->mutex);
             parent->childs.insert(parent->childs.begin(), child);
-            parent->unlock();
         }
 
         child->parent = parent;
@@ -59,25 +55,11 @@ namespace Ast
 
         if (parent)
         {
-            parent->lock();
+            scoped_lock lk(parent->mutex);
             parent->childs.push_back(child);
-            parent->unlock();
         }
 
         child->parent = parent;
-    }
-
-    Scope* findOrCreateScopeByName(Scope* parentScope, const string& name)
-    {
-        SWAG_ASSERT(parentScope);
-        scoped_lock lock(parentScope->lockChilds);
-        for (auto child : parentScope->childScopes)
-        {
-            if (child->name == name)
-                return child;
-        }
-
-        return g_Pool_scope.alloc();
     }
 
     Scope* newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName)

@@ -41,7 +41,6 @@ namespace Ast
         return node;
     }
 
-    extern Scope* findOrCreateScopeByName(Scope* parentScope, const string& name);
     extern Scope* newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     extern void   removeFromParent(AstNode* child);
     extern void   addChildBack(AstNode* parent, AstNode* child);
