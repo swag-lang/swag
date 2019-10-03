@@ -56,6 +56,17 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+
+    if (node->prop == Property::TypeOf)
+    {
+        if (token.id == TokenId::KwdConst)
+        {
+            SWAG_CHECK(doTypeExpression(node, &node->expression));
+            SWAG_CHECK(eatToken(TokenId::SymRightParen));
+            return true;
+        }
+    }
+
     SWAG_CHECK(doExpression(node, &node->expression));
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;

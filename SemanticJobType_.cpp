@@ -280,3 +280,56 @@ bool SemanticJob::resolveTypeList(SemanticContext* context)
         node->typeInfo = node->childs.front()->typeInfo;
     return true;
 }
+
+bool SemanticJob::resolveIsExpression(SemanticContext* context)
+{
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto left       = node->childs[0];
+    auto right      = node->childs[1];
+
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+    SWAG_ASSERT(leftTypeInfo && rightTypeInfo);
+
+    // Keep it generic if it's generic on one side
+    if (leftTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = leftTypeInfo;
+        return true;
+    }
+    if (rightTypeInfo->kind == TypeInfoKind::Generic)
+    {
+        node->typeInfo = rightTypeInfo;
+        return true;
+    }
+
+    SWAG_CHECK(checkIsConcrete(context, left));
+    node->typeInfo = g_TypeMgr.typeInfoBool;
+    right->flags |= AST_NO_BYTECODE;
+
+    if (leftTypeInfo->isNative(NativeTypeKind::Any))
+    {
+        node->byteCodeFct = &ByteCodeGenJob::emitIs;
+        auto& typeTable   = sourceFile->module->typeTable;
+        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, right->typeInfo, &right->typeInfo, &right->computedValue.reg.u32));
+        right->flags |= AST_VALUE_IS_TYPEINFO;
+    }
+    else if (leftTypeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+    {
+        node->computedValue.reg.b = rightTypeInfo == g_TypeMgr.typeInfoF32;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+    else if (leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+    {
+        node->computedValue.reg.b = rightTypeInfo == g_TypeMgr.typeInfoS32;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+    else
+    {
+        node->computedValue.reg.b = leftTypeInfo->isSame(rightTypeInfo, ISSAME_EXACT);
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    }
+
+    return true;
+}
