@@ -1565,10 +1565,16 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         return true;
     }
 
-    if (fromType->isNative(NativeTypeKind::Any) && (castFlags & CASTFLAG_EXPLICIT))
+    if (fromType->isNative(NativeTypeKind::Any))
     {
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
+            if (!(castFlags & CASTFLAG_EXPLICIT))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = toType;
+            }
+
             auto& typeTable = context->sourceFile->module->typeTable;
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, toType, &fromNode->concreteTypeInfo, &fromNode->concreteTypeInfoStorage));
         }

@@ -105,6 +105,12 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     return &ins;
 }
 
+void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
+{
+    inst->startLocation = node->token.startLocation;
+    inst->endLocation   = node->token.endLocation;
+}
+
 void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
 {
     node->bc             = g_Pool_byteCode.alloc();

@@ -594,6 +594,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, exprNode->resultRegisterRC[1], r0);
             inst            = emitInstruction(context, ByteCodeOp::IntrinsicAssert, r0);
             inst->c.pointer = (uint8_t*) "invalid cast";
+            inherhitLocation(inst, exprNode);
         }
 
         SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));

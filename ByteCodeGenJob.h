@@ -39,6 +39,7 @@ struct ByteCodeGenJob : public Job
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
+    static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 setupBC(Module* module, AstNode* node);
     static void                 askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode);
     static void                 collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds);
