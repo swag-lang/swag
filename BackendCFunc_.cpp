@@ -222,7 +222,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
     {
         if (i)
             bufferC.addString(", ");
-        bufferC.addString(format("__register* rr%d", i));
+        bufferC.addString(format("swag_register* rr%d", i));
     }
 
     // Parameters
@@ -234,7 +234,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
         {
             if (index || i || typeFunc->numReturnRegisters())
                 bufferC.addString(", ");
-            bufferC.addString(format("__register* rp%u", index++));
+            bufferC.addString(format("swag_register* rp%u", index++));
         }
     }
 
@@ -307,7 +307,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         for (uint32_t r = 0; r < bc->maxReservedRegisterRC; r++)
         {
             if (index == 0)
-                bufferC.addString("__register ");
+                bufferC.addString("swag_register ");
             else
                 bufferC.addString(", ");
             index = (index + 1) % 10;
@@ -326,7 +326,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         for (int i = 0; i < bc->maxCallResults; i++)
         {
             if (index == 0)
-                bufferC.addString("__register ");
+                bufferC.addString("swag_register ");
             else
                 bufferC.addString(", ");
             bufferC.addString(format("rt%u", index));
@@ -1030,7 +1030,10 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-            bufferC.addString(format("__assert(r%u.b, \"%s\", %d, %s);", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1, ip->c.pointer));
+			if(ip->c.pointer)
+				bufferC.addString(format("__assert(r%u.b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1, ip->c.pointer));
+			else
+				bufferC.addString(format("__assert(r%u.b, \"%s\", %d, 0);", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::IntrinsicAlloc:
             bufferC.addString(format("r%u.pointer = (swag_uint8_t*) __alloc(r%u.u32);", ip->a.u32, ip->b.u32));
@@ -1193,12 +1196,12 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
         case ByteCodeOp::MovRASPVaargs:
         {
-            bufferC.addString(format("__register vaargs%u[] = { 0, ", vaargsIdx));
+            bufferC.addString(format("swag_register vaargs%u[] = { 0, ", vaargsIdx));
             int idxParam = (int) pushRAParams.size() - 1;
             while (idxParam >= 0)
                 bufferC.addString(format("r%u, ", pushRAParams[idxParam--]));
             bufferC.addString(" }; ");
-            bufferC.addString(format("r%u.pointer = sizeof(__register) + (swag_int8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
+            bufferC.addString(format("r%u.pointer = sizeof(swag_register) + (swag_int8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
             bufferC.addString(format("vaargs%u[0].pointer = r%u.pointer;", vaargsIdx, ip->a.u32));
             vaargsIdx++;
             break;
@@ -1225,7 +1228,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
                 {
                     if (j)
                         bufferC.addString(",");
-                    bufferC.addString("__register*");
+                    bufferC.addString("swag_register*");
                 }
 
                 bufferC.addString("); ");
