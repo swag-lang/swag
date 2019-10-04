@@ -16,7 +16,7 @@ typedef short				swag_int16_t;
 typedef int					swag_int32_t;
 typedef long long			swag_int64_t;
 typedef unsigned char		swag_uint8_t;
-typedef unsigned char		swag_bool;
+typedef unsigned char		swag_bool_t;
 typedef unsigned short		swag_uint16_t;
 typedef unsigned int		swag_uint32_t;
 typedef unsigned int		swag_char32_t;
@@ -43,7 +43,7 @@ typedef double				swag_float64_t;
 )";
 
 static const char* g_RuntimeC = R"(
-typedef union swag_register {
+typedef union swag_register_t {
     swag_uint8_t*	pointer;
     swag_uint64_t	u64;
     swag_int64_t	s64;
@@ -56,8 +56,8 @@ typedef union swag_register {
     swag_int16_t	s16;
     swag_uint8_t	u8;
     swag_int8_t		s8;
-    swag_bool		b;
-} swag_register;
+    swag_bool_t		b;
+} swag_register_t;
 
 )";
 
@@ -98,7 +98,7 @@ static void __print_f64(swag_float64_t value)
 	__print(buf);
 }
 
-static void __assert(swag_bool expr, const char* file, int line, const char* msg)
+static void __assert(swag_bool_t expr, const char* file, int line, const char* msg)
 {
 	if(expr) 
 		return;
@@ -112,7 +112,7 @@ static void __assert(swag_bool expr, const char* file, int line, const char* msg
 	exit(-1);
 }
 
-static swag_bool __strcmp(const char* str1, const char* str2)
+static swag_bool_t __strcmp(const char* str1, const char* str2)
 {
 	if(!str1 || !str2)
 		return str1 == str2;

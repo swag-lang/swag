@@ -19,7 +19,7 @@ const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
     switch (typeInfo->nativeType)
     {
     case NativeTypeKind::Bool:
-        return "swag_bool";
+        return "swag_bool_t";
     case NativeTypeKind::S8:
         return "swag_int8_t";
     case NativeTypeKind::S16:
@@ -222,7 +222,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
     {
         if (i)
             bufferC.addString(", ");
-        bufferC.addString(format("swag_register* rr%d", i));
+        bufferC.addString(format("swag_register_t* rr%d", i));
     }
 
     // Parameters
@@ -234,7 +234,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
         {
             if (index || i || typeFunc->numReturnRegisters())
                 bufferC.addString(", ");
-            bufferC.addString(format("swag_register* rp%u", index++));
+            bufferC.addString(format("swag_register_t* rp%u", index++));
         }
     }
 
@@ -307,7 +307,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         for (uint32_t r = 0; r < bc->maxReservedRegisterRC; r++)
         {
             if (index == 0)
-                bufferC.addString("swag_register ");
+                bufferC.addString("swag_register_t ");
             else
                 bufferC.addString(", ");
             index = (index + 1) % 10;
@@ -326,7 +326,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         for (int i = 0; i < bc->maxCallResults; i++)
         {
             if (index == 0)
-                bufferC.addString("swag_register ");
+                bufferC.addString("swag_register_t ");
             else
                 bufferC.addString(", ");
             bufferC.addString(format("rt%u", index));
@@ -1196,12 +1196,12 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
         case ByteCodeOp::MovRASPVaargs:
         {
-            bufferC.addString(format("swag_register vaargs%u[] = { 0, ", vaargsIdx));
+            bufferC.addString(format("swag_register_t vaargs%u[] = { 0, ", vaargsIdx));
             int idxParam = (int) pushRAParams.size() - 1;
             while (idxParam >= 0)
                 bufferC.addString(format("r%u, ", pushRAParams[idxParam--]));
             bufferC.addString(" }; ");
-            bufferC.addString(format("r%u.pointer = sizeof(swag_register) + (swag_int8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
+            bufferC.addString(format("r%u.pointer = sizeof(swag_register_t) + (swag_int8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
             bufferC.addString(format("vaargs%u[0].pointer = r%u.pointer;", vaargsIdx, ip->a.u32));
             vaargsIdx++;
             break;
@@ -1228,7 +1228,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
                 {
                     if (j)
                         bufferC.addString(",");
-                    bufferC.addString("swag_register*");
+                    bufferC.addString("swag_register_t*");
                 }
 
                 bufferC.addString("); ");
