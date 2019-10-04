@@ -65,6 +65,16 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
+    case TokenId::CompilerFunction:
+    {
+        auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerFunction, sourceFile->indexInModule, parent);
+        if (result)
+            *result = exprNode;
+        exprNode->inheritTokenLocation(token);
+		SWAG_CHECK(eatToken());
+        exprNode->semanticFct = &SemanticJob::resolveCompilerFunction;
+        break;
+    }
     case TokenId::SymLeftParen:
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doExpression(parent, result));
@@ -298,10 +308,10 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         leftNode = binaryNode;
         isBinary = true;
     }
-	else if (token.id == TokenId::SymEqual)
-	{
-		return syntaxError(token, "invalid token '=', did you mean '==' ?");
-	}
+    else if (token.id == TokenId::SymEqual)
+    {
+        return syntaxError(token, "invalid token '=', did you mean '==' ?");
+    }
 
     if (!isBinary)
         Ast::addChildBack(parent, leftNode);
@@ -347,13 +357,13 @@ bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
         return true;
     }
 
-	SWAG_CHECK(doExpression(parent, result));
-	return true;
+    SWAG_CHECK(doExpression(parent, result));
+    return true;
 }
 
 bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
 {
-	AstNode* boolExpression;
+    AstNode* boolExpression;
     if (token.id == TokenId::CompilerRun)
     {
         SWAG_CHECK(eatToken());

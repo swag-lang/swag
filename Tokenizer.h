@@ -67,6 +67,7 @@ enum class TokenId
     CompilerRun,
     CompilerFile,
     CompilerLine,
+    CompilerFunction,
     CompilerImport,
     CompilerVersion,
     CompilerTest,

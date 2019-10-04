@@ -173,3 +173,15 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolveCompilerFunction(SemanticContext* context)
+{
+	auto node = context->node;
+	auto sourceFile = context->sourceFile;
+
+	SWAG_VERIFY(node->ownerFct, context->errorContext.report({ sourceFile, node, "'#function' can only be called inside a function" }));
+	node->computedValue.text = node->ownerFct->name;
+	node->typeInfo = g_TypeMgr.typeInfoString;
+	node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+	return true;
+}
