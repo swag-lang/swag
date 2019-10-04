@@ -341,7 +341,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
 {
     // Is this a type ?
-    if (token.id == TokenId::KwdConst || token.id == TokenId::SymLeftSquare)
+    if (token.id == TokenId::KwdConst || token.id == TokenId::SymLeftSquare || token.id == TokenId::SymAsterisk)
     {
         SWAG_CHECK(doTypeExpression(parent, result));
         return true;
