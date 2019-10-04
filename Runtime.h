@@ -126,6 +126,12 @@ namespace swag
 		count:			u32
 		totalCount:		u32
 	}
+
+	struct typeinfo_slice
+	{
+		base: 			typeinfo
+		pointed_type:	const *typeinfo
+	}
 }
 
 )";

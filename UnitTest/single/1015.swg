@@ -15,4 +15,7 @@ using swag
 	@assert(ptr2.totalCount == 6)
 	@assert(ptr2.pointed_type == @typeof([3] string))
 	@assert(ptr2.final_type == @typeof(string))
+	
+	ptr3 := cast(const *typeinfo_slice) @typeof([..] string)
+	@assert(ptr3.pointed_type == @typeof(string))
 }

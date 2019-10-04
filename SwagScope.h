@@ -17,6 +17,7 @@ struct SwagScope
     TypeInfoStruct* regTypeInfoEnum     = nullptr;
     TypeInfoStruct* regTypeInfoVariadic = nullptr;
     TypeInfoStruct* regTypeInfoArray    = nullptr;
+    TypeInfoStruct* regTypeInfoSlice    = nullptr;
 
     bool         fullySolved = false;
     uint32_t     cptSolved   = 0;

@@ -89,9 +89,15 @@ struct ConcreteTypeInfoArray
 {
     ConcreteTypeInfo  base;
     ConcreteTypeInfo* pointedType;
-	ConcreteTypeInfo* finalType;
+    ConcreteTypeInfo* finalType;
     uint32_t          count;
     uint32_t          totalCount;
+};
+
+struct ConcreteTypeInfoSlice
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
@@ -226,6 +232,9 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         break;
     case TypeInfoKind::Array:
         typeStruct = swagScope.regTypeInfoArray;
+        break;
+    case TypeInfoKind::Slice:
+        typeStruct = swagScope.regTypeInfoSlice;
         break;
     default:
         context->errorContext.report({sourceFile, node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
@@ -378,7 +387,15 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         concreteType->count      = realType->count;
         concreteType->totalCount = realType->totalCount;
         SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
-		SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
+        break;
+    }
+
+    case TypeInfoKind::Slice:
+    {
+        auto concreteType = (ConcreteTypeInfoSlice*) concreteTypeInfoValue;
+        auto realType     = (TypeInfoSlice*) typeInfo;
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
         break;
     }
     }

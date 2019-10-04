@@ -65,8 +65,14 @@ void SwagScope::registerType(TypeInfo* typeInfo)
 		regTypeInfoArray = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         cptSolved++;
     }
+    else if (typeInfo->name == "typeinfo_slice")
+    {
+        SWAG_ASSERT(!regTypeInfoSlice);
+        regTypeInfoSlice = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        cptSolved++;
+    }
 
-    if (cptSolved == 9)
+    if (cptSolved == 10)
     {
         fullySolved = true;
         for (auto job : dependentJobs)
