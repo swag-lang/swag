@@ -85,6 +85,15 @@ struct ConcreteTypeInfoEnum
     ConcreteStringSlice attributes;
 };
 
+struct ConcreteTypeInfoArray
+{
+    ConcreteTypeInfo  base;
+    ConcreteTypeInfo* pointedType;
+	ConcreteTypeInfo* finalType;
+    uint32_t          count;
+    uint32_t          totalCount;
+};
+
 #define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
 
 bool TypeTable::makeConcreteSubTypeInfo(SemanticContext* context, void* concreteTypeInfoValue, uint32_t storageOffset, ConcreteTypeInfo** result, TypeInfo* typeInfo)
@@ -133,14 +142,14 @@ bool TypeTable::makeConcreteAttributes(SemanticContext* context, SymbolAttribute
 
         auto ptrAny        = (ConcreteAny*) ptr;
         auto typeAttribute = one.second.first;
-		if (typeAttribute->kind == TypeInfoKind::Native)
-		{
-			auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, typeAttribute, one.second.second);
-			ptrAny->value = module->constantSegment.addressNoLock(storageOffsetValue);
-			module->constantSegment.addInitPtr(curOffset, storageOffsetValue);
-		}
-		else
-			ptrAny->value = nullptr;
+        if (typeAttribute->kind == TypeInfoKind::Native)
+        {
+            auto storageOffsetValue = module->constantSegment.addComputedValueNoLock(sourceFile, typeAttribute, one.second.second);
+            ptrAny->value           = module->constantSegment.addressNoLock(storageOffsetValue);
+            module->constantSegment.addInitPtr(curOffset, storageOffsetValue);
+        }
+        else
+            ptrAny->value = nullptr;
 
         SWAG_CHECK(makeConcreteSubTypeInfo(context, nullptr, curOffset + sizeof(void*), &ptrAny->type, typeAttribute));
         curOffset += sizeof(ConcreteAny);
@@ -214,6 +223,9 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         break;
     case TypeInfoKind::Variadic:
         typeStruct = swagScope.regTypeInfoVariadic;
+        break;
+    case TypeInfoKind::Array:
+        typeStruct = swagScope.regTypeInfoArray;
         break;
     default:
         context->errorContext.report({sourceFile, node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
@@ -356,6 +368,17 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         concreteType->rawType = nullptr;
         if (realType->rawType)
             SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->rawType, realType->rawType));
+        break;
+    }
+
+    case TypeInfoKind::Array:
+    {
+        auto concreteType        = (ConcreteTypeInfoArray*) concreteTypeInfoValue;
+        auto realType            = (TypeInfoArray*) typeInfo;
+        concreteType->count      = realType->count;
+        concreteType->totalCount = realType->totalCount;
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
+		SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
         break;
     }
     }

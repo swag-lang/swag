@@ -117,6 +117,15 @@ namespace swag
 	{
 		base: 		typeinfo
 	}
+
+	struct typeinfo_array
+	{
+		base: 			typeinfo
+		pointed_type:	const *typeinfo
+		final_type:		const *typeinfo
+		count:			u32
+		totalCount:		u32
+	}
 }
 
 )";

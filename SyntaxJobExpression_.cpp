@@ -56,7 +56,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doExpression(node, &node->expression));
+    SWAG_CHECK(doTopExpression(node, &node->expression));
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }
@@ -298,6 +298,10 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         leftNode = binaryNode;
         isBinary = true;
     }
+	else if (token.id == TokenId::SymEqual)
+	{
+		return syntaxError(token, "invalid token '=', did you mean '==' ?");
+	}
 
     if (!isBinary)
         Ast::addChildBack(parent, leftNode);
@@ -334,15 +338,21 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
 {
-	// Is this a type ?
-    if (token.id == TokenId::KwdConst)
+    // Is this a type ?
+    if (token.id == TokenId::KwdConst || token.id == TokenId::SymLeftSquare)
     {
         SWAG_CHECK(doTypeExpression(parent, result));
         return true;
     }
 
+	SWAG_CHECK(doExpression(parent, result));
+	return true;
+}
+
+bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
+{
 	AstNode* boolExpression;
     if (token.id == TokenId::CompilerRun)
     {

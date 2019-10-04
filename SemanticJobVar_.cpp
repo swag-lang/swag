@@ -480,7 +480,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 auto typeArray         = g_Pool_typeInfoArray.alloc();
                 typeArray->pointedType = typeList->childs.front();
-                typeArray->rawType     = typeArray->pointedType;
+                typeArray->finalType   = typeArray->pointedType;
                 typeArray->sizeOf      = node->typeInfo->sizeOf;
                 typeArray->count       = (uint32_t) typeList->childs.size();
                 typeArray->totalCount  = typeArray->count;

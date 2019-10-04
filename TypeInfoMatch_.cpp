@@ -124,9 +124,9 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                             auto symbolArray = CastTypeInfo<TypeInfoArray>(symbolTypeInfo, TypeInfoKind::Array);
                             auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
-                            context.mapGenericTypes[symbolArray->rawType] = {typeArray->rawType, i};
-                            symbolTypeInfos.push_back(symbolArray->rawType);
-                            typeInfos.push_back(typeArray->rawType);
+                            context.mapGenericTypes[symbolArray->finalType] = {typeArray->finalType, i};
+                            symbolTypeInfos.push_back(symbolArray->finalType);
+                            typeInfos.push_back(typeArray->finalType);
                             break;
                         }
 

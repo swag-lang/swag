@@ -64,9 +64,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        if (typeArray->rawType->kind == TypeInfoKind::Struct)
+        if (typeArray->finalType->kind == TypeInfoKind::Struct)
         {
-            if ((typeArray->rawType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
+            if ((typeArray->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
             {
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
                 {
@@ -78,12 +78,12 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     auto seekJump = context->bc->numInstructions;
 
                     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->rawType, TypeInfoKind::Struct), r0[1]);
+                        emitStructInit(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct), r0[1]);
                     emitStructParameters(context, r0[1]);
 
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
-                    if (typeArray->rawType->sizeOf)
-                        emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->rawType->sizeOf;
+                    if (typeArray->finalType->sizeOf)
+                        emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->finalType->sizeOf;
                     emitInstruction(context, ByteCodeOp::IsNullU32, r0[0], r0[2]);
                     emitInstruction(context, ByteCodeOp::JumpNotTrue, r0[2])->b.s32 = seekJump - context->bc->numInstructions - 1;
 

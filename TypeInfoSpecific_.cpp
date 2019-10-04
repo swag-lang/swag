@@ -137,7 +137,7 @@ TypeInfo* TypeInfoArray::clone()
 {
     auto newType         = g_Pool_typeInfoArray.alloc();
     newType->pointedType = pointedType;
-    newType->rawType     = rawType;
+    newType->finalType   = finalType;
     newType->count       = count;
     newType->totalCount  = totalCount;
     newType->copyFrom(this);

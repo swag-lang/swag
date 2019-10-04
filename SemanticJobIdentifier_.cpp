@@ -100,8 +100,8 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Array:
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        if (typeArray->rawType->kind == TypeInfoKind::Struct)
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(typeArray->rawType)->scope;
+        if (typeArray->finalType->kind == TypeInfoKind::Struct)
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(typeArray->finalType)->scope;
         node->typeInfo = typeInfo;
         break;
     }

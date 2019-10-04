@@ -430,7 +430,7 @@ struct TypeInfoArray : public TypeInfo
         TypeInfo::reset();
         kind        = TypeInfoKind::Array;
         pointedType = nullptr;
-        rawType     = nullptr;
+        finalType     = nullptr;
         count       = 0;
         totalCount  = 0;
     }
@@ -456,7 +456,7 @@ struct TypeInfoArray : public TypeInfo
     TypeInfo* clone() override;
 
     TypeInfo* pointedType;
-    TypeInfo* rawType;
+    TypeInfo* finalType;
     uint32_t  count;
     uint32_t  totalCount;
 };

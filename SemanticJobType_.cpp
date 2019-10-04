@@ -161,10 +161,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrArray->count       = UINT32_MAX;
             ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = node->typeInfo;
-            ptrArray->rawType     = node->typeInfo;
+            ptrArray->finalType   = node->typeInfo;
             if (node->isConst)
                 ptrArray->flags |= TYPEINFO_CONST;
-            ptrArray->flags |= (ptrArray->rawType->flags & TYPEINFO_GENERIC);
+            ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
             ptrArray->sizeOf = 0;
             ptrArray->computeName();
             node->typeInfo = typeTable.registerType(ptrArray);
@@ -186,11 +186,11 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 totalCount *= ptrArray->count;
                 ptrArray->totalCount  = totalCount;
                 ptrArray->pointedType = node->typeInfo;
-                ptrArray->rawType     = rawType;
+                ptrArray->finalType   = rawType;
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
                 if (node->isConst)
                     ptrArray->flags |= TYPEINFO_CONST;
-                ptrArray->flags |= (ptrArray->rawType->flags & TYPEINFO_GENERIC);
+                ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
                 ptrArray->computeName();
                 node->typeInfo = typeTable.registerType(ptrArray);
             }
