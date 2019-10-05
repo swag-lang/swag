@@ -162,7 +162,7 @@ JobResult ByteCodeGenJob::execute()
             }
 
 			// Register some default swag functions
-			if (originalNode->fullname == "swag_defaultAllocator")
+			if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)
             {
 				g_defaultContext.allocator = context.bc;
             }

@@ -1,10 +1,6 @@
 #module module1019
 using swag
 
-func swag_Toto()
-{
-}
-
 //#[swag.printbc]
 #test
 {

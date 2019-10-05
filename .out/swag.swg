@@ -1,3 +1,5 @@
+// swag compiler mandatory file
+
 func @print(value: s32);
 func @print(value: s64);
 func @print(value: f32);
@@ -12,6 +14,10 @@ func @getcontext()->*swag.Context;
 
 namespace swag 
 {
+	// #########################################################
+	// Compiler attributes
+	// #########################################################
+
 	attr constexpr() -> func
 	attr printbc() -> func
 	attr compiler() -> func
@@ -20,6 +26,10 @@ namespace swag
 	attr foreign(module: string = "") -> func
 	attr waitsem(ms: s32) -> func
 
+	// #########################################################
+	// Context & allocators
+	// #########################################################
+	
 	enum AllocatorMode
 	{
 		Alloc
@@ -50,6 +60,10 @@ namespace swag
 		allocator: (*AllocatorRequest)->void
 	}
 
+	// #########################################################
+	// Type reflection
+	// #########################################################
+	
 	enum TypeinfoKind
 	{
 		Invalid

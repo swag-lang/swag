@@ -244,12 +244,6 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 return false;
             }
 
-            if (token.id == TokenId::Identifier && token.text[0] == '@')
-            {
-                sourceFile->report({sourceFile, token, format("invalid intrinsic '%s'", token.text.c_str())});
-                return false;
-            }
-
             return true;
         }
 

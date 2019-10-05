@@ -161,7 +161,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (node->name == "opInit")
         genByteCode = true;
-    if (node->fullname == "swag_defaultAllocator")
+    if (node->name == "defaultAllocator" && sourceFile->swagFile)
         genByteCode = true;
     if (node->attributeFlags & AST_IS_GENERIC)
         genByteCode = false;
