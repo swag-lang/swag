@@ -110,7 +110,7 @@ namespace swag
 	struct Typeinfo
 	{
 		name:	string
-		kind: 	TypeinfoKind = TypeinfoKind.Invalid
+		kind: 	TypeinfoKind = ?
 		sizeof: u32
 	}
 

@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "Workspace.h"
+#include "TypeManager.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
@@ -112,7 +113,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         {
             SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
 
-            auto typeInfoAssignment = varDecl->assignment->typeInfo;
+            auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, MakeConcrete::FlagAlias);
+            typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, MakeConcrete::FlagEnum);
+
             if (typeInfoAssignment->isNative(NativeTypeKind::String))
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
             else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
@@ -152,8 +155,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     node->typeInfo = typeInfo;
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
 
-	// We are parsing the swag module
-	if(sourceFile->swagFile)
-		sourceFile->module->workspace->swagScope.registerType(node->typeInfo);
+    // We are parsing the swag module
+    if (sourceFile->swagFile)
+        sourceFile->module->workspace->swagScope.registerType(node->typeInfo);
     return true;
 }
