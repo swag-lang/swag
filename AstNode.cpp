@@ -57,6 +57,7 @@ void AstNode::inheritLocationFromChilds()
 
 void AstNode::computeFullName()
 {
+    scoped_lock lk(mutex);
     SWAG_ASSERT(ownerScope);
     fullname = ownerScope->fullname + "_" + name;
     replaceAll(fullname, '.', '_');
@@ -67,7 +68,7 @@ const char* AstNode::getKindName(AstNode* node)
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
-	case AstNodeKind::LetDecl:
+    case AstNodeKind::LetDecl:
         return "a variable";
     case AstNodeKind::FuncDecl:
         return "a function";
@@ -93,7 +94,7 @@ const char* AstNode::getNakedKindName(AstNode* node)
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
-	case AstNodeKind::LetDecl:
+    case AstNodeKind::LetDecl:
         return "variable";
     case AstNodeKind::FuncDecl:
         return "function";

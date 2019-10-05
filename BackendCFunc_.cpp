@@ -361,7 +361,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         // Print source code
-        if (g_CommandLine.cOutputCode)
+        if (g_CommandLine.cOutputCode && !bc->compilerGenerated)
         {
             if (ip->startLocation.line != lastLine)
             {

@@ -40,18 +40,27 @@ bool SourceFile::open()
         return true;
     openedOnce = true;
 
-	// Seems that we need 'N' flag to avoid handle to be shared with spawned processes
+    // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
     auto err = _wfopen_s(&fileHandle, path.c_str(), L"rbN");
     if (fileHandle == nullptr)
     {
         char buf[256];
         strerror_s(buf, err);
-        report({this, format("error reading file '%s': '%s'", path.string().c_str(), buf)});
+        report({this, format("error opening file '%s': '%s'", path.string().c_str(), buf)});
         return false;
     }
 
     setvbuf(fileHandle, nullptr, _IONBF, 0);
     return true;
+}
+
+void SourceFile::close()
+{
+    if (fileHandle)
+    {
+        fclose(fileHandle);
+        fileHandle = nullptr;
+    }
 }
 
 bool SourceFile::checkFormat(int bufferIndex)
@@ -90,15 +99,6 @@ bool SourceFile::checkFormat(int bufferIndex)
     }
 
     return true;
-}
-
-void SourceFile::close()
-{
-    if (fileHandle)
-    {
-        fclose(fileHandle);
-        fileHandle = nullptr;
-    }
 }
 
 void SourceFile::seekTo(long seek)
@@ -281,6 +281,7 @@ void SourceFile::waitEndRequests()
 
 Utf8 SourceFile::getLine(long seek)
 {
+    scoped_lock lk(mutexGetLine);
     waitEndRequests(); // Be sure there's no pending requests
     open();
     seekTo(seek + headerSize);
@@ -322,7 +323,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         return false;
 
     scoped_lock lock(g_Log.mutexAccess);
-	numErrors++;
+    numErrors++;
     module->numErrors++;
 
     // Do not raise an error if we are waiting for one, during tests

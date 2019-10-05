@@ -14,7 +14,7 @@ struct ByteCodeInstruction
     Register       a;
     Register       b;
     Register       c;
-	Register       cache;
+    Register       cache;
     uint32_t       sourceFileIdx;
     SourceLocation startLocation;
     SourceLocation endLocation;
@@ -34,6 +34,7 @@ struct ByteCode : public PoolElement
     TypeInfoFuncAttr*    typeInfoFunc       = nullptr;
     AstNode*             node               = nullptr;
     string               name;
+    bool                 compilerGenerated = false;
 
     uint32_t          maxReservedRegisterRC = 0;
     vector<uint32_t>  availableRegistersRC;

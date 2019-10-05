@@ -75,6 +75,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     replaceAll(opDrop->name, '.', '_');
     opDrop->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
     opDrop->maxReservedRegisterRC = 3;
+    opDrop->compilerGenerated     = true;
     sourceFile->module->addByteCodeFunc(opDrop);
 
     ByteCodeGenContext cxt{*context};
@@ -184,6 +185,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     replaceAll(opPostMove->name, '.', '_');
     opPostMove->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
     opPostMove->maxReservedRegisterRC = 3;
+    opPostMove->compilerGenerated     = true;
     sourceFile->module->addByteCodeFunc(opPostMove);
 
     ByteCodeGenContext cxt{*context};
@@ -291,6 +293,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     replaceAll(opPostCopy->name, '.', '_');
     opPostCopy->typeInfoFunc          = CastTypeInfo<TypeInfoFuncAttr>(typeInfoStruct->opInitFct->typeInfo, TypeInfoKind::FuncAttr);
     opPostCopy->maxReservedRegisterRC = 3;
+    opPostCopy->compilerGenerated     = true;
     sourceFile->module->addByteCodeFunc(opPostCopy);
 
     ByteCodeGenContext cxt{*context};
@@ -413,6 +416,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     replaceAll(opInit->name, '.', '_');
     opInit->typeInfoFunc          = typeInfoFunc;
     opInit->maxReservedRegisterRC = 3;
+    opInit->compilerGenerated     = true;
     typeInfoStruct->opInitFct->flags |= AST_BYTECODE_GENERATED;
 
     if (!typeInfoStruct->opInitFct->bc)

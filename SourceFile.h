@@ -62,6 +62,7 @@ struct SourceFile : public PoolElement
     int                          totalRead   = 0;
     condition_variable           condVar;
     Scope*                       scopeRoot = nullptr;
+    SpinLock                     mutexGetLine;
 };
 
 extern Pool<SourceFile> g_Pool_sourceFile;
