@@ -262,6 +262,7 @@ bool BackendCCompilerVS::compile()
     clArguments += "/nologo ";
     clArguments += "/EHsc ";
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
+	//clArguments += "/Za "; // Force C89/90 standard
     string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
     for (const auto& oneIncludePath : includePath)

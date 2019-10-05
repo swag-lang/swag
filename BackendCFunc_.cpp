@@ -372,8 +372,6 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                     s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
                     if (!s.empty())
                         s.pop_back();
-                    for (int idx = 0; idx < 14; idx++)
-                        bufferC.addString(" ");
                     bufferC.addString("/* ");
                     bufferC.addString(s);
                     bufferC.addString(" */\n");
