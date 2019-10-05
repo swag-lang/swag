@@ -279,6 +279,7 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
+		bufferC.addString("static ");
         emitFuncSignatureInternalC(one);
         bufferC.addString(";\n");
 
@@ -1205,16 +1206,22 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             pushRAParams.push_back(ip->a.u32);
             break;
         case ByteCodeOp::MovRASP:
-            bufferC.addString(format("r%u.pointer = (swag_int8_t*) &r%u;", ip->a.u32, ip->c.u32));
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &r%u;", ip->a.u32, ip->c.u32));
             break;
         case ByteCodeOp::MovRASPVaargs:
         {
             bufferC.addString(format("swag_register_t vaargs%u[] = { 0, ", vaargsIdx));
             int idxParam = (int) pushRAParams.size() - 1;
-            while (idxParam >= 0)
-                bufferC.addString(format("r%u, ", pushRAParams[idxParam--]));
+			while (idxParam >= 0)
+			{
+				bufferC.addString(format("r%u", pushRAParams[idxParam]));
+				if(idxParam)
+					bufferC.addString(", ");
+				idxParam--;
+			}
+
             bufferC.addString(" }; ");
-            bufferC.addString(format("r%u.pointer = sizeof(swag_register_t) + (swag_int8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
+            bufferC.addString(format("r%u.pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
             bufferC.addString(format("vaargs%u[0].pointer = r%u.pointer;", vaargsIdx, ip->a.u32));
             vaargsIdx++;
             break;
