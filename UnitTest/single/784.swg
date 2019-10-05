@@ -20,11 +20,11 @@ struct Point
 	
 	ptr0 := ptr.fields[0]
 	@assert(ptr0.base.kind == TypeinfoKind.Param)
-	@assert(ptr0.named_param == "x")
-	@assert(ptr0.pointed_type.kind == TypeinfoKind.Native)
+	@assert(ptr0.namedParam == "x")
+	@assert(ptr0.pointedType.kind == TypeinfoKind.Native)
 	@assert(ptr0.offset == 0)
 	
 	ptr1 := ptr.fields[1]
-	@assert(ptr1.named_param == "y")
+	@assert(ptr1.namedParam == "y")
 	@assert(ptr1.offset == 4)
 }

@@ -9,5 +9,5 @@
 	@assert(t.sizeof == 4)
 	
 	ptr := cast(const *TypeinfoNative) t;
-	@assert(ptr.native_kind == TypeinfoNativeKind.U32)
+	@assert(ptr.nativeKind == TypeinfoNativeKind.U32)
 }

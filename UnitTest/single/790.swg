@@ -17,7 +17,7 @@ enum TOTO : string
 	@assert(@countof(ptr.values) == 3)
 	
 	ptr1 := ptr.values[1]
-	@assert(ptr1.named_param == "G")
+	@assert(ptr1.namedParam == "G")
 	
 	ptrVal := cast(*string) ptr1.value;
 	@assert(ptrVal[0] == "str200")

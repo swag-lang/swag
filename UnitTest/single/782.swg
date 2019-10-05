@@ -9,11 +9,11 @@
 	@assert(t.sizeof == @sizeof(*void))
 	
 	ptr := cast(const *TypeinfoPointer) t;
-	@assert(ptr.ptr_count == 1)
+	@assert(ptr.ptrCount == 1)
 	
-	ptr1 := ptr.pointed_type;
+	ptr1 := ptr.pointedType;
 	@assert(ptr1.kind == TypeinfoKind.Native)
 	
 	ptr2 := cast(const *TypeinfoNative) ptr1;
-	@assert(ptr2.native_kind == TypeinfoNativeKind.U32)
+	@assert(ptr2.nativeKind == TypeinfoNativeKind.U32)
 }

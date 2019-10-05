@@ -13,5 +13,5 @@ func toto(x: s32, y: bool)->s32 => x
 	//ptr := @typeof(t)
 	//ptr := cast(const *TypeinfoFunc) @typeof(t)
 	//@assert(@countof(ptr.parameters) == 2)
-	//@assert(ptr.return_type == @typeof(f32))
+	//@assert(ptr.returnType == @typeof(f32))
 }

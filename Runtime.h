@@ -81,21 +81,21 @@ namespace swag
 	struct TypeinfoNative
 	{
 		base: 			Typeinfo
-		native_kind:	TypeinfoNativeKind = TypeinfoNativeKind.Void
+		nativeKind:		TypeinfoNativeKind = TypeinfoNativeKind.Void
 	}
 
 	struct TypeinfoPointer
 	{
 		base: 			Typeinfo
-		pointed_type:	const *Typeinfo
-		ptr_count:		u32
+		pointedType:	const *Typeinfo
+		ptrCount:		u32
 	}
 
 	struct TypeinfoParam
 	{
 		base: 			Typeinfo
-		named_param:	string
-		pointed_type:	const *Typeinfo
+		namedParam:		string
+		pointedType:	const *Typeinfo
 		value:			*void
 		attributes:		const [..] { string, any }
 		offset:			u32
@@ -112,7 +112,7 @@ namespace swag
 	{
 		base: 			Typeinfo
 		parameters:		const [..] *TypeinfoParam
-		return_type:	const *Typeinfo
+		returnType:		const *Typeinfo
 		attributes:		const [..] { string, any }
 	}
 
@@ -120,7 +120,7 @@ namespace swag
 	{
 		base: 		Typeinfo
 		values:		const [..] *TypeinfoParam
-		raw_type:	const *Typeinfo
+		rawType:	const *Typeinfo
 		attributes:	const [..] { string, any }
 	}
 
@@ -132,8 +132,8 @@ namespace swag
 	struct TypeinfoArray
 	{
 		base: 			Typeinfo
-		pointed_type:	const *Typeinfo
-		final_type:		const *Typeinfo
+		pointedType:	const *Typeinfo
+		finalType:		const *Typeinfo
 		count:			u32
 		totalCount:		u32
 	}
@@ -141,7 +141,7 @@ namespace swag
 	struct TypeinfoSlice
 	{
 		base: 			Typeinfo
-		pointed_type:	const *Typeinfo
+		pointedType:	const *Typeinfo
 	}
 }
 
