@@ -1,4 +1,4 @@
 #pragma once
-#define SWAG_VERSION 0
-#define SWAG_REVISION 0
-#define SWAG_BUILD 1
+#define SWAG_BUILD_VERSION 0
+#define SWAG_BUILD_REVISION 0
+#define SWAG_BUILD_NUM 1

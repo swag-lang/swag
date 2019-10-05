@@ -12,7 +12,7 @@ void printStats()
         return;
 
     g_Log.setColor(LogColor::White);
-    wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD).c_str();
+    wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM).c_str();
     if (g_CommandLine.output)
         wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
@@ -50,7 +50,7 @@ int main(int argc, const char* argv[])
     // Log all arguments
     if (g_CommandLine.help)
     {
-        wcout << "swag version " << format("%d.%d.%d\n", SWAG_VERSION, SWAG_REVISION, SWAG_BUILD).c_str();
+        wcout << "swag version " << format("%d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM).c_str();
         cmdParser.logArguments();
         exit(0);
     }

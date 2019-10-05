@@ -3,6 +3,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "SourceFile.h"
+#include "Version.h"
 
 void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
 {
@@ -53,6 +54,21 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
         token.id               = TokenId::LiteralNumber;
         token.literalType      = g_TypeMgr.typeInfoS64;
         token.literalValue.s64 = location.line + 1;
+        return;
+    case TokenId::CompilerBuildVersion:
+        token.id               = TokenId::LiteralNumber;
+        token.literalType      = g_TypeMgr.typeInfoS32;
+        token.literalValue.s32 = SWAG_BUILD_VERSION;
+        return;
+    case TokenId::CompilerBuildRevision:
+        token.id               = TokenId::LiteralNumber;
+        token.literalType      = g_TypeMgr.typeInfoS32;
+        token.literalValue.s32 = SWAG_BUILD_REVISION;
+        return;
+    case TokenId::CompilerBuildNum:
+        token.id               = TokenId::LiteralNumber;
+        token.literalType      = g_TypeMgr.typeInfoS32;
+        token.literalValue.s32 = SWAG_BUILD_NUM;
         return;
     case TokenId::NativeType:
         token.literalType = g_LangSpec.nativeTypes[token.text];

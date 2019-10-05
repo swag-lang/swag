@@ -6,20 +6,23 @@ LanguageSpec g_LangSpec;
 
 void LanguageSpec::setup()
 {
-    keywords["#module"]   = TokenId::CompilerModule;
-    keywords["#unittest"] = TokenId::CompilerUnitTest;
-    keywords["#assert"]   = TokenId::CompilerAssert;
-    keywords["#print"]    = TokenId::CompilerPrint;
-    keywords["#run"]      = TokenId::CompilerRun;
-    keywords["#file"]     = TokenId::CompilerFile;
-    keywords["#line"]     = TokenId::CompilerLine;
-    keywords["#function"] = TokenId::CompilerFunction;
-    keywords["#import"]   = TokenId::CompilerImport;
-    keywords["#version"]  = TokenId::CompilerVersion;
-    keywords["#else"]     = TokenId::CompilerElse;
-    keywords["#test"]     = TokenId::CompilerTest;
-    keywords["#if"]       = TokenId::CompilerIf;
-    keywords["#else"]     = TokenId::CompilerElse;
+    keywords["#module"]        = TokenId::CompilerModule;
+    keywords["#unittest"]      = TokenId::CompilerUnitTest;
+    keywords["#assert"]        = TokenId::CompilerAssert;
+    keywords["#print"]         = TokenId::CompilerPrint;
+    keywords["#run"]           = TokenId::CompilerRun;
+    keywords["#file"]          = TokenId::CompilerFile;
+    keywords["#line"]          = TokenId::CompilerLine;
+    keywords["#buildversion"]  = TokenId::CompilerBuildVersion;
+    keywords["#buildrevision"] = TokenId::CompilerBuildRevision;
+    keywords["#buildnum"]      = TokenId::CompilerBuildNum;
+    keywords["#function"]      = TokenId::CompilerFunction;
+    keywords["#import"]        = TokenId::CompilerImport;
+    keywords["#version"]       = TokenId::CompilerVersion;
+    keywords["#else"]          = TokenId::CompilerElse;
+    keywords["#test"]          = TokenId::CompilerTest;
+    keywords["#if"]            = TokenId::CompilerIf;
+    keywords["#else"]          = TokenId::CompilerElse;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["let"]       = TokenId::KwdLet;
@@ -98,11 +101,11 @@ void LanguageSpec::setup()
     intrinsics["@typeof"]  = Intrinsic::IntrinsicProp;
     intrinsics["@kindof"]  = Intrinsic::IntrinsicProp;
 
-    intrinsics["@print"]   = Intrinsic::IntrinsicPrint;
-    intrinsics["@assert"]  = Intrinsic::IntrinsicAssert;
-    intrinsics["@alloc"]   = Intrinsic::IntrinsicAlloc;
-    intrinsics["@free"]    = Intrinsic::IntrinsicFree;
-    intrinsics["@memcpy"]  = Intrinsic::IntrinsicMemCpy;
+    intrinsics["@print"]      = Intrinsic::IntrinsicPrint;
+    intrinsics["@assert"]     = Intrinsic::IntrinsicAssert;
+    intrinsics["@alloc"]      = Intrinsic::IntrinsicAlloc;
+    intrinsics["@free"]       = Intrinsic::IntrinsicFree;
+    intrinsics["@memcpy"]     = Intrinsic::IntrinsicMemCpy;
     intrinsics["@getcontext"] = Intrinsic::IntrinsicGetContext;
 }
 

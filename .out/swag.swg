@@ -1,4 +1,7 @@
 // swag compiler mandatory file
+#assert #buildversion == 0
+#assert #buildrevision == 0
+#assert #buildnum == 1
 
 func @print(value: s32);
 func @print(value: s64);
@@ -39,9 +42,9 @@ namespace swag
 
 	struct AllocatorRequest
 	{
-		mode:			AllocatorMode = AllocatorMode.Alloc
-		size:			u32
-		address:		*void
+		mode:		AllocatorMode = AllocatorMode.Alloc
+		size:		u32
+		address:	*void
 	}
 
 	func defaultAllocator(request: *AllocatorRequest)
