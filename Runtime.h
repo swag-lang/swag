@@ -29,17 +29,27 @@ namespace swag
 		Realloc
 	}
 
-	func defaultAllocator(size: u32, mode: AllocatorMode, previousAddress: *void)->*void
+	struct AllocatorRequest
 	{
-		if(mode == AllocatorMode.Alloc)
-			return @alloc(size)
-		@free(previousAddress)
-		return null
+		mode:			AllocatorMode = AllocatorMode.Alloc
+		size:			u32
+		address:		*void
+	}
+
+	func defaultAllocator(request: *AllocatorRequest)
+	{
+		switch request.mode
+		{
+			case AllocatorMode.Alloc:
+				request.address = @alloc(request.size)
+			case AllocatorMode.Free:
+				@free(request.address)
+		}
 	}
 
 	struct Context
 	{
-		allocator: (u32, AllocatorMode, *void)->*void
+		allocator: (*AllocatorRequest)->void
 	}
 
 	enum TypeinfoKind

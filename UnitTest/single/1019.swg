@@ -1,11 +1,19 @@
 #module module1019
 using swag
 
+func swag_Toto()
+{
+}
+
 //#[swag.printbc]
 #test
 {
 	ptr := @getcontext()
 	
-	addr := ptr.allocator(16, AllocatorMode.Alloc, null)
-	ptr.allocator(0, AllocatorMode.Free, addr)
+	var req: AllocatorRequest
+	req.size = 16
+	
+	ptr.allocator(&req)
+	req.mode = AllocatorMode.Free
+	ptr.allocator(&req)
 }
