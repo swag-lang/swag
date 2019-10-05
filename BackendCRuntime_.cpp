@@ -24,6 +24,8 @@ typedef unsigned long long	swag_uint64_t;
 typedef float				swag_float32_t;
 typedef double				swag_float64_t;
 
+typedef swag_uint32_t		swag_tls_id_t;
+
 #ifdef __cplusplus
 #define SWAG_EXTERN extern "C"
 #else
@@ -58,6 +60,13 @@ typedef union swag_register_t {
     swag_int8_t		s8;
     swag_bool_t		b;
 } swag_register_t;
+
+typedef union swag_context_t {
+	swag_uint32_t toto;
+} swag_context_t;
+
+static swag_uint32_t __contextTlsId = 0;
+extern void* TlsGetValue(swag_uint32_t);
 
 )";
 

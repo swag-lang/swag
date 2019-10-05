@@ -10,6 +10,7 @@
 #include "ModuleOutputJob.h"
 #include "ByteCode.h"
 #include "SymTable.h"
+#include "Context.h"
 
 Workspace g_Workspace;
 

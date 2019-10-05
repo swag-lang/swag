@@ -314,6 +314,9 @@
     <ClCompile Include="Attribute.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="Context.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -516,6 +519,9 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="RaceCondition.h">
+      <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="Context.h">
       <Filter>Threading</Filter>
     </ClInclude>
   </ItemGroup>

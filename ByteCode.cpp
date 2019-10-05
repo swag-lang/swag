@@ -190,6 +190,7 @@ void ByteCode::print()
         case ByteCodeOp::CastBool32:
         case ByteCodeOp::CastBool64:
         case ByteCodeOp::MovRASPVaargs:
+		case ByteCodeOp::IntrinsicGetContext:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 

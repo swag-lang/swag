@@ -5,6 +5,7 @@
 #include "Global.h"
 #include "Job.h"
 #include "Log.h"
+#include "Context.h"
 
 JobThread::JobThread()
 {
@@ -48,6 +49,9 @@ bool JobThread::executeJob(Job* job, string& exception)
 
 void JobThread::loop()
 {
+	// TLS context
+	TlsSetValue(g_tlsContextId, &g_defaultContext);
+
     while (!requestEnd)
     {
         auto job = g_ThreadMgr.getJob(this);

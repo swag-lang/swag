@@ -11,6 +11,7 @@
 #include "ThreadManager.h"
 #include "ModuleCompileJob.h"
 #include "TypeManager.h"
+#include "Context.h"
 
 ByteCodeRun g_Run;
 
@@ -782,6 +783,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::IntrinsicFree:
     {
         free(registersRC[ip->a.u32].pointer);
+        break;
+    }
+    case ByteCodeOp::IntrinsicGetContext:
+    {
+        registersRC[ip->a.u32].pointer = (uint8_t*) TlsGetValue(g_tlsContextId);
         break;
     }
 

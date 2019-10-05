@@ -7,11 +7,16 @@
 #include "CommandLine.h"
 #include "Stats.h"
 #include "Job.h"
+#include "Context.h"
 
 ThreadManager g_ThreadMgr;
 
 void ThreadManager::init()
 {
+    // Allocate a TLS slot, and set default context for this thread
+    g_tlsContextId = TlsAlloc();
+    TlsSetValue(g_tlsContextId, &g_defaultContext);
+
     loadingThread = new LoadingThread();
     savingThread  = new SavingThread();
 

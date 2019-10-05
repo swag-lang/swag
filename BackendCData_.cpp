@@ -107,7 +107,8 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("}\n\n");
 
     // Main init fct
-    bufferC.addString(format("void %s_globalInit() {\n", module->name.c_str()));
+    bufferC.addString(format("void %s_globalInit(swag_tls_id_t contextTlsID) {\n", module->name.c_str()));	
+	bufferC.addString("__contextTlsId = contextTlsID;\n");
     bufferC.addString("initDataSeg();\n");
     bufferC.addString("initConstantSeg();\n");
     bufferC.addString("}\n\n");

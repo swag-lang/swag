@@ -1041,6 +1041,9 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::IntrinsicFree:
             bufferC.addString(format("__free(r%u.pointer);", ip->a.u32));
             break;
+        case ByteCodeOp::IntrinsicGetContext:
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) TlsGetValue(__contextTlsId);", ip->a.u32));
+            break;
 
         case ByteCodeOp::NegBool:
             bufferC.addString(format("r%u.b = !r%u.b;", ip->a.u32, ip->a.u32));

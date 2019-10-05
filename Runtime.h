@@ -10,6 +10,7 @@ func @assert(value: bool);
 func @alloc(size: u32)->*void;
 func @free(ptr: *void);
 func @memcpy(dst: *void, src: *void, size: u32);
+func @getcontext()->*swag.context;
 
 namespace swag 
 {
@@ -20,6 +21,11 @@ namespace swag
 	attr test() -> func
 	attr foreign(module: string = "") -> func
 	attr waitsem(ms: s32) -> func
+
+	struct context
+	{
+		toto: u32
+	}
 
 	enum typeinfo_kind
 	{

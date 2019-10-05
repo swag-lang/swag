@@ -16,10 +16,16 @@ bool BackendC::emitMain()
     bufferC.addString("#ifdef SWAG_IS_EXE\n");
     bufferC.addString("void main() {\n");
 
+	// Main context
+    bufferC.addString("static swag_context_t mainContext;\n");
+	bufferC.addString("swag_tls_id_t contextTlsId = TlsAlloc();\n");
+	bufferC.addString("TlsSetValue(contextTlsId, &mainContext);\n");
+	bufferC.addString("\n");
+
     // Call to global init of this module, and dependencies
-    bufferC.addString(format("%s_globalInit();\n", module->name.c_str()));
+    bufferC.addString(format("%s_globalInit(contextTlsId);\n", module->name.c_str()));
     for (auto& k : module->moduleDependenciesNames)
-        bufferC.addString(format("%s_globalInit();\n", k.c_str()));
+        bufferC.addString(format("%s_globalInit(contextTlsId);\n", k.c_str()));
 
     // Generate call to test functions
     bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");

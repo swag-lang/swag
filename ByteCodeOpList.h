@@ -11,6 +11,7 @@ BYTECODE_OP(IntrinsicPrintString)
 BYTECODE_OP(IntrinsicAssert)
 BYTECODE_OP(IntrinsicAlloc)
 BYTECODE_OP(IntrinsicFree)
+BYTECODE_OP(IntrinsicGetContext)
 
 BYTECODE_OP(JumpNotTrue)
 BYTECODE_OP(JumpTrue)

@@ -154,6 +154,7 @@
     <ClInclude Include="CommandLineParser.h" />
     <ClInclude Include="Concat.h" />
     <ClInclude Include="ConcatBucket.h" />
+    <ClInclude Include="Context.h" />
     <ClInclude Include="DataSegment.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="ffi.h" />
@@ -241,6 +242,7 @@
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Final|x64'">false</ShowIncludes>
     </ClCompile>
+    <ClCompile Include="Context.cpp" />
     <ClCompile Include="DataSegment.cpp" />
     <ClCompile Include="Diagnostic.cpp" />
     <ClCompile Include="ffi.c">

@@ -8,6 +8,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Scope.h"
+#include "Context.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -28,7 +29,7 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
     AstNode* node          = context->node;
     auto     back          = node->childs.front();
     node->resultRegisterRC = back->resultRegisterRC;
-	SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
+    SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
     return true;
 }
 
@@ -159,6 +160,12 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
         freeRegisterRC(context, childSize);
+        break;
+    }
+    case Intrinsic::IntrinsicGetContext:
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
         break;
     }
 
