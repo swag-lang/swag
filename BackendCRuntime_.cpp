@@ -118,7 +118,7 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 	if(msg)
 		__print(msg);
 	else	
-		__print(": error: intrinsic assertion failed in native code\n");
+		__print(": error: assertion failed in native code\n");
 	exit(-1);
 }
 
@@ -127,26 +127,6 @@ static swag_bool_t __strcmp(const char* str1, const char* str2)
 	if(!str1 || !str2)
 		return str1 == str2;
 	return !strcmp(str1, str2);
-}
-
-static void __memcpy(void* dst, void* src, swag_uint32_t size)
-{
-	memcpy(dst, src, size);
-}
-
-static void __memclear(void* dst, swag_uint32_t size)
-{
-	memset(dst, 0, size);
-}
-
-static void* __alloc(swag_uint32_t size)
-{
-	return (swag_uint8_t*) malloc(size);
-}
-
-static void __free(void* ptr)
-{
-	free(ptr);
 }
 
 )";

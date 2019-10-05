@@ -467,7 +467,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("*(swag_uint64_t*)r%u.pointer = 0;", ip->a.u32));
             break;
         case ByteCodeOp::ClearX:
-            bufferC.addString(format("__memclear(r%u.pointer, %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("memset(r%u.pointer, 0, %u);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::ClearRefFromStack8:
@@ -483,7 +483,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("*(swag_uint64_t*)(stack + %u) = 0;", ip->a.u32));
             break;
         case ByteCodeOp::ClearRefFromStackX:
-            bufferC.addString(format("__memclear(stack + %u, %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromDataSeg:
             bufferC.addString(format("r%u.pointer = __mutableseg + %u;", ip->a.u32, ip->b.u32));
@@ -511,10 +511,10 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::Copy:
-            bufferC.addString(format("__memcpy(r%u.pointer, r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("memcpy(r%u.pointer, r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::CopyVC:
-            bufferC.addString(format("__memcpy(r%u.pointer, r%u.pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("memcpy(r%u.pointer, r%u.pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::CopyRAVB32:
             bufferC.addString(format("r%u.u32 = 0x%x;", ip->a.u32, ip->b.u32));
@@ -1044,13 +1044,13 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                 bufferC.addString(format("__assert(r%u.b, \"%s\", %d, 0);", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::IntrinsicAlloc:
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) __alloc(r%u.u32);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) malloc(r%u.u32);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::IntrinsicRealloc:
             bufferC.addString(format("r%u.pointer = (swag_uint8_t*) realloc(r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::IntrinsicFree:
-            bufferC.addString(format("__free(r%u.pointer);", ip->a.u32));
+            bufferC.addString(format("free(r%u.pointer);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicGetContext:
             bufferC.addString(format("r%u.pointer = (swag_uint8_t*) TlsGetValue(__contextTlsId);", ip->a.u32));
