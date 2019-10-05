@@ -1,14 +1,11 @@
 #module module1019
 using swag
 
-func me(x: string)
-{
-	@print("titi")
-}
-
 //#[swag.printbc]
 #test
 {
 	ptr := @getcontext()
-	ptr.allocator("toto")
+	
+	addr := ptr.allocator(16, AllocatorMode.Alloc, null)
+	ptr.allocator(0, AllocatorMode.Free, addr)
 }

@@ -10,7 +10,7 @@ func @assert(value: bool);
 func @alloc(size: u32)->*void;
 func @free(ptr: *void);
 func @memcpy(dst: *void, src: *void, size: u32);
-func @getcontext()->*swag.context;
+func @getcontext()->*swag.Context;
 
 namespace swag 
 {
@@ -22,14 +22,24 @@ namespace swag
 	attr foreign(module: string = "") -> func
 	attr waitsem(ms: s32) -> func
 
-	func defaultAllocator(size: string)
+	enum AllocatorMode
 	{
-		@print(size)
+		Alloc
+		Free
+		Realloc
 	}
 
-	struct context
+	func defaultAllocator(size: u32, mode: AllocatorMode, previousAddress: *void)->*void
 	{
-		allocator: (string)->void
+		if(mode == AllocatorMode.Alloc)
+			return @alloc(size)
+		@free(previousAddress)
+		return null
+	}
+
+	struct Context
+	{
+		allocator: (u32, AllocatorMode, *void)->*void
 	}
 
 	enum TypeinfoKind
