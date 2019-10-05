@@ -780,6 +780,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = (uint8_t*) malloc(registersRC[ip->b.u32].u32);
         break;
     }
+    case ByteCodeOp::IntrinsicRealloc:
+    {
+        registersRC[ip->a.u32].pointer = (uint8_t*) realloc(registersRC[ip->b.u32].pointer, registersRC[ip->c.u32].u32);
+        break;
+    }
     case ByteCodeOp::IntrinsicFree:
     {
         free(registersRC[ip->a.u32].pointer);

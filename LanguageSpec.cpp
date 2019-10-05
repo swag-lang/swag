@@ -104,6 +104,7 @@ void LanguageSpec::setup()
     intrinsics["@print"]      = Intrinsic::IntrinsicPrint;
     intrinsics["@assert"]     = Intrinsic::IntrinsicAssert;
     intrinsics["@alloc"]      = Intrinsic::IntrinsicAlloc;
+    intrinsics["@realloc"]    = Intrinsic::IntrinsicRealloc;
     intrinsics["@free"]       = Intrinsic::IntrinsicFree;
     intrinsics["@memcpy"]     = Intrinsic::IntrinsicMemCpy;
     intrinsics["@getcontext"] = Intrinsic::IntrinsicGetContext;

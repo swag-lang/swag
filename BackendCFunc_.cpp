@@ -1038,6 +1038,9 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
         case ByteCodeOp::IntrinsicAlloc:
             bufferC.addString(format("r%u.pointer = (swag_uint8_t*) __alloc(r%u.u32);", ip->a.u32, ip->b.u32));
             break;
+        case ByteCodeOp::IntrinsicRealloc:
+            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) realloc(r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32, ip->c.u32));
+            break;
         case ByteCodeOp::IntrinsicFree:
             bufferC.addString(format("__free(r%u.pointer);", ip->a.u32));
             break;

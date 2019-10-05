@@ -151,6 +151,14 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child0);
         break;
     }
+    case Intrinsic::IntrinsicRealloc:
+    {
+        auto child0            = callParams->childs.front();
+        auto child1            = callParams->childs.back();
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicRealloc, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
+        break;
+    }
     case Intrinsic::IntrinsicMemCpy:
     {
         auto childDest = callParams->childs[0];

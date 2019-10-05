@@ -27,6 +27,7 @@ enum class Intrinsic
     IntrinsicAssert,
     IntrinsicProp,
     IntrinsicAlloc,
+	IntrinsicRealloc,
     IntrinsicFree,
 	IntrinsicMemCpy,
 	IntrinsicGetContext,

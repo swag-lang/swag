@@ -4,12 +4,12 @@ using swag
 //#[swag.printbc]
 #test
 {
-	ptr := @getcontext()
+	context := @getcontext()
 	
 	var req: AllocatorRequest
 	req.size = 16
 	
-	ptr.allocator(&req)
+	context.allocator(&req)
 	req.mode = AllocatorMode.Free
-	ptr.allocator(&req)
+	context.allocator(&req)
 }
