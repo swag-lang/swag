@@ -46,7 +46,7 @@ bool SourceFile::open()
     {
         char buf[256];
         strerror_s(buf, err);
-        report({this, format("error reading file: '%s'", buf)});
+        report({this, format("error reading file '%s': '%s'", path.string().c_str(), buf)});
         return false;
     }
 
@@ -156,9 +156,6 @@ void SourceFile::buildRequest(int reqNum)
 
 char SourceFile::getPrivateChar()
 {
-    if (externalBuffer)
-        return externalBuffer[seekExternal++];
-
     if (directMode)
     {
         if (!fileHandle)
@@ -284,17 +281,10 @@ void SourceFile::waitEndRequests()
 
 Utf8 SourceFile::getLine(long seek)
 {
-    if (!externalBuffer)
-    {
-        waitEndRequests(); // Be sure there's no pending requests
-        open();
-        seekTo(seek + headerSize);
-        directMode = true;
-    }
-    else
-    {
-        seekExternal = seek;
-    }
+    waitEndRequests(); // Be sure there's no pending requests
+    open();
+    seekTo(seek + headerSize);
+    directMode = true;
 
     Utf8 line;
     int  column = 0;

@@ -111,7 +111,7 @@ JobResult SyntaxJob::execute()
     g_diagnosticInfos.sourceFile = sourceFile;
 #endif
 
-    if (g_CommandLine.stats && !sourceFile->externalBuffer)
+    if (g_CommandLine.stats)
         g_Stats.numFiles++;
 
     tokenizer.setFile(sourceFile);

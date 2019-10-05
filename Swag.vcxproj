@@ -177,7 +177,6 @@
     <ClInclude Include="OutputFile.h" />
     <ClInclude Include="RaceCondition.h" />
     <ClInclude Include="RegisterList.h" />
-    <ClInclude Include="Runtime.h" />
     <ClInclude Include="SavingThread.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />
@@ -351,21 +350,21 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
 cl.exe /EP win64.S &gt; win64_plain.asm
 
-ml64.exe /c /Cx /Fo $(Platform)/$(Configuration)/win64.obj win64_plain.asm
+ml64.exe /c /Cx /Fo $(SolutionDir)/.out/$(Configuration)/win64.obj win64_plain.asm
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)/$(Configuration)/win64.obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)/.out/$(Configuration)/win64.obj</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
 cl.exe /EP win64.S &gt; win64_plain.asm
 
-ml64.exe /c /Cx /Fo $(Platform)/$(Configuration)/win64.obj win64_plain.asm
+ml64.exe /c /Cx /Fo $(SolutionDir)/.out/$(Configuration)/win64.obj win64_plain.asm
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Final|x64'">
 cl.exe /EP win64.S &gt; win64_plain.asm
 
-ml64.exe /c /Cx /Fo $(Platform)/$(Configuration)/win64.obj win64_plain.asm
+ml64.exe /c /Cx /Fo $(SolutionDir)/.out/$(Configuration)/win64.obj win64_plain.asm
 </Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)/$(Configuration)/win64.obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Final|x64'">$(Platform)/$(Configuration)/win64.obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)/.out/$(Configuration)/win64.obj</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Final|x64'">$(SolutionDir)/.out/$(Configuration)/win64.obj</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

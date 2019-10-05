@@ -1,5 +1,3 @@
-const char* g_Runtime = R"(
-
 func @print(value: s32);
 func @print(value: s64);
 func @print(value: f32);
@@ -164,5 +162,3 @@ namespace swag
 		pointedType:	const *Typeinfo
 	}
 }
-
-)";

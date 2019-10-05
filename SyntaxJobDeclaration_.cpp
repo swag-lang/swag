@@ -48,7 +48,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
-        if (!sourceFile->externalBuffer)
+        if (!sourceFile->swagFile)
             SWAG_VERIFY(token.text != "swag", syntaxError(token, "the 'swag' namespace is reserved by the compiler"));
 
         // Add/Get namespace

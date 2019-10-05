@@ -440,9 +440,6 @@
     <ClInclude Include="Module.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Runtime.h">
-      <Filter>Lexer</Filter>
-    </ClInclude>
     <ClInclude Include="SourceLocation.h">
       <Filter>Main</Filter>
     </ClInclude>

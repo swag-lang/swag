@@ -38,13 +38,11 @@ struct SourceFile : public PoolElement
     int       numErrors     = 0;
     int       unittestError = 0;
     int       silent        = 0;
+    bool      swagFile      = false;
     Module*   module        = nullptr;
     AstNode*  astRoot       = nullptr;
     uint32_t  indexInModule = UINT32_MAX;
     BuildPass buildPass     = BuildPass::Full;
-
-    const char* externalBuffer = nullptr;
-    int         seekExternal   = 0;
 
     TextFormat                   textFormat = TextFormat::UTF8;
     int                          bufferSize;

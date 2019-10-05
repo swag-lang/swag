@@ -3,7 +3,6 @@
 #include "ThreadManager.h"
 #include "Module.h"
 #include "Stats.h"
-#include "Runtime.h"
 #include "SourceFile.h"
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
@@ -117,13 +116,13 @@ void Workspace::addRuntime()
     runtimeModule->setup(this, "");
     modules.push_back(runtimeModule);
 
-    auto file = g_Pool_sourceFile.alloc();
-    auto job  = g_Pool_syntaxJob.alloc();
+    auto file      = g_Pool_sourceFile.alloc();
+    auto job       = g_Pool_syntaxJob.alloc();
+    file->path     = g_CommandLine.exePath.parent_path().string() + "/swag.swg";
+    file->module   = runtimeModule;
+    file->swagFile = true;
     runtimeModule->addFile(file);
-    job->sourceFile      = file;
-    file->path           = "<swag.runtime>";
-    file->module         = runtimeModule;
-    file->externalBuffer = g_Runtime;
+    job->sourceFile = file;
     g_ThreadMgr.addJob(job);
 }
 
