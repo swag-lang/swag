@@ -29,7 +29,9 @@ struct BackendC : public Backend
     bool emitStrings();
     bool emitMain();
     bool emitFunctions();
+    bool emitFunctions(Module* moduleToGen);
     bool emitFuncSignatures();
+	bool emitFuncSignatures(Module* moduleToGen);
     bool emitGlobalInit();
 
     const char* swagTypeToCType(TypeInfo* typeInfo);
@@ -37,7 +39,7 @@ struct BackendC : public Backend
     void        emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void        emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void        emitFuncSignatureInternalC(ByteCode* bc);
-    bool        emitInternalFunction(ByteCode* bc);
+    bool        emitInternalFunction(Module* moduleToGen, ByteCode* bc);
 
     string destFile;
 

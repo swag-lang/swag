@@ -413,6 +413,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     replaceAll(opInit->name, '.', '_');
     opInit->typeInfoFunc          = typeInfoFunc;
     opInit->maxReservedRegisterRC = 3;
+    typeInfoStruct->opInitFct->flags |= AST_BYTECODE_GENERATED;
 
     if (!typeInfoStruct->opInitFct->bc)
         sourceFile->module->addByteCodeFunc(opInit);

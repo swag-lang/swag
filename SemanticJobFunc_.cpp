@@ -165,6 +165,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = true;
     if (node->attributeFlags & AST_IS_GENERIC)
         genByteCode = false;
+	if(!node->content)
+		genByteCode = false;
 
     if (genByteCode)
     {

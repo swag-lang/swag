@@ -9,6 +9,7 @@
 #include "AstNode.h"
 #include "TypeInfo.h"
 #include "Attribute.h"
+#include "Context.h"
 
 bool BackendC::emitMain()
 {
@@ -18,6 +19,7 @@ bool BackendC::emitMain()
 
 	// Main context
     bufferC.addString("static swag_context_t mainContext;\n");
+	bufferC.addString(format("mainContext.allocator = &%s;\n", g_defaultContext.allocator->callName().c_str()));
 	bufferC.addString("swag_tls_id_t contextTlsId = TlsAlloc();\n");
 	bufferC.addString("TlsSetValue(contextTlsId, &mainContext);\n");
 	bufferC.addString("\n");

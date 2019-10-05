@@ -11,6 +11,7 @@
 #include "TypeManager.h"
 #include "Scope.h"
 #include "SymTable.h"
+#include "Workspace.h"
 
 const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
 {
@@ -246,11 +247,19 @@ bool BackendC::emitFuncSignatures()
     emitSeparator(bufferSwg, "PROTOTYPES");
     emitSeparator(bufferH, "PROTOTYPES");
     emitSeparator(bufferC, "PROTOTYPES");
+    if (!emitFuncSignatures(module->workspace->runtimeModule))
+        return false;
+    if (!emitFuncSignatures(module))
+        return false;
+    return true;
+}
 
+bool BackendC::emitFuncSignatures(Module* moduleToGen)
+{
     bufferSwg.addString(format("#[swag.foreign(\"%s\")]\n", module->name.c_str()));
     bufferSwg.addString("{\n");
 
-    for (auto one : module->byteCodeFunc)
+    for (auto one : moduleToGen->byteCodeFunc)
     {
         TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
         AstFuncDecl*      node     = nullptr;
@@ -291,7 +300,7 @@ bool BackendC::emitFuncSignatures()
     return true;
 }
 
-bool BackendC::emitInternalFunction(ByteCode* bc)
+bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
 {
     bool ok       = true;
     auto typeFunc = bc->callType();
@@ -392,13 +401,13 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
 
         case ByteCodeOp::BoundCheck:
-            bufferC.addString(format("__assert(r%u.u32 <= r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            bufferC.addString(format("__assert(r%u.u32 <= r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::BoundCheckString:
-            bufferC.addString(format("__assert(r%u.u32 <= r%u.u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            bufferC.addString(format("__assert(r%u.u32 <= r%u.u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::BoundCheckReg:
-            bufferC.addString(format("__assert(r%u.u32 < r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            bufferC.addString(format("__assert(r%u.u32 < r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::IncPointerVB:
             bufferC.addString(format("r%u.pointer += %d;", ip->a.u32, ip->b.s32));
@@ -516,7 +525,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
         case ByteCodeOp::CopyRARBStr:
             bufferC.addString(format("r%u.pointer = __string%u; ", ip->a.u32, ip->c.u32));
-            bufferC.addString(format("r%u.u32 = %u;", ip->b.u32, module->strBuffer[ip->c.u32].size()));
+            bufferC.addString(format("r%u.u32 = %u;", ip->b.u32, moduleToGen->strBuffer[ip->c.u32].size()));
             break;
         case ByteCodeOp::CopyRARB:
             bufferC.addString(format("r%u = r%u; ", ip->a.u32, ip->b.u32));
@@ -1030,10 +1039,10 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             break;
 
         case ByteCodeOp::IntrinsicAssert:
-			if(ip->c.pointer)
-				bufferC.addString(format("__assert(r%u.b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1, ip->c.pointer));
-			else
-				bufferC.addString(format("__assert(r%u.b, \"%s\", %d, 0);", ip->a.u32, normalizePath(module->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            if (ip->c.pointer)
+                bufferC.addString(format("__assert(r%u.b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1, ip->c.pointer));
+            else
+                bufferC.addString(format("__assert(r%u.b, \"%s\", %d, 0);", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::IntrinsicAlloc:
             bufferC.addString(format("r%u.pointer = (swag_uint8_t*) __alloc(r%u.u32);", ip->a.u32, ip->b.u32));
@@ -1279,7 +1288,7 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
             ok = false;
             bufferC.addString("// ");
             bufferC.addString(g_ByteCodeOpNames[(int) ip->op]);
-            module->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
+            moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
 
@@ -1292,10 +1301,19 @@ bool BackendC::emitInternalFunction(ByteCode* bc)
 
 bool BackendC::emitFunctions()
 {
+    emitSeparator(bufferC, "SWAG FUNCTIONS");
+    if (!emitFunctions(module->workspace->runtimeModule))
+        return false;
     emitSeparator(bufferC, "INTERNAL FUNCTIONS");
+    if (!emitFunctions(module))
+        return false;
+    return true;
+}
 
+bool BackendC::emitFunctions(Module* moduleToGen)
+{
     bool ok = true;
-    for (auto one : module->byteCodeFunc)
+    for (auto one : moduleToGen->byteCodeFunc)
     {
         TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
         AstFuncDecl*      node     = nullptr;
@@ -1312,11 +1330,13 @@ bool BackendC::emitFunctions()
                 continue;
             if (node->attributeFlags & ATTRIBUTE_FOREIGN)
                 continue;
+            if (!node->content)
+                continue;
 
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        ok &= emitInternalFunction(one);
+        ok &= emitInternalFunction(moduleToGen, one);
 
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
         {

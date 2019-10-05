@@ -61,8 +61,9 @@ typedef union swag_register_t {
     swag_bool_t		b;
 } swag_register_t;
 
+typedef void(*__allocatorFct)(swag_register_t*);
 typedef union swag_context_t {
-	swag_uint32_t toto;
+	__allocatorFct allocator;
 } swag_context_t;
 
 static swag_uint32_t __contextTlsId = 0;
