@@ -82,9 +82,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
-    typeInfo = TypeManager::concreteType(typeInfo);
-
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::FuncAttr)
     {
         emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         return true;
@@ -110,9 +108,9 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::TypeList || 
-		typeInfo->kind == TypeInfoKind::Struct || 
-		typeInfo->kind == TypeInfoKind::Array)
+    if (typeInfo->kind == TypeInfoKind::TypeList ||
+        typeInfo->kind == TypeInfoKind::Struct ||
+        typeInfo->kind == TypeInfoKind::Array)
     {
         return true;
     }

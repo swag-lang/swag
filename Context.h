@@ -1,8 +1,9 @@
 #pragma once
+struct ByteCode;
 
 struct Context
 {
-    uint32_t toto;
+    ByteCode* allocator;
 };
 
 extern uint32_t g_tlsContextId;

@@ -1,9 +1,10 @@
 #module module1019
 using swag
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	ptr := @getcontext()
-	@print(cast(s32) ptr.toto)
+	ptr.allocator("toto")
+	//@print(cast(s32) ptr.toto)
 }

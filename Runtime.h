@@ -22,9 +22,14 @@ namespace swag
 	attr foreign(module: string = "") -> func
 	attr waitsem(ms: s32) -> func
 
+	func defaultAllocator(size: string)
+	{
+		@print(size)
+	}
+
 	struct context
 	{
-		toto: u32
+		allocator: (string)->void
 	}
 
 	enum typeinfo_kind

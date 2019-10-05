@@ -11,6 +11,8 @@
 #include "Ast.h"
 #include "Stats.h"
 #include "TypeManager.h"
+#include "Workspace.h"
+#include "Context.h"
 
 Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
@@ -157,6 +159,12 @@ JobResult ByteCodeGenJob::execute()
             {
                 setupBC(sourceFile->module, originalNode);
                 context.bc = originalNode->bc;
+            }
+
+			// Register some default swag functions
+			if (originalNode->fullname == "swag_defaultAllocator")
+            {
+				g_defaultContext.allocator = context.bc;
             }
 
             while (!nodes.empty())
