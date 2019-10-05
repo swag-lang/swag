@@ -13,7 +13,7 @@ enum TOTO
 	using swag
 	
 	t := @typeof(TOTO)
-	ptr := cast(const *typeinfo_enum) t
+	ptr := cast(const *TypeinfoEnum) t
 	@assert(@countof(ptr.values) == 3)
 	
 	ptr1 := ptr.values[1]

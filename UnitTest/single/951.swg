@@ -6,7 +6,7 @@ func toto(x: s32, y: bool)->s32 => x
 //#[swag.printbc]
 #test
 {
-	ptr := cast(const *typeinfo_func) @typeof(toto)
+	ptr := cast(const *TypeinfoFunc) @typeof(toto)
 	@assert(@countof(ptr.parameters) == 2)
 	@assert(ptr.return_type == @typeof(s32))
 }

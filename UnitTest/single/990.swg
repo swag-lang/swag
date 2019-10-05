@@ -16,12 +16,12 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	t := cast(const *typeinfo_struct) @typeof(Point)
+	t := cast(const *TypeinfoStruct) @typeof(Point)
 	@assert(@countof(t.fields) == 2)
 	
 	loop t.fields
 	{
-		p := cast(const *typeinfo_param) t.fields[index]
+		p := cast(const *TypeinfoParam) t.fields[index]
 		@assert(p.named_param == (index == 0 ? "x" : "y"))
 		@assert(@countof(p.attributes) == 1)
 		@assert(p.attributes[0].val0 == "NC1")

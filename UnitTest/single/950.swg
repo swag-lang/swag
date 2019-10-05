@@ -7,7 +7,7 @@ func toto(x: s32, y: bool)->s32 => x
 #test
 {
 	var t: (s32, bool)->s32 = &toto	
-	ptr := cast(const *typeinfo_func) @typeof(t)
+	ptr := cast(const *TypeinfoFunc) @typeof(t)
 	@assert(@countof(ptr.parameters) == 2)
 	@assert(ptr.return_type == @typeof(s32))
 }

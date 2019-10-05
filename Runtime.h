@@ -32,7 +32,7 @@ namespace swag
 		allocator: (string)->void
 	}
 
-	enum typeinfo_kind
+	enum TypeinfoKind
 	{
 		Invalid
 		Native
@@ -52,7 +52,7 @@ namespace swag
 		Alias		
 	}
 
-	enum typeinfo_native_kind
+	enum TypeinfoNativeKind
 	{
 		Void
 		S8
@@ -71,77 +71,77 @@ namespace swag
 		Any
 	}
 
-	struct typeinfo
+	struct Typeinfo
 	{
 		name:	string
-		kind: 	typeinfo_kind = typeinfo_kind.Invalid
+		kind: 	TypeinfoKind = TypeinfoKind.Invalid
 		sizeof: u32
 	}
 
-	struct typeinfo_native
+	struct TypeinfoNative
 	{
-		base: 			typeinfo
-		native_kind:	typeinfo_native_kind = typeinfo_native_kind.Void
+		base: 			Typeinfo
+		native_kind:	TypeinfoNativeKind = TypeinfoNativeKind.Void
 	}
 
-	struct typeinfo_pointer
+	struct TypeinfoPointer
 	{
-		base: 			typeinfo
-		pointed_type:	const *typeinfo
+		base: 			Typeinfo
+		pointed_type:	const *Typeinfo
 		ptr_count:		u32
 	}
 
-	struct typeinfo_param
+	struct TypeinfoParam
 	{
-		base: 			typeinfo
+		base: 			Typeinfo
 		named_param:	string
-		pointed_type:	const *typeinfo
+		pointed_type:	const *Typeinfo
 		value:			*void
 		attributes:		const [..] { string, any }
 		offset:			u32
 	}
 
-	struct typeinfo_struct
+	struct TypeinfoStruct
 	{
-		base: 		typeinfo
-		fields:		const [..] *typeinfo_param
+		base: 		Typeinfo
+		fields:		const [..] *TypeinfoParam
 		attributes:	const [..] { string, any }
 	}
 
-	struct typeinfo_func
+	struct TypeinfoFunc
 	{
-		base: 			typeinfo
-		parameters:		const [..] *typeinfo_param
-		return_type:	const *typeinfo
+		base: 			Typeinfo
+		parameters:		const [..] *TypeinfoParam
+		return_type:	const *Typeinfo
 		attributes:		const [..] { string, any }
 	}
 
-	struct typeinfo_enum
+	struct TypeinfoEnum
 	{
-		base: 		typeinfo
-		values:		const [..] *typeinfo_param
-		raw_type:	const *typeinfo
+		base: 		Typeinfo
+		values:		const [..] *TypeinfoParam
+		raw_type:	const *Typeinfo
 		attributes:	const [..] { string, any }
 	}
 
-	struct typeinfo_variadic
+	struct TypeinfoVariadic
 	{
-		base: 		typeinfo
+		base:	Typeinfo
 	}
 
-	struct typeinfo_array
+	struct TypeinfoArray
 	{
-		base: 			typeinfo
-		pointed_type:	const *typeinfo
-		final_type:		const *typeinfo
+		base: 			Typeinfo
+		pointed_type:	const *Typeinfo
+		final_type:		const *Typeinfo
 		count:			u32
 		totalCount:		u32
 	}
 
-	struct typeinfo_slice
+	struct TypeinfoSlice
 	{
-		base: 			typeinfo
-		pointed_type:	const *typeinfo
+		base: 			Typeinfo
+		pointed_type:	const *Typeinfo
 	}
 }
 

@@ -5,7 +5,7 @@ using swag
 #test
 {
 	var t: ()->s32
-	ptr := cast(const *typeinfo_func) @typeof(t)
+	ptr := cast(const *TypeinfoFunc) @typeof(t)
 	@assert(@countof(ptr.parameters) == 0)
 	@assert(ptr.return_type == @typeof(s32))
 }
