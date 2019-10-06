@@ -414,15 +414,18 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     if (justClear)
     {
         uint32_t sizeToClear = typeExpression->pointedType->sizeOf;
-        if (numToInit)
+        if (sizeToClear)
         {
-            sizeToClear *= numToInit;
-            SWAG_CHECK(emitClearRefConstantSize(context, sizeToClear, node->expression->resultRegisterRC));
-        }
-        else
-        {
-            SWAG_ASSERT(node->count);
-            emitInstruction(context, ByteCodeOp::ClearXVar, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u32 = sizeToClear;
+            if (numToInit)
+            {
+                sizeToClear *= numToInit;
+                SWAG_CHECK(emitClearRefConstantSize(context, sizeToClear, node->expression->resultRegisterRC));
+            }
+            else
+            {
+                SWAG_ASSERT(node->count);
+                emitInstruction(context, ByteCodeOp::ClearXVar, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u32 = sizeToClear;
+            }
         }
     }
     else if (!node->parameters)

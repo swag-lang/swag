@@ -1,0 +1,13 @@
+#module module1038
+
+struct Point
+{
+}
+
+#[swag.printbc]
+#test
+{
+	var pt : [5] Point
+	ptr := &pt
+	init(ptr, 5)
+}
