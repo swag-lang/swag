@@ -149,7 +149,7 @@ struct ByteCodeGenJob : public Job
     static bool emitIs(ByteCodeGenContext* context);
 	static bool emitInit(ByteCodeGenContext* context);
 	static bool emitDrop(ByteCodeGenContext* context);
-	static bool emitClearRef(ByteCodeGenContext* context, TypeInfo* typeInfo, uint32_t registerIndex);
+	static bool emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);

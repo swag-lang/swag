@@ -374,14 +374,34 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 {
     auto node           = CastAst<AstInit>(context->node, AstNodeKind::Init);
-    auto typeExpression = TypeManager::concreteType(node->expression->typeInfo);
+    auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
 
-    if (!node->parameters)
+    bool justClear = true;
+    if (node->parameters)
+        justClear = false;
+
+    if (justClear)
     {
-		SWAG_CHECK(emitClearRef(context, typeExpression, node->expression->resultRegisterRC));
-        return true;
+        uint32_t sizeToClear = typeExpression->pointedType->sizeOf;
+        if (!node->count || (node->count->flags & AST_VALUE_COMPUTED))
+        {
+            if (node->count && (node->count->flags & AST_VALUE_COMPUTED))
+                sizeToClear *= node->count->computedValue.reg.u32;
+            SWAG_CHECK(emitClearRefConstantSize(context, sizeToClear, node->expression->resultRegisterRC));
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::ClearXVar, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u32 = sizeToClear;
+        }
+    }
+    else
+    {
+        return internalError(context, "emitInit, invalid type");
     }
 
+    freeRegisterRC(context, node->expression);
+    freeRegisterRC(context, node->count);
+    freeRegisterRC(context, node->parameters);
     return true;
 }
 
@@ -390,9 +410,9 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitClearRef(ByteCodeGenContext* context, TypeInfo* typeInfo, uint32_t registerIndex)
+bool ByteCodeGenJob::emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex)
 {
-    switch (typeInfo->sizeOf)
+    switch (sizeOf)
     {
     case 1:
         emitInstruction(context, ByteCodeOp::Clear8, registerIndex);
@@ -407,9 +427,9 @@ bool ByteCodeGenJob::emitClearRef(ByteCodeGenContext* context, TypeInfo* typeInf
         emitInstruction(context, ByteCodeOp::Clear64, registerIndex);
         break;
     default:
-        emitInstruction(context, ByteCodeOp::ClearX, registerIndex)->b.u32 = typeInfo->sizeOf;
+        emitInstruction(context, ByteCodeOp::ClearX, registerIndex)->b.u32 = sizeOf;
         break;
     }
 
-	return true;
+    return true;
 }

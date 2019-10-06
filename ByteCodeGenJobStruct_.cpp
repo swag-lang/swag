@@ -438,7 +438,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        SWAG_CHECK(emitClearRef(&cxt, typeInfoStruct, 0));
+        SWAG_CHECK(emitClearRefConstantSize(&cxt, typeInfoStruct->sizeOf, 0));
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
         return true;
@@ -532,7 +532,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
             if (!done)
             {
-				SWAG_CHECK(emitClearRef(&cxt, typeVar, 0));
+				SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
             }
         }
     }

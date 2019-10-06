@@ -581,6 +581,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::ClearX:
         memset(registersRC[ip->a.u32].pointer, 0, ip->b.u32);
         break;
+    case ByteCodeOp::ClearXVar:
+        memset(registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u32 * ip->c.u32);
+        break;
 
     case ByteCodeOp::RAFromDataSeg8:
     {

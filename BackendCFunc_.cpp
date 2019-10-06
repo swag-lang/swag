@@ -469,6 +469,9 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         case ByteCodeOp::ClearX:
             bufferC.addString(format("memset(r%u.pointer, 0, %u);", ip->a.u32, ip->b.u32));
             break;
+        case ByteCodeOp::ClearXVar:
+            bufferC.addString(format("memset(r%u.pointer, 0, r%u.u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32));
+            break;
 
         case ByteCodeOp::ClearRefFromStack8:
             bufferC.addString(format("*(swag_uint8_t*)(stack + %u) = 0;", ip->a.u32));

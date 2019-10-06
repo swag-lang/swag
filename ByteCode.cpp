@@ -190,7 +190,11 @@ void ByteCode::print()
         case ByteCodeOp::CastBool32:
         case ByteCodeOp::CastBool64:
         case ByteCodeOp::MovRASPVaargs:
-		case ByteCodeOp::IntrinsicGetContext:
+        case ByteCodeOp::IntrinsicGetContext:
+        case ByteCodeOp::Clear8:
+        case ByteCodeOp::Clear16:
+        case ByteCodeOp::Clear32:
+        case ByteCodeOp::Clear64:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -215,6 +219,7 @@ void ByteCode::print()
         case ByteCodeOp::CopyRARBStr:
         case ByteCodeOp::DeRefPointer:
         case ByteCodeOp::CopyVC:
+		case ByteCodeOp::ClearXVar:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
@@ -226,6 +231,7 @@ void ByteCode::print()
             wprintf(L"RA: %u VB: { %u } VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
+        case ByteCodeOp::ClearX:
         case ByteCodeOp::RAFromStack8:
         case ByteCodeOp::RAFromStack16:
         case ByteCodeOp::RAFromStack32:
@@ -235,7 +241,6 @@ void ByteCode::print()
         case ByteCodeOp::IncPointerVB:
         case ByteCodeOp::ShiftRightU64VB:
         case ByteCodeOp::IncRAVB:
-        case ByteCodeOp::ClearX:
         case ByteCodeOp::RAAddrFromConstantSeg:
             wprintf(L"RA: %u VB: { %u } ", ip->a.u32, ip->b.u32);
             break;

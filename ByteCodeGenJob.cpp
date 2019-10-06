@@ -74,6 +74,8 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
 {
+	if (!node)
+		return;
     freeRegisterRC(context, node->resultRegisterRC);
     freeRegisterRC(context, node->additionalRegisterRC);
 }
