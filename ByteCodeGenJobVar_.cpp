@@ -72,7 +72,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                 {
                     // Need to loop on every element of the array in order to initialize them
                     RegisterList r0;
-                    reserveRegisterRC(context, r0, 3);
+                    reserveRegisterRC(context, r0, 2);
                     emitInstruction(context, ByteCodeOp::CopyRAVB32, r0[0])->b.u32 = typeArray->totalCount;
                     emitInstruction(context, ByteCodeOp::ClearRA, r0[1]);
                     auto seekJump = context->bc->numInstructions;
@@ -84,8 +84,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                     emitInstruction(context, ByteCodeOp::DecRA, r0[0]);
                     if (typeArray->finalType->sizeOf)
                         emitInstruction(context, ByteCodeOp::IncRAVB, r0[1])->b.u32 = typeArray->finalType->sizeOf;
-                    emitInstruction(context, ByteCodeOp::IsNullU32, r0[0], r0[2]);
-                    emitInstruction(context, ByteCodeOp::JumpNotTrue, r0[2])->b.s32 = seekJump - context->bc->numInstructions - 1;
+                    emitInstruction(context, ByteCodeOp::JumpNotZero32, r0[0])->b.s32 = seekJump - context->bc->numInstructions - 1;
 
                     freeRegisterRC(context, r0);
                 }
