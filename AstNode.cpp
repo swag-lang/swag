@@ -26,6 +26,8 @@ Pool<AstProperty>        g_Pool_astProperty;
 Pool<AstExpressionList>  g_Pool_astExpressionList;
 Pool<AstStruct>          g_Pool_astStruct;
 Pool<AstImpl>            g_Pool_astImpl;
+Pool<AstInit>            g_Pool_astInit;
+Pool<AstDrop>            g_Pool_astDrop;
 
 void AstNode::setPassThrough()
 {
@@ -490,4 +492,25 @@ AstNode* AstImpl::clone(CloneContext& context)
 {
     SWAG_ASSERT(false);
     return nullptr;
+}
+
+AstNode* AstInit::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astInit.alloc();
+    newNode->copyFrom(context, this, false);
+
+    newNode->expression = findChildRef(expression, newNode);
+    newNode->count      = findChildRef(count, newNode);
+    newNode->parameters = findChildRef(parameters, newNode);
+    return newNode;
+}
+
+AstNode* AstDrop::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astDrop.alloc();
+    newNode->copyFrom(context, this, false);
+
+    newNode->expression = findChildRef(expression, newNode);
+    newNode->count      = findChildRef(count, newNode);
+    return newNode;
 }

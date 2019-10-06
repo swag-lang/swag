@@ -71,7 +71,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         if (result)
             *result = exprNode;
         exprNode->inheritTokenLocation(token);
-		SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatToken());
         exprNode->semanticFct = &SemanticJob::resolveCompilerFunction;
         break;
     }
@@ -618,5 +618,49 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(eatSemiCol("after left expression"));
+    return true;
+}
+
+bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
+{
+    AstInit* node     = Ast::newNode(this, &g_Pool_astInit, AstNodeKind::Init, sourceFile->indexInModule, parent);
+    node->semanticFct = &SemanticJob::resolveInit;
+    SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(doExpression(node, &node->expression));
+
+    if (token.id == TokenId::SymComma)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doExpression(node, &node->count));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(doFuncCallParameters(node, &node->count));
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doDrop(AstNode* parent, AstNode** result)
+{
+    AstDrop* node     = Ast::newNode(this, &g_Pool_astDrop, AstNodeKind::Drop, sourceFile->indexInModule, parent);
+    node->semanticFct = &SemanticJob::resolveDrop;
+    SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(doExpression(node, &node->expression));
+
+    if (token.id == TokenId::SymComma)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doExpression(node, &node->count));
+    }
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
     return true;
 }

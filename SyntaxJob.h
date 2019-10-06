@@ -101,6 +101,8 @@ struct SyntaxJob : public Job
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerIndex(AstNode** exprNode);
     bool doLeftExpression(AstNode* parent, AstNode** result = nullptr);
+	bool doInit(AstNode* parent, AstNode** result = nullptr);
+	bool doDrop(AstNode* parent, AstNode** result = nullptr);
 
     void reset() override
     {

@@ -222,6 +222,12 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::Intrinsic:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
+    case TokenId::KwdInit:
+        SWAG_CHECK(doInit(parent, result));
+        break;
+    case TokenId::KwdDrop:
+        SWAG_CHECK(doDrop(parent, result));
+        break;
     case TokenId::KwdBreak:
         SWAG_CHECK(doBreak(parent, result));
         break;

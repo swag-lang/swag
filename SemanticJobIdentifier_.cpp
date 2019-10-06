@@ -421,6 +421,7 @@ anotherTry:
                     job->symMatch.result = MatchResult::Ok;
                 else if (symbol->kind == SymbolKind::Function && node->parent->childs.size() == 1)
                 {
+					// We can make @typeof(function), without adding the 'function' parameters
                     auto grandParent = node->parent->parent;
                     if (grandParent->kind == AstNodeKind::IntrinsicProp)
                     {

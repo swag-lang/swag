@@ -41,67 +41,69 @@ enum class AstNodeResolveState
 
 enum class AstNodeKind
 {
-	Module,
-	File,
-	VarDecl,
-	ConstDecl,
-	LetDecl,
-	TypeAlias,
-	IdentifierRef,
-	Identifier,
-	TypeExpression,
-	TypeLambda,
-	Namespace,
-	If,
-	While,
-	For,
-	Loop,
-	Switch,
-	SwitchCase,
-	Break,
-	Continue,
-	Statement,
-	EnumDecl,
-	StructDecl,
-	StructContent,
-	TupleContent,
-	Impl,
-	FuncDecl,
-	AttrDecl,
-	AttrUse,
-	FuncDeclParams,
-	FuncDeclParam,
-	FuncDeclType,
-	FuncDeclGenericParams,
-	FuncCallParams,
-	FuncCallParam,
-	FuncCall,
-	FuncContent,
-	Return,
-	EnumType,
-	EnumValue,
-	Literal,
-	SizeOf,
-	IntrinsicProp,
-	Index,
-	Cast,
-	TypeList,
-	SingleOp,
-	MakePointer,
-	BinaryOp,
-	FactorOp,
-	ExpressionList,
-	AffectOp,
-	ArrayPointerIndex,
-	PointerRef,
-	CompilerAssert,
-	CompilerPrint,
-	CompilerRun,
-	CompilerImport,
-	CompilerVersion,
-	CompilerFunction,
+    Module,
+    File,
+    VarDecl,
+    ConstDecl,
+    LetDecl,
+    TypeAlias,
+    IdentifierRef,
+    Identifier,
+    TypeExpression,
+    TypeLambda,
+    Namespace,
+    If,
+    While,
+    For,
+    Loop,
+    Switch,
+    SwitchCase,
+    Break,
+    Continue,
+    Statement,
+    EnumDecl,
+    StructDecl,
+    StructContent,
+    TupleContent,
+    Impl,
+    FuncDecl,
+    AttrDecl,
+    AttrUse,
+    FuncDeclParams,
+    FuncDeclParam,
+    FuncDeclType,
+    FuncDeclGenericParams,
+    FuncCallParams,
+    FuncCallParam,
+    FuncCall,
+    FuncContent,
+    Return,
+    EnumType,
+    EnumValue,
+    Literal,
+    SizeOf,
+    IntrinsicProp,
+    Index,
+    Cast,
+    TypeList,
+    SingleOp,
+    MakePointer,
+    BinaryOp,
+    FactorOp,
+    ExpressionList,
+    AffectOp,
+    ArrayPointerIndex,
+    PointerRef,
+    CompilerAssert,
+    CompilerPrint,
+    CompilerRun,
+    CompilerImport,
+    CompilerVersion,
+    CompilerFunction,
     QuestionExpression,
     Defer,
+    Init,
+    Drop,
 };
 
 struct CloneContext
@@ -731,6 +733,38 @@ struct AstImpl : public AstNode
     AstNode* identifier;
 };
 
+struct AstInit : public AstNode
+{
+    void reset() override
+    {
+        expression = nullptr;
+        count      = nullptr;
+        parameters = nullptr;
+        AstNode::reset();
+    }
+
+    AstNode* clone(CloneContext& context) override;
+
+    AstNode* expression;
+    AstNode* count;
+    AstNode* parameters;
+};
+
+struct AstDrop : public AstNode
+{
+    void reset() override
+    {
+        expression = nullptr;
+        count      = nullptr;
+        AstNode::reset();
+    }
+
+    AstNode* clone(CloneContext& context) override;
+
+    AstNode* expression;
+    AstNode* count;
+};
+
 extern Pool<AstNode>            g_Pool_astNode;
 extern Pool<AstAttrDecl>        g_Pool_astAttrDecl;
 extern Pool<AstAttrUse>         g_Pool_astAttrUse;
@@ -754,3 +788,5 @@ extern Pool<AstProperty>        g_Pool_astProperty;
 extern Pool<AstExpressionList>  g_Pool_astExpressionList;
 extern Pool<AstStruct>          g_Pool_astStruct;
 extern Pool<AstImpl>            g_Pool_astImpl;
+extern Pool<AstInit>            g_Pool_astInit;
+extern Pool<AstDrop>            g_Pool_astDrop;
