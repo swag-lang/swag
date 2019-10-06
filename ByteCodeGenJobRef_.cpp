@@ -465,7 +465,30 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     }
     else
     {
-        return internalError(context, "emitInit, invalid type");
+        RegisterList r1;
+        reserveRegisterRC(context, r1, 1);
+
+        auto startLoop = context->bc->numInstructions;
+        for (auto child : node->parameters->childs)
+        {
+            auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+            auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
+            emitInstruction(context, ByteCodeOp::CopyRARB, r1, node->expression->resultRegisterRC);
+            if (typeParam->offset)
+                emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
+            emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
+            freeRegisterRC(context, child);
+        }
+
+        if (numToInit != 1)
+        {
+            emitInstruction(context, ByteCodeOp::IncPointerVB, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
+            emitInstruction(context, ByteCodeOp::DecRA, node->count->resultRegisterRC);
+            auto instJump   = emitInstruction(context, ByteCodeOp::JumpNotZero32, node->count->resultRegisterRC);
+            instJump->b.s32 = startLoop - context->bc->numInstructions;
+        }
+
+        freeRegisterRC(context, r1);
     }
 
     freeRegisterRC(context, node->expression);

@@ -292,14 +292,25 @@ bool SemanticJob::resolveInit(SemanticContext* context)
 
         if (pointedType->kind == TypeInfoKind::Native || pointedType->kind == TypeInfoKind::Pointer)
         {
-			SWAG_VERIFY(node->parameters->childs.size() == 1, context->errorContext.report({ sourceFile, node->count, format("too many initialization parameters for type '%s'", pointedType->name.c_str()) }));
+            SWAG_VERIFY(node->parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->count, format("too many initialization parameters for type '%s'", pointedType->name.c_str())}));
             auto child = node->parameters->childs.front();
-			SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
+            SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
         }
-		else
-		{
-			return internalError(context, "resolveInit, invalid type");
-		}
+        else if (pointedType->kind == TypeInfoKind::Struct)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
+            auto job        = context->job;
+            job->cacheDependentSymbols.clear();
+            job->cacheDependentSymbols.push_back(typeStruct->structNode->resolvedSymbolName);
+            job->symMatch.reset();
+            for (auto child : node->parameters->childs)
+                job->symMatch.parameters.push_back(child);
+            SWAG_CHECK(matchIdentifierParameters(context, nullptr, node->parameters, node));
+        }
+        else
+        {
+            return internalError(context, "resolveInit, invalid type");
+        }
     }
 
     node->byteCodeFct = &ByteCodeGenJob::emitInit;

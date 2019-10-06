@@ -334,7 +334,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstIdentifier* node)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, AstNode* genericParameters, AstNode* callParameters, AstNode* node)
 {
     auto  job                 = context->job;
     auto  sourceFile          = context->sourceFile;

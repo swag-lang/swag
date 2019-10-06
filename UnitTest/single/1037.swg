@@ -1,0 +1,16 @@
+#module module1037
+
+struct Point
+{
+	x, y: s32
+}
+
+//#[swag.printbc]
+#test
+{
+	var pt : [5] Point
+	ptr := &pt
+	init(ptr, 5)(10, 20)
+	@assert(pt[4].x == 10)
+	@assert(pt[4].y == 20)
+}

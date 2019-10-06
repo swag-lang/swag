@@ -152,8 +152,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // Register symbol with its type
     if (!(node->flags & AST_FROM_GENERIC))
         typeInfo->flags |= structFlags;
-    node->typeInfo = typeInfo;
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct));
+    node->typeInfo               = typeInfo;
+    node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct);
+    SWAG_CHECK(node->resolvedSymbolOverload);
 
     // We are parsing the swag module
     if (sourceFile->swagFile)

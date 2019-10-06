@@ -69,18 +69,17 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     currentScope->allocateSymTable();
     {
         scoped_lock lk(currentScope->symTable->mutex);
-        auto        symbol = currentScope->symTable->findNoLock(structNode->name);
+        auto        symbol             = currentScope->symTable->findNoLock(structNode->name);
         if (!symbol)
         {
             auto typeInfo = g_Pool_typeInfoStruct.alloc();
             newScope      = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
             newScope->allocateSymTable();
-            typeInfo->name       = structNode->name;
-            typeInfo->scope      = newScope;
-            structNode->typeInfo = typeInfo;
-            structNode->scope    = newScope;
-            if (!isContextDisabled())
-                currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+            typeInfo->name                 = structNode->name;
+            typeInfo->scope                = newScope;
+            structNode->typeInfo           = typeInfo;
+            structNode->scope              = newScope;
+            structNode->resolvedSymbolName = currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
         }
         else
         {
