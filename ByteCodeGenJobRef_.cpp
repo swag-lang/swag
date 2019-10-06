@@ -370,3 +370,46 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
     node->resultRegisterRC = node->childs.front()->resultRegisterRC;
     return true;
 }
+
+bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
+{
+    auto node           = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    auto typeExpression = TypeManager::concreteType(node->expression->typeInfo);
+
+    if (!node->parameters)
+    {
+		SWAG_CHECK(emitClearRef(context, typeExpression, node->expression->resultRegisterRC));
+        return true;
+    }
+
+    return true;
+}
+
+bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
+{
+    return true;
+}
+
+bool ByteCodeGenJob::emitClearRef(ByteCodeGenContext* context, TypeInfo* typeInfo, uint32_t registerIndex)
+{
+    switch (typeInfo->sizeOf)
+    {
+    case 1:
+        emitInstruction(context, ByteCodeOp::Clear8, registerIndex);
+        break;
+    case 2:
+        emitInstruction(context, ByteCodeOp::Clear16, registerIndex);
+        break;
+    case 4:
+        emitInstruction(context, ByteCodeOp::Clear32, registerIndex);
+        break;
+    case 8:
+        emitInstruction(context, ByteCodeOp::Clear64, registerIndex);
+        break;
+    default:
+        emitInstruction(context, ByteCodeOp::ClearX, registerIndex)->b.u32 = typeInfo->sizeOf;
+        break;
+    }
+
+	return true;
+}

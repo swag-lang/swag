@@ -333,3 +333,27 @@ bool SemanticJob::resolveIsExpression(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolveInit(SemanticContext* context)
+{
+    auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    auto sourceFile         = context->sourceFile;
+    auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
+
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("first parameter of 'init' should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+	node->byteCodeFct = &ByteCodeGenJob::emitInit;
+
+    return true;
+}
+
+bool SemanticJob::resolveDrop(SemanticContext* context)
+{
+    auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    auto sourceFile         = context->sourceFile;
+    auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
+
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("first parameter of 'init' should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+	node->byteCodeFct = &ByteCodeGenJob::emitDrop;
+
+    return true;
+}

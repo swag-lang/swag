@@ -438,25 +438,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        switch (typeInfoStruct->sizeOf)
-        {
-        case 1:
-            emitInstruction(&cxt, ByteCodeOp::Clear8, 0);
-            break;
-        case 2:
-            emitInstruction(&cxt, ByteCodeOp::Clear16, 0);
-            break;
-        case 4:
-            emitInstruction(&cxt, ByteCodeOp::Clear32, 0);
-            break;
-        case 8:
-            emitInstruction(&cxt, ByteCodeOp::Clear64, 0);
-            break;
-        default:
-            emitInstruction(&cxt, ByteCodeOp::ClearX, 0)->b.u32 = typeInfoStruct->sizeOf;
-            break;
-        }
-
+        SWAG_CHECK(emitClearRef(&cxt, typeInfoStruct, 0));
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
         return true;
@@ -550,24 +532,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
             if (!done)
             {
-                switch (typeVar->sizeOf)
-                {
-                case 1:
-                    emitInstruction(&cxt, ByteCodeOp::Clear8, 0);
-                    break;
-                case 2:
-                    emitInstruction(&cxt, ByteCodeOp::Clear16, 0);
-                    break;
-                case 4:
-                    emitInstruction(&cxt, ByteCodeOp::Clear32, 0);
-                    break;
-                case 8:
-                    emitInstruction(&cxt, ByteCodeOp::Clear64, 0);
-                    break;
-                default:
-                    emitInstruction(&cxt, ByteCodeOp::ClearX, 0)->b.u32 = typeVar->sizeOf;
-                    break;
-                }
+				SWAG_CHECK(emitClearRef(&cxt, typeVar, 0));
             }
         }
     }

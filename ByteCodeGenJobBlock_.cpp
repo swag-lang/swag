@@ -386,7 +386,7 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context, Scope* scope)
+bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope)
 {
     if (!scope)
         return true;
@@ -465,7 +465,7 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
     if ((node->flags & AST_EMIT_DROP_DONE) == 0)
     {
         node->flags |= AST_EMIT_DROP_DONE;
-        SWAG_CHECK(emitDrop(context, scope));
+        SWAG_CHECK(emitLeaveScopeDrop(context, scope));
         if (context->result != ByteCodeResult::Done)
             return true;
     }

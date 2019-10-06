@@ -269,13 +269,3 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     return true;
 }
-
-bool SemanticJob::resolveInit(SemanticContext* context)
-{
-    return true;
-}
-
-bool SemanticJob::resolveDrop(SemanticContext* context)
-{
-    return true;
-}
