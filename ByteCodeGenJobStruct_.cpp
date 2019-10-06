@@ -521,8 +521,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 if (typeVarStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
                 {
                     emitInstruction(&cxt, ByteCodeOp::PushRAParam);
-                    auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall);
-                    SWAG_ASSERT(typeInfoStruct->opInitFct->bc->out);
+                    auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall);
                     inst->a.pointer = (uint8_t*) typeVarStruct->opInitFct->bc;
                     inst->b.pointer = (uint8_t*) typeInfoFunc;
                     emitInstruction(&cxt, ByteCodeOp::IncSP, 8);

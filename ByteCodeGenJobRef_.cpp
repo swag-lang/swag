@@ -376,7 +376,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     auto node           = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
 
-    // Determin if we just need to clear the memory
+    // Determine if we just need to clear the memory
     bool justClear = true;
     if (node->parameters)
         justClear = false;
@@ -406,6 +406,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         }
         else
         {
+            SWAG_ASSERT(node->count);
             emitInstruction(context, ByteCodeOp::ClearXVar, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u32 = sizeToClear;
         }
     }
@@ -414,18 +415,24 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         SWAG_ASSERT(typeStruct);
         if (!(typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
-			if (numToInit == 1)
-			{
-				emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
-				auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
-				inst->a.pointer = (uint8_t*)typeStruct->opInitFct->bc;
-				inst->b.pointer = (uint8_t*)typeStruct->opInitFct->typeInfo;
-				emitInstruction(context, ByteCodeOp::IncSP, 8);
-			}
-			else
-			{
-				return internalError(context, "emitInit, invalid type");
-			}
+            SWAG_ASSERT(typeStruct->opInitFct);
+            if (!generateStruct_opInit(context, typeStruct))
+                return false;
+
+            auto startLoop = context->bc->numInstructions;
+            emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
+            auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+            inst->a.pointer = (uint8_t*) typeStruct->opInitFct->bc;
+            inst->b.pointer = (uint8_t*) typeStruct->opInitFct->typeInfo;
+            emitInstruction(context, ByteCodeOp::IncSP, 8);
+
+            if (numToInit != 1)
+            {
+                emitInstruction(context, ByteCodeOp::IncPointerVB, node->expression->resultRegisterRC)->b.u32 = typeStruct->sizeOf;
+                emitInstruction(context, ByteCodeOp::DecRA, node->count->resultRegisterRC);
+                auto instJump   = emitInstruction(context, ByteCodeOp::JumpNotZero32, node->count->resultRegisterRC);
+                instJump->b.s32 = startLoop - context->bc->numInstructions;
+            }
         }
     }
     else

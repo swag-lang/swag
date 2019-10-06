@@ -3,17 +3,16 @@
 struct Point
 {
 	x: s32 = 10
-	y: s32 = 20
 }
 
 //#[swag.printbc]
 #test
 {
-	var pt : Point
-	pt.x = 0
-	pt.y = 0
+	var pt : [2] Point
+	pt[0].x = 0
+	pt[1].x = 0
 	ptr := &pt
-	init(ptr)
-	@assert(pt.x == 10)
-	@assert(pt.y == 20)
+	init(ptr, 2)
+	@assert(pt[0].x == 10)
+	@assert(pt[1].x == 10)
 }

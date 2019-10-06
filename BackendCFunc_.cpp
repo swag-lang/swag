@@ -1020,6 +1020,9 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         case ByteCodeOp::JumpTrue:
             bufferC.addString(format("if(r%d.b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
             break;
+        case ByteCodeOp::JumpNotZero32:
+            bufferC.addString(format("if(r%d.u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
+            break;
         case ByteCodeOp::Ret:
             bufferC.addString("return;");
             break;

@@ -224,6 +224,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     switch (ip->op)
     {
+    case ByteCodeOp::JumpNotZero32:
+    {
+        if (registersRC[ip->a.u32].u32)
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::JumpNotTrue:
     {
         if (!registersRC[ip->a.u32].b)

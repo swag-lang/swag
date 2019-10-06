@@ -14,6 +14,7 @@ BYTECODE_OP(IntrinsicFree)
 BYTECODE_OP(IntrinsicRealloc)
 BYTECODE_OP(IntrinsicGetContext)
 
+BYTECODE_OP(JumpNotZero32)
 BYTECODE_OP(JumpNotTrue)
 BYTECODE_OP(JumpTrue)
 BYTECODE_OP(Jump)
