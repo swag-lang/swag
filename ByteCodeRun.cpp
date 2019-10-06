@@ -958,11 +958,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->b.u32].b = registersRC[ip->a.u32].pointer == nullptr;
         break;
     }
-    case ByteCodeOp::IsNullU32:
-    {
-        registersRC[ip->b.u32].b = registersRC[ip->a.u32].u32 == 0;
-        break;
-    }
 
     case ByteCodeOp::CompareOpLowerS32:
     {

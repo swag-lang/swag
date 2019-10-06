@@ -202,7 +202,6 @@ void ByteCode::print()
         case ByteCodeOp::AffectOp16:
         case ByteCodeOp::AffectOpPointer:
         case ByteCodeOp::IsNullString:
-        case ByteCodeOp::IsNullU32:
         case ByteCodeOp::BoundCheck:
         case ByteCodeOp::BoundCheckString:
         case ByteCodeOp::BoundCheckReg:

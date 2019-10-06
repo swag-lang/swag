@@ -1000,9 +1000,6 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         case ByteCodeOp::IsNullString:
             bufferC.addString(format("r%u.b = r%u.pointer == 0;", ip->b.u32, ip->a.u32));
             break;
-        case ByteCodeOp::IsNullU32:
-            bufferC.addString(format("r%u.b = r%u.u32 == 0;", ip->b.u32, ip->a.u32));
-            break;
 
         case ByteCodeOp::BinOpAnd:
             bufferC.addString(format("r%u.b = r%u.b && r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));

@@ -173,7 +173,6 @@ BYTECODE_OP(CompareOpGreaterF32)
 BYTECODE_OP(CompareOpGreaterF64)
 BYTECODE_OP(CompareOpGreaterPointer)
 BYTECODE_OP(IsNullString)
-BYTECODE_OP(IsNullU32)
 
 BYTECODE_OP(ClearMaskU32)
 BYTECODE_OP(ClearMaskU64)
