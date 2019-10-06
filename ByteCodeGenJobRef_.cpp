@@ -502,6 +502,44 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
 {
+    auto node           = CastAst<AstDrop>(context->node, AstNodeKind::Drop);
+    auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
+
+    if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
+    {
+        // Number of elements to init. If 0, then this is dynamic
+        uint32_t numToInit = 0;
+        if (!node->count)
+            numToInit = 1;
+        else if (node->count->flags & AST_VALUE_COMPUTED)
+            numToInit = node->count->computedValue.reg.u32;
+
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+        generateStruct_opDrop(context, typeStruct);
+        if (context->result == ByteCodeResult::Pending)
+            return true;
+
+        if (typeStruct->opDrop)
+        {
+            auto startLoop = context->bc->numInstructions;
+            emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
+            auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+            inst->a.pointer = (uint8_t*) typeStruct->opDrop;
+            inst->b.pointer = (uint8_t*) typeStruct->opInitFct->typeInfo;
+            emitInstruction(context, ByteCodeOp::IncSP, 8);
+
+            if (numToInit != 1)
+            {
+                emitInstruction(context, ByteCodeOp::IncPointerVB, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
+                emitInstruction(context, ByteCodeOp::DecRA, node->count->resultRegisterRC);
+                auto instJump   = emitInstruction(context, ByteCodeOp::JumpNotZero32, node->count->resultRegisterRC);
+                instJump->b.s32 = startLoop - context->bc->numInstructions;
+            }
+        }
+    }
+
+    freeRegisterRC(context, node->expression);
+    freeRegisterRC(context, node->count);
     return true;
 }
 

@@ -4,7 +4,7 @@ struct Point
 {
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	var pt : [5] Point

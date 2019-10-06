@@ -278,6 +278,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("'init' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
@@ -306,6 +307,8 @@ bool SemanticJob::resolveInit(SemanticContext* context)
             for (auto child : node->parameters->childs)
                 job->symMatch.parameters.push_back(child);
             SWAG_CHECK(matchIdentifierParameters(context, nullptr, node->parameters, node));
+            if (context->result == SemanticResult::Pending)
+                return true;
         }
         else
         {
@@ -320,11 +323,19 @@ bool SemanticJob::resolveInit(SemanticContext* context)
 
 bool SemanticJob::resolveDrop(SemanticContext* context)
 {
-    auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    auto node               = CastAst<AstDrop>(context->node, AstNodeKind::Drop);
     auto sourceFile         = context->sourceFile;
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("first parameter of 'init' should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("'drop' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+
+    if (node->count)
+    {
+        auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({sourceFile, node->count, format("'drop' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, node->count, "'drop' count parameter should be 32 bits"}));
+    }
+
     node->byteCodeFct = &ByteCodeGenJob::emitDrop;
 
     return true;
