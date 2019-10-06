@@ -379,7 +379,22 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     // Determine if we just need to clear the memory
     bool justClear = true;
     if (node->parameters)
-        justClear = false;
+    {
+        for (auto child : node->parameters->childs)
+        {
+            if (!(child->flags & AST_VALUE_COMPUTED))
+            {
+                justClear = false;
+                break;
+            }
+
+            if (child->computedValue.reg.u64)
+            {
+                justClear = false;
+                break;
+            }
+        }
+    }
 
     TypeInfoStruct* typeStruct = nullptr;
     if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
@@ -434,6 +449,10 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
                 instJump->b.s32 = startLoop - context->bc->numInstructions;
             }
         }
+    }
+    else if (!typeStruct)
+    {
+		return internalError(context, "emitInit, invalid type");
     }
     else
     {

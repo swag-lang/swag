@@ -640,7 +640,7 @@ bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymLeftParen)
     {
-        SWAG_CHECK(doFuncCallParameters(node, &node->count));
+        SWAG_CHECK(doFuncCallParameters(node, &node->parameters));
     }
 
     return true;
