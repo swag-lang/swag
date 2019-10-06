@@ -271,6 +271,7 @@ void ByteCode::print()
             g_Log.setColor(LogColor::Cyan);
             wprintf(bcNum, ip->a.s32 + i + 1);
             break;
+		case ByteCodeOp::JumpZero32:
 		case ByteCodeOp::JumpNotZero32:
         case ByteCodeOp::JumpNotTrue:
         case ByteCodeOp::JumpTrue:

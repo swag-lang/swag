@@ -92,13 +92,10 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
         inst->b.s32             = -1;
     }
 
-    auto r0                            = reserveRegisterRC(context);
     loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
     loopNode->seekJumpBeforeContinue   = loopNode->seekJumpBeforeExpression;
-    emitInstruction(context, ByteCodeOp::IsNullU32, node->resultRegisterRC, r0);
-    loopNode->seekJumpExpression = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpTrue, r0);
-    freeRegisterRC(context, r0);
+    loopNode->seekJumpExpression       = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpZero32, node->resultRegisterRC);
 
     // Decrement the loop variable
     emitInstruction(context, ByteCodeOp::DecRA, node->resultRegisterRC);
