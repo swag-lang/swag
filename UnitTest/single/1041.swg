@@ -5,6 +5,5 @@
 {
 	var pt : s32 = 1
 	ptr := &pt
-	drop(ptr)
-	@assert(pt == 1)
+	drop(ptr, 2)
 }

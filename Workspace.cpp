@@ -44,6 +44,8 @@ Module* Workspace::createOrUseModule(const fs::path& path)
         g_Stats.numModules++;
     if (g_CommandLine.backendDebugInformations)
         module->backendParameters.debugInformations = true;
+    if (g_CommandLine.backendOptimize)
+        module->backendParameters.optimize = true;
 
     return module;
 }
@@ -204,7 +206,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
     g_ThreadMgr.waitEndJobs();
 
-	// Errors in swag.swg !!!
+    // Errors in swag.swg !!!
     if (runtimeModule->numErrors)
     {
         g_Log.error("some syntax errors have been found in 'swag.swg' ! exiting...");

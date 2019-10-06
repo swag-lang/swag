@@ -97,7 +97,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                 if (!pz)
                     pz = strstr(oneLine.c_str(), ": warning");
 
-				// Error
+                // Error
                 if (pz)
                 {
                     backend->module->numErrors++;
@@ -108,7 +108,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                     g_Log.print(oneLine + "\n");
                 }
 
-				// Messages
+                // Messages
                 else if (logAll)
                 {
                     g_Log.setDefaultColor();
@@ -264,7 +264,8 @@ bool BackendCCompilerVS::compile()
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
     string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
-	clArguments += "/O2 ";
+    if (backendParameters.optimize)
+        clArguments += "/O2 ";
 
     for (const auto& oneIncludePath : includePaths)
         clArguments += "/I\"" + oneIncludePath + "\" ";
