@@ -195,6 +195,11 @@ void ByteCode::print()
         case ByteCodeOp::Clear16:
         case ByteCodeOp::Clear32:
         case ByteCodeOp::Clear64:
+		case ByteCodeOp::NegBool:
+		case ByteCodeOp::NegF32:
+		case ByteCodeOp::NegF64:
+		case ByteCodeOp::NegS32:
+		case ByteCodeOp::NegS64:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
