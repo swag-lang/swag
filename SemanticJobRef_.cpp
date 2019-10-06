@@ -285,9 +285,21 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, node->count, "'init' count parameter should be 32 bits"}));
     }
 
-    auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
     if (node->parameters)
     {
+        auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
+        auto pointedType     = typeinfoPointer->pointedType;
+
+        if (pointedType->kind == TypeInfoKind::Native || pointedType->kind == TypeInfoKind::Pointer)
+        {
+			SWAG_VERIFY(node->parameters->childs.size() == 1, context->errorContext.report({ sourceFile, node->count, format("too many initialization parameters for type '%s'", pointedType->name.c_str()) }));
+            auto child = node->parameters->childs.front();
+			SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
+        }
+		else
+		{
+			return internalError(context, "resolveInit, invalid type");
+		}
     }
 
     node->byteCodeFct = &ByteCodeGenJob::emitInit;

@@ -397,9 +397,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     }
 
     TypeInfoStruct* typeStruct = nullptr;
-    if (typeExpression->finalType->kind == TypeInfoKind::Struct)
+    if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
     {
-        typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->finalType, TypeInfoKind::Struct);
+        typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             justClear = false;
     }
@@ -413,7 +413,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 
     if (justClear)
     {
-        uint32_t sizeToClear = typeExpression->finalType->sizeOf;
+        uint32_t sizeToClear = typeExpression->pointedType->sizeOf;
         if (numToInit)
         {
             sizeToClear *= numToInit;
@@ -452,7 +452,16 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     }
     else if (!typeStruct)
     {
-		return internalError(context, "emitInit, invalid type");
+        auto child     = node->parameters->childs.front();
+        auto startLoop = context->bc->numInstructions;
+        SWAG_CHECK(emitAffectEqual(context, node->expression->resultRegisterRC, child->resultRegisterRC, child->typeInfo, child));
+        if (numToInit != 1)
+        {
+            emitInstruction(context, ByteCodeOp::IncPointerVB, node->expression->resultRegisterRC)->b.u32 = typeExpression->pointedType->sizeOf;
+            emitInstruction(context, ByteCodeOp::DecRA, node->count->resultRegisterRC);
+            auto instJump   = emitInstruction(context, ByteCodeOp::JumpNotZero32, node->count->resultRegisterRC);
+            instJump->b.s32 = startLoop - context->bc->numInstructions;
+        }
     }
     else
     {
