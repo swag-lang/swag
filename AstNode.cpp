@@ -497,7 +497,7 @@ AstNode* AstImpl::clone(CloneContext& context)
 AstNode* AstInit::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astInit.alloc();
-    newNode->copyFrom(context, this, false);
+    newNode->copyFrom(context, this);
 
     newNode->expression = findChildRef(expression, newNode);
     newNode->count      = findChildRef(count, newNode);
@@ -508,7 +508,7 @@ AstNode* AstInit::clone(CloneContext& context)
 AstNode* AstDrop::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astDrop.alloc();
-    newNode->copyFrom(context, this, false);
+    newNode->copyFrom(context, this);
 
     newNode->expression = findChildRef(expression, newNode);
     newNode->count      = findChildRef(count, newNode);
