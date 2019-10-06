@@ -42,7 +42,7 @@ Module* Workspace::createOrUseModule(const fs::path& path)
 
     if (g_CommandLine.stats)
         g_Stats.numModules++;
-    if (g_CommandLine.debug)
+    if (g_CommandLine.backendDebugInformations)
         module->backendParameters.debugInformations = true;
 
     return module;
@@ -281,7 +281,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     // Output pass on all modules
-    if (g_CommandLine.output)
+    if (g_CommandLine.backendOutput)
     {
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose("starting backend pass...");

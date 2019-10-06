@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     auto node   = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     int  sizeOf = node->typeInfo->sizeOf;
 
-    if (g_CommandLine.debugBoundCheck)
+    if (g_CommandLine.bytecodeBoundCheck)
     {
         auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         auto r0       = reserveRegisterRC(context);
@@ -60,7 +60,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     inst->c.u32 = sizeof(void*);
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC[0], node->array->resultRegisterRC[0]);
 
-    if (g_CommandLine.debugBoundCheck)
+    if (g_CommandLine.bytecodeBoundCheck)
         emitInstruction(context, ByteCodeOp::BoundCheckReg, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     if (sizeOf > 1)
@@ -143,7 +143,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a string constant
     if (node->array->typeInfo->isNative(NativeTypeKind::String))
     {
-        if (g_CommandLine.debugBoundCheck)
+        if (g_CommandLine.bytecodeBoundCheck)
             emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
         emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC);
@@ -157,7 +157,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Slice);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
-        if (g_CommandLine.debugBoundCheck)
+        if (g_CommandLine.bytecodeBoundCheck)
         {
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
         }
@@ -208,7 +208,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoArray>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Array);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
-        if (g_CommandLine.debugBoundCheck)
+        if (g_CommandLine.bytecodeBoundCheck)
         {
             auto r0 = reserveRegisterRC(context);
 
@@ -241,7 +241,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
 
-        if (g_CommandLine.debugBoundCheck)
+        if (g_CommandLine.bytecodeBoundCheck)
         {
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
@@ -276,7 +276,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     {
         auto r0 = reserveRegisterRC(context);
 
-        if (g_CommandLine.debugBoundCheck)
+        if (g_CommandLine.bytecodeBoundCheck)
         {
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);

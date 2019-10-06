@@ -1,44 +1,58 @@
 #pragma once
 #include "BuildPass.h"
 
+struct CommandLineBackendC
+{
+    bool outputCode     = false;
+    bool outputByteCode = false;
+};
+
 struct CommandLine
 {
-    bool help             = false;
+    // Compiler
+    int       numCores  = 0;
+    BuildPass buildPass = BuildPass::Full;
+
+    // Input
+    bool        cleanCache       = true;
+    bool        addRuntimeModule = true;
+    string      fileFilter;
+    set<string> compileVersion;
+    int         tabSize = 4;
+
+    // Test
     bool unittest         = true;
     bool test             = true;
-    bool silent           = false;
-    bool stats            = true;
-    bool output           = true;
-    bool errorSourceOut   = true;
-    bool errorNoteOut     = true;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
-    bool cleanCache       = true;
 
-    bool debug           = false;
-    bool debugBoundCheck = true;
-    bool debugAnycast    = true;
+    // Language options
+    uint32_t staticArrayMaxSize = 32 * 1024 * 1024;
 
-    bool addRuntimeModule = true;
+    // Bytecode generation
+    bool bytecodeBoundCheck   = true;
+    bool bytecodeAnyCastCheck = true;
 
+    // Bytecode execution
+    uint32_t byteCodeMaxRecurse = 1024;
+    uint32_t byteCodeStackSize  = 16 * 1024;
+
+    // Verbose
+    bool help                  = false;
+    bool silent                = false;
+    bool stats                 = true;
     bool verbose               = false;
     bool verboseUnittestErrors = false;
     bool verboseBackendCommand = false;
     bool verboseTest           = true;
     bool verboseBuildPass      = true;
+    bool errorSourceOut        = true;
+    bool errorNoteOut          = true;
 
-    bool cOutputCode     = false;
-    bool cOutputByteCode = false;
-
-    BuildPass   buildPass = BuildPass::Full;
-    string      fileFilter;
-    set<string> compileVersion;
-
-    int      numCores           = 0;
-    int      tabSize            = 4;
-    uint32_t byteCodeMaxRecurse = 1024;
-    uint32_t byteCodeStackSize  = 16 * 1024;
-    uint32_t staticArrayMaxSize = 32 * 1024 * 1024;
+    // Backend
+    bool                backendOutput            = true;
+    bool                backendDebugInformations = false;
+    CommandLineBackendC cBackend;
 
     fs::path exePath;
 };

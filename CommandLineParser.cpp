@@ -9,7 +9,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--silent", "-s", CommandLineType::Bool, &cmdLine->silent);
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
     addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
-    addArg("--output", "-o", CommandLineType::Bool, &cmdLine->output);
+    addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput);
     addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut);
     addArg("--unittest", nullptr, CommandLineType::Bool, &cmdLine->unittest);
@@ -18,7 +18,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
     addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanCache);
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
-    addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->debug);
+    addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->backendDebugInformations);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
@@ -28,14 +28,14 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--bc-stack-size", nullptr, CommandLineType::Int, &cmdLine->byteCodeStackSize);
     addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
 
-    cmdLine->cOutputCode = true;
-    cmdLine->cOutputByteCode = true;
+    cmdLine->cBackend.outputCode     = true;
+    cmdLine->cBackend.outputByteCode = true;
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
     //cmdLine->output = false;
     //cmdLine->verboseBackendCommand = true;
     //cmdLine->verboseUnittestErrors = true;
-	//cmdLine->debugBoundCheck = false;
+    //cmdLine->debugBoundCheck = false;
     cmdLine->fileFilter = "1039";
 }
 

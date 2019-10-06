@@ -13,7 +13,7 @@ void printStats()
 
     g_Log.setColor(LogColor::White);
     wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM).c_str();
-    if (g_CommandLine.output)
+    if (g_CommandLine.backendOutput)
         wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
     wcout << "workers ........... " << g_Stats.numWorkers << "\n";
@@ -22,7 +22,7 @@ void printStats()
     wcout << "lines ............. " << g_Stats.numLines << "\n";
     wcout << "lines/s ........... " << (int) (g_Stats.numLines / g_Stats.totalTime.count()) << "\n";
     wcout << "instructions ...... " << g_Stats.numInstructions << "\n";
-    if (g_CommandLine.output)
+    if (g_CommandLine.backendOutput)
         wcout << "output modules .... " << g_Stats.numGenModules << "\n";
     if (g_CommandLine.unittest)
         wcout << "test functions .... " << g_Stats.testFunctions << "\n";

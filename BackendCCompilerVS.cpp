@@ -232,11 +232,11 @@ bool BackendCCompilerVS::compile()
     libPath.push_back(module->workspace->cachePath.string());
 
     // Include paths
-    vector<string> includePath;
+    vector<string> includePaths;
     //includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\um)", winSdk.c_str()));
     //includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
-    includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
-    includePath.push_back(format(R"(%s\include)", vsTarget.c_str()));
+    includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
+    includePaths.push_back(format(R"(%s\include)", vsTarget.c_str()));
 
     // CL arguments
     string clArguments = "";
@@ -264,9 +264,10 @@ bool BackendCCompilerVS::compile()
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
     string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
-    for (const auto& oneIncludePath : includePath)
-        clArguments += "/I\"" + oneIncludePath + "\" ";
+	//clArguments += "/O2 ";
 
+    for (const auto& oneIncludePath : includePaths)
+        clArguments += "/I\"" + oneIncludePath + "\" ";
     for (const auto& define : backendParameters.defines)
         clArguments += "/D" + define + " ";
 

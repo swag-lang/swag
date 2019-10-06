@@ -147,7 +147,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Ask for bytecode
     bool genByteCode = false;
-    if (g_CommandLine.output && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic))
+    if (g_CommandLine.backendOutput && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic))
         genByteCode = true;
     if ((node->attributeFlags & ATTRIBUTE_TEST) && g_CommandLine.test && g_CommandLine.runByteCodeTests)
         genByteCode = true;

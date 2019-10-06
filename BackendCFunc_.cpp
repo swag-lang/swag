@@ -362,7 +362,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         // Print source code
-        if (g_CommandLine.cOutputCode && !bc->compilerGenerated)
+        if (g_CommandLine.cBackend.outputCode && !bc->compilerGenerated)
         {
             if (ip->startLocation.line != lastLine)
             {
@@ -382,7 +382,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
 
         bufferC.addString(format("lbl%08u:; ", i));
 
-        if (g_CommandLine.cOutputByteCode)
+        if (g_CommandLine.cBackend.outputByteCode)
         {
             bufferC.addString("/* ");
             for (int dec = g_ByteCodeOpNamesLen[(int) ip->op]; dec < ByteCode::ALIGN_RIGHT_OPCODE; dec++)
