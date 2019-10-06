@@ -391,18 +391,9 @@ struct TypeInfoPointer : public TypeInfo
     {
         TypeInfo::reset();
         kind        = TypeInfoKind::Pointer;
-        finalType = nullptr;
+        finalType   = nullptr;
+        pointedType = nullptr;
         ptrCount    = 0;
-    }
-
-    uint32_t sizeOfPointedBy()
-    {
-        int size;
-        if (ptrCount == 1)
-            size = finalType->sizeOf;
-        else
-            size = sizeof(void*);
-        return size;
     }
 
     void computeName() override
@@ -420,6 +411,7 @@ struct TypeInfoPointer : public TypeInfo
     TypeInfo* clone() override;
 
     TypeInfo* finalType;
+    TypeInfo* pointedType;
     uint32_t  ptrCount;
 };
 
@@ -430,7 +422,7 @@ struct TypeInfoArray : public TypeInfo
         TypeInfo::reset();
         kind        = TypeInfoKind::Array;
         pointedType = nullptr;
-        finalType     = nullptr;
+        finalType   = nullptr;
         count       = 0;
         totalCount  = 0;
     }

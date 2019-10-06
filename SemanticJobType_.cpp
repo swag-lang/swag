@@ -122,14 +122,27 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     // In fact, this is a pointer
     if (node->ptrCount)
     {
-        auto ptrPointer         = g_Pool_typeInfoPointer.alloc();
-        ptrPointer->ptrCount    = node->ptrCount;
+        auto ptrPointer       = g_Pool_typeInfoPointer.alloc();
+        ptrPointer->ptrCount  = node->ptrCount;
         ptrPointer->finalType = node->typeInfo;
-        ptrPointer->sizeOf      = sizeof(void*);
+        ptrPointer->sizeOf    = sizeof(void*);
         if (node->isConst)
             ptrPointer->flags |= TYPEINFO_CONST;
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
+
+		if (ptrPointer->ptrCount == 1)
+		{
+			ptrPointer->pointedType = ptrPointer->finalType;
+		}
+        else
+        {
+            auto pointedType = (TypeInfoPointer*) ptrPointer->clone();
+            pointedType->ptrCount--;
+            pointedType->computeName();
+            ptrPointer->pointedType = typeTable.registerType(pointedType);
+        }
+
         node->typeInfo = typeTable.registerType(ptrPointer);
     }
 

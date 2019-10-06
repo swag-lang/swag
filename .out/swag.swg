@@ -123,6 +123,7 @@ namespace swag
 	struct TypeinfoPointer
 	{
 		base: 			Typeinfo
+		finalType:		const *Typeinfo
 		pointedType:	const *Typeinfo
 		ptrCount:		u32
 	}

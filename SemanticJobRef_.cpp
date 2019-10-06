@@ -48,7 +48,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             typeInfo       = typeArray->pointedType;
         }
 
-        ptrType->finalType = typeInfo;
+        ptrType->finalType   = typeInfo;
+        ptrType->pointedType = typeInfo;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->name        = "*" + typeInfo->name;
 

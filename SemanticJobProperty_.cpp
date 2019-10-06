@@ -16,7 +16,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         {
             node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
             node->computedValue.reg.u64 = node->computedValue.text.length();
-			node->typeInfo = g_TypeMgr.typeInfoU32;
+            node->typeInfo              = g_TypeMgr.typeInfoU32;
         }
         else
         {
@@ -39,7 +39,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeList);
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         node->computedValue.reg.u64 = (uint32_t) typeList->childs.size();
-		node->typeInfo = g_TypeMgr.typeInfoU32;
+        node->typeInfo              = g_TypeMgr.typeInfoU32;
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
@@ -50,7 +50,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, node, nullptr));
         if (context->result == SemanticResult::Pending)
             return true;
-		node->typeInfo = g_TypeMgr.typeInfoU32;
+        node->typeInfo = g_TypeMgr.typeInfoU32;
     }
     else
     {
@@ -105,7 +105,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         {
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;
-            ptrType->finalType = g_TypeMgr.typeInfoU8;
+            ptrType->finalType   = g_TypeMgr.typeInfoU8;
+            ptrType->pointedType = g_TypeMgr.typeInfoU8;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*u8";
             node->typeInfo       = typeTable.registerType(ptrType);
@@ -116,7 +117,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(expr->typeInfo, TypeInfoKind::Slice);
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;
-            ptrType->finalType = ptrSlice->pointedType;
+            ptrType->finalType   = ptrSlice->pointedType;
+            ptrType->pointedType = ptrSlice->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrSlice->pointedType->name;
             node->typeInfo       = typeTable.registerType(ptrType);
@@ -127,7 +129,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             auto ptrArray        = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;
-            ptrType->finalType = ptrArray->pointedType;
+            ptrType->finalType   = ptrArray->pointedType;
+            ptrType->pointedType = ptrArray->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrArray->pointedType->name;
             node->typeInfo       = typeTable.registerType(ptrType);
@@ -137,7 +140,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         {
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;
-            ptrType->finalType = g_TypeMgr.typeInfoVoid;
+            ptrType->finalType   = g_TypeMgr.typeInfoVoid;
+            ptrType->pointedType = g_TypeMgr.typeInfoVoid;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
             node->typeInfo       = typeTable.registerType(ptrType);

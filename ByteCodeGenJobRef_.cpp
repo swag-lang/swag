@@ -183,7 +183,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     else if (node->array->typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
-        int  sizeOf   = typeInfo->sizeOfPointedBy();
+        int  sizeOf   = typeInfo->pointedType->sizeOf;
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstantInt0())
