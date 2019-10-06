@@ -264,7 +264,7 @@ bool BackendCCompilerVS::compile()
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
     string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
-	//clArguments += "/O2 ";
+	clArguments += "/O2 ";
 
     for (const auto& oneIncludePath : includePaths)
         clArguments += "/I\"" + oneIncludePath + "\" ";
