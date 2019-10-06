@@ -269,3 +269,34 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolveInit(SemanticContext* context)
+{
+    auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    auto sourceFile         = context->sourceFile;
+    auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
+
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("'init' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+    if (node->count)
+    {
+        auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
+		SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({ sourceFile, node->count, format("'init' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str()) }));
+		SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({ sourceFile, node->count, "'init' count parameter should be 32 bits" }));
+    }
+
+    node->byteCodeFct = &ByteCodeGenJob::emitInit;
+
+    return true;
+}
+
+bool SemanticJob::resolveDrop(SemanticContext* context)
+{
+    auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    auto sourceFile         = context->sourceFile;
+    auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
+
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("first parameter of 'init' should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+    node->byteCodeFct = &ByteCodeGenJob::emitDrop;
+
+    return true;
+}
