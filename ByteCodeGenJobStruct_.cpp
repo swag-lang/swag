@@ -91,12 +91,12 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         // Reference to the field
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
         if (varDecl->resolvedSymbolOverload->storageOffset)
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+            emitInstruction(&cxt, ByteCodeOp::IncPointerVB)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
 
         // Call drop
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall);
         inst->a.pointer = (uint8_t*) typeStructVar->opDrop;
         inst->b.pointer = (uint8_t*) opDrop->typeInfoFunc;
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
@@ -106,8 +106,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opUserDropFct)
     {
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall);
         inst->a.pointer = (uint8_t*) typeInfoStruct->opUserDropFct->bc;
         inst->b.pointer = (uint8_t*) opDrop->typeInfoFunc;
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
@@ -205,8 +205,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
         // Call postmove
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall);
         inst->a.pointer = (uint8_t*) typeStructVar->opPostMove;
         inst->b.pointer = (uint8_t*) opPostMove->typeInfoFunc;
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
@@ -216,8 +216,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostMoveFct)
     {
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall);
         inst->a.pointer = (uint8_t*) typeInfoStruct->opUserPostMoveFct->bc;
         inst->b.pointer = (uint8_t*) opPostMove->typeInfoFunc;
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
@@ -313,8 +313,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
         // Call postcopy
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall);
         inst->a.pointer = (uint8_t*) typeStructVar->opPostCopy;
         inst->b.pointer = (uint8_t*) opPostCopy->typeInfoFunc;
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
@@ -324,8 +324,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostCopyFct)
     {
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+        emitInstruction(&cxt, ByteCodeOp::PushRAParam);
+        auto inst       = emitInstruction(&cxt, ByteCodeOp::LocalCall);
         inst->a.pointer = (uint8_t*) typeInfoStruct->opUserPostCopyFct->bc;
         inst->b.pointer = (uint8_t*) opPostCopy->typeInfoFunc;
         emitInstruction(&cxt, ByteCodeOp::IncSP, 8);
@@ -518,10 +518,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                     return false;
 
                 // Function call if necessary
-                if (typeVar->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+                if (typeVarStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
                 {
-                    emitInstruction(&cxt, ByteCodeOp::PushRAParam, 0);
-                    auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall, 0);
+                    emitInstruction(&cxt, ByteCodeOp::PushRAParam);
+                    auto inst = emitInstruction(&cxt, ByteCodeOp::LocalCall);
                     SWAG_ASSERT(typeInfoStruct->opInitFct->bc->out);
                     inst->a.pointer = (uint8_t*) typeVarStruct->opInitFct->bc;
                     inst->b.pointer = (uint8_t*) typeInfoFunc;
@@ -532,7 +532,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
             if (!done)
             {
-				SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
+                SWAG_CHECK(emitClearRefConstantSize(&cxt, typeVar->sizeOf, 0));
             }
         }
     }
@@ -618,8 +618,8 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
             emitInstruction(context, ByteCodeOp::IncPointer, r0, regOffset, r0);
 
         // Then call
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0, 0);
-        inst            = emitInstruction(context, ByteCodeOp::LocalCall, 0);
+        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+        inst            = emitInstruction(context, ByteCodeOp::LocalCall);
         inst->a.pointer = (uint8_t*) typeInfoStruct->opInitFct->bc;
         inst->b.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
         emitInstruction(context, ByteCodeOp::IncSP, 8);

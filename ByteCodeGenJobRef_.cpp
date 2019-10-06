@@ -376,22 +376,56 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     auto node           = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
 
+    // Determin if we just need to clear the memory
     bool justClear = true;
     if (node->parameters)
         justClear = false;
 
+    TypeInfoStruct* typeStruct = nullptr;
+    if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
+    {
+        typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+        if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            justClear = false;
+    }
+
+    // Number of elements to init. If 0, then this is dynamic
+    uint32_t numToInit = 0;
+    if (!node->count)
+        numToInit = 1;
+    else if (node->count->flags & AST_VALUE_COMPUTED)
+        numToInit = node->count->computedValue.reg.u32;
+
     if (justClear)
     {
         uint32_t sizeToClear = typeExpression->pointedType->sizeOf;
-        if (!node->count || (node->count->flags & AST_VALUE_COMPUTED))
+        if (numToInit)
         {
-            if (node->count && (node->count->flags & AST_VALUE_COMPUTED))
-                sizeToClear *= node->count->computedValue.reg.u32;
+            sizeToClear *= numToInit;
             SWAG_CHECK(emitClearRefConstantSize(context, sizeToClear, node->expression->resultRegisterRC));
         }
         else
         {
             emitInstruction(context, ByteCodeOp::ClearXVar, node->expression->resultRegisterRC, node->count->resultRegisterRC)->c.u32 = sizeToClear;
+        }
+    }
+    else if (!node->parameters)
+    {
+        SWAG_ASSERT(typeStruct);
+        if (!(typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+        {
+			if (numToInit == 1)
+			{
+				emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
+				auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+				inst->a.pointer = (uint8_t*)typeStruct->opInitFct->bc;
+				inst->b.pointer = (uint8_t*)typeStruct->opInitFct->typeInfo;
+				emitInstruction(context, ByteCodeOp::IncSP, 8);
+			}
+			else
+			{
+				return internalError(context, "emitInit, invalid type");
+			}
         }
     }
     else
