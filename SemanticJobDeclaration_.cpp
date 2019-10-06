@@ -26,8 +26,8 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePointer->ptrCount == 1, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
-        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+        SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
         node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
         node->ownerScope->alternativeScopesVars.push_back({varNode, typeStruct->scope});
     }

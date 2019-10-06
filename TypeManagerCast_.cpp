@@ -1212,7 +1212,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
             else
             {
                 auto typePointer = static_cast<TypeInfoPointer*>(fromTypeList->childs.front());
-                if (!TypeManager::makeCompatibles(context, toTypeSlice->pointedType, typePointer->pointedType, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
+                if (!TypeManager::makeCompatibles(context, toTypeSlice->pointedType, typePointer->finalType, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
                     forcedInit = false;
             }
 
@@ -1632,7 +1632,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Struct)
     {
         auto typePtr = static_cast<TypeInfoPointer*>(toType);
-        if (typePtr->ptrCount == 1 && typePtr->pointedType->isSame(fromType, ISSAME_CAST))
+        if (typePtr->ptrCount == 1 && typePtr->finalType->isSame(fromType, ISSAME_CAST))
         {
             if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
             {

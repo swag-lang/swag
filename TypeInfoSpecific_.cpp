@@ -98,7 +98,7 @@ bool TypeInfoParam::isSame(TypeInfo* to, uint32_t isSameFlags)
 TypeInfo* TypeInfoPointer::clone()
 {
     auto newType         = g_Pool_typeInfoPointer.alloc();
-    newType->pointedType = pointedType;
+    newType->finalType = finalType;
     newType->ptrCount    = ptrCount;
     newType->copyFrom(this);
     return newType;
@@ -126,11 +126,11 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     if (isSameFlags & ISSAME_CAST)
     {
-        if (other->pointedType == g_TypeMgr.typeInfoVoid)
+        if (other->finalType == g_TypeMgr.typeInfoVoid)
             return true;
     }
 
-    return pointedType->isSame(other->pointedType, isSameFlags);
+    return finalType->isSame(other->finalType, isSameFlags);
 }
 
 TypeInfo* TypeInfoArray::clone()

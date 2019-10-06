@@ -20,8 +20,8 @@ void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatc
         if (callType->kind == TypeInfoKind::Struct && genType->kind == TypeInfoKind::Pointer)
         {
             auto genTypePointer                                    = CastTypeInfo<TypeInfoPointer>(genType, TypeInfoKind::Pointer);
-            cloneContext.replaceTypes[genTypePointer->pointedType] = callType;
-            genType                                                = genTypePointer->pointedType;
+            cloneContext.replaceTypes[genTypePointer->finalType] = callType;
+            genType                                                = genTypePointer->finalType;
         }
 
         // Else replace 1 to 1
@@ -166,12 +166,12 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(oldType, TypeInfoKind::Pointer);
-        newType          = typePointer->pointedType;
+        newType          = typePointer->finalType;
         doTypeSubstitution(context, cloneContext, &newType);
-        if (newType != typePointer->pointedType)
+        if (newType != typePointer->finalType)
         {
             typePointer              = static_cast<TypeInfoPointer*>(typePointer->clone());
-            typePointer->pointedType = newType;
+            typePointer->finalType = newType;
             typePointer->flags &= ~TYPEINFO_GENERIC;
             typePointer->computeName();
             *typeInfo = module->typeTable.registerType(typePointer);

@@ -48,7 +48,7 @@ struct ConcreteTypeInfoNative
 struct ConcreteTypeInfoPointer
 {
     ConcreteTypeInfo  base;
-    ConcreteTypeInfo* pointedType;
+    ConcreteTypeInfo* finalType;
     uint32_t          ptrCount;
 };
 
@@ -265,7 +265,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         auto concreteType      = (ConcreteTypeInfoPointer*) concreteTypeInfoValue;
         auto realType          = (TypeInfoPointer*) typeInfo;
         concreteType->ptrCount = realType->ptrCount;
-        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->pointedType, realType->pointedType));
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, concreteTypeInfoValue, storageOffset, &concreteType->finalType, realType->finalType));
         break;
     }
     case TypeInfoKind::Param:
@@ -407,7 +407,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     auto typePtr = g_Pool_typeInfoPointer.alloc();
     typePtr->flags |= TYPEINFO_CONST;
     typePtr->ptrCount    = 1;
-    typePtr->pointedType = ((TypeInfoParam*) typeStruct->childs[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
+    typePtr->finalType = ((TypeInfoParam*) typeStruct->childs[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
     typePtr->computeName();
     typePtr->sizeOf = sizeof(void*);
 

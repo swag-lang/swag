@@ -193,10 +193,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointer, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        if (typeInfo->pointedType->isNative(NativeTypeKind::String))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
+        if (typeInfo->finalType->isNative(NativeTypeKind::String))
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->finalType));
         else if (!(node->flags & AST_TAKE_ADDRESS))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfo->finalType));
 
         node->resultRegisterRC = node->array->resultRegisterRC;
         freeRegisterRC(context, node->access);
@@ -397,9 +397,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     }
 
     TypeInfoStruct* typeStruct = nullptr;
-    if (typeExpression->pointedType->kind == TypeInfoKind::Struct)
+    if (typeExpression->finalType->kind == TypeInfoKind::Struct)
     {
-        typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+        typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->finalType, TypeInfoKind::Struct);
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             justClear = false;
     }
@@ -413,7 +413,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 
     if (justClear)
     {
-        uint32_t sizeToClear = typeExpression->pointedType->sizeOf;
+        uint32_t sizeToClear = typeExpression->finalType->sizeOf;
         if (numToInit)
         {
             sizeToClear *= numToInit;

@@ -124,11 +124,11 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     {
         auto ptrPointer         = g_Pool_typeInfoPointer.alloc();
         ptrPointer->ptrCount    = node->ptrCount;
-        ptrPointer->pointedType = node->typeInfo;
+        ptrPointer->finalType = node->typeInfo;
         ptrPointer->sizeOf      = sizeof(void*);
         if (node->isConst)
             ptrPointer->flags |= TYPEINFO_CONST;
-        ptrPointer->flags |= (ptrPointer->pointedType->flags & TYPEINFO_GENERIC);
+        ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
         node->typeInfo = typeTable.registerType(ptrPointer);
     }

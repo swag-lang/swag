@@ -42,7 +42,7 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
     auto firstTypePtr = static_cast<TypeInfoPointer*>(firstType);
     SWAG_VERIFY(firstTypePtr->ptrCount == 1, context->errorContext.report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
-    SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, ISSAME_CAST), context->errorContext.report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
+    SWAG_VERIFY(firstTypePtr->finalType->isSame(typeStruct, ISSAME_CAST), context->errorContext.report({sourceFile, node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
 
     // Generic operator must have one generic parameter of type string
     if (name == "opBinary" || name == "opUnary" || name == "opAssign" || name == "opIndexAssign")

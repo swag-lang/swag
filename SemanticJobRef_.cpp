@@ -48,7 +48,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             typeInfo       = typeArray->pointedType;
         }
 
-        ptrType->pointedType = typeInfo;
+        ptrType->finalType = typeInfo;
         ptrType->sizeOf      = sizeof(void*);
         ptrType->name        = "*" + typeInfo->name;
 
@@ -114,8 +114,8 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Pointer:
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, arrayNode, "cannot dereference a 'void' pointer"}));
-        arrayNode->typeInfo    = typePtr->pointedType;
+        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, arrayNode, "cannot dereference a 'void' pointer"}));
+        arrayNode->typeInfo    = typePtr->finalType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerRef;
         break;
     }
@@ -192,10 +192,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Pointer:
     {
         auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
-        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->pointedType != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, arrayNode, "cannot dereference a 'void' pointer"}));
+        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, arrayNode, "cannot dereference a 'void' pointer"}));
         if (typePtr->ptrCount == 1)
         {
-            arrayNode->typeInfo = typePtr->pointedType;
+            arrayNode->typeInfo = typePtr->finalType;
         }
         else
         {
@@ -280,8 +280,13 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-		SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({ sourceFile, node->count, format("'init' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str()) }));
-		SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({ sourceFile, node->count, "'init' count parameter should be 32 bits" }));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({sourceFile, node->count, format("'init' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, node->count, "'init' count parameter should be 32 bits"}));
+    }
+
+    auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
+    if (node->parameters)
+    {
     }
 
     node->byteCodeFct = &ByteCodeGenJob::emitInit;

@@ -391,7 +391,7 @@ struct TypeInfoPointer : public TypeInfo
     {
         TypeInfo::reset();
         kind        = TypeInfoKind::Pointer;
-        pointedType = nullptr;
+        finalType = nullptr;
         ptrCount    = 0;
     }
 
@@ -399,7 +399,7 @@ struct TypeInfoPointer : public TypeInfo
     {
         int size;
         if (ptrCount == 1)
-            size = pointedType->sizeOf;
+            size = finalType->sizeOf;
         else
             size = sizeof(void*);
         return size;
@@ -412,14 +412,14 @@ struct TypeInfoPointer : public TypeInfo
             name = "const ";
         for (uint32_t i = 0; i < ptrCount; i++)
             name += "*";
-        pointedType->computeName();
-        name += pointedType->name;
+        finalType->computeName();
+        name += finalType->name;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* pointedType;
+    TypeInfo* finalType;
     uint32_t  ptrCount;
 };
 

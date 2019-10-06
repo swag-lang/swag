@@ -81,8 +81,8 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        if ((typePointer->ptrCount == 1) && (typePointer->pointedType->kind == TypeInfoKind::Struct))
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(typePointer->pointedType)->scope;
+        if ((typePointer->ptrCount == 1) && (typePointer->finalType->kind == TypeInfoKind::Struct))
+            identifierRef->startScope = static_cast<TypeInfoStruct*>(typePointer->finalType)->scope;
         node->typeInfo = typeInfo;
         break;
     }

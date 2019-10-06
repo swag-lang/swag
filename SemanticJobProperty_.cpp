@@ -105,7 +105,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         {
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;
-            ptrType->pointedType = g_TypeMgr.typeInfoU8;
+            ptrType->finalType = g_TypeMgr.typeInfoU8;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*u8";
             node->typeInfo       = typeTable.registerType(ptrType);
@@ -116,7 +116,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             auto ptrSlice        = CastTypeInfo<TypeInfoSlice>(expr->typeInfo, TypeInfoKind::Slice);
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;
-            ptrType->pointedType = ptrSlice->pointedType;
+            ptrType->finalType = ptrSlice->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrSlice->pointedType->name;
             node->typeInfo       = typeTable.registerType(ptrType);
@@ -127,7 +127,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             auto ptrArray        = CastTypeInfo<TypeInfoArray>(expr->typeInfo, TypeInfoKind::Array);
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;
-            ptrType->pointedType = ptrArray->pointedType;
+            ptrType->finalType = ptrArray->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrArray->pointedType->name;
             node->typeInfo       = typeTable.registerType(ptrType);
@@ -137,7 +137,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         {
             auto ptrType         = g_Pool_typeInfoPointer.alloc();
             ptrType->ptrCount    = 1;
-            ptrType->pointedType = g_TypeMgr.typeInfoVoid;
+            ptrType->finalType = g_TypeMgr.typeInfoVoid;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
             node->typeInfo       = typeTable.registerType(ptrType);
