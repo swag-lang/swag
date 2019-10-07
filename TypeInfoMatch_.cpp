@@ -331,9 +331,13 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         }
         else if (context.mapGenericTypes.size())
         {
-            context.genericParametersCallValues.resize(context.maxGenericParam + 1);
-            context.genericParametersCallTypes.resize(context.maxGenericParam + 1);
-            context.genericParametersGenTypes.resize(context.maxGenericParam + 1);
+            if (context.maxGenericParam + 1 > context.genericParametersCallValues.size())
+            {
+                context.genericParametersCallValues.resize(context.maxGenericParam + 1);
+                context.genericParametersCallTypes.resize(context.maxGenericParam + 1);
+                context.genericParametersGenTypes.resize(context.maxGenericParam + 1);
+            }
+
             for (auto it : context.mapGenericTypes)
             {
                 context.genericParametersCallTypes[it.second.second] = it.second.first;
