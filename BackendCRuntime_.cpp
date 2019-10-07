@@ -80,24 +80,10 @@ static void __print(const char* message)
 	printf(message);
 }
 
-static void __print_i32(swag_int32_t value)   
-{ 
-	char buf[100]; 
-	snprintf(buf, 100, "%d", value); 
-	__print(buf);
-}
-
 static void __print_i64(swag_int64_t value)   
 { 
 	char buf[100]; 
 	snprintf(buf, 100, "%lld", value); 
-	__print(buf);
-}
-
-static void __print_f32(swag_float32_t value)
-{ 
-	char buf[100]; 
-	snprintf(buf, 100, "%f", value); 
 	__print(buf);
 }
 
