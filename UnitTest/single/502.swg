@@ -6,7 +6,7 @@
 func T(xx: string, a: ...)
 {
 	@assert(@countof(a) == 3)
-	@print(cast(s32) @countof(a))
+	@print(cast(s64) @countof(a))
 }
 
 //#[swag.printbc]

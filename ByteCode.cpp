@@ -157,10 +157,7 @@ void ByteCode::print()
         case ByteCodeOp::DeRef16:
         case ByteCodeOp::DeRef32:
         case ByteCodeOp::DeRef64:
-        case ByteCodeOp::IntrinsicPrintChar:
-        case ByteCodeOp::IntrinsicPrintF32:
         case ByteCodeOp::IntrinsicPrintF64:
-        case ByteCodeOp::IntrinsicPrintS32:
         case ByteCodeOp::IntrinsicPrintS64:
         case ByteCodeOp::IntrinsicPrintString:
         case ByteCodeOp::ClearRA:

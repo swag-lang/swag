@@ -1029,14 +1029,8 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString("return;");
             break;
 
-        case ByteCodeOp::IntrinsicPrintS32:
-            bufferC.addString(format("__print_i32(r%u.s32);", ip->a.u32));
-            break;
         case ByteCodeOp::IntrinsicPrintS64:
             bufferC.addString(format("__print_i64(r%u.s64);", ip->a.u32));
-            break;
-        case ByteCodeOp::IntrinsicPrintF32:
-            bufferC.addString(format("__print_f32(r%u.f32);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicPrintF64:
             bufferC.addString(format("__print_f64(r%u.f64);", ip->a.u32));

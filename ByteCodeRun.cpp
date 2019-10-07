@@ -811,13 +811,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-    case ByteCodeOp::IntrinsicPrintF32:
-    {
-        g_Log.lock();
-        g_Log.print(to_string(registersRC[ip->a.u32].f32));
-        g_Log.unlock();
-        break;
-    }
     case ByteCodeOp::IntrinsicPrintF64:
     {
         g_Log.lock();
@@ -825,26 +818,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         g_Log.unlock();
         break;
     }
-    case ByteCodeOp::IntrinsicPrintS32:
-    {
-        g_Log.lock();
-        g_Log.print(to_string(registersRC[ip->a.u32].s32));
-        g_Log.unlock();
-        break;
-    }
     case ByteCodeOp::IntrinsicPrintS64:
     {
         g_Log.lock();
         g_Log.print(to_string(registersRC[ip->a.u32].s64));
-        g_Log.unlock();
-        break;
-    }
-    case ByteCodeOp::IntrinsicPrintChar:
-    {
-        Utf8 msg;
-        msg += (char32_t) registersRC[ip->a.u32].u32;
-        g_Log.lock();
-        g_Log.print(msg);
         g_Log.unlock();
         break;
     }

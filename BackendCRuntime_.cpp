@@ -114,7 +114,7 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 		return;
 	__print(file); 
 	__print(":"); 
-	__print_i32(line);
+	__print_i64(line);
 	if(msg)
 		__print(msg);
 	else	
