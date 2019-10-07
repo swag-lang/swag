@@ -130,20 +130,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrPointer->flags |= TYPEINFO_CONST;
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
-
-		if (ptrPointer->ptrCount == 1)
-		{
-			ptrPointer->pointedType = ptrPointer->finalType;
-		}
-        else
-        {
-            auto pointedType = (TypeInfoPointer*) ptrPointer->clone();
-            pointedType->ptrCount--;
-            pointedType->computeName();
-            ptrPointer->pointedType = typeTable.registerType(pointedType);
-        }
-
-        node->typeInfo = typeTable.registerType(ptrPointer);
+        ptrPointer->pointedType = typeTable.registerType(ptrPointer->computePointedType());
+        node->typeInfo          = typeTable.registerType(ptrPointer);
     }
 
     // Const struct

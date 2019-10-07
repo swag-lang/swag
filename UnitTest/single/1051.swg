@@ -20,7 +20,6 @@ func(T, N: u32) delete(addr: *T)
 	req.address = addr
 	req.mode = swag.AllocatorMode.Free
 	@getcontext().allocator(req)
-
 }
 
 struct Point

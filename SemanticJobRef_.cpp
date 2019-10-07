@@ -202,6 +202,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             auto newType = static_cast<TypeInfoPointer*>(typePtr->clone());
             newType->ptrCount--;
+			newType->computeName();
             arrayNode->typeInfo = typeTable.registerType(newType);
         }
 

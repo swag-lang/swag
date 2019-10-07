@@ -105,6 +105,16 @@ TypeInfo* TypeInfoPointer::clone()
     return newType;
 }
 
+TypeInfo* TypeInfoPointer::computePointedType()
+{
+    if (ptrCount == 1)
+        return finalType;
+    auto result = (TypeInfoPointer*) clone();
+    result->ptrCount--;
+	result->computeName();
+    return result;
+}
+
 bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)

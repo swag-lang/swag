@@ -407,6 +407,7 @@ struct TypeInfoPointer : public TypeInfo
         name += finalType->name;
     }
 
+    TypeInfo* computePointedType();
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
