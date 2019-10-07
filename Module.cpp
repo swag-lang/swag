@@ -90,7 +90,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         if (exception)
         {
             auto ip = runContext->ip - 1;
-            sourceFile->report({runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("unhandled exception '%X' during bytecode execution !", m_exceptionCode)});
+            sourceFile->report({runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", m_exceptionCode)});
         }
 
         return false;
