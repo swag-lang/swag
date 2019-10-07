@@ -172,7 +172,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case Intrinsic::IntrinsicGetContext:
     {
-        node->resultRegisterRC = reserveRegisterRC(context);
+        node->resultRegisterRC         = reserveRegisterRC(context);
+        node->parent->resultRegisterRC = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
         break;
     }
@@ -271,10 +272,6 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
         inst->b.u32            = node->fctCallStorageOffset;
         emitInstruction(context, ByteCodeOp::CopyRRxRCxCall, 0, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-
-		// This is usefull when function call is inside an expression like func().something
-		// The emitIdentifier will have to know the register where the result of func() is stored
-		node->parent->resultRegisterRC = node->resultRegisterRC;
     }
 
     // If we are in a function that need to keep the RR0 register alive, we need to save it
@@ -495,7 +492,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             auto numRegs = typeInfoFunc->returnType->numRegisters();
             reserveRegisterRC(context, node->resultRegisterRC, numRegs);
             context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
-            for (int idx = 0; idx < node->resultRegisterRC.size(); idx++)
+            for (int idx = 0; idx < numRegs; idx++)
                 emitInstruction(context, ByteCodeOp::CopyRCxRRxCall, node->resultRegisterRC[idx], idx);
         }
     }
@@ -511,6 +508,10 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     {
         emitInstruction(context, ByteCodeOp::PopRRSaved, 0);
     }
+
+    // This is usefull when function call is inside an expression like func().something
+    // The emitIdentifier will have to know the register where the result of func() is stored
+    node->parent->resultRegisterRC = node->resultRegisterRC;
 
     return true;
 }
