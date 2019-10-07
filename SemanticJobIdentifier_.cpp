@@ -133,16 +133,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->flags |= AST_IS_GENERIC;
 
     // Symbol is linked to a using var : insert the variable name before the symbol
-    if (dependentVar && !parent->typeInfo && parent->kind == AstNodeKind::IdentifierRef)
+    if (dependentVar && !parent->typeInfo && parent->kind == AstNodeKind::IdentifierRef && symbol->kind != SymbolKind::Function)
     {
         auto idRef  = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
         auto idNode = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
         idNode->inheritTokenLocation(identifier->token);
         Ast::addChildFront(idRef, idNode);
-        auto copyContext      = *context;
-        copyContext.node      = idNode;
-        idNode->semanticState = AstNodeResolveState::ProcessingChilds;
-        SWAG_CHECK(resolveIdentifier(&copyContext));
+		context->node->semanticState = AstNodeResolveState::Enter;
+		context->job->nodes.push_back(idNode);
+		context->result = SemanticResult::NewChilds;
+		return true;
     }
 
     switch (symbol->kind)

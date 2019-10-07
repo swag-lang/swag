@@ -31,12 +31,12 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->cBackend.outputCode     = true;
     cmdLine->cBackend.outputByteCode = true;
     //cmdLine->runBackendTests = false;
-    cmdLine->addRuntimeModule = false;
-    //cmdLine->output = false;
+    //cmdLine->addRuntimeModule = false;
+    cmdLine->backendOutput = false;
     //cmdLine->verboseBackendCommand = true;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->debugBoundCheck = false;
-    cmdLine->fileFilter = "1057";
+    cmdLine->fileFilter = "1058";
 }
 
 void CommandLineParser::logArguments()
