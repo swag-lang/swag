@@ -51,8 +51,8 @@ struct CommandLine
 
     // Backend
     bool                backendOutput            = true;
-    bool                backendDebugInformations = true;
-    bool                backendOptimize          = true;
+    bool                backendDebugInformations = false;
+    bool                backendOptimize          = false;
     CommandLineBackendC cBackend;
 
     fs::path exePath;
