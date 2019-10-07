@@ -616,8 +616,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // A using on a variable
-    if (node->flags & AST_DECL_USING)
-        SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
+	if (node->flags & AST_DECL_USING)
+	{
+		SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
+	}
 
     // Register symbol with its type
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,

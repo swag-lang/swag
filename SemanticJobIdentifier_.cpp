@@ -132,11 +132,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     if (identifier->typeInfo->flags & TYPEINFO_GENERIC)
         identifier->flags |= AST_IS_GENERIC;
 
-    // Symbol is linked to a using var
+    // Symbol is linked to a using var : insert the variable name before the symbol
     if (dependentVar && !parent->typeInfo && parent->kind == AstNodeKind::IdentifierRef)
     {
         auto idRef  = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
         auto idNode = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
+        idNode->inheritTokenLocation(identifier->token);
         Ast::addChildFront(idRef, idNode);
         auto copyContext      = *context;
         copyContext.node      = idNode;
@@ -317,7 +318,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-		// Setup parent if necessary
+        // Setup parent if necessary
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
         SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
 
@@ -952,7 +953,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     AstNode* dependentVar = nullptr;
     for (auto& dep : scopeHierarchyVars)
     {
-        if (dep.scope == symbol->ownerTable->scope)
+        if (dep.scope->fullname == symbol->ownerTable->scope->fullname)
         {
             if (dependentVar)
             {
