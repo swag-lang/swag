@@ -53,6 +53,8 @@ namespace swag
 				request.address = @alloc(request.size)
 			case AllocatorMode.Free:
 				@free(request.address)
+			case AllocatorMode.Realloc:
+				request.address = @realloc(request.address, request.size)
 		}
 	}
 
