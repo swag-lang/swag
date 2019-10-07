@@ -271,6 +271,10 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
         inst->b.u32            = node->fctCallStorageOffset;
         emitInstruction(context, ByteCodeOp::CopyRRxRCxCall, 0, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+
+		// This is usefull when function call is inside an expression like func().something
+		// The emitIdentifier will have to know the register where the result of func() is stored
+		node->parent->resultRegisterRC = node->resultRegisterRC;
     }
 
     // If we are in a function that need to keep the RR0 register alive, we need to save it

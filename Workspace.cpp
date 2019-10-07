@@ -207,7 +207,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     g_ThreadMgr.waitEndJobs();
 
     // Errors in swag.swg !!!
-    if (runtimeModule->numErrors)
+    if (runtimeModule && runtimeModule->numErrors)
     {
         g_Log.error("some syntax errors have been found in 'swag.swg' ! exiting...");
         return false;

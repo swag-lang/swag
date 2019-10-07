@@ -85,8 +85,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->c.u32 = resolved->storageIndex;
         }
 
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
         return true;
     }
 
@@ -198,6 +198,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IncPointerVB, node->resultRegisterRC)->b.u32 = node->resolvedSymbolOverload->storageOffset;
         if (!(node->flags & AST_TAKE_ADDRESS))
             emitStructDeRef(context);
+
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
         return true;
     }
 

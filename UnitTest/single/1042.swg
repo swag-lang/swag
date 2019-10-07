@@ -12,8 +12,14 @@ func(T) new()->*T
 	return acast req.address
 }
 
+struct Point
+{
+	x, y: string = "coucou"
+}
 //#[swag.printbc]
 #test
 {
-	ptr := new!s32()
+	ptr := new!Point()
+	@assert(ptr.x == "coucou")
+	@assert(ptr.y == "coucou")
 }

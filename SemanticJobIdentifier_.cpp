@@ -317,8 +317,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-        // For a return by copy, need to reserve room on the stack for the return result
+		// Setup parent if necessary
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
+        SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
+
+        // For a return by copy, need to reserve room on the stack for the return result
         if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
             identifier->flags |= AST_TRANSIENT;
@@ -421,7 +424,7 @@ anotherTry:
                     job->symMatch.result = MatchResult::Ok;
                 else if (symbol->kind == SymbolKind::Function && node->parent->childs.size() == 1)
                 {
-					// We can make @typeof(function), without adding the 'function' parameters
+                    // We can make @typeof(function), without adding the 'function' parameters
                     auto grandParent = node->parent->parent;
                     if (grandParent->kind == AstNodeKind::IntrinsicProp)
                     {
