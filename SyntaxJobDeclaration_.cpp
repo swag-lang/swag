@@ -1,11 +1,7 @@
 #include "pch.h"
-#include "Global.h"
 #include "Diagnostic.h"
 #include "Scoped.h"
 #include "SourceFile.h"
-#include "Scope.h"
-#include "SymTable.h"
-#include "TypeInfo.h"
 #include "Ast.h"
 #include "SemanticJob.h"
 
