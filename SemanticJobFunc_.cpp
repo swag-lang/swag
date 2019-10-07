@@ -165,8 +165,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = true;
     if (node->attributeFlags & AST_IS_GENERIC)
         genByteCode = false;
-	if(!node->content)
-		genByteCode = false;
+    if (!node->content)
+        genByteCode = false;
 
     if (genByteCode)
     {
@@ -376,14 +376,21 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         return true;
 
     // Check return type
-    bool lateRegister = false;
+    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    bool lateRegister = funcNode->returnType->flags & FORCE_FUNC_LATE_REGISTER;
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
     {
         // This is a short lambda without a specified return type. We now have it
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
         {
-            auto typeInfoFunc        = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
             typeInfoFunc->returnType = node->childs.front()->typeInfo;
+            if (typeInfoFunc->returnType->kind == TypeInfoKind::TypeList)
+            {
+                SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
+                funcNode->returnType->flags |= FORCE_FUNC_LATE_REGISTER;
+                return true;
+            }
+
             typeInfoFunc->computeName();
             funcNode->returnType->typeInfo = typeInfoFunc->returnType;
             lateRegister                   = true;
@@ -435,8 +442,11 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     }
 
     // Register symbol now that we have inferred the return type
-    if (lateRegister)
-        SWAG_CHECK(registerFuncSymbol(context, funcNode));
+	if (lateRegister)
+	{
+		typeInfoFunc->returnType = funcNode->returnType->typeInfo;
+		SWAG_CHECK(registerFuncSymbol(context, funcNode));
+	}
 
     return true;
 }

@@ -76,8 +76,8 @@ struct SemanticJob : public Job
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool forceExecuteNode(SemanticContext* context);
-	static bool reserveAndStoreToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-	static bool storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool reserveAndStoreToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool storeToSegment(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool collectLiteralsToSegmentNoLock(SemanticContext* context, uint32_t& offset, AstNode* node, DataSegment* segment);
     static bool reserveAndStoreToSegmentNoLock(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool storeToSegmentNoLock(SemanticContext* context, uint32_t storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
@@ -88,9 +88,9 @@ struct SemanticJob : public Job
     static bool evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool checkUnreachableCode(SemanticContext* context);
     static bool waitForStructUserOps(SemanticContext* context, AstNode* node);
-	static bool convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result);
-    static bool convertVarAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl);
-	static bool collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg);
+    static bool convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result);
+    static bool convertAssignementToStruct(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
+    static bool collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg);
 
     void waitForSymbol(SymbolName* symbol);
     void setPending();
@@ -116,13 +116,13 @@ struct SemanticJob : public Job
     static bool resolveExpressionListArray(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
-	static bool resolveIsExpression(SemanticContext* context);
+    static bool resolveIsExpression(SemanticContext* context);
     static bool resolveFactorExpression(SemanticContext* context);
     static bool resolveShiftExpression(SemanticContext* context);
     static bool resolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
-	static bool resolveCompilerFunction(SemanticContext* context);
+    static bool resolveCompilerFunction(SemanticContext* context);
     static bool resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right, bool optionnal = false);
     static bool resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, vector<AstNode*>& params, bool optionnal = false);
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
@@ -173,8 +173,8 @@ struct SemanticJob : public Job
     static bool resolveArrayPointerRef(SemanticContext* context);
     static bool resolveTypeList(SemanticContext* context);
     static bool resolveTrinaryOp(SemanticContext* context);
-	static bool resolveInit(SemanticContext* context);
-	static bool resolveDrop(SemanticContext* context);
+    static bool resolveInit(SemanticContext* context);
+    static bool resolveDrop(SemanticContext* context);
 
     void reset() override
     {

@@ -317,18 +317,17 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     return true;
 }
 
-bool SemanticJob::convertVarAssignementToStruct(SemanticContext* context, AstVarDecl* varDecl)
+bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* parent, AstNode* assignement, AstNode** result)
 {
     auto       sourceFile = context->sourceFile;
     AstStruct* structNode;
-    SWAG_CHECK(convertAssignementToStruct(context, varDecl->assignment, &structNode));
+    SWAG_CHECK(convertAssignementToStruct(context, assignement, &structNode));
 
     // Reference to that struct
-    varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
-    auto typeExpression = Ast::newTypeExpression(sourceFile, varDecl);
+    auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
     typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
-    varDecl->type              = typeExpression;
+    *result                    = typeExpression;
     context->job->nodes.push_back(typeExpression);
     context->result = SemanticResult::NewChilds;
     return true;
@@ -497,7 +496,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
             else if (typeList->listKind == TypeInfoListKind::Curly)
             {
-                SWAG_CHECK(convertVarAssignementToStruct(context, node));
+                SWAG_CHECK(convertAssignementToStruct(context, node, node->assignment, &node->type));
+                node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
                 return true;
             }
             else

@@ -256,6 +256,8 @@ bool BackendC::emitFuncSignatures()
 
 bool BackendC::emitFuncSignatures(Module* moduleToGen)
 {
+	SWAG_ASSERT(moduleToGen);
+
     bufferSwg.addString(format("#[swag.foreign(\"%s\")]\n", module->name.c_str()));
     bufferSwg.addString("{\n");
 
@@ -1323,6 +1325,8 @@ bool BackendC::emitFunctions()
 
 bool BackendC::emitFunctions(Module* moduleToGen)
 {
+	SWAG_ASSERT(moduleToGen);
+
     bool ok = true;
     for (auto one : moduleToGen->byteCodeFunc)
     {
