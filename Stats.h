@@ -8,8 +8,9 @@ struct Stats
     atomic<int>              testFunctions   = 0;
     atomic<int>              numInstructions = 0;
     int                      numWorkers      = 0;
+    chrono::duration<double> frontendTime;
+    chrono::duration<double> backendTime;
     chrono::duration<double> totalTime;
-    chrono::duration<double> outputTime;
 };
 
 extern Stats g_Stats;

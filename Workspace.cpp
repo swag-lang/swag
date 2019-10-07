@@ -179,6 +179,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("starting dependency pass...");
 
+    auto timeBefore = chrono::high_resolution_clock::now();
+
     // Dependency pass
     for (auto module : list)
     {
@@ -245,6 +247,9 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
     g_ThreadMgr.waitEndJobs();
 
+    auto timeAfter = chrono::high_resolution_clock::now();
+    g_Stats.frontendTime += timeAfter - timeBefore;
+
     // If we have some pending jobs, that means we don't have succeeded to resolve everything
     if (g_ThreadMgr.pendingJobs.size() > 0)
     {
@@ -288,7 +293,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
         if (g_CommandLine.verboseBuildPass)
             g_Log.verbose("starting backend pass...");
 
-        auto timeBefore = chrono::high_resolution_clock::now();
+        timeBefore = chrono::high_resolution_clock::now();
 
         for (auto module : list)
         {
@@ -308,8 +313,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
         g_ThreadMgr.waitEndJobs();
 
-        auto timeAfter = chrono::high_resolution_clock::now();
-        g_Stats.outputTime += timeAfter - timeBefore;
+        timeAfter = chrono::high_resolution_clock::now();
+        g_Stats.backendTime += timeAfter - timeBefore;
     }
 
     // During unit testing, be sure we don't have remaining not raised errors
@@ -337,9 +342,14 @@ bool Workspace::build()
     g_ThreadMgr.init();
 
     // Ask for a syntax pass on all files of all modules
+    auto timeBefore = chrono::high_resolution_clock::now();
+
     addRuntime();
     enumerateModules();
     g_ThreadMgr.waitEndJobs();
+
+    auto timeAfter = chrono::high_resolution_clock::now();
+    g_Stats.frontendTime += timeAfter - timeBefore;
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("## syntax pass done on %d module(s)", modules.size()));

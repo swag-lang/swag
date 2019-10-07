@@ -13,8 +13,9 @@ void printStats()
 
     g_Log.setColor(LogColor::White);
     wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM).c_str();
+	wcout << "frontend time ..... " << g_Stats.frontendTime.count() << "s\n";
     if (g_CommandLine.backendOutput)
-        wcout << "output time ....... " << g_Stats.outputTime.count() << "s\n";
+        wcout << "backend time ...... " << g_Stats.backendTime.count() << "s\n";
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
     wcout << "workers ........... " << g_Stats.numWorkers << "\n";
     wcout << "modules ........... " << g_Stats.numModules << "\n";
@@ -39,9 +40,9 @@ int main(int argc, const char* argv[])
 {
     auto timeBefore = chrono::high_resolution_clock::now();
 
-	// We do not want assert, but just reports of the CRT
+    // We do not want assert, but just reports of the CRT
 #ifdef WIN32
-	if (!IsDebuggerPresent())
+    if (!IsDebuggerPresent())
     {
         _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
         _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
