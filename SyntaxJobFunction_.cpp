@@ -280,7 +280,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
         AstNode* typeExpression;
         SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
-		Ast::setForceConstType(typeExpression);
+        Ast::setForceConstType(typeExpression);
         typeNode->flags |= AST_FUNC_RETURN_DEFINED;
     }
 
@@ -394,7 +394,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
-			Ast::setForceConstType(typeExpression);
+            Ast::setForceConstType(typeExpression);
         }
     }
 
@@ -439,8 +439,12 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
+
     // Return value
     SWAG_CHECK(tokenizer.getToken(token));
+    if (tokenizer.lastTokenIsEOL)
+        return true;
+
     if (token.id != TokenId::SymSemiColon)
     {
         SWAG_CHECK(doExpression(node));
