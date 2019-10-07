@@ -431,6 +431,13 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+
+	if (isSameFlags & ISSAME_CAST)
+    {
+        if (to->kind == TypeInfoKind::Generic)
+            return true;
+    }
+
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
     if ((flags & TYPEINFO_STRUCT_IS_TUPLE) != (to->flags & TYPEINFO_STRUCT_IS_TUPLE))

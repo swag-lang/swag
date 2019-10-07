@@ -27,9 +27,21 @@ struct Point
 	x, y: string = "coucou"
 }
 
+var G: s32 = 0
+
+impl Point
+{
+	func opDrop(self)
+	{
+		G += 1
+	}
+}
+
 //#[swag.printbc]
 #test
 {
+	G = 0
 	ptr := new!(Point, 4)()
 	delete!(Point, 4)(ptr)
+	@assert(G == 4)
 }
