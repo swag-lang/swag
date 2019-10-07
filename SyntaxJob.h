@@ -78,7 +78,6 @@ struct SyntaxJob : public Job
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
 	bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr);
     bool doFuncDecl(AstNode* parent, AstNode** result = nullptr);
-	void setForceConstType(AstNode* node);
     bool doFuncDeclParameter(AstNode* parent);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);

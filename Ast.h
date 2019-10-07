@@ -47,6 +47,7 @@ namespace Ast
     extern void   addChildFront(AstNode* parent, AstNode* child);
     extern int    findChildIndex(AstNode* parent, AstNode* child);
     extern void   visit(AstNode* root, const function<void(AstNode*)>& fctor);
+    extern void   setForceConstType(AstNode* node);
 
     extern AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent);
 

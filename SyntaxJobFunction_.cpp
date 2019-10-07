@@ -79,17 +79,6 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
     return true;
 }
 
-void SyntaxJob::setForceConstType(AstNode* node)
-{
-    if (node)
-    {
-        if (node->kind == AstNodeKind::TypeExpression)
-            ((AstTypeExpression*) node)->forceConstType = true;
-        if (node->kind == AstNodeKind::ExpressionList)
-            ((AstExpressionList*) node)->forceConstType = true;
-    }
-}
-
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 {
     auto paramNode         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, parent);
@@ -187,7 +176,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         }
     }
 
-    setForceConstType(paramNode->type);
+    Ast::setForceConstType(paramNode->type);
 
     // Be sure we will be able to have a type
     if (!paramNode->type && !paramNode->assignment)
@@ -291,7 +280,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
         AstNode* typeExpression;
         SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
-        setForceConstType(typeExpression);
+		Ast::setForceConstType(typeExpression);
         typeNode->flags |= AST_FUNC_RETURN_DEFINED;
     }
 
@@ -350,7 +339,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(doGenericDeclParameters(funcNode, &funcNode->genericParameters));
 
         SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::Intrinsic, syntaxError(token, format("missing function name instead of '%s'", token.text.c_str())));
-		SWAG_VERIFY(token.id != TokenId::Intrinsic || sourceFile->swagFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
+        SWAG_VERIFY(token.id != TokenId::Intrinsic || sourceFile->swagFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
 
         isIntrinsic = token.id == TokenId::Intrinsic;
         funcNode->inheritTokenName(token);
@@ -405,7 +394,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
-            setForceConstType(typeExpression);
+			Ast::setForceConstType(typeExpression);
         }
     }
 

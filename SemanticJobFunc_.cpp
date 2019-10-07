@@ -388,6 +388,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             {
                 SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 funcNode->returnType->flags |= FORCE_FUNC_LATE_REGISTER;
+				Ast::setForceConstType(funcNode->returnType);
                 return true;
             }
 

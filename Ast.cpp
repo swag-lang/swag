@@ -62,6 +62,17 @@ namespace Ast
         child->parent = parent;
     }
 
+    void setForceConstType(AstNode* node)
+    {
+        if (node)
+        {
+            if (node->kind == AstNodeKind::TypeExpression)
+                ((AstTypeExpression*) node)->forceConstType = true;
+            if (node->kind == AstNodeKind::ExpressionList)
+                ((AstExpressionList*) node)->forceConstType = true;
+        }
+    }
+
     Scope* newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
         if (parentScope)
