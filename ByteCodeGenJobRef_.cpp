@@ -428,7 +428,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
             }
         }
     }
-    else if (!node->parameters)
+    else if (!node->parameters || node->parameters->childs.empty())
     {
         SWAG_ASSERT(typeStruct);
         if (!(typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
