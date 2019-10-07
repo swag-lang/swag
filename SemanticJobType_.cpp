@@ -150,10 +150,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     else
     {
         // A struct function parameter is const
-        if (node->forFuncParameter && node->typeInfo->kind == TypeInfoKind::Struct)
+        if (node->forceConstType && (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
             node->isConst = true;
 
-        if (node->isConst && node->typeInfo->kind == TypeInfoKind::Struct)
+        if (node->isConst && (node->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
         {
             if (!node->typeInfo->isConst())
             {

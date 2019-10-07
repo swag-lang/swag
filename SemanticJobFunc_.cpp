@@ -228,7 +228,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if ((funcNode->flags & AST_IS_GENERIC) && !shortLambda)
         funcNode->content->flags |= AST_DISABLED;
 
-    // We do want to do a full semantic pass on content for a short lambda with returned type inferred, se we need
+    // We do want to do a full semantic pass on content for a short lambda with returned type inferred, so we need
     // to remove the AST_FROM_GENERIC flag, otherwise, some stuff won't be done (because typeinfo has been set on nodes)
     else if ((funcNode->flags & AST_FROM_GENERIC) && shortLambda)
         Ast::visit(funcNode->content, [](AstNode* x) { x->flags &= ~AST_FROM_GENERIC; });

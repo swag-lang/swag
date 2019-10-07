@@ -418,7 +418,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->arrayDim         = arrayDim;
     newNode->isSlice          = isSlice;
     newNode->isConst          = isConst;
-    newNode->forFuncParameter = forFuncParameter;
+    newNode->forceConstType = forceConstType;
     return newNode;
 }
 
@@ -461,7 +461,7 @@ AstNode* AstExpressionList::clone(CloneContext& context)
     newNode->storageOffsetSegment = storageOffsetSegment;
     newNode->listKind             = listKind;
     newNode->isConst              = isConst;
-    newNode->forFuncParameter     = forFuncParameter;
+    newNode->forceConstType     = forceConstType;
 
     return newNode;
 }

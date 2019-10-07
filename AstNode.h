@@ -619,7 +619,7 @@ struct AstTypeExpression : public AstNode
         arrayDim         = 0;
         isSlice          = false;
         isConst          = false;
-        forFuncParameter = false;
+        forceConstType = false;
         AstNode::reset();
     }
 
@@ -630,7 +630,7 @@ struct AstTypeExpression : public AstNode
     int      arrayDim;
     bool     isSlice;
     bool     isConst;
-    bool     forFuncParameter;
+    bool     forceConstType;
 };
 
 struct AstTypeLambda : public AstNode
@@ -686,14 +686,14 @@ struct AstExpressionList : public AstNode
         storageOffset        = 0;
         storageOffsetSegment = UINT32_MAX;
         isConst              = false;
-        forFuncParameter     = false;
+        forceConstType     = false;
         AstNode::reset();
     }
 
     AstNode* clone(CloneContext& context) override;
 
     bool             isConst;
-    bool             forFuncParameter;
+    bool             forceConstType;
     uint32_t         storageOffset;
     uint32_t         storageOffsetSegment;
     TypeInfoListKind listKind;
