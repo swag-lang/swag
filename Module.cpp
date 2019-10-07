@@ -84,11 +84,15 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         node->bc->enterByteCode(runContext);
     }
 
-    string exception;
+    bool exception = false;
     if (!executeNodeNoLock(sourceFile, node, exception))
     {
-        if (!exception.empty())
-            sourceFile->report({sourceFile, exception});
+        if (exception)
+        {
+            auto ip = runContext->ip - 1;
+            sourceFile->report({runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("unhandled exception '%X' during bytecode execution !", m_exceptionCode)});
+        }
+
         return false;
     }
 
@@ -102,7 +106,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     return true;
 }
 
-bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, string& exception)
+bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exception)
 {
     __try
     {
@@ -112,7 +116,8 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, string& ex
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        exception = "executeNode, unhandled exception";
+        m_exceptionCode = GetExceptionCode();
+        exception       = true;
         return false;
     }
 

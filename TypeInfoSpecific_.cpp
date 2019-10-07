@@ -111,7 +111,7 @@ TypeInfo* TypeInfoPointer::computePointedType()
         return finalType;
     auto result = (TypeInfoPointer*) clone();
     result->ptrCount--;
-	result->computeName();
+    result->computeName();
     return result;
 }
 
@@ -432,7 +432,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-	if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & ISSAME_CAST)
     {
         if (to->kind == TypeInfoKind::Generic)
             return true;
@@ -445,9 +445,10 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     auto other = static_cast<TypeInfoStruct*>(to);
 
-    if (genericParameters.size() != other->genericParameters.size())
+    auto numGenParams = genericParameters.size();
+    if (numGenParams != other->genericParameters.size())
         return false;
-    for (int i = 0; i < genericParameters.size(); i++)
+    for (int i = 0; i < numGenParams; i++)
     {
         if (isSameFlags & ISSAME_CAST)
         {

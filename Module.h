@@ -38,10 +38,11 @@ struct Module : public PoolElement
     BackendParameters   backendParameters;
     Backend*            backend = nullptr;
     set<string>         compileVersion;
+    int                 m_exceptionCode = 0;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);
-    bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, string& exception);
+    bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exception);
 
     SpinLock mutexRegisterRR;
     uint32_t maxReservedRegisterRR = 0;
