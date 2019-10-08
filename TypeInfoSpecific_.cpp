@@ -201,6 +201,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
     auto other = static_cast<TypeInfoList*>(to);
