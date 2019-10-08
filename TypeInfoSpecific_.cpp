@@ -202,6 +202,14 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
+	// Can cast from typelist curly to struct
+	// The real check will be done later
+    if (isSameFlags & ISSAME_CAST)
+    {
+        if (to->kind == TypeInfoKind::Struct && listKind == TypeInfoListKind::Curly)
+            return true;
+    }
+
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
     auto other = static_cast<TypeInfoList*>(to);
