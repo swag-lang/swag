@@ -1396,12 +1396,18 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     }
 
     // Declare a variable
-    auto varNode  = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), fromNode->parent);
+    auto varNode = Ast::newVarDecl(sourceFile, format("__tmp_%d", g_Global.uniqueID.fetch_add(1)), fromNode->parent);
+    varNode->inheritTokenLocation(fromNode->token);
+
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
+    typeNode->inheritTokenLocation(fromNode->token);
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
-    varNode->type        = typeNode;
+    varNode->type = typeNode;
+
     typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->structNode->name, typeNode);
     typeNode->identifier->flags |= AST_GENERATED;
+    typeNode->identifier->inheritTokenLocation(fromNode->token);
+
     auto back = typeNode->identifier->childs.back();
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
@@ -1414,7 +1420,8 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     identifierRef->flags |= AST_R_VALUE | AST_TRANSIENT | AST_DONT_COLLECT;
 
     // Make parameters
-    auto identifier            = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+    auto identifier = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+    identifier->inheritTokenLocation(fromNode->token);
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
     int countParams            = (int) fromNode->childs.size();
     if (parent == fromNode)
