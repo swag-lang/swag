@@ -14,11 +14,6 @@ void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatc
         auto callType = match.genericParametersCallTypes[i];
         auto genType  = match.genericParametersGenTypes[i];
 
-		if (callType->kind == TypeInfoKind::TypeList)
-		{
-			g_Log.print("XXXXXX\n");
-		}
-
         // Cast from struct to pointer
         if (callType->kind == TypeInfoKind::Struct && genType->kind == TypeInfoKind::Pointer)
         {

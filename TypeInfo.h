@@ -116,6 +116,8 @@ struct TypeInfo : public PoolElement
         {
             if ((flags & TYPEINFO_CONST) != (from->flags & TYPEINFO_CONST))
                 return false;
+            if ((flags & TYPEINFO_GENERIC) != (from->flags & TYPEINFO_GENERIC))
+                return false;
         }
 
         return true;
@@ -329,19 +331,26 @@ struct SymbolMatchContext
     uint32_t maxGenericParam;
     bool     hasNamedParameters;
 
-    uint32_t                             flags;
-    int                                  badSignatureParameterIdx;
-    TypeInfo*                            badSignatureRequestedType;
-    TypeInfo*                            badSignatureGivenType;
-    MatchResult                          result;
-    vector<AstNode*>                     genericParameters;
-    vector<AstNode*>                     parameters;
-    vector<TypeInfoParam*>               solvedParameters;
-    vector<bool>                         doneParameters;
-    map<TypeInfo*, pair<TypeInfo*, int>> mapGenericTypes;
-    vector<ComputedValue>                genericParametersCallValues;
-    vector<TypeInfo*>                    genericParametersCallTypes;
-    vector<TypeInfo*>                    genericParametersGenTypes;
+    uint32_t               flags;
+    int                    badSignatureParameterIdx;
+    TypeInfo*              badSignatureRequestedType;
+    TypeInfo*              badSignatureGivenType;
+    MatchResult            result;
+    vector<AstNode*>       genericParameters;
+    vector<AstNode*>       parameters;
+    vector<TypeInfoParam*> solvedParameters;
+    vector<bool>           doneParameters;
+    vector<ComputedValue>  genericParametersCallValues;
+    vector<TypeInfo*>      genericParametersCallTypes;
+    vector<TypeInfo*>      genericParametersGenTypes;
+
+    struct MapGenType
+    {
+        TypeInfo*        toType;
+        vector<uint32_t> parameterIndex;
+    };
+
+    map<TypeInfo*, MapGenType> mapGenericTypes;
 };
 
 struct TypeInfoFuncAttr : public TypeInfo

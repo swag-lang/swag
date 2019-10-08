@@ -9,7 +9,7 @@ struct(T) Point
 //#[swag.printbc]
 func toto(v: Point)
 {
-	@assert(v.x == 666)
+	//@assert(v.x == 666)
 }
 
 //#[swag.printbc]
