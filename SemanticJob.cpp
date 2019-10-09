@@ -33,7 +33,7 @@ void SemanticJob::waitForSymbolNoLock(SymbolName* symbol)
 {
     waitingSymbolSolved = symbol;
     setPending();
-    symbol->dependentJobs.push_back(this);
+    symbol->dependentJobs.add(this);
     g_ThreadMgr.addPendingJob(this);
 }
 

@@ -339,7 +339,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
         // Need to wait for function full semantic resolve
         if (!(funcNode->flags & AST_FULL_RESOLVE))
         {
-            funcNode->dependentJobs.push_back(context->job);
+            funcNode->dependentJobs.add(context->job);
             context->job->setPending();
             return true;
         }

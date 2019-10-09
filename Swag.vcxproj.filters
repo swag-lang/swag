@@ -521,6 +521,9 @@
     <ClInclude Include="Context.h">
       <Filter>Threading</Filter>
     </ClInclude>
+    <ClInclude Include="DependentJobs.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

@@ -253,7 +253,7 @@ JobResult ByteCodeGenJob::execute()
     {
         scoped_lock lk(originalNode->mutex);
         originalNode->flags |= AST_BYTECODE_GENERATED;
-        for (auto job : dependentJobs)
+        for (auto job : dependentJobs.list)
             g_ThreadMgr.addJob(job);
         dependentJobs.clear();
     }
@@ -268,7 +268,7 @@ JobResult ByteCodeGenJob::execute()
             dependentNodes.pop_back();
         else
         {
-            node->byteCodeJob->dependentJobs.push_back(this);
+            node->byteCodeJob->dependentJobs.add(this);
             return JobResult::KeepJobAlive;
         }
     }
@@ -278,7 +278,7 @@ JobResult ByteCodeGenJob::execute()
         scoped_lock lk(originalNode->mutex);
         originalNode->byteCodeJob = nullptr;
         originalNode->flags |= AST_BYTECODE_RESOLVED;
-        for (auto job : dependentJobs)
+        for (auto job : dependentJobs.list)
             g_ThreadMgr.addJob(job);
     }
 

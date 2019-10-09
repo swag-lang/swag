@@ -1,5 +1,6 @@
 #pragma once
 #include "Job.h"
+#include "DependentJobs.h"
 struct AstNode;
 struct SourceFile;
 struct SemanticContext;
@@ -147,9 +148,9 @@ struct ByteCodeGenJob : public Job
     static bool emitTrinaryOp(ByteCodeGenContext* context);
     static bool emitPassThrough(ByteCodeGenContext* context);
     static bool emitIs(ByteCodeGenContext* context);
-	static bool emitInit(ByteCodeGenContext* context);
-	static bool emitDrop(ByteCodeGenContext* context);
-	static bool emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex);
+    static bool emitInit(ByteCodeGenContext* context);
+    static bool emitDrop(ByteCodeGenContext* context);
+    static bool emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
@@ -167,7 +168,7 @@ struct ByteCodeGenJob : public Job
 
     void reset() override
     {
-		Job::reset();
+        Job::reset();
         originalNode = nullptr;
         nodes.clear();
         dependentJobs.clear();
@@ -181,7 +182,7 @@ struct ByteCodeGenJob : public Job
     SourceFile*        sourceFile;
     AstNode*           originalNode;
     vector<AstNode*>   nodes;
-    vector<Job*>       dependentJobs;
+    DependentJobs      dependentJobs;
     vector<AstNode*>   dependentNodes;
     vector<AstNode*>   collectChilds;
     vector<Scope*>     collectScopes;

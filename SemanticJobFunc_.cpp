@@ -141,7 +141,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     {
         scoped_lock lk(node->mutex);
         node->flags |= AST_FULL_RESOLVE;
-        for (auto job : node->dependentJobs)
+        for (auto job : node->dependentJobs.list)
             g_ThreadMgr.addJob(job);
     }
 

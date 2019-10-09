@@ -129,7 +129,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
             symbol->cptOverloads--;
             if (symbol->cptOverloads == 0)
             {
-                for (auto job : symbol->dependentJobs)
+                for (auto job : symbol->dependentJobs.list)
                     g_ThreadMgr.addJob(job);
                 symbol->dependentJobs.clear();
             }

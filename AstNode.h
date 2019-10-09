@@ -1,4 +1,5 @@
 #pragma once
+#include "DependentJobs.h"
 #include "SpinLock.h"
 #include "Pool.h"
 #include "Utf8Crc.h"
@@ -391,7 +392,7 @@ struct AstFuncDecl : public AstNode
     AstNode*         genericParameters;
     AstNode*         returnType;
     AstNode*         content;
-    vector<Job*>     dependentJobs;
+    DependentJobs    dependentJobs;
     Scope*           scope;
     SymbolAttributes collectAttributes;
 };

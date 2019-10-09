@@ -1,5 +1,5 @@
 #pragma once
-#pragma once
+#include "DependentJobs.h"
 #include "Pool.h"
 #include "SpinLock.h"
 #include "Utf8crc.h"
@@ -72,7 +72,7 @@ struct SymbolName : public PoolElement
     SymbolKind              kind;
     int                     cptOverloads;
     vector<SymbolOverload*> overloads;
-    vector<Job*>            dependentJobs;
+    DependentJobs           dependentJobs;
     SymTable*               ownerTable;
 
     void reset() override
