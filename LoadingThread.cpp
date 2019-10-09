@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "LoadingThread.h"
 #include "SourceFile.h"
+#include "Assert.h"
 
 LoadingThread::LoadingThread()
 {
@@ -55,6 +56,8 @@ LoadingThreadRequest* LoadingThread::getRequest()
 void LoadingThread::waitRequest()
 {
     unique_lock<mutex> lk(mutexAdd);
+	if (queueRequests.size())
+		return;
     condVar.wait(lk);
 }
 

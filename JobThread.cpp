@@ -31,7 +31,7 @@ void JobThread::waitJob()
 
 bool JobThread::executeJob(Job* job, bool& exception)
 {
-    __try
+    //__try
     {
         auto result = job->execute();
         if (result == JobResult::ReleaseJob)
@@ -39,11 +39,11 @@ bool JobThread::executeJob(Job* job, bool& exception)
 
         g_ThreadMgr.jobHasEnded();
     }
-    __except (EXCEPTION_EXECUTE_HANDLER)
+    /*__except (EXCEPTION_EXECUTE_HANDLER)
     {
         exception = true;
         return false;
-    }
+    }*/
 
     return true;
 }
