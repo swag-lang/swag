@@ -106,6 +106,9 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
 
+	if (g_CommandLine.stats)
+        g_Stats.numInstructions++;
+
     return &ins;
 }
 
@@ -277,9 +280,6 @@ JobResult ByteCodeGenJob::execute()
         for (auto job : dependentJobs)
             g_ThreadMgr.addJob(job);
     }
-
-    if (g_CommandLine.stats)
-        g_Stats.numInstructions += originalNode->bc->numInstructions;
 
     return JobResult::ReleaseJob;
 }

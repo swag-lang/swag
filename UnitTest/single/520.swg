@@ -1,12 +1,12 @@
 #module module520
 #unittest pass semantic
 
-//#[swag.printbc]
 struct point
 {
 	x, y: f32
 }
 
+//#[swag.printbc]
 #test
 {
 	var pt: point
