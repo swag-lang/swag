@@ -128,7 +128,7 @@ void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
 
 void ByteCodeGenJob::setPending()
 {
-    context.node->semanticPass++;
+    context.node->byteCodePass++;
     context.result = ByteCodeResult::Pending;
 }
 

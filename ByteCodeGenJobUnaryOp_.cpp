@@ -65,12 +65,17 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
     auto     r0            = node->childs[0]->resultRegisterRC;
     node->resultRegisterRC = r0;
 
-    SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
+	if (node->byteCodePass == 0)
+	{
+		SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
+	}
 
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
-        return true;
+		if (context->result == ByteCodeResult::Pending)
+			return true;
+		return true;
     }
 
     switch (node->token.id)

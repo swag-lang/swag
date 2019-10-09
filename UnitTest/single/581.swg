@@ -7,18 +7,6 @@ struct Point
 	y: s32
 }
 
-impl Point
-{
-	func opCmp(self, other: Point)->s32
-	{
-		if self.x < other.x || self.y < other.y
-			return -1
-		if self.x > other.x || self.y > other.y
-			return 1			
-		return 0
-	}
-}
-
 //#[swag.printbc]
 #test
 {
@@ -32,4 +20,16 @@ impl Point
 	@assert(pt2 < pt1)
 	
 	@assert(pt2 <= pt2)
+}
+
+impl Point
+{
+	func opCmp(self, other: Point)->s32
+	{
+		if self.x < other.x || self.y < other.y
+			return -1
+		if self.x > other.x || self.y > other.y
+			return 1			
+		return 0
+	}
 }

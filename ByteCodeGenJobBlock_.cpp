@@ -82,7 +82,11 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
 
     if (loopNode->resolvedUserOpSymbolName && loopNode->resolvedUserOpSymbolName->kind == SymbolKind::Function)
+    {
         SWAG_CHECK(emitUserOp(context, nullptr, loopNode));
+        if (context->result == ByteCodeResult::Pending)
+            return true;
+    }
 
     // To store the 'index' of the loop
     if (loopNode->needIndex())

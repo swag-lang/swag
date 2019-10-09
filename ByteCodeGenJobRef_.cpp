@@ -313,6 +313,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             allParams.reset();
             allParams.childs = node->structFlatParams;
             SWAG_CHECK(emitUserOp(context, &allParams));
+            if (context->result == ByteCodeResult::Pending)
+                return true;
         }
     }
     else

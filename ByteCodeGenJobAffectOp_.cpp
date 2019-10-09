@@ -522,11 +522,14 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     AstNode* leftNode  = context->node->childs[0];
     AstNode* rightNode = context->node->childs[1];
 
-    SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+    if (node->byteCodePass == 0)
+    {
+        SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+    }
 
     if (leftNode->typeInfo->isNative(NativeTypeKind::Any))
     {
-		leftNode->typeInfo = rightNode->typeInfo;
+        leftNode->typeInfo = rightNode->typeInfo;
     }
 
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
@@ -538,10 +541,14 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
             allParams.reset();
             allParams.childs = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, &allParams));
+            if (context->result == ByteCodeResult::Pending)
+                return true;
         }
         else
         {
             SWAG_CHECK(emitUserOp(context));
+            if (context->result == ByteCodeResult::Pending)
+                return true;
         }
 
         return true;

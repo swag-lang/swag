@@ -164,14 +164,19 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     auto     r0   = node->childs[0]->resultRegisterRC;
     auto     r1   = node->childs[1]->resultRegisterRC;
 
-	SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
-	SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+    if (node->byteCodePass == 0)
+    {
+        SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+    }
 
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
-        auto r2 = node->resultRegisterRC;
+		if (context->result == ByteCodeResult::Pending)
+			return true;
 
+        auto r2 = node->resultRegisterRC;
         switch (node->token.id)
         {
         case TokenId::SymLower:
@@ -240,19 +245,19 @@ bool ByteCodeGenJob::emitIs(ByteCodeGenContext* context)
     AstNode* left  = node->childs[0];
     AstNode* right = node->childs[1];
 
-	if (left->typeInfo->isNative(NativeTypeKind::Any))
-	{
-		node->resultRegisterRC = reserveRegisterRC(context);
-		auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
-		inst->b.u32 = right->computedValue.reg.u32;
-		emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
-		freeRegisterRC(context, left);
-		freeRegisterRC(context, right);
-	}
-	else
-	{
-		return internalError(context, "emitIs, invalid type");
-	}
+    if (left->typeInfo->isNative(NativeTypeKind::Any))
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        auto inst              = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC);
+        inst->b.u32            = right->computedValue.reg.u32;
+        emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, node->resultRegisterRC, left->resultRegisterRC[1], node->resultRegisterRC);
+        freeRegisterRC(context, left);
+        freeRegisterRC(context, right);
+    }
+    else
+    {
+        return internalError(context, "emitIs, invalid type");
+    }
 
     return true;
 }

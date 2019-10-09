@@ -285,8 +285,11 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-	SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
-	SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+    if (node->byteCodePass == 0)
+    {
+        SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
+        SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+    }
 
     auto r0 = node->childs[0]->resultRegisterRC;
     auto r1 = node->childs[1]->resultRegisterRC;
@@ -294,6 +297,8 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
+        if (context->result == ByteCodeResult::Pending)
+            return true;
         auto r2 = node->resultRegisterRC;
     }
     else
