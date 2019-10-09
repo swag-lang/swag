@@ -543,7 +543,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
 void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset)
 {
-    auto node     = static_cast<AstVarDecl*>(context->node);
+    auto node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::LetDecl);
     auto resolved = node->resolvedSymbolOverload;
 
     if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))

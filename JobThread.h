@@ -6,7 +6,7 @@ struct JobThread
     JobThread();
     ~JobThread();
 
-	bool executeJob(Job* job, string& exception);
+	bool executeJob(Job* job, bool& exception);
     void loop();
     void notifyJob();
     void waitJob();

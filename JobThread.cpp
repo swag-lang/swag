@@ -29,7 +29,7 @@ void JobThread::waitJob()
     condVar.wait(lk);
 }
 
-bool JobThread::executeJob(Job* job, string& exception)
+bool JobThread::executeJob(Job* job, bool& exception)
 {
     __try
     {
@@ -40,7 +40,7 @@ bool JobThread::executeJob(Job* job, string& exception)
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        exception = "executeJob, unhandled exception";
+        exception = true;
         return false;
     }
 
@@ -62,9 +62,11 @@ void JobThread::loop()
             continue;
         }
 
-        string exception;
-        if (!executeJob(job, exception))
-            g_Log.error(exception);
+        bool exception = false;
+		if (!executeJob(job, exception))
+		{
+			g_Log.error("executeJob, unhandled exception");
+		}
 
 #ifdef SWAG_HAS_ASSERT
         g_diagnosticInfos.clear();
