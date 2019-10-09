@@ -344,9 +344,9 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
     auto node      = context->node;
     auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
 
-    if ((breakNode->flags & AST_EMIT_DEFERRED_DONE) == 0)
+    if (!(breakNode->doneFlags & AST_DONE_EMIT_DEFERRED))
     {
-        breakNode->flags |= AST_EMIT_DEFERRED_DONE;
+        breakNode->doneFlags |= AST_DONE_EMIT_DEFERRED;
         Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
         for (auto scope : context->job->collectScopes)
             SWAG_CHECK(emitDeferredStatements(context, scope));
@@ -364,9 +364,9 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     auto node      = context->node;
     auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
-    if ((breakNode->flags & AST_EMIT_DEFERRED_DONE) == 0)
+    if (!(breakNode->doneFlags & AST_DONE_EMIT_DEFERRED))
     {
-        breakNode->flags |= AST_EMIT_DEFERRED_DONE;
+        breakNode->doneFlags |= AST_DONE_EMIT_DEFERRED;
         Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
         for (auto scope : context->job->collectScopes)
             SWAG_CHECK(emitDeferredStatements(context, scope));
@@ -458,18 +458,18 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
     auto node = context->node;
 
     // Emit all 'defer' statements
-    if ((node->flags & AST_EMIT_DEFERRED_DONE) == 0)
+    if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED))
     {
-        node->flags |= AST_EMIT_DEFERRED_DONE;
+        node->doneFlags |= AST_DONE_EMIT_DEFERRED;
         SWAG_CHECK(emitDeferredStatements(context, scope));
         if (context->result != ByteCodeResult::Done)
             return true;
     }
 
     // Emit all drops
-    if ((node->flags & AST_EMIT_DROP_DONE) == 0)
+    if (!(node->doneFlags & AST_DONE_EMIT_DROP))
     {
-        node->flags |= AST_EMIT_DROP_DONE;
+        node->doneFlags |= AST_DONE_EMIT_DROP;
         SWAG_CHECK(emitLeaveScopeDrop(context, scope));
         if (context->result != ByteCodeResult::Done)
             return true;

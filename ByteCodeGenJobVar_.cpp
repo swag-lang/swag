@@ -20,7 +20,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         if (context->result == ByteCodeResult::Pending)
             return true;
 
-        if (node->byteCodePass == 0)
+        if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
         {
             if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
             {
@@ -29,15 +29,17 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             }
 
             emitStructParameters(context, UINT32_MAX);
+            node->doneFlags |= AST_DONE_VARDECL_STRUCT_PARAMETERS;
         }
 
         if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
         {
-            if (node->byteCodePass == 0)
+            if (!(node->doneFlags & AST_DONE_VARDECL_REF_CALL))
             {
                 RegisterList r0                                                 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.s32 = resolved->storageOffset;
                 node->type->resultRegisterRC                                    = r0;
+                node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
             }
 
             SWAG_CHECK(emitLocalCall(context, node, static_cast<AstFuncDecl*>(node->resolvedUserOpSymbolOverload->node), nullptr));

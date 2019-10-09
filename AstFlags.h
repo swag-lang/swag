@@ -30,8 +30,11 @@ static const uint64_t AST_IS_CONST                   = 0x00000000'08000000;
 static const uint64_t AST_IS_CONST_ASSIGN            = 0x00000000'10000000;
 static const uint64_t AST_VALUE_IS_TYPEINFO          = 0x00000000'20000000;
 static const uint64_t AST_DECL_USING                 = 0x00000000'40000000;
-static const uint64_t AST_EMIT_DEFERRED_DONE         = 0x00000000'80000000;
-static const uint64_t AST_EMIT_DROP_DONE             = 0x00000001'00000000;
-static const uint64_t AST_SHORT_LAMBDA               = 0x00000002'00000000;
-static const uint64_t AST_FUNC_RETURN_DEFINED        = 0x00000004'00000000;
-static const uint64_t FORCE_FUNC_LATE_REGISTER       = 0x00000008'00000000;
+static const uint64_t AST_SHORT_LAMBDA               = 0x00000000'80000000;
+static const uint64_t AST_FUNC_RETURN_DEFINED        = 0x00000001'00000000;
+static const uint64_t AST_FORCE_FUNC_LATE_REGISTER   = 0x00000002'00000000;
+
+static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
+static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
+static const uint64_t AST_DONE_EMIT_DEFERRED             = 0x00000004;
+static const uint64_t AST_DONE_EMIT_DROP                 = 0x00000008;

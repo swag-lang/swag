@@ -377,7 +377,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // Check return type
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-    bool lateRegister = funcNode->returnType->flags & FORCE_FUNC_LATE_REGISTER;
+    bool lateRegister = funcNode->returnType->flags & AST_FORCE_FUNC_LATE_REGISTER;
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && !node->childs.empty())
     {
         // This is a short lambda without a specified return type. We now have it
@@ -387,7 +387,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             if (typeInfoFunc->returnType->kind == TypeInfoKind::TypeList)
             {
                 SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
-                funcNode->returnType->flags |= FORCE_FUNC_LATE_REGISTER;
+                funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;
 				Ast::setForceConstType(funcNode->returnType);
                 return true;
             }

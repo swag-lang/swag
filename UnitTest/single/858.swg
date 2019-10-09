@@ -11,7 +11,7 @@ impl Point
 {
 	func opDrop(self)
 	{
-		@assert(self.x == 1)
+		@assert(self.x == 10)
 		G += 1
 	}
 }
@@ -23,9 +23,8 @@ impl Point
 	
 	loop(10)
 	{
-		var pt: Point(1)
+		var pt: Point(10)
 	}
 	
-	//@print(G)
 	@assert(G == 10)
 }

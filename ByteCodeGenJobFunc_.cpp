@@ -40,7 +40,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode);
 
     // Copy result to RR0... registers
-    if ((node->flags & AST_EMIT_DEFERRED_DONE) == 0)
+    if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED))
     {
         if (!node->childs.empty())
         {
@@ -75,7 +75,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
         }
 
-        node->flags |= AST_EMIT_DEFERRED_DONE;
+        node->doneFlags |= AST_DONE_EMIT_DEFERRED;
 
         // Leave all scopes
         Scope::collectScopeFrom(node->ownerScope, funcNode->scope, context->job->collectScopes);

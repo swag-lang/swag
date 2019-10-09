@@ -145,6 +145,7 @@ struct AstNode : public PoolElement
         sourceFileIdx                = UINT32_MAX;
         attributeFlags               = 0;
         flags                        = 0;
+        doneFlags                    = 0;
         fctCallStorageOffset         = 0;
         byteCodeJob                  = nullptr;
         semanticPass                 = 0;
@@ -310,6 +311,7 @@ struct AstNode : public PoolElement
     vector<AstNode*> childs;
 
     uint64_t      flags;
+    uint64_t      doneFlags;
     SpinLock      mutex;
     ComputedValue computedValue;
     Utf8Crc       name;
@@ -614,11 +616,11 @@ struct AstTypeExpression : public AstNode
 {
     void reset() override
     {
-        identifier       = nullptr;
-        ptrCount         = 0;
-        arrayDim         = 0;
-        isSlice          = false;
-        isConst          = false;
+        identifier     = nullptr;
+        ptrCount       = 0;
+        arrayDim       = 0;
+        isSlice        = false;
+        isConst        = false;
         forceConstType = false;
         AstNode::reset();
     }
@@ -686,7 +688,7 @@ struct AstExpressionList : public AstNode
         storageOffset        = 0;
         storageOffsetSegment = UINT32_MAX;
         isConst              = false;
-        forceConstType     = false;
+        forceConstType       = false;
         AstNode::reset();
     }
 
