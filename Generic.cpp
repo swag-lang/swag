@@ -49,8 +49,8 @@ void Generic::end(SemanticContext* context, AstNode* newNode)
     auto  symbol           = dependentSymbols[0];
 
     // Need to wait for the struct to be semantic resolved
-    symbol->cptOverloads++;
-    job->waitForSymbol(symbol);
+	symbol->cptOverloads++;
+	job->waitForSymbolNoLock(symbol);
 
     // Run semantic on that struct
     auto sourceFile = context->sourceFile;

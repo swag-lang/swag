@@ -59,17 +59,6 @@ void ThreadManager::addJob(Job* job)
     thread->notifyJob();
 }
 
-Job* ThreadManager::getJob()
-{
-    scoped_lock<mutex> lk(mutexAdd);
-    if (queueJobs.empty())
-        return nullptr;
-    auto job = queueJobs.back();
-    queueJobs.pop_back();
-    processingJobs++;
-    return job;
-}
-
 bool ThreadManager::doneWithJobs()
 {
     return queueJobs.empty() && processingJobs == 0;
@@ -94,6 +83,17 @@ void ThreadManager::waitEndJobs()
     }
 }
 
+Job* ThreadManager::getJob()
+{
+    scoped_lock<mutex> lk(mutexAdd);
+    if (queueJobs.empty())
+        return nullptr;
+    auto job = queueJobs.back();
+    queueJobs.pop_back();
+    processingJobs++;
+    return job;
+}
+
 Job* ThreadManager::getJob(JobThread* thread)
 {
     auto job = getJob();
@@ -106,6 +106,7 @@ Job* ThreadManager::getJob(JobThread* thread)
         return nullptr;
     }
 
+    //SWAG_ASSERT(!job->thread);
     job->thread = thread;
     return job;
 }
@@ -115,4 +116,5 @@ void ThreadManager::addPendingJob(Job* job)
     scoped_lock<mutex> lk(mutexAdd);
     pendingJobs.push_back(job);
     job->pendingIndex = (int) pendingJobs.size() - 1;
+    job->thread       = nullptr;
 }

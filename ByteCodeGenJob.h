@@ -167,6 +167,7 @@ struct ByteCodeGenJob : public Job
 
     void reset() override
     {
+		Job::reset();
         originalNode = nullptr;
         nodes.clear();
         dependentJobs.clear();

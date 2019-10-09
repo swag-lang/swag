@@ -36,6 +36,7 @@ bool JobThread::executeJob(Job* job, bool& exception)
         auto result = job->execute();
         if (result == JobResult::ReleaseJob)
             job->release();
+
         g_ThreadMgr.jobHasEnded();
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
@@ -49,8 +50,8 @@ bool JobThread::executeJob(Job* job, bool& exception)
 
 void JobThread::loop()
 {
-	// TLS context
-	TlsSetValue(g_tlsContextId, &g_defaultContext);
+    // TLS context
+    TlsSetValue(g_tlsContextId, &g_defaultContext);
 
     while (!requestEnd)
     {
@@ -63,10 +64,10 @@ void JobThread::loop()
         }
 
         bool exception = false;
-		if (!executeJob(job, exception))
-		{
-			g_Log.error("executeJob, unhandled exception");
-		}
+        if (!executeJob(job, exception))
+        {
+            g_Log.error("executeJob, unhandled exception");
+        }
 
 #ifdef SWAG_HAS_ASSERT
         g_diagnosticInfos.clear();

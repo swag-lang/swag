@@ -105,6 +105,7 @@ struct SyntaxJob : public Job
 
     void reset() override
     {
+		Job::reset();
         sourceFile         = nullptr;
         canChangeModule    = true;
         moduleSpecified    = false;

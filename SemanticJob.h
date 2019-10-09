@@ -92,7 +92,7 @@ struct SemanticJob : public Job
     static bool convertAssignementToStruct(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
     static bool collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg);
 
-    void waitForSymbol(SymbolName* symbol);
+    void waitForSymbolNoLock(SymbolName* symbol);
     void setPending();
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -178,6 +178,7 @@ struct SemanticJob : public Job
 
     void reset() override
     {
+		Job::reset();
         nodes.clear();
         cacheDependentSymbols.clear();
         cacheScopeHierarchy.clear();

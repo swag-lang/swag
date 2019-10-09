@@ -4,7 +4,7 @@ struct JobThread;
 
 enum class JobResult
 {
-	Continue,
+    Continue,
     ReleaseJob,
     KeepJobAlive,
 };
@@ -16,6 +16,7 @@ struct Job : public PoolElement
     void reset() override
     {
         pendingIndex = -1;
+        thread       = nullptr;
     }
 
     JobThread* thread       = nullptr;

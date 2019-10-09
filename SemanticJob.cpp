@@ -29,7 +29,7 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
     return false;
 }
 
-void SemanticJob::waitForSymbol(SymbolName* symbol)
+void SemanticJob::waitForSymbolNoLock(SymbolName* symbol)
 {
     waitingSymbolSolved = symbol;
     symbol->dependentJobs.push_back(this);

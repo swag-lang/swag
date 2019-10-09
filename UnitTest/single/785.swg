@@ -1,5 +1,6 @@
 #module module785
 
+//#[swag.waitsem(100)]
 func toto(x: s32)
 {
 }
