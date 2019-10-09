@@ -45,8 +45,9 @@ void SemanticJob::setPending()
 
 JobResult SemanticJob::execute()
 {
+    scoped_lock lkExecute(executeMutex);
+
 #ifdef SWAG_HAS_ASSERT
-    RaceCondition rc(&raceCondition);
     g_diagnosticInfos.pass       = "SemanticJob";
     g_diagnosticInfos.sourceFile = sourceFile;
 #endif

@@ -42,6 +42,9 @@ void ThreadManager::addJob(Job* job)
 {
     scoped_lock<mutex> lk(mutexAdd);
 
+	SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
+    job->flags &= ~JOB_IS_DEPENDENT;
+
     // Remove from pending list
     if (job->pendingIndex != -1)
     {
@@ -91,6 +94,8 @@ Job* ThreadManager::getJob()
     auto job = queueJobs.back();
     queueJobs.pop_back();
     processingJobs++;
+    SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
+    job->flags |= JOB_IS_IN_THREAD;
     return job;
 }
 
@@ -106,7 +111,6 @@ Job* ThreadManager::getJob(JobThread* thread)
         return nullptr;
     }
 
-    //SWAG_ASSERT(!job->thread);
     job->thread = thread;
     return job;
 }

@@ -41,7 +41,7 @@ int main(int argc, const char* argv[])
     auto timeBefore = chrono::high_resolution_clock::now();
 
     // We do not want assert, but just reports of the CRT
-#ifdef WIN32
+#if defined(WIN32) && !defined(SWAG_HAS_ASSERT)
     if (!IsDebuggerPresent())
     {
         _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);

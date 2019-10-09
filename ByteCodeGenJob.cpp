@@ -137,8 +137,9 @@ void ByteCodeGenJob::setPending()
 
 JobResult ByteCodeGenJob::execute()
 {
+    scoped_lock lkExecute(executeMutex);
+
 #ifdef SWAG_HAS_ASSERT
-    RaceCondition rc(&raceCondition);
     g_diagnosticInfos.pass       = "ByteCodeGenJob";
     g_diagnosticInfos.sourceFile = sourceFile;
     g_diagnosticInfos.node       = originalNode;
@@ -186,6 +187,7 @@ JobResult ByteCodeGenJob::execute()
 
                     if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
                         return JobResult::ReleaseJob;
+                    SWAG_ASSERT(context.result == ByteCodeResult::Done);
 
                     if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
                     {
@@ -215,6 +217,7 @@ JobResult ByteCodeGenJob::execute()
                                 return JobResult::ReleaseJob;
                             // To be sure that cast is treated once
                             node->castedTypeInfo = nullptr;
+                            SWAG_ASSERT(context.result == ByteCodeResult::Done);
                         }
                         else if (node->byteCodeFct)
                         {

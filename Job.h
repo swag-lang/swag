@@ -1,6 +1,6 @@
 #pragma once
 #include "Pool.h"
-#include "RaceCondition.h"
+#include "SpinLock.h"
 struct JobThread;
 
 enum class JobResult
@@ -10,19 +10,22 @@ enum class JobResult
     KeepJobAlive,
 };
 
+static const uint32_t JOB_IS_DEPENDENT = 0x00000001;
+static const uint32_t JOB_IS_IN_THREAD = 0x00000002;
+
 struct Job : public PoolElement
 {
     virtual JobResult execute() = 0;
 
     void reset() override
     {
+        flags        = 0;
         pendingIndex = -1;
         thread       = nullptr;
     }
 
-    JobThread* thread       = nullptr;
-    int        pendingIndex = -1;
-#ifdef SWAG_HAS_ASSERT
-    RaceCondition::Instance raceCondition;
-#endif
+    SpinLock   executeMutex;
+    uint32_t   flags;
+    JobThread* thread;
+    int        pendingIndex;
 };

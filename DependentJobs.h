@@ -1,7 +1,7 @@
 #pragma once
 #include "SpinLock.h"
 #include "Assert.h"
-struct Job;
+#include "Job.h"
 
 struct DependentJobs
 {
@@ -9,10 +9,9 @@ struct DependentJobs
 
     void add(Job* job)
     {
-#ifdef SWAG_HAS_ASSERT
-        for (auto here : list)
-            SWAG_ASSERT(here != job);
-#endif
+        SWAG_ASSERT(!(job->flags & JOB_IS_DEPENDENT));
+        job->flags |= JOB_IS_DEPENDENT;
+        job->flags &= ~JOB_IS_IN_THREAD;
         list.push_back(job);
     }
 

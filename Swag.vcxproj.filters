@@ -522,7 +522,7 @@
       <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="DependentJobs.h">
-      <Filter>Semantic</Filter>
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
