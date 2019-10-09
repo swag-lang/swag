@@ -1,5 +1,6 @@
 #pragma once
 #include "Pool.h"
+#include "RaceCondition.h"
 struct JobThread;
 
 enum class JobResult
@@ -21,4 +22,7 @@ struct Job : public PoolElement
 
     JobThread* thread       = nullptr;
     int        pendingIndex = -1;
+#ifdef SWAG_HAS_ASSERT
+    RaceCondition::Instance raceCondition;
+#endif
 };

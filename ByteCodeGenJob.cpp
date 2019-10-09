@@ -74,8 +74,8 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
 {
-	if (!node)
-		return;
+    if (!node)
+        return;
     freeRegisterRC(context, node->resultRegisterRC);
     freeRegisterRC(context, node->additionalRegisterRC);
 }
@@ -106,7 +106,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
 
-	if (g_CommandLine.stats)
+    if (g_CommandLine.stats)
         g_Stats.numInstructions++;
 
     return &ins;
@@ -138,6 +138,7 @@ void ByteCodeGenJob::setPending()
 JobResult ByteCodeGenJob::execute()
 {
 #ifdef SWAG_HAS_ASSERT
+    RaceCondition rc(&raceCondition);
     g_diagnosticInfos.pass       = "ByteCodeGenJob";
     g_diagnosticInfos.sourceFile = sourceFile;
     g_diagnosticInfos.node       = originalNode;
@@ -166,10 +167,10 @@ JobResult ByteCodeGenJob::execute()
                 context.bc = originalNode->bc;
             }
 
-			// Register some default swag functions
-			if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)
+            // Register some default swag functions
+            if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)
             {
-				g_defaultContext.allocator = context.bc;
+                g_defaultContext.allocator = context.bc;
             }
 
             while (!nodes.empty())
@@ -232,7 +233,7 @@ JobResult ByteCodeGenJob::execute()
                             return JobResult::ReleaseJob;
                         if (context.result == ByteCodeResult::NewChilds)
                             continue;
-						SWAG_ASSERT(context.result != ByteCodeResult::Pending);
+                        SWAG_ASSERT(context.result != ByteCodeResult::Pending);
                     }
 
                     nodes.pop_back();

@@ -45,15 +45,16 @@ void SemanticJob::setPending()
 
 JobResult SemanticJob::execute()
 {
+#ifdef SWAG_HAS_ASSERT
+    RaceCondition rc(&raceCondition);
+    g_diagnosticInfos.pass       = "SemanticJob";
+    g_diagnosticInfos.sourceFile = sourceFile;
+#endif
+
     context.job                     = this;
     context.sourceFile              = sourceFile;
     context.errorContext.sourceFile = sourceFile;
     context.result                  = SemanticResult::Done;
-
-#ifdef SWAG_HAS_ASSERT
-    g_diagnosticInfos.pass       = "SemanticJob";
-    g_diagnosticInfos.sourceFile = sourceFile;
-#endif
 
     while (!nodes.empty())
     {

@@ -192,7 +192,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-    SWAG_ASSERT(leftTypeInfo && rightTypeInfo);
+    SWAG_ASSERT(leftTypeInfo);
+	SWAG_ASSERT(rightTypeInfo);
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->kind == TypeInfoKind::Generic)
