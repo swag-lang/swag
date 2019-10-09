@@ -1,3 +1,3 @@
 :loop
-swag_r --file-filter:swg -o:false
+swag_d --file-filter:644 -o:false
 goto loop

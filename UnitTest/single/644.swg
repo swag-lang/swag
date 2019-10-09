@@ -8,7 +8,7 @@ struct(T) Point
 
 impl Point
 {
-	//#[swag.printbc]
+	//#[swag.waitsem(100)]
 	func toto(self)->T
 	{
 		return self.x

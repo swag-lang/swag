@@ -57,6 +57,8 @@ SaveThreadRequest* SavingThread::getRequest()
 void SavingThread::waitRequest()
 {
     unique_lock<mutex> lk(mutexAdd);
+    if (!queueRequests.empty())
+        return;
     condVar.wait(lk);
 }
 
@@ -100,8 +102,8 @@ void SavingThread::loop()
         FILE* file = nullptr;
         for (int tryOpen = 0; tryOpen < 10; tryOpen++)
         {
-			// Seems that we need 'N' flag to avoid handle to be shared with spawned processes
-			// Without that, fopen can fail due to compiling processes
+            // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
+            // Without that, fopen can fail due to compiling processes
             fopen_s(&file, req->file->fileName.c_str(), "a+tN");
             if (file)
                 break;
@@ -116,7 +118,7 @@ void SavingThread::loop()
         else
         {
             g_Log.error(format("cannot open file '%s' for writing (error %d)", req->file->fileName.c_str(), errno));
-			req->ioError = true;
+            req->ioError = true;
         }
 
         req->file->notifySave(req);
