@@ -42,7 +42,8 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
 
             SWAG_CHECK(emitLocalCall(context, node, static_cast<AstFuncDecl*>(node->resolvedUserOpSymbolOverload->node), nullptr));
             if (context->result == ByteCodeResult::Pending)
-                node->byteCodePass++;
+                return true;
+
             return true;
         }
     }
