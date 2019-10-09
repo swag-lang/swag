@@ -31,7 +31,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (symbol && symbol->cptOverloads)
         {
             symbol->dependentJobs.push_back(context->job);
-            context->result = ByteCodeResult::Pending;
+            context->job->setPending();
             return true;
         }
     }
@@ -141,7 +141,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->dependentJobs.push_back(context->job);
-            context->result = ByteCodeResult::Pending;
+			context->job->setPending();
             return true;
         }
     }
@@ -249,7 +249,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->dependentJobs.push_back(context->job);
-            context->result = ByteCodeResult::Pending;
+			context->job->setPending();
             return true;
         }
     }
