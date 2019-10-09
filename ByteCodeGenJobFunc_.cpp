@@ -79,8 +79,11 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 
         // Leave all scopes
         Scope::collectScopeFrom(node->ownerScope, funcNode->scope, context->job->collectScopes);
-        for (auto scope : context->job->collectScopes)
-            SWAG_CHECK(emitDeferredStatements(context, scope));
+		for (auto scope : context->job->collectScopes)
+		{
+			SWAG_CHECK(emitDeferredStatements(context, scope));
+		}
+
         if (context->result != ByteCodeResult::Done)
             return true;
     }

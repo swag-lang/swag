@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
-#include "SymTable.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "Ast.h"
@@ -141,7 +140,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->dependentJobs.push_back(context->job);
-			context->job->setPending();
+            context->job->setPending();
             return true;
         }
     }
@@ -249,7 +248,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (symbol && symbol->cptOverloads)
         {
             symbol->dependentJobs.push_back(context->job);
-			context->job->setPending();
+            context->job->setPending();
             return true;
         }
     }
@@ -514,8 +513,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             {
                 auto typeVarStruct = static_cast<TypeInfoStruct*>(typeVar);
                 SWAG_ASSERT(typeVarStruct->opInitFct);
-                if (!generateStruct_opInit(context, typeVarStruct))
-                    return false;
+                SWAG_CHECK(generateStruct_opInit(context, typeVarStruct));
 
                 // Function call if necessary
                 if (typeVarStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)

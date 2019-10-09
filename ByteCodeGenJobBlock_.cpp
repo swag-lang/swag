@@ -403,7 +403,11 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         SWAG_CHECK(prepareEmitStructDrop(context, one->typeInfo));
         if (context->result == ByteCodeResult::Pending)
             return true;
+    }
 
+    for (int i = (int) table->allStructs.size() - 1; i >= 0; i--)
+    {
+        auto one            = table->allStructs[i];
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
         if (typeInfoStruct->opDrop)
         {
