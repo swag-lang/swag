@@ -32,8 +32,8 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 void SemanticJob::waitForSymbolNoLock(SymbolName* symbol)
 {
     waitingSymbolSolved = symbol;
-    symbol->dependentJobs.push_back(this);
     setPending();
+    symbol->dependentJobs.push_back(this);
     g_ThreadMgr.addPendingJob(this);
 }
 

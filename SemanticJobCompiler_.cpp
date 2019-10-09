@@ -31,7 +31,6 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
                 node->byteCodeJob->sourceFile   = sourceFile;
                 node->byteCodeJob->originalNode = node;
                 node->byteCodeJob->nodes.push_back(node);
-				for (auto j : node->byteCodeJob->dependentJobs) { SWAG_ASSERT(j != context->job); }
                 node->byteCodeJob->dependentJobs.push_back(context->job);
                 ByteCodeGenJob::setupBC(sourceFile->module, node);
                 g_ThreadMgr.addJob(node->byteCodeJob);
@@ -43,7 +42,6 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
 
         if (!(node->flags & AST_BYTECODE_RESOLVED))
         {
-			for (auto j : node->byteCodeJob->dependentJobs) { SWAG_ASSERT(j != job); }
             node->byteCodeJob->dependentJobs.push_back(job);
             job->setPending();
             return true;
@@ -178,12 +176,12 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerFunction(SemanticContext* context)
 {
-	auto node = context->node;
-	auto sourceFile = context->sourceFile;
+    auto node       = context->node;
+    auto sourceFile = context->sourceFile;
 
-	SWAG_VERIFY(node->ownerFct, context->errorContext.report({ sourceFile, node, "'#function' can only be called inside a function" }));
-	node->computedValue.text = node->ownerFct->name;
-	node->typeInfo = g_TypeMgr.typeInfoString;
-	node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-	return true;
+    SWAG_VERIFY(node->ownerFct, context->errorContext.report({sourceFile, node, "'#function' can only be called inside a function"}));
+    node->computedValue.text = node->ownerFct->name;
+    node->typeInfo           = g_TypeMgr.typeInfoString;
+    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+    return true;
 }
