@@ -229,6 +229,7 @@ JobResult ByteCodeGenJob::execute()
                             return JobResult::ReleaseJob;
                         if (context.result == ByteCodeResult::NewChilds)
                             continue;
+						SWAG_ASSERT(context.result != ByteCodeResult::Pending);
                     }
 
                     nodes.pop_back();
