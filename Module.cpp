@@ -99,7 +99,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     if (node->resultRegisterRC.size())
     {
         node->computedValue.reg = node->bc->registersRC[0][node->resultRegisterRC[0]];
-        node->flags |= AST_VALUE_COMPUTED;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         node->typeInfo = TypeManager::concreteType(node->typeInfo);
     }
 
