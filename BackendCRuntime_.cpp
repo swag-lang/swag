@@ -74,6 +74,12 @@ extern void* TlsGetValue(swag_uint32_t);
 static const char* g_Intrinsics = R"(
 #include "malloc.h"
 
+static void __print_n(const char* message, int len) 
+{ 
+	if(!message) message = "<null>";
+	printf("%.*s", len, message);
+}
+
 static void __print(const char* message) 
 { 
 	if(!message) message = "<null>";

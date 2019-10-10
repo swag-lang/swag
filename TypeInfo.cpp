@@ -25,6 +25,8 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "an enum";
     case TypeInfoKind::Array:
         return "an array";
+    case TypeInfoKind::Slice:
+        return "a slice";
     case TypeInfoKind::Pointer:
         return "a pointer";
     case TypeInfoKind::FuncAttr:
@@ -61,6 +63,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "enum";
     case TypeInfoKind::Array:
         return "array";
+    case TypeInfoKind::Slice:
+        return "slice";
     case TypeInfoKind::Pointer:
         return "pointer";
     case TypeInfoKind::FuncAttr:

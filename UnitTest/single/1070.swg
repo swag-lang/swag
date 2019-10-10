@@ -13,6 +13,11 @@ impl titi
 	}
 }
 
+func toto(v: string)
+{
+	@assert(v == "123")
+}
+
 //#[swag.printbc]
 #test
 {
@@ -20,8 +25,8 @@ impl titi
 	t.buf[0] = acast '1'
 	t.buf[1] = acast '2'
 	t.buf[2] = acast '3'
-	t.buf[3] = acast '4'
+	t.buf[3] = 0
 	
 	var x = t.toString()
-	@print(cast(string) x)
+	toto(x)
 }

@@ -159,7 +159,6 @@ void ByteCode::print()
         case ByteCodeOp::DeRef64:
         case ByteCodeOp::IntrinsicPrintF64:
         case ByteCodeOp::IntrinsicPrintS64:
-        case ByteCodeOp::IntrinsicPrintString:
         case ByteCodeOp::ClearRA:
         case ByteCodeOp::DecRA:
         case ByteCodeOp::IncRA:
@@ -212,6 +211,7 @@ void ByteCode::print()
         case ByteCodeOp::CopyRCxRRxCall:
         case ByteCodeOp::CopyRRxRCx:
         case ByteCodeOp::CopyRRxRCxCall:
+        case ByteCodeOp::IntrinsicPrintString:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
 

@@ -1033,7 +1033,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("__print_f64(r%u.f64);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicPrintString:
-            bufferC.addString(format("__print((const char*) r%u.pointer);", ip->a.u32));
+            bufferC.addString(format("__print_n((const char*) r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::IntrinsicAssert:

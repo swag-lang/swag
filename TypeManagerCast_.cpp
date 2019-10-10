@@ -1608,7 +1608,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = ((TypeInfoVariadic*) toType)->rawType;
 
     // Const mismatch
-    if (!toType->isConst() && fromType->isConst())
+    if (!toType->isConst() && fromType->isConst() && !toType->isNative(NativeTypeKind::String))
     {
         if (!(castFlags & CASTFLAG_UNCONST))
             return castError(context, toType, fromType, fromNode, castFlags);
@@ -1665,6 +1665,22 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     if (toType == g_TypeMgr.typeInfoNull && fromType->isNative(NativeTypeKind::String))
         return true;
+
+    // const [..] u8 to string, this is possible !
+    if (toType->isNative(NativeTypeKind::String) && fromType->kind == TypeInfoKind::Slice)
+    {
+        auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
+        if ((fromTypeSlice->flags & TYPEINFO_CONST) && (fromTypeSlice->pointedType == g_TypeMgr.typeInfoU8))
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->castedTypeInfo = fromNode->typeInfo;
+                fromNode->typeInfo       = g_TypeMgr.typeInfoString;
+            }
+
+            return true;
+        }
+    }
 
     // Cast to native type
     if (toType->kind == TypeInfoKind::Native)

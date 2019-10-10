@@ -533,6 +533,10 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
         emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
         return true;
     }
+    else if (fromTypeInfo->kind == TypeInfoKind::Slice)
+    {
+		return true;
+    }
 
     internalError(context, "emitCastToNativeString, invalid type");
     return false;

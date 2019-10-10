@@ -113,7 +113,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegisterRC);
             break;
         case NativeTypeKind::String:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
             break;
         default:
             return internalError(context, "emitIntrinsic, @print invalid type");

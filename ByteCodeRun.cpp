@@ -825,7 +825,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (ptr == nullptr)
             g_Log.print("<null>");
         else
-            g_Log.print(string((const char*) ptr));
+            g_Log.print(string((const char*) ptr, registersRC[ip->b.u32].u32));
         g_Log.unlock();
         break;
     }
