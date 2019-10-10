@@ -401,13 +401,10 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         case ByteCodeOp::MovSPBP:
             break;
 
-        case ByteCodeOp::BoundCheck:
-            bufferC.addString(format("__assert(r%u.u32 <= r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
-            break;
         case ByteCodeOp::BoundCheckString:
             bufferC.addString(format("__assert(r%u.u32 <= r%u.u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
-        case ByteCodeOp::BoundCheckReg:
+        case ByteCodeOp::BoundCheck:
             bufferC.addString(format("__assert(r%u.u32 < r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::IncPointerVB:

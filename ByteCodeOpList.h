@@ -26,7 +26,6 @@ BYTECODE_OP(DeRefStringSlice)
 BYTECODE_OP(MulRAVB)
 BYTECODE_OP(BoundCheck)
 BYTECODE_OP(BoundCheckString)
-BYTECODE_OP(BoundCheckReg)
 BYTECODE_OP(MakeLambda)
 
 BYTECODE_OP(MinusToTrue)

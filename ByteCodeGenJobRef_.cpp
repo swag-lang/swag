@@ -35,7 +35,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
         auto typeInfo = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         auto r0       = reserveRegisterRC(context);
 
-        emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count - 1;
+        emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count;
         emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
 
         freeRegisterRC(context, r0);
@@ -61,7 +61,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     emitInstruction(context, ByteCodeOp::DeRefPointer, node->array->resultRegisterRC[0], node->array->resultRegisterRC[0]);
 
     if (g_CommandLine.bytecodeBoundCheck)
-        emitInstruction(context, ByteCodeOp::BoundCheckReg, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     if (sizeOf > 1)
         emitInstruction(context, ByteCodeOp::MulRAVB, node->access->resultRegisterRC)->b.u32 = sizeOf;
@@ -158,7 +158,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
         if (g_CommandLine.bytecodeBoundCheck)
-            emitInstruction(context, ByteCodeOp::BoundCheckReg, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstantInt0())
@@ -208,11 +208,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (g_CommandLine.bytecodeBoundCheck)
         {
-            auto r0 = reserveRegisterRC(context);
-
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count - 1;
+            auto r0                                                     = reserveRegisterRC(context);
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = typeInfo->count;
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
-
             freeRegisterRC(context, r0);
         }
 
@@ -244,7 +242,6 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
             emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u32 = 0;
-            emitInstruction(context, ByteCodeOp::DecRA, r0);
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
         }
 
@@ -279,7 +276,6 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, r0);
             emitInstruction(context, ByteCodeOp::ClearMaskU64, r0)->b.u32 = 0;
-            emitInstruction(context, ByteCodeOp::DecRA, r0);
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
         }
 
