@@ -388,7 +388,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             {
                 SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;
-				Ast::setForceConstType(funcNode->returnType);
+                Ast::setForceConstType(funcNode->returnType);
                 return true;
             }
 
@@ -423,16 +423,26 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         child->flags |= AST_FORCE_MOVE;
 
     // Propagate return
-    auto scanNode = node->parent;
+    auto scanNode = node;
     while (scanNode && scanNode != node->ownerFct->parent)
     {
         scanNode->flags |= AST_SCOPE_HAS_RETURN;
-        if (scanNode->kind == AstNodeKind::If ||
-            scanNode->kind == AstNodeKind::While ||
-            scanNode->kind == AstNodeKind::Loop ||
-            scanNode->kind == AstNodeKind::For ||
-            scanNode->kind == AstNodeKind::Switch)
+        if (scanNode->parent->kind == AstNodeKind::If)
+        {
+            auto ifNode = CastAst<AstIf>(scanNode->parent, AstNodeKind::If);
+            if (ifNode->elseBlock != scanNode)
+                break;
+            if (!(ifNode->ifBlock->flags & AST_SCOPE_HAS_RETURN))
+                break;
+        }
+        else if (scanNode->kind == AstNodeKind::While ||
+                 scanNode->kind == AstNodeKind::Loop ||
+                 scanNode->kind == AstNodeKind::For ||
+                 scanNode->kind == AstNodeKind::Switch)
+        {
             break;
+        }
+
         scanNode = scanNode->parent;
     }
 
@@ -443,11 +453,11 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     }
 
     // Register symbol now that we have inferred the return type
-	if (lateRegister)
-	{
-		typeInfoFunc->returnType = funcNode->returnType->typeInfo;
-		SWAG_CHECK(registerFuncSymbol(context, funcNode));
-	}
+    if (lateRegister)
+    {
+        typeInfoFunc->returnType = funcNode->returnType->typeInfo;
+        SWAG_CHECK(registerFuncSymbol(context, funcNode));
+    }
 
     return true;
 }
