@@ -50,8 +50,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo));
                 if (context->result == ByteCodeResult::Pending)
                     return true;
-                RegisterList r0;
-                reserveRegisterRC(context, r0, 1);
+                RegisterList r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
                 SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
                 freeRegisterRC(context, r0);

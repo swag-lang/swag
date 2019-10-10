@@ -192,11 +192,11 @@ void ByteCode::print()
         case ByteCodeOp::Clear16:
         case ByteCodeOp::Clear32:
         case ByteCodeOp::Clear64:
-		case ByteCodeOp::NegBool:
-		case ByteCodeOp::NegF32:
-		case ByteCodeOp::NegF64:
-		case ByteCodeOp::NegS32:
-		case ByteCodeOp::NegS64:
+        case ByteCodeOp::NegBool:
+        case ByteCodeOp::NegF32:
+        case ByteCodeOp::NegF64:
+        case ByteCodeOp::NegS32:
+        case ByteCodeOp::NegS64:
             wprintf(L"RA: %u ", ip->a.u32);
             break;
 
@@ -209,8 +209,9 @@ void ByteCode::print()
         case ByteCodeOp::BoundCheckReg:
         case ByteCodeOp::CopyRARB:
         case ByteCodeOp::CopyRARBAddr:
-        case ByteCodeOp::CopyRRxRCx:
+        case ByteCodeOp::CopyRCxRRx:
         case ByteCodeOp::CopyRCxRRxCall:
+        case ByteCodeOp::CopyRRxRCx:
         case ByteCodeOp::CopyRRxRCxCall:
             wprintf(L"RA: %u RB: %u ", ip->a.u32, ip->b.u32);
             break;
@@ -220,7 +221,7 @@ void ByteCode::print()
         case ByteCodeOp::CopyRARBStr:
         case ByteCodeOp::DeRefPointer:
         case ByteCodeOp::CopyVC:
-		case ByteCodeOp::ClearXVar:
+        case ByteCodeOp::ClearXVar:
             wprintf(L"RA: %u RB: %u VC: { %u } ", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
 
@@ -272,8 +273,8 @@ void ByteCode::print()
             g_Log.setColor(LogColor::Cyan);
             wprintf(bcNum, ip->a.s32 + i + 1);
             break;
-		case ByteCodeOp::JumpZero32:
-		case ByteCodeOp::JumpNotZero32:
+        case ByteCodeOp::JumpZero32:
+        case ByteCodeOp::JumpNotZero32:
         case ByteCodeOp::JumpNotTrue:
         case ByteCodeOp::JumpTrue:
             g_Log.setColor(LogColor::Gray);
