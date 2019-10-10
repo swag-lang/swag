@@ -674,7 +674,7 @@ anotherTry:
                 vector<const Diagnostic*> notes;
                 for (auto overload : badSignature)
                 {
-                    auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+                    auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "cast has failed for", DiagnosticLevel::Note};
                     note->showRange = false;
                     notes.push_back(note);
                 }
@@ -687,7 +687,7 @@ anotherTry:
                 vector<const Diagnostic*> notes;
                 for (auto overload : badGenericSignature)
                 {
-                    auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "could be", DiagnosticLevel::Note};
+                    auto note       = new Diagnostic{overload->sourceFile, overload->node->token, "cast has failed for", DiagnosticLevel::Note};
                     note->showRange = false;
                     notes.push_back(note);
                 }
