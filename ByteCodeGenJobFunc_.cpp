@@ -45,7 +45,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if (!node->childs.empty())
         {
             auto returnExpression = node->childs.front();
-            if (returnExpression->typeInfo->kind == TypeInfoKind::Struct)
+            if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
             {
                 SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo));
                 if (context->result == ByteCodeResult::Pending)
@@ -55,7 +55,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
                 freeRegisterRC(context, r0);
             }
-            else if (returnExpression->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+            else if (funcNode->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
             {
                 auto r0 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);

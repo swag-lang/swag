@@ -1,6 +1,6 @@
 #module module1067
 
-#[swag.printbc]
+//#[swag.printbc]
 func toString() -> [..] u8
 {
 	return [0, 1, 2, 3]
@@ -10,4 +10,7 @@ func toString() -> [..] u8
 {
 	var x = toString()
 	@assert(x[0] == 0)
+	@assert(x[1] == 1)
+	@assert(x[2] == 2)
+	@assert(x[3] == 3)
 }
