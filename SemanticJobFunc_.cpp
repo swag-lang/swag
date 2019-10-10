@@ -4,9 +4,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
-#include "SymTable.h"
 #include "Module.h"
-#include "Attribute.h"
 #include "TypeManager.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics)
