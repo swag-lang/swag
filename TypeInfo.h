@@ -475,7 +475,10 @@ struct TypeInfoSlice : public TypeInfo
     void computeName() override
     {
         pointedType->computeName();
-        name = format("[..] %s", pointedType->name.c_str());
+		name.clear();
+        if (flags & TYPEINFO_CONST)
+            name = "const ";
+        name += format("[..] %s", pointedType->name.c_str());
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
