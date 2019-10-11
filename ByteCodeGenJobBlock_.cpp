@@ -290,7 +290,8 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     vector<uint32_t> allJumps;
     if (!caseNode->expressions.empty())
     {
-        auto r0 = reserveRegisterRC(context);
+		RegisterList r0;
+		reserveRegisterRC(context, r0, 1);
         for (auto expr : caseNode->expressions)
         {
             SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));

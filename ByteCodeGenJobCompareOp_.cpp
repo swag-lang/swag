@@ -11,7 +11,7 @@
 #include "CommandLine.h"
 #include "SymTable.h"
 
-bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
     auto typeInfo = TypeManager::concreteType(left->typeInfo);
 
@@ -45,7 +45,9 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             if (right->typeInfo == g_TypeMgr.typeInfoNull)
                 emitInstruction(context, ByteCodeOp::IsNullString, r0, r2);
             else
+            {
                 emitInstruction(context, ByteCodeOp::CompareOpEqualString, r0, r1, r2);
+            }
             return true;
         default:
             return internalError(context, "emitCompareOpEqual, type not supported");
@@ -63,7 +65,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
     auto node  = context->node;
     auto left  = node->childs.front();
@@ -173,8 +175,8 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
     {
         SWAG_CHECK(emitUserOp(context));
-		if (context->result == ByteCodeResult::Pending)
-			return true;
+        if (context->result == ByteCodeResult::Pending)
+            return true;
 
         auto r2 = node->resultRegisterRC;
         switch (node->token.id)
@@ -202,7 +204,8 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     }
     else
     {
-        auto r2                = reserveRegisterRC(context);
+        RegisterList r2;
+        reserveRegisterRC(context, r2, 1);
         node->resultRegisterRC = r2;
 
         switch (node->token.id)
