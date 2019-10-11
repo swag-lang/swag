@@ -62,37 +62,37 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         switch (typeFuncBC->returnType->nativeType)
         {
         case NativeTypeKind::S8:
-            bufferC.addString("rt0.s8 = ");
+            bufferC.addString("rt[0].s8 = ");
             break;
         case NativeTypeKind::U8:
-            bufferC.addString("rt0.u8 = ");
+            bufferC.addString("rt[0].u8 = ");
             break;
         case NativeTypeKind::S16:
-            bufferC.addString("rt0.s16 = ");
+            bufferC.addString("rt[0].s16 = ");
             break;
         case NativeTypeKind::U16:
-            bufferC.addString("rt0.u16 = ");
+            bufferC.addString("rt[0].u16 = ");
             break;
         case NativeTypeKind::S32:
-            bufferC.addString("rt0.s32 = ");
+            bufferC.addString("rt[0].s32 = ");
             break;
         case NativeTypeKind::U32:
-            bufferC.addString("rt0.u32 = ");
+            bufferC.addString("rt[0].u32 = ");
             break;
         case NativeTypeKind::S64:
-            bufferC.addString("rt0.s64 = ");
+            bufferC.addString("rt[0].s64 = ");
             break;
         case NativeTypeKind::U64:
-            bufferC.addString("rt0.u32 = ");
+            bufferC.addString("rt[0].u32 = ");
             break;
         case NativeTypeKind::Bool:
-            bufferC.addString("rt0.b = ");
+            bufferC.addString("rt[0].b = ");
             break;
         case NativeTypeKind::F32:
-            bufferC.addString("rt0.f32 = ");
+            bufferC.addString("rt[0].f32 = ");
             break;
         case NativeTypeKind::F64:
-            bufferC.addString("rt0.f64 = ");
+            bufferC.addString("rt[0].f64 = ");
             break;
         default:
             SWAG_ASSERT(false);
@@ -314,27 +314,12 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     bufferC.addString(" {\n");
 
     // Generate one local variable per used register
-	if(bc->maxReservedRegisterRC)
-		bufferC.addString(format("swag_register_t r[%u];\n", bc->maxReservedRegisterRC));
+    if (bc->maxReservedRegisterRC)
+        bufferC.addString(format("swag_register_t r[%u];\n", bc->maxReservedRegisterRC));
 
     // For function call results
     if (bc->maxCallResults)
-    {
-        int index = 0;
-        for (int i = 0; i < bc->maxCallResults; i++)
-        {
-            if (index == 0)
-                bufferC.addString("swag_register_t ");
-            else
-                bufferC.addString(", ");
-            bufferC.addString(format("rt%u", index));
-            index = (index + 1) % 10;
-            if (index == 0)
-                bufferC.addString(";\n");
-        }
-
-        bufferC.addString(";\n");
-    }
+        bufferC.addString(format("swag_register_t rt[%u];\n", bc->maxCallResults));
 
     // Local stack
     if (typeFunc->stackSize)
@@ -1164,10 +1149,10 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r[%u] = *rr%u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRRxRCxCall:
-            bufferC.addString(format("rt%u = r[%u];", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("rt[%u] = r[%u];", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRCxRRxCall:
-            bufferC.addString(format("r[%u] = rt%u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u] = rt[%u];", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromStackParam64:
             bufferC.addString(format("r[%u] = *rp%u;", ip->a.u32, ip->c.u32));
@@ -1271,7 +1256,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             {
                 if (j)
                     bufferC.addString(",");
-                bufferC.addString(format("&rt%d", j));
+                bufferC.addString(format("&rt[%u]", j));
             }
 
             int numCallParams = (int) typeFuncBC->parameters.size();
