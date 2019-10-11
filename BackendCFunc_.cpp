@@ -117,18 +117,18 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            bufferC.addString(format("r%u", index));
+            bufferC.addString(format("r[%u]", index));
             bufferC.addString(".pointer");
             index -= 1;
         }
         else if (typeParam->isNative(NativeTypeKind::String))
         {
-            bufferC.addString(format("r%u.pointer", index));
+            bufferC.addString(format("r[%u].pointer", index));
             index -= 2;
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            bufferC.addString(format("r%u", index));
+            bufferC.addString(format("r[%u]", index));
             index -= 1;
 
             switch (typeParam->nativeType)
@@ -314,22 +314,8 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     bufferC.addString(" {\n");
 
     // Generate one local variable per used register
-    {
-        int index = 0;
-        for (uint32_t r = 0; r < bc->maxReservedRegisterRC; r++)
-        {
-            if (index == 0)
-                bufferC.addString("swag_register_t ");
-            else
-                bufferC.addString(", ");
-            index = (index + 1) % 10;
-            bufferC.addString(format("r%d", r));
-            if (index == 0)
-                bufferC.addString(";\n");
-        }
-
-        bufferC.addString(";\n");
-    }
+	if(bc->maxReservedRegisterRC)
+		bufferC.addString(format("swag_register_t r[%u];\n", bc->maxReservedRegisterRC));
 
     // For function call results
     if (bc->maxCallResults)
@@ -402,74 +388,74 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             break;
 
         case ByteCodeOp::BoundCheckString:
-            bufferC.addString(format("__assert(r%u.u32 <= r%u.u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            bufferC.addString(format("__assert(r[%u].u32 <= r[%u].u32 + 1, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::BoundCheck:
-            bufferC.addString(format("__assert(r%u.u32 < r%u.u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+            bufferC.addString(format("__assert(r[%u].u32 < r[%u].u32, \"%s\", %d, \": error: index out of range\");", ip->a.u32, ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::IncPointerVB:
-            bufferC.addString(format("r%u.pointer += %d;", ip->a.u32, ip->b.s32));
+            bufferC.addString(format("r[%u].pointer += %d;", ip->a.u32, ip->b.s32));
             break;
         case ByteCodeOp::IncPointer:
-            bufferC.addString(format("r%u.pointer = r%u.pointer + r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].pointer = r[%u].pointer + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::DecPointer:
-            bufferC.addString(format("r%u.pointer = r%u.pointer - r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].pointer = r[%u].pointer - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::DeRef8:
-            bufferC.addString(format("r%u.u64 = *(swag_uint8_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = *(swag_uint8_t*) r[%u].pointer;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::DeRef16:
-            bufferC.addString(format("r%u.u64 = *(swag_uint16_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = *(swag_uint16_t*) r[%u].pointer;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::DeRef32:
-            bufferC.addString(format("r%u.u64 = *(swag_uint32_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = *(swag_uint32_t*) r[%u].pointer;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::DeRef64:
-            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) r%u.pointer;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = *(swag_uint64_t*) r[%u].pointer;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::DeRefPointer:
-            bufferC.addString(format("r%u.pointer = *(swag_uint8_t**) (r%u.pointer + %u);", ip->b.u32, ip->a.u32, ip->c.u32));
+            bufferC.addString(format("r[%u].pointer = *(swag_uint8_t**) (r[%u].pointer + %u);", ip->b.u32, ip->a.u32, ip->c.u32));
             break;
         case ByteCodeOp::DeRefStringSlice:
-            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (r%u.pointer + 8); ", ip->b.u32, ip->a.u32));
-            bufferC.addString(format("r%u.pointer = *(swag_uint8_t**) r%u.pointer; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = *(swag_uint64_t*) (r[%u].pointer + 8); ", ip->b.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].pointer = *(swag_uint8_t**) r[%u].pointer; ", ip->a.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::MulRAVB:
-            bufferC.addString(format("r%u.s32 *= %u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s32 *= %u;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::RAFromDataSeg8:
-            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u8 = *(swag_uint8_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg16:
-            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u16 = *(swag_uint16_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg32:
-            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = *(swag_uint32_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromDataSeg64:
-            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 = *(swag_uint64_t*) (__mutableseg + %u);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::Clear8:
-            bufferC.addString(format("*(swag_uint8_t*)r%u.pointer = 0;", ip->a.u32));
+            bufferC.addString(format("*(swag_uint8_t*)r[%u].pointer = 0;", ip->a.u32));
             break;
         case ByteCodeOp::Clear16:
-            bufferC.addString(format("*(swag_uint16_t*)r%u.pointer = 0;", ip->a.u32));
+            bufferC.addString(format("*(swag_uint16_t*)r[%u].pointer = 0;", ip->a.u32));
             break;
         case ByteCodeOp::Clear32:
-            bufferC.addString(format("*(swag_uint32_t*)r%u.pointer = 0;", ip->a.u32));
+            bufferC.addString(format("*(swag_uint32_t*)r[%u].pointer = 0;", ip->a.u32));
             break;
         case ByteCodeOp::Clear64:
-            bufferC.addString(format("*(swag_uint64_t*)r%u.pointer = 0;", ip->a.u32));
+            bufferC.addString(format("*(swag_uint64_t*)r[%u].pointer = 0;", ip->a.u32));
             break;
         case ByteCodeOp::ClearX:
-            bufferC.addString(format("memset(r%u.pointer, 0, %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("memset(r[%u].pointer, 0, %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ClearXVar:
-            bufferC.addString(format("memset(r%u.pointer, 0, r%u.u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("memset(r[%u].pointer, 0, r[%u].u32 * %u);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
 
         case ByteCodeOp::ClearRefFromStack8:
@@ -488,728 +474,728 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("memset(stack + %u, 0, %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromDataSeg:
-            bufferC.addString(format("r%u.pointer = __mutableseg + %u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].pointer = __mutableseg + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAAddrFromConstantSeg:
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) (__constantseg + %u); ", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RARefFromConstantSeg:
-            bufferC.addString(format("r%u.pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32)));
-            bufferC.addString(format("r%u.u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF));
+            bufferC.addString(format("r[%u].pointer = __constantseg + %u; ", ip->a.u32, (uint32_t)(ip->c.u64 >> 32)));
+            bufferC.addString(format("r[%u].u64 = %u;", ip->b.u32, (ip->c.u64) & 0xFFFFFFFF));
             break;
         case ByteCodeOp::RARefFromStack:
-            bufferC.addString(format("r%u.pointer = stack + %u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].pointer = stack + %u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromStack8:
-            bufferC.addString(format("r%u.u8 = *(swag_uint8_t*) (stack + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u8 = *(swag_uint8_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromStack16:
-            bufferC.addString(format("r%u.u16 = *(swag_uint16_t*) (stack + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u16 = *(swag_uint16_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromStack32:
-            bufferC.addString(format("r%u.u32 = *(swag_uint32_t*) (stack + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = *(swag_uint32_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromStack64:
-            bufferC.addString(format("r%u.u64 = *(swag_uint64_t*) (stack + %u);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 = *(swag_uint64_t*) (stack + %u);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::Copy:
-            bufferC.addString(format("memcpy(r%u.pointer, r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::CopyVC:
-            bufferC.addString(format("memcpy(r%u.pointer, r%u.pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::CopyRAVB32:
-            bufferC.addString(format("r%u.u32 = 0x%x;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = 0x%x;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRAVB64:
-            bufferC.addString(format("r%u.u64 = 0x%I64x;", ip->a.u32, ip->b.u64));
+            bufferC.addString(format("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64));
             break;
         case ByteCodeOp::CopyRARBStr:
-            bufferC.addString(format("r%u.pointer = __string%u; ", ip->a.u32, ip->c.u32));
-            bufferC.addString(format("r%u.u32 = %u;", ip->b.u32, moduleToGen->strBuffer[ip->c.u32].size()));
+            bufferC.addString(format("r[%u].pointer = __string%u; ", ip->a.u32, ip->c.u32));
+            bufferC.addString(format("r[%u].u32 = %u;", ip->b.u32, moduleToGen->strBuffer[ip->c.u32].size()));
             break;
         case ByteCodeOp::CopyRARB:
-            bufferC.addString(format("r%u = r%u; ", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u] = r[%u]; ", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRARBAddr:
         {
             if (ip->c.u32 == 1)
-                bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &r%u; ", ip->a.u32, ip->b.u32));
+                bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &r[%u]; ", ip->a.u32, ip->b.u32));
             else
             {
                 bufferC.addString(format("swag_register_t vaargs%u[] = { ", vaargsIdx));
                 for (uint32_t idxParam = 0; idxParam < ip->c.u32; idxParam++)
-                    bufferC.addString(format("r%u, ", ip->b.u32 + idxParam));
+                    bufferC.addString(format("r[%u], ", ip->b.u32 + idxParam));
                 bufferC.addString("}; ");
-                bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
+                bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
                 vaargsIdx++;
             }
             break;
         }
         case ByteCodeOp::ClearRA:
-            bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = 0;", ip->a.u32));
             break;
         case ByteCodeOp::DecRA:
-            bufferC.addString(format("r%u.u32--;", ip->a.u32));
+            bufferC.addString(format("r[%u].u32--;", ip->a.u32));
             break;
         case ByteCodeOp::IncRA:
-            bufferC.addString(format("r%u.u32++;", ip->a.u32));
+            bufferC.addString(format("r[%u].u32++;", ip->a.u32));
             break;
         case ByteCodeOp::IncRA64:
-            bufferC.addString(format("r%u.u64++;", ip->a.u32));
+            bufferC.addString(format("r[%u].u64++;", ip->a.u32));
             break;
         case ByteCodeOp::IncRAVB:
-            bufferC.addString(format("r%u.u32 += %u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 += %u;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOp8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) = r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) = r[%u].u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOp16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) = r%u.u16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) = r[%u].u16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOp32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer + %u) = r%u.u32;", ip->a.u32, ip->c.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer + %u) = r[%u].u32;", ip->a.u32, ip->c.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOp64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer + %u) = r%u.u64;", ip->a.u32, ip->c.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer + %u) = r[%u].u64;", ip->a.u32, ip->c.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOp64Null:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer + %u) = 0;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer + %u) = 0;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPointer:
-            bufferC.addString(format("*(void**)(r%u.pointer) = r%u.pointer;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(void**)(r[%u].pointer) = r[%u].pointer;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::BinOpPlusS32:
-            bufferC.addString(format("r%u.s32 = r%u.s32 + r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 + r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpPlusS64:
-            bufferC.addString(format("r%u.s64 = r%u.s64 + r%u.s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 + r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpPlusU32:
-            bufferC.addString(format("r%u.u32 = r%u.u32 + r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 + r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpPlusU64:
-            bufferC.addString(format("r%u.u64 = r%u.u64 + r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 + r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpPlusF32:
-            bufferC.addString(format("r%u.f32 = r%u.f32 + r%u.f32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].f32 = r[%u].f32 + r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpPlusF64:
-            bufferC.addString(format("r%u.f64= r%u.f64 + r%u.f64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].f64= r[%u].f64 + r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::BinOpMinusS32:
-            bufferC.addString(format("r%u.s32 = r%u.s32 - r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 - r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMinusS64:
-            bufferC.addString(format("r%u.s64 = r%u.s64 - r%u.s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 - r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMinusU32:
-            bufferC.addString(format("r%u.u32 = r%u.u32 - r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 - r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMinusU64:
-            bufferC.addString(format("r%u.u64 = r%u.u64 - r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 - r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMinusF32:
-            bufferC.addString(format("r%u.f32 = r%u.f32 - r%u.f32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].f32 = r[%u].f32 - r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMinusF64:
-            bufferC.addString(format("r%u.f64 = r%u.f64 - r%u.f64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].f64 = r[%u].f64 - r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::BinOpMulS32:
-            bufferC.addString(format("r%u.s32 = r%u.s32 * r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 * r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMulS64:
-            bufferC.addString(format("r%u.s64 = r%u.s64 * r%u.s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 * r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMulU32:
-            bufferC.addString(format("r%u.u32 = r%u.u32 * r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 * r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMulU64:
-            bufferC.addString(format("r%u.u64 = r%u.u64 * r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 * r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMulF32:
-            bufferC.addString(format("r%u.f32 = r%u.f32 * r%u.f32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].f32 = r[%u].f32 * r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpMulF64:
-            bufferC.addString(format("r%u.f64= r%u.f64 * r%u.f64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].f64= r[%u].f64 * r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::XorS32:
-            bufferC.addString(format("r%u.s32 = r%u.s32 ^ r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 ^ r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::XorS64:
-            bufferC.addString(format("r%u.s64 = r%u.s64 ^ r%u.s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 ^ r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::XorU32:
-            bufferC.addString(format("r%u.u32 = r%u.u32 ^ r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 ^ r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::XorU64:
-            bufferC.addString(format("r%u.u64 = r%u.u64 ^ r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 ^ r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::ShiftLeftS32:
-            bufferC.addString(format("r%u.s32 = r%u.s32 << r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 << r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ShiftLeftS64:
-            bufferC.addString(format("r%u.s64 = r%u.s64 << r%u.s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 << r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ShiftLeftU32:
-            bufferC.addString(format("r%u.u32 = r%u.u32 << r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 << r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ShiftLeftU64:
-            bufferC.addString(format("r%u.u64 = r%u.u64 << r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 << r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::ShiftRightS32:
-            bufferC.addString(format("r%u.s32 = r%u.s32 >> r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 >> r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ShiftRightS64:
-            bufferC.addString(format("r%u.s64 = r%u.s64 >> r%u.s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 >> r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ShiftRightU32:
-            bufferC.addString(format("r%u.u32 = r%u.u32 >> r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 >> r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ShiftRightU64:
-            bufferC.addString(format("r%u.u64 = r%u.u64 >> r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 >> r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ShiftRightU64VB:
-            bufferC.addString(format("r%u.u64 >>= %u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::BinOpDivF32:
-            bufferC.addString(format("r%u.f32 = r%u.f32 / r%u.f32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpDivF64:
-            bufferC.addString(format("r%u.f64 = r%u.f64 / r%u.f64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].f64 = r[%u].f64 / r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpMinusEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) -= r%u.s8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) -= r[%u].s8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) -= r%u.s16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) -= r[%u].s16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) -= r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) -= r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) -= r%u.s64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) -= r[%u].s64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) -= r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) -= r[%u].u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) -= r%u.u16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) -= r[%u].u16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) -= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) -= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) -= r%u.u64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) -= r[%u].u64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqF32:
-            bufferC.addString(format("*(swag_float32_t*)(r%u.pointer) -= r%u.f32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_float32_t*)(r[%u].pointer) -= r[%u].f32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqF64:
-            bufferC.addString(format("*(swag_float64_t*)(r%u.pointer) -= r%u.f64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_float64_t*)(r[%u].pointer) -= r[%u].f64;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpPlusEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) += r%u.s8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) += r[%u].s8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) += r%u.s16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) += r[%u].s16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) += r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) += r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) += r%u.s64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) += r[%u].s64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) += r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) += r[%u].u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) += r%u.u16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) += r[%u].u16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) += r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) += r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) += r%u.u64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) += r[%u].u64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqF32:
-            bufferC.addString(format("*(swag_float32_t*)(r%u.pointer) += r%u.f32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_float32_t*)(r[%u].pointer) += r[%u].f32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqF64:
-            bufferC.addString(format("*(swag_float64_t*)(r%u.pointer) += r%u.f64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_float64_t*)(r[%u].pointer) += r[%u].f64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPlusEqPointer:
-            bufferC.addString(format("*(swag_uint8_t**)(r%u.pointer) += r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t**)(r[%u].pointer) += r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMinusEqPointer:
-            bufferC.addString(format("*(swag_uint8_t**)(r%u.pointer) -= r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t**)(r[%u].pointer) -= r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpMulEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) *= r%u.s8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) *= r[%u].s8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) *= r%u.s16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) *= r[%u].s16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) *= r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) *= r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) *= r%u.s64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) *= r[%u].s64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) *= r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) *= r[%u].u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) *= r%u.u16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) *= r[%u].u16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) *= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) *= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) *= r%u.u64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) *= r[%u].u64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqF32:
-            bufferC.addString(format("*(swag_float32_t*)(r%u.pointer) *= r%u.f32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_float32_t*)(r[%u].pointer) *= r[%u].f32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpMulEqF64:
-            bufferC.addString(format("*(swag_float64_t*)(r%u.pointer) *= r%u.f64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_float64_t*)(r[%u].pointer) *= r[%u].f64;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpDivEqF32:
-            bufferC.addString(format("*(swag_float32_t*)(r%u.pointer) /= r%u.f32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_float32_t*)(r[%u].pointer) /= r[%u].f32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpDivEqF64:
-            bufferC.addString(format("*(swag_float64_t*)(r%u.pointer) /= r%u.f64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_float64_t*)(r[%u].pointer) /= r[%u].f64;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpAndEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) &= r%u.s8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) &= r[%u].s8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpAndEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) &= r%u.s16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) &= r[%u].s16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpAndEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) &= r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) &= r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpAndEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) &= r%u.s64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) &= r[%u].s64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpAndEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) &= r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) &= r[%u].u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpAndEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) &= r%u.u16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) &= r[%u].u16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpAndEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) &= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) &= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpAndEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) &= r%u.u64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) &= r[%u].u64;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpOrEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) |= r%u.s8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) |= r[%u].s8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpOrEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) |= r%u.s16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) |= r[%u].s16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpOrEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) |= r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) |= r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpOrEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) |= r%u.s64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) |= r[%u].s64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpOrEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) |= r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) |= r[%u].u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpOrEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) |= r%u.u16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) |= r[%u].u16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpOrEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) |= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) |= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpOrEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) |= r%u.u64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) |= r[%u].u64;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpShiftLeftEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) <<= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) <<= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) <<= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) <<= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) <<= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) <<= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) <<= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) <<= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) <<= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) >>= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftRightEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) >>= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftRightEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) >>= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftRightEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) >>= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) >>= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) >>= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) >>= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) >>= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) >>= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpPercentEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) %%= r%u.s8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) %%= r[%u].s8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPercentEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) %%= r%u.s16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) %%= r[%u].s16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPercentEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) %%= r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) %%= r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPercentEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) %%= r%u.s64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) %%= r[%u].s64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPercentEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) %%= r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) %%= r[%u].u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPercentEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) %%= r%u.u16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) %%= r[%u].u16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPercentEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) %%= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) %%= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpPercentEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) %%= r%u.u64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) %%= r[%u].u64;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::AffectOpXOrEqS8:
-            bufferC.addString(format("*(swag_int8_t*)(r%u.pointer) ^= r%u.s8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int8_t*)(r[%u].pointer) ^= r[%u].s8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpXOrEqS16:
-            bufferC.addString(format("*(swag_int16_t*)(r%u.pointer) ^= r%u.s16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int16_t*)(r[%u].pointer) ^= r[%u].s16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpXOrEqS32:
-            bufferC.addString(format("*(swag_int32_t*)(r%u.pointer) ^= r%u.s32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int32_t*)(r[%u].pointer) ^= r[%u].s32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpXOrEqS64:
-            bufferC.addString(format("*(swag_int64_t*)(r%u.pointer) ^= r%u.s64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_int64_t*)(r[%u].pointer) ^= r[%u].s64;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpXOrEqU8:
-            bufferC.addString(format("*(swag_uint8_t*)(r%u.pointer) ^= r%u.u8;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint8_t*)(r[%u].pointer) ^= r[%u].u8;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpXOrEqU16:
-            bufferC.addString(format("*(swag_uint16_t*)(r%u.pointer) ^= r%u.u16;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint16_t*)(r[%u].pointer) ^= r[%u].u16;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpXOrEqU32:
-            bufferC.addString(format("*(swag_uint32_t*)(r%u.pointer) ^= r%u.u32;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint32_t*)(r[%u].pointer) ^= r[%u].u32;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::AffectOpXOrEqU64:
-            bufferC.addString(format("*(swag_uint64_t*)(r%u.pointer) ^= r%u.u64;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*(swag_uint64_t*)(r[%u].pointer) ^= r[%u].u64;", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::CompareOpGreaterS32:
-            bufferC.addString(format("r%u.b = r%u.s32 > r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].s32 > r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpGreaterS64:
-            bufferC.addString(format("r%u.b = r%u.s64 > r%u.s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].s64 > r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpGreaterU32:
-            bufferC.addString(format("r%u.b = r%u.u32 > r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u32 > r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpGreaterU64:
-            bufferC.addString(format("r%u.b = r%u.u64 > r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u64 > r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpGreaterF32:
-            bufferC.addString(format("r%u.b = r%u.f32 > r%u.f32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].f32 > r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpGreaterF64:
-            bufferC.addString(format("r%u.b = r%u.f64 > r%u.f64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].f64 > r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpGreaterPointer:
-            bufferC.addString(format("r%u.b = r%u.pointer > r%u.pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].pointer > r[%u].pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::CompareOpLowerS32:
-            bufferC.addString(format("r%u.b = r%u.s32 < r%u.s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].s32 < r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpLowerS64:
-            bufferC.addString(format("r%u.b = r%u.s64 < r%u.s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].s64 < r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpLowerU32:
-            bufferC.addString(format("r%u.b = r%u.u32 < r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u32 < r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpLowerU64:
-            bufferC.addString(format("r%u.b = r%u.u64 < r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u64 < r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpLowerF32:
-            bufferC.addString(format("r%u.b = r%u.f32 < r%u.f32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].f32 < r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpLowerF64:
-            bufferC.addString(format("r%u.b = r%u.f64 < r%u.f64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].f64 < r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpLowerPointer:
-            bufferC.addString(format("r%u.b = r%u.pointer < r%u.pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].pointer < r[%u].pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::CompareOpEqual8:
-            bufferC.addString(format("r%u.b = r%u.u8 == r%u.u8;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u8 == r[%u].u8;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqual16:
-            bufferC.addString(format("r%u.b = r%u.u16 == r%u.u16;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u16 == r[%u].u16;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqual32:
-            bufferC.addString(format("r%u.b = r%u.u32 == r%u.u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u32 == r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqual64:
-            bufferC.addString(format("r%u.b = r%u.u64 == r%u.u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u64 == r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqualPointer:
-            bufferC.addString(format("r%u.b = r%u.pointer == r%u.pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].pointer == r[%u].pointer;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqualBool:
-            bufferC.addString(format("r%u.b = r%u.b == r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].b == r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqualString:
-            bufferC.addString(format("r%u.b = __strcmp((const char*) r%u.pointer, (const char*) r%u.pointer, %d);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("r[%u].b = __strcmp((const char*) r[%u].pointer, (const char*) r[%u].pointer, %d);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::IsNullString:
-            bufferC.addString(format("r%u.b = r%u.pointer == 0;", ip->b.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].pointer == 0;", ip->b.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::BinOpAnd:
-            bufferC.addString(format("r%u.b = r%u.b && r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].b && r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpOr:
-            bufferC.addString(format("r%u.b = r%u.b || r%u.b;", ip->c.u32, ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].b = r[%u].b || r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::Jump:
             bufferC.addString(format("goto lbl%08u;", ip->a.s32 + i + 1));
             break;
         case ByteCodeOp::JumpNotTrue:
-            bufferC.addString(format("if(!r%d.b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
+            bufferC.addString(format("if(!r[%u].b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
             break;
         case ByteCodeOp::JumpTrue:
-            bufferC.addString(format("if(r%d.b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
+            bufferC.addString(format("if(r[%u].b) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
             break;
         case ByteCodeOp::JumpZero32:
-            bufferC.addString(format("if(!r%d.u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
+            bufferC.addString(format("if(!r[%u].u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
             break;
         case ByteCodeOp::JumpNotZero32:
-            bufferC.addString(format("if(r%d.u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
+            bufferC.addString(format("if(r[%u].u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1));
             break;
         case ByteCodeOp::Ret:
             bufferC.addString("return;");
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:
-            bufferC.addString(format("__print_i64(r%u.s64);", ip->a.u32));
+            bufferC.addString(format("__print_i64(r[%u].s64);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicPrintF64:
-            bufferC.addString(format("__print_f64(r%u.f64);", ip->a.u32));
+            bufferC.addString(format("__print_f64(r[%u].f64);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicPrintString:
-            bufferC.addString(format("__print_n((const char*) r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("__print_n((const char*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::IntrinsicAssert:
             if (ip->c.pointer)
-                bufferC.addString(format("__assert(r%u.b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1, ip->c.pointer));
+                bufferC.addString(format("__assert(r[%u].b, \"%s\", %d, \"%s\");", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1, ip->c.pointer));
             else
-                bufferC.addString(format("__assert(r%u.b, \"%s\", %d, 0);", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
+                bufferC.addString(format("__assert(r[%u].b, \"%s\", %d, 0);", ip->a.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1));
             break;
         case ByteCodeOp::IntrinsicAlloc:
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) malloc(r%u.u32);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) malloc(r[%u].u32);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::IntrinsicRealloc:
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) realloc(r%u.pointer, r%u.u32);", ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) realloc(r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::IntrinsicFree:
-            bufferC.addString(format("free(r%u.pointer);", ip->a.u32));
+            bufferC.addString(format("free(r[%u].pointer);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicGetContext:
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) TlsGetValue(__contextTlsId);", ip->a.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) TlsGetValue(__contextTlsId);", ip->a.u32));
             break;
 
         case ByteCodeOp::NegBool:
-            bufferC.addString(format("r%u.b = !r%u.b;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = !r[%u].b;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::NegF32:
-            bufferC.addString(format("r%u.f32 = -r%u.f32;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f32 = -r[%u].f32;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::NegF64:
-            bufferC.addString(format("r%u.f64 = -r%u.f64;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f64 = -r[%u].f64;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::NegS32:
-            bufferC.addString(format("r%u.s32 = -r%u.s32;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s32 = -r[%u].s32;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::NegS64:
-            bufferC.addString(format("r%u.s64 = -r%u.s64;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s64 = -r[%u].s64;", ip->a.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::InvertS32:
-            bufferC.addString(format("r%u.s32 = ~r%u.s32;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s32 = ~r[%u].s32;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::InvertS64:
-            bufferC.addString(format("r%u.s64 = ~r%u.s64;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s64 = ~r[%u].s64;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::InvertU32:
-            bufferC.addString(format("r%u.u32 = ~r%u.u32;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].u32 = ~r[%u].u32;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::InvertU64:
-            bufferC.addString(format("r%u.u64 = ~r%u.u64;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = ~r[%u].u64;", ip->a.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::ClearMaskU32:
-            bufferC.addString(format("r%u.u32 &= 0x%x;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 &= 0x%x;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ClearMaskU64:
-            bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::ClearMaskU32U64:
-            bufferC.addString(format("r%u.u32 &= 0x%x; ", ip->a.u32, ip->b.u32));
-            bufferC.addString(format("r%u.u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u32 &= 0x%x; ", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u].u64 &= 0xFFFFFFFF | ((swag_uint64_t) 0x%x << 32);", ip->a.u32, ip->b.u32));
             break;
 
         case ByteCodeOp::CastBool8:
-            bufferC.addString(format("r%u.b = r%u.u8 ? 1 : 0; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u8 ? 1 : 0; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastBool16:
-            bufferC.addString(format("r%u.b = r%u.u16 ? 1 : 0; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u16 ? 1 : 0; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastBool32:
-            bufferC.addString(format("r%u.b = r%u.u32 ? 1 : 0; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u32 ? 1 : 0; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastBool64:
-            bufferC.addString(format("r%u.b = r%u.u64 ? 1 : 0; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].u64 ? 1 : 0; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS8S16:
-            bufferC.addString(format("r%u.s16 = (swag_int16_t) r%u.s8; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s16 = (swag_int16_t) r[%u].s8; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS16S32:
-            bufferC.addString(format("r%u.s32 = (swag_int32_t) r%u.s16; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s32 = (swag_int32_t) r[%u].s16; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS32S8:
-            bufferC.addString(format("r%u.s8 = (swag_int8_t) r%u.s32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s8 = (swag_int8_t) r[%u].s32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS32S16:
-            bufferC.addString(format("r%u.s16 = (swag_int16_t) r%u.s32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s16 = (swag_int16_t) r[%u].s32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS32S64:
-            bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.s32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f64 = (swag_float64_t) r[%u].s32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS32F32:
-            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.s32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f32 = (swag_float32_t) r[%u].s32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS64S32:
-            bufferC.addString(format("r%u.s32 = (swag_int32_t) r%u.s64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s32 = (swag_int32_t) r[%u].s64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS64F32:
-            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.s64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f32 = (swag_float32_t) r[%u].s64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS64F64:
-            bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.s64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f64 = (swag_float64_t) r[%u].s64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastU32F32:
-            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.u32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f32 = (swag_float32_t) r[%u].u32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastU64F32:
-            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.u64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f32 = (swag_float32_t) r[%u].u64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastU64F64:
-            bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.u64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f64 = (swag_float64_t) r[%u].u64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF32S32:
-            bufferC.addString(format("r%u.s32 = (swag_int32_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s32 = (swag_int32_t) r[%u].f32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF32S64:
-            bufferC.addString(format("r%u.s64 = (swag_int64_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s64 = (swag_int64_t) r[%u].f32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF32F64:
-            bufferC.addString(format("r%u.f64 = (swag_float64_t) r%u.f32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f64 = (swag_float64_t) r[%u].f32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF64S64:
-            bufferC.addString(format("r%u.s64 = (swag_int64_t) r%u.f64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s64 = (swag_int64_t) r[%u].f64; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastF64F32:
-            bufferC.addString(format("r%u.f32 = (swag_float32_t) r%u.f64; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].f32 = (swag_float32_t) r[%u].f64; ", ip->a.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::CopyRRxRCx:
-            bufferC.addString(format("*rr%u = r%u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("*rr%u = r[%u];", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRCxRRx:
-            bufferC.addString(format("r%u = *rr%u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u] = *rr%u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRRxRCxCall:
-            bufferC.addString(format("rt%u = r%u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("rt%u = r[%u];", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRCxRRxCall:
-            bufferC.addString(format("r%u = rt%u;", ip->a.u32, ip->b.u32));
+            bufferC.addString(format("r[%u] = rt%u;", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::RAFromStackParam64:
-            bufferC.addString(format("r%u = *rp%u;", ip->a.u32, ip->c.u32));
+            bufferC.addString(format("r[%u] = *rp%u;", ip->a.u32, ip->c.u32));
             break;
         case ByteCodeOp::RARefFromStackParam:
-            bufferC.addString(format("r%u.pointer = (swag_int8_t*) &rp%u->pointer;", ip->a.u32, ip->c.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_int8_t*) &rp%u->pointer;", ip->a.u32, ip->c.u32));
             break;
         case ByteCodeOp::PushRRSaved:
         case ByteCodeOp::PopRRSaved:
             break;
 
         case ByteCodeOp::MinusToTrue:
-            bufferC.addString(format("r%u.b = r%u.s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].s32 < 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::MinusZeroToTrue:
-            bufferC.addString(format("r%u.b = r%u.s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].s32 <= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::PlusToTrue:
-            bufferC.addString(format("r%u.b = r%u.s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].s32 > 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::PlusZeroToTrue:
-            bufferC.addString(format("r%u.b = r%u.s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].b = r[%u].s32 >= 0 ? 1 : 0;", ip->a.u32, ip->a.u32));
             break;
 
         case ByteCodeOp::MakeLambda:
         {
             auto funcBC = (ByteCode*) ip->b.pointer;
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str()));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &%s;", ip->a.u32, funcBC->callName().c_str()));
             break;
         }
 
@@ -1221,14 +1207,14 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             uint32_t numReg   = ip->c.u64 >> 32;
             uint32_t firstReg = ip->c.u64 & 0xFFFFFFFF;
             if (numReg == 1)
-                bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &r%u;", ip->a.u32, firstReg));
+                bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &r[%u];", ip->a.u32, firstReg));
             else
             {
                 bufferC.addString(format("swag_register_t vaargs%u[] = { ", vaargsIdx));
                 for (uint32_t idxParam = 0; idxParam < numReg; idxParam++)
-                    bufferC.addString(format("r%u, ", firstReg + idxParam));
+                    bufferC.addString(format("r[%u], ", firstReg + idxParam));
                 bufferC.addString("}; ");
-                bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
+                bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
                 vaargsIdx++;
             }
             break;
@@ -1239,13 +1225,13 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             int idxParam = (int) pushRAParams.size() - 1;
             while (idxParam >= 0)
             {
-                bufferC.addString(format("r%u, ", pushRAParams[idxParam]));
+                bufferC.addString(format("r[%u], ", pushRAParams[idxParam]));
                 idxParam--;
             }
 
             bufferC.addString("}; ");
-            bufferC.addString(format("r%u.pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
-            bufferC.addString(format("vaargs%u[0].pointer = r%u.pointer;", vaargsIdx, ip->a.u32));
+            bufferC.addString(format("r[%u].pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
+            bufferC.addString(format("vaargs%u[0].pointer = r[%u].pointer;", vaargsIdx, ip->a.u32));
             vaargsIdx++;
             break;
         }
@@ -1277,7 +1263,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                 bufferC.addString("); ");
 
                 // Then the call
-                bufferC.addString(format("((tfn)r%u.pointer)", ip->a.u32));
+                bufferC.addString(format("((tfn)r[%u].pointer)", ip->a.u32));
             }
 
             bufferC.addString("(");
@@ -1299,7 +1285,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                         bufferC.addString(", ");
                     auto index = pushRAParams.back();
                     pushRAParams.pop_back();
-                    bufferC.addString(format("&r%u", index));
+                    bufferC.addString(format("&r[%u]", index));
                 }
             }
 
