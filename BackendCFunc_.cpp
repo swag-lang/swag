@@ -503,20 +503,8 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r[%u] = r[%u]; ", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRARBAddr:
-        {
-            if (ip->c.u32 == 1)
-                bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &r[%u]; ", ip->a.u32, ip->b.u32));
-            else
-            {
-                bufferC.addString(format("swag_register_t vaargs%u[] = { ", vaargsIdx));
-                for (uint32_t idxParam = 0; idxParam < ip->c.u32; idxParam++)
-                    bufferC.addString(format("r[%u], ", ip->b.u32 + idxParam));
-                bufferC.addString("}; ");
-                bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
-                vaargsIdx++;
-            }
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &r[%u]; ", ip->a.u32, ip->b.u32));
             break;
-        }
         case ByteCodeOp::ClearRA:
             bufferC.addString(format("r[%u].u64 = 0;", ip->a.u32));
             break;

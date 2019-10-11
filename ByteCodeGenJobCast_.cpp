@@ -21,7 +21,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 	{
 		// Be sure registers are contiguous, as we address the first of them
 		SWAG_ASSERT(exprNode->resultRegisterRC.size() != 2 || exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
-		emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC[0])->c.u32 = exprNode->resultRegisterRC.size();
+		emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC[0]);
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Struct)
     {
