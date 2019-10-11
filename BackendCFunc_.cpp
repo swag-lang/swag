@@ -256,7 +256,7 @@ bool BackendC::emitFuncSignatures()
 
 bool BackendC::emitFuncSignatures(Module* moduleToGen)
 {
-	SWAG_ASSERT(moduleToGen);
+    SWAG_ASSERT(moduleToGen);
 
     bufferSwg.addString(format("#[swag.foreign(\"%s\")]\n", module->name.c_str()));
     bufferSwg.addString("{\n");
@@ -281,7 +281,7 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-		bufferC.addString("static ");
+        bufferC.addString("static ");
         emitFuncSignatureInternalC(one);
         bufferC.addString(";\n");
 
@@ -532,8 +532,24 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r%u = r%u; ", ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CopyRARBAddr:
-            bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &r%u; ", ip->a.u32, ip->b.u32));
+        {
+            if (ip->c.u32 == 1)
+                bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &r%u; ", ip->a.u32, ip->b.u32));
+            else
+            {
+                bufferC.addString(format("swag_register_t vaargs%u[] = { ", vaargsIdx));
+                for (uint32_t idxParam = 0; idxParam < ip->c.u32; idxParam++)
+                {
+                    bufferC.addString(format("r%u", ip->b.u32 + idxParam));
+                    bufferC.addString(", ");
+                }
+
+                bufferC.addString(" }; ");
+                bufferC.addString(format("r%u.pointer = (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
+                vaargsIdx++;
+            }
             break;
+        }
         case ByteCodeOp::ClearRA:
             bufferC.addString(format("r%u.u64 = 0;", ip->a.u32));
             break;
@@ -1211,13 +1227,13 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         {
             bufferC.addString(format("swag_register_t vaargs%u[] = { 0, ", vaargsIdx));
             int idxParam = (int) pushRAParams.size() - 1;
-			while (idxParam >= 0)
-			{
-				bufferC.addString(format("r%u", pushRAParams[idxParam]));
-				if(idxParam)
-					bufferC.addString(", ");
-				idxParam--;
-			}
+            while (idxParam >= 0)
+            {
+                bufferC.addString(format("r%u", pushRAParams[idxParam]));
+                if (idxParam)
+                    bufferC.addString(", ");
+                idxParam--;
+            }
 
             bufferC.addString(" }; ");
             bufferC.addString(format("r%u.pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
@@ -1316,7 +1332,7 @@ bool BackendC::emitFunctions()
 
 bool BackendC::emitFunctions(Module* moduleToGen)
 {
-	SWAG_ASSERT(moduleToGen);
+    SWAG_ASSERT(moduleToGen);
 
     bool ok = true;
     for (auto one : moduleToGen->byteCodeFunc)
