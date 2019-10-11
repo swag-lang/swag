@@ -317,7 +317,7 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
             toFree += r1;
             inst        = emitInstruction(context, ByteCodeOp::MovRASP, r1);
             inst->b.u32 = offset;
-            inst->c.u64 = child->resultRegisterRC[0] | ((uint64_t) child->resultRegisterRC.size() << 32);
+            inst->c.u32 = child->resultRegisterRC[0];
             emitInstruction(context, ByteCodeOp::PushRAParam, r1);
 
             precallStack += 2 * sizeof(Register);

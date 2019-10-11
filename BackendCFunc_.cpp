@@ -1188,22 +1188,8 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             pushRAParams.push_back(ip->a.u32);
             break;
         case ByteCodeOp::MovRASP:
-        {
-            uint32_t numReg   = ip->c.u64 >> 32;
-            uint32_t firstReg = ip->c.u64 & 0xFFFFFFFF;
-            if (numReg == 1)
-                bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &r[%u];", ip->a.u32, firstReg));
-            else
-            {
-                bufferC.addString(format("swag_register_t vaargs%u[] = { ", vaargsIdx));
-                for (uint32_t idxParam = 0; idxParam < numReg; idxParam++)
-                    bufferC.addString(format("r[%u], ", firstReg + idxParam));
-                bufferC.addString("}; ");
-                bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx));
-                vaargsIdx++;
-            }
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &r[%u];", ip->a.u32, ip->c.u32));
             break;
-        }
         case ByteCodeOp::MovRASPVaargs:
         {
             bufferC.addString(format("swag_register_t vaargs%u[] = { 0, ", vaargsIdx));
