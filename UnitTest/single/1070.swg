@@ -15,7 +15,7 @@ impl titi
 
 func toto(v: string)
 {
-	@assert(v == "123")
+	@assert(v != "123")
 }
 
 //#[swag.printbc]

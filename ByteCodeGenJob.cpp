@@ -45,6 +45,13 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
     }
 }
 
+void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
+{
+    freeRegisterRC(context, rc);
+    while (num--)
+        rc += context->bc->maxReservedRegisterRC++;
+}
+
 bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
 {
     auto node              = context->node;

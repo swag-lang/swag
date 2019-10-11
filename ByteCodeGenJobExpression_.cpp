@@ -131,7 +131,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
     // We have null, and we want a string
     if (node->typeInfo->nativeType == NativeTypeKind::String && node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        reserveRegisterRC(context, node->resultRegisterRC, 2);
+        reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
         emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[0]);
         emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[1]);
         return true;
@@ -186,7 +186,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
             return true;
         case NativeTypeKind::String:
         {
-			node->resultRegisterRC += reserveRegisterRC(context);
+            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
             auto index  = context->sourceFile->module->reserveString(node->computedValue.text);
             auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
             inst->c.u32 = index;
@@ -198,28 +198,24 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
     }
     else if (typeInfo == g_TypeMgr.typeInfoNull)
     {
-        emitInstruction(context, ByteCodeOp::ClearRA, r0);
         if (toType && (toType->kind == TypeInfoKind::Slice || toType->isNative(NativeTypeKind::String)))
         {
-            node->resultRegisterRC += reserveRegisterRC(context);
+            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+            emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[0]);
             emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[1]);
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::ClearRA, r0);
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto     typeArray     = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         uint32_t storageOffset = node->computedValue.reg.u32;
-        node->resultRegisterRC += reserveRegisterRC(context);
+        reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
         auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
-    }
-    else if (typeInfo->kind == TypeInfoKind::TypeList)
-    {
-        auto     typeList      = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeList);
-        uint32_t storageOffset = node->computedValue.reg.u32;
-        node->resultRegisterRC += reserveRegisterRC(context);
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-        inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeList->childs.size();
     }
     else
     {

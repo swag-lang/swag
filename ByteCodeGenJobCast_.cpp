@@ -19,6 +19,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     // Make a pointer to the value
     if (fromTypeInfo->kind == TypeInfoKind::Native)
     {
+		SWAG_ASSERT(exprNode->resultRegisterRC.size() != 2 || exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
         emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC);
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Struct)
@@ -535,7 +536,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Slice)
     {
-		return true;
+        return true;
     }
 
     internalError(context, "emitCastToNativeString, invalid type");

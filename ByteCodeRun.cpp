@@ -919,8 +919,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         if (!registersRC[ip->a.u32].pointer || !registersRC[ip->b.u32].pointer)
             registersRC[ip->c.u32].b = registersRC[ip->a.u32].pointer == registersRC[ip->b.u32].pointer;
-        else
-            registersRC[ip->c.u32].b = !strcmp((const char*) registersRC[ip->a.u32].pointer, (const char*) registersRC[ip->b.u32].pointer);
+		else
+		{
+			auto length = registersRC[ip->c.u32].u32;
+			registersRC[ip->c.u32].b = !strncmp((const char*)registersRC[ip->a.u32].pointer, (const char*)registersRC[ip->b.u32].pointer, length);
+		}
         break;
     }
     case ByteCodeOp::IsNullString:

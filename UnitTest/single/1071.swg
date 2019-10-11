@@ -13,12 +13,12 @@ impl titi
 	}
 }
 
+//#[swag.printbc]
 func toto(v: string)
 {
 	@assert(v == "1234")
 }
 
-//#[swag.printbc]
 #test
 {
 	var t: titi

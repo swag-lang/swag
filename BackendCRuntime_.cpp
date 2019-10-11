@@ -114,11 +114,11 @@ static void __assert(swag_bool_t expr, const char* file, int line, const char* m
 	exit(-1);
 }
 
-static swag_bool_t __strcmp(const char* str1, const char* str2)
+static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t num)
 {
 	if(!str1 || !str2)
 		return str1 == str2;
-	return !strcmp(str1, str2);
+	return !strncmp(str1, str2, num);
 }
 
 )";
