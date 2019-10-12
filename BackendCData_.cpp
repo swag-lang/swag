@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCCompilerVS.h"
-#include "Global.h"
 #include "Module.h"
 #include "ByteCode.h"
+#include "AstNode.h"
 
 bool BackendC::emitDataSegment(DataSegment* dataSegment)
 {
@@ -71,7 +70,7 @@ bool BackendC::emitStrings()
 
 bool BackendC::emitGlobalInit()
 {
-    // Data segment
+    // Init of data segment
     bufferC.addString("static void initDataSeg() {\n");
     for (auto& k : module->mutableSegment.initString)
     {
@@ -90,7 +89,7 @@ bool BackendC::emitGlobalInit()
 
     bufferC.addString("}\n\n");
 
-    // Constant segment
+    // Init of constant segment
     bufferC.addString("static void initConstantSeg() {\n");
     for (auto& k : module->constantSegment.initString)
     {
@@ -107,12 +106,41 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("}\n\n");
 
     // Main init fct
-    bufferC.addString(format("void %s_globalInit(swag_tls_id_t contextTlsID) {\n", module->name.c_str()));	
-	bufferC.addString("__contextTlsId = contextTlsID;\n");
+    bufferC.addString(format("void %s_globalInit(swag_tls_id_t contextTlsID) {\n", module->name.c_str()));
+    bufferC.addString("__contextTlsId = contextTlsID;\n");
+
     bufferC.addString("initDataSeg();\n");
     bufferC.addString("initConstantSeg();\n");
+
+	for (auto bc : module->byteCodeInitFunc)
+    {
+        auto node = bc->node;
+        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+        bufferC.addString(format("%s();\n", bc->callName().c_str()));
+    }
+
     bufferC.addString("}\n\n");
 
-    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit();\n", module->name.c_str()));
+    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(swag_tls_id_t contextTlsID);\n", module->name.c_str()));
+    return true;
+}
+
+bool BackendC::emitGlobalDrop()
+{
+    // Main init fct
+    bufferC.addString(format("void %s_globalDrop() {\n", module->name.c_str()));
+
+    for (auto bc : module->byteCodeDropFunc)
+    {
+        auto node = bc->node;
+        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+        bufferC.addString(format("%s();\n", bc->callName().c_str()));
+    }
+
+    bufferC.addString("}\n\n");
+
+    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalDrop();\n", module->name.c_str()));
     return true;
 }

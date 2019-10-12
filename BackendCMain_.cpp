@@ -41,6 +41,11 @@ bool BackendC::emitMain()
     }
     bufferC.addString("#endif\n");
 
+	// Call to global drop of this module, and dependencies
+    bufferC.addString(format("%s_globalDrop();\n", module->name.c_str()));
+    for (auto& k : module->moduleDependenciesNames)
+        bufferC.addString(format("%s_globalDrop();\n", k.c_str()));
+
     bufferC.addString("}\n");
     bufferC.addString("#endif\n");
     bufferC.addString("\n");

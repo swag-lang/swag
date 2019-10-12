@@ -33,6 +33,7 @@ struct BackendC : public Backend
     bool emitFuncSignatures();
 	bool emitFuncSignatures(Module* moduleToGen);
     bool emitGlobalInit();
+	bool emitGlobalDrop();
 
     const char* swagTypeToCType(TypeInfo* typeInfo);
     void        emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
