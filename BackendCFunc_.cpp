@@ -968,7 +968,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r[%u].b = r[%u].b == r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::CompareOpEqualString:
-            bufferC.addString(format("r[%u].b = __strcmp((const char*) r[%u].pointer, (const char*) r[%u].pointer, %d);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32));
+            bufferC.addString(format("r[%u].b = __strcmp((const char*) r[%u].pointer, (const char*) r[%u].pointer, r[%u].u32);", ip->c.u32, ip->a.u32, ip->b.u32, ip->c.u32));
             break;
         case ByteCodeOp::IsNullString:
             bufferC.addString(format("r[%u].b = r[%u].pointer == 0;", ip->b.u32, ip->a.u32));

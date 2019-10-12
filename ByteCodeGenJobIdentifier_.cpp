@@ -69,7 +69,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->numRegisters() == 2)
         {
-            node->resultRegisterRC += reserveRegisterRC(context);
+            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
             auto inst   = emitInstruction(context, ByteCodeOp::RAFromStackParam64, node->resultRegisterRC[1]);
             inst->b.u32 = resolved->storageOffset + 8;
             inst->c.u32 = resolved->storageIndex + 1;
@@ -156,7 +156,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->numRegisters() == 2)
         {
-            node->resultRegisterRC += reserveRegisterRC(context);
+            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
         }
