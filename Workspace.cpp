@@ -275,12 +275,29 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
         for (auto module : list)
         {
-            for (auto func : module->byteCodeTestFunc)
+            if (!module->numErrors)
             {
-                if (func->sourceFile->module->numErrors)
-                    continue;
-                g_Stats.testFunctions++;
-                module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                for (auto func : module->byteCodeInitFunc)
+                {
+                    module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                }
+            }
+
+            if (!module->numErrors)
+            {
+                for (auto func : module->byteCodeTestFunc)
+                {
+                    g_Stats.testFunctions++;
+                    module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                }
+            }
+
+            if (!module->numErrors)
+            {
+                for (auto func : module->byteCodeDropFunc)
+                {
+                    module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                }
             }
         }
     }
