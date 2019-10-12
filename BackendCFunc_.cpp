@@ -308,6 +308,9 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     bool ok       = true;
     auto typeFunc = bc->callType();
 
+	if(bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
+		bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
+
     // Signature
     bufferC.addString("static ");
     emitFuncSignatureInternalC(bc);
@@ -1268,7 +1271,12 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         bufferC.addString("\n");
     }
 
-    bufferC.addString("}\n\n");
+    bufferC.addString("}\n");
+
+	if (bc->node && bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
+        bufferC.addString("#endif\n");
+
+	bufferC.addString("\n");
     return ok;
 }
 
