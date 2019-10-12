@@ -318,19 +318,33 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     if (result)
         *result = funcNode;
 
-    bool isTest      = false;
-    bool isIntrinsic = false;
+    bool funcForCompiler = false;
+    bool isIntrinsic     = false;
 
-    if (token.id == TokenId::CompilerTest)
-        isTest = true;
+    auto typeFuncId = token.id;
+    if (typeFuncId == TokenId::CompilerFuncTest || typeFuncId == TokenId::CompilerFuncInit || typeFuncId == TokenId::CompilerFuncDrop)
+        funcForCompiler = true;
     SWAG_CHECK(tokenizer.getToken(token));
 
     // Name
-    if (isTest)
+    if (funcForCompiler)
     {
-        int id         = g_Global.uniqueID.fetch_add(1);
-        funcNode->name = "__test" + to_string(id);
-        funcNode->attributeFlags |= ATTRIBUTE_TEST;
+        int id = g_Global.uniqueID.fetch_add(1);
+        switch (typeFuncId)
+        {
+        case TokenId::CompilerFuncTest:
+            funcNode->name = "__test" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC;
+            break;
+        case TokenId::CompilerFuncInit:
+            funcNode->name = "__init" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_INIT_FUNC;
+            break;
+        case TokenId::CompilerFuncDrop:
+            funcNode->name = "__drop" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC;
+            break;
+        }
     }
     else
     {
@@ -372,7 +386,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     }
 
     // Parameters
-    if (!isTest)
+    if (!funcForCompiler)
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
@@ -384,7 +398,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
     funcNode->returnType  = typeNode;
     typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
-    if (!isTest)
+    if (!funcForCompiler)
     {
         if (token.id == TokenId::SymMinusGreat)
         {
@@ -438,7 +452,6 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
     node->semanticFct = &SemanticJob::resolveReturn;
     if (result)
         *result = node;
-
 
     // Return value
     SWAG_CHECK(tokenizer.getToken(token));

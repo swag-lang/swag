@@ -128,8 +128,16 @@ void Module::addByteCodeFunc(ByteCode* bc)
 {
     scoped_lock lk(mutexByteCode);
     byteCodeFunc.push_back(bc);
-    if (bc->node && bc->node->attributeFlags & ATTRIBUTE_TEST)
-        byteCodeTestFunc.push_back(bc);
+
+    if (bc->node)
+    {
+        if (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
+            byteCodeTestFunc.push_back(bc);
+        else if (bc->node->attributeFlags & ATTRIBUTE_INIT_FUNC)
+            byteCodeInitFunc.push_back(bc);
+        else if (bc->node->attributeFlags & ATTRIBUTE_DROP_FUNC)
+            byteCodeDropFunc.push_back(bc);
+    }
 }
 
 void Module::setBuildPass(BuildPass buildP)

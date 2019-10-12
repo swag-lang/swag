@@ -114,7 +114,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         context->errorContext.report({sourceFile, node->token, "function with the 'foreign' attribute can't have a body"});
     }
 
-    if (node->attributeFlags & ATTRIBUTE_TEST)
+    if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
     {
         SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, node->returnType, "function marked with the 'test' attribute can't have a return value"}));
         SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->errorContext.report({sourceFile, node->parameters, "function marked with the 'test' attribute can't have parameters"}));
@@ -147,11 +147,15 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     bool genByteCode = false;
     if (g_CommandLine.backendOutput && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic))
         genByteCode = true;
-    if ((node->attributeFlags & ATTRIBUTE_TEST) && g_CommandLine.test && g_CommandLine.runByteCodeTests)
+    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && g_CommandLine.test && g_CommandLine.runByteCodeTests)
         genByteCode = true;
-    if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.test && !g_CommandLine.unittest)
+    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test && !g_CommandLine.unittest)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+        genByteCode = true;
+    if (node->attributeFlags & ATTRIBUTE_INIT_FUNC)
+        genByteCode = true;
+    if (node->attributeFlags & ATTRIBUTE_DROP_FUNC)
         genByteCode = true;
     if (node->token.id == TokenId::Intrinsic)
         genByteCode = false;

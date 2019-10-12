@@ -273,7 +273,7 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
             // Do we need to generate that function ?
             if (node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
-            if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
+            if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.unittest)
                 continue;
             if (node->attributeFlags & ATTRIBUTE_FOREIGN)
                 continue;
@@ -1301,7 +1301,7 @@ bool BackendC::emitFunctions(Module* moduleToGen)
             // Do we need to generate that function ?
             if (node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
-            if ((node->attributeFlags & ATTRIBUTE_TEST) && !g_CommandLine.unittest)
+            if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.unittest)
                 continue;
             if (node->attributeFlags & ATTRIBUTE_FOREIGN)
                 continue;
