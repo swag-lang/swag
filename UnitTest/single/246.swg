@@ -14,4 +14,7 @@ func main1 ()
 	main();
 }
 
-#run main1();
+#run 
+{
+	main1()
+}

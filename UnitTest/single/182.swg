@@ -2,4 +2,4 @@
 #unittest pass semantic;
 
 #unittest error;
-#run 1.0 & 1;
+#assert 1.0 & 1;

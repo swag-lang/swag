@@ -40,7 +40,6 @@ struct SyntaxJob : public Job
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
     bool doCompilerVersion(AstNode* parent);
-    bool doCompilerRunDecl(AstNode* parent);
     bool doCompilerUnitTest();
     bool doCompilerModule();
     bool doCompilerImport(AstNode* parent);

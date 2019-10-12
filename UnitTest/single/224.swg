@@ -18,4 +18,8 @@ func main ()
 	@assert(b4 == 4);
 }
 
-#run main();
+#run 
+{
+	main()
+}
+

@@ -23,4 +23,7 @@ func main1 ()
 	@assert(main(5, 7) == 7);
 }
 
-#run main1();
+#run 
+{
+	main1()
+}

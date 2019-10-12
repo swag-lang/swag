@@ -114,54 +114,6 @@ bool SyntaxJob::doCompilerVersion(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doCompilerRunDecl(AstNode* parent)
-{
-    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#run can only be declared in the top level scope"}));
-
-    auto runNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile->indexInModule, parent);
-    runNode->semanticFct = &SemanticJob::resolveCompilerRun;
-    runNode->token       = move(token);
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    if (token.id != TokenId::SymLeftCurly)
-        return doExpression(runNode);
-
-    // Generated function
-    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, parent);
-    funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
-    funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
-
-    auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
-    typeNode->semanticFct = &SemanticJob::resolveFuncDeclType;
-
-    // Register function name
-    Scope* newScope = nullptr;
-    currentScope->allocateSymTable();
-    {
-        scoped_lock lk(currentScope->symTable->mutex);
-        auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
-        newScope             = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
-        int id               = g_Global.uniqueID.fetch_add(1);
-        funcNode->name       = "__" + to_string(id);
-        funcNode->typeInfo   = typeInfo;
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
-    }
-
-    // run content is the function body
-    {
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
-    }
-
-    // Generate a call
-    auto idRef         = (AstIdentifierRef*) Ast::createIdentifierRef(this, funcNode->name, runNode->token, runNode);
-    auto id            = (AstIdentifier*) idRef->childs.front();
-    id->callParameters = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile->indexInModule, id);
-
-    return true;
-}
-
 bool SyntaxJob::doCompilerModule()
 {
     if (!isContextDisabled())

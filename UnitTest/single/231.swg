@@ -14,4 +14,8 @@ func main ()
 	@assert(b == 2.5);
 }
 
-#run main();
+#run 
+{
+	main()
+}
+

@@ -20,4 +20,7 @@ func main ()
 	@assert(a == 1);
 }
 
-#run main();
+#run 
+{
+	main()
+}

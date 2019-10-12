@@ -18,4 +18,7 @@ func main ()
 	@assert(a == 10);
 }
 
-#run main()
+#run 
+{
+	main()
+}

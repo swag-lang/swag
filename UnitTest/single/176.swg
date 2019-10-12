@@ -3,4 +3,4 @@
 
 #unittest error;
 func main ()-> char { return '1'; }
-#run main() / '1';
+#assert main() / '1';

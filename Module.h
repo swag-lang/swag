@@ -67,6 +67,7 @@ struct Module : public PoolElement
     vector<ByteCode*> byteCodeTestFunc;
 	vector<ByteCode*> byteCodeInitFunc;
 	vector<ByteCode*> byteCodeDropFunc;
+	vector<ByteCode*> byteCodeRunFunc;
 
     void addDependency(AstNode* importNode);
 

@@ -5,4 +5,7 @@
 func main (){}
 func main (b: string){}
 
-#run main(1);
+#run 
+{
+	main(1);
+}

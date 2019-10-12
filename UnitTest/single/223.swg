@@ -12,4 +12,7 @@ func main ()
 	@assert(v == 666);
 }
 
-#run main()
+#run 
+{
+	main()
+}

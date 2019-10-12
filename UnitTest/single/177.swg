@@ -4,8 +4,8 @@
 namespace A{}
 
 #unittest error;
-#run A + A;
+#assert A + A;
 #unittest error;
-#run !A;
+#assert !A;
 #unittest error;
-#run -A;
+#assert -A;

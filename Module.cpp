@@ -137,6 +137,8 @@ void Module::addByteCodeFunc(ByteCode* bc)
             byteCodeInitFunc.push_back(bc);
         else if (bc->node->attributeFlags & ATTRIBUTE_DROP_FUNC)
             byteCodeDropFunc.push_back(bc);
+        else if (bc->node->attributeFlags & ATTRIBUTE_RUN_FUNC)
+            byteCodeRunFunc.push_back(bc);
     }
 }
 

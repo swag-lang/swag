@@ -10,6 +10,7 @@ static const uint32_t ATTRIBUTE_PUBLIC        = 0x00000010;
 static const uint32_t ATTRIBUTE_FOREIGN       = 0x00000020;
 static const uint32_t ATTRIBUTE_INIT_FUNC     = 0x00000040;
 static const uint32_t ATTRIBUTE_DROP_FUNC     = 0x00000080;
+static const uint32_t ATTRIBUTE_RUN_FUNC      = 0x00000100;
 
 struct TypeInfoFuncAttr;
 struct SymbolAttributes

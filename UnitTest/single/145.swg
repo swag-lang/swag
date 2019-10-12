@@ -6,4 +6,7 @@ func main (b: bool)
 {
 }
 
-#run main;
+#run 
+{
+	main;
+}

@@ -289,6 +289,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::CompilerFuncTest:
 	case TokenId::CompilerFuncInit:
 	case TokenId::CompilerFuncDrop:
+	case TokenId::CompilerRun:
         SWAG_CHECK(doFuncDecl(parent));
         break;
     case TokenId::CompilerUnitTest:
@@ -305,9 +306,6 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         break;
     case TokenId::CompilerVersion:
         SWAG_CHECK(doCompilerVersion(parent));
-        break;
-    case TokenId::CompilerRun:
-        SWAG_CHECK(doCompilerRunDecl(parent));
         break;
     case TokenId::CompilerImport:
         SWAG_CHECK(doCompilerImport(parent));

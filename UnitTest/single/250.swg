@@ -15,4 +15,7 @@ func main1 ()
 	@assert(main() == 55);
 }
 
-#run main1();
+#run 
+{
+	main1()
+}

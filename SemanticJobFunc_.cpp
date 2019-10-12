@@ -157,6 +157,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = true;
     if (node->attributeFlags & ATTRIBUTE_DROP_FUNC)
         genByteCode = true;
+    if (node->attributeFlags & ATTRIBUTE_RUN_FUNC)
+        genByteCode = true;
     if (node->token.id == TokenId::Intrinsic)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)

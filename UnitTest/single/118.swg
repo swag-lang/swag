@@ -4,4 +4,7 @@ func main ()
 {
 }
 
-#run main();
+#run 
+{
+	main();
+}

@@ -4,4 +4,4 @@
 namespace A{}
 #unittest error;
 
-#run A && A;
+#assert A && A;

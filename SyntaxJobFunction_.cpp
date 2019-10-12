@@ -322,7 +322,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     bool isIntrinsic     = false;
 
     auto typeFuncId = token.id;
-    if (typeFuncId == TokenId::CompilerFuncTest || typeFuncId == TokenId::CompilerFuncInit || typeFuncId == TokenId::CompilerFuncDrop)
+    if (typeFuncId == TokenId::CompilerFuncTest ||
+        typeFuncId == TokenId::CompilerFuncInit ||
+        typeFuncId == TokenId::CompilerFuncDrop ||
+        typeFuncId == TokenId::CompilerRun)
         funcForCompiler = true;
     SWAG_CHECK(tokenizer.getToken(token));
 
@@ -343,6 +346,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         case TokenId::CompilerFuncDrop:
             funcNode->name = "__drop" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC;
+            break;
+        case TokenId::CompilerRun:
+            funcNode->name = "__run" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER;
             break;
         }
     }

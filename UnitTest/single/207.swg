@@ -2,5 +2,5 @@
 #unittest pass syntax;
 
 #unittest error
-#run __toto;
+#assert __toto;
 

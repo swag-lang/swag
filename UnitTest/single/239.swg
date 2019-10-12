@@ -18,4 +18,7 @@ func main ()
 	@assert(c == 666);
 }
 
-#run main();
+#run 
+{
+	main()
+}

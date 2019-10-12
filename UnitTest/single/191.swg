@@ -2,5 +2,8 @@
 #unittest pass semantic;
 
 #unittest error;
-#run swag.@print;
+#run 
+{
+	swag.@print;
+}
 
