@@ -139,6 +139,11 @@ void Module::addByteCodeFunc(ByteCode* bc)
             byteCodeDropFunc.push_back(bc);
         else if (bc->node->attributeFlags & ATTRIBUTE_RUN_FUNC)
             byteCodeRunFunc.push_back(bc);
+		else if (bc->node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+		{
+			SWAG_ASSERT(!byteCodeMainFunc);
+			byteCodeMainFunc = bc;
+		}
     }
 }
 

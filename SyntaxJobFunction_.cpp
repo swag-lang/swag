@@ -325,6 +325,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     if (typeFuncId == TokenId::CompilerFuncTest ||
         typeFuncId == TokenId::CompilerFuncInit ||
         typeFuncId == TokenId::CompilerFuncDrop ||
+        typeFuncId == TokenId::CompilerFuncMain ||
         typeFuncId == TokenId::CompilerRun)
         funcForCompiler = true;
     SWAG_CHECK(tokenizer.getToken(token));
@@ -350,6 +351,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         case TokenId::CompilerRun:
             funcNode->name = "__run" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER;
+            break;
+        case TokenId::CompilerFuncMain:
+            funcNode->name = "__main" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC;
             break;
         }
     }

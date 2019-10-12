@@ -91,8 +91,22 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
     auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+
+    // Only one main per module !
+    if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+    {
+        if (sourceFile->module->mainIsDefined)
+        {
+            Diagnostic diag({sourceFile, node->token, "#main directive already defined one"});
+            Diagnostic note{module->files[module->mainIsDefined->sourceFileIdx], sourceFile->module->mainIsDefined->token, "this is the other definition", DiagnosticLevel::Note};
+            return context->errorContext.report(diag, &note);
+        }
+
+        sourceFile->module->mainIsDefined = node;
+    }
 
     // No semantic on a generic function
     if (node->flags & AST_IS_GENERIC)
@@ -252,7 +266,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Generic &&
         typeInfo->returnType->kind != TypeInfoKind::Alias &&
         typeInfo->returnType->kind != TypeInfoKind::Lambda &&
-		typeInfo->returnType->kind != TypeInfoKind::Slice &&
+        typeInfo->returnType->kind != TypeInfoKind::Slice &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->errorContext.report({sourceFile, typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 

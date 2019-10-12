@@ -76,6 +76,7 @@ enum class TokenId
     CompilerFuncTest,
 	CompilerFuncInit,
 	CompilerFuncDrop,
+	CompilerFuncMain,
     CompilerIf,
     CompilerElse,
 

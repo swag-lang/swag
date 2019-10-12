@@ -65,9 +65,11 @@ struct Module : public PoolElement
     SpinLock          mutexByteCode;
     vector<ByteCode*> byteCodeFunc;
     vector<ByteCode*> byteCodeTestFunc;
-	vector<ByteCode*> byteCodeInitFunc;
-	vector<ByteCode*> byteCodeDropFunc;
-	vector<ByteCode*> byteCodeRunFunc;
+    vector<ByteCode*> byteCodeInitFunc;
+    vector<ByteCode*> byteCodeDropFunc;
+    vector<ByteCode*> byteCodeRunFunc;
+    ByteCode*         byteCodeMainFunc = nullptr;
+    AstNode*          mainIsDefined    = nullptr;
 
     void addDependency(AstNode* importNode);
 

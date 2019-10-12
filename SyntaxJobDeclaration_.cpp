@@ -287,9 +287,10 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         break;
     case TokenId::KwdFunc:
     case TokenId::CompilerFuncTest:
-	case TokenId::CompilerFuncInit:
-	case TokenId::CompilerFuncDrop:
-	case TokenId::CompilerRun:
+    case TokenId::CompilerFuncInit:
+    case TokenId::CompilerFuncDrop:
+    case TokenId::CompilerFuncMain:
+    case TokenId::CompilerRun:
         SWAG_CHECK(doFuncDecl(parent));
         break;
     case TokenId::CompilerUnitTest:
