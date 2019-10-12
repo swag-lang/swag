@@ -2,5 +2,5 @@
 
 #main
 {
-	@assert(true)
+	//@print("true")
 }

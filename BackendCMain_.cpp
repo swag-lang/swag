@@ -17,13 +17,13 @@ bool BackendC::emitMain()
     bufferC.addString("#ifdef SWAG_IS_EXE\n");
     bufferC.addString("void main() {\n");
 
-	// Main context
+    // Main context
     bufferC.addString("static swag_context_t mainContext;\n");
-	SWAG_ASSERT(g_defaultContext.allocator);
-	bufferC.addString(format("mainContext.allocator = &%s;\n", g_defaultContext.allocator->callName().c_str()));
-	bufferC.addString("swag_tls_id_t contextTlsId = TlsAlloc();\n");
-	bufferC.addString("TlsSetValue(contextTlsId, &mainContext);\n");
-	bufferC.addString("\n");
+    SWAG_ASSERT(g_defaultContext.allocator);
+    bufferC.addString(format("mainContext.allocator = &%s;\n", g_defaultContext.allocator->callName().c_str()));
+    bufferC.addString("swag_tls_id_t contextTlsId = TlsAlloc();\n");
+    bufferC.addString("TlsSetValue(contextTlsId, &mainContext);\n");
+    bufferC.addString("\n");
 
     // Call to global init of this module, and dependencies
     bufferC.addString(format("%s_globalInit(contextTlsId);\n", module->name.c_str()));
@@ -41,7 +41,13 @@ bool BackendC::emitMain()
     }
     bufferC.addString("#endif\n");
 
-	// Call to global drop of this module, and dependencies
+    // Call to main
+    if (module->byteCodeMainFunc)
+    {
+		bufferC.addString(format("%s();\n", module->byteCodeMainFunc->callName().c_str()));
+    }
+
+    // Call to global drop of this module, and dependencies
     bufferC.addString(format("%s_globalDrop();\n", module->name.c_str()));
     for (auto& k : module->moduleDependenciesNames)
         bufferC.addString(format("%s_globalDrop();\n", k.c_str()));
@@ -49,6 +55,6 @@ bool BackendC::emitMain()
     bufferC.addString("}\n");
     bufferC.addString("#endif\n");
     bufferC.addString("\n");
-	
+
     return true;
 }
