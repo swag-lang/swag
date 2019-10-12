@@ -13,7 +13,7 @@ void printStats()
 
     g_Log.setColor(LogColor::White);
     wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM).c_str();
-	wcout << "frontend time ..... " << g_Stats.frontendTime.count() << "s\n";
+    wcout << "frontend time ..... " << g_Stats.frontendTime.count() << "s\n";
     if (g_CommandLine.backendOutput)
         wcout << "backend time ...... " << g_Stats.backendTime.count() << "s\n";
     wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
@@ -51,6 +51,7 @@ int main(int argc, const char* argv[])
 
     g_Log.setup();
 
+    // Arguments
     CommandLineParser cmdParser;
     g_CommandLine.exePath = fs::absolute(argv[0]);
     cmdParser.setup(&g_CommandLine);
@@ -65,6 +66,20 @@ int main(int argc, const char* argv[])
         exit(0);
     }
 
+    // User arguments
+    tokenizeBlanks(g_CommandLine.userArguments.c_str(), g_CommandLine.userArgumentsVec);
+    for (auto& arg : g_CommandLine.userArgumentsVec)
+    {
+        pair<void*, void*> one;
+        one.first  = (void*) arg.c_str();
+        one.second = (void*) arg.size();
+        g_CommandLine.userArgumentsStr.push_back(one);
+    }
+
+    g_CommandLine.userArgumentsSlice.first  = &g_CommandLine.userArgumentsStr[0];
+    g_CommandLine.userArgumentsSlice.second = (void*) g_CommandLine.userArgumentsStr.size();
+
+    // Setup
     g_Global.setup();
     g_Workspace.build();
 

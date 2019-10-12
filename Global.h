@@ -13,6 +13,7 @@ extern void    makeUpper(string& str);
 extern void    replaceAll(string& str, char src, char dst);
 extern string  normalizePath(const fs::path& path);
 extern void    tokenize(const char* str, char c, vector<string>& tokens);
+extern void    tokenizeBlanks(const char* str, vector<string>& tokens);
 extern wstring utf8ToUnicode(const string& s);
 
 extern struct Global g_Global;

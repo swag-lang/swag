@@ -62,6 +62,28 @@ void tokenize(const char* str, char c, vector<string>& tokens)
     }
 }
 
+void tokenizeBlanks(const char* str, vector<string>& tokens)
+{
+    auto pz = str;
+
+    tokens.clear();
+    while (*pz)
+    {
+        string one;
+        while (*pz && !SWAG_IS_BLANK(*pz))
+            one += *pz++;
+
+        if (*pz)
+        {
+            while (*pz && SWAG_IS_BLANK(*pz))
+                pz++;
+        }
+
+        if (!one.empty())
+            tokens.push_back(one);
+    }
+}
+
 string normalizePath(const fs::path& path)
 {
     auto str = path.string();

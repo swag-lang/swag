@@ -1,21 +1,35 @@
 #include "pch.h"
 #include "SourceFile.h"
 #include "BackendC.h"
-#include "BackendCCompilerVS.h"
-#include "Global.h"
 #include "Module.h"
 #include "ByteCode.h"
-#include "CommandLine.h"
 #include "AstNode.h"
-#include "TypeInfo.h"
-#include "Attribute.h"
 #include "Context.h"
+
+void BackendC::emitArgcArgv()
+{
+    bufferC.addString("static void convertArgcArgv(int argc, char *argv[])\n");
+    bufferC.addString("{\n");
+
+    bufferC.addString(format("static swag_uint64_t argumentsStr[%d];\n", g_CommandLine.cBackend.maxApplicationArguments));
+    bufferC.addString(format("__assert(argc <= %d, __FILE__, __LINE__, \"too many application arguments\");\n", g_CommandLine.cBackend.maxApplicationArguments));
+    bufferC.addString("for(int i = 0; i < argc; i++) {\n");
+    bufferC.addString("argumentsStr[i * 2] = (swag_int64_t) argv[i];\n");
+    bufferC.addString("argumentsStr[(i * 2) + 1] = (swag_int64_t) strlen(argv[i]);\n");
+    bufferC.addString("}\n");
+    bufferC.addString("__argumentsSlice[0] = (swag_uint64_t) &argumentsStr[0];\n");
+	bufferC.addString("__argumentsSlice[1] = (swag_uint64_t) argc;\n");
+
+    bufferC.addString("}\n\n");
+}
 
 bool BackendC::emitMain()
 {
     emitSeparator(bufferC, "MAIN");
+
     bufferC.addString("#ifdef SWAG_IS_EXE\n");
-    bufferC.addString("void main() {\n");
+    emitArgcArgv();
+    bufferC.addString("void main(int argc, char *argv[]) {\n");
 
     // Main context
     bufferC.addString("static swag_context_t mainContext;\n");
@@ -23,7 +37,9 @@ bool BackendC::emitMain()
     bufferC.addString(format("mainContext.allocator = &%s;\n", g_defaultContext.allocator->callName().c_str()));
     bufferC.addString("swag_tls_id_t contextTlsId = TlsAlloc();\n");
     bufferC.addString("TlsSetValue(contextTlsId, &mainContext);\n");
-    bufferC.addString("\n");
+
+	// Arguments
+	bufferC.addString("convertArgcArgv(argc, argv);\n");
 
     // Call to global init of this module, and dependencies
     bufferC.addString(format("%s_globalInit(contextTlsId);\n", module->name.c_str()));
@@ -31,20 +47,23 @@ bool BackendC::emitMain()
         bufferC.addString(format("%s_globalInit(contextTlsId);\n", k.c_str()));
 
     // Generate call to test functions
-    bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
-    for (auto bc : module->byteCodeTestFunc)
+    if (!module->byteCodeTestFunc.empty())
     {
-        auto node = bc->node;
-        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
-            continue;
-        bufferC.addString(format("%s();\n", bc->callName().c_str()));
+        bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
+        for (auto bc : module->byteCodeTestFunc)
+        {
+            auto node = bc->node;
+            if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+                continue;
+            bufferC.addString(format("%s();\n", bc->callName().c_str()));
+        }
+        bufferC.addString("#endif\n");
     }
-    bufferC.addString("#endif\n");
 
     // Call to main
     if (module->byteCodeMainFunc)
     {
-		bufferC.addString(format("%s();\n", module->byteCodeMainFunc->callName().c_str()));
+        bufferC.addString(format("%s();\n", module->byteCodeMainFunc->callName().c_str()));
     }
 
     // Call to global drop of this module, and dependencies

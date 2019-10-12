@@ -113,6 +113,7 @@ void LanguageSpec::setup()
     intrinsics["@free"]       = Intrinsic::IntrinsicFree;
     intrinsics["@memcpy"]     = Intrinsic::IntrinsicMemCpy;
     intrinsics["@getcontext"] = Intrinsic::IntrinsicGetContext;
+    intrinsics["@arguments"]  = Intrinsic::IntrinsicArguments;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

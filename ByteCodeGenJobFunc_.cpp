@@ -78,10 +78,10 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 
         // Leave all scopes
         Scope::collectScopeFrom(node->ownerScope, funcNode->scope, context->job->collectScopes);
-		for (auto scope : context->job->collectScopes)
-		{
-			SWAG_CHECK(emitDeferredStatements(context, scope));
-		}
+        for (auto scope : context->job->collectScopes)
+        {
+            SWAG_CHECK(emitDeferredStatements(context, scope));
+        }
 
         if (context->result != ByteCodeResult::Done)
             return true;
@@ -168,6 +168,13 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         node->resultRegisterRC         = reserveRegisterRC(context);
         node->parent->resultRegisterRC = node->resultRegisterRC;
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
+        break;
+    }
+    case Intrinsic::IntrinsicArguments:
+	{
+		reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+		node->parent->resultRegisterRC = node->resultRegisterRC;
+		emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
 

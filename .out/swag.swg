@@ -12,6 +12,7 @@ func @realloc(ptr: *void, size: u32)->*void;
 func @free(ptr: *void);
 func @memcpy(dst: *void, src: *void, size: u32);
 func @getcontext()->*swag.Context;
+func @arguments()->[..] string;
 
 namespace swag 
 {

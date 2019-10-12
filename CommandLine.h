@@ -3,8 +3,9 @@
 
 struct CommandLineBackendC
 {
-    bool outputCode     = false;
-    bool outputByteCode = false;
+    bool     outputCode              = false;
+    bool     outputByteCode          = false;
+    uint32_t maxApplicationArguments = 64;
 };
 
 struct CommandLine
@@ -34,8 +35,12 @@ struct CommandLine
     bool bytecodeAnyCastCheck = true;
 
     // Bytecode execution
-    uint32_t byteCodeMaxRecurse = 1024;
-    uint32_t byteCodeStackSize  = 16 * 1024;
+    uint32_t                   byteCodeMaxRecurse = 1024;
+    uint32_t                   byteCodeStackSize  = 16 * 1024;
+    string                     userArguments;
+    vector<string>             userArgumentsVec;
+    vector<pair<void*, void*>> userArgumentsStr;
+    pair<void*, void*>         userArgumentsSlice;
 
     // Verbose
     bool help                  = false;

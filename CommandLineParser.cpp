@@ -24,19 +24,21 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
+    addArg("--userargs", nullptr, CommandLineType::String, &cmdLine->userArguments);
 
     addArg("--bc-stack-size", nullptr, CommandLineType::Int, &cmdLine->byteCodeStackSize);
     addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
 
     cmdLine->cBackend.outputCode     = true;
     cmdLine->cBackend.outputByteCode = true;
+	cmdLine->userArguments = "toto   titi";
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
     //cmdLine->backendOutput = false;
     //cmdLine->verboseBackendCommand = true;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->debugBoundCheck = false;
-    cmdLine->fileFilter = "166";
+    cmdLine->fileFilter = "1076";
 }
 
 void CommandLineParser::logArguments()
@@ -87,14 +89,9 @@ void CommandLineParser::addArg(const char* longName, const char* shortName, Comm
         arg->shortName = shortName;
 
     if (longName)
-    {
         longNameArgs[longName] = arg;
-    }
-
     if (shortName)
-    {
         shortNameArgs[shortName] = arg;
-    }
 }
 
 bool CommandLineParser::process(int argc, const char* argv[])

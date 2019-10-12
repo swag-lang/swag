@@ -66,6 +66,7 @@ typedef union swag_context_t {
 	__allocatorFct allocator;
 } swag_context_t;
 
+static swag_uint64_t __argumentsSlice[2];
 static swag_uint32_t __contextTlsId = 0;
 extern void* TlsGetValue(swag_uint32_t);
 

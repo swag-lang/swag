@@ -31,6 +31,7 @@ enum class Intrinsic
     IntrinsicFree,
 	IntrinsicMemCpy,
 	IntrinsicGetContext,
+	IntrinsicArguments,
 };
 
 struct LanguageSpec

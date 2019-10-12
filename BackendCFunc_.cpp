@@ -308,8 +308,8 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     bool ok       = true;
     auto typeFunc = bc->callType();
 
-	if(bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-		bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
+    if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
+        bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
 
     // Signature
     bufferC.addString("static ");
@@ -1028,6 +1028,10 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         case ByteCodeOp::IntrinsicGetContext:
             bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) TlsGetValue(__contextTlsId);", ip->a.u32));
             break;
+        case ByteCodeOp::IntrinsicArguments:
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) __argumentsSlice[0]; ", ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = (swag_uint64_t) __argumentsSlice[1]; ", ip->b.u32));
+            break;
 
         case ByteCodeOp::NegBool:
             bufferC.addString(format("r[%u].b = !r[%u].b;", ip->a.u32, ip->a.u32));
@@ -1273,10 +1277,10 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
 
     bufferC.addString("}\n");
 
-	if (bc->node && bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
+    if (bc->node && bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         bufferC.addString("#endif\n");
 
-	bufferC.addString("\n");
+    bufferC.addString("\n");
     return ok;
 }
 

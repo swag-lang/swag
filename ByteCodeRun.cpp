@@ -772,6 +772,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::IntrinsicArguments:
+        registersRC[ip->a.u32].pointer = (uint8_t*) g_CommandLine.userArgumentsSlice.first;
+        registersRC[ip->b.u32].u64     = (uint64_t) g_CommandLine.userArgumentsSlice.second;
+        break;
+
     case ByteCodeOp::IntrinsicAssert:
     {
         if (!registersRC[ip->a.u32].b)
@@ -919,11 +924,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     {
         if (!registersRC[ip->a.u32].pointer || !registersRC[ip->b.u32].pointer)
             registersRC[ip->c.u32].b = registersRC[ip->a.u32].pointer == registersRC[ip->b.u32].pointer;
-		else
-		{
-			auto length = registersRC[ip->c.u32].u32;
-			registersRC[ip->c.u32].b = !strncmp((const char*)registersRC[ip->a.u32].pointer, (const char*)registersRC[ip->b.u32].pointer, length);
-		}
+        else
+        {
+            auto length              = registersRC[ip->c.u32].u32;
+            registersRC[ip->c.u32].b = !strncmp((const char*) registersRC[ip->a.u32].pointer, (const char*) registersRC[ip->b.u32].pointer, length);
+        }
         break;
     }
     case ByteCodeOp::IsNullString:

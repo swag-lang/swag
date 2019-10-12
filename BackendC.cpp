@@ -2,13 +2,9 @@
 #include "SourceFile.h"
 #include "BackendC.h"
 #include "BackendCCompilerVS.h"
-#include "Global.h"
 #include "Module.h"
-#include "CommandLine.h"
 #include "Version.h"
-#include "ThreadManager.h"
 #include "Workspace.h"
-#include "ModuleCompileJob.h"
 
 bool BackendC::emitHeader()
 {
@@ -20,13 +16,13 @@ bool BackendC::emitHeader()
     bufferC.addString("#ifdef SWAG_IS_DLL\n");
     bufferC.addString("#define SWAG_EXPORT\n");
     bufferC.addString("#endif\n");
-    bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+	bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
 
     // My dependencies. Need to import for dlls
     for (auto depName : module->moduleDependenciesNames)
     {
         bufferC.addString("#undef SWAG_EXPORT\n");
-        bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
+		bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
     }
 
     bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
