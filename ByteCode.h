@@ -38,6 +38,7 @@ struct ByteCode : public PoolElement
 
     uint32_t          maxReservedRegisterRC = 0;
     vector<uint32_t>  availableRegistersRC;
+    vector<uint32_t>  availableRegistersRC2;
     vector<Register*> registersRC;
     int               curRC = -1;
     void              enterByteCode(ByteCodeRunContext* context);

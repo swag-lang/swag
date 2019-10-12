@@ -48,19 +48,32 @@ void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList
 void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     freeRegisterRC(context, rc);
+
+	// From linear cache
+    if (num == 2 && !context->bc->availableRegistersRC2.empty())
+    {
+        rc += context->bc->availableRegistersRC2.back();
+        context->bc->availableRegistersRC2.pop_back();
+        rc += context->bc->availableRegistersRC2.back();
+        context->bc->availableRegistersRC2.pop_back();
+        return;
+    }
+
     while (num--)
         rc += context->bc->maxReservedRegisterRC++;
 }
 
-bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
-{
-    auto node              = context->node;
-    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
-    return true;
-}
-
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
+    // Cache for linear
+    if (rc.size() == 2 && rc[0] == rc[1] - 1)
+    {
+        context->bc->availableRegistersRC2.push_back(rc[1]);
+        context->bc->availableRegistersRC2.push_back(rc[0]);
+        rc.clear();
+        return;
+    }
+
     auto n = rc.size();
     for (int i = n - 1; i >= 0; i--)
     {
@@ -85,6 +98,13 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
         return;
     freeRegisterRC(context, node->resultRegisterRC);
     freeRegisterRC(context, node->additionalRegisterRC);
+}
+
+bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
+{
+    auto node              = context->node;
+    node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+    return true;
 }
 
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2)
