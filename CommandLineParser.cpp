@@ -24,9 +24,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
     addArg("--userargs", nullptr, CommandLineType::String, &cmdLine->userArguments);
 
-    addArg("--bc-stack-size", nullptr, CommandLineType::Int, &cmdLine->byteCodeStackSize);
-    addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
-
     cmdLine->test          = true;
     cmdLine->cleanTarget   = true;
     cmdLine->workspacePath = "f:/swag/std";

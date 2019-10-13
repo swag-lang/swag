@@ -1,5 +1,5 @@
 #pragma once
-struct Target;
+#include "Target.h"
 
 enum class BackendType
 {
@@ -8,10 +8,10 @@ enum class BackendType
     Lib,
 };
 
-struct BackendParameters
+struct BuildParameters
 {
-    BackendType    type   = BackendType::Exe;
-    Target*        target = nullptr;
+    BackendType    type = BackendType::Exe;
+    Target         target;
     string         postFix;
     vector<string> defines;
 };

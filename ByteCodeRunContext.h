@@ -1,11 +1,12 @@
 #pragma once
 #include "Register.h"
 #include "Log.h"
+#include "SourceFile.h"
+#include "Module.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
 struct ConcatBucket;
-struct SourceFile;
 struct ByteCode;
 struct ByteCodeInstruction;
 
@@ -49,7 +50,7 @@ struct ByteCodeRunContext
         if (sp - sizeof(T) < stack)
         {
             hasError = true;
-            errorMsg = format("stack overflow during bytecode execution (stack size is '--bc-stack-size:%d' bytes)", g_CommandLine.byteCodeStackSize);
+            errorMsg = format("stack overflow during bytecode execution (stack size is '--bc-stack-size:%d' bytes)", sourceFile->module->buildParameters.target.byteCodeStackSize);
             return;
         }
 

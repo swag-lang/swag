@@ -241,7 +241,7 @@ bool BackendCCompilerVS::compile()
 
     // CL arguments
     string clArguments = "";
-    if (backendParameters.target->debugInformations)
+    if (backendParameters.target.debugInformations)
     {
         fs::path pdbPath = backend->destFile + backendParameters.postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
@@ -265,7 +265,7 @@ bool BackendCCompilerVS::compile()
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
     string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
-    switch (backendParameters.target->optimizeLevel)
+    switch (backendParameters.target.optimizeLevel)
     {
     case 0:
         break;
@@ -318,7 +318,7 @@ bool BackendCCompilerVS::compile()
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 
         linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-        if (backendParameters.target->debugInformations)
+        if (backendParameters.target.debugInformations)
             linkArguments += "/DEBUG ";
 
         if (backendParameters.type == BackendType::Dll)

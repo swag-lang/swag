@@ -155,17 +155,17 @@ bool SyntaxJob::doCompilerUnitTest()
         if (token.text == "lib")
         {
             if (g_CommandLine.test)
-                sourceFile->module->backendParameters.type = BackendType::Lib;
+                sourceFile->module->buildParameters.type = BackendType::Lib;
         }
         else if (token.text == "dll")
         {
             if (g_CommandLine.test)
-                sourceFile->module->backendParameters.type = BackendType::Dll;
+                sourceFile->module->buildParameters.type = BackendType::Dll;
         }
         else if (token.text == "exe")
         {
             if (g_CommandLine.test)
-                sourceFile->module->backendParameters.type = BackendType::Exe;
+                sourceFile->module->buildParameters.type = BackendType::Exe;
         }
         else
         {

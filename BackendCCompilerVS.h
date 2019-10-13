@@ -1,6 +1,6 @@
 #pragma once
 #include "BackendCCompiler.h"
-#include "BackendParameters.h"
+#include "BuildParameters.h"
 
 struct BackendCCompilerVS : public BackendCCompiler
 {
@@ -16,5 +16,5 @@ struct BackendCCompilerVS : public BackendCCompiler
     bool getWinSdk(string& winSdk);
     bool doProcess(const string& cmdline, const string& compilerPath, bool logAll);
 
-    BackendParameters backendParameters;
+    BuildParameters backendParameters;
 };

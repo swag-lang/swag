@@ -23,13 +23,7 @@ struct CommandLine
     // Language options
     uint32_t staticArrayMaxSize = 32 * 1024 * 1024;
 
-    // Bytecode generation
-    bool bytecodeBoundCheck   = true;
-    bool bytecodeAnyCastCheck = true;
-
-    // Bytecode execution
-    uint32_t                   byteCodeMaxRecurse = 1024;
-    uint32_t                   byteCodeStackSize  = 16 * 1024;
+	// User arguments
     string                     userArguments;
     vector<string>             userArgumentsVec;
     vector<pair<void*, void*>> userArgumentsStr;

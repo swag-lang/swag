@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
-#include "Log.h"
 #include "Ast.h"
 #include "SourceFile.h"
-#include "TypeInfo.h"
-#include "SymTable.h"
 #include "ByteCodeRunContext.h"
 
 #undef BYTECODE_OP
@@ -38,10 +35,10 @@ TypeInfoFuncAttr* ByteCode::callType()
 
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
-    if (curRC == (int) g_CommandLine.byteCodeMaxRecurse)
+    if (curRC == (int)context->sourceFile->module->buildParameters.target.byteCodeMaxRecurse)
     {
         context->hasError = true;
-        context->errorMsg = format("recursive overflow during bytecode execution (max recursion is '--bc-max-recurse:%d')", g_CommandLine.byteCodeMaxRecurse);
+        context->errorMsg = format("recursive overflow during bytecode execution (max recursion is '--bc-max-recurse:%d')", context->sourceFile->module->buildParameters.target.byteCodeMaxRecurse);
         return;
     }
 

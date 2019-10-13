@@ -8,7 +8,7 @@ Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
 JobResult ModuleCompileJob::execute()
 {
-    module->backend->compile(backendParameters);
+    module->backend->compile(buildParameters);
     g_Stats.numGenModules++;
 
     if (mutexDone)

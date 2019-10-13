@@ -2,7 +2,7 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "BuildPass.h"
-#include "BackendParameters.h"
+#include "BuildParameters.h"
 #include "TypeTable.h"
 #include "DataSegment.h"
 
@@ -34,7 +34,7 @@ struct Module : public PoolElement
     vector<SourceFile*> files;
     AstNode*            astRoot;
     Scope*              scopeRoot;
-    BackendParameters   backendParameters;
+    BuildParameters   buildParameters;
     Backend*            backend = nullptr;
     set<string>         compileVersion;
     int                 m_exceptionCode = 0;

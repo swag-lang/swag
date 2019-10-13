@@ -59,7 +59,7 @@ void BackendC::emitSeparator(Concat& buffer, const char* title)
     buffer.addString("*/\n");
 }
 
-bool BackendC::compile(const BackendParameters& backendParameters)
+bool BackendC::compile(const BuildParameters& backendParameters)
 {
     if (module->buildPass != BuildPass::Full)
         return true;

@@ -6,7 +6,7 @@ struct AstNode;
 struct AstFuncDecl;
 struct TypeInfoFuncAttr;
 struct TypeInfo;
-struct BackendParameters;
+struct BuildParameters;
 struct ByteCode;
 struct ByteCodeInstruction;
 struct DataSegment;
@@ -19,7 +19,7 @@ struct BackendC : public Backend
     }
 
     bool generate() override;
-    bool compile(const BackendParameters& backendParameters) override;
+    bool compile(const BuildParameters& backendParameters) override;
 
     void emitSeparator(Concat& buffer, const char* title);
     bool emitHeader();

@@ -1,6 +1,6 @@
 #pragma once
 #include "Job.h"
-#include "BackendParameters.h"
+#include "BuildParameters.h"
 struct Module;
 
 struct ModuleCompileJob : public Job
@@ -14,8 +14,8 @@ struct ModuleCompileJob : public Job
 
     JobResult execute() override;
 
-    Module*           module = nullptr;
-    BackendParameters backendParameters;
+    Module*         module = nullptr;
+    BuildParameters buildParameters;
 
     condition_variable* condVar   = nullptr;
     mutex*              mutexDone = nullptr;

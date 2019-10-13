@@ -473,9 +473,6 @@
     <ClInclude Include="Attribute.h">
       <Filter>Semantic</Filter>
     </ClInclude>
-    <ClInclude Include="BackendParameters.h">
-      <Filter>Backend</Filter>
-    </ClInclude>
     <ClInclude Include="ByteCodeModuleManager.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
@@ -526,6 +523,9 @@
     </ClInclude>
     <ClInclude Include="Target.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildParameters.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

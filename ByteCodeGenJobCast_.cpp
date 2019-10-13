@@ -4,6 +4,8 @@
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
+#include "SourceFile.h"
+#include "Module.h"
 
 bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
@@ -592,7 +594,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (fromTypeInfo->isNative(NativeTypeKind::Any))
     {
         auto r0 = reserveRegisterRC(context);
-        if (g_CommandLine.bytecodeAnyCastCheck)
+        if (context->sourceFile->module->buildParameters.target.bytecodeAnyCastCheck)
         {
             auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0);
             SWAG_ASSERT(exprNode->concreteTypeInfoStorage != UINT32_MAX);

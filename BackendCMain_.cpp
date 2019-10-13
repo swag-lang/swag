@@ -12,8 +12,8 @@ void BackendC::emitArgcArgv()
     bufferC.addString("static void convertArgcArgv(int argc, char *argv[])\n");
     bufferC.addString("{\n");
 
-    bufferC.addString(format("static swag_uint64_t argumentsStr[%d];\n", module->backendParameters.target->cBackend.maxApplicationArguments));
-    bufferC.addString(format("__assert(argc <= %d, __FILE__, __LINE__, \"too many application arguments\");\n", module->backendParameters.target->cBackend.maxApplicationArguments));
+    bufferC.addString(format("static swag_uint64_t argumentsStr[%d];\n", module->buildParameters.target.cBackend.maxApplicationArguments));
+    bufferC.addString(format("__assert(argc <= %d, __FILE__, __LINE__, \"too many application arguments\");\n", module->buildParameters.target.cBackend.maxApplicationArguments));
     bufferC.addString("for(int i = 0; i < argc; i++) {\n");
     bufferC.addString("argumentsStr[i * 2] = (swag_int64_t) argv[i];\n");
     bufferC.addString("argumentsStr[(i * 2) + 1] = (swag_int64_t) strlen(argv[i]);\n");

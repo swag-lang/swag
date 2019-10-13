@@ -20,9 +20,9 @@ void Module::setup(const string& moduleName)
     scopeRoot = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     scopeRoot->allocateSymTable();
 
-    astRoot                  = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
-    buildPass                = g_CommandLine.buildPass;
-    backendParameters.target = g_Workspace.currentTarget;
+    astRoot                = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
+    buildPass              = g_CommandLine.buildPass;
+    buildParameters.target = *g_Workspace.currentTarget;
 }
 
 void Module::addFile(SourceFile* file)
@@ -77,7 +77,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     // Global setup
     {
         scoped_lock lkRR(mutexRegisterRR);
-        runContext->setup(sourceFile, node, maxReservedRegisterRR, g_CommandLine.byteCodeStackSize);
+        runContext->setup(sourceFile, node, maxReservedRegisterRR, buildParameters.target.byteCodeStackSize);
         node->bc->enterByteCode(runContext);
     }
 
