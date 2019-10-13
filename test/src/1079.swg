@@ -2,5 +2,4 @@
 
 #test
 {
-	@print(@args()[0])
 }

@@ -7,16 +7,17 @@ struct Scope;
 
 struct Workspace
 {
-    bool    build();
+    bool    build(const fs::path& path);
     Module* createOrUseModule(const fs::path& path);
 
     void    enumerateFilesInModule(const fs::path& path);
     void    addRuntime();
-    void    enumerateModules();
+    void    setup(const fs::path& path);
     bool    buildModules(const vector<Module*>& list);
     Module* getModuleByName(const string& name);
     void    removeCache();
 
+    fs::path               workspacePath;
     fs::path               cachePath;
     SpinLock               mutexModules;
     atomic<int>            numErrors = 0;

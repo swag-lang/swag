@@ -85,7 +85,9 @@ int main(int argc, const char* argv[])
 
     // Setup
     g_Global.setup();
-    g_Workspace.build();
+
+	// Let's go...
+	g_Workspace.build("f:/swag/test");
 
     // Prints stats, then exit
     auto timeAfter    = chrono::high_resolution_clock::now();

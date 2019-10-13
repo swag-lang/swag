@@ -149,34 +149,10 @@ void Workspace::removeCache()
     }
 }
 
-void Workspace::enumerateModules()
-{
-    cachePath = "f:/temp/";
-
-    // Clean cache
-    if (g_CommandLine.unittest || g_CommandLine.cleanCache)
-    {
-        if (fs::exists(cachePath))
-            removeCache();
-    }
-
-    // Be sure the cache folder exists
-    if (!fs::exists(cachePath))
-    {
-        if (!fs::create_directory(cachePath))
-        {
-            g_Log.error(format("fatal error: can't create cache directory '%s'", cachePath.c_str()));
-            exit(-1);
-        }
-    }
-
-    enumerateFilesInModule("f:/swag/unittest/single");
-}
-
 bool Workspace::buildModules(const vector<Module*>& list)
 {
     if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose("starting dependency pass...");
+        g_Log.verbose("starting dependency pass");
 
     auto timeBefore = chrono::high_resolution_clock::now();
 
@@ -215,7 +191,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose("starting semantic pass...");
+        g_Log.verbose("starting semantic pass");
 
     // Semantic pass on runtime module first
     ModuleSemanticJob* job = nullptr;
@@ -272,7 +248,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose("running bytecode test functions...");
+            g_Log.verbose("running bytecode test functions");
 
         for (auto module : list)
         {
@@ -362,22 +338,56 @@ bool Workspace::buildModules(const vector<Module*>& list)
     return true;
 }
 
-bool Workspace::build()
+void Workspace::setup(const fs::path& path)
 {
+    workspacePath = path;
+    cachePath     = path;
+    cachePath.append("bin/");
+
+    if (g_CommandLine.verboseBuildPass)
+    {
+        g_Log.verbose(format("building workspace '%s'", path.string().c_str()));
+		g_Log.verbose(format("output cache folder is '%s'", cachePath.string().c_str()));
+    }
+
+    // Clean cache
+    if (g_CommandLine.unittest || g_CommandLine.cleanCache)
+    {
+        if (fs::exists(cachePath))
+            removeCache();
+    }
+
+    // Be sure the cache folder exists
+    if (!fs::exists(cachePath))
+    {
+        if (!fs::create_directory(cachePath))
+        {
+            g_Log.error(format("fatal error: can't create cache directory '%s'", cachePath.c_str()));
+            exit(-1);
+        }
+    }
+
     g_ThreadMgr.init();
+    addRuntime();
+}
+
+bool Workspace::build(const fs::path& path)
+{
+    // Setup
+    setup(path);
 
     // Ask for a syntax pass on all files of all modules
+    if (g_CommandLine.verboseBuildPass)
+        g_Log.verbose("starting syntax pass");
+
     auto timeBefore = chrono::high_resolution_clock::now();
-
-    addRuntime();
-    enumerateModules();
+    enumerateFilesInModule("f:/swag/test/src");
     g_ThreadMgr.waitEndJobs();
-
     auto timeAfter = chrono::high_resolution_clock::now();
     g_Stats.frontendTime += timeAfter - timeBefore;
 
     if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose(format("## syntax pass done on %d module(s)", modules.size()));
+        g_Log.verbose(format("syntax pass done on %d file(s) in %d module(s)", g_Stats.numFiles.load(), modules.size()));
 
     // Build modules in dependency order
     vector<Module*> order;
@@ -426,7 +436,7 @@ bool Workspace::build()
         }
 
         if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("## starting build pass %d on %d module(s)", pass, (int) order.size()));
+            g_Log.verbose(format("starting build pass on %d module(s)", (int) order.size()));
 
         buildModules(order);
 
