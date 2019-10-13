@@ -7,5 +7,8 @@ func toto() -> [..] string
 
 #test
 {
-	@print(toto()[0])
+	x := toto()[0]
+	@assert(x == "str0")
+	y := toto()[1]
+	@assert(y == "str1")
 }

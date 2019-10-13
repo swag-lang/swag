@@ -17,12 +17,6 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     SWAG_CHECK(tokenizer.getToken(token));
 
-    // Array index
-    AstNode* expr = identifier;
-    if (token.id == TokenId::SymLeftSquare)
-        SWAG_CHECK(doArrayPointerIndex(&expr));
-    Ast::addChildBack(parent, expr);
-
     // Template arguments
     if (acceptParameters)
     {
@@ -39,6 +33,12 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters));
         }
     }
+
+	// Array index
+    AstNode* expr = identifier;
+    if (token.id == TokenId::SymLeftSquare)
+        SWAG_CHECK(doArrayPointerIndex(&expr));
+    Ast::addChildBack(parent, expr);
 
     return true;
 }

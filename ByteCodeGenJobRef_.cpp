@@ -138,10 +138,11 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
 
 bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto node      = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto typeArray = TypeManager::concreteType(node->array->typeInfo);
 
     // Dereference of a string constant
-    if (node->array->typeInfo->isNative(NativeTypeKind::String))
+    if (typeArray->isNative(NativeTypeKind::String))
     {
         if (g_CommandLine.bytecodeBoundCheck)
             emitInstruction(context, ByteCodeOp::BoundCheckString, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
@@ -152,9 +153,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference of a slice
-    else if (node->array->typeInfo->kind == TypeInfoKind::Slice)
+    else if (typeArray->kind == TypeInfoKind::Slice)
     {
-        auto typeInfo = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Slice);
+        auto typeInfo = CastTypeInfo<TypeInfoSlice>(typeArray, TypeInfoKind::Slice);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
         if (g_CommandLine.bytecodeBoundCheck)
@@ -178,9 +179,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference of a pointer
-    else if (node->array->typeInfo->kind == TypeInfoKind::Pointer)
+    else if (typeArray->kind == TypeInfoKind::Pointer)
     {
-        auto typeInfo = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Pointer);
+        auto typeInfo = CastTypeInfo<TypeInfoPointer>(typeArray, TypeInfoKind::Pointer);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
         // Increment pointer (if increment is not 0)
@@ -201,9 +202,9 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference of an array
-    else if (node->array->typeInfo->kind == TypeInfoKind::Array)
+    else if (typeArray->kind == TypeInfoKind::Array)
     {
-        auto typeInfo = CastTypeInfo<TypeInfoArray>(TypeManager::concreteType(node->array->typeInfo), TypeInfoKind::Array);
+        auto typeInfo = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
         int  sizeOf   = typeInfo->pointedType->sizeOf;
 
         if (g_CommandLine.bytecodeBoundCheck)
@@ -232,7 +233,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference a variadic parameter
-    else if (node->array->typeInfo->kind == TypeInfoKind::Variadic)
+    else if (typeArray->kind == TypeInfoKind::Variadic)
     {
         RegisterList r0;
         reserveRegisterRC(context, r0, 2);
@@ -267,7 +268,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference a typed variadic parameter
-    else if (node->array->typeInfo->kind == TypeInfoKind::TypedVariadic)
+    else if (typeArray->kind == TypeInfoKind::TypedVariadic)
     {
         auto r0 = reserveRegisterRC(context);
 
@@ -279,7 +280,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
         }
 
-        auto rawType = ((TypeInfoVariadic*) node->array->typeInfo)->rawType;
+        auto rawType = ((TypeInfoVariadic*)typeArray)->rawType;
 
         // Offset from variadic named parameter to the first parameter on the stack
         emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
@@ -299,7 +300,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     }
 
     // Dereference a struct
-    else if (node->array->typeInfo->kind == TypeInfoKind::Struct)
+    else if (typeArray->kind == TypeInfoKind::Struct)
     {
         if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
         {
