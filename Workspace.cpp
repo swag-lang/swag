@@ -532,10 +532,10 @@ bool Workspace::build()
 
     auto target                     = new Target;
     target->name                    = "debug";
-    target->debugInformations       = false;
-    target->optimizeLevel           = 0;
-    target->cBackend.outputCode     = true;
-    target->cBackend.outputByteCode = true;
+    target->backendDebugInformations       = false;
+    target->backendOptimizeLevel           = 0;
+    target->backendC.writeSourceCode     = true;
+    target->backendC.writeByteCodeInstruction = true;
 
 	bool ok = true;
 

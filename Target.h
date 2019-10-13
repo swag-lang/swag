@@ -1,11 +1,11 @@
 #pragma once
 #include "CommandLine.h"
 
-struct CommandLineBackendC
+struct ParametersBackendC
 {
-    bool     outputCode              = false;
-    bool     outputByteCode          = false;
-    uint32_t maxApplicationArguments = 64;
+    bool     writeSourceCode          = false;
+    bool     writeByteCodeInstruction = false;
+    uint32_t maxApplicationArguments  = 64;
 };
 
 struct Target
@@ -19,7 +19,7 @@ struct Target
     uint32_t byteCodeStackSize    = 16 * 1024;
 
     // Backend
-    bool                debugInformations = false;
-    int                 optimizeLevel     = 0;
-    CommandLineBackendC cBackend;
+    bool               backendDebugInformations = false;
+    int                backendOptimizeLevel     = 0;
+    ParametersBackendC backendC;
 };
