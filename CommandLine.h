@@ -35,8 +35,7 @@ struct CommandLine
     bool stats                 = true;
     bool verbose               = false;
     bool verboseUnittestErrors = false;
-    bool verboseBackendCommand = false;
-    bool verboseTest           = true;
+    bool verboseBackendCommand = true;
     bool verboseBuildPass      = true;
     bool errorSourceOut        = true;
     bool errorNoteOut          = true;

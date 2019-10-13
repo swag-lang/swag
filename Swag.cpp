@@ -12,23 +12,23 @@ void printStats()
         return;
 
     g_Log.setColor(LogColor::DarkCyan);
-    g_Log.messageHeaderDot("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    g_Log.messageHeaderDot("frontend time", format("%.3fs", g_Stats.frontendTime.count()));
+	g_Log.messageHeaderCentered("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM), LogColor::Cyan, LogColor::Cyan);
+    g_Log.messageHeaderCentered("frontend time", format("%.3fs", g_Stats.frontendTime.count()), LogColor::Cyan, LogColor::Cyan);
     if (g_CommandLine.backendOutput)
-        g_Log.messageHeaderDot("backend time", format("%.3fs", g_Stats.backendTime.count()));
-    g_Log.messageHeaderDot("total time", format("%.3fs", g_Stats.totalTime.count()));
-    g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
-    g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
-    g_Log.messageHeaderDot("files", format("%d", g_Stats.numFiles.load()));
-    g_Log.messageHeaderDot("lines", format("%d", g_Stats.numLines.load()));
-        g_Log.messageHeaderDot("lines/s", format("%d", (int)(g_Stats.numLines.load() / g_Stats.totalTime.count())));
-	g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));
+        g_Log.messageHeaderCentered("backend time", format("%.3fs", g_Stats.backendTime.count()), LogColor::Cyan, LogColor::Cyan);
+    g_Log.messageHeaderCentered("total time", format("%.3fs", g_Stats.totalTime.count()), LogColor::Cyan, LogColor::Cyan);
+    g_Log.messageHeaderCentered("workers", format("%d", g_Stats.numWorkers), LogColor::Cyan, LogColor::Cyan);
+    g_Log.messageHeaderCentered("modules", format("%d", g_Stats.numModules.load()), LogColor::Cyan, LogColor::Cyan);
+    g_Log.messageHeaderCentered("files", format("%d", g_Stats.numFiles.load()), LogColor::Cyan, LogColor::Cyan);
+    g_Log.messageHeaderCentered("lines", format("%d", g_Stats.numLines.load()), LogColor::Cyan, LogColor::Cyan);
+        g_Log.messageHeaderCentered("lines/s", format("%d", (int)(g_Stats.numLines.load() / g_Stats.totalTime.count())), LogColor::Cyan, LogColor::Cyan);
+	g_Log.messageHeaderCentered("instructions", format("%d", g_Stats.numInstructions.load()), LogColor::Cyan, LogColor::Cyan);
     if (g_CommandLine.backendOutput)
-		g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
+		g_Log.messageHeaderCentered("output modules", format("%d", g_Stats.numGenModules.load()), LogColor::Cyan, LogColor::Cyan);
     if (g_CommandLine.test)
-		g_Log.messageHeaderDot("test functions", format("%d", g_Stats.testFunctions.load()));
+		g_Log.messageHeaderCentered("test functions", format("%d", g_Stats.testFunctions.load()), LogColor::Cyan, LogColor::Cyan);
     if (g_Workspace.numErrors)
-		g_Log.messageHeaderDot("test functions", format("%d", g_Workspace.numErrors.load(), LogColor::Red, LogColor::Red));
+		g_Log.messageHeaderCentered("test functions", format("%d", g_Workspace.numErrors.load(), LogColor::Red, LogColor::Red));
     g_Log.setDefaultColor();
 }
 

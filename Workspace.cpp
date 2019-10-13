@@ -325,7 +325,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     if (g_CommandLine.backendOutput)
     {
         if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose("starting backend pass...");
+            g_Log.verbose("starting backend pass");
 
         timeBefore = chrono::high_resolution_clock::now();
 
