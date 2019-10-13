@@ -173,6 +173,7 @@
     <ClInclude Include="FileSemanticJob.h" />
     <ClInclude Include="Generic.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Target.h" />
     <ClInclude Include="ModuleCompileJob.h" />
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="OutputFile.h" />

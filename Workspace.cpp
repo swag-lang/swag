@@ -8,6 +8,7 @@
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "ByteCode.h"
+#include "Target.h"
 
 Workspace g_Workspace;
 
@@ -184,28 +185,6 @@ void Workspace::addRuntime()
     g_ThreadMgr.addJob(job);
 }
 
-void Workspace::removeCache()
-{
-    for (auto& p : fs::directory_iterator(cachePath))
-    {
-        bool ok = true;
-        try
-        {
-            ok = fs::remove_all(p.path());
-        }
-        catch (...)
-        {
-            ok = false;
-        }
-
-        if (!ok)
-        {
-            g_Log.error(format("fatal error: cannot delete cached file '%s'", p.path().string().c_str()));
-            exit(-1);
-        }
-    }
-}
-
 bool Workspace::buildModules(const vector<Module*>& list)
 {
     if (g_CommandLine.verboseBuildPass)
@@ -220,7 +199,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
         for (auto node : module->moduleDependencies)
         {
             // Now the .swg export file is in the cache
-            auto path = cachePath.string() + node->name + ".swg";
+            auto path = targetPath.string() + node->name + ".swg";
             if (!fs::exists(path))
             {
                 auto sourceFile = module->files[node->sourceFileIdx];
@@ -404,44 +383,82 @@ void Workspace::setup()
         exit(-1);
     }
 
-    cachePath = workspacePath;
-    cachePath.append("bin/");
     testsPath = workspacePath;
     testsPath.append("tests/");
     sourcePath = workspacePath;
     sourcePath.append("src/");
 
     if (g_CommandLine.verboseBuildPass)
-    {
         g_Log.verbose(format("building workspace '%s'", workspacePath.string().c_str()));
-        g_Log.verbose(format("output cache folder is '%s'", cachePath.string().c_str()));
-    }
-
-    // Clean cache
-    if (g_CommandLine.cleanCache)
-    {
-        if (fs::exists(cachePath))
-            removeCache();
-    }
-
-    // Be sure the cache folder exists
-    if (!fs::exists(cachePath))
-    {
-        if (!fs::create_directory(cachePath))
-        {
-            g_Log.error(format("fatal error: cannot create cache directory '%s'", cachePath.c_str()));
-            exit(-1);
-        }
-    }
 
     g_ThreadMgr.init();
     addRuntime();
 }
 
-bool Workspace::build()
+void Workspace::clearPath(const fs::path& path)
 {
-    // Setup
-    setup();
+    for (auto& p : fs::directory_iterator(path))
+    {
+        try
+        {
+            fs::remove_all(p.path());
+        }
+        catch (...)
+        {
+            g_Log.error(format("fatal error: cannot delete file '%s'", p.path().string().c_str()));
+            exit(-1);
+        }
+    }
+}
+
+void Workspace::setup(Target* target)
+{
+    auto outPath = workspacePath;
+    outPath.append("out/");
+
+    targetPath = outPath;
+    targetPath.append(target->name);
+    targetPath.append("/");
+
+    // Clean target
+    if (g_CommandLine.cleanTarget)
+    {
+        if (fs::exists(targetPath))
+            clearPath(targetPath);
+    }
+
+    // Be sure the output folder exists
+    if (!fs::exists(outPath))
+    {
+        try
+        {
+            fs::create_directory(outPath);
+        }
+        catch (...)
+        {
+            g_Log.error(format("fatal error: cannot create output directory '%s'", outPath.string().c_str()));
+            exit(-1);
+        }
+    }
+
+    // Be sure the output folder exists
+    if (!fs::exists(targetPath))
+    {
+        try
+        {
+            fs::create_directory(targetPath);
+        }
+        catch (...)
+        {
+            g_Log.error(format("fatal error: cannot create target directory '%s'", targetPath.string().c_str()));
+            exit(-1);
+        }
+    }
+}
+
+bool Workspace::buildTarget(Target* target)
+{
+    setup(target);
 
     // Ask for a syntax pass on all files of all modules
     if (g_CommandLine.verboseBuildPass)
@@ -514,4 +531,16 @@ bool Workspace::build()
     }
 
     return true;
+}
+
+bool Workspace::build()
+{
+    setup();
+
+    auto target           = new Target;
+    target->name          = "debug";
+    target->debugInfos    = true;
+    target->optimizeLevel = 0;
+
+    return buildTarget(target);
 }

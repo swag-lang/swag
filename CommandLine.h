@@ -15,7 +15,7 @@ struct CommandLine
     BuildPass buildPass = BuildPass::Full;
 
     // Input
-    bool        cleanCache       = true;
+    bool        cleanTarget       = true;
     bool        addRuntimeModule = true;
 	string		workspacePath;
     string      fileFilter;

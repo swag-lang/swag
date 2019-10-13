@@ -229,7 +229,7 @@ bool BackendCCompilerVS::compile()
     libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\um\x64)", winSdk.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\ucrt\x64)", winSdk.c_str()));
-    libPath.push_back(module->workspace->cachePath.string());
+    libPath.push_back(module->workspace->targetPath.string());
 
     // Include paths
     vector<string> includePaths;

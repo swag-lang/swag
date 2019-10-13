@@ -15,7 +15,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test);
     addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
-    addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanCache);
+    addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
     addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->backendDebugInformations);
 
@@ -29,7 +29,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
 
     cmdLine->test                    = true;
-    cmdLine->cleanCache              = true;
+    cmdLine->cleanTarget              = true;
     cmdLine->workspacePath           = "f:/swag/std";
     cmdLine->cBackend.outputCode     = true;
     cmdLine->cBackend.outputByteCode = true;

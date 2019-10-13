@@ -4,9 +4,11 @@
 #include "swagScope.h"
 struct Module;
 struct Scope;
+struct Target;
 
 struct Workspace
 {
+    bool    buildTarget(Target* target);
     bool    build();
     Module* createOrUseModule(const string& moduleName);
 
@@ -16,10 +18,11 @@ struct Workspace
     void    setup();
     bool    buildModules(const vector<Module*>& list);
     Module* getModuleByName(const string& moduleName);
-    void    removeCache();
+    void    clearPath(const fs::path& path);
+    void    setup(Target* target);
 
     fs::path             workspacePath;
-    fs::path             cachePath;
+    fs::path             targetPath;
     fs::path             testsPath;
     fs::path             sourcePath;
     SpinLock             mutexModules;
