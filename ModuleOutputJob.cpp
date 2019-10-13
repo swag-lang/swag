@@ -12,6 +12,12 @@ Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 JobResult ModuleOutputJob::execute()
 {
     SWAG_ASSERT(!module->backend);
+
+	// No need to generate something for a module from tests/ folder, if we do not want test backend
+	if (module->fromTests && !g_CommandLine.backendOutputTest)
+		return JobResult::ReleaseJob;
+
+	// Generate backend file
     module->backend = new BackendC(module);
     if (!module->backend->generate())
         return JobResult::ReleaseJob;

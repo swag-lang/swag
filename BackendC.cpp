@@ -69,7 +69,7 @@ bool BackendC::compile(const BuildParameters& backendParameters)
     SWAG_CHECK(compiler.compile());
 
     // Test
-    if (g_CommandLine.runBackendTests)
+    if (g_CommandLine.runBackendTests && g_CommandLine.backendOutputTest)
     {
         SWAG_CHECK(compiler.runTests());
     }

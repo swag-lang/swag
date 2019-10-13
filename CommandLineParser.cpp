@@ -6,16 +6,22 @@
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
     addArg("--help", "-?", CommandLineType::Bool, &cmdLine->help);
+    addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
     addArg("--silent", "-s", CommandLineType::Bool, &cmdLine->silent);
     addArg("--verbose", "-v", CommandLineType::Bool, &cmdLine->verbose);
-    addArg("--stats", nullptr, CommandLineType::Bool, &cmdLine->stats);
-    addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput);
     addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut);
+
+    addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput);
+    addArg("--output-legit", "-ol", CommandLineType::Bool, &cmdLine->backendOutputLegit);
+    addArg("--output-test", "-ot", CommandLineType::Bool, &cmdLine->backendOutputTest);
+
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test);
     addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
-    addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
+
+    addArg("--clean-target", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
+
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
@@ -29,7 +35,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
     cmdLine->backendOutput = true;
-    cmdLine->fileFilter = "1070";
+	cmdLine->backendOutputTest = false;
+    //cmdLine->fileFilter    = "1070";
 }
 
 void CommandLineParser::logArguments()
