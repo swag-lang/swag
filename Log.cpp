@@ -79,14 +79,14 @@ void Log::setColor(LogColor color)
 
 #endif // WIN32
 
-void Log::messageHeader(const Utf8& header, const Utf8& message)
+void Log::messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
 {
     if (g_CommandLine.silent)
         return;
     lock();
-    setColor(LogColor::Green);
+    setColor(headerColor);
     auto size = header.size();
-    while (size != 20)
+    while (size != CENTER_COLUMN)
     {
         print(" ");
         size++;
@@ -94,10 +94,36 @@ void Log::messageHeader(const Utf8& header, const Utf8& message)
 
     print(header);
     print(" ");
-    setDefaultColor();
+    setColor(msgColor);
     print(message);
     if (message.back() != '\n')
         eol();
+    setDefaultColor();
+    unlock();
+}
+
+void Log::messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor)
+{
+    if (g_CommandLine.silent)
+        return;
+    lock();
+
+    setColor(headerColor);
+    print(header);
+
+    auto size = header.size();
+    while (size != CENTER_COLUMN)
+    {
+        print(".");
+        size++;
+    }
+
+    print(" ");
+    print(message);
+    setColor(msgColor);
+    if (message.back() != '\n')
+        eol();
+    setDefaultColor();
     unlock();
 }
 

@@ -353,7 +353,7 @@ bool BackendCCompilerVS::runTests()
     fs::path path = backend->destFile + ".test.exe";
     if (fs::exists(path))
     {
-        g_Log.messageHeader("Testing backend", backend->module->name.c_str());
+        g_Log.messageHeaderCentered("Testing backend", backend->module->name.c_str());
         SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
     }
 

@@ -12,27 +12,23 @@ void printStats()
         return;
 
     g_Log.setColor(LogColor::DarkCyan);
-    wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM).c_str();
-    wcout << "frontend time ..... " << g_Stats.frontendTime.count() << "s\n";
+    g_Log.messageHeaderDot("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    g_Log.messageHeaderDot("frontend time", format("%.3fs", g_Stats.frontendTime.count()));
     if (g_CommandLine.backendOutput)
-        wcout << "backend time ...... " << g_Stats.backendTime.count() << "s\n";
-    wcout << "total time ........ " << g_Stats.totalTime.count() << "s\n";
-    wcout << "workers ........... " << g_Stats.numWorkers << "\n";
-    wcout << "modules ........... " << g_Stats.numModules << "\n";
-    wcout << "files ............. " << g_Stats.numFiles << "\n";
-    wcout << "lines ............. " << g_Stats.numLines << "\n";
-    wcout << "lines/s ........... " << (int) (g_Stats.numLines / g_Stats.totalTime.count()) << "\n";
-    wcout << "instructions ...... " << g_Stats.numInstructions << "\n";
+        g_Log.messageHeaderDot("backend time", format("%.3fs", g_Stats.backendTime.count()));
+    g_Log.messageHeaderDot("total time", format("%.3fs", g_Stats.totalTime.count()));
+    g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
+    g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
+    g_Log.messageHeaderDot("files", format("%d", g_Stats.numFiles.load()));
+    g_Log.messageHeaderDot("lines", format("%d", g_Stats.numLines.load()));
+        g_Log.messageHeaderDot("lines/s", format("%d", (int)(g_Stats.numLines.load() / g_Stats.totalTime.count())));
+	g_Log.messageHeaderDot("instructions", format("%d", g_Stats.numInstructions.load()));
     if (g_CommandLine.backendOutput)
-        wcout << "output modules .... " << g_Stats.numGenModules << "\n";
+		g_Log.messageHeaderDot("output modules", format("%d", g_Stats.numGenModules.load()));
     if (g_CommandLine.test)
-        wcout << "test functions .... " << g_Stats.testFunctions << "\n";
+		g_Log.messageHeaderDot("test functions", format("%d", g_Stats.testFunctions.load()));
     if (g_Workspace.numErrors)
-    {
-        g_Log.setColor(LogColor::Red);
-        wcout << "errors ............ " << g_Workspace.numErrors << "\n";
-    }
-
+		g_Log.messageHeaderDot("test functions", format("%d", g_Workspace.numErrors.load(), LogColor::Red, LogColor::Red));
     g_Log.setDefaultColor();
 }
 
@@ -86,8 +82,8 @@ int main(int argc, const char* argv[])
     // Setup
     g_Global.setup();
 
-	// Let's go...
-	g_Workspace.build();
+    // Let's go...
+    g_Workspace.build();
 
     // Prints stats, then exit
     auto timeAfter    = chrono::high_resolution_clock::now();
