@@ -132,6 +132,36 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module, boo
     }
 }
 
+void Workspace::enumerateModules()
+{
+    // Add ./tests folder
+    if (g_CommandLine.test)
+        enumerateFilesInModule(testsPath, nullptr, true);
+
+    // Scan source folder
+    WIN32_FIND_DATAA findfile;
+    string           searchPath = sourcePath.string() + "/*";
+    HANDLE           h          = ::FindFirstFileA(searchPath.c_str(), &findfile);
+    if (h != INVALID_HANDLE_VALUE)
+    {
+        do
+        {
+            if (!(findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+                continue;
+            if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
+                continue;
+
+            auto module            = createOrUseModule(findfile.cFileName);
+            module->compileVersion = g_CommandLine.compileVersion;
+            string tmp             = sourcePath.string() + findfile.cFileName;
+            enumerateFilesInModule(tmp, module, false);
+
+        } while (::FindNextFileA(h, &findfile));
+
+        ::FindClose(h);
+    }
+}
+
 void Workspace::addRuntime()
 {
     if (!g_CommandLine.addRuntimeModule)
@@ -365,23 +395,25 @@ bool Workspace::buildModules(const vector<Module*>& list)
     return true;
 }
 
-void Workspace::setup(const fs::path& path)
+void Workspace::setup()
 {
-    if (!fs::exists(path))
+    workspacePath = g_CommandLine.workspacePath;
+    if (!fs::exists(workspacePath))
     {
-        g_Log.error(format("fatal error: workspace folder '%s' does not exist", path.string().c_str()));
+        g_Log.error(format("fatal error: workspace folder '%s' does not exist", workspacePath.string().c_str()));
         exit(-1);
     }
 
-    workspacePath = path;
-    cachePath     = path;
+    cachePath = workspacePath;
     cachePath.append("bin/");
-    testsPath = path;
+    testsPath = workspacePath;
     testsPath.append("tests/");
+    sourcePath = workspacePath;
+    sourcePath.append("src/");
 
     if (g_CommandLine.verboseBuildPass)
     {
-        g_Log.verbose(format("building workspace '%s'", path.string().c_str()));
+        g_Log.verbose(format("building workspace '%s'", workspacePath.string().c_str()));
         g_Log.verbose(format("output cache folder is '%s'", cachePath.string().c_str()));
     }
 
@@ -406,18 +438,17 @@ void Workspace::setup(const fs::path& path)
     addRuntime();
 }
 
-bool Workspace::build(const fs::path& path)
+bool Workspace::build()
 {
     // Setup
-    setup(path);
+    setup();
 
     // Ask for a syntax pass on all files of all modules
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("starting syntax pass");
 
     auto timeBefore = chrono::high_resolution_clock::now();
-    if (g_CommandLine.test)
-        enumerateFilesInModule(testsPath, nullptr, true);
+    enumerateModules();
     g_ThreadMgr.waitEndJobs();
     auto timeAfter = chrono::high_resolution_clock::now();
     g_Stats.frontendTime += timeAfter - timeBefore;

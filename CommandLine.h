@@ -17,6 +17,7 @@ struct CommandLine
     // Input
     bool        cleanCache       = true;
     bool        addRuntimeModule = true;
+	string		workspacePath;
     string      fileFilter;
     set<string> compileVersion;
     int         tabSize = 4;

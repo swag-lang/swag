@@ -30,6 +30,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     cmdLine->test                    = true;
     cmdLine->cleanCache              = true;
+    cmdLine->workspacePath           = "f:/swag/std";
     cmdLine->cBackend.outputCode     = true;
     cmdLine->cBackend.outputByteCode = true;
     //cmdLine->runBackendTests = false;
