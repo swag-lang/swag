@@ -83,7 +83,7 @@ void Diagnostic::report(bool verboseMode) const
         }
 
         // Print all lines
-        g_Log.eol();
+        //g_Log.eol();
         for (auto& line : lines)
         {
             const char* pz = line.c_str() + minOffset;
@@ -109,8 +109,23 @@ void Diagnostic::report(bool verboseMode) const
             else
                 range = (int) lines.back().length() - startLocation.column - minOffset;
             range = max(1, range);
+
             if (!verboseMode)
-                g_Log.setColor(LogColor::Green);
+            {
+                switch (errorLevel)
+                {
+                case DiagnosticLevel::Error:
+                    g_Log.setColor(LogColor::Red);
+                    break;
+                case DiagnosticLevel::Warning:
+                    g_Log.setColor(LogColor::Magenta);
+                    break;
+                case DiagnosticLevel::Note:
+                    g_Log.setColor(LogColor::Blue);
+                    break;
+                }
+            }
+
             for (int i = 0; i < range; i++)
                 g_Log.print("^");
             g_Log.eol();

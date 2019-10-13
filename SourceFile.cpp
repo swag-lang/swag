@@ -2,14 +2,8 @@
 #include "SourceFile.h"
 #include "ThreadManager.h"
 #include "LoadingThread.h"
-#include "CommandLine.h"
-#include "Global.h"
-#include "Stats.h"
-#include "Log.h"
 #include "Diagnostic.h"
-#include "Module.h"
 #include "Workspace.h"
-#include "SymTable.h"
 
 Pool<SourceFile> g_Pool_sourceFile;
 const auto       BUF_SIZE = 512;
