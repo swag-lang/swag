@@ -60,7 +60,7 @@ struct CommandLine
     bool                backendOptimize          = false;
     CommandLineBackendC cBackend;
 
-    fs::path exePath;
+    string exePath;
 };
 
 extern CommandLine g_CommandLine;

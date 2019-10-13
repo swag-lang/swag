@@ -53,7 +53,7 @@ int main(int argc, const char* argv[])
 
     // Arguments
     CommandLineParser cmdParser;
-    g_CommandLine.exePath = fs::absolute(argv[0]);
+    g_CommandLine.exePath = fs::absolute(argv[0]).string();
     cmdParser.setup(&g_CommandLine);
     if (!cmdParser.process(argc, argv))
         return -2;
@@ -69,7 +69,7 @@ int main(int argc, const char* argv[])
     // User arguments
     pair<void*, void*> oneArg;
     oneArg.first  = (void*) g_CommandLine.exePath.c_str();
-    oneArg.second = (void*) g_CommandLine.exePath.string().size();
+    oneArg.second = (void*) g_CommandLine.exePath.size();
     g_CommandLine.userArgumentsStr.push_back(oneArg);
 
     tokenizeBlanks(g_CommandLine.userArguments.c_str(), g_CommandLine.userArgumentsVec);

@@ -116,9 +116,10 @@ void Workspace::addRuntime()
     runtimeModule->setup(this, "");
     modules.push_back(runtimeModule);
 
-    auto file      = g_Pool_sourceFile.alloc();
-    auto job       = g_Pool_syntaxJob.alloc();
-    file->path     = g_CommandLine.exePath.parent_path().string() + "/swag.swg";
+    auto     file  = g_Pool_sourceFile.alloc();
+    auto     job   = g_Pool_syntaxJob.alloc();
+    fs::path p     = g_CommandLine.exePath;
+    file->path     = p.parent_path().string() + "/swag.swg";
     file->module   = runtimeModule;
     file->swagFile = true;
     runtimeModule->addFile(file);
