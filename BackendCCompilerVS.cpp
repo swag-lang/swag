@@ -230,7 +230,7 @@ bool BackendCCompilerVS::compile()
     libPath.push_back(format(R"(%s\lib\x64)", vsTarget.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\um\x64)", winSdk.c_str()));
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\ucrt\x64)", winSdk.c_str()));
-    libPath.push_back(module->workspace->targetPath.string());
+    libPath.push_back(g_Workspace.targetPath.string());
 
     // Include paths
     vector<string> includePaths;
@@ -241,7 +241,7 @@ bool BackendCCompilerVS::compile()
 
     // CL arguments
     string clArguments = "";
-    if (backendParameters.target->backendDebugInformations)
+    if (backendParameters.target->debugInformations)
     {
         fs::path pdbPath = backend->destFile + backendParameters.postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
@@ -265,7 +265,7 @@ bool BackendCCompilerVS::compile()
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
     string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
-    switch (backendParameters.target->backendOptimizeLevel)
+    switch (backendParameters.target->optimizeLevel)
     {
     case 0:
         break;
@@ -318,7 +318,7 @@ bool BackendCCompilerVS::compile()
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 
         linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-        if (backendParameters.target->backendDebugInformations)
+        if (backendParameters.target->debugInformations)
             linkArguments += "/DEBUG ";
 
         if (backendParameters.type == BackendType::Dll)

@@ -11,18 +11,18 @@
 
 Pool<Module> g_Pool_module;
 
-void Module::setup(Workspace* wkp, const string& moduleName)
+void Module::setup(const string& moduleName)
 {
     name   = moduleName;
     nameUp = name;
     makeUpper(nameUp);
 
-    workspace = wkp;
     scopeRoot = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     scopeRoot->allocateSymTable();
 
-    astRoot   = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
-    buildPass = g_CommandLine.buildPass;
+    astRoot                  = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
+    buildPass                = g_CommandLine.buildPass;
+    backendParameters.target = g_Workspace.currentTarget;
 }
 
 void Module::addFile(SourceFile* file)
@@ -72,7 +72,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     static SpinLock mutexExecuteNode;
     scoped_lock     lk(mutexExecuteNode);
 
-    auto runContext = &workspace->runContext;
+    auto runContext = &g_Workspace.runContext;
 
     // Global setup
     {
@@ -107,7 +107,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exce
 {
     __try
     {
-        auto runContext = &workspace->runContext;
+        auto runContext = &g_Workspace.runContext;
         if (!g_Run.run(runContext))
             return false;
     }

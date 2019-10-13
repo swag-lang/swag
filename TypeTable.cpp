@@ -205,7 +205,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     auto            node       = context->node;
     auto            sourceFile = context->sourceFile;
     auto            module     = sourceFile->module;
-    auto&           swagScope  = module->workspace->swagScope;
+    auto&           swagScope  = g_Workspace.swagScope;
     TypeInfoStruct* typeStruct = nullptr;
     switch (typeInfo->kind)
     {

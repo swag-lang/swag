@@ -33,7 +33,7 @@ Module* Workspace::createOrUseModule(const string& moduleName)
             return it->second;
 
         module = g_Pool_module.alloc();
-        module->setup(this, moduleName);
+        module->setup(moduleName);
         modules.push_back(module);
         mapModulesNames[moduleName] = module;
     }
@@ -167,7 +167,7 @@ void Workspace::addRuntime()
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
     runtimeModule = g_Pool_module.alloc();
-    runtimeModule->setup(this, "");
+    runtimeModule->setup("");
     modules.push_back(runtimeModule);
 
     auto     file  = g_Pool_sourceFile.alloc();
@@ -388,7 +388,6 @@ void Workspace::setup()
         g_Log.verbose(format("building workspace '%s'", workspacePath.string().c_str()));
 
     g_ThreadMgr.init();
-    addRuntime();
 }
 
 void Workspace::clearPath(const fs::path& path)
@@ -407,13 +406,13 @@ void Workspace::clearPath(const fs::path& path)
     }
 }
 
-void Workspace::setup(Target* target)
+void Workspace::setupTarget()
 {
     auto outPath = workspacePath;
     outPath.append("out/");
 
     targetPath = outPath;
-    targetPath.append(target->name);
+    targetPath.append(currentTarget->name);
     targetPath.append("/");
 
     // Clean target
@@ -452,10 +451,8 @@ void Workspace::setup(Target* target)
     }
 }
 
-bool Workspace::buildTarget(Target* target)
+bool Workspace::buildTarget()
 {
-    setup(target);
-
     // Ask for a syntax pass on all files of all modules
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("starting syntax pass");
@@ -531,20 +528,21 @@ bool Workspace::buildTarget(Target* target)
 
 bool Workspace::build()
 {
-    g_CommandLine.test          = true;
-    g_CommandLine.cleanTarget   = true;
-    g_CommandLine.workspacePath = "f:/swag/std";
-    //g_CommandLine.addRuntimeModule = false;
-    g_CommandLine.backendOutput = false;
-    //cmdLine->fileFilter = "1079";
+    setup();
 
-    auto target                      = new Target;
-    target->name                     = "debug";
-    target->backendDebugInformations = true;
-    target->backendOptimizeLevel     = 0;
-    target->cBackend.outputCode      = true;
-    target->cBackend.outputByteCode  = true;
+    auto target                     = new Target;
+    target->name                    = "debug";
+    target->debugInformations       = false;
+    target->optimizeLevel           = 0;
+    target->cBackend.outputCode     = true;
+    target->cBackend.outputByteCode = true;
 
-	setup();
-    return buildTarget(target);
+	bool ok = true;
+
+	currentTarget = target;
+    addRuntime();
+    setupTarget();
+    ok &= buildTarget();
+
+	return ok;
 }

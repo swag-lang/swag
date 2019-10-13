@@ -8,7 +8,7 @@ struct Target;
 
 struct Workspace
 {
-    bool    buildTarget(Target* target);
+    bool    buildTarget();
     bool    build();
     Module* createOrUseModule(const string& moduleName);
 
@@ -19,8 +19,9 @@ struct Workspace
     bool    buildModules(const vector<Module*>& list);
     Module* getModuleByName(const string& moduleName);
     void    clearPath(const fs::path& path);
-    void    setup(Target* target);
+    void    setupTarget();
 
+    Target*              currentTarget = nullptr;
     fs::path             workspacePath;
     fs::path             targetPath;
     fs::path             testsPath;

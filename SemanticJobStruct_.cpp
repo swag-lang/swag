@@ -158,6 +158,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // We are parsing the swag module
     if (sourceFile->swagFile)
-        sourceFile->module->workspace->swagScope.registerType(node->typeInfo);
+		g_Workspace.swagScope.registerType(node->typeInfo);
     return true;
 }

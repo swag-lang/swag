@@ -79,11 +79,10 @@ bool BackendC::compile(const BackendParameters& backendParameters)
 
 bool BackendC::generate()
 {
-    auto workspace     = module->workspace;
-    bufferH.fileName   = workspace->targetPath.string() + module->name + ".h";
-    bufferC.fileName   = workspace->targetPath.string() + module->name + ".c";
-    bufferSwg.fileName = workspace->targetPath.string() + module->name + ".swg";
-    destFile           = workspace->targetPath.string() + module->name;
+    bufferH.fileName   = g_Workspace.targetPath.string() + module->name + ".h";
+    bufferC.fileName   = g_Workspace.targetPath.string() + module->name + ".c";
+    bufferSwg.fileName = g_Workspace.targetPath.string() + module->name + ".swg";
+    destFile           = g_Workspace.targetPath.string() + module->name;
 
     bool ok = true;
     ok &= emitHeader();

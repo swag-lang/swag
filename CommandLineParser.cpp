@@ -26,6 +26,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("--bc-stack-size", nullptr, CommandLineType::Int, &cmdLine->byteCodeStackSize);
     addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
+
+    cmdLine->test          = true;
+    cmdLine->cleanTarget   = true;
+    cmdLine->workspacePath = "f:/swag/std";
+    //cmdLine->addRuntimeModule = false;
+    cmdLine->backendOutput = true;
+    cmdLine->fileFilter = "1070";
 }
 
 void CommandLineParser::logArguments()

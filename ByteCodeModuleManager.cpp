@@ -22,7 +22,7 @@ void ByteCodeModuleManager::loadModule(ByteCodeRunContext* context, const string
     if (loadedModules.find(name) != loadedModules.end())
         return;
 
-    fs::path path = context->sourceFile->module->workspace->targetPath;
+    fs::path path = g_Workspace.targetPath;
     path += name;
     path += ".dll";
 

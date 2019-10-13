@@ -44,7 +44,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         }
 
         // Compile the generated files
-        auto externalModule = context->sourceFile->module->workspace->getModuleByName(moduleName.text);
+        auto externalModule = g_Workspace.getModuleByName(moduleName.text);
         if (!externalModule)
         {
             context->error(format("cannot resolve external function call to '%s'", funcName.c_str()));

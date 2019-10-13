@@ -243,7 +243,7 @@ bool BackendC::emitFuncSignatures()
     emitSeparator(bufferSwg, "PROTOTYPES");
     emitSeparator(bufferH, "PROTOTYPES");
     emitSeparator(bufferC, "PROTOTYPES");
-    if (!emitFuncSignatures(module->workspace->runtimeModule))
+    if (!emitFuncSignatures(g_Workspace.runtimeModule))
         return false;
     if (!emitFuncSignatures(module))
         return false;
@@ -1283,7 +1283,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
 bool BackendC::emitFunctions()
 {
     emitSeparator(bufferC, "SWAG FUNCTIONS");
-    if (!emitFunctions(module->workspace->runtimeModule))
+    if (!emitFunctions(g_Workspace.runtimeModule))
         return false;
     emitSeparator(bufferC, "INTERNAL FUNCTIONS");
     if (!emitFunctions(module))

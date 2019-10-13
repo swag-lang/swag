@@ -12,7 +12,7 @@ struct Target
 {
     string name;
 
-    bool                backendDebugInformations = false;
-    int                 backendOptimizeLevel     = 0;
+    bool                debugInformations = false;
+    int                 optimizeLevel     = 0;
     CommandLineBackendC cBackend;
 };

@@ -16,10 +16,11 @@ struct Scope;
 struct ByteCode;
 struct Job;
 struct Backend;
+struct Target;
 
 struct Module : public PoolElement
 {
-    void setup(Workspace* wkp, const string& moduleName);
+    void setup(const string& moduleName);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
@@ -33,7 +34,6 @@ struct Module : public PoolElement
     vector<SourceFile*> files;
     AstNode*            astRoot;
     Scope*              scopeRoot;
-    Workspace*          workspace;
     BackendParameters   backendParameters;
     Backend*            backend = nullptr;
     set<string>         compileVersion;
