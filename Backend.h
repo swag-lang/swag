@@ -8,7 +8,7 @@ struct Backend
     {
     }
 
-    virtual bool generate()                                          = 0;
+    virtual bool generate()                                        = 0;
     virtual bool compile(const BuildParameters& backendParameters) = 0;
 
     Module* module;

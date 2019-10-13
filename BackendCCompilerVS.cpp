@@ -243,7 +243,7 @@ bool BackendCCompilerVS::compile()
     string clArguments = "";
     if (backendParameters.target.backendDebugInformations)
     {
-        fs::path pdbPath = backend->destFile + backendParameters.postFix + ".pdb";
+        fs::path pdbPath = backendParameters.destFile + backendParameters.postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
         clArguments += "/Zi ";
     }
@@ -263,7 +263,7 @@ bool BackendCCompilerVS::compile()
     clArguments += "/nologo ";
     clArguments += "/EHsc ";
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
-    string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
+    string nameObj = backendParameters.destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
     switch (backendParameters.target.backendOptimizeLevel)
     {
@@ -296,7 +296,7 @@ bool BackendCCompilerVS::compile()
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
         if (g_CommandLine.verboseBackendCommand)
             libArguments += "/VERBOSE ";
-        resultFile = backend->destFile + backendParameters.postFix + ".lib";
+        resultFile = backendParameters.destFile + backendParameters.postFix + ".lib";
         libArguments += "/OUT:\"" + resultFile + "\" ";
         libArguments += "\"" + nameObj + "\" ";
 
@@ -325,13 +325,13 @@ bool BackendCCompilerVS::compile()
         if (backendParameters.type == BackendType::Dll)
         {
             linkArguments += "/DLL ";
-            resultFile = backend->destFile + backendParameters.postFix + ".dll";
+            resultFile = backendParameters.destFile + backendParameters.postFix + ".dll";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_DLL ";
         }
         else
         {
-            resultFile = backend->destFile + backendParameters.postFix + ".exe";
+            resultFile = backendParameters.destFile + backendParameters.postFix + ".exe";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_EXE ";
         }
@@ -350,7 +350,7 @@ bool BackendCCompilerVS::compile()
 
 bool BackendCCompilerVS::runTests()
 {
-    fs::path path = backend->destFile + ".test.exe";
+    fs::path path = backendParameters.destFile + ".test.exe";
     if (fs::exists(path))
     {
         g_Log.messageHeaderCentered("Testing backend", backend->module->name.c_str());

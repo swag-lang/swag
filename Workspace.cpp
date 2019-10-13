@@ -409,10 +409,8 @@ void Workspace::clearPath(const fs::path& path)
 
 void Workspace::setupTarget()
 {
-    auto outPath = workspacePath;
-    outPath.append("out/");
-
-    targetPath = outPath;
+    targetPath = workspacePath;
+    targetPath.append("out/");
     targetPath.append(currentTarget->name);
     targetPath.append("/");
 
@@ -423,32 +421,20 @@ void Workspace::setupTarget()
             clearPath(targetPath);
     }
 
-    // Be sure the output folder exists
-    if (!fs::exists(outPath))
+    // Be sure folders exists
+    error_code errorCode;
+    if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
-        try
-        {
-            fs::create_directory(outPath);
-        }
-        catch (...)
-        {
-            g_Log.error(format("fatal error: cannot create output directory '%s'", outPath.string().c_str()));
-            exit(-1);
-        }
+        g_Log.error(format("fatal error: cannot create target directory '%s'", targetPath.string().c_str()));
+        exit(-1);
     }
 
-    // Be sure the output folder exists
-    if (!fs::exists(targetPath))
+    targetTestPath = targetPath;
+    targetTestPath.append("tests/");
+    if (!fs::exists(targetTestPath) && !fs::create_directories(targetTestPath, errorCode))
     {
-        try
-        {
-            fs::create_directory(targetPath);
-        }
-        catch (...)
-        {
-            g_Log.error(format("fatal error: cannot create target directory '%s'", targetPath.string().c_str()));
-            exit(-1);
-        }
+        g_Log.error(format("fatal error: cannot create target directory '%s'", targetTestPath.string().c_str()));
+        exit(-1);
     }
 }
 

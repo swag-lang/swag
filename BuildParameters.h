@@ -14,4 +14,5 @@ struct BuildParameters
     Target         target;
     string         postFix;
     vector<string> defines;
+    string         destFile;
 };

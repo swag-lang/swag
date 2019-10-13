@@ -16,13 +16,13 @@ bool BackendC::emitHeader()
     bufferC.addString("#ifdef SWAG_IS_DLL\n");
     bufferC.addString("#define SWAG_EXPORT\n");
     bufferC.addString("#endif\n");
-	bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+    bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
 
     // My dependencies. Need to import for dlls
     for (auto depName : module->moduleDependenciesNames)
     {
         bufferC.addString("#undef SWAG_EXPORT\n");
-		bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
+        bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
     }
 
     bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
@@ -79,10 +79,10 @@ bool BackendC::compile(const BuildParameters& backendParameters)
 
 bool BackendC::generate()
 {
-    bufferH.fileName   = g_Workspace.targetPath.string() + module->name + ".h";
-    bufferC.fileName   = g_Workspace.targetPath.string() + module->name + ".c";
-    bufferSwg.fileName = g_Workspace.targetPath.string() + module->name + ".swg";
-    destFile           = g_Workspace.targetPath.string() + module->name;
+    auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
+    bufferH.fileName   = targetPath + module->name + ".h";
+    bufferC.fileName   = targetPath + module->name + ".c";
+    bufferSwg.fileName = targetPath + module->name + ".swg";
 
     bool ok = true;
     ok &= emitHeader();
@@ -93,7 +93,7 @@ bool BackendC::generate()
     ok &= emitFuncSignatures();
     ok &= emitFunctions();
     ok &= emitGlobalInit();
-	ok &= emitGlobalDrop();
+    ok &= emitGlobalDrop();
     ok &= emitMain();
     ok &= emitFooter();
 

@@ -43,8 +43,6 @@ struct BackendC : public Backend
     void        emitFuncSignatureInternalC(ByteCode* bc);
     bool        emitInternalFunction(Module* moduleToGen, ByteCode* bc);
 
-    string destFile;
-
     OutputFile bufferH;
     OutputFile bufferC;
     OutputFile bufferSwg;

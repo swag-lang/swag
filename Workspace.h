@@ -24,6 +24,7 @@ struct Workspace
     Target*              currentTarget = nullptr;
     fs::path             workspacePath;
     fs::path             targetPath;
+    fs::path             targetTestPath;
     fs::path             testsPath;
     fs::path             sourcePath;
     SpinLock             mutexModules;

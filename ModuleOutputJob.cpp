@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "CommandLine.h"
+#include "Workspace.h"
 #include "Diagnostic.h"
 
 Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
@@ -13,11 +14,11 @@ JobResult ModuleOutputJob::execute()
 {
     SWAG_ASSERT(!module->backend);
 
-	// No need to generate something for a module from tests/ folder, if we do not want test backend
-	if (module->fromTests && !g_CommandLine.backendOutputTest)
-		return JobResult::ReleaseJob;
+    // No need to generate something for a module from tests/ folder, if we do not want test backend
+    if (module->fromTests && !g_CommandLine.backendOutputTest)
+        return JobResult::ReleaseJob;
 
-	// Generate backend file
+    // Generate backend file
     module->backend = new BackendC(module);
     if (!module->backend->generate())
         return JobResult::ReleaseJob;
@@ -31,11 +32,12 @@ JobResult ModuleOutputJob::execute()
         {
             g_Log.messageHeaderCentered("Building test", module->name.c_str());
 
-            auto compileJob                     = g_Pool_moduleCompileJob.alloc();
-            compileJob->module                  = module;
-            compileJob->buildParameters         = module->buildParameters;
-            compileJob->buildParameters.type    = BackendType::Exe;
-            compileJob->buildParameters.postFix = ".test";
+            auto compileJob                      = g_Pool_moduleCompileJob.alloc();
+            compileJob->module                   = module;
+            compileJob->buildParameters          = module->buildParameters;
+            compileJob->buildParameters.destFile = g_Workspace.targetTestPath.string() + module->name;
+            compileJob->buildParameters.type     = BackendType::Exe;
+            compileJob->buildParameters.postFix  = ".test";
             compileJob->buildParameters.defines.clear();
             compileJob->buildParameters.defines.push_back("SWAG_IS_UNITTEST");
             g_ThreadMgr.addJob(compileJob);
@@ -47,9 +49,10 @@ JobResult ModuleOutputJob::execute()
     {
         g_Log.messageHeaderCentered("Building", module->name.c_str());
 
-        auto compileJob             = g_Pool_moduleCompileJob.alloc();
-        compileJob->module          = module;
-        compileJob->buildParameters = module->buildParameters;
+        auto compileJob                      = g_Pool_moduleCompileJob.alloc();
+        compileJob->module                   = module;
+        compileJob->buildParameters          = module->buildParameters;
+        compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + module->name;
         g_ThreadMgr.addJob(compileJob);
     }
 
