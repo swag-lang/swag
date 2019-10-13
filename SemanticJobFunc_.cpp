@@ -163,7 +163,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = true;
     if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && g_CommandLine.test && g_CommandLine.runByteCodeTests)
         genByteCode = true;
-    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test && !g_CommandLine.unittest)
+    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test && !g_CommandLine.test)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
         genByteCode = true;

@@ -12,7 +12,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--output", "-o", CommandLineType::Bool, &cmdLine->backendOutput);
     addArg("--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut);
     addArg("--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut);
-    addArg("--unittest", nullptr, CommandLineType::Bool, &cmdLine->unittest);
     addArg("--test", nullptr, CommandLineType::Bool, &cmdLine->test);
     addArg("--run-test-bytecode", nullptr, CommandLineType::Bool, &cmdLine->runByteCodeTests);
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
@@ -29,15 +28,17 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--bc-stack-size", nullptr, CommandLineType::Int, &cmdLine->byteCodeStackSize);
     addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
 
+    cmdLine->test                    = true;
+    cmdLine->cleanCache              = true;
     cmdLine->cBackend.outputCode     = true;
     cmdLine->cBackend.outputByteCode = true;
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
-    //cmdLine->backendOutput = false;
+    cmdLine->backendOutput = false;
     //cmdLine->verboseBackendCommand = true;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->debugBoundCheck = false;
-    cmdLine->fileFilter = "1079";
+    //cmdLine->fileFilter = "1079";
 }
 
 void CommandLineParser::logArguments()

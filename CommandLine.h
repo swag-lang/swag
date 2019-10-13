@@ -22,8 +22,7 @@ struct CommandLine
     int         tabSize = 4;
 
     // Test
-    bool unittest         = true;
-    bool test             = true;
+    bool test             = false;
     bool runByteCodeTests = true;
     bool runBackendTests  = true;
 

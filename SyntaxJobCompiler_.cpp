@@ -144,7 +144,7 @@ bool SyntaxJob::doCompilerUnitTest()
     // ERROR
     if (token.text == "error")
     {
-        if (g_CommandLine.unittest)
+        if (g_CommandLine.test)
             sourceFile->unittestError++;
     }
 
@@ -154,17 +154,17 @@ bool SyntaxJob::doCompilerUnitTest()
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lib")
         {
-            if (g_CommandLine.unittest)
+            if (g_CommandLine.test)
                 sourceFile->module->backendParameters.type = BackendType::Lib;
         }
         else if (token.text == "dll")
         {
-            if (g_CommandLine.unittest)
+            if (g_CommandLine.test)
                 sourceFile->module->backendParameters.type = BackendType::Dll;
         }
         else if (token.text == "exe")
         {
-            if (g_CommandLine.unittest)
+            if (g_CommandLine.test)
                 sourceFile->module->backendParameters.type = BackendType::Exe;
         }
         else
@@ -180,22 +180,22 @@ bool SyntaxJob::doCompilerUnitTest()
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lexer")
         {
-            if (g_CommandLine.unittest && !isContextDisabled())
+            if (g_CommandLine.test && !isContextDisabled())
                 sourceFile->buildPass = BuildPass::Lexer;
         }
         else if (token.text == "syntax")
         {
-            if (g_CommandLine.unittest && !isContextDisabled())
+            if (g_CommandLine.test && !isContextDisabled())
                 sourceFile->buildPass = BuildPass::Syntax;
         }
         else if (token.text == "semantic")
         {
-            if (g_CommandLine.unittest && !isContextDisabled())
+            if (g_CommandLine.test && !isContextDisabled())
                 sourceFile->buildPass = BuildPass::Semantic;
         }
         else if (token.text == "backend")
         {
-            if (g_CommandLine.unittest && !isContextDisabled())
+            if (g_CommandLine.test && !isContextDisabled())
                 sourceFile->buildPass = BuildPass::Backend;
         }
         else

@@ -25,7 +25,7 @@ void printStats()
     wcout << "instructions ...... " << g_Stats.numInstructions << "\n";
     if (g_CommandLine.backendOutput)
         wcout << "output modules .... " << g_Stats.numGenModules << "\n";
-    if (g_CommandLine.unittest)
+    if (g_CommandLine.test)
         wcout << "test functions .... " << g_Stats.testFunctions << "\n";
     if (g_Workspace.numErrors)
     {
@@ -87,7 +87,7 @@ int main(int argc, const char* argv[])
     g_Global.setup();
 
 	// Let's go...
-	g_Workspace.build("f:/swag/test");
+	g_Workspace.build("f:/swag/std");
 
     // Prints stats, then exit
     auto timeAfter    = chrono::high_resolution_clock::now();

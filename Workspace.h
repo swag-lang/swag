@@ -19,6 +19,7 @@ struct Workspace
 
     fs::path               workspacePath;
     fs::path               cachePath;
+    fs::path               testsPath;
     SpinLock               mutexModules;
     atomic<int>            numErrors = 0;
     vector<Module*>        modules;

@@ -143,7 +143,7 @@ void Workspace::removeCache()
 
         if (!ok)
         {
-            g_Log.error(format("fatal error: can't delete cache content '%s'", p.path().string().c_str()));
+            g_Log.error(format("fatal error: cannot delete cached file '%s'", p.path().string().c_str()));
             exit(-1);
         }
     }
@@ -319,7 +319,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     // During unit testing, be sure we don't have remaining not raised errors
-    if (g_CommandLine.unittest && g_CommandLine.runByteCodeTests)
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         for (auto module : list)
         {
@@ -340,18 +340,26 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
 void Workspace::setup(const fs::path& path)
 {
+    if (!fs::exists(path))
+    {
+        g_Log.error(format("fatal error: workspace folder '%s' does not exist", path.string().c_str()));
+        exit(-1);
+    }
+
     workspacePath = path;
     cachePath     = path;
     cachePath.append("bin/");
+    testsPath = path;
+    testsPath.append("tests/");
 
     if (g_CommandLine.verboseBuildPass)
     {
         g_Log.verbose(format("building workspace '%s'", path.string().c_str()));
-		g_Log.verbose(format("output cache folder is '%s'", cachePath.string().c_str()));
+        g_Log.verbose(format("output cache folder is '%s'", cachePath.string().c_str()));
     }
 
     // Clean cache
-    if (g_CommandLine.unittest || g_CommandLine.cleanCache)
+    if (g_CommandLine.cleanCache)
     {
         if (fs::exists(cachePath))
             removeCache();
@@ -362,7 +370,7 @@ void Workspace::setup(const fs::path& path)
     {
         if (!fs::create_directory(cachePath))
         {
-            g_Log.error(format("fatal error: can't create cache directory '%s'", cachePath.c_str()));
+            g_Log.error(format("fatal error: cannot create cache directory '%s'", cachePath.c_str()));
             exit(-1);
         }
     }
@@ -381,7 +389,8 @@ bool Workspace::build(const fs::path& path)
         g_Log.verbose("starting syntax pass");
 
     auto timeBefore = chrono::high_resolution_clock::now();
-    enumerateFilesInModule("f:/swag/test/src");
+    if (g_CommandLine.test)
+        enumerateFilesInModule(testsPath);
     g_ThreadMgr.waitEndJobs();
     auto timeAfter = chrono::high_resolution_clock::now();
     g_Stats.frontendTime += timeAfter - timeBefore;

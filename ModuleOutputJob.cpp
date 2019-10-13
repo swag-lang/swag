@@ -19,7 +19,7 @@ JobResult ModuleOutputJob::execute()
         return JobResult::ReleaseJob;
 
     // Compile a specific version, to test it
-    if (g_CommandLine.unittest)
+    if (g_CommandLine.test)
     {
         auto compileJob                       = g_Pool_moduleCompileJob.alloc();
         compileJob->module                    = module;
