@@ -1,4 +1,3 @@
-#module module1001
 using swag
 
 struct Point

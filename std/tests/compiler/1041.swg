@@ -1,5 +1,3 @@
-#module module1041
-
 //#[swag.printbc]
 #test
 {
