@@ -40,10 +40,6 @@ Module* Workspace::createOrUseModule(const string& moduleName)
 
     if (g_CommandLine.stats)
         g_Stats.numModules++;
-    if (g_CommandLine.backendDebugInformations)
-        module->backendParameters.debugInformations = true;
-    if (g_CommandLine.backendOptimize)
-        module->backendParameters.optimize = true;
 
     return module;
 }
@@ -535,12 +531,20 @@ bool Workspace::buildTarget(Target* target)
 
 bool Workspace::build()
 {
-    setup();
+    g_CommandLine.test          = true;
+    g_CommandLine.cleanTarget   = true;
+    g_CommandLine.workspacePath = "f:/swag/std";
+    //g_CommandLine.addRuntimeModule = false;
+    g_CommandLine.backendOutput = false;
+    //cmdLine->fileFilter = "1079";
 
-    auto target           = new Target;
-    target->name          = "debug";
-    target->debugInfos    = true;
-    target->optimizeLevel = 0;
+    auto target                      = new Target;
+    target->name                     = "debug";
+    target->backendDebugInformations = true;
+    target->backendOptimizeLevel     = 0;
+    target->cBackend.outputCode      = true;
+    target->cBackend.outputByteCode  = true;
 
+	setup();
     return buildTarget(target);
 }

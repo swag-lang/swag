@@ -1,13 +1,6 @@
 #pragma once
 #include "BuildPass.h"
 
-struct CommandLineBackendC
-{
-    bool     outputCode              = false;
-    bool     outputByteCode          = false;
-    uint32_t maxApplicationArguments = 64;
-};
-
 struct CommandLine
 {
     // Compiler
@@ -15,9 +8,9 @@ struct CommandLine
     BuildPass buildPass = BuildPass::Full;
 
     // Input
-    bool        cleanTarget       = true;
+    bool        cleanTarget      = true;
     bool        addRuntimeModule = true;
-	string		workspacePath;
+    string      workspacePath;
     string      fileFilter;
     set<string> compileVersion;
     int         tabSize = 4;
@@ -55,10 +48,7 @@ struct CommandLine
     bool errorNoteOut          = true;
 
     // Backend
-    bool                backendOutput            = true;
-    bool                backendDebugInformations = false;
-    bool                backendOptimize          = false;
-    CommandLineBackendC cBackend;
+    bool backendOutput = true;
 
     string exePath;
 };

@@ -1,17 +1,13 @@
 #include "pch.h"
-#include "Attribute.h"
 #include "SourceFile.h"
 #include "BackendC.h"
-#include "Global.h"
 #include "Module.h"
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
-#include "CommandLine.h"
 #include "Ast.h"
 #include "TypeManager.h"
-#include "Scope.h"
-#include "SymTable.h"
 #include "Workspace.h"
+#include "Target.h"
 
 const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
 {
@@ -338,7 +334,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         // Print source code
-        if (g_CommandLine.cBackend.outputCode && !bc->compilerGenerated)
+        if (module->backendParameters.target->cBackend.outputCode && !bc->compilerGenerated)
         {
             if (ip->startLocation.line != lastLine)
             {
@@ -358,7 +354,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
 
         bufferC.addString(format("lbl%08u:; ", i));
 
-        if (g_CommandLine.cBackend.outputByteCode)
+        if (module->backendParameters.target->cBackend.outputByteCode)
         {
             bufferC.addString("/* ");
             for (int dec = g_ByteCodeOpNamesLen[(int) ip->op]; dec < ByteCode::ALIGN_RIGHT_OPCODE; dec++)

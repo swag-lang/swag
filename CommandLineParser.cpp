@@ -17,7 +17,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
     addArg("--clean-cache", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
-    addArg("--debug", nullptr, CommandLineType::Bool, &cmdLine->backendDebugInformations);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
@@ -27,19 +26,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("--bc-stack-size", nullptr, CommandLineType::Int, &cmdLine->byteCodeStackSize);
     addArg("--bc-max-recurse", nullptr, CommandLineType::Int, &cmdLine->byteCodeMaxRecurse);
-
-    cmdLine->test                    = true;
-    cmdLine->cleanTarget              = true;
-    cmdLine->workspacePath           = "f:/swag/std";
-    cmdLine->cBackend.outputCode     = true;
-    cmdLine->cBackend.outputByteCode = true;
-    //cmdLine->runBackendTests = false;
-    //cmdLine->addRuntimeModule = false;
-    cmdLine->backendOutput = false;
-    //cmdLine->verboseBackendCommand = true;
-    //cmdLine->verboseUnittestErrors = true;
-    //cmdLine->debugBoundCheck = false;
-    //cmdLine->fileFilter = "1079";
 }
 
 void CommandLineParser::logArguments()

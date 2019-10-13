@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "Stats.h"
 #include "Workspace.h"
+#include "Target.h"
 
 bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compilerPath, bool logAll)
 {
@@ -240,7 +241,7 @@ bool BackendCCompilerVS::compile()
 
     // CL arguments
     string clArguments = "";
-    if (backendParameters.debugInformations)
+    if (backendParameters.target->backendDebugInformations)
     {
         fs::path pdbPath = backend->destFile + backendParameters.postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
@@ -264,8 +265,17 @@ bool BackendCCompilerVS::compile()
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
     string nameObj = backend->destFile + outputTypeName + backendParameters.postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
-    if (backendParameters.optimize)
+    switch (backendParameters.target->backendOptimizeLevel)
+    {
+    case 0:
+        break;
+    case 1:
+        clArguments += "/01 ";
+        break;
+    default:
         clArguments += "/O2 ";
+        break;
+    }
 
     for (const auto& oneIncludePath : includePaths)
         clArguments += "/I\"" + oneIncludePath + "\" ";
@@ -308,7 +318,7 @@ bool BackendCCompilerVS::compile()
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 
         linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-        if (backendParameters.debugInformations)
+        if (backendParameters.target->backendDebugInformations)
             linkArguments += "/DEBUG ";
 
         if (backendParameters.type == BackendType::Dll)

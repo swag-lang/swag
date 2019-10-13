@@ -1,4 +1,6 @@
 #pragma once
+struct Target;
+
 enum class BackendType
 {
     Exe,
@@ -8,9 +10,8 @@ enum class BackendType
 
 struct BackendParameters
 {
-    BackendType    type              = BackendType::Exe;
-    bool           debugInformations = false;
-    bool           optimize          = false;
+    BackendType    type   = BackendType::Exe;
+    Target*        target = nullptr;
     string         postFix;
     vector<string> defines;
 };
