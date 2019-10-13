@@ -19,21 +19,28 @@ JobResult ModuleOutputJob::execute()
         return JobResult::ReleaseJob;
 
     // Compile a specific version, to test it
-    if (g_CommandLine.test)
+    if (g_CommandLine.test && g_CommandLine.backendOutputTest)
     {
-        auto compileJob                     = g_Pool_moduleCompileJob.alloc();
-        compileJob->module                  = module;
-        compileJob->buildParameters         = module->buildParameters;
-        compileJob->buildParameters.type    = BackendType::Exe;
-        compileJob->buildParameters.postFix = ".test";
-        compileJob->buildParameters.defines.clear();
-        compileJob->buildParameters.defines.push_back("SWAG_IS_UNITTEST");
-        g_ThreadMgr.addJob(compileJob);
+        if (module->fromTests || module->byteCodeTestFunc.size() > 0)
+        {
+            g_Log.messageHeader("Building test", module->name.c_str());
+
+            auto compileJob                     = g_Pool_moduleCompileJob.alloc();
+            compileJob->module                  = module;
+            compileJob->buildParameters         = module->buildParameters;
+            compileJob->buildParameters.type    = BackendType::Exe;
+            compileJob->buildParameters.postFix = ".test";
+            compileJob->buildParameters.defines.clear();
+            compileJob->buildParameters.defines.push_back("SWAG_IS_UNITTEST");
+            g_ThreadMgr.addJob(compileJob);
+        }
     }
 
-    // Compile the official normal version
-    else
+    // Compile the official normal version, except if it comes from the test folder
+    if (!module->fromTests && g_CommandLine.backendOutputLegit)
     {
+        g_Log.messageHeader("Building", module->name.c_str());
+
         auto compileJob             = g_Pool_moduleCompileJob.alloc();
         compileJob->module          = module;
         compileJob->buildParameters = module->buildParameters;

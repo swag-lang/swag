@@ -34,10 +34,11 @@ struct Module : public PoolElement
     vector<SourceFile*> files;
     AstNode*            astRoot;
     Scope*              scopeRoot;
-    BuildParameters   buildParameters;
+    BuildParameters     buildParameters;
     Backend*            backend = nullptr;
     set<string>         compileVersion;
     int                 m_exceptionCode = 0;
+    bool                fromTests       = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);

@@ -112,6 +112,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module, boo
 
                             *pzn                   = 0;
                             module                 = createOrUseModule(moduleName);
+                            module->fromTests      = true;
                             module->compileVersion = g_CommandLine.compileVersion;
                         }
 
@@ -530,19 +531,19 @@ bool Workspace::build()
 {
     setup();
 
-    auto target                     = new Target;
-    target->name                    = "debug";
-    target->backendDebugInformations       = false;
-    target->backendOptimizeLevel           = 0;
-    target->backendC.writeSourceCode     = true;
+    auto target                               = new Target;
+    target->name                              = "debug";
+    target->backendDebugInformations          = false;
+    target->backendOptimizeLevel              = 0;
+    target->backendC.writeSourceCode          = true;
     target->backendC.writeByteCodeInstruction = true;
 
-	bool ok = true;
+    bool ok = true;
 
-	currentTarget = target;
+    currentTarget = target;
     addRuntime();
     setupTarget();
     ok &= buildTarget();
 
-	return ok;
+    return ok;
 }

@@ -300,7 +300,8 @@ bool BackendCCompilerVS::compile()
         libArguments += "/OUT:\"" + resultFile + "\" ";
         libArguments += "\"" + nameObj + "\" ";
 
-        g_Log.message(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
+        if (verbose)
+            g_Log.verbose(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
         SWAG_CHECK(doProcess(cmdLineLIB, clPath, verbose));
@@ -335,7 +336,8 @@ bool BackendCCompilerVS::compile()
             clArguments += "/DSWAG_IS_EXE ";
         }
 
-        g_Log.message(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
+        if (verbose)
+            g_Log.verbose(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
         SWAG_CHECK(doProcess(cmdLineCL, clPath, verbose));
@@ -349,9 +351,11 @@ bool BackendCCompilerVS::compile()
 bool BackendCCompilerVS::runTests()
 {
     fs::path path = backend->destFile + ".test.exe";
+    if (fs::exists(path))
+    {
+        g_Log.messageHeader("Testing backend", backend->module->name.c_str());
+        SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
+    }
 
-    if (g_CommandLine.verboseTest)
-        g_Log.verbose(format("running tests on '%s'\n", path.string().c_str()));
-    SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
     return true;
 }

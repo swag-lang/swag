@@ -126,6 +126,7 @@ bool SyntaxJob::doCompilerModule()
 
         auto newModule = g_Workspace.createOrUseModule(token.text);
         newModule->compileVersion.insert(sourceFile->module->compileVersion.begin(), sourceFile->module->compileVersion.end());
+        newModule->fromTests = sourceFile->module->fromTests;
         sourceFile->module->removeFile(sourceFile);
         newModule->addFile(sourceFile);
         currentScope = sourceFile->scopeRoot;

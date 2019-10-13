@@ -1,5 +1,5 @@
 //#[swag.printbc]
 #test
 {
-	@print("STD !")
+	//@print("STD !\n")
 }

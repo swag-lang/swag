@@ -11,7 +11,7 @@ void printStats()
     if (!g_CommandLine.stats || g_CommandLine.silent)
         return;
 
-    g_Log.setColor(LogColor::White);
+    g_Log.setColor(LogColor::DarkCyan);
     wcout << "swag version ...... " << format("%d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM).c_str();
     wcout << "frontend time ..... " << g_Stats.frontendTime.count() << "s\n";
     if (g_CommandLine.backendOutput)

@@ -78,3 +78,62 @@ void Log::setColor(LogColor color)
 }
 
 #endif // WIN32
+
+void Log::messageHeader(const Utf8& header, const Utf8& message)
+{
+    if (g_CommandLine.silent)
+        return;
+    lock();
+    setColor(LogColor::Green);
+    auto size = header.size();
+    while (size != 20)
+    {
+        print(" ");
+        size++;
+    }
+
+    print(header);
+    print(" ");
+    setDefaultColor();
+    print(message);
+    if (message.back() != '\n')
+        eol();
+    unlock();
+}
+
+void Log::error(const Utf8& message)
+{
+    lock();
+    setColor(LogColor::Red);
+    print(message);
+    if (message.back() != '\n')
+        eol();
+    setDefaultColor();
+    unlock();
+}
+
+void Log::message(const Utf8& message)
+{
+    if (g_CommandLine.silent)
+        return;
+    lock();
+    setColor(LogColor::Gray);
+    print(message);
+    if (message.back() != '\n')
+        eol();
+    setDefaultColor();
+    unlock();
+}
+
+void Log::verbose(const Utf8& message)
+{
+    if (g_CommandLine.silent || !g_CommandLine.verbose)
+        return;
+    lock();
+    setColor(LogColor::DarkCyan);
+    print(message);
+    if (message.back() != '\n')
+        eol();
+    setDefaultColor();
+    unlock();
+}

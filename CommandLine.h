@@ -23,7 +23,7 @@ struct CommandLine
     // Language options
     uint32_t staticArrayMaxSize = 32 * 1024 * 1024;
 
-	// User arguments
+    // User arguments
     string                     userArguments;
     vector<string>             userArgumentsVec;
     vector<pair<void*, void*>> userArgumentsStr;
@@ -42,7 +42,9 @@ struct CommandLine
     bool errorNoteOut          = true;
 
     // Backend
-    bool backendOutput = true;
+    bool backendOutput      = true;
+    bool backendOutputTest  = true;
+    bool backendOutputLegit = true;
 
     string exePath;
 };
