@@ -1,4 +1,4 @@
-#module module1051
+
 
 func(T, N: u32) new()->*T
 {

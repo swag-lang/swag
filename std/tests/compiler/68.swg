@@ -1,4 +1,4 @@
-﻿#module module68;
+﻿;
 #unittest pass semantic;
 
 #assert 1 < 2;

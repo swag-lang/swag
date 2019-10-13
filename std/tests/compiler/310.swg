@@ -1,4 +1,4 @@
-#module module310;
+;
 //#unittest pass semantic;
 
 var g = false;

@@ -1,4 +1,4 @@
-#module module372;
+;
 //#unittest pass semantic;
 
 var slice: const [..] s32;	

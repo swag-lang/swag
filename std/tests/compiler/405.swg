@@ -1,4 +1,4 @@
-#module module404;
+;
 
 //#[swag.printbc]
 //#assert true

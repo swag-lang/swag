@@ -1,4 +1,4 @@
-#module module308;
+;
 #unittest pass semantic;
 
 var g = "toto";

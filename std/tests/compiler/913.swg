@@ -1,4 +1,4 @@
-#module module913
+
 
 //#[swag.printbc]
 func(T) sum(x: T, y: u32) => x >> y

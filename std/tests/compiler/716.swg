@@ -1,4 +1,4 @@
-#module module716
+
 
 //#[swag.printbc]
 func(N: s32) toto()->s32

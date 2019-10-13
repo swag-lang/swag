@@ -1,4 +1,4 @@
-#module module357;
+;
 //#unittest pass semantic;
 
 var a = ["0", "1.0"];

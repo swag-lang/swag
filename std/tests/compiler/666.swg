@@ -1,4 +1,4 @@
-#module module666
+
 //#unittest pass syntax
 
 //#[swag.printbc]

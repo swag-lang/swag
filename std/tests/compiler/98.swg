@@ -1,4 +1,4 @@
-#module module98;
+;
 #unittest pass semantic;
 
 enum A

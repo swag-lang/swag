@@ -1,4 +1,4 @@
-#module module477
+
 #unittest pass semantic
 
 var g = 0

@@ -1,4 +1,4 @@
-#module module1067
+
 
 //#[swag.printbc]
 func toString() -> [..] u8

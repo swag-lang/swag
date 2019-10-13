@@ -1,4 +1,4 @@
-#module module1044
+
 
 func new() => {1, 2}
 

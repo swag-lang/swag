@@ -1,4 +1,4 @@
-#module module604
+
 //#unittest pass semantic
 
 struct Point

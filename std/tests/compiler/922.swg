@@ -1,4 +1,4 @@
-#module module922
+
 
 func average(x: any)
 {

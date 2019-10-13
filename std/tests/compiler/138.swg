@@ -1,4 +1,4 @@
-#module module138;
+;
 #unittest pass syntax;
 
 #[toto(true)]

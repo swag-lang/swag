@@ -1,4 +1,4 @@
-#module module316;
+;
 #unittest pass syntax;
 
 var a: [6] s32;

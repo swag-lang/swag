@@ -8,13 +8,13 @@ struct Scope;
 struct Workspace
 {
     bool    build(const fs::path& path);
-    Module* createOrUseModule(const fs::path& path);
+    Module* createOrUseModule(const string& moduleName);
 
-    void    enumerateFilesInModule(const fs::path& path);
+    void    enumerateFilesInModule(const fs::path& path, Module* module, bool tests);
     void    addRuntime();
     void    setup(const fs::path& path);
     bool    buildModules(const vector<Module*>& list);
-    Module* getModuleByName(const string& name);
+    Module* getModuleByName(const string& moduleName);
     void    removeCache();
 
     fs::path               workspacePath;
@@ -23,7 +23,6 @@ struct Workspace
     SpinLock               mutexModules;
     atomic<int>            numErrors = 0;
     vector<Module*>        modules;
-    map<fs::path, Module*> mapModulesPaths;
     map<string, Module*>   mapModulesNames;
     ByteCodeRunContext     runContext;
     Module*                runtimeModule;

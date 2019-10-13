@@ -1,4 +1,4 @@
-#module module193;
+;
 #unittest pass semantic;
 
 #[swag.constexpr]

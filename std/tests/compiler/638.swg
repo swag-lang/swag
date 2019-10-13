@@ -1,4 +1,4 @@
-#module module638
+
 //#unittest pass semantic
 
 struct(T) Point

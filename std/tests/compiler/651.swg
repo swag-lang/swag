@@ -1,4 +1,4 @@
-#module module651
+
 //#unittest pass syntax
 
 func toto() -> {x: s32, y: s32}

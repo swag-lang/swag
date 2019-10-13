@@ -1,4 +1,4 @@
-#module module314;
+;
 
 func len (str: string)->u32
 {

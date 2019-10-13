@@ -1,4 +1,4 @@
-#module module714
+
 
 //#[swag.printbc]
 func(T) toto(x: T)->T

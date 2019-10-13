@@ -1,3 +1,3 @@
-﻿#module module32;
+﻿#module tests_compiler_33
 #unittest error;
-#module module32;
+#module tests_compiler_33

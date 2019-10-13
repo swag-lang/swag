@@ -1,4 +1,4 @@
-#module module956
+
 using swag
 
 func toto()->s32 => 666

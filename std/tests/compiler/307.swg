@@ -1,4 +1,4 @@
-#module module307;
+;
 #unittest pass semantic;
 
 func toto ()->bool { return true; }

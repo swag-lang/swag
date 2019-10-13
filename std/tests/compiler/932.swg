@@ -1,4 +1,4 @@
-#module module932
+
 
 /*func(T) valueof(x: any)->T
 {

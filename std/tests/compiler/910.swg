@@ -1,4 +1,4 @@
-#module module910
+
 
 //#[swag.printbc]
 func(T) sum(x, y: T) -> T => x + y

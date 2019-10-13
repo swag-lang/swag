@@ -1,4 +1,4 @@
-#module module958
+
 
 //#[swag.printbc]
 func toto(x: any)

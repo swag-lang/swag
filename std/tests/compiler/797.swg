@@ -1,4 +1,4 @@
-#module module797
+
 
 typealias alloc: (u32)->*void
 var cpt: u32 = 0

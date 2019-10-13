@@ -1,4 +1,4 @@
-#module module906
+
 
 func arithmeticMean(x: f64)
 {

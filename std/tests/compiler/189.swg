@@ -1,4 +1,4 @@
-#module module188;
+;
 #unittest pass semantic;
 
 #unittest error;

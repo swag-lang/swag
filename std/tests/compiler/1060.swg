@@ -1,4 +1,4 @@
-#module module1060
+
 
 func toto()->s32
 {

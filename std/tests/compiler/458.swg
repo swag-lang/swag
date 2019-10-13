@@ -1,4 +1,4 @@
-#module module458
+
 //#unittest pass syntax
 
 func F()->s32

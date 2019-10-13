@@ -1,4 +1,4 @@
-#module module741
+
 
 func(T) toto(x: [..] T)
 {

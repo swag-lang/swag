@@ -1,4 +1,4 @@
-#module module510
+
 //#unittest pass semantic
 
 func(T) valueof(x: any)->T

@@ -1,4 +1,4 @@
-#module module320;
+;
 #unittest pass semantic;
 
 var a: [6] s32;

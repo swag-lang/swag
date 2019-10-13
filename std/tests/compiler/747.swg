@@ -1,4 +1,4 @@
-#module module747
+
 
 func lambda(x: s32)
 {

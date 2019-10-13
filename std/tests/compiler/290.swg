@@ -1,4 +1,4 @@
-#module module290;
+;
 using swag;
 
 #version(FastTest)

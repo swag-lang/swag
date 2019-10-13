@@ -1,4 +1,4 @@
-#module module543
+
 #unittest pass semantic
 
 struct point

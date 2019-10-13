@@ -1,4 +1,4 @@
-#module module1053
+
 
 func(T) delete(addr: *T)
 {

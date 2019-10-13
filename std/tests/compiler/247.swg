@@ -1,4 +1,4 @@
-#module module247;
+;
 #unittest pass semantic;
 using swag;
 

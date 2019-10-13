@@ -1,4 +1,4 @@
-#module module975
+
 //#unittest pass semantic
 
 var pt = {1, 2}

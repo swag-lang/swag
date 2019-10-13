@@ -1,4 +1,4 @@
-#module module299;
+;
 
 //#[printbc]
 #test

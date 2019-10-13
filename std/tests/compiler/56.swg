@@ -1,4 +1,4 @@
-﻿#module module56;
+﻿;
 #unittest pass lexer;
 
 #unittest error;

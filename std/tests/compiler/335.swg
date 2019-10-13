@@ -1,4 +1,4 @@
-#module module335;
+;
 
 #test
 {

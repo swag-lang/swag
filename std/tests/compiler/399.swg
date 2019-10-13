@@ -1,4 +1,4 @@
-#module module399;
+;
 
 #unittest error;
 #test

@@ -1,4 +1,4 @@
-#module module85;
+;
 #unittest pass syntax;
 
 var a: A.myType;

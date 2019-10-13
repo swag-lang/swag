@@ -1,4 +1,4 @@
-﻿#module module63;
+﻿;
 #unittest pass semantic;
 
 #assert 1'u8 + 255'u32 == 256;

@@ -1,4 +1,4 @@
-#module module697
+
 //#unittest pass syntax
 
 func(op: s32) toto()

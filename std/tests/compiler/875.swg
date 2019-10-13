@@ -1,4 +1,4 @@
-#module module875
+
 
 func minMax(array: [..] s32) -> {min: s32, max: s32}
 {

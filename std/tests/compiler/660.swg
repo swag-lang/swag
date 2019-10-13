@@ -1,4 +1,4 @@
-#module module660
+
 //#unittest pass syntax
 
 enum OT

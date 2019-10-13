@@ -1,4 +1,4 @@
-#module module90;
+#module tests_module90
 #unittest pass semantic;
 
 namespace A

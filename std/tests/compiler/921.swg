@@ -1,4 +1,4 @@
-#module module921
+
 
 #unittest error
 func average(x: any)

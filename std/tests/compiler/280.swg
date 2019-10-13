@@ -1,4 +1,4 @@
-#module module280;
+;
 #unittest pass syntax;
 
 func main ()

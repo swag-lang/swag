@@ -1,4 +1,4 @@
-#module module276;
+;
 #unittest pass syntax;
 
 #version(toto)

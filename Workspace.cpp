@@ -11,31 +11,30 @@
 
 Workspace g_Workspace;
 
-Module* Workspace::getModuleByName(const string& name)
+Module* Workspace::getModuleByName(const string& moduleName)
 {
     scoped_lock lk(mutexModules);
-    auto        it = mapModulesNames.find(name);
+    auto        it = mapModulesNames.find(moduleName);
     if (it == mapModulesNames.end())
         return nullptr;
     return it->second;
 }
 
-Module* Workspace::createOrUseModule(const fs::path& path)
+Module* Workspace::createOrUseModule(const string& moduleName)
 {
     Module* module;
 
     {
         scoped_lock lk(mutexModules);
 
-        auto it = mapModulesPaths.find(path);
-        if (it != mapModulesPaths.end())
+        auto it = mapModulesNames.find(moduleName);
+        if (it != mapModulesNames.end())
             return it->second;
 
         module = g_Pool_module.alloc();
-        module->setup(this, path);
+        module->setup(this, moduleName);
         modules.push_back(module);
-        mapModulesPaths[path]         = module;
-        mapModulesNames[module->name] = module;
+        mapModulesNames[moduleName] = module;
     }
 
     if (g_CommandLine.stats)
@@ -48,18 +47,17 @@ Module* Workspace::createOrUseModule(const fs::path& path)
     return module;
 }
 
-void Workspace::enumerateFilesInModule(const fs::path& path)
+void Workspace::enumerateFilesInModule(const fs::path& path, Module* module, bool tests)
 {
-    // Create a default module
-    auto module            = createOrUseModule(path);
-    module->compileVersion = g_CommandLine.compileVersion;
-
     // Scan source folder
     WIN32_FIND_DATAA findfile;
     vector<string>   directories;
 
     directories.push_back(path.string());
     string     tmp, tmp1;
+    fs::path   modulePath;
+    auto       leftNameOffset = workspacePath.string().size() + 1;
+    char       moduleName[_MAX_PATH];
     const bool filterIsEmpty = g_CommandLine.fileFilter.empty();
     while (directories.size())
     {
@@ -73,11 +71,11 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
 
         do
         {
-            tmp1 = tmp + "\\" + findfile.cFileName;
             if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
             {
                 if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
                     continue;
+                tmp1 = tmp + findfile.cFileName;
                 directories.emplace_back(move(tmp1));
             }
             else
@@ -86,14 +84,43 @@ void Workspace::enumerateFilesInModule(const fs::path& path)
                 if (pz && !_strcmpi(pz, ".swg"))
                 {
                     // File filtering by name
-                    if (filterIsEmpty || strstr(tmp1.c_str(), g_CommandLine.fileFilter.c_str()))
+                    if (filterIsEmpty || strstr(findfile.cFileName, g_CommandLine.fileFilter.c_str()))
                     {
                         auto job  = g_Pool_syntaxJob.alloc();
                         auto file = g_Pool_sourceFile.alloc();
 
+                        // When gattering files from the test folder, each file is in its own module
+                        if (tests)
+                        {
+                            // Generate a module name, depending on the test file location, and its name
+                            auto pz1 = tmp.c_str() + leftNameOffset;
+                            auto pzn = moduleName;
+                            while (*pz1)
+                            {
+                                if (*pz1 == '/' || *pz1 == '\\')
+                                    *pzn++ = '_';
+                                else
+                                    *pzn++ = *pz1;
+                                pz1++;
+                            }
+
+                            *pzn++ = '_';
+                            pz1    = findfile.cFileName;
+                            while (true)
+                            {
+                                if (pz1[0] == '.' && pz1[4] == 0)
+                                    break;
+                                *pzn++ = *pz1++;
+                            }
+
+                            *pzn                   = 0;
+                            module                 = createOrUseModule(moduleName);
+                            module->compileVersion = g_CommandLine.compileVersion;
+                        }
+
                         job->sourceFile = file;
                         module->addFile(file);
-                        file->path = move(tmp1);
+                        file->path = tmp + "\\" + findfile.cFileName;
 
                         g_ThreadMgr.addJob(job);
                     }
@@ -390,7 +417,7 @@ bool Workspace::build(const fs::path& path)
 
     auto timeBefore = chrono::high_resolution_clock::now();
     if (g_CommandLine.test)
-        enumerateFilesInModule(testsPath);
+        enumerateFilesInModule(testsPath, nullptr, true);
     g_ThreadMgr.waitEndJobs();
     auto timeAfter = chrono::high_resolution_clock::now();
     g_Stats.frontendTime += timeAfter - timeBefore;

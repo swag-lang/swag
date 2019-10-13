@@ -1,4 +1,4 @@
-#module module732
+
 
 /*func(T) toto(x: T)
 {

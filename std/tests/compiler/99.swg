@@ -1,4 +1,4 @@
-#module module99;
+;
 #unittest pass semantic;
 
 #assert A.Red == 0;

@@ -19,14 +19,13 @@ struct Backend;
 
 struct Module : public PoolElement
 {
-    void setup(Workspace* wkp, const fs::path& pth);
+    void setup(Workspace* wkp, const string& moduleName);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
     void internalError(const Utf8& msg);
     void deferReleaseChilds(AstNode* node);
 
-    fs::path            path;
     string              name;
     string              nameUp;
     atomic<int>         numErrors = 0;

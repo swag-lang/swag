@@ -1,4 +1,4 @@
-#module module582
+
 #unittest pass syntax
 
 func(op: string) toto()

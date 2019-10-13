@@ -1,4 +1,4 @@
-﻿#module module46;
+﻿;
 #unittest pass semantic;
 var a: bool;
 var b: bool;

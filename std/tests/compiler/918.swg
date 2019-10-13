@@ -1,4 +1,4 @@
-#module module918
+
 
 func(T) valueof(x: any)->T
 {

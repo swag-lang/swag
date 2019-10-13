@@ -1,4 +1,4 @@
-#module module360;
+;
 //#unittest pass semantic;
 
 var a = [1, 2];

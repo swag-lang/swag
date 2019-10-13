@@ -1,4 +1,4 @@
-#module module401;
+;
 
 var Table: [256] u64 = 
 [

@@ -1,4 +1,4 @@
-#module module893
+
 
 func toto(x: [..] f32)
 {

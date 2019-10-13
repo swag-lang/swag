@@ -1,4 +1,4 @@
-#module module1078
+
 
 func toto() -> [..] string
 {

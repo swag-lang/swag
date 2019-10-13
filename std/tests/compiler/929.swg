@@ -1,4 +1,4 @@
-#module module929
+
 
 //#[swag.printbc]
 func average(x: any)

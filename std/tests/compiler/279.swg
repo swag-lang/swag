@@ -1,4 +1,4 @@
-#module module279;
+;
 #unittest pass semantic;
 
 #version(toto)

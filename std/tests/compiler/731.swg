@@ -1,4 +1,4 @@
-#module module731
+
 
 #unittest error
 func(T) toto(x: *T)

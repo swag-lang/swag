@@ -1,4 +1,4 @@
-#module module988
+
 //#unittest pass semantic
 
 typealias pair: {string, any}

@@ -1,4 +1,4 @@
-#module module534
+
 #unittest pass semantic
 
 func toto(x: s32)

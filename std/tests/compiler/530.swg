@@ -1,4 +1,4 @@
-#module module530
+
 //#unittest pass semantic
 
 struct toto

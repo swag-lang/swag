@@ -1,4 +1,4 @@
-#module module936
+
 
 var x: any = 666.0'f64
 

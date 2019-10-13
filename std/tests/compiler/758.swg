@@ -1,4 +1,4 @@
-#module module758
+
 
 #[swag.constexpr]
 func toto()->s32

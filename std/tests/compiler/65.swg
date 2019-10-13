@@ -1,4 +1,4 @@
-﻿#module module65;
+﻿;
 #unittest pass semantic;
 
 #assert 1.0 / 2.0 == 0.5;

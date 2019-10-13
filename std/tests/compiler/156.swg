@@ -1,4 +1,4 @@
-#module module156;
+;
 #unittest pass semantic;
 
 func main () -> bool

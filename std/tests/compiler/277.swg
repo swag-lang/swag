@@ -1,4 +1,4 @@
-#module module277;
+;
 #unittest pass semantic;
 
 #version(donotdefinethisorthistestwillfail)

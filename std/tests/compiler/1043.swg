@@ -1,4 +1,4 @@
-#module module1043
+
 
 func new()->Point => {1, 2}
 

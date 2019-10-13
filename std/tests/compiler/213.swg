@@ -1,4 +1,4 @@
-#module module212;
+;
 #unittest pass semantic;
 
 #run

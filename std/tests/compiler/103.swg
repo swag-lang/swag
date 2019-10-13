@@ -1,4 +1,4 @@
-#module module103;
+;
 #unittest pass semantic;
 
 enum A: bool

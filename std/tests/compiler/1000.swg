@@ -1,4 +1,4 @@
-#module module1000
+
 using swag
 
 struct Point

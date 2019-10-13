@@ -1,4 +1,4 @@
-#module module665
+
 //#unittest pass syntax
 
 typealias toto: s32

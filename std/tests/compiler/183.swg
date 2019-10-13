@@ -1,4 +1,4 @@
-#module module183;
+;
 #unittest pass syntax;
 
 #assert 1 << 1;

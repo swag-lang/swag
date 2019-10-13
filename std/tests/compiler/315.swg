@@ -1,4 +1,4 @@
-#module module315;
+;
 
 #unittest error;
 func len: (str: string)->bool

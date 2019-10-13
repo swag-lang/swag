@@ -1,4 +1,4 @@
-#module module348;
+;
 #unittest pass semantic;
 
 const TOTO = 666;

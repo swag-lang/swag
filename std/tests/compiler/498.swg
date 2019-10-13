@@ -1,4 +1,4 @@
-#module module498
+
 //#unittest pass semantic
 
 func T(a: const [..] s32)

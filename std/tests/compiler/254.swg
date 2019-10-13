@@ -1,4 +1,4 @@
-#module module254;
+;
 using swag;
 
 //#unittest error;

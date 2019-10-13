@@ -1,4 +1,4 @@
-#module module994
+
 using swag
 
 attr NC1(x: string) -> enum

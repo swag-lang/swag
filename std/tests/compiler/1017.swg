@@ -1,4 +1,4 @@
-#module module1017
+
 using swag
 
 func toto()

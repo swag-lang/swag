@@ -1,4 +1,4 @@
-#module module1050
+
 
 func(T) new()->*T
 {

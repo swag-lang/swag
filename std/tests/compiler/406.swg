@@ -1,4 +1,4 @@
-#module module406;
+;
 
 #test
 {

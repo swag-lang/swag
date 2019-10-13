@@ -1,4 +1,4 @@
-#module module648
+
 //#unittest pass semantic
 
 var gx: s32

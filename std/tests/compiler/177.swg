@@ -1,4 +1,4 @@
-#module module177;
+;
 #unittest pass semantic;
 
 namespace A{}

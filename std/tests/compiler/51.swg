@@ -1,4 +1,4 @@
-﻿#module module51;
+﻿;
 #unittest pass semantic;
 
 var e: f32 = 1'f32;

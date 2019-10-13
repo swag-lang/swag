@@ -1,4 +1,4 @@
-#module module398;
+;
 
 //#[swag.printbc]
 func test1(a: [3] s32)

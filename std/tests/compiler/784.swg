@@ -1,4 +1,4 @@
-#module module784
+
 
 struct Point
 {

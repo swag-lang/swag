@@ -1,4 +1,4 @@
-#module module876
+
 
 func toto(x: s32)->s32 => x * x
 

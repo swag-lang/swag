@@ -1,4 +1,4 @@
-#module module904
+
 
 //#[swag.printbc]
 func arithmeticMean(x: string, numbers: f32...)

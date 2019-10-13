@@ -1,4 +1,4 @@
-#module module298;
+;
 #version(FastTest)
 {
 	#unittest pass backend;

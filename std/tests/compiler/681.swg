@@ -1,4 +1,4 @@
-#module module681
+
 //#unittest pass syntax
 
 struct Point

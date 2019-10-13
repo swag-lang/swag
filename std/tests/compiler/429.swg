@@ -1,4 +1,4 @@
-#module module429
+
 //#unittest pass semantic
 
 func T(color: COLOR)->s32

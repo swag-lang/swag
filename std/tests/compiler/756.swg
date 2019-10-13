@@ -1,4 +1,4 @@
-#module module756
+
 
 //#[swag.printbc]
 func toto(x: const [..] s32)

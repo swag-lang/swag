@@ -1,4 +1,4 @@
-#module module188;
+;
 #unittest pass semantic;
 
 #assert 1 ^ 1 == 0;

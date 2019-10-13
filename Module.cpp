@@ -5,18 +5,15 @@
 #include "Workspace.h"
 #include "Scope.h"
 #include "Ast.h"
-#include "Log.h"
 #include "ByteCode.h"
-#include "Attribute.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
 
 Pool<Module> g_Pool_module;
 
-void Module::setup(Workspace* wkp, const fs::path& pth)
+void Module::setup(Workspace* wkp, const string& moduleName)
 {
-    path   = pth;
-    name   = path.filename().string();
+    name   = moduleName;
     nameUp = name;
     makeUpper(nameUp);
 
@@ -139,11 +136,11 @@ void Module::addByteCodeFunc(ByteCode* bc)
             byteCodeDropFunc.push_back(bc);
         else if (bc->node->attributeFlags & ATTRIBUTE_RUN_FUNC)
             byteCodeRunFunc.push_back(bc);
-		else if (bc->node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
-		{
-			SWAG_ASSERT(!byteCodeMainFunc);
-			byteCodeMainFunc = bc;
-		}
+        else if (bc->node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
+        {
+            SWAG_ASSERT(!byteCodeMainFunc);
+            byteCodeMainFunc = bc;
+        }
     }
 }
 

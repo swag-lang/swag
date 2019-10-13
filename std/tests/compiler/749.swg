@@ -1,4 +1,4 @@
-#module module749
+
 /*
 #[swag.printbc]
 func lambda(x: f32)

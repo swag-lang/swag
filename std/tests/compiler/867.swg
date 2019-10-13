@@ -1,4 +1,4 @@
-#module module867
+
 
 var G: s32 = 0
 

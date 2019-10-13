@@ -1,4 +1,4 @@
-#module module142;
+;
 #unittest pass semantic;
 
 attr toto(b: bool) -> var;

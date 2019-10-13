@@ -1,4 +1,4 @@
-#module module403;
+;
 
 //#[swag.printbc]
 #test

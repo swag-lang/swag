@@ -1,4 +1,4 @@
-#module module592
+
 //#unittest pass semantic
 
 var c: s32 = 0

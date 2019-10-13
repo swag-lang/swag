@@ -1,4 +1,4 @@
-#module module618
+
 //#unittest pass semantic
 
 //#[swag.printbc]
