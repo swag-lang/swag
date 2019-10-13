@@ -106,14 +106,14 @@ void LanguageSpec::setup()
     intrinsics["@typeof"]  = Intrinsic::IntrinsicProp;
     intrinsics["@kindof"]  = Intrinsic::IntrinsicProp;
 
-    intrinsics["@print"]      = Intrinsic::IntrinsicPrint;
-    intrinsics["@assert"]     = Intrinsic::IntrinsicAssert;
-    intrinsics["@alloc"]      = Intrinsic::IntrinsicAlloc;
-    intrinsics["@realloc"]    = Intrinsic::IntrinsicRealloc;
-    intrinsics["@free"]       = Intrinsic::IntrinsicFree;
-    intrinsics["@memcpy"]     = Intrinsic::IntrinsicMemCpy;
-    intrinsics["@getcontext"] = Intrinsic::IntrinsicGetContext;
-    intrinsics["@arguments"]  = Intrinsic::IntrinsicArguments;
+    intrinsics["@print"]   = Intrinsic::IntrinsicPrint;
+    intrinsics["@assert"]  = Intrinsic::IntrinsicAssert;
+    intrinsics["@alloc"]   = Intrinsic::IntrinsicAlloc;
+    intrinsics["@realloc"] = Intrinsic::IntrinsicRealloc;
+    intrinsics["@free"]    = Intrinsic::IntrinsicFree;
+    intrinsics["@memcpy"]  = Intrinsic::IntrinsicMemCpy;
+    intrinsics["@context"] = Intrinsic::IntrinsicGetContext;
+    intrinsics["@args"]    = Intrinsic::IntrinsicArguments;
 }
 
 string LanguageSpec::tokenToName(TokenId id)

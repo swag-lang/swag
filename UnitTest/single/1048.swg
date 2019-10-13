@@ -4,7 +4,7 @@ func(T) new()->*T
 {
 	var req : swag.AllocatorRequest
 	req.size = @sizeof(T)
-	@getcontext().allocator(req)
+	@context().allocator(req)
 	
 	init(cast(*T) req.address)
 	

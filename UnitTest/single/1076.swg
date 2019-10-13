@@ -1,9 +1,11 @@
 #module module1076
 
+func toto() -> [..] string
+{
+	return ["str0", "str1"]
+}
+
 #test
 {
-	@assert(@countof(@arguments()) == 2)
-	args := @arguments()
-	@print(args[0])
-	@print(args[1])
+	@print(toto()[0])
 }

@@ -11,8 +11,8 @@ func @alloc(size: u32)->*void;
 func @realloc(ptr: *void, size: u32)->*void;
 func @free(ptr: *void);
 func @memcpy(dst: *void, src: *void, size: u32);
-func @getcontext()->*swag.Context;
-func @arguments()->[..] string;
+func @context()->*swag.Context;
+func @args()->[..] string;
 
 namespace swag 
 {

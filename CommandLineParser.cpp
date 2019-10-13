@@ -31,7 +31,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     cmdLine->cBackend.outputCode     = true;
     cmdLine->cBackend.outputByteCode = true;
-	cmdLine->userArguments = "toto   titi";
     //cmdLine->runBackendTests = false;
     //cmdLine->addRuntimeModule = false;
     //cmdLine->backendOutput = false;

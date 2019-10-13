@@ -20,7 +20,7 @@ impl Array
 		if size < 8
 			size = 8
 			
-		context := @getcontext()
+		context := @context()
 		
 		var request: AllocatorRequest
 		request.size = size * @sizeof(T)

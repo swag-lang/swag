@@ -67,13 +67,17 @@ int main(int argc, const char* argv[])
     }
 
     // User arguments
+    pair<void*, void*> oneArg;
+    oneArg.first  = (void*) g_CommandLine.exePath.c_str();
+    oneArg.second = (void*) g_CommandLine.exePath.string().size();
+    g_CommandLine.userArgumentsStr.push_back(oneArg);
+
     tokenizeBlanks(g_CommandLine.userArguments.c_str(), g_CommandLine.userArgumentsVec);
     for (auto& arg : g_CommandLine.userArgumentsVec)
     {
-        pair<void*, void*> one;
-        one.first  = (void*) arg.c_str();
-        one.second = (void*) arg.size();
-        g_CommandLine.userArgumentsStr.push_back(one);
+        oneArg.first  = (void*) arg.c_str();
+        oneArg.second = (void*) arg.size();
+        g_CommandLine.userArgumentsStr.push_back(oneArg);
     }
 
     g_CommandLine.userArgumentsSlice.first  = &g_CommandLine.userArgumentsStr[0];
