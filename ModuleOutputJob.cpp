@@ -62,6 +62,7 @@ JobResult ModuleOutputJob::execute()
 			compileJob->buildParameters.type = BackendOutputType::Binary;
 		else
 			compileJob->buildParameters.type = BackendOutputType::DynamicLib;
+		module->buildParameters.type = compileJob->buildParameters.type;
 
         compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + "\\" + module->name;
         g_ThreadMgr.addJob(compileJob);

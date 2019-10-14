@@ -6,6 +6,7 @@
 #include "AstNode.h"
 #include "Context.h"
 #include "Target.h"
+#include "Workspace.h"
 
 void BackendC::emitArgcArgv()
 {
@@ -41,7 +42,7 @@ bool BackendC::emitMain()
     SWAG_ASSERT(g_defaultContext.allocator);
     bufferC.addString(format("\tmainContext.allocator = &%s;\n", g_defaultContext.allocator->callName().c_str()));
     bufferC.addString("\t__contextTlsId = __tlsAlloc();\n");
-	bufferC.addString("\t__defaultContext = &mainContext;\n");
+    bufferC.addString("\t__defaultContext = &mainContext;\n");
     bufferC.addString("\t__tlsSetValue(__contextTlsId, __defaultContext);\n");
 
     // Arguments
@@ -53,7 +54,9 @@ bool BackendC::emitMain()
     bufferC.addString(format("\t%s_globalInit(__contextTlsId, __defaultContext);\n", module->name.c_str()));
     for (auto& k : module->moduleDependenciesNames)
     {
-        bufferC.addString(format("\t__loadDynamicLibrary(\"%s\");\n", k.c_str()));
+        auto depModule = g_Workspace.getModuleByName(k);
+		if(depModule->buildParameters.type == BackendOutputType::DynamicLib)
+			bufferC.addString(format("\t__loadDynamicLibrary(\"%s\");\n", k.c_str()));
         bufferC.addString(format("\t%s_globalInit(__contextTlsId, __defaultContext);\n", k.c_str()));
     }
 

@@ -36,8 +36,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
     cmdLine->backendOutput = true;
-	//cmdLine->backendOutputTest = false;
-    cmdLine->testFilter    = "1081";
+	cmdLine->backendOutputTest = true;
+    cmdLine->testFilter    = "std";
 	//cmdLine->verboseBuildPass = false;
 	//cmdLine->fileFilter    = "1081";
 }
