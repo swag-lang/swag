@@ -197,7 +197,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
         for (auto node : module->moduleDependencies)
         {
             // Now the .swg export file is in the cache
-            auto path = targetPath.string() + node->name + ".swg";
+            auto path = targetPath.string() + "\\" + node->name + ".swg";
             if (!fs::exists(path))
             {
                 auto sourceFile = module->files[node->sourceFileIdx];
@@ -413,7 +413,6 @@ void Workspace::setupTarget()
     targetPath = workspacePath;
     targetPath.append("out/");
     targetPath.append(currentTarget->name);
-    targetPath.append("/");
 
     // Clean target
     if (g_CommandLine.cleanTarget)

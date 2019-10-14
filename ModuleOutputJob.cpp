@@ -63,7 +63,7 @@ JobResult ModuleOutputJob::execute()
 		else
 			compileJob->buildParameters.type = BackendOutputType::DynamicLib;
 
-        compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + module->name;
+        compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + "\\" + module->name;
         g_ThreadMgr.addJob(compileJob);
     }
 

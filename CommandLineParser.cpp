@@ -37,7 +37,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->addRuntimeModule = false;
     cmdLine->backendOutput = true;
 	//cmdLine->backendOutputTest = false;
-    //cmdLine->testFilter    = "std1";
+    cmdLine->testFilter    = "std1";
 	//cmdLine->fileFilter    = "1070";
 }
 

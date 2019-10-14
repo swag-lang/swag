@@ -61,9 +61,9 @@ void BackendC::emitSeparator(Concat& buffer, const char* title)
 bool BackendC::preCompile()
 {
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
-    bufferH.fileName   = targetPath + module->name + ".h";
-    bufferC.fileName   = targetPath + module->name + ".c";
-    bufferSwg.fileName = targetPath + module->name + ".swg";
+    bufferH.fileName   = targetPath + "\\" + module->name + ".h";
+    bufferC.fileName   = targetPath + "\\" + module->name + ".c";
+    bufferSwg.fileName = targetPath + "\\" + module->name + ".swg";
 
     bool ok = true;
     ok &= emitHeader();

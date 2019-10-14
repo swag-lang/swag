@@ -74,6 +74,7 @@ bool BackendCCompilerVS::compile()
     //includePath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
     includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
     includePaths.push_back(format(R"(%s\include)", vsTarget.c_str()));
+	includePaths.push_back(g_Workspace.targetPath.string());
 
     // CL arguments
     string clArguments = "";
