@@ -94,7 +94,7 @@ namespace OS
         ::SetConsoleTextAttribute(consoleHandle, attributes | back);
     }
 
-    bool doProcess(const string& cmdline, const string& compilerPath, bool logAll, uint32_t& numErrors)
+    bool doProcess(const string& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors)
     {
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;
@@ -138,7 +138,7 @@ namespace OS
                               TRUE,
                               CREATE_NO_WINDOW,
                               nullptr,
-                              compilerPath.c_str(),
+                              currentDirectory.c_str(),
                               &si,
                               &pi))
         {

@@ -48,6 +48,8 @@ bool BackendC::emitMain()
 	bufferC.addString("\tconvertArgcArgv(argc, argv);\n");
 	bufferC.addString("\n");
 
+	bufferC.addString("\tLoadLibraryA(\"std.dll\");\n\n");
+
     // Call to global init of this module, and dependencies
     bufferC.addString(format("\t%s_globalInit(contextTlsId);\n", module->name.c_str()));
     for (auto& k : module->moduleDependenciesNames)
