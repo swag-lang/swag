@@ -25,6 +25,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
+	addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
@@ -36,7 +37,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->addRuntimeModule = false;
     cmdLine->backendOutput = true;
 	//cmdLine->backendOutputTest = false;
-    //cmdLine->fileFilter    = "1070";
+    //cmdLine->testFilter    = "std1";
+	//cmdLine->fileFilter    = "1070";
 }
 
 void CommandLineParser::logArguments()

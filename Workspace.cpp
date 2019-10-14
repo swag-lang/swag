@@ -55,7 +55,8 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module, boo
     fs::path   modulePath;
     auto       leftNameOffset = workspacePath.string().size() + 1;
     char       moduleName[_MAX_PATH];
-    const bool filterIsEmpty = g_CommandLine.fileFilter.empty();
+    auto&      nameFilter    = tests ? g_CommandLine.testFilter : g_CommandLine.fileFilter;
+    const bool filterIsEmpty = nameFilter.empty();
     while (directories.size())
     {
         tmp = move(directories.back());
@@ -81,7 +82,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module, boo
                 if (pz && !_strcmpi(pz, ".swg"))
                 {
                     // File filtering by name
-                    if (filterIsEmpty || strstr(findfile.cFileName, g_CommandLine.fileFilter.c_str()))
+                    if (filterIsEmpty || strstr(findfile.cFileName, nameFilter.c_str()))
                     {
                         auto job  = g_Pool_syntaxJob.alloc();
                         auto file = g_Pool_sourceFile.alloc();
@@ -200,7 +201,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
             if (!fs::exists(path))
             {
                 auto sourceFile = module->files[node->sourceFileIdx];
-                sourceFile->report({sourceFile, node, format("could not find module export file '%s'", path.c_str())});
+                sourceFile->report({sourceFile, node, format("cannot find module export file '%s'", path.c_str())});
                 continue;
             }
 

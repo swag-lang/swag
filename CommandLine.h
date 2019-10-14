@@ -17,6 +17,7 @@ struct CommandLine
     bool        addRuntimeModule = true;
     string      workspacePath;
     string      fileFilter;
+	string      testFilter;
     set<string> compileVersion;
     int         tabSize = 4;
 
