@@ -61,7 +61,10 @@ void AstNode::computeFullName()
 {
     scoped_lock lk(mutex);
     SWAG_ASSERT(ownerScope);
-    fullname = ownerScope->fullname + "_" + name;
+	if(ownerScope->fullname.empty())
+		fullname = name;
+	else
+		fullname = ownerScope->fullname + "_" + name;
     replaceAll(fullname, '.', '_');
 }
 

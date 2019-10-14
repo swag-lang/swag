@@ -176,7 +176,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     }
 
     // Initialize the cif
-    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (int) typeInfoFunc->parameters.size(), typeResult, &ffiArgs[0]);
+    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (int) typeInfoFunc->parameters.size(), typeResult, ffiArgs.empty() ? nullptr : &ffiArgs[0]);
 
     // Store result
     Register result;
@@ -206,6 +206,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     }
 
     // Make the call
-    ffi_call(&cif, FFI_FN(ip->cache.pointer), resultPtr, &ffiArgsValues[0]);
-    context->registersRR[0] = result;
+    ffi_call(&cif, FFI_FN(ip->cache.pointer), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
+	if(context->registersRR)
+		context->registersRR[0] = result;
 }

@@ -96,7 +96,7 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         }
     }
 
-    bufferC.addString(format("%s", nodeFunc->name.c_str()));
+    bufferC.addString(nodeFunc->fullname);
     bufferC.addString("(");
 
     int numCallParams = (int) typeFuncBC->parameters.size();
