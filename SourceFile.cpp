@@ -197,6 +197,10 @@ char SourceFile::getPrivateChar()
             nextBufIndex = (bufferCurIndex + 1) % 2;
             buildRequest(nextBufIndex);
         }
+
+		// Be sure there's something in the current buffer
+		if (bufferCurSeek >= buffersSize[bufferCurIndex])
+			return 0;
     }
 
     char c = buffers[bufferCurIndex][bufferCurSeek++];
