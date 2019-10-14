@@ -68,10 +68,6 @@ struct Log
     }
 
     mutex mutexAccess;
-#ifdef WIN32
-    HANDLE consoleHandle     = NULL;
-    WORD   defaultAttributes = 0;
-#endif
 };
 
 extern Log g_Log;
