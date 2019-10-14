@@ -134,9 +134,11 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     for (int i = 0; i < typeInfoFunc->parameters.size(); i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
+        typeParam      = TypeManager::concreteType(typeParam);
         ffiArgs[i]     = ffiFromTypeinfo(typeParam);
         if (!ffiArgs[i])
         {
+            context->hasError = true;
             context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
             return;
         }
@@ -156,6 +158,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             ffiArgsValues[i] = &sp->u64;
             break;
         default:
+            context->hasError = true;
             context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
             return;
         }
@@ -165,11 +168,13 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 
     // Function return type
     ffi_type* typeResult = &ffi_type_void;
-    if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
+    auto      returnType = TypeManager::concreteType(typeInfoFunc->returnType);
+    if (returnType != g_TypeMgr.typeInfoVoid)
     {
-        typeResult = ffiFromTypeinfo(typeInfoFunc->returnType);
+        typeResult = ffiFromTypeinfo(returnType);
         if (!typeResult)
         {
+            context->hasError = true;
             context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->name.c_str());
             return;
         }
@@ -183,9 +188,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     result.pointer = 0;
 
     void* resultPtr = nullptr;
-    if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
+    if (returnType != g_TypeMgr.typeInfoVoid)
     {
-        switch (typeInfoFunc->returnType->sizeOf)
+        switch (returnType->sizeOf)
         {
         case 1:
             resultPtr = &result.u8;
@@ -200,13 +205,14 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             resultPtr = &result.u64;
             break;
         default:
-            context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->name.c_str());
+            context->hasError = true;
+            context->errorMsg = format("ffi failed to get return result of type '%s'", typeInfoFunc->returnType->name.c_str());
             return;
         }
     }
 
     // Make the call
     ffi_call(&cif, FFI_FN(ip->cache.pointer), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
-	if(context->registersRR)
-		context->registersRR[0] = result;
+    if (context->registersRR)
+        context->registersRR[0] = result;
 }

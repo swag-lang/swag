@@ -51,12 +51,10 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module, boo
     vector<string>   directories;
 
     directories.push_back(path.string());
-    string     tmp, tmp1;
-    fs::path   modulePath;
-    auto       leftNameOffset = workspacePath.string().size() + 1;
-    char       moduleName[_MAX_PATH];
-    auto&      nameFilter    = tests ? g_CommandLine.testFilter : g_CommandLine.fileFilter;
-    const bool filterIsEmpty = nameFilter.empty();
+    string   tmp, tmp1;
+    fs::path modulePath;
+    auto     leftNameOffset = workspacePath.string().size() + 1;
+    char     moduleName[_MAX_PATH];
     while (directories.size())
     {
         tmp = move(directories.back());
@@ -81,47 +79,50 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module, boo
                 auto pz = strrchr(findfile.cFileName, '.');
                 if (pz && !_strcmpi(pz, ".swg"))
                 {
-                    // File filtering by name
-                    if (filterIsEmpty || strstr(findfile.cFileName, nameFilter.c_str()))
+                    if (g_CommandLine.fileFilter.empty() || strstr(findfile.cFileName, g_CommandLine.fileFilter.c_str()))
                     {
-                        auto job  = g_Pool_syntaxJob.alloc();
-                        auto file = g_Pool_sourceFile.alloc();
-
-                        // When gattering files from the test folder, each file is in its own module
-                        if (tests)
+                        // File filtering by name
+                        if (!tests || g_CommandLine.testFilter.empty() || strstr(findfile.cFileName, g_CommandLine.testFilter.c_str()))
                         {
-                            // Generate a module name, depending on the test file location, and its name
-                            auto pz1 = tmp.c_str() + leftNameOffset;
-                            auto pzn = moduleName;
-                            while (*pz1)
+                            auto job  = g_Pool_syntaxJob.alloc();
+                            auto file = g_Pool_sourceFile.alloc();
+
+                            // When gathering files from the test folder, each file is in its own module
+                            if (tests)
                             {
-                                if (*pz1 == '/' || *pz1 == '\\')
-                                    *pzn++ = '_';
-                                else
-                                    *pzn++ = *pz1;
-                                pz1++;
+                                // Generate a module name, depending on the test file location, and its name
+                                auto pz1 = tmp.c_str() + leftNameOffset;
+                                auto pzn = moduleName;
+                                while (*pz1)
+                                {
+                                    if (*pz1 == '/' || *pz1 == '\\')
+                                        *pzn++ = '_';
+                                    else
+                                        *pzn++ = *pz1;
+                                    pz1++;
+                                }
+
+                                *pzn++ = '_';
+                                pz1    = findfile.cFileName;
+                                while (true)
+                                {
+                                    if (pz1[0] == '.' && pz1[4] == 0)
+                                        break;
+                                    *pzn++ = *pz1++;
+                                }
+
+                                *pzn                   = 0;
+                                module                 = createOrUseModule(moduleName);
+                                module->fromTests      = true;
+                                module->compileVersion = g_CommandLine.compileVersion;
                             }
 
-                            *pzn++ = '_';
-                            pz1    = findfile.cFileName;
-                            while (true)
-                            {
-                                if (pz1[0] == '.' && pz1[4] == 0)
-                                    break;
-                                *pzn++ = *pz1++;
-                            }
+                            job->sourceFile = file;
+                            module->addFile(file);
+                            file->path = tmp + "\\" + findfile.cFileName;
 
-                            *pzn                   = 0;
-                            module                 = createOrUseModule(moduleName);
-                            module->fromTests      = true;
-                            module->compileVersion = g_CommandLine.compileVersion;
+                            g_ThreadMgr.addJob(job);
                         }
-
-                        job->sourceFile = file;
-                        module->addFile(file);
-                        file->path = tmp + "\\" + findfile.cFileName;
-
-                        g_ThreadMgr.addJob(job);
                     }
                 }
             }
@@ -285,19 +286,19 @@ bool Workspace::buildModules(const vector<Module*>& list)
             !module->byteCodeRunFunc.empty())
         {
             // INIT
-			if (!module->byteCodeInitFunc.empty())
-			{
-				if (!module->numErrors)
-				{
-					if (g_CommandLine.verboseBuildPass)
-						g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+            if (!module->byteCodeInitFunc.empty())
+            {
+                if (!module->numErrors)
+                {
+                    if (g_CommandLine.verboseBuildPass)
+                        g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
-					for (auto func : module->byteCodeInitFunc)
-					{
-						module->executeNode(module->files[func->node->sourceFileIdx], func->node);
-					}
-				}
-			}
+                    for (auto func : module->byteCodeInitFunc)
+                    {
+                        module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                    }
+                }
+            }
 
             // #TEST
             if (g_CommandLine.test && g_CommandLine.runByteCodeTests)

@@ -25,7 +25,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
-	addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter);
+    addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
@@ -35,11 +35,11 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->cleanTarget   = true;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
-    cmdLine->backendOutput = true;
-	cmdLine->backendOutputTest = true;
-    cmdLine->testFilter    = "std";
-	//cmdLine->verboseBuildPass = false;
-	//cmdLine->fileFilter    = "1081";
+    cmdLine->backendOutput     = true;
+    cmdLine->backendOutputTest = true;
+    //cmdLine->testFilter    = "std";
+    //cmdLine->verboseBuildPass = false;
+    cmdLine->fileFilter = "1082";
 }
 
 void CommandLineParser::logArguments()
