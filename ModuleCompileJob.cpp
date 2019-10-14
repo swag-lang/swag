@@ -25,7 +25,7 @@ JobResult ModuleCompileJob::execute()
     // Test
     if (buildParameters.flags & BUILDPARAM_FOR_TEST)
     {
-		fs::path path = buildParameters.destFile + ".test.";
+		fs::path path = buildParameters.destFile + buildParameters.postFix;
 		path += OS::getOutputFileExtension(buildParameters.type);
         if (fs::exists(path))
         {

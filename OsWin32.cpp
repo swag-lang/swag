@@ -257,11 +257,11 @@ namespace OS
         switch (type)
         {
         case BackendOutputType::Binary:
-            return "exe";
+            return ".exe";
         case BackendOutputType::StaticLib:
-            return "lib";
+            return ".lib";
         case BackendOutputType::DynamicLib:
-            return "dll";
+            return ".dll";
 		default:
 			SWAG_ASSERT(false);
 			return "";
