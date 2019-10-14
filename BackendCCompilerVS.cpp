@@ -187,19 +187,4 @@ bool BackendCCompilerVS::compile()
     return true;
 }
 
-bool BackendCCompilerVS::runTests()
-{
-    fs::path path = buildParameters->destFile + ".test.exe";
-    if (fs::exists(path))
-    {
-        g_Log.messageHeaderCentered("Testing backend", backend->module->name.c_str());
-        uint32_t numErrors = 0;
-        SWAG_CHECK(OS::doProcess(path.string(), path.parent_path().string(), true, numErrors));
-        g_Workspace.numErrors += numErrors;
-        backend->module->numErrors += numErrors;
-    }
-
-    return true;
-}
-
 #endif

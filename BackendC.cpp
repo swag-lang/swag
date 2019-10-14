@@ -2,7 +2,6 @@
 #include "SourceFile.h"
 #include "BackendC.h"
 #include "BackendCCompilerVS.h"
-#include "Module.h"
 #include "Version.h"
 #include "Workspace.h"
 
@@ -16,13 +15,13 @@ bool BackendC::emitHeader()
     bufferC.addString("#ifdef SWAG_IS_DLL\n");
     bufferC.addString("#define SWAG_EXPORT\n");
     bufferC.addString("#endif\n");
-    bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+	bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
 
     // My dependencies. Need to import for dlls
     for (auto depName : module->moduleDependenciesNames)
     {
         bufferC.addString("#undef SWAG_EXPORT\n");
-        bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
+		bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
     }
 
     bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
@@ -59,23 +58,6 @@ void BackendC::emitSeparator(Concat& buffer, const char* title)
     buffer.addString("*/\n");
 }
 
-bool BackendC::compile(const BuildParameters& buildParameters)
-{
-    if (module->buildPass != BuildPass::Full)
-        return true;
-
-    BackendCCompilerVS compiler(this, &buildParameters);
-    SWAG_CHECK(compiler.compile());
-
-    // Test
-    if (g_CommandLine.runBackendTests && g_CommandLine.backendOutputTest)
-    {
-        SWAG_CHECK(compiler.runTests());
-    }
-
-    return true;
-}
-
 bool BackendC::preCompile()
 {
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
@@ -101,4 +83,10 @@ bool BackendC::preCompile()
     ok &= bufferSwg.flush();
 
     return ok;
+}
+
+bool BackendC::compile(const BuildParameters& buildParameters)
+{
+    BackendCCompilerVS compiler(this, &buildParameters);
+    return compiler.compile();
 }
