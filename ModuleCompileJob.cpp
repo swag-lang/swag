@@ -31,7 +31,7 @@ JobResult ModuleCompileJob::execute()
         {
             g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
             uint32_t numErrors = 0;
-            OS::doProcess(path.string(), path.parent_path().parent_path().string(), true, numErrors);
+            OS::doProcess(path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
             g_Workspace.numErrors += numErrors;
             module->numErrors += numErrors;
         }

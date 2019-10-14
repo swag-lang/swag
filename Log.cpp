@@ -11,7 +11,7 @@ void Log::setup()
 
 void Log::setDefaultColor()
 {
-    OS::consoleSetDefaultColor();
+    OS::consoleSetColor(LogColor::Default);
 }
 
 void Log::setColor(LogColor color)

@@ -21,6 +21,7 @@ enum class LogColor
     DarkCyan,
     DarkYellow,
     DarkMagenta,
+	Default,
 };
 
 static const int CENTER_COLUMN = 20;

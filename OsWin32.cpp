@@ -33,11 +33,6 @@ namespace OS
         defaultAttributes = info.wAttributes;
     }
 
-    void consoleSetDefaultColor()
-    {
-        ::SetConsoleTextAttribute(consoleHandle, defaultAttributes);
-    }
-
     void consoleSetColor(LogColor color)
     {
         WORD attributes{};
@@ -88,13 +83,16 @@ namespace OS
         case LogColor::DarkYellow:
             attributes = FOREGROUND_RED | FOREGROUND_GREEN;
             break;
+		case LogColor::Default:
+			attributes = defaultAttributes;
+			break;
         }
 
         WORD back = defaultAttributes & (BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
         ::SetConsoleTextAttribute(consoleHandle, attributes | back);
     }
 
-    bool doProcess(const string& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors)
+    bool doProcess(const string& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor)
     {
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;
@@ -196,7 +194,7 @@ namespace OS
                     // Messages
                     else if (logAll)
                     {
-                        g_Log.setDefaultColor();
+                        g_Log.setColor(logColor);
                         g_Log.print(oneLine + "\n");
                     }
                 }

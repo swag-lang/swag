@@ -279,13 +279,12 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     // Call bytecode test functions
-    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+    for (auto module : list)
     {
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose("running bytecode test functions");
-
-        for (auto module : list)
+        if ((g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty()) ||
+            !module->byteCodeRunFunc.empty())
         {
+            // INIT
             if (!module->numErrors)
             {
                 for (auto func : module->byteCodeInitFunc)
@@ -294,24 +293,39 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 }
             }
 
-            if (!module->numErrors)
+            // #TEST
+            if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
             {
-                for (auto func : module->byteCodeTestFunc)
+                if (!module->numErrors)
                 {
-                    g_Stats.testFunctions++;
-                    module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                    if (g_CommandLine.verboseBuildPass)
+						g_Log.verbose(format("running '%d' bytecode #test function(s)", module->byteCodeTestFunc.size()));
+
+                    for (auto func : module->byteCodeTestFunc)
+                    {
+                        g_Stats.testFunctions++;
+                        module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                    }
                 }
             }
 
-            if (!module->numErrors)
+            // #RUN
+            if (!module->byteCodeRunFunc.empty())
             {
-                for (auto func : module->byteCodeRunFunc)
+                if (!module->numErrors)
                 {
-                    g_Stats.testFunctions++;
-                    module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                    if (g_CommandLine.verboseBuildPass)
+                        g_Log.verbose(format("running '%d' bytecode #run function(s)", module->byteCodeRunFunc.size()));
+
+                    for (auto func : module->byteCodeRunFunc)
+                    {
+                        g_Stats.testFunctions++;
+                        module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                    }
                 }
             }
 
+            // DROP
             if (!module->numErrors)
             {
                 for (auto func : module->byteCodeDropFunc)
@@ -500,7 +514,7 @@ bool Workspace::buildTarget()
         }
 
         if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("starting build pass on %d module(s)", (int) order.size()));
+            g_Log.verbose(format("starting build pass #%d on %d module(s)", pass, (int) order.size()));
 
         buildModules(order);
 
