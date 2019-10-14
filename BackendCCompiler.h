@@ -3,13 +3,15 @@ struct BackendC;
 
 struct BackendCCompiler
 {
-    BackendCCompiler(BackendC* bk)
+    BackendCCompiler(BackendC* bk, const BuildParameters* params)
         : backend{bk}
+        , buildParameters{params}
     {
     }
 
-    virtual bool compile() = 0;
-	virtual bool runTests() = 0;
+    virtual bool compile()  = 0;
+    virtual bool runTests() = 0;
 
-    BackendC* backend;
+    BackendC*              backend;
+    const BuildParameters* buildParameters;
 };

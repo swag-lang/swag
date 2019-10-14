@@ -4,8 +4,8 @@
 
 struct BackendCCompilerVS : public BackendCCompiler
 {
-    BackendCCompilerVS(BackendC* bk)
-        : BackendCCompiler{bk}
+    BackendCCompilerVS(BackendC* bk, const BuildParameters* params)
+        : BackendCCompiler(bk, params)
     {
     }
 
@@ -15,6 +15,4 @@ struct BackendCCompilerVS : public BackendCCompiler
     bool getVSTarget(string& vsTarget);
     bool getWinSdk(string& winSdk);
     bool doProcess(const string& cmdline, const string& compilerPath, bool logAll);
-
-    BuildParameters backendParameters;
 };

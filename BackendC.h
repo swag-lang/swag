@@ -18,7 +18,7 @@ struct BackendC : public Backend
     {
     }
 
-    bool generate() override;
+    bool preCompile() override;
     bool compile(const BuildParameters& backendParameters) override;
 
     void emitSeparator(Concat& buffer, const char* title);

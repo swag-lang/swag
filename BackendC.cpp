@@ -59,13 +59,12 @@ void BackendC::emitSeparator(Concat& buffer, const char* title)
     buffer.addString("*/\n");
 }
 
-bool BackendC::compile(const BuildParameters& backendParameters)
+bool BackendC::compile(const BuildParameters& buildParameters)
 {
     if (module->buildPass != BuildPass::Full)
         return true;
 
-    BackendCCompilerVS compiler(this);
-    compiler.backendParameters = backendParameters;
+    BackendCCompilerVS compiler(this, &buildParameters);
     SWAG_CHECK(compiler.compile());
 
     // Test
@@ -77,7 +76,7 @@ bool BackendC::compile(const BuildParameters& backendParameters)
     return true;
 }
 
-bool BackendC::generate()
+bool BackendC::preCompile()
 {
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
     bufferH.fileName   = targetPath + module->name + ".h";

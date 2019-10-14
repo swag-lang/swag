@@ -241,16 +241,16 @@ bool BackendCCompilerVS::compile()
 
     // CL arguments
     string clArguments = "";
-    if (backendParameters.target.backendDebugInformations)
+    if (buildParameters->target.backendDebugInformations)
     {
-        fs::path pdbPath = backendParameters.destFile + backendParameters.postFix + ".pdb";
+        fs::path pdbPath = buildParameters->destFile + buildParameters->postFix + ".pdb";
         clArguments += "/Fd\"" + pdbPath.string() + "\" ";
         clArguments += "/Zi ";
     }
 
     // Append a string related to the version
     string outputTypeName;
-    switch (backendParameters.type)
+    switch (buildParameters->type)
     {
     case BackendType::Lib:
         outputTypeName = ".lib";
@@ -263,9 +263,9 @@ bool BackendCCompilerVS::compile()
     clArguments += "/nologo ";
     clArguments += "/EHsc ";
     clArguments += "/Tc\"" + backend->bufferC.fileName + "\" ";
-    string nameObj = backendParameters.destFile + outputTypeName + backendParameters.postFix + ".obj";
+    string nameObj = buildParameters->destFile + outputTypeName + buildParameters->postFix + ".obj";
     clArguments += "/Fo\"" + nameObj + "\" ";
-    switch (backendParameters.target.backendOptimizeLevel)
+    switch (buildParameters->target.backendOptimizeLevel)
     {
     case 0:
         break;
@@ -279,13 +279,13 @@ bool BackendCCompilerVS::compile()
 
     for (const auto& oneIncludePath : includePaths)
         clArguments += "/I\"" + oneIncludePath + "\" ";
-    for (const auto& define : backendParameters.defines)
+    for (const auto& define : buildParameters->defines)
         clArguments += "/D" + define + " ";
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
     string resultFile;
-    switch (backendParameters.type)
+    switch (buildParameters->type)
     {
     case BackendType::Lib:
     {
@@ -296,7 +296,7 @@ bool BackendCCompilerVS::compile()
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
         if (g_CommandLine.verboseBackendCommand)
             libArguments += "/VERBOSE ";
-        resultFile = backendParameters.destFile + backendParameters.postFix + ".lib";
+        resultFile = buildParameters->destFile + buildParameters->postFix + ".lib";
         libArguments += "/OUT:\"" + resultFile + "\" ";
         libArguments += "\"" + nameObj + "\" ";
 
@@ -319,19 +319,19 @@ bool BackendCCompilerVS::compile()
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 
         linkArguments += "/INCREMENTAL:NO /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
-        if (backendParameters.target.backendDebugInformations)
+        if (buildParameters->target.backendDebugInformations)
             linkArguments += "/DEBUG ";
 
-        if (backendParameters.type == BackendType::Dll)
+        if (buildParameters->type == BackendType::Dll)
         {
             linkArguments += "/DLL ";
-            resultFile = backendParameters.destFile + backendParameters.postFix + ".dll";
+            resultFile = buildParameters->destFile + buildParameters->postFix + ".dll";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_DLL ";
         }
         else
         {
-            resultFile = backendParameters.destFile + backendParameters.postFix + ".exe";
+            resultFile = buildParameters->destFile + buildParameters->postFix + ".exe";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_EXE ";
         }
@@ -350,7 +350,7 @@ bool BackendCCompilerVS::compile()
 
 bool BackendCCompilerVS::runTests()
 {
-    fs::path path = backendParameters.destFile + ".test.exe";
+    fs::path path = buildParameters->destFile + ".test.exe";
     if (fs::exists(path))
     {
         g_Log.messageHeaderCentered("Testing backend", backend->module->name.c_str());

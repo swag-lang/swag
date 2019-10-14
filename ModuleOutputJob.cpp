@@ -2,11 +2,8 @@
 #include "ModuleOutputJob.h"
 #include "ModuleCompileJob.h"
 #include "BackendC.h"
-#include "Module.h"
 #include "ThreadManager.h"
-#include "CommandLine.h"
 #include "Workspace.h"
-#include "Diagnostic.h"
 
 Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 
@@ -18,9 +15,8 @@ JobResult ModuleOutputJob::execute()
     if (module->fromTests && !g_CommandLine.backendOutputTest)
         return JobResult::ReleaseJob;
 
-    // Generate backend file
     module->backend = new BackendC(module);
-    if (!module->backend->generate())
+    if (!module->backend->preCompile())
         return JobResult::ReleaseJob;
     if (module->buildPass < BuildPass::Full)
         return JobResult::ReleaseJob;
