@@ -129,8 +129,8 @@ bool BackendCCompilerVS::compile()
     {
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + " /c";
         if (verbose)
-            g_Log.verbose("VS: " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, clPath, verbose, numErrors, LogColor::DarkCyan, "VS: "));
+            g_Log.verbose("VS " + cmdLineCL + "\n");
+        SWAG_CHECK(OS::doProcess(cmdLineCL, clPath, verbose, numErrors, LogColor::DarkCyan, "VS "));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -141,12 +141,12 @@ bool BackendCCompilerVS::compile()
         libArguments += "\"" + nameObj + "\" ";
 
         if (verbose)
-            g_Log.verbose(format("VS: '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
+            g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
         if (verbose)
-            g_Log.verbose("VS: " + cmdLineLIB + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineLIB, clPath, verbose, numErrors, LogColor::DarkCyan, "VS: "));
+            g_Log.verbose("VS " + cmdLineLIB + "\n");
+        SWAG_CHECK(OS::doProcess(cmdLineLIB, clPath, verbose, numErrors, LogColor::DarkCyan, "VS "));
     }
     break;
 
@@ -179,12 +179,12 @@ bool BackendCCompilerVS::compile()
         }
 
         if (verbose)
-            g_Log.verbose(format("VS: '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
+            g_Log.verbose(format("VS '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
         if (verbose)
-            g_Log.verbose("VS: " + cmdLineCL + "\n");
-        SWAG_CHECK(OS::doProcess(cmdLineCL, clPath, verbose, numErrors, LogColor::DarkCyan, "VS: "));
+            g_Log.verbose("VS " + cmdLineCL + "\n");
+        SWAG_CHECK(OS::doProcess(cmdLineCL, clPath, verbose, numErrors, LogColor::DarkCyan, "VS "));
     }
     break;
     }

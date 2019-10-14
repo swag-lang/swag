@@ -91,14 +91,14 @@ void Log::message(const Utf8& message)
     unlock();
 }
 
-void Log::verbose(const Utf8& message)
+void Log::verbose(const Utf8& message, bool forceEol)
 {
     if (g_CommandLine.silent || !g_CommandLine.verbose)
         return;
     lock();
     setColor(LogColor::DarkCyan);
     print(message);
-    if (message.back() != '\n')
+    if (forceEol && message.back() != '\n')
         eol();
     setDefaultColor();
     unlock();

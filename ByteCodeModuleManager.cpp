@@ -9,7 +9,7 @@ ByteCodeModuleManager g_ModuleMgr;
 
 ByteCodeModuleManager::ByteCodeModuleManager()
 {
-	loadedModules["windows"] = ::GetModuleHandle(L"kernel32.dll");
+    loadedModules["windows"] = ::GetModuleHandle(L"kernel32.dll");
 }
 
 bool ByteCodeModuleManager::isModuleLoaded(const string& name)
@@ -23,14 +23,24 @@ void ByteCodeModuleManager::loadModule(ByteCodeRunContext* context, const string
         return;
 
     fs::path path = g_Workspace.targetPath;
-	path += "\\";
+    path += "\\";
     path += name;
     path += ".dll";
 
+    bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBuildPass;
+    if (verbose)
+        g_Log.verbose(format("   request to load module '%s': ", path.string().c_str()), false);
+
     auto h = ::LoadLibrary(path.c_str());
     if (h == NULL)
+    {
+        if (verbose)
+            g_Log.verbose("FAIL");
         return;
+    }
 
+    if (verbose)
+        g_Log.verbose("success");
     loadedModules[name] = h;
 }
 

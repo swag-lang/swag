@@ -36,7 +36,7 @@ struct Log
     void message(const Utf8& message);
     void messageHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Green, LogColor msgColor = LogColor::White);
     void messageHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor = LogColor::Cyan, LogColor msgColor = LogColor::Cyan);
-    void verbose(const Utf8& message);
+    void verbose(const Utf8& message, bool forceEol = true);
 
     void lock()
     {
