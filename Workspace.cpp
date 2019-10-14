@@ -285,13 +285,19 @@ bool Workspace::buildModules(const vector<Module*>& list)
             !module->byteCodeRunFunc.empty())
         {
             // INIT
-            if (!module->numErrors)
-            {
-                for (auto func : module->byteCodeInitFunc)
-                {
-                    module->executeNode(module->files[func->node->sourceFileIdx], func->node);
-                }
-            }
+			if (!module->byteCodeInitFunc.empty())
+			{
+				if (!module->numErrors)
+				{
+					if (g_CommandLine.verboseBuildPass)
+						g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+
+					for (auto func : module->byteCodeInitFunc)
+					{
+						module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+					}
+				}
+			}
 
             // #TEST
             if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
@@ -299,7 +305,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
-						g_Log.verbose(format("   bytecode execution of %d #test function(s)", module->byteCodeTestFunc.size()));
+                        g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
                     for (auto func : module->byteCodeTestFunc)
                     {
@@ -315,7 +321,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   bytecode execution of %d #run function(s)", module->byteCodeRunFunc.size()));
+                        g_Log.verbose(format("   module '%s', bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
 
                     for (auto func : module->byteCodeRunFunc)
                     {
@@ -326,11 +332,17 @@ bool Workspace::buildModules(const vector<Module*>& list)
             }
 
             // DROP
-            if (!module->numErrors)
+            if (!module->byteCodeDropFunc.empty())
             {
-                for (auto func : module->byteCodeDropFunc)
+                if (!module->numErrors)
                 {
-                    module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                    if (g_CommandLine.verboseBuildPass)
+                        g_Log.verbose(format("   module '%s', bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+
+                    for (auto func : module->byteCodeDropFunc)
+                    {
+                        module->executeNode(module->files[func->node->sourceFileIdx], func->node);
+                    }
                 }
             }
         }
@@ -428,7 +440,7 @@ void Workspace::setupTarget()
     targetPath.append("out/");
     targetPath.append(currentTarget->name);
 
-	if (g_CommandLine.verboseBuildPass)
+    if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> target is '%s'", targetPath.string().c_str()));
 
     // Clean target
@@ -511,11 +523,11 @@ bool Workspace::buildTarget()
         // Nothing to build !
         if (order.empty())
         {
-			for (auto module : remain)
-			{
-				if(!module->numErrors)
-					module->error("cannot compute the build order. do you have a dependency cycle ?");
-			}
+            for (auto module : remain)
+            {
+                if (!module->numErrors)
+                    module->error("cannot compute the build order. do you have a dependency cycle ?");
+            }
 
             return false;
         }

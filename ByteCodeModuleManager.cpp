@@ -9,7 +9,7 @@ ByteCodeModuleManager g_ModuleMgr;
 
 ByteCodeModuleManager::ByteCodeModuleManager()
 {
-    loadedModules["windows"] = ::GetModuleHandle(L"kernel32.dll");
+    loadedModules["kernel32"] = ::GetModuleHandle(L"kernel32.dll");
 }
 
 bool ByteCodeModuleManager::isModuleLoaded(const string& name)
