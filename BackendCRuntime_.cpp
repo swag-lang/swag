@@ -24,20 +24,29 @@ typedef unsigned long long	swag_uint64_t;
 typedef float				swag_float32_t;
 typedef double				swag_float64_t;
 
-typedef swag_uint32_t		swag_tls_id_t;
-
 #ifdef __cplusplus
 #define SWAG_EXTERN extern "C"
 #else
 #define SWAG_EXTERN extern
 #endif
 
+/* Visual studio */
+#ifdef _MSC_VER
 #if defined(SWAG_IMPORT)
 #define SWAG_IMPEXP __declspec(dllimport)
 #elif defined(SWAG_EXPORT)
 #define SWAG_IMPEXP __declspec(dllexport)
 #else
 #define SWAG_IMPEXP
+#endif
+#endif
+
+/* Windows */
+#ifdef _WIN32
+#define __loadDynamicLibrary	LoadLibraryA
+#define __tlsAlloc				TlsAlloc
+#define __tlsSetValue			TlsSetValue
+typedef swag_uint32_t			swag_tls_id_t;
 #endif
 
 #endif
@@ -66,9 +75,9 @@ typedef union swag_context_t {
 	__allocatorFct allocator;
 } swag_context_t;
 
-static swag_uint64_t __argumentsSlice[2];
-static swag_uint32_t __contextTlsId = 0;
-extern void* TlsGetValue(swag_uint32_t);
+static swag_uint64_t	__argumentsSlice[2];
+static swag_tls_id_t	__contextTlsId = 0;
+static swag_context_t*	__defaultContext = 0;
 
 )";
 
