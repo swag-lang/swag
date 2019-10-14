@@ -1022,7 +1022,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("free(r[%u].pointer);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicGetContext:
-            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) TlsGetValue(__contextTlsId);", ip->a.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) __tlsGetValue(__contextTlsId);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicArguments:
             bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) __argumentsSlice[0]; ", ip->a.u32));

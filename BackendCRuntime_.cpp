@@ -46,7 +46,9 @@ typedef double				swag_float64_t;
 #define __loadDynamicLibrary	LoadLibraryA
 #define __tlsAlloc				TlsAlloc
 #define __tlsSetValue			TlsSetValue
+#define __tlsGetValue			TlsGetValue
 typedef swag_uint32_t			swag_tls_id_t;
+extern void *TlsGetValue(swag_tls_id_t);
 #endif
 
 #endif
