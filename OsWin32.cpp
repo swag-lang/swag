@@ -10,6 +10,18 @@ namespace OS
     static HANDLE consoleHandle     = NULL;
     static WORD   defaultAttributes = 0;
 
+    void setup()
+    {
+        // We do not want assert, but just reports of the CRT
+#if !defined(SWAG_HAS_ASSERT)
+        if (!IsDebuggerPresent())
+        {
+            _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+            _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
+        }
+#endif
+    }
+
     void consoleSetup()
     {
         consoleHandle = ::GetStdHandle(STD_OUTPUT_HANDLE);
@@ -20,7 +32,7 @@ namespace OS
         defaultAttributes = info.wAttributes;
     }
 
-	void consoleSetDefaultColor()
+    void consoleSetDefaultColor()
     {
         ::SetConsoleTextAttribute(consoleHandle, defaultAttributes);
     }

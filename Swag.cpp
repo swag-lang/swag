@@ -5,6 +5,7 @@
 #include "Workspace.h"
 #include "CommandLineParser.h"
 #include "Version.h"
+#include "Os.h"
 
 void printStats()
 {
@@ -36,15 +37,7 @@ int main(int argc, const char* argv[])
 {
     auto timeBefore = chrono::high_resolution_clock::now();
 
-    // We do not want assert, but just reports of the CRT
-#if defined(WIN32) && !defined(SWAG_HAS_ASSERT)
-    if (!IsDebuggerPresent())
-    {
-        _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
-        _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
-    }
-#endif
-
+    OS::setup();
     g_Log.setup();
 
     // Arguments
@@ -57,7 +50,7 @@ int main(int argc, const char* argv[])
     // Log all arguments
     if (g_CommandLine.help)
     {
-        wcout << "swag version " << format("%d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM).c_str();
+		g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
         cmdParser.logArguments();
         exit(0);
     }
