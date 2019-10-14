@@ -2,14 +2,9 @@
 #include "SourceFile.h"
 #include "BackendC.h"
 #include "BackendCCompilerVS.h"
-#include "Global.h"
-#include "Module.h"
-#include "Log.h"
-#include "Stats.h"
 #include "Workspace.h"
-#include "Target.h"
 
-bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compilerPath, bool logAll)
+bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compilerPath, bool logAll, uint32_t& numErrors)
 {
     STARTUPINFOA        si;
     PROCESS_INFORMATION pi;
@@ -31,7 +26,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
     saAttr.lpSecurityDescriptor = nullptr;
     if (!::CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
     {
-        backend->module->error(format("can't create '%s' process (::CreatePipe)", cmdline.c_str()));
+        g_Log.error(format("cannot create '%s' process (::CreatePipe)", cmdline.c_str()));
         return false;
     }
 
@@ -57,7 +52,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                           &si,
                           &pi))
     {
-        backend->module->error(format("can't create '%s' process (::CreateProcess)", cmdline.c_str()));
+        g_Log.error(format("cannot create '%s' process (::CreateProcess)", cmdline.c_str()));
         return false;
     }
 
@@ -101,8 +96,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
                 // Error
                 if (pz)
                 {
-                    backend->module->numErrors++;
-                    g_Workspace.numErrors++;
+                    numErrors++;
                     ok = false;
 
                     g_Log.setColor(LogColor::Red);
@@ -134,8 +128,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
             case STATUS_ACCESS_VIOLATION:
                 g_Log.lock();
                 g_Log.setColor(LogColor::Red);
-                backend->module->numErrors++;
-                g_Workspace.numErrors++;
+                numErrors++;
                 wcout << cmdline.c_str();
                 wcout << ": access violation during process execution\n";
                 g_Log.setDefaultColor();
@@ -145,8 +138,7 @@ bool BackendCCompilerVS::doProcess(const string& cmdline, const string& compiler
             default:
                 g_Log.lock();
                 g_Log.setColor(LogColor::Red);
-                backend->module->numErrors++;
-                g_Workspace.numErrors++;
+                numErrors++;
                 wcout << cmdline.c_str();
                 wcout << ": process execution failed\n";
                 g_Log.setDefaultColor();
@@ -279,18 +271,19 @@ bool BackendCCompilerVS::compile()
 
     for (const auto& oneIncludePath : includePaths)
         clArguments += "/I\"" + oneIncludePath + "\" ";
-	if(buildParameters->flags & BUILDPARAM_FOR_TEST)
-		clArguments += "/DSWAG_IS_UNITTEST ";
+    if (buildParameters->flags & BUILDPARAM_FOR_TEST)
+        clArguments += "/DSWAG_IS_UNITTEST ";
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
-    string resultFile;
+    uint32_t numErrors = 0;
+    string   resultFile;
     switch (buildParameters->type)
     {
     case BackendOutputType::StaticLib:
     {
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + " /c";
-        SWAG_CHECK(doProcess(cmdLineCL, clPath, verbose));
+        SWAG_CHECK(doProcess(cmdLineCL, clPath, verbose, numErrors));
 
         string libArguments;
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
@@ -304,7 +297,7 @@ bool BackendCCompilerVS::compile()
             g_Log.verbose(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineLIB = "\"" + clPath + "lib.exe\" " + libArguments;
-        SWAG_CHECK(doProcess(cmdLineLIB, clPath, verbose));
+        SWAG_CHECK(doProcess(cmdLineLIB, clPath, verbose, numErrors));
     }
     break;
 
@@ -340,11 +333,13 @@ bool BackendCCompilerVS::compile()
             g_Log.verbose(format("vs compiling '%s' => '%s'", backend->bufferC.fileName.c_str(), resultFile.c_str()));
 
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + "/link " + linkArguments;
-        SWAG_CHECK(doProcess(cmdLineCL, clPath, verbose));
+        SWAG_CHECK(doProcess(cmdLineCL, clPath, verbose, numErrors));
     }
     break;
     }
 
+    g_Workspace.numErrors += numErrors;
+    backend->module->numErrors += numErrors;
     return true;
 }
 
@@ -354,7 +349,10 @@ bool BackendCCompilerVS::runTests()
     if (fs::exists(path))
     {
         g_Log.messageHeaderCentered("Testing backend", backend->module->name.c_str());
-        SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true));
+        uint32_t numErrors = 0;
+        SWAG_CHECK(doProcess(path.string(), path.parent_path().string(), true, numErrors));
+        g_Workspace.numErrors += numErrors;
+        backend->module->numErrors += numErrors;
     }
 
     return true;
