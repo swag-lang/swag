@@ -305,7 +305,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     auto typeFunc = bc->callType();
 
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-        bufferC.addString("#ifdef SWAG_IS_UNITTEST\n");
+        bufferC.addString("#ifdef SWAG_HAS_TEST\n");
 
     // Signature
     bufferC.addString("static ");

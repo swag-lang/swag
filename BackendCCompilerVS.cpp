@@ -116,7 +116,7 @@ bool BackendCCompilerVS::compile()
     for (const auto& oneIncludePath : includePaths)
         clArguments += "/I\"" + oneIncludePath + "\" ";
     if (buildParameters->flags & BUILDPARAM_FOR_TEST)
-        clArguments += "/DSWAG_IS_UNITTEST ";
+        clArguments += "/DSWAG_HAS_TEST ";
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
@@ -164,13 +164,13 @@ bool BackendCCompilerVS::compile()
             linkArguments += "/DLL ";
             resultFile = buildParameters->destFile + buildParameters->postFix + ".dll";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
-            clArguments += "/DSWAG_IS_DLL ";
+            clArguments += "/DSWAG_IS_DYNAMICLIB ";
         }
         else
         {
             resultFile = buildParameters->destFile + buildParameters->postFix + ".exe";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
-            clArguments += "/DSWAG_IS_EXE ";
+            clArguments += "/DSWAG_IS_BINARY ";
         }
 
         if (verbose)

@@ -56,6 +56,13 @@ JobResult ModuleOutputJob::execute()
         auto compileJob                      = g_Pool_moduleCompileJob.alloc();
         compileJob->module                   = module;
         compileJob->buildParameters          = module->buildParameters;
+
+		// Temp output type
+		if(module->byteCodeMainFunc)
+			compileJob->buildParameters.type = BackendOutputType::Binary;
+		else
+			compileJob->buildParameters.type = BackendOutputType::DynamicLib;
+
         compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + module->name;
         g_ThreadMgr.addJob(compileJob);
     }
