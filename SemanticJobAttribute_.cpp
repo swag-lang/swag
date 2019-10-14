@@ -100,8 +100,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_COMPILER;
             else if (child->name == "public")
                 flags |= ATTRIBUTE_PUBLIC;
-            else if (child->name == "foreign")
-                flags |= ATTRIBUTE_FOREIGN;
+			else if (child->name == "foreign")
+				flags |= ATTRIBUTE_FOREIGN;
 
             result.attributes.insert(typeInfo);
             result.values.insert(curAttr->values.begin(), curAttr->values.end());

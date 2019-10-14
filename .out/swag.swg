@@ -25,7 +25,7 @@ namespace swag
 	attr compiler() -> func
 	attr public() -> func
 	attr test() -> func
-	attr foreign(module: string = "") -> func
+	attr foreign(module: string = "", generated: bool = false) -> func
 	attr waitsem(ms: s32) -> func
 
 	// #########################################################

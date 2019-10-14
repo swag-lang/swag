@@ -54,7 +54,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-	auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
+    auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
         switch (returnType->nativeType)
@@ -97,7 +97,11 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         }
     }
 
-    bufferC.addString(nodeFunc->fullname);
+    ComputedValue value;
+    if(typeFuncBC->attributes.getValue("swag.foreign.generated", value) && value.reg.b)
+        bufferC.addString(nodeFunc->fullname);
+    else
+        bufferC.addString(nodeFunc->name);
     bufferC.addString("(");
 
     int numCallParams = (int) typeFuncBC->parameters.size();
@@ -255,7 +259,7 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
 {
     SWAG_ASSERT(moduleToGen);
 
-    bufferSwg.addString(format("#[swag.foreign(\"%s\")]\n", module->name.c_str()));
+    bufferSwg.addString(format("#[swag.foreign(\"%s\", generated: true)]\n", module->name.c_str()));
     bufferSwg.addString("{\n");
 
     for (auto one : moduleToGen->byteCodeFunc)

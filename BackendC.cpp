@@ -27,7 +27,7 @@ bool BackendC::emitHeader()
     bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
     bufferH.addString(format("#define __SWAG_%s__\n", module->nameUp.c_str()));
 
-    bufferSwg.addString(format("namespace %s {\n\n", module->name.c_str()));
+    bufferSwg.addString(format("namespace %s\n{\n\n", module->name.c_str()));
 
     return true;
 }
