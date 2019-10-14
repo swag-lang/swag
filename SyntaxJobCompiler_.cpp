@@ -149,32 +149,6 @@ bool SyntaxJob::doCompilerUnitTest()
             sourceFile->unittestError++;
     }
 
-    // BACKEND
-    else if (token.text == "backend")
-    {
-        SWAG_CHECK(tokenizer.getToken(token));
-        if (token.text == "lib")
-        {
-            if (g_CommandLine.test)
-                sourceFile->module->buildParameters.type = BackendType::Lib;
-        }
-        else if (token.text == "dll")
-        {
-            if (g_CommandLine.test)
-                sourceFile->module->buildParameters.type = BackendType::Dll;
-        }
-        else if (token.text == "exe")
-        {
-            if (g_CommandLine.test)
-                sourceFile->module->buildParameters.type = BackendType::Exe;
-        }
-        else
-        {
-            sourceFile->report({sourceFile, token, format("invalid backend parameter '%s'", token.text.c_str())});
-            return false;
-        }
-    }
-
     // PASS
     else if (token.text == "pass")
     {

@@ -240,6 +240,7 @@
     <ClCompile Include="ByteCodeModuleManager.cpp" />
     <ClCompile Include="ByteCodeRun.cpp" />
     <ClCompile Include="ByteCodeRunContext.cpp" />
+    <ClCompile Include="ByteCodeRunFFI_.cpp" />
     <ClCompile Include="closures.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>

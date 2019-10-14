@@ -317,6 +317,9 @@
     <ClCompile Include="Context.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="ByteCodeRunFFI_.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

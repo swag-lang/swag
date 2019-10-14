@@ -1,7 +1,7 @@
 #pragma once
 #include "Target.h"
 
-enum class BackendType
+enum class BackendOutputType
 {
     Exe,
     Dll,
@@ -10,9 +10,9 @@ enum class BackendType
 
 struct BuildParameters
 {
-    BackendType    type = BackendType::Exe;
-    Target         target;
-    string         postFix;
-    vector<string> defines;
-    string         destFile;
+    BackendOutputType type = BackendOutputType::Exe;
+    Target            target;
+    string            postFix;
+    vector<string>    defines;
+    string            destFile;
 };

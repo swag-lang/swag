@@ -1,6 +1,11 @@
 #pragma once
 #include "BuildPass.h"
 
+enum class BackendType
+{
+    C,
+};
+
 struct CommandLine
 {
     // Compiler
@@ -41,9 +46,10 @@ struct CommandLine
     bool errorNoteOut          = true;
 
     // Backend
-    bool backendOutput      = true;
-    bool backendOutputTest  = true;
-    bool backendOutputLegit = true;
+    BackendType backendType        = BackendType::C;
+    bool        backendOutput      = true;
+    bool        backendOutputTest  = true;
+    bool        backendOutputLegit = true;
 
     string exePath;
 };
