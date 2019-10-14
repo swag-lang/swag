@@ -87,6 +87,8 @@ bool BackendC::preCompile()
 
 bool BackendC::compile(const BuildParameters& buildParameters)
 {
+#ifdef _WIN32
     BackendCCompilerVS compiler(this, &buildParameters);
+#endif
     return compiler.compile();
 }

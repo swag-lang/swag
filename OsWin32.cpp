@@ -4,6 +4,7 @@
 #include "Log.h"
 #include <fcntl.h>
 #include <io.h>
+#include "BuildParameters.h"
 
 namespace OS
 {
@@ -250,6 +251,23 @@ namespace OS
 
         return ok;
     }
+
+    string getOutputFileExtension(BackendOutputType type)
+    {
+        switch (type)
+        {
+        case BackendOutputType::Binary:
+            return "exe";
+        case BackendOutputType::StaticLib:
+            return "lib";
+        case BackendOutputType::DynamicLib:
+            return "dll";
+		default:
+			SWAG_ASSERT(false);
+			return "";
+        }
+    }
+
 }; // namespace OS
 
 #endif

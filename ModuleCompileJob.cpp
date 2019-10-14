@@ -25,7 +25,8 @@ JobResult ModuleCompileJob::execute()
     // Test
     if (buildParameters.flags & BUILDPARAM_FOR_TEST)
     {
-        fs::path path = buildParameters.destFile + ".test.exe";
+		fs::path path = buildParameters.destFile + ".test.";
+		path += OS::getOutputFileExtension(buildParameters.type);
         if (fs::exists(path))
         {
             g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
