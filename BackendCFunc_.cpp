@@ -49,13 +49,15 @@ const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
     }
 }
 
-void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams)
+bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams)
 {
     auto              nodeFunc   = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-    if (typeFuncBC->returnType != g_TypeMgr.typeInfoVoid)
+
+	auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
+    if (returnType != g_TypeMgr.typeInfoVoid)
     {
-        switch (typeFuncBC->returnType->nativeType)
+        switch (returnType->nativeType)
         {
         case NativeTypeKind::S8:
             bufferC.addString("rt[0].s8 = ");
@@ -91,8 +93,7 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
             bufferC.addString("rt[0].f64 = ");
             break;
         default:
-            SWAG_ASSERT(false);
-            break;
+            return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid return type");
         }
     }
 
@@ -102,8 +103,7 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     int numCallParams = (int) typeFuncBC->parameters.size();
     for (int idxCall = 0; idxCall < numCallParams; idxCall++)
     {
-        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-        typeParam      = TypeManager::concreteType(typeParam);
+        auto typeParam = TypeManager::concreteType(typeFuncBC->parameters[idxCall]->typeInfo);
         if (idxCall)
             bufferC.addString(", ");
 
@@ -157,12 +157,13 @@ void BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
                 bufferC.addString(".u64");
                 break;
             default:
-                break;
+                return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid param type");
             }
         }
     }
 
     bufferC.addString(");");
+    return true;
 }
 
 void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
@@ -1257,7 +1258,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         break;
 
         case ByteCodeOp::ForeignCall:
-            emitForeignCall(ip, pushRAParams);
+            SWAG_CHECK(emitForeignCall(ip, pushRAParams));
             break;
 
         default:

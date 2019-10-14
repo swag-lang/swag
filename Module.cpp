@@ -189,7 +189,7 @@ void Module::error(const Utf8& msg)
     numErrors++;
 }
 
-void Module::internalError(const Utf8& msg)
+bool Module::internalError(const Utf8& msg)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
@@ -202,6 +202,13 @@ void Module::internalError(const Utf8& msg)
 
     g_Workspace.numErrors++;
     numErrors++;
+    return false;
+}
+
+bool Module::internalError(uint32_t sourceFileIdx, SourceLocation& startLocation, SourceLocation& endLocation, const Utf8& msg)
+{
+    auto sourceFile = files[sourceFileIdx];
+    return sourceFile->report({sourceFile, startLocation, endLocation, msg});
 }
 
 void Module::deferReleaseChilds(AstNode* node)

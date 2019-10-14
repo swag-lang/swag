@@ -37,9 +37,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->addRuntimeModule = false;
     cmdLine->backendOutput = true;
 	//cmdLine->backendOutputTest = false;
-    cmdLine->testFilter    = "std2";
+    cmdLine->testFilter    = "1081";
 	//cmdLine->verboseBuildPass = false;
-	//cmdLine->fileFilter    = "1070";
+	//cmdLine->fileFilter    = "1081";
 }
 
 void CommandLineParser::logArguments()

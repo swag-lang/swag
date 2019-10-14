@@ -17,4 +17,10 @@ namespace os.win32
 		func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED);
 		func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
 	}
+	
+	var stdOutputHandle: HANDLE
+	#init
+	{
+		stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
+	}
 }

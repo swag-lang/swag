@@ -17,6 +17,7 @@ struct ByteCode;
 struct Job;
 struct Backend;
 struct Target;
+struct SourceLocation;
 
 struct Module : public PoolElement
 {
@@ -24,7 +25,8 @@ struct Module : public PoolElement
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
-    void internalError(const Utf8& msg);
+	bool internalError(const Utf8& msg);
+    bool internalError(uint32_t sourceFileIdx, SourceLocation& startLocation, SourceLocation& endLocation, const Utf8& msg);
     void deferReleaseChilds(AstNode* node);
 
     string              name;

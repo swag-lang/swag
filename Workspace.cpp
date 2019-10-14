@@ -501,7 +501,7 @@ bool Workspace::buildTarget()
             }
 
             if (hasErrors)
-                module->error("module cannot be compiled because it depends on other modules with errors");
+                module->numErrors++;
             else if (canBuild)
                 order.push_back(module);
             else
@@ -511,8 +511,12 @@ bool Workspace::buildTarget()
         // Nothing to build !
         if (order.empty())
         {
-            for (auto module : remain)
-                module->error("cannot compute the build order. do you have a dependency cycle ?");
+			for (auto module : remain)
+			{
+				if(!module->numErrors)
+					module->error("cannot compute the build order. do you have a dependency cycle ?");
+			}
+
             return false;
         }
 

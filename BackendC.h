@@ -27,17 +27,17 @@ struct BackendC : public Backend
     bool emitRuntime();
     bool emitDataSegment(DataSegment* dataSegment);
     bool emitStrings();
-	void emitArgcArgv();
+    void emitArgcArgv();
     bool emitMain();
     bool emitFunctions();
     bool emitFunctions(Module* moduleToGen);
     bool emitFuncSignatures();
-	bool emitFuncSignatures(Module* moduleToGen);
+    bool emitFuncSignatures(Module* moduleToGen);
     bool emitGlobalInit();
-	bool emitGlobalDrop();
+    bool emitGlobalDrop();
 
     const char* swagTypeToCType(TypeInfo* typeInfo);
-    void        emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
+    bool        emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
     void        emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void        emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void        emitFuncSignatureInternalC(ByteCode* bc);
