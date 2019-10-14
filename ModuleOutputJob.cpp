@@ -41,7 +41,7 @@ JobResult ModuleOutputJob::execute()
             compileJob->module                   = module;
             compileJob->buildParameters          = module->buildParameters;
             compileJob->buildParameters.destFile = g_Workspace.targetTestPath.string() + module->name;
-            compileJob->buildParameters.type     = BackendOutputType::Exe;
+            compileJob->buildParameters.type     = BackendOutputType::Binary;
             compileJob->buildParameters.postFix  = ".test";
             compileJob->buildParameters.defines.clear();
             compileJob->buildParameters.defines.push_back("SWAG_IS_UNITTEST");

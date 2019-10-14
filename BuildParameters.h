@@ -3,14 +3,14 @@
 
 enum class BackendOutputType
 {
-    Exe,
-    Dll,
-    Lib,
+    Binary,
+    DynamicLib,
+    StaticLib,
 };
 
 struct BuildParameters
 {
-    BackendOutputType type = BackendOutputType::Exe;
+    BackendOutputType type = BackendOutputType::Binary;
     Target            target;
     string            postFix;
     vector<string>    defines;

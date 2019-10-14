@@ -252,10 +252,10 @@ bool BackendCCompilerVS::compile()
     string outputTypeName;
     switch (buildParameters->type)
     {
-    case BackendOutputType::Lib:
+    case BackendOutputType::StaticLib:
         outputTypeName = ".lib";
         break;
-    case BackendOutputType::Dll:
+    case BackendOutputType::DynamicLib:
         outputTypeName = ".dll";
         break;
     }
@@ -287,7 +287,7 @@ bool BackendCCompilerVS::compile()
     string resultFile;
     switch (buildParameters->type)
     {
-    case BackendOutputType::Lib:
+    case BackendOutputType::StaticLib:
     {
         auto cmdLineCL = "\"" + clPath + "cl.exe\" " + clArguments + " /c";
         SWAG_CHECK(doProcess(cmdLineCL, clPath, verbose));
@@ -308,8 +308,8 @@ bool BackendCCompilerVS::compile()
     }
     break;
 
-    case BackendOutputType::Dll:
-    case BackendOutputType::Exe:
+    case BackendOutputType::DynamicLib:
+    case BackendOutputType::Binary:
     {
         string linkArguments;
         linkArguments += "legacy_stdio_definitions.lib ";
@@ -322,7 +322,7 @@ bool BackendCCompilerVS::compile()
         if (buildParameters->target.backendDebugInformations)
             linkArguments += "/DEBUG ";
 
-        if (buildParameters->type == BackendOutputType::Dll)
+        if (buildParameters->type == BackendOutputType::DynamicLib)
         {
             linkArguments += "/DLL ";
             resultFile = buildParameters->destFile + buildParameters->postFix + ".dll";
