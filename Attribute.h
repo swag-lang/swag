@@ -2,16 +2,17 @@
 #include "Register.h"
 struct TypeInfo;
 
-static const uint32_t ATTRIBUTE_CONSTEXPR     = 0x00000001;
-static const uint32_t ATTRIBUTE_PRINTBYTECODE = 0x00000002;
-static const uint32_t ATTRIBUTE_TEST_FUNC     = 0x00000004;
-static const uint32_t ATTRIBUTE_COMPILER      = 0x00000008;
-static const uint32_t ATTRIBUTE_PUBLIC        = 0x00000010;
-static const uint32_t ATTRIBUTE_FOREIGN       = 0x00000020;
-static const uint32_t ATTRIBUTE_INIT_FUNC     = 0x00000040;
-static const uint32_t ATTRIBUTE_DROP_FUNC     = 0x00000080;
-static const uint32_t ATTRIBUTE_RUN_FUNC      = 0x00000100;
-static const uint32_t ATTRIBUTE_MAIN_FUNC     = 0x00000200;
+static const uint32_t ATTRIBUTE_CONSTEXPR         = 0x00000001;
+static const uint32_t ATTRIBUTE_PRINTBYTECODE     = 0x00000002;
+static const uint32_t ATTRIBUTE_TEST_FUNC         = 0x00000004;
+static const uint32_t ATTRIBUTE_COMPILER          = 0x00000008;
+static const uint32_t ATTRIBUTE_PUBLIC            = 0x00000010;
+static const uint32_t ATTRIBUTE_FOREIGN           = 0x00000020;
+static const uint32_t ATTRIBUTE_INIT_FUNC         = 0x00000040;
+static const uint32_t ATTRIBUTE_DROP_FUNC         = 0x00000080;
+static const uint32_t ATTRIBUTE_RUN_FUNC          = 0x00000100;
+static const uint32_t ATTRIBUTE_MAIN_FUNC         = 0x00000200;
+static const uint32_t ATTRIBUTE_GENERATED_FOREIGN = 0x00000400;
 
 struct TypeInfoFuncAttr;
 struct SymbolAttributes

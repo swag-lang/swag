@@ -97,8 +97,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         }
     }
 
-    ComputedValue value;
-    if(typeFuncBC->attributes.getValue("swag.foreign.generated", value) && value.reg.b)
+    if (nodeFunc->attributeFlags & ATTRIBUTE_GENERATED_FOREIGN)
         bufferC.addString(nodeFunc->fullname);
     else
         bufferC.addString(nodeFunc->name);
@@ -259,7 +258,7 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
 {
     SWAG_ASSERT(moduleToGen);
 
-    bufferSwg.addString(format("#[swag.foreign(\"%s\", generated: true)]\n", module->name.c_str()));
+    bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)]\n", module->name.c_str()));
     bufferSwg.addString("{\n");
 
     for (auto one : moduleToGen->byteCodeFunc)

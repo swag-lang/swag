@@ -56,7 +56,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         return context->errorContext.report(diag, &note, &note1);
     }
 
-	if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && kind != AstNodeKind::EnumValue)
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && kind != AstNodeKind::EnumValue)
     {
         Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to an enum value", oneAttribute->name.c_str())};
         Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
@@ -72,22 +72,26 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
     if (!attrUse)
         return true;
 
-    auto sourceFile = context->sourceFile;
-    auto curAttr    = attrUse;
+    auto          sourceFile = context->sourceFile;
+    auto          curAttr    = attrUse;
+    ComputedValue value;
     while (curAttr)
     {
-        // Check that the attribute matches the following declaration
         for (auto child : curAttr->childs)
         {
+            // Check that the attribute matches the following declaration
             SWAG_CHECK(checkAttribute(context, child, forNode, kind));
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
 
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (result.attributes.find(typeInfo) != result.attributes.end())
             {
                 Diagnostic diag{sourceFile, forNode->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), forNode->name.c_str())};
                 Diagnostic note{sourceFile, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
+
+            result.attributes.insert(typeInfo);
+            result.values.insert(curAttr->values.begin(), curAttr->values.end());
 
             // Predefined attributes will mark some flags
             if (child->name == "constexpr")
@@ -100,11 +104,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_COMPILER;
             else if (child->name == "public")
                 flags |= ATTRIBUTE_PUBLIC;
-			else if (child->name == "foreign")
-				flags |= ATTRIBUTE_FOREIGN;
-
-            result.attributes.insert(typeInfo);
-            result.values.insert(curAttr->values.begin(), curAttr->values.end());
+            else if (child->name == "foreign")
+            {
+                flags |= ATTRIBUTE_FOREIGN;
+                auto it = curAttr->values.find("swag.foreign.gen");
+                if (it != curAttr->values.end() && it->second.second.reg.b)
+                    flags |= ATTRIBUTE_GENERATED_FOREIGN;
+            }
         }
 
         curAttr = curAttr->parentAttributes;
