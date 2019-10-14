@@ -15,16 +15,16 @@ JobResult ModuleOutputJob::execute()
     if (module->fromTests && !g_CommandLine.backendOutputTest)
         return JobResult::ReleaseJob;
 
-	switch (g_CommandLine.backendType)
-	{
-	case BackendType::C:
-		module->backend = new BackendC(module);
-		break;
-	default:
-		SWAG_ASSERT(false);
-		break;
-	}
-    
+    switch (g_CommandLine.backendType)
+    {
+    case BackendType::C:
+        module->backend = new BackendC(module);
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
     if (!module->backend->preCompile())
         return JobResult::ReleaseJob;
     if (module->buildPass < BuildPass::Full)
@@ -43,8 +43,7 @@ JobResult ModuleOutputJob::execute()
             compileJob->buildParameters.destFile = g_Workspace.targetTestPath.string() + module->name;
             compileJob->buildParameters.type     = BackendOutputType::Binary;
             compileJob->buildParameters.postFix  = ".test";
-            compileJob->buildParameters.defines.clear();
-            compileJob->buildParameters.defines.push_back("SWAG_IS_UNITTEST");
+            compileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;
             g_ThreadMgr.addJob(compileJob);
         }
     }

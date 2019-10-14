@@ -279,8 +279,8 @@ bool BackendCCompilerVS::compile()
 
     for (const auto& oneIncludePath : includePaths)
         clArguments += "/I\"" + oneIncludePath + "\" ";
-    for (const auto& define : buildParameters->defines)
-        clArguments += "/D" + define + " ";
+	if(buildParameters->flags & BUILDPARAM_FOR_TEST)
+		clArguments += "/DSWAG_IS_UNITTEST ";
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
