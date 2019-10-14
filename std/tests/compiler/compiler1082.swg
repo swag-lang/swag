@@ -24,5 +24,5 @@ var stdOutputHandle: HANDLE
 
 #test
 {
-	WriteFile(stdOutputHandle, @dataof("toto\n"), 5, null, null)
+	//WriteFile(stdOutputHandle, @dataof("toto\n"), 5, null, null)
 }
