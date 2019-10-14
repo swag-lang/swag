@@ -38,6 +38,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->backendOutput = true;
 	//cmdLine->backendOutputTest = false;
     cmdLine->testFilter    = "std2";
+	//cmdLine->verboseBuildPass = false;
 	//cmdLine->fileFilter    = "1070";
 }
 

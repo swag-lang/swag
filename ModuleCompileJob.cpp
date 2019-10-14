@@ -30,6 +30,9 @@ JobResult ModuleCompileJob::execute()
         if (fs::exists(path))
         {
             g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
+			if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)
+				g_Log.verbose("launch " + path.string());
+
             uint32_t numErrors = 0;
             OS::doProcess(path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
             g_Workspace.numErrors += numErrors;

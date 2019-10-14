@@ -83,16 +83,16 @@ namespace OS
         case LogColor::DarkYellow:
             attributes = FOREGROUND_RED | FOREGROUND_GREEN;
             break;
-		case LogColor::Default:
-			attributes = defaultAttributes;
-			break;
+        case LogColor::Default:
+            attributes = defaultAttributes;
+            break;
         }
 
         WORD back = defaultAttributes & (BACKGROUND_BLUE | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY);
         ::SetConsoleTextAttribute(consoleHandle, attributes | back);
     }
 
-    bool doProcess(const string& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor)
+    bool doProcess(const string& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor, const char* logPrefix)
     {
         STARTUPINFOA        si;
         PROCESS_INFORMATION pi;
@@ -125,9 +125,6 @@ namespace OS
         si.hStdOutput = hChildStdoutWr;
         si.dwFlags    = STARTF_USESTDHANDLES;
         ::ZeroMemory(&pi, sizeof(pi));
-
-        if (g_CommandLine.verboseBackendCommand)
-            g_Log.verbose(cmdline);
 
         if (!::CreateProcessA(nullptr,
                               (LPSTR) cmdline.c_str(),
@@ -195,6 +192,8 @@ namespace OS
                     else if (logAll)
                     {
                         g_Log.setColor(logColor);
+                        if (logPrefix)
+                            g_Log.print(logPrefix);
                         g_Log.print(oneLine + "\n");
                     }
                 }
@@ -260,9 +259,9 @@ namespace OS
             return ".lib";
         case BackendOutputType::DynamicLib:
             return ".dll";
-		default:
-			SWAG_ASSERT(false);
-			return "";
+        default:
+            SWAG_ASSERT(false);
+            return "";
         }
     }
 

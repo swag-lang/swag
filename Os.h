@@ -8,6 +8,6 @@ namespace OS
     extern void   setup();
     extern void   consoleSetup();
     extern void   consoleSetColor(LogColor color);
-    extern bool   doProcess(const string& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor = LogColor::DarkCyan);
+    extern bool   doProcess(const string& cmdline, const string& currentDirectory, bool logAll, uint32_t& numErrors, LogColor logColor = LogColor::DarkCyan, const char* logPrefix = nullptr);
     extern string getOutputFileExtension(BackendOutputType type);
 } // namespace OS

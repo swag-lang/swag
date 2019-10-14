@@ -299,7 +299,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
-						g_Log.verbose(format("running '%d' bytecode #test function(s)", module->byteCodeTestFunc.size()));
+						g_Log.verbose(format("bytecode execution of %d #test function(s)", module->byteCodeTestFunc.size()));
 
                     for (auto func : module->byteCodeTestFunc)
                     {
@@ -315,7 +315,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("running '%d' bytecode #run function(s)", module->byteCodeRunFunc.size()));
+                        g_Log.verbose(format("bytecode execution of %d #run function(s)", module->byteCodeRunFunc.size()));
 
                     for (auto func : module->byteCodeRunFunc)
                     {
@@ -401,7 +401,7 @@ void Workspace::setup()
     sourcePath.append("src/");
 
     if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose(format("building workspace '%s'", workspacePath.string().c_str()));
+        g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
 
     g_ThreadMgr.init();
 }
@@ -427,6 +427,9 @@ void Workspace::setupTarget()
     targetPath = workspacePath;
     targetPath.append("out/");
     targetPath.append(currentTarget->name);
+
+	if (g_CommandLine.verboseBuildPass)
+        g_Log.verbose(format("=> target is '%s'", targetPath.string().c_str()));
 
     // Clean target
     if (g_CommandLine.cleanTarget)
