@@ -981,6 +981,31 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r[%u].b = r[%u].b || r[%u].b;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
 
+        case ByteCodeOp::BitmaskAndS32:
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 & r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BitmaskAndS64:
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 & r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BitmaskAndU32:
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 & r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BitmaskAndU64:
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 & r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BitmaskOrS32:
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 | r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BitmaskOrS64:
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 | r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BitmaskOrU32:
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 | r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BitmaskOrU64:
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 | r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+
         case ByteCodeOp::Jump:
             bufferC.addString(format("goto lbl%08u;", ip->a.s32 + i + 1));
             break;
