@@ -13,7 +13,8 @@ static const uint32_t ATTRIBUTE_DROP_FUNC         = 0x00000080;
 static const uint32_t ATTRIBUTE_RUN_FUNC          = 0x00000100;
 static const uint32_t ATTRIBUTE_MAIN_FUNC         = 0x00000200;
 static const uint32_t ATTRIBUTE_GENERATED_FOREIGN = 0x00000400;
-static const uint32_t ATTRIBUTE_STRUCT_PACK       = 0x00000800;
+static const uint32_t ATTRIBUTE_PACK              = 0x00000800;
+static const uint32_t ATTRIBUTE_FLAGS             = 0x00001000;
 
 struct TypeInfoFuncAttr;
 struct SymbolAttributes

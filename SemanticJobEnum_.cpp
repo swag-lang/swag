@@ -18,12 +18,31 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     auto typeNode = context->node;
     auto enumNode = context->node->parent;
 
-    auto rawTypeInfo  = typeNode->childs.empty() ? g_TypeMgr.typeInfoS32 : typeNode->childs[0]->typeInfo;
-    auto typeInfo     = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
+    auto typeInfo = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
+    if (enumNode->parentAttributes)
+    {
+        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, enumNode->parentAttributes, enumNode, AstNodeKind::EnumDecl, enumNode->attributeFlags));
+    }
+
+    TypeInfo* rawTypeInfo = (enumNode->attributeFlags & ATTRIBUTE_FLAGS) ? g_TypeMgr.typeInfoU32 : g_TypeMgr.typeInfoS32;
+    if (!typeNode->childs.empty())
+        rawTypeInfo = typeNode->childs[0]->typeInfo;
+
     typeInfo->rawType = rawTypeInfo;
     typeInfo->sizeOf  = rawTypeInfo->sizeOf;
-    if (enumNode->parentAttributes)
-        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, enumNode->parentAttributes, enumNode, AstNodeKind::EnumDecl, enumNode->attributeFlags));
+
+    if (enumNode->attributeFlags & ATTRIBUTE_FLAGS)
+    {
+        auto concreteType = TypeManager::concreteType(rawTypeInfo);
+        if (concreteType != g_TypeMgr.typeInfoU8 &&
+            concreteType != g_TypeMgr.typeInfoU16 &&
+            concreteType != g_TypeMgr.typeInfoU32 &&
+            concreteType != g_TypeMgr.typeInfoU64)
+        {
+            auto sourceFile = context->sourceFile;
+            return context->errorContext.report({sourceFile, typeNode->childs[0], format("invalid type '%s' for flags (should be u8, u16, u32 or u64)", rawTypeInfo->name.c_str())});
+        }
+    }
 
     return true;
 }
@@ -71,28 +90,50 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     typeEnum->values.push_back(typeParam);
 
     // Compute next value
+    bool isFlags = (enumNode->attributeFlags & ATTRIBUTE_FLAGS);
     switch (rawType->nativeType)
     {
     case NativeTypeKind::U8:
         if (enumNode->computedValue.reg.u8 == UINT8_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u8'", valNode->name.c_str())});
-        enumNode->computedValue.reg.u8++;
+        if (isFlags && enumNode->computedValue.reg.u8)
+        {
+            enumNode->computedValue.reg.u8 <<= 1;
+        }
+        else
+            enumNode->computedValue.reg.u8++;
         break;
     case NativeTypeKind::U16:
         if (enumNode->computedValue.reg.u16 == UINT16_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u16'", valNode->name.c_str())});
-        enumNode->computedValue.reg.u16++;
+        if (isFlags && enumNode->computedValue.reg.u16)
+        {
+            enumNode->computedValue.reg.u16 <<= 1;
+        }
+        else
+            enumNode->computedValue.reg.u16++;
         break;
     case NativeTypeKind::U32:
         if (enumNode->computedValue.reg.u32 == UINT32_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u32'", valNode->name.c_str())});
-        enumNode->computedValue.reg.u32++;
+        if (isFlags && enumNode->computedValue.reg.u32)
+        {
+            enumNode->computedValue.reg.u32 <<= 1;
+        }
+        else
+            enumNode->computedValue.reg.u32++;
         break;
     case NativeTypeKind::U64:
         if (enumNode->computedValue.reg.u64 == UINT64_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u64'", valNode->name.c_str())});
-        enumNode->computedValue.reg.u64++;
+        if (isFlags && enumNode->computedValue.reg.u64)
+        {
+            enumNode->computedValue.reg.u64 <<= 1;
+        }
+        else
+            enumNode->computedValue.reg.u64++;
         break;
+
     case NativeTypeKind::S8:
         if (enumNode->computedValue.reg.s8 <= INT8_MIN || enumNode->computedValue.reg.s8 >= INT8_MAX)
             return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 's8'", valNode->name.c_str())});

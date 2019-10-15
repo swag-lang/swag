@@ -28,6 +28,7 @@ namespace swag
 	attr foreign(module: string = "", gen: bool = false) -> func
 	attr waitsem(ms: s32) -> func
 	attr pack() -> struct
+	attr flags() -> enum
 
 	// #########################################################
 	// Context & allocators

@@ -105,7 +105,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             else if (child->name == "public")
                 flags |= ATTRIBUTE_PUBLIC;
             else if (child->name == "pack")
-                flags |= ATTRIBUTE_STRUCT_PACK;
+                flags |= ATTRIBUTE_PACK;
+            else if (child->name == "flags")
+                flags |= ATTRIBUTE_FLAGS;
+
             else if (child->name == "foreign")
             {
                 flags |= ATTRIBUTE_FOREIGN;
