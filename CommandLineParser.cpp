@@ -37,6 +37,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->addRuntimeModule = false;
     cmdLine->backendOutput     = true;
     cmdLine->backendOutputTest = true;
+    cmdLine->runBackendTests   = false;
     //cmdLine->testFilter    = "std";
     //cmdLine->verboseBuildPass = false;
     //cmdLine->fileFilter = "1090";
