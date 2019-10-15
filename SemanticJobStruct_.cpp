@@ -152,14 +152,25 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         // Direct matching
-        else if (node->packing == 1)
+        else if (node->packing == 1 || child->typeInfo->sizeOf == 0)
         {
             typeInfo->sizeOf += child->typeInfo->sizeOf;
             storageOffset += child->typeInfo->sizeOf;
         }
         else
         {
-            typeInfo->sizeOf += child->typeInfo->sizeOf;
+            auto padding = storageOffset & (child->typeInfo->sizeOf - 1);
+            padding %= node->packing;
+            if (padding)
+            {
+				padding = child->typeInfo->sizeOf - padding;
+				padding %= node->packing;
+                storageOffset += padding;
+				typeInfo->childs[storageIndex]->offset = storageOffset;
+                child->resolvedSymbolOverload->storageOffset = storageOffset;
+            }
+
+            typeInfo->sizeOf += child->typeInfo->sizeOf + padding;
             storageOffset += child->typeInfo->sizeOf;
         }
 
