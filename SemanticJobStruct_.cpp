@@ -83,6 +83,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     typeInfo->name       = format("%s", node->name.c_str());
     if (!typeInfo->opInitFct)
         typeInfo->opInitFct = node->defaultOpInit;
+	if (node->attributeFlags & ATTRIBUTE_STRUCT_PACK)
+		node->packing = 1;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;

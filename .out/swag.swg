@@ -27,6 +27,7 @@ namespace swag
 	attr test() -> func
 	attr foreign(module: string = "", gen: bool = false) -> func
 	attr waitsem(ms: s32) -> func
+	attr pack() -> struct
 
 	// #########################################################
 	// Context & allocators
