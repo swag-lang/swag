@@ -33,6 +33,8 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 
     if (enumNode->attributeFlags & ATTRIBUTE_FLAGS)
     {
+		typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
+
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (concreteType != g_TypeMgr.typeInfoU8 &&
             concreteType != g_TypeMgr.typeInfoU16 &&
@@ -87,8 +89,8 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 return context->errorContext.report({sourceFile, valNode->token, format("enum value '%s' is out of range of 'u8'", valNode->name.c_str())});
             if (isFlags && enumNode->computedValue.reg.u8)
             {
-				auto n = enumNode->computedValue.reg.u8;
-                SWAG_VERIFY((n & (n- 1)) == 0, context->errorContext.report({sourceFile, valNode->token, format("cannot deduce flag value of '%s' because previous value is not power of two", valNode->name.c_str())}));
+                auto n = enumNode->computedValue.reg.u8;
+                SWAG_VERIFY((n & (n - 1)) == 0, context->errorContext.report({sourceFile, valNode->token, format("cannot deduce flag value of '%s' because previous value is not power of two", valNode->name.c_str())}));
                 enumNode->computedValue.reg.u8 <<= 1;
             }
             else

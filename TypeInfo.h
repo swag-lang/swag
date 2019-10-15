@@ -98,6 +98,7 @@ static const uint32_t TYPEINFO_ATTRIBUTE_STRUCT         = 0x00200000;
 static const uint32_t TYPEINFO_ATTRIBUTE_ENUM           = 0x00400000;
 static const uint32_t TYPEINFO_STRUCT_IS_TUPLE          = 0x00800000;
 static const uint32_t TYPEINFO_ATTRIBUTE_ENUMVALUE      = 0x01000000;
+static const uint32_t TYPEINFO_ENUM_FLAGS               = 0x02000000;
 
 static const uint32_t ISSAME_EXACT    = 0x00000001;
 static const uint32_t ISSAME_CAST     = 0x00000002;
@@ -475,7 +476,7 @@ struct TypeInfoSlice : public TypeInfo
     void computeName() override
     {
         pointedType->computeName();
-		name.clear();
+        name.clear();
         if (flags & TYPEINFO_CONST)
             name = "const ";
         name += format("[..] %s", pointedType->name.c_str());
