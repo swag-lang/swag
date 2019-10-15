@@ -39,7 +39,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->backendOutputTest = true;
     //cmdLine->testFilter    = "std";
     //cmdLine->verboseBuildPass = false;
-    cmdLine->fileFilter = "1082";
+    cmdLine->fileFilter = "1083";
 }
 
 void CommandLineParser::logArguments()

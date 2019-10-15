@@ -274,6 +274,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         SWAG_CHECK(doImpl(parent));
         break;
     case TokenId::KwdStruct:
+	case TokenId::KwdUnion:
         SWAG_CHECK(doStruct(parent));
         break;
     case TokenId::KwdAttr:

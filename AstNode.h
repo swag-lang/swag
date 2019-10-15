@@ -321,7 +321,7 @@ struct AstNode : public PoolElement
     ByteCode*     bc;
     RegisterList  resultRegisterRC;
     RegisterList  additionalRegisterRC;
-	RegisterList  contiguousRegisterRC;
+    RegisterList  contiguousRegisterRC;
     uint32_t      fctCallStorageOffset;
 };
 
@@ -711,11 +711,13 @@ struct AstStruct : public AstNode
         content           = nullptr;
         scope             = nullptr;
         defaultOpInit     = nullptr;
+        packing           = sizeof(uint64_t);
         AstNode::reset();
     }
 
     AstNode* clone(CloneContext& context) override;
 
+    uint32_t packing;
     AstNode* genericParameters;
     AstNode* content;
     Scope*   scope;

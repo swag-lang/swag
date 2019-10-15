@@ -141,11 +141,28 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
-        typeInfo->sizeOf += child->typeInfo->sizeOf;
         typeInfo->childs[storageIndex]->offset       = storageOffset;
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
-        storageOffset += child->typeInfo->sizeOf;
+
+        // Union, no offset, sizeof is the size of the biggest child
+        if (node->packing == 0)
+        {
+            typeInfo->sizeOf = max(typeInfo->sizeOf, child->typeInfo->sizeOf);
+        }
+
+        // Direct matching
+        else if (node->packing == 1)
+        {
+            typeInfo->sizeOf += child->typeInfo->sizeOf;
+            storageOffset += child->typeInfo->sizeOf;
+        }
+        else
+        {
+            typeInfo->sizeOf += child->typeInfo->sizeOf;
+            storageOffset += child->typeInfo->sizeOf;
+        }
+
         storageIndex++;
     }
 
@@ -158,6 +175,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // We are parsing the swag module
     if (sourceFile->swagFile)
-		g_Workspace.swagScope.registerType(node->typeInfo);
+        g_Workspace.swagScope.registerType(node->typeInfo);
     return true;
 }

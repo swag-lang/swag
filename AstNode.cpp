@@ -61,10 +61,10 @@ void AstNode::computeFullName()
 {
     scoped_lock lk(mutex);
     SWAG_ASSERT(ownerScope);
-	if(ownerScope->fullname.empty())
-		fullname = name;
-	else
-		fullname = ownerScope->fullname + "_" + name;
+    if (ownerScope->fullname.empty())
+        fullname = name;
+    else
+        fullname = ownerScope->fullname + "_" + name;
     replaceAll(fullname, '.', '_');
 }
 
@@ -416,11 +416,11 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     auto newNode = g_Pool_astTypeExpression.alloc();
     newNode->copyFrom(context, this);
 
-    newNode->identifier       = findChildRef(identifier, newNode);
-    newNode->ptrCount         = ptrCount;
-    newNode->arrayDim         = arrayDim;
-    newNode->isSlice          = isSlice;
-    newNode->isConst          = isConst;
+    newNode->identifier     = findChildRef(identifier, newNode);
+    newNode->ptrCount       = ptrCount;
+    newNode->arrayDim       = arrayDim;
+    newNode->isSlice        = isSlice;
+    newNode->isConst        = isConst;
     newNode->forceConstType = forceConstType;
     return newNode;
 }
@@ -464,7 +464,7 @@ AstNode* AstExpressionList::clone(CloneContext& context)
     newNode->storageOffsetSegment = storageOffsetSegment;
     newNode->listKind             = listKind;
     newNode->isConst              = isConst;
-    newNode->forceConstType     = forceConstType;
+    newNode->forceConstType       = forceConstType;
 
     return newNode;
 }
@@ -474,6 +474,7 @@ AstNode* AstStruct::clone(CloneContext& context)
     auto newNode = g_Pool_astStruct.alloc();
     newNode->copyFrom(context, this, false);
     newNode->defaultOpInit = defaultOpInit;
+    newNode->packing       = packing;
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;

@@ -52,6 +52,10 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     if (result)
         *result = structNode;
 
+    // Structure layout
+    if (token.id == TokenId::KwdUnion)
+        structNode->packing = 0;
+
     SWAG_CHECK(tokenizer.getToken(token));
 
     // Generic arguments
@@ -69,7 +73,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     currentScope->allocateSymTable();
     {
         scoped_lock lk(currentScope->symTable->mutex);
-        auto        symbol             = currentScope->symTable->findNoLock(structNode->name);
+        auto        symbol = currentScope->symTable->findNoLock(structNode->name);
         if (!symbol)
         {
             auto typeInfo = g_Pool_typeInfoStruct.alloc();

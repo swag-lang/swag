@@ -91,6 +91,7 @@ enum class TokenId
     KwdEnumValue,
     KwdImpl,
     KwdStruct,
+	KwdUnion,
     KwdFunc,
     KwdAttr,
     KwdTrue,

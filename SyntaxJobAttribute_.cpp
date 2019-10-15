@@ -51,6 +51,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_VAR;
             break;
         case TokenId::KwdStruct:
+		case TokenId::KwdUnion:
             SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute type 'struct' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_STRUCT;
             break;
