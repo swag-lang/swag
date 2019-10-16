@@ -134,9 +134,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, left, right));
                 }
             }
+
+            break;
         }
-        else
-            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right));
+
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right));
         break;
 
     case TokenId::SymLowerLowerEqual:
@@ -160,7 +162,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
         {
-			return notAllowed(context, node, leftTypeInfo);
+            return notAllowed(context, node, leftTypeInfo);
         }
         break;
 
@@ -193,7 +195,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
         {
-			return notAllowed(context, node, leftTypeInfo);
+            return notAllowed(context, node, leftTypeInfo);
         }
         break;
 
@@ -217,7 +219,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 rightTypeInfo->nativeType != NativeTypeKind::U32 &&
                 rightTypeInfo->nativeType != NativeTypeKind::U64)
             {
-                return context->errorContext.report({sourceFile, right, format("pointer operation not allowed on type '%s'", rightTypeInfo->name.c_str())});
+                return context->errorContext.report({sourceFile, right, format("pointer arithmetic not allowed with type '%s'", rightTypeInfo->name.c_str())});
             }
 
             auto leftPtrType = CastTypeInfo<TypeInfoPointer>(leftTypeInfo, TypeInfoKind::Pointer);
@@ -232,7 +234,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::Char ||
             leftTypeInfo->nativeType == NativeTypeKind::String)
         {
-			return notAllowed(context, node, leftTypeInfo);
+            return notAllowed(context, node, leftTypeInfo);
         }
         break;
 
@@ -252,7 +254,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (leftTypeInfo->nativeType != NativeTypeKind::F32 &&
             leftTypeInfo->nativeType != NativeTypeKind::F64)
         {
-			return notAllowed(context, node, leftTypeInfo);
+            return notAllowed(context, node, leftTypeInfo);
         }
         break;
 
