@@ -13,7 +13,6 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     auto  child      = node->childs.front();
     auto  typeInfo   = child->typeInfo;
     auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
 
     SWAG_VERIFY(child->flags & AST_L_VALUE, context->errorContext.report({sourceFile, child, "cannot take address of expression"}));
     if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerIndex)
@@ -28,7 +27,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         auto lambdaType    = child->typeInfo->clone();
         lambdaType->kind   = TypeInfoKind::Lambda;
         lambdaType->sizeOf = sizeof(void*);
-        node->typeInfo     = typeTable.registerType(lambdaType);
+        node->typeInfo     = lambdaType;
         node->byteCodeFct  = &ByteCodeGenJob::emitMakeLambda;
     }
 
@@ -57,7 +56,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_CONST)
             ptrType->setConst();
 
-        node->typeInfo = typeTable.registerType(ptrType);
+        node->typeInfo = ptrType;
     }
 
     return true;
@@ -169,7 +168,6 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto  sourceFile       = context->sourceFile;
-    auto& typeTable        = sourceFile->module->typeTable;
     auto  arrayNode        = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     auto  arrayType        = TypeManager::concreteType(arrayNode->array->typeInfo);
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
@@ -203,7 +201,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             auto newType = static_cast<TypeInfoPointer*>(typePtr->clone());
             newType->ptrCount--;
 			newType->computeName();
-            arrayNode->typeInfo = typeTable.registerType(newType);
+            arrayNode->typeInfo = newType;
         }
 
         setupIdentifierRef(context, arrayNode, arrayNode->typeInfo);

@@ -229,7 +229,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             // From now this is considered as a function, not a lambda
             auto funcType           = typeInfo->clone();
             funcType->kind          = TypeInfoKind::FuncAttr;
-            identifier->typeInfo    = typeTable.registerType(funcType);
+            identifier->typeInfo    = funcType;
             identifier->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
 
             // Need to make all types compatible, in case a cast is necessary

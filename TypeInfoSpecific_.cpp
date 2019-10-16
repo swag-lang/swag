@@ -22,16 +22,6 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (to->kind != TypeInfoKind::Native)
         return false;
 
-    if ((isSameFlags & ISSAME_EXACT) && !(isSameFlags & ISSAME_CONCRETE))
-    {
-        if ((flags & TYPEINFO_UNTYPED_INTEGER) != (to->flags & TYPEINFO_UNTYPED_INTEGER))
-            return false;
-        if ((flags & TYPEINFO_UNTYPED_FLOAT) != (to->flags & TYPEINFO_UNTYPED_FLOAT))
-            return false;
-        if ((flags & TYPEINFO_AUTO_CAST) != (to->flags & TYPEINFO_AUTO_CAST))
-            return false;
-    }
-
     auto other = static_cast<TypeInfoNative*>(to);
     if (nativeType != other->nativeType)
         return false;

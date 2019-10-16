@@ -23,10 +23,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 {
-    auto  sourceFile = context->sourceFile;
-    auto  module     = sourceFile->module;
-    auto& typeTable  = module->typeTable;
-    auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
@@ -63,7 +60,7 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
     typeInfo->name += "}";
     node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
-    node->typeInfo          = typeTable.registerType(typeInfo);
+    node->typeInfo          = typeInfo;
 
     // Reserve
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
@@ -78,10 +75,7 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
 
 bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
-    auto  sourceFile = context->sourceFile;
-    auto  module     = sourceFile->module;
-    auto& typeTable  = module->typeTable;
-    auto  node       = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
     auto typeInfo      = g_Pool_typeInfoList.alloc();
     typeInfo->listKind = node->listKind;
@@ -102,7 +96,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 
     node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
     node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
-    node->typeInfo          = typeTable.registerType(typeInfo);
+    node->typeInfo          = typeInfo;
 
     // Reserve
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)

@@ -109,7 +109,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = g_TypeMgr.typeInfoU8;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*u8";
-            node->typeInfo       = typeTable.registerType(ptrType);
+            node->typeInfo       = ptrType;
             node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Slice)
@@ -121,7 +121,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = ptrSlice->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrSlice->pointedType->name;
-            node->typeInfo       = typeTable.registerType(ptrType);
+            node->typeInfo       = ptrType;
             node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Array)
@@ -133,7 +133,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = ptrArray->pointedType;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrArray->pointedType->name;
-            node->typeInfo       = typeTable.registerType(ptrType);
+            node->typeInfo       = ptrType;
             node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->isNative(NativeTypeKind::Any))
@@ -144,7 +144,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->pointedType = g_TypeMgr.typeInfoVoid;
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
-            node->typeInfo       = typeTable.registerType(ptrType);
+            node->typeInfo       = ptrType;
             node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
         }
         else

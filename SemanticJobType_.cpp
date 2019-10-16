@@ -25,11 +25,9 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    auto  node       = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
-    auto  typeInfo   = g_Pool_typeInfoFuncAttr.alloc();
-    typeInfo->kind   = TypeInfoKind::Lambda;
+    auto node       = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
+    auto typeInfo   = g_Pool_typeInfoFuncAttr.alloc();
+    typeInfo->kind  = TypeInfoKind::Lambda;
 
     if (node->returnType)
     {
@@ -52,16 +50,15 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 
     typeInfo->computeName();
     typeInfo->sizeOf = sizeof(void*);
-    node->typeInfo   = typeTable.registerType(typeInfo);
+    node->typeInfo   = typeInfo;
 
     return true;
 }
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    auto  node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
+    auto sourceFile = context->sourceFile;
+    auto node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
@@ -82,7 +79,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             auto typeVariadic     = (TypeInfoVariadic*) node->typeInfo->clone();
             typeVariadic->kind    = TypeInfoKind::TypedVariadic;
             typeVariadic->rawType = node->childs.front()->typeInfo;
-            node->typeInfo        = typeTable.registerType(typeVariadic);
+            node->typeInfo        = typeVariadic;
         }
     }
 
@@ -93,7 +90,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         node->resolvedSymbolOverload = node->identifier->resolvedSymbolOverload;
         node->typeInfo               = g_Pool_typeInfoGeneric.alloc();
         node->typeInfo->name         = node->resolvedSymbolName->name;
-        node->typeInfo               = typeTable.registerType(node->typeInfo);
+        node->typeInfo               = node->typeInfo;
     }
 
     // Otherwise, this is strange, we should have a type
@@ -131,8 +128,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
         ptrPointer->pointedType = ptrPointer->computePointedType();
-        ptrPointer->pointedType = typeTable.registerType(ptrPointer->pointedType);
-        node->typeInfo          = typeTable.registerType(ptrPointer);
+        node->typeInfo          = ptrPointer;
     }
 
     // Const struct
@@ -148,7 +144,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             {
                 auto copyType = node->typeInfo->clone();
                 copyType->setConst();
-                node->typeInfo = typeTable.registerType(copyType);
+                node->typeInfo = copyType;
             }
         }
     }
@@ -169,7 +165,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
             ptrArray->sizeOf = 0;
             ptrArray->computeName();
-            node->typeInfo = typeTable.registerType(ptrArray);
+            node->typeInfo = ptrArray;
         }
         else
         {
@@ -194,7 +190,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                     ptrArray->flags |= TYPEINFO_CONST;
                 ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
                 ptrArray->computeName();
-                node->typeInfo = typeTable.registerType(ptrArray);
+                node->typeInfo = ptrArray;
             }
         }
     }
@@ -207,7 +203,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         ptrSlice->computeName();
-        node->typeInfo = typeTable.registerType(ptrSlice);
+        node->typeInfo = ptrSlice;
     }
 
     node->computedValue.reg.pointer = (uint8_t*) node->typeInfo;
@@ -219,9 +215,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 
 bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
-    auto  sourceFile = context->sourceFile;
-    auto& typeTable  = sourceFile->module->typeTable;
-    auto  node       = context->node;
+    auto sourceFile = context->sourceFile;
+    auto node       = context->node;
 
     auto typeInfo     = g_Pool_typeInfoAlias.alloc();
     typeInfo->rawType = node->childs.front()->typeInfo;
@@ -231,7 +226,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_GENERIC);
     typeInfo->flags |= (typeInfo->rawType->flags & TYPEINFO_CONST);
     typeInfo->computeName();
-    node->typeInfo = typeTable.registerType(typeInfo);
+    node->typeInfo = typeInfo;
 
     uint32_t symbolFlags = 0;
     if (node->typeInfo->flags & TYPEINFO_GENERIC)
@@ -261,13 +256,11 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 
 bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-
+    auto node      = context->node;
     auto exprNode  = node->childs[0];
     auto cloneType = TypeManager::concreteType(exprNode->typeInfo)->clone();
     cloneType->flags |= TYPEINFO_AUTO_CAST;
-    node->typeInfo = sourceFile->module->typeTable.registerType(cloneType);
+    node->typeInfo = cloneType;
 
     node->byteCodeFct = &ByteCodeGenJob::emitExplicitAutoCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);

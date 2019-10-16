@@ -130,9 +130,6 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
     if (!oldType)
         return;
 
-    auto      sourceFile = context->sourceFile;
-    auto      module     = sourceFile->module;
-    auto&     typeTable  = module->typeTable;
     TypeInfo* newType    = nullptr;
 
     auto it = cloneContext.replaceTypes.find(oldType);
@@ -156,7 +153,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typeAlias->rawType = newType;
             typeAlias->flags &= ~TYPEINFO_GENERIC;
             typeAlias->computeName();
-            *typeInfo = typeTable.registerType(typeAlias);
+            *typeInfo = typeAlias;
         }
 
         break;
@@ -173,8 +170,8 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typePointer->finalType = newType;
             typePointer->flags &= ~TYPEINFO_GENERIC;
             typePointer->computeName();
-            typePointer->pointedType = typeTable.registerType(typePointer->computePointedType());
-            *typeInfo                = typeTable.registerType(typePointer);
+            typePointer->pointedType = typePointer->computePointedType();
+            *typeInfo                = typePointer;
         }
 
         break;
@@ -191,7 +188,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typeArray->pointedType = newType;
             typeArray->flags &= ~TYPEINFO_GENERIC;
             typeArray->computeName();
-            *typeInfo = typeTable.registerType(typeArray);
+            *typeInfo = typeArray;
         }
 
         break;
@@ -208,7 +205,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
             typeSlice->pointedType = newType;
             typeSlice->flags &= ~TYPEINFO_GENERIC;
             typeSlice->computeName();
-            *typeInfo = typeTable.registerType(typeSlice);
+            *typeInfo = typeSlice;
         }
 
         break;
@@ -249,7 +246,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
         if (newLambda)
         {
             newLambda->computeName();
-            *typeInfo = typeTable.registerType(newLambda);
+            *typeInfo = newLambda;
         }
 
         break;

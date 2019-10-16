@@ -368,7 +368,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto  sourceFile         = context->sourceFile;
     auto  module             = sourceFile->module;
-    auto& typeTable          = module->typeTable;
     auto  node               = static_cast<AstVarDecl*>(context->node);
     bool  isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
@@ -485,7 +484,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (isCompilerConstant)
                     typeArray->flags |= TYPEINFO_CONST;
                 typeArray->computeName();
-                node->typeInfo = typeTable.registerType(typeArray);
+                node->typeInfo = typeArray;
 
                 // For a global variable, no need to collect in the constant segment, as we will collect directly to the mutable segment
                 if (symbolFlags & OVERLOAD_VAR_GLOBAL)
@@ -517,7 +516,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             node->typeInfo       = g_Pool_typeInfoGeneric.alloc();
             node->typeInfo->name = node->name;
-            node->typeInfo       = typeTable.registerType(node->typeInfo);
         }
     }
 
@@ -560,7 +558,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 {
                     auto typeConst = node->typeInfo->clone();
                     typeConst->setConst();
-                    node->typeInfo = typeTable.registerType(typeConst);
+                    node->typeInfo = typeConst;
                 }
             }
         }
