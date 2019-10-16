@@ -1,4 +1,4 @@
-;
+#module compiler178
 #unittest pass semantic;
 
 namespace A{}

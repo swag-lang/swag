@@ -1,4 +1,5 @@
-﻿#unittest pass lexer;
+﻿#module compiler38
+#unittest pass lexer;
 #unittest error;
 0xFFFFFFFF_FFFFFFFF'char;
 

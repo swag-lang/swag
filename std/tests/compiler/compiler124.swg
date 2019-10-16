@@ -1,3 +1,4 @@
+#module compiler124
 #unittest pass syntax;
 
 #[toto]

@@ -1,4 +1,4 @@
-;
+#module compiler240
 #unittest pass semantic;
 using swag;
 

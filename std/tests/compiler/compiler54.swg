@@ -1,4 +1,4 @@
-﻿;
+﻿#module compiler54
 #unittest pass semantic;
 
 var a: s8 = 127;

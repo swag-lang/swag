@@ -1,4 +1,4 @@
-;
+#module compiler232
 #unittest pass semantic;
 using swag;
 

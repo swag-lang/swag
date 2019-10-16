@@ -1,4 +1,4 @@
-
+#module compiler579
 //#unittest pass semantic
 
 struct Point

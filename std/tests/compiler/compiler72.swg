@@ -1,4 +1,4 @@
-﻿;
+﻿#module compiler72
 #unittest pass semantic;
 
 typealias myType: u32;

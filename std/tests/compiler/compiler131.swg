@@ -1,4 +1,4 @@
-;
+#module compiler131
 #unittest pass semantic;
 
 attr toto() -> var;

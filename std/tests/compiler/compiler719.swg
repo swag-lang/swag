@@ -1,5 +1,3 @@
-
-
 //#[swag.printbc]
 //#unittest error
 #test

@@ -1,4 +1,4 @@
-
+#module compiler694
 //#unittest pass syntax
 
 struct(T) Point

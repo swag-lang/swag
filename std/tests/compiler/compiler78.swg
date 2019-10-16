@@ -1,4 +1,4 @@
-﻿;
+﻿#module compiler78
 #unittest pass semantic;
 
 typealias str: string;

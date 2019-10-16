@@ -1,4 +1,5 @@
-;
+#module compiler108
+
 #unittest pass semantic;
 
 #unittest error;

@@ -1,4 +1,4 @@
-;
+#module compiler147
 #unittest pass semantic;
 
 #unittest error;

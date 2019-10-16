@@ -1,4 +1,4 @@
-﻿;
+﻿#module compiler59
 #unittest pass semantic;
 
 var a: bool = true && true;

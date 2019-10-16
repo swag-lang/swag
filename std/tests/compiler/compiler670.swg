@@ -1,4 +1,4 @@
-
+#module compiler670
 //#unittest pass syntax
 
 typealias toto: bool

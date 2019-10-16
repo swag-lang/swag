@@ -1,4 +1,3 @@
-;
 using swag;
 
 //#unittest error;

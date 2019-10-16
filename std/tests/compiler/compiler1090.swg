@@ -1,3 +1,5 @@
+#module compiler1090
+
 enum TITI
 {
 	F1

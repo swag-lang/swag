@@ -1,4 +1,4 @@
-
+#module compiler772
 
 struct Point
 {

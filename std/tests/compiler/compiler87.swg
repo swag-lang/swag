@@ -1,4 +1,4 @@
-;
+#module compiler87
 #unittest pass semantic;
 #unittest error;
 namespace A

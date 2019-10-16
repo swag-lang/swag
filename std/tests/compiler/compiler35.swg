@@ -1,4 +1,5 @@
-﻿#unittest pass syntax;
+﻿#module compiler35
+#unittest pass syntax;
 #unittest error;
 var 1: s32;
 #unittest error;

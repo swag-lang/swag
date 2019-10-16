@@ -1,4 +1,5 @@
-;
+#module compiler103
+
 #unittest pass semantic;
 
 enum A: bool

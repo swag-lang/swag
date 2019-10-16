@@ -1,4 +1,4 @@
-;
+#module compiler123
 #unittest pass syntax;
 
 attr toto() -> func, var;

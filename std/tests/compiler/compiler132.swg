@@ -1,4 +1,4 @@
-;
+#module compiler132
 #unittest pass semantic;
 #unittest error;
 attr toto() -> func;
