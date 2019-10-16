@@ -119,6 +119,8 @@ struct TypeInfo : public PoolElement
                 return false;
             if ((flags & TYPEINFO_GENERIC) != (from->flags & TYPEINFO_GENERIC))
                 return false;
+            if ((flags & TYPEINFO_AUTO_CAST) != (from->flags & TYPEINFO_AUTO_CAST))
+                return false;
         }
 
         return true;

@@ -28,6 +28,8 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
             return false;
         if ((flags & TYPEINFO_UNTYPED_FLOAT) != (to->flags & TYPEINFO_UNTYPED_FLOAT))
             return false;
+        if ((flags & TYPEINFO_AUTO_CAST) != (to->flags & TYPEINFO_AUTO_CAST))
+            return false;
     }
 
     auto other = static_cast<TypeInfoNative*>(to);
@@ -202,8 +204,8 @@ bool TypeInfoList::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-	// Can cast from typelist curly to struct
-	// The real check will be done later
+    // Can cast from typelist curly to struct
+    // The real check will be done later
     if (isSameFlags & ISSAME_CAST)
     {
         if (to->kind == TypeInfoKind::Struct && listKind == TypeInfoListKind::Curly)
