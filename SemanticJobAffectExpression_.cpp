@@ -55,8 +55,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 node->token.id != TokenId::SymAmpersandEqual &&
                 node->token.id != TokenId::SymCircumflexEqual)
                 ok = false;
-            if (!ok)
-                return context->errorContext.report({sourceFile, node->token, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
+			if (!ok)
+				return notAllowed(context, node, leftTypeInfo);
             forEnumFlags = true;
         }
     }
