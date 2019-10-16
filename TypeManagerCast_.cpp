@@ -40,7 +40,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
         }
     }
 
-	fromType = TypeManager::concreteType(fromType);
+    fromType = TypeManager::concreteType(fromType);
     if (fromType->kind == TypeInfoKind::Native)
     {
         switch (fromType->nativeType)
@@ -1156,7 +1156,13 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     }
 
     if (fromNode && (fromTypeList->sizeOf != newSizeof))
+    {
+        SWAG_ASSERT(fromNode->typeInfo == fromTypeList);
+        fromTypeList         = (TypeInfoList*) fromTypeList->clone();
         fromTypeList->sizeOf = newSizeof;
+        fromNode->typeInfo   = fromTypeList;
+    }
+
     return true;
 }
 

@@ -23,6 +23,9 @@ TypeInfo* TypeList::registerType(TypeInfo* newTypeInfo)
 {
     scoped_lock lk(mutexTypes);
 
+	// Sanity check
+	SWAG_ASSERT(newTypeInfo->kind != TypeInfoKind::Pointer || ((TypeInfoPointer*)newTypeInfo)->pointedType);
+
     auto& oneList = allTypes[(uint32_t) newTypeInfo->kind];
     if (newTypeInfo->kind != TypeInfoKind::Enum && newTypeInfo->kind != TypeInfoKind::Struct)
     {

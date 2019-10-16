@@ -104,6 +104,7 @@ TypeInfo* TypeInfoPointer::computePointedType()
     auto result = (TypeInfoPointer*) clone();
     result->ptrCount--;
     result->computeName();
+    result->pointedType = result->computePointedType();
     return result;
 }
 
@@ -157,7 +158,10 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
     auto other = static_cast<TypeInfoArray*>(to);
     if (count != other->count)
         return false;
-    return pointedType->isSame(other->pointedType, isSameFlags);
+    if (!pointedType->isSame(other->pointedType, isSameFlags))
+        return false;
+	SWAG_ASSERT(!sizeOf || !other->sizeOf || sizeOf == other->sizeOf);
+    return true;
 }
 
 TypeInfo* TypeInfoSlice::clone()
@@ -495,7 +499,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         if (scope != other->scope)
             return false;
 
-		int childSize = childs.size();
+        int childSize = (int) childs.size();
         if (childSize != other->childs.size())
             return false;
         for (int i = 0; i < childSize; i++)

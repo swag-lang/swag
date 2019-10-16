@@ -130,7 +130,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             ptrPointer->flags |= TYPEINFO_CONST;
         ptrPointer->flags |= (ptrPointer->finalType->flags & TYPEINFO_GENERIC);
         ptrPointer->computeName();
-        ptrPointer->pointedType = typeTable.registerType(ptrPointer->computePointedType());
+        ptrPointer->pointedType = ptrPointer->computePointedType();
+        ptrPointer->pointedType = typeTable.registerType(ptrPointer->pointedType);
         node->typeInfo          = typeTable.registerType(ptrPointer);
     }
 
