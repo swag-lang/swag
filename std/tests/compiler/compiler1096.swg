@@ -8,6 +8,6 @@ enum DrawFilters
 
 #test
 {
-	x := DrawFilters.None
+	var x : DrawFilters = DrawFilters.None
 	x |= DrawFilters.F2
 }
