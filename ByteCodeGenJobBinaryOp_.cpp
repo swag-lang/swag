@@ -154,7 +154,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, u
 bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
     if (typeInfo->kind != TypeInfoKind::Native)
         return internalError(context, "emitBitmaskAnd, type not native");
 

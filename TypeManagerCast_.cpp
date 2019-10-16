@@ -40,6 +40,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
         }
     }
 
+	fromType = TypeManager::concreteType(fromType);
     if (fromType->kind == TypeInfoKind::Native)
     {
         switch (fromType->nativeType)
