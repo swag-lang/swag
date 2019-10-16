@@ -1,4 +1,4 @@
-//#unittest pass semantic
+
 
 var gx: s32
 

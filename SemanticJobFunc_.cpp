@@ -101,7 +101,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic diag({sourceFile, node->token, "#main directive already defined one"});
-            Diagnostic note{module->files[module->mainIsDefined->sourceFileIdx], sourceFile->module->mainIsDefined->token, "this is the other definition", DiagnosticLevel::Note};
+            Diagnostic note{module->mainIsDefined->sourceFile, sourceFile->module->mainIsDefined->token, "this is the other definition", DiagnosticLevel::Note};
             return context->errorContext.report(diag, &note);
         }
 

@@ -1,5 +1,5 @@
 
-//#unittest pass semantic
+
 
 var c: s32 = 0
 

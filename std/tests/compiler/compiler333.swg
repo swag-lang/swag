@@ -1,5 +1,5 @@
 ;
-//#unittest pass semantic;
+;
 
 var a: [2] s32 = [50, 60];
 

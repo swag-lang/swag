@@ -1,5 +1,5 @@
 
-//#unittest pass semantic
+
 
 func T()->string { return "toto"; }
 

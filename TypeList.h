@@ -5,11 +5,12 @@
 struct TypeList
 {
     TypeInfo* registerType(TypeInfo* typeInfo);
+    void      registerInit();
 
-    uint32_t          hereFlag      = 0;
-    uint32_t          sameFlags     = 0;
-    bool              releaseIfHere = false;
-    SpinLock          mutexTypes;
+    uint32_t hereFlag      = 0;
+    uint32_t sameFlags     = 0;
+    bool     releaseIfHere = false;
+    SpinLock mutexTypes;
 
     vector<TypeInfo*> allTypes[(uint32_t) TypeInfoKind::Count];
 };

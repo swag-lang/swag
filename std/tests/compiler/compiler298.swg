@@ -1,25 +1,17 @@
-;
-#version(FastTest)
+using swag;
+
+//#[printbc]
+func test2 ()-> string
 {
-	#unittest pass backend;
+	return "toto1";
 }
-#else
+
+//#[printbc]
+#test
 {
-	using swag;
-
-	//#[printbc]
-	func test2 ()-> string
-	{
-		return "toto1";
-	}
-
-	//#[printbc]
-	#test
-	{
-		var res = test2();
-		//@op(res, count) == 5;
+	var res = test2();
+	//@op(res, count) == 5;
 		
-		//@print(res);
-		//@print(test2.count);
-	}
+	//@print(res);
+	//@print(test2.count);
 }

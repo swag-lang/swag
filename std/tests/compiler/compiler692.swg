@@ -1,5 +1,5 @@
 #module compiler692
-//#unittest pass syntax
+
 
 struct(T) Point
 {

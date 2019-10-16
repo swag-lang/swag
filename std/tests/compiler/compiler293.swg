@@ -1,12 +1,6 @@
 ;
 using swag;
 
-//#unittest pass backend;
-#version(FastTest)
-{
-	#unittest pass backend;
-}
-
 //#[printbc]
 #test
 {

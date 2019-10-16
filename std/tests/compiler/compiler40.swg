@@ -1,4 +1,5 @@
-﻿#unittest pass syntax;
+﻿#module compiler40
+#unittest pass syntax;
 namespace toto
 {
 	var a: s32;

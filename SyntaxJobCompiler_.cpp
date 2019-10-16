@@ -14,7 +14,7 @@
 
 bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::If, sourceFile->indexInModule, parent);
+    auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::If, sourceFile, parent);
     if (result)
         *result = node;
 
@@ -35,7 +35,7 @@ bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile, parent);
     node->semanticFct = &SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
@@ -66,7 +66,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
 
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile, parent);
     node->semanticFct = &SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
@@ -79,7 +79,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
 
 bool SyntaxJob::doCompilerVersion(AstNode* parent)
 {
-    auto node   = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerVersion, sourceFile->indexInModule, parent);
+    auto node   = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerVersion, sourceFile, parent);
     node->token = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -199,7 +199,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#assert can only be declared in the top level scope"}));
 
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile->indexInModule, parent);
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerImport, sourceFile, parent);
 
     SWAG_CHECK(tokenizer.getToken(token));
     AstNode* identifier;

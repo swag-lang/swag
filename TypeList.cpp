@@ -1,23 +1,43 @@
 #include "pch.h"
 #include "TypeInfo.h"
 #include "TypeList.h"
+#include "TypeManager.h"
+
+void TypeList::registerInit()
+{
+    registerType(g_TypeMgr.typeInfoS8);
+    registerType(g_TypeMgr.typeInfoS16);
+    registerType(g_TypeMgr.typeInfoS32);
+    registerType(g_TypeMgr.typeInfoS64);
+    registerType(g_TypeMgr.typeInfoU8);
+    registerType(g_TypeMgr.typeInfoU16);
+    registerType(g_TypeMgr.typeInfoU32);
+    registerType(g_TypeMgr.typeInfoU64);
+    registerType(g_TypeMgr.typeInfoF32);
+    registerType(g_TypeMgr.typeInfoF64);
+    registerType(g_TypeMgr.typeInfoBool);
+    registerType(g_TypeMgr.typeInfoString);
+}
 
 TypeInfo* TypeList::registerType(TypeInfo* newTypeInfo)
 {
     scoped_lock lk(mutexTypes);
 
     auto& oneList = allTypes[(uint32_t) newTypeInfo->kind];
-    for (auto typeInfo : oneList)
+    if (newTypeInfo->kind != TypeInfoKind::Enum && newTypeInfo->kind != TypeInfoKind::Struct)
     {
-        if (typeInfo->isSame(newTypeInfo, sameFlags))
+        for (auto typeInfo : oneList)
         {
-            if ((newTypeInfo != typeInfo) && !(newTypeInfo->flags & hereFlag))
+            if (typeInfo->isSame(newTypeInfo, sameFlags))
             {
-                if (releaseIfHere)
-                    newTypeInfo->release();
-            }
+                if ((newTypeInfo != typeInfo) && !(newTypeInfo->flags & hereFlag))
+                {
+                    if (releaseIfHere)
+                        newTypeInfo->release();
+                }
 
-            return typeInfo;
+                return typeInfo;
+            }
         }
     }
 

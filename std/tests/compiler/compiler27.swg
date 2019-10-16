@@ -1,3 +1,4 @@
+#module compiler27
 #unittest pass lexer;
 
 0,

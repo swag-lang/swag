@@ -9,14 +9,14 @@ enum class ScopeKind;
 namespace Ast
 {
     template<typename T>
-    T* newNode(SyntaxJob* job, Pool<T>* pool, AstNodeKind kind, uint32_t sourceFileIdx, AstNode* parent = nullptr)
+    T* newNode(SyntaxJob* job, Pool<T>* pool, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent = nullptr)
     {
-        auto node           = pool->alloc();
-        node->kind          = kind;
-        node->parent        = parent;
-        node->ownerScope    = nullptr;
-        node->ownerFct      = nullptr;
-        node->sourceFileIdx = sourceFileIdx;
+        auto node        = pool->alloc();
+        node->kind       = kind;
+        node->parent     = parent;
+        node->ownerScope = nullptr;
+        node->ownerFct   = nullptr;
+        node->sourceFile = sourceFile;
 
         if (job)
         {

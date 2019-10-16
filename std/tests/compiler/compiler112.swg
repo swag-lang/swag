@@ -1,3 +1,4 @@
+#module compiler112
 #unittest pass syntax;
 
 func main ()

@@ -1,5 +1,5 @@
-#module tests_module90
+#module compiler90
 #unittest pass semantic;
 
-var a: A.tt = true;
-var b: A.tt1 = true;
+//var a: A.tt = true;
+//var b: A.tt1 = true;

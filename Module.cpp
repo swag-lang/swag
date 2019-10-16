@@ -20,7 +20,7 @@ void Module::setup(const string& moduleName)
     scopeRoot = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     scopeRoot->allocateSymTable();
 
-    astRoot                = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, UINT32_MAX);
+    astRoot                = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, nullptr);
     buildPass              = g_CommandLine.buildPass;
     buildParameters.target = *g_Workspace.currentTarget;
 }
@@ -46,9 +46,10 @@ void Module::removeFile(SourceFile* file)
 
     SWAG_ASSERT(file->module == this);
 
-    SWAG_ASSERT(files[file->indexInModule] == file);
-    files[file->indexInModule]                = files.back();
-    files[file->indexInModule]->indexInModule = file->indexInModule;
+    auto idx = file->indexInModule;
+    SWAG_ASSERT(files[idx] == file);
+    files[idx]                = files.back();
+    files[idx]->indexInModule = idx;
     files.pop_back();
     file->module        = nullptr;
     file->indexInModule = UINT32_MAX;
@@ -146,6 +147,8 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
 void Module::setBuildPass(BuildPass buildP)
 {
+	if (buildP == BuildPass::Semantic)
+		return;
     scoped_lock lk(mutexBuildPass);
     buildPass = (BuildPass) min((int) buildP, (int) buildPass);
     buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);

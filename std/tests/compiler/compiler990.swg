@@ -1,5 +1,5 @@
 
-//#unittest pass semantic
+
 using swag
 
 attr NC1() -> var
@@ -24,6 +24,6 @@ struct Point
 		p := cast(const *TypeinfoParam) t.fields[index]
 		@assert(p.namedParam == (index == 0 ? "x" : "y"))
 		@assert(@countof(p.attributes) == 1)
-		@assert(p.attributes[0].val0 == "NC1")
+		@assert(p.attributes[0].val0 == "compiler990.NC1")
 	}
 }

@@ -1,5 +1,5 @@
 #module compiler444
-//#unittest pass syntax
+
 
 #unittest error
 func F(a: s32, b: s32)

@@ -1,5 +1,5 @@
 #module compiler662
-//#unittest pass syntax
+
 
 enum OT
 {

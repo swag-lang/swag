@@ -1,5 +1,5 @@
 #module compiler499
-//#unittest pass semantic
+
 
 #unittest error
 func T(a: ..., c: s32)

@@ -49,7 +49,7 @@ void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, Regist
 {
     freeRegisterRC(context, rc);
 
-	// From linear cache
+    // From linear cache
     if (num == 2 && !context->bc->availableRegistersRC2.empty())
     {
         rc += context->bc->availableRegistersRC2.back();
@@ -129,7 +129,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.b.u64                = r1;
     ins.c.u64                = r2;
     ins.cache.u64            = 0;
-    ins.sourceFileIdx        = node->sourceFileIdx;
+    ins.sourceFileIdx        = node->sourceFile->indexInModule;
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
 
@@ -147,9 +147,9 @@ void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
 
 void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
 {
-    node->bc             = g_Pool_byteCode.alloc();
-    node->bc->node       = node;
-    node->bc->sourceFile = module->files[node->sourceFileIdx];
+    node->bc       = g_Pool_byteCode.alloc();
+    node->bc->node = node;
+    node->bc->sourceFile = node->sourceFile;
     node->bc->name       = node->ownerScope->fullname + "_" + node->name;
     replaceAll(node->bc->name, '.', '_');
     if (node->kind == AstNodeKind::FuncDecl)

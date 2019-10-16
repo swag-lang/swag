@@ -1,5 +1,5 @@
 
-//#unittest pass syntax
+
 
 func F(a: string = "toto")
 {

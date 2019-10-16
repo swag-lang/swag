@@ -117,11 +117,14 @@ JobResult SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     // One unnamed scope per file
-    sourceFile->scopeRoot = Ast::newScope(nullptr, "", ScopeKind::File, sourceFile->module->scopeRoot);
+    string name;
+    if (sourceFile->module->fromTests)
+        name = sourceFile->path.filename().replace_extension("").string();
+    sourceFile->scopeRoot = Ast::newScope(nullptr, name, ScopeKind::File, sourceFile->module->scopeRoot);
     currentScope          = sourceFile->scopeRoot;
 
     // Setup root ast for file
-    sourceFile->astRoot = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::File, sourceFile->indexInModule, sourceFile->module->astRoot);
+    sourceFile->astRoot = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::File, sourceFile, sourceFile->module->astRoot);
 
     bool result = true;
     bool ok     = tokenizer.getToken(token);

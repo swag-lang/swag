@@ -143,7 +143,7 @@ struct AstNode : public PoolElement
         resolvedUserOpSymbolOverload = nullptr;
         parentAttributes             = nullptr;
         bc                           = nullptr;
-        sourceFileIdx                = UINT32_MAX;
+        sourceFile                   = nullptr;
         attributeFlags               = 0;
         flags                        = 0;
         doneFlags                    = 0;
@@ -317,7 +317,7 @@ struct AstNode : public PoolElement
     ComputedValue computedValue;
     Utf8Crc       name;
     Utf8          fullname;
-    uint32_t      sourceFileIdx;
+    SourceFile*   sourceFile;
     ByteCode*     bc;
     RegisterList  resultRegisterRC;
     RegisterList  additionalRegisterRC;

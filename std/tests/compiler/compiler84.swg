@@ -1,4 +1,4 @@
-#module tests_compiler_83
+#module compiler84
 #unittest pass semantic;
 
 typealias tt: bool;

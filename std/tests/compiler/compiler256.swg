@@ -1,5 +1,3 @@
-;
-#unittest pass backend;
 using swag;
 
 #test

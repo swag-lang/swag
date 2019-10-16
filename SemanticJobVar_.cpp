@@ -120,8 +120,7 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
     AstStruct* structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
     auto       module     = sourceFile->module;
 
-    uint8_t* ptrStart = segment ? segment->addressNoLock(offset) : nullptr;
-    auto     ptrDest  = ptrStart;
+    auto ptrDest = segment->addressNoLock(offset);
     for (auto child : structNode->content->childs)
     {
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
@@ -174,7 +173,7 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(varDecl->typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(collectStructLiteralsNoLock(context, sourceFile, offset, typeStruct->structNode, segment));
-            ptrDest = ptrStart + offset;
+            ptrDest = segment->addressNoLock(offset);
         }
     }
 
@@ -616,10 +615,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // A using on a variable
-	if (node->flags & AST_DECL_USING)
-	{
-		SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
-	}
+    if (node->flags & AST_DECL_USING)
+    {
+        SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
+    }
 
     // Register symbol with its type
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,

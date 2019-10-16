@@ -4,15 +4,19 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Workspace.h"
+#include "TypeManager.h"
 
 TypeTable::TypeTable()
 {
     exactList.hereFlag         = TYPEINFO_IN_EXACT_LIST;
     exactList.sameFlags        = ISSAME_EXACT;
     exactList.releaseIfHere    = true;
+	exactList.registerInit();
+
     concreteList.hereFlag      = TYPEINFO_IN_CONCRETE_LIST;
     concreteList.sameFlags     = ISSAME_EXACT | ISSAME_CONCRETE;
     concreteList.releaseIfHere = false;
+	concreteList.registerInit();
 }
 
 TypeInfo* TypeTable::registerType(TypeInfo* newTypeInfo)

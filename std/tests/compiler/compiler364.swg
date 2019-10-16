@@ -1,5 +1,5 @@
 #module compiler364
-//#unittest pass semantic;
+;
 
 //#[swag.printbc]
 func test (arr: [2] s32, idx: s32, val: s32)

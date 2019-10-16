@@ -35,7 +35,10 @@ JobResult ModuleOutputJob::execute()
     {
         if (module->fromTests || module->byteCodeTestFunc.size() > 0)
         {
-            g_Log.messageHeaderCentered("Building test", module->name.c_str());
+			if (module->fromTests)
+				g_Log.messageHeaderCentered("Building", module->name.c_str());
+			else
+				g_Log.messageHeaderCentered("Building test", module->name.c_str());
 
             auto compileJob                      = g_Pool_moduleCompileJob.alloc();
             compileJob->module                   = module;

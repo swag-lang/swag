@@ -1,5 +1,5 @@
 
-//#unittest pass semantic
+
 
 let pt = {x: 1, y: 2}
 

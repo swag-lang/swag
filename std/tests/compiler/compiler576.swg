@@ -1,5 +1,5 @@
 #module compiler576
-//#unittest pass semantic
+
 
 struct Point
 {

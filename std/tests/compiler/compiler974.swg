@@ -1,5 +1,5 @@
 #module compiler974
-//#unittest pass semantic
+
 
 #unittest error
 struct Point

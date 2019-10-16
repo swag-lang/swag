@@ -1,5 +1,5 @@
 
-//#unittest pass syntax
+
 
 #[swag.constexpr]
 func T()->s32 { return 666; }

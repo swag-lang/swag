@@ -1,5 +1,5 @@
 #module compiler652
-//#unittest pass syntax
+
 
 
 //#[swag.printbc]

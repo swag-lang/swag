@@ -11,7 +11,7 @@
 
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
-    auto implNode         = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile->indexInModule, parent);
+    auto implNode         = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile, parent);
     implNode->semanticFct = &SemanticJob::resolveImpl;
     if (result)
         *result = implNode;
@@ -47,7 +47,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 {
-    auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile->indexInModule, parent);
+    auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile, parent);
     structNode->semanticFct = &SemanticJob::resolveStruct;
     if (result)
         *result = structNode;
@@ -122,7 +122,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope, structNode);
 
-        auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::StructContent, sourceFile->indexInModule, structNode);
+        auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content            = contentNode;
         contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
 
@@ -156,7 +156,7 @@ void SyntaxJob::setupSelfType(AstIdentifier* node, const Utf8& name, AstNode* ge
 
     if (genericParameters)
     {
-        auto allParams          = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, node);
+        auto allParams          = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile, node);
         allParams->semanticFct  = &SemanticJob::resolveFuncDeclParams;
         node->genericParameters = allParams;
 
@@ -173,13 +173,13 @@ void SyntaxJob::setupSelfType(AstIdentifier* node, const Utf8& name, AstNode* ge
 AstNode* SyntaxJob::generateOpInit(AstNode* node, const Utf8& structName, AstNode* genericParameters)
 {
     // Generate impl
-    auto implNode        = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile->indexInModule, node);
+    auto implNode        = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile, node);
     implNode->identifier = Ast::createIdentifierRef(this, structName, node->token, implNode);
     auto structScope     = Ast::newScope(implNode, structName, ScopeKind::Struct, currentScope, true);
     structScope->allocateSymTable();
     implNode->structScope = structScope;
 
-    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile->indexInModule, implNode);
+    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile, implNode);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
     funcNode->name        = "opInit";
     funcNode->flags |= AST_GENERATED;
@@ -202,15 +202,15 @@ AstNode* SyntaxJob::generateOpInit(AstNode* node, const Utf8& structName, AstNod
         ScopedStruct scopedStruct(this, structScope);
 
         // Parameters
-        funcNode->parameters              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile->indexInModule, funcNode);
+        funcNode->parameters              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile, funcNode);
         funcNode->parameters->semanticFct = &SemanticJob::resolveFuncDeclParams;
 
         // One parameter
-        auto param         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile->indexInModule, funcNode->parameters);
+        auto param         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile, funcNode->parameters);
         param->semanticFct = &SemanticJob::resolveVarDecl;
         param->name        = "self";
 
-        auto typeNode         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile->indexInModule, param);
+        auto typeNode         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile, param);
         typeNode->ptrCount    = 1;
         typeNode->semanticFct = &SemanticJob::resolveTypeExpression;
         typeNode->identifier  = Ast::createIdentifierRef(this, "Self", token, typeNode);
@@ -218,14 +218,14 @@ AstNode* SyntaxJob::generateOpInit(AstNode* node, const Utf8& structName, AstNod
         setupSelfType(CastAst<AstIdentifier>(typeNode->identifier->childs.front(), AstNodeKind::Identifier), structName, genericParameters);
     }
 
-    funcNode->returnType              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile->indexInModule, funcNode);
+    funcNode->returnType              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType->semanticFct = &SemanticJob::resolveFuncDeclType;
 
     // Content
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        funcNode->content = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, funcNode);
+        funcNode->content = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, funcNode);
     }
 
     return funcNode;

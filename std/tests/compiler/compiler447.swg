@@ -1,5 +1,5 @@
 #module compiler447
-//#unittest pass syntax
+
 
 #unittest error
 func F(a: s32 = 10, b: s32 = 20)

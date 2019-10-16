@@ -1,4 +1,5 @@
-﻿#unittest pass syntax;
+﻿#module compiler41
+#unittest pass syntax;
 namespace toto
 {
 	namespace toto

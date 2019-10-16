@@ -10,7 +10,7 @@
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {
-    auto enumNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumDecl, sourceFile->indexInModule, parent);
+    auto enumNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumDecl, sourceFile, parent);
     if (result)
         *result = enumNode;
     enumNode->semanticFct = &SemanticJob::resolveEnum;
@@ -49,7 +49,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 
     // Raw type
     SWAG_CHECK(tokenizer.getToken(token));
-    auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumType, sourceFile->indexInModule, enumNode);
+    auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumType, sourceFile, enumNode);
     typeNode->semanticFct = &SemanticJob::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
@@ -69,7 +69,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         else
         {
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
-            auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile->indexInModule, enumNode);
+            auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile, enumNode);
             enumValue->inheritTokenName(token);
             enumValue->semanticFct = &SemanticJob::resolveEnumValue;
             currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue, SymbolKind::EnumValue);

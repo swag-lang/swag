@@ -1,5 +1,5 @@
 ;
-//#unittest pass semantic;
+;
 
 //#[swag.printbc]
 func a (ptr: const [..] s32, cpt: s32)

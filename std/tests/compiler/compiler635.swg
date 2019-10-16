@@ -1,5 +1,5 @@
 #module compiler635
-//#unittest pass semantic
+
 
 #unittest error
 struct(T) Point

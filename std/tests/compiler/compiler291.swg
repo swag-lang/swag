@@ -1,10 +1,4 @@
-;
 using swag;
-
-#version(FastTest)
-{
-	#unittest pass backend;
-}
 
 //#[printbc]
 func test2 (v: string, v1: string)

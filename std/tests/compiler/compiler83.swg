@@ -1,4 +1,4 @@
-#module tests_compiler_83
+#module compiler83
 #unittest pass semantic;
 
-var a: tt;
+//var a: tt;

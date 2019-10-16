@@ -1,5 +1,5 @@
 
-//#unittest pass syntax
+
 
 typealias toto: s32
 

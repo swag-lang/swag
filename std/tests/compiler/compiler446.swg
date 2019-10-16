@@ -1,5 +1,5 @@
 
-//#unittest pass syntax
+
 
 func F(a: s32 = 10, b: s32 = 20)
 {

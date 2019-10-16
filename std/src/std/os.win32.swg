@@ -26,6 +26,6 @@ namespace os.win32
 	
 	#test
 	{
-		WriteFile(stdOutputHandle, @dataof("toto"), 4, null, null)
+		//WriteFile(stdOutputHandle, @dataof("toto"), 4, null, null)
 	}
 }

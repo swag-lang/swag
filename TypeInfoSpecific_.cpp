@@ -47,16 +47,6 @@ TypeInfo* TypeInfoNamespace::clone()
     return newType;
 }
 
-bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
-{
-    if (this == to)
-        return true;
-    if (!TypeInfo::isSame(to, isSameFlags))
-        return false;
-    auto other = static_cast<TypeInfoEnum*>(to);
-    return rawType->isSame(other->rawType, isSameFlags);
-}
-
 TypeInfo* TypeInfoAlias::clone()
 {
     auto newType     = g_Pool_typeInfoAlias.alloc();
@@ -406,6 +396,33 @@ TypeInfo* TypeInfoEnum::clone()
     return newType;
 }
 
+bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    auto other = static_cast<TypeInfoEnum*>(to);
+    if (!rawType->isSame(other->rawType, isSameFlags))
+        return false;
+    if (values.size() != other->values.size())
+        return false;
+
+    if (!(isSameFlags & ISSAME_CAST))
+    {
+        int childSize = (int) values.size();
+        if (childSize != other->values.size())
+            return false;
+        for (int i = 0; i < childSize; i++)
+        {
+            if (!values[i]->isSame(other->values[i], isSameFlags))
+                return false;
+        }
+    }
+
+    return true;
+}
+
 TypeInfo* TypeInfoStruct::clone()
 {
     auto newType               = g_Pool_typeInfoStruct.alloc();
@@ -477,9 +494,11 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
             return false;
         if (scope != other->scope)
             return false;
-        if (childs.size() != other->childs.size())
+
+		int childSize = childs.size();
+        if (childSize != other->childs.size())
             return false;
-        for (int i = 0; i < childs.size(); i++)
+        for (int i = 0; i < childSize; i++)
         {
             if (!childs[i]->isSame(other->childs[i], isSameFlags))
                 return false;

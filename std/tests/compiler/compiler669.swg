@@ -1,5 +1,5 @@
 #module compiler669
-//#unittest pass syntax
+
 
 typealias toto: bool
 

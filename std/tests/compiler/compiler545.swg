@@ -1,5 +1,5 @@
 
-//#unittest pass semantic
+
 
 struct point1
 {
@@ -20,6 +20,6 @@ var pt: point;
 {
 	@assert(pt.pt.x == 10)
 	@assert(pt.pt.y == 20)
-	@assert(pt.x == 30)
 	@assert(pt.y == 40)
+	@assert(pt.x == 30)
 }

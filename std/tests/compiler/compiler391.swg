@@ -1,5 +1,5 @@
 ;
-//#unittest pass semantic;
+;
 
 func test (arr: [2] s32)
 {

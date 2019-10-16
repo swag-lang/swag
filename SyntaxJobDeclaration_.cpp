@@ -7,7 +7,7 @@
 
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile, parent);
     node->semanticFct = &SemanticJob::resolveUsing;
     if (result)
         *result = node;
@@ -29,7 +29,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     Scope*   newScope = nullptr;
     while (true)
     {
-        namespaceNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile->indexInModule, parent);
+        namespaceNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile, parent);
         namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
         namespaceNode->inheritTokenName(token);
 
@@ -102,7 +102,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
 
 bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent);
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
     if (result)
         *result = node;
 
@@ -165,7 +165,7 @@ bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
     bool isGlobal = currentScope->isGlobal();
     if (isGlobal)
     {
-        auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile->indexInModule, parent);
+        auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
         if (result)
             *result = node;
         return doTopLevelInstruction(node);

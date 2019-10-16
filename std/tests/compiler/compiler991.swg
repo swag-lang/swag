@@ -1,5 +1,5 @@
 
-//#unittest pass semantic
+
 using swag
 
 attr NC1(x: s32) -> var
@@ -16,8 +16,8 @@ struct Point
 {
 	t := cast(const *TypeinfoStruct) @typeof(Point)
 	p := cast(const *TypeinfoParam) t.fields[0]
-	@assert(p.attributes[0].val0 == "NC1")
-	@assert(p.attributes[1].val0 == "NC1.x")
+	@assert(p.attributes[0].val0 == "compiler991.NC1")
+	@assert(p.attributes[1].val0 == "compiler991.NC1.x")
 	
 	ptr := @kindof(p.attributes[1].val1)
 	@assert(ptr.name == "s32")

@@ -1,5 +1,5 @@
 #module compiler394
-//#unittest pass semantic;
+;
 
 #unittest error;
 var c = 666;

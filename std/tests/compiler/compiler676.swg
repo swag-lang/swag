@@ -1,5 +1,5 @@
 #module compiler676
-//#unittest pass syntax
+
 
 struct Point
 {

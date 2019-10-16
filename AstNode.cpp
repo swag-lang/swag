@@ -189,7 +189,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
     computedValue        = from->computedValue;
     name                 = from->name;
     fullname             = from->fullname;
-    sourceFileIdx        = from->sourceFileIdx;
+    sourceFile           = from->sourceFile;
     bc                   = from->bc;
     resultRegisterRC     = from->resultRegisterRC;
     fctCallStorageOffset = from->fctCallStorageOffset;
