@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 
 #assert 0xFF << 4 == 0xFF0;
 #assert 1 << 0x1 == 2;

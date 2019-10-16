@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 
 var v = 50;
 

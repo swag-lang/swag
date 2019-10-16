@@ -1,5 +1,5 @@
 ﻿#module compiler55
-#unittest pass semantic;
+;
 
 #unittest error;
 var a: f32 = 21474837;

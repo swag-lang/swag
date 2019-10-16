@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 using swag;
 
 func main1 ()->s32 { return 77; }

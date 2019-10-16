@@ -236,11 +236,11 @@ bool Workspace::buildModules(const vector<Module*>& list)
             auto semanticJob = static_cast<SemanticJob*>(pendingJob);
             auto node        = semanticJob->nodes.back();
             auto sourceFile  = semanticJob->sourceFile;
-            if (!sourceFile->module->numErrors)
+            if (!sourceFile->numErrors)
             {
                 auto& name = semanticJob->waitingSymbolSolved ? semanticJob->waitingSymbolSolved->name : node->name;
                 sourceFile->report({sourceFile, node->token, format("cannot resolve type of identifier '%s'", name.c_str())});
-                sourceFile->module->numErrors = 0;
+                sourceFile->numErrors = 0;
             }
         }
 

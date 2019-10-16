@@ -1,5 +1,5 @@
 #module compiler189
-#unittest pass semantic;
+;
 
 #unittest error;
 #assert 1 ^ 1.0 == 0;

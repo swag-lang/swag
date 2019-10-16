@@ -1,5 +1,5 @@
 #module compiler175
-#unittest pass semantic;
+;
 
 #unittest error;
 #assert '1' / '2';

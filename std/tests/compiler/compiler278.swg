@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 
 #version(oula)
 	#assert(false);

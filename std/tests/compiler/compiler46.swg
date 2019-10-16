@@ -1,5 +1,5 @@
 ﻿;
-#unittest pass semantic;
+;
 var a: bool;
 var b: bool;
 var c: bool;

@@ -1,5 +1,5 @@
 ﻿#module compiler53
-#unittest pass semantic;
+;
 
 var a: u16 = 256;
 var b: u32 = 256;

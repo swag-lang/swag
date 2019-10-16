@@ -1,5 +1,5 @@
 ﻿#module compiler42
-#unittest pass semantic;
+;
 #unittest error;
 namespace toto
 {

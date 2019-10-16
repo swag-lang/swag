@@ -1,5 +1,5 @@
 #module compiler128
-#unittest pass semantic;
+;
 
 attr toto() -> var;
 attr toto1() -> func;

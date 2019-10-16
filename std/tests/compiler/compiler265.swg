@@ -1,7 +1,7 @@
 ;
 #version(FastTest)
 {
-	#unittest pass semantic;
+	;
 }
 #else
 {

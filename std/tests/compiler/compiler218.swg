@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 using swag;
 
 var g: s64 = 5;

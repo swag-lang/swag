@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 using swag;
 
 var ga: u32 = 0;

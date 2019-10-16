@@ -1,5 +1,5 @@
 ﻿#module compiler80
-#unittest pass semantic;
+;
 
 namespace A
 {

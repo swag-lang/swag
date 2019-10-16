@@ -88,7 +88,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         if (exception)
         {
             auto ip = runContext->ip - 1;
-            sourceFile->report({runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", m_exceptionCode)});
+            sourceFile->report({runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", exceptionCode)});
         }
 
         return false;
@@ -114,7 +114,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exce
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        m_exceptionCode = GetExceptionCode();
+        exceptionCode = GetExceptionCode();
         exception       = true;
         return false;
     }
@@ -147,8 +147,6 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
 void Module::setBuildPass(BuildPass buildP)
 {
-	if (buildP == BuildPass::Semantic)
-		return;
     scoped_lock lk(mutexBuildPass);
     buildPass = (BuildPass) min((int) buildP, (int) buildPass);
     buildPass = (BuildPass) min((int) g_CommandLine.buildPass, (int) buildPass);

@@ -1,5 +1,5 @@
 #module compiler148
-#unittest pass semantic;
+;
 
 func main (){}
 func main (b: bool){}

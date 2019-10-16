@@ -1,5 +1,5 @@
 #module compiler317
-#unittest pass semantic;
+;
 
 #unittest error
 var b: s32;

@@ -1,5 +1,5 @@
 ﻿#module compiler64
-#unittest pass semantic;
+;
 
 #unittest error;
 #test

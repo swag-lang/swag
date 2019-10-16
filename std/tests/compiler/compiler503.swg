@@ -1,5 +1,5 @@
 
-#unittest pass semantic
+
 
 //#[swag.printbc]
 func T(xx: string, xy: bool, a: ...)

@@ -1,5 +1,5 @@
 #module compiler110
-#unittest pass semantic;
+;
 
 #unittest error;
 #unittest error;

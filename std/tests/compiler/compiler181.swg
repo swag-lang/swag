@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 using swag;
 
 #assert 1 | 2 == 3;

@@ -1,6 +1,3 @@
-#module compiler91
-#unittest pass semantic;
-
 namespace A
 {
 	typealias tt1: bool;

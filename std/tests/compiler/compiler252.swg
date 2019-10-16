@@ -1,5 +1,5 @@
 #module compiler252
-#unittest pass semantic;
+;
 using swag;
 
 #unittest error;

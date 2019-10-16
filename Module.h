@@ -25,13 +25,13 @@ struct Module : public PoolElement
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
     void error(const Utf8& msg);
-	bool internalError(const Utf8& msg);
+    bool internalError(const Utf8& msg);
     bool internalError(uint32_t sourceFileIdx, SourceLocation& startLocation, SourceLocation& endLocation, const Utf8& msg);
     void deferReleaseChilds(AstNode* node);
 
     string              name;
     string              nameUp;
-    atomic<int>         numErrors = 0;
+    atomic<int>         numErrors  = 0;
     SpinLock            mutexFile;
     vector<SourceFile*> files;
     AstNode*            astRoot;
@@ -39,8 +39,8 @@ struct Module : public PoolElement
     BuildParameters     buildParameters;
     Backend*            backend = nullptr;
     set<string>         compileVersion;
-    int                 m_exceptionCode = 0;
-    bool                fromTests       = false;
+    int                 exceptionCode = 0;
+    bool                fromTests     = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);

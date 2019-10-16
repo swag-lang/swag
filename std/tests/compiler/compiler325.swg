@@ -1,5 +1,5 @@
 #module compiler325
-#unittest pass semantic;
+;
 
 //#[swag.printbc]
 #unittest error;

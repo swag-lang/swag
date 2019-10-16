@@ -1,6 +1,6 @@
 ;
 using swag;
-#unittest pass semantic;
+;
 
 #run
 {

@@ -1,5 +1,5 @@
 #module compiler215
-#unittest pass semantic;
+;
 
 #unittest error;
 #run

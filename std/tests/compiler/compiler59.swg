@@ -1,4 +1,4 @@
-﻿#unittest pass semantic;
+﻿;
 
 var a: bool = true && true;
 //#unittest error

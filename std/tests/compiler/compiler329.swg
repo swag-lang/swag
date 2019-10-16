@@ -1,5 +1,5 @@
 #module compiler329
-#unittest pass semantic;
+;
 
 #unittest error;
 #test

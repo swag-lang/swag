@@ -1,5 +1,5 @@
 ﻿#module compiler58
-#unittest pass semantic;
+;
 
 var a: s8 = -127;
 var b: s8 = -127's8;

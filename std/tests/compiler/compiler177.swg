@@ -1,5 +1,5 @@
 #module compiler177
-#unittest pass semantic;
+;
 
 namespace A{}
 

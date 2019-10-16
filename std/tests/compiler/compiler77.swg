@@ -1,5 +1,5 @@
 ﻿;
-#unittest pass semantic;
+;
 
 typealias a: u32;
 typealias b: f32;

@@ -1,8 +1,8 @@
 #module compiler109
-#unittest pass semantic;
 
-#unittest error;
-#unittest error;
+
+#unittest error
+#unittest error
 enum A : u8
 {
 	Red = B.Red;

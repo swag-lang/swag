@@ -1,5 +1,5 @@
 ﻿;
-#unittest pass semantic;
+;
 
 var x: s8 = 1's8;
 var y: u8 = 1'u8;

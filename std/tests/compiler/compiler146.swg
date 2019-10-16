@@ -1,5 +1,5 @@
 #module compiler146
-#unittest pass semantic;
+;
 
 #unittest error;
 var main: bool;

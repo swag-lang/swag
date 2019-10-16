@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 
 attr toto(b: bool) -> var;
 #[toto(true)]

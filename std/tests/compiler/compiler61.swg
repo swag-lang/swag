@@ -1,5 +1,5 @@
 ﻿;
-#unittest pass semantic;
+;
 
 #assert 2 == 2;
 #assert true == true;

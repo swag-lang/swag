@@ -1,5 +1,5 @@
 ﻿#module compiler52
-#unittest pass semantic;
+;
 
 #unittest error;
 var a: u8 = 256;

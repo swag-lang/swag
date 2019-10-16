@@ -1,5 +1,5 @@
 #module compiler596
-#unittest pass semantic
+
 
 #unittest error
 func(op: string) toto()

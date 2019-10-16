@@ -1,5 +1,5 @@
 #module compiler248
-#unittest pass semantic;
+;
 using swag;
 
 //#[printbc]

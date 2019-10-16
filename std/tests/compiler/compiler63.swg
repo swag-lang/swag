@@ -1,5 +1,5 @@
 ﻿;
-#unittest pass semantic;
+;
 
 #assert 1'u8 + 255'u32 == 256;
 #assert 1'u8 + 255'u64 == 256;

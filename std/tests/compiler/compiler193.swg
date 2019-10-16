@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 
 #[swag.constexpr]
 func main ()->s32

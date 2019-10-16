@@ -1,6 +1,6 @@
 #module compiler108
 
-#unittest pass semantic;
+;
 
 #unittest error;
 enum A : u8

@@ -1,5 +1,5 @@
 #module compiler149
-#unittest pass semantic;
+;
 
 #unittest error;
 func main (){}

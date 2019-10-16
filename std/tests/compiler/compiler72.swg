@@ -1,5 +1,5 @@
 ﻿#module compiler72
-#unittest pass semantic;
+;
 
 typealias myType: u32;
 typealias myType1: bool;

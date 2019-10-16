@@ -1,5 +1,5 @@
 ﻿#module compiler48
-#unittest pass semantic;
+;
 #unittest error;
 
 namespace A

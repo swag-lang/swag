@@ -1,5 +1,5 @@
 ;
-#unittest pass semantic;
+;
 
 #assert A.Red == 0;
 #assert A.Green == 1;
