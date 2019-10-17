@@ -32,7 +32,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--userargs", nullptr, CommandLineType::String, &cmdLine->userArguments);
 
     cmdLine->test          = true;
-    cmdLine->cleanTarget   = true;
+    //cmdLine->cleanTarget   = true;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
     cmdLine->backendOutput     = true;
