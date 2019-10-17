@@ -4,6 +4,7 @@
 #include "ByteCodeGenJob.h"
 #include "SemanticJob.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
 
 bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
 {
@@ -34,7 +35,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
         }
     }
 
-	// Array index
+    // Array index
     AstNode* expr = identifier;
     if (token.id == TokenId::SymLeftSquare)
         SWAG_CHECK(doArrayPointerIndex(&expr));
@@ -50,7 +51,11 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
     if (result)
         *result = identifierRef;
 
-    SWAG_CHECK(doIdentifier(identifierRef));
+    if (g_LangSpec.intrinsics[token.text] == Intrinsic::IntrinsicProp)
+        SWAG_CHECK(doIntrinsicProp(identifierRef));
+    else
+        SWAG_CHECK(doIdentifier(identifierRef));
+
     while (token.id == TokenId::SymDot)
     {
         SWAG_CHECK(eatToken(TokenId::SymDot));

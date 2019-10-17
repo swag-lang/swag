@@ -114,14 +114,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::Intrinsic:
-        if (g_LangSpec.intrinsics[token.text] == Intrinsic::IntrinsicProp)
-        {
-            SWAG_CHECK(doIntrinsicProp(parent, result));
-        }
-        else
-        {
-            SWAG_CHECK(doIdentifierRef(parent, result));
-        }
+        SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
     case TokenId::NativeType:

@@ -34,7 +34,9 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
             node->flags |= AST_GENERIC_MATCH_WAS_PARTIAL;
     }
 
-    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT);
+    if (childBack->flags & AST_VALUE_COMPUTED)
+        node->inheritComputedValue(childBack);
+    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_TYPEINFO);
 
     if (childBack->flags & AST_IS_CONST_ASSIGN)
         node->flags |= AST_IS_CONST;
@@ -139,10 +141,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         auto idNode = Ast::newIdentifier(sourceFile, dependentVar->name, idRef, nullptr);
         idNode->inheritTokenLocation(identifier->token);
         Ast::addChildFront(idRef, idNode);
-		context->node->semanticState = AstNodeResolveState::Enter;
-		context->job->nodes.push_back(idNode);
-		context->result = SemanticResult::NewChilds;
-		return true;
+        context->node->semanticState = AstNodeResolveState::Enter;
+        context->job->nodes.push_back(idNode);
+        context->result = SemanticResult::NewChilds;
+        return true;
     }
 
     switch (symbol->kind)
@@ -1056,15 +1058,15 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         {
             for (auto child : scope->childScopes)
             {
-				if (child->name.empty())
-				{
-					if (here.find(child) == here.end())
-					{
-						scopes.push_back(child);
-						here.insert(child);
-						hereNoAlt.insert(child);
-					}
-				}
+                if (child->name.empty())
+                {
+                    if (here.find(child) == here.end())
+                    {
+                        scopes.push_back(child);
+                        here.insert(child);
+                        hereNoAlt.insert(child);
+                    }
+                }
             }
         }
     }

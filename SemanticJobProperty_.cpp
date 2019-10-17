@@ -81,6 +81,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         expr->flags |= AST_NO_BYTECODE;
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
+        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
 
     case Property::KindOf:
@@ -89,6 +90,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->byteCodeFct = &ByteCodeGenJob::emitKindOfProperty;
+        SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
 
     case Property::CountOf:
