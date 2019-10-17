@@ -60,6 +60,9 @@ void BackendC::emitSeparator(Concat& buffer, const char* title)
 
 bool BackendC::preCompile()
 {
+    if (g_CommandLine.verboseBuildPass)
+        g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
+
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
     bufferH.fileName   = targetPath + "\\" + module->name + ".h";
     bufferC.fileName   = targetPath + "\\" + module->name + ".c";

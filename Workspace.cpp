@@ -259,7 +259,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+                        g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
 
                     for (auto func : module->byteCodeInitFunc)
                     {
@@ -269,7 +269,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
             }
 
             // #TEST
-            if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+            if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty())
             {
                 if (!module->numErrors)
                 {
@@ -290,7 +290,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+                        g_Log.verbose(format("   module '%s', bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
 
                     for (auto func : module->byteCodeRunFunc)
                     {
@@ -306,7 +306,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 if (!module->numErrors)
                 {
                     if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
+                        g_Log.verbose(format("   module '%s', bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
 
                     for (auto func : module->byteCodeDropFunc)
                     {
