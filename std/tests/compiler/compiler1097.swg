@@ -14,6 +14,7 @@ enum Days
 #test
 {
     meetingDays := Days.Tuesday | Days.Thursday;
+	@assert(@typeof(meetingDays) == @typeof(Days))
 	ptr := @typeof(meetingDays)
-	@print(ptr.name)
+	@assert(ptr.name == "Days")
 }
