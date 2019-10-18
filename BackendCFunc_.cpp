@@ -9,44 +9,71 @@
 #include "Workspace.h"
 #include "Target.h"
 
-const char* BackendC::swagTypeToCType(TypeInfo* typeInfo)
+bool BackendC::swagTypeToCType(TypeInfo* typeInfo, Utf8& cType)
 {
-    SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+	cType.clear();
 
-    switch (typeInfo->nativeType)
+    if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-    case NativeTypeKind::Bool:
-        return "swag_bool_t";
-    case NativeTypeKind::S8:
-        return "swag_int8_t";
-    case NativeTypeKind::S16:
-        return "swag_int16_t";
-    case NativeTypeKind::S32:
-        return "swag_int32_t";
-    case NativeTypeKind::S64:
-        return "swag_int64_t";
-    case NativeTypeKind::U8:
-        return "swag_uint8_t";
-    case NativeTypeKind::U16:
-        return "swag_uint16_t";
-    case NativeTypeKind::U32:
-        return "swag_uint32_t";
-    case NativeTypeKind::U64:
-        return "swag_uint64_t";
-    case NativeTypeKind::F32:
-        return "swag_float32_t";
-    case NativeTypeKind::F64:
-        return "swag_float64_t";
-    case NativeTypeKind::Char:
-        return "swag_char_t";
-    case NativeTypeKind::String:
-        return "const char*";
-    case NativeTypeKind::Void:
-        return "void";
-    default:
-        SWAG_ASSERT(false);
-        return "";
+        auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+		for (uint32_t i = 0; i < typeInfoPointer->ptrCount; i++)
+			cType += "*";
+		Utf8 internType;
+		SWAG_CHECK(swagTypeToCType(typeInfoPointer->finalType, internType));
+		cType += internType;
+		return true;
     }
+
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::Bool:
+            cType = "swag_bool_t";
+            return true;
+        case NativeTypeKind::S8:
+            cType = "swag_int8_t";
+            return true;
+        case NativeTypeKind::S16:
+            cType = "swag_int16_t";
+            return true;
+        case NativeTypeKind::S32:
+            cType = "swag_int32_t";
+            return true;
+        case NativeTypeKind::S64:
+            cType = "swag_int64_t";
+            return true;
+        case NativeTypeKind::U8:
+            cType = "swag_uint8_t";
+            return true;
+        case NativeTypeKind::U16:
+            cType = "swag_uint16_t";
+            return true;
+        case NativeTypeKind::U32:
+            cType = "swag_uint32_t";
+            return true;
+        case NativeTypeKind::U64:
+            cType = "swag_uint64_t";
+            return true;
+        case NativeTypeKind::F32:
+            cType = "swag_float32_t";
+            return true;
+        case NativeTypeKind::F64:
+            cType = "swag_float64_t";
+            return true;
+        case NativeTypeKind::Char:
+            cType = "swag_char_t";
+            return true;
+        case NativeTypeKind::String:
+            cType = "const char*";
+            return true;
+        case NativeTypeKind::Void:
+            cType = "void";
+            return true;
+        }
+    }
+
+    return module->internalError("swagTypeToCType, invalid type");
 }
 
 bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams)
@@ -182,9 +209,11 @@ void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
     bufferSwg.addString(";\n");
 }
 
-void BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
-    buffer.addString(swagTypeToCType(typeFunc->returnType));
+    Utf8 cType;
+    SWAG_CHECK(swagTypeToCType(typeFunc->returnType, cType));
+    buffer.addString(cType);
     buffer.addString(" ");
     buffer.addString(module->name);
     buffer.addString("_");
@@ -200,13 +229,15 @@ void BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
                 buffer.addString(", ");
             first = false;
 
-            buffer.addString(swagTypeToCType(param->typeInfo));
+            SWAG_CHECK(swagTypeToCType(param->typeInfo, cType));
+            buffer.addString(cType);
             buffer.addString(" ");
             buffer.addString(param->name.c_str());
         }
     }
 
     buffer.addString(")");
+    return true;
 }
 
 void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
@@ -290,7 +321,7 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
             if (node->attributeFlags & ATTRIBUTE_PUBLIC)
             {
                 bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
-                emitFuncSignaturePublic(bufferH, typeFunc, node);
+                SWAG_CHECK(emitFuncSignaturePublic(bufferH, typeFunc, node));
                 bufferH.addString(";\n");
             }
 
@@ -1352,7 +1383,7 @@ bool BackendC::emitFunctions(Module* moduleToGen)
 
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            emitFuncSignaturePublic(bufferC, typeFunc, node);
+            SWAG_CHECK(emitFuncSignaturePublic(bufferC, typeFunc, node));
             bufferC.addString(" {\n");
             bufferC.addString(format("%s();\n", one->callName().c_str()));
             bufferC.addString("}\n\n");

@@ -10,6 +10,7 @@ struct BuildParameters;
 struct ByteCode;
 struct ByteCodeInstruction;
 struct DataSegment;
+struct Utf8;
 
 struct BackendC : public Backend
 {
@@ -36,12 +37,12 @@ struct BackendC : public Backend
     bool emitGlobalInit();
     bool emitGlobalDrop();
 
-    const char* swagTypeToCType(TypeInfo* typeInfo);
-    bool        emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
-    void        emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    void        emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    void        emitFuncSignatureInternalC(ByteCode* bc);
-    bool        emitInternalFunction(Module* moduleToGen, ByteCode* bc);
+    bool swagTypeToCType(TypeInfo* typeInfo, Utf8 &cType);
+    bool emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
+    void emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    void emitFuncSignatureInternalC(ByteCode* bc);
+    bool emitInternalFunction(Module* moduleToGen, ByteCode* bc);
 
     OutputFile bufferH;
     OutputFile bufferC;

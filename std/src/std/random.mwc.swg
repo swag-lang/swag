@@ -12,12 +12,14 @@ namespace random
 		const mhi = mult >> 16
 		const mlo = mult & 0xFFFF
 	
+		#[swag.public]
 		func seed(using self, seed: u32)
 		{
 			x = seed
 			crry = 1234567
 		}
 		
+		#[swag.public]
 		func next(using self)->u32
 		{
 		    xhi := x >> 16
