@@ -65,7 +65,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
 
     // Be sure we do not reference a structure field, without a corresponding concrete variable
     auto sourceFile = context->sourceFile;
-    if (!identifierRef->typeInfo && overload && (overload->flags & OVERLOAD_VAR_STRUCT))
+    if (!identifierRef->typeInfo && overload && (overload->flags & OVERLOAD_VAR_STRUCT) && !(overload->flags & OVERLOAD_COMPUTED_VALUE))
     {
         Diagnostic diag{sourceFile, node, format("cannot reference structure identifier '%s'", node->name.c_str())};
         context->errorContext.report(diag);
