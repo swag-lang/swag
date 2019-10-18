@@ -134,7 +134,15 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, op));
     node->flags |= AST_R_VALUE;
 
-    auto typeInfo = TypeManager::concreteType(op->typeInfo);
+    // Special case for enum : nothing is possible, except for flags
+    auto typeInfo = TypeManager::concreteType(op->typeInfo, MakeConcrete::FlagAlias);
+    if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
+            return notAllowed(context, node, typeInfo);
+    }
+
+    typeInfo = TypeManager::concreteType(op->typeInfo);
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {

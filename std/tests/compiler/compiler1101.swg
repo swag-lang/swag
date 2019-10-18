@@ -1,4 +1,4 @@
-//#[swag.flags]
+#[swag.flags]
 enum Days
 {
 	A = 1
