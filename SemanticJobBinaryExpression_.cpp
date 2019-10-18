@@ -687,10 +687,9 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
 
 bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto left       = node->childs[0];
-    auto right      = node->childs[1];
+    auto node  = context->node;
+    auto left  = node->childs[0];
+    auto right = node->childs[1];
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
@@ -711,7 +710,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             node->token.id != TokenId::SymCircumflex)
             ok = false;
         if (!ok)
-            return context->errorContext.report({sourceFile, node->token, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
+            return notAllowed(context, node, leftTypeInfo);
         isEnumFlags = true;
     }
 
@@ -748,37 +747,37 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         SWAG_CHECK(resolveBinaryOpMinus(context, left, right));
         break;
     case TokenId::SymAsterisk:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBinaryOpMul(context, left, right));
         break;
     case TokenId::SymSlash:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBinaryOpDiv(context, left, right));
         break;
 
     case TokenId::SymVertical:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = isEnumFlags ? left->typeInfo : TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBitmaskOr(context, left, right));
         break;
     case TokenId::SymAmpersand:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = isEnumFlags ? left->typeInfo : TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveBitmaskAnd(context, left, right));
         break;
     case TokenId::SymCircumflex:
-        SWAG_VERIFY(leftTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
-        SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, right, format("operation  not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())}));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = isEnumFlags ? left->typeInfo : TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveXor(context, left, right));
@@ -792,10 +791,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
 bool SemanticJob::resolveShiftExpression(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto left       = node->childs[0];
-    auto right      = node->childs[1];
+    auto node  = context->node;
+    auto left  = node->childs[0];
+    auto right = node->childs[1];
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
@@ -815,10 +813,8 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
         return true;
     }
 
-    if (leftTypeInfo->kind != TypeInfoKind::Native)
-        return context->errorContext.report({sourceFile, left, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
-    if (rightTypeInfo->kind != TypeInfoKind::Native)
-        return context->errorContext.report({sourceFile, right, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
+    SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+    SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
 
     TypeManager::promote(left, right);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right));

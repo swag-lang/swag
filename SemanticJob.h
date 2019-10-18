@@ -66,12 +66,14 @@ struct SemanticJob : public Job
     static SemanticJob* newJob(SourceFile* sourceFile, AstNode* rootNode, bool run);
     static bool         error(SemanticContext* context, const Utf8& msg);
     static bool         internalError(SemanticContext* context, const char* msg, AstNode* node = nullptr);
+    static bool         checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
 
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags);
     static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
-	static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
+    static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar);
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
@@ -179,7 +181,7 @@ struct SemanticJob : public Job
 
     void reset() override
     {
-		Job::reset();
+        Job::reset();
         nodes.clear();
         cacheDependentSymbols.clear();
         cacheScopeHierarchy.clear();

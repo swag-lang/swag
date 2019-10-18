@@ -13,6 +13,18 @@ bool SemanticJob::internalError(SemanticContext* context, const char* msg, AstNo
     return false;
 }
 
+bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, notAllowed(context, node, typeInfo));
+    return true;
+}
+
+bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    auto sourceFile = context->sourceFile;
+    return context->errorContext.report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
+}
+
 SemanticJob* SemanticJob::newJob(SourceFile* sourceFile, AstNode* rootNode, bool run)
 {
     auto job        = g_Pool_semanticJob.alloc();

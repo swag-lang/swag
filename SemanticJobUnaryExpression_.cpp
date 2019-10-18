@@ -124,9 +124,8 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
 
 bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto op         = node->childs[0];
+    auto node = context->node;
+    auto op   = node->childs[0];
 
     node->typeInfo    = op->typeInfo;
     node->byteCodeFct = &ByteCodeGenJob::emitUnaryOp;
@@ -136,6 +135,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     node->flags |= AST_R_VALUE;
 
     auto typeInfo = TypeManager::concreteType(op->typeInfo);
+
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         switch (node->token.id)
@@ -156,8 +156,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())}));
-
+    SWAG_CHECK(checkTypeIsNative(context, node, typeInfo));
     switch (node->token.id)
     {
     case TokenId::SymExclam:

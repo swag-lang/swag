@@ -8,19 +8,6 @@
 #include "ByteCodeGenJob.h"
 #include "SymTable.h"
 
-static bool checkNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
-{
-    auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(typeInfo->kind == TypeInfoKind::Native, context->errorContext.report({sourceFile, node, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())}));
-    return true;
-}
-
-static bool notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
-{
-    auto sourceFile = context->sourceFile;
-    return context->errorContext.report({sourceFile, node, format("operation not allowed on type '%s'", typeInfo->name.c_str())});
-}
-
 bool SemanticJob::resolveAffect(SemanticContext* context)
 {
     auto node       = context->node;
@@ -55,8 +42,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 node->token.id != TokenId::SymAmpersandEqual &&
                 node->token.id != TokenId::SymCircumflexEqual)
                 ok = false;
-			if (!ok)
-				return notAllowed(context, node, leftTypeInfo);
+            if (!ok)
+                return notAllowed(context, node, leftTypeInfo);
             forEnumFlags = true;
         }
     }
@@ -153,8 +140,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkNative(context, left, leftTypeInfo));
-        SWAG_CHECK(checkNative(context, right, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::Char ||
@@ -186,8 +173,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(forEnumFlags || checkNative(context, left, leftTypeInfo));
-        SWAG_CHECK(forEnumFlags || checkNative(context, right, rightTypeInfo));
+        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::Char ||
@@ -227,8 +214,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkNative(context, left, leftTypeInfo));
-        SWAG_CHECK(checkNative(context, right, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::Char ||
@@ -248,8 +235,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkNative(context, left, leftTypeInfo));
-        SWAG_CHECK(checkNative(context, right, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType != NativeTypeKind::F32 &&
             leftTypeInfo->nativeType != NativeTypeKind::F64)
@@ -270,8 +257,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(checkNative(context, left, leftTypeInfo));
-        SWAG_CHECK(checkNative(context, right, rightTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, left, leftTypeInfo));
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
             leftTypeInfo->nativeType == NativeTypeKind::Char ||
@@ -282,7 +269,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         break;
 
     default:
-		return internalError(context, "resolveAffect, invalid token");
+        return internalError(context, "resolveAffect, invalid token");
     }
 
     node->byteCodeFct = &ByteCodeGenJob::emitAffect;
