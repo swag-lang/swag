@@ -9,8 +9,8 @@ namespace rand
 	impl Mwc
 	{
 		const mult: u32 = 2083801278
-		const mhi: u32  = mult >> 16
-		const mlo: u32  = mult & 0xFFFF
+		const mhi = mult >> 16
+		const mlo = mult & 0xFFFF
 	
 		func seed(using self, seed: u32)
 		{
