@@ -1,4 +1,4 @@
-namespace rand
+namespace random
 {
 	struct Mwc
 	{
