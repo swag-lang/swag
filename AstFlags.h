@@ -33,6 +33,7 @@ static const uint64_t AST_DECL_USING                 = 0x00000000'40000000;
 static const uint64_t AST_SHORT_LAMBDA               = 0x00000000'80000000;
 static const uint64_t AST_FUNC_RETURN_DEFINED        = 0x00000001'00000000;
 static const uint64_t AST_FORCE_FUNC_LATE_REGISTER   = 0x00000002'00000000;
+static const uint64_t AST_INSIDE_IMPL                = 0x00000004'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;

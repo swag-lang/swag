@@ -25,7 +25,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
-    // Get or create scope
+    // Get existing scope or create a new one
     auto newScope = Ast::newScope(implNode, implNode->identifier->childs.front()->name, ScopeKind::Struct, currentScope, true);
     newScope->allocateSymTable();
     implNode->structScope = newScope;
@@ -33,6 +33,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     {
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);
+        ScopedFlags  scopedFlags(this, AST_INSIDE_IMPL);
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doTopLevelInstruction(implNode));
