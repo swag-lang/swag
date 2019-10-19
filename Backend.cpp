@@ -56,26 +56,22 @@ bool Backend::emitFuncSignaturesSwg(Module* moduleToGen)
 
     for (auto one : moduleToGen->byteCodeFunc)
     {
-        TypeInfoFuncAttr* typeFunc = one->typeInfoFunc;
-        AstFuncDecl*      node     = nullptr;
+        if (!one->node)
+            continue;
 
-        if (one->node)
-        {
-            node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+        // Do we need to generate that function ?
+        if (one->node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+        if ((one->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
+            continue;
+        if (one->node->attributeFlags & ATTRIBUTE_FOREIGN)
+            continue;
+        if (!(one->node->attributeFlags & ATTRIBUTE_PUBLIC))
+            continue;
 
-            // Do we need to generate that function ?
-            if (node->attributeFlags & ATTRIBUTE_COMPILER)
-                continue;
-            if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
-                continue;
-            if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-                continue;
-
-            typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        }
-
-        if (node && (node->attributeFlags & ATTRIBUTE_PUBLIC))
-            emitFuncSignatureSwg(typeFunc, node);
+        AstFuncDecl*      node     = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+        TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        emitFuncSignatureSwg(typeFunc, node);
     }
 
     bufferSwg.addString("}\n");
@@ -97,9 +93,9 @@ bool Backend::preCompile()
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
     bufferSwg.fileName = targetPath + "\\" + module->name + ".swg";
 
-	bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 
-	SWAG_CHECK(emitFuncSignaturesSwg());
+    SWAG_CHECK(emitFuncSignaturesSwg());
 
     return bufferSwg.flush();
 }

@@ -15,6 +15,7 @@ namespace std.random
 		#[swag.public]
 		func toto()
 		{
+			@print("toto\n")
 		}
 
 		//#[swag.public]
