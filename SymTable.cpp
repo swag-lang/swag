@@ -164,6 +164,9 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
         return false;
     }
 
+	if (symbol->kind == SymbolKind::Namespace)
+		return true;
+
     // Overloads are not allowed on certain types
     bool canOverload = kind == SymbolKind::Function || kind == SymbolKind::Attribute || kind == SymbolKind::Struct;
     if (!canOverload && !symbol->overloads.empty())

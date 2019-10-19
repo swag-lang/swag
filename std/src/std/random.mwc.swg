@@ -12,12 +12,6 @@ namespace std.random
 		const mhi = mult >> 16
 		const mlo = mult & 0xFFFF
 	
-		#[swag.public]
-		func toto()
-		{
-			@print("toto\n")
-		}
-
 		//#[swag.public]
 		func seed(using self, seed: u32)
 		{

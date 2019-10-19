@@ -1,4 +1,4 @@
-namespace os.win32
+namespace std.os.win32
 {
 	#[swag.foreign("kernel32")]
 	{

@@ -2,5 +2,5 @@
 
 #test
 {
-	std.random.Mwc.toto()
+	
 }
