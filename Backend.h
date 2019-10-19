@@ -4,6 +4,7 @@ struct Module;
 struct BuildParameters;
 struct TypeInfoFuncAttr;
 struct AstFuncDecl;
+struct Scope;
 
 struct Backend
 {
@@ -22,6 +23,5 @@ struct Backend
     OutputFile bufferSwg;
 
     void emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool emitFuncSignaturesSwg(Module* moduleToGen);
-	bool emitFuncSignaturesSwg();
+    void emitFuncSignaturesSwg(Module* moduleToGen, Scope* scope);
 };

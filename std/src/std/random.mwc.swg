@@ -14,13 +14,19 @@ namespace std.random
 		const mlo = mult & 0xFFFF
 	
 		#[swag.public]
+		func toto(seed: u32)->u32
+		{
+			return seed
+		}
+		
+		//#[swag.public]
 		func seed(using self, seed: u32)
 		{
 			x = seed
 			crry = 1234567
 		}
 		
-		#[swag.public]
+		//#[swag.public]
 		func next(using self)->u32
 		{
 		    xhi := x >> 16

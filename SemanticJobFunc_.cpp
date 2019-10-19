@@ -157,8 +157,24 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             g_ThreadMgr.addJob(job);
     }
 
-	if((node->attributeFlags & ATTRIBUTE_TEST_FUNC) &&  (node->attributeFlags & ATTRIBUTE_PUBLIC))
-		return context->errorContext.report({ sourceFile, node->token, format("test function '%s' cannot be public", node->name.c_str()) });
+    // Public
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
+            return context->errorContext.report({sourceFile, node->token, format("test function '%s' cannot be public", node->name.c_str())});
+        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+            return context->errorContext.report({sourceFile, node->token, format("compiler function '%s' cannot be public", node->name.c_str())});
+        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+            return context->errorContext.report({sourceFile, node->token, format("foreign function '%s' cannot be public", node->name.c_str())});
+        node->ownerScope->publicFunc.push_back(node);
+
+        auto pscope = node->ownerScope;
+        while (pscope && !(pscope->hasExports))
+        {
+            pscope->hasExports = true;
+            pscope             = pscope->parentScope;
+        }
+    }
 
     // Ask for bytecode
     bool genByteCode = false;

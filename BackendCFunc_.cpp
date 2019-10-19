@@ -203,6 +203,158 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     return true;
 }
 
+bool BackendC::emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one)
+{
+    SWAG_CHECK(emitFuncSignaturePublic(bufferC, typeFunc, node));
+    bufferC.addString(" {\n");
+
+    // Compute number of registers
+    auto n = typeFunc->numReturnRegisters();
+    for (auto param : typeFunc->parameters)
+    {
+        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        n += typeParam->numRegisters();
+    }
+
+    // Declare registers
+    if (n)
+    {
+        bufferC.addString("\tswag_register_t ");
+        for (int i = 0; i < n; i++)
+        {
+            if (i)
+                bufferC.addString(", ");
+            bufferC.addString(format("rr%d", i));
+        }
+        bufferC.addString(";\n");
+    }
+
+    // Affect registers
+    int idx = typeFunc->numReturnRegisters();
+    for (auto param : typeFunc->parameters)
+    {
+        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Native)
+        {
+            switch (typeParam->nativeType)
+            {
+            case NativeTypeKind::U8:
+                bufferC.addString(format("\trr%d.u8 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::U16:
+                bufferC.addString(format("\trr%d.u16 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::U32:
+                bufferC.addString(format("\trr%d.u32 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::U64:
+                bufferC.addString(format("\trr%d.u64 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::S8:
+                bufferC.addString(format("\trr%d.s8 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::S16:
+                bufferC.addString(format("\trr%d.s16 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::S32:
+                bufferC.addString(format("\trr%d.s32 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::S64:
+                bufferC.addString(format("\trr%d.s64 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::F32:
+                bufferC.addString(format("\trr%d.f32 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::F64:
+                bufferC.addString(format("\trr%d.f64 = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::Bool:
+                bufferC.addString(format("\trr%d.b = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            case NativeTypeKind::Char:
+                bufferC.addString(format("\trr%d.ch = %s;\n", idx, param->namedParam.c_str()));
+                break;
+            default:
+                return module->internalError("emitFuncWrapperPublic, invalid param type");
+            }
+        }
+        else
+        {
+            return module->internalError("emitFuncWrapperPublic, invalid param type");
+        }
+
+        idx += typeParam->numRegisters();
+    }
+
+    // Make the call
+    bufferC.addString(format("\t%s", one->callName().c_str()));
+    bufferC.addString("(");
+    for (int i = 0; i < n; i++)
+    {
+        if (i)
+            bufferC.addString(", ");
+        bufferC.addString(format("&rr%d", i));
+    }
+
+    bufferC.addString(");\n");
+
+    // Return
+    if (typeFunc->numReturnRegisters())
+    {
+        if (typeFunc->returnType->kind == TypeInfoKind::Native)
+        {
+            switch (typeFunc->returnType->nativeType)
+            {
+            case NativeTypeKind::U8:
+                bufferC.addString("\treturn rr0.u8;\n");
+                break;
+            case NativeTypeKind::U16:
+                bufferC.addString("\treturn rr0.u16;\n");
+                break;
+            case NativeTypeKind::U32:
+				bufferC.addString("\treturn rr0.u32;\n");
+                break;
+            case NativeTypeKind::U64:
+                bufferC.addString("\treturn rr0.u64;\n");
+                break;
+            case NativeTypeKind::S8:
+                bufferC.addString("\treturn rr0.s8;\n");
+                break;
+            case NativeTypeKind::S16:
+                bufferC.addString("\treturn rr0.s16;\n");
+                break;
+            case NativeTypeKind::S32:
+                bufferC.addString("\treturn rr0.s32;\n");
+                break;
+            case NativeTypeKind::S64:
+                bufferC.addString("\treturn rr0.s64;\n");
+                break;
+            case NativeTypeKind::F32:
+                bufferC.addString("\treturn rr0.f32;\n");
+                break;
+            case NativeTypeKind::F64:
+                bufferC.addString("\treturn rr0.f64;\n");
+                break;
+            case NativeTypeKind::Char:
+                bufferC.addString("\treturn rr0.ch;\n");
+                break;
+            case NativeTypeKind::Bool:
+                bufferC.addString("\treturn rr0.b;\n");
+                break;
+			default:
+				return module->internalError("emitFuncWrapperPublic, invalid return type");
+            }
+        }
+        else
+        {
+            return module->internalError("emitFuncWrapperPublic, invalid return type");
+        }
+    }
+
+    bufferC.addString("}\n\n");
+    return true;
+}
+
 bool BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     Utf8 cType;
@@ -1363,12 +1515,10 @@ bool BackendC::emitFunctions(Module* moduleToGen)
 
         ok &= emitInternalFunction(moduleToGen, one);
 
+        // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_CHECK(emitFuncSignaturePublic(bufferC, typeFunc, node));
-            bufferC.addString(" {\n");
-            bufferC.addString(format("%s();\n", one->callName().c_str()));
-            bufferC.addString("}\n\n");
+            SWAG_CHECK(emitFuncWrapperPublic(typeFunc, node, one));
         }
     }
 

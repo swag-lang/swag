@@ -39,6 +39,7 @@ struct BackendC : public Backend
     bool swagTypeToCType(TypeInfo* typeInfo, Utf8 &cType);
     bool emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
     void emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+	bool emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
     bool emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void emitFuncSignatureInternalC(ByteCode* bc);
     bool emitInternalFunction(Module* moduleToGen, ByteCode* bc);

@@ -1,4 +1,3 @@
-#module compiler86
 /*;
 
 #unittest error;

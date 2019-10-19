@@ -33,10 +33,6 @@ void Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
         return;
 
-    if (!node->ownerScope->fullname.empty())
-        bufferSwg.addString(format("namespace %s { ", node->ownerScope->fullname.c_str()));
-
-    bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)] ", module->name.c_str()));
     bufferSwg.addString("func ");
     bufferSwg.addString(node->name.c_str());
     bufferSwg.addString("(");
@@ -62,46 +58,35 @@ void Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     }
 
     bufferSwg.addString(";");
-    if (!node->ownerScope->fullname.empty())
-        bufferSwg.addString(" }");
     bufferSwg.addString("\n");
 }
 
-bool Backend::emitFuncSignaturesSwg(Module* moduleToGen)
+void Backend::emitFuncSignaturesSwg(Module* moduleToGen, Scope* scope)
 {
     SWAG_ASSERT(moduleToGen);
+    if (!scope->hasExports)
+        return;
 
-    for (auto one : moduleToGen->byteCodeFunc)
-    {
-        if (!one->node)
-            continue;
+    if (scope->hasExports && !scope->name.empty())
+        bufferSwg.addString(format("namespace %s {\n", scope->name.c_str()));
 
-        // Do we need to generate that function ?
-        if (one->node->attributeFlags & ATTRIBUTE_COMPILER)
-            continue;
-        if ((one->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
-            continue;
-        if (one->node->attributeFlags & ATTRIBUTE_FOREIGN)
-            continue;
-        if (!(one->node->attributeFlags & ATTRIBUTE_PUBLIC))
-            continue;
+	if (!scope->publicFunc.empty())
+	{
+		bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)] {\n", module->name.c_str()));
+		for (auto func : scope->publicFunc)
+		{
+			AstFuncDecl* node = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+			TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+			emitFuncSignatureSwg(typeFunc, node);
+		}
+		bufferSwg.addString("}\n");
+	}
 
-        AstFuncDecl*      node     = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
-        TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        emitFuncSignatureSwg(typeFunc, node);
-    }
+    for (auto oneScope : scope->childScopes)
+        emitFuncSignaturesSwg(moduleToGen, oneScope);
 
-    return true;
-}
-
-bool Backend::emitFuncSignaturesSwg()
-{
-    emitSeparator(bufferSwg, "PROTOTYPES");
-    if (!emitFuncSignaturesSwg(g_Workspace.runtimeModule))
-        return false;
-    if (!emitFuncSignaturesSwg(module))
-        return false;
-    return true;
+    if (scope->hasExports && !scope->name.empty())
+        bufferSwg.addString(format("} // namespace %s\n", scope->name.c_str()));
 }
 
 bool Backend::preCompile()
@@ -110,8 +95,8 @@ bool Backend::preCompile()
     bufferSwg.fileName = targetPath + "\\" + module->name + ".swg";
 
     bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-
-    SWAG_CHECK(emitFuncSignaturesSwg());
+    emitSeparator(bufferSwg, "PROTOTYPES");
+    emitFuncSignaturesSwg(module, module->scopeRoot);
 
     return bufferSwg.flush();
 }

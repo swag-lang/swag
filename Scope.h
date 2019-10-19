@@ -16,7 +16,7 @@ enum class ScopeKind
     Enum,
     Struct,
     Function,
-	Attribute,
+    Attribute,
     Statement,
     Breakable,
     TypeList,
@@ -67,6 +67,8 @@ struct Scope : public PoolElement
     int                      startStackSize;
     SpinLock                 lockChilds;
     vector<AstNode*>         deferedNodes;
+    vector<AstNode*>         publicFunc;
+    bool                     hasExports = false;
 };
 
 extern Pool<Scope> g_Pool_scope;
