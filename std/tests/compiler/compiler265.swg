@@ -13,7 +13,6 @@ func test1 (v: s32)->s32
 	return v * test2(v - 1);
 }
 
-#[swag.public]
 #test
 {
 	@assert(test2(5) == 120);

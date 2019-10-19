@@ -157,6 +157,9 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             g_ThreadMgr.addJob(job);
     }
 
+	if((node->attributeFlags & ATTRIBUTE_TEST_FUNC) &&  (node->attributeFlags & ATTRIBUTE_PUBLIC))
+		return context->errorContext.report({ sourceFile, node->token, format("test function '%s' cannot be public", node->name.c_str()) });
+
     // Ask for bytecode
     bool genByteCode = false;
     if (g_CommandLine.backendOutput && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic))

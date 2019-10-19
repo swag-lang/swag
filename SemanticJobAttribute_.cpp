@@ -1,13 +1,6 @@
 #include "pch.h"
-#include "Global.h"
-#include "Diagnostic.h"
-#include "SourceFile.h"
-#include "SymTable.h"
 #include "SemanticJob.h"
-#include "TypeInfo.h"
 #include "Ast.h"
-#include "Scope.h"
-#include "Attribute.h"
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
@@ -24,47 +17,20 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         return false;
     }
 
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && kind != AstNodeKind::FuncDecl && kind != AstNodeKind::Statement)
-    {
-        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a function definition", oneAttribute->name.c_str())};
-        Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-        return context->errorContext.report(diag, &note, &note1);
-    }
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && (kind == AstNodeKind::FuncDecl || kind == AstNodeKind::Statement))
+        return true;
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl || kind == AstNodeKind::Statement))
+        return true;
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) && (kind == AstNodeKind::StructDecl || kind == AstNodeKind::Statement))
+        return true;
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) && (kind == AstNodeKind::EnumDecl || kind == AstNodeKind::Statement))
+        return true;
+    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue))
+		return true;
 
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && kind != AstNodeKind::VarDecl && kind != AstNodeKind::LetDecl && kind != AstNodeKind::Statement)
-    {
-        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a variable definition", oneAttribute->name.c_str())};
-        Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-        return context->errorContext.report(diag, &note, &note1);
-    }
-
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) && kind != AstNodeKind::StructDecl && kind != AstNodeKind::Statement)
-    {
-        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to a struct definition", oneAttribute->name.c_str())};
-        Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-        return context->errorContext.report(diag, &note, &note1);
-    }
-
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) && kind != AstNodeKind::EnumDecl && kind != AstNodeKind::Statement)
-    {
-        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to an enum definition", oneAttribute->name.c_str())};
-        Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-        return context->errorContext.report(diag, &note, &note1);
-    }
-
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && kind != AstNodeKind::EnumValue)
-    {
-        Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' can only be applied to an enum value", oneAttribute->name.c_str())};
-        Diagnostic note{sourceFile, checkNode->token, format("'%s' is %s", checkNode->name.c_str(), AstNode::getKindName(checkNode)), DiagnosticLevel::Note};
-        Diagnostic note1{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-        return context->errorContext.report(diag, &note, &note1);
-    }
-
-    return true;
+    Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode))};
+    Diagnostic note{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+    return context->errorContext.report(diag, &note);
 }
 
 bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
