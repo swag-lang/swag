@@ -7,6 +7,7 @@
 #include "AstNode.h"
 #include "Scope.h"
 #include "ByteCode.h"
+#include "TypeManager.h"
 
 void Backend::emitSeparator(Concat& buffer, const char* title)
 {
@@ -39,7 +40,26 @@ void Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     bufferSwg.addString("func ");
     bufferSwg.addString(node->name.c_str());
     bufferSwg.addString("(");
+
+    uint32_t idx = 0;
+    for (auto p : typeFunc->parameters)
+    {
+        bufferSwg.addString(p->namedParam);
+        bufferSwg.addString(": ");
+        bufferSwg.addString(p->typeInfo->name);
+
+        if (idx != typeFunc->parameters.size() - 1)
+            bufferSwg.addString(", ");
+        idx++;
+    }
+
     bufferSwg.addString(")");
+
+    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        bufferSwg.addString("->");
+        bufferSwg.addString(typeFunc->returnType->name);
+    }
 
     bufferSwg.addString(";");
     if (!node->ownerScope->fullname.empty())

@@ -1,5 +1,6 @@
 namespace std.random
 {
+	#[swag.public]
 	struct Mwc
 	{
 		x: 		u32 = 1234567

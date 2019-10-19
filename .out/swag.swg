@@ -23,7 +23,7 @@ namespace swag
 	attr constexpr() -> func
 	attr printbc() -> func
 	attr compiler() -> func
-	attr public() -> func
+	attr public() -> func, struct
 	attr test() -> func
 	attr foreign(module: string = "", gen: bool = false) -> func
 	attr waitsem(ms: s32) -> func
