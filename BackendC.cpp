@@ -15,27 +15,24 @@ bool BackendC::emitHeader()
     bufferC.addString("#ifdef SWAG_IS_DYNAMICLIB\n");
     bufferC.addString("#define SWAG_EXPORT\n");
     bufferC.addString("#endif\n");
-	bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+    bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
 
     // My dependencies. Need to import for dlls
+    bufferC.addString("#undef SWAG_EXPORT\n");
+	bufferC.addString("#define SWAG_IMPORT\n");
     for (auto depName : module->moduleDependenciesNames)
     {
-        bufferC.addString("#undef SWAG_EXPORT\n");
-		bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
+        bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
     }
 
     bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
     bufferH.addString(format("#define __SWAG_%s__\n", module->nameUp.c_str()));
-
-    bufferSwg.addString(format("namespace %s\n{\n\n", module->name.c_str()));
-
     return true;
 }
 
 bool BackendC::emitFooter()
 {
     bufferH.addString(format("#endif /* __SWAG_%s__ */\n", module->nameUp.c_str()));
-    bufferSwg.addString(format("\n} // namespace %s\n", module->name.c_str()));
     return true;
 }
 

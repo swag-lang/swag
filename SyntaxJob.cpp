@@ -118,7 +118,7 @@ JobResult SyntaxJob::execute()
 
     // One unnamed scope per file
     string name;
-    if (sourceFile->module->fromTests)
+    if (sourceFile->fromTests)
         name = sourceFile->path.filename().replace_extension("").string();
     sourceFile->scopeRoot = Ast::newScope(nullptr, name, ScopeKind::File, sourceFile->module->scopeRoot);
     currentScope          = sourceFile->scopeRoot;

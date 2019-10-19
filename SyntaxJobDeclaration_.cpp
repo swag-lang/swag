@@ -31,7 +31,6 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     {
         namespaceNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile, parent);
         namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
-        namespaceNode->inheritTokenName(token);
 
         switch (token.id)
         {
@@ -48,6 +47,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
             SWAG_VERIFY(token.text != "swag", syntaxError(token, "the 'swag' namespace is reserved by the compiler"));
 
         // Add/Get namespace
+        namespaceNode->inheritTokenName(token);
         currentScope->allocateSymTable();
         {
             scoped_lock lk(currentScope->symTable->mutex);
@@ -274,7 +274,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         SWAG_CHECK(doImpl(parent));
         break;
     case TokenId::KwdStruct:
-	case TokenId::KwdUnion:
+    case TokenId::KwdUnion:
         SWAG_CHECK(doStruct(parent));
         break;
     case TokenId::KwdAttr:

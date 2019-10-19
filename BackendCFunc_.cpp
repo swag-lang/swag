@@ -8,20 +8,32 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 #include "Target.h"
+#include "Scope.h"
 
 bool BackendC::swagTypeToCType(TypeInfo* typeInfo, Utf8& cType)
 {
-	cType.clear();
+    cType.clear();
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-		for (uint32_t i = 0; i < typeInfoPointer->ptrCount; i++)
-			cType += "*";
-		Utf8 internType;
-		SWAG_CHECK(swagTypeToCType(typeInfoPointer->finalType, internType));
-		cType += internType;
-		return true;
+
+        Utf8 internType;
+        cType = module->name + "_";
+        SWAG_CHECK(swagTypeToCType(typeInfoPointer->finalType, internType));
+        cType += internType;
+
+        for (uint32_t i = 0; i < typeInfoPointer->ptrCount; i++)
+            cType += "*";
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        typeInfoStruct->structNode->computeFullName();
+        cType = typeInfoStruct->structNode->fullnameUnderscore;
+        return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Native)
@@ -125,7 +137,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     }
 
     if (nodeFunc->attributeFlags & ATTRIBUTE_GENERATED_FOREIGN)
-        bufferC.addString(nodeFunc->fullname);
+        bufferC.addString(nodeFunc->fullnameUnderscore);
     else
         bufferC.addString(nodeFunc->name);
     bufferC.addString("(");
@@ -201,12 +213,19 @@ void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* nod
     if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
         return;
 
+	if(!node->ownerScope->fullname.empty())
+		bufferSwg.addString(format("namespace %s {\n", node->ownerScope->fullname.c_str()));
+
+	bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)]\n", module->name.c_str()));
     bufferSwg.addString("func ");
-    bufferSwg.addString(node->fullname.c_str());
+    bufferSwg.addString(node->name.c_str());
     bufferSwg.addString("(");
     bufferSwg.addString(")");
 
-    bufferSwg.addString(";\n");
+    bufferSwg.addString(";");
+	if (!node->ownerScope->fullname.empty())
+		bufferSwg.addString(" }");
+	bufferSwg.addString("\n");
 }
 
 bool BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
@@ -215,9 +234,7 @@ bool BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
     SWAG_CHECK(swagTypeToCType(typeFunc->returnType, cType));
     buffer.addString(cType);
     buffer.addString(" ");
-    buffer.addString(module->name);
-    buffer.addString("_");
-    buffer.addString(node->fullname.c_str());
+    buffer.addString(node->fullnameUnderscore.c_str());
     buffer.addString("(");
 
     if (node->parameters)

@@ -85,6 +85,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
                             auto job        = g_Pool_syntaxJob.alloc();
                             auto file       = g_Pool_sourceFile.alloc();
                             job->sourceFile = file;
+                            file->fromTests = module->fromTests;
                             module->addFile(file);
                             file->path = tmp + "\\" + findfile.cFileName;
                             g_ThreadMgr.addJob(job);

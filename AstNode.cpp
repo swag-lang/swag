@@ -61,11 +61,17 @@ void AstNode::computeFullName()
 {
     scoped_lock lk(mutex);
     SWAG_ASSERT(ownerScope);
-    if (ownerScope->fullname.empty())
-        fullname = name;
+	if (ownerScope->fullname.empty())
+	{
+		fullnameDot = fullnameUnderscore = name;
+	}
     else
-        fullname = ownerScope->fullname + "_" + name;
-    replaceAll(fullname, '.', '_');
+    {
+        fullnameUnderscore = ownerScope->fullname + "_" + name;
+        fullnameDot        = ownerScope->fullname + "." + name;
+    }
+
+    replaceAll(fullnameUnderscore, '.', '_');
 }
 
 const char* AstNode::getKindName(AstNode* node)
@@ -188,7 +194,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
 
     computedValue        = from->computedValue;
     name                 = from->name;
-    fullname             = from->fullname;
+    fullnameDot          = from->fullnameDot;
+    fullnameUnderscore   = from->fullnameUnderscore;
     sourceFile           = from->sourceFile;
     bc                   = from->bc;
     resultRegisterRC     = from->resultRegisterRC;

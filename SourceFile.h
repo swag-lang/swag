@@ -59,6 +59,7 @@ struct SourceFile : public PoolElement
     bool                         directMode  = false;
     bool                         openedOnce  = false;
     bool                         formatDone  = false;
+    bool                         fromTests   = false;
     int                          totalRead   = 0;
     condition_variable           condVar;
     Scope*                       scopeRoot = nullptr;

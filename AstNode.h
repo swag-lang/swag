@@ -316,7 +316,8 @@ struct AstNode : public PoolElement
     SpinLock      mutex;
     ComputedValue computedValue;
     Utf8Crc       name;
-    Utf8          fullname;
+    Utf8          fullnameDot;
+	Utf8          fullnameUnderscore;
     SourceFile*   sourceFile;
     ByteCode*     bc;
     RegisterList  resultRegisterRC;
