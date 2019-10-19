@@ -33,9 +33,9 @@ void Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
         return;
 
     if (!node->ownerScope->fullname.empty())
-        bufferSwg.addString(format("namespace %s {\n", node->ownerScope->fullname.c_str()));
+        bufferSwg.addString(format("namespace %s { ", node->ownerScope->fullname.c_str()));
 
-    bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)]\n", module->name.c_str()));
+    bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)] ", module->name.c_str()));
     bufferSwg.addString("func ");
     bufferSwg.addString(node->name.c_str());
     bufferSwg.addString("(");
@@ -50,9 +50,6 @@ void Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
 bool Backend::emitFuncSignaturesSwg(Module* moduleToGen)
 {
     SWAG_ASSERT(moduleToGen);
-
-    bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)]\n", module->name.c_str()));
-    bufferSwg.addString("{\n");
 
     for (auto one : moduleToGen->byteCodeFunc)
     {
@@ -74,7 +71,6 @@ bool Backend::emitFuncSignaturesSwg(Module* moduleToGen)
         emitFuncSignatureSwg(typeFunc, node);
     }
 
-    bufferSwg.addString("}\n");
     return true;
 }
 
