@@ -17,12 +17,7 @@ bool BackendC::swagTypeToCType(TypeInfo* typeInfo, Utf8& cType)
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-
-        Utf8 internType;
-        cType = module->name + "_";
-        SWAG_CHECK(swagTypeToCType(typeInfoPointer->finalType, internType));
-        cType += internType;
-
+        SWAG_CHECK(swagTypeToCType(typeInfoPointer->finalType, cType));
         for (uint32_t i = 0; i < typeInfoPointer->ptrCount; i++)
             cType += "*";
         return true;
