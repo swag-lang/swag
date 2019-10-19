@@ -1,5 +1,9 @@
 #pragma once
+#include "OutputFile.h"
+struct Module;
 struct BuildParameters;
+struct TypeInfoFuncAttr;
+struct AstFuncDecl;
 
 struct Backend
 {
@@ -8,8 +12,16 @@ struct Backend
     {
     }
 
-    virtual bool preCompile()                                        = 0;
+    void generateSwg();
+    void emitSeparator(Concat& buffer, const char* title);
+
+    virtual bool preCompile();
     virtual bool compile(const BuildParameters& backendParameters) = 0;
 
-    Module* module;
+    Module*    module;
+    OutputFile bufferSwg;
+
+    void emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool emitFuncSignaturesSwg(Module* moduleToGen);
+	bool emitFuncSignaturesSwg();
 };

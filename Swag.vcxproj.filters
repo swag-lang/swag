@@ -323,6 +323,9 @@
     <ClCompile Include="OsWin32.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="Backend.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

@@ -217,6 +217,7 @@
     <ClCompile Include="Ast.cpp" />
     <ClCompile Include="AstNode.cpp" />
     <ClCompile Include="Attribute.cpp" />
+    <ClCompile Include="Backend.cpp" />
     <ClCompile Include="BackendC.cpp" />
     <ClCompile Include="BackendCCompilerVS.cpp" />
     <ClCompile Include="BackendCData_.cpp" />

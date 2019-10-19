@@ -9,7 +9,6 @@ bool BackendC::emitHeader()
 {
     bufferH.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     bufferC.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 
     // My include file. Need to export for dlls
     bufferC.addString("#ifdef SWAG_IS_DYNAMICLIB\n");
@@ -36,25 +35,6 @@ bool BackendC::emitFooter()
     return true;
 }
 
-void BackendC::emitSeparator(Concat& buffer, const char* title)
-{
-    int len = (int) strlen(title);
-    buffer.addString("/*");
-    int maxLen = 80;
-
-    int i = 0;
-    for (; i < 4; i++)
-        buffer.addString("#");
-    buffer.addString(" ");
-    buffer.addString(title);
-    buffer.addString(" ");
-    i += len + 2;
-
-    for (; i < maxLen; i++)
-        buffer.addString("#");
-    buffer.addString("*/\n");
-}
-
 bool BackendC::preCompile()
 {
     if (g_CommandLine.verboseBuildPass)
@@ -63,7 +43,6 @@ bool BackendC::preCompile()
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
     bufferH.fileName   = targetPath + "\\" + module->name + ".h";
     bufferC.fileName   = targetPath + "\\" + module->name + ".c";
-    bufferSwg.fileName = targetPath + "\\" + module->name + ".swg";
 
     bool ok = true;
     ok &= emitHeader();
@@ -80,7 +59,8 @@ bool BackendC::preCompile()
 
     ok &= bufferH.flush();
     ok &= bufferC.flush();
-    ok &= bufferSwg.flush();
+
+	ok &= Backend::preCompile();
 
     return ok;
 }

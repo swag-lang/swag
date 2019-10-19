@@ -22,7 +22,6 @@ struct BackendC : public Backend
     bool preCompile() override;
     bool compile(const BuildParameters& backendParameters) override;
 
-    void emitSeparator(Concat& buffer, const char* title);
     bool emitHeader();
     bool emitFooter();
     bool emitRuntime();
@@ -46,5 +45,4 @@ struct BackendC : public Backend
 
     OutputFile bufferH;
     OutputFile bufferC;
-    OutputFile bufferSwg;
 };

@@ -208,26 +208,6 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     return true;
 }
 
-void BackendC::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
-{
-    if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
-        return;
-
-	if(!node->ownerScope->fullname.empty())
-		bufferSwg.addString(format("namespace %s {\n", node->ownerScope->fullname.c_str()));
-
-	bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)]\n", module->name.c_str()));
-    bufferSwg.addString("func ");
-    bufferSwg.addString(node->name.c_str());
-    bufferSwg.addString("(");
-    bufferSwg.addString(")");
-
-    bufferSwg.addString(";");
-	if (!node->ownerScope->fullname.empty())
-		bufferSwg.addString(" }");
-	bufferSwg.addString("\n");
-}
-
 bool BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     Utf8 cType;
@@ -292,7 +272,6 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
 
 bool BackendC::emitFuncSignatures()
 {
-    emitSeparator(bufferSwg, "PROTOTYPES");
     emitSeparator(bufferH, "PROTOTYPES");
     emitSeparator(bufferC, "PROTOTYPES");
     if (!emitFuncSignatures(g_Workspace.runtimeModule))
@@ -305,9 +284,6 @@ bool BackendC::emitFuncSignatures()
 bool BackendC::emitFuncSignatures(Module* moduleToGen)
 {
     SWAG_ASSERT(moduleToGen);
-
-    bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)]\n", module->name.c_str()));
-    bufferSwg.addString("{\n");
 
     for (auto one : moduleToGen->byteCodeFunc)
     {
@@ -333,20 +309,14 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
         emitFuncSignatureInternalC(one);
         bufferC.addString(";\n");
 
-        if (node)
+        if (node && (node->attributeFlags & ATTRIBUTE_PUBLIC))
         {
-            if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-            {
-                bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
-                SWAG_CHECK(emitFuncSignaturePublic(bufferH, typeFunc, node));
-                bufferH.addString(";\n");
-            }
-
-            emitFuncSignatureSwg(typeFunc, node);
+            bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
+            SWAG_CHECK(emitFuncSignaturePublic(bufferH, typeFunc, node));
+            bufferH.addString(";\n");
         }
     }
 
-    bufferSwg.addString("}\n");
     bufferC.addString("\n");
     return true;
 }
