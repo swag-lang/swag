@@ -97,6 +97,20 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         auto varDecl = static_cast<AstVarDecl*>(child);
 
+        TypeInfoParam* typeParam = nullptr;
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            typeParam             = g_Pool_typeInfoParam.alloc();
+            typeParam->namedParam = child->name;
+            typeParam->name       = child->typeInfo->name;
+            typeParam->typeInfo   = child->typeInfo;
+            typeParam->sizeOf     = child->typeInfo->sizeOf;
+            typeParam->offset     = storageOffset;
+            if (child->parentAttributes)
+                SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
+            typeInfo->childs.push_back(typeParam);
+        }
+
         // Default value
         if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
@@ -123,19 +137,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-        }
-
-        if (!(node->flags & AST_FROM_GENERIC))
-        {
-            auto typeParam        = g_Pool_typeInfoParam.alloc();
-            typeParam->namedParam = child->name;
-            typeParam->name       = child->typeInfo->name;
-            typeParam->typeInfo   = child->typeInfo;
-            typeParam->sizeOf     = child->typeInfo->sizeOf;
-            typeParam->offset     = storageOffset;
-            if (child->parentAttributes)
-                SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
-            typeInfo->childs.push_back(typeParam);
         }
 
         if (!(node->flags & AST_IS_GENERIC))
