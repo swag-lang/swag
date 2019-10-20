@@ -97,7 +97,10 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 {
     AstNode* node       = context->node;
     auto     callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
+
     SWAG_ASSERT(!node->name.empty());
+    SWAG_ASSERT(g_LangSpec.intrinsics.find(node->name) != g_LangSpec.intrinsics.end());
+
     auto intrinsic = g_LangSpec.intrinsics[node->name];
     switch (intrinsic)
     {
@@ -171,10 +174,10 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
     case Intrinsic::IntrinsicArguments:
-	{
-		reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
-		node->parent->resultRegisterRC = node->resultRegisterRC;
-		emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+    {
+        reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+        node->parent->resultRegisterRC = node->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
 
@@ -212,7 +215,7 @@ void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* fu
 {
     if (!funcNode)
         return;
-	SWAG_ASSERT(!(funcNode->attributeFlags & ATTRIBUTE_FOREIGN));
+    SWAG_ASSERT(!(funcNode->attributeFlags & ATTRIBUTE_FOREIGN));
 
     auto        sourceFile = context->sourceFile;
     scoped_lock lk(funcNode->mutex);

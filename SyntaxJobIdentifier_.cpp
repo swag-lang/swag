@@ -51,8 +51,14 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
     if (result)
         *result = identifierRef;
 
-    if (g_LangSpec.intrinsics[token.text] == Intrinsic::IntrinsicProp)
-        SWAG_CHECK(doIntrinsicProp(identifierRef));
+    if (token.text[0] == '@')
+    {
+        auto it = g_LangSpec.intrinsics.find(token.text);
+        if (it == g_LangSpec.intrinsics.end() || it->second != Intrinsic::IntrinsicProp)
+            SWAG_CHECK(doIdentifier(identifierRef));
+        else
+            SWAG_CHECK(doIntrinsicProp(identifierRef));
+    }
     else
         SWAG_CHECK(doIdentifier(identifierRef));
 
