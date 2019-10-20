@@ -38,7 +38,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->backendOutput     = true;
     cmdLine->backendOutputTest = true;
     //cmdLine->runBackendTests   = false;
-    cmdLine->testFilter    = "std3";
+    //cmdLine->testFilter    = "std3";
     //cmdLine->verboseBuildPass = false;
     //cmdLine->fileFilter = "compiler265";
 }
