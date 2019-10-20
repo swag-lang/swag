@@ -150,13 +150,12 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            bufferC.addString(format("r[%u]", index));
-            bufferC.addString(".pointer");
+            bufferC.addString(format("(void*)r[%u].pointer", index));
             index -= 1;
         }
         else if (typeParam->isNative(NativeTypeKind::String))
         {
-            bufferC.addString(format("r[%u].pointer", index));
+            bufferC.addString(format("(void*)r[%u].pointer", index));
             index -= 2;
         }
         else if (typeParam->kind == TypeInfoKind::Native)
