@@ -39,6 +39,7 @@ struct Scope : public PoolElement
         indexInParent  = UINT32_MAX;
     }
 
+    void               setHasExports();
     void               allocateSymTable();
     static string      makeFullName(const string& parentName, const string& name);
     static const char* getNakedName(ScopeKind kind);
@@ -67,8 +68,11 @@ struct Scope : public PoolElement
     int                      startStackSize;
     SpinLock                 lockChilds;
     vector<AstNode*>         deferedNodes;
-    vector<AstNode*>         publicFunc;
-    bool                     hasExports = false;
+
+    SpinLock         mutexPublic;
+    vector<AstNode*> publicFunc;
+    vector<AstNode*> publicStruct;
+    bool             hasExports = false;
 };
 
 extern Pool<Scope> g_Pool_scope;

@@ -54,3 +54,13 @@ void Scope::collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result)
         SWAG_ASSERT(src);
     }
 }
+
+void Scope::setHasExports()
+{
+    auto pscope = this;
+    while (pscope && !(pscope->hasExports))
+    {
+        pscope->hasExports = true;
+        pscope             = pscope->parentScope;
+    }
+}

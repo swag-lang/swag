@@ -83,8 +83,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     typeInfo->name       = format("%s", node->name.c_str());
     if (!typeInfo->opInitFct)
         typeInfo->opInitFct = node->defaultOpInit;
-	if (node->attributeFlags & ATTRIBUTE_PACK)
-		node->packing = 1;
+    if (node->attributeFlags & ATTRIBUTE_PACK)
+        node->packing = 1;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
@@ -165,10 +165,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             padding %= node->packing;
             if (padding)
             {
-				padding = child->typeInfo->sizeOf - padding;
-				padding %= node->packing;
+                padding = child->typeInfo->sizeOf - padding;
+                padding %= node->packing;
                 storageOffset += padding;
-				typeInfo->childs[storageIndex]->offset = storageOffset;
+                typeInfo->childs[storageIndex]->offset       = storageOffset;
                 child->resolvedSymbolOverload->storageOffset = storageOffset;
             }
 
@@ -177,6 +177,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         storageIndex++;
+    }
+
+    // Check public
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        scoped_lock lk(node->ownerScope->mutexPublic);
+        node->ownerScope->publicStruct.push_back(node);
+        node->ownerScope->setHasExports();
     }
 
     // Register symbol with its type

@@ -166,14 +166,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             return context->errorContext.report({sourceFile, node->token, format("compiler function '%s' cannot be public", node->name.c_str())});
         if (node->attributeFlags & ATTRIBUTE_FOREIGN)
             return context->errorContext.report({sourceFile, node->token, format("foreign function '%s' cannot be public", node->name.c_str())});
-        node->ownerScope->publicFunc.push_back(node);
 
-        auto pscope = node->ownerScope;
-        while (pscope && !(pscope->hasExports))
-        {
-            pscope->hasExports = true;
-            pscope             = pscope->parentScope;
-        }
+        scoped_lock lk(node->ownerScope->mutexPublic);
+        node->ownerScope->publicFunc.push_back(node);
+		node->ownerScope->setHasExports();
     }
 
     // Ask for bytecode
