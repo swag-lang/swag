@@ -1,7 +1,7 @@
-#module compiler1105
-#unittest error
+attr NC()->var
 
-#[swag.public]
-#test
+struct Toto
 {
+	#[NC]
+	x: s32 = 10
 }

@@ -405,9 +405,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opInitFct->bc && typeInfoStruct->opInitFct->bc->out)
         return true;
 
-	// No need to generate opInit context if the function is foreign, i.e. imported from another module
-	if (typeInfoStruct->opInitFct->attributeFlags & ATTRIBUTE_FOREIGN)
-		return true;
+    // No need to generate opInit context if the function is foreign, i.e. imported from another module
+    if (typeInfoStruct->opInitFct->attributeFlags & ATTRIBUTE_FOREIGN)
+        return true;
 
     ByteCode* opInit;
     if (typeInfoStruct->opInitFct->bc)
@@ -449,6 +449,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     for (auto child : structNode->content->childs)
     {
+        if (child->kind == AstNodeKind::AttrUse)
+            continue;
+
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
 
