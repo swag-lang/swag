@@ -1550,6 +1550,7 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
         auto node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
+		node->computeFullName();
         SWAG_CHECK(emitFuncSignaturePublic(bufferH, typeFunc, node));
         bufferH.addString(";\n");
     }

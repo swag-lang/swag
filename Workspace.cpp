@@ -180,7 +180,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
             auto file       = g_Pool_sourceFile.alloc();
             job->sourceFile = file;
             module->addFile(file);
-            file->path = move(path);
+            file->path      = move(path);
+            file->generated = true;
             g_ThreadMgr.addJob(job);
         }
     }

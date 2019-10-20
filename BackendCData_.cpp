@@ -126,6 +126,7 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("}\n");
 	bufferC.addString("\n");
 
+	bufferH.addString("\n");
     bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(swag_tls_id_t contextTlsID, struct swag_context_t* defaultContext);\n", module->name.c_str()));
     return true;
 }

@@ -615,14 +615,30 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
             emitInstruction(context, ByteCodeOp::IncPointer, r0, regOffset, r0);
 
         // Then call
-        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
-        inst            = emitInstruction(context, ByteCodeOp::LocalCall);
-        inst->a.pointer = (uint8_t*) typeInfoStruct->opInitFct->bc;
-        inst->b.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
-        emitInstruction(context, ByteCodeOp::IncSP, 8);
-
-        freeRegisterRC(context, r0);
+        emitStructCallFunc(context, typeInfoStruct->opInitFct, r0);
     }
 
     return true;
+}
+
+void ByteCodeGenJob::emitStructCallFunc(ByteCodeGenContext* context, AstNode* funcNode, RegisterList& r0)
+{
+    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+    {
+        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer = (uint8_t*) funcNode;
+        inst->b.pointer = (uint8_t*) funcNode->typeInfo;
+        emitInstruction(context, ByteCodeOp::IncSP, 8);
+        freeRegisterRC(context, r0);
+    }
+    else
+    {
+        emitInstruction(context, ByteCodeOp::PushRAParam, r0);
+        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+        inst->a.pointer = (uint8_t*) funcNode->bc;
+        inst->b.pointer = (uint8_t*) funcNode->typeInfo;
+        emitInstruction(context, ByteCodeOp::IncSP, 8);
+        freeRegisterRC(context, r0);
+    }
 }

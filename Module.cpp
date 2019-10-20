@@ -115,7 +115,7 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exce
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
         exceptionCode = GetExceptionCode();
-        exception       = true;
+        exception     = true;
         return false;
     }
 
@@ -124,13 +124,20 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exce
 
 void Module::addByteCodeFunc(ByteCode* bc)
 {
-	SWAG_ASSERT(!bc->node || !(bc->node->attributeFlags & ATTRIBUTE_FOREIGN));
+    SWAG_ASSERT(!bc->node || !(bc->node->attributeFlags & ATTRIBUTE_FOREIGN));
 
     scoped_lock lk(mutexByteCode);
     byteCodeFunc.push_back(bc);
 
     if (bc->node)
     {
+        if (bc->node->attributeFlags & ATTRIBUTE_PUBLIC)
+        {
+            scoped_lock lk1(bc->node->ownerScope->mutexPublic);
+            bc->node->ownerScope->publicFunc.push_back(bc->node);
+            bc->node->ownerScope->setHasExports();
+        }
+
         if (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
             byteCodeTestFunc.push_back(bc);
         else if (bc->node->attributeFlags & ATTRIBUTE_INIT_FUNC)

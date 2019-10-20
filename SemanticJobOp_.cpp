@@ -29,8 +29,11 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
         return true;
 
     auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(node->parent->kind == AstNodeKind::Impl, context->errorContext.report({sourceFile, node->token, format("special function '%s' should be defined in a 'impl' scope", name.c_str())}));
-    auto implNode = CastAst<AstImpl>(node->parent, AstNodeKind::Impl);
+    auto parent     = node->parent;
+    while (parent && parent->kind != AstNodeKind::Impl)
+        parent = parent->parent;
+    SWAG_VERIFY(parent, context->errorContext.report({sourceFile, node->token, format("special function '%s' should be defined in a 'impl' scope", name.c_str())}));
+    auto implNode = CastAst<AstImpl>(parent, AstNodeKind::Impl);
 
     // No need to raise an error, the semantic pass on the impl node will fail
     auto typeStruct = implNode->identifier->typeInfo;
@@ -54,7 +57,11 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
 
     auto parameters = node->parameters;
     auto returnType = node->returnType;
-    if (name == "opEquals")
+    if (name == "opInit")
+    {
+        SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
+    }
+    else if (name == "opEquals")
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 2, context->errorContext.report({sourceFile, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
         SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoBool, 0), context->errorContext.report({sourceFile, returnType, format("invalid return type for special function '%s' ('bool' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
