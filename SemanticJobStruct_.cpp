@@ -133,9 +133,18 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, MakeConcrete::FlagEnum);
 
             if (typeInfoAssignment->isNative(NativeTypeKind::String))
+            {
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                if (typeParam)
+                    typeParam->value.reg = varDecl->assignment->computedValue.reg;
+            }
             else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
+            {
                 structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                if (typeParam)
+                    typeParam->value.reg = varDecl->assignment->computedValue.reg;
+            }
+
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
         }
 

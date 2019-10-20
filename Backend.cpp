@@ -28,7 +28,7 @@ void Backend::emitSeparator(Concat& buffer, const char* title)
     buffer.addString("*/\n");
 }
 
-void Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     bufferSwg.addString("func ");
     bufferSwg.addString(node->name.c_str());
@@ -59,9 +59,10 @@ void Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
 
     bufferSwg.addString(";");
     bufferSwg.addString("\n");
+    return true;
 }
 
-void Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
+bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
     bufferSwg.addString("struct ");
     bufferSwg.addString(node->name.c_str());
@@ -73,17 +74,63 @@ void Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
         bufferSwg.addString(p->namedParam);
         bufferSwg.addString(": ");
         bufferSwg.addString(p->typeInfo->name);
+
+        if (p->typeInfo->isNative(NativeTypeKind::String))
+        {
+        }
+        else if (p->typeInfo->kind == TypeInfoKind::Native)
+        {
+            switch (p->typeInfo->nativeType)
+            {
+            case NativeTypeKind::U8:
+                if (p->value.reg.u8)
+                    bufferSwg.addString(format(" = %u", p->value.reg.u8));
+                break;
+            case NativeTypeKind::U16:
+                if (p->value.reg.u16)
+                    bufferSwg.addString(format(" = %u", p->value.reg.u16));
+                break;
+            case NativeTypeKind::U32:
+                if (p->value.reg.u32)
+                    bufferSwg.addString(format(" = %u", p->value.reg.u32));
+                break;
+            case NativeTypeKind::U64:
+                if (p->value.reg.u64)
+                    bufferSwg.addString(format(" = %llu", p->value.reg.u64));
+                break;
+            case NativeTypeKind::S8:
+                if (p->value.reg.s8)
+                    bufferSwg.addString(format(" = %d", p->value.reg.s8));
+                break;
+            case NativeTypeKind::S16:
+                if (p->value.reg.s16)
+                    bufferSwg.addString(format(" = %d", p->value.reg.s16));
+                break;
+            case NativeTypeKind::S32:
+                if (p->value.reg.s32)
+                    bufferSwg.addString(format(" = %d", p->value.reg.s32));
+                break;
+            case NativeTypeKind::S64:
+                if (p->value.reg.s64)
+                    bufferSwg.addString(format(" = %lld", p->value.reg.s64));
+                break;
+			default:
+				return module->internalError("emitStructSignatureSwg, invalid type");
+            }
+        }
+
         bufferSwg.addString("\n");
     }
 
     bufferSwg.addString("}\n");
+    return true;
 }
 
-void Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
+bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
 {
     SWAG_ASSERT(moduleToGen);
     if (!scope->hasExports)
-        return;
+        return true;
 
     if (scope->hasExports && !scope->name.empty())
     {
@@ -103,7 +150,7 @@ void Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
         {
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            emitStructSignatureSwg(typeStruct, node);
+            SWAG_CHECK(emitStructSignatureSwg(typeStruct, node));
         }
         bufferSwg.addString("\n");
     }
@@ -117,17 +164,19 @@ void Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            emitFuncSignatureSwg(typeFunc, node);
+            SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }
         bufferSwg.addString("}\n");
         bufferSwg.addString("\n");
     }
 
     for (auto oneScope : scope->childScopes)
-        emitPublicSignaturesSwg(moduleToGen, oneScope);
+        SWAG_CHECK(emitPublicSignaturesSwg(moduleToGen, oneScope));
 
     if (scope->hasExports && !scope->name.empty())
         bufferSwg.addString(format("} // %s\n", scope->name.c_str()));
+
+    return true;
 }
 
 bool Backend::preCompile()
@@ -136,7 +185,7 @@ bool Backend::preCompile()
     bufferSwg.fileName = targetPath + "\\" + module->name + ".swg";
 
     bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    emitPublicSignaturesSwg(module, module->scopeRoot);
+    SWAG_CHECK(emitPublicSignaturesSwg(module, module->scopeRoot));
 
     return bufferSwg.flush();
 }
