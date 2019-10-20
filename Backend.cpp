@@ -77,6 +77,8 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
 
         if (p->typeInfo->isNative(NativeTypeKind::String))
         {
+            if (!p->value.text.empty())
+                bufferSwg.addString(format(" = \"%s\"", p->value.text.c_str()));
         }
         else if (p->typeInfo->kind == TypeInfoKind::Native)
         {
@@ -91,6 +93,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
                     bufferSwg.addString(format(" = %u", p->value.reg.u16));
                 break;
             case NativeTypeKind::U32:
+			case NativeTypeKind::Char:
                 if (p->value.reg.u32)
                     bufferSwg.addString(format(" = %u", p->value.reg.u32));
                 break;
@@ -113,6 +116,18 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
             case NativeTypeKind::S64:
                 if (p->value.reg.s64)
                     bufferSwg.addString(format(" = %lld", p->value.reg.s64));
+                break;
+            case NativeTypeKind::F32:
+                if (p->value.reg.f32 != 0.0f)
+                    bufferSwg.addString(format(" = %f", p->value.reg.f32));
+                break;
+            case NativeTypeKind::F64:
+                if (p->value.reg.f64 != 0.0)
+                    bufferSwg.addString(format(" = %lf", p->value.reg.f64));
+                break;
+            case NativeTypeKind::Bool:
+                if (p->value.reg.b)
+                    bufferSwg.addString(" = true");
                 break;
 			default:
 				return module->internalError("emitStructSignatureSwg, invalid type");
