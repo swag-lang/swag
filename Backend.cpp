@@ -74,7 +74,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
         bufferSwg.addString(p->namedParam);
         bufferSwg.addString(": ");
         bufferSwg.addString(p->typeInfo->name);
-
+		/*
         if (p->typeInfo->isNative(NativeTypeKind::String))
         {
             if (!p->value.text.empty())
@@ -132,7 +132,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
 			default:
 				return module->internalError("emitStructSignatureSwg, invalid type");
             }
-        }
+        }*/
 
         bufferSwg.addString("\n");
     }

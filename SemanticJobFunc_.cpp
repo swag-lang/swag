@@ -298,6 +298,11 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opInitFct = funcNode;
+
+			// If an opInit is defined as foreign for this struct, then force init value, and opInit call
+			if(funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+				typeStruct->flags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+
             funcNode->attributeFlags |= (typeStruct->structNode->attributeFlags & ATTRIBUTE_PUBLIC);
         }
         else if (funcNode->name == "opPostCopy")
