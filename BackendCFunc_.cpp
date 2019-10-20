@@ -234,7 +234,11 @@ bool BackendC::emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* no
     for (auto param : typeFunc->parameters)
     {
         auto typeParam = TypeManager::concreteType(param->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Native)
+        if (typeParam->kind == TypeInfoKind::Pointer)
+        {
+            bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str()));
+        }
+        else if (typeParam->kind == TypeInfoKind::Native)
         {
             switch (typeParam->nativeType)
             {
@@ -312,7 +316,7 @@ bool BackendC::emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* no
                 bufferC.addString("\treturn rr0.u16;\n");
                 break;
             case NativeTypeKind::U32:
-				bufferC.addString("\treturn rr0.u32;\n");
+                bufferC.addString("\treturn rr0.u32;\n");
                 break;
             case NativeTypeKind::U64:
                 bufferC.addString("\treturn rr0.u64;\n");
@@ -341,8 +345,8 @@ bool BackendC::emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* no
             case NativeTypeKind::Bool:
                 bufferC.addString("\treturn rr0.b;\n");
                 break;
-			default:
-				return module->internalError("emitFuncWrapperPublic, invalid return type");
+            default:
+                return module->internalError("emitFuncWrapperPublic, invalid return type");
             }
         }
         else
@@ -419,7 +423,6 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
 
 bool BackendC::emitFuncSignatures()
 {
-    emitSeparator(bufferH, "PROTOTYPES");
     emitSeparator(bufferC, "PROTOTYPES");
     if (!emitFuncSignatures(g_Workspace.runtimeModule))
         return false;
@@ -455,13 +458,6 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
         bufferC.addString("static ");
         emitFuncSignatureInternalC(one);
         bufferC.addString(";\n");
-
-        if (node && (node->attributeFlags & ATTRIBUTE_PUBLIC))
-        {
-            bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
-            SWAG_CHECK(emitFuncSignaturePublic(bufferH, typeFunc, node));
-            bufferH.addString(";\n");
-        }
     }
 
     bufferC.addString("\n");
@@ -1523,4 +1519,43 @@ bool BackendC::emitFunctions(Module* moduleToGen)
     }
 
     return ok;
+}
+
+bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
+{
+    if (!scope->hasExports)
+        return true;
+
+    for (auto one : scope->publicStruct)
+    {
+        auto node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+
+        node->computeFullName();
+        bufferH.addString(format("typedef struct %s {\n", node->fullnameUnderscore.c_str()));
+
+        Utf8 cType;
+        for (auto param : typeStruct->childs)
+        {
+            SWAG_CHECK(swagTypeToCType(param->typeInfo, cType));
+            bufferH.addString(format("%s %s;\n", cType.c_str(), param->namedParam.c_str()));
+        }
+
+        bufferH.addString(format("} %s;\n", node->fullnameUnderscore.c_str()));
+        bufferH.addString("\n");
+    }
+
+    for (auto func : scope->publicFunc)
+    {
+        auto node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
+        SWAG_CHECK(emitFuncSignaturePublic(bufferH, typeFunc, node));
+        bufferH.addString(";\n");
+    }
+
+    for (auto child : scope->childScopes)
+        SWAG_CHECK(emitPublic(moduleToGen, child));
+
+    return true;
 }

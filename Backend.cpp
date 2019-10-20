@@ -38,8 +38,11 @@ void Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     for (auto p : typeFunc->parameters)
     {
         bufferSwg.addString(p->namedParam);
-        bufferSwg.addString(": ");
-        bufferSwg.addString(p->typeInfo->name);
+        if (p->namedParam != "self")
+        {
+            bufferSwg.addString(": ");
+            bufferSwg.addString(p->typeInfo->name);
+        }
 
         if (idx != typeFunc->parameters.size() - 1)
             bufferSwg.addString(", ");
@@ -66,11 +69,11 @@ void Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
 
     for (auto p : typeStruct->childs)
     {
-		bufferSwg.addString("\t");
+        bufferSwg.addString("\t");
         bufferSwg.addString(p->namedParam);
         bufferSwg.addString(": ");
         bufferSwg.addString(p->typeInfo->name);
-		bufferSwg.addString("\n");
+        bufferSwg.addString("\n");
     }
 
     bufferSwg.addString("}\n");
@@ -82,34 +85,34 @@ void Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
     if (!scope->hasExports)
         return;
 
-	if (scope->hasExports && !scope->name.empty())
-	{
-		if (scope->kind == ScopeKind::Namespace)
-			bufferSwg.addString(format("namespace %s {\n", scope->name.c_str()));
-		else if (scope->kind == ScopeKind::Struct)
-			bufferSwg.addString(format("impl %s {\n", scope->name.c_str()));
-		else
-			bufferSwg.addString("{\n");
-	}
+    if (scope->hasExports && !scope->name.empty())
+    {
+        if (scope->kind == ScopeKind::Namespace)
+            bufferSwg.addString(format("namespace %s {\n", scope->name.c_str()));
+        else if (scope->kind == ScopeKind::Struct)
+            bufferSwg.addString(format("impl %s {\n", scope->name.c_str()));
+        else
+            bufferSwg.addString("{\n");
+    }
 
     // Structures
     if (!scope->publicStruct.empty())
     {
-		bufferSwg.addString("\n");
+        bufferSwg.addString("\n");
         for (auto one : scope->publicStruct)
         {
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
             emitStructSignatureSwg(typeStruct, node);
         }
-		bufferSwg.addString("\n");
+        bufferSwg.addString("\n");
     }
 
     // Functions
     if (!scope->publicFunc.empty())
     {
-		bufferSwg.addString("\n");
-		bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)] {\n", module->name.c_str()));
+        bufferSwg.addString("\n");
+        bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)] {\n", module->name.c_str()));
         for (auto func : scope->publicFunc)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
