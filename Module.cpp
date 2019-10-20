@@ -124,6 +124,10 @@ bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exce
 
 void Module::addByteCodeFunc(ByteCode* bc)
 {
+	SWAG_ASSERT(!bc->node || !(bc->node->attributeFlags & ATTRIBUTE_FOREIGN));
+	if (bc->node && bc->node->fullnameUnderscore.find("random") != string::npos)
+		bc = bc;
+
     scoped_lock lk(mutexByteCode);
     byteCodeFunc.push_back(bc);
 

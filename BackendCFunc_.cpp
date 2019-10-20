@@ -390,6 +390,7 @@ bool BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
 
 void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
 {
+
     auto typeFunc = bc->callType();
     auto name     = bc->callName();
 

@@ -212,6 +212,7 @@ void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* fu
 {
     if (!funcNode)
         return;
+	SWAG_ASSERT(!(funcNode->attributeFlags & ATTRIBUTE_FOREIGN));
 
     auto        sourceFile = context->sourceFile;
     scoped_lock lk(funcNode->mutex);
