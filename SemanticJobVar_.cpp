@@ -402,10 +402,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // A template type with a default value is a generic type
         if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE))
             genericType = true;
-        else
+        else if (!(node->flags & AST_FROM_GENERIC))
         {
-            if (!(node->flags & AST_FROM_GENERIC))
-                SWAG_CHECK(checkIsConcrete(context, node->assignment));
+            SWAG_CHECK(checkIsConcrete(context, node->assignment));
             if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
             {
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
