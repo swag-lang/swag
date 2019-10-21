@@ -27,6 +27,11 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     AstNode* namespaceNode;
     Scope*   oldScope = currentScope;
     Scope*   newScope = nullptr;
+
+	// A namespace registers its scope in the module scope, except if the file scope has a name
+    if (currentScope->kind == ScopeKind::File && currentScope->name.empty())
+        currentScope = currentScope->parentScope;
+
     while (true)
     {
         namespaceNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile, parent);

@@ -400,32 +400,34 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
     {
         // A template type with a default value is a generic type
-        if ((node->flags & AST_IS_GENERIC) && !node->type && node->assignment->kind == AstNodeKind::TypeExpression)
+        if ((node->flags & AST_IS_GENERIC) && !node->type && !(node->flags & AST_R_VALUE))
             genericType = true;
-        else if (!(node->flags & AST_FROM_GENERIC))
-            SWAG_CHECK(checkIsConcrete(context, node->assignment));
-
-        if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
+        else
         {
-            SWAG_CHECK(evaluateConstExpression(context, node->assignment));
-            if (context->result == SemanticResult::Pending)
-                return true;
-        }
+            if (!(node->flags & AST_FROM_GENERIC))
+                SWAG_CHECK(checkIsConcrete(context, node->assignment));
+            if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
+            {
+                SWAG_CHECK(evaluateConstExpression(context, node->assignment));
+                if (context->result == SemanticResult::Pending)
+                    return true;
+            }
 
-        if (node->type && node->type->typeInfo->kind != TypeInfoKind::Slice)
-        {
-            SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->errorContext.report({sourceFile, node->assignment, "affect not allowed from an array"}));
+            if (node->type && node->type->typeInfo->kind != TypeInfoKind::Slice)
+            {
+                SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->errorContext.report({sourceFile, node->assignment, "affect not allowed from an array"}));
+            }
         }
     }
 
     // A global variable or a constant must have its value computed at that point
-	if (!(node->flags & AST_FROM_GENERIC))
-	{
-		if (node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
-		{
-			SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({ sourceFile, node->assignment, "initialization expression cannot be evaluated at compile time" }));
-		}
-	}
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        if (node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
+        {
+            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node->assignment, "initialization expression cannot be evaluated at compile time"}));
+        }
+    }
 
     // Be sure array without a size have an initializer, to deduce the size
     if (node->type && node->type->typeInfo && node->type->typeInfo->kind == TypeInfoKind::Array)
