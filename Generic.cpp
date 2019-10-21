@@ -113,6 +113,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     updateGenericParameters(newType->genericParameters, structNode->genericParameters->childs, genericParameters, match);
 
     // Clone opInit
+	SWAG_ASSERT(structNode->defaultOpInit);
     auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
     newType->opInitFct = newOpInit;
     newOpInit->flags |= AST_FROM_GENERIC | AST_DISABLED;

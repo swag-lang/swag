@@ -64,7 +64,24 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
 
 bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
-    bufferSwg.addString("struct ");
+    bufferSwg.addString("struct");
+
+    if (!typeStruct->genericParameters.empty())
+    {
+		bufferSwg.addString("(");
+		int idx = 0;
+        for (auto p : typeStruct->genericParameters)
+        {
+			if(idx)
+				bufferSwg.addString(", ");
+            bufferSwg.addString(p->namedParam);
+			idx++;
+        }
+
+		bufferSwg.addString(")");
+    }
+
+	bufferSwg.addString(" ");
     bufferSwg.addString(node->name.c_str());
     bufferSwg.addString(" {\n");
 
@@ -74,7 +91,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
         bufferSwg.addString(p->namedParam);
         bufferSwg.addString(": ");
         bufferSwg.addString(p->typeInfo->name);
-		
+
         if (p->typeInfo->isNative(NativeTypeKind::String))
         {
             if (!p->value.text.empty())
@@ -93,7 +110,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
                     bufferSwg.addString(format(" = %u", p->value.reg.u16));
                 break;
             case NativeTypeKind::U32:
-			case NativeTypeKind::Char:
+            case NativeTypeKind::Char:
                 if (p->value.reg.u32)
                     bufferSwg.addString(format(" = %u", p->value.reg.u32));
                 break;
@@ -129,15 +146,15 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
                 if (p->value.reg.b)
                     bufferSwg.addString(" = true");
                 break;
-			default:
-				return module->internalError("emitStructSignatureSwg, invalid type");
+            default:
+                return module->internalError("emitStructSignatureSwg, invalid type");
             }
         }
 
         bufferSwg.addString("\n");
     }
 
-    bufferSwg.addString("}\n");
+    bufferSwg.addString("}\n\n");
     return true;
 }
 

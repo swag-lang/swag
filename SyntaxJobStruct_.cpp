@@ -141,7 +141,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     // Generate an empty init function so that the user can call it (except if this is a generated file, because
 	// in that case the opInit function is foreign)
-	if(!sourceFile->generated)
+	//if(!sourceFile->generated)
     {
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);

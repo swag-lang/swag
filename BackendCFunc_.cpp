@@ -1531,6 +1531,9 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
         auto node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
+		if (typeStruct->flags & TYPEINFO_GENERIC)
+			continue;
+
         node->computeFullName();
         bufferH.addString(format("typedef struct %s {\n", node->fullnameUnderscore.c_str()));
 
