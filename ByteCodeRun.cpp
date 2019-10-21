@@ -60,6 +60,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(context->bc);
         context->push(context->ip);
         context->bc = (ByteCode*) ip->a.pointer;
+        SWAG_ASSERT(context->bc);
         context->ip = context->bc->out;
         SWAG_ASSERT(context->ip);
         context->bp = context->sp;

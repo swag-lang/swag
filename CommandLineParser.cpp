@@ -38,9 +38,9 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->backendOutput     = true;
     cmdLine->backendOutputTest = true;
     //cmdLine->runBackendTests   = false;
-    //cmdLine->testFilter    = "std3";
+    //cmdLine->testFilter    = "std4";
     //cmdLine->verboseBuildPass = false;
-    cmdLine->fileFilter = "compiler1112";
+    //cmdLine->fileFilter = "compiler1112";
 }
 
 void CommandLineParser::logArguments()

@@ -159,7 +159,7 @@ struct ByteCodeGenJob : public Job
     static bool prepareEmitStructDrop(ByteCodeGenContext* context, TypeInfo* typeInfo);
     static bool prepareEmitStructCopyMove(ByteCodeGenContext* context, TypeInfo* typeInfo);
     static bool emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
-	static void emitStructCallFunc(ByteCodeGenContext* context, AstNode* funcNode, RegisterList& r0);
+	static void emitStructCallFunc(ByteCodeGenContext* context, AstNode* funcNode, RegisterList* r0);
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);

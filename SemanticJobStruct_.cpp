@@ -197,9 +197,17 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->ownerScope->setHasExports();
     }
 
-    // Register symbol with its type
     if (!(node->flags & AST_FROM_GENERIC))
+    {
         typeInfo->flags |= structFlags;
+    }
+    else
+    {
+        typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
+        typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
+    }
+
+    // Register symbol with its type
     node->typeInfo               = typeInfo;
     node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct);
     SWAG_CHECK(node->resolvedSymbolOverload);
