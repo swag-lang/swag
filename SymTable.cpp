@@ -196,13 +196,17 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
-        auto       firstOverload = overload;
-        Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
-        Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-        Utf8       note = "this is the other definition";
-        Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
-        sourceFile->report(diag, &diagNote);
-        return false;
+		// Because of a foreign opInit, this can happen. Not sure this is fine to do that
+		if (symbol->name != "opInit")
+		{
+			auto       firstOverload = overload;
+			Utf8       msg = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
+			Diagnostic diag{ sourceFile, token.startLocation, token.endLocation, msg };
+			Utf8       note = "this is the other definition";
+			Diagnostic diagNote{ firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note };
+			sourceFile->report(diag, &diagNote);
+			return false;
+		}
     }
 
     return true;

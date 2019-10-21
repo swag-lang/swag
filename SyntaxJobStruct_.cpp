@@ -139,9 +139,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
 
-    // Generate an empty init function so that the user can call it (except if this is a generated file, because
-	// in that case the opInit function is foreign)
-	//if(!sourceFile->generated)
+    // Generate an empty init function so that the user can call it
     {
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);
