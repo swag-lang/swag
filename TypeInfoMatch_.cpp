@@ -315,7 +315,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 {
                     if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
                     {
-                        uint32_t numDefault = 0;
+                        int numDefault = 0;
                         for (int i = 0; i < wantedNumGenericParams; i++)
                         {
                             auto symbolParameter = genericParameters[i];
@@ -438,12 +438,22 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         {
             // We already have a match, and they do not match with that type, error
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
-            if (it != context.mapGenericTypes.end() && !it->second.toType->isSame(typeInfo, ISSAME_CAST))
+            if (it != context.mapGenericTypes.end())
             {
-                context.badSignatureParameterIdx  = it->second.parameterIndex.front();
-                context.badSignatureRequestedType = typeInfo;
-                context.badSignatureGivenType     = it->second.toType;
-                context.result                    = MatchResult::BadSignature;
+                same = TypeManager::makeCompatibles(context.semanticContext, typeInfo, it->second.toType, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                if (same)
+                {
+                    context.genericParametersCallValues[i] = callParameter->computedValue;
+                    context.genericParametersCallTypes[i]  = callParameter->typeInfo;
+                    context.genericParametersGenTypes[i]   = symbolParameter->typeInfo;
+                }
+                else
+                {
+                    context.badSignatureParameterIdx  = it->second.parameterIndex.front();
+                    context.badSignatureRequestedType = typeInfo;
+                    context.badSignatureGivenType     = it->second.toType;
+                    context.result                    = MatchResult::BadSignature;
+                }
             }
             else
             {
