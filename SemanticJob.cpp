@@ -68,7 +68,6 @@ JobResult SemanticJob::execute()
     context.sourceFile              = sourceFile;
     context.errorContext.sourceFile = sourceFile;
     context.result                  = SemanticResult::Done;
-    symMatch.semanticContext        = &context;
 
     while (!nodes.empty())
     {

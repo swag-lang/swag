@@ -13,7 +13,6 @@ enum class Intrisic;
 struct AstNode;
 struct ByteCode;
 struct TypeInfoFuncAttr;
-struct SemanticContext;
 
 // Do not forget to synchronize runtime.h !
 enum class TypeInfoKind
@@ -312,7 +311,6 @@ struct SymbolMatchContext
         badSignatureParameterIdx  = 0;
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
-        semanticContext           = nullptr;
         result                    = MatchResult::Ok;
         genericParameters.clear();
         parameters.clear();
@@ -336,7 +334,6 @@ struct SymbolMatchContext
     uint32_t maxGenericParam;
     bool     hasNamedParameters;
 
-    SemanticContext*       semanticContext;
     uint32_t               flags;
     int                    badSignatureParameterIdx;
     TypeInfo*              badSignatureRequestedType;

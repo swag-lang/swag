@@ -440,7 +440,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             auto it = context.mapGenericTypes.find(symbolParameter->typeInfo);
             if (it != context.mapGenericTypes.end())
             {
-                same = TypeManager::makeCompatibles(context.semanticContext, typeInfo, it->second.toType, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                same = TypeManager::makeCompatibles(nullptr, typeInfo, it->second.toType, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
                 if (same)
                 {
                     context.genericParametersCallValues[i] = callParameter->computedValue;
