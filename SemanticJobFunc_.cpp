@@ -192,7 +192,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = true;
     if (node->name == "defaultAllocator" && sourceFile->swagFile)
         genByteCode = true;
-    if (node->attributeFlags & AST_IS_GENERIC)
+    if (node->flags & AST_IS_GENERIC)
         genByteCode = false;
     if (!node->content)
         genByteCode = false;
@@ -299,9 +299,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             scoped_lock lk(typeStruct->mutex);
             typeStruct->opInitFct = funcNode;
 
-			// If an opInit is defined as foreign for this struct, then force init value, and opInit call
-			if(funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-				typeStruct->flags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+            // If an opInit is defined as foreign for this struct, then force init value, and opInit call
+            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+                typeStruct->flags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
 
             funcNode->attributeFlags |= (typeStruct->structNode->attributeFlags & ATTRIBUTE_PUBLIC);
         }

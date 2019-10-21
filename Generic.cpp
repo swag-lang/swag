@@ -2,9 +2,7 @@
 #include "SemanticJob.h"
 #include "Generic.h"
 #include "Ast.h"
-#include "SourceFile.h"
 #include "ThreadManager.h"
-#include "Module.h"
 
 void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatch& match)
 {

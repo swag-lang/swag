@@ -299,6 +299,7 @@ struct SymbolMatchContext
     static const uint32_t MATCH_ERROR_VALUE_TYPE  = 0x00000008;
     static const uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
     static const uint32_t MATCH_UNCONST           = 0x00000020;
+    static const uint32_t MATCH_WAS_DEFAULT       = 0x00000040;
 
     SymbolMatchContext()
     {

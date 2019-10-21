@@ -245,6 +245,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::Identifier)
     {
+		ScopedFlags scopedFlags(this, AST_CAN_INSTANCIATE_TYPE);
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
 		if (inTypeVarDecl)
 			node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;

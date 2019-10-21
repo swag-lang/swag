@@ -433,7 +433,7 @@ anotherTry:
 
             auto rawTypeInfo = overload->typeInfo;
 
-            // If to a type alias that already a generic instance, accept to not have generic
+            // If this is a type alias that already has a generic instance, accept to not have generic
             // parameters on the source symbol
             if (overload->typeInfo->kind == TypeInfoKind::Alias)
             {
@@ -466,6 +466,9 @@ anotherTry:
             {
                 SWAG_ASSERT(false);
             }
+
+            if (job->symMatch.flags & SymbolMatchContext::MATCH_WAS_DEFAULT)
+                job->symMatch.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
 
             // We need () for a function call !
             if (!callParameters && job->symMatch.result == MatchResult::Ok && symbol->kind == SymbolKind::Function)
@@ -562,7 +565,7 @@ anotherTry:
         auto& firstMatch = genericMatches[0];
         if (forStruct)
         {
-            if (genericParameters && !(node->flags & AST_IS_GENERIC))
+            if ((node->flags & AST_CAN_INSTANCIATE_TYPE) && !(node->flags & AST_IS_GENERIC) && (genericParameters || (firstMatch.flags & SymbolMatchContext::MATCH_WAS_DEFAULT)))
             {
                 SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch));
             }

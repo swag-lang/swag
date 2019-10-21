@@ -234,6 +234,12 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(doTypeExpression(oneParam, &oneParam->type));
         }
 
+        if (token.id == TokenId::SymEqual)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->assignment));
+        }
+
         if (token.id != TokenId::SymComma)
             break;
         SWAG_CHECK(eatToken());

@@ -96,8 +96,8 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                 {
                     context.maxGenericParam = i;
 
-					// Associate the generic type with the mapped one, and remember the parameter
-					// index
+                    // Associate the generic type with the mapped one, and remember the parameter
+                    // index
                     SymbolMatchContext::MapGenType mapGenType;
                     mapGenType.toType = typeInfo;
                     mapGenType.parameterIndex.push_back(i);
@@ -315,14 +315,28 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 {
                     if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
                     {
+                        uint32_t numDefault = 0;
                         for (int i = 0; i < wantedNumGenericParams; i++)
                         {
-                            auto symbolParameter                  = genericParameters[i];
-                            context.genericParametersCallTypes[i] = symbolParameter->typeInfo;
+                            auto symbolParameter = genericParameters[i];
+                            auto genType         = symbolParameter->typeInfo;
+
+                            // Default value
+                            if (genType->kind == TypeInfoKind::Generic)
+                            {
+                                genType = ((TypeInfoGeneric*) genType)->rawType;
+                                if (genType)
+                                    numDefault++;
+                            }
+
+                            context.genericParametersCallTypes[i] = genType ? genType : symbolParameter->typeInfo;
                             context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
                         }
 
                         context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
+                        if (numDefault == wantedNumGenericParams)
+                            context.flags |= SymbolMatchContext::MATCH_WAS_DEFAULT;
+
                         context.result = MatchResult::Ok;
                     }
                 }

@@ -366,10 +366,10 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
 
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
-    auto  sourceFile         = context->sourceFile;
-    auto  module             = sourceFile->module;
-    auto  node               = static_cast<AstVarDecl*>(context->node);
-    bool  isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
+    auto sourceFile         = context->sourceFile;
+    auto module             = sourceFile->module;
+    auto node               = static_cast<AstVarDecl*>(context->node);
+    bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
 
     uint32_t symbolFlags = 0;
     if (node->kind == AstNodeKind::FuncDeclParam)
@@ -377,8 +377,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (node->ownerScope->isGlobal())
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if ((node->ownerScope->kind == ScopeKind::Struct) && (node->flags & AST_INSIDE_IMPL))
-		symbolFlags |= OVERLOAD_VAR_GLOBAL;
-	else if(node->ownerScope->kind == ScopeKind::Struct)
+        symbolFlags |= OVERLOAD_VAR_GLOBAL;
+    else if (node->ownerScope->kind == ScopeKind::Struct)
         symbolFlags |= OVERLOAD_VAR_STRUCT;
     else if (!isCompilerConstant)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
@@ -396,9 +396,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Value
+    bool genericType = !node->type && !node->assignment;
     if (node->assignment && node->assignment->kind != AstNodeKind::ExpressionList)
     {
-        SWAG_CHECK(checkIsConcrete(context, node->assignment));
+        // A template type with a default value is a generic type
+        if ((node->flags & AST_IS_GENERIC) && !node->type && node->assignment->kind == AstNodeKind::TypeExpression)
+            genericType = true;
+        else if (!(node->flags & AST_FROM_GENERIC))
+            SWAG_CHECK(checkIsConcrete(context, node->assignment));
 
         if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
         {
@@ -414,10 +419,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // A global variable or a constant must have its value computed at that point
-    if (node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
-    {
-        SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node->assignment, "initialization expression cannot be evaluated at compile time"}));
-    }
+	if (!(node->flags & AST_FROM_GENERIC))
+	{
+		if (node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
+		{
+			SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({ sourceFile, node->assignment, "initialization expression cannot be evaluated at compile time" }));
+		}
+	}
 
     // Be sure array without a size have an initializer, to deduce the size
     if (node->type && node->type->typeInfo && node->type->typeInfo->kind == TypeInfoKind::Array)
@@ -514,7 +522,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
     {
         symbolFlags |= OVERLOAD_GENERIC;
-        if (!node->typeInfo)
+        if (genericType && node->assignment)
+        {
+            auto typeGeneric     = g_Pool_typeInfoGeneric.alloc();
+            typeGeneric->name    = node->name;
+            typeGeneric->rawType = node->typeInfo;
+            node->typeInfo       = typeGeneric;
+        }
+        else if (!node->typeInfo)
         {
             node->typeInfo       = g_Pool_typeInfoGeneric.alloc();
             node->typeInfo->name = node->name;
@@ -624,7 +639,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
                                                                   node,
                                                                   node->typeInfo,
-                                                                  (node->type || node->assignment) ? SymbolKind::Variable : SymbolKind::GenericType,
+                                                                  genericType ? SymbolKind::GenericType : SymbolKind::Variable,
                                                                   isCompilerConstant ? &node->computedValue : nullptr,
                                                                   symbolFlags,
                                                                   nullptr,
