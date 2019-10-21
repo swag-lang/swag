@@ -1,7 +1,7 @@
 #import "std"
 using std.random
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	var rng: Random!Mwc
