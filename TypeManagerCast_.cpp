@@ -910,13 +910,16 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            float   tmpF = static_cast<float>(fromNode->computedValue.reg.s64);
-            int64_t tmpI = static_cast<int64_t>(tmpF);
-            if (tmpI != fromNode->computedValue.reg.s64)
+            if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                if (!(castFlags & CASTFLAG_NO_ERROR))
-                    context->errorContext.report({context->errorContext.sourceFile, fromNode->token, format("value '%I64d' is truncated in 'f32'", fromNode->computedValue.reg.s64)});
-                return false;
+                float   tmpF = static_cast<float>(fromNode->computedValue.reg.s64);
+                int64_t tmpI = static_cast<int64_t>(tmpF);
+                if (tmpI != fromNode->computedValue.reg.s64)
+                {
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                        context->errorContext.report({context->errorContext.sourceFile, fromNode->token, format("value '%I64d' is truncated in 'f32'", fromNode->computedValue.reg.s64)});
+                    return false;
+                }
             }
 
             if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -948,13 +951,16 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            float    tmpF = static_cast<float>(fromNode->computedValue.reg.u64);
-            uint64_t tmpI = static_cast<uint64_t>(tmpF);
-            if (tmpI != fromNode->computedValue.reg.u64)
+            if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                if (!(castFlags & CASTFLAG_NO_ERROR))
-                    context->errorContext.report({context->errorContext.sourceFile, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->computedValue.reg.u64)});
-                return false;
+                float    tmpF = static_cast<float>(fromNode->computedValue.reg.u64);
+                uint64_t tmpI = static_cast<uint64_t>(tmpF);
+                if (tmpI != fromNode->computedValue.reg.u64)
+                {
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                        context->errorContext.report({context->errorContext.sourceFile, fromNode->token, format("value '%I64u' is truncated in 'f32'", fromNode->computedValue.reg.u64)});
+                    return false;
+                }
             }
 
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -974,13 +980,16 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            float  tmpF = static_cast<float>(fromNode->computedValue.reg.f64);
-            double tmpD = static_cast<double>(tmpF);
-            if (tmpD != fromNode->computedValue.reg.f64)
+            if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                if (!(castFlags & CASTFLAG_NO_ERROR))
-                    context->errorContext.report({context->errorContext.sourceFile, fromNode->token, format("value '%Lf' is truncated in 'f32'", fromNode->computedValue.reg.f64)});
-                return false;
+                float  tmpF = static_cast<float>(fromNode->computedValue.reg.f64);
+                double tmpD = static_cast<double>(tmpF);
+                if (tmpD != fromNode->computedValue.reg.f64)
+                {
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                        context->errorContext.report({context->errorContext.sourceFile, fromNode->token, format("value '%Lf' is truncated in 'f32'", fromNode->computedValue.reg.f64)});
+                    return false;
+                }
             }
 
             if (!(castFlags & CASTFLAG_JUST_CHECK))

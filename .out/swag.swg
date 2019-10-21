@@ -34,7 +34,20 @@ namespace swag
 	// Constants
 	// #########################################################
 
-	const u32_max: u32 = 0xFFFF_FFFF
+	const s8_min  = -127's8 - 1
+	const s16_min = -32767's16 - 1
+	const s32_min = -2147483647's32 - 1
+	const s64_min = -9223372036854775807's64 - 1
+	
+	const s8_max  = 127's8
+	const s16_max = 32767's16
+	const s32_max = 2147483647's32
+	const s64_max = 9223372036854775807's64
+	
+	const u8_max  = 0xFF'u8
+	const u16_max = 0xFFFF'u16
+	const u32_max = 0xFFFF_FFFF'u32
+	const u64_max = 0xFFFF_FFFF_FFFF_FFFF'u64
 	
 	// #########################################################
 	// Context & allocators
