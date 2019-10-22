@@ -9,14 +9,13 @@
 
 bool SemanticJob::resolveMakePointer(SemanticContext* context)
 {
-    auto  node       = context->node;
-    auto  child      = node->childs.front();
-    auto  typeInfo   = child->typeInfo;
-    auto  sourceFile = context->sourceFile;
+    auto node     = context->node;
+    auto child    = node->childs.front();
+    auto typeInfo = child->typeInfo;
 
-    SWAG_VERIFY(child->flags & AST_L_VALUE, context->errorContext.report({sourceFile, child, "cannot take address of expression"}));
+    SWAG_VERIFY(child->flags & AST_L_VALUE, context->errorContext.report({child, "cannot take address of expression"}));
     if (child->kind != AstNodeKind::IdentifierRef && child->kind != AstNodeKind::ArrayPointerIndex)
-        return context->errorContext.report({sourceFile, child, "invalid address expression"});
+        return context->errorContext.report({child, "invalid address expression"});
 
     SWAG_CHECK(checkIsConcrete(context, child));
     node->flags |= AST_R_VALUE;
@@ -102,19 +101,18 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
     arrayNode->flags |= AST_R_VALUE;
 
-    auto arrayType  = arrayNode->array->typeInfo;
-    auto sourceFile = context->sourceFile;
-    SWAG_VERIFY(!arrayType->isConst(), context->errorContext.report({sourceFile, arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
+    auto arrayType = arrayNode->array->typeInfo;
+    SWAG_VERIFY(!arrayType->isConst(), context->errorContext.report({arrayNode->access, format("type '%s' is immutable and cannot be changed", arrayType->name.c_str())}));
 
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
-        return context->errorContext.report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
+        return context->errorContext.report({arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
     switch (arrayType->kind)
     {
     case TypeInfoKind::Pointer:
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, arrayNode, "cannot dereference a 'void' pointer"}));
+        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->errorContext.report({arrayNode, "cannot dereference a 'void' pointer"}));
         arrayNode->typeInfo    = typePtr->finalType;
         arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerRef;
         break;
@@ -158,7 +156,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     default:
     {
-        return context->errorContext.report({sourceFile, arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
+        return context->errorContext.report({arrayNode->array, format("cannot dereference type '%s'", arrayType->name.c_str())});
     }
     }
 
@@ -167,9 +165,8 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
 bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
-    auto  sourceFile       = context->sourceFile;
-    auto  arrayNode        = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto  arrayType        = TypeManager::concreteType(arrayNode->array->typeInfo);
+    auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
+    auto arrayType         = TypeManager::concreteType(arrayNode->array->typeInfo);
     arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
@@ -177,7 +174,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     arrayNode->flags |= AST_R_VALUE;
 
     if (!(arrayNode->access->typeInfo->flags & TYPEINFO_INTEGER))
-        return context->errorContext.report({sourceFile, arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
+        return context->errorContext.report({arrayNode->array, format("access type should be integer, not '%s'", arrayNode->access->typeInfo->name.c_str())});
 
     arrayNode->resolvedSymbolName = arrayNode->array->resolvedSymbolName;
 
@@ -191,7 +188,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Pointer:
     {
         auto typePtr = static_cast<TypeInfoPointer*>(arrayType);
-        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->errorContext.report({sourceFile, arrayNode, "cannot dereference a 'void' pointer"}));
+        SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->errorContext.report({arrayNode, "cannot dereference a 'void' pointer"}));
         if (typePtr->ptrCount == 1)
         {
             arrayNode->typeInfo = typePtr->finalType;
@@ -200,7 +197,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             auto newType = static_cast<TypeInfoPointer*>(typePtr->clone());
             newType->ptrCount--;
-			newType->computeName();
+            newType->computeName();
             arrayNode->typeInfo = newType;
         }
 
@@ -264,7 +261,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         break;
 
     default:
-        return context->errorContext.report({sourceFile, arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
+        return context->errorContext.report({arrayNode->array, format("%s type '%s' cannot be referenced like a pointer", TypeInfo::getNakedKindName(arrayType), arrayType->name.c_str())});
     }
 
     return true;
@@ -273,16 +270,15 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 bool SemanticJob::resolveInit(SemanticContext* context)
 {
     auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
-    auto sourceFile         = context->sourceFile;
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("'init' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({node->expression, format("'init' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({sourceFile, node->count, format("'init' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
-        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, node->count, "'init' count parameter should be 32 bits"}));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({node->count, format("'init' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({node->count, "'init' count parameter should be 32 bits"}));
     }
 
     if (node->parameters)
@@ -292,7 +288,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
 
         if (pointedType->kind == TypeInfoKind::Native || pointedType->kind == TypeInfoKind::Pointer)
         {
-            SWAG_VERIFY(node->parameters->childs.size() == 1, context->errorContext.report({sourceFile, node->count, format("too many initialization parameters for type '%s'", pointedType->name.c_str())}));
+            SWAG_VERIFY(node->parameters->childs.size() == 1, context->errorContext.report({node->count, format("too many initialization parameters for type '%s'", pointedType->name.c_str())}));
             auto child = node->parameters->childs.front();
             SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
         }
@@ -323,16 +319,15 @@ bool SemanticJob::resolveInit(SemanticContext* context)
 bool SemanticJob::resolveDrop(SemanticContext* context)
 {
     auto node               = CastAst<AstDrop>(context->node, AstNodeKind::Drop);
-    auto sourceFile         = context->sourceFile;
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({sourceFile, node->expression, format("'drop' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->errorContext.report({node->expression, format("'drop' first parameter should be a pointer, but is '%s'", expressionTypeInfo->name.c_str())}));
 
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({sourceFile, node->count, format("'drop' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
-        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, node->count, "'drop' count parameter should be 32 bits"}));
+        SWAG_VERIFY(countTypeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({node->count, format("'drop' count parameter should be an integer, but is '%s'", countTypeInfo->name.c_str())}));
+        SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->errorContext.report({node->count, "'drop' count parameter should be 32 bits"}));
     }
 
     node->byteCodeFct = &ByteCodeGenJob::emitDrop;

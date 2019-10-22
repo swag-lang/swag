@@ -58,9 +58,7 @@ void Generic::end(SemanticContext* context, AstNode* newNode)
     auto& srcCxt  = context->errorContext;
     auto& destCxt = newJob->context.errorContext;
     destCxt.genericInstanceTree.insert(destCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.end());
-    destCxt.genericInstanceTreeFile.insert(destCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.begin(), srcCxt.genericInstanceTreeFile.end());
     destCxt.genericInstanceTree.push_back(context->node);
-    destCxt.genericInstanceTreeFile.push_back(context->sourceFile);
 
     g_ThreadMgr.addJob(newJob);
 }

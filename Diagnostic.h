@@ -52,8 +52,8 @@ struct Diagnostic
     {
     }
 
-    Diagnostic(SourceFile* file, AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : sourceFile{file}
+    Diagnostic(AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : sourceFile{node->sourceFile}
         , textMsg{msg}
         , errorLevel{level}
         , hasFile{true}
@@ -92,9 +92,8 @@ struct Diagnostic
 
 struct ErrorContext
 {
-    SourceFile*                sourceFile;
-    vector<struct AstNode*>    genericInstanceTree;
-    vector<struct SourceFile*> genericInstanceTreeFile;
+    SourceFile*             sourceFile;
+    vector<struct AstNode*> genericInstanceTree;
 
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);

@@ -421,7 +421,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return sourceFile->report({sourceFile, paramExpression, format("invalid named value '%s'", token.text.c_str())});
+                    return sourceFile->report({paramExpression, format("invalid named value '%s'", token.text.c_str())});
                 auto name = paramExpression->childs.front()->name;
                 SWAG_CHECK(eatToken());
                 if (token.id == TokenId::SymLeftCurly)

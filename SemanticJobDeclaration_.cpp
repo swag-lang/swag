@@ -13,9 +13,8 @@ bool SemanticJob::resolveNamespace(SemanticContext* context)
 
 bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {
-    auto sourceFile = context->sourceFile;
     auto node       = context->node;
-    SWAG_VERIFY(node->ownerFct, context->errorContext.report({sourceFile, node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedName(node->ownerScope->kind))}));
+    SWAG_VERIFY(node->ownerFct, context->errorContext.report({node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedName(node->ownerScope->kind))}));
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
@@ -25,15 +24,15 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePointer->ptrCount == 1, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
-        SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
+        SWAG_VERIFY(typePointer->ptrCount == 1, context->errorContext.report({node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
+        SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->errorContext.report({node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
         node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
         node->ownerScope->alternativeScopesVars.push_back({varNode, typeStruct->scope});
     }
     else
     {
-        return context->errorContext.report({sourceFile, node, format("'using' cannot be used on a variable of type '%s'", node->typeInfo->name.c_str())});
+        return context->errorContext.report({node, format("'using' cannot be used on a variable of type '%s'", node->typeInfo->name.c_str())});
     }
 
     return true;

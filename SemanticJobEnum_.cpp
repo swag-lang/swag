@@ -33,7 +33,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 
     if (enumNode->attributeFlags & ATTRIBUTE_FLAGS)
     {
-		typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
+        typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
 
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (concreteType != g_TypeMgr.typeInfoU8 &&
@@ -41,8 +41,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
             concreteType != g_TypeMgr.typeInfoU32 &&
             concreteType != g_TypeMgr.typeInfoU64)
         {
-            auto sourceFile = context->sourceFile;
-            return context->errorContext.report({sourceFile, typeNode->childs[0], format("invalid type '%s' for flags (should be u8, u16, u32 or u64)", rawTypeInfo->name.c_str())});
+            return context->errorContext.report({typeNode->childs[0], format("invalid type '%s' for flags (should be u8, u16, u32 or u64)", rawTypeInfo->name.c_str())});
         }
     }
 

@@ -40,7 +40,6 @@ struct SemanticContext
     void reset()
     {
         errorContext.genericInstanceTree.clear();
-        errorContext.genericInstanceTreeFile.clear();
     }
 };
 

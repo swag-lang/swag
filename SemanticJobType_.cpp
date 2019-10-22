@@ -11,23 +11,22 @@
 
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
-    auto sourceFile = context->sourceFile;
     if (node->flags & AST_R_VALUE)
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression)
-        return context->errorContext.report({sourceFile, node, "cannot reference a type expression"});
+        return context->errorContext.report({node, "cannot reference a type expression"});
     if (node->resolvedSymbolName)
-        return context->errorContext.report({sourceFile, node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
+        return context->errorContext.report({node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
 
     return true;
 }
 
 bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 {
-    auto node       = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
-    auto typeInfo   = g_Pool_typeInfoFuncAttr.alloc();
-    typeInfo->kind  = TypeInfoKind::Lambda;
+    auto node      = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda);
+    auto typeInfo  = g_Pool_typeInfoFuncAttr.alloc();
+    typeInfo->kind = TypeInfoKind::Lambda;
 
     if (node->returnType)
     {
@@ -57,8 +56,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
 
 bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
+    auto node = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
     // Already solved
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
@@ -174,10 +172,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             for (int i = node->arrayDim - 1; i >= 0; i--)
             {
                 auto child = node->childs[i];
-                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->errorContext.report({sourceFile, child, "array dimension cannot be evaluted at compile time"}));
-                SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->errorContext.report({sourceFile, child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
-                SWAG_VERIFY(child->typeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
-                SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.staticArrayMaxSize, context->errorContext.report({sourceFile, child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.staticArrayMaxSize, child->computedValue.reg.u32)}));
+                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->errorContext.report({child, "array dimension cannot be evaluted at compile time"}));
+                SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->errorContext.report({child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
+                SWAG_VERIFY(child->typeInfo->sizeOf <= 4, context->errorContext.report({child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
+                SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.staticArrayMaxSize, context->errorContext.report({child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.staticArrayMaxSize, child->computedValue.reg.u32)}));
 
                 auto ptrArray   = g_Pool_typeInfoArray.alloc();
                 ptrArray->count = child->computedValue.reg.u32;
@@ -215,8 +213,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
 
 bool SemanticJob::resolveTypeAlias(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = context->node;
+    auto node = context->node;
 
     auto typeInfo     = g_Pool_typeInfoAlias.alloc();
     typeInfo->rawType = node->childs.front()->typeInfo;
@@ -232,7 +229,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     if (node->typeInfo->flags & TYPEINFO_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
 
-    SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, node, "type alias cannot be generic"}));
+    SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({node, "type alias cannot be generic"}));
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::TypeAlias));
 

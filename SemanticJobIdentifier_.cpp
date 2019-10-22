@@ -64,10 +64,9 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
 
     // Be sure we do not reference a structure field, without a corresponding concrete variable
-    auto sourceFile = context->sourceFile;
     if (!identifierRef->typeInfo && overload && (overload->flags & OVERLOAD_VAR_STRUCT) && !(overload->flags & OVERLOAD_COMPUTED_VALUE))
     {
-        Diagnostic diag{sourceFile, node, format("cannot reference structure identifier '%s'", node->name.c_str())};
+        Diagnostic diag{node, format("cannot reference structure identifier '%s'", node->name.c_str())};
         context->errorContext.report(diag);
         return false;
     }
@@ -607,14 +606,14 @@ anotherTry:
             {
                 SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{sourceFile, param, format("parameter '%d' must be named", job->symMatch.badSignatureParameterIdx + 1)};
+                Diagnostic diag{param, format("parameter '%d' must be named", job->symMatch.badSignatureParameterIdx + 1)};
                 return context->errorContext.report(diag);
             }
             case MatchResult::InvalidNamedParameter:
             {
                 SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{sourceFile, param->namedParamNode ? param->namedParamNode : param, format("unknown named parameter '%s'", param->namedParam.c_str())};
+                Diagnostic diag{param->namedParamNode ? param->namedParamNode : param, format("unknown named parameter '%s'", param->namedParam.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
@@ -622,18 +621,18 @@ anotherTry:
             {
                 SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{sourceFile, param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
+                Diagnostic diag{param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
                 return context->errorContext.report(diag);
             }
             case MatchResult::NotEnoughParameters:
             {
-                Diagnostic diag{sourceFile, callParameters ? callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic diag{callParameters ? callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
             case MatchResult::MissingParameters:
             {
-                Diagnostic diag{sourceFile, callParameters ? callParameters : node, format("missing function call '()' to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic diag{callParameters ? callParameters : node, format("missing function call '()' to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
@@ -641,19 +640,19 @@ anotherTry:
             {
                 SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
-                Diagnostic diag{sourceFile, param, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic diag{param, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
             case MatchResult::NotEnoughGenericParameters:
             {
-                Diagnostic diag{sourceFile, genericParameters ? genericParameters : node ? node : context->node, format("not enough generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic diag{genericParameters ? genericParameters : node ? node : context->node, format("not enough generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
             case MatchResult::TooManyGenericParameters:
             {
-                Diagnostic diag{sourceFile, genericParameters ? genericParameters : node ? node : context->node, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+                Diagnostic diag{genericParameters ? genericParameters : node ? node : context->node, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->sourceFile, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
@@ -676,8 +675,7 @@ anotherTry:
                     parameter = format("parameter '%d'", job->symMatch.badSignatureParameterIdx + 1);
                     break;
                 }
-                Diagnostic diag{sourceFile,
-                                callParameters->childs[job->symMatch.badSignatureParameterIdx],
+                Diagnostic diag{callParameters->childs[job->symMatch.badSignatureParameterIdx],
                                 format("bad type of %s for %s '%s' ('%s' expected, '%s' provided)",
                                        parameter.c_str(),
                                        SymTable::getNakedKindName(symbol->kind),
@@ -692,8 +690,7 @@ anotherTry:
                 SWAG_ASSERT(genericParameters);
                 if (job->symMatch.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
                 {
-                    Diagnostic diag{sourceFile,
-                                    genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                    Diagnostic diag{genericParameters->childs[job->symMatch.badSignatureParameterIdx],
                                     format("bad generic parameter '%d' for %s '%s' (type expected, value provided)",
                                            job->symMatch.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
@@ -703,8 +700,7 @@ anotherTry:
                 }
                 else if (job->symMatch.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
                 {
-                    Diagnostic diag{sourceFile,
-                                    genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                    Diagnostic diag{genericParameters->childs[job->symMatch.badSignatureParameterIdx],
                                     format("bad generic parameter '%d' for %s '%s' (value expected, type provided)",
                                            job->symMatch.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
@@ -714,8 +710,7 @@ anotherTry:
                 }
                 else
                 {
-                    Diagnostic diag{sourceFile,
-                                    genericParameters->childs[job->symMatch.badSignatureParameterIdx],
+                    Diagnostic diag{genericParameters->childs[job->symMatch.badSignatureParameterIdx],
                                     format("bad type of generic parameter '%d' for %s '%s' ('%s' expected, '%s' provided)",
                                            job->symMatch.badSignatureParameterIdx + 1,
                                            SymTable::getNakedKindName(symbol->kind),
@@ -732,7 +727,7 @@ anotherTry:
         {
             if (badSignature.size())
             {
-                Diagnostic                diag{sourceFile, callParameters ? callParameters : node, format("none of the %d overloads could convert all the parameters types", numOverloads)};
+                Diagnostic                diag{callParameters ? callParameters : node, format("none of the %d overloads could convert all the parameters types", numOverloads)};
                 vector<const Diagnostic*> notes;
                 for (auto overload : badSignature)
                 {
@@ -745,7 +740,7 @@ anotherTry:
             }
             else if (badGenericSignature.size())
             {
-                Diagnostic                diag{sourceFile, genericParameters ? genericParameters : node, format("none of the %d overloads could convert all the generic parameters types", numOverloads)};
+                Diagnostic                diag{genericParameters ? genericParameters : node, format("none of the %d overloads could convert all the generic parameters types", numOverloads)};
                 vector<const Diagnostic*> notes;
                 for (auto overload : badGenericSignature)
                 {
@@ -760,14 +755,14 @@ anotherTry:
             {
                 int         numParams = genericParameters ? (int) genericParameters->childs.size() : 0;
                 const char* args      = numParams <= 1 ? "generic parameter" : "generic parameters";
-                Diagnostic  diag{sourceFile, genericParameters ? genericParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
+                Diagnostic  diag{genericParameters ? genericParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
                 return context->errorContext.report(diag);
             }
             else
             {
                 int         numParams = callParameters ? (int) callParameters->childs.size() : 0;
                 const char* args      = numParams <= 1 ? "parameter" : "parameters";
-                Diagnostic  diag{sourceFile, callParameters ? callParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
+                Diagnostic  diag{callParameters ? callParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
                 return context->errorContext.report(diag);
             }
         }
@@ -983,7 +978,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
                 {
-                    return context->errorContext.report({sourceFile, oneParam, "variadic argument must be the last one"});
+                    return context->errorContext.report({oneParam, "variadic argument must be the last one"});
                 }
             }
         }
@@ -1019,8 +1014,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             if (dependentVar)
             {
-                Diagnostic diag{sourceFile, dep.node, "cannot use 'using' on two variables with the same type"};
-                Diagnostic note{sourceFile, dependentVar, "this is the other definition", DiagnosticLevel::Note};
+                Diagnostic diag{dep.node, "cannot use 'using' on two variables with the same type"};
+                Diagnostic note{dependentVar, "this is the other definition", DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
 

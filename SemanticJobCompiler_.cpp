@@ -16,7 +16,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     auto sourceFile = context->sourceFile;
     if (onlyconstExpr)
     {
-        SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, node, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->errorContext.report({node, "expression cannot be evaluated at compile time"}));
     }
 
     {
@@ -67,9 +67,8 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto expr       = node->childs[0];
-    auto sourceFile = context->sourceFile;
+    auto node = context->node;
+    auto expr = node->childs[0];
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(executeNode(context, expr, true));
@@ -79,9 +78,9 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     if (!expr->computedValue.reg.b)
     {
         if (!node->name.empty())
-            context->errorContext.report({sourceFile, expr, format("compiler assertion failed: %s", node->name.c_str())});
+            context->errorContext.report({expr, format("compiler assertion failed: %s", node->name.c_str())});
         else
-            context->errorContext.report({sourceFile, expr, "compiler assertion failed"});
+            context->errorContext.report({expr, "compiler assertion failed"});
         return false;
     }
 
@@ -150,10 +149,9 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstIf>(context->node->parent, AstNodeKind::If);
+    auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::If);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
-    SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->errorContext.report({sourceFile, node->boolExpression, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->errorContext.report({node->boolExpression, "expression cannot be evaluated at compile time"}));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
     node->boolExpression->flags |= AST_NO_BYTECODE;
@@ -176,10 +174,9 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerFunction(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
+    auto node = context->node;
 
-    SWAG_VERIFY(node->ownerFct, context->errorContext.report({sourceFile, node, "'#function' can only be called inside a function"}));
+    SWAG_VERIFY(node->ownerFct, context->errorContext.report({node, "'#function' can only be called inside a function"}));
     node->computedValue.text = node->ownerFct->name;
     node->typeInfo           = g_TypeMgr.typeInfoString;
     node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;

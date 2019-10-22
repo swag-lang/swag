@@ -21,8 +21,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, Typ
 
 bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    auto sourceFile = context->sourceFile;
-    return context->errorContext.report({sourceFile, node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
+    return context->errorContext.report({node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
 }
 
 SemanticJob* SemanticJob::newJob(SourceFile* sourceFile, AstNode* rootNode, bool run)

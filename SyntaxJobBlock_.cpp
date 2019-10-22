@@ -201,7 +201,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymColon)
         {
             if (node->expression->kind != AstNodeKind::IdentifierRef || node->expression->childs.size() != 1)
-                return sourceFile->report({sourceFile, node->expression, format("invalid named index '%s'", token.text.c_str())});
+                return sourceFile->report({node->expression, format("invalid named index '%s'", token.text.c_str())});
             name = node->expression->childs.front()->name;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doExpression(node, &node->expression));

@@ -70,14 +70,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     switch (node->prop)
     {
     case Property::SizeOf:
-        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({expr, "expression cannot be evaluated at compile time"}));
         node->computedValue.reg.u64 = expr->typeInfo->sizeOf;
         node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
 
     case Property::TypeOf:
-        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({expr, "expression cannot be evaluated at compile time"}));
         expr->flags |= AST_NO_BYTECODE;
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
@@ -85,8 +85,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         return true;
 
     case Property::KindOf:
-        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({sourceFile, expr, "expression cannot be evaluated at compile time"}));
-        SWAG_VERIFY(expr->typeInfo->isNative(NativeTypeKind::Any), context->errorContext.report({sourceFile, expr, "expression is not of type 'any'"}));
+        SWAG_VERIFY(expr->typeInfo, context->errorContext.report({expr, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(expr->typeInfo->isNative(NativeTypeKind::Any), context->errorContext.report({expr, "expression is not of type 'any'"}));
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->byteCodeFct = &ByteCodeGenJob::emitKindOfProperty;
@@ -97,7 +97,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
         if (!resolveCountProperty(context, node, expr->typeInfo))
-            return context->errorContext.report({sourceFile, node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
+            return context->errorContext.report({node->expression, format("'count' property cannot be applied to expression of type '%s'", node->expression->typeInfo->name.c_str())});
         node->typeInfo = g_TypeMgr.typeInfoU32;
         break;
 
@@ -151,7 +151,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         }
         else
         {
-            return context->errorContext.report({sourceFile, expr, format("'data' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
+            return context->errorContext.report({expr, format("'data' property cannot be applied to expression of type '%s'", expr->typeInfo->name.c_str())});
         }
 
         break;

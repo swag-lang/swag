@@ -23,14 +23,13 @@ bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 
 bool SemanticJob::resolveImpl(SemanticContext* context)
 {
-    auto sourceFile = context->sourceFile;
-    auto node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+    auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
 
     // Be sure this is a struct
     auto typeInfo = node->identifier->typeInfo;
     if (typeInfo->kind != TypeInfoKind::Struct)
     {
-        Diagnostic diag{sourceFile, node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic diag{node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->sourceFile, node->identifier->resolvedSymbolOverload->node->token.startLocation, node->identifier->resolvedSymbolOverload->node->token.endLocation, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
         return context->errorContext.report(diag, &note);
     }
@@ -128,7 +127,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Var has an initialization
         else if (varDecl->assignment)
         {
-            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->errorContext.report({sourceFile, varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
+            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->errorContext.report({varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
 
             auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, MakeConcrete::FlagAlias);
             typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, MakeConcrete::FlagEnum);
@@ -151,7 +150,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({sourceFile, child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
         typeInfo->childs[storageIndex]->offset       = storageOffset;
@@ -191,8 +190,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     // Check public
-	if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-		node->ownerScope->addPublicStruct(node);
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        node->ownerScope->addPublicStruct(node);
 
     if (!(node->flags & AST_FROM_GENERIC))
     {

@@ -107,14 +107,13 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     auto node = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
-    auto sourceFile = context->sourceFile;
     auto expression = node->expression;
 
     if (!resolveCountProperty(context, expression, expression->typeInfo))
     {
         auto typeInfo = expression->typeInfo;
-        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({sourceFile, expression, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
-        SWAG_VERIFY(typeInfo->sizeOf <= 4, context->errorContext.report({sourceFile, expression, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
+        SWAG_VERIFY(typeInfo->flags & TYPEINFO_INTEGER, context->errorContext.report({expression, format("expression should be of type integer, but is '%s'", typeInfo->name.c_str())}));
+        SWAG_VERIFY(typeInfo->sizeOf <= 4, context->errorContext.report({expression, format("expression should be a 32 bit integer, but is '%s'", typeInfo->name.c_str())}));
         if (expression->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
@@ -123,22 +122,22 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
                 {
                 case NativeTypeKind::S8:
                     if (expression->computedValue.reg.s8 < 0)
-                        return context->errorContext.report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s8)});
+                        return context->errorContext.report({expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s8)});
                     break;
                 case NativeTypeKind::S16:
                     if (expression->computedValue.reg.s16 < 0)
-                        return context->errorContext.report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s16)});
+                        return context->errorContext.report({expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s16)});
                     break;
                 case NativeTypeKind::S32:
                     if (expression->computedValue.reg.s32 < 0)
-                        return context->errorContext.report({sourceFile, expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s32)});
+                        return context->errorContext.report({expression, format("constant value should be unsigned, but is '%d'", expression->computedValue.reg.s32)});
                     break;
                 }
             }
         }
         else
         {
-            SWAG_VERIFY(typeInfo->flags & TYPEINFO_UNSIGNED, context->errorContext.report({sourceFile, expression, format("expression should be of type unsigned integer, but is '%s'", typeInfo->name.c_str())}));
+            SWAG_VERIFY(typeInfo->flags & TYPEINFO_UNSIGNED, context->errorContext.report({expression, format("expression should be of type unsigned integer, but is '%s'", typeInfo->name.c_str())}));
         }
     }
 

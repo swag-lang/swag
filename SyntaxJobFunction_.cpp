@@ -36,7 +36,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(doTypeExpression(param));
             break;
         default:
-            return sourceFile->report({sourceFile, param, format("invalid generic argument '%s'", token.text.c_str())});
+            return sourceFile->report({param, format("invalid generic argument '%s'", token.text.c_str())});
         }
     }
     else
@@ -56,7 +56,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
                 if (token.id == TokenId::SymColon)
                 {
                     if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                        return sourceFile->report({sourceFile, paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
+                        return sourceFile->report({paramExpression, format("invalid named parameter '%s'", token.text.c_str())});
                     param->namedParamNode = paramExpression->childs.front();
                     param->namedParam     = param->namedParamNode->name;
                     SWAG_CHECK(eatToken());

@@ -20,7 +20,7 @@ bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg,
 {
     if (!node)
         node = context->node;
-    context->sourceFile->report({context->sourceFile, node, format("internal error, %s", msg)});
+    context->sourceFile->report({node, format("internal error, %s", msg)});
     return false;
 }
 

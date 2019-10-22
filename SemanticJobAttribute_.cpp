@@ -108,7 +108,6 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
-    auto        sourceFile    = context->sourceFile;
     auto        node          = CastAst<AstAttrUse>(context->node, AstNodeKind::AttrUse);
     auto        nextStatement = node->childParentIdx < node->parent->childs.size() - 1 ? node->parent->childs[node->childParentIdx + 1] : nullptr;
     AstNodeKind kind          = nextStatement ? nextStatement->kind : AstNodeKind::Module;
@@ -129,7 +128,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         auto resolved     = identifier->resolvedSymbolOverload;
         if (resolvedName->kind != SymbolKind::Attribute)
         {
-            Diagnostic diag{sourceFile, identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
+            Diagnostic diag{identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
             Diagnostic note{resolved->sourceFile, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
             context->errorContext.report(diag, &note);
             return false;
@@ -144,7 +143,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->errorContext.report({sourceFile, param, "attribute parameter cannot be evaluated at compile time"}));
+                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->errorContext.report({param, "attribute parameter cannot be evaluated at compile time"}));
                 string attrFullName        = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->namedParam);
                 node->values[attrFullName] = {param->typeInfo, param->computedValue};
             }

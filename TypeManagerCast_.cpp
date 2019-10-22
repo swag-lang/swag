@@ -1189,9 +1189,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
                 if (!(castFlags & CASTFLAG_NO_ERROR))
                 {
                     if (toTypeArray->count > fromTypeList->childs.size())
-                        context->errorContext.report({context->errorContext.sourceFile, fromNode, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                        context->errorContext.report({fromNode, format("cannot cast, not enough initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
                     else
-                        context->errorContext.report({context->errorContext.sourceFile, fromNode, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
+                        context->errorContext.report({fromNode, format("cannot cast, too many initializers ('%d' provided, '%d' requested)", fromTypeList->childs.size(), toTypeArray->count)});
                 }
 
                 return false;
@@ -1457,7 +1457,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
     {
         if (countParams != typeStruct->childs.size())
         {
-            return context->errorContext.report({sourceFile, identifier, format("not enough parameters in tuple initialization ('%d' expected, '%d' provided)", typeStruct->childs.size(), countParams)});
+            return context->errorContext.report({identifier, format("not enough parameters in tuple initialization ('%d' expected, '%d' provided)", typeStruct->childs.size(), countParams)});
         }
     }
 
