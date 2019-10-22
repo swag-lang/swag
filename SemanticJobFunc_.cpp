@@ -110,7 +110,11 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // No semantic on a generic function
     if (node->flags & AST_IS_GENERIC)
+    {
+        if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
+			node->ownerScope->addPublicGenericFunc(node);
         return true;
+    }
 
     node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;

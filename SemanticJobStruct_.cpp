@@ -191,12 +191,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     }
 
     // Check public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-    {
-        scoped_lock lk(node->ownerScope->mutexPublic);
-        node->ownerScope->publicStruct.push_back(node);
-        node->ownerScope->setHasExports();
-    }
+	if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+		node->ownerScope->addPublicStruct(node);
 
     if (!(node->flags & AST_FROM_GENERIC))
     {

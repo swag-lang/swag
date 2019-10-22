@@ -62,6 +62,40 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     return true;
 }
 
+bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+{
+    bufferSwg.addString("func ");
+    bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString("(");
+
+    uint32_t idx = 0;
+    for (auto p : typeFunc->parameters)
+    {
+        bufferSwg.addString(p->namedParam);
+        if (p->namedParam != "self")
+        {
+            bufferSwg.addString(": ");
+            bufferSwg.addString(p->typeInfo->name);
+        }
+
+        if (idx != typeFunc->parameters.size() - 1)
+            bufferSwg.addString(", ");
+        idx++;
+    }
+
+    bufferSwg.addString(")");
+
+    if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
+    {
+        bufferSwg.addString("->");
+        bufferSwg.addString(typeFunc->returnType->name);
+    }
+
+    bufferSwg.addString("{}");
+    bufferSwg.addString("\n");
+    return true;
+}
+
 bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
     bufferSwg.addString("struct");
@@ -83,7 +117,8 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
 
 	bufferSwg.addString(" ");
     bufferSwg.addString(node->name.c_str());
-    bufferSwg.addString(" {\n");
+	bufferSwg.addString("\n");
+    bufferSwg.addString("{\n");
 
     for (auto p : typeStruct->childs)
     {
@@ -154,7 +189,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
         bufferSwg.addString("\n");
     }
 
-    bufferSwg.addString("}\n\n");
+    bufferSwg.addString("}\n");
     return true;
 }
 
@@ -169,7 +204,7 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
         if (scope->kind == ScopeKind::Namespace)
             bufferSwg.addString(format("namespace %s {\n", scope->name.c_str()));
         else if (scope->kind == ScopeKind::Struct)
-            bufferSwg.addString(format("impl %s {\n", scope->name.c_str()));
+            bufferSwg.addString(format("impl %s\n{\n", scope->name.c_str()));
         else
             bufferSwg.addString("{\n");
     }
@@ -177,20 +212,29 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
     // Structures
     if (!scope->publicStruct.empty())
     {
-        bufferSwg.addString("\n");
         for (auto one : scope->publicStruct)
         {
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(emitStructSignatureSwg(typeStruct, node));
         }
-        bufferSwg.addString("\n");
+    }
+
+	// Generic functions
+    if (!scope->publicGenericFunc.empty())
+    {
+        for (auto func : scope->publicGenericFunc)
+        {
+            AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
+            TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            bufferSwg.addString("\t");
+            SWAG_CHECK(emitFuncSwg(typeFunc, node));
+        }
     }
 
     // Functions
     if (!scope->publicFunc.empty())
     {
-        bufferSwg.addString("\n");
         bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)]\n", module->name.c_str()));
 		bufferSwg.addString("{\n");
         for (auto func : scope->publicFunc)
@@ -201,14 +245,13 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }
         bufferSwg.addString("}\n");
-        bufferSwg.addString("\n");
     }
 
     for (auto oneScope : scope->childScopes)
         SWAG_CHECK(emitPublicSignaturesSwg(moduleToGen, oneScope));
 
     if (scope->hasExports && !scope->name.empty())
-        bufferSwg.addString(format("} // %s\n", scope->name.c_str()));
+        bufferSwg.addString("}\n");
 
     return true;
 }

@@ -1531,8 +1531,10 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
         auto node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
-		if (typeStruct->flags & TYPEINFO_GENERIC)
-			continue;
+        if (node->flags & AST_IS_GENERIC)
+            continue;
+        if (typeStruct->flags & TYPEINFO_GENERIC)
+            continue;
 
         node->computeFullName();
         bufferH.addString(format("typedef struct %s {\n", node->fullnameUnderscore.c_str()));
@@ -1552,8 +1554,14 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
     {
         auto node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+
+        if (node->flags & AST_IS_GENERIC)
+            continue;
+        if (typeFunc->flags & TYPEINFO_GENERIC)
+            continue;
+
         bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
-		node->computeFullName();
+        node->computeFullName();
         SWAG_CHECK(emitFuncSignaturePublic(bufferH, typeFunc, node));
         bufferH.addString(";\n");
     }

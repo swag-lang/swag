@@ -41,6 +41,9 @@ struct Scope : public PoolElement
 
     void               setHasExports();
     void               allocateSymTable();
+    void               addPublicFunc(AstNode* node);
+	void               addPublicGenericFunc(AstNode* node);
+	void               addPublicStruct(AstNode* node);
     static string      makeFullName(const string& parentName, const string& name);
     static const char* getNakedName(ScopeKind kind);
     static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);
@@ -71,6 +74,7 @@ struct Scope : public PoolElement
 
     SpinLock         mutexPublic;
     vector<AstNode*> publicFunc;
+	vector<AstNode*> publicGenericFunc;
     vector<AstNode*> publicStruct;
     bool             hasExports = false;
 };

@@ -132,11 +132,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
     if (bc->node)
     {
         if (bc->node->attributeFlags & ATTRIBUTE_PUBLIC)
-        {
-            scoped_lock lk1(bc->node->ownerScope->mutexPublic);
-            bc->node->ownerScope->publicFunc.push_back(bc->node);
-            bc->node->ownerScope->setHasExports();
-        }
+            bc->node->ownerScope->addPublicFunc(bc->node);
 
         if (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
             byteCodeTestFunc.push_back(bc);

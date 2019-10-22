@@ -64,3 +64,24 @@ void Scope::setHasExports()
         pscope             = pscope->parentScope;
     }
 }
+
+void Scope::addPublicFunc(AstNode* node)
+{
+    scoped_lock lk(mutexPublic);
+    publicFunc.push_back(node);
+    setHasExports();
+}
+
+void Scope::addPublicGenericFunc(AstNode* node)
+{
+    scoped_lock lk(mutexPublic);
+    publicGenericFunc.push_back(node);
+    setHasExports();
+}
+
+void Scope::addPublicStruct(AstNode* node)
+{
+    scoped_lock lk(mutexPublic);
+    publicStruct.push_back(node);
+    setHasExports();
+}
