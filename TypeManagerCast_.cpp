@@ -242,7 +242,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->errorContext.report({ fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u8'", fromNode->computedValue.reg.s64)});
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u8'", fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -262,7 +262,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.u64 > UINT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->errorContext.report({ fromNode, fromNode->token, format("value '%I64u' is not in the range of 'u8'", fromNode->computedValue.reg.u64)});
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%I64u' is not in the range of 'u8'", fromNode->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -346,7 +346,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->errorContext.report({ fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u16'", fromNode->computedValue.reg.s64)});
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%I64d' is negative and not in the range of 'u16'", fromNode->computedValue.reg.s64)});
                     return false;
                 }
             }
@@ -366,7 +366,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.u64 > UINT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->errorContext.report({ fromNode, fromNode->token, format("value '%I64u' is not in the range of 'u16'", fromNode->computedValue.reg.u64)});
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%I64u' is not in the range of 'u16'", fromNode->computedValue.reg.u64)});
                     return false;
                 }
 
@@ -646,7 +646,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue.reg.s64 < INT8_MIN || fromNode->computedValue.reg.s64 > INT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->errorContext.report({ fromNode, fromNode->token, format("value '%I64d' is not in the range of 's8'", fromNode->computedValue.reg.s64)});
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%I64d' is not in the range of 's8'", fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -725,7 +725,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue.reg.s64 < INT16_MIN || fromNode->computedValue.reg.s64 > INT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->errorContext.report({ fromNode, fromNode->token, format("value '%I64d' is not in the range of 's16'", fromNode->computedValue.reg.s64)});
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%I64d' is not in the range of 's16'", fromNode->computedValue.reg.s64)});
                     return false;
                 }
 
@@ -1020,13 +1020,16 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            double  tmpF = static_cast<double>(fromNode->computedValue.reg.s64);
-            int64_t tmpI = static_cast<int64_t>(tmpF);
-            if (tmpI != fromNode->computedValue.reg.s64)
+            if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                if (!(castFlags & CASTFLAG_NO_ERROR))
-                    context->errorContext.report({fromNode, fromNode->token, format("value '%I64d' is truncated in 'f64'", fromNode->computedValue.reg.s64)});
-                return false;
+                double  tmpF = static_cast<double>(fromNode->computedValue.reg.s64);
+                int64_t tmpI = static_cast<int64_t>(tmpF);
+                if (tmpI != fromNode->computedValue.reg.s64)
+                {
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%I64d' is truncated in 'f64'", fromNode->computedValue.reg.s64)});
+                    return false;
+                }
             }
 
             if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -1058,13 +1061,16 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            double   tmpF = static_cast<double>(fromNode->computedValue.reg.u64);
-            uint64_t tmpI = static_cast<uint64_t>(tmpF);
-            if (tmpI != fromNode->computedValue.reg.u64)
+            if (!(castFlags & CASTFLAG_EXPLICIT))
             {
-                if (!(castFlags & CASTFLAG_NO_ERROR))
-                    context->errorContext.report({fromNode, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->computedValue.reg.u64)});
-                return false;
+                double   tmpF = static_cast<double>(fromNode->computedValue.reg.u64);
+                uint64_t tmpI = static_cast<uint64_t>(tmpF);
+                if (tmpI != fromNode->computedValue.reg.u64)
+                {
+                    if (!(castFlags & CASTFLAG_NO_ERROR))
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%I64u' is truncated in 'f64'", fromNode->computedValue.reg.u64)});
+                    return false;
+                }
             }
 
             if (!(castFlags & CASTFLAG_JUST_CHECK))

@@ -5,5 +5,7 @@ using std.random
 #test
 {
 	var rng: Random!Mwc
-	@assert(rng.nextU32() != 0)
+	@print(rng.nextF64())
+	@print("\n")
+	@print(rng.nextF64())
 }
