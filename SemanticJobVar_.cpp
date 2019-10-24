@@ -538,7 +538,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->errorContext.report({sourceFile, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
+    SWAG_VERIFY(node->typeInfo, context->errorContext.report({node, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
@@ -588,7 +588,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->kind == TypeInfoKind::Enum ||
             (node->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) node->typeInfo)->pointedType->kind == TypeInfoKind::Enum))
         {
-            return context->errorContext.report({sourceFile, node->token, "an enum variable must be initialized"});
+            return context->errorContext.report({node, node->token, "an enum variable must be initialized"});
         }
     }
 

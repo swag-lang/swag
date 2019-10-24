@@ -1565,6 +1565,6 @@ bool ByteCodeRun::run(ByteCodeRunContext* context)
 
 bool ByteCodeRun::internalError(ByteCodeRunContext* context)
 {
-    context->sourceFile->report({context->sourceFile, context->node->token, "internal compiler error during bytecode execution"});
+    context->sourceFile->report({context->node, context->node->token, "internal compiler error during bytecode execution"});
     return false;
 }

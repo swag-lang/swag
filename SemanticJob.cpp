@@ -9,7 +9,7 @@ bool SemanticJob::internalError(SemanticContext* context, const char* msg, AstNo
 {
     if (!node)
         node = context->node;
-    context->errorContext.report({context->sourceFile, node->token, format("internal compiler error during semantic (%s)", msg)});
+    context->errorContext.report({node, node->token, format("internal compiler error during semantic (%s)", msg)});
     return false;
 }
 
@@ -36,7 +36,7 @@ SemanticJob* SemanticJob::newJob(SourceFile* sourceFile, AstNode* rootNode, bool
 
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {
-    context->errorContext.report({context->sourceFile, context->node->token, msg});
+    context->errorContext.report({context->node, context->node->token, msg});
     return false;
 }
 

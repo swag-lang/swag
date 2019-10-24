@@ -92,7 +92,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
             Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
             Utf8       note = "this is the other definition";
-            Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
+            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
             return sourceFile->report(diag, &diagNote);
         }
     }

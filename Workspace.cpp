@@ -241,7 +241,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
             if (!sourceFile->numErrors)
             {
                 auto& name = semanticJob->waitingSymbolSolved ? semanticJob->waitingSymbolSolved->name : node->name;
-                sourceFile->report({sourceFile, node->token, format("cannot resolve type of identifier '%s'", name.c_str())});
+                sourceFile->report({ node, node->token, format("cannot resolve type of identifier '%s'", name.c_str())});
                 sourceFile->numErrors = 0;
             }
         }

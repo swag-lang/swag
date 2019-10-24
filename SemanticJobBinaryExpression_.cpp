@@ -341,7 +341,6 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
 bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
-    auto sourceFile   = context->sourceFile;
     auto leftTypeInfo = TypeManager::concreteType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -377,12 +376,12 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         {
         case NativeTypeKind::F32:
             if (right->computedValue.reg.f32 == 0)
-                return context->errorContext.report({sourceFile, right->token, "division by zero"});
+                return context->errorContext.report({right, right->token, "division by zero"});
             node->computedValue.reg.f32 = left->computedValue.reg.f32 / right->computedValue.reg.f32;
             break;
         case NativeTypeKind::F64:
             if (right->computedValue.reg.f64 == 0)
-                return context->errorContext.report({sourceFile, right->token, "division by zero"});
+                return context->errorContext.report({right, right->token, "division by zero"});
             node->computedValue.reg.f64 = left->computedValue.reg.f64 / right->computedValue.reg.f64;
             break;
         default:

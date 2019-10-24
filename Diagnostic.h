@@ -52,6 +52,19 @@ struct Diagnostic
     {
     }
 
+    Diagnostic(AstNode* node, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : sourceFile{node->sourceFile}
+        , startLocation{token.startLocation}
+        , endLocation{token.endLocation}
+        , textMsg{msg}
+        , errorLevel{level}
+        , hasFile{true}
+        , hasLocation{true}
+        , hasRangeLocation{true}
+        , printSource{true}
+    {
+    }
+
     Diagnostic(AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
         : sourceFile{node->sourceFile}
         , textMsg{msg}

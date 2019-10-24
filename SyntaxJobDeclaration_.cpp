@@ -28,7 +28,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     Scope*   oldScope = currentScope;
     Scope*   newScope = nullptr;
 
-	// A namespace registers its scope in the module scope, except if the file scope has a name
+    // A namespace registers its scope in the module scope, except if the file scope has a name
     if (currentScope->kind == ScopeKind::File && currentScope->name.empty())
         currentScope = currentScope->parentScope;
 
@@ -72,7 +72,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
                 Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
                 Utf8       note = "this is the other definition";
-                Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
+                Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
                 return sourceFile->report(diag, &diagNote);
             }
             else

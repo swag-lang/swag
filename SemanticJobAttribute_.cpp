@@ -4,15 +4,14 @@
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
 
     if (!checkNode)
     {
         if (typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC)
-            return context->errorContext.report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
+            return context->errorContext.report({oneAttribute, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
         if (typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR)
-            return context->errorContext.report({sourceFile, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
+            return context->errorContext.report({oneAttribute, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
         SWAG_ASSERT(false);
         return false;
     }
@@ -26,10 +25,10 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) && (kind == AstNodeKind::EnumDecl || kind == AstNodeKind::Statement))
         return true;
     if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue))
-		return true;
+        return true;
 
-    Diagnostic diag{sourceFile, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode))};
-    Diagnostic note{oneAttribute->resolvedSymbolOverload->sourceFile, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+    Diagnostic diag{oneAttribute, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode))};
+    Diagnostic note{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
     return context->errorContext.report(diag, &note);
 }
 
@@ -38,7 +37,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
     if (!attrUse)
         return true;
 
-    auto          sourceFile = context->sourceFile;
     auto          curAttr    = attrUse;
     ComputedValue value;
     while (curAttr)
@@ -51,8 +49,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (result.attributes.find(typeInfo) != result.attributes.end())
             {
-                Diagnostic diag{sourceFile, forNode->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), forNode->name.c_str())};
-                Diagnostic note{sourceFile, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
+                Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), forNode->name.c_str())};
+                Diagnostic note{child, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
 
@@ -129,7 +127,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         if (resolvedName->kind != SymbolKind::Attribute)
         {
             Diagnostic diag{identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
-            Diagnostic note{resolved->sourceFile, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
             context->errorContext.report(diag, &note);
             return false;
         }

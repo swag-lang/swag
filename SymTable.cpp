@@ -159,7 +159,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
         Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
-        Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
+        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
         sourceFile->report(diag, &diagNote);
         return false;
     }
@@ -175,7 +175,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
-        Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
+        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
         sourceFile->report(diag, &diagNote);
         return false;
     }
@@ -187,7 +187,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
         Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
         Utf8       note = "this is the other definition";
-        Diagnostic diagNote{firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note};
+        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
         sourceFile->report(diag, &diagNote);
         return false;
     }
@@ -203,7 +203,7 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
 			Utf8       msg = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
 			Diagnostic diag{ sourceFile, token.startLocation, token.endLocation, msg };
 			Utf8       note = "this is the other definition";
-			Diagnostic diagNote{ firstOverload->sourceFile, firstOverload->node->token, note, DiagnosticLevel::Note };
+			Diagnostic diagNote{ firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note };
 			sourceFile->report(diag, &diagNote);
 			return false;
 		}
