@@ -38,14 +38,13 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     auto symbol = findNoLock(node->name);
     if (!symbol)
     {
-        symbol                             = g_Pool_symName.alloc();
-        symbol->name                       = node->name;
-        symbol->fullName                   = Scope::makeFullName(scope->fullname, node->name);
-        symbol->kind                       = kind;
-        symbol->defaultOverload.sourceFile = sourceFile;
-        symbol->defaultOverload.node       = node;
-        symbol->ownerTable                 = this;
-        int indexInTable                   = node->name.crc % HASH_SIZE;
+        symbol                       = g_Pool_symName.alloc();
+        symbol->name                 = node->name;
+        symbol->fullName             = Scope::makeFullName(scope->fullname, node->name);
+        symbol->kind                 = kind;
+        symbol->defaultOverload.node = node;
+        symbol->ownerTable           = this;
+        int indexInTable             = node->name.crc % HASH_SIZE;
         if (!mapNames[indexInTable])
             mapNames[indexInTable] = new map<Utf8Crc, SymbolName*>();
         (*mapNames[indexInTable])[node->name] = symbol;
@@ -110,9 +109,9 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
 
         if (!result)
         {
-            if (!checkHiddenSymbolNoLock(sourceFile, node->token, node->name, typeInfo, kind, symbol))
+            if (!checkHiddenSymbolNoLock(node, typeInfo, kind, symbol))
                 return nullptr;
-            result = symbol->addOverloadNoLock(sourceFile, node, typeInfo, computedValue);
+            result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
 
             // Remember all variables of type struct
             if (symbol->kind == SymbolKind::Variable && typeInfo->kind == TypeInfoKind::Struct)
@@ -139,14 +138,17 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
     }
 }
 
-bool SymTable::checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind type)
+bool SymTable::checkHiddenSymbol(AstNode* node, TypeInfo* typeInfo, SymbolKind type)
 {
     scoped_lock lk(mutex);
-    return checkHiddenSymbolNoLock(sourceFile, token, name, typeInfo, type, nullptr, true);
+    return checkHiddenSymbolNoLock(node, typeInfo, type, nullptr, true);
 }
 
-bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
+bool SymTable::checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
 {
+    auto& token = node->token;
+    auto& name  = node->name;
+
     if (!symbol)
         symbol = findNoLock(name);
     if (!symbol)
@@ -157,15 +159,15 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     {
         auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined as %s in an accessible scope", symbol->name.c_str(), SymTable::getArticleKindName(symbol->kind));
-        Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
+        Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        sourceFile->report(diag, &diagNote);
+        node->sourceFile->report(diag, &diagNote);
         return false;
     }
 
-	if (symbol->kind == SymbolKind::Namespace)
-		return true;
+    if (symbol->kind == SymbolKind::Namespace)
+        return true;
 
     // Overloads are not allowed on certain types
     bool canOverload = kind == SymbolKind::Function || kind == SymbolKind::Attribute || kind == SymbolKind::Struct;
@@ -173,10 +175,10 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     {
         auto       firstOverload = symbol->overloads[0];
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
-        Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
+        Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        sourceFile->report(diag, &diagNote);
+        node->sourceFile->report(diag, &diagNote);
         return false;
     }
 
@@ -185,10 +187,10 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     {
         auto       firstOverload = &symbol->defaultOverload;
         Utf8       msg           = format("symbol '%s' already defined in an accessible scope", symbol->name.c_str());
-        Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
+        Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        sourceFile->report(diag, &diagNote);
+        node->sourceFile->report(diag, &diagNote);
         return false;
     }
 
@@ -196,28 +198,27 @@ bool SymTable::checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& toke
     auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
-		// Because of a foreign opInit, this can happen. Not sure this is fine to do that
-		if (symbol->name != "opInit")
-		{
-			auto       firstOverload = overload;
-			Utf8       msg = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
-			Diagnostic diag{ sourceFile, token.startLocation, token.endLocation, msg };
-			Utf8       note = "this is the other definition";
-			Diagnostic diagNote{ firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note };
-			sourceFile->report(diag, &diagNote);
-			return false;
-		}
+        // Because of a foreign opInit, this can happen. Not sure this is fine to do that
+        if (symbol->name != "opInit")
+        {
+            auto       firstOverload = overload;
+            Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
+            Diagnostic diag{node, token, msg};
+            Utf8       note = "this is the other definition";
+            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+            node->sourceFile->report(diag, &diagNote);
+            return false;
+        }
     }
 
     return true;
 }
 
-SymbolOverload* SymbolName::addOverloadNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
+SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
-    auto overload        = g_Pool_symOverload.alloc();
-    overload->typeInfo   = typeInfo;
-    overload->sourceFile = sourceFile;
-    overload->node       = node;
+    auto overload      = g_Pool_symOverload.alloc();
+    overload->typeInfo = typeInfo;
+    overload->node     = node;
 
     if (computedValue)
     {

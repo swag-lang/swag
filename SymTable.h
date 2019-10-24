@@ -31,7 +31,6 @@ struct SymbolOverload : public PoolElement
     void reset() override
     {
         typeInfo      = nullptr;
-        sourceFile    = nullptr;
         flags         = 0;
         node          = nullptr;
         storageOffset = UINT32_MAX;
@@ -40,7 +39,6 @@ struct SymbolOverload : public PoolElement
     }
 
     TypeInfo*     typeInfo;
-    SourceFile*   sourceFile;
     ComputedValue computedValue;
     uint32_t      flags;
     AstNode*      node;
@@ -83,7 +81,7 @@ struct SymbolName : public PoolElement
         overloads.clear();
     }
 
-    SymbolOverload* addOverloadNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue);
+    SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue);
     SymbolOverload* findOverload(TypeInfo* typeInfo);
 };
 
@@ -94,8 +92,8 @@ struct SymTable
     SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind);
     SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0);
     SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0);
-    bool            checkHiddenSymbol(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind);
-    bool            checkHiddenSymbolNoLock(SourceFile* sourceFile, const Token& token, const Utf8Crc& name, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
+    bool            checkHiddenSymbol(AstNode* node, TypeInfo* typeInfo, SymbolKind kind);
+    bool            checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8Crc& name);
     SymbolName*     findNoLock(const Utf8Crc& name);
 

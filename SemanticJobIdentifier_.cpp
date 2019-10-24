@@ -1127,8 +1127,7 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
 
 bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind)
 {
-    auto sourceFile = context->sourceFile;
-    auto job        = context->job;
+    auto job = context->job;
 
     // No ghosting from struct
     if (startScope->kind == ScopeKind::Struct)
@@ -1158,7 +1157,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
             }
         }
 
-        SWAG_CHECK(scope->symTable->checkHiddenSymbol(sourceFile, node->token, node->name, node->typeInfo, kind));
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(node, node->typeInfo, kind));
     }
 
     return true;
