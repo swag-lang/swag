@@ -43,6 +43,17 @@ namespace Ast
             break;
         }
 
+		case AstNodeKind::Statement:
+			concat.addString("{\n");
+			for (auto child : node->childs)
+			{
+				SWAG_CHECK(output(concat, child));
+				concat.addString(";\n");
+			}
+
+			concat.addString("}\n");
+			break;
+
 		case AstNodeKind::FuncCallParam:
 			SWAG_CHECK(output(concat, node->childs.front()));
 			break;

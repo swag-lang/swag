@@ -69,10 +69,13 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
     bufferSwg.addString("(");
 
     uint32_t idx = 0;
-    for (auto p : typeFunc->parameters)
+    for (auto p : node->parameters->childs)
     {
-        bufferSwg.addString(p->namedParam);
-        if (p->namedParam != "self")
+		if(p->flags & AST_DECL_USING)
+			bufferSwg.addString("using ");
+
+        bufferSwg.addString(p->name);
+        if (p->name != "self")
         {
             bufferSwg.addString(": ");
             bufferSwg.addString(p->typeInfo->name);
