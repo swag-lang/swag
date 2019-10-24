@@ -326,6 +326,9 @@
     <ClCompile Include="Backend.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="AstOutput.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">

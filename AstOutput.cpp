@@ -1,0 +1,229 @@
+#include "pch.h"
+#include "Ast.h"
+#include "Scope.h"
+#include "SourceFile.h"
+#include "SemanticJob.h"
+#include "ByteCodeGenJob.h"
+#include "Utf8Crc.h"
+
+namespace Ast
+{
+    int findChildIndex(AstNode* parent, AstNode* child)
+    {
+        for (int i = 0; i < parent->childs.size(); i++)
+        {
+            if (parent->childs[i] == child)
+                return i;
+        }
+
+        return -1;
+    }
+
+    void removeFromParent(AstNode* child)
+    {
+        auto        parent = child->parent;
+        scoped_lock lk(parent->mutex);
+        for (int i = 0; i < parent->childs.size(); i++)
+        {
+            if (parent->childs[i] == child)
+            {
+                parent->childs.erase(parent->childs.begin() + i);
+                child->parent = nullptr;
+                return;
+            }
+        }
+    }
+
+    void addChildFront(AstNode* parent, AstNode* child)
+    {
+        if (!child)
+            return;
+
+        if (parent)
+        {
+            scoped_lock lk(parent->mutex);
+            parent->childs.insert(parent->childs.begin(), child);
+        }
+
+        child->parent = parent;
+    }
+
+    void addChildBack(AstNode* parent, AstNode* child)
+    {
+        if (!child)
+            return;
+
+        if (parent)
+        {
+            scoped_lock lk(parent->mutex);
+            parent->childs.push_back(child);
+        }
+
+        child->parent = parent;
+    }
+
+    void setForceConstType(AstNode* node)
+    {
+        if (node)
+        {
+            if (node->kind == AstNodeKind::TypeExpression)
+                ((AstTypeExpression*) node)->forceConstType = true;
+            if (node->kind == AstNodeKind::ExpressionList)
+                ((AstExpressionList*) node)->forceConstType = true;
+        }
+    }
+
+    Scope* newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName)
+    {
+        if (parentScope)
+            parentScope->lockChilds.lock();
+
+        if (matchName)
+        {
+            SWAG_ASSERT(parentScope);
+            for (auto child : parentScope->childScopes)
+            {
+                if (child->name == name)
+                {
+                    parentScope->lockChilds.unlock();
+                    return child;
+                }
+            }
+        }
+
+        auto newScope = g_Pool_scope.alloc();
+
+        Utf8 fullname         = parentScope ? Scope::makeFullName(parentScope->fullname, name) : name;
+        newScope->kind        = kind;
+        newScope->parentScope = parentScope;
+        newScope->owner       = owner;
+        newScope->name        = name;
+        newScope->fullname    = move(fullname);
+
+        if (parentScope && newScope->indexInParent >= (uint32_t) parentScope->childScopes.size())
+        {
+            newScope->indexInParent = (uint32_t) parentScope->childScopes.size();
+            parentScope->childScopes.push_back(newScope);
+        }
+
+        if (parentScope)
+            parentScope->lockChilds.unlock();
+
+        return newScope;
+    }
+
+    void visit(AstNode* root, const function<void(AstNode*)>& fctor)
+    {
+        fctor(root);
+        for (auto child : root->childs)
+            visit(child, fctor);
+    }
+
+    AstNode* clone(AstNode* source, AstNode* parent)
+    {
+        CloneContext cloneContext;
+        cloneContext.parent = parent;
+        return source->clone(cloneContext);
+    }
+
+    AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent)
+    {
+        auto sourceFile    = job->sourceFile;
+        auto idRef         = Ast::newNode(job, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
+        idRef->semanticFct = &SemanticJob::resolveIdentifierRef;
+        idRef->byteCodeFct = &ByteCodeGenJob::emitIdentifierRef;
+        idRef->name        = name;
+        idRef->token       = token;
+
+        vector<string> tokens;
+        tokenize(name.c_str(), '.', tokens);
+        for (int i = 0; i < tokens.size(); i++)
+        {
+            auto id           = Ast::newNode(job, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, idRef);
+            id->semanticFct   = &SemanticJob::resolveIdentifier;
+            id->byteCodeFct   = &ByteCodeGenJob::emitIdentifier;
+            id->name          = tokens[i];
+            id->token         = token;
+            id->identifierRef = idRef;
+        }
+
+        return idRef;
+    }
+
+    AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstNode* node = Ast::newNode(syntaxJob, &g_Pool_astNode, kind, sourceFile, parent);
+        return node;
+    }
+
+    AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstStruct* node   = Ast::newNode(syntaxJob, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile, parent);
+        node->semanticFct = &SemanticJob::resolveStruct;
+        return node;
+    }
+
+    AstNode* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstNode* node     = Ast::newNode(syntaxJob, &g_Pool_astNode, AstNodeKind::FuncCallParams, sourceFile, parent);
+        node->semanticFct = &SemanticJob::resolveFuncCallParams;
+        return node;
+    }
+
+    AstFuncCallParam* newFuncCallParam(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstFuncCallParam* node = Ast::newNode(syntaxJob, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, sourceFile, parent);
+        node->semanticFct      = &SemanticJob::resolveFuncCallParam;
+        return node;
+    }
+
+    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstVarDecl* node  = Ast::newNode(syntaxJob, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile, parent);
+        node->name        = name;
+        node->semanticFct = &SemanticJob::resolveVarDecl;
+        return node;
+    }
+
+    AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstTypeExpression* node = Ast::newNode(syntaxJob, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile, parent);
+        node->semanticFct       = &SemanticJob::resolveTypeExpression;
+        return node;
+    }
+
+    AstIdentifier* newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstIdentifier* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, parent);
+        node->name          = name;
+        node->identifierRef = identifierRef;
+        node->semanticFct   = &SemanticJob::resolveIdentifier;
+        if (identifierRef)
+            node->inheritOwners(identifierRef);
+        return node;
+    }
+
+    AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstIdentifierRef* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
+        node->name             = name;
+        node->semanticFct      = &SemanticJob::resolveIdentifierRef;
+        if (syntaxJob)
+            node->inheritTokenLocation(syntaxJob->token);
+
+        vector<string> subNames;
+        tokenize(name.c_str(), '.', subNames);
+        for (int i = 0; i < subNames.size(); i++)
+        {
+            auto id         = Ast::newNode(syntaxJob, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, node);
+            id->semanticFct = &SemanticJob::resolveIdentifier;
+            id->name        = move(subNames[i]);
+            if (syntaxJob)
+                id->inheritTokenLocation(syntaxJob->token);
+            id->identifierRef = node;
+            id->inheritOwners(node);
+        }
+
+        return node;
+    }
+}; // namespace Ast

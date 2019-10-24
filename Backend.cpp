@@ -91,8 +91,11 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
         bufferSwg.addString(typeFunc->returnType->name);
     }
 
-    bufferSwg.addString("{}");
-    bufferSwg.addString("\n");
+	bufferSwg.addString("\n");
+    bufferSwg.addString("{\n");
+	Ast::output(bufferSwg, node->content);
+    bufferSwg.addString("}\n");
+	bufferSwg.addString("\n");
     return true;
 }
 
@@ -227,7 +230,6 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            bufferSwg.addString("\t");
             SWAG_CHECK(emitFuncSwg(typeFunc, node));
         }
     }
