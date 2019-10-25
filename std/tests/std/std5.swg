@@ -7,7 +7,7 @@ using std.random
 	var rng: Random!Mwc
 	loop 10
 	{
-		@print(cast(s64) rng.nextS32())
+		@print(cast(s64) rng.nextS32(10, 50))
 		@print("\n")
 	}
 }
