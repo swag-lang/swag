@@ -151,6 +151,32 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, u
     }
 }
 
+bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+{
+    AstNode* node     = context->node;
+    auto     typeInfo = TypeManager::concreteType(node->typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Native)
+        return internalError(context, "emitBinaryOpModulo, type not native");
+
+    switch (typeInfo->nativeType)
+    {
+    case NativeTypeKind::S32:
+        emitInstruction(context, ByteCodeOp::BinOpModuloS32, r0, r1, r2);
+        return true;
+    case NativeTypeKind::S64:
+        emitInstruction(context, ByteCodeOp::BinOpModuloS64, r0, r1, r2);
+        return true;
+    case NativeTypeKind::U32:
+        emitInstruction(context, ByteCodeOp::BinOpModuloU32, r0, r1, r2);
+        return true;
+    case NativeTypeKind::U64:
+        emitInstruction(context, ByteCodeOp::BinOpModuloU64, r0, r1, r2);
+        return true;
+    default:
+        return internalError(context, "emitBinaryOpModulo, type not supported");
+    }
+}
+
 bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
@@ -319,6 +345,9 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
             break;
         case TokenId::SymSlash:
             SWAG_CHECK(emitBinaryOpDiv(context, r0, r1, r2));
+            break;
+        case TokenId::SymPercent:
+            SWAG_CHECK(emitBinaryOpModulo(context, r0, r1, r2));
             break;
         case TokenId::SymAmpersandAmpersand:
             emitInstruction(context, ByteCodeOp::BinOpAnd, r0, r1, r2);

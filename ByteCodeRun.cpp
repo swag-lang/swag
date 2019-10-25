@@ -443,6 +443,47 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::BinOpModuloS32:
+    {
+        auto val1 = registersRC[ip->a.u32].s32;
+        auto val2 = registersRC[ip->b.u32].s32;
+        if (val2 == 0)
+            context->error("modulo by zero");
+        else
+            registersRC[ip->c.u32].s32 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloS64:
+    {
+        auto val1 = registersRC[ip->a.u32].s64;
+        auto val2 = registersRC[ip->b.u32].s64;
+        if (val2 == 0)
+            context->error("modulo by zero");
+        else
+            registersRC[ip->c.u32].s32 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloU32:
+    {
+        auto val1 = registersRC[ip->a.u32].u32;
+        auto val2 = registersRC[ip->b.u32].u32;
+        if (val2 == 0)
+            context->error("modulo by zero");
+        else
+            registersRC[ip->c.u32].s32 = val1 % val2;
+        break;
+    }
+    case ByteCodeOp::BinOpModuloU64:
+    {
+        auto val1 = registersRC[ip->a.u32].u64;
+        auto val2 = registersRC[ip->b.u32].u64;
+        if (val2 == 0)
+            context->error("modulo by zero");
+        else
+            registersRC[ip->c.u32].s32 = val1 % val2;
+        break;
+    }
+
     case ByteCodeOp::BinOpPlusS32:
     {
         registersRC[ip->c.u32].s32 = registersRC[ip->a.u32].s32 + registersRC[ip->b.u32].s32;

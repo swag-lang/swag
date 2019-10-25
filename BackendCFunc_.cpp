@@ -803,6 +803,19 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32));
             break;
 
+		case ByteCodeOp::BinOpModuloS32:
+            bufferC.addString(format("r[%u].s32 = r[%u].s32 %% r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BinOpModuloS64:
+            bufferC.addString(format("r[%u].s64 = r[%u].s64 %% r[%u].s64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BinOpModuloU32:
+            bufferC.addString(format("r[%u].u32 = r[%u].u32 %% r[%u].u32;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+        case ByteCodeOp::BinOpModuloU64:
+            bufferC.addString(format("r[%u].u64 = r[%u].u64 %% r[%u].u64;", ip->c.u32, ip->a.u32, ip->b.u32));
+            break;
+
         case ByteCodeOp::BinOpDivF32:
             bufferC.addString(format("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
