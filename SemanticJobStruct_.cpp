@@ -64,8 +64,8 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
     }
 
     // Attributes
-    if (node->parentAttributes)
-        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, context->node, AstNodeKind::StructDecl, node->attributeFlags));
+    if (node->parentAttributes && !(node->flags & AST_FROM_GENERIC))
+        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, node, AstNodeKind::StructDecl, node->attributeFlags));
 
     // Register symbol with its type
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));

@@ -108,15 +108,29 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
 {
     bufferSwg.addString("struct");
 
-    if (!typeStruct->genericParameters.empty())
+    if (node->genericParameters)
     {
         bufferSwg.addString("(");
         int idx = 0;
-        for (auto p : typeStruct->genericParameters)
+        for (auto p : node->genericParameters->childs)
         {
             if (idx)
                 bufferSwg.addString(", ");
-            bufferSwg.addString(p->namedParam);
+            bufferSwg.addString(p->name);
+
+            AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+            if (varDecl->type)
+            {
+				bufferSwg.addString(": ");
+				SWAG_CHECK(Ast::output(bufferSwg, varDecl->type));
+            }
+
+            if (varDecl->assignment)
+            {
+                bufferSwg.addString(" = ");
+                SWAG_CHECK(Ast::output(bufferSwg, varDecl->assignment));
+            }
+
             idx++;
         }
 

@@ -1,0 +1,4 @@
+#[swag.public]
+struct Random
+{
+}
