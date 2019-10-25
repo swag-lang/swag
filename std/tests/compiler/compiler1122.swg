@@ -1,4 +1,4 @@
-#[swag.public]
+//#[swag.public]
 struct Random
 {
 }

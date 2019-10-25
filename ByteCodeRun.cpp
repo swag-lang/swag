@@ -460,7 +460,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (val2 == 0)
             context->error("modulo by zero");
         else
-            registersRC[ip->c.u32].s32 = val1 % val2;
+            registersRC[ip->c.u32].s64 = val1 % val2;
         break;
     }
     case ByteCodeOp::BinOpModuloU32:
@@ -470,7 +470,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (val2 == 0)
             context->error("modulo by zero");
         else
-            registersRC[ip->c.u32].s32 = val1 % val2;
+            registersRC[ip->c.u32].u32 = val1 % val2;
         break;
     }
     case ByteCodeOp::BinOpModuloU64:
@@ -480,7 +480,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         if (val2 == 0)
             context->error("modulo by zero");
         else
-            registersRC[ip->c.u32].s32 = val1 % val2;
+            registersRC[ip->c.u32].u64 = val1 % val2;
         break;
     }
 

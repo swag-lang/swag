@@ -235,17 +235,19 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Register symbol with its type
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-    // Function is generic if parameters are
-    if (funcNode->parameters)
-        funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
-
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
+		// Determine if function is generic
+        if (funcNode->parameters)
+            funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
+        if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC))
+            funcNode->flags |= AST_IS_GENERIC;
+        if (funcNode->genericParameters)
+            funcNode->flags |= AST_IS_GENERIC;
+
         // Register parameters
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->parameters, false));
-        if (funcNode->genericParameters)
-            funcNode->flags |= AST_IS_GENERIC;
     }
 
     // Short lambda with a return type we must deduce
