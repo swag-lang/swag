@@ -5,9 +5,11 @@ using std.random
 #test
 {
 	var rng: Random!Mwc
-	loop 10
+	loop 100
 	{
-		@print(cast(s64) rng.nextS32(10, 50))
-		@print("\n")
+		v := rng.nextS32(10, 50)
+		//@print(cast(s64) v)
+		//@print("\n")
+		@assert(v >= 10 && v < 50)
 	}
 }

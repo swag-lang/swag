@@ -19,9 +19,9 @@ namespace std.random
 						
 			func nextS32(using self, min, max: s32)->s32 
 			{
-				range := (max - min) + 1
-				value := cast(s32) rng.next()
-				return min + (value % range)
+				range := cast(u32) (max - min)
+				value := cast(s32) (rng.next() % range)
+				return min + value
 			}
 		}
 	}

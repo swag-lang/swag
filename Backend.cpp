@@ -268,7 +268,7 @@ bool Backend::preCompile()
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
     bufferSwg.fileName = targetPath + "\\" + module->name + ".swg";
 
-    bufferSwg.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    bufferSwg.addString(format("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     SWAG_CHECK(emitPublicSignaturesSwg(module, module->scopeRoot));
 
     return bufferSwg.flush();
