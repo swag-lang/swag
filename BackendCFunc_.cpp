@@ -1284,7 +1284,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r[%u].s16 = (swag_int16_t) r[%u].s32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS32S64:
-            bufferC.addString(format("r[%u].f64 = (swag_float64_t) r[%u].s32; ", ip->a.u32, ip->a.u32));
+            bufferC.addString(format("r[%u].s64 = (swag_int64_t) r[%u].s32; ", ip->a.u32, ip->a.u32));
             break;
         case ByteCodeOp::CastS32F32:
             bufferC.addString(format("r[%u].f32 = (swag_float32_t) r[%u].s32; ", ip->a.u32, ip->a.u32));

@@ -5,7 +5,9 @@ using std.random
 #test
 {
 	var rng: Random!Mwc
-	@print(rng.nextF64())
-	@print("\n")
-	@print(rng.nextF64())
+	loop 10
+	{
+		@print(cast(s64) rng.nextS32())
+		@print("\n")
+	}
 }
