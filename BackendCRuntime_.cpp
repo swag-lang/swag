@@ -43,7 +43,6 @@ typedef double				swag_float64_t;
 
 /* Windows */
 #ifdef _WIN32
-#pragma warning(disable: 4028)
 #include "windows.h"
 #define __loadDynamicLibrary	LoadLibraryA
 #define __tlsAlloc				TlsAlloc

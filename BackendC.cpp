@@ -42,7 +42,7 @@ bool BackendC::preCompile()
 
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
     bufferH.fileName   = targetPath + "\\" + module->name + ".h";
-    bufferC.fileName   = targetPath + "\\" + module->name + ".cpp";
+    bufferC.fileName   = targetPath + "\\" + module->name + ".c";
 
     bool ok = true;
     ok &= emitHeader();
