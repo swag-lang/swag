@@ -91,42 +91,53 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
-        switch (returnType->nativeType)
+        if (returnType->kind == TypeInfoKind::Pointer)
         {
-        case NativeTypeKind::S8:
-            bufferC.addString("rt[0].s8 = ");
-            break;
-        case NativeTypeKind::U8:
-            bufferC.addString("rt[0].u8 = ");
-            break;
-        case NativeTypeKind::S16:
-            bufferC.addString("rt[0].s16 = ");
-            break;
-        case NativeTypeKind::U16:
-            bufferC.addString("rt[0].u16 = ");
-            break;
-        case NativeTypeKind::S32:
-            bufferC.addString("rt[0].s32 = ");
-            break;
-        case NativeTypeKind::U32:
-            bufferC.addString("rt[0].u32 = ");
-            break;
-        case NativeTypeKind::S64:
-            bufferC.addString("rt[0].s64 = ");
-            break;
-        case NativeTypeKind::U64:
-            bufferC.addString("rt[0].u32 = ");
-            break;
-        case NativeTypeKind::Bool:
-            bufferC.addString("rt[0].b = ");
-            break;
-        case NativeTypeKind::F32:
-            bufferC.addString("rt[0].f32 = ");
-            break;
-        case NativeTypeKind::F64:
-            bufferC.addString("rt[0].f64 = ");
-            break;
-        default:
+			bufferC.addString("rt[0].pointer = (swag_uint8_t*) ");
+        }
+        else if (returnType->kind == TypeInfoKind::Native)
+        {
+            switch (returnType->nativeType)
+            {
+            case NativeTypeKind::S8:
+                bufferC.addString("rt[0].s8 = (swag_int8_t) ");
+                break;
+            case NativeTypeKind::U8:
+                bufferC.addString("rt[0].u8 = (swag_int8_t) ");
+                break;
+            case NativeTypeKind::S16:
+                bufferC.addString("rt[0].s16 = (swag_int16_t) ");
+                break;
+            case NativeTypeKind::U16:
+                bufferC.addString("rt[0].u16 = (swag_uint16_t) ");
+                break;
+            case NativeTypeKind::S32:
+                bufferC.addString("rt[0].s32 = (swag_int32_t) ");
+                break;
+            case NativeTypeKind::U32:
+                bufferC.addString("rt[0].u32 = (swag_uint32_t) ");
+                break;
+            case NativeTypeKind::S64:
+                bufferC.addString("rt[0].s64 = (swag_int64_t) ");
+                break;
+            case NativeTypeKind::U64:
+                bufferC.addString("rt[0].u64 = (swag_uint64_t) ");
+                break;
+            case NativeTypeKind::Bool:
+                bufferC.addString("rt[0].b = (swag_bool_t) ");
+                break;
+            case NativeTypeKind::F32:
+                bufferC.addString("rt[0].f32 = (float) ");
+                break;
+            case NativeTypeKind::F64:
+                bufferC.addString("rt[0].f64 = (double) ");
+                break;
+            default:
+                return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid return type");
+            }
+        }
+        else
+        {
             return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid return type");
         }
     }
@@ -150,7 +161,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            bufferC.addString(format("(void*)r[%u].pointer", index));
+            bufferC.addString(format("(void*) r[%u].pointer", index));
             index -= 1;
         }
         else if (typeParam->isNative(NativeTypeKind::String))
@@ -803,7 +814,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r[%u].u64 >>= %u;", ip->a.u32, ip->b.u32));
             break;
 
-		case ByteCodeOp::BinOpModuloS32:
+        case ByteCodeOp::BinOpModuloS32:
             bufferC.addString(format("r[%u].s32 = r[%u].s32 %% r[%u].s32;", ip->c.u32, ip->a.u32, ip->b.u32));
             break;
         case ByteCodeOp::BinOpModuloS64:
@@ -1352,7 +1363,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("r[%u] = *rp%u;", ip->a.u32, ip->c.u32));
             break;
         case ByteCodeOp::RARefFromStackParam:
-            bufferC.addString(format("r[%u].pointer = (swag_int8_t*) &rp%u->pointer;", ip->a.u32, ip->c.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) &rp%u->pointer;", ip->a.u32, ip->c.u32));
             break;
         case ByteCodeOp::PushRRSaved:
         case ByteCodeOp::PopRRSaved:

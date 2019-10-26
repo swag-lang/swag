@@ -1,4 +1,4 @@
-typealias HANDLE: u32
+typealias HANDLE: *void
 
 #[swag.foreign]
 func GetStdHandle(nStdHandle: u32)->HANDLE;
