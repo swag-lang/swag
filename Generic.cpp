@@ -40,15 +40,16 @@ void Generic::computeTypeReplacements(CloneContext& cloneContext, OneGenericMatc
     }
 }
 
-void Generic::end(SemanticContext* context, AstNode* newNode)
+void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
 {
     auto  job              = context->job;
     auto& dependentSymbols = job->cacheDependentSymbols;
     auto  symbol           = dependentSymbols[0];
 
     // Need to wait for the struct to be semantic resolved
-	symbol->cptOverloads++;
-	job->waitForSymbolNoLock(symbol);
+    symbol->cptOverloads++;
+    if (waitSymbol)
+        job->waitForSymbolNoLock(symbol);
 
     // Run semantic on that struct
     auto sourceFile = context->sourceFile;
@@ -86,7 +87,7 @@ void Generic::updateGenericParameters(vector<TypeInfoParam*>& typeGenericParamet
     }
 }
 
-bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
+bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool waitSymbol)
 {
     CloneContext cloneContext;
 
@@ -111,13 +112,13 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     updateGenericParameters(newType->genericParameters, structNode->genericParameters->childs, genericParameters, match);
 
     // Clone opInit
-	SWAG_ASSERT(structNode->defaultOpInit);
+    SWAG_ASSERT(structNode->defaultOpInit);
     auto newOpInit     = CastAst<AstFuncDecl>(structNode->defaultOpInit->clone(cloneContext), AstNodeKind::FuncDecl);
     newType->opInitFct = newOpInit;
     newOpInit->flags |= AST_FROM_GENERIC | AST_DISABLED;
     Ast::addChildBack(structNode, newType->opInitFct);
 
-    end(context, structNode);
+    end(context, structNode, waitSymbol);
     return true;
 }
 
@@ -127,7 +128,7 @@ void Generic::doTypeSubstitution(SemanticContext* context, CloneContext& cloneCo
     if (!oldType)
         return;
 
-    TypeInfo* newType    = nullptr;
+    TypeInfo* newType = nullptr;
 
     auto it = cloneContext.replaceTypes.find(oldType);
     if (it != cloneContext.replaceTypes.end())
@@ -285,6 +286,51 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     // Replace generic types and values in the struct generic parameters
     updateGenericParameters(newType->genericParameters, funcNode->genericParameters->childs, genericParameters, match);
 
-    end(context, funcNode);
+    end(context, funcNode, true);
     return true;
+}
+
+bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* node)
+{
+    if (node->typeInfo->kind == TypeInfoKind::Struct && node->type && node->type->kind == AstNodeKind::TypeExpression)
+    {
+        auto typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        if (typeExpr->identifier)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+            auto nodeStruct = CastAst<AstStruct>(typeStruct->structNode, AstNodeKind::StructDecl);
+            if (nodeStruct->genericParameters)
+            {
+                auto idRef      = CastAst<AstIdentifierRef>(typeExpr->identifier, AstNodeKind::IdentifierRef);
+                auto identifier = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+                if (!identifier->genericParameters)
+                {
+                    identifier->genericParameters = Ast::newFuncCallParams(context->sourceFile, identifier);
+                    identifier->genericParameters->flags |= AST_NO_BYTECODE;
+
+                    CloneContext cloneContext;
+                    for (auto p : nodeStruct->genericParameters->childs)
+                    {
+                        auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+                        if (!param->assignment)
+                            return context->errorContext.report({node, format("cannot instantiate variable because type '%s' is generic", node->typeInfo->name.c_str())});
+
+                        auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
+                        cloneContext.parent = child;
+                        param->assignment->clone(cloneContext);
+                    }
+
+                    idRef->flags &= ~AST_IS_GENERIC;
+                    identifier->flags &= ~AST_IS_GENERIC;
+                    node->flags &= ~AST_IS_GENERIC;
+                    node->type->flags &= ~AST_IS_GENERIC;
+                    context->result     = SemanticResult::NewChilds;
+                    node->semanticState = AstNodeResolveState::Enter;
+                    return true;
+                }
+            }
+        }
+    }
+
+    return context->errorContext.report({node, format("cannot instantiate variable because type '%s' is generic", node->typeInfo->name.c_str())});
 }

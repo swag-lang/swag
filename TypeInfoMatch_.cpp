@@ -315,28 +315,15 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 {
                     if (!(myTypeInfo->flags & TYPEINFO_GENERIC) || !context.parameters.size())
                     {
-                        int numDefault = 0;
                         for (int i = 0; i < wantedNumGenericParams; i++)
                         {
-                            auto symbolParameter = genericParameters[i];
-                            auto genType         = symbolParameter->typeInfo;
-
-                            // Default value
-                            if (genType->kind == TypeInfoKind::Generic)
-                            {
-                                genType = ((TypeInfoGeneric*) genType)->rawType;
-                                if (genType)
-                                    numDefault++;
-                            }
-
+                            auto symbolParameter                  = genericParameters[i];
+                            auto genType                          = symbolParameter->typeInfo;
                             context.genericParametersCallTypes[i] = genType ? genType : symbolParameter->typeInfo;
                             context.genericParametersGenTypes[i]  = symbolParameter->typeInfo;
                         }
 
                         context.flags |= SymbolMatchContext::MATCH_WAS_PARTIAL;
-                        if (numDefault == wantedNumGenericParams)
-                            context.flags |= SymbolMatchContext::MATCH_WAS_DEFAULT;
-
                         context.result = MatchResult::Ok;
                     }
                 }

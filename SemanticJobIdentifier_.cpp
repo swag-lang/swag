@@ -465,9 +465,6 @@ anotherTry:
                 SWAG_ASSERT(false);
             }
 
-            if (job->symMatch.flags & SymbolMatchContext::MATCH_WAS_DEFAULT)
-                job->symMatch.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
-
             // We need () for a function call !
             if (!callParameters && job->symMatch.result == MatchResult::Ok && symbol->kind == SymbolKind::Function)
             {
@@ -563,9 +560,9 @@ anotherTry:
         auto& firstMatch = genericMatches[0];
         if (forStruct)
         {
-            if ((node->flags & AST_CAN_INSTANCIATE_TYPE) && !(node->flags & AST_IS_GENERIC) && (genericParameters || (firstMatch.flags & SymbolMatchContext::MATCH_WAS_DEFAULT)))
+            if ((node->flags & AST_CAN_INSTANCIATE_TYPE) && !(node->flags & AST_IS_GENERIC) && genericParameters)
             {
-                SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch));
+                SWAG_CHECK(Generic::instanciateStruct(context, genericParameters, firstMatch, true));
             }
             else
             {

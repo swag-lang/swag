@@ -54,6 +54,27 @@ void SemanticJob::setPending()
     context.result = SemanticResult::Pending;
 }
 
+void SemanticJob::enterState(AstNode* node)
+{
+    if (node->semanticState == AstNodeResolveState::Enter)
+        return;
+
+    node->semanticState = AstNodeResolveState::Enter;
+    switch (node->kind)
+    {
+    case AstNodeKind::IdentifierRef:
+    {
+        AstIdentifierRef* idRef       = static_cast<AstIdentifierRef*>(node);
+        idRef->startScope             = nullptr;
+        idRef->resolvedSymbolName     = nullptr;
+        idRef->resolvedSymbolOverload = nullptr;
+        idRef->previousResolvedNode   = nullptr;
+        idRef->semanticPass           = 0;
+        break;
+    }
+    }
+}
+
 JobResult SemanticJob::execute()
 {
     scoped_lock lkExecute(executeMutex);
@@ -97,6 +118,7 @@ JobResult SemanticJob::execute()
                     if (node->kind == AstNodeKind::Statement)
                         child->parentAttributes = node->parentAttributes;
 
+                    enterState(child);
                     nodes.push_back(child);
                 }
 

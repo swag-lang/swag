@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
+#include "Generic.h"
 
 bool SemanticJob::reserveAndStoreToSegment(SemanticContext* context, uint32_t& storageOffset, DataSegment* seg, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
@@ -615,7 +616,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 return true;
         }
 
-        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
+		if (node->typeInfo->flags & TYPEINFO_GENERIC)
+		{
+			SWAG_CHECK(Generic::instantiateDefaultGeneric(context, node));
+			if (context->result != SemanticResult::Done)
+				return true;
+		}
+
         SWAG_ASSERT(node->ownerScope);
         SWAG_ASSERT(node->ownerFct);
         storageOffset = node->ownerScope->startStackSize;

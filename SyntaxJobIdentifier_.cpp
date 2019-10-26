@@ -18,9 +18,9 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     SWAG_CHECK(tokenizer.getToken(token));
 
-    // Template arguments
     if (acceptParameters)
     {
+        // Generic arguments
         if (token.id == TokenId::SymExclam)
         {
             SWAG_CHECK(eatToken());
