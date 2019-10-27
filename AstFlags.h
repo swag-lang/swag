@@ -19,7 +19,7 @@ static const uint64_t AST_DONT_COLLECT               = 0x00000000'00010000;
 static const uint64_t AST_GENERATED                  = 0x00000000'00020000;
 static const uint64_t AST_IS_GENERIC                 = 0x00000000'00040000;
 static const uint64_t AST_FROM_GENERIC               = 0x00000000'00080000;
-static const uint64_t AST_UFCS_DONE                  = 0x00000000'00100000;
+//static const uint64_t AST_UFCS_DONE                  = 0x00000000'00100000;
 static const uint64_t AST_HAS_STRUCT_PARAMETERS      = 0x00000000'00200000;
 static const uint64_t AST_HAS_FULL_STRUCT_PARAMETERS = 0x00000000'00400000;
 static const uint64_t AST_GENERIC_MATCH_WAS_PARTIAL  = 0x00000000'00800000;
@@ -38,5 +38,6 @@ static const uint64_t AST_CAN_INSTANCIATE_TYPE       = 0x00000008'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
-static const uint64_t AST_DONE_EMIT_DEFERRED             = 0x00000004;
-static const uint64_t AST_DONE_EMIT_DROP                 = 0x00000008;
+static const uint32_t AST_DONE_EMIT_DEFERRED             = 0x00000004;
+static const uint32_t AST_DONE_EMIT_DROP                 = 0x00000008;
+static const uint32_t AST_DONE_UFCS                      = 0x00000010;

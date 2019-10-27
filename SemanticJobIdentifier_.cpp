@@ -322,26 +322,29 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Need to make all types compatible, in case a cast is necessary
-        if (identifier->callParameters && oneMatch)
-        {
-            auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
-            auto maxParams    = identifier->callParameters->childs.size();
-            for (int i = 0; i < maxParams; i++)
-            {
-                auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-                if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
-                else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters.back()->typeInfo, nullptr, nodeCall));
+		if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
+		{
+			if (identifier->callParameters && oneMatch)
+			{
+				auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
+				auto maxParams = identifier->callParameters->childs.size();
+				for (int i = 0; i < maxParams; i++)
+				{
+					auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+					if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
+						SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
+					else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+						SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters.back()->typeInfo, nullptr, nodeCall));
 
-                // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
-                if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
-                {
-                    auto& typeTable = sourceFile->module->typeTable;
-                    SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeCall->typeInfo, &nodeCall->concreteTypeInfo, &nodeCall->concreteTypeInfoStorage));
-                }
-            }
-        }
+					// For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
+					if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
+					{
+						auto& typeTable = sourceFile->module->typeTable;
+						SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeCall->typeInfo, &nodeCall->concreteTypeInfo, &nodeCall->concreteTypeInfoStorage));
+					}
+				}
+			}
+		}
 
         // This is for a lambda
         if (identifier->flags & AST_TAKE_ADDRESS)
@@ -863,7 +866,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
         }
 
-        if (job->cacheDependentSymbols.empty())
+        if (dependentSymbols.empty())
         {
             if (identifierRef->startScope)
             {
@@ -908,29 +911,38 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (node->flags & AST_TAKE_ADDRESS)
         job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
-    // If a variable is defined just before the call, then this can be an UFCS (unified function call system)
-    if (!(node->flags & AST_UFCS_DONE))
+    // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
+    AstNode* ufcsParam = nullptr;
+    if (!(node->doneFlags & AST_DONE_UFCS))
     {
-        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+        auto symbol = dependentSymbols[0];
+        if (symbol->kind == SymbolKind::Function)
         {
-            auto symbol = dependentSymbols[0];
-            if (symbol->kind == SymbolKind::Function)
+            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                if (!node->callParameters)
+                if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
                 {
-                    node->callParameters        = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParams, node->sourceFile, node);
-                    node->callParameters->token = identifierRef->previousResolvedNode->token;
+                    SWAG_ASSERT(identifierRef->previousResolvedNode);
+                    ufcsParam = identifierRef->previousResolvedNode;
                 }
+                else
+                {
+                    if (!node->callParameters)
+                    {
+                        node->callParameters        = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParams, node->sourceFile, node);
+                        node->callParameters->token = identifierRef->previousResolvedNode->token;
+                    }
 
-                node->flags |= AST_UFCS_DONE;
-                auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
-                node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
-                fctCallParam->parent      = node->callParameters;
-                fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
-                fctCallParam->token       = identifierRef->previousResolvedNode->token;
-                fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
-                Ast::removeFromParent(identifierRef->previousResolvedNode);
-                Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+                    node->doneFlags |= AST_DONE_UFCS;
+                    auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+                    node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+                    fctCallParam->parent      = node->callParameters;
+                    fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
+                    fctCallParam->token       = identifierRef->previousResolvedNode->token;
+                    fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+                    Ast::removeFromParent(identifierRef->previousResolvedNode);
+                    Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+                }
             }
         }
     }
@@ -940,7 +952,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  symbol            = dependentSymbols[0];
     auto& symMatch          = job->symMatch;
 
-    if (callParameters)
+    if (callParameters || ufcsParam)
     {
         if (symbol->kind != SymbolKind::Attribute &&
             symbol->kind != SymbolKind::Function &&
@@ -962,18 +974,24 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             }
         }
 
-        auto childCount = callParameters->childs.size();
-        for (int i = 0; i < childCount; i++)
-        {
-            auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
-            symMatch.parameters.push_back(oneParam);
+        if (ufcsParam)
+            symMatch.parameters.push_back(ufcsParam);
 
-            // Variadic parameter must be the last one
-            if (i != childCount - 1)
+        if (callParameters)
+        {
+            auto childCount = callParameters->childs.size();
+            for (int i = 0; i < childCount; i++)
             {
-                if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
+                symMatch.parameters.push_back(oneParam);
+
+                // Variadic parameter must be the last one
+                if (i != childCount - 1)
                 {
-                    return context->errorContext.report({oneParam, "variadic argument must be the last one"});
+                    if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                    {
+                        return context->errorContext.report({oneParam, "variadic argument must be the last one"});
+                    }
                 }
             }
         }

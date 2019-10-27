@@ -1,6 +1,5 @@
 func toto()
 {
-	@print("toto")
 }
 
 #[swag.public]
