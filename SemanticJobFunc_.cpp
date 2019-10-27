@@ -424,7 +424,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         // This is a short lambda without a specified return type. We now have it
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->flags & AST_FUNC_RETURN_DEFINED))
         {
-            typeInfoFunc->returnType = node->childs.front()->typeInfo;
+            typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo);
             if (typeInfoFunc->returnType->kind == TypeInfoKind::TypeList)
             {
                 SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
