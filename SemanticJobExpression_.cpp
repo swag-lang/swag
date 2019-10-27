@@ -1,14 +1,8 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "SourceFile.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
-#include "Scope.h"
-#include "Module.h"
 #include "TypeManager.h"
-#include "SourceFile.h"
-#include "Module.h"
-#include "Workspace.h"
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {

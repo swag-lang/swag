@@ -176,9 +176,29 @@ bool SemanticJob::resolveCompilerFunction(SemanticContext* context)
 {
     auto node = context->node;
 
-    SWAG_VERIFY(node->ownerFct, context->errorContext.report({node, "'#function' can only be called inside a function"}));
-    node->computedValue.text = node->ownerFct->name;
-    node->typeInfo           = g_TypeMgr.typeInfoString;
-    node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-    return true;
+    switch (node->token.id)
+    {
+    case TokenId::CompilerFunction:
+        SWAG_VERIFY(node->ownerFct, context->errorContext.report({node, "'#function' can only be called inside a function"}));
+        node->computedValue.text = node->ownerFct->name;
+        node->typeInfo           = g_TypeMgr.typeInfoString;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        return true;
+
+    case TokenId::CompilerCallerLine:
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->errorContext.report({node, "'#callerline' can only be set in a function parameter declaration"}));
+        node->typeInfo = g_TypeMgr.typeInfoU32;
+        return true;
+    case TokenId::CompilerCallerFile:
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->errorContext.report({node, "'#callerfile' can only be set in a function parameter declaration"}));
+        node->typeInfo = g_TypeMgr.typeInfoString;
+        return true;
+    case TokenId::CompilerCallerFunction:
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->errorContext.report({node, "'#callerfile' can only be set in a function parameter declaration"}));
+        node->typeInfo = g_TypeMgr.typeInfoString;
+        return true;
+
+    default:
+        return internalError(context, "resolveCompilerFunction, unknown token");
+    }
 }

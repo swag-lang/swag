@@ -66,6 +66,9 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::CompilerFunction:
+    case TokenId::CompilerCallerLine:
+    case TokenId::CompilerCallerFile:
+    case TokenId::CompilerCallerFunction:
     {
         auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerFunction, sourceFile, parent);
         if (result)
@@ -75,6 +78,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         exprNode->semanticFct = &SemanticJob::resolveCompilerFunction;
         break;
     }
+
     case TokenId::SymLeftParen:
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doExpression(parent, result));
@@ -239,7 +243,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
         (token.id == TokenId::SymAmpersand) ||
         (token.id == TokenId::SymGreaterGreater) ||
         (token.id == TokenId::SymLowerLower) ||
-		(token.id == TokenId::SymPercent) ||
+        (token.id == TokenId::SymPercent) ||
         (token.id == TokenId::SymCircumflex))
     {
         if (parent && parent->kind == AstNodeKind::FactorOp && parent->token.id != token.id)
