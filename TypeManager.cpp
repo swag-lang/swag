@@ -21,6 +21,9 @@ void TypeManager::setup()
     typeInfoString = new TypeInfoNative(NativeTypeKind::String, "string", 2 * sizeof(Register), 0);
     typeInfoAny    = new TypeInfoNative(NativeTypeKind::Any, "any", 2 * sizeof(Register), 0);
 
+    typeInfoUntypedU64 = (TypeInfoNative*) typeInfoU64->clone();
+    typeInfoUntypedU64->flags |= TYPEINFO_UNTYPED_INTEGER;
+
     typeInfoVariadic = new TypeInfoVariadic();
     typeInfoVariadic->reset();
     typeInfoVariadic->name   = "...";

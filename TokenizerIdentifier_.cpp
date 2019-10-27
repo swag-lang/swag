@@ -52,8 +52,8 @@ void Tokenizer::getIdentifier(Token& token, char32_t c, unsigned offset)
         return;
     case TokenId::CompilerLine:
         token.id               = TokenId::LiteralNumber;
-        token.literalType      = g_TypeMgr.typeInfoS64;
-        token.literalValue.s64 = location.line + 1;
+        token.literalType      = g_TypeMgr.typeInfoUntypedU64;
+        token.literalValue.u64 = location.line + 1;
         return;
     case TokenId::CompilerBuildVersion:
         token.id               = TokenId::LiteralNumber;
