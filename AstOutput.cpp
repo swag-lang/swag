@@ -13,24 +13,43 @@ namespace Ast
     {
         switch (node->kind)
         {
+        case AstNodeKind::CompilerFunction:
+        {
+            switch (node->token.id)
+            {
+            case TokenId::CompilerCallerFile:
+                concat.addString("#callerfile");
+                break;
+            case TokenId::CompilerCallerLine:
+                concat.addString("#callerline");
+                break;
+            case TokenId::CompilerCallerFunction:
+                concat.addString("#callerfunction");
+                break;
+            default:
+                return node->sourceFile->report({node, node->token, "Ast::output, unknown compiler function"});
+            }
+            break;
+        }
+
         case AstNodeKind::VarDecl:
         {
             AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
-			if (varDecl->type)
-			{
+            if (varDecl->type)
+            {
                 concat.addString("var ");
                 concat.addString(node->name);
-				concat.addString(": ");
-				SWAG_CHECK(output(concat, varDecl->type));
-			}
-			else
-			{
+                concat.addString(": ");
+                SWAG_CHECK(output(concat, varDecl->type));
+            }
+            else
+            {
                 concat.addString(node->name);
-				concat.addString(" := ");
-			}
+                concat.addString(" := ");
+            }
 
-			if (varDecl->assignment)
-				SWAG_CHECK(output(concat, varDecl->assignment));
+            if (varDecl->assignment)
+                SWAG_CHECK(output(concat, varDecl->assignment));
             break;
         }
 
@@ -108,7 +127,7 @@ namespace Ast
         }
 
         case AstNodeKind::FactorOp:
-		case AstNodeKind::BinaryOp:
+        case AstNodeKind::BinaryOp:
             concat.addString("(");
             SWAG_CHECK(output(concat, node->childs[0]));
             concat.addString(" ");
@@ -142,7 +161,7 @@ namespace Ast
         case AstNodeKind::Literal:
             concat.addString(node->token.text);
             break;
-			
+
         default:
             return node->sourceFile->report({node, node->token, "Ast::output, unknown node"});
         }

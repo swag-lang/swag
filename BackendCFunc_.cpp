@@ -288,6 +288,10 @@ bool BackendC::emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* no
             case NativeTypeKind::Char:
                 bufferC.addString(format("\trr%d.ch = %s;\n", idx, param->namedParam.c_str()));
                 break;
+            case NativeTypeKind::String:
+                bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) %s; ", idx, param->namedParam.c_str()));
+				bufferC.addString(format("rr%d.u32 = strlen(%s);\n", idx + 1, param->namedParam.c_str()));
+                break;
             default:
                 return module->internalError("emitFuncWrapperPublic, invalid param type");
             }

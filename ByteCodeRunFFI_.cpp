@@ -83,7 +83,7 @@ ffi_type* ByteCodeRun::ffiFromTypeinfo(TypeInfo* typeInfo)
         return &ffi_type_pointer;
 
     if (typeInfo->isNative(NativeTypeKind::String))
-        return nullptr;
+        return &ffi_type_pointer;
 
     if (typeInfo->kind != TypeInfoKind::Native)
         return nullptr;
@@ -143,27 +143,35 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             return;
         }
 
-        switch (typeParam->sizeOf)
+        if (typeParam->isNative(NativeTypeKind::String))
         {
-        case 1:
-            ffiArgsValues[i] = &sp->u8;
-            break;
-        case 2:
-            ffiArgsValues[i] = &sp->u16;
-            break;
-        case 4:
-            ffiArgsValues[i] = &sp->u32;
-            break;
-        case 8:
-            ffiArgsValues[i] = &sp->u64;
-            break;
-        default:
-            context->hasError = true;
-            context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
-            return;
+            ffiArgsValues[i] = &sp[1].pointer;
+            sp += 2;
         }
+        else
+        {
+            switch (typeParam->sizeOf)
+            {
+            case 1:
+                ffiArgsValues[i] = &sp->u8;
+                break;
+            case 2:
+                ffiArgsValues[i] = &sp->u16;
+                break;
+            case 4:
+                ffiArgsValues[i] = &sp->u32;
+                break;
+            case 8:
+                ffiArgsValues[i] = &sp->u64;
+                break;
+            default:
+                context->hasError = true;
+                context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
+                return;
+            }
 
-        sp++;
+            sp++;
+        }
     }
 
     // Function return type

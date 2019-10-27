@@ -34,19 +34,29 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     bufferSwg.addString(node->name.c_str());
     bufferSwg.addString("(");
 
-    uint32_t idx = 0;
-    for (auto p : typeFunc->parameters)
+    if (node->parameters)
     {
-        bufferSwg.addString(p->namedParam);
-        if (p->namedParam != "self")
+        uint32_t idx = 0;
+        for (auto p : node->parameters->childs)
         {
-            bufferSwg.addString(": ");
-            bufferSwg.addString(p->typeInfo->name);
-        }
+            bufferSwg.addString(p->name);
+            if (p->name != "self")
+            {
+                bufferSwg.addString(": ");
+                bufferSwg.addString(p->typeInfo->name);
+            }
 
-        if (idx != typeFunc->parameters.size() - 1)
-            bufferSwg.addString(", ");
-        idx++;
+            AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
+            if (varDecl->assignment)
+            {
+				bufferSwg.addString(" = ");
+				Ast::output(bufferSwg, varDecl->assignment);
+            }
+
+            if (idx != node->parameters->childs.size() - 1)
+                bufferSwg.addString(", ");
+            idx++;
+        }
     }
 
     bufferSwg.addString(")");
@@ -121,8 +131,8 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
             AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
             if (varDecl->type)
             {
-				bufferSwg.addString(": ");
-				SWAG_CHECK(Ast::output(bufferSwg, varDecl->type));
+                bufferSwg.addString(": ");
+                SWAG_CHECK(Ast::output(bufferSwg, varDecl->type));
             }
 
             if (varDecl->assignment)
