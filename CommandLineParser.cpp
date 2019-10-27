@@ -40,7 +40,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
 	//cmdLine->verboseUnittestErrors = true;
-    cmdLine->testFilter    = "std7";
+    //cmdLine->testFilter    = "std7";
     //cmdLine->fileFilter = "compiler1127";
 }
 

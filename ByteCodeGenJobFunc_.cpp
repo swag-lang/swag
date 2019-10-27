@@ -199,24 +199,25 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     varNode->resultRegisterRC = node->resultRegisterRC;
 
     auto allParams = node->childs.empty() ? nullptr : node->childs.front();
-    return emitLocalCall(context, allParams, nullptr, varNode);
+    return emitCall(context, allParams, nullptr, varNode, false);
 }
 
-bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
 {
     AstNode* node     = context->node;
     auto     overload = node->resolvedSymbolOverload;
     auto     funcNode = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
 
     auto allParams = node->childs.empty() ? nullptr : node->childs.back();
-    return emitLocalCall(context, allParams, funcNode, nullptr);
+    return emitCall(context, allParams, funcNode, nullptr, false);
 }
 
 void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode)
 {
     if (!funcNode)
         return;
-    SWAG_ASSERT(!(funcNode->attributeFlags & ATTRIBUTE_FOREIGN));
+    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+        return;
 
     auto        sourceFile = context->sourceFile;
     scoped_lock lk(funcNode->mutex);
@@ -247,7 +248,7 @@ void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* fu
     }
 }
 
-bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode)
+bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, bool foreign)
 {
     AstNode*          node         = context->node;
     TypeInfoFuncAttr* typeInfoFunc = nullptr;
@@ -509,9 +510,15 @@ bool ByteCodeGenJob::emitLocalCall(ByteCodeGenContext* context, AstNode* allPara
     // Free all registers now that the call can really be done
     freeRegisterRC(context, toFree);
 
-    if (funcNode)
+    if (foreign)
     {
-        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall, 0);
+        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer = (uint8_t*) funcNode;
+        inst->b.pointer = (uint8_t*) typeInfoFunc;
+    }
+    else if (funcNode)
+    {
+        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
         inst->a.pointer = (uint8_t*) funcNode->bc;
         inst->b.pointer = (uint8_t*) typeInfoFunc;
     }
@@ -618,59 +625,8 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     AstNode* node         = context->node;
     auto     overload     = node->resolvedSymbolOverload;
     auto     funcNode     = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-    auto     typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     auto     allParams    = node->childs.empty() ? nullptr : node->childs.front();
 
-    // Sort childs by parameter index
-    if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
-    {
-        sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
-            AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-            AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-            return p1->index < p2->index;
-        });
-    }
-
-    // Push parameters
-    int precallStack  = 0;
-    int numRegisters  = 0;
-    int numCallParams = allParams ? (int) allParams->childs.size() : 0;
-    if (allParams)
-    {
-        for (int i = numCallParams - 1; i >= 0; i--)
-        {
-            auto param = allParams->childs[i];
-            for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
-            {
-                emitInstruction(context, ByteCodeOp::PushRAParam, param->resultRegisterRC[r]);
-                precallStack += sizeof(Register);
-                numRegisters++;
-            }
-
-            freeRegisterRC(context, param);
-        }
-    }
-
-    auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
-    inst->a.pointer = (uint8_t*) funcNode;
-    inst->b.pointer = (uint8_t*) typeInfoFunc;
-    inst->c.pointer = nullptr;
-
-    // Copy result in a computing register
-    if (typeInfoFunc->returnType != g_TypeMgr.typeInfoVoid)
-    {
-        auto numRegs = typeInfoFunc->returnType->numRegisters();
-        reserveRegisterRC(context, node->resultRegisterRC, numRegs);
-        context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
-        for (int idx = 0; idx < node->resultRegisterRC.size(); idx++)
-            emitInstruction(context, ByteCodeOp::CopyRCxRRxCall, node->resultRegisterRC[idx], idx);
-    }
-
-    // Restore stack as it was before the call, before the parameters
-    if (precallStack)
-    {
-        emitInstruction(context, ByteCodeOp::IncSP, precallStack);
-    }
-
+    emitCall(context, allParams, funcNode, nullptr, true);
     return true;
 }

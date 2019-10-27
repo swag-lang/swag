@@ -145,7 +145,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 
         if (typeParam->isNative(NativeTypeKind::String))
         {
-            ffiArgsValues[i] = &sp[1].pointer;
+            ffiArgsValues[i] = &sp->pointer;
             sp += 2;
         }
         else

@@ -367,7 +367,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
         else
         {
-            identifier->byteCodeFct = &ByteCodeGenJob::emitLocalCall;
+            identifier->byteCodeFct = &ByteCodeGenJob::emitCall;
             auto ownerFct           = identifier->ownerFct;
             if (ownerFct)
             {
