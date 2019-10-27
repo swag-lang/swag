@@ -439,9 +439,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         }
         else
         {
-            Diagnostic diag{node, format("function '%s' does not have a return type", funcNode->name.c_str())};
-            Diagnostic note{funcNode, funcNode->token, format("this is the definition of '%s'", funcNode->name.c_str()), DiagnosticLevel::Note};
-            return context->errorContext.report(diag, &note);
+			// This is fine to return void
+			node->byteCodeFct = nullptr;
         }
     }
 
