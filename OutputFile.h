@@ -11,6 +11,7 @@ struct OutputFile : public Concat
     condition_variable         condVar;
     vector<SaveThreadRequest*> reqToRelease;
     int                        pendingRequests = 0;
+    bool                       firstSave       = true;
 
     void flushBucket(ConcatBucket* bucket) override;
     bool flush();

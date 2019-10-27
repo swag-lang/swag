@@ -11,6 +11,8 @@ void OutputFile::flushBucket(ConcatBucket* bucket)
     req->file         = this;
     req->buffer       = (char*) bucket->datas;
     req->bufferSize   = bucket->count;
+    req->firstSave    = firstSave;
+    firstSave         = false;
     lastRequest       = req;
     pendingRequests++;
     g_ThreadMgr.savingThread->addRequest(req);

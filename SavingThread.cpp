@@ -104,7 +104,10 @@ void SavingThread::loop()
         {
             // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
             // Without that, fopen can fail due to compiling processes
-            fopen_s(&file, req->file->fileName.c_str(), "a+tN");
+			if(req->firstSave)
+				fopen_s(&file, req->file->fileName.c_str(), "wtN");
+			else
+				fopen_s(&file, req->file->fileName.c_str(), "a+tN");
             if (file)
                 break;
             Sleep(10);

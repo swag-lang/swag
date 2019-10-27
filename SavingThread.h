@@ -6,6 +6,7 @@ struct SaveThreadRequest
     OutputFile* file       = nullptr;
     char*       buffer     = nullptr;
     long        bufferSize = 0;
+    bool        firstSave  = false;
     bool        ioError    = false;
 };
 
