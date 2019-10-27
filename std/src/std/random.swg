@@ -21,7 +21,7 @@ namespace std
 						
 			func nextS32(using self, min, max: s32)->s32 
 			{
-				assert(max > min)
+				debug.assert(max > min)
 				range := cast(u32) (max - min)
 				value := cast(s32) (rng.next() % range)
 				return min + value

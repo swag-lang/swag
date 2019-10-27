@@ -4,5 +4,5 @@ using std
 //#[swag.printbc]
 #test
 {
-	assert(true)
+	debug.assert(true)
 }
