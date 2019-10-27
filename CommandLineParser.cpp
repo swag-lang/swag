@@ -32,16 +32,16 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--userargs", nullptr, CommandLineType::String, &cmdLine->userArguments);
 
     cmdLine->test          = true;
-    //cmdLine->cleanTarget   = true;
+    cmdLine->cleanTarget   = false;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
     cmdLine->backendOutput     = true;
     cmdLine->backendOutputTest = true;
     //cmdLine->runBackendTests   = false;
-    //cmdLine->testFilter    = "std4";
     //cmdLine->verboseBuildPass = false;
 	//cmdLine->verboseUnittestErrors = true;
-    cmdLine->fileFilter = "778";
+    //cmdLine->testFilter    = "std6";
+    cmdLine->fileFilter = "1123";
 }
 
 void CommandLineParser::logArguments()

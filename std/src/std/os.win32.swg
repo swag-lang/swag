@@ -23,9 +23,4 @@ namespace std.os.win32
 	{
 		stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
 	}
-	
-	#test
-	{
-		//WriteFile(stdOutputHandle, @dataof("toto"), 4, null, null)
-	}
 }

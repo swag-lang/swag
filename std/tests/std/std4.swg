@@ -1,6 +1,6 @@
 #import "std"
 
-struct(T = std.random.Mwc) Random
+struct(T = std.Mwc) Random
 {
 	rng: T
 }

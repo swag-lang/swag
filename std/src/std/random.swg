@@ -1,4 +1,4 @@
-namespace std.random
+namespace std
 {
 	#[swag.public]
 	struct(T = Mwc) Random
@@ -10,6 +10,8 @@ namespace std.random
 	{
 		#[swag.public]
 		{
+			func seed(using self, value: u32) => rng.seed(value)
+			
 			func nextS32(using self)->s32 => cast(s32) rng.next()
 			func nextS64(using self)->s64 => cast(s64) nextU64(self)
 			func nextU32(using self)->u32 => rng.next()		
@@ -19,6 +21,7 @@ namespace std.random
 						
 			func nextS32(using self, min, max: s32)->s32 
 			{
+				assert(max > min)
 				range := cast(u32) (max - min)
 				value := cast(s32) (rng.next() % range)
 				return min + value

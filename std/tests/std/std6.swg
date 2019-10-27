@@ -4,6 +4,6 @@ using std
 //#[swag.printbc]
 #test
 {
-	var rng: Mwc
-	@assert(rng.next() == 1372587705)
+	var rng: Random
+	rng.seed(0)
 }

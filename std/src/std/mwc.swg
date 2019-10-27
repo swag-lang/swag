@@ -1,4 +1,4 @@
-namespace std.random
+namespace std
 {
 	#[swag.public]
 	struct Mwc

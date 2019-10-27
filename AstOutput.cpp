@@ -44,6 +44,7 @@ namespace Ast
         }
 
         case AstNodeKind::Identifier:
+        case AstNodeKind::FuncCall:
         {
             AstIdentifier* identifier = static_cast<AstIdentifier*>(node);
             concat.addString(node->name);
@@ -107,6 +108,7 @@ namespace Ast
         }
 
         case AstNodeKind::FactorOp:
+		case AstNodeKind::BinaryOp:
             concat.addString("(");
             SWAG_CHECK(output(concat, node->childs[0]));
             concat.addString(" ");
@@ -140,7 +142,7 @@ namespace Ast
         case AstNodeKind::Literal:
             concat.addString(node->token.text);
             break;
-
+			
         default:
             return node->sourceFile->report({node, node->token, "Ast::output, unknown node"});
         }

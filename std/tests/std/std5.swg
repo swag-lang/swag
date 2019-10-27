@@ -1,5 +1,5 @@
 #import "std"
-using std.random
+using std
 
 //#[swag.printbc]
 #test
