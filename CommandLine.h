@@ -11,13 +11,14 @@ struct CommandLine
     // Compiler
     int       numCores  = 0;
     BuildPass buildPass = BuildPass::Full;
+    bool      rebuild   = false;
 
     // Input
     bool        cleanTarget      = true;
     bool        addRuntimeModule = true;
     string      workspacePath;
     string      fileFilter;
-	string      testFilter;
+    string      testFilter;
     set<string> compileVersion;
     int         tabSize = 4;
 

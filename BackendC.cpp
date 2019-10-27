@@ -18,7 +18,7 @@ bool BackendC::emitHeader()
 
     // My dependencies. Need to import for dlls
     bufferC.addString("#undef SWAG_EXPORT\n");
-	bufferC.addString("#define SWAG_IMPORT\n");
+    bufferC.addString("#define SWAG_IMPORT\n");
     for (auto depName : module->moduleDependenciesNames)
     {
         bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
@@ -40,29 +40,58 @@ bool BackendC::preCompile()
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
 
-    auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
-    bufferH.fileName   = targetPath + "\\" + module->name + ".h";
-    bufferC.fileName   = targetPath + "\\" + module->name + ".c";
+    auto targetPath  = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
+    bufferH.fileName = targetPath + "\\" + module->name + ".h";
+    bufferC.fileName = targetPath + "\\" + module->name + ".c";
+
+    // Do we need to generate the file ?
+    bool regen = g_CommandLine.rebuild;
+    if (!regen)
+    {
+        if (fs::exists(bufferH.fileName))
+        {
+            fs::file_time_type mtime = fs::last_write_time(bufferH.fileName);
+            time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
+            if (t1 < module->moreRecentSourceFile)
+            {
+                regen = true;
+            }
+        }
+
+        if (fs::exists(bufferC.fileName))
+        {
+            fs::file_time_type mtime = fs::last_write_time(bufferC.fileName);
+            time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
+            if (t1 < module->moreRecentSourceFile)
+            {
+                regen = true;
+            }
+        }
+    }
 
     bool ok = true;
-    ok &= emitHeader();
-    ok &= emitRuntime();
-    ok &= emitDataSegment(&module->mutableSegment);
-    ok &= emitDataSegment(&module->constantSegment);
-    ok &= emitStrings();
-    ok &= emitFuncSignatures();
-	ok &= emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
-    ok &= emitPublic(module, module->scopeRoot);
-    ok &= emitFunctions();
-    ok &= emitGlobalInit();
-    ok &= emitGlobalDrop();
-    ok &= emitMain();
-    ok &= emitFooter();
-	
-    ok &= bufferH.flush();
-    ok &= bufferC.flush();
 
-	ok &= Backend::preCompile();
+    if (regen)
+    {
+        ok &= emitHeader();
+        ok &= emitRuntime();
+        ok &= emitDataSegment(&module->mutableSegment);
+        ok &= emitDataSegment(&module->constantSegment);
+        ok &= emitStrings();
+        ok &= emitFuncSignatures();
+        ok &= emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
+        ok &= emitPublic(module, module->scopeRoot);
+        ok &= emitFunctions();
+        ok &= emitGlobalInit();
+        ok &= emitGlobalDrop();
+        ok &= emitMain();
+        ok &= emitFooter();
+
+        ok &= bufferH.flush();
+        ok &= bufferC.flush();
+    }
+
+    ok &= Backend::preCompile();
 
     return ok;
 }
@@ -72,5 +101,13 @@ bool BackendC::compile(const BuildParameters& buildParameters)
 #ifdef _WIN32
     BackendCCompilerVS compiler(this, &buildParameters);
 #endif
+
+    if (!compiler.mustCompile())
+    {
+        g_Log.messageHeaderCentered("Skipping build", module->name.c_str());
+        return true;
+    }
+
+    g_Log.messageHeaderCentered("Building", module->name.c_str());
     return compiler.compile();
 }

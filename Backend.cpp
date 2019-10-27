@@ -49,8 +49,8 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
             if (varDecl->assignment)
             {
-				bufferSwg.addString(" = ");
-				Ast::output(bufferSwg, varDecl->assignment);
+                bufferSwg.addString(" = ");
+                Ast::output(bufferSwg, varDecl->assignment);
             }
 
             if (idx != node->parameters->childs.size() - 1)
@@ -291,6 +291,20 @@ bool Backend::preCompile()
 {
     auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
     bufferSwg.fileName = targetPath + "\\" + module->name + ".swg";
+
+    // Do we need to generate the file ?
+    if (!g_CommandLine.rebuild)
+    {
+        if (fs::exists(bufferSwg.fileName))
+        {
+            fs::file_time_type mtime = fs::last_write_time(bufferSwg.fileName);
+			time_t t1 = fs::file_time_type::clock::to_time_t(mtime);
+            if (t1 > module->moreRecentSourceFile)
+            {
+                return true;
+            }
+        }
+    }
 
     bufferSwg.addString(format("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     SWAG_CHECK(emitPublicSignaturesSwg(module, module->scopeRoot));

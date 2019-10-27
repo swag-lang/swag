@@ -37,6 +37,12 @@ void Module::addFile(SourceFile* file)
         scopeRoot->childScopes.push_back(file->scopeRoot);
         file->scopeRoot->parentScope = scopeRoot;
     }
+
+    // Keep track of the most recent file
+    auto   ftime = fs::last_write_time(file->path);
+    time_t t     = fs::file_time_type::clock::to_time_t(ftime);
+    if (files.size() == 1 || t > moreRecentSourceFile)
+        moreRecentSourceFile = t;
 }
 
 void Module::removeFile(SourceFile* file)

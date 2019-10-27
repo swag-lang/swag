@@ -50,6 +50,48 @@ bool BackendCCompilerVS::getWinSdk(string& winSdk)
     return true;
 }
 
+string BackendCCompilerVS::getResultFile()
+{
+    string resultFile;
+    switch (buildParameters->type)
+    {
+    case BackendOutputType::StaticLib:
+        resultFile = buildParameters->destFile + buildParameters->postFix + ".lib";
+        break;
+
+    case BackendOutputType::DynamicLib:
+        resultFile = buildParameters->destFile + buildParameters->postFix + ".dll";
+        break;
+
+    case BackendOutputType::Binary:
+        resultFile = buildParameters->destFile + buildParameters->postFix + ".exe";
+        break;
+    }
+
+    return resultFile;
+}
+
+bool BackendCCompilerVS::mustCompile()
+{
+    if (g_CommandLine.rebuild)
+        return true;
+
+    if (!fs::exists(backend->bufferC.fileName))
+        return true;
+    auto resultFile = getResultFile();
+    if (!fs::exists(resultFile))
+        return true;
+
+    fs::file_time_type mtime1 = fs::last_write_time(resultFile);
+    time_t             t1     = fs::file_time_type::clock::to_time_t(mtime1);
+    fs::file_time_type mtime2 = fs::last_write_time(backend->bufferC.fileName);
+    time_t             t2     = fs::file_time_type::clock::to_time_t(mtime2);
+    if (t1 >= t2)
+        return false;
+
+    return true;
+}
+
 bool BackendCCompilerVS::compile()
 {
     auto module = backend->module;
@@ -70,11 +112,11 @@ bool BackendCCompilerVS::compile()
 
     // Include paths
     vector<string> includePaths;
-	includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\um)", winSdk.c_str()));
-	includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
+    includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\um)", winSdk.c_str()));
+    includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
     includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
     includePaths.push_back(format(R"(%s\include)", vsTarget.c_str()));
-	includePaths.push_back(g_Workspace.targetPath.string());
+    includePaths.push_back(g_Workspace.targetPath.string());
 
     // CL arguments
     string clArguments = "";
@@ -121,8 +163,8 @@ bool BackendCCompilerVS::compile()
 
     bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBackendCommand;
 
-    uint32_t numErrors = 0;
-    string   resultFile;
+    uint32_t numErrors  = 0;
+    string   resultFile = getResultFile();
     switch (buildParameters->type)
     {
     case BackendOutputType::StaticLib:
@@ -136,7 +178,6 @@ bool BackendCCompilerVS::compile()
         libArguments = "/NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:X64 ";
         if (g_CommandLine.verboseBackendCommand)
             libArguments += "/VERBOSE ";
-        resultFile = buildParameters->destFile + buildParameters->postFix + ".lib";
         libArguments += "/OUT:\"" + resultFile + "\" ";
         libArguments += "\"" + nameObj + "\" ";
 
@@ -167,13 +208,11 @@ bool BackendCCompilerVS::compile()
         if (buildParameters->type == BackendOutputType::DynamicLib)
         {
             linkArguments += "/DLL ";
-            resultFile = buildParameters->destFile + buildParameters->postFix + ".dll";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_DYNAMICLIB ";
         }
         else
         {
-            resultFile = buildParameters->destFile + buildParameters->postFix + ".exe";
             linkArguments += "/OUT:\"" + resultFile + "\" ";
             clArguments += "/DSWAG_IS_BINARY ";
         }

@@ -24,8 +24,8 @@ struct Backend
     Module*    module;
     OutputFile bufferSwg;
 
-	bool emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node);
-	bool emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-	bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node);
+    bool emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope);
 };

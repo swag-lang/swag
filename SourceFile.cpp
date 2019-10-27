@@ -32,6 +32,7 @@ bool SourceFile::open()
 {
     if (fileHandle != nullptr)
         return true;
+	
     openedOnce = true;
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes

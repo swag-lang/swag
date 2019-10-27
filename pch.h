@@ -14,6 +14,7 @@
 #include <locale>
 #include <codecvt>
 #include <set>
+#include <fstream>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;

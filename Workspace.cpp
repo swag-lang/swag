@@ -86,8 +86,8 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
                             auto file       = g_Pool_sourceFile.alloc();
                             job->sourceFile = file;
                             file->fromTests = module->fromTests;
+                            file->path      = tmp + "\\" + findfile.cFileName;
                             module->addFile(file);
-                            file->path = tmp + "\\" + findfile.cFileName;
                             g_ThreadMgr.addJob(job);
                         }
                     }
@@ -179,9 +179,9 @@ bool Workspace::buildModules(const vector<Module*>& list)
             auto job        = g_Pool_syntaxJob.alloc();
             auto file       = g_Pool_sourceFile.alloc();
             job->sourceFile = file;
-            module->addFile(file);
             file->path      = move(path);
             file->generated = true;
+            module->addFile(file);
             g_ThreadMgr.addJob(job);
         }
     }
@@ -241,7 +241,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
             if (!sourceFile->numErrors)
             {
                 auto& name = semanticJob->waitingSymbolSolved ? semanticJob->waitingSymbolSolved->name : node->name;
-                sourceFile->report({ node, node->token, format("cannot resolve identifier '%s'", name.c_str())});
+                sourceFile->report({node, node->token, format("cannot resolve identifier '%s'", name.c_str())});
                 sourceFile->numErrors = 0;
             }
         }

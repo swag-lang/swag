@@ -29,9 +29,10 @@ struct Module : public PoolElement
     bool internalError(uint32_t sourceFileIdx, SourceLocation& startLocation, SourceLocation& endLocation, const Utf8& msg);
     void deferReleaseChilds(AstNode* node);
 
+    time_t              moreRecentSourceFile;
     string              name;
     string              nameUp;
-    atomic<int>         numErrors  = 0;
+    atomic<int>         numErrors = 0;
     SpinLock            mutexFile;
     vector<SourceFile*> files;
     AstNode*            astRoot;

@@ -9,7 +9,8 @@ struct BackendCCompiler
     {
     }
 
-    virtual bool compile() = 0;
+    virtual bool mustCompile() = 0;
+    virtual bool compile()     = 0;
 
     BackendC*              backend;
     const BuildParameters* buildParameters;

@@ -21,6 +21,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
 
     addArg("--clean-target", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
+	addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild);
 
     addArg("--version", "-d", CommandLineType::StringList, &cmdLine->compileVersion);
 

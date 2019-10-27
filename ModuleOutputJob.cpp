@@ -35,11 +35,6 @@ JobResult ModuleOutputJob::execute()
     {
         if (module->fromTests || module->byteCodeTestFunc.size() > 0)
         {
-			if (module->fromTests)
-				g_Log.messageHeaderCentered("Building", module->name.c_str());
-			else
-				g_Log.messageHeaderCentered("Building test", module->name.c_str());
-
             auto compileJob                      = g_Pool_moduleCompileJob.alloc();
             compileJob->module                   = module;
             compileJob->buildParameters          = module->buildParameters;
@@ -54,8 +49,6 @@ JobResult ModuleOutputJob::execute()
     // Compile the official normal version, except if it comes from the test folder
     if (!module->fromTests && g_CommandLine.backendOutputLegit)
     {
-        g_Log.messageHeaderCentered("Building", module->name.c_str());
-
         auto compileJob                      = g_Pool_moduleCompileJob.alloc();
         compileJob->module                   = module;
         compileJob->buildParameters          = module->buildParameters;

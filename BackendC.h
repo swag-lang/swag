@@ -20,6 +20,7 @@ struct BackendC : public Backend
     }
 
     bool preCompile() override;
+    bool mustCompile();
     bool compile(const BuildParameters& backendParameters) override;
 
     bool emitHeader();
@@ -36,11 +37,11 @@ struct BackendC : public Backend
     bool emitGlobalInit();
     bool emitGlobalDrop();
 
-	bool emitPublic(Module* moduleToGen, Scope* scope);
-    bool swagTypeToCType(TypeInfo* typeInfo, Utf8 &cType);
+    bool emitPublic(Module* moduleToGen, Scope* scope);
+    bool swagTypeToCType(TypeInfo* typeInfo, Utf8& cType);
     bool emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
     void emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-	bool emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
+    bool emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
     bool emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void emitFuncSignatureInternalC(ByteCode* bc);
     bool emitInternalFunction(Module* moduleToGen, ByteCode* bc);
