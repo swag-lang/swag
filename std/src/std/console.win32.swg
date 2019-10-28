@@ -2,50 +2,36 @@ namespace std.console
 {
 	using os.win32
 	
-	func colorToWin(color: Color)->u16
+	var g_colorToWin: [16/*@countof(Color)*/] u16
+	
+	#[swag.compiler]
+	func colorToWin()
 	{
 		using Color
-		
-		var attributes: u16
-		switch color
-		{
-		case Black:
-			attributes = 0
-		case White:
-			attributes = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
-		case Gray:
-			attributes = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-		case Red:
-			attributes = FOREGROUND_RED | FOREGROUND_INTENSITY
-		case Green:
-			attributes = FOREGROUND_GREEN | FOREGROUND_INTENSITY
-		case Blue:
-			attributes = FOREGROUND_BLUE | FOREGROUND_INTENSITY
-		case Cyan:
-			attributes = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-		case Magenta:
-			attributes = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
-		case Yellow:
-			attributes = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-		case DarkRed:
-			attributes = FOREGROUND_RED
-		case DarkGreen:
-			attributes = FOREGROUND_GREEN
-		case DarkBlue:
-			attributes = FOREGROUND_BLUE
-		case DarkCyan:
-			attributes = FOREGROUND_BLUE | FOREGROUND_GREEN
-		case DarkMagenta:
-			attributes = FOREGROUND_BLUE | FOREGROUND_RED
-		case DarkYellow:
-			attributes = FOREGROUND_RED | FOREGROUND_GREEN
-		}	
-		
-		return attributes
+		g_colorToWin[cast(u32) Black] 		= 0
+		g_colorToWin[cast(u32) White] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
+		g_colorToWin[cast(u32) Gray]  		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+		g_colorToWin[cast(u32) Red]  		= FOREGROUND_RED | FOREGROUND_INTENSITY
+		g_colorToWin[cast(u32) Green] 		= FOREGROUND_GREEN | FOREGROUND_INTENSITY
+		g_colorToWin[cast(u32) Blue]  		= FOREGROUND_BLUE | FOREGROUND_INTENSITY
+		g_colorToWin[cast(u32) Cyan]  		= FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+		g_colorToWin[cast(u32) Magenta] 	= FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
+		g_colorToWin[cast(u32) Yellow] 		= FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+		g_colorToWin[cast(u32) DarkRed] 	= FOREGROUND_RED
+		g_colorToWin[cast(u32) DarkGreen] 	= FOREGROUND_GREEN
+		g_colorToWin[cast(u32) DarkBlue] 	= FOREGROUND_BLUE
+		g_colorToWin[cast(u32) DarkCyan] 	= FOREGROUND_BLUE | FOREGROUND_GREEN
+		g_colorToWin[cast(u32) DarkMagenta] = FOREGROUND_BLUE | FOREGROUND_RED
+		g_colorToWin[cast(u32) DarkYellow] 	= FOREGROUND_RED | FOREGROUND_GREEN
 	}
 	
 	var g_stdOutputInitAttr: u16
 	var g_stdOutputCurAttr: u16
+	
+	#run 
+	{ 
+		colorToWin()
+	}
 	
 	func init()
 	{
@@ -63,7 +49,7 @@ namespace std.console
 	#[swag.public]
 	func setTextColor(color: Color)
 	{
-		attributes := colorToWin(color)
+		attributes := g_colorToWin[cast(u32) color]
 		g_stdOutputCurAttr &= BACKGROUND_MASK
 		g_stdOutputCurAttr |= attributes
 		SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
@@ -72,7 +58,7 @@ namespace std.console
 	#[swag.public]
 	func setBackColor(color: Color)
 	{
-		attributes := cast(u16) (colorToWin(color) << 4)
+		attributes := cast(u16) (g_colorToWin[cast(u32) color] << 4)
 		g_stdOutputCurAttr &= FOREGROUND_MASK
 		g_stdOutputCurAttr |= attributes		
 		SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
