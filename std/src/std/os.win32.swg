@@ -58,6 +58,11 @@ namespace std.os.win32
 	#init
 	{
 		g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
-		console.setup()
+		console.init()
 	}
+	
+	#drop
+	{
+		console.drop()
+	}	
 }

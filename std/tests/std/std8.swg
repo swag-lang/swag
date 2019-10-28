@@ -8,5 +8,4 @@ using std
 	setTextColor(Color.Red)
 	setBackColor(Color.Black)
 	@print("toto\n")
-	resetColor()
 }
