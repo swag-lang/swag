@@ -347,7 +347,7 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            bufferSwg.addString(format("\t#[swag.foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameUnderscore.c_str()));
+            bufferSwg.addString(format("\t#[swag.foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameForeign.c_str()));
             bufferSwg.addString("\t");
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }

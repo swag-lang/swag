@@ -317,7 +317,7 @@ struct AstNode : public PoolElement
     ComputedValue computedValue;
     Utf8Crc       name;
     Utf8          fullnameDot;
-	Utf8          fullnameUnderscore;
+	Utf8          fullnameForeign;
     SourceFile*   sourceFile;
     ByteCode*     bc;
     RegisterList  resultRegisterRC;

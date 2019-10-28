@@ -38,7 +38,7 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         {
             auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             typeInfoStruct->structNode->computeFullName();
-            cType = typeInfoStruct->structNode->fullnameUnderscore;
+            cType = typeInfoStruct->structNode->fullnameForeign;
         }
         return true;
     }
@@ -401,7 +401,7 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
     SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, cType));
     buffer.addString(cType);
     buffer.addString(" ");
-    buffer.addString(node->fullnameUnderscore.c_str());
+    buffer.addString(node->fullnameForeign.c_str());
     buffer.addString("(");
 
     if (node->parameters)
@@ -1580,11 +1580,11 @@ bool BackendC::emitPublicEnum(Module* moduleToGen, TypeInfoEnum* typeEnum, AstNo
     SWAG_CHECK(swagTypeToCType(moduleToGen, typeEnum->rawType, cType));
 
     node->computeFullName();
-    bufferH.addString(format("typedef %s %s;\n", cType.c_str(), node->fullnameUnderscore.c_str()));
+    bufferH.addString(format("typedef %s %s;\n", cType.c_str(), node->fullnameForeign.c_str()));
 
     for (auto p : typeEnum->values)
     {
-        Utf8 enumValueName = node->fullnameUnderscore + "_" + p->namedParam;
+        Utf8 enumValueName = node->fullnameForeign + "_" + p->namedParam;
         makeUpper(enumValueName);
         bufferH.addString("#define ");
         bufferH.addString(enumValueName.c_str());
@@ -1644,7 +1644,7 @@ bool BackendC::emitPublicStruct(Module* moduleToGen, TypeInfoStruct* typeStruct,
         return true;
 
     node->computeFullName();
-    bufferH.addString(format("typedef struct %s {\n", node->fullnameUnderscore.c_str()));
+    bufferH.addString(format("typedef struct %s {\n", node->fullnameForeign.c_str()));
 
     Utf8 cType;
     for (auto param : typeStruct->childs)
@@ -1653,7 +1653,7 @@ bool BackendC::emitPublicStruct(Module* moduleToGen, TypeInfoStruct* typeStruct,
         bufferH.addString(format("%s %s;\n", cType.c_str(), param->namedParam.c_str()));
     }
 
-    bufferH.addString(format("} %s;\n", node->fullnameUnderscore.c_str()));
+    bufferH.addString(format("} %s;\n", node->fullnameForeign.c_str()));
     bufferH.addString("\n");
     return true;
 }

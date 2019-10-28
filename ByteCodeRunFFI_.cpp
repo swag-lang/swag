@@ -19,13 +19,16 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     if (hasModuleName)
         g_ModuleMgr.loadModule(context, moduleName.text);
 
-    auto funcName = nodeFunc->resolvedSymbolName->fullName;
-    replaceAll(funcName, '.', '_');
-    auto fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
+    auto& funcName = nodeFunc->name;
+    auto  fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
     if (!fn)
     {
-        funcName = nodeFunc->resolvedSymbolName->name;
-        fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
+        auto it = typeFunc->attributes.values.find("swag.foreign.function");
+        if (it != typeFunc->attributes.values.end())
+        {
+            funcName = it->second.second.text;
+            fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
+        }
     }
 
     if (!fn)
