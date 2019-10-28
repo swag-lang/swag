@@ -41,9 +41,11 @@ typedef double				swag_float64_t;
 #endif
 #endif
 
+#include <math.h>
+
 /* Windows */
 #ifdef _WIN32
-#include "windows.h"
+#include <windows.h>
 #define __loadDynamicLibrary	LoadLibraryA
 #define __tlsAlloc				TlsAlloc
 #define __tlsSetValue			TlsSetValue
