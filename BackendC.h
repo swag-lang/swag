@@ -40,11 +40,11 @@ struct BackendC : public Backend
 	bool emitPublicEnum(Module* moduleToGen, TypeInfoEnum* typeEnum, AstNode* node);
 	bool emitPublicStruct(Module* moduleToGen, TypeInfoStruct* typeStruct, AstStruct* node);
     bool emitPublic(Module* moduleToGen, Scope* scope);
-    bool swagTypeToCType(TypeInfo* typeInfo, Utf8& cType);
+    bool swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType);
     bool emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
-    void emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
-    bool emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    void emitFuncSignatureSwg(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
+    bool emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void emitFuncSignatureInternalC(ByteCode* bc);
     bool emitInternalFunction(Module* moduleToGen, ByteCode* bc);
 

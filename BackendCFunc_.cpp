@@ -10,21 +10,21 @@
 #include "Target.h"
 #include "Scope.h"
 
-bool BackendC::swagTypeToCType(TypeInfo* typeInfo, Utf8& cType)
+bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType)
 {
     cType.clear();
 
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_CHECK(swagTypeToCType(typeInfoEnum->rawType, cType));
+        SWAG_CHECK(swagTypeToCType(moduleToGen, typeInfoEnum->rawType, cType));
         return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        SWAG_CHECK(swagTypeToCType(typeInfoPointer->finalType, cType));
+        SWAG_CHECK(swagTypeToCType(moduleToGen, typeInfoPointer->finalType, cType));
         for (uint32_t i = 0; i < typeInfoPointer->ptrCount; i++)
             cType += "*";
         return true;
@@ -32,9 +32,14 @@ bool BackendC::swagTypeToCType(TypeInfo* typeInfo, Utf8& cType)
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        typeInfoStruct->structNode->computeFullName();
-        cType = typeInfoStruct->structNode->fullnameUnderscore;
+        if (!moduleToGen->buildParameters.target.backendC.outputPublic)
+            cType = "void";
+        else
+        {
+            auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+            typeInfoStruct->structNode->computeFullName();
+            cType = typeInfoStruct->structNode->fullnameUnderscore;
+        }
         return true;
     }
 
@@ -220,9 +225,9 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     return true;
 }
 
-bool BackendC::emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one)
+bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one)
 {
-    SWAG_CHECK(emitFuncSignaturePublic(bufferC, typeFunc, node));
+    SWAG_CHECK(emitFuncSignature(moduleToGen, bufferC, typeFunc, node));
     bufferC.addString(" {\n");
 
     // Compute number of registers
@@ -380,10 +385,10 @@ bool BackendC::emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* no
     return true;
 }
 
-bool BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     Utf8 cType;
-    SWAG_CHECK(swagTypeToCType(typeFunc->returnType, cType));
+    SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, cType));
     buffer.addString(cType);
     buffer.addString(" ");
     buffer.addString(node->fullnameUnderscore.c_str());
@@ -398,7 +403,7 @@ bool BackendC::emitFuncSignaturePublic(Concat& buffer, TypeInfoFuncAttr* typeFun
                 buffer.addString(", ");
             first = false;
 
-            SWAG_CHECK(swagTypeToCType(param->typeInfo, cType));
+            SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
             buffer.addString(cType);
             buffer.addString(" ");
             buffer.addString(param->name.c_str());
@@ -1549,7 +1554,7 @@ bool BackendC::emitFunctions(Module* moduleToGen)
         // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_CHECK(emitFuncWrapperPublic(typeFunc, node, one));
+            SWAG_CHECK(emitFuncWrapperPublic(moduleToGen, typeFunc, node, one));
         }
     }
 
@@ -1562,7 +1567,7 @@ bool BackendC::emitPublicEnum(Module* moduleToGen, TypeInfoEnum* typeEnum, AstNo
         return true;
 
     Utf8 cType;
-    SWAG_CHECK(swagTypeToCType(typeEnum->rawType, cType));
+    SWAG_CHECK(swagTypeToCType(moduleToGen, typeEnum->rawType, cType));
 
     node->computeFullName();
     bufferH.addString(format("typedef %s %s;\n", cType.c_str(), node->fullnameUnderscore.c_str()));
@@ -1625,19 +1630,22 @@ bool BackendC::emitPublicEnum(Module* moduleToGen, TypeInfoEnum* typeEnum, AstNo
 
 bool BackendC::emitPublicStruct(Module* moduleToGen, TypeInfoStruct* typeStruct, AstStruct* node)
 {
+    if (!moduleToGen->buildParameters.target.backendC.outputPublic)
+        return true;
+
     node->computeFullName();
     bufferH.addString(format("typedef struct %s {\n", node->fullnameUnderscore.c_str()));
 
-	Utf8 cType;
+    Utf8 cType;
     for (auto param : typeStruct->childs)
     {
-        SWAG_CHECK(swagTypeToCType(param->typeInfo, cType));
+        SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
         bufferH.addString(format("%s %s;\n", cType.c_str(), param->namedParam.c_str()));
     }
 
     bufferH.addString(format("} %s;\n", node->fullnameUnderscore.c_str()));
     bufferH.addString("\n");
-	return true;
+    return true;
 }
 
 bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
@@ -1663,7 +1671,7 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
         if (typeStruct->flags & TYPEINFO_GENERIC)
             continue;
 
-		SWAG_CHECK(emitPublicStruct(moduleToGen, typeStruct, node));
+        SWAG_CHECK(emitPublicStruct(moduleToGen, typeStruct, node));
     }
 
     // Functions
@@ -1679,7 +1687,7 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
 
         bufferH.addString("SWAG_EXTERN SWAG_IMPEXP ");
         node->computeFullName();
-        SWAG_CHECK(emitFuncSignaturePublic(bufferH, typeFunc, node));
+        SWAG_CHECK(emitFuncSignature(moduleToGen, bufferH, typeFunc, node));
         bufferH.addString(";\n");
     }
 
