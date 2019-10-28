@@ -85,3 +85,10 @@ void Scope::addPublicStruct(AstNode* node)
     publicStruct.push_back(node);
     setHasExports();
 }
+
+void Scope::addPublicEnum(AstNode* node)
+{
+    scoped_lock lk(mutexPublic);
+    publicEnum.push_back(node);
+    setHasExports();
+}

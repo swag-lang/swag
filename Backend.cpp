@@ -114,6 +114,73 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
     return true;
 }
 
+bool Backend::emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node)
+{
+    bufferSwg.addString("enum ");
+    bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString("\n");
+    bufferSwg.addString("{\n");
+
+    for (auto p : typeEnum->values)
+    {
+        bufferSwg.addString("\t");
+        bufferSwg.addString(p->namedParam);
+
+        if (typeEnum->rawType->isNative(NativeTypeKind::String))
+        {
+            bufferSwg.addString(format(" = \"%s\"", p->value.text.c_str()));
+        }
+        else if (typeEnum->rawType->kind == TypeInfoKind::Native)
+        {
+            switch (typeEnum->rawType->nativeType)
+            {
+            case NativeTypeKind::U8:
+                bufferSwg.addString(format(" = %u", p->value.reg.u8));
+                break;
+            case NativeTypeKind::U16:
+                bufferSwg.addString(format(" = %u", p->value.reg.u16));
+                break;
+            case NativeTypeKind::U32:
+            case NativeTypeKind::Char:
+                bufferSwg.addString(format(" = %u", p->value.reg.u32));
+                break;
+            case NativeTypeKind::U64:
+                bufferSwg.addString(format(" = %llu", p->value.reg.u64));
+                break;
+            case NativeTypeKind::S8:
+                bufferSwg.addString(format(" = %d", p->value.reg.s8));
+                break;
+            case NativeTypeKind::S16:
+                bufferSwg.addString(format(" = %d", p->value.reg.s16));
+                break;
+            case NativeTypeKind::S32:
+                bufferSwg.addString(format(" = %d", p->value.reg.s32));
+                break;
+            case NativeTypeKind::S64:
+                bufferSwg.addString(format(" = %lld", p->value.reg.s64));
+                break;
+            case NativeTypeKind::F32:
+                bufferSwg.addString(format(" = %f", p->value.reg.f32));
+                break;
+            case NativeTypeKind::F64:
+                bufferSwg.addString(format(" = %lf", p->value.reg.f64));
+                break;
+            case NativeTypeKind::Bool:
+                if (p->value.reg.b)
+                    bufferSwg.addString(p->value.reg.b ? " = true" : " = false");
+                break;
+            default:
+                return module->internalError("emitEnumSignatureSwg, invalid type");
+            }
+        }
+
+		bufferSwg.addString("\n");
+    }
+
+    bufferSwg.addString("}\n");
+    return true;
+}
+
 bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
     bufferSwg.addString("struct");
@@ -252,6 +319,16 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
         }
     }
 
+    // Enums
+    if (!scope->publicEnum.empty())
+    {
+        for (auto one : scope->publicEnum)
+        {
+            TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
+            SWAG_CHECK(emitEnumSignatureSwg(typeEnum, one));
+        }
+    }
+
     // Generic functions
     if (!scope->publicGenericFunc.empty())
     {
@@ -298,7 +375,7 @@ bool Backend::preCompile()
         if (fs::exists(bufferSwg.fileName))
         {
             fs::file_time_type mtime = fs::last_write_time(bufferSwg.fileName);
-			time_t t1 = fs::file_time_type::clock::to_time_t(mtime);
+            time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
             if (t1 > module->moreRecentSourceFile)
             {
                 return true;

@@ -4,8 +4,10 @@ struct Module;
 struct BuildParameters;
 struct TypeInfoFuncAttr;
 struct TypeInfoStruct;
+struct TypeInfoEnum;
 struct AstFuncDecl;
 struct AstStruct;
+struct AstNode;
 struct Scope;
 
 struct Backend
@@ -24,6 +26,7 @@ struct Backend
     Module*    module;
     OutputFile bufferSwg;
 
+	bool emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node);
     bool emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node);
     bool emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);

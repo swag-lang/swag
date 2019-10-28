@@ -6,9 +6,18 @@
 
 bool SemanticJob::resolveEnum(SemanticContext* context)
 {
-    auto enumNode = context->node;
-    auto typeInfo = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
-    SWAG_CHECK(enumNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, enumNode, typeInfo, SymbolKind::Enum));
+    auto node     = context->node;
+    auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, typeInfo, SymbolKind::Enum));
+
+    // Check public
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            node->ownerScope->addPublicEnum(node);
+        }
+    }
 
     return true;
 }
@@ -124,7 +133,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             if (isFlags && enumNode->computedValue.reg.u64)
             {
                 auto n = enumNode->computedValue.reg.u64;
-                SWAG_VERIFY((n & (n - 1)) == 0, context->errorContext.report({ valNode, valNode->token, format("cannot deduce flag value of '%s' because previous value is not power of two", valNode->name.c_str())}));
+                SWAG_VERIFY((n & (n - 1)) == 0, context->errorContext.report({valNode, valNode->token, format("cannot deduce flag value of '%s' because previous value is not power of two", valNode->name.c_str())}));
                 enumNode->computedValue.reg.u64 <<= 1;
             }
             else
