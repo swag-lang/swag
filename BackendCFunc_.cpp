@@ -154,8 +154,9 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         }
     }
 
-    if (nodeFunc->attributeFlags & ATTRIBUTE_GENERATED_FOREIGN)
-        bufferC.addString(nodeFunc->fullnameUnderscore);
+    auto it = typeFuncBC->attributes.values.find("swag.foreign.function");
+    if (it != typeFuncBC->attributes.values.end())
+        bufferC.addString(it->second.second.text);
     else
         bufferC.addString(nodeFunc->name);
     bufferC.addString("(");
@@ -221,7 +222,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
             case NativeTypeKind::F64:
                 bufferC.addString(".f64");
                 break;
-			case NativeTypeKind::Char:
+            case NativeTypeKind::Char:
                 bufferC.addString(".ch");
                 break;
             default:

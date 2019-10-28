@@ -343,16 +343,14 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
     // Functions
     if (!scope->publicFunc.empty())
     {
-        bufferSwg.addString(format("#[swag.foreign(\"%s\", gen: true)]\n", module->name.c_str()));
-        bufferSwg.addString("{\n");
         for (auto func : scope->publicFunc)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            bufferSwg.addString(format("\t#[swag.foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameUnderscore.c_str()));
             bufferSwg.addString("\t");
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }
-        bufferSwg.addString("}\n");
     }
 
     for (auto oneScope : scope->childScopes)

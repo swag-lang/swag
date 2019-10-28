@@ -25,7 +25,7 @@ namespace swag
 	attr compiler() -> func
 	attr public() -> func, struct, enum
 	attr test() -> func
-	attr foreign(module: string = "", gen: bool = false) -> func
+	attr foreign(module: string = "", function: string = "") -> func
 	attr waitsem(ms: s32) -> func
 	attr pack() -> struct
 	attr flags() -> enum

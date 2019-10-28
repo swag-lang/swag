@@ -37,7 +37,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
     if (!attrUse)
         return true;
 
-    auto          curAttr    = attrUse;
+    auto          curAttr = attrUse;
     ComputedValue value;
     while (curAttr)
     {
@@ -72,14 +72,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_PACK;
             else if (child->name == "flags")
                 flags |= ATTRIBUTE_FLAGS;
-
             else if (child->name == "foreign")
-            {
                 flags |= ATTRIBUTE_FOREIGN;
-                auto it = curAttr->values.find("swag.foreign.gen");
-                if (it != curAttr->values.end() && it->second.second.reg.b)
-                    flags |= ATTRIBUTE_GENERATED_FOREIGN;
-            }
         }
 
         curAttr = curAttr->parentAttributes;
