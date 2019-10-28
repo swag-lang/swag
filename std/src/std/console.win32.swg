@@ -47,12 +47,12 @@ namespace std.console
 	var g_stdOutputInitAttr: u16
 	var g_stdOutputCurAttr: u16
 	
-	func init()
+	func setup()
 	{
 		var csbi: CONSOLE_SCREEN_BUFFER_INFO
 		GetConsoleScreenBufferInfo(g_stdOutputHandle, csbi)		
 		g_stdOutputInitAttr = csbi.wAttributes
-		g_stdOutputCurAttr = csbi.wAttributes
+		g_stdOutputCurAttr = g_stdOutputInitAttr
 	}
 
 	#[swag.public]
