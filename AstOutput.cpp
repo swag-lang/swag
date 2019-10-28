@@ -9,7 +9,7 @@
 
 namespace Ast
 {
-    bool output(Concat& concat, AstNode* node)
+    bool output(Concat& concat, AstNode* node, int indent)
     {
         switch (node->kind)
         {
@@ -67,7 +67,7 @@ namespace Ast
             concat.addString("return ");
             if (!node->childs.empty())
                 SWAG_CHECK(output(concat, node->childs.front()));
-            concat.addString(";\n");
+            concat.addString(";");
             break;
         }
 
@@ -94,13 +94,16 @@ namespace Ast
         }
 
         case AstNodeKind::Statement:
+			concat.addIndent(indent);
             concat.addString("{\n");
             for (auto child : node->childs)
             {
-                SWAG_CHECK(output(concat, child));
-                concat.addString(";\n");
+				concat.addIndent(indent + 1);
+                SWAG_CHECK(output(concat, child, indent + 1));
+                concat.addString("\n");
             }
 
+			concat.addIndent(indent);
             concat.addString("}\n");
             break;
 

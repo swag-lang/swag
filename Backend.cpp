@@ -1,12 +1,9 @@
 #include "pch.h"
 #include "Backend.h"
-#include "Module.h"
 #include "Workspace.h"
 #include "Version.h"
 #include "Ast.h"
-#include "AstNode.h"
 #include "Scope.h"
-#include "ByteCode.h"
 #include "TypeManager.h"
 
 void Backend::emitSeparator(Concat& buffer, const char* title)
@@ -104,7 +101,9 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
 
 bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
-    bufferSwg.addString("func");
+	if(node->flags & AST_CONST_EXPR)
+		bufferSwg.addString("\t#[swag.constexpr]\n");
+    bufferSwg.addString("\tfunc");
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
@@ -140,24 +139,23 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 
     bufferSwg.addString("\n");
     if (node->content->kind != AstNodeKind::Statement)
-        bufferSwg.addString("{\n");
-    Ast::output(bufferSwg, node->content);
+        bufferSwg.addString("\t{\n\t\t");
+    Ast::output(bufferSwg, node->content, 1);
     if (node->content->kind != AstNodeKind::Statement)
-        bufferSwg.addString("}\n");
+        bufferSwg.addString("\n\t}\n");
     bufferSwg.addString("\n");
     return true;
 }
 
 bool Backend::emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node)
 {
-    bufferSwg.addString("enum ");
+    bufferSwg.addString("\tenum ");
     bufferSwg.addString(node->name.c_str());
-    bufferSwg.addString("\n");
-    bufferSwg.addString("{\n");
+    bufferSwg.addString("\n\t{\n");
 
     for (auto p : typeEnum->values)
     {
-        bufferSwg.addString("\t");
+        bufferSwg.addString("\t\t");
         bufferSwg.addString(p->namedParam);
 
         if (typeEnum->rawType->isNative(NativeTypeKind::String))
@@ -211,24 +209,23 @@ bool Backend::emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node)
         bufferSwg.addString("\n");
     }
 
-    bufferSwg.addString("}\n");
+    bufferSwg.addString("\t}\n\n");
     return true;
 }
 
 bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
-    bufferSwg.addString("struct");
+    bufferSwg.addString("\tstruct");
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
     bufferSwg.addString(" ");
     bufferSwg.addString(node->name.c_str());
-    bufferSwg.addString("\n");
-    bufferSwg.addString("{\n");
+    bufferSwg.addString("\n\t{\n");
 
     for (auto p : typeStruct->childs)
     {
-        bufferSwg.addString("\t");
+        bufferSwg.addString("\t\t");
         bufferSwg.addString(p->namedParam);
         bufferSwg.addString(": ");
         bufferSwg.addString(p->typeInfo->name);
@@ -295,7 +292,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
         bufferSwg.addString("\n");
     }
 
-    bufferSwg.addString("}\n");
+    bufferSwg.addString("\t}\n\n");
     return true;
 }
 
@@ -310,7 +307,7 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
         if (scope->kind == ScopeKind::Namespace)
             bufferSwg.addString(format("namespace %s {\n", scope->name.c_str()));
         else if (scope->kind == ScopeKind::Struct)
-            bufferSwg.addString(format("impl %s\n{\n", scope->name.c_str()));
+            bufferSwg.addString(format("impl %s {\n", scope->name.c_str()));
         else
             bufferSwg.addString("{\n");
     }
@@ -366,7 +363,7 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
         SWAG_CHECK(emitPublicSignaturesSwg(moduleToGen, oneScope));
 
     if (scope->hasExports && !scope->name.empty())
-        bufferSwg.addString("}\n");
+        bufferSwg.addString("}\n\n");
 
     return true;
 }

@@ -129,3 +129,9 @@ void Concat::addString(const char* v)
     memcpy(currentSP, v, len);
     currentSP += len;
 }
+
+void Concat::addIndent(int num)
+{
+	while (num--)
+		addString("\t");
+}

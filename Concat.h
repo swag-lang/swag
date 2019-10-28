@@ -21,6 +21,7 @@ struct Concat
     void addPointer(void* v);
     void addString(const char* v);
     void addString(const string& v);
+	void addIndent(int num);
 
     virtual void flushBucket(ConcatBucket* bucket){};
 
