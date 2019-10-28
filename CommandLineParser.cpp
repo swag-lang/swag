@@ -36,7 +36,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->cleanTarget   = false;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
-	cmdLine->rebuild = true;
+	//cmdLine->rebuild = true;
     cmdLine->backendOutput     = true;
     cmdLine->backendOutputTest = true;
     //cmdLine->runBackendTests   = false;

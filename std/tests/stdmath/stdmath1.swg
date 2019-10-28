@@ -1,7 +1,7 @@
 #import "stdmath"
-using stdmath
+using std
 
 #test
 {
-	x := trigo.cos(1.0'f32)
+	x := math.cos(1.0'f32)
 }
