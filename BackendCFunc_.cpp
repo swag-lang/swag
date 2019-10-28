@@ -14,6 +14,13 @@ bool BackendC::swagTypeToCType(TypeInfo* typeInfo, Utf8& cType)
 {
     cType.clear();
 
+	if (typeInfo->kind == TypeInfoKind::Enum)
+	{
+		auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+		SWAG_CHECK(swagTypeToCType(typeInfoEnum->rawType, cType));
+		return true;
+	}
+
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);

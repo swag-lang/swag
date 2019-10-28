@@ -138,7 +138,6 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 
 bool BackendC::emitRuntime()
 {
-    emitSeparator(bufferH, "RUNTIME");
     bufferH.addString(g_RuntimeH);
     emitSeparator(bufferC, "RUNTIME");
     bufferC.addString(g_RuntimeC);
