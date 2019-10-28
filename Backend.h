@@ -26,10 +26,11 @@ struct Backend
     Module*    module;
     OutputFile bufferSwg;
 
+	bool emitAttributes(AstNode* node);
 	bool emitGenericParameters(AstNode* node);
 	bool emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node);
     bool emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node);
     bool emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope);
+    bool emitPublicSwg(Module* moduleToGen, Scope* scope);
 };

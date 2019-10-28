@@ -25,6 +25,13 @@ void Backend::emitSeparator(Concat& buffer, const char* title)
     buffer.addString("*/\n");
 }
 
+bool Backend::emitAttributes(AstNode* node)
+{
+    if (node->flags & AST_CONST_EXPR)
+        bufferSwg.addString("\t#[swag.constexpr]\n");
+    return true;
+}
+
 bool Backend::emitGenericParameters(AstNode* node)
 {
     bufferSwg.addString("(");
@@ -101,13 +108,12 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
 
 bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
-	if(node->flags & AST_CONST_EXPR)
-		bufferSwg.addString("\t#[swag.constexpr]\n");
+    SWAG_CHECK(emitAttributes(node));
     bufferSwg.addString("\tfunc");
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
-	bufferSwg.addString(" ");
+    bufferSwg.addString(" ");
     bufferSwg.addString(node->name.c_str());
     bufferSwg.addString("(");
 
@@ -296,7 +302,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
     return true;
 }
 
-bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
+bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
 {
     SWAG_ASSERT(moduleToGen);
     if (!scope->hasExports)
@@ -352,15 +358,14 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             bufferSwg.addString(format("\t#[swag.foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameForeign.c_str()));
-            if (node->attributeFlags & AST_CONST_EXPR)
-                bufferSwg.addString("\t#[swag.constexpr]\n");
+            SWAG_CHECK(emitAttributes(node));
             bufferSwg.addString("\t");
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }
     }
 
     for (auto oneScope : scope->childScopes)
-        SWAG_CHECK(emitPublicSignaturesSwg(moduleToGen, oneScope));
+        SWAG_CHECK(emitPublicSwg(moduleToGen, oneScope));
 
     if (scope->hasExports && !scope->name.empty())
         bufferSwg.addString("}\n\n");
@@ -388,7 +393,8 @@ bool Backend::preCompile()
     }
 
     bufferSwg.addString(format("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    SWAG_CHECK(emitPublicSignaturesSwg(module, module->scopeRoot));
+
+    SWAG_CHECK(emitPublicSwg(module, module->scopeRoot));
 
     return bufferSwg.flush();
 }
