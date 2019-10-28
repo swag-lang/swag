@@ -69,4 +69,10 @@ namespace std.console
 	{
 		SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 	}
+	
+	#[swag.public]
+	func write(message: string)
+	{
+		WriteFile(g_stdOutputHandle, @dataof(message), @countof(message), null, null)
+	}	
 }
