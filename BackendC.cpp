@@ -48,24 +48,24 @@ bool BackendC::preCompile()
     bool regen = g_CommandLine.rebuild;
     if (!regen)
     {
-        if (fs::exists(bufferH.fileName))
+        if (!fs::exists(bufferH.fileName))
+            regen = true;
+        else
         {
             fs::file_time_type mtime = fs::last_write_time(bufferH.fileName);
             time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
             if (t1 < module->moreRecentSourceFile)
-            {
                 regen = true;
-            }
         }
 
-        if (fs::exists(bufferC.fileName))
+        if (!fs::exists(bufferC.fileName))
+            regen = true;
+        else
         {
             fs::file_time_type mtime = fs::last_write_time(bufferC.fileName);
             time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
             if (t1 < module->moreRecentSourceFile)
-            {
                 regen = true;
-            }
         }
     }
 
