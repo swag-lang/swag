@@ -49,6 +49,11 @@ namespace swag
 	const u32_max = 0xFFFF_FFFF'u32
 	const u64_max = 0xFFFF_FFFF_FFFF_FFFF'u64
 	
+	const f32_min = 1.175494e-38'f32
+	const f32_max = 3.402822e+38'f32
+	const f64_min = 2.22507e-308'f64
+	const f64_max = 1.79769e+308'f64	
+				
 	// #########################################################
 	// Context & allocators
 	// #########################################################

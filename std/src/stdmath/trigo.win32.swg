@@ -75,7 +75,7 @@ namespace std.math
 		func floor(x: f64)->f64 => win32.floor(x)		
 		func round(x: f32)->f32 => win32.roundf(x)
 		func round(x: f64)->f64 => win32.round(x)		
-		func round(x, exp: f32)->f32 => win32.powf(x, exp)
-		func round(x, exp: f64)->f64 => win32.pow(x, exp)		
+		func pow(x, exp: f32)->f32 => win32.powf(x, exp)
+		func pow(x, exp: f64)->f64 => win32.pow(x, exp)		
 	}
 }

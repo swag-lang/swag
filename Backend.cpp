@@ -376,7 +376,7 @@ bool Backend::preCompile()
         {
             fs::file_time_type mtime = fs::last_write_time(bufferSwg.fileName);
             time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
-            if (t1 > module->moreRecentSourceFile)
+            if (t1 > module->moreRecentSourceFile && t1 > g_Workspace.runtimeModule->moreRecentSourceFile)
             {
                 return true;
             }
