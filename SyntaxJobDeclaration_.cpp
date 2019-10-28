@@ -111,7 +111,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
-    bool isGlobal = currentScope->isGlobal() || parent->kind == AstNodeKind::Impl;
+    bool isGlobal = currentScope->isGlobal() || (parent && parent->kind == AstNodeKind::Impl);
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
@@ -183,6 +183,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
+    case TokenId::CompilerVersion:
+        SWAG_CHECK(doCompilerVersion(parent));
+        break;
     case TokenId::SymLeftCurly:
         SWAG_CHECK(doScopedCurlyStatement(parent, result));
         break;

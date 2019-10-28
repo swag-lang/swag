@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
 #include "Scoped.h"
 #include "SemanticJob.h"
 #include "SourceFile.h"
-#include "Attribute.h"
-#include "SymTable.h"
 #include "TypeManager.h"
 
 bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
@@ -456,7 +453,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         else
         {
             SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
-            funcNode->content->token = token;
+            funcNode->content->token = token;			
         }
     }
 

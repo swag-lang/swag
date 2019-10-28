@@ -26,6 +26,14 @@ namespace std
 				value := cast(s32) (rng.next() % range)
 				return min + value
 			}
+			
+			func nextS64(using self, min, max: s64)->s64 
+			{
+				debug.assert(max > min)
+				range := cast(u64) (max - min)
+				value := cast(s64) (rng.next() % range)
+				return min + value
+			}			
 		}
 	}
 }

@@ -3,6 +3,10 @@ namespace std.debug
 	#[swag.public]
 	func assert(expr: bool, file: string = #callerfile, line: u32 = #callerline)
 	{
-		@assert(expr)
+		#version(DEBUG)
+		{
+			@assert(expr)
+			@print("assert\n")
+		}
 	}
 }

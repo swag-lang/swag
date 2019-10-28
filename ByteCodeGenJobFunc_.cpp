@@ -8,7 +8,6 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Scope.h"
-#include "Context.h"
 #include "Module.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
@@ -21,6 +20,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 
     if (node->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = node->stackSize;
+
     emitInstruction(context, ByteCodeOp::Ret);
     return true;
 }
