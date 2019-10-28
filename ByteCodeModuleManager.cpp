@@ -10,6 +10,7 @@ ByteCodeModuleManager g_ModuleMgr;
 ByteCodeModuleManager::ByteCodeModuleManager()
 {
     loadedModules["kernel32"] = ::GetModuleHandle(L"kernel32.dll");
+	loadedModules["ucrtbase"] = ::GetModuleHandle(L"ucrtbased.dll");
 }
 
 bool ByteCodeModuleManager::isModuleLoaded(const string& name)

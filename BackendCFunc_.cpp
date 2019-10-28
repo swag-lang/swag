@@ -215,6 +215,15 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
             case NativeTypeKind::U64:
                 bufferC.addString(".u64");
                 break;
+            case NativeTypeKind::F32:
+                bufferC.addString(".f32");
+                break;
+            case NativeTypeKind::F64:
+                bufferC.addString(".f64");
+                break;
+			case NativeTypeKind::Char:
+                bufferC.addString(".ch");
+                break;
             default:
                 return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid param type");
             }
