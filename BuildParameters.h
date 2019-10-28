@@ -10,7 +10,7 @@ enum class BackendOutputType
 
 static const uint32_t BUILDPARAM_FOR_TEST = 0x00000001;
 
-    struct BuildParameters
+struct BuildParameters
 {
     BackendOutputType type = BackendOutputType::Binary;
     Target            target;

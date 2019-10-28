@@ -37,6 +37,8 @@ struct BackendC : public Backend
     bool emitGlobalInit();
     bool emitGlobalDrop();
 
+	bool emitPublicEnum(Module* moduleToGen, TypeInfoEnum* typeEnum, AstNode* node);
+	bool emitPublicStruct(Module* moduleToGen, TypeInfoStruct* typeStruct, AstStruct* node);
     bool emitPublic(Module* moduleToGen, Scope* scope);
     bool swagTypeToCType(TypeInfo* typeInfo, Utf8& cType);
     bool emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);

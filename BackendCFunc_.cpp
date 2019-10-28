@@ -14,12 +14,12 @@ bool BackendC::swagTypeToCType(TypeInfo* typeInfo, Utf8& cType)
 {
     cType.clear();
 
-	if (typeInfo->kind == TypeInfoKind::Enum)
-	{
-		auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-		SWAG_CHECK(swagTypeToCType(typeInfoEnum->rawType, cType));
-		return true;
-	}
+    if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        SWAG_CHECK(swagTypeToCType(typeInfoEnum->rawType, cType));
+        return true;
+    }
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
@@ -100,7 +100,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     {
         if (returnType->kind == TypeInfoKind::Pointer)
         {
-			bufferC.addString("rt[0].pointer = (swag_uint8_t*) ");
+            bufferC.addString("rt[0].pointer = (swag_uint8_t*) ");
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
@@ -297,7 +297,7 @@ bool BackendC::emitFuncWrapperPublic(TypeInfoFuncAttr* typeFunc, AstFuncDecl* no
                 break;
             case NativeTypeKind::String:
                 bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) %s; ", idx, param->namedParam.c_str()));
-				bufferC.addString(format("rr%d.u32 = strlen(%s);\n", idx + 1, param->namedParam.c_str()));
+                bufferC.addString(format("rr%d.u32 = strlen(%s);\n", idx + 1, param->namedParam.c_str()));
                 break;
             default:
                 return module->internalError("emitFuncWrapperPublic, invalid param type");
@@ -1556,11 +1556,103 @@ bool BackendC::emitFunctions(Module* moduleToGen)
     return ok;
 }
 
+bool BackendC::emitPublicEnum(Module* moduleToGen, TypeInfoEnum* typeEnum, AstNode* node)
+{
+    if (!moduleToGen->buildParameters.target.backendC.outputPublic)
+        return true;
+
+    Utf8 cType;
+    SWAG_CHECK(swagTypeToCType(typeEnum->rawType, cType));
+
+    node->computeFullName();
+    bufferH.addString(format("typedef %s %s;\n", cType.c_str(), node->fullnameUnderscore.c_str()));
+
+    for (auto p : typeEnum->values)
+    {
+        Utf8 enumValueName = node->fullnameUnderscore + "_" + p->namedParam;
+        makeUpper(enumValueName);
+        bufferH.addString("#define ");
+        bufferH.addString(enumValueName.c_str());
+        bufferH.addString(" ");
+        if (typeEnum->rawType->isNative(NativeTypeKind::String))
+        {
+            bufferH.addString(format("\"%s\"", p->value.text.c_str()));
+        }
+        else if (typeEnum->rawType->kind == TypeInfoKind::Native)
+        {
+            switch (typeEnum->rawType->nativeType)
+            {
+            case NativeTypeKind::S8:
+                bufferH.addString(format("%d", p->value.reg.s8));
+                break;
+            case NativeTypeKind::S16:
+                bufferH.addString(format("%d", p->value.reg.s16));
+                break;
+            case NativeTypeKind::S32:
+                bufferH.addString(format("%d", p->value.reg.s32));
+                break;
+            case NativeTypeKind::S64:
+                bufferH.addString(format("%lld", p->value.reg.s64));
+                break;
+            case NativeTypeKind::U8:
+                bufferH.addString(format("%u", p->value.reg.u8));
+                break;
+            case NativeTypeKind::U16:
+                bufferH.addString(format("%u", p->value.reg.u16));
+                break;
+            case NativeTypeKind::U32:
+                bufferH.addString(format("%u", p->value.reg.u32));
+                break;
+            case NativeTypeKind::U64:
+                bufferH.addString(format("%llu", p->value.reg.u64));
+                break;
+            case NativeTypeKind::F32:
+                bufferH.addString(format("%f", p->value.reg.f32));
+                break;
+            case NativeTypeKind::F64:
+                bufferH.addString(format("%lf", p->value.reg.f64));
+                break;
+            default:
+                return moduleToGen->internalError("emitPublicEnum, invalid type");
+            }
+        }
+
+        bufferH.addString("\n");
+    }
+
+    return true;
+}
+
+bool BackendC::emitPublicStruct(Module* moduleToGen, TypeInfoStruct* typeStruct, AstStruct* node)
+{
+    node->computeFullName();
+    bufferH.addString(format("typedef struct %s {\n", node->fullnameUnderscore.c_str()));
+
+	Utf8 cType;
+    for (auto param : typeStruct->childs)
+    {
+        SWAG_CHECK(swagTypeToCType(param->typeInfo, cType));
+        bufferH.addString(format("%s %s;\n", cType.c_str(), param->namedParam.c_str()));
+    }
+
+    bufferH.addString(format("} %s;\n", node->fullnameUnderscore.c_str()));
+    bufferH.addString("\n");
+	return true;
+}
+
 bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
 {
     if (!scope->hasExports)
         return true;
 
+    // Enums
+    for (auto one : scope->publicEnum)
+    {
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
+        SWAG_CHECK(emitPublicEnum(moduleToGen, typeEnum, one));
+    }
+
+    // Structures
     for (auto one : scope->publicStruct)
     {
         auto node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
@@ -1571,20 +1663,10 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
         if (typeStruct->flags & TYPEINFO_GENERIC)
             continue;
 
-        node->computeFullName();
-        bufferH.addString(format("typedef struct %s {\n", node->fullnameUnderscore.c_str()));
-
-        Utf8 cType;
-        for (auto param : typeStruct->childs)
-        {
-            SWAG_CHECK(swagTypeToCType(param->typeInfo, cType));
-            bufferH.addString(format("%s %s;\n", cType.c_str(), param->namedParam.c_str()));
-        }
-
-        bufferH.addString(format("} %s;\n", node->fullnameUnderscore.c_str()));
-        bufferH.addString("\n");
+		SWAG_CHECK(emitPublicStruct(moduleToGen, typeStruct, node));
     }
 
+    // Functions
     for (auto func : scope->publicFunc)
     {
         auto node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
