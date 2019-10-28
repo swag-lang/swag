@@ -79,7 +79,8 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
                 if (it != context.mapGenericTypes.end())
                 {
                     // Yes, and the map is not the same, then this is an error
-                    if (!typeInfo->isSame(it->second.toType, ISSAME_CAST))
+                    same = TypeManager::makeCompatibles(nullptr, it->second.toType, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                    if (!same)
                     {
                         context.badSignatureParameterIdx  = i;
                         context.badSignatureRequestedType = it->second.toType;

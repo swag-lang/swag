@@ -85,7 +85,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
             int64_t tmp  = static_cast<int64_t>(tmpF);
             if (tmp != token.literalValue.s64)
                 return error(token, format("literal number '%I64d' is truncated in 'f32'", token.literalValue.s64));
-            token.literalValue.f32 = tmpF;
+            token.literalValue.f64 = tmpF;
             break;
         }
         case NativeTypeKind::F64:

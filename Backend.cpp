@@ -28,6 +28,36 @@ void Backend::emitSeparator(Concat& buffer, const char* title)
     buffer.addString("*/\n");
 }
 
+bool Backend::emitGenericParameters(AstNode* node)
+{
+    bufferSwg.addString("(");
+    int idx = 0;
+    for (auto p : node->childs)
+    {
+        if (idx)
+            bufferSwg.addString(", ");
+        bufferSwg.addString(p->name);
+
+        AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
+        if (varDecl->type)
+        {
+            bufferSwg.addString(": ");
+            SWAG_CHECK(Ast::output(bufferSwg, varDecl->type));
+        }
+
+        if (varDecl->assignment)
+        {
+            bufferSwg.addString(" = ");
+            SWAG_CHECK(Ast::output(bufferSwg, varDecl->assignment));
+        }
+
+        idx++;
+    }
+
+    bufferSwg.addString(")");
+    return true;
+}
+
 bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     bufferSwg.addString("func ");
@@ -74,7 +104,11 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
 
 bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
-    bufferSwg.addString("func ");
+    bufferSwg.addString("func");
+    if (node->genericParameters)
+        SWAG_CHECK(emitGenericParameters(node->genericParameters));
+
+	bufferSwg.addString(" ");
     bufferSwg.addString(node->name.c_str());
     bufferSwg.addString("(");
 
@@ -174,7 +208,7 @@ bool Backend::emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node)
             }
         }
 
-		bufferSwg.addString("\n");
+        bufferSwg.addString("\n");
     }
 
     bufferSwg.addString("}\n");
@@ -184,35 +218,8 @@ bool Backend::emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node)
 bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
     bufferSwg.addString("struct");
-
     if (node->genericParameters)
-    {
-        bufferSwg.addString("(");
-        int idx = 0;
-        for (auto p : node->genericParameters->childs)
-        {
-            if (idx)
-                bufferSwg.addString(", ");
-            bufferSwg.addString(p->name);
-
-            AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-            if (varDecl->type)
-            {
-                bufferSwg.addString(": ");
-                SWAG_CHECK(Ast::output(bufferSwg, varDecl->type));
-            }
-
-            if (varDecl->assignment)
-            {
-                bufferSwg.addString(" = ");
-                SWAG_CHECK(Ast::output(bufferSwg, varDecl->assignment));
-            }
-
-            idx++;
-        }
-
-        bufferSwg.addString(")");
-    }
+        SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
     bufferSwg.addString(" ");
     bufferSwg.addString(node->name.c_str());
@@ -348,8 +355,8 @@ bool Backend::emitPublicSignaturesSwg(Module* moduleToGen, Scope* scope)
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             bufferSwg.addString(format("\t#[swag.foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameForeign.c_str()));
-			if(node->attributeFlags & AST_CONST_EXPR)
-				bufferSwg.addString("\t#[swag.constexpr]\n");
+            if (node->attributeFlags & AST_CONST_EXPR)
+                bufferSwg.addString("\t#[swag.constexpr]\n");
             bufferSwg.addString("\t");
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }

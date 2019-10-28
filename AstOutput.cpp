@@ -32,6 +32,15 @@ namespace Ast
             break;
         }
 
+		case AstNodeKind::QuestionExpression:
+			SWAG_CHECK(output(concat, node->childs[0]));
+			concat.addString(" ? (");
+			SWAG_CHECK(output(concat, node->childs[1]));
+			concat.addString(") : (");
+			SWAG_CHECK(output(concat, node->childs[2]));
+			concat.addString(")");
+			break;
+
         case AstNodeKind::VarDecl:
         {
             AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);

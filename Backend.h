@@ -26,6 +26,7 @@ struct Backend
     Module*    module;
     OutputFile bufferSwg;
 
+	bool emitGenericParameters(AstNode* node);
 	bool emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node);
     bool emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node);
     bool emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
