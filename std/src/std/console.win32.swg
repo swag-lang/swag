@@ -2,7 +2,7 @@ namespace std.console
 {
 	using os.win32
 	
-	var g_colorToWin: [16/*@countof(Color)*/] u16
+	var g_colorToWin: [@countof(Color)] u16
 	
 	#[swag.compiler]
 	func colorToWin()

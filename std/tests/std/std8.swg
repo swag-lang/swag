@@ -7,5 +7,6 @@ using std
 	using console
 	setTextColor(Color.Red)
 	setBackColor(Color.Black)
-	@print("toto\n")
+	resetColor()
+	//@print("toto\n")
 }

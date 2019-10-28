@@ -94,6 +94,15 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         return true;
 
     case Property::CountOf:
+		if (expr->typeInfo->kind == TypeInfoKind::Enum)
+		{
+			auto typeEnum = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
+			node->computedValue.reg.u32 = (uint32_t) typeEnum->values.size();
+			node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+			node->typeInfo = g_TypeMgr.typeInfoU32;
+			break;
+		}
+
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
         if (!resolveCountProperty(context, node, expr->typeInfo))
