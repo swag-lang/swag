@@ -44,18 +44,38 @@ namespace std.console
 		return attributes
 	}
 	
+	var g_stdOutputInitAttr: u16
+	var g_stdOutputCurAttr: u16
+	
+	func init()
+	{
+		var csbi: CONSOLE_SCREEN_BUFFER_INFO
+		GetConsoleScreenBufferInfo(g_stdOutputHandle, csbi)		
+		g_stdOutputInitAttr = csbi.wAttributes
+		g_stdOutputCurAttr = csbi.wAttributes
+	}
+
 	#[swag.public]
 	func setTextColor(color: Color)
 	{
 		attributes := colorToWin(color)
-		SetConsoleTextAttribute(stdOutputHandle, attributes)
-		WriteFile(stdOutputHandle, @dataof("toto"), 4, null, null)
+		g_stdOutputCurAttr &= BACKGROUND_MASK
+		g_stdOutputCurAttr |= attributes
+		SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 	}
 	
 	#[swag.public]
 	func setBackColor(color: Color)
 	{
-		attributes := colorToWin(color) << 4
-		SetConsoleTextAttribute(stdOutputHandle, cast(u16) attributes)
-	}	
+		attributes := cast(u16) (colorToWin(color) << 4)
+		g_stdOutputCurAttr &= FOREGROUND_MASK
+		g_stdOutputCurAttr |= attributes		
+		SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
+	}
+
+	#[swag.public]
+	func resetColor()
+	{
+		SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
+	}
 }

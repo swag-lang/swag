@@ -430,7 +430,7 @@ void Workspace::setupTarget()
     }
 
     targetTestPath = targetPath;
-    targetTestPath.append("tests/");
+    targetTestPath.append("/");
     if (!fs::exists(targetTestPath) && !fs::create_directories(targetTestPath, errorCode))
     {
         g_Log.error(format("fatal error: cannot create target directory '%s'", targetTestPath.string().c_str()));

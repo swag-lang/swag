@@ -6,5 +6,7 @@ using std
 {
 	using console
 	setTextColor(Color.Red)
-	setTextColor(Color.Gray)
+	setBackColor(Color.Black)
+	@print("toto\n")
+	resetColor()
 }
