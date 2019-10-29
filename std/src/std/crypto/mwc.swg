@@ -1,4 +1,4 @@
-namespace std
+namespace std.crypto
 {
 	#[swag.public]
 	struct Mwc

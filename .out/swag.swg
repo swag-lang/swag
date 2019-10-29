@@ -23,6 +23,7 @@ namespace swag
 	attr constexpr() -> func
 	attr printbc() -> func
 	attr compiler() -> func
+	attr inline() -> func
 	attr public() -> func, struct, enum
 	attr test() -> func
 	attr foreign(module: string = "", function: string = "") -> func

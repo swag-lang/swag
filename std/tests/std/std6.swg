@@ -1,5 +1,5 @@
 #import "std"
-using std
+using std.crypto
 
 //#[swag.printbc]
 #test

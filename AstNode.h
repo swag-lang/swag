@@ -25,6 +25,7 @@ struct AstAttrUse;
 struct AstSwitch;
 struct TypeInfoParam;
 struct AstBreakable;
+struct AstInline;
 struct AstStruct;
 enum class Property;
 enum class TypeInfoListKind;
@@ -64,6 +65,7 @@ enum class AstNodeKind
     Statement,
     EnumDecl,
     StructDecl,
+    Inline,
     StructContent,
     TupleContent,
     Impl,
@@ -109,6 +111,7 @@ enum class AstNodeKind
 
 struct CloneContext
 {
+    AstInline*                ownerInline      = nullptr;
     AstBreakable*             ownerBreakable   = nullptr;
     AstFuncDecl*              ownerFct         = nullptr;
     AstNode*                  parent           = nullptr;
@@ -126,6 +129,7 @@ struct AstNode : public PoolElement
         bytecodeState                = AstNodeResolveState::Enter;
         ownerScope                   = nullptr;
         ownerBreakable               = nullptr;
+        ownerInline                  = nullptr;
         ownerFct                     = nullptr;
         ownerStructScope             = nullptr;
         parent                       = nullptr;
@@ -219,6 +223,7 @@ struct AstNode : public PoolElement
         ownerScope       = op->ownerScope;
         ownerFct         = op->ownerFct;
         ownerBreakable   = op->ownerBreakable;
+        ownerInline      = op->ownerInline;
     }
 
     void inheritTokenName(Token& tkn)
@@ -275,6 +280,7 @@ struct AstNode : public PoolElement
     AstNodeKind   kind;
     Scope*        ownerScope;
     AstBreakable* ownerBreakable;
+    AstInline*    ownerInline;
     AstFuncDecl*  ownerFct;
     uint64_t      ownerFlags;
     Scope*        ownerStructScope;
@@ -317,7 +323,7 @@ struct AstNode : public PoolElement
     ComputedValue computedValue;
     Utf8Crc       name;
     Utf8          fullnameDot;
-	Utf8          fullnameForeign;
+    Utf8          fullnameForeign;
     SourceFile*   sourceFile;
     ByteCode*     bc;
     RegisterList  resultRegisterRC;
@@ -475,7 +481,7 @@ struct AstBreakContinue : public AstNode
 
 const uint32_t BREAKABLE_CAN_HAVE_INDEX    = 0x00000001;
 const uint32_t BREAKABLE_CAN_HAVE_CONTINUE = 0x00000002;
-const uint32_t BREAKABLE_NEED_INDEX        = 0x00000002;
+const uint32_t BREAKABLE_NEED_INDEX        = 0x00000004;
 
 struct AstBreakable : public AstNode
 {
@@ -772,6 +778,22 @@ struct AstDrop : public AstNode
     AstNode* count;
 };
 
+struct AstReturn : public AstNode
+{
+	int seekJump;
+};
+
+struct AstInline : public AstNode
+{
+    void reset() override
+    {
+        returnList.clear();
+        AstNode::reset();
+    }
+
+    vector<AstReturn*> returnList;
+};
+
 extern Pool<AstNode>            g_Pool_astNode;
 extern Pool<AstAttrDecl>        g_Pool_astAttrDecl;
 extern Pool<AstAttrUse>         g_Pool_astAttrUse;
@@ -797,3 +819,5 @@ extern Pool<AstStruct>          g_Pool_astStruct;
 extern Pool<AstImpl>            g_Pool_astImpl;
 extern Pool<AstInit>            g_Pool_astInit;
 extern Pool<AstDrop>            g_Pool_astDrop;
+extern Pool<AstInline>          g_Pool_astInline;
+extern Pool<AstReturn>          g_Pool_astReturn;

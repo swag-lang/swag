@@ -62,6 +62,7 @@ namespace Ast
     extern AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8Crc& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
+    extern AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
 
     extern bool output(Concat& concat, AstNode* node, int indent = 0);
 }; // namespace Ast

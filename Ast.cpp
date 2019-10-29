@@ -157,6 +157,13 @@ namespace Ast
         return node;
     }
 
+    AstInline* newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        AstInline* node   = Ast::newNode(syntaxJob, &g_Pool_astInline, AstNodeKind::Inline, sourceFile, parent);
+        node->byteCodeFct = &ByteCodeGenJob::emitInline;
+        return node;
+    }
+
     AstStruct* newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstStruct* node   = Ast::newNode(syntaxJob, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile, parent);

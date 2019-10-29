@@ -36,8 +36,8 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 {
-    AstNode* node     = context->node;
-    auto     funcNode = node->ownerFct;
+    AstReturn* node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
+    auto       funcNode = node->ownerFct;
     SWAG_ASSERT(funcNode);
 
     // Copy result to RR0... registers
@@ -90,7 +90,19 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 
     if (funcNode->stackSize)
         emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
-    emitInstruction(context, ByteCodeOp::Ret);
+
+    if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
+    {
+        SWAG_ASSERT(node->ownerInline);
+        node->seekJump = context->bc->numInstructions;
+        emitInstruction(context, ByteCodeOp::Jump);
+        node->ownerInline->returnList.push_back(node);
+    }
+    else
+    {
+        emitInstruction(context, ByteCodeOp::Ret);
+    }
+
     return true;
 }
 
@@ -622,10 +634,10 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
 {
-    AstNode* node         = context->node;
-    auto     overload     = node->resolvedSymbolOverload;
-    auto     funcNode     = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-    auto     allParams    = node->childs.empty() ? nullptr : node->childs.front();
+    AstNode* node      = context->node;
+    auto     overload  = node->resolvedSymbolOverload;
+    auto     funcNode  = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+    auto     allParams = node->childs.empty() ? nullptr : node->childs.front();
 
     emitCall(context, allParams, funcNode, nullptr, true);
     return true;

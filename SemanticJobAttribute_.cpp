@@ -74,6 +74,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_FLAGS;
             else if (child->name == "foreign")
                 flags |= ATTRIBUTE_FOREIGN;
+            else if (child->name == "inline")
+                flags |= ATTRIBUTE_INLINE;
         }
 
         curAttr = curAttr->parentAttributes;

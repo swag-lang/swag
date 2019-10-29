@@ -462,7 +462,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astReturn, AstNodeKind::Return, sourceFile, parent);
     node->semanticFct = &SemanticJob::resolveReturn;
     if (result)
         *result = node;

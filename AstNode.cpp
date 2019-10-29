@@ -28,6 +28,8 @@ Pool<AstStruct>          g_Pool_astStruct;
 Pool<AstImpl>            g_Pool_astImpl;
 Pool<AstInit>            g_Pool_astInit;
 Pool<AstDrop>            g_Pool_astDrop;
+Pool<AstInline>          g_Pool_astInline;
+Pool<AstReturn>          g_Pool_astReturn;
 
 void AstNode::setPassThrough()
 {
@@ -72,7 +74,7 @@ void AstNode::computeFullName()
         fullnameDot     = ownerScope->fullname + "." + name;
     }
 
-	fullnameForeign += format("_%llX", this);
+    fullnameForeign += format("_%llX", this);
     replaceAll(fullnameForeign, '.', '_');
 }
 
@@ -158,6 +160,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
     ownerStruct      = context.ownerStruct ? context.ownerStruct : from->ownerStruct;
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
+    ownerInline      = context.ownerInline ? context.ownerInline : from->ownerInline;
     ownerFct         = context.ownerFct ? context.ownerFct : from->ownerFct;
     ownerFlags       = from->ownerFlags;
 

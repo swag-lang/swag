@@ -1,4 +1,4 @@
-namespace std
+namespace std.crypto
 {
 	#[swag.public]
 	struct(T = Mwc) Random
@@ -31,7 +31,7 @@ namespace std
 			{
 				diagnostics.debug.assert(max > min)
 				range := cast(u64) (max - min)
-				value := cast(s64) (rng.next() % range)
+				value := cast(s64) (nextU64() % range)
 				return min + value
 			}			
 		}

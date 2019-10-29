@@ -168,6 +168,21 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     return true;
 }
 
+bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* parent)
+{
+    CloneContext cloneContext;
+
+    auto inlineNode = Ast::newInline(context->sourceFile, parent);
+
+    cloneContext.parent      = inlineNode;
+    cloneContext.ownerInline = inlineNode;
+    funcDecl->content->clone(cloneContext);
+
+    context->result       = SemanticResult::NewChilds;
+    parent->semanticState = AstNodeResolveState::Enter;
+    return true;
+}
+
 bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar)
 {
     // Direct reference to a constexpr typeinfo
@@ -322,29 +337,29 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
         // Need to make all types compatible, in case a cast is necessary
-		if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
-		{
-			if (identifier->callParameters && oneMatch)
-			{
-				auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
-				auto maxParams = identifier->callParameters->childs.size();
-				for (int i = 0; i < maxParams; i++)
-				{
-					auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-					if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
-						SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
-					else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
-						SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters.back()->typeInfo, nullptr, nodeCall));
+        if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
+        {
+            if (identifier->callParameters && oneMatch)
+            {
+                auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
+                auto maxParams    = identifier->callParameters->childs.size();
+                for (int i = 0; i < maxParams; i++)
+                {
+                    auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+                    if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
+                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, nodeCall));
+                    else if (oneMatch->solvedParameters.back() && oneMatch->solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+                        SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters.back()->typeInfo, nullptr, nodeCall));
 
-					// For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
-					if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
-					{
-						auto& typeTable = sourceFile->module->typeTable;
-						SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeCall->typeInfo, &nodeCall->concreteTypeInfo, &nodeCall->concreteTypeInfoStorage));
-					}
-				}
-			}
-		}
+                    // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
+                    if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
+                    {
+                        auto& typeTable = sourceFile->module->typeTable;
+                        SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, nodeCall->typeInfo, &nodeCall->concreteTypeInfo, &nodeCall->concreteTypeInfoStorage));
+                    }
+                }
+            }
+        }
 
         // This is for a lambda
         if (identifier->flags & AST_TAKE_ADDRESS)
@@ -352,6 +367,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             // The makePointer will deal with the real make lambda thing
             identifier->flags |= AST_NO_BYTECODE;
             break;
+        }
+
+        if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
+        {
+            if (!(identifier->doneFlags & AST_DONE_INLINED))
+            {
+                identifier->doneFlags |= AST_DONE_INLINED;
+                SWAG_CHECK(makeInline(context, static_cast<AstFuncDecl*>(overload->node), identifier));
+            }
+
+            identifier->byteCodeFct = nullptr;
+            return true;
         }
 
         identifier->kind = AstNodeKind::FuncCall;

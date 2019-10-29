@@ -199,6 +199,11 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (!node->content)
         genByteCode = false;
+	if (node->attributeFlags & ATTRIBUTE_INLINE)
+	{
+		node->flags |= AST_NO_BYTECODE;
+		genByteCode = false;
+	}
 
     if (genByteCode)
     {
@@ -237,7 +242,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
-		// Determine if function is generic
+        // Determine if function is generic
         if (funcNode->parameters)
             funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
         if (funcNode->ownerStructScope && (funcNode->ownerStructScope->owner->flags & AST_IS_GENERIC))
@@ -439,8 +444,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         }
         else
         {
-			// This is fine to return void
-			node->byteCodeFct = nullptr;
+            // This is fine to return void
+            node->byteCodeFct = nullptr;
         }
     }
 

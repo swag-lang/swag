@@ -11,6 +11,19 @@
 #include "Scope.h"
 #include "SymTable.h"
 
+bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+
+	// Update all returns to jump at the end of the inline block
+    for (auto r : node->returnList)
+    {
+		context->bc->out[r->seekJump].a.u32 = context->bc->numInstructions - r->seekJump - 1;
+    }
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
 {
     auto ifNode = CastAst<AstIf>(context->node, AstNodeKind::If);
@@ -290,8 +303,8 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     vector<uint32_t> allJumps;
     if (!caseNode->expressions.empty())
     {
-		RegisterList r0;
-		reserveRegisterRC(context, r0, 1);
+        RegisterList r0;
+        reserveRegisterRC(context, r0, 1);
         for (auto expr : caseNode->expressions)
         {
             SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
