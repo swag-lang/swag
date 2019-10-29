@@ -530,3 +530,17 @@ AstNode* AstDrop::clone(CloneContext& context)
     newNode->count      = findChildRef(count, newNode);
     return newNode;
 }
+
+AstNode* AstReturn::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astReturn.alloc();
+    newNode->copyFrom(context, this);
+    return newNode;
+}
+
+AstNode* AstInline::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astInline.alloc();
+    newNode->copyFrom(context, this);
+    return newNode;
+}

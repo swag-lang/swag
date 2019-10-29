@@ -5,7 +5,7 @@ func toto()
 	return
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	a := 1
