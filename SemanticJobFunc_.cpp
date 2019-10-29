@@ -199,11 +199,11 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (!node->content)
         genByteCode = false;
-	if (node->attributeFlags & ATTRIBUTE_INLINE)
-	{
-		node->flags |= AST_NO_BYTECODE;
-		genByteCode = false;
-	}
+    if (node->attributeFlags & ATTRIBUTE_INLINE)
+    {
+        node->flags |= AST_NO_BYTECODE;
+        genByteCode = false;
+    }
 
     if (genByteCode)
     {
@@ -420,6 +420,14 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Nothing to return
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
         return true;
+
+	// For a return inside an inline block, just get the type of the expression
+    if (node->ownerInline)
+    {
+		if (!node->childs.empty())
+			node->typeInfo = node->childs.front()->typeInfo;
+        return true;
+    }
 
     // Check return type
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
