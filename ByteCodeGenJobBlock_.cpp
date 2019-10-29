@@ -15,11 +15,9 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
-	// Update all returns to jump at the end of the inline block
+    // Update all returns to jump at the end of the inline block
     for (auto r : node->returnList)
-    {
-		context->bc->out[r->seekJump].a.u32 = context->bc->numInstructions - r->seekJump - 1;
-    }
+        context->bc->out[r->seekJump].a.u32 = context->bc->numInstructions - r->seekJump - 1;
 
     return true;
 }

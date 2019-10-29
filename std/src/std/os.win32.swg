@@ -4,10 +4,12 @@ namespace std.os
 	typealias WORD: 		u16
 	typealias DWORD: 		u32
 	typealias BOOL: 		bool
+	typealias LPVOID:		*void
 	typealias LPCVOID:		const *void
 	typealias LPCSTR:		string
 	typealias LPDWORD:		*DWORD
 	typealias LPOVERLAPPED:	*DWORD
+	typealias DWORD_PTR:	u64
 	
 	const STD_INPUT_HANDLE 	= cast(DWORD) -10
 	const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -46,6 +48,20 @@ namespace std.os
 		dwMaximumWindowSize: 	COORD
 	}	
 	
+	struct SYSTEM_INFO 
+	{
+		dwOemId:	DWORD
+		dwPageSize:	DWORD
+		lpMinimumApplicationAddress:	LPVOID
+		lpMaximumApplicationAddress:	LPVOID
+		dwActiveProcessorMask:			DWORD_PTR
+		dwNumberOfProcessors:		DWORD
+		dwProcessorType:			DWORD
+		dwAllocationGranularity:	DWORD
+		wProcessorLevel:			WORD
+		wProcessorRevision:			WORD
+	}
+	
 	#[swag.foreign("kernel32")]
 	{
 		func GetStdHandle(nStdHandle: DWORD)->HANDLE;
@@ -55,6 +71,7 @@ namespace std.os
 		func IsDebuggerPresent()->BOOL;
 		func DebugBreak();
 		func OutputDebugString(lpOutputString: LPCSTR);
+		func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
 	}
 	
 	var g_stdOutputHandle: HANDLE
