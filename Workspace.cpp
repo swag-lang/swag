@@ -69,7 +69,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
             {
                 if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
                     continue;
-                tmp1 = tmp + findfile.cFileName;
+                tmp1 = tmp + "/" + findfile.cFileName;
                 directories.emplace_back(move(tmp1));
             }
             else
