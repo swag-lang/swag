@@ -80,6 +80,7 @@ namespace std.os
 	{
 		g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
 		console.init()
+		environment.init()
 	}
 	
 	#drop

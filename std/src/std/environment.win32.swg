@@ -3,10 +3,12 @@ namespace std.environment
 	using os
 	
 	#[swag.public]
-	func getProcessorCount()->u32
+	func getProcessorCount() => g_sysInfo.dwNumberOfProcessors
+	
+	var g_sysInfo: SYSTEM_INFO
+	
+	func init()
 	{
-		var sysInfo: SYSTEM_INFO
-		GetSystemInfo(sysInfo)
-		return sysInfo.dwNumberOfProcessors
+		GetSystemInfo(g_sysInfo)
 	}
 }
