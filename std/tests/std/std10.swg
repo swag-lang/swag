@@ -1,4 +1,4 @@
-#import "stdmath"
+#import "std"
 using std
 
 //#[swag.printbc]
