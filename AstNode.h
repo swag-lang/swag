@@ -780,7 +780,7 @@ struct AstDrop : public AstNode
 
 struct AstReturn : public AstNode
 {
-	int seekJump;
+    int seekJump;
 };
 
 struct AstInline : public AstNode
@@ -788,9 +788,11 @@ struct AstInline : public AstNode
     void reset() override
     {
         returnList.clear();
+        scope = nullptr;
         AstNode::reset();
     }
 
+    Scope*             scope;
     vector<AstReturn*> returnList;
 };
 

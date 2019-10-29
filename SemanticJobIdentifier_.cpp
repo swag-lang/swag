@@ -175,14 +175,15 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     auto inlineNode = Ast::newInline(context->sourceFile, parent);
     auto newScope   = Ast::newScope(nullptr, "", ScopeKind::Inline, parent->ownerScope);
 
+    inlineNode->scope = newScope;
     newScope->allocateSymTable();
-    cloneContext.parent         = inlineNode;
-    cloneContext.ownerInline    = inlineNode;
-    cloneContext.ownerFct       = parent->ownerFct;
-    cloneContext.ownerBreakable = parent->ownerBreakable;
-    cloneContext.parentScope    = newScope;
-    auto newContent = funcDecl->content->clone(cloneContext);
-	newContent->byteCodeBeforeFct = nullptr;
+    cloneContext.parent           = inlineNode;
+    cloneContext.ownerInline      = inlineNode;
+    cloneContext.ownerFct         = parent->ownerFct;
+    cloneContext.ownerBreakable   = parent->ownerBreakable;
+    cloneContext.parentScope      = newScope;
+    auto newContent               = funcDecl->content->clone(cloneContext);
+    newContent->byteCodeBeforeFct = nullptr;
 
     context->result       = SemanticResult::NewChilds;
     parent->semanticState = AstNodeResolveState::Enter;

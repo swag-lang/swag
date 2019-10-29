@@ -50,8 +50,8 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
 
 bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 {
-    auto node                        = CastAst<AstInline>(context->node, AstNodeKind::Inline);
-    node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
+    auto node                   = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+    node->scope->startStackSize = node->ownerScope->startStackSize;
     return true;
 }
 
