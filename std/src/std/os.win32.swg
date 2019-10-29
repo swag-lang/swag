@@ -50,7 +50,7 @@ namespace std.os
 	
 	struct SYSTEM_INFO 
 	{
-		dwOemId:	DWORD
+		dwOemId:	DWORD // Must be updated to an union
 		dwPageSize:	DWORD
 		lpMinimumApplicationAddress:	LPVOID
 		lpMaximumApplicationAddress:	LPVOID
