@@ -367,12 +367,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymLeftParen)
             SWAG_CHECK(doGenericDeclParameters(funcNode, &funcNode->genericParameters));
 
-        if (token.id != TokenId::Identifier &&
-            token.id != TokenId::Intrinsic &&
-            token.id != TokenId::KwdInit &&
-            token.id != TokenId::KwdDrop)
-            return syntaxError(token, format("missing function name instead of '%s'", token.text.c_str()));
-
+        SWAG_CHECK(checkIsName(token));
         SWAG_VERIFY(token.id != TokenId::Intrinsic || sourceFile->swagFile, syntaxError(token, "function names starting with '@' are reserved for intrinsics"));
 
         isIntrinsic = token.id == TokenId::Intrinsic;

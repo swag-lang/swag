@@ -1,10 +1,11 @@
-namespace std.os.win32
+namespace std.os
 {
 	typealias HANDLE: 		*void
 	typealias WORD: 		u16
 	typealias DWORD: 		u32
 	typealias BOOL: 		bool
 	typealias LPCVOID:		const *void
+	typealias LPCSTR:		string
 	typealias LPDWORD:		*DWORD
 	typealias LPOVERLAPPED:	*DWORD
 	
@@ -51,6 +52,9 @@ namespace std.os.win32
 		func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->bool;
 		func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED);
 		func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
+		func IsDebuggerPresent()->BOOL;
+		func DebugBreak();
+		func OutputDebugString(lpOutputString: LPCSTR);
 	}
 	
 	var g_stdOutputHandle: HANDLE

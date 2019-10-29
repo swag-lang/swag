@@ -31,6 +31,7 @@ struct SyntaxJob : public Job
     bool eatToken(TokenId id, const char* msg = nullptr);
     bool eatSemiCol(const char* msg = nullptr);
     bool recoverError();
+	bool checkIsName(Token& tkn);
 
     void     setupSelfType(AstIdentifier* node, const Utf8& strctName, AstNode* genericParameters);
     AstNode* generateOpInit(AstNode* node, const Utf8& structName, AstNode* genericParameters);

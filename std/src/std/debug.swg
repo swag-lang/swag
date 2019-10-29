@@ -1,4 +1,4 @@
-namespace std.debug
+namespace std.diagnostics.debug
 {
 	#[swag.public]
 	func assert(expr: bool, file: string = #callerfile, line: u32 = #callerline)

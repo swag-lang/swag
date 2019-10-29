@@ -1,6 +1,6 @@
 namespace std.console
 {
-	using os.win32
+	using os
 	
 	var g_colorToWin: [@countof(Color)] u16
 	

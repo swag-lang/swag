@@ -1,12 +1,8 @@
 #include "pch.h"
-#include "Global.h"
 #include "SourceFile.h"
 #include "Ast.h"
 #include "SemanticJob.h"
-#include "Scoped.h"
 #include "LanguageSpec.h"
-#include "Global.h"
-#include "SymTable.h"
 #include "TypeManager.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
