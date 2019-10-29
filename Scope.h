@@ -20,6 +20,7 @@ enum class ScopeKind
     Statement,
     Breakable,
     TypeList,
+	Inline,
 };
 
 struct AlternativeScope

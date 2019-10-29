@@ -159,8 +159,9 @@ namespace Ast
 
     AstInline* newInline(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        AstInline* node   = Ast::newNode(syntaxJob, &g_Pool_astInline, AstNodeKind::Inline, sourceFile, parent);
-        node->byteCodeFct = &ByteCodeGenJob::emitInline;
+        AstInline* node         = Ast::newNode(syntaxJob, &g_Pool_astInline, AstNodeKind::Inline, sourceFile, parent);
+        node->semanticBeforeFct = &SemanticJob::resolveInlineBefore;
+        node->byteCodeFct       = &ByteCodeGenJob::emitInline;
         return node;
     }
 

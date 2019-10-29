@@ -31,6 +31,8 @@ const char* Scope::getNakedName(ScopeKind kind)
         return "global";
     case ScopeKind::Statement:
         return "statement";
+    case ScopeKind::Inline:
+        return "inline";
 
     default:
         return "???";

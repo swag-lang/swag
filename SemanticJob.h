@@ -58,6 +58,9 @@ struct OneGenericMatch
     vector<TypeInfo*>     genericParametersGenTypes;
 };
 
+const uint32_t COLLECT_ALL         = 0x00000000;
+const uint32_t COLLECT_STOP_INLINE = 0x00000001;
+
 struct SemanticJob : public Job
 {
     JobResult execute() override;
@@ -68,13 +71,13 @@ struct SemanticJob : public Job
     static bool         checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
 
-	static void enterState(AstNode* node);
+    static void enterState(AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags);
-    static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope);
+    static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
-	static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* parent);
+    static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* parent);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar);
     static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
@@ -165,6 +168,7 @@ struct SemanticJob : public Job
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
     static bool resolveLoopBefore(SemanticContext* context);
+	static bool resolveInlineBefore(SemanticContext* context);
     static bool resolveForBefore(SemanticContext* context);
     static bool resolveFor(SemanticContext* context);
     static bool resolveSwitch(SemanticContext* context);

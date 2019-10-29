@@ -88,10 +88,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             return true;
     }
 
-    if (funcNode->stackSize)
-        emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
-
-    if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
+	// A return inside an inlined function is just a jump to the end of the block
+    if (node->ownerInline)
     {
         SWAG_ASSERT(node->ownerInline);
         node->seekJump = context->bc->numInstructions;
@@ -100,6 +98,8 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     }
     else
     {
+        if (funcNode->stackSize)
+            emitInstruction(context, ByteCodeOp::IncSP)->a.s32 = funcNode->stackSize;
         emitInstruction(context, ByteCodeOp::Ret);
     }
 

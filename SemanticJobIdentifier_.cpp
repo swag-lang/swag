@@ -173,10 +173,16 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     CloneContext cloneContext;
 
     auto inlineNode = Ast::newInline(context->sourceFile, parent);
+    auto newScope   = Ast::newScope(nullptr, "", ScopeKind::Inline, parent->ownerScope);
 
-    cloneContext.parent      = inlineNode;
-    cloneContext.ownerInline = inlineNode;
-    funcDecl->content->clone(cloneContext);
+    newScope->allocateSymTable();
+    cloneContext.parent         = inlineNode;
+    cloneContext.ownerInline    = inlineNode;
+    cloneContext.ownerFct       = parent->ownerFct;
+    cloneContext.ownerBreakable = parent->ownerBreakable;
+    cloneContext.parentScope    = newScope;
+    auto newContent = funcDecl->content->clone(cloneContext);
+	newContent->byteCodeBeforeFct = nullptr;
 
     context->result       = SemanticResult::NewChilds;
     parent->semanticState = AstNodeResolveState::Enter;
@@ -1090,7 +1096,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope)
+void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope, uint32_t flags)
 {
     auto  job       = context->job;
     auto& here      = job->scopesHere;
@@ -1119,12 +1125,15 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         auto scope = scopes[i];
 
         // Add parent scope
-        if (scope->parentScope)
+        if (scope->kind != ScopeKind::Inline || !(flags & COLLECT_STOP_INLINE))
         {
-            if (here.find(scope->parentScope) == here.end())
+            if (scope->parentScope)
             {
-                scopes.push_back(scope->parentScope);
-                here.insert(scope->parentScope);
+                if (here.find(scope->parentScope) == here.end())
+                {
+                    scopes.push_back(scope->parentScope);
+                    here.insert(scope->parentScope);
+                }
             }
         }
 
@@ -1175,7 +1184,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScop
     if (startScope->kind == ScopeKind::Struct)
         return true;
 
-    SemanticJob::collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, startScope);
+    SemanticJob::collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, startScope, COLLECT_STOP_INLINE);
     for (auto scope : job->cacheScopeHierarchy)
     {
         // No ghosting with struct
