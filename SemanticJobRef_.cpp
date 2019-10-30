@@ -23,6 +23,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     // Lambda
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
+		SWAG_VERIFY(!(child->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({ child, "cannot take address of an inline function" }));
+
         auto lambdaType    = child->typeInfo->clone();
         lambdaType->kind   = TypeInfoKind::Lambda;
         lambdaType->sizeOf = sizeof(void*);
