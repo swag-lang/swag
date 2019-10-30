@@ -1,5 +1,7 @@
 namespace std.crypto
 {
+	using diagnostics
+	
 	#[swag.public]
 	struct(T = Mwc) Random
 	{
@@ -21,7 +23,7 @@ namespace std.crypto
 						
 			func nextS32(using self, min, max: s32)->s32 
 			{
-				diagnostics.debug.assert(max > min)
+				debug.assert(max > min)
 				range := cast(u32) (max - min)
 				value := cast(s32) (rng.next() % range)
 				return min + value
@@ -29,7 +31,7 @@ namespace std.crypto
 			
 			func nextS64(using self, min, max: s64)->s64 
 			{
-				diagnostics.debug.assert(max > min)
+				debug.assert(max > min)
 				range := cast(u64) (max - min)
 				value := cast(s64) (nextU64() % range)
 				return min + value
