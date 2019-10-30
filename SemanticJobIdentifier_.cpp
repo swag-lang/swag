@@ -378,38 +378,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             break;
         }
 
-		// Expand inline function. Do not expand an inline call inside a function marked as inline.
-		// The expansion will be done at the lowest level possible
-		if (identifier->ownerFct && !(identifier->ownerFct->attributeFlags & ATTRIBUTE_INLINE))
-		{
-			if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
-			{
-				if (!(identifier->doneFlags & AST_DONE_INLINED))
-				{
-					identifier->doneFlags |= AST_DONE_INLINED;
-					SWAG_CHECK(makeInline(context, static_cast<AstFuncDecl*>(overload->node), identifier));
-				}
-
-				identifier->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
-				return true;
-			}
-		}
-
-        identifier->kind = AstNodeKind::FuncCall;
-        identifier->inheritOrFlag(identifier->resolvedSymbolOverload->node, AST_CONST_EXPR);
-
-        if (identifier->token.id == TokenId::Intrinsic)
+		// Be sure the call is valid
+        if ((identifier->token.id != TokenId::Intrinsic) && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
         {
-            identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
-        }
-        else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
-        {
-            identifier->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
-        }
-        else
-        {
-            identifier->byteCodeFct = &ByteCodeGenJob::emitCall;
-            auto ownerFct           = identifier->ownerFct;
+            auto ownerFct = identifier->ownerFct;
             if (ownerFct)
             {
                 auto myAttributes = ownerFct->attributeFlags;
@@ -419,6 +391,33 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     return context->errorContext.report({identifier, identifier->token, format("cannot call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
             }
         }
+
+        // Expand inline function. Do not expand an inline call inside a function marked as inline.
+        // The expansion will be done at the lowest level possible
+        if (identifier->ownerFct && !(identifier->ownerFct->attributeFlags & ATTRIBUTE_INLINE))
+        {
+            if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
+            {
+                if (!(identifier->doneFlags & AST_DONE_INLINED))
+                {
+                    identifier->doneFlags |= AST_DONE_INLINED;
+                    SWAG_CHECK(makeInline(context, static_cast<AstFuncDecl*>(overload->node), identifier));
+                }
+
+                identifier->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
+                return true;
+            }
+        }
+
+        identifier->kind = AstNodeKind::FuncCall;
+        identifier->inheritOrFlag(identifier->resolvedSymbolOverload->node, AST_CONST_EXPR);
+
+        if (identifier->token.id == TokenId::Intrinsic)
+            identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+        else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
+            identifier->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
+        else
+            identifier->byteCodeFct = &ByteCodeGenJob::emitCall;
 
         // Setup parent if necessary
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
@@ -956,12 +955,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto symbol = dependentSymbols[0];
     if (dependentSymbols.size() > 1)
     {
-		for (auto p : dependentSymbols)
-		{
-			symbol = p;
-			if (!node->callParameters && symbol->kind == SymbolKind::Variable)
-				break;
-		}
+        for (auto p : dependentSymbols)
+        {
+            symbol = p;
+            if (!node->callParameters && symbol->kind == SymbolKind::Variable)
+                break;
+        }
     }
 
     // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
