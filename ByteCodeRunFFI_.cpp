@@ -130,11 +130,12 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 
     // Function call parameters
     ffi_cif cif;
-    ffiArgs.resize(typeInfoFunc->parameters.size());
-    ffiArgsValues.resize(typeInfoFunc->parameters.size());
+    int     numParameters = (int) typeInfoFunc->parameters.size();
+    ffiArgs.resize(numParameters);
+    ffiArgsValues.resize(numParameters);
 
     Register* sp = (Register*) context->sp;
-    for (int i = 0; i < typeInfoFunc->parameters.size(); i++)
+    for (int i = 0; i < numParameters; i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
         typeParam      = TypeManager::concreteType(typeParam);
@@ -182,38 +183,45 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     auto      returnType = TypeManager::concreteType(typeInfoFunc->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
-        typeResult = ffiFromTypeinfo(returnType);
-        if (!typeResult)
+        // Special return
+        if (returnType->kind == TypeInfoKind::Slice)
         {
-            context->hasError = true;
-            context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->name.c_str());
-            return;
+            numParameters++;
+            ffiArgs.push_back(&ffi_type_pointer);
+            ffiArgsValues.push_back(&context->registersRR);
+        }
+        else
+        {
+            typeResult = ffiFromTypeinfo(returnType);
+            if (!typeResult)
+            {
+                context->hasError = true;
+                context->errorMsg = format("ffi failed to convert return type '%s'", typeInfoFunc->returnType->name.c_str());
+                return;
+            }
         }
     }
 
     // Initialize the cif
-    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (int) typeInfoFunc->parameters.size(), typeResult, ffiArgs.empty() ? nullptr : &ffiArgs[0]);
-
-    // Store result
-    Register result;
-    result.pointer = 0;
+    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, numParameters, typeResult, ffiArgs.empty() ? nullptr : &ffiArgs[0]);
 
     void* resultPtr = nullptr;
-    if (returnType != g_TypeMgr.typeInfoVoid)
+    if (typeResult != &ffi_type_void)
     {
+		SWAG_ASSERT(context->registersRR);
         switch (returnType->sizeOf)
         {
         case 1:
-            resultPtr = &result.u8;
+            resultPtr = &context->registersRR->u8;
             break;
         case 2:
-            resultPtr = &result.u16;
+            resultPtr = &context->registersRR->u16;
             break;
         case 4:
-            resultPtr = &result.u32;
+            resultPtr = &context->registersRR->u32;
             break;
         case 8:
-            resultPtr = &result.u64;
+            resultPtr = &context->registersRR->u64;
             break;
         default:
             context->hasError = true;
@@ -224,6 +232,4 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 
     // Make the call
     ffi_call(&cif, FFI_FN(ip->cache.pointer), resultPtr, ffiArgsValues.empty() ? nullptr : &ffiArgsValues[0]);
-    if (context->registersRR)
-        context->registersRR[0] = result;
 }

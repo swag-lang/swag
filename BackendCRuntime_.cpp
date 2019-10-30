@@ -86,6 +86,11 @@ typedef struct swag_process_infos_t {
 	swag_context_t*		defaultContext;
 } swag_process_infos_t;
 
+typedef struct swag_slice_t {
+	void*			addr;
+	swag_uint64_t	count;
+} swag_slice_t;
+
 swag_process_infos_t __process_infos = {0};
 
 )";

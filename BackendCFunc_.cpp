@@ -30,16 +30,9 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct)
+    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Slice)
     {
-        if (!moduleToGen->buildParameters.target.backendC.outputPublic)
-            cType = "void";
-        else
-        {
-            auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            typeInfoStruct->structNode->computeFullName();
-            cType = typeInfoStruct->structNode->fullnameForeign;
-        }
+        cType = "void";
         return true;
     }
 
@@ -103,7 +96,11 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
-        if (returnType->kind == TypeInfoKind::Pointer)
+        if (returnType->kind == TypeInfoKind::Slice)
+        {
+            // Return by parameter
+        }
+        else if (returnType->kind == TypeInfoKind::Pointer)
         {
             bufferC.addString("rt[0].pointer = (swag_uint8_t*) ");
         }
@@ -231,7 +228,16 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         }
     }
 
+    // Return by parameter
+    if (returnType->kind == TypeInfoKind::Slice)
+    {
+        if (numCallParams)
+            bufferC.addString(", ");
+        bufferC.addString("&rt[0]");
+    }
+
     bufferC.addString(");");
+
     return true;
 }
 
@@ -341,7 +347,12 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     // Return
     if (typeFunc->numReturnRegisters())
     {
-        if (typeFunc->returnType->kind == TypeInfoKind::Native)
+        if (typeFunc->returnType->kind == TypeInfoKind::Slice)
+        {
+            bufferC.addString("\t*((void **) result) = rr0.pointer;\n");
+            bufferC.addString("\t*((void **) result + 1) = rr1.pointer;\n");
+        }
+        else if (typeFunc->returnType->kind == TypeInfoKind::Native)
         {
             switch (typeFunc->returnType->nativeType)
             {
@@ -397,16 +408,21 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
 
 bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
-    Utf8 cType;
-    SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, cType));
-    buffer.addString(cType);
+    Utf8 returnType;
+
+    SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, returnType));
+    if (typeFunc->numReturnRegisters() <= 1)
+        buffer.addString(returnType);
+    else
+        buffer.addString("void");
     buffer.addString(" ");
     buffer.addString(node->fullnameForeign.c_str());
     buffer.addString("(");
 
+    bool first = true;
     if (node->parameters)
     {
-        bool first = true;
+        Utf8 cType;
         for (auto param : node->parameters->childs)
         {
             if (!first)
@@ -418,6 +434,15 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
             buffer.addString(" ");
             buffer.addString(param->name.c_str());
         }
+    }
+
+    // Return value
+    if (typeFunc->numReturnRegisters() > 1)
+    {
+        if (!first)
+            buffer.addString(", ");
+        buffer.addString(returnType);
+        buffer.addString("* result");
     }
 
     buffer.addString(")");
@@ -1571,118 +1596,10 @@ bool BackendC::emitFunctions(Module* moduleToGen)
     return ok;
 }
 
-bool BackendC::emitPublicEnum(Module* moduleToGen, TypeInfoEnum* typeEnum, AstNode* node)
-{
-    if (!moduleToGen->buildParameters.target.backendC.outputPublic)
-        return true;
-
-    Utf8 cType;
-    SWAG_CHECK(swagTypeToCType(moduleToGen, typeEnum->rawType, cType));
-
-    node->computeFullName();
-    bufferH.addString(format("typedef %s %s;\n", cType.c_str(), node->fullnameForeign.c_str()));
-
-    for (auto p : typeEnum->values)
-    {
-        Utf8 enumValueName = node->fullnameForeign + "_" + p->namedParam;
-        makeUpper(enumValueName);
-        bufferH.addString("#define ");
-        bufferH.addString(enumValueName.c_str());
-        bufferH.addString(" ");
-        if (typeEnum->rawType->isNative(NativeTypeKind::String))
-        {
-            bufferH.addString(format("\"%s\"", p->value.text.c_str()));
-        }
-        else if (typeEnum->rawType->kind == TypeInfoKind::Native)
-        {
-            switch (typeEnum->rawType->nativeType)
-            {
-            case NativeTypeKind::S8:
-                bufferH.addString(format("%d", p->value.reg.s8));
-                break;
-            case NativeTypeKind::S16:
-                bufferH.addString(format("%d", p->value.reg.s16));
-                break;
-            case NativeTypeKind::S32:
-                bufferH.addString(format("%d", p->value.reg.s32));
-                break;
-            case NativeTypeKind::S64:
-                bufferH.addString(format("%lld", p->value.reg.s64));
-                break;
-            case NativeTypeKind::U8:
-                bufferH.addString(format("%u", p->value.reg.u8));
-                break;
-            case NativeTypeKind::U16:
-                bufferH.addString(format("%u", p->value.reg.u16));
-                break;
-            case NativeTypeKind::U32:
-                bufferH.addString(format("%u", p->value.reg.u32));
-                break;
-            case NativeTypeKind::U64:
-                bufferH.addString(format("%llu", p->value.reg.u64));
-                break;
-            case NativeTypeKind::F32:
-                bufferH.addString(format("%f", p->value.reg.f32));
-                break;
-            case NativeTypeKind::F64:
-                bufferH.addString(format("%lf", p->value.reg.f64));
-                break;
-            default:
-                return moduleToGen->internalError("emitPublicEnum, invalid type");
-            }
-        }
-
-        bufferH.addString("\n");
-    }
-
-    return true;
-}
-
-bool BackendC::emitPublicStruct(Module* moduleToGen, TypeInfoStruct* typeStruct, AstStruct* node)
-{
-    if (!moduleToGen->buildParameters.target.backendC.outputPublic)
-        return true;
-
-    node->computeFullName();
-    bufferH.addString(format("typedef struct %s {\n", node->fullnameForeign.c_str()));
-
-    Utf8 cType;
-    for (auto param : typeStruct->childs)
-    {
-        SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
-        bufferH.addString(format("%s %s;\n", cType.c_str(), param->namedParam.c_str()));
-    }
-
-    bufferH.addString(format("} %s;\n", node->fullnameForeign.c_str()));
-    bufferH.addString("\n");
-    return true;
-}
-
 bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
 {
     if (!scope->hasExports)
         return true;
-
-    // Enums
-    for (auto one : scope->publicEnum)
-    {
-        auto typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
-        SWAG_CHECK(emitPublicEnum(moduleToGen, typeEnum, one));
-    }
-
-    // Structures
-    for (auto one : scope->publicStruct)
-    {
-        auto node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-
-        if (node->flags & AST_IS_GENERIC)
-            continue;
-        if (typeStruct->flags & TYPEINFO_GENERIC)
-            continue;
-
-        SWAG_CHECK(emitPublicStruct(moduleToGen, typeStruct, node));
-    }
 
     // Functions
     for (auto func : scope->publicFunc)

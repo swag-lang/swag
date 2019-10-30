@@ -6,7 +6,6 @@ struct ParametersBackendC
     bool     writeSourceCode          = false;
     bool     writeByteCodeInstruction = false;
     uint32_t maxApplicationArguments  = 64;
-    bool     outputPublic             = true;
 };
 
 struct Target
