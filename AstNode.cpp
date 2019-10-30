@@ -541,7 +541,16 @@ AstNode* AstReturn::clone(CloneContext& context)
 AstNode* AstInline::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astInline.alloc();
-    newNode->copyFrom(context, this);
+    newNode->copyFrom(context, this, false);
     newNode->func = func;
+
+    auto cloneContext        = context;
+    cloneContext.parent      = newNode;
+    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope->allocateSymTable();
+
+    newNode->scope = cloneContext.parentScope;
+    func->content->clone(cloneContext);
+
     return newNode;
 }
