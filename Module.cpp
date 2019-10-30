@@ -133,6 +133,9 @@ void Module::addByteCodeFunc(ByteCode* bc)
     SWAG_ASSERT(!bc->node || !(bc->node->attributeFlags & ATTRIBUTE_FOREIGN));
 
     scoped_lock lk(mutexByteCode);
+
+	SWAG_ASSERT(!bc->addedToList);
+	bc->addedToList = true;
     byteCodeFunc.push_back(bc);
 
     if (bc->node)

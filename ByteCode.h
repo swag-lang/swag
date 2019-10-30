@@ -35,6 +35,7 @@ struct ByteCode : public PoolElement
     AstNode*             node               = nullptr;
     string               name;
     bool                 compilerGenerated = false;
+    bool                 addedToList       = false;
 
     uint32_t          maxReservedRegisterRC = 0;
     vector<uint32_t>  availableRegistersRC;
