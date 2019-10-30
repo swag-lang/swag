@@ -370,14 +370,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-        // This is for a lambda
-        if (identifier->flags & AST_TAKE_ADDRESS)
-        {
-            // The makePointer will deal with the real make lambda thing
-            identifier->flags |= AST_NO_BYTECODE;
-            break;
-        }
-
 		// Be sure the call is valid
         if ((identifier->token.id != TokenId::Intrinsic) && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
         {
@@ -386,10 +378,18 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 auto myAttributes = ownerFct->attributeFlags;
                 if (!(myAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
-                    return context->errorContext.report({identifier, identifier->token, format("cannot call compiler function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->errorContext.report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
                 if (!(myAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-                    return context->errorContext.report({identifier, identifier->token, format("cannot call test function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->errorContext.report({identifier, identifier->token, format("cannot reference 'swag.test' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
             }
+        }
+
+		// This is for a lambda
+        if (identifier->flags & AST_TAKE_ADDRESS)
+        {
+            // The makePointer will deal with the real make lambda thing
+            identifier->flags |= AST_NO_BYTECODE;
+            break;
         }
 
         // Expand inline function. Do not expand an inline call inside a function marked as inline.
