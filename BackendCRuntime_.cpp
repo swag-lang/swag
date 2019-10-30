@@ -76,7 +76,7 @@ typedef union swag_register_t {
 } swag_register_t;
 
 typedef void(*__allocatorFct)(swag_register_t*);
-typedef union swag_context_t {
+typedef struct swag_context_t {
 	__allocatorFct allocator;
 } swag_context_t;
 
