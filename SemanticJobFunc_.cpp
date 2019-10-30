@@ -401,6 +401,13 @@ bool SemanticJob::checkUnreachableCode(SemanticContext* context)
     // Return must be the last of its block
     if (node->parent->childs.back() != node)
     {
+        if (node->parent->kind == AstNodeKind::If)
+        {
+			AstIf* ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
+			if (ifNode->ifBlock == node || ifNode->elseBlock == node)
+				return true;
+        }
+
         auto idx = Ast::findChildIndex(node->parent, node);
         return context->errorContext.report({node->parent->childs[idx + 1], "unreachable code"});
     }
@@ -421,11 +428,11 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())
         return true;
 
-	// For a return inside an inline block, just get the type of the expression
+    // For a return inside an inline block, just get the type of the expression
     if (node->ownerInline)
     {
-		if (!node->childs.empty())
-			node->typeInfo = node->childs.front()->typeInfo;
+        if (!node->childs.empty())
+            node->typeInfo = node->childs.front()->typeInfo;
         return true;
     }
 
