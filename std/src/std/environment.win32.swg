@@ -7,7 +7,7 @@ namespace std.environment
 	
 	var g_sysInfo: SYSTEM_INFO
 	
-	func init()
+	#init
 	{
 		GetSystemInfo(g_sysInfo)
 	}

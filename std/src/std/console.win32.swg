@@ -25,6 +25,7 @@ namespace std.console
 		g_colorToWin[cast(u32) DarkYellow] 	= FOREGROUND_RED | FOREGROUND_GREEN
 	}
 	
+	var g_stdOutputHandle: HANDLE
 	var g_stdOutputInitAttr: u16
 	var g_stdOutputCurAttr: u16
 	
@@ -33,15 +34,17 @@ namespace std.console
 		colorToWin()
 	}
 	
-	func init()
+	#init
 	{
+		g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
+	
 		var csbi: CONSOLE_SCREEN_BUFFER_INFO
 		GetConsoleScreenBufferInfo(g_stdOutputHandle, csbi)		
 		g_stdOutputInitAttr = csbi.wAttributes
 		g_stdOutputCurAttr = g_stdOutputInitAttr
 	}
 	
-	func drop()
+	#drop
 	{
 		resetColor()
 	}

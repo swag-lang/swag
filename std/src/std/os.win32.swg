@@ -73,18 +73,4 @@ namespace std.os
 		func OutputDebugString(lpOutputString: LPCSTR);
 		func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
 	}
-	
-	var g_stdOutputHandle: HANDLE
-	
-	#init
-	{
-		g_stdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
-		console.init()
-		environment.init()
-	}
-	
-	#drop
-	{
-		console.drop()
-	}	
 }
