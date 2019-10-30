@@ -1,4 +1,4 @@
-/*namespace std.crypto
+namespace std.crypto
 {
 	struct Mwc
 	{
@@ -12,4 +12,4 @@
 			x = seed
 		}
 	}
-}*/
+}

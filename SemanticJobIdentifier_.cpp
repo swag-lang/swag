@@ -947,11 +947,22 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     if (node->flags & AST_TAKE_ADDRESS)
         job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
+    // If we have multiple symbols, we need to choose one
+    auto symbol = dependentSymbols[0];
+    if (dependentSymbols.size() > 1)
+    {
+		for (auto p : dependentSymbols)
+		{
+			symbol = p;
+			if (!node->callParameters && symbol->kind == SymbolKind::Variable)
+				break;
+		}
+    }
+
     // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
     AstNode* ufcsParam = nullptr;
     if (!(node->doneFlags & AST_DONE_UFCS))
     {
-        auto symbol = dependentSymbols[0];
         if (symbol->kind == SymbolKind::Function)
         {
             if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
@@ -963,12 +974,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 }
                 else
                 {
-                    if (!node->callParameters)
-                    {
-                        node->callParameters        = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::FuncCallParams, node->sourceFile, node);
-                        node->callParameters->token = identifierRef->previousResolvedNode->token;
-                    }
-
                     node->doneFlags |= AST_DONE_UFCS;
                     auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
                     node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
@@ -985,7 +990,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     auto  genericParameters = node->genericParameters;
     auto  callParameters    = node->callParameters;
-    auto  symbol            = dependentSymbols[0];
     auto& symMatch          = job->symMatch;
 
     if (callParameters || ufcsParam)
@@ -1081,7 +1085,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             symbol->kind != SymbolKind::Struct &&
             overload->typeInfo->kind != TypeInfoKind::Lambda)
         {
-            SWAG_ASSERT(dependentSymbols.size() == 1);
             SWAG_ASSERT(symbol->overloads.size() == 1);
             node->typeInfo = overload->typeInfo;
             SWAG_CHECK(setSymbolMatch(context, identifierRef, node, symbol, symbol->overloads[0], nullptr, dependentVar));
@@ -1176,7 +1179,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
     auto job = context->job;
 
     // No ghosting from struct
-	auto startScope = node->ownerScope;
+    auto startScope = node->ownerScope;
     if (startScope->kind == ScopeKind::Struct)
         return true;
 
