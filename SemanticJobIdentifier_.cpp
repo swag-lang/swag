@@ -378,17 +378,22 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             break;
         }
 
-        if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
-        {
-            if (!(identifier->doneFlags & AST_DONE_INLINED))
-            {
-                identifier->doneFlags |= AST_DONE_INLINED;
-                SWAG_CHECK(makeInline(context, static_cast<AstFuncDecl*>(overload->node), identifier));
-            }
+		// Expand inline function. Do not expand an inline call inside a function marked as inlined. 
+		// The expansion must be done at the lowest level possible
+		if (identifier->ownerFct && !(identifier->ownerFct->attributeFlags & ATTRIBUTE_INLINE))
+		{
+			if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
+			{
+				if (!(identifier->doneFlags & AST_DONE_INLINED))
+				{
+					identifier->doneFlags |= AST_DONE_INLINED;
+					SWAG_CHECK(makeInline(context, static_cast<AstFuncDecl*>(overload->node), identifier));
+				}
 
-            identifier->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
-            return true;
-        }
+				identifier->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
+				return true;
+			}
+		}
 
         identifier->kind = AstNodeKind::FuncCall;
         identifier->inheritOrFlag(identifier->resolvedSymbolOverload->node, AST_CONST_EXPR);
