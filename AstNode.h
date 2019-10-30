@@ -10,10 +10,10 @@
 #include "RegisterList.h"
 #include "SymTable.h"
 #include "Attribute.h"
+#include "Scope.h"
 
 struct SemanticContext;
 struct ByteCodeGenContext;
-struct Scope;
 struct TypeInfo;
 struct SymbolOverload;
 struct SymbolName;
@@ -161,6 +161,8 @@ struct AstNode : public PoolElement
         childs.clear();
         computedValue.reg.u64 = 0;
         computedValue.text.clear();
+		alternativeScopes.clear();
+		alternativeScopesVars.clear();
     }
 
     void lock()
@@ -285,6 +287,9 @@ struct AstNode : public PoolElement
     uint64_t      ownerFlags;
     Scope*        ownerStructScope;
     AstStruct*    ownerStruct;
+
+    vector<Scope*>           alternativeScopes;
+    vector<AlternativeScope> alternativeScopesVars;
 
     TypeInfo*       typeInfo;
     TypeInfo*       castedTypeInfo;
@@ -791,7 +796,7 @@ struct AstInline : public AstNode
     {
         returnList.clear();
         scope = nullptr;
-		func = nullptr;
+        func  = nullptr;
         AstNode::reset();
     }
 

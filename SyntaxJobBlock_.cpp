@@ -101,7 +101,7 @@ bool SyntaxJob::doSwitch(AstNode* parent, AstNode** result)
 
         // Content
         {
-            auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+            auto   newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
             Scoped scoped(this, newScope);
 
             auto statement               = Ast::newNode(this, &g_Pool_astSwitchCaseBlock, AstNodeKind::Statement, sourceFile, caseNode);

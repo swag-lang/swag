@@ -496,7 +496,7 @@ AstNode* AstStruct::clone(CloneContext& context)
     cloneContext.ownerStruct      = newNode;
 
     newNode->scope = cloneContext.parentScope;
-    newNode->scope->alternativeScopes.push_back(scope);
+    newNode->alternativeScopes.push_back(scope);
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;

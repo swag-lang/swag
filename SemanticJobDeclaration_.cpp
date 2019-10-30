@@ -7,19 +7,22 @@
 bool SemanticJob::resolveNamespace(SemanticContext* context)
 {
     auto node = context->node;
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Namespace));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Namespace));
     return true;
 }
 
 bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {
-    auto node       = context->node;
+    auto node    = context->node;
+    auto regNode = node->ownerScope ? node->ownerScope->owner : node;
+
+    SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct, context->errorContext.report({node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedName(node->ownerScope->kind))}));
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
-        node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
-        node->ownerScope->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+        regNode->alternativeScopes.push_back(typeStruct->scope);
+        regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
@@ -27,8 +30,8 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->ptrCount == 1, context->errorContext.report({node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
         SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->errorContext.report({node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
-        node->ownerScope->alternativeScopes.push_back(typeStruct->scope);
-        node->ownerScope->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+        regNode->alternativeScopes.push_back(typeStruct->scope);
+        regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
     }
     else
     {
@@ -76,7 +79,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         return job->error(context, "invalid 'using' reference");
     }
 
-    node->ownerScope->alternativeScopes.push_back(scope);
+    node->parent->alternativeScopes.push_back(scope);
     return true;
 }
 

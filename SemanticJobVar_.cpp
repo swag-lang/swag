@@ -653,7 +653,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                                                                   nullptr,
                                                                   storageOffset);
     SWAG_CHECK(overload);
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node->ownerScope, node, SymbolKind::Variable));
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Variable));
     node->resolvedSymbolOverload = overload;
 
     return true;

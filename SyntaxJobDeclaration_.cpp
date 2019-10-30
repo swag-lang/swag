@@ -132,7 +132,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto     newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+    auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     AstNode* statement;
 
     {
@@ -152,7 +152,7 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
         return doScopedCurlyStatement(parent, result);
 
     // One single line, but we need a scope too
-    auto     newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
+    auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     AstNode* statement;
     Scoped   scoped(this, newScope);
     SWAG_CHECK(doEmbeddedInstruction(parent, &statement));

@@ -67,8 +67,6 @@ struct Scope : public PoolElement
     uint32_t                 indexInParent;
     Utf8Crc                  name;
     Utf8                     fullname;
-    vector<Scope*>           alternativeScopes;
-    vector<AlternativeScope> alternativeScopesVars;
     vector<Scope*>           childScopes;
     int                      startStackSize;
     SpinLock                 lockChilds;

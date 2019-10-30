@@ -74,12 +74,13 @@ struct SemanticJob : public Job
     static void enterState(AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags);
-    static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope, uint32_t flags = COLLECT_ALL);
+	static void collectAlternativeScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags);
+    static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* identifier);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar);
-    static bool checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind);
+    static bool checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     static bool executeNode(SemanticContext* context, AstNode* node, bool onlyconstExpr);
     static bool forceExecuteNode(SemanticContext* context);
@@ -193,7 +194,6 @@ struct SemanticJob : public Job
         cacheScopeHierarchy.clear();
         cacheScopeHierarchyVars.clear();
         scopesHere.clear();
-        scopesHereNoAlt.clear();
         cacheMatches.clear();
         cacheBadSignature.clear();
         cacheGenericMatches.clear();
@@ -210,7 +210,6 @@ struct SemanticJob : public Job
     vector<Scope*>           cacheScopeHierarchy;
     vector<AlternativeScope> cacheScopeHierarchyVars;
     set<Scope*>              scopesHere;
-    set<Scope*>              scopesHereNoAlt;
     vector<OneMatch>         cacheMatches;
     vector<OneGenericMatch>  cacheGenericMatches;
     vector<SymbolOverload*>  cacheBadSignature;

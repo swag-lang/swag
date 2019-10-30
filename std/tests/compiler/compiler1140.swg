@@ -1,3 +1,6 @@
+#module compiler1140
+#unittest error
+
 namespace A.B
 {
 	using A.C

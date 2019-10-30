@@ -14,9 +14,9 @@ namespace std.crypto
 		const mlo = mult & 0xFFFF
 	
 		#[swag.public]
-		func seed(using self, seed: u32)
+		func seed(using self, value: u32)
 		{
-			x = seed
+			x = value
 			carry = 1234567
 		}
 		

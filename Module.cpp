@@ -21,6 +21,7 @@ void Module::setup(const string& moduleName)
     scopeRoot->allocateSymTable();
 
     astRoot                = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, nullptr);
+    scopeRoot->owner       = astRoot;
     buildPass              = g_CommandLine.buildPass;
     buildParameters.target = *g_Workspace.currentTarget;
 }
@@ -134,8 +135,8 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
     scoped_lock lk(mutexByteCode);
 
-	SWAG_ASSERT(!bc->addedToList);
-	bc->addedToList = true;
+    SWAG_ASSERT(!bc->addedToList);
+    bc->addedToList = true;
     byteCodeFunc.push_back(bc);
 
     if (bc->node)

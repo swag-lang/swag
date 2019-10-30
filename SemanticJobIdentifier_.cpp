@@ -187,7 +187,7 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
 
-    context->result       = SemanticResult::NewChilds;
+    context->result           = SemanticResult::NewChilds;
     identifier->semanticState = AstNodeResolveState::Enter;
     return true;
 }
@@ -878,13 +878,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (!startScope)
         {
             startScope = node->ownerScope;
-            collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, startScope);
+            collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node);
         }
         else
         {
             scopeHierarchy.push_back(startScope);
-            scopeHierarchy.insert(scopeHierarchy.end(), startScope->alternativeScopes.begin(), startScope->alternativeScopes.end());
-            scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->alternativeScopesVars.begin(), startScope->alternativeScopesVars.end());
+            scopeHierarchy.insert(scopeHierarchy.end(), startScope->owner->alternativeScopes.begin(), startScope->owner->alternativeScopes.end());
+            scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->owner->alternativeScopesVars.begin(), startScope->owner->alternativeScopesVars.end());
         }
 
         // Search symbol in all the scopes of the hierarchy
@@ -1099,20 +1099,34 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, Scope* startScope, uint32_t flags)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
-    auto  job       = context->job;
-    auto& here      = job->scopesHere;
-    auto& hereNoAlt = job->scopesHereNoAlt;
+    if (!startNode->alternativeScopes.empty())
+    {
+        scopes.insert(scopes.end(), startNode->alternativeScopes.begin(), startNode->alternativeScopes.end());
+        scopesVars.insert(scopesVars.end(), startNode->alternativeScopesVars.begin(), startNode->alternativeScopesVars.end());
+    }
+
+    if (startNode->parent)
+        collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->parent, flags);
+}
+
+void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+{
+    auto  job  = context->job;
+    auto& here = job->scopesHere;
 
     here.clear();
-    hereNoAlt.clear();
     scopes.clear();
-    if (!startScope)
-        return;
 
-    scopes.push_back(startScope);
-    here.insert(startScope);
+    collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode, flags);
+
+    auto startScope = startNode->ownerScope;
+    if (startScope)
+    {
+        scopes.push_back(startScope);
+        here.insert(startScope);
+    }
 
     // Can be null because of g_CommandLine.addRuntimeModule to false
     if (g_Workspace.runtimeModule)
@@ -1120,7 +1134,6 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         auto runTime = g_Workspace.runtimeModule->scopeRoot;
         scopes.push_back(runTime);
         here.insert(runTime);
-        hereNoAlt.insert(runTime);
     }
 
     for (int i = 0; i < scopes.size(); i++)
@@ -1140,26 +1153,6 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
             }
         }
 
-        // Add current alternative scopes, made by 'using'.
-        if (!scope->alternativeScopes.empty())
-        {
-            // Can we add alternative scopes for that specific scope ?
-            if (hereNoAlt.find(scope) == hereNoAlt.end())
-            {
-                for (int j = 0; j < scope->alternativeScopes.size(); j++)
-                {
-                    auto altScope = scope->alternativeScopes[j];
-                    if (here.find(altScope) == here.end())
-                    {
-                        scopes.push_back(altScope);
-                        here.insert(altScope);
-                    }
-                }
-            }
-
-            scopesVars.insert(scopesVars.end(), scope->alternativeScopesVars.begin(), scope->alternativeScopesVars.end());
-        }
-
         // If we are on a module, add all files
         if (scope->kind == ScopeKind::Module)
         {
@@ -1171,7 +1164,6 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
                     {
                         scopes.push_back(child);
                         here.insert(child);
-                        hereNoAlt.insert(child);
                     }
                 }
             }
@@ -1179,15 +1171,16 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
     }
 }
 
-bool SemanticJob::checkSymbolGhosting(SemanticContext* context, Scope* startScope, AstNode* node, SymbolKind kind)
+bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind)
 {
     auto job = context->job;
 
     // No ghosting from struct
+	auto startScope = node->ownerScope;
     if (startScope->kind == ScopeKind::Struct)
         return true;
 
-    SemanticJob::collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, startScope, COLLECT_STOP_INLINE);
+    SemanticJob::collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, COLLECT_STOP_INLINE);
     for (auto scope : job->cacheScopeHierarchy)
     {
         // No ghosting with struct
