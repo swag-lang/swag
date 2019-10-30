@@ -340,23 +340,23 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         switch (typeFuncId)
         {
         case TokenId::CompilerFuncTest:
-            funcNode->name = "__test" + to_string(id);
+            funcNode->name = "test" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC;
             break;
         case TokenId::CompilerFuncInit:
-            funcNode->name = "__init" + to_string(id);
+            funcNode->name = "init" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_INIT_FUNC;
             break;
         case TokenId::CompilerFuncDrop:
-            funcNode->name = "__drop" + to_string(id);
+            funcNode->name = "drop" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC;
             break;
         case TokenId::CompilerRun:
-            funcNode->name = "__run" + to_string(id);
+            funcNode->name = "run" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER;
             break;
         case TokenId::CompilerFuncMain:
-            funcNode->name = "__main" + to_string(id);
+            funcNode->name = "main" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC;
             break;
         }
