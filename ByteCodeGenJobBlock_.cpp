@@ -11,6 +11,13 @@
 #include "Scope.h"
 #include "SymTable.h"
 
+bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
+{
+    auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+	reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
+    return true;
+}
+
 bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);

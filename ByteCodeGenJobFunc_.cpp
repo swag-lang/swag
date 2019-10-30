@@ -59,7 +59,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                         auto sizeChilds = child->resultRegisterRC.size();
                         for (int r = 0; r < sizeChilds; r++)
                         {
-                            emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+                            emitInstruction(context, ByteCodeOp::CopyRARB, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
                         }
                     }
                 }

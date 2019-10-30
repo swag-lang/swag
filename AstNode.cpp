@@ -542,5 +542,6 @@ AstNode* AstInline::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astInline.alloc();
     newNode->copyFrom(context, this);
+    newNode->func = func;
     return newNode;
 }

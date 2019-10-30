@@ -780,7 +780,7 @@ struct AstDrop : public AstNode
 
 struct AstReturn : public AstNode
 {
-	AstNode* clone(CloneContext& context) override;
+    AstNode* clone(CloneContext& context) override;
 
     int seekJump;
 };
@@ -791,11 +791,13 @@ struct AstInline : public AstNode
     {
         returnList.clear();
         scope = nullptr;
+		func = nullptr;
         AstNode::reset();
     }
 
-	AstNode* clone(CloneContext& context) override;
+    AstNode* clone(CloneContext& context) override;
 
+    AstFuncDecl*       func;
     Scope*             scope;
     vector<AstReturn*> returnList;
 };

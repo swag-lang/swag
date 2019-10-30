@@ -168,25 +168,27 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     return true;
 }
 
-bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* parent)
+bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* identifier)
 {
     CloneContext cloneContext;
 
-    auto inlineNode = Ast::newInline(context->sourceFile, parent);
-    auto newScope   = Ast::newScope(nullptr, "", ScopeKind::Inline, parent->ownerScope);
+    auto inlineNode = Ast::newInline(context->sourceFile, identifier);
+    auto newScope   = Ast::newScope(nullptr, "", ScopeKind::Inline, identifier->ownerScope);
 
+    inlineNode->func  = funcDecl;
     inlineNode->scope = newScope;
+
     newScope->allocateSymTable();
     cloneContext.parent           = inlineNode;
     cloneContext.ownerInline      = inlineNode;
-    cloneContext.ownerFct         = parent->ownerFct;
-    cloneContext.ownerBreakable   = parent->ownerBreakable;
+    cloneContext.ownerFct         = identifier->ownerFct;
+    cloneContext.ownerBreakable   = identifier->ownerBreakable;
     cloneContext.parentScope      = newScope;
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
 
     context->result       = SemanticResult::NewChilds;
-    parent->semanticState = AstNodeResolveState::Enter;
+    identifier->semanticState = AstNodeResolveState::Enter;
     return true;
 }
 
@@ -384,7 +386,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 SWAG_CHECK(makeInline(context, static_cast<AstFuncDecl*>(overload->node), identifier));
             }
 
-            identifier->byteCodeFct = nullptr;
+            identifier->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
             return true;
         }
 

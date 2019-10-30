@@ -1,10 +1,9 @@
-/*
 #[swag.inline]
-func toto()->s32 => 1
+func toto()->s32 => 666
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	x := toto()
+	@assert(x == 666)
 }
-*/

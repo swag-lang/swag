@@ -161,6 +161,7 @@ namespace Ast
     {
         AstInline* node         = Ast::newNode(syntaxJob, &g_Pool_astInline, AstNodeKind::Inline, sourceFile, parent);
         node->semanticBeforeFct = &SemanticJob::resolveInlineBefore;
+        node->byteCodeBeforeFct = &ByteCodeGenJob::emitInlineBefore;
         node->byteCodeFct       = &ByteCodeGenJob::emitInline;
         return node;
     }
