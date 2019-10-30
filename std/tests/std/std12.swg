@@ -5,4 +5,5 @@ using std
 #test
 {
 	x := environment.getCommandLineArgs()
+	@assert(@countof(x) >= 1)
 }
