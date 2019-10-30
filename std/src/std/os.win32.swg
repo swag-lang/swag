@@ -10,6 +10,7 @@ namespace std.os
 	typealias LPDWORD:		*DWORD
 	typealias LPOVERLAPPED:	*DWORD
 	typealias DWORD_PTR:	u64
+	typealias UINT:			u32
 	
 	const STD_INPUT_HANDLE 	= cast(DWORD) -10
 	const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -72,5 +73,6 @@ namespace std.os
 		func DebugBreak();
 		func OutputDebugString(lpOutputString: LPCSTR);
 		func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
+		func ExitProcess(uExitCode: UINT);
 	}
 }

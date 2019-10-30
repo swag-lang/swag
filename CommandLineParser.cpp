@@ -30,7 +30,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
-    addArg("--userargs", nullptr, CommandLineType::String, &cmdLine->userArguments);
+    addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments);
 
     cmdLine->test          = true;
     cmdLine->cleanTarget   = false;
