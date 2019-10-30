@@ -14,4 +14,5 @@ func toto()->s32
 #test
 {
 	@assert(toto() == 3)
+	@assert(toto1() == 1)
 }
