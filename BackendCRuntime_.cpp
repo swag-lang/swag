@@ -80,9 +80,13 @@ typedef struct swag_context_t {
 	__allocatorFct allocator;
 } swag_context_t;
 
-static swag_uint64_t	__argumentsSlice[2];
-static swag_tls_id_t	__contextTlsId = 0;
-static swag_context_t*	__defaultContext = 0;
+typedef struct swag_process_infos_t {
+	swag_uint64_t		argumentsSlice[2];
+	swag_tls_id_t		contextTlsId;
+	swag_context_t*		defaultContext;
+} swag_process_infos_t;
+
+swag_process_infos_t __process_infos = {0};
 
 )";
 

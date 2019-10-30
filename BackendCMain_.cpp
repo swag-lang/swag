@@ -22,8 +22,8 @@ void BackendC::emitArgcArgv()
     bufferC.addString("\t\targumentsStr[(i * 2) + 1] = (swag_int64_t) strlen(argv[i]);\n");
     bufferC.addString("\t}\n");
     bufferC.addString("\n");
-    bufferC.addString("\t__argumentsSlice[0] = (swag_uint64_t) &argumentsStr[0];\n");
-    bufferC.addString("\t__argumentsSlice[1] = (swag_uint64_t) argc;\n");
+    bufferC.addString("\t__process_infos.argumentsSlice[0] = (swag_uint64_t) &argumentsStr[0];\n");
+    bufferC.addString("\t__process_infos.argumentsSlice[1] = (swag_uint64_t) argc;\n");
 
     bufferC.addString("}\n\n");
 }
@@ -41,9 +41,9 @@ bool BackendC::emitMain()
     bufferC.addString("\tstatic swag_context_t mainContext;\n");
     SWAG_ASSERT(g_defaultContext.allocator);
     bufferC.addString(format("\tmainContext.allocator = &%s;\n", g_defaultContext.allocator->callName().c_str()));
-    bufferC.addString("\t__contextTlsId = __tlsAlloc();\n");
-    bufferC.addString("\t__defaultContext = &mainContext;\n");
-    bufferC.addString("\t__tlsSetValue(__contextTlsId, __defaultContext);\n");
+    bufferC.addString("\t__process_infos.contextTlsId = __tlsAlloc();\n");
+    bufferC.addString("\t__process_infos.defaultContext = &mainContext;\n");
+    bufferC.addString("\t__tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);\n");
 
     // Arguments
     bufferC.addString("\n");
@@ -51,13 +51,13 @@ bool BackendC::emitMain()
     bufferC.addString("\n");
 
     // Call to global init of this module, and dependencies
-    bufferC.addString(format("\t%s_globalInit(__contextTlsId, __defaultContext);\n", module->name.c_str()));
+    bufferC.addString(format("\t%s_globalInit(&__process_infos);\n", module->name.c_str()));
     for (auto& k : module->moduleDependenciesNames)
     {
         auto depModule = g_Workspace.getModuleByName(k);
 		if(depModule->buildParameters.type == BackendOutputType::DynamicLib)
 			bufferC.addString(format("\t__loadDynamicLibrary(\"%s\");\n", k.c_str()));
-        bufferC.addString(format("\t%s_globalInit(__contextTlsId, __defaultContext);\n", k.c_str()));
+        bufferC.addString(format("\t%s_globalInit(&__process_infos);\n", k.c_str()));
     }
 
     bufferC.addString("\n");

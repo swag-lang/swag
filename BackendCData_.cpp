@@ -106,10 +106,9 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("}\n\n");
 
     // Main init fct
-    bufferC.addString(format("void %s_globalInit(swag_tls_id_t contextTlsID, swag_context_t* defaultContext)\n", module->name.c_str()));
+    bufferC.addString(format("void %s_globalInit(swag_process_infos_t *processInfos)\n", module->name.c_str()));
 	bufferC.addString("{\n");
-    bufferC.addString("\t__contextTlsId = contextTlsID;\n");
-	bufferC.addString("\t__defaultContext = defaultContext;\n");
+    bufferC.addString("\t__process_infos = *processInfos;\n");
 	bufferC.addString("\n");
 
     bufferC.addString("\tinitDataSeg();\n");
@@ -127,7 +126,7 @@ bool BackendC::emitGlobalInit()
 	bufferC.addString("\n");
 
 	bufferH.addString("\n");
-    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(swag_tls_id_t contextTlsID, struct swag_context_t* defaultContext);\n", module->name.c_str()));
+    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(struct swag_process_infos_t *processInfos);\n", module->name.c_str()));
     return true;
 }
 

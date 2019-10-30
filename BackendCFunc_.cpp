@@ -1262,11 +1262,11 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addString(format("free(r[%u].pointer);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicGetContext:
-            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) __tlsGetValue(__contextTlsId);", ip->a.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) __tlsGetValue(__process_infos.contextTlsId);", ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicArguments:
-            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) __argumentsSlice[0]; ", ip->a.u32));
-            bufferC.addString(format("r[%u].u64 = (swag_uint64_t) __argumentsSlice[1]; ", ip->b.u32));
+            bufferC.addString(format("r[%u].pointer = (swag_uint8_t*) __process_infos.argumentsSlice[0]; ", ip->a.u32));
+            bufferC.addString(format("r[%u].u64 = (swag_uint64_t) __process_infos.argumentsSlice[1]; ", ip->b.u32));
             break;
 
         case ByteCodeOp::NegBool:
