@@ -204,7 +204,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    // Reference to an inline parameter
+    // Reference to an inline parameter : the registers are directly stored in the overload symbol
     if (resolved->flags & OVERLOAD_VAR_INLINE)
     {
         node->resultRegisterRC = resolved->registers;
