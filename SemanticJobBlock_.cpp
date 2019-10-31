@@ -54,14 +54,15 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     auto node                   = CastAst<AstInline>(context->node, AstNodeKind::Inline);
     node->scope->startStackSize = node->ownerScope->startStackSize;
 
-    // Register all function parameters
-    if (node->func->parameters)
+    // Register all function parameters as inline symbols
+    auto func = node->func;
+    if (func->parameters)
     {
-        for (int i = 0; i < node->func->parameters->childs.size(); i++)
+        auto numParams = func->parameters->childs.size();
+        for (int i = 0; i < numParams; i++)
         {
-            auto funcParam         = node->func->parameters->childs[i];
-            auto overload          = node->scope->symTable->addSymbolTypeInfo(sourceFile, funcParam, funcParam->typeInfo, SymbolKind::FuncParam, nullptr, OVERLOAD_VAR_INLINE);
-            overload->storageIndex = i;
+            auto funcParam = func->parameters->childs[i];
+            node->scope->symTable->addSymbolTypeInfo(sourceFile, funcParam, funcParam->typeInfo, SymbolKind::FuncParam, nullptr, OVERLOAD_VAR_INLINE);
         }
     }
 

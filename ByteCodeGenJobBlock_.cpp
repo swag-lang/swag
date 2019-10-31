@@ -22,15 +22,61 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     auto func = node->func;
     if (func->parameters)
     {
-        auto identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
-        for (int i = 0; i < identifier->callParameters->childs.size(); i++)
+        auto identifier    = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
+        auto numFuncParams = func->parameters->childs.size();
+        auto numCallParams = identifier->callParameters->childs.size();
+
+        // Simple case, every parameters are covered by the call, and there's no named param
+        if (numFuncParams == numCallParams)
         {
-			auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
-            auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
-			auto symbol = node->scope->symTable->find(funcParam->name);
-			SWAG_ASSERT(symbol);
-			SWAG_ASSERT(symbol->overloads.size() == 1);
-			symbol->overloads[0]->registers = callParam->resultRegisterRC;
+            for (int i = 0; i < numCallParams; i++)
+            {
+                auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
+                auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+                auto symbol    = node->scope->symTable->find(funcParam->name);
+                SWAG_ASSERT(symbol);
+                SWAG_ASSERT(symbol->overloads.size() == 1);
+                symbol->overloads[0]->registers = callParam->resultRegisterRC;
+            }
+        }
+        else
+        {
+            // Determine if this parameter has been covered by the call
+            bool covered = false;
+            for (int i = 0; i < numFuncParams; i++)
+            {
+                auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
+                for (int j = 0; j < numCallParams; j++)
+                {
+                    auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
+                    if (callParam->index == i)
+                    {
+                        auto symbol = node->scope->symTable->find(funcParam->name);
+                        SWAG_ASSERT(symbol);
+                        SWAG_ASSERT(symbol->overloads.size() == 1);
+                        symbol->overloads[0]->registers = callParam->resultRegisterRC;
+                        covered                         = true;
+                        break;
+                    }
+                }
+
+                // If not covered, then this is a default value
+                if (!covered)
+                {
+                    auto defaultParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
+                    SWAG_ASSERT(defaultParam->assignment);
+
+                    context->node = defaultParam->assignment;
+                    SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
+                    emitLiteral(context, defaultParam->typeInfo);
+                    context->node = node;
+
+                    auto symbol = node->scope->symTable->find(defaultParam->name);
+                    SWAG_ASSERT(symbol);
+                    SWAG_ASSERT(symbol->overloads.size() == 1);
+                    symbol->overloads[0]->registers = defaultParam->assignment->resultRegisterRC;
+                }
+            }
         }
     }
 
