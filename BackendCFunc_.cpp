@@ -30,9 +30,15 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Struct || typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->kind == TypeInfoKind::Struct)
     {
         cType = "void";
+        return true;
+    }
+
+	if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        cType = "void*";
         return true;
     }
 
@@ -276,6 +282,11 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
         {
             bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str()));
         }
+        else if (typeParam->kind == TypeInfoKind::Slice)
+        {
+            bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[0];\n", idx, param->namedParam.c_str()));
+			bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[1];\n", idx + 1, param->namedParam.c_str()));
+        }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
             switch (typeParam->nativeType)
@@ -442,7 +453,7 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
         if (!first)
             buffer.addString(", ");
         buffer.addString(returnType);
-        buffer.addString("* result");
+        buffer.addString(" result");
     }
 
     buffer.addString(")");
