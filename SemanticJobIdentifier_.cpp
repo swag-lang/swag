@@ -398,10 +398,22 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
             {
+                // Need to wait for function full semantic resolve
+                auto funcDecl = static_cast<AstFuncDecl*>(overload->node);
+                {
+                    scoped_lock lk(funcDecl->mutex);
+                    if (!(funcDecl->flags & AST_FULL_RESOLVE))
+                    {
+                        funcDecl->dependentJobs.add(context->job);
+                        context->job->setPending();
+                        return true;
+                    }
+                }
+
                 if (!(identifier->doneFlags & AST_DONE_INLINED))
                 {
                     identifier->doneFlags |= AST_DONE_INLINED;
-                    SWAG_CHECK(makeInline(context, static_cast<AstFuncDecl*>(overload->node), identifier));
+                    SWAG_CHECK(makeInline(context, funcDecl, identifier));
                 }
 
                 identifier->byteCodeFct = &ByteCodeGenJob::emitPassThrough;

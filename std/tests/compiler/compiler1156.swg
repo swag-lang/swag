@@ -8,5 +8,5 @@ func toto(x: s64, y: s64)
 #test
 {
 	toto(x: 2, y: 1)
-	toto(y: 1, x: 2)
+	toto(y: 1, x: 2)	
 }
