@@ -23,6 +23,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     else
         typeInfo->parameters.reserve(parameters->childs.size());
 
+    auto sourceFile = context->sourceFile;
     for (auto param : parameters->childs)
     {
         auto nodeParam        = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
@@ -45,12 +46,16 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Variadic must be the last one
         if (nodeParam->typeInfo->kind == TypeInfoKind::Variadic)
         {
+            SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
+
             typeInfo->flags |= TYPEINFO_VARIADIC;
             if (index != parameters->childs.size())
                 return context->errorContext.report({nodeParam, "variadic argument should be the last one"});
         }
         else if (nodeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {
+			SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({ sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported" }));
+
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())
                 return context->errorContext.report({nodeParam, "variadic argument should be the last one"});
@@ -163,8 +168,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
-        if(!node->ownerScope->isGlobal() && node->ownerScope->kind != ScopeKind::Struct)
-			return context->errorContext.report({node, node->token, format("embedded function '%s' cannot be public", node->name.c_str())});
+        if (!node->ownerScope->isGlobal() && node->ownerScope->kind != ScopeKind::Struct)
+            return context->errorContext.report({node, node->token, format("embedded function '%s' cannot be public", node->name.c_str())});
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
             return context->errorContext.report({node, node->token, format("test function '%s' cannot be public", node->name.c_str())});
         if (node->attributeFlags & ATTRIBUTE_COMPILER)
@@ -239,6 +244,11 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
+    // Collect function attributes
+    SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
+    if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
+        funcNode->flags |= AST_CONST_EXPR;
+
     // Register symbol with its type
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
@@ -273,11 +283,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // to remove the AST_FROM_GENERIC flag, otherwise, some stuff won't be done (because typeinfo has been set on nodes)
     else if ((funcNode->flags & AST_FROM_GENERIC) && shortLambda)
         Ast::visit(funcNode->content, [](AstNode* x) { x->flags &= ~AST_FROM_GENERIC; });
-
-    // Collect function attributes
-    SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
-    if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
-        funcNode->flags |= AST_CONST_EXPR;
 
     // Register symbol
     typeInfo->returnType = typeNode->typeInfo;
@@ -405,9 +410,9 @@ bool SemanticJob::checkUnreachableCode(SemanticContext* context)
     {
         if (node->parent->kind == AstNodeKind::If)
         {
-			AstIf* ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
-			if (ifNode->ifBlock == node || ifNode->elseBlock == node)
-				return true;
+            AstIf* ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
+            if (ifNode->ifBlock == node || ifNode->elseBlock == node)
+                return true;
         }
 
         auto idx = Ast::findChildIndex(node->parent, node);
