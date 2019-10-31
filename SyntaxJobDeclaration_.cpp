@@ -265,21 +265,19 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
 void SyntaxJob::moveAttributes(AstNode* from, AstNode* to)
 {
-	vector<AstNode*> attrs;
+    vector<AstNode*> attrs;
     for (int i = (int) from->childs.size() - 1; i >= 0; i--)
     {
         if (from->childs[i]->kind != AstNodeKind::AttrUse)
             break;
-		attrs.push_back(from->childs[i]);
+        attrs.push_back(from->childs[i]);
     }
 
-	for (auto p : attrs)
-	{
-		Ast::removeFromParent(p);
-		Ast::addChildBack(to, p);
-		p->ownerFct = nullptr;
-		p->ownerScope = to->ownerScope;
-	}
+    for (auto p : attrs)
+    {
+        Ast::removeFromParent(p);
+        Ast::addChildBack(to, p);
+    }
 }
 
 bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
