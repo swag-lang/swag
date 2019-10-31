@@ -26,6 +26,16 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         auto numFuncParams = func->parameters->childs.size();
         auto numCallParams = identifier->callParameters->childs.size();
 
+        // Sort childs by parameter index
+        if (identifier->callParameters && (identifier->callParameters->flags & AST_MUST_SORT_CHILDS))
+        {
+            sort(identifier->callParameters->childs.begin(), identifier->callParameters->childs.end(), [](AstNode* n1, AstNode* n2) {
+                AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+                AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+                return p1->index < p2->index;
+            });
+        }
+
         // Simple case, every parameters are covered by the call, and there's no named param
         if (numFuncParams == numCallParams)
         {
