@@ -4,6 +4,7 @@
 #include "SpinLock.h"
 #include "Utf8crc.h"
 #include "Register.h"
+#include "RegisterList.h"
 #include "SourceLocation.h"
 struct Scope;
 struct SourceFile;
@@ -25,6 +26,7 @@ static const uint32_t OVERLOAD_CONST              = 0x00000020;
 static const uint32_t OVERLOAD_VAR_STRUCT         = 0x00000040;
 static const uint32_t OVERLOAD_GENERIC            = 0x00000080;
 static const uint32_t OVERLOAD_INCOMPLETE         = 0x00000100;
+static const uint32_t OVERLOAD_VAR_INLINE         = 0x00000200;
 
 struct SymbolOverload : public PoolElement
 {
@@ -36,6 +38,7 @@ struct SymbolOverload : public PoolElement
         storageOffset = UINT32_MAX;
         storageIndex  = 0;
         overloadIndex = 0;
+        registers.clear();
     }
 
     TypeInfo*     typeInfo;
@@ -45,6 +48,7 @@ struct SymbolOverload : public PoolElement
     uint32_t      storageOffset;
     uint32_t      storageIndex;
     uint32_t      overloadIndex;
+    RegisterList  registers;
 };
 
 enum class SymbolKind

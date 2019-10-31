@@ -370,7 +370,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-		// Be sure the call is valid
+        // Be sure the call is valid
         if ((identifier->token.id != TokenId::Intrinsic) && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN))
         {
             auto ownerFct = identifier->ownerFct;
@@ -384,7 +384,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
 
-		// This is for a lambda
+        // This is for a lambda
         if (identifier->flags & AST_TAKE_ADDRESS)
         {
             // The makePointer will deal with the real make lambda thing

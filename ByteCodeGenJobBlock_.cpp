@@ -14,7 +14,26 @@
 bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
-	reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
+
+    // Reserve registers for return value
+    reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
+
+    // Need to map all call parameters to function arguments
+    auto func = node->func;
+    if (func->parameters)
+    {
+        auto identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
+        for (int i = 0; i < identifier->callParameters->childs.size(); i++)
+        {
+			auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
+            auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+			auto symbol = node->scope->symTable->find(funcParam->name);
+			SWAG_ASSERT(symbol);
+			SWAG_ASSERT(symbol->overloads.size() == 1);
+			symbol->overloads[0]->registers = callParam->resultRegisterRC;
+        }
+    }
+
     return true;
 }
 

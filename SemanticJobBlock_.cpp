@@ -50,8 +50,21 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
 
 bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 {
+    auto sourceFile             = context->sourceFile;
     auto node                   = CastAst<AstInline>(context->node, AstNodeKind::Inline);
     node->scope->startStackSize = node->ownerScope->startStackSize;
+
+    // Register all function parameters
+    if (node->func->parameters)
+    {
+        for (int i = 0; i < node->func->parameters->childs.size(); i++)
+        {
+            auto funcParam         = node->func->parameters->childs[i];
+            auto overload          = node->scope->symTable->addSymbolTypeInfo(sourceFile, funcParam, funcParam->typeInfo, SymbolKind::FuncParam, nullptr, OVERLOAD_VAR_INLINE);
+            overload->storageIndex = i;
+        }
+    }
+
     return true;
 }
 

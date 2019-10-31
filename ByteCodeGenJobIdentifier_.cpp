@@ -204,5 +204,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
+    // Reference to an inline parameter
+    if (resolved->flags & OVERLOAD_VAR_INLINE)
+    {
+        node->resultRegisterRC = resolved->registers;
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, internalError(context, format("emitIdentifier, cannot reference identifier '%s'", identifier->name.c_str()).c_str()));
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        return true;
+    }
+
     return internalError(context, "emitIdentifier");
 }
