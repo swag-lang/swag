@@ -75,11 +75,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 {
                     auto defaultParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                     SWAG_ASSERT(defaultParam->assignment);
-
-                    context->node = defaultParam->assignment;
-                    SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
-                    emitLiteral(context, defaultParam->typeInfo);
-                    context->node = node;
+                    SWAG_CHECK(emitDefaultParamValue(context, defaultParam));
 
                     auto symbol = node->scope->symTable->find(defaultParam->name);
                     SWAG_ASSERT(symbol);

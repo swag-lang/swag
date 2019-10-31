@@ -44,6 +44,7 @@ struct ByteCodeGenJob : public Job
     static void                 setupBC(Module* module, AstNode* node);
     static void                 askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode);
     static void                 collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds);
+    static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param);
 
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
@@ -53,7 +54,7 @@ struct ByteCodeGenJob : public Job
     static bool emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpMul(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
-	static bool emitBinaryOpModulo(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
+    static bool emitBinaryOpModulo(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOp(ByteCodeGenContext* context);
     static bool emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2);
     static bool emitCompareOpEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2);
@@ -98,8 +99,8 @@ struct ByteCodeGenJob : public Job
     static bool emitFuncDeclParams(ByteCodeGenContext* context);
     static bool emitIfAfterExpr(ByteCodeGenContext* context);
     static bool emitIfAfterIf(ByteCodeGenContext* context);
-	static bool emitInlineBefore(ByteCodeGenContext* context);
-	static bool emitInline(ByteCodeGenContext* context);
+    static bool emitInlineBefore(ByteCodeGenContext* context);
+    static bool emitInline(ByteCodeGenContext* context);
     static bool emitIf(ByteCodeGenContext* context);
     static bool emitWhileBeforeExpr(ByteCodeGenContext* context);
     static bool emitWhileAfterExpr(ByteCodeGenContext* context);
@@ -162,11 +163,11 @@ struct ByteCodeGenJob : public Job
     static bool prepareEmitStructDrop(ByteCodeGenContext* context, TypeInfo* typeInfo);
     static bool prepareEmitStructCopyMove(ByteCodeGenContext* context, TypeInfo* typeInfo);
     static bool emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
-	static void emitStructCallFunc(ByteCodeGenContext* context, AstNode* funcNode, RegisterList* r0);
+    static void emitStructCallFunc(ByteCodeGenContext* context, AstNode* funcNode, RegisterList* r0);
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
-	static void     reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
+    static void     reserveLinearRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
     static void     freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, AstNode* node);
