@@ -42,3 +42,4 @@ static const uint32_t AST_DONE_EMIT_DEFERRED             = 0x00000004;
 static const uint32_t AST_DONE_EMIT_DROP                 = 0x00000008;
 static const uint32_t AST_DONE_UFCS                      = 0x00000010;
 static const uint32_t AST_DONE_INLINED                   = 0x00000020;
+static const uint32_t AST_DONE_RESOLVE_INLINED           = 0x00000040;
