@@ -42,10 +42,10 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         else
         {
             // Determine if this parameter has been covered by the call
-            bool covered = false;
             for (int i = 0; i < numFuncParams; i++)
             {
                 auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
+                bool covered   = false;
                 for (int j = 0; j < numCallParams; j++)
                 {
                     auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);

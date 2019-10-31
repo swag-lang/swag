@@ -58,10 +58,8 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     auto func = node->func;
     if (func->parameters)
     {
-        auto numParams = func->parameters->childs.size();
-        for (int i = 0; i < numParams; i++)
+        for (auto funcParam : func->parameters->childs)
         {
-            auto funcParam = func->parameters->childs[i];
             node->scope->symTable->addSymbolTypeInfo(sourceFile, funcParam, funcParam->typeInfo, SymbolKind::FuncParam, nullptr, OVERLOAD_VAR_INLINE);
         }
     }
