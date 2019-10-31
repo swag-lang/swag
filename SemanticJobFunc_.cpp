@@ -54,7 +54,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         }
         else if (nodeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {
-			SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({ sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported" }));
+            SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
 
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())
@@ -119,6 +119,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             node->ownerScope->addPublicGenericFunc(node);
         return true;
     }
+
+	// An inline function will not have bytecode, so need to register public by hand now
+    if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_INLINE))
+        node->ownerScope->addPublicGenericFunc(node);
 
     node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;

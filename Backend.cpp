@@ -29,6 +29,8 @@ bool Backend::emitAttributes(AstNode* node)
 {
     if (node->flags & AST_CONST_EXPR)
         bufferSwg.addString("\t#[swag.constexpr]\n");
+    if (node->attributeFlags & ATTRIBUTE_INLINE)
+        bufferSwg.addString("\t#[swag.inline]\n");
     return true;
 }
 
@@ -129,6 +131,13 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
             bufferSwg.addString(": ");
             bufferSwg.addString(p->typeInfo->name);
         }
+
+        auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+		if (param->assignment)
+		{
+			bufferSwg.addString(" = ");
+			SWAG_CHECK(Ast::output(bufferSwg, param->assignment));
+		}
 
         if (idx != typeFunc->parameters.size() - 1)
             bufferSwg.addString(", ");
