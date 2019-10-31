@@ -248,17 +248,38 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doAttrUse(parent));
         break;
     case TokenId::KwdFunc:
+        moveAttributes(parent, sourceFile->astRoot);
         SWAG_CHECK(doFuncDecl(sourceFile->astRoot, result));
         break;
     case TokenId::KwdStruct:
-	case TokenId::KwdUnion:
-        SWAG_CHECK(doStruct(parent, result));
+    case TokenId::KwdUnion:
+        moveAttributes(parent, sourceFile->astRoot);
+        SWAG_CHECK(doStruct(sourceFile->astRoot, result));
         break;
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
     }
 
     return true;
+}
+
+void SyntaxJob::moveAttributes(AstNode* from, AstNode* to)
+{
+	vector<AstNode*> attrs;
+    for (int i = (int) from->childs.size() - 1; i >= 0; i--)
+    {
+        if (from->childs[i]->kind != AstNodeKind::AttrUse)
+            break;
+		attrs.push_back(from->childs[i]);
+    }
+
+	for (auto p : attrs)
+	{
+		Ast::removeFromParent(p);
+		Ast::addChildBack(to, p);
+		p->ownerFct = nullptr;
+		p->ownerScope = to->ownerScope;
+	}
 }
 
 bool SyntaxJob::doTopLevelInstruction(AstNode* parent)

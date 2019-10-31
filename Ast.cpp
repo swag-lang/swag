@@ -57,6 +57,7 @@ namespace Ast
         if (parent)
         {
             scoped_lock lk(parent->mutex);
+            child->childParentIdx = (uint32_t) parent->childs.size();
             parent->childs.push_back(child);
         }
 
