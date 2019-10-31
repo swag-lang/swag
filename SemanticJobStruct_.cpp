@@ -192,6 +192,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
+		SWAG_VERIFY(node->ownerScope->isGlobal(), context->errorContext.report({ node, node->token, format("struct '%s' is embedded and cannot be public", node->name.c_str()) }));
+
 		if (!(node->flags & AST_FROM_GENERIC))
 		{
 			SWAG_VERIFY(!typeInfo->childs.empty(), context->errorContext.report({ node, node->token, format("struct '%s' is public and cannot be empty", node->name.c_str()) }));

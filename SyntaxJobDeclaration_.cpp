@@ -244,8 +244,15 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIf(parent, result));
         break;
+    case TokenId::SymAttrStart:
+        SWAG_CHECK(doAttrUse(parent));
+        break;
     case TokenId::KwdFunc:
         SWAG_CHECK(doFuncDecl(sourceFile->astRoot, result));
+        break;
+    case TokenId::KwdStruct:
+	case TokenId::KwdUnion:
+        SWAG_CHECK(doStruct(parent, result));
         break;
     default:
         return syntaxError(token, format("invalid token '%s'", token.text.c_str()));
