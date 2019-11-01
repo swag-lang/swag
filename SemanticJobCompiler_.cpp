@@ -147,6 +147,12 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
     return true;
 }
 
+void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block)
+{
+    block->flags |= AST_NO_BYTECODE;
+    block->flags |= AST_DISABLED;
+}
+
 bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 {
     auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
@@ -157,15 +163,11 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     if (node->boolExpression->computedValue.reg.b)
     {
         if (node->elseBlock)
-        {
-            node->elseBlock->flags |= AST_NO_BYTECODE;
-            node->elseBlock->flags |= AST_DISABLED;
-        }
+            disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->elseBlock);
     }
     else
     {
-        node->ifBlock->flags |= AST_NO_BYTECODE;
-        node->ifBlock->flags |= AST_DISABLED;
+        disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->ifBlock);
     }
 
     return true;
