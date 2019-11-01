@@ -81,6 +81,7 @@ enum class TokenId
 	CompilerFuncMain,
     CompilerIf,
     CompilerElse,
+	CompilerElseIf,
 
     Intrinsic,
 

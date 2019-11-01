@@ -21,13 +21,13 @@ void LanguageSpec::setup()
     keywords["#swagrevision"]   = TokenId::CompilerBuildRevision;
     keywords["#swagbuildnum"]   = TokenId::CompilerBuildNum;
     keywords["#import"]         = TokenId::CompilerImport;
-    keywords["#else"]           = TokenId::CompilerElse;
     keywords["#test"]           = TokenId::CompilerFuncTest;
     keywords["#init"]           = TokenId::CompilerFuncInit;
     keywords["#drop"]           = TokenId::CompilerFuncDrop;
     keywords["#main"]           = TokenId::CompilerFuncMain;
     keywords["#if"]             = TokenId::CompilerIf;
     keywords["#else"]           = TokenId::CompilerElse;
+    keywords["#elif"]           = TokenId::CompilerElseIf;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["let"]       = TokenId::KwdLet;

@@ -1092,7 +1092,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    // Can happen because of #if for example
+    // Can happen if a symbol is inside a disabled #if for example
     if (symbol->overloads.empty())
     {
         return context->errorContext.report({node, format("cannot resolve identifier '%s'", symbol->name.c_str())});

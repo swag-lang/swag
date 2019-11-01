@@ -24,16 +24,21 @@ bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
         SWAG_CHECK(doStatement(block));
     }
 
-    if (token.id == TokenId::CompilerElse)
+    if (token.id == TokenId::CompilerElse || token.id == TokenId::CompilerElseIf)
     {
-        SWAG_CHECK(tokenizer.getToken(token));
         auto block      = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->elseBlock = block;
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->blocks.push_back(block);
 
         ScopedCompilerIfBlock scopedIf(this, block);
-        SWAG_CHECK(doStatement(block));
+        if (token.id == TokenId::CompilerElseIf)
+            SWAG_CHECK(doCompilerIf(block));
+        else
+        {
+            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_CHECK(doStatement(block));
+        }
     }
 
     return true;
