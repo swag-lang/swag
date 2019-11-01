@@ -124,6 +124,7 @@ bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->childs[0]));
     SWAG_CHECK(checkIsConcrete(context, node->childs[1]));
     SWAG_CHECK(checkIsConcrete(context, node->childs[2]));
+	//node->inheritAndFlag(AST_CONST_EXPR);
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->childs[0]));
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->childs[2], node->childs[1]));

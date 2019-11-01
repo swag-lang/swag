@@ -152,9 +152,9 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
         bufferSwg.addString(typeFunc->returnType->name);
     }
 
-    bufferSwg.addString("\n");
+    bufferSwg.addEolIndent(1);
     if (node->content->kind != AstNodeKind::Statement)
-        bufferSwg.addString("\t{\n\t\t");
+        bufferSwg.addString("{\n\t\t");
     Ast::output(bufferSwg, node->content, 1);
     if (node->content->kind != AstNodeKind::Statement)
         bufferSwg.addString("\n\t}\n");

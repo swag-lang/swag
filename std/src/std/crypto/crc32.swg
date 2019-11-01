@@ -512,8 +512,9 @@ namespace std.crypto
 		{
 			loop unrolling: unroll
 			{
-	/*#ifndef _sTEP_LITTLE_ENDIAN_
-				one   := current[0] ^ sEndian::Swap(crc)
+			#if BIG_ENDIAN 
+			{
+				one   := current[0] ^ Swap(crc)
 				two   := current[1]
 				three := current[2]
 				four  := current[3]
@@ -527,8 +528,9 @@ namespace std.crypto
 					  lookupTable[10, (two >> 16) & 0xFF] ^ lookupTable[11, (two >> 24) & 0xFF] ^
 					  lookupTable[12, one & 0xFF] ^ lookupTable[13, (one >> 8) & 0xFF] ^
 					  lookupTable[14, (one >> 16) & 0xFF] ^ lookupTable[15, (one >> 24) & 0xFF]
-*/
-	//#else
+			}
+			#else
+			{
 				one   := current[0] ^ crc
 				two   := current[1]
 				three := current[2]
@@ -543,7 +545,7 @@ namespace std.crypto
 					  lookupTable[10, (two >> 8) & 0xFF] ^ lookupTable[11, two & 0xFF] ^
 					  lookupTable[12, (one >> 24) & 0xFF] ^ lookupTable[13, (one >> 16) & 0xFF] ^
 					  lookupTable[14, (one >> 8) & 0xFF] ^ lookupTable[15, one & 0xFF]
-	//#endif
+			}
 			}
 
 			length -= bytesAtOnce

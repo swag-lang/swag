@@ -135,3 +135,9 @@ void Concat::addIndent(int num)
 	while (num--)
 		addString("\t");
 }
+
+void Concat::addEolIndent(int num)
+{
+    addString("\n");
+	addIndent(num);
+}
