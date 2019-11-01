@@ -455,9 +455,6 @@
     <ClInclude Include="SourceLocation.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Scoped.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
     <ClInclude Include="ByteCodeGenJob.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
@@ -540,6 +537,9 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="Os.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Scoped.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

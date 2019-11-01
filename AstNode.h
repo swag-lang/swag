@@ -97,6 +97,8 @@ enum class AstNodeKind
     AffectOp,
     ArrayPointerIndex,
     PointerRef,
+	CompilerIf,
+    CompilerIfBlock,
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
@@ -132,6 +134,8 @@ struct AstNode : public PoolElement
         ownerInline                  = nullptr;
         ownerFct                     = nullptr;
         ownerStructScope             = nullptr;
+        ownerStruct                  = nullptr;
+        ownerCompilerIfBlock         = nullptr;
         parent                       = nullptr;
         semanticFct                  = nullptr;
         semanticBeforeFct            = nullptr;
@@ -161,8 +165,8 @@ struct AstNode : public PoolElement
         childs.clear();
         computedValue.reg.u64 = 0;
         computedValue.text.clear();
-		alternativeScopes.clear();
-		alternativeScopesVars.clear();
+        alternativeScopes.clear();
+        alternativeScopesVars.clear();
     }
 
     void lock()
@@ -220,12 +224,13 @@ struct AstNode : public PoolElement
     {
         if (!op)
             return;
-        ownerStructScope = op->ownerStructScope;
-        ownerStruct      = op->ownerStruct;
-        ownerScope       = op->ownerScope;
-        ownerFct         = op->ownerFct;
-        ownerBreakable   = op->ownerBreakable;
-        ownerInline      = op->ownerInline;
+        ownerStructScope     = op->ownerStructScope;
+        ownerStruct          = op->ownerStruct;
+        ownerScope           = op->ownerScope;
+        ownerFct             = op->ownerFct;
+        ownerBreakable       = op->ownerBreakable;
+        ownerInline          = op->ownerInline;
+        ownerCompilerIfBlock = op->ownerCompilerIfBlock;
     }
 
     void inheritTokenName(Token& tkn)
@@ -242,11 +247,12 @@ struct AstNode : public PoolElement
 
     void inheritOwnersAndFlags(SyntaxJob* job)
     {
-        ownerScope       = job->currentScope;
-        ownerBreakable   = job->currentBreakable;
-        ownerFct         = job->currentFct;
-        ownerStructScope = job->currentStructScope;
-        ownerStruct      = job->currentStruct;
+        ownerStructScope     = job->currentStructScope;
+        ownerStruct          = job->currentStruct;
+        ownerScope           = job->currentScope;
+        ownerFct             = job->currentFct;
+        ownerBreakable       = job->currentBreakable;
+        ownerCompilerIfBlock = job->currentCompilerIfBlock;
         flags |= job->currentFlags;
     }
 
@@ -279,14 +285,15 @@ struct AstNode : public PoolElement
     void               copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
     void               computeFullName();
 
-    AstNodeKind   kind;
-    Scope*        ownerScope;
-    AstBreakable* ownerBreakable;
-    AstInline*    ownerInline;
-    AstFuncDecl*  ownerFct;
-    uint64_t      ownerFlags;
-    Scope*        ownerStructScope;
-    AstStruct*    ownerStruct;
+    AstNodeKind         kind;
+    Scope*              ownerScope;
+    AstBreakable*       ownerBreakable;
+    AstInline*          ownerInline;
+    AstFuncDecl*        ownerFct;
+    uint64_t            ownerFlags;
+    Scope*              ownerStructScope;
+    AstStruct*          ownerStruct;
+    AstCompilerIfBlock* ownerCompilerIfBlock;
 
     vector<Scope*>           alternativeScopes;
     vector<AlternativeScope> alternativeScopesVars;
@@ -807,6 +814,11 @@ struct AstInline : public AstNode
     vector<AstReturn*> returnList;
 };
 
+struct AstCompilerIfBlock : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+};
+
 extern Pool<AstNode>            g_Pool_astNode;
 extern Pool<AstAttrDecl>        g_Pool_astAttrDecl;
 extern Pool<AstAttrUse>         g_Pool_astAttrUse;
@@ -834,3 +846,4 @@ extern Pool<AstInit>            g_Pool_astInit;
 extern Pool<AstDrop>            g_Pool_astDrop;
 extern Pool<AstInline>          g_Pool_astInline;
 extern Pool<AstReturn>          g_Pool_astReturn;
+extern Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;

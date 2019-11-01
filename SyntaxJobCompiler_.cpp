@@ -1,33 +1,31 @@
 #include "pch.h"
-#include "Diagnostic.h"
-#include "Global.h"
-#include "CommandLine.h"
 #include "Workspace.h"
-#include "Module.h"
-#include "SourceFile.h"
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "Scoped.h"
-#include "SymTable.h"
-#include "Attribute.h"
-#include "TypeManager.h"
 
 bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::If, sourceFile, parent);
+    auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerIf, sourceFile, parent);
     if (result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
-
     SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
-    SWAG_CHECK(doEmbeddedStatement(node, &node->ifBlock));
     node->boolExpression->semanticAfterFct = &SemanticJob::resolveCompilerIf;
+
+    {
+        node->ifBlock = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        ScopedCompilerIfBlock scopedIf(this, (AstCompilerIfBlock*) node->ifBlock);
+		SWAG_CHECK(doStatement(node->ifBlock));
+    }
 
     if (token.id == TokenId::CompilerElse)
     {
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doEmbeddedStatement(node, &node->elseBlock));
+        node->elseBlock = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        ScopedCompilerIfBlock scopedIf(this, (AstCompilerIfBlock*) node->elseBlock);
+        SWAG_CHECK(doStatement(node->elseBlock));
     }
 
     return true;

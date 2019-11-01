@@ -3,6 +3,7 @@
 #include "Scope.h"
 struct SyntaxJob;
 struct AstFuncDecl;
+struct AstCompilerIfBlock;
 
 struct Scoped
 {
@@ -57,6 +58,24 @@ struct ScopedFct
 
     SyntaxJob*   savedJob;
     AstFuncDecl* savedFct;
+};
+
+struct ScopedCompilerIfBlock
+{
+	ScopedCompilerIfBlock(SyntaxJob* job, AstCompilerIfBlock* newIf)
+    {
+        savedJob                    = job;
+        savedIf                     = job->currentCompilerIfBlock;
+        job->currentCompilerIfBlock = newIf;
+    }
+
+    ~ScopedCompilerIfBlock()
+    {
+        savedJob->currentCompilerIfBlock = savedIf;
+    }
+
+    SyntaxJob*          savedJob;
+    AstCompilerIfBlock* savedIf;
 };
 
 struct ScopedFlags

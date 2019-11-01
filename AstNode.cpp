@@ -30,6 +30,7 @@ Pool<AstInit>            g_Pool_astInit;
 Pool<AstDrop>            g_Pool_astDrop;
 Pool<AstInline>          g_Pool_astInline;
 Pool<AstReturn>          g_Pool_astReturn;
+Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;
 
 void AstNode::setPassThrough()
 {
@@ -552,5 +553,12 @@ AstNode* AstInline::clone(CloneContext& context)
     newNode->scope = cloneContext.parentScope;
     func->content->clone(cloneContext);
 
+    return newNode;
+}
+
+AstNode* AstCompilerIfBlock::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astCompilerIfBlock.alloc();
+    newNode->copyFrom(context, this);
     return newNode;
 }
