@@ -159,6 +159,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
 		SymTable::decreaseOverloadNoLock(symbol);
     }
 
+	// Do the same for all embedded blocks
 	for (auto p : block->blocks)
 		disableCompilerIfBlock(context, p);
 }
