@@ -75,60 +75,20 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doCompilerVersion(AstNode* parent)
-{
-    auto node   = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerVersion, sourceFile, parent);
-    node->token = move(token);
-
-    SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-    SWAG_CHECK(doIdentifierRef(nullptr, &node->boolExpression));
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
-
-    auto version          = node->boolExpression->childs.back()->name;
-    bool versionValidated = sourceFile->module->compileVersion.find(version) != sourceFile->module->compileVersion.end();
-
-    uint64_t ifFlags = versionValidated ? 0 : AST_DISABLED;
-    {
-        ScopedFlags scopedFlags(this, ifFlags);
-        SWAG_CHECK(doStatement(nullptr, &node->ifBlock));
-    }
-
-    if (token.id == TokenId::CompilerElse)
-    {
-        uint64_t elseFlags = versionValidated ? AST_DISABLED : 0;
-        SWAG_CHECK(tokenizer.getToken(token));
-        {
-            ScopedFlags scopedFlags(this, elseFlags);
-            SWAG_CHECK(doStatement(nullptr, &node->elseBlock));
-        }
-    }
-
-    if (versionValidated)
-        Ast::addChildBack(node, node->ifBlock);
-    else if (node->elseBlock)
-        Ast::addChildBack(node, node->elseBlock);
-
-    return true;
-}
-
 bool SyntaxJob::doCompilerModule()
 {
-    if (!isContextDisabled())
-    {
-        SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#module can only be specified once"}));
-        SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#module instruction must be done before any code"}));
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
-        moduleSpecified = true;
+    SWAG_VERIFY(!moduleSpecified, sourceFile->report({sourceFile, token, "#module can only be specified once"}));
+    SWAG_VERIFY(canChangeModule, sourceFile->report({sourceFile, token, "#module instruction must be done before any code"}));
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_VERIFY(token.id == TokenId::Identifier, sourceFile->report({sourceFile, token, format("invalid module name '%s'", token.text.c_str())}));
+    moduleSpecified = true;
 
-        auto newModule = g_Workspace.createOrUseModule(token.text);
-        newModule->compileVersion.insert(sourceFile->module->compileVersion.begin(), sourceFile->module->compileVersion.end());
-        newModule->fromTests = sourceFile->module->fromTests;
-        sourceFile->module->removeFile(sourceFile);
-        newModule->addFile(sourceFile);
-        currentScope = sourceFile->scopeRoot;
-    }
+    auto newModule = g_Workspace.createOrUseModule(token.text);
+    newModule->compileVersion.insert(sourceFile->module->compileVersion.begin(), sourceFile->module->compileVersion.end());
+    newModule->fromTests = sourceFile->module->fromTests;
+    sourceFile->module->removeFile(sourceFile);
+    newModule->addFile(sourceFile);
+    currentScope = sourceFile->scopeRoot;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(eatSemiCol("after module name"));
@@ -153,22 +113,22 @@ bool SyntaxJob::doCompilerUnitTest()
         SWAG_CHECK(tokenizer.getToken(token));
         if (token.text == "lexer")
         {
-            if (g_CommandLine.test && !isContextDisabled())
+            if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Lexer;
         }
         else if (token.text == "syntax")
         {
-            if (g_CommandLine.test && !isContextDisabled())
+            if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Syntax;
         }
         else if (token.text == "semantic")
         {
-            if (g_CommandLine.test && !isContextDisabled())
+            if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Semantic;
         }
         else if (token.text == "backend")
         {
-            if (g_CommandLine.test && !isContextDisabled())
+            if (g_CommandLine.test)
                 sourceFile->buildPass = BuildPass::Backend;
         }
         else
@@ -177,8 +137,7 @@ bool SyntaxJob::doCompilerUnitTest()
             return false;
         }
 
-        if (!isContextDisabled())
-            sourceFile->module->setBuildPass(sourceFile->buildPass);
+        sourceFile->module->setBuildPass(sourceFile->buildPass);
     }
 
     // ???
@@ -206,9 +165,6 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     node->name              = moduleName;
     node->token.endLocation = identifier->childs.back()->token.endLocation;
     SWAG_CHECK(eatSemiCol("after import expression"));
-
-    if (!isContextDisabled())
-        sourceFile->module->addDependency(node);
-
+    sourceFile->module->addDependency(node);
     return true;
 }

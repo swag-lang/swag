@@ -386,8 +386,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         newScope->allocateSymTable();
         funcNode->typeInfo = typeInfo;
         funcNode->scope    = newScope;
-        if (!isContextDisabled())
-            currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+        currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
     }
 
     // Dispatch owners

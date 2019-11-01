@@ -33,8 +33,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             typeInfo->name     = enumNode->name;
             typeInfo->scope    = newScope;
             enumNode->typeInfo = typeInfo;
-            if (!isContextDisabled())
-                currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode, SymbolKind::Enum);
+            currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode, SymbolKind::Enum);
         }
         else
         {

@@ -109,13 +109,10 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     }
 
     // Register symbol name
-    if (!isContextDisabled())
-    {
-        currentScope->allocateSymTable();
-        SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
-        for (auto otherVar : otherVariables)
-            SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, otherVar, SymbolKind::Variable));
-    }
+    currentScope->allocateSymTable();
+    SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+    for (auto otherVar : otherVariables)
+        SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, otherVar, SymbolKind::Variable));
 
     // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters
     if (varNode->type && varNode->type->kind == AstNodeKind::TypeExpression)

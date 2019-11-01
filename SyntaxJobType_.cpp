@@ -26,9 +26,7 @@ bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatSemiCol("after type alias"));
 
     currentScope->allocateSymTable();
-    if (!isContextDisabled())
-        currentScope->symTable->registerSymbolNameNoLock(sourceFile, node, SymbolKind::TypeAlias);
-
+    currentScope->symTable->registerSymbolNameNoLock(sourceFile, node, SymbolKind::TypeAlias);
     return true;
 }
 

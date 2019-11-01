@@ -1,3 +1,4 @@
+/*
 #module compiler276
 #unittest pass syntax;
 
@@ -17,6 +18,6 @@
 #version(toto) 
 	var a: bool;
 #else
-	var a: bool;
+	var a: bool;*/
 
 	

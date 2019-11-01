@@ -75,7 +75,6 @@ enum class TokenId
     CompilerBuildRevision,
     CompilerBuildNum,
     CompilerImport,
-    CompilerVersion,
     CompilerFuncTest,
 	CompilerFuncInit,
 	CompilerFuncDrop,

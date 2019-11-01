@@ -568,12 +568,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
         varNode->flags |= AST_R_VALUE;
-
-        if (!isContextDisabled())
-        {
-            currentScope->allocateSymTable();
-            SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
-        }
+        currentScope->allocateSymTable();
+        SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
     }
 
     // Affect operator

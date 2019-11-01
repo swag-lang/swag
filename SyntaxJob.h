@@ -19,11 +19,6 @@ struct SyntaxJob : public Job
 {
     JobResult execute() override;
 
-    bool isContextDisabled() const
-    {
-        return currentFlags & AST_DISABLED;
-    }
-
     bool error(const Token& tk, const Utf8& msg);
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg);
     bool syntaxError(const Token& tk, const Utf8& msg);
@@ -42,7 +37,6 @@ struct SyntaxJob : public Job
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
-    bool doCompilerVersion(AstNode* parent);
     bool doCompilerUnitTest();
     bool doCompilerModule();
     bool doCompilerImport(AstNode* parent);

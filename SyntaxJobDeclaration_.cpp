@@ -183,9 +183,6 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
-    case TokenId::CompilerVersion:
-        SWAG_CHECK(doCompilerVersion(parent));
-        break;
     case TokenId::SymLeftCurly:
         SWAG_CHECK(doScopedCurlyStatement(parent, result));
         break;
@@ -342,9 +339,6 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         break;
     case TokenId::CompilerPrint:
         SWAG_CHECK(doCompilerPrint(parent));
-        break;
-    case TokenId::CompilerVersion:
-        SWAG_CHECK(doCompilerVersion(parent));
         break;
     case TokenId::CompilerImport:
         SWAG_CHECK(doCompilerImport(parent));
