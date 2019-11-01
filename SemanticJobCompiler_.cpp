@@ -151,6 +151,13 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
 {
     block->flags |= AST_NO_BYTECODE;
     block->flags |= AST_DISABLED;
+
+    // Unregister one overload
+    for (auto symbol : block->symbols)
+    {
+        scoped_lock lk(symbol->mutex);
+		SymTable::decreaseOverloadNoLock(symbol);
+    }
 }
 
 bool SemanticJob::resolveCompilerIf(SemanticContext* context)

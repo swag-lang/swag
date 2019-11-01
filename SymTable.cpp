@@ -125,16 +125,21 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
         // and so we can wakeup all jobs waiting for that symbol to be solved
         if (!(flags & OVERLOAD_INCOMPLETE))
         {
-            symbol->cptOverloads--;
-            if (symbol->cptOverloads == 0)
-            {
-                for (auto job : symbol->dependentJobs.list)
-                    g_ThreadMgr.addJob(job);
-                symbol->dependentJobs.clear();
-            }
+            decreaseOverloadNoLock(symbol);
         }
 
         return result;
+    }
+}
+
+void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
+{
+    symbol->cptOverloads--;
+    if (symbol->cptOverloads == 0)
+    {
+        for (auto job : symbol->dependentJobs.list)
+            g_ThreadMgr.addJob(job);
+        symbol->dependentJobs.clear();
     }
 }
 

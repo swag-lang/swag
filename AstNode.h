@@ -97,7 +97,7 @@ enum class AstNodeKind
     AffectOp,
     ArrayPointerIndex,
     PointerRef,
-	CompilerIf,
+    CompilerIf,
     CompilerIfBlock,
     CompilerAssert,
     CompilerPrint,
@@ -816,7 +816,21 @@ struct AstInline : public AstNode
 
 struct AstCompilerIfBlock : public AstNode
 {
+    void reset() override
+    {
+        symbols.clear();
+        AstNode::reset();
+    }
+
     AstNode* clone(CloneContext& context) override;
+
+    void addSymbol(SymbolName* symbolName)
+    {
+        scoped_lock lk(mutex);
+        symbols.push_back(symbolName);
+    }
+
+    vector<SymbolName*> symbols;
 };
 
 extern Pool<AstNode>            g_Pool_astNode;
