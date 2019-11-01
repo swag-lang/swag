@@ -408,7 +408,7 @@ void Workspace::setupTarget()
 {
     targetPath = workspacePath;
     targetPath.append("out/");
-    targetPath.append(currentTarget->name);
+    targetPath.append(currentTarget->configuration + "-" + currentTarget->platform);
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> target is '%s'", targetPath.string().c_str()));
@@ -524,7 +524,8 @@ bool Workspace::build()
     setup();
 
     auto target                               = new Target;
-    target->name                              = "debug";
+    target->configuration                     = g_CommandLine.configuration;
+    target->platform                          = g_CommandLine.platform;
     target->backendDebugInformations          = false;
     target->backendOptimizeLevel              = 0;
     target->backendC.writeSourceCode          = true;

@@ -13,9 +13,11 @@ void LanguageSpec::setup()
     keywords["#run"]            = TokenId::CompilerRun;
     keywords["#file"]           = TokenId::CompilerFile;
     keywords["#line"]           = TokenId::CompilerLine;
+    keywords["#configuration"]  = TokenId::CompilerConfiguration;
+    keywords["#platform"]       = TokenId::CompilerPlatform;
     keywords["#function"]       = TokenId::CompilerFunction;
-    keywords["#callerline"]     = TokenId::CompilerCallerLine;
     keywords["#callerfile"]     = TokenId::CompilerCallerFile;
+    keywords["#callerline"]     = TokenId::CompilerCallerLine;
     keywords["#callerfunction"] = TokenId::CompilerCallerFunction;
     keywords["#swagversion"]    = TokenId::CompilerBuildVersion;
     keywords["#swagrevision"]   = TokenId::CompilerBuildRevision;

@@ -10,7 +10,8 @@ struct ParametersBackendC
 
 struct Target
 {
-    string name;
+    string configuration;
+	string platform;
 
     // Bytecode
     bool     bytecodeBoundCheck   = true;

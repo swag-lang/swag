@@ -65,13 +65,15 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerCallerLine:
     case TokenId::CompilerCallerFile:
     case TokenId::CompilerCallerFunction:
+	case TokenId::CompilerConfiguration:
+	case TokenId::CompilerPlatform:
     {
-        auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerFunction, sourceFile, parent);
+        auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
         if (result)
             *result = exprNode;
         exprNode->inheritTokenLocation(token);
         SWAG_CHECK(eatToken());
-        exprNode->semanticFct = &SemanticJob::resolveCompilerFunction;
+        exprNode->semanticFct = &SemanticJob::resolveCompilerSpecialFunction;
         break;
     }
 

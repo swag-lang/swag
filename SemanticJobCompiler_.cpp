@@ -156,12 +156,12 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     for (auto symbol : block->symbols)
     {
         scoped_lock lk(symbol->mutex);
-		SymTable::decreaseOverloadNoLock(symbol);
+        SymTable::decreaseOverloadNoLock(symbol);
     }
 
-	// Do the same for all embedded blocks
-	for (auto p : block->blocks)
-		disableCompilerIfBlock(context, p);
+    // Do the same for all embedded blocks
+    for (auto p : block->blocks)
+        disableCompilerIfBlock(context, p);
 }
 
 bool SemanticJob::resolveCompilerIf(SemanticContext* context)
@@ -184,7 +184,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerFunction(SemanticContext* context)
+bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 {
     auto node = context->node;
 
@@ -193,6 +193,17 @@ bool SemanticJob::resolveCompilerFunction(SemanticContext* context)
     case TokenId::CompilerFunction:
         SWAG_VERIFY(node->ownerFct, context->errorContext.report({node, "'#function' can only be called inside a function"}));
         node->computedValue.text = node->ownerFct->name;
+        node->typeInfo           = g_TypeMgr.typeInfoString;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        return true;
+
+    case TokenId::CompilerConfiguration:
+		node->computedValue.text = context->sourceFile->module->buildParameters.target.configuration;
+        node->typeInfo = g_TypeMgr.typeInfoString;
+        node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+        return true;
+    case TokenId::CompilerPlatform:
+        node->computedValue.text = context->sourceFile->module->buildParameters.target.platform;
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         return true;

@@ -21,7 +21,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--run-test-backend", nullptr, CommandLineType::Bool, &cmdLine->runBackendTests);
 
     addArg("--clean-target", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
-	addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild);
+    addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
     addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter);
@@ -30,16 +30,19 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments);
 
+    addArg("--configuration", nullptr, CommandLineType::String, &cmdLine->configuration);
+    addArg("--platform", nullptr, CommandLineType::Enum, &cmdLine->platform, "win64");
+
     cmdLine->test          = true;
     cmdLine->cleanTarget   = false;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
-	//cmdLine->rebuild = true;
+    //cmdLine->rebuild = true;
     cmdLine->backendOutput     = true;
     cmdLine->backendOutputTest = true;
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
-	//cmdLine->verboseUnittestErrors = true;
+    //cmdLine->verboseUnittestErrors = true;
     //cmdLine->testFilter    = "std12";
     cmdLine->fileFilter = "compiler1165";
 }

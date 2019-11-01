@@ -13,7 +13,7 @@ namespace Ast
     {
         switch (node->kind)
         {
-        case AstNodeKind::CompilerFunction:
+        case AstNodeKind::CompilerSpecialFunction:
         {
             switch (node->token.id)
             {

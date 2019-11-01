@@ -104,17 +104,15 @@ bool BackendC::compile(const BuildParameters& buildParameters)
 
     if (!compiler.mustCompile())
     {
-		if(buildParameters.flags & BUILDPARAM_FOR_TEST)
-			g_Log.messageHeaderCentered("Skipping test build", module->name.c_str());
-		else
-			g_Log.messageHeaderCentered("Skipping build", module->name.c_str());
+        if (buildParameters.flags & BUILDPARAM_FOR_TEST)
+            g_Log.messageHeaderCentered("Skipping test build", module->name.c_str());
+        else
+            g_Log.messageHeaderCentered("Skipping build", module->name.c_str());
         return true;
     }
 
-	if (buildParameters.flags & BUILDPARAM_FOR_TEST)
-		g_Log.messageHeaderCentered("Building test", module->name.c_str());
-	else
-		g_Log.messageHeaderCentered("Building", module->name.c_str());
+    const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
+    g_Log.messageHeaderCentered(header, format("%s [%s-%s]", module->name.c_str(), module->buildParameters.target.configuration.c_str(), module->buildParameters.target.platform.c_str()));
 
     return compiler.compile();
 }
