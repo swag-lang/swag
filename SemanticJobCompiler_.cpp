@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SourceFile.h"
-#include "SemanticJob.h"
 #include "Ast.h"
+#include "FileSemanticJob.h"
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "Module.h"
@@ -171,14 +171,27 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->errorContext.report({node->boolExpression, "expression cannot be evaluated at compile time"}));
 
     node->boolExpression->flags |= AST_NO_BYTECODE;
+    AstNode* validatedNode = nullptr;
     if (node->boolExpression->computedValue.reg.b)
     {
+        validatedNode = node->ifBlock;
         if (node->elseBlock)
             disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->elseBlock);
     }
     else
     {
+        validatedNode = node->elseBlock;
         disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->ifBlock);
+    }
+
+	// #if in the global scope : need to spawn a job to parse the content
+    if (validatedNode && node->ownerScope->isGlobal())
+    {
+        auto job        = g_Pool_fileSemanticJob.alloc();
+        job->sourceFile = context->sourceFile;
+        validatedNode->flags &= ~AST_DISABLED;
+        job->nodes.push_back(validatedNode);
+        g_ThreadMgr.addJob(job);
     }
 
     return true;
@@ -198,8 +211,8 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerConfiguration:
-		node->computedValue.text = context->sourceFile->module->buildParameters.target.configuration;
-        node->typeInfo = g_TypeMgr.typeInfoString;
+        node->computedValue.text = context->sourceFile->module->buildParameters.target.configuration;
+        node->typeInfo           = g_TypeMgr.typeInfoString;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         return true;
     case TokenId::CompilerPlatform:
