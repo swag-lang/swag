@@ -121,15 +121,25 @@ bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
     auto node = context->node;
     SWAG_ASSERT(node->childs.size() == 3);
 
-    SWAG_CHECK(checkIsConcrete(context, node->childs[0]));
-    SWAG_CHECK(checkIsConcrete(context, node->childs[1]));
-    SWAG_CHECK(checkIsConcrete(context, node->childs[2]));
-	//node->inheritAndFlag(AST_CONST_EXPR);
+    auto expression = node->childs[0];
+    auto ifTrue     = node->childs[1];
+    auto ifFalse    = node->childs[2];
+    SWAG_CHECK(checkIsConcrete(context, expression));
+    SWAG_CHECK(checkIsConcrete(context, ifTrue));
+    SWAG_CHECK(checkIsConcrete(context, ifFalse));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->childs[0]));
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->childs[2], node->childs[1]));
-    node->typeInfo    = node->childs[1]->typeInfo;
-    node->byteCodeFct = &ByteCodeGenJob::emitTrinaryOp;
+    node->typeInfo    = ifTrue->typeInfo;
 
+	if (expression->flags & AST_VALUE_COMPUTED)
+    {
+		if (expression->computedValue.reg.b)
+			node->inheritComputedValue(ifTrue);
+		else
+			node->inheritComputedValue(ifFalse);
+    }
+
+    node->byteCodeFct = &ByteCodeGenJob::emitTrinaryOp;
     return true;
 }
