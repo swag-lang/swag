@@ -112,7 +112,7 @@ bool BackendC::compile(const BuildParameters& buildParameters)
     }
 
     const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
-    g_Log.messageHeaderCentered(header, format("%s [%s-%s]", module->name.c_str(), module->buildParameters.target.configuration.c_str(), module->buildParameters.target.platform.c_str()));
+    g_Log.messageHeaderCentered(header, module->name.c_str());
 
     return compiler.compile();
 }

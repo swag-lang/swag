@@ -533,6 +533,8 @@ bool Workspace::build()
 
     bool ok = true;
 
+	g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), target->configuration.c_str(), target->platform.c_str()));
+
     currentTarget = target;
     addRuntime();
     setupTarget();
