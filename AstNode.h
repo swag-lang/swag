@@ -103,7 +103,6 @@ enum class AstNodeKind
     CompilerPrint,
     CompilerRun,
     CompilerImport,
-    CompilerVersion,
     CompilerFunction,
     QuestionExpression,
     Defer,

@@ -14,13 +14,12 @@ struct CommandLine
     bool      rebuild   = false;
 
     // Input
-    bool        cleanTarget      = true;
-    bool        addRuntimeModule = true;
-    string      workspacePath;
-    string      fileFilter;
-    string      testFilter;
-    set<string> compileVersion;
-    int         tabSize = 4;
+    bool   cleanTarget      = true;
+    bool   addRuntimeModule = true;
+    string workspacePath;
+    string fileFilter;
+    string testFilter;
+    int    tabSize = 4;
 
     // Test
     bool test             = false;

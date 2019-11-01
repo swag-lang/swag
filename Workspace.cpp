@@ -119,10 +119,9 @@ void Workspace::enumerateModules(const fs::path& path, bool fromTests)
                 moduleName = "tests_";
             moduleName += findfile.cFileName;
 
-            auto module            = createOrUseModule(moduleName);
-            module->compileVersion = g_CommandLine.compileVersion;
-            module->fromTests      = fromTests;
-            string tmp             = path.string() + findfile.cFileName;
+            auto module       = createOrUseModule(moduleName);
+            module->fromTests = fromTests;
+            string tmp        = path.string() + findfile.cFileName;
             enumerateFilesInModule(tmp, module);
 
         } while (::FindNextFileA(h, &findfile));
