@@ -819,6 +819,7 @@ struct AstCompilerIfBlock : public AstNode
     void reset() override
     {
         symbols.clear();
+		blocks.clear();
         AstNode::reset();
     }
 
@@ -830,7 +831,8 @@ struct AstCompilerIfBlock : public AstNode
         symbols.push_back(symbolName);
     }
 
-    vector<SymbolName*> symbols;
+    vector<AstCompilerIfBlock*> blocks;
+    vector<SymbolName*>         symbols;
 };
 
 extern Pool<AstNode>            g_Pool_astNode;

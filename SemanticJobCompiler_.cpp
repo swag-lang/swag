@@ -158,6 +158,9 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
         scoped_lock lk(symbol->mutex);
 		SymTable::decreaseOverloadNoLock(symbol);
     }
+
+	for (auto p : block->blocks)
+		disableCompilerIfBlock(context, p);
 }
 
 bool SemanticJob::resolveCompilerIf(SemanticContext* context)

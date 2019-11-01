@@ -15,17 +15,25 @@ bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
     node->boolExpression->semanticAfterFct = &SemanticJob::resolveCompilerIf;
 
     {
-        node->ifBlock = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
-        ScopedCompilerIfBlock scopedIf(this, (AstCompilerIfBlock*) node->ifBlock);
-		SWAG_CHECK(doStatement(node->ifBlock));
+        auto block    = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        node->ifBlock = block;
+        if (node->ownerCompilerIfBlock)
+            node->ownerCompilerIfBlock->blocks.push_back(block);
+
+        ScopedCompilerIfBlock scopedIf(this, block);
+        SWAG_CHECK(doStatement(block));
     }
 
     if (token.id == TokenId::CompilerElse)
     {
         SWAG_CHECK(tokenizer.getToken(token));
-        node->elseBlock = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
-        ScopedCompilerIfBlock scopedIf(this, (AstCompilerIfBlock*) node->elseBlock);
-        SWAG_CHECK(doStatement(node->elseBlock));
+        auto block      = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
+        node->elseBlock = block;
+        if (node->ownerCompilerIfBlock)
+            node->ownerCompilerIfBlock->blocks.push_back(block);
+
+        ScopedCompilerIfBlock scopedIf(this, block);
+        SWAG_CHECK(doStatement(block));
     }
 
     return true;
