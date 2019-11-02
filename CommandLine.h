@@ -47,8 +47,8 @@ struct CommandLine
     bool errorNoteOut          = true;
 
     // Output
-    string configuration = "debug";
-    string platform      = "win64";
+    string config = "debug";
+    string arch      = "win64";
 
     // Backend
     BackendType backendType        = BackendType::C;

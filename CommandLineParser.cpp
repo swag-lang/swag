@@ -30,14 +30,14 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
     addArg("--user-args", nullptr, CommandLineType::String, &cmdLine->userArguments);
 
-    addArg("--configuration", nullptr, CommandLineType::String, &cmdLine->configuration);
-    addArg("--platform", nullptr, CommandLineType::Enum, &cmdLine->platform, "win64");
+    addArg("--config", nullptr, CommandLineType::String, &cmdLine->config);
+    addArg("--arch", nullptr, CommandLineType::Enum, &cmdLine->arch, "win64");
 
     cmdLine->test          = true;
     cmdLine->cleanTarget   = false;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
-    cmdLine->rebuild = true;
+    cmdLine->rebuild           = true;
     cmdLine->backendOutput     = true;
     cmdLine->backendOutputTest = true;
     //cmdLine->runBackendTests   = false;

@@ -211,12 +211,12 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerConfiguration:
-        node->computedValue.text = context->sourceFile->module->buildParameters.target.configuration;
+        node->computedValue.text = context->sourceFile->module->buildParameters.target.config;
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         return true;
     case TokenId::CompilerPlatform:
-        node->computedValue.text = context->sourceFile->module->buildParameters.target.platform;
+        node->computedValue.text = context->sourceFile->module->buildParameters.target.arch;
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         return true;
