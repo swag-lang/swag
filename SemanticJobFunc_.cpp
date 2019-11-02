@@ -120,7 +120,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         return true;
     }
 
-	// An inline function will not have bytecode, so need to register public by hand now
+    // An inline function will not have bytecode, so need to register public by hand now
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_INLINE))
         node->ownerScope->addPublicGenericFunc(node);
 
@@ -299,6 +299,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Alias &&
         typeInfo->returnType->kind != TypeInfoKind::Lambda &&
         typeInfo->returnType->kind != TypeInfoKind::Slice &&
+        typeInfo->returnType->kind != TypeInfoKind::Enum &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->errorContext.report({typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 

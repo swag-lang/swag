@@ -135,6 +135,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -186,6 +187,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -290,6 +292,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -394,6 +397,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -498,6 +502,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -591,6 +596,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -674,6 +680,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -753,6 +760,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -828,6 +836,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -901,6 +910,9 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
+    if (castFlags & CASTFLAG_EXPLICIT)
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+
     switch (fromType->nativeType)
     {
     case NativeTypeKind::S8:
@@ -1011,6 +1023,9 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
+    if (castFlags & CASTFLAG_EXPLICIT)
+        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+
     switch (fromType->nativeType)
     {
     case NativeTypeKind::S8:
