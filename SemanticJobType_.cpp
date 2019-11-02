@@ -255,7 +255,7 @@ bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
 {
     auto node      = context->node;
     auto exprNode  = node->childs[0];
-    auto cloneType = TypeManager::concreteType(exprNode->typeInfo)->clone();
+    auto cloneType = exprNode->typeInfo->clone();
     cloneType->flags |= TYPEINFO_AUTO_CAST;
     node->typeInfo = cloneType;
 

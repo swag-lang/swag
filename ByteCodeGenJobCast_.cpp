@@ -19,11 +19,11 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     SWAG_ASSERT(numRegs <= 2);
 
     // Make a pointer to the value
-	if (fromTypeInfo->kind == TypeInfoKind::Native)
-	{
-		// Be sure registers are contiguous, as we address the first of them
-		SWAG_ASSERT(exprNode->resultRegisterRC.size() != 2 || exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
-		emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC[0]);
+    if (fromTypeInfo->kind == TypeInfoKind::Native)
+    {
+        // Be sure registers are contiguous, as we address the first of them
+        SWAG_ASSERT(exprNode->resultRegisterRC.size() != 2 || exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
+        emitInstruction(context, ByteCodeOp::CopyRARBAddr, r0[0], exprNode->resultRegisterRC[0]);
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -691,9 +691,10 @@ bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
     AstNode* node         = context->node;
-    auto     typeInfo     = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+    auto     typeInfo     = TypeManager::concreteType(node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo);
     auto     exprNode     = node->childs[0];
     auto     fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
+    node->castedTypeInfo = typeInfo;
     return true;
 }
