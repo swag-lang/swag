@@ -1,12 +1,14 @@
 namespace std.math
 {
-	#[swag.public, swag.constexpr]
+	#[swag.constexpr]
+    public
 	{
 		func saturate(x: f32) => clamp(x, 0, 1)
 		func saturate(x: f64) => clamp(x, 0, 1)
 	}
 	
-	#[swag.public, swag.constexpr]
+	#[swag.constexpr]
+    public
 	{
 		func cos(x: f32)->f32 => os.cosf(x)
 		func cos(x: f64)->f64 => os.cos(x)

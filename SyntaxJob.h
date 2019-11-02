@@ -52,6 +52,7 @@ struct SyntaxJob : public Job
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, bool acceptParameters = true);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
+    bool doExpose(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
@@ -106,6 +107,7 @@ struct SyntaxJob : public Job
         canChangeModule        = true;
         moduleSpecified        = false;
         currentFlags           = 0;
+        currentAttributesFlags = 0;
         currentScope           = nullptr;
         currentFct             = nullptr;
         currentBreakable       = nullptr;
@@ -120,6 +122,7 @@ struct SyntaxJob : public Job
     bool                canChangeModule;
     bool                moduleSpecified;
     uint64_t            currentFlags;
+    uint32_t            currentAttributesFlags;
     Scope*              currentScope;
     AstFuncDecl*        currentFct;
     AstBreakable*       currentBreakable;

@@ -1,6 +1,6 @@
 namespace std.diagnostics.debugger
 {
-	#[swag.public]
+	public
 	{
 		func isAttached() => os.IsDebuggerPresent()
 		func break() => os.DebugBreak()

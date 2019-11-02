@@ -62,7 +62,7 @@ struct ScopedFct
 
 struct ScopedCompilerIfBlock
 {
-	ScopedCompilerIfBlock(SyntaxJob* job, AstCompilerIfBlock* newIf)
+    ScopedCompilerIfBlock(SyntaxJob* job, AstCompilerIfBlock* newIf)
     {
         savedJob                    = job;
         savedIf                     = job->currentCompilerIfBlock;
@@ -94,6 +94,24 @@ struct ScopedFlags
 
     SyntaxJob* savedJob;
     uint64_t   savedFlags;
+};
+
+struct ScopedAttributesFlags
+{
+    ScopedAttributesFlags(SyntaxJob* job, uint32_t newFlags)
+    {
+        savedJob                    = job;
+        savedFlags                  = job->currentAttributesFlags;
+        job->currentAttributesFlags = newFlags;
+    }
+
+    ~ScopedAttributesFlags()
+    {
+        savedJob->currentAttributesFlags = savedFlags;
+    }
+
+    SyntaxJob* savedJob;
+    uint32_t   savedFlags;
 };
 
 struct ScopedStruct

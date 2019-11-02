@@ -35,6 +35,8 @@ void LanguageSpec::setup()
     keywords["let"]       = TokenId::KwdLet;
     keywords["const"]     = TokenId::KwdConst;
     keywords["namespace"] = TokenId::KwdNamespace;
+    keywords["public"]    = TokenId::KwdPublic;
+    keywords["private"]   = TokenId::KwdPrivate;
     keywords["typealias"] = TokenId::KwdTypeAlias;
     keywords["enum"]      = TokenId::KwdEnum;
     keywords["enumvalue"] = TokenId::KwdEnumValue;

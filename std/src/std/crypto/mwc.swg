@@ -1,27 +1,24 @@
 namespace std.crypto
-{
-	#[swag.public]
-	struct Mwc
+{   
+	public struct Mwc
 	{
 		x: 		u32 = 1234567
 		carry: 	u32 = 1234567
 	}
-	
+
 	impl Mwc
 	{
 		const mult: u32 = 2083801278
 		const mhi = mult >> 16
 		const mlo = mult & 0xFFFF
-	
-		#[swag.public]
-		func seed(using self, value: u32)
+
+		public func seed(using self, value: u32)
 		{
 			x = value
 			carry = 1234567
 		}
-		
-		#[swag.public]
-		func next(using self)->u32
+
+		public func next(using self)->u32
 		{
 		    xhi := x >> 16
 			xlo := x & 0xFFFF

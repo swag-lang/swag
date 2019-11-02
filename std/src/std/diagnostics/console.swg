@@ -1,7 +1,6 @@
 namespace std.console
 {
-	#[swag.public]
-	enum Color
+	public enum Color
 	{
 		Black
 		White

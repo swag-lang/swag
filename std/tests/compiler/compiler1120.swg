@@ -1,7 +1,6 @@
 namespace A.B
 {
-	#[swag.public]
-	struct(T) Random
+	public struct(T) Random
 	{
 		x: s32
 	}

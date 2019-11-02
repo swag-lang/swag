@@ -1,14 +1,13 @@
 namespace std.crypto
 {
-	#[swag.public]
-	struct(T = Mwc) Random
+	public struct(T = Mwc) Random
 	{    
 		rng: T
 	}
 	
 	impl Random
 	{
-		#[swag.public]
+		public
 		{
 			func seed(using self, value: u32) => rng.seed(value)
 			

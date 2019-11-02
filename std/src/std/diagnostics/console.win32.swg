@@ -51,8 +51,7 @@
 			resetColor()
 		}
 
-		#[swag.public]
-		func setTextColor(color: Color)
+		public func setTextColor(color: Color)
 		{
 			attributes := g_colorToWin[cast(u32) color]
 			g_stdOutputCurAttr &= BACKGROUND_MASK
@@ -60,8 +59,7 @@
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 		}
 		
-		#[swag.public]
-		func setBackColor(color: Color)
+		public func setBackColor(color: Color)
 		{
 			attributes := cast(u16) (g_colorToWin[cast(u32) color] << 4)
 			g_stdOutputCurAttr &= FOREGROUND_MASK
@@ -69,14 +67,12 @@
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputCurAttr)
 		}
 
-		#[swag.public]
-		func resetColor()
+		public func resetColor()
 		{
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 		}
 		
-		#[swag.public]
-		func write(message: string)
+		public func write(message: string)
 		{
 			WriteFile(g_stdOutputHandle, @dataof(message), @countof(message), null, null)
 		}	

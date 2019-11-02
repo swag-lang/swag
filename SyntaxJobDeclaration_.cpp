@@ -295,6 +295,10 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::KwdTypeAlias:
         SWAG_CHECK(doTypeAlias(parent));
         break;
+    case TokenId::KwdPublic:
+    case TokenId::KwdPrivate:
+        SWAG_CHECK(doExpose(parent));
+        break;
     case TokenId::KwdNamespace:
         SWAG_CHECK(doNamespace(parent));
         break;
@@ -325,7 +329,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::CompilerRun:
         SWAG_CHECK(doFuncDecl(parent));
         break;
-	case TokenId::CompilerIf:
+    case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIf(parent));
         break;
     case TokenId::CompilerUnitTest:

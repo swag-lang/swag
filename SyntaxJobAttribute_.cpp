@@ -21,7 +21,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->inheritTokenName(token);
 
     // Register attribute
-	currentScope->allocateSymTable();
+    currentScope->allocateSymTable();
     scoped_lock lk(currentScope->symTable->mutex);
     auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
     auto        newScope = Ast::newScope(attrNode, attrNode->name, ScopeKind::Attribute, currentScope);
@@ -51,7 +51,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_VAR;
             break;
         case TokenId::KwdStruct:
-		case TokenId::KwdUnion:
+        case TokenId::KwdUnion:
             SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute type 'struct' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_STRUCT;
             break;
@@ -76,6 +76,35 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatSemiCol("after attribute definition"));
     SWAG_VERIFY(attrNode->typeInfo->flags, syntaxError(token, "missing attribute type"));
 
+    return true;
+}
+
+bool SyntaxJob::doExpose(AstNode* parent, AstNode** result)
+{
+    uint32_t attr = 0;
+
+    Scope* newScope = currentScope;
+    switch (token.id)
+    {
+    case TokenId::KwdPrivate:
+        attr = ATTRIBUTE_PRIVATE;
+        SWAG_VERIFY(currentScope->isGlobal(), error(token, "a private definition must appear at file or namespace scope"));
+        newScope = sourceFile->scopePrivate;
+        break;
+    case TokenId::KwdPublic:
+        attr = ATTRIBUTE_PUBLIC;
+        SWAG_VERIFY(currentScope->isGlobal() || currentScope->kind == ScopeKind::Struct, error(token, "a public definition must appear at file or namespace scope"));
+        break;
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    SWAG_CHECK(tokenizer.getToken(token));
+
+    Scoped                scoped(this, newScope);
+    ScopedAttributesFlags scopedAttributes(this, attr);
+    SWAG_CHECK(doTopLevelInstruction(parent));
     return true;
 }
 

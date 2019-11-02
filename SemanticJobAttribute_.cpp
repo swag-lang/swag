@@ -66,8 +66,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_TEST_FUNC;
             else if (child->name == "compiler")
                 flags |= ATTRIBUTE_COMPILER;
-            else if (child->name == "public")
-                flags |= ATTRIBUTE_PUBLIC;
             else if (child->name == "pack")
                 flags |= ATTRIBUTE_PACK;
             else if (child->name == "flags")

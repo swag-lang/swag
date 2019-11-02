@@ -4,7 +4,7 @@
     {
         using os
         
-        #[swag.public]
+        public
         {
             func getProcessorCount() => g_sysInfo.dwNumberOfProcessors	
         }

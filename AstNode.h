@@ -252,7 +252,9 @@ struct AstNode : public PoolElement
         ownerFct             = job->currentFct;
         ownerBreakable       = job->currentBreakable;
         ownerCompilerIfBlock = job->currentCompilerIfBlock;
+
         flags |= job->currentFlags;
+        attributeFlags |= job->currentAttributesFlags;
     }
 
     bool isConstantTrue()
@@ -818,7 +820,7 @@ struct AstCompilerIfBlock : public AstNode
     void reset() override
     {
         symbols.clear();
-		blocks.clear();
+        blocks.clear();
         AstNode::reset();
     }
 

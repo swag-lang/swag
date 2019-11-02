@@ -1138,8 +1138,9 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vec
 
 void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
-    auto  job  = context->job;
-    auto& here = job->scopesHere;
+    auto  job        = context->job;
+    auto& here       = job->scopesHere;
+    auto  sourceFile = context->sourceFile;
 
     here.clear();
     scopes.clear();
@@ -1183,7 +1184,7 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         {
             for (auto child : scope->childScopes)
             {
-                if (child->name.empty())
+                if (child->name.empty() || child == sourceFile->scopePrivate)
                 {
                     if (here.find(child) == here.end())
                     {

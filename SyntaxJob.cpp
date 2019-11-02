@@ -128,15 +128,18 @@ JobResult SyntaxJob::execute()
     tokenizer.setFile(sourceFile);
 
     // One unnamed scope per file
-    string name;
-    if (sourceFile->fromTests)
-        name = sourceFile->path.filename().replace_extension("").string();
-    sourceFile->scopeRoot = Ast::newScope(nullptr, name, ScopeKind::File, sourceFile->module->scopeRoot);
+    string scopeName;
+    scopeName             = sourceFile->path.filename().replace_extension("").string();
+    sourceFile->scopeRoot = Ast::newScope(nullptr, sourceFile->fromTests ? scopeName : "", ScopeKind::File, sourceFile->module->scopeRoot);
     currentScope          = sourceFile->scopeRoot;
 
+	// One private scope
+    sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, sourceFile->module->scopeRoot);
+
     // Setup root ast for file
-    sourceFile->astRoot = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::File, sourceFile, sourceFile->module->astRoot);
-	sourceFile->scopeRoot->owner = sourceFile->astRoot;
+    sourceFile->astRoot             = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::File, sourceFile, sourceFile->module->astRoot);
+    sourceFile->scopeRoot->owner    = sourceFile->astRoot;
+    sourceFile->scopePrivate->owner = sourceFile->astRoot;
 
     bool result = true;
     bool ok     = tokenizer.getToken(token);

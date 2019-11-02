@@ -2,13 +2,13 @@ namespace std.environment
 {
 	using os
 	
-	#[swag.public]
+	public
 	{
 		func getCommandLineArgs() => g_cmdLineArgs
 		func exit(code: u32) => os.ExitProcess(code)
 	}
 	
-	var g_cmdLineArgs: [..] string
+	private var g_cmdLineArgs: [..] string
 	
 	#init
 	{

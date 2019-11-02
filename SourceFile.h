@@ -63,7 +63,8 @@ struct SourceFile : public PoolElement
     bool                         generated   = false;
     int                          totalRead   = 0;
     condition_variable           condVar;
-    Scope*                       scopeRoot = nullptr;
+    Scope*                       scopeRoot    = nullptr;
+    Scope*                       scopePrivate = nullptr;
     SpinLock                     mutexGetLine;
 };
 

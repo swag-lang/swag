@@ -1,7 +1,7 @@
 namespace std.diagnostics.debug
 {
-	#[swag.public, swag.inline]
-	func assert(expr: bool, file: string = #callerfile, line: u32 = #callerline)
+	#[swag.inline]
+	public func assert(expr: bool, file: string = #callerfile, line: u32 = #callerline)
 	{
 		#if ASSERT
 		{
