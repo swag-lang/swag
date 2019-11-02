@@ -35,7 +35,7 @@ TypeInfoFuncAttr* ByteCode::callType()
 
 void ByteCode::enterByteCode(ByteCodeRunContext* context)
 {
-    if (curRC == (int)context->sourceFile->module->buildParameters.target.byteCodeMaxRecurse)
+    if (curRC == (int) context->sourceFile->module->buildParameters.target.byteCodeMaxRecurse)
     {
         context->hasError = true;
         context->errorMsg = format("recursive overflow during bytecode execution (max recursion is '--bc-max-recurse:%d')", context->sourceFile->module->buildParameters.target.byteCodeMaxRecurse);
@@ -283,6 +283,7 @@ void ByteCode::print()
         {
             wprintf(L"RA: %u ", ip->a.u32);
             auto bc = (ByteCode*) ip->b.pointer;
+            SWAG_ASSERT(bc);
             g_Log.print("[");
             g_Log.print(bc->sourceFile->path.string());
             g_Log.print(", ");
@@ -294,6 +295,7 @@ void ByteCode::print()
         case ByteCodeOp::LocalCall:
         {
             auto bc = (ByteCode*) ip->a.pointer;
+            SWAG_ASSERT(bc);
             g_Log.print("[");
             g_Log.print(bc->sourceFile->path.string());
             g_Log.print(", ");

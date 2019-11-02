@@ -386,5 +386,6 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
     AstNode* node           = forNode ? forNode : context->node;
     auto     symbolOverload = node->resolvedUserOpSymbolOverload;
     SWAG_ASSERT(symbolOverload);
-    return emitCall(context, allParams ? allParams : node, static_cast<AstFuncDecl*>(symbolOverload->node), nullptr);
+    bool foreign = symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
+    return emitCall(context, allParams ? allParams : node, static_cast<AstFuncDecl*>(symbolOverload->node), nullptr, foreign);
 }
