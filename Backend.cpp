@@ -133,11 +133,11 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
         }
 
         auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
-		if (param->assignment)
-		{
-			bufferSwg.addString(" = ");
-			SWAG_CHECK(Ast::output(bufferSwg, param->assignment));
-		}
+        if (param->assignment)
+        {
+            bufferSwg.addString(" = ");
+            SWAG_CHECK(Ast::output(bufferSwg, param->assignment));
+        }
 
         if (idx != typeFunc->parameters.size() - 1)
             bufferSwg.addString(", ");
@@ -166,6 +166,9 @@ bool Backend::emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node)
 {
     bufferSwg.addString("\tenum ");
     bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString(" : ");
+    bufferSwg.addString(typeEnum->rawType->name);
+
     bufferSwg.addString("\n\t{\n");
 
     for (auto p : typeEnum->values)
