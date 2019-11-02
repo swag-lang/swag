@@ -12,6 +12,7 @@ namespace std.drawing
 	{
 		public
 		{
+            #[swag.complete]
 			func opAffect(using self, argb: u32)
 			{
 				a = acast (argb >> 24)

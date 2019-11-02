@@ -20,16 +20,23 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         if (context->result == ByteCodeResult::Pending)
             return true;
 
-        if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
+        // Generate initialization
+        // Do not generate if we have a user define affectation, and the operator is marker as 'complete'
+        if (!node->resolvedUserOpSymbolName ||
+            node->resolvedUserOpSymbolName->kind != SymbolKind::Function ||
+            !(node->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
         {
-            if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+            if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
             {
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-                emitStructInit(context, typeStruct, UINT32_MAX);
-            }
+                if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
+                {
+                    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+                    emitStructInit(context, typeStruct, UINT32_MAX);
+                }
 
-            emitStructParameters(context, UINT32_MAX);
-            node->doneFlags |= AST_DONE_VARDECL_STRUCT_PARAMETERS;
+                emitStructParameters(context, UINT32_MAX);
+                node->doneFlags |= AST_DONE_VARDECL_STRUCT_PARAMETERS;
+            }
         }
 
         if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)

@@ -31,6 +31,8 @@ bool Backend::emitAttributes(AstNode* node)
         bufferSwg.addString("\t#[swag.constexpr]\n");
     if (node->attributeFlags & ATTRIBUTE_INLINE)
         bufferSwg.addString("\t#[swag.inline]\n");
+    if (node->attributeFlags & ATTRIBUTE_COMPLETE)
+        bufferSwg.addString("\t#[swag.complete]\n");
     return true;
 }
 

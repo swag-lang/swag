@@ -29,6 +29,7 @@ namespace swag
 	attr waitsem(ms: s32) -> func
 	attr pack() -> struct
 	attr flags() -> enum
+    attr complete() -> func
 
 	// #########################################################
 	// Constants
