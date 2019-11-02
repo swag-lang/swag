@@ -45,7 +45,7 @@ static void matchParameters(SymbolMatchContext& context, vector<TypeInfoParam*>&
             return;
         }
 
-        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
 
         if (symbolTypeInfo->kind == TypeInfoKind::TypedVariadic)
         {
@@ -251,7 +251,7 @@ static void matchNamedParameters(SymbolMatchContext& context, vector<TypeInfoPar
                     return;
                 }
 
-                auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+                auto typeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
                 bool same     = TypeManager::makeCompatibles(nullptr, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR);
                 if (!same)
                 {
@@ -385,7 +385,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     {
         auto callParameter   = context.genericParameters[i];
         auto symbolParameter = genericParameters[i];
-        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, MakeConcrete::FlagFunc);
+        auto typeInfo        = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
 
         if (myTypeInfo->flags & TYPEINFO_GENERIC)
         {

@@ -771,8 +771,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
     // Special case for enum : nothing is possible, except for flags
     bool isEnumFlags   = false;
-    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo, MakeConcrete::FlagAlias);
-    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo, MakeConcrete::FlagAlias);
+    auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
+    auto rightTypeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ALIAS);
     if (leftTypeInfo->kind == TypeInfoKind::Enum || rightTypeInfo->kind == TypeInfoKind::Enum)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));

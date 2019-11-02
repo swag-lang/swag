@@ -129,8 +129,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         {
             SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->errorContext.report({varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
 
-            auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, MakeConcrete::FlagAlias);
-            typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, MakeConcrete::FlagEnum);
+            auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ALIAS);
+            typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
 
             if (typeInfoAssignment->isNative(NativeTypeKind::String))
             {

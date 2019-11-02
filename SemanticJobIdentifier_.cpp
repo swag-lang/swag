@@ -490,7 +490,7 @@ anotherTry:
             // parameters on the source symbol
             if (overload->typeInfo->kind == TypeInfoKind::Alias)
             {
-                rawTypeInfo = TypeManager::concreteType(overload->typeInfo, MakeConcrete::FlagAlias);
+                rawTypeInfo = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
                 if (rawTypeInfo->kind == TypeInfoKind::Struct)
                 {
                     auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
@@ -1014,7 +1014,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             symbol->kind != SymbolKind::Function &&
             symbol->kind != SymbolKind::Struct &&
             symbol->kind != SymbolKind::TypeAlias &&
-            TypeManager::concreteType(symbol->overloads[0]->typeInfo, MakeConcrete::FlagAlias)->kind != TypeInfoKind::Lambda)
+            TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
         {
             if (symbol->kind == SymbolKind::Variable)
             {

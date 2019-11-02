@@ -16,14 +16,11 @@ static const uint32_t CASTFLAG_AUTO_BOOL     = 0x00000020;
 static const uint32_t CASTFLAG_NO_COLLECT    = 0x00000040;
 static const uint32_t CASTFLAG_BIJECTIF      = 0x00000080;
 
-enum MakeConcrete
-{
-    FlagAll     = 0xFFFFFFFF,
-    FlagEnum    = 0x00000001,
-    FlagFunc    = 0x00000002,
-    FlagGeneric = 0x00000004,
-    FlagAlias   = 0x00000008,
-};
+static const uint32_t CONCRETE_ALL     = 0xFFFFFFFF;
+static const uint32_t CONCRETE_ENUM    = 0x00000001;
+static const uint32_t CONCRETE_FUNC    = 0x00000002;
+static const uint32_t CONCRETE_GENERIC = 0x00000004;
+static const uint32_t CONCRETE_ALIAS   = 0x00000008;
 
 struct TypeManager
 {
@@ -57,7 +54,7 @@ struct TypeManager
 
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);
-    static TypeInfo* concreteType(TypeInfo* typeInfo, MakeConcrete flags = MakeConcrete::FlagAll);
+    static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
 
     TypeInfoNative*   typeInfoS8;
     TypeInfoNative*   typeInfoS16;

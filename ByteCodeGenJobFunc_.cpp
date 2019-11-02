@@ -339,7 +339,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
     else
     {
-        auto typeVar = TypeManager::concreteType(varNode->typeInfo, MakeConcrete::FlagAlias);
+        auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
     }
 

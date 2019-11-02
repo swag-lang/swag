@@ -135,7 +135,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -187,7 +187,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -292,7 +292,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -397,7 +397,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -502,7 +502,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -596,7 +596,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -680,7 +680,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -760,7 +760,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -836,7 +836,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 {
     if (castFlags & CASTFLAG_EXPLICIT)
     {
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         switch (fromType->nativeType)
         {
         case NativeTypeKind::Char:
@@ -911,7 +911,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_EXPLICIT)
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
 
     switch (fromType->nativeType)
     {
@@ -1024,7 +1024,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     if (castFlags & CASTFLAG_EXPLICIT)
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
 
     switch (fromType->nativeType)
     {
@@ -1503,7 +1503,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
-    auto fromType = concreteType(fromNode->typeInfo, MakeConcrete::FlagAlias);
+    auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
     if (fromType->kind == TypeInfoKind::TypeList && toType->kind == TypeInfoKind::Struct)
     {
         TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeList);
@@ -1557,8 +1557,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint32_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
-    auto realFromType = concreteType(fromType, MakeConcrete::FlagAlias);
-    auto realToType   = concreteType(toType, MakeConcrete::FlagAlias);
+    auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
+    auto realToType   = concreteType(toType, CONCRETE_ALIAS);
     if (realFromType->kind == TypeInfoKind::TypeList && realToType->kind == TypeInfoKind::Struct)
     {
         TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(realFromType, TypeInfoKind::TypeList);
@@ -1570,23 +1570,23 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT))
     {
-        toType   = TypeManager::concreteType(toType, MakeConcrete::FlagEnum);
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagEnum);
+        toType   = TypeManager::concreteType(toType, CONCRETE_ENUM);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     }
 
     SWAG_ASSERT(toType && fromType);
 
     if (toType->kind == TypeInfoKind::FuncAttr)
-        toType = TypeManager::concreteType(toType, MakeConcrete::FlagFunc);
+        toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
     if (fromType->kind == TypeInfoKind::FuncAttr)
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
     if (toType->kind != TypeInfoKind::Lambda && fromType->kind == TypeInfoKind::Lambda)
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagFunc);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_FUNC);
 
     if (toType->kind == TypeInfoKind::Alias)
-        toType = TypeManager::concreteType(toType, MakeConcrete::FlagAlias);
+        toType = TypeManager::concreteType(toType, CONCRETE_ALIAS);
     if (fromType->kind == TypeInfoKind::Alias)
-        fromType = TypeManager::concreteType(fromType, MakeConcrete::FlagAlias);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS);
 
     if (fromType == toType)
         return true;

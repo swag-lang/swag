@@ -145,7 +145,7 @@ void TypeManager::setup()
     promoteMatrix[(int) NativeTypeKind::F64][(int) NativeTypeKind::F64] = typeInfoF64;
 }
 
-TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
+TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
 {
     if (!typeInfo)
         return typeInfo;
@@ -156,7 +156,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
         return typeInfo;
 
     case TypeInfoKind::FuncAttr:
-        if (flags & MakeConcrete::FlagFunc)
+        if (flags & CONCRETE_FUNC)
         {
             auto returnType = static_cast<TypeInfoFuncAttr*>(typeInfo)->returnType;
             if (!returnType)
@@ -166,17 +166,17 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, MakeConcrete flags)
         break;
 
     case TypeInfoKind::Enum:
-        if (flags & MakeConcrete::FlagEnum)
+        if (flags & CONCRETE_ENUM)
             return concreteType(static_cast<TypeInfoEnum*>(typeInfo)->rawType, flags);
         break;
 
     case TypeInfoKind::Alias:
-        if (flags & MakeConcrete::FlagAlias)
+        if (flags & CONCRETE_ALIAS)
             return concreteType(static_cast<TypeInfoAlias*>(typeInfo)->rawType, flags);
         break;
 
     case TypeInfoKind::Generic:
-        if (flags & MakeConcrete::FlagGeneric)
+        if (flags & CONCRETE_GENERIC)
         {
             auto typeGeneric = static_cast<TypeInfoGeneric*>(typeInfo);
             if (!typeGeneric->rawType)

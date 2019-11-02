@@ -471,7 +471,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (node->assignment)
     {
-        node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, MakeConcrete::FlagFunc);
+        node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
         SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->errorContext.report({node->assignment, "type of expression is 'void'"}));
 

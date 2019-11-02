@@ -227,8 +227,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     node->typeInfo = g_TypeMgr.typeInfoBool;
     TypeManager::promote(left, right);
-    left->typeInfo  = TypeManager::concreteType(left->typeInfo, MakeConcrete::FlagEnum);
-    right->typeInfo = TypeManager::concreteType(right->typeInfo, MakeConcrete::FlagEnum);
+    left->typeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ENUM);
+    right->typeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ENUM);
 
     // Must not make types compatible for a struct, as we can compare a struct with whatever
     if (left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
