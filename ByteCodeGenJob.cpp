@@ -52,9 +52,13 @@ void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, Regist
     // From linear cache
     if (num == 2 && !context->bc->availableRegistersRC2.empty())
     {
-        rc += context->bc->availableRegistersRC2.back();
+        auto r0 = context->bc->availableRegistersRC2.back();
+        rc += r0;
+        SWAG_ASSERT(r0 < context->bc->maxReservedRegisterRC);
         context->bc->availableRegistersRC2.pop_back();
-        rc += context->bc->availableRegistersRC2.back();
+        auto r1 = context->bc->availableRegistersRC2.back();
+        rc += r1;
+        SWAG_ASSERT(r1 < context->bc->maxReservedRegisterRC);
         context->bc->availableRegistersRC2.pop_back();
         return;
     }
@@ -147,8 +151,8 @@ void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
 
 void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
 {
-    node->bc       = g_Pool_byteCode.alloc();
-    node->bc->node = node;
+    node->bc             = g_Pool_byteCode.alloc();
+    node->bc->node       = node;
     node->bc->sourceFile = node->sourceFile;
     node->bc->name       = node->ownerScope->fullname + "_" + node->name;
     replaceAll(node->bc->name, '.', '_');
