@@ -2,7 +2,7 @@ namespace std.crypto
 {
 	#[swag.public]
 	struct(T = Mwc) Random
-	{
+	{    
 		rng: T
 	}
 	

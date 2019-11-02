@@ -1,4 +1,4 @@
-#if #configuration == "frffrrf"
+#if #config == "frffrrf"
 {
 #assert(false)
 }

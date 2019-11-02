@@ -1,5 +1,5 @@
 // Platform setup
-#if #platform == "win64"
+#if #arch == "win64"
 {
 	const WINDOWS = true
 	const BIG_ENDIAN = false
@@ -10,12 +10,12 @@
 }
 
 // Configuration setup
-#if #configuration == "debug"
+#if #config == "debug"
 {
 	const DEBUG = true
 	const ASSERT = true
 }
-#elif #configuration == "release"
+#elif #config == "release"
 {
 	const DEBUG = false
 	const ASSERT = false
