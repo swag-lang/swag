@@ -116,7 +116,7 @@ void Workspace::enumerateModules(const fs::path& path, bool fromTests)
 
             string moduleName;
             if (fromTests)
-                moduleName = "tests_";
+                moduleName = "tests.";
             moduleName += findfile.cFileName;
 
             auto module       = createOrUseModule(moduleName);

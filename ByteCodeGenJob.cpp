@@ -70,8 +70,9 @@ void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, Regist
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
     // Cache for linear
-    if (rc.size() == 2 && rc[0] == rc[1] - 1)
-    {
+	if (rc.size() == 2 && rc[0] == rc[1] - 1)
+	{
+		SWAG_ASSERT(rc[1] < context->bc->maxReservedRegisterRC);
         context->bc->availableRegistersRC2.push_back(rc[1]);
         context->bc->availableRegistersRC2.push_back(rc[0]);
         rc.clear();
