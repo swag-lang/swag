@@ -15,6 +15,8 @@ void Module::setup(const string& moduleName)
 {
     name   = moduleName;
     nameUp = name;
+    replaceAll(nameUp, '.', '_');
+    nameDown = nameUp;
     makeUpper(nameUp);
 
     scopeRoot = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);

@@ -51,13 +51,15 @@ bool BackendC::emitMain()
     bufferC.addString("\n");
 
     // Call to global init of this module, and dependencies
-    bufferC.addString(format("\t%s_globalInit(&__process_infos);\n", module->name.c_str()));
+    bufferC.addString(format("\t%s_globalInit(&__process_infos);\n", module->nameDown.c_str()));
     for (auto& k : module->moduleDependenciesNames)
     {
+        auto nameDown = k;
+        replaceAll(nameDown, '.', '_');
         auto depModule = g_Workspace.getModuleByName(k);
-		if(depModule->buildParameters.type == BackendOutputType::DynamicLib)
-			bufferC.addString(format("\t__loadDynamicLibrary(\"%s\");\n", k.c_str()));
-        bufferC.addString(format("\t%s_globalInit(&__process_infos);\n", k.c_str()));
+        if (depModule->buildParameters.type == BackendOutputType::DynamicLib)
+            bufferC.addString(format("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str()));
+        bufferC.addString(format("\t%s_globalInit(&__process_infos);\n", nameDown.c_str()));
     }
 
     bufferC.addString("\n");
@@ -85,9 +87,13 @@ bool BackendC::emitMain()
     }
 
     // Call to global drop of this module, and dependencies
-    bufferC.addString(format("\t%s_globalDrop();\n", module->name.c_str()));
+    bufferC.addString(format("\t%s_globalDrop();\n", module->nameDown.c_str()));
     for (auto& k : module->moduleDependenciesNames)
-        bufferC.addString(format("\t%s_globalDrop();\n", k.c_str()));
+    {
+        auto nameDown = k;
+        replaceAll(nameDown, '.', '_');
+        bufferC.addString(format("\t%s_globalDrop();\n", nameDown.c_str()));
+    }
 
     bufferC.addString("}\n");
     bufferC.addString("#endif /* SWAG_IS_BINARY */\n");

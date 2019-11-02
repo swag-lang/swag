@@ -31,6 +31,7 @@ struct Module : public PoolElement
 
     time_t              moreRecentSourceFile;
     string              name;
+	string              nameDown;
     string              nameUp;
     atomic<int>         numErrors = 0;
     SpinLock            mutexFile;

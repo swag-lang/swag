@@ -106,7 +106,7 @@ bool BackendC::emitGlobalInit()
     bufferC.addString("}\n\n");
 
     // Main init fct
-    bufferC.addString(format("void %s_globalInit(swag_process_infos_t *processInfos)\n", module->name.c_str()));
+    bufferC.addString(format("void %s_globalInit(swag_process_infos_t *processInfos)\n", module->nameDown.c_str()));
 	bufferC.addString("{\n");
     bufferC.addString("\t__process_infos = *processInfos;\n");
 	bufferC.addString("\n");
@@ -126,14 +126,14 @@ bool BackendC::emitGlobalInit()
 	bufferC.addString("\n");
 
 	bufferH.addString("\n");
-    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(struct swag_process_infos_t *processInfos);\n", module->name.c_str()));
+    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(struct swag_process_infos_t *processInfos);\n", module->nameDown.c_str()));
     return true;
 }
 
 bool BackendC::emitGlobalDrop()
 {
     // Main init fct
-    bufferC.addString(format("void %s_globalDrop()\n", module->name.c_str()));
+    bufferC.addString(format("void %s_globalDrop()\n", module->nameDown.c_str()));
 	bufferC.addString("{\n");
 
     for (auto bc : module->byteCodeDropFunc)
@@ -147,6 +147,6 @@ bool BackendC::emitGlobalDrop()
 	bufferC.addString("}\n");
     bufferC.addString("\n");
 
-    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalDrop();\n", module->name.c_str()));
+    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalDrop();\n", module->nameDown.c_str()));
     return true;
 }
