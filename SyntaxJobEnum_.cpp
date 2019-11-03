@@ -8,6 +8,7 @@
 #include "SymTable.h"
 #include "TypeInfo.h"
 #include "SemanticJob.h"
+#include "LanguageSpec.h"
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {
@@ -57,32 +58,46 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-    // Content of enum
-    auto curly = token;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+	SWAG_VERIFY(token.id == TokenId::SymLeftCurly, syntaxError(token, format("'{' is expected instead of '%s'", token.text.c_str())));
 
+    // Content of enum
     Scoped         scoped(this, newScope);
     ScopedMainNode scopedMainNode(this, enumNode);
     SWAG_CHECK(doEnumContent(enumNode));
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
+    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(enumNode->token, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
 
 bool SyntaxJob::doEnumContent(AstNode* parent)
 {
-    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+    bool waitCurly = false;
+    if (token.id == TokenId::SymLeftCurly)
     {
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+        waitCurly = true;
+    }
+
+    while (true)
+    {
+        if (token.id == TokenId::EndOfFile)
+            break;
+        if (token.id == TokenId::SymRightCurly)
+            break;
+
         if (token.id == TokenId::SymAttrStart)
         {
             SWAG_CHECK(doAttrUse(parent));
         }
         else if (token.id == TokenId::SymLeftCurly)
         {
-            SWAG_CHECK(eatToken());
             auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doEnumContent(stmt));
             SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        }
+        else if (token.id == TokenId::CompilerIf)
+        {
+            SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::EnumDecl));
         }
         else
         {
@@ -101,6 +116,9 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
 
             SWAG_CHECK(eatSemiCol("after enum value"));
         }
+
+        if (!waitCurly)
+            break;
     }
 
     return true;

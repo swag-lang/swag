@@ -6,6 +6,11 @@
 
 bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 {
+	return doCompilerIfFor(parent, result, AstNodeKind::Statement);
+}
+
+bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind)
+{
     auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerIf, sourceFile, parent);
     if (result)
         *result = node;
@@ -23,7 +28,7 @@ bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
             block->flags |= AST_DISABLED;
 
         ScopedCompilerIfBlock scopedIf(this, block);
-        SWAG_CHECK(doStatement(block));
+        SWAG_CHECK(doStatementFor(block, nullptr, kind));
     }
 
     if (token.id == TokenId::CompilerElse || token.id == TokenId::CompilerElseIf)
@@ -41,7 +46,7 @@ bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
         else
         {
             SWAG_CHECK(tokenizer.getToken(token));
-            SWAG_CHECK(doStatement(block));
+            SWAG_CHECK(doStatementFor(block, nullptr, kind));
         }
     }
 

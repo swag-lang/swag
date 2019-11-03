@@ -34,6 +34,7 @@ struct SyntaxJob : public Job
     AstNode* generateOpInit(AstNode* node, const Utf8& structName, AstNode* genericParameters);
 
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
+	bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
@@ -83,6 +84,7 @@ struct SyntaxJob : public Job
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);
+	bool doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doStatement(AstNode* parent, AstNode** result = nullptr);
     bool doCurlyStatement(AstNode* parent, AstNode** result = nullptr);
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr);

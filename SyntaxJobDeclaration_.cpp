@@ -162,6 +162,23 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
+{
+    switch (kind)
+    {
+    case AstNodeKind::Statement:
+        return doStatement(parent, result);
+    case AstNodeKind::EnumDecl:
+        return doEnumContent(parent);
+
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doStatement(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
