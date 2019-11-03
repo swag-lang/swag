@@ -58,14 +58,12 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-	SWAG_VERIFY(token.id == TokenId::SymLeftCurly, syntaxError(token, format("'{' is expected instead of '%s'", token.text.c_str())));
+    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, syntaxError(token, format("'{' is expected instead of '%s'", token.text.c_str())));
 
     // Content of enum
     Scoped         scoped(this, newScope);
     ScopedMainNode scopedMainNode(this, enumNode);
     SWAG_CHECK(doEnumContent(enumNode));
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(enumNode->token, "no matching '}' found"));
-    SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
 
@@ -81,9 +79,16 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
     while (true)
     {
         if (token.id == TokenId::EndOfFile)
+        {
+            SWAG_CHECK(syntaxError(token, "no matching '}' found in enum declaration"));
             break;
+        }
+
         if (token.id == TokenId::SymRightCurly)
+        {
+            SWAG_CHECK(eatToken());
             break;
+        }
 
         if (token.id == TokenId::SymAttrStart)
         {
@@ -93,7 +98,6 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
         {
             auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doEnumContent(stmt));
-            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
         }
         else if (token.id == TokenId::CompilerIf)
         {
