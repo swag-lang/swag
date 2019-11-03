@@ -46,10 +46,9 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
     if (!needDrop)
     {
-        for (auto child : structNode->content->childs)
+        for (auto typeParam : typeInfoStruct->childs)
         {
-            auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-            auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
             if (typeVar->kind != TypeInfoKind::Struct)
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
@@ -641,7 +640,7 @@ void ByteCodeGenJob::emitStructCallFunc(ByteCodeGenContext* context, AstNode* fu
         inst->b.pointer = (uint8_t*) funcNode->typeInfo;
     }
 
-	emitInstruction(context, ByteCodeOp::IncSP, 8);
+    emitInstruction(context, ByteCodeOp::IncSP, 8);
     if (r0)
         freeRegisterRC(context, *r0);
 }
