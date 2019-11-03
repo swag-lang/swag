@@ -155,10 +155,9 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     if (!needPostMove)
     {
-        for (auto child : structNode->content->childs)
+        for (auto typeParam : typeInfoStruct->childs)
         {
-            auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-            auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
             if (typeVar->kind != TypeInfoKind::Struct)
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
@@ -263,10 +262,9 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     if (!needPostCopy)
     {
-        for (auto child : structNode->content->childs)
+        for (auto typeParam : typeInfoStruct->childs)
         {
-            auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-            auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+            auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
             if (typeVar->kind != TypeInfoKind::Struct)
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
