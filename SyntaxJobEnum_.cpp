@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "Ast.h"
 #include "Scope.h"
+#include "Scoped.h"
 #include "SymTable.h"
 #include "TypeInfo.h"
 #include "SemanticJob.h"
@@ -59,14 +60,14 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     // Content of enum
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-    auto savedScope = currentScope;
-    currentScope    = newScope;
+
+    Scoped scoped(this, newScope);
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-		if (token.id == TokenId::SymAttrStart)
-		{
-			SWAG_CHECK(doAttrUse(enumNode));
-		}
+        if (token.id == TokenId::SymAttrStart)
+        {
+            SWAG_CHECK(doAttrUse(enumNode));
+        }
         else
         {
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
@@ -85,8 +86,6 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatSemiCol("after enum value"));
         }
     }
-
-    currentScope = savedScope;
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
