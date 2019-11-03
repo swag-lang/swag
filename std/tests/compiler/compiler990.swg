@@ -2,7 +2,7 @@
 
 using swag
 
-attr NC1() -> var
+attr NC1() -> "var"
 
 struct Point
 {

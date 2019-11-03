@@ -2,8 +2,8 @@
 
 using swag
 
-attr NC1(x: s32) -> var
-attr NC2(y: s32) -> var
+attr NC1(x: s32) -> "var"
+attr NC2(y: s32) -> "var"
 
 struct Point
 {

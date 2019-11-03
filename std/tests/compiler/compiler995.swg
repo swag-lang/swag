@@ -1,7 +1,7 @@
 
 using swag
 
-attr NC1(x: string) -> enumvalue
+attr NC1(x: string) -> "enumvalue"
 
 enum A
 {

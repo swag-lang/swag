@@ -1,7 +1,7 @@
 
 using swag
 
-attr NC1(x: string) -> enum
+attr NC1(x: string) -> "enum"
 
 #[NC1("toto")]
 enum A

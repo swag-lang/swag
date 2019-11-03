@@ -2,9 +2,9 @@
 
 using swag
 
-attr NC() -> struct
-attr NC0() -> struct
-attr NC1() -> var
+attr NC() -> "struct"
+attr NC0() -> "struct"
+attr NC1() -> "var"
 
 #[NC, NC0]
 struct Point

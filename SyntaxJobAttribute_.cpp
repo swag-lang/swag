@@ -40,31 +40,37 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
     while (true)
     {
-        switch (token.id)
+        if (token.id != TokenId::LiteralString)
+            return error(token, format("string requested instead of '%s'", token.text.c_str()));
+
+        if (token.text == "func")
         {
-        case TokenId::KwdFunc:
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute type 'func' already defined"));
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute constraint 'func' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_FUNC;
-            break;
-        case TokenId::KwdVar:
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute type 'var' already defined"));
+        }
+        else if (token.text == "var")
+        {
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute constraint 'var' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_VAR;
-            break;
-        case TokenId::KwdStruct:
-        case TokenId::KwdUnion:
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute type 'struct' already defined"));
+        }
+        else if (token.text == "struct" || token.text == "union")
+        {
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute constraint 'struct' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_STRUCT;
-            break;
-        case TokenId::KwdEnum:
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) == 0, syntaxError(token, "attribute type 'enum' already defined"));
+        }
+        else if (token.text == "enum")
+        {
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) == 0, syntaxError(token, "attribute constraint 'enum' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_ENUM;
-            break;
-        case TokenId::KwdEnumValue:
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) == 0, syntaxError(token, "attribute type 'enumvalue' already defined"));
+        }
+        else if (token.text == "enumvalue")
+        {
+            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) == 0, syntaxError(token, "attribute constraint 'enumvalue' already defined"));
             attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_ENUMVALUE;
-            break;
-        default:
-            return error(token, format("invalid attribute type '%s'", token.text.c_str()));
+        }
+        else
+        {
+            return error(token, format("invalid attribute constraint '%s'", token.text.c_str()));
         }
 
         SWAG_CHECK(tokenizer.getToken(token));

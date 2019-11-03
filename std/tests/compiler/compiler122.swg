@@ -6,4 +6,4 @@ attr toto() -> ;
 
 #unittest pass syntax;
 #unittest error;
-attr toto() -> coucou;
+attr toto() -> "coucou"

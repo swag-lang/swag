@@ -1,6 +1,6 @@
 
 
-attr PR(x: s32) -> var
+attr PR(x: s32) -> "var"
 
 struct toto
 {

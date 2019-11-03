@@ -1,12 +1,9 @@
-;
-;
-
 namespace A
 {
-	attr toto() -> func;
+	attr toto() -> "func"
 	namespace B
 	{
-		attr toto1() -> var;
+		attr toto1() -> "var"
 	}
 }
 

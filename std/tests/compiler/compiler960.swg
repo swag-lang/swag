@@ -1,6 +1,6 @@
 
 
-attr PR(x: s32) -> struct
+attr PR(x: s32) -> "struct"
 
 #[PR(666)]
 struct toto

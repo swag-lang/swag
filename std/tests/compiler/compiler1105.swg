@@ -1,4 +1,4 @@
-attr NC()->var
+attr NC()->"var"
 
 struct Toto
 {

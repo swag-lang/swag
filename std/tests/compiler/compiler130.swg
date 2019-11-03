@@ -1,7 +1,6 @@
 #module compiler130
-;
 
-attr toto() -> var;
+attr toto() -> "var"
 
 #unittest error;
 #[toto]

@@ -20,17 +20,17 @@ namespace swag
 	// Compiler attributes
 	// #########################################################
 
-	attr constexpr() -> func
-	attr printbc() -> func
-	attr compiler() -> func
-	attr inline() -> func
-	attr test() -> func
-	attr foreign(module: string = "", function: string = "") -> func
-	attr waitsem(ms: s32) -> func
-	attr pack() -> struct
-	attr flags() -> enum
-    attr complete() -> func
-    attr offset(name: string) -> var
+	attr constexpr() -> "func"
+	attr printbc() -> "func"
+	attr compiler() -> "func"
+	attr inline() -> "func"
+	attr test() -> "func"
+	attr foreign(module: string = "", function: string = "") -> "func"
+	attr waitsem(ms: s32) -> "func"
+	attr pack() -> "struct"
+	attr flags() -> "enum"
+    attr complete() -> "func"
+    attr offset(name: string) -> "var"
 
 	// #########################################################
 	// Constants
