@@ -49,6 +49,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 auto overload               = symbol->overloads[0];
                 overload->registers         = callParam->resultRegisterRC;
                 overload->registers.canFree = false;
+                node->scope->registersToRelease += overload->registers;
             }
         }
         else
@@ -69,7 +70,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         auto overload               = symbol->overloads[0];
                         overload->registers         = callParam->resultRegisterRC;
                         overload->registers.canFree = false;
-                        covered                     = true;
+                        node->scope->registersToRelease += overload->registers;
+                        covered = true;
                         break;
                     }
                 }
@@ -86,6 +88,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     auto overload = symbol->overloads[0];
                     SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
                     overload->registers.canFree = false;
+                    node->scope->registersToRelease += overload->registers;
                 }
             }
         }
@@ -97,6 +100,10 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+
+    SWAG_CHECK(emitLeaveScope(context, node->scope));
+    if (context->result != ByteCodeResult::Done)
+        return true;
 
     // Update all returns to jump at the end of the inline block
     for (auto r : node->returnList)
@@ -569,6 +576,9 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
         if (context->result != ByteCodeResult::Done)
             return true;
     }
+
+    // Release persistent list of registers
+    freeRegisterRC(context, scope->registersToRelease);
 
     return true;
 }

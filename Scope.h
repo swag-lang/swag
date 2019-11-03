@@ -2,6 +2,7 @@
 #include "Utf8Crc.h"
 #include "Pool.h"
 #include "SpinLock.h"
+#include "RegisterList.h"
 struct SyntaxJob;
 struct Scope;
 struct SymTable;
@@ -20,7 +21,7 @@ enum class ScopeKind
     Statement,
     Breakable,
     TypeList,
-	Inline,
+    Inline,
 };
 
 struct AlternativeScope
@@ -43,9 +44,9 @@ struct Scope : public PoolElement
     void               setHasExports();
     void               allocateSymTable();
     void               addPublicFunc(AstNode* node);
-	void               addPublicGenericFunc(AstNode* node);
-	void               addPublicStruct(AstNode* node);
-	void               addPublicEnum(AstNode* node);
+    void               addPublicGenericFunc(AstNode* node);
+    void               addPublicStruct(AstNode* node);
+    void               addPublicEnum(AstNode* node);
     static string      makeFullName(const string& parentName, const string& name);
     static const char* getNakedName(ScopeKind kind);
     static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);
@@ -60,23 +61,24 @@ struct Scope : public PoolElement
         return kind == ScopeKind::Module || kind == ScopeKind::File;
     }
 
-    AstNode*                 owner;
-    ScopeKind                kind;
-    Scope*                   parentScope;
-    SymTable*                symTable;
-    uint32_t                 indexInParent;
-    Utf8Crc                  name;
-    Utf8                     fullname;
-    vector<Scope*>           childScopes;
-    int                      startStackSize;
-    SpinLock                 lockChilds;
-    vector<AstNode*>         deferedNodes;
+    AstNode*         owner;
+    ScopeKind        kind;
+    Scope*           parentScope;
+    SymTable*        symTable;
+    uint32_t         indexInParent;
+    Utf8Crc          name;
+    Utf8             fullname;
+    vector<Scope*>   childScopes;
+    int              startStackSize;
+    SpinLock         lockChilds;
+    vector<AstNode*> deferedNodes;
+    RegisterList     registersToRelease;
 
     SpinLock         mutexPublic;
     vector<AstNode*> publicFunc;
-	vector<AstNode*> publicGenericFunc;
+    vector<AstNode*> publicGenericFunc;
     vector<AstNode*> publicStruct;
-	vector<AstNode*> publicEnum;
+    vector<AstNode*> publicEnum;
     bool             hasExports = false;
 };
 
