@@ -858,8 +858,10 @@ anotherTry:
 
 bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result)
 {
-    auto  job              = context->job;
-    auto& dependentSymbols = job->cacheDependentSymbols;
+    auto  job                = context->job;
+    auto  identifierRef      = node->identifierRef;
+    auto& dependentSymbols   = job->cacheDependentSymbols;
+    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
 
     if (dependentSymbols.size() == 1)
     {
@@ -867,12 +869,55 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         return true;
     }
 
-    auto symbol = dependentSymbols[0];
+    SymbolName* symbol = nullptr;
     for (auto p : dependentSymbols)
     {
-        symbol = p;
-        if (!node->callParameters && symbol->kind == SymbolKind::Variable)
-            break;
+        if (node->callParameters && p->kind == SymbolKind::Variable)
+            continue;
+        if (!node->callParameters && p->kind == SymbolKind::Function)
+            continue;
+
+        // Reference to a variable inside a struct, without a direct explicit reference
+        bool isValid = true;
+        if (p->ownerTable->scope->kind == ScopeKind::Struct && !identifierRef->startScope)
+        {
+            isValid = false;
+            for (auto& dep : scopeHierarchyVars)
+            {
+                if (dep.scope->fullname == p->ownerTable->scope->fullname)
+                {
+                    isValid = true;
+                    break;
+                }
+            }
+        }
+
+        if (!isValid)
+            continue;
+
+        if (!symbol)
+        {
+            symbol = p;
+            continue;
+        }
+
+        // Priority to concrete type, i.e. not generic
+        auto lastOverload = symbol->ownerTable->scope->owner->typeInfo;
+        auto newOverload  = p->ownerTable->scope->owner->typeInfo;
+        if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
+            continue;
+        if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
+        {
+            symbol = p;
+            continue;
+        }
+
+        // Error this is ambiguous
+        Diagnostic diag{node, format("ambiguous resolution of '%s'", symbol->name.c_str())};
+        Diagnostic note1{symbol->overloads[0]->node, "could be", DiagnosticLevel::Note};
+        Diagnostic note2{p->overloads[0]->node, "could be", DiagnosticLevel::Note};
+		context->errorContext.report(diag, &note1, &note2);
+		return false;
     }
 
     *result = symbol;

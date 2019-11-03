@@ -1,5 +1,5 @@
-//#module compiler1190
-//#unittest error
+#module compiler1190
+#unittest error
 
 struct Color
 {
