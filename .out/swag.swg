@@ -30,6 +30,7 @@ namespace swag
 	attr pack() -> struct
 	attr flags() -> enum
     attr complete() -> func
+    attr offset(name: string) -> var
 
 	// #########################################################
 	// Constants
