@@ -136,19 +136,31 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
-        return context->errorContext.report({node, node->token, "function with the 'foreign' attribute cannot have a body"});
+        return context->errorContext.report({node, node->token, "function with the 'swag.foreign' attribute cannot have a body"});
 
     if (node->flags & AST_SPECIAL_COMPILER_FUNC)
     {
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({node, node->token, "compiler special function cannot have the 'swag.inline' attribute"}));
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->errorContext.report({node, node->token, "compiler special function cannot have the 'swag.public' attribute"}));
-		SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->errorContext.report({ node, node->token, "compiler special function cannot have the 'swag.private' attribute" }));
+        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->errorContext.report({node, node->token, "compiler special function cannot have the 'swag.private' attribute"}));
     }
 
     if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
     {
-        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->errorContext.report({node->returnType, "function marked with the 'swag.test' attribute cannot have a return value"}));
-        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->errorContext.report({node->parameters, "function marked with the 'swag.test' attribute cannot have parameters"}));
+        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->errorContext.report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
+        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->errorContext.report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));
+    }
+
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (!node->ownerScope->isGlobal() && node->ownerScope->kind != ScopeKind::Struct)
+            return context->errorContext.report({node, node->token, format("embedded function '%s' cannot be public", node->name.c_str())});
+        if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
+            return context->errorContext.report({node, node->token, format("test function '%s' cannot be public", node->name.c_str())});
+        if (node->attributeFlags & ATTRIBUTE_COMPILER)
+            return context->errorContext.report({node, node->token, format("compiler function '%s' cannot be public", node->name.c_str())});
+        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+            return context->errorContext.report({node, node->token, format("foreign function '%s' cannot be public", node->name.c_str())});
     }
 
     // Can be null for intrinsics etc...
@@ -172,19 +184,6 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         node->flags |= AST_FULL_RESOLVE;
         for (auto job : node->dependentJobs.list)
             g_ThreadMgr.addJob(job);
-    }
-
-    // Public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-    {
-        if (!node->ownerScope->isGlobal() && node->ownerScope->kind != ScopeKind::Struct)
-            return context->errorContext.report({node, node->token, format("embedded function '%s' cannot be public", node->name.c_str())});
-        if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
-            return context->errorContext.report({node, node->token, format("test function '%s' cannot be public", node->name.c_str())});
-        if (node->attributeFlags & ATTRIBUTE_COMPILER)
-            return context->errorContext.report({node, node->token, format("compiler function '%s' cannot be public", node->name.c_str())});
-        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-            return context->errorContext.report({node, node->token, format("foreign function '%s' cannot be public", node->name.c_str())});
     }
 
     // Ask for bytecode
