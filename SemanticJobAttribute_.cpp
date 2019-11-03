@@ -5,16 +5,7 @@
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
-
-    if (!checkNode)
-    {
-        if (typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC)
-            return context->errorContext.report({oneAttribute, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
-        if (typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR)
-            return context->errorContext.report({oneAttribute, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
-        SWAG_ASSERT(false);
-        return false;
-    }
+	SWAG_ASSERT(checkNode);
 
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) && (kind == AstNodeKind::FuncDecl || kind == AstNodeKind::Statement))
         return true;
@@ -24,7 +15,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         return true;
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUM) && (kind == AstNodeKind::EnumDecl || kind == AstNodeKind::Statement))
         return true;
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue))
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue || kind == AstNodeKind::Statement))
         return true;
 
     Diagnostic diag{oneAttribute, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode))};

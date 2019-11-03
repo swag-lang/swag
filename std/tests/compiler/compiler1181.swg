@@ -1,3 +1,13 @@
+attr T()-> "enumvalue"
+enum TITI
+{
+    //#[T]
+    //{
+        A
+        B   
+    //}
+}
+
 struct TOTO
 {
     x: s32

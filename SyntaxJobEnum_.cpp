@@ -63,8 +63,10 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     currentScope    = newScope;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
-        if (token.id == TokenId::SymAttrStart)
-            SWAG_CHECK(doAttrUse(enumNode));
+		if (token.id == TokenId::SymAttrStart)
+		{
+			SWAG_CHECK(doAttrUse(enumNode));
+		}
         else
         {
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
