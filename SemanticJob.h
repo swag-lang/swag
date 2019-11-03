@@ -58,9 +58,6 @@ struct OneGenericMatch
     vector<TypeInfo*>     genericParametersGenTypes;
 };
 
-const uint32_t COLLECT_ALL         = 0x00000000;
-const uint32_t COLLECT_STOP_INLINE = 0x00000001;
-
 struct SemanticJob : public Job
 {
     JobResult execute() override;
@@ -74,8 +71,8 @@ struct SemanticJob : public Job
     static void enterState(AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags);
-    static void collectAlternativeScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags);
-    static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
+    static void collectAlternativeScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode);
+    static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* identifier);

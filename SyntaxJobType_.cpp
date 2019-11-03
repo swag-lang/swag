@@ -8,6 +8,7 @@
 #include "Scoped.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
+#include "Module.h"
 
 bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 {
@@ -72,7 +73,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
-    string name = "__tuple_";
+    string name = "__" + sourceFile->scopePrivate->name + "_tuple_";
     int    idx  = 0;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
@@ -130,7 +131,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         *result = identifier;
 
     // Add struct type and scope
-    auto rootScope = sourceFile->scopeRoot;
+	auto rootScope = sourceFile->scopeRoot;
     rootScope->allocateSymTable();
     scoped_lock lk(rootScope->symTable->mutex);
     auto        symbol = rootScope->symTable->findNoLock(structNode->name);

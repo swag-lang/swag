@@ -1,5 +1,3 @@
-
-
 func toto(x: {s32, s32})
 {
 	@assert(x.val0 == 10)

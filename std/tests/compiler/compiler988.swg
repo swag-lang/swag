@@ -1,6 +1,3 @@
-
-
-
 typealias pair: {string, any}
 
 //#[swag.printbc]

@@ -212,7 +212,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     structNode->content            = contentNode;
 
     auto typeList   = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeList);
-    Utf8 structName = "__tuple_";
+    Utf8 structName = "__" + sourceFile->scopePrivate->name + "_tuple_";
     Utf8 varName;
     int  numChilds = (int) typeList->childs.size();
     for (int idx = 0; idx < numChilds; idx++)
