@@ -69,25 +69,26 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doEnumContent(AstNode* enumNode)
+bool SyntaxJob::doEnumContent(AstNode* parent)
 {
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
         if (token.id == TokenId::SymAttrStart)
         {
-            SWAG_CHECK(doAttrUse(enumNode));
+            SWAG_CHECK(doAttrUse(parent));
         }
         else if (token.id == TokenId::SymLeftCurly)
         {
             SWAG_CHECK(eatToken());
-            auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, enumNode);
+            auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doEnumContent(stmt));
             SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+            parent->ownerMainNode->flags |= AST_COMPOUND;
         }
         else
         {
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
-            auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile, enumNode);
+            auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile, parent);
             enumValue->inheritTokenName(token);
             enumValue->semanticFct = &SemanticJob::resolveEnumValue;
             currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue, SymbolKind::EnumValue);
