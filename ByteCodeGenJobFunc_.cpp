@@ -326,7 +326,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         context->node = node;
     }
 
-	return true;
+    return true;
 }
 
 bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, bool foreign)
@@ -452,47 +452,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             if (!covered)
             {
                 auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
-                SWAG_CHECK(emitDefaultParamValue(context, defaultParam));
-
                 SWAG_ASSERT(defaultParam->assignment);
-
-                if (defaultParam->assignment->kind == AstNodeKind::CompilerSpecialFunction)
-                {
-                    switch (defaultParam->assignment->token.id)
-                    {
-                    case TokenId::CompilerCallerLine:
-                    {
-                        defaultParam->assignment->resultRegisterRC                                                          = reserveRegisterRC(context);
-                        emitInstruction(context, ByteCodeOp::CopyRAVB32, defaultParam->assignment->resultRegisterRC)->b.u32 = node->token.startLocation.line + 1;
-                        break;
-                    }
-                    case TokenId::CompilerCallerFile:
-                    {
-                        reserveLinearRegisterRC(context, defaultParam->assignment->resultRegisterRC, 2);
-                        auto index  = context->sourceFile->module->reserveString(node->sourceFile->path.string());
-                        auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, defaultParam->assignment->resultRegisterRC[0], defaultParam->assignment->resultRegisterRC[1]);
-                        inst->c.u32 = index;
-                        break;
-                    }
-                    case TokenId::CompilerCallerFunction:
-                    {
-                        reserveLinearRegisterRC(context, defaultParam->assignment->resultRegisterRC, 2);
-                        auto index  = context->sourceFile->module->reserveString(node->ownerFct->fullnameDot);
-                        auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, defaultParam->assignment->resultRegisterRC[0], defaultParam->assignment->resultRegisterRC[1]);
-                        inst->c.u32 = index;
-                        break;
-                    }
-                    default:
-                        return internalError(context, "emitLocalCall, invalid compiler function", defaultParam->assignment);
-                    }
-                }
-                else
-                {
-                    context->node = defaultParam->assignment;
-                    SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
-                    emitLiteral(context, defaultParam->typeInfo);
-                    context->node = node;
-                }
+                SWAG_CHECK(emitDefaultParamValue(context, defaultParam));
 
                 for (int r = defaultParam->assignment->resultRegisterRC.size() - 1; r >= 0; r--)
                 {

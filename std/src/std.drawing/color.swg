@@ -6,6 +6,8 @@ namespace std.drawing
 		r: u8
 		g: u8
 		b: u8
+        //#[swag.offset("a")]
+        //argb: u32
 	}
 
 	impl Color

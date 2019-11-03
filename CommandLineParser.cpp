@@ -43,7 +43,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
-    cmdLine->testFilter    = "std.drawing1";
+    //cmdLine->testFilter    = "std.drawing1";
     //cmdLine->fileFilter = "compiler847";
 }
 

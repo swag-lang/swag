@@ -1,7 +1,7 @@
 #import "std.drawing"
 using std.drawing
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
 	x := Argb.Red
