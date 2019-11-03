@@ -277,14 +277,14 @@ struct AstNode : public PoolElement
         return (flags & AST_VALUE_COMPUTED) && computedValue.reg.u64 == 1;
     }
 
-    void               setPassThrough();
-    void               inheritLocationFromChilds();
-    static const char* getKindName(AstNode* node);
-    static const char* getNakedKindName(AstNode* node);
-    AstNode*           findChildRef(AstNode* ref, AstNode* fromChild);
-    virtual AstNode*   clone(CloneContext& context);
-    void               copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
-    void               computeFullName();
+    void             setPassThrough();
+    void             inheritLocationFromChilds();
+    static Utf8      getKindName(AstNode* node);
+    static Utf8      getNakedKindName(AstNode* node);
+    AstNode*         findChildRef(AstNode* ref, AstNode* fromChild);
+    virtual AstNode* clone(CloneContext& context);
+    void             copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
+    void             computeFullName();
 
     AstNodeKind         kind;
     Scope*              ownerScope;

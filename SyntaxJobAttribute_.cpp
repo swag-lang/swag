@@ -53,6 +53,11 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute constraint 'var' already defined"));
 			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_VAR;
         }
+        else if (token.text == "structvar")
+        {
+            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCTVAR) == 0, syntaxError(token, "attribute constraint 'structvar' already defined"));
+            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_STRUCTVAR;
+        }
         else if (token.text == "struct" || token.text == "union")
         {
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute constraint 'struct' already defined"));

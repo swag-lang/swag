@@ -79,39 +79,38 @@ void AstNode::computeFullName()
     replaceAll(fullnameForeign, '.', '_');
 }
 
-const char* AstNode::getKindName(AstNode* node)
+Utf8 AstNode::getKindName(AstNode* node)
 {
+    Utf8 result = getNakedKindName(node);
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
     case AstNodeKind::LetDecl:
-        return "a variable";
     case AstNodeKind::FuncDecl:
-        return "a function";
-    case AstNodeKind::EnumDecl:
-        return "an enum";
-    case AstNodeKind::EnumValue:
-        return "an enum value";
     case AstNodeKind::Namespace:
-        return "a namespace";
     case AstNodeKind::TypeAlias:
-        return "a type";
     case AstNodeKind::FuncDeclParam:
-        return "a function parameter";
     case AstNodeKind::StructDecl:
-        return "a structure";
+        return "a " + result;
+    case AstNodeKind::EnumDecl:
+    case AstNodeKind::EnumValue:
+        return "an " + result;
     }
 
     return "<node>";
 }
 
-const char* AstNode::getNakedKindName(AstNode* node)
+Utf8 AstNode::getNakedKindName(AstNode* node)
 {
     switch (node->kind)
     {
     case AstNodeKind::VarDecl:
     case AstNodeKind::LetDecl:
-        return "variable";
+		if(node->ownerScope && node->ownerScope->isGlobal())
+			return "global variable";
+		if(node->ownerMainNode && node->ownerMainNode->kind == AstNodeKind::StructDecl)
+			return "struct member";
+		return "variable";
     case AstNodeKind::FuncDecl:
         return "function";
     case AstNodeKind::EnumDecl:

@@ -5,7 +5,7 @@
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind)
 {
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
-	SWAG_ASSERT(checkNode);
+    SWAG_ASSERT(checkNode);
 
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) && (kind == AstNodeKind::FuncDecl || kind == AstNodeKind::Statement))
         return true;
@@ -18,9 +18,16 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue || kind == AstNodeKind::Statement))
         return true;
 
-    Diagnostic diag{oneAttribute, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode))};
-    Diagnostic note{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-    return context->errorContext.report(diag, &note);
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCTVAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::Statement))
+    {
+        if (checkNode->ownerMainNode && checkNode->ownerMainNode->kind == AstNodeKind::StructDecl)
+            return true;
+    }
+
+    Diagnostic diag{oneAttribute, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode).c_str())};
+    Diagnostic note1{checkNode, format("this is the %s", AstNode::getNakedKindName(checkNode).c_str()), DiagnosticLevel::Note};
+    Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
+    return context->errorContext.report(diag, &note1, &note2);
 }
 
 bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
