@@ -293,17 +293,16 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     ByteCodeGenContext cxt{*context};
     cxt.bc = opPostCopy;
 
-    for (auto child : structNode->content->childs)
+    for (auto typeParam : typeInfoStruct->childs)
     {
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-        auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
 
         // Reference to the field
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        if (varDecl->resolvedSymbolOverload->storageOffset)
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+        if (typeParam->offset)
+            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = typeParam->offset;
 
         // Call postcopy
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
