@@ -46,7 +46,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 auto symbol    = node->scope->symTable->find(funcParam->name);
                 SWAG_ASSERT(symbol);
                 SWAG_ASSERT(symbol->overloads.size() == 1);
-                symbol->overloads[0]->registers = callParam->resultRegisterRC;
+                auto overload               = symbol->overloads[0];
+                overload->registers         = callParam->resultRegisterRC;
+                overload->registers.canFree = false;
             }
         }
         else
@@ -64,8 +66,10 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         auto symbol = node->scope->symTable->find(funcParam->name);
                         SWAG_ASSERT(symbol);
                         SWAG_ASSERT(symbol->overloads.size() == 1);
-                        symbol->overloads[0]->registers = callParam->resultRegisterRC;
-                        covered                         = true;
+                        auto overload               = symbol->overloads[0];
+                        overload->registers         = callParam->resultRegisterRC;
+                        overload->registers.canFree = false;
+                        covered                     = true;
                         break;
                     }
                 }
@@ -79,7 +83,9 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     auto symbol = node->scope->symTable->find(defaultParam->name);
                     SWAG_ASSERT(symbol);
                     SWAG_ASSERT(symbol->overloads.size() == 1);
-                    SWAG_CHECK(emitDefaultParamValue(context, defaultParam, symbol->overloads[0]->registers));
+                    auto overload = symbol->overloads[0];
+                    SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
+                    overload->registers.canFree = false;
                 }
             }
         }

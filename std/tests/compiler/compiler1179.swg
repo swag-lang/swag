@@ -1,12 +1,12 @@
 #[swag.inline]
-func toto(x, y: s32 = 666)
+func toto(x: s32)->s32
 {
-    z := x + y
+    return x + x
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    toto()
-    toto()
+    toto(1)
+    toto(1)
 }

@@ -9,6 +9,7 @@ struct RegisterList
     uint32_t         oneResult[MAX_STATIC];
     vector<uint32_t> registers;
     int              countResults = 0;
+    bool             canFree      = true;
 
     RegisterList()
     {
