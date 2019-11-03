@@ -153,7 +153,31 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
-        typeInfo->childs[storageIndex]->offset       = storageOffset;
+        // Attribute 'swag.offset' can be used to force the storage offset of the member
+        ComputedValue forceOffset;
+        bool          relocated = false;
+        if (typeParam && typeParam->attributes.getValue("swag.offset.name", forceOffset))
+        {
+            for (auto p : typeInfo->childs)
+            {
+                if (p->namedParam == forceOffset.text)
+                {
+                    relocated = true;
+                }
+            }
+
+            if (!relocated)
+            {
+                // The attribute itself stores the corresponding node in its value
+                ComputedValue valueNode;
+                bool          found = typeParam->attributes.getValue("swag.offset", valueNode);
+                SWAG_ASSERT(found);
+                auto attrNode = (AstNode*) valueNode.reg.pointer;
+                return context->errorContext.report({attrNode, format("cannot find structure member '%s' to compute variable relocation", forceOffset.text.c_str())});
+            }
+        }
+
+		typeInfo->childs[storageIndex]->offset       = storageOffset;
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
 
@@ -169,22 +193,22 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeInfo->sizeOf += child->typeInfo->sizeOf;
             storageOffset += child->typeInfo->sizeOf;
         }
-        else
-        {
-            auto padding = storageOffset & (child->typeInfo->sizeOf - 1);
-            padding %= node->packing;
-            if (padding)
-            {
-                padding = child->typeInfo->sizeOf - padding;
-                padding %= node->packing;
-                storageOffset += padding;
-                typeInfo->childs[storageIndex]->offset       = storageOffset;
-                child->resolvedSymbolOverload->storageOffset = storageOffset;
-            }
+		else
+		{
+			auto padding = storageOffset & (child->typeInfo->sizeOf - 1);
+			padding %= node->packing;
+			if (padding)
+			{
+				padding = child->typeInfo->sizeOf - padding;
+				padding %= node->packing;
+				storageOffset += padding;
+				typeInfo->childs[storageIndex]->offset = storageOffset;
+				child->resolvedSymbolOverload->storageOffset = storageOffset;
+			}
 
-            typeInfo->sizeOf += child->typeInfo->sizeOf + padding;
-            storageOffset += child->typeInfo->sizeOf;
-        }
+			typeInfo->sizeOf += child->typeInfo->sizeOf + padding;
+			storageOffset += child->typeInfo->sizeOf;
+		}
 
         storageIndex++;
     }
@@ -192,14 +216,14 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
-		if(!node->ownerScope->isGlobal())
-			return context->errorContext.report({ node, node->token, format("embedded struct '%s' cannot be public", node->name.c_str()) });
+        if (!node->ownerScope->isGlobal())
+            return context->errorContext.report({node, node->token, format("embedded struct '%s' cannot be public", node->name.c_str())});
 
-		if (!(node->flags & AST_FROM_GENERIC))
-		{
-			SWAG_VERIFY(!typeInfo->childs.empty(), context->errorContext.report({ node, node->token, format("struct '%s' is public and cannot be empty", node->name.c_str()) }));
-			node->ownerScope->addPublicStruct(node);
-		}
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            SWAG_VERIFY(!typeInfo->childs.empty(), context->errorContext.report({node, node->token, format("struct '%s' is public and cannot be empty", node->name.c_str())}));
+            node->ownerScope->addPublicStruct(node);
+        }
     }
 
     if (!(node->flags & AST_FROM_GENERIC))

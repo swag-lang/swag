@@ -127,6 +127,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         }
 
         // Register attribute itself
+        dummy.reg.pointer                    = (uint8_t*) node;
         node->values[resolvedName->fullName] = {resolved->typeInfo, dummy};
 
         // And all its parameters
