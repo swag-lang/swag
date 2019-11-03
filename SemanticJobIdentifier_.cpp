@@ -856,6 +856,29 @@ anotherTry:
     return true;
 }
 
+bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result)
+{
+    auto  job              = context->job;
+    auto& dependentSymbols = job->cacheDependentSymbols;
+
+    if (dependentSymbols.size() == 1)
+    {
+        *result = dependentSymbols[0];
+        return true;
+    }
+
+    auto symbol = dependentSymbols[0];
+    for (auto p : dependentSymbols)
+    {
+        symbol = p;
+        if (!node->callParameters && symbol->kind == SymbolKind::Variable)
+            break;
+    }
+
+    *result = symbol;
+    return true;
+}
+
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
@@ -962,16 +985,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         job->symMatch.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
     // If we have multiple symbols, we need to choose one
-    auto symbol = dependentSymbols[0];
-    if (dependentSymbols.size() > 1)
-    {
-        for (auto p : dependentSymbols)
-        {
-            symbol = p;
-            if (!node->callParameters && symbol->kind == SymbolKind::Variable)
-                break;
-        }
-    }
+    SymbolName* symbol = nullptr;
+    SWAG_CHECK(pickSymbol(context, node, &symbol));
 
     // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
     AstNode* ufcsParam = nullptr;
@@ -1177,16 +1192,16 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
     {
         auto scope = scopes[i];
 
-		// For an inline scope, jump right to the function
+        // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)
         {
-			while (scope->parentScope && scope->parentScope->kind != ScopeKind::Function)
-				scope = scope->parentScope;
-			if (scope)
-				scope = scope->parentScope;
+            while (scope->parentScope && scope->parentScope->kind != ScopeKind::Function)
+                scope = scope->parentScope;
+            if (scope)
+                scope = scope->parentScope;
         }
 
-		// Add parent scope
+        // Add parent scope
         if (scope->parentScope)
         {
             if (here.find(scope->parentScope) == here.end())
