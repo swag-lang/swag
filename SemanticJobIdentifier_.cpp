@@ -1128,7 +1128,17 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vec
 {
     if (!startNode->alternativeScopes.empty())
     {
-        scopes.insert(scopes.end(), startNode->alternativeScopes.begin(), startNode->alternativeScopes.end());
+        auto  job  = context->job;
+        auto& here = job->scopesHere;
+        for (auto p : startNode->alternativeScopes)
+        {
+            if (here.find(p) == here.end())
+            {
+                here.insert(p);
+                scopes.push_back(p);
+            }
+        }
+
         scopesVars.insert(scopesVars.end(), startNode->alternativeScopesVars.begin(), startNode->alternativeScopesVars.end());
     }
 
@@ -1145,6 +1155,7 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
     here.clear();
     scopes.clear();
 
+	// Get alternative scopes from the node hierarchy
     collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode, flags);
 
     auto startScope = startNode->ownerScope;
