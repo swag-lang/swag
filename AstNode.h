@@ -219,6 +219,18 @@ struct AstNode : public PoolElement
         }
     }
 
+    void inheritTokenName(Token& tkn)
+    {
+        SWAG_ASSERT(!tkn.text.empty());
+        name = move(tkn.text);
+    }
+
+    void inheritTokenLocation(Token& tkn)
+    {
+        token.startLocation = tkn.startLocation;
+        token.endLocation   = tkn.endLocation;
+    }
+
     void inheritOwners(AstNode* op)
     {
         if (!op)
@@ -230,18 +242,6 @@ struct AstNode : public PoolElement
         ownerBreakable       = op->ownerBreakable;
         ownerInline          = op->ownerInline;
         ownerCompilerIfBlock = op->ownerCompilerIfBlock;
-    }
-
-    void inheritTokenName(Token& tkn)
-    {
-        SWAG_ASSERT(!tkn.text.empty());
-        name = move(tkn.text);
-    }
-
-    void inheritTokenLocation(Token& tkn)
-    {
-        token.startLocation = tkn.startLocation;
-        token.endLocation   = tkn.endLocation;
     }
 
     void inheritOwnersAndFlags(SyntaxJob* job)

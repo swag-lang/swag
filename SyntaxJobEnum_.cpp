@@ -83,7 +83,6 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
             auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doEnumContent(stmt));
             SWAG_CHECK(eatToken(TokenId::SymRightCurly));
-            parent->ownerMainNode->flags |= AST_COMPOUND;
         }
         else
         {

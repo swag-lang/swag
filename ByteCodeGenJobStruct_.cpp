@@ -394,6 +394,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     auto opInitFct    = CastAst<AstFuncDecl>(typeInfoStruct->opInitFct, AstNodeKind::FuncDecl);
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(opInitFct->typeInfo, TypeInfoKind::FuncAttr);
     auto structNode   = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    auto job          = context->job;
 
     scoped_lock lk(typeInfoStruct->opInitFct->mutex);
     if (typeInfoStruct->opInitFct->bc && typeInfoStruct->opInitFct->bc->out)
@@ -441,15 +442,19 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         return true;
     }
 
-    auto tmpNodes = structNode->content->childs;
-    for (int i = 0; i < tmpNodes.size(); i++)
+    vector<AstNode*>& childs = (structNode->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : structNode->content->childs;
+    if (structNode->flags & AST_STRUCT_COMPOUND)
+        job->tmpNodes = structNode->content->childs;
+
+    for (int i = 0; i < childs.size(); i++)
     {
-        auto child = tmpNodes[i];
+        auto child = childs[i];
         if (child->kind == AstNodeKind::AttrUse)
             continue;
         if (child->kind == AstNodeKind::Statement)
         {
-			tmpNodes.insert(tmpNodes.end(), child->childs.begin(), child->childs.end());
+			SWAG_ASSERT(structNode->flags & AST_STRUCT_COMPOUND);
+            job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
             continue;
         }
 

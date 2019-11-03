@@ -91,15 +91,19 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     uint32_t storageIndex  = 0;
     uint32_t structFlags   = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
-    job->tmpNodes = node->content->childs;
-    for (int i = 0; i < job->tmpNodes.size(); i++)
+    vector<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
+    if (node->flags & AST_STRUCT_COMPOUND)
+        job->tmpNodes = node->content->childs;
+
+    for (int i = 0; i < childs.size(); i++)
     {
-        auto child = job->tmpNodes[i];
+        auto child = childs[i];
 
         if (child->kind == AstNodeKind::AttrUse)
             continue;
         if (child->kind == AstNodeKind::Statement)
         {
+            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
             job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
             continue;
         }

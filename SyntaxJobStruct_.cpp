@@ -158,7 +158,7 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doStructContent(stmt));
             SWAG_CHECK(eatToken(TokenId::SymRightCurly));
-            parent->ownerMainNode->flags |= AST_COMPOUND;
+            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
         }
         else
         {
