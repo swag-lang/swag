@@ -128,13 +128,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         structNode->content            = contentNode;
         contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
 
-        while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
-        {
-            if (token.id == TokenId::SymAttrStart)
-                SWAG_CHECK(doAttrUse(contentNode));
-            else
-                SWAG_CHECK(doVarDecl(contentNode, nullptr, AstNodeKind::VarDecl));
-        }
+        SWAG_CHECK(doStructContent(contentNode));
     }
 
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
@@ -145,6 +139,30 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);
         structNode->defaultOpInit = generateOpInit(structNode->parent, structNode->name, structNode->genericParameters);
+    }
+
+    return true;
+}
+
+bool SyntaxJob::doStructContent(AstNode* parent)
+{
+    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+    {
+        if (token.id == TokenId::SymAttrStart)
+        {
+            SWAG_CHECK(doAttrUse(parent));
+        }
+        else if (token.id == TokenId::SymLeftCurly)
+        {
+            SWAG_CHECK(eatToken());
+            auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+            SWAG_CHECK(doStructContent(stmt));
+            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
+        }
+        else
+        {
+            SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
+        }
     }
 
     return true;
