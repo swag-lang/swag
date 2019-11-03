@@ -62,6 +62,14 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     Scoped scoped(this, newScope);
+    SWAG_CHECK(doEnumContent(enumNode));
+    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
+    SWAG_CHECK(tokenizer.getToken(token));
+    return true;
+}
+
+bool SyntaxJob::doEnumContent(AstNode* enumNode)
+{
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
         if (token.id == TokenId::SymAttrStart)
@@ -87,7 +95,5 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
-    SWAG_CHECK(tokenizer.getToken(token));
-    return true;
+	return true;
 }

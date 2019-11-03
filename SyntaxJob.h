@@ -54,6 +54,7 @@ struct SyntaxJob : public Job
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
     bool doExpose(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
+	bool doEnumContent(AstNode* enumNode);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
     bool doImpl(AstNode* parent, AstNode** result = nullptr);
