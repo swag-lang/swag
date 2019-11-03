@@ -139,12 +139,16 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         return context->errorContext.report({node, node->token, "function with the 'foreign' attribute cannot have a body"});
 
     if (node->flags & AST_SPECIAL_COMPILER_FUNC)
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({node, node->token, "compiler special function cannot have the 'inline' attribute"}));
+    {
+        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({node, node->token, "compiler special function cannot have the 'swag.inline' attribute"}));
+        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->errorContext.report({node, node->token, "compiler special function cannot have the 'swag.public' attribute"}));
+		SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->errorContext.report({ node, node->token, "compiler special function cannot have the 'swag.private' attribute" }));
+    }
 
     if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
     {
-        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->errorContext.report({node->returnType, "function marked with the 'test' attribute cannot have a return value"}));
-        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->errorContext.report({node->parameters, "function marked with the 'test' attribute cannot have parameters"}));
+        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->errorContext.report({node->returnType, "function marked with the 'swag.test' attribute cannot have a return value"}));
+        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->errorContext.report({node->parameters, "function marked with the 'swag.test' attribute cannot have parameters"}));
     }
 
     // Can be null for intrinsics etc...
