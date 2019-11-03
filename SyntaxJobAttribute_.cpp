@@ -45,28 +45,28 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
         if (token.text == "func")
         {
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute constraint 'func' already defined"));
-            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_FUNC;
+            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute constraint 'func' already defined"));
+			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_FUNC;
         }
         else if (token.text == "var")
         {
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute constraint 'var' already defined"));
-            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_VAR;
+            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute constraint 'var' already defined"));
+			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_VAR;
         }
         else if (token.text == "struct" || token.text == "union")
         {
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute constraint 'struct' already defined"));
-            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_STRUCT;
+            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute constraint 'struct' already defined"));
+			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_STRUCT;
         }
         else if (token.text == "enum")
         {
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) == 0, syntaxError(token, "attribute constraint 'enum' already defined"));
-            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_ENUM;
+            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUM) == 0, syntaxError(token, "attribute constraint 'enum' already defined"));
+			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_ENUM;
         }
         else if (token.text == "enumvalue")
         {
-            SWAG_VERIFY((attrNode->typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) == 0, syntaxError(token, "attribute constraint 'enumvalue' already defined"));
-            attrNode->typeInfo->flags |= TYPEINFO_ATTRIBUTE_ENUMVALUE;
+            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) == 0, syntaxError(token, "attribute constraint 'enumvalue' already defined"));
+			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_ENUMVALUE;
         }
         else
         {
@@ -80,7 +80,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(eatSemiCol("after attribute definition"));
-    SWAG_VERIFY(attrNode->typeInfo->flags, syntaxError(token, "missing attribute type"));
+    SWAG_VERIFY(typeInfo->attributeFlags, syntaxError(token, "missing attribute constraint"));
 
     return true;
 }

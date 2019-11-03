@@ -150,7 +150,7 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
     if (!pointedType->isSame(other->pointedType, isSameFlags))
         return false;
-	SWAG_ASSERT(!sizeOf || !other->sizeOf || sizeOf == other->sizeOf);
+    SWAG_ASSERT(!sizeOf || !other->sizeOf || sizeOf == other->sizeOf);
     return true;
 }
 
@@ -275,6 +275,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->returnType           = returnType;
     newType->stackSize            = stackSize;
     newType->attributes           = attributes;
+    newType->attributeFlags       = attributeFlags;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {

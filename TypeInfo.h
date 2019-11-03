@@ -73,8 +73,8 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
     return casted;
 }
 
-static const uint32_t TYPEINFO_ATTRIBUTE_FUNC           = 0x00000001;
-static const uint32_t TYPEINFO_ATTRIBUTE_VAR            = 0x00000002;
+//static const uint32_t TYPEINFO_ATTRIBUTE_FUNC           = 0x00000001;
+//static const uint32_t TYPEINFO_ATTRIBUTE_VAR            = 0x00000002;
 static const uint32_t TYPEINFO_INTEGER                  = 0x00000004;
 static const uint32_t TYPEINFO_FLOAT                    = 0x00000008;
 static const uint32_t TYPEINFO_UNSIGNED                 = 0x00000010;
@@ -94,11 +94,8 @@ static const uint32_t TYPEINFO_DEFINED_VALUE            = 0x00020000;
 static const uint32_t TYPEINFO_AUTO_CAST                = 0x00040000;
 static const uint32_t TYPEINFO_TYPED_VARIADIC           = 0x00080000;
 static const uint32_t TYPEINFO_IN_CONCRETE_LIST         = 0x00100000;
-static const uint32_t TYPEINFO_ATTRIBUTE_STRUCT         = 0x00200000;
-static const uint32_t TYPEINFO_ATTRIBUTE_ENUM           = 0x00400000;
-static const uint32_t TYPEINFO_STRUCT_IS_TUPLE          = 0x00800000;
-static const uint32_t TYPEINFO_ATTRIBUTE_ENUMVALUE      = 0x01000000;
-static const uint32_t TYPEINFO_ENUM_FLAGS               = 0x02000000;
+static const uint32_t TYPEINFO_STRUCT_IS_TUPLE          = 0x00200000;
+static const uint32_t TYPEINFO_ENUM_FLAGS               = 0x00400000;
 
 static const uint32_t ISSAME_EXACT = 0x00000001;
 static const uint32_t ISSAME_CAST  = 0x00000002;
@@ -355,6 +352,12 @@ struct SymbolMatchContext
     map<TypeInfo*, MapGenType> mapGenericTypes;
 };
 
+static const uint32_t TYPEINFO_ATTRIBUTE_FUNC      = 0x00000001;
+static const uint32_t TYPEINFO_ATTRIBUTE_VAR       = 0x00000002;
+static const uint32_t TYPEINFO_ATTRIBUTE_STRUCT    = 0x00000004;
+static const uint32_t TYPEINFO_ATTRIBUTE_ENUM      = 0x00000008;
+static const uint32_t TYPEINFO_ATTRIBUTE_ENUMVALUE = 0x00000010;
+
 struct TypeInfoFuncAttr : public TypeInfo
 {
     void reset() override
@@ -367,6 +370,7 @@ struct TypeInfoFuncAttr : public TypeInfo
         returnType = nullptr;
         stackSize  = 0;
         attributes.reset();
+        attributeFlags = 0;
     }
 
     int numParamsRegisters()
@@ -394,6 +398,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     TypeInfo*              returnType;
     int                    stackSize;
     SymbolAttributes       attributes;
+    uint32_t               attributeFlags;
 };
 
 struct TypeInfoPointer : public TypeInfo

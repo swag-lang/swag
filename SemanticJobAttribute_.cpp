@@ -8,23 +8,23 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     if (!checkNode)
     {
-        if (typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC)
+        if (typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC)
             return context->errorContext.report({oneAttribute, oneAttribute->token, format("attribute '%s' must be followed by a function definition", oneAttribute->name.c_str())});
-        if (typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR)
+        if (typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR)
             return context->errorContext.report({oneAttribute, oneAttribute->token, format("attribute '%s' must be followed by a variable definition", oneAttribute->name.c_str())});
         SWAG_ASSERT(false);
         return false;
     }
 
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_FUNC) && (kind == AstNodeKind::FuncDecl || kind == AstNodeKind::Statement))
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) && (kind == AstNodeKind::FuncDecl || kind == AstNodeKind::Statement))
         return true;
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_VAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl || kind == AstNodeKind::Statement))
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl || kind == AstNodeKind::Statement))
         return true;
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_STRUCT) && (kind == AstNodeKind::StructDecl || kind == AstNodeKind::Statement))
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) && (kind == AstNodeKind::StructDecl || kind == AstNodeKind::Statement))
         return true;
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUM) && (kind == AstNodeKind::EnumDecl || kind == AstNodeKind::Statement))
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUM) && (kind == AstNodeKind::EnumDecl || kind == AstNodeKind::Statement))
         return true;
-    if ((typeInfo->flags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue))
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue))
         return true;
 
     Diagnostic diag{oneAttribute, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode))};
