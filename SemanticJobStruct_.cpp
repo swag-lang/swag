@@ -78,6 +78,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto job        = context->job;
 
     typeInfo->structNode = node;
     typeInfo->name       = format("%s", node->name.c_str());
@@ -90,12 +91,20 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     uint32_t storageIndex  = 0;
     uint32_t structFlags   = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
-    for (auto child : node->content->childs)
+    job->tmpNodes = node->content->childs;
+    for (int i = 0; i < job->tmpNodes.size(); i++)
     {
-        if (child->kind != AstNodeKind::VarDecl)
-            continue;
+        auto child = job->tmpNodes[i];
 
-        auto varDecl = static_cast<AstVarDecl*>(child);
+        if (child->kind == AstNodeKind::AttrUse)
+            continue;
+        if (child->kind == AstNodeKind::Statement)
+        {
+            job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
+            continue;
+        }
+
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))

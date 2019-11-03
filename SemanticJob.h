@@ -74,7 +74,7 @@ struct SemanticJob : public Job
     static void enterState(AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags);
-	static void collectAlternativeScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags);
+    static void collectAlternativeScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags);
     static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
@@ -99,7 +99,7 @@ struct SemanticJob : public Job
     static bool convertAssignementToStruct(SemanticContext* context, AstNode* assignment, AstStruct** result);
     static bool convertAssignementToStruct(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
     static bool collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg);
-	static void disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
+    static void disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
 
     void waitForSymbolNoLock(SymbolName* symbol);
     void setPending();
@@ -170,7 +170,7 @@ struct SemanticJob : public Job
     static bool resolveIf(SemanticContext* context);
     static bool resolveWhile(SemanticContext* context);
     static bool resolveLoopBefore(SemanticContext* context);
-	static bool resolveInlineBefore(SemanticContext* context);
+    static bool resolveInlineBefore(SemanticContext* context);
     static bool resolveForBefore(SemanticContext* context);
     static bool resolveFor(SemanticContext* context);
     static bool resolveSwitch(SemanticContext* context);
@@ -200,6 +200,7 @@ struct SemanticJob : public Job
         cacheGenericMatches.clear();
         cacheBadSignature.clear();
         cacheBadGenericSignature.clear();
+        tmpNodes.clear();
         symMatch.reset();
         waitingSymbolSolved = nullptr;
         context.reset();
@@ -207,6 +208,7 @@ struct SemanticJob : public Job
 
     SourceFile*              sourceFile;
     vector<AstNode*>         nodes;
+    vector<AstNode*>         tmpNodes;
     vector<SymbolName*>      cacheDependentSymbols;
     vector<Scope*>           cacheScopeHierarchy;
     vector<AlternativeScope> cacheScopeHierarchyVars;

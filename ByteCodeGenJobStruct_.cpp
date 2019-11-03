@@ -441,10 +441,17 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         return true;
     }
 
-    for (auto child : structNode->content->childs)
+    auto tmpNodes = structNode->content->childs;
+    for (int i = 0; i < tmpNodes.size(); i++)
     {
+        auto child = tmpNodes[i];
         if (child->kind == AstNodeKind::AttrUse)
             continue;
+        if (child->kind == AstNodeKind::Statement)
+        {
+			tmpNodes.insert(tmpNodes.end(), child->childs.begin(), child->childs.end());
+            continue;
+        }
 
         auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
         auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
