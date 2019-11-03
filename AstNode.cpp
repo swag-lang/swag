@@ -158,7 +158,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
     flags &= ~AST_IS_GENERIC;
 
     ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
-    ownerStruct      = context.ownerStruct ? context.ownerStruct : from->ownerStruct;
+    ownerMainNode    = context.ownerMainNode ? context.ownerMainNode : from->ownerMainNode;
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable   = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
     ownerInline      = context.ownerInline ? context.ownerInline : from->ownerInline;
@@ -494,7 +494,7 @@ AstNode* AstStruct::clone(CloneContext& context)
     cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.parentScope->allocateSymTable();
     cloneContext.ownerStructScope = cloneContext.parentScope;
-    cloneContext.ownerStruct      = newNode;
+    cloneContext.ownerMainNode    = newNode;
 
     newNode->scope = cloneContext.parentScope;
     newNode->alternativeScopes.push_back(scope);

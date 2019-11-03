@@ -120,8 +120,9 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     {
-        Scoped       scoped(this, newScope);
-        ScopedStruct scopedStruct(this, newScope, structNode);
+        Scoped         scoped(this, newScope);
+        ScopedStruct   scopedStruct(this, newScope);
+        ScopedMainNode scopedMainNode(this, structNode);
 
         auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content            = contentNode;

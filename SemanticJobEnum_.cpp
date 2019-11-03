@@ -59,8 +59,10 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 
 bool SemanticJob::resolveEnumValue(SemanticContext* context)
 {
-    auto valNode    = context->node;
-    auto enumNode   = valNode->parent;
+    auto valNode  = context->node;
+    auto enumNode = valNode->ownerMainNode;
+    SWAG_ASSERT(enumNode && enumNode->kind == AstNodeKind::EnumDecl);
+
     auto typeEnum   = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     auto assignNode = valNode->childs.empty() ? nullptr : valNode->childs[0];
 

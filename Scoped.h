@@ -116,22 +116,36 @@ struct ScopedAttributesFlags
 
 struct ScopedStruct
 {
-    ScopedStruct(SyntaxJob* job, Scope* structScope, AstStruct* structNode = nullptr)
+    ScopedStruct(SyntaxJob* job, Scope* structScope)
     {
         savedJob                = job;
         savedStruct             = job->currentStructScope;
-        savedStructNode         = job->currentStruct;
         job->currentStructScope = structScope;
-        job->currentStruct      = structNode;
     }
 
     ~ScopedStruct()
     {
         savedJob->currentStructScope = savedStruct;
-        savedJob->currentStruct      = savedStructNode;
     }
 
     SyntaxJob* savedJob;
     Scope*     savedStruct;
-    AstStruct* savedStructNode;
+};
+
+struct ScopedMainNode
+{
+    ScopedMainNode(SyntaxJob* job, AstNode* mainNode)
+    {
+        savedJob             = job;
+        savedMainNode        = job->currentMainNode;
+        job->currentMainNode = mainNode;
+    }
+
+    ~ScopedMainNode()
+    {
+        savedJob->currentMainNode = savedMainNode;
+    }
+
+    SyntaxJob* savedJob;
+    AstNode*   savedMainNode;
 };

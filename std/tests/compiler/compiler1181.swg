@@ -1,11 +1,11 @@
 attr T()-> "enumvalue"
 enum TITI
 {
-    //#[T]
-    //{
+    #[T]
+    {
         A
         B   
-    //}
+    }
 }
 
 struct TOTO

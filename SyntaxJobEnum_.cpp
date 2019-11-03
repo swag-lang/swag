@@ -61,7 +61,8 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
-    Scoped scoped(this, newScope);
+    Scoped         scoped(this, newScope);
+    ScopedMainNode scopedMainNode(this, enumNode);
     SWAG_CHECK(doEnumContent(enumNode));
     SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
     SWAG_CHECK(tokenizer.getToken(token));
@@ -75,6 +76,13 @@ bool SyntaxJob::doEnumContent(AstNode* enumNode)
         if (token.id == TokenId::SymAttrStart)
         {
             SWAG_CHECK(doAttrUse(enumNode));
+        }
+        else if (token.id == TokenId::SymLeftCurly)
+        {
+            SWAG_CHECK(eatToken());
+            auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, enumNode);
+            SWAG_CHECK(doEnumContent(stmt));
+            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
         }
         else
         {
@@ -95,5 +103,5 @@ bool SyntaxJob::doEnumContent(AstNode* enumNode)
         }
     }
 
-	return true;
+    return true;
 }

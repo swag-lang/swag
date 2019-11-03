@@ -54,7 +54,7 @@ struct SyntaxJob : public Job
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
     bool doExpose(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
-	bool doEnumContent(AstNode* enumNode);
+    bool doEnumContent(AstNode* enumNode);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
     bool doStruct(AstNode* parent, AstNode** result = nullptr);
     bool doImpl(AstNode* parent, AstNode** result = nullptr);
@@ -113,7 +113,7 @@ struct SyntaxJob : public Job
         currentFct             = nullptr;
         currentBreakable       = nullptr;
         currentStructScope     = nullptr;
-        currentStruct          = nullptr;
+        currentMainNode        = nullptr;
         currentCompilerIfBlock = nullptr;
     }
 
@@ -128,8 +128,8 @@ struct SyntaxJob : public Job
     AstFuncDecl*        currentFct;
     AstBreakable*       currentBreakable;
     Scope*              currentStructScope;
-    AstStruct*          currentStruct;
     AstCompilerIfBlock* currentCompilerIfBlock;
+    AstNode*            currentMainNode;
 };
 
 extern Pool<SyntaxJob> g_Pool_syntaxJob;

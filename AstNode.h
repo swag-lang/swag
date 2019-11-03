@@ -118,7 +118,7 @@ struct CloneContext
     AstNode*                  parent           = nullptr;
     Scope*                    parentScope      = nullptr;
     Scope*                    ownerStructScope = nullptr;
-    AstStruct*                ownerStruct      = nullptr;
+    AstNode*                  ownerMainNode    = nullptr;
     map<TypeInfo*, TypeInfo*> replaceTypes;
 };
 
@@ -133,7 +133,7 @@ struct AstNode : public PoolElement
         ownerInline                  = nullptr;
         ownerFct                     = nullptr;
         ownerStructScope             = nullptr;
-        ownerStruct                  = nullptr;
+        ownerMainNode                = nullptr;
         ownerCompilerIfBlock         = nullptr;
         parent                       = nullptr;
         semanticFct                  = nullptr;
@@ -224,7 +224,7 @@ struct AstNode : public PoolElement
         if (!op)
             return;
         ownerStructScope     = op->ownerStructScope;
-        ownerStruct          = op->ownerStruct;
+        ownerMainNode        = op->ownerMainNode;
         ownerScope           = op->ownerScope;
         ownerFct             = op->ownerFct;
         ownerBreakable       = op->ownerBreakable;
@@ -247,7 +247,7 @@ struct AstNode : public PoolElement
     void inheritOwnersAndFlags(SyntaxJob* job)
     {
         ownerStructScope     = job->currentStructScope;
-        ownerStruct          = job->currentStruct;
+        ownerMainNode        = job->currentMainNode;
         ownerScope           = job->currentScope;
         ownerFct             = job->currentFct;
         ownerBreakable       = job->currentBreakable;
@@ -293,7 +293,7 @@ struct AstNode : public PoolElement
     AstFuncDecl*        ownerFct;
     uint64_t            ownerFlags;
     Scope*              ownerStructScope;
-    AstStruct*          ownerStruct;
+    AstNode*            ownerMainNode;
     AstCompilerIfBlock* ownerCompilerIfBlock;
 
     vector<Scope*>           alternativeScopes;
