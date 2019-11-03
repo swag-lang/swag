@@ -906,15 +906,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         // Search symbol in all the scopes of the hierarchy
         for (auto scope : scopeHierarchy)
         {
-            if (scope->symTable)
+            if (!scope->symTable)
+                continue;
+
+            auto symbol = scope->symTable->find(node->name);
+            if (symbol)
             {
-                auto symbol = scope->symTable->find(node->name);
-                if (symbol)
-                {
-                    dependentSymbols.push_back(symbol);
-                    if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Attribute)
-                        break;
-                }
+                dependentSymbols.push_back(symbol);
+                if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Attribute)
+                    break;
             }
         }
 
