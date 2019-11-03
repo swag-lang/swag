@@ -153,6 +153,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
+        auto realStorageOffset = storageOffset;
+
         // Attribute 'swag.offset' can be used to force the storage offset of the member
         ComputedValue forceOffset;
         bool          relocated = false;
@@ -162,7 +164,9 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             {
                 if (p->namedParam == forceOffset.text)
                 {
-                    relocated = true;
+                    realStorageOffset = p->offset;
+                    relocated         = true;
+                    break;
                 }
             }
 
@@ -177,38 +181,30 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             }
         }
 
-		typeInfo->childs[storageIndex]->offset       = storageOffset;
-        child->resolvedSymbolOverload->storageOffset = storageOffset;
+        // Compute padding
+        if (!relocated && node->packing > 1 && child->typeInfo->sizeOf)
+        {
+            auto padding = realStorageOffset & (child->typeInfo->sizeOf - 1);
+            padding %= node->packing;
+            if (padding)
+            {
+                padding = child->typeInfo->sizeOf - padding;
+                padding %= node->packing;
+                realStorageOffset += padding;
+                storageOffset += padding;
+            }
+        }
+
+        typeInfo->childs[storageIndex]->offset       = realStorageOffset;
+        child->resolvedSymbolOverload->storageOffset = realStorageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
 
-        // Union, no offset, sizeof is the size of the biggest child
-        if (node->packing == 0)
-        {
-            typeInfo->sizeOf = max(typeInfo->sizeOf, child->typeInfo->sizeOf);
-        }
+        typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + child->typeInfo->sizeOf);
 
-        // Direct matching
-        else if (node->packing == 1 || child->typeInfo->sizeOf == 0)
-        {
-            typeInfo->sizeOf += child->typeInfo->sizeOf;
+        if (relocated)
+            storageOffset = max(storageOffset, realStorageOffset + child->typeInfo->sizeOf);
+        else if (node->packing)
             storageOffset += child->typeInfo->sizeOf;
-        }
-		else
-		{
-			auto padding = storageOffset & (child->typeInfo->sizeOf - 1);
-			padding %= node->packing;
-			if (padding)
-			{
-				padding = child->typeInfo->sizeOf - padding;
-				padding %= node->packing;
-				storageOffset += padding;
-				typeInfo->childs[storageIndex]->offset = storageOffset;
-				child->resolvedSymbolOverload->storageOffset = storageOffset;
-			}
-
-			typeInfo->sizeOf += child->typeInfo->sizeOf + padding;
-			storageOffset += child->typeInfo->sizeOf;
-		}
 
         storageIndex++;
     }
