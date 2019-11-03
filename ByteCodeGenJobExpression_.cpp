@@ -112,13 +112,13 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
-    SWAG_CHECK(emitLiteral(context, nullptr));
+    auto node = context->node;
+    SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRC));
     return true;
 }
 
-bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
+bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList)
 {
-    auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
 
     // If we need a cast to an any, then first resolve literal with its real type
@@ -131,65 +131,64 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
     // We have null, and we want a string
     if (node->typeInfo->nativeType == NativeTypeKind::String && node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
-        emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[0]);
-        emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[1]);
+        reserveLinearRegisterRC(context, regList, 2);
+        emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
+        emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
         return true;
     }
 
-    auto r0                = reserveRegisterRC(context);
-    node->resultRegisterRC = r0;
+    reserveRegisterRC(context, regList, 1);
 
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
-        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, node->resultRegisterRC[0])->b.u32 = node->computedValue.reg.u32;
-		node->parent->resultRegisterRC = node->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0])->b.u32 = node->computedValue.reg.u32;
+        node->parent->resultRegisterRC = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.b = node->computedValue.reg.b;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.b = node->computedValue.reg.b;
             return true;
         case NativeTypeKind::U8:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u8 = node->computedValue.reg.u8;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u8 = node->computedValue.reg.u8;
             return true;
         case NativeTypeKind::U16:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u16 = node->computedValue.reg.u16;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u16 = node->computedValue.reg.u16;
             return true;
         case NativeTypeKind::U32:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeTypeKind::U64:
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.u64 = node->computedValue.reg.u64;
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, regList)->b.u64 = node->computedValue.reg.u64;
             return true;
         case NativeTypeKind::S8:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s8 = node->computedValue.reg.s8;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.s8 = node->computedValue.reg.s8;
             return true;
         case NativeTypeKind::S16:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s16 = node->computedValue.reg.s16;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.s16 = node->computedValue.reg.s16;
             return true;
         case NativeTypeKind::S32:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.s32 = node->computedValue.reg.s32;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.s32 = node->computedValue.reg.s32;
             return true;
         case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.s64 = node->computedValue.reg.s64;
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, regList)->b.s64 = node->computedValue.reg.s64;
             return true;
         case NativeTypeKind::F32:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.f32 = node->computedValue.reg.f32;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.f32 = node->computedValue.reg.f32;
             return true;
         case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::CopyRAVB64, r0)->b.f64 = node->computedValue.reg.f64;
+            emitInstruction(context, ByteCodeOp::CopyRAVB64, regList)->b.f64 = node->computedValue.reg.f64;
             return true;
         case NativeTypeKind::Char:
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, r0)->b.u32 = node->computedValue.reg.u32;
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u32 = node->computedValue.reg.u32;
             return true;
         case NativeTypeKind::String:
         {
-            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+            reserveLinearRegisterRC(context, regList, 2);
             auto index  = context->sourceFile->module->reserveString(node->computedValue.text);
-            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, regList[0], regList[1]);
             inst->c.u32 = index;
             return true;
         }
@@ -201,21 +200,21 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, TypeInfo* toType)
     {
         if (toType && (toType->kind == TypeInfoKind::Slice || toType->isNative(NativeTypeKind::String)))
         {
-            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
-            emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[0]);
-            emitInstruction(context, ByteCodeOp::ClearRA, node->resultRegisterRC[1]);
+            reserveLinearRegisterRC(context, regList, 2);
+            emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
+            emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::ClearRA, r0);
+            emitInstruction(context, ByteCodeOp::ClearRA, regList);
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto     typeArray     = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         uint32_t storageOffset = node->computedValue.reg.u32;
-        reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
-        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        reserveLinearRegisterRC(context, regList, 2);
+        auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, regList[0], regList[1]);
         inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
     }
     else

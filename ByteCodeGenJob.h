@@ -44,11 +44,11 @@ struct ByteCodeGenJob : public Job
     static void                 setupBC(Module* module, AstNode* node);
     static void                 askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode);
     static void                 collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds);
-    static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param);
+    static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
 
     static bool emitExpressionListBefore(ByteCodeGenContext* context);
     static bool emitExpressionList(ByteCodeGenContext* context);
-    static bool emitLiteral(ByteCodeGenContext* context, TypeInfo* toType);
+    static bool emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList);
     static bool emitLiteral(ByteCodeGenContext* context);
     static bool emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);
     static bool emitBinaryOpMinus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2);

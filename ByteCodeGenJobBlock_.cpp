@@ -75,12 +75,11 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 {
                     auto defaultParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                     SWAG_ASSERT(defaultParam->assignment);
-                    SWAG_CHECK(emitDefaultParamValue(context, defaultParam));
 
                     auto symbol = node->scope->symTable->find(defaultParam->name);
                     SWAG_ASSERT(symbol);
                     SWAG_ASSERT(symbol->overloads.size() == 1);
-                    symbol->overloads[0]->registers = defaultParam->assignment->resultRegisterRC;
+                    SWAG_CHECK(emitDefaultParamValue(context, defaultParam, symbol->overloads[0]->registers));
                 }
             }
         }

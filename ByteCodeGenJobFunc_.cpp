@@ -282,7 +282,7 @@ void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* fu
     }
 }
 
-bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param)
+bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList)
 {
     auto node         = context->node;
     auto defaultParam = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
@@ -294,23 +294,23 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         {
         case TokenId::CompilerCallerLine:
         {
-            defaultParam->assignment->resultRegisterRC                                                          = reserveRegisterRC(context);
-            emitInstruction(context, ByteCodeOp::CopyRAVB32, defaultParam->assignment->resultRegisterRC)->b.u32 = node->token.startLocation.line + 1;
+            reserveRegisterRC(context, regList, 1);
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList)->b.u32 = node->token.startLocation.line + 1;
             break;
         }
         case TokenId::CompilerCallerFile:
         {
-            reserveLinearRegisterRC(context, defaultParam->assignment->resultRegisterRC, 2);
+            reserveLinearRegisterRC(context, regList, 2);
             auto index  = context->sourceFile->module->reserveString(node->sourceFile->path.string());
-            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, defaultParam->assignment->resultRegisterRC[0], defaultParam->assignment->resultRegisterRC[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, regList[0], regList[1]);
             inst->c.u32 = index;
             break;
         }
         case TokenId::CompilerCallerFunction:
         {
-            reserveLinearRegisterRC(context, defaultParam->assignment->resultRegisterRC, 2);
+            reserveLinearRegisterRC(context, regList, 2);
             auto index  = context->sourceFile->module->reserveString(node->ownerFct->fullnameDot);
-            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, defaultParam->assignment->resultRegisterRC[0], defaultParam->assignment->resultRegisterRC[1]);
+            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, regList[0], regList[1]);
             inst->c.u32 = index;
             break;
         }
@@ -320,10 +320,8 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
     }
     else
     {
-        context->node = defaultParam->assignment;
-        SWAG_ASSERT(context->node->flags & AST_VALUE_COMPUTED);
-        SWAG_CHECK(emitLiteral(context, defaultParam->typeInfo));
-        context->node = node;
+        SWAG_ASSERT(defaultParam->assignment->flags & AST_VALUE_COMPUTED);
+        SWAG_CHECK(emitLiteral(context, defaultParam->assignment, defaultParam->typeInfo, regList));
     }
 
     return true;
@@ -453,16 +451,17 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             {
                 auto defaultParam = CastAst<AstVarDecl>(funcNode->parameters->childs[i], AstNodeKind::FuncDeclParam);
                 SWAG_ASSERT(defaultParam->assignment);
-                SWAG_CHECK(emitDefaultParamValue(context, defaultParam));
 
-                for (int r = defaultParam->assignment->resultRegisterRC.size() - 1; r >= 0; r--)
+                RegisterList regList;
+                SWAG_CHECK(emitDefaultParamValue(context, defaultParam, regList));
+
+                toFree += regList;
+                for (int r = regList.size() - 1; r >= 0; r--)
                 {
-                    emitInstruction(context, ByteCodeOp::PushRAParam, defaultParam->assignment->resultRegisterRC[r]);
+                    emitInstruction(context, ByteCodeOp::PushRAParam, regList[r]);
                     precallStack += sizeof(Register);
                     numPushParams++;
                 }
-
-                freeRegisterRC(context, defaultParam->assignment);
             }
         }
     }
