@@ -169,6 +169,14 @@ namespace Ast
             break;
         }
 
+		case AstNodeKind::AffectOp:
+			SWAG_CHECK(output(concat, node->childs[0]));
+			concat.addString(" ");
+			concat.addString(node->token.text);
+			concat.addString(" ");
+			SWAG_CHECK(output(concat, node->childs[1]));
+			break;
+
         case AstNodeKind::FactorOp:
         case AstNodeKind::BinaryOp:
             concat.addString("(");
