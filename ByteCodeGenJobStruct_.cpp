@@ -449,12 +449,23 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
-        if (child->kind == AstNodeKind::AttrUse)
-            continue;
-        if (child->kind == AstNodeKind::Statement)
+
+        switch (child->kind)
         {
-			SWAG_ASSERT(structNode->flags & AST_STRUCT_COMPOUND);
+        case AstNodeKind::AttrUse:
+            continue;
+        case AstNodeKind::Statement:
+        case AstNodeKind::CompilerIfBlock:
+            SWAG_ASSERT(structNode->flags & AST_STRUCT_COMPOUND);
             job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
+            continue;
+        case AstNodeKind::CompilerIf:
+            SWAG_ASSERT(structNode->flags & AST_STRUCT_COMPOUND);
+            AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
+            if (!(compilerIf->ifBlock->flags & AST_DISABLED))
+                job->tmpNodes.push_back(compilerIf->ifBlock);
+            else if (compilerIf->elseBlock)
+                job->tmpNodes.push_back(compilerIf->elseBlock);
             continue;
         }
 
