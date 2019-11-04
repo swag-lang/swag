@@ -1,5 +1,10 @@
 namespace std.math
 {
+    public
+	{
+        const Pi = 3.14159265358979323846'f64
+    }
+    
 	#[swag.constexpr]
     public
 	{

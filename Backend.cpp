@@ -245,6 +245,18 @@ bool Backend::emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node)
     return true;
 }
 
+bool Backend::emitPublicConstSwg(AstVarDecl* node)
+{
+	bufferSwg.addString("\tconst ");
+	bufferSwg.addString(node->name.c_str());
+	bufferSwg.addString(": ");
+	bufferSwg.addString(node->typeInfo->name);
+	bufferSwg.addString(" = ");
+	SWAG_CHECK(Ast::output(bufferSwg, node->assignment));
+	bufferSwg.addString("\n");
+    return true;
+}
+
 bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
     bufferSwg.addString("\tstruct");
@@ -343,6 +355,16 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
             bufferSwg.addString(format("impl %s {\n", scope->name.c_str()));
         else
             bufferSwg.addString("{\n");
+    }
+
+    // Enums
+    if (!scope->publicConst.empty())
+    {
+        for (auto one : scope->publicConst)
+        {
+            AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
+            SWAG_CHECK(emitPublicConstSwg(node));
+        }
     }
 
     // Structures

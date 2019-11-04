@@ -386,6 +386,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->kind == AstNodeKind::LetDecl)
         symbolFlags |= OVERLOAD_CONST;
 
+	// Check public
+    if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
+    {
+		if(node->ownerScope->isGlobal())
+			node->ownerScope->addPublicConst(node);
+    }
+
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default
     if (!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)

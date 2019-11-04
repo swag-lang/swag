@@ -210,10 +210,20 @@ namespace Ast
         }
 
         case AstNodeKind::Literal:
-			if(node->token.literalType->isNative(NativeTypeKind::String))
+			if (node->token.literalType->isNative(NativeTypeKind::String))
+			{
 				concat.addString("\"" + node->token.text + "\"");
+			}
 			else
+			{
 				concat.addString(node->token.text);
+				if (!(node->token.literalType->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT)))
+				{
+					concat.addString("'");
+					concat.addString(node->token.literalType->name);
+				}
+			}
+
             break;
 
         default:
