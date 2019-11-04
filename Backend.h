@@ -9,6 +9,7 @@ struct AstFuncDecl;
 struct AstStruct;
 struct AstNode;
 struct Scope;
+struct TypeInfoParam;
 
 struct Backend
 {
@@ -27,6 +28,7 @@ struct Backend
     OutputFile bufferSwg;
 
 	bool emitAttributes(AstNode* node);
+	bool emitAttributes(TypeInfoParam* param);
 	bool emitGenericParameters(AstNode* node);
 	bool emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node);
     bool emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node);

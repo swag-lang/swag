@@ -36,6 +36,15 @@ bool Backend::emitAttributes(AstNode* node)
     return true;
 }
 
+bool Backend::emitAttributes(TypeInfoParam* param)
+{
+	ComputedValue v;
+	if (param->attributes.getValue("swag.offset.name", v))
+		bufferSwg.addString(format("\t\t#[swag.offset(\"%s\")]\n", v.text.c_str()));
+
+	return true;
+}
+
 bool Backend::emitGenericParameters(AstNode* node)
 {
     bufferSwg.addString("(");
@@ -245,6 +254,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
 
     for (auto p : typeStruct->childs)
     {
+		SWAG_CHECK(emitAttributes(p));
         bufferSwg.addString("\t\t");
         bufferSwg.addString(p->namedParam);
         bufferSwg.addString(": ");
