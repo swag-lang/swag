@@ -4,6 +4,7 @@
 #include "Global.h"
 #include "ThreadManager.h"
 #include "FileSemanticJob.h"
+#include "Ast.h"
 
 Pool<FileSemanticJob> g_Pool_fileSemanticJob;
 
@@ -31,29 +32,9 @@ JobResult FileSemanticJob::execute()
         case AstNodeResolveState::Enter:
             switch (node->kind)
             {
-            case AstNodeKind::AttrUse:
-            {
-                auto job = newSemanticJob(sourceFile);
-                nodes.pop_back();
-
-                // Will deal with the next node too, as we want to stitch the attributes and the next declaration
-                // if necessary
-                if (!nodes.empty())
-                {
-                    auto nextNode = nodes.back();
-                    job->nodes.push_back(nextNode);
-                    nodes.pop_back();
-                }
-
-                job->nodes.push_back(node);
-                g_ThreadMgr.addJob(job);
-                continue;
-            }
-            break;
-
-            case AstNodeKind::VarDecl:		
-			case AstNodeKind::LetDecl:
-			case AstNodeKind::ConstDecl:
+            case AstNodeKind::VarDecl:
+            case AstNodeKind::LetDecl:
+            case AstNodeKind::ConstDecl:
             case AstNodeKind::TypeAlias:
             case AstNodeKind::EnumDecl:
             case AstNodeKind::StructDecl:
@@ -63,7 +44,7 @@ JobResult FileSemanticJob::execute()
             case AstNodeKind::CompilerRun:
             case AstNodeKind::AttrDecl:
             case AstNodeKind::Impl:
-			case AstNodeKind::CompilerIf:
+            case AstNodeKind::CompilerIf:
             {
                 auto job = newSemanticJob(sourceFile);
                 job->nodes.push_back(node);
@@ -80,6 +61,14 @@ JobResult FileSemanticJob::execute()
                 for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                 {
                     auto child = node->childs[i];
+                    if (child->isDisabled())
+                        continue;
+
+                    // Top to bottom inheritance
+                    if (node->kind == AstNodeKind::Statement)
+                        child->parentAttributes = node->parentAttributes;
+
+                    enterState(child);
                     nodes.push_back(child);
                 }
 

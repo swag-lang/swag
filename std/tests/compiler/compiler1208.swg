@@ -7,7 +7,7 @@ public
     }
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     toto()
