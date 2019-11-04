@@ -5,7 +5,7 @@ using std.drawing
 #test
 {
 	x := Argb.Red
-	var y: Color = cast(u32) Argb.Red
+	var y: Color = Argb.Red
     @assert(y.a == 255)
     @assert(y.r == 255)
     @assert(y.g == 0)
