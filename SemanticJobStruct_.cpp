@@ -134,6 +134,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             typeInfo->childs.push_back(typeParam);
         }
 
+        typeParam           = typeInfo->childs[storageIndex];
+        typeParam->typeInfo = child->typeInfo;
+        typeParam->node     = child;
+
         // Default value
         if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
             structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
@@ -218,7 +222,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             }
         }
 
-        typeInfo->childs[storageIndex]->offset       = realStorageOffset;
+        typeParam->offset                            = realStorageOffset;
         child->resolvedSymbolOverload->storageOffset = realStorageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
 

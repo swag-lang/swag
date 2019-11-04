@@ -394,7 +394,6 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     auto opInitFct    = CastAst<AstFuncDecl>(typeInfoStruct->opInitFct, AstNodeKind::FuncDecl);
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(opInitFct->typeInfo, TypeInfoKind::FuncAttr);
     auto structNode   = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
-    auto job          = context->job;
 
     scoped_lock lk(typeInfoStruct->opInitFct->mutex);
     if (typeInfoStruct->opInitFct->bc && typeInfoStruct->opInitFct->bc->out)
@@ -442,40 +441,15 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         return true;
     }
 
-    vector<AstNode*>& childs = (structNode->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : structNode->content->childs;
-    if (structNode->flags & AST_STRUCT_COMPOUND)
-        job->tmpNodes = structNode->content->childs;
-
-    for (int i = 0; i < childs.size(); i++)
+    for (auto param : typeInfoStruct->childs)
     {
-        auto child = childs[i];
-
-        switch (child->kind)
-        {
-        case AstNodeKind::AttrUse:
-            continue;
-        case AstNodeKind::Statement:
-        case AstNodeKind::CompilerIfBlock:
-            SWAG_ASSERT(structNode->flags & AST_STRUCT_COMPOUND);
-            job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
-            continue;
-        case AstNodeKind::CompilerIf:
-            SWAG_ASSERT(structNode->flags & AST_STRUCT_COMPOUND);
-            AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
-            if (!(compilerIf->ifBlock->flags & AST_DISABLED))
-                job->tmpNodes.push_back(compilerIf->ifBlock);
-            else if (compilerIf->elseBlock)
-                job->tmpNodes.push_back(compilerIf->elseBlock);
-            continue;
-        }
-
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-        auto typeVar = TypeManager::concreteType(varDecl->typeInfo);
+        auto varDecl = CastAst<AstVarDecl>(param->node, AstNodeKind::VarDecl);
+        auto typeVar = TypeManager::concreteType(param->typeInfo);
 
         // Reference to the field
         emitInstruction(&cxt, ByteCodeOp::RAFromStackParam64, 0, 24);
-        if (varDecl->resolvedSymbolOverload->storageOffset)
-            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = varDecl->resolvedSymbolOverload->storageOffset;
+        if (param->offset)
+            emitInstruction(&cxt, ByteCodeOp::IncPointerVB, 0)->b.u32 = param->offset;
 
         if (varDecl->assignment)
         {

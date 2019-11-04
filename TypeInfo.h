@@ -233,6 +233,7 @@ struct TypeInfoParam : public TypeInfo
         typeInfo = nullptr;
         index    = 0;
         offset   = 0;
+        node     = nullptr;
         attributes.reset();
     }
 
@@ -250,6 +251,7 @@ struct TypeInfoParam : public TypeInfo
     int              index;
     int              offset;
     SymbolAttributes attributes;
+    AstNode*         node;
 };
 
 struct TypeInfoEnum : public TypeInfo
