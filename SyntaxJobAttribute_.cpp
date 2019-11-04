@@ -46,12 +46,12 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         if (token.text == "func")
         {
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute constraint 'func' already defined"));
-			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_FUNC;
+            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_FUNC;
         }
         else if (token.text == "var")
         {
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute constraint 'var' already defined"));
-			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_VAR;
+            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_VAR;
         }
         else if (token.text == "structvar")
         {
@@ -61,17 +61,17 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         else if (token.text == "struct" || token.text == "union")
         {
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute constraint 'struct' already defined"));
-			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_STRUCT;
+            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_STRUCT;
         }
         else if (token.text == "enum")
         {
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUM) == 0, syntaxError(token, "attribute constraint 'enum' already defined"));
-			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_ENUM;
+            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_ENUM;
         }
         else if (token.text == "enumvalue")
         {
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) == 0, syntaxError(token, "attribute constraint 'enumvalue' already defined"));
-			typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_ENUMVALUE;
+            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_ENUMVALUE;
         }
         else
         {
@@ -95,6 +95,7 @@ bool SyntaxJob::doAttributeExpose(AstNode* parent, AstNode** result)
     uint32_t attr = 0;
 
     Scope* newScope = currentScope;
+
     switch (token.id)
     {
     case TokenId::KwdPrivate:
@@ -112,6 +113,25 @@ bool SyntaxJob::doAttributeExpose(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(tokenizer.getToken(token));
+
+    switch (token.id)
+    {
+    case TokenId::SymLeftCurly:
+    case TokenId::KwdFunc:
+    case TokenId::KwdVar:
+    case TokenId::KwdLet:
+    case TokenId::KwdConst:
+    case TokenId::KwdEnum:
+    case TokenId::KwdStruct:
+    case TokenId::KwdUnion:
+    case TokenId::KwdTypeAlias:
+        break;
+
+    default:
+		if(attr == ATTRIBUTE_PRIVATE)
+			return syntaxError(token, format("unexpected token '%s' after 'private' attribute", token.text.c_str()));
+		return syntaxError(token, format("unexpected token '%s' after 'public' attribute", token.text.c_str()));
+    }
 
     Scoped                scoped(this, newScope);
     ScopedAttributesFlags scopedAttributes(this, attr);
