@@ -31,10 +31,10 @@ struct Backend
     bool emitAttributes(AstNode* node);
     bool emitAttributes(TypeInfoParam* param);
     bool emitGenericParameters(AstNode* node);
-    bool emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node);
-    bool emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node);
+    bool emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node);
+    bool emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node);
     bool emitPublicConstSwg(AstVarDecl* node);
-    bool emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitPublicSwg(Module* moduleToGen, Scope* scope);
 };

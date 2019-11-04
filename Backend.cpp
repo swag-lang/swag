@@ -119,7 +119,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     return true;
 }
 
-bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     SWAG_CHECK(emitAttributes(node));
     bufferSwg.addString("\tfunc");
@@ -176,7 +176,7 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
     return true;
 }
 
-bool Backend::emitEnumSignatureSwg(TypeInfoEnum* typeEnum, AstNode* node)
+bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node)
 {
     bufferSwg.addString("\tenum ");
     bufferSwg.addString(node->name.c_str());
@@ -257,7 +257,7 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node)
     return true;
 }
 
-bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node)
+bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
     bufferSwg.addString("\tstruct");
     if (node->genericParameters)
@@ -374,7 +374,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         {
             AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(emitStructSignatureSwg(typeStruct, node));
+            SWAG_CHECK(emitPublicStructSwg(typeStruct, node));
         }
     }
 
@@ -384,7 +384,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         for (auto one : scope->publicEnum)
         {
             TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(one->typeInfo, TypeInfoKind::Enum);
-            SWAG_CHECK(emitEnumSignatureSwg(typeEnum, one));
+            SWAG_CHECK(emitPublicEnumSwg(typeEnum, one));
         }
     }
 
@@ -395,7 +395,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            SWAG_CHECK(emitFuncSwg(typeFunc, node));
+            SWAG_CHECK(emitPublicFuncSwg(typeFunc, node));
         }
     }
 
