@@ -12,8 +12,10 @@ impl A
     }
 }
 
+//#[swag.printbc]
 #test
 {
-    var pt: A = 0xFFFF0000
-    //@assert(pt.x == 0xFFFF0000)
+    var pt: A
+    pt = 0xFFFF0000
+    @assert(pt.x == 0xFFFF0000)
 }

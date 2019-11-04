@@ -10,6 +10,12 @@
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="DependentJobs.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>    
+    <ClCompile Include="Job.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
     <ClCompile Include="Swag.cpp">
       <Filter>Main</Filter>
     </ClCompile>

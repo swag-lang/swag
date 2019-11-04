@@ -75,7 +75,7 @@ struct SemanticJob : public Job
     static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
-    static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* identifier);
+    static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar);
     static bool checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind);
     static bool setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
@@ -137,7 +137,7 @@ struct SemanticJob : public Job
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveImpl(SemanticContext* context);
-	static bool pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result);
+    static bool pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result);
     static bool preResolveStruct(SemanticContext* context);
     static bool resolveStruct(SemanticContext* context);
     static bool resolveEnum(SemanticContext* context);

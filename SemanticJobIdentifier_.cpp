@@ -159,7 +159,7 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     return true;
 }
 
-bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstIdentifier* identifier)
+bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
     CloneContext cloneContext;
 
@@ -168,6 +168,7 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
 
     inlineNode->func  = funcDecl;
     inlineNode->scope = newScope;
+	inlineNode->alternativeScopes.push_back(funcDecl->ownerScope);
 
     newScope->allocateSymTable();
     cloneContext.parent           = inlineNode;

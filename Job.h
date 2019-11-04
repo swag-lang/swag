@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "SpinLock.h"
+#include "DependentJobs.h"
 struct JobThread;
 
 enum class JobResult
@@ -24,8 +25,12 @@ struct Job : public PoolElement
         thread       = nullptr;
     }
 
-    SpinLock   executeMutex;
-    uint32_t   flags;
-    JobThread* thread;
-    int        pendingIndex;
+    void addDependentJob(Job* job);
+    void doneJob();
+
+    SpinLock      executeMutex;
+    uint32_t      flags;
+    JobThread*    thread;
+    int           pendingIndex;
+    DependentJobs dependentJobs;
 };

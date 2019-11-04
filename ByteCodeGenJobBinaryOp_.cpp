@@ -10,6 +10,9 @@
 #include "ByteCode.h"
 #include "CommandLine.h"
 #include "SymTable.h"
+#include "SemanticJob.h"
+#include "ThreadManager.h"
+#include "Ast.h"
 
 bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
@@ -381,11 +384,74 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     return true;
 }
 
+bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+{
+    CloneContext cloneContext;
+
+    auto inlineNode = Ast::newInline(context->sourceFile, identifier);
+    auto newScope   = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
+
+    inlineNode->func  = funcDecl;
+    inlineNode->scope = newScope;
+    inlineNode->alternativeScopes.push_back(funcDecl->ownerScope);
+
+    newScope->allocateSymTable();
+    cloneContext.parent           = inlineNode;
+    cloneContext.ownerInline      = inlineNode;
+    cloneContext.ownerFct         = identifier->ownerFct;
+    cloneContext.ownerBreakable   = identifier->ownerBreakable;
+    cloneContext.parentScope      = newScope;
+    auto newContent               = funcDecl->content->clone(cloneContext);
+    newContent->byteCodeBeforeFct = nullptr;
+
+    context->job->setPending();
+    identifier->semanticState = AstNodeResolveState::Enter;
+
+    // Create a semantic job to resolve the inline part, and wait for that to be finished
+    auto job = SemanticJob::newJob(context->sourceFile, inlineNode, false);
+    job->addDependentJob(context->job);
+    g_ThreadMgr.addJob(job);
+    return true;
+}
+
 bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, AstNode* forNode)
 {
     AstNode* node           = forNode ? forNode : context->node;
     auto     symbolOverload = node->resolvedUserOpSymbolOverload;
     SWAG_ASSERT(symbolOverload);
+    auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
+
+    if (symbolOverload->node->attributeFlags & ATTRIBUTE_INLINE)
+    {
+        // Need to wait for function full semantic resolve
+        {
+            scoped_lock lk(funcDecl->mutex);
+            if (!(funcDecl->flags & AST_FULL_RESOLVE))
+            {
+                funcDecl->dependentJobs.add(context->job);
+                context->job->setPending();
+                return true;
+            }
+        }
+
+        if (!(node->doneFlags & AST_DONE_INLINED))
+        {
+			node->doneFlags |= AST_DONE_INLINED;
+            SWAG_CHECK(makeInline(context, funcDecl, node));
+			return true;
+        }
+
+		if (!(node->doneFlags & AST_DONE_RESOLVE_INLINED))
+		{
+			node->doneFlags |= AST_DONE_RESOLVE_INLINED;
+			context->job->nodes.pop_back();
+			context->job->nodes.push_back(node->childs.back());
+			context->job->nodes.push_back(node);
+		}
+
+        return true;
+    }
+
     bool foreign = symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
-    return emitCall(context, allParams ? allParams : node, static_cast<AstFuncDecl*>(symbolOverload->node), nullptr, foreign);
+    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, foreign);
 }

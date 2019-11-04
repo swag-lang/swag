@@ -18,18 +18,30 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
 
+    AstNode* allParams     = nullptr;
+    int      numCallParams = 0;
+    if (node->parent->kind == AstNodeKind::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
+        allParams       = identifier->callParameters;
+        numCallParams   = allParams ? (int) allParams->childs.size() : 0;
+    }
+    else
+    {
+        allParams     = node->parent;
+        numCallParams = (int) allParams->childs.size() - 1; // Remove the inline block
+    }
+
     // Need to map all call parameters to function arguments
     auto func = node->func;
     if (func->parameters)
     {
-        auto identifier    = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
         auto numFuncParams = func->parameters->childs.size();
-        auto numCallParams = identifier->callParameters->childs.size();
 
         // Sort childs by parameter index
-        if (identifier->callParameters && (identifier->callParameters->flags & AST_MUST_SORT_CHILDS))
+        if (allParams && (allParams->flags & AST_MUST_SORT_CHILDS))
         {
-            sort(identifier->callParameters->childs.begin(), identifier->callParameters->childs.end(), [](AstNode* n1, AstNode* n2) {
+            sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2) {
                 AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
                 AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
                 return p1->index < p2->index;
@@ -42,7 +54,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
             for (int i = 0; i < numCallParams; i++)
             {
                 auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
-                auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+                auto callParam = allParams->childs[i];
                 auto symbol    = node->scope->symTable->find(funcParam->name);
                 SWAG_ASSERT(symbol);
                 SWAG_ASSERT(symbol->overloads.size() == 1);
@@ -61,7 +73,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 bool covered   = false;
                 for (int j = 0; j < numCallParams; j++)
                 {
-                    auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
+                    auto callParam = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->index == i)
                     {
                         auto symbol = node->scope->symTable->find(funcParam->name);

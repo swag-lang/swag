@@ -296,7 +296,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
-            auto returnNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile, funcNode);
+            auto returnNode         = Ast::newNode(this, &g_Pool_astReturn, AstNodeKind::Return, sourceFile, funcNode);
             returnNode->semanticFct = &SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
@@ -444,7 +444,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         {
             SWAG_CHECK(eatToken());
             auto stmt               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, funcNode);
-            auto returnNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Return, sourceFile, stmt);
+            auto returnNode         = Ast::newNode(this, &g_Pool_astReturn, AstNodeKind::Return, sourceFile, stmt);
             returnNode->semanticFct = &SemanticJob::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->flags |= AST_SHORT_LAMBDA;
