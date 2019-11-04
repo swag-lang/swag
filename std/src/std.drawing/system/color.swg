@@ -18,6 +18,7 @@ namespace std.drawing
 
 	impl Color
 	{
+        #[swag.inline]
 		public
 		{
             #[swag.complete]

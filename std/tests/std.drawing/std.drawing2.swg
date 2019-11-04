@@ -5,5 +5,5 @@ using std.drawing
 #test
 {
 	var x: Color = Argb.Red
-    //@assert(x == Argb.Red)    
+    @assert(x == Argb.Red)    
 }
