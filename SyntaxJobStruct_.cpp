@@ -116,9 +116,6 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     SWAG_CHECK(tokenizer.getToken(token));
 
     // Content of struct
-    auto curly = token;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
-
     {
         Scoped         scoped(this, newScope);
         ScopedStruct   scopedStruct(this, newScope);
@@ -130,9 +127,6 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
         SWAG_CHECK(doStructContent(contentNode));
     }
-
-    SWAG_VERIFY(token.id == TokenId::SymRightCurly, syntaxError(curly, "no matching '}' found"));
-    SWAG_CHECK(tokenizer.getToken(token));
 
     // Generate an empty init function so that the user can call it
     {
@@ -146,18 +140,40 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doStructContent(AstNode* parent)
 {
-    while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
+    bool waitCurly = false;
+    if (token.id == TokenId::SymLeftCurly)
     {
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+        waitCurly = true;
+    }
+
+    while (true)
+    {
+        if (token.id == TokenId::EndOfFile)
+        {
+            SWAG_CHECK(syntaxError(token, "no matching '}' found in struct declaration"));
+            break;
+        }
+
+        if (token.id == TokenId::SymRightCurly)
+        {
+            SWAG_CHECK(eatToken());
+            break;
+        }
+
         if (token.id == TokenId::SymAttrStart)
         {
             SWAG_CHECK(doAttrUse(parent));
         }
+        else if (token.id == TokenId::CompilerIf)
+        {
+            SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::StructDecl));
+            parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+        }
         else if (token.id == TokenId::SymLeftCurly)
         {
-            SWAG_CHECK(eatToken());
             auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doStructContent(stmt));
-            SWAG_CHECK(eatToken(TokenId::SymRightCurly));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
         }
         else
