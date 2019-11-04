@@ -90,7 +90,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doExpose(AstNode* parent, AstNode** result)
+bool SyntaxJob::doAttributeExpose(AstNode* parent, AstNode** result)
 {
     uint32_t attr = 0;
 

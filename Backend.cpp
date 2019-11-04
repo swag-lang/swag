@@ -38,11 +38,11 @@ bool Backend::emitAttributes(AstNode* node)
 
 bool Backend::emitAttributes(TypeInfoParam* param)
 {
-	ComputedValue v;
-	if (param->attributes.getValue("swag.offset.name", v))
-		bufferSwg.addString(format("\t\t#[swag.offset(\"%s\")]\n", v.text.c_str()));
+    ComputedValue v;
+    if (param->attributes.getValue("swag.offset.name", v))
+        bufferSwg.addString(format("\t\t#[swag.offset(\"%s\")]\n", v.text.c_str()));
 
-	return true;
+    return true;
 }
 
 bool Backend::emitGenericParameters(AstNode* node)
@@ -131,28 +131,31 @@ bool Backend::emitFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
     bufferSwg.addString("(");
 
     uint32_t idx = 0;
-    for (auto p : node->parameters->childs)
+    if (node->parameters)
     {
-        if (p->flags & AST_DECL_USING)
-            bufferSwg.addString("using ");
-
-        bufferSwg.addString(p->name);
-        if (p->name != "self")
+        for (auto p : node->parameters->childs)
         {
-            bufferSwg.addString(": ");
-            bufferSwg.addString(p->typeInfo->name);
-        }
+            if (p->flags & AST_DECL_USING)
+                bufferSwg.addString("using ");
 
-        auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
-        if (param->assignment)
-        {
-            bufferSwg.addString(" = ");
-            SWAG_CHECK(Ast::output(bufferSwg, param->assignment));
-        }
+            bufferSwg.addString(p->name);
+            if (p->name != "self")
+            {
+                bufferSwg.addString(": ");
+                bufferSwg.addString(p->typeInfo->name);
+            }
 
-        if (idx != typeFunc->parameters.size() - 1)
-            bufferSwg.addString(", ");
-        idx++;
+            auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+            if (param->assignment)
+            {
+                bufferSwg.addString(" = ");
+                SWAG_CHECK(Ast::output(bufferSwg, param->assignment));
+            }
+
+            if (idx != typeFunc->parameters.size() - 1)
+                bufferSwg.addString(", ");
+            idx++;
+        }
     }
 
     bufferSwg.addString(")");
@@ -254,7 +257,7 @@ bool Backend::emitStructSignatureSwg(TypeInfoStruct* typeStruct, AstStruct* node
 
     for (auto p : typeStruct->childs)
     {
-		SWAG_CHECK(emitAttributes(p));
+        SWAG_CHECK(emitAttributes(p));
         bufferSwg.addString("\t\t");
         bufferSwg.addString(p->namedParam);
         bufferSwg.addString(": ");

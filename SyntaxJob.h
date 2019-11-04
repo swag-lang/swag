@@ -53,7 +53,7 @@ struct SyntaxJob : public Job
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, bool acceptParameters = true);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);
-    bool doExpose(AstNode* parent, AstNode** result = nullptr);
+    bool doAttributeExpose(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent);
     bool doEnumContent(AstNode* parent);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
