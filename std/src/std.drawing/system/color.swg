@@ -20,7 +20,7 @@ namespace std.drawing
 	{
 		public
 		{
-            #[swag.complete, swag.inline]
+            #[swag.complete]
 			func opAffect(self, argb: u32)
 			{
 				self.argb = argb

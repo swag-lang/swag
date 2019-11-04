@@ -49,8 +49,9 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
                 node->doneFlags |= AST_DONE_VARDECL_REF_CALL;
             }
 
-            bool foreign = node->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
-            SWAG_CHECK(emitCall(context, node, static_cast<AstFuncDecl*>(node->resolvedUserOpSymbolOverload->node), nullptr, foreign));
+			SWAG_CHECK(emitUserOp(context, nullptr, node));
+            //bool foreign = node->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
+            //SWAG_CHECK(emitCall(context, node, static_cast<AstFuncDecl*>(node->resolvedUserOpSymbolOverload->node), nullptr, foreign));
             if (context->result == ByteCodeResult::Pending)
                 return true;
 
