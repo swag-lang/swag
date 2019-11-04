@@ -70,34 +70,34 @@ void Scope::setHasExports()
 void Scope::addPublicFunc(AstNode* node)
 {
     scoped_lock lk(mutexPublic);
-    publicFunc.push_back(node);
+    publicFunc.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicGenericFunc(AstNode* node)
 {
     scoped_lock lk(mutexPublic);
-    publicGenericFunc.push_back(node);
+    publicGenericFunc.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicStruct(AstNode* node)
 {
     scoped_lock lk(mutexPublic);
-    publicStruct.push_back(node);
+    publicStruct.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicEnum(AstNode* node)
 {
     scoped_lock lk(mutexPublic);
-    publicEnum.push_back(node);
+    publicEnum.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicConst(AstNode* node)
 {
     scoped_lock lk(mutexPublic);
-    publicConst.push_back(node);
+    publicConst.insert(node);
     setHasExports();
 }

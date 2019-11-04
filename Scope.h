@@ -47,7 +47,7 @@ struct Scope : public PoolElement
     void               addPublicGenericFunc(AstNode* node);
     void               addPublicStruct(AstNode* node);
     void               addPublicEnum(AstNode* node);
-	void               addPublicConst(AstNode* node);
+    void               addPublicConst(AstNode* node);
     static string      makeFullName(const string& parentName, const string& name);
     static const char* getNakedName(ScopeKind kind);
     static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);
@@ -75,13 +75,13 @@ struct Scope : public PoolElement
     vector<AstNode*> deferedNodes;
     RegisterList     registersToRelease;
 
-    SpinLock         mutexPublic;
-    vector<AstNode*> publicFunc;
-    vector<AstNode*> publicGenericFunc;
-    vector<AstNode*> publicStruct;
-    vector<AstNode*> publicEnum;
-	vector<AstNode*> publicConst;
-    bool             hasExports = false;
+    SpinLock      mutexPublic;
+    set<AstNode*> publicFunc;
+    set<AstNode*> publicGenericFunc;
+    set<AstNode*> publicStruct;
+    set<AstNode*> publicEnum;
+    set<AstNode*> publicConst;
+    bool          hasExports = false;
 };
 
 extern Pool<Scope> g_Pool_scope;
