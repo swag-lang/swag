@@ -38,13 +38,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
     cmdLine->rebuild           = true;
-    cmdLine->backendOutput     = true;
     cmdLine->backendOutputTest = true;
+    cmdLine->backendOutput     = true;
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->testFilter    = "std.drawing1";
-    cmdLine->fileFilter = "compiler1211";
+    cmdLine->fileFilter = "compiler963";
 }
 
 void CommandLineParser::logArguments()

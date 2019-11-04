@@ -13,3 +13,9 @@ impl Utf8
 		Utf8.size = 0
 	}
 }
+
+#test
+{
+    var x: Utf8
+    x.reserveSize()
+}

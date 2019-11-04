@@ -318,6 +318,23 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
+	// During unit testing, be sure we don't have remaining not raised errors
+    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
+    {
+        for (auto module : list)
+        {
+            for (auto file : module->files)
+            {
+                if (file->unittestError)
+                {
+                    auto nb             = file->unittestError;
+                    file->unittestError = 0;
+                    file->report({file, format("missing unittest errors: %d (%d raised)", nb, file->numErrors)});
+                }
+            }
+        }
+    }
+
     // Output pass on all modules
     if (g_CommandLine.backendOutput)
     {
@@ -346,23 +363,6 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
         timeAfter = chrono::high_resolution_clock::now();
         g_Stats.backendTime += timeAfter - timeBefore;
-    }
-
-    // During unit testing, be sure we don't have remaining not raised errors
-    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
-    {
-        for (auto module : list)
-        {
-            for (auto file : module->files)
-            {
-                if (file->unittestError)
-                {
-                    auto nb             = file->unittestError;
-                    file->unittestError = 0;
-                    file->report({file, format("missing unittest errors: %d (%d raised)", nb, file->numErrors)});
-                }
-            }
-        }
     }
 
     return true;
