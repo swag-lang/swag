@@ -5,6 +5,8 @@ namespace std.math
 	{
 		func saturate(x: f32) => clamp(x, 0, 1)
 		func saturate(x: f64) => clamp(x, 0, 1)
+		func lerp(x, y, factor: f32) => ((1 - factor) * x) + (factor * y)
+		func lerp(x, y, factor: f64) => ((1 - factor) * x) + (factor * y)
 	}
 	
 	#[swag.constexpr]
@@ -42,6 +44,8 @@ namespace std.math
 		func floor(x: f64)->f64 => os.floor(x)		
 		func round(x: f32)->f32 => os.roundf(x)
 		func round(x: f64)->f64 => os.round(x)		
+		func abs(x: f32)->f32 => os.fabs(x)
+		func abs(x: f64)->f64 => os.abs(x)	
 		func pow(x, exp: f32)->f32 => os.powf(x, exp)
 		func pow(x, exp: f64)->f64 => os.pow(x, exp)		
 	}
