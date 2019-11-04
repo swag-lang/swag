@@ -289,6 +289,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
 
     case SymbolKind::Variable:
+	case SymbolKind::FuncParam:
     {
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
