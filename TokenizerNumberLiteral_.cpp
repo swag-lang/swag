@@ -84,7 +84,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
             float   tmpF = static_cast<float>(token.literalValue.s64);
             int64_t tmp  = static_cast<int64_t>(tmpF);
             if (tmp != token.literalValue.s64)
-                return error(token, format("literal number '%I64d' is truncated in 'f32'", token.literalValue.s64));
+                return error(token, format("value '%I64d' is truncated in 'f32'", token.literalValue.s64));
             token.literalValue.f64 = tmpF;
             break;
         }
@@ -93,7 +93,7 @@ bool Tokenizer::doNumberSuffix(Token& token)
             double  tmpF = static_cast<double>(token.literalValue.s64);
             int64_t tmp  = static_cast<int64_t>(tmpF);
             if (tmp != token.literalValue.s64)
-                return error(token, format("literal number '%I64d' is truncated in 'f64'", token.literalValue.s64));
+                return error(token, format("value '%I64d' is truncated in 'f64'", token.literalValue.s64));
             token.literalValue.f64 = tmpF;
             break;
         }
@@ -291,12 +291,11 @@ bool Tokenizer::doHexLiteral(Token& token)
     return true;
 }
 
-bool Tokenizer::doIntLiteral(char32_t c, Token& token, unsigned& fractPart)
+bool Tokenizer::doFloatLiteral(char32_t c, Token& token)
 {
-    token.literalValue.u64 = 0;
-    int rank               = 0;
-
-    fractPart = 1;
+    token.literalValue.f64 = 0;
+    int    rank            = 0;
+    double fractPart       = 0.1;
 
     bool     acceptSep = true;
     unsigned offset    = 0;
@@ -313,7 +312,54 @@ bool Tokenizer::doIntLiteral(char32_t c, Token& token, unsigned& fractPart)
         {
             if (!acceptSep)
             {
-                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, "a digit separator can't start a literal number"));
+                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, "a digit separator cannot start a literal number"));
+                SWAG_CHECK(rank == 0 || errorNumberSyntax(token, "forbidden consecutive digit separators"));
+            }
+
+            acceptSep = false;
+            c         = getCharNoSeek(offset);
+            continue;
+        }
+
+        acceptSep = true;
+        rank++;
+
+        auto val = (c - '0');
+        SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615 - val, error(token, "literal number is too big"));
+        token.literalValue.f64 += val * fractPart;
+        fractPart *= 0.1;
+
+        c = getCharNoSeek(offset);
+    }
+
+    // Be sure we don't have a number with a separator at its end
+    if (!acceptSep)
+        SWAG_CHECK(errorNumberSyntax(token, "a digit separator cannot end a literal number"));
+
+    return true;
+}
+
+bool Tokenizer::doIntLiteral(char32_t c, Token& token)
+{
+    token.literalValue.u64 = 0;
+    int rank               = 0;
+
+    bool     acceptSep = true;
+    unsigned offset    = 0;
+    while (SWAG_IS_DIGIT(c) || SWAG_IS_NUMSEP(c))
+    {
+        if (offset)
+        {
+            token.text += c;
+            treatChar(c, offset);
+        }
+
+        // Digit separator
+        if (SWAG_IS_NUMSEP(c))
+        {
+            if (!acceptSep)
+            {
+                SWAG_CHECK(rank != 0 || errorNumberSyntax(token, "a digit separator cannot start a literal number"));
                 SWAG_CHECK(rank == 0 || errorNumberSyntax(token, "forbidden consecutive digit separators"));
             }
 
@@ -324,7 +370,6 @@ bool Tokenizer::doIntLiteral(char32_t c, Token& token, unsigned& fractPart)
 
         acceptSep = true;
         token.literalValue.u64 *= 10;
-        fractPart *= 10;
         rank++;
 
         auto val = (c - '0');
@@ -336,15 +381,14 @@ bool Tokenizer::doIntLiteral(char32_t c, Token& token, unsigned& fractPart)
 
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
-        SWAG_CHECK(errorNumberSyntax(token, "a digit separator can't end a literal number"));
+        SWAG_CHECK(errorNumberSyntax(token, "a digit separator cannot end a literal number"));
 
     return true;
 }
 
 bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
 {
-    unsigned fractPart = 1;
-    unsigned offset    = 1;
+    unsigned offset = 1;
     Token    tokenFrac;
     Token    tokenExponent;
     tokenFrac.literalValue.u64     = 0;
@@ -354,7 +398,7 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
     token.id          = TokenId::LiteralNumber;
 
     // Integer part
-    SWAG_CHECK(doIntLiteral(c, token, fractPart));
+    SWAG_CHECK(doIntLiteral(c, token));
     c = getCharNoSeek(offset);
 
     // If there's a dot, then this is a floating point number
@@ -370,10 +414,9 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenFrac, "a digit separator cannot start a fractional part"));
         if (SWAG_IS_DIGIT(c))
         {
-            token.text += c;
             tokenFrac.text = c;
             treatChar(c, offset);
-            SWAG_CHECK(doIntLiteral(c, tokenFrac, fractPart));
+            SWAG_CHECK(doFloatLiteral(c, tokenFrac));
             token.text += tokenFrac.text;
             c = getCharNoSeek(offset);
         }
@@ -408,9 +451,8 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
         tokenExponent.startLocation = location;
         SWAG_VERIFY(!SWAG_IS_NUMSEP(c), errorNumberSyntax(tokenExponent, "a digit separator cannot start an exponent part"));
         SWAG_VERIFY(SWAG_IS_DIGIT(c), error(tokenExponent, "floating point number exponent must have at least one digit"));
-        unsigned exponentPart;
         treatChar(c, offset);
-        SWAG_CHECK(doIntLiteral(c, tokenExponent, exponentPart));
+        SWAG_CHECK(doIntLiteral(c, tokenExponent));
         token.text += tokenExponent.text;
         c = getCharNoSeek(offset);
 
@@ -421,7 +463,7 @@ bool Tokenizer::doIntFloatLiteral(char32_t c, Token& token)
     // Really compute the floating point value, with as much precision as we can
     if (token.literalType->nativeType == NativeTypeKind::F32 || token.literalType->nativeType == NativeTypeKind::F64)
     {
-        token.literalValue.f64 = (double) (token.literalValue.u64) + (tokenFrac.literalValue.u64 / (double) fractPart);
+        token.literalValue.f64 = (double) (token.literalValue.u64) + tokenFrac.literalValue.f64;
         if (tokenExponent.literalValue.s64)
             token.literalValue.f64 *= std::pow(10, tokenExponent.literalValue.s64);
     }

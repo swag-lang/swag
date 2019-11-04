@@ -1027,7 +1027,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
                 if (tmpD != fromNode->computedValue.reg.f64)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->errorContext.report({fromNode, fromNode->token, format("value '%Lf' is truncated in 'f32'", fromNode->computedValue.reg.f64)});
+                        context->errorContext.report({fromNode, fromNode->token, format("value '%lf' is truncated in 'f32'", fromNode->computedValue.reg.f64)});
                     return false;
                 }
             }

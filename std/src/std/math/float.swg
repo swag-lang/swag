@@ -2,7 +2,8 @@ namespace std.math
 {
     public
 	{
-        const Pi = 3.14159265358979323846'f64
+        const Pi: f64       = 3.14159265358979323846264338327950288
+        const Sqrt2: f64    = sqrt(2.0'f64)
     }
     
 	#[swag.constexpr]

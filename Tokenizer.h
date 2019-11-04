@@ -67,38 +67,38 @@ enum class TokenId
     CompilerRun,
     CompilerFile,
     CompilerLine,
-	CompilerConfiguration,
-	CompilerPlatform,
+    CompilerConfiguration,
+    CompilerPlatform,
     CompilerFunction,
-	CompilerCallerLine,
-	CompilerCallerFile,
-	CompilerCallerFunction,
+    CompilerCallerLine,
+    CompilerCallerFile,
+    CompilerCallerFunction,
     CompilerBuildVersion,
     CompilerBuildRevision,
     CompilerBuildNum,
     CompilerImport,
     CompilerFuncTest,
-	CompilerFuncInit,
-	CompilerFuncDrop,
-	CompilerFuncMain,
+    CompilerFuncInit,
+    CompilerFuncDrop,
+    CompilerFuncMain,
     CompilerIf,
     CompilerElse,
-	CompilerElseIf,
+    CompilerElseIf,
 
     Intrinsic,
 
     KwdVar,
     KwdLet,
     KwdConst,
-	KwdPublic,
-	KwdPrivate,
+    KwdPublic,
+    KwdPrivate,
     KwdNamespace,
     KwdTypeAlias,
     KwdEnum,
     KwdEnumValue,
     KwdImpl,
     KwdStruct,
-	KwdUnion,
+    KwdUnion,
     KwdFunc,
     KwdAttr,
     KwdTrue,
@@ -162,7 +162,8 @@ struct Tokenizer
     bool     doBinLiteral(Token& token);
     bool     doNumberSuffix(Token& token);
     bool     doIntFloatLiteral(char32_t c, Token& token);
-    bool     doIntLiteral(char32_t c, Token& token, unsigned& fractPart);
+    bool     doIntLiteral(char32_t c, Token& token);
+    bool     doFloatLiteral(char32_t c, Token& token);
     bool     error(Token& token, const Utf8& msg);
     bool     errorNumberSyntax(Token& token, const Utf8& msg);
     bool     doSymbol(char32_t c, Token& token);
