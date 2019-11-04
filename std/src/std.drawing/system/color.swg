@@ -26,7 +26,8 @@ namespace std.drawing
 				self.argb = argb
 			}
 
-			func opEquals(self, argb: u32)->bool => self.argb == argb
+			func opEquals(self, argb: u32) => self.argb == argb
+            func opEquals(self, b: Self) => self.argb == b.argb
 		}
 	}
 }

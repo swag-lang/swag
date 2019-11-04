@@ -25,18 +25,21 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
     {
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         SWAG_CHECK(swagTypeToCType(moduleToGen, typeInfoPointer->finalType, cType));
-        for (uint32_t i = 0; i < typeInfoPointer->ptrCount; i++)
+        uint32_t ptrCount = typeInfoPointer->ptrCount;
+        if (typeInfoPointer->finalType->kind == TypeInfoKind::Struct || typeInfoPointer->finalType->kind == TypeInfoKind::Slice)
+            ptrCount--;
+        for (uint32_t i = 0; i < ptrCount; i++)
             cType += "*";
         return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        cType = "void";
+        cType = "void*";
         return true;
     }
 
-	if (typeInfo->kind == TypeInfoKind::Slice)
+    if (typeInfo->kind == TypeInfoKind::Slice)
     {
         cType = "void*";
         return true;
@@ -285,7 +288,11 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
         else if (typeParam->kind == TypeInfoKind::Slice)
         {
             bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[0];\n", idx, param->namedParam.c_str()));
-			bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[1];\n", idx + 1, param->namedParam.c_str()));
+            bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[1];\n", idx + 1, param->namedParam.c_str()));
+        }
+        else if (typeParam->kind == TypeInfoKind::Struct)
+        {
+            bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str()));
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
