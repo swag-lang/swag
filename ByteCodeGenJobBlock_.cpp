@@ -17,6 +17,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
+	node->parent->resultRegisterRC = node->resultRegisterRC;
 
     AstNode* allParams     = nullptr;
     int      numCallParams = 0;
