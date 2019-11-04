@@ -1179,6 +1179,10 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         return castToNativeF32(context, fromType, fromNode, castFlags);
     case NativeTypeKind::F64:
         return castToNativeF64(context, fromType, fromNode, castFlags);
+	case NativeTypeKind::String:
+		fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
+		if (fromType->nativeType == NativeTypeKind::String)
+			return true;
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);
