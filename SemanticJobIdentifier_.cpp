@@ -61,16 +61,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
 
-    auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
-
-    // Be sure we do not reference a structure field, without a corresponding concrete variable
-    if (!identifierRef->typeInfo && overload && (overload->flags & OVERLOAD_VAR_STRUCT) && !(overload->flags & OVERLOAD_COMPUTED_VALUE))
-    {
-        Diagnostic diag{node, format("cannot reference structure identifier '%s'", node->name.c_str())};
-        context->errorContext.report(diag);
-        return false;
-    }
-
+    auto identifierRef                  = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
     identifierRef->typeInfo             = typeInfo;
     identifierRef->previousResolvedNode = node;
 
@@ -916,8 +907,8 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         Diagnostic diag{node, format("ambiguous resolution of '%s'", symbol->name.c_str())};
         Diagnostic note1{symbol->overloads[0]->node, "could be", DiagnosticLevel::Note};
         Diagnostic note2{p->overloads[0]->node, "could be", DiagnosticLevel::Note};
-		context->errorContext.report(diag, &note1, &note2);
-		return false;
+        context->errorContext.report(diag, &note1, &note2);
+        return false;
     }
 
     *result = symbol;
