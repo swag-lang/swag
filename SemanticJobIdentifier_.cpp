@@ -168,7 +168,7 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
 
     inlineNode->func  = funcDecl;
     inlineNode->scope = newScope;
-	inlineNode->alternativeScopes.push_back(funcDecl->ownerScope);
+    inlineNode->alternativeScopes.push_back(funcDecl->ownerScope);
 
     newScope->allocateSymTable();
     cloneContext.parent           = inlineNode;
@@ -289,7 +289,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
 
     case SymbolKind::Variable:
-	case SymbolKind::FuncParam:
+    case SymbolKind::FuncParam:
     {
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
 
@@ -415,7 +415,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         identifier->kind = AstNodeKind::FuncCall;
-        identifier->inheritOrFlag(identifier->resolvedSymbolOverload->node, AST_CONST_EXPR);
+
+		// The function call is constexpr if the function is, and all parameters are
+        if (identifier->resolvedSymbolOverload->node->flags & AST_CONST_EXPR)
+        {
+			if (identifier->callParameters)
+				identifier->inheritAndFlag(identifier->callParameters, AST_CONST_EXPR);
+			else
+				identifier->flags |= AST_CONST_EXPR;
+        }
 
         if (identifier->token.id == TokenId::Intrinsic)
             identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;

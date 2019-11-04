@@ -198,7 +198,12 @@ struct AstNode : public PoolElement
 
     void inheritAndFlag(uint64_t flag)
     {
-        for (auto child : childs)
+		inheritAndFlag(this, flag);
+    }
+
+    void inheritAndFlag(AstNode* who, uint64_t flag)
+    {
+        for (auto child : who->childs)
         {
             if (!(child->flags & flag))
                 return;
