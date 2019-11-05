@@ -9,6 +9,6 @@ const XAxis: Vector2 = {1, 0}
 //#[swag.printbc]
 #test
 {
-	//@assert(XAxis.x == 4)
+	@assert(XAxis.x == 1)
 	//@assert(XAxis.y == 555)
 }

@@ -184,10 +184,6 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    // This is a tuple
-    if (token.id == TokenId::SymLeftCurly)
-        return convertExpressionListToStruct(parent, result, isConst);
-
     // Else this is a type expression
     auto node = Ast::newTypeExpression(sourceFile, parent, this);
     if (result)

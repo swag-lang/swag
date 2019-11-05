@@ -325,7 +325,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
 
     // Reference to that struct
     auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
-    typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
+    typeExpression->flags |= AST_NO_BYTECODE_CHILDS | AST_GENERATED;
     typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
     *result                    = typeExpression;
     context->job->nodes.push_back(typeExpression);
@@ -386,11 +386,11 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->kind == AstNodeKind::LetDecl)
         symbolFlags |= OVERLOAD_CONST;
 
-	// Check public
+    // Check public
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-		if(node->ownerScope->isGlobal())
-			node->ownerScope->addPublicConst(node);
+        if (node->ownerScope->isGlobal())
+            node->ownerScope->addPublicConst(node);
     }
 
     // Check for missing initialization
@@ -458,8 +458,35 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_ASSERT(node->type->typeInfo);
 
+        // Assign an expression list to a struct : need to be sure all types are compatibles, field by field
+        if ((node->assignment->flags & AST_CONST_EXPR) &&
+            (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)) &&
+            (node->type->typeInfo->kind == TypeInfoKind::Struct) &&
+            (node->assignment->typeInfo->kind == TypeInfoKind::TypeList))
+        {
+            AstTypeExpression* typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->type->typeInfo, TypeInfoKind::Struct);
+            auto job        = context->job;
+            job->cacheDependentSymbols.clear();
+            job->cacheDependentSymbols.push_back(typeExpr->identifier->resolvedSymbolName);
+            SWAG_CHECK(matchIdentifierParameters(context, nullptr, node->assignment, node));
+
+            auto maxParams = node->assignment->childs.size();
+            if (maxParams < typeStruct->childs.size())
+                return context->errorContext.report({node->assignment, format("not enough arguments in expression list for struct '%s'", typeStruct->name.c_str())});
+            if (maxParams > typeStruct->childs.size())
+                return context->errorContext.report({node->assignment, format("too many arguments in expression list for struct '%s'", typeStruct->name.c_str()) });
+
+            for (int i = 0; i < maxParams; i++)
+            {
+                auto nodeCall = node->assignment->childs[i];
+                SWAG_CHECK(TypeManager::makeCompatibles(context, typeStruct->childs[i]->typeInfo, nullptr, nodeCall));
+            }
+        }
+
         // Do not cast for structs, as we can have special assignment with different types
-        if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
+        else if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_UNCONST));
         }
@@ -623,12 +650,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 return true;
         }
 
-		if (node->typeInfo->flags & TYPEINFO_GENERIC)
-		{
-			SWAG_CHECK(Generic::instantiateDefaultGeneric(context, node));
-			if (context->result != SemanticResult::Done)
-				return true;
-		}
+        if (node->typeInfo->flags & TYPEINFO_GENERIC)
+        {
+            SWAG_CHECK(Generic::instantiateDefaultGeneric(context, node));
+            if (context->result != SemanticResult::Done)
+                return true;
+        }
 
         SWAG_ASSERT(node->ownerScope);
         SWAG_ASSERT(node->ownerFct);

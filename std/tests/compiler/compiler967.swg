@@ -1,5 +1,3 @@
-
-
 struct Point
 {
 	x: f32

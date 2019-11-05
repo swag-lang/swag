@@ -1,6 +1,3 @@
-
-
-
 struct Point
 {
 	x: s32 = 10
@@ -8,7 +5,7 @@ struct Point
 }
 
 var pt: 	Point = {1, 2}
-var pt1: 	Point = {1}
+var pt1: 	Point = {1, 20}
 
 //#[swag.printbc]
 #test
