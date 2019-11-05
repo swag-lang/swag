@@ -9,6 +9,54 @@
 
 namespace Ast
 {
+    bool outputLiteral(Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::U8:
+            concat.addString(format("%u", reg.u8));
+            break;
+        case NativeTypeKind::U16:
+            concat.addString(format("%u", reg.u16));
+            break;
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            concat.addString(format("%u", reg.u32));
+            break;
+        case NativeTypeKind::U64:
+            concat.addString(format("%llu", reg.u64));
+            break;
+        case NativeTypeKind::S8:
+            concat.addString(format("%d", reg.s8));
+            break;
+        case NativeTypeKind::S16:
+            concat.addString(format("%d", reg.s16));
+            break;
+        case NativeTypeKind::S32:
+            concat.addString(format("%d", reg.s32));
+            break;
+        case NativeTypeKind::S64:
+            concat.addString(format("%lld", reg.s64));
+            break;
+        case NativeTypeKind::F32:
+            concat.addString(toStringF64((float) reg.f64));
+            break;
+        case NativeTypeKind::F64:
+            concat.addString(toStringF64(reg.f64));
+            break;
+        case NativeTypeKind::Bool:
+            concat.addString(reg.b ? "true" : "false");
+            break;
+        case NativeTypeKind::String:
+            concat.addString("\"" + text + "\"");
+            break;
+        default:
+            return node->sourceFile->report({node, node->token, "Ast::outputLiteral, unknown type"});
+        }
+
+        return true;
+    }
+
     bool output(Concat& concat, AstNode* node, int indent)
     {
         if (!node)
@@ -38,9 +86,9 @@ namespace Ast
             SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
             if (compilerIf->elseBlock)
             {
-				concat.addString("else");
-				concat.addEolIndent(indent);
-				SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
+                concat.addString("else");
+                concat.addEolIndent(indent);
+                SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
             }
             break;
         }
@@ -126,12 +174,12 @@ namespace Ast
 
         case AstNodeKind::Statement:
             concat.addString("{");
-			concat.addEolIndent(indent);
+            concat.addEolIndent(indent);
             for (auto child : node->childs)
             {
-				concat.addIndent(1);
+                concat.addIndent(1);
                 SWAG_CHECK(output(concat, child, indent + 1));
-				concat.addEolIndent(indent);
+                concat.addEolIndent(indent);
             }
 
             concat.addString("}");
@@ -169,13 +217,13 @@ namespace Ast
             break;
         }
 
-		case AstNodeKind::AffectOp:
-			SWAG_CHECK(output(concat, node->childs[0]));
-			concat.addString(" ");
-			concat.addString(node->token.text);
-			concat.addString(" ");
-			SWAG_CHECK(output(concat, node->childs[1]));
-			break;
+        case AstNodeKind::AffectOp:
+            SWAG_CHECK(output(concat, node->childs[0]));
+            concat.addString(" ");
+            concat.addString(node->token.text);
+            concat.addString(" ");
+            SWAG_CHECK(output(concat, node->childs[1]));
+            break;
 
         case AstNodeKind::FactorOp:
         case AstNodeKind::BinaryOp:
@@ -210,20 +258,7 @@ namespace Ast
         }
 
         case AstNodeKind::Literal:
-			if (node->token.literalType->isNative(NativeTypeKind::String))
-			{
-				concat.addString("\"" + node->token.text + "\"");
-			}
-			else
-			{
-				concat.addString(node->token.text);
-				if (!(node->token.literalType->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT)))
-				{
-					concat.addString("'");
-					concat.addString(node->token.literalType->name);
-				}
-			}
-
+            SWAG_CHECK(outputLiteral(concat, node, node->token.literalType, node->token.text, node->token.literalValue));
             break;
 
         default:

@@ -2,7 +2,7 @@ namespace std.math
 {
     public
 	{
-        const Pi: f64       = 3.14159265358979323846264338327950288
+        const Pi: f64       = 3.1415927410125732421875
         const Sqrt2: f64    = sqrt(2.0'f64)
     }
     

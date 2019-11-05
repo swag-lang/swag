@@ -16,6 +16,8 @@ extern void    tokenize(const char* str, char c, vector<string>& tokens);
 extern void    tokenizeBlanks(const char* str, vector<string>& tokens);
 extern wstring utf8ToUnicode(const string& s);
 
+extern string toStringF64(double v);
+
 extern struct Global g_Global;
 
 #define SWAG_CHECK(__expr) \

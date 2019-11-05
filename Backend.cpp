@@ -189,55 +189,8 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node)
     {
         bufferSwg.addString("\t\t");
         bufferSwg.addString(p->namedParam);
-
-        if (typeEnum->rawType->isNative(NativeTypeKind::String))
-        {
-            bufferSwg.addString(format(" = \"%s\"", p->value.text.c_str()));
-        }
-        else if (typeEnum->rawType->kind == TypeInfoKind::Native)
-        {
-            switch (typeEnum->rawType->nativeType)
-            {
-            case NativeTypeKind::U8:
-                bufferSwg.addString(format(" = %u", p->value.reg.u8));
-                break;
-            case NativeTypeKind::U16:
-                bufferSwg.addString(format(" = %u", p->value.reg.u16));
-                break;
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Char:
-                bufferSwg.addString(format(" = %u", p->value.reg.u32));
-                break;
-            case NativeTypeKind::U64:
-                bufferSwg.addString(format(" = %llu", p->value.reg.u64));
-                break;
-            case NativeTypeKind::S8:
-                bufferSwg.addString(format(" = %d", p->value.reg.s8));
-                break;
-            case NativeTypeKind::S16:
-                bufferSwg.addString(format(" = %d", p->value.reg.s16));
-                break;
-            case NativeTypeKind::S32:
-                bufferSwg.addString(format(" = %d", p->value.reg.s32));
-                break;
-            case NativeTypeKind::S64:
-                bufferSwg.addString(format(" = %lld", p->value.reg.s64));
-                break;
-            case NativeTypeKind::F32:
-                bufferSwg.addString(format(" = %f", p->value.reg.f32));
-                break;
-            case NativeTypeKind::F64:
-                bufferSwg.addString(format(" = %lf", p->value.reg.f64));
-                break;
-            case NativeTypeKind::Bool:
-                if (p->value.reg.b)
-                    bufferSwg.addString(p->value.reg.b ? " = true" : " = false");
-                break;
-            default:
-                return module->internalError("emitEnumSignatureSwg, invalid type");
-            }
-        }
-
+        bufferSwg.addString(" = ");
+        SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, typeEnum->rawType, p->value.text, p->value.reg));
         bufferSwg.addString("\n");
     }
 
@@ -247,13 +200,13 @@ bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node)
 
 bool Backend::emitPublicConstSwg(AstVarDecl* node)
 {
-	bufferSwg.addString("\tconst ");
-	bufferSwg.addString(node->name.c_str());
-	bufferSwg.addString(": ");
-	bufferSwg.addString(node->typeInfo->name);
-	bufferSwg.addString(" = ");
-	SWAG_CHECK(Ast::output(bufferSwg, node->assignment));
-	bufferSwg.addString("\n");
+    bufferSwg.addString("\tconst ");
+    bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString(": ");
+    bufferSwg.addString(node->typeInfo->name);
+    bufferSwg.addString(" = ");
+    SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, node->assignment->typeInfo, node->assignment->computedValue.text, node->assignment->computedValue.reg));
+    bufferSwg.addString("\n");
     return true;
 }
 
@@ -275,62 +228,42 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
         bufferSwg.addString(": ");
         bufferSwg.addString(p->typeInfo->name);
 
-        if (p->typeInfo->isNative(NativeTypeKind::String))
+        if (p->typeInfo->kind == TypeInfoKind::Native)
         {
-            if (!p->value.text.empty())
-                bufferSwg.addString(format(" = \"%s\"", p->value.text.c_str()));
-        }
-        else if (p->typeInfo->kind == TypeInfoKind::Native)
-        {
+            bool notZero = false;
             switch (p->typeInfo->nativeType)
             {
             case NativeTypeKind::U8:
-                if (p->value.reg.u8)
-                    bufferSwg.addString(format(" = %u", p->value.reg.u8));
+            case NativeTypeKind::S8:
+                notZero = p->value.reg.u8;
                 break;
             case NativeTypeKind::U16:
-                if (p->value.reg.u16)
-                    bufferSwg.addString(format(" = %u", p->value.reg.u16));
+            case NativeTypeKind::S16:
+                notZero = p->value.reg.u16;
                 break;
             case NativeTypeKind::U32:
             case NativeTypeKind::Char:
-                if (p->value.reg.u32)
-                    bufferSwg.addString(format(" = %u", p->value.reg.u32));
+            case NativeTypeKind::S32:
+            case NativeTypeKind::F32:
+                notZero = p->value.reg.u32;
                 break;
             case NativeTypeKind::U64:
-                if (p->value.reg.u64)
-                    bufferSwg.addString(format(" = %llu", p->value.reg.u64));
-                break;
-            case NativeTypeKind::S8:
-                if (p->value.reg.s8)
-                    bufferSwg.addString(format(" = %d", p->value.reg.s8));
-                break;
-            case NativeTypeKind::S16:
-                if (p->value.reg.s16)
-                    bufferSwg.addString(format(" = %d", p->value.reg.s16));
-                break;
-            case NativeTypeKind::S32:
-                if (p->value.reg.s32)
-                    bufferSwg.addString(format(" = %d", p->value.reg.s32));
-                break;
             case NativeTypeKind::S64:
-                if (p->value.reg.s64)
-                    bufferSwg.addString(format(" = %lld", p->value.reg.s64));
-                break;
-            case NativeTypeKind::F32:
-                if (p->value.reg.f32 != 0.0f)
-                    bufferSwg.addString(format(" = %f", p->value.reg.f32));
-                break;
             case NativeTypeKind::F64:
-                if (p->value.reg.f64 != 0.0)
-                    bufferSwg.addString(format(" = %lf", p->value.reg.f64));
+                notZero = p->value.reg.u64;
                 break;
             case NativeTypeKind::Bool:
-                if (p->value.reg.b)
-                    bufferSwg.addString(" = true");
+                notZero = p->value.reg.b;
                 break;
-            default:
-                return module->internalError("emitStructSignatureSwg, invalid type");
+            case NativeTypeKind::String:
+                notZero = !p->value.text.empty();
+                break;
+            }
+
+            if (notZero)
+            {
+				bufferSwg.addString(" = ");
+                SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, p->typeInfo, p->value.text, p->value.reg));
             }
         }
 
