@@ -142,7 +142,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     if (node->flags & AST_VALUE_IS_TYPEINFO)
     {
         emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0])->b.u32 = node->computedValue.reg.u32;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC                                                 = node->resultRegisterRC;
     }
     else if (typeInfo->kind == TypeInfoKind::Native)
     {
@@ -217,9 +217,14 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         auto inst   = emitInstruction(context, ByteCodeOp::RARefFromConstantSeg, regList[0], regList[1]);
         inst->c.u64 = ((uint64_t) storageOffset << 32) | (uint32_t) typeArray->count;
     }
+    else if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        auto inst   = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0]);
+        inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
+    }
     else
     {
-        return internalError(context, "emitLiteral, type not native");
+        return internalError(context, format("emitLiteral, unsupported type '%s'", typeInfo->name.c_str()).c_str());
     }
 
     return true;
