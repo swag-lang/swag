@@ -61,6 +61,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
+        if (varNode->assignment)
+            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
     }
     else if (!varNode->type)
     {
@@ -73,7 +75,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         return error(varNode->token, "variable must have a type or must be initialized");
     }
 
-	SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid token '==', did you mean '=' ?"));
+    SWAG_VERIFY(token.id != TokenId::SymEqualEqual, syntaxError(token, "invalid token '==', did you mean '=' ?"));
     SWAG_CHECK(eatSemiCol("at the end of a variable declation"));
 
     if (varNode->assignment)
@@ -85,10 +87,12 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
             for (auto otherVar : otherVariables)
             {
                 CloneContext cloneContext;
-                otherVar->assignment = varNode->assignment->clone(cloneContext);
+                otherVar->assignment                   = varNode->assignment->clone(cloneContext);
+                otherVar->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
                 Ast::addChildBack(otherVar, otherVar->assignment);
             }
         }
+
         // Otherwise, we generate initialization for other variables (init to the first var)
         else
         {
@@ -98,7 +102,9 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
             }
         }
     }
-    else
+
+    // Duplicate type for all other variables
+    if (varNode->type)
     {
         CloneContext cloneContext;
         for (auto otherVar : otherVariables)

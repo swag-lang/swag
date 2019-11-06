@@ -106,11 +106,11 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
     {
     case AstNodeKind::VarDecl:
     case AstNodeKind::LetDecl:
-		if(node->ownerScope && node->ownerScope->isGlobal())
-			return "global variable";
-		if(node->ownerMainNode && node->ownerMainNode->kind == AstNodeKind::StructDecl)
-			return "struct member";
-		return "variable";
+        if (node->ownerScope && node->ownerScope->isGlobal())
+            return "global variable";
+        if (node->ownerMainNode && node->ownerMainNode->kind == AstNodeKind::StructDecl)
+            return "struct member";
+        return "variable";
     case AstNodeKind::FuncDecl:
         return "function";
     case AstNodeKind::EnumDecl:

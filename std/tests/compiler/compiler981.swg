@@ -1,5 +1,5 @@
-
-
+#module compiler981
+#unittest error
 
 struct Point
 {

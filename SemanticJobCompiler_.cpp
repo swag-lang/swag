@@ -52,16 +52,12 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     return true;
 }
 
-bool SemanticJob::forceExecuteNode(SemanticContext* context)
-{
-    SWAG_CHECK(executeNode(context, context->node, false));
-    return true;
-}
-
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
-    auto expr = context->node->childs[0];
-    SWAG_CHECK(executeNode(context, expr, false));
+    auto expression = context->node->childs.front();
+    SWAG_CHECK(executeNode(context, expression, false));
+	context->node->inheritComputedValue(expression);
+	context->node->typeInfo = expression->typeInfo;
     return true;
 }
 
@@ -184,7 +180,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
         disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->ifBlock);
     }
 
-	// #if in the global scope : need to spawn a job to parse the content
+    // #if in the global scope : need to spawn a job to parse the content
     if (validatedNode && node->ownerScope->isGlobal())
     {
         auto job        = g_Pool_fileSemanticJob.alloc();

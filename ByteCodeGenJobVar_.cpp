@@ -21,7 +21,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             return true;
 
         // Generate initialization
-        // Do not generate if we have a user define affectation, and the operator is marker as 'complete'
+        // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
         if (!node->resolvedUserOpSymbolName ||
             node->resolvedUserOpSymbolName->kind != SymbolKind::Function ||
             !(node->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))

@@ -1,5 +1,4 @@
 #module compiler397
-;
 
 //#[swag.printbc]
 #unittest error;

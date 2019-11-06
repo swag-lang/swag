@@ -108,18 +108,37 @@ JobResult SemanticJob::execute()
 
             if (!node->childs.empty() && !node->isDisabled())
             {
-                for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+                if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::LetDecl || node->kind == AstNodeKind::ConstDecl)
                 {
-                    auto child = node->childs[i];
-                    if (child->isDisabled())
-                        continue;
+                    for (int i = 0; i < (int) node->childs.size(); i++)
+                    {
+                        auto child = node->childs[i];
+                        if (child->isDisabled())
+                            continue;
 
-                    // Top to bottom inheritance
-                    if (node->kind == AstNodeKind::Statement)
-                        child->parentAttributes = node->parentAttributes;
+                        // Top to bottom inheritance
+                        if (node->kind == AstNodeKind::Statement)
+                            child->parentAttributes = node->parentAttributes;
 
-                    enterState(child);
-                    nodes.push_back(child);
+                        enterState(child);
+                        nodes.push_back(child);
+                    }
+                }
+                else
+                {
+                    for (int i = (int) node->childs.size() - 1; i >= 0; i--)
+                    {
+                        auto child = node->childs[i];
+                        if (child->isDisabled())
+                            continue;
+
+                        // Top to bottom inheritance
+                        if (node->kind == AstNodeKind::Statement)
+                            child->parentAttributes = node->parentAttributes;
+
+                        enterState(child);
+                        nodes.push_back(child);
+                    }
                 }
 
                 break;
@@ -145,6 +164,8 @@ JobResult SemanticJob::execute()
                     return JobResult::ReleaseJob;
                 if (context.result == SemanticResult::Pending)
                     return JobResult::KeepJobAlive;
+                if (context.result == SemanticResult::NewChilds)
+                    continue;
             }
 
             nodes.pop_back();

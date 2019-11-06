@@ -65,8 +65,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerCallerLine:
     case TokenId::CompilerCallerFile:
     case TokenId::CompilerCallerFunction:
-	case TokenId::CompilerConfiguration:
-	case TokenId::CompilerPlatform:
+    case TokenId::CompilerConfiguration:
+    case TokenId::CompilerPlatform:
     {
         auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerSpecialFunction, sourceFile, parent);
         if (result)
@@ -363,8 +363,9 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::CompilerRun)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doBoolExpression(nullptr, &boolExpression));
-        boolExpression->semanticAfterFct = &SemanticJob::forceExecuteNode;
+        boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile, parent);
+        boolExpression->semanticFct = &SemanticJob::resolveCompilerRun;
+        SWAG_CHECK(doBoolExpression(boolExpression));
     }
     else
     {
@@ -563,12 +564,13 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         AstVarDecl* varNode = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile, parent);
         varNode->name       = leftNode->childs.back()->name;
         varNode->inheritTokenLocation(leftNode->token);
-        varNode->semanticFct = &SemanticJob::resolveVarDecl;
+        varNode->semanticFct = SemanticJob::resolveVarDecl;
 
         if (result)
             *result = varNode;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
+        varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         varNode->flags |= AST_R_VALUE;
         currentScope->allocateSymTable();
         SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));

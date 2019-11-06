@@ -1,9 +1,13 @@
-#module compiler970
-
+struct pt
+{
+    x, y: s32
+}
 
 //#[swag.printbc]
-#unittest error
+//#unittest error
 #test
 {
-	var x: {s32, s32} = {1}
+	var x: {s32, s32} = {666}
+    @assert(x.val0 == 666)
+    @assert(x.val1 == 0)
 }

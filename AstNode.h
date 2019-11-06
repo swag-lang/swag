@@ -198,7 +198,7 @@ struct AstNode : public PoolElement
 
     void inheritAndFlag(uint64_t flag)
     {
-		inheritAndFlag(this, flag);
+        inheritAndFlag(this, flag);
     }
 
     void inheritAndFlag(AstNode* who, uint64_t flag)

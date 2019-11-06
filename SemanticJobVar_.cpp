@@ -328,8 +328,8 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS | AST_GENERATED;
     typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
     *result                    = typeExpression;
-    context->job->nodes.push_back(typeExpression);
-    context->result = SemanticResult::NewChilds;
+    //context->job->nodes.push_back(typeExpression);
+    //context->result = SemanticResult::NewChilds;
     return true;
 }
 
@@ -353,14 +353,84 @@ bool SemanticJob::collectAssignment(SemanticContext* context, uint32_t& storageO
             SWAG_CHECK(storeToSegment(context, storageOffset, seg, value, typeInfo, identifier->callParameters));
         }
 
-        // Then collect values from the assignment
-        if (node->assignment && node->assignment->kind == AstNodeKind::ExpressionList)
-            SWAG_CHECK(storeToSegment(context, storageOffset, seg, value, typeInfo, node->assignment));
+        SWAG_ASSERT(!node->assignment || node->assignment->kind != AstNodeKind::ExpressionList);
     }
     else
     {
         SWAG_CHECK(reserveAndStoreToSegment(context, storageOffset, seg, value, typeInfo, node->assignment));
     }
+
+    return true;
+}
+
+bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
+{
+    auto savedNode = context->node;
+    auto varDecl   = static_cast<AstVarDecl*>(context->node->parent);
+
+    auto assign = varDecl->assignment;
+    if (!assign || assign->kind != AstNodeKind::ExpressionList)
+        return true;
+
+    auto exprList = CastAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
+    if (exprList->listKind != TypeInfoListKind::Curly)
+        return true;
+
+	bool addedType = false;
+    if (!varDecl->type)
+    {
+        SWAG_CHECK(convertAssignementToStruct(context, varDecl, assign, &varDecl->type));
+        varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+
+		auto job = context->job;
+		context->result = SemanticResult::Done;
+		job->nodes.pop_back();
+		job->nodes.push_back(varDecl->type);
+		job->nodes.push_back(context->node);
+		addedType = true;
+        //return true;
+    }
+
+    auto typeExpression = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
+    if (!typeExpression->identifier)
+        return true;
+
+    auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+    SWAG_VERIFY(!identifier->callParameters, context->errorContext.report({assign, "structure cannot be initialized twice"}));
+
+    auto sourceFile            = context->sourceFile;
+    identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
+
+    auto numParams = assign->childs.size();
+    for (int i = 0; i < numParams; i++)
+    {
+        auto child = assign->childs[0];
+
+        // This happens if the structure has been generated from the assignment expression
+        if (child->kind == AstNodeKind::TypeExpression)
+            continue;
+
+        auto param        = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+        param->namedParam = move(child->name);
+        Ast::removeFromParent(child);
+        Ast::addChildBack(param, child);
+
+		context->node = param;
+		SWAG_CHECK(resolveFuncCallParam(context));
+    }
+
+	context->node = identifier->callParameters;
+	SWAG_CHECK(resolveFuncCallParams(context));
+	context->node = savedNode;
+
+    identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR);
+    identifier->flags |= AST_IN_TYPE_VAR_DECLARATION;
+    varDecl->type->flags &= ~AST_NO_BYTECODE_CHILDS;
+    varDecl->type->flags |= AST_HAS_STRUCT_PARAMETERS;
+
+    Ast::removeFromParent(varDecl->assignment);
+    varDecl->assignment->release();
+    varDecl->assignment = nullptr;
 
     return true;
 }
@@ -458,35 +528,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_ASSERT(node->type->typeInfo);
 
-        // Assign an expression list to a struct : need to be sure all types are compatibles, field by field
-        if ((node->assignment->flags & AST_CONST_EXPR) &&
-            (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)) &&
-            (node->type->typeInfo->kind == TypeInfoKind::Struct) &&
-            (node->assignment->typeInfo->kind == TypeInfoKind::TypeList))
-        {
-            AstTypeExpression* typeExpr = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
-
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->type->typeInfo, TypeInfoKind::Struct);
-            auto job        = context->job;
-            job->cacheDependentSymbols.clear();
-            job->cacheDependentSymbols.push_back(typeExpr->identifier->resolvedSymbolName);
-            SWAG_CHECK(matchIdentifierParameters(context, nullptr, node->assignment, node));
-
-            auto maxParams = node->assignment->childs.size();
-            if (maxParams < typeStruct->childs.size())
-                return context->errorContext.report({node->assignment, format("not enough arguments in expression list for struct '%s'", typeStruct->name.c_str())});
-            if (maxParams > typeStruct->childs.size())
-                return context->errorContext.report({node->assignment, format("too many arguments in expression list for struct '%s'", typeStruct->name.c_str()) });
-
-            for (int i = 0; i < maxParams; i++)
-            {
-                auto nodeCall = node->assignment->childs[i];
-                SWAG_CHECK(TypeManager::makeCompatibles(context, typeStruct->childs[i]->typeInfo, nullptr, nodeCall));
-            }
-        }
-
         // Do not cast for structs, as we can have special assignment with different types
-        else if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
+        if (node->type->typeInfo->kind != TypeInfoKind::Struct || node->assignment->typeInfo->kind == TypeInfoKind::TypeList)
         {
             SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, CASTFLAG_UNCONST));
         }
