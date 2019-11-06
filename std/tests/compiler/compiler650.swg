@@ -1,6 +1,3 @@
-
-
-
 //#[swag.printbc]
 #test
 {

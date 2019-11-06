@@ -466,6 +466,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                 SWAG_CHECK(convertAssignementToStruct(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;
                 Ast::setForceConstType(funcNode->returnType);
+                context->job->nodes.push_back(funcNode->returnType);
+                context->result = SemanticResult::NewChilds;
                 return true;
             }
 

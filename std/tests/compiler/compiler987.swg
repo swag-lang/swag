@@ -1,7 +1,4 @@
-
-
-
-struct Point
+/*struct Point
 {
 	x: s32
 }
@@ -12,3 +9,4 @@ struct Point
 	@assert(pair.val1.x == 10)
 }
 
+*/
