@@ -12,7 +12,7 @@
 
 bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType)
 {
-	typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     cType.clear();
 
     if (typeInfo->kind == TypeInfoKind::Enum)
@@ -179,7 +179,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         pushParams.pop_back();
 
         // Access to the content of the register
-        if (typeParam->kind == TypeInfoKind::Pointer)
+        if (typeParam->kind == TypeInfoKind::Pointer || typeParam->kind == TypeInfoKind::Struct)
         {
             bufferC.addString(format("(void*) r[%u].pointer", index));
             index -= 1;
@@ -233,8 +233,12 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
                 bufferC.addString(".ch");
                 break;
             default:
-                return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid param type");
+                return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid param native type");
             }
+        }
+        else
+        {
+            return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid param type");
         }
     }
 
