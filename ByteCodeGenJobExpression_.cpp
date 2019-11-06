@@ -220,6 +220,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto inst   = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0]);
+		SWAG_ASSERT(node->resolvedSymbolOverload);
         inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
     }
     else
