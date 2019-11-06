@@ -84,7 +84,8 @@ ffi_type* ByteCodeRun::ffiFromTypeinfo(TypeInfo* typeInfo)
 {
     if (typeInfo->kind == TypeInfoKind::Pointer)
         return &ffi_type_pointer;
-
+    if (typeInfo->kind == TypeInfoKind::Struct)
+        return &ffi_type_pointer;
     if (typeInfo->isNative(NativeTypeKind::String))
         return &ffi_type_pointer;
 
