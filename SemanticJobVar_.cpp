@@ -74,7 +74,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({assignment, "expression cannot be evaluated at compile time"}));
         auto offset = storageOffset;
-        auto result = collectLiteralsToSegmentNoLock(context, offset, assignment, seg);
+        auto result = collectLiteralsToSegmentNoLock(context, storageOffset, offset, assignment, seg);
         SWAG_CHECK(result);
         return true;
     }
@@ -83,7 +83,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
     {
         SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({assignment, "expression cannot be evaluated at compile time"}));
         auto offset = storageOffset;
-        auto result = collectLiteralsToSegmentNoLock(context, offset, assignment, seg);
+        auto result = collectLiteralsToSegmentNoLock(context, storageOffset, offset, assignment, seg);
         SWAG_CHECK(result);
         return true;
     }
@@ -181,7 +181,7 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
     return true;
 }
 
-bool SemanticJob::collectLiteralsToSegmentNoLock(SemanticContext* context, uint32_t& offset, AstNode* node, DataSegment* segment)
+bool SemanticJob::collectLiteralsToSegmentNoLock(SemanticContext* context, uint32_t baseOffset, uint32_t& offset, AstNode* node, DataSegment* segment)
 {
     for (auto child : node->childs)
     {
@@ -190,9 +190,16 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(SemanticContext* context, uint3
 
         if (child->kind == AstNodeKind::ExpressionList)
         {
-            SWAG_CHECK(collectLiteralsToSegmentNoLock(context, offset, child, segment));
+            SWAG_CHECK(collectLiteralsToSegmentNoLock(context, baseOffset, offset, child, segment));
             continue;
         }
+
+		if (child->kind == AstNodeKind::FuncCallParam)
+		{
+			auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+			if (param->resolvedParameter)
+				offset = baseOffset + param->resolvedParameter->offset;
+		}
 
         SWAG_CHECK(storeToSegmentNoLock(context, offset, segment, &child->computedValue, child->typeInfo, child));
         offset += child->typeInfo->sizeOf;
