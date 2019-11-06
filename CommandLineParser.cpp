@@ -44,7 +44,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->testFilter    = "std.drawing1";
-    cmdLine->fileFilter = "compiler1222";
+    cmdLine->fileFilter = "compiler1223";
 }
 
 void CommandLineParser::logArguments()

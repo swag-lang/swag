@@ -462,7 +462,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // Check public
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        if (node->ownerScope->isGlobal())
+        if (node->ownerScope->isGlobal() || node->ownerScope->kind == ScopeKind::Struct)
             node->ownerScope->addPublicConst(node);
     }
 
