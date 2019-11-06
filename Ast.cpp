@@ -188,9 +188,9 @@ namespace Ast
         return node;
     }
 
-    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
+    AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob, AstNodeKind kind)
     {
-        AstVarDecl* node  = Ast::newNode(syntaxJob, &g_Pool_astVarDecl, AstNodeKind::VarDecl, sourceFile, parent);
+        AstVarDecl* node  = Ast::newNode(syntaxJob, &g_Pool_astVarDecl, kind, sourceFile, parent);
         node->name        = name;
         node->semanticFct = &SemanticJob::resolveVarDecl;
         return node;

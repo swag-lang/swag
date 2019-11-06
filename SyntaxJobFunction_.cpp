@@ -78,8 +78,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
 {
-    auto paramNode         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile, parent);
-    paramNode->semanticFct = &SemanticJob::resolveVarDecl;
+    auto paramNode = Ast::newVarDecl(sourceFile, "", parent, this, AstNodeKind::FuncDeclParam);
 
     // Using variable
     if (token.id == TokenId::KwdUsing)
@@ -112,9 +111,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid parameter name '%s'", token.text.c_str())));
 
-            AstVarDecl* otherVarNode  = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile, parent);
-            otherVarNode->semanticFct = SemanticJob::resolveVarDecl;
-            otherVarNode->inheritTokenName(token);
+            AstVarDecl* otherVarNode = Ast::newVarDecl(sourceFile, token.text, parent, this, AstNodeKind::FuncDeclParam);
             SWAG_CHECK(tokenizer.getToken(token));
             otherVariables.push_back(otherVarNode);
         }
@@ -219,9 +216,7 @@ bool SyntaxJob::doGenericDeclParameters(AstNode* parent, AstNode** result)
     while (token.id != TokenId::SymRightParen)
     {
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "missing generic name or type"));
-        auto oneParam = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile, allParams);
-        oneParam->inheritTokenName(token);
-        oneParam->semanticFct = &SemanticJob::resolveVarDecl;
+        auto oneParam = Ast::newVarDecl(sourceFile, token.text, allParams, this, AstNodeKind::FuncDeclParam);
         oneParam->flags |= AST_IS_GENERIC;
         SWAG_CHECK(eatToken());
 
@@ -336,7 +331,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     // Name
     if (funcForCompiler)
     {
-		funcNode->flags |= AST_SPECIAL_COMPILER_FUNC;
+        funcNode->flags |= AST_SPECIAL_COMPILER_FUNC;
         int id = g_Global.uniqueID.fetch_add(1);
         switch (typeFuncId)
         {

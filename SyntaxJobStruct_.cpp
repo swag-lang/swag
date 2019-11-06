@@ -243,10 +243,7 @@ AstNode* SyntaxJob::generateOpInit(AstNode* node, const Utf8& structName, AstNod
         funcNode->parameters->semanticFct = &SemanticJob::resolveFuncDeclParams;
 
         // One parameter
-        auto param         = Ast::newNode(this, &g_Pool_astVarDecl, AstNodeKind::FuncDeclParam, sourceFile, funcNode->parameters);
-        param->semanticFct = &SemanticJob::resolveVarDecl;
-        param->name        = "self";
-
+        auto param            = Ast::newVarDecl(sourceFile, "self", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
         auto typeNode         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile, param);
         typeNode->ptrCount    = 1;
         typeNode->semanticFct = &SemanticJob::resolveTypeExpression;
