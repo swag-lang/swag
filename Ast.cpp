@@ -190,7 +190,12 @@ namespace Ast
 
     AstVarDecl* newVarDecl(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob, AstNodeKind kind)
     {
-        AstVarDecl* node  = Ast::newNode(syntaxJob, &g_Pool_astVarDecl, kind, sourceFile, parent);
+        AstVarDecl* node = Ast::newNode(syntaxJob, &g_Pool_astVarDecl, kind, sourceFile, parent);
+
+		// We need to evaluate assignment first, then type, in ordre to be able to generate the type depending on the
+		// assignment if necessary
+        node->flags |= AST_REVERSE_SEMANTIC;
+
         node->name        = name;
         node->semanticFct = &SemanticJob::resolveVarDecl;
         return node;

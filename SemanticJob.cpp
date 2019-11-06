@@ -108,7 +108,7 @@ JobResult SemanticJob::execute()
 
             if (!node->childs.empty() && !node->isDisabled())
             {
-                if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::LetDecl || node->kind == AstNodeKind::ConstDecl)
+                if (node->flags & AST_REVERSE_SEMANTIC)
                 {
                     for (int i = 0; i < (int) node->childs.size(); i++)
                     {
