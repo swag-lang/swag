@@ -160,5 +160,6 @@ string toStringF64(double v)
 {
     string s = format("%.35lf", v);
     s.erase(s.find_last_not_of('0') + 1, std::string::npos);
+	s += "0";
     return s;
 }

@@ -202,10 +202,19 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node)
 {
     bufferSwg.addString("\tconst ");
     bufferSwg.addString(node->name.c_str());
-    bufferSwg.addString(": ");
-    bufferSwg.addString(node->typeInfo->name);
-    bufferSwg.addString(" = ");
-    SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, node->assignment->typeInfo, node->assignment->computedValue.text, node->assignment->computedValue.reg));
+
+    if (node->type)
+    {
+        bufferSwg.addString(": ");
+        SWAG_CHECK(Ast::output(bufferSwg, node->type));
+    }
+
+    if (node->assignment)
+    {
+        bufferSwg.addString(" = ");
+        SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, node->assignment->typeInfo, node->assignment->computedValue.text, node->assignment->computedValue.reg));
+    }
+
     bufferSwg.addString("\n");
     return true;
 }
@@ -262,7 +271,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 
             if (notZero)
             {
-				bufferSwg.addString(" = ");
+                bufferSwg.addString(" = ");
                 SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, p->typeInfo, p->value.text, p->value.reg));
             }
         }

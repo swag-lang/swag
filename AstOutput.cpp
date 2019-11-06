@@ -39,7 +39,7 @@ namespace Ast
             concat.addString(format("%lld", reg.s64));
             break;
         case NativeTypeKind::F32:
-            concat.addString(toStringF64((float) reg.f64));
+            concat.addString(toStringF64(reg.f32));
             break;
         case NativeTypeKind::F64:
             concat.addString(toStringF64(reg.f64));
@@ -187,8 +187,18 @@ namespace Ast
             break;
 
         case AstNodeKind::FuncCallParam:
-            SWAG_CHECK(output(concat, node->childs.front()));
-            break;
+		{
+			auto funcParam = CastAst<AstFuncCallParam>(node, AstNodeKind::FuncCallParam);
+			if (!funcParam->namedParam.empty())
+			{
+				concat.addString(funcParam->namedParam);
+				concat.addString(": ");
+			}
+
+			SWAG_CHECK(output(concat, funcParam->childs.front()));
+			break;
+		}
+
         case AstNodeKind::FuncCallParams:
         {
             int idx = 0;
