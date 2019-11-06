@@ -12,6 +12,7 @@
 
 bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType)
 {
+	typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS);
     cType.clear();
 
     if (typeInfo->kind == TypeInfoKind::Enum)
