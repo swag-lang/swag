@@ -631,7 +631,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // A constant does nothing on backend, except if it can't be stored in a register
-    uint32_t storageOffset = 0;
+    uint32_t storageOffset = UINT32_MAX;
     if (isCompilerConstant)
     {
         node->inheritComputedValue(node->assignment);
