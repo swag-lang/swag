@@ -405,8 +405,9 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         if (child->kind == AstNodeKind::TypeExpression)
             continue;
 
-        auto param        = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
-        param->namedParam = move(child->name);
+        auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+        if (child->kind == AstNodeKind::Literal)
+            param->namedParam = move(child->name);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
 
