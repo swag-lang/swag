@@ -328,8 +328,6 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS | AST_GENERATED;
     typeExpression->identifier = Ast::newIdentifierRef(sourceFile, structNode->name, typeExpression);
     *result                    = typeExpression;
-    //context->job->nodes.push_back(typeExpression);
-    //context->result = SemanticResult::NewChilds;
     return true;
 }
 
@@ -376,19 +374,16 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     if (exprList->listKind != TypeInfoListKind::Curly)
         return true;
 
-	bool addedType = false;
     if (!varDecl->type)
     {
         SWAG_CHECK(convertAssignementToStruct(context, varDecl, assign, &varDecl->type));
         varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
 
-		auto job = context->job;
-		context->result = SemanticResult::Done;
-		job->nodes.pop_back();
-		job->nodes.push_back(varDecl->type);
-		job->nodes.push_back(context->node);
-		addedType = true;
-        //return true;
+        auto job        = context->job;
+        context->result = SemanticResult::Done;
+        job->nodes.pop_back();
+        job->nodes.push_back(varDecl->type);
+        job->nodes.push_back(context->node);
     }
 
     auto typeExpression = CastAst<AstTypeExpression>(varDecl->type, AstNodeKind::TypeExpression);
@@ -415,13 +410,13 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
 
-		context->node = param;
-		SWAG_CHECK(resolveFuncCallParam(context));
+        context->node = param;
+        SWAG_CHECK(resolveFuncCallParam(context));
     }
 
-	context->node = identifier->callParameters;
-	SWAG_CHECK(resolveFuncCallParams(context));
-	context->node = savedNode;
+    context->node = identifier->callParameters;
+    SWAG_CHECK(resolveFuncCallParams(context));
+    context->node = savedNode;
 
     identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR);
     identifier->flags |= AST_IN_TYPE_VAR_DECLARATION;
@@ -580,12 +575,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment, CASTFLAG_NO_COLLECT));
                 else
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->typeInfo, nullptr, node->assignment));
-            }
-            else if (typeList->listKind == TypeInfoListKind::Curly)
-            {
-                SWAG_CHECK(convertAssignementToStruct(context, node, node->assignment, &node->type));
-                node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
-                return true;
             }
             else
                 return internalError(context, "resolveVarDecl, invalid typelist kind");
