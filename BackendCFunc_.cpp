@@ -283,6 +283,14 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
 
     // Affect registers
     int idx = typeFunc->numReturnRegisters();
+
+    // Return by copy
+    bool returnByCopy = typeFunc->returnType->kind == TypeInfoKind::Struct;
+    if (returnByCopy)
+    {
+        bufferC.addString("\trr0.pointer = result;\n");
+    }
+
     for (auto param : typeFunc->parameters)
     {
         auto typeParam = TypeManager::concreteType(param->typeInfo);
@@ -368,7 +376,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     bufferC.addString(");\n");
 
     // Return
-    if (typeFunc->numReturnRegisters())
+    if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
         if (typeFunc->returnType->kind == TypeInfoKind::Slice)
         {
@@ -432,9 +440,12 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
 bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     Utf8 returnType;
+    bool returnByCopy = typeFunc->returnType->kind == TypeInfoKind::Struct;
 
     SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, returnType));
-    if (typeFunc->numReturnRegisters() <= 1)
+    if (returnByCopy)
+        buffer.addString("void");
+    else if (typeFunc->numReturnRegisters() <= 1)
         buffer.addString(returnType);
     else
         buffer.addString("void");
@@ -460,7 +471,7 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
     }
 
     // Return value
-    if (typeFunc->numReturnRegisters() > 1)
+	if (typeFunc->numReturnRegisters() > 1 || returnByCopy)
     {
         if (!first)
             buffer.addString(", ");

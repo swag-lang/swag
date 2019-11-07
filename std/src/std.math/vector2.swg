@@ -28,7 +28,7 @@ namespace std.math
 			func lengthSquared(using self) => (x * x) + (y * y)
 			func dot(using self, other: Self) => (x * other.x) + (y * other.y)
             
-            func normalize(using self)
+            func makeNormalize(using self)
             {
                 norm := sqrt((x * x) + (y * y))
                 diagnostics.debug.assert(!isZeroEpsilon(norm))                
@@ -36,6 +36,14 @@ namespace std.math
                 x *= norm
                 y *= norm
             }
+            
+            func normalize(using self)->Vector2
+            {
+                norm := sqrt((x * x) + (y * y))
+                diagnostics.debug.assert(!isZeroEpsilon(norm))                
+                norm = 1 / norm
+                return Vector2(x * norm, y * norm)
+            }            
 		}
 	}
 }
