@@ -17,7 +17,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     ComputedValue moduleName;
     bool          hasModuleName = typeFunc->attributes.getValue("swag.foreign.module", moduleName);
     if (hasModuleName)
-        g_ModuleMgr.loadModule(context, moduleName.text);
+        g_ModuleMgr.loadModule(moduleName.text);
 
     auto& funcName = nodeFunc->name;
     auto  fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
@@ -68,7 +68,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         condVar.wait(lk);
 
         // Last try
-        g_ModuleMgr.loadModule(context, moduleName.text);
+        g_ModuleMgr.loadModule(moduleName.text);
         fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
         if (!externalModule)
         {

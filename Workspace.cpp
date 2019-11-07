@@ -9,6 +9,7 @@
 #include "ModuleOutputJob.h"
 #include "ByteCode.h"
 #include "Target.h"
+#include "ByteCodeModuleManager.h"
 
 Workspace g_Workspace;
 
@@ -318,7 +319,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
-	// During unit testing, be sure we don't have remaining not raised errors
+    // During unit testing, be sure we don't have remaining not raised errors
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         for (auto module : list)
@@ -483,6 +484,8 @@ bool Workspace::buildTarget()
                     canBuild = false;
                     break;
                 }
+
+                g_ModuleMgr.loadModule(depName);
             }
 
             if (hasErrors)
@@ -524,8 +527,8 @@ bool Workspace::build()
     setup();
 
     auto target                               = new Target;
-    target->config                     = g_CommandLine.config;
-    target->arch                          = g_CommandLine.arch;
+    target->config                            = g_CommandLine.config;
+    target->arch                              = g_CommandLine.arch;
     target->backendDebugInformations          = false;
     target->backendOptimizeLevel              = 0;
     target->backendC.writeSourceCode          = true;
@@ -533,7 +536,7 @@ bool Workspace::build()
 
     bool ok = true;
 
-	g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), target->config.c_str(), target->arch.c_str()));
+    g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), target->config.c_str(), target->arch.c_str()));
 
     currentTarget = target;
     addRuntime();

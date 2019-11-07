@@ -22,7 +22,7 @@ bool ByteCodeModuleManager::isModuleLoaded(const string& name)
     return loadedModules.find(name) != loadedModules.end();
 }
 
-void ByteCodeModuleManager::loadModule(ByteCodeRunContext* context, const string& name)
+void ByteCodeModuleManager::loadModule(const string& name)
 {
     if (loadedModules.find(name) != loadedModules.end())
         return;

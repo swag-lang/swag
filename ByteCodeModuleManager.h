@@ -4,7 +4,7 @@ struct ByteCodeRunContext;
 struct ByteCodeModuleManager
 {
 	ByteCodeModuleManager();
-    void  loadModule(ByteCodeRunContext* context, const string& name);
+    void  loadModule(const string& name);
     bool  isModuleLoaded(const string& name);
     void* getFnPointer(ByteCodeRunContext* context, const string& moduleName, const string& funcName);
 
