@@ -111,7 +111,14 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         bufferSwg.addString("->");
-        bufferSwg.addString(typeFunc->returnType->name);
+        if (typeFunc->returnType->kind == TypeInfoKind::Struct)
+        {
+			// Just to remove the "const"
+			auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeFunc->returnType, TypeInfoKind::Struct);			
+            bufferSwg.addString(typeStruct->structNode->name);
+        }
+        else
+            bufferSwg.addString(typeFunc->returnType->name);
     }
 
     bufferSwg.addString(";");
