@@ -189,6 +189,18 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
     g_ThreadMgr.waitEndJobs();
 
+	// Then load all dependencies
+    for (auto module : list)
+    {
+        for (auto name : module->moduleDependenciesNames)
+        {
+            if (!g_ModuleMgr.loadModule(name))
+            {
+                module->error(format("fail to load module '%s' => %s", name.c_str(), OS::getLastErrorAsString().c_str()));
+            }
+        }
+    }
+
     // Errors in swag.swg !!!
     if (runtimeModule && runtimeModule->numErrors)
     {
@@ -485,12 +497,6 @@ bool Workspace::buildTarget()
                     canBuild = false;
                     break;
                 }
-
-				if (!g_ModuleMgr.loadModule(depName))
-				{
-					module->error(format("fail to load module '%s' => %s", depName.c_str(), OS::getLastErrorAsString().c_str()));
-					hasErrors = true;
-				}
             }
 
             if (hasErrors)
