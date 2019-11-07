@@ -195,7 +195,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         {
             numParameters++;
             ffiArgs.push_back(&ffi_type_pointer);
-            ffiArgsValues.push_back(&context->registersRR);
+            ffiArgsValues.push_back(context->registersRR);
         }
         else
         {
@@ -213,7 +213,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     ffi_prep_cif(&cif, FFI_DEFAULT_ABI, numParameters, typeResult, ffiArgs.empty() ? nullptr : &ffiArgs[0]);
 
     void* resultPtr = nullptr;
-    if (typeResult != &ffi_type_void)
+    if (typeResult != &ffi_type_void && !(returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         SWAG_ASSERT(context->registersRR);
         switch (returnType->sizeOf)

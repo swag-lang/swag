@@ -243,11 +243,17 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     }
 
     // Return by parameter
-	if ((returnType->kind == TypeInfoKind::Slice) || (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+    if (returnType->kind == TypeInfoKind::Slice)
     {
         if (numCallParams)
             bufferC.addString(", ");
         bufferC.addString("&rt[0]");
+    }
+    else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        if (numCallParams)
+            bufferC.addString(", ");
+        bufferC.addString("rt[0].pointer");
     }
 
     bufferC.addString(");");
@@ -285,7 +291,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     int idx = typeFunc->numReturnRegisters();
 
     // Return by copy
-	bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
         bufferC.addString("\trr0.pointer = result;\n");
@@ -471,7 +477,7 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
     }
 
     // Return value
-	if (typeFunc->numReturnRegisters() > 1 || returnByCopy)
+    if (typeFunc->numReturnRegisters() > 1 || returnByCopy)
     {
         if (!first)
             buffer.addString(", ");

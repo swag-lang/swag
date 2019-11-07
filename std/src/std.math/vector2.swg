@@ -39,10 +39,11 @@ namespace std.math
             
             func normalize(using self)->Vector2
             {
-                norm := sqrt((x * x) + (y * y))
+                /*norm := sqrt((x * x) + (y * y))
                 diagnostics.debug.assert(!isZeroEpsilon(norm))                
                 norm = 1 / norm
-                return Vector2(x * norm, y * norm)
+                return Vector2(x * norm, y * norm)*/
+                return Vector2(x, y)
             }            
 		}
 	}
