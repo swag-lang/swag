@@ -20,5 +20,5 @@ impl Vector2
 #test
 {
 	pt1 := normalize()
-	Vector2.toto(pt1)
+	//Vector2.toto(pt1)
 }

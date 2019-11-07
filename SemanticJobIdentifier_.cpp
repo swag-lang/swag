@@ -55,13 +55,22 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->flags |= AST_IS_CONST;
     auto overload = node->resolvedSymbolOverload;
-    if (overload && overload->flags & OVERLOAD_CONST)
+    if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->flags |= AST_IS_CONST_ASSIGN;
 
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
 
-    auto identifierRef                  = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+
+    // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
+    // this one either
+    if (identifierRef->previousResolvedNode && (identifierRef->previousResolvedNode->flags & AST_IS_CONST_ASSIGN_INHERIT))
+    {
+        node->flags |= AST_IS_CONST_ASSIGN;
+        node->flags |= AST_IS_CONST_ASSIGN_INHERIT;
+    }
+
     identifierRef->typeInfo             = typeInfo;
     identifierRef->previousResolvedNode = node;
 
@@ -195,7 +204,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         return true;
     }
 
-	// If this a L or R value
+    // If this a L or R value
     if (!dependentVar && (overload->flags & OVERLOAD_VAR_STRUCT))
     {
         if (parent->previousResolvedNode)
@@ -219,7 +228,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     auto sourceFile                    = context->sourceFile;
     parent->resolvedSymbolName         = symbol;
     parent->resolvedSymbolOverload     = overload;
-    parent->previousResolvedNode       = identifier;
     identifier->resolvedSymbolName     = symbol;
     identifier->resolvedSymbolOverload = overload;
 
@@ -453,6 +461,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Setup parent if necessary
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
+        if (returnType->kind == TypeInfoKind::Struct)
+        {
+            identifier->flags |= AST_IS_CONST_ASSIGN_INHERIT;
+            identifier->flags |= AST_IS_CONST_ASSIGN;
+        }
+
         SWAG_CHECK(setupIdentifierRef(context, identifier, returnType));
 
         // For a return by copy, need to reserve room on the stack for the return result

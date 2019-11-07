@@ -419,7 +419,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, &typeExpression));
-            Ast::setForceConstType(typeExpression);
         }
     }
 

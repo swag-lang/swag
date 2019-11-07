@@ -54,7 +54,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         ptrType->name        = "*" + typeInfo->name;
 
         // Type is constant if we take address of a readonly variable
-        if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_CONST)
+        if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN)
             ptrType->setConst();
 
         node->typeInfo = ptrType;

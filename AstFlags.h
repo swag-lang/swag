@@ -37,6 +37,7 @@ static const uint64_t AST_INSIDE_IMPL                = 0x00000004'00000000;
 static const uint64_t AST_CAN_INSTANCIATE_TYPE       = 0x00000008'00000000;
 static const uint64_t AST_STRUCT_COMPOUND            = 0x00000010'00000000;
 static const uint64_t AST_REVERSE_SEMANTIC           = 0x00000020'00000000;
+static const uint64_t AST_IS_CONST_ASSIGN_INHERIT    = 0x00000040'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;

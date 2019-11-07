@@ -447,7 +447,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     uint32_t symbolFlags = 0;
     if (node->kind == AstNodeKind::FuncDeclParam)
-        symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST;
+        symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN;
     else if (node->ownerScope->isGlobal())
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if ((node->ownerScope->kind == ScopeKind::Struct) && (node->flags & AST_INSIDE_IMPL))
@@ -457,7 +457,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (!isCompilerConstant)
         symbolFlags |= OVERLOAD_VAR_LOCAL;
     if (node->kind == AstNodeKind::LetDecl)
-        symbolFlags |= OVERLOAD_CONST;
+        symbolFlags |= OVERLOAD_CONST_ASSIGN;
 
     // Check public
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
@@ -472,7 +472,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
             return context->errorContext.report({node, "a constant must be initialized"});
-        if ((symbolFlags & OVERLOAD_CONST) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
+        if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
             return context->errorContext.report({node, "a non mutable 'let' variable must be initialized"});
     }
 
