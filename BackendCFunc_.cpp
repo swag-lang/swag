@@ -285,7 +285,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     int idx = typeFunc->numReturnRegisters();
 
     // Return by copy
-    bool returnByCopy = typeFunc->returnType->kind == TypeInfoKind::Struct;
+	bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
         bufferC.addString("\trr0.pointer = result;\n");
@@ -440,7 +440,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
 bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     Utf8 returnType;
-    bool returnByCopy = typeFunc->returnType->kind == TypeInfoKind::Struct;
+    bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
     SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, returnType));
     if (returnByCopy)
