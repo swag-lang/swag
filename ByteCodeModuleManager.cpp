@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "Module.h"
 #include "Workspace.h"
+#include "Os.h"
 
 ByteCodeModuleManager g_ModuleMgr;
 
@@ -11,9 +12,9 @@ ByteCodeModuleManager::ByteCodeModuleManager()
 {
     loadedModules["kernel32"] = ::GetModuleHandle(L"kernel32.dll");
 #ifdef _DEBUG
-	loadedModules["ucrtbase"] = ::GetModuleHandle(L"ucrtbased.dll");
+    loadedModules["ucrtbase"] = ::GetModuleHandle(L"ucrtbased.dll");
 #else
-	loadedModules["ucrtbase"] = ::GetModuleHandle(L"ucrtbase.dll");
+    loadedModules["ucrtbase"] = ::GetModuleHandle(L"ucrtbase.dll");
 #endif
 }
 
@@ -22,10 +23,10 @@ bool ByteCodeModuleManager::isModuleLoaded(const string& name)
     return loadedModules.find(name) != loadedModules.end();
 }
 
-void ByteCodeModuleManager::loadModule(const string& name)
+bool ByteCodeModuleManager::loadModule(const string& name)
 {
     if (loadedModules.find(name) != loadedModules.end())
-        return;
+        return true;
 
     fs::path path = g_Workspace.targetPath;
     path += "\\";
@@ -41,12 +42,13 @@ void ByteCodeModuleManager::loadModule(const string& name)
     {
         if (verbose)
             g_Log.verbose("FAIL");
-        return;
+        return false;
     }
 
     if (verbose)
         g_Log.verbose("success");
     loadedModules[name] = h;
+    return true;
 }
 
 void* ByteCodeModuleManager::getFnPointer(ByteCodeRunContext* context, const string& moduleName, const string& funcName)

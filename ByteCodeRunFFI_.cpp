@@ -7,6 +7,7 @@
 #include "ThreadManager.h"
 #include "ModuleCompileJob.h"
 #include "TypeManager.h"
+#include "OS.h"
 
 void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
@@ -17,7 +18,13 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     ComputedValue moduleName;
     bool          hasModuleName = typeFunc->attributes.getValue("swag.foreign.module", moduleName);
     if (hasModuleName)
-        g_ModuleMgr.loadModule(moduleName.text);
+    {
+        if (!g_ModuleMgr.loadModule(moduleName.text))
+        {
+            context->error(format("fail to load module '%s' => %s", moduleName.text.c_str(), OS::getLastErrorAsString().c_str()));
+            return nullptr;
+        }
+    }
 
     auto& funcName = nodeFunc->name;
     auto  fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
@@ -68,7 +75,12 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         condVar.wait(lk);
 
         // Last try
-        g_ModuleMgr.loadModule(moduleName.text);
+		if (!g_ModuleMgr.loadModule(moduleName.text))
+		{
+			context->error(format("fail to load module '%s' => %s", moduleName.text.c_str(), OS::getLastErrorAsString().c_str()));
+			return nullptr;
+		}
+
         fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
         if (!externalModule)
         {

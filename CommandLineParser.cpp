@@ -37,14 +37,14 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->cleanTarget   = false;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
-    cmdLine->rebuild           = true;
+    //cmdLine->rebuild           = true;
     cmdLine->backendOutputTest = true;
     cmdLine->backendOutput     = true;
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->testFilter    = "std.math4";
-    //cmdLine->fileFilter = "compiler1028";
+    cmdLine->fileFilter = "std.math4";
 }
 
 void CommandLineParser::logArguments()

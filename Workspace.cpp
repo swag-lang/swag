@@ -10,6 +10,7 @@
 #include "ByteCode.h"
 #include "Target.h"
 #include "ByteCodeModuleManager.h"
+#include "Os.h"
 
 Workspace g_Workspace;
 
@@ -485,7 +486,11 @@ bool Workspace::buildTarget()
                     break;
                 }
 
-                g_ModuleMgr.loadModule(depName);
+				if (!g_ModuleMgr.loadModule(depName))
+				{
+					module->error(format("fail to load module '%s' => %s", depName.c_str(), OS::getLastErrorAsString().c_str()));
+					hasErrors = true;
+				}
             }
 
             if (hasErrors)

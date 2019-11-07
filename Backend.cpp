@@ -392,6 +392,7 @@ bool Backend::preCompile()
 
     bufferSwg.addString(format("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 
+	// Emit everything that's public
     SWAG_CHECK(emitPublicSwg(module, module->scopeRoot));
 
     return bufferSwg.flush();
