@@ -106,7 +106,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     auto returnType = TypeManager::concreteType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr.typeInfoVoid)
     {
-        if (returnType->kind == TypeInfoKind::Slice)
+        if ((returnType->kind == TypeInfoKind::Slice) || (returnType->flags & TYPEINFO_RETURN_BY_COPY))
         {
             // Return by parameter
         }
@@ -243,7 +243,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     }
 
     // Return by parameter
-    if (returnType->kind == TypeInfoKind::Slice)
+	if ((returnType->kind == TypeInfoKind::Slice) || (returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         if (numCallParams)
             bufferC.addString(", ");

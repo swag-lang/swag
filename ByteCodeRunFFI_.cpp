@@ -191,6 +191,12 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             ffiArgs.push_back(&ffi_type_pointer);
             ffiArgsValues.push_back(&context->registersRR);
         }
+        else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
+        {
+            numParameters++;
+            ffiArgs.push_back(&ffi_type_pointer);
+            ffiArgsValues.push_back(&context->registersRR);
+        }
         else
         {
             typeResult = ffiFromTypeinfo(returnType);
@@ -209,7 +215,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     void* resultPtr = nullptr;
     if (typeResult != &ffi_type_void)
     {
-		SWAG_ASSERT(context->registersRR);
+        SWAG_ASSERT(context->registersRR);
         switch (returnType->sizeOf)
         {
         case 1:
