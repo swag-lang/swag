@@ -105,9 +105,9 @@ bool BackendC::compile(const BuildParameters& buildParameters)
     if (!compiler.mustCompile())
     {
         if (buildParameters.flags & BUILDPARAM_FOR_TEST)
-            g_Log.messageHeaderCentered("Skipping test build", module->name.c_str());
+            g_Log.messageHeaderCentered("Skipping test build", module->name.c_str(), LogColor::Gray);
         else
-            g_Log.messageHeaderCentered("Skipping build", module->name.c_str());
+            g_Log.messageHeaderCentered("Skipping build", module->name.c_str(), LogColor::Gray);
         return true;
     }
 

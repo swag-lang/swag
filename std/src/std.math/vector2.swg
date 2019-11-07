@@ -27,6 +27,15 @@ namespace std.math
 			func length(using self) => sqrt((x * x) + (y * y))
 			func lengthSquared(using self) => (x * x) + (y * y)
 			func dot(using self, other: Self) => (x * other.x) + (y * other.y)
+            
+            func normalize(using self)
+            {
+                norm := sqrt((x * x) + (y * y))
+                diagnostics.debug.assert(!isZeroEpsilon(norm))                
+                norm = 1 / norm
+                x *= norm
+                y *= norm
+            }
 		}
 	}
 }

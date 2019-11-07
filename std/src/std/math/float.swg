@@ -18,6 +18,7 @@ namespace std.math.constF64
         const Ln10 : f64        = log(10'f64)
         const Log2E : f64       = log2(E)
         const Log10E : f64      = log10(E)
+        const Epsilon: f64      = 1e-06'f64
     }
 }
 
@@ -41,6 +42,7 @@ namespace std.math.constF32
         const Ln10          = cast(f32) constF64.Ln10
         const Log2E         = cast(f32) constF64.Log2E
         const Log10E        = cast(f32) constF64.Log10E
+        const Epsilon       = cast(f32) constF64.Epsilon
     }
 }
 
@@ -57,6 +59,10 @@ namespace std.math
         func toRadians(x: f32) => x * 0.017453292519943295769236907684886'f32
         func toDegrees(x: f64) => x * (180'f64 / constF64.Pi)
         func toRadians(x: f64) => x * (constF64.Pi / 180'f64)        
+        func isZeroEpsilon(x: f32, eps: f32 = constF32.Epsilon) => abs(x) < eps
+        func isZeroEpsilon(x: f64, eps: f64 = constF64.Epsilon) => abs(x) < eps
+        func isEqualEpsilon(x, y: f32, eps: f32 = constF32.Epsilon) => abs(x - y) < eps
+        func isEqualEpsilon(x, y: f64, eps: f64 = constF64.Epsilon) => abs(x - y) < eps
 	}
 	
 	#[swag.constexpr]
