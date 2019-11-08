@@ -953,13 +953,16 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         // Priority to concrete type, i.e. not generic
         auto lastOverload = symbol->ownerTable->scope->owner->typeInfo;
         auto newOverload  = p->ownerTable->scope->owner->typeInfo;
-        if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
-            continue;
-        if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
-        {
-            symbol = p;
-            continue;
-        }
+		if (lastOverload && newOverload)
+		{
+			if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
+				continue;
+			if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
+			{
+				symbol = p;
+				continue;
+			}
+		}
 
         // Error this is ambiguous
         Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", symbol->name.c_str())};
