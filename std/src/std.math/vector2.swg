@@ -29,7 +29,7 @@ namespace std.math
 			func dot(using self, other: Self) => (x * other.x) + (y * other.y)
             
             func isZero(using self) => x == 0 && y == 0
-            //func isZeroEpsilon(using self, eps: Float) => isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
+            func isZeroEpsilon(using self, eps: Float) => isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
             
             func makeNormalize(using self)
             {

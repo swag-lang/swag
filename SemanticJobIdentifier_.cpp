@@ -368,7 +368,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             scoped_lock lk(symbol->mutex);
             if (overload->flags & OVERLOAD_INCOMPLETE)
             {
-				g_Log.print("#####\n");
                 symbol->dependentJobs.add(context->job);
                 context->job->setPending();
                 return true;
@@ -963,9 +962,9 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         }
 
         // Error this is ambiguous
-        Diagnostic diag{node, format("ambiguous resolution of '%s'", symbol->name.c_str())};
-        Diagnostic note1{symbol->overloads[0]->node, "could be", DiagnosticLevel::Note};
-        Diagnostic note2{p->overloads[0]->node, "could be", DiagnosticLevel::Note};
+        Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", symbol->name.c_str())};
+        Diagnostic note1{symbol->overloads[0]->node, symbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
+        Diagnostic note2{p->overloads[0]->node, p->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
         context->errorContext.report(diag, &note1, &note2);
         return false;
     }
