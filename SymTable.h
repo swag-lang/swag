@@ -22,7 +22,7 @@ static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
 static const uint32_t OVERLOAD_VAR_GLOBAL         = 0x00000004;
 static const uint32_t OVERLOAD_VAR_LOCAL          = 0x00000008;
 static const uint32_t OVERLOAD_COMPUTED_VALUE     = 0x00000010;
-static const uint32_t OVERLOAD_CONST_ASSIGN              = 0x00000020;
+static const uint32_t OVERLOAD_CONST_ASSIGN       = 0x00000020;
 static const uint32_t OVERLOAD_VAR_STRUCT         = 0x00000040;
 static const uint32_t OVERLOAD_GENERIC            = 0x00000080;
 static const uint32_t OVERLOAD_INCOMPLETE         = 0x00000100;
@@ -73,6 +73,7 @@ struct SymbolName : public PoolElement
     SymbolOverload          defaultOverload;
     SymbolKind              kind;
     int                     cptOverloads;
+    int                     cptOverloadsInit;
     vector<SymbolOverload*> overloads;
     DependentJobs           dependentJobs;
     SymTable*               ownerTable;
@@ -80,8 +81,9 @@ struct SymbolName : public PoolElement
     void reset() override
     {
         name.clear();
-        cptOverloads = 0;
-        ownerTable   = nullptr;
+        cptOverloads     = 0;
+        cptOverloadsInit = 0;
+        ownerTable       = nullptr;
         overloads.clear();
     }
 

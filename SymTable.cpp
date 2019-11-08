@@ -54,7 +54,10 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     {
         scoped_lock lock(symbol->mutex);
         if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
+        {
             symbol->cptOverloads++;
+            symbol->cptOverloadsInit++;
+        }
     }
 
     return symbol;
@@ -106,7 +109,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
                 }
             }
         }
-		
+
         if (!result)
         {
             if (!checkHiddenSymbolNoLock(node, typeInfo, kind, symbol))
@@ -126,6 +129,16 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
         if (!(flags & OVERLOAD_INCOMPLETE))
         {
             decreaseOverloadNoLock(symbol);
+        }
+
+		// In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
+		// because an incomplete function doesn't yet know its return type, but we dont need it in order
+		// to make a match
+        else if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
+        {
+            for (auto job : symbol->dependentJobs.list)
+                g_ThreadMgr.addJob(job);
+            symbol->dependentJobs.clear();
         }
 
         return result;

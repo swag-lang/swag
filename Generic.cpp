@@ -48,6 +48,7 @@ void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
 
     // Need to wait for the struct to be semantic resolved
     symbol->cptOverloads++;
+	symbol->cptOverloadsInit++;
     if (waitSymbol)
         job->waitForSymbolNoLock(symbol);
 

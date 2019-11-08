@@ -1,2 +1,2 @@
-//func isZeroEpsilon(x: f32) => false
-//func isZeroEpsilon() => isZeroEpsilon(0)
+func isZeroEpsilon(x: f32) => false
+func isZeroEpsilon() => isZeroEpsilon(0)
