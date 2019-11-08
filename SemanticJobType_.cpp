@@ -111,6 +111,13 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
                 Diagnostic note{symOver->node, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
                 return context->errorContext.report(diag, &note);
             }
+
+            if (node->ownerFct)
+            {
+                auto fctAttributes = node->ownerFct->attributeFlags;
+                if ((fctAttributes & ATTRIBUTE_PUBLIC) && (node->identifier->flags & AST_IN_FCT_PROTOTYPE) && !(symOver->node->attributeFlags & ATTRIBUTE_PUBLIC))
+                    return node->identifier->sourceFile->report({node->identifier, node->identifier->token, format("identifier '%s' should be public, because function '%s' is public", symOver->node->name.c_str(), node->ownerFct->name.c_str())});
+            }
         }
     }
 
@@ -233,7 +240,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
 
-	// Check public
+    // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (node->ownerScope->isGlobal() || node->ownerScope->kind == ScopeKind::Struct)

@@ -1,4 +1,4 @@
-struct Vector2
+public struct Vector2
 {
 	x: s32
 	y: s32

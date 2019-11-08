@@ -407,11 +407,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto ownerFct = identifier->ownerFct;
             if (ownerFct)
             {
-                auto myAttributes = ownerFct->attributeFlags;
-                if (!(myAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
+                auto fctAttributes = ownerFct->attributeFlags;
+                if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
                     return context->errorContext.report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
-                if (!(myAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
+                if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
                     return context->errorContext.report({identifier, identifier->token, format("cannot reference 'swag.test' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                if ((fctAttributes & ATTRIBUTE_PUBLIC) && (fctAttributes & ATTRIBUTE_INLINE) && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
+                    return identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public, because function '%s' is public and inline", overload->node->name.c_str(), ownerFct->name.c_str())});
             }
         }
 

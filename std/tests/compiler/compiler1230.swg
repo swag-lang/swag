@@ -1,4 +1,4 @@
-/*#module compiler1230
+#module compiler1230
 #unittest error
 
 func toto1()
@@ -9,4 +9,4 @@ func toto1()
 public func toto()
 {
 	toto1()
-}*/
+}

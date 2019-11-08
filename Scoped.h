@@ -82,9 +82,9 @@ struct ScopedFlags
 {
     ScopedFlags(SyntaxJob* job, uint64_t newFlags)
     {
-        savedJob          = job;
-        savedFlags        = job->currentFlags;
-        job->currentFlags = newFlags;
+        savedJob   = job;
+        savedFlags = job->currentFlags;
+        job->currentFlags |= newFlags;
     }
 
     ~ScopedFlags()
