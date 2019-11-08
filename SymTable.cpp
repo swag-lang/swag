@@ -94,7 +94,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
         SymbolOverload* result = nullptr;
 
         // A structure is defined the first time as incomplete (so that it can reference itself)
-        if (symbol->kind == SymbolKind::Struct)
+        if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Function)
         {
             for (auto resolved : symbol->overloads)
             {
@@ -106,7 +106,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
                 }
             }
         }
-
+		
         if (!result)
         {
             if (!checkHiddenSymbolNoLock(node, typeInfo, kind, symbol))

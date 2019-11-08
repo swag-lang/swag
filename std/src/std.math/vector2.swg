@@ -23,10 +23,13 @@ namespace std.math
 				self.x = value
 				self.y = value
 			}
-			
+			           
 			func length(using self) => sqrt((x * x) + (y * y))
-			func lengthSquared(using self) => (x * x) + (y * y)
+			func lengthSquared(using self) => (x * x) + (y * y)           
 			func dot(using self, other: Self) => (x * other.x) + (y * other.y)
+            
+            func isZero(using self) => x == 0 && y == 0
+            //func isZeroEpsilon(using self, eps: Float) => isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
             
             func makeNormalize(using self)
             {
