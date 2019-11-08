@@ -17,11 +17,15 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
 
     if (forGenerics)
     {
+		typeInfo->genericParameters.clear();
         typeInfo->genericParameters.reserve(parameters->childs.size());
         typeInfo->flags |= TYPEINFO_GENERIC;
     }
-    else
-        typeInfo->parameters.reserve(parameters->childs.size());
+	else
+	{
+		typeInfo->parameters.clear();
+		typeInfo->parameters.reserve(parameters->childs.size());
+	}
 
     auto sourceFile = context->sourceFile;
     for (auto param : parameters->childs)
@@ -362,8 +366,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
 bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags)
 {
-	if(!(symbolFlags & OVERLOAD_INCOMPLETE))
-		SWAG_CHECK(checkFuncPrototype(context, funcNode));
+    if (!(symbolFlags & OVERLOAD_INCOMPLETE))
+        SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
     if (funcNode->flags & AST_IS_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
@@ -372,7 +376,9 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     typeFunc->attributes             = move(funcNode->collectAttributes);
     funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
-    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode, SymbolKind::Function));
+
+    if (!(symbolFlags & OVERLOAD_INCOMPLETE))
+        SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode, SymbolKind::Function));
     return true;
 }
 
@@ -392,7 +398,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR);
     node->inheritOrFlag(child, AST_IS_GENERIC);
-    node->byteCodeFct            = &ByteCodeGenJob::emitFuncCallParam;
+    node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
     // test for concrete must be done
@@ -406,7 +412,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     if (context->result == SemanticResult::Pending)
         return true;
 
-	node->resolvedSymbolName     = child->resolvedSymbolName;
+    node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
     return true;
 }

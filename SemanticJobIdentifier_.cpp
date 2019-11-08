@@ -630,7 +630,6 @@ anotherTry:
             case MatchResult::BadSignature:
                 badSignature.push_back(overload);
                 break;
-                break;
 
             case MatchResult::TooManyGenericParameters:
             case MatchResult::NotEnoughGenericParameters:
@@ -953,23 +952,26 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         // Priority to concrete type, i.e. not generic
         auto lastOverload = symbol->ownerTable->scope->owner->typeInfo;
         auto newOverload  = p->ownerTable->scope->owner->typeInfo;
-		if (lastOverload && newOverload)
-		{
-			if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
-				continue;
-			if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
-			{
-				symbol = p;
-				continue;
-			}
-		}
+        if (lastOverload && newOverload)
+        {
+            if (!(lastOverload->flags & TYPEINFO_GENERIC) && (newOverload->flags & TYPEINFO_GENERIC))
+                continue;
+            if ((lastOverload->flags & TYPEINFO_GENERIC) && !(newOverload->flags & TYPEINFO_GENERIC))
+            {
+                symbol = p;
+                continue;
+            }
+        }
 
         // Error this is ambiguous
-        Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", symbol->name.c_str())};
-        Diagnostic note1{symbol->overloads[0]->node, symbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
-        Diagnostic note2{p->overloads[0]->node, p->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
-        context->errorContext.report(diag, &note1, &note2);
-        return false;
+        if (symbol->kind != p->kind || p->kind != SymbolKind::Function)
+        {
+            Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", symbol->name.c_str())};
+            Diagnostic note1{symbol->overloads[0]->node, symbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
+            Diagnostic note2{p->overloads[0]->node, p->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
+            context->errorContext.report(diag, &note1, &note2);
+            return false;
+        }
     }
 
     *result = symbol;
@@ -1359,11 +1361,15 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
             auto symbol = scope->symTable->find(node->name);
             if (!symbol)
                 continue;
+
             scoped_lock lock(symbol->mutex);
-            if (symbol->cptOverloads)
+            if (symbol->cptOverloadsInit != symbol->overloads.size())
             {
-                job->waitForSymbolNoLock(symbol);
-                return true;
+                if (symbol->cptOverloads)
+                {
+                    job->waitForSymbolNoLock(symbol);
+                    return true;
+                }
             }
         }
 
