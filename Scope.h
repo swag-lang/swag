@@ -48,6 +48,7 @@ struct Scope : public PoolElement
     void               addPublicStruct(AstNode* node);
     void               addPublicEnum(AstNode* node);
     void               addPublicConst(AstNode* node);
+	void               addPublicTypeAlias(AstNode* node);
     static string      makeFullName(const string& parentName, const string& name);
     static const char* getNakedName(ScopeKind kind);
     static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);
@@ -81,6 +82,7 @@ struct Scope : public PoolElement
     set<AstNode*> publicStruct;
     set<AstNode*> publicEnum;
     set<AstNode*> publicConst;
+	set<AstNode*> publicTypeAlias;
     bool          hasExports = false;
 };
 

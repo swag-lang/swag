@@ -233,6 +233,13 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
 
+	// Check public
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (node->ownerScope->isGlobal() || node->ownerScope->kind == ScopeKind::Struct)
+            node->ownerScope->addPublicTypeAlias(node);
+    }
+
     return true;
 }
 

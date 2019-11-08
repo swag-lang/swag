@@ -34,6 +34,7 @@ struct Backend
     bool emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node);
     bool emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node);
     bool emitPublicConstSwg(AstVarDecl* node);
+	bool emitPublicTypeAliasSwg(AstNode* node);
     bool emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitPublicSwg(Module* moduleToGen, Scope* scope);

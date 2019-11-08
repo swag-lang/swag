@@ -113,8 +113,8 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
         bufferSwg.addString("->");
         if (typeFunc->returnType->kind == TypeInfoKind::Struct)
         {
-			// Just to remove the "const"
-			auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeFunc->returnType, TypeInfoKind::Struct);			
+            // Just to remove the "const"
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeFunc->returnType, TypeInfoKind::Struct);
             bufferSwg.addString(typeStruct->structNode->name);
         }
         else
@@ -226,6 +226,17 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node)
     return true;
 }
 
+bool Backend::emitPublicTypeAliasSwg(AstNode* node)
+{
+    bufferSwg.addString("\ttypealias ");
+    bufferSwg.addString(node->name.c_str());
+    bufferSwg.addString(": ");
+    SWAG_CHECK(Ast::output(bufferSwg, node->childs.front()));
+
+    bufferSwg.addString("\n");
+    return true;
+}
+
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
     bufferSwg.addString("\tstruct");
@@ -306,13 +317,22 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
             bufferSwg.addString("{\n");
     }
 
-    // Enums
+    // Consts
     if (!scope->publicConst.empty())
     {
         for (auto one : scope->publicConst)
         {
             AstVarDecl* node = CastAst<AstVarDecl>(one, AstNodeKind::ConstDecl);
             SWAG_CHECK(emitPublicConstSwg(node));
+        }
+    }
+
+    // Typealias
+    if (!scope->publicTypeAlias.empty())
+    {
+        for (auto one : scope->publicTypeAlias)
+        {
+            SWAG_CHECK(emitPublicTypeAliasSwg(one));
         }
     }
 
@@ -392,12 +412,12 @@ bool Backend::preCompile()
 
     bufferSwg.addString(format("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 
-	for (auto depName : module->moduleDependenciesNames)
-	{
-		bufferSwg.addString(format("#import \"%s\"\n", depName.c_str()));
-	}
+    for (auto depName : module->moduleDependenciesNames)
+    {
+        bufferSwg.addString(format("#import \"%s\"\n", depName.c_str()));
+    }
 
-	// Emit everything that's public
+    // Emit everything that's public
     SWAG_CHECK(emitPublicSwg(module, module->scopeRoot));
 
     return bufferSwg.flush();
