@@ -9,11 +9,13 @@ namespace std.math
 	{
 		public 
 		{
-			const Zero:  Vector2(0, 0)
-			const One:   Vector2(1, 1)
-			const UnitX: Vector2(1, 0)
-			const UnitY: Vector2(0, 1)
-		}
+			const Zero:     Vector2(0, 0)
+			const One:      Vector2(1, 1)
+			const UnitX:    Vector2(1, 0)
+			const UnitY:    Vector2(0, 1)
+			const UnitNX:   Vector2(-1, 0)
+			const UnitNY:   Vector2(0, -1)		
+        }
 		
 		public
 		{
@@ -28,8 +30,17 @@ namespace std.math
 			func lengthSquared(using self) => (x * x) + (y * y)           
 			func dot(using self, other: Self) => (x * other.x) + (y * other.y)
             
-            func isZero(using self) => x == 0 && y == 0
+            func clear(using self)
+            {
+                x = 0
+                y = 0
+            }
             
+            func isZero(using self)->bool
+            {
+                return x == 0 && y == 0
+            }
+                 
             func isZeroEpsilon(using self, eps: Float = cast(Float) constF64.Epsilon)->bool
             {
                 return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)

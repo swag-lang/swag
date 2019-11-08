@@ -227,6 +227,11 @@ namespace Ast
             break;
         }
 
+		case AstNodeKind::SingleOp:
+			concat.addString(node->token.text);
+			SWAG_CHECK(output(concat, node->childs[0]));
+			break;
+
         case AstNodeKind::AffectOp:
             SWAG_CHECK(output(concat, node->childs[0]));
             concat.addString(" ");
