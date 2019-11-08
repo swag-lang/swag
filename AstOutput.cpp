@@ -154,6 +154,21 @@ namespace Ast
         case AstNodeKind::FuncCall:
         {
             AstIdentifier* identifier = static_cast<AstIdentifier*>(node);
+
+            // Be sure identifier is public
+            if (identifier->resolvedSymbolName)
+            {
+                if ((identifier->resolvedSymbolName->kind == SymbolKind::Function && identifier->resolvedSymbolName->name[0] != '@') ||
+                    identifier->resolvedSymbolName->kind == SymbolKind::TypeAlias)
+                {
+                    if (!(identifier->resolvedSymbolOverload->flags & OVERLOAD_PUBLIC) &&
+                        !(identifier->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
+                    {
+                        return identifier->sourceFile->report({identifier, format("identifier '%s' should be public", identifier->name.c_str())});
+                    }
+                }
+            }
+
             concat.addString(node->name);
             if (identifier->genericParameters)
             {
@@ -187,17 +202,17 @@ namespace Ast
             break;
 
         case AstNodeKind::FuncCallParam:
-		{
-			auto funcParam = CastAst<AstFuncCallParam>(node, AstNodeKind::FuncCallParam);
-			if (!funcParam->namedParam.empty())
-			{
-				concat.addString(funcParam->namedParam);
-				concat.addString(": ");
-			}
+        {
+            auto funcParam = CastAst<AstFuncCallParam>(node, AstNodeKind::FuncCallParam);
+            if (!funcParam->namedParam.empty())
+            {
+                concat.addString(funcParam->namedParam);
+                concat.addString(": ");
+            }
 
-			SWAG_CHECK(output(concat, funcParam->childs.front()));
-			break;
-		}
+            SWAG_CHECK(output(concat, funcParam->childs.front()));
+            break;
+        }
 
         case AstNodeKind::FuncCallParams:
         {

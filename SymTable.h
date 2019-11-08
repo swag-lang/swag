@@ -27,6 +27,7 @@ static const uint32_t OVERLOAD_VAR_STRUCT         = 0x00000040;
 static const uint32_t OVERLOAD_GENERIC            = 0x00000080;
 static const uint32_t OVERLOAD_INCOMPLETE         = 0x00000100;
 static const uint32_t OVERLOAD_VAR_INLINE         = 0x00000200;
+static const uint32_t OVERLOAD_PUBLIC             = 0x00000400;
 
 struct SymbolOverload : public PoolElement
 {

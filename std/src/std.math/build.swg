@@ -2,5 +2,5 @@
 
 namespace std.math
 {
-	public typealias Float: f32
+	 public typealias Float: f32
 }

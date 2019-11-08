@@ -73,6 +73,8 @@ SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile*    sourceFile,
                                             uint32_t       storageOffset)
 {
     scoped_lock lk(mutex);
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        flags |= OVERLOAD_PUBLIC;
     return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName, storageOffset);
 }
 
@@ -131,9 +133,9 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
             decreaseOverloadNoLock(symbol);
         }
 
-		// In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
-		// because an incomplete function doesn't yet know its return type, but we dont need it in order
-		// to make a match
+        // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
+        // because an incomplete function doesn't yet know its return type, but we dont need it in order
+        // to make a match
         else if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
         {
             for (auto job : symbol->dependentJobs.list)
