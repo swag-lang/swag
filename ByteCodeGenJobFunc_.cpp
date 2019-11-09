@@ -306,7 +306,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Be sure referenced function has bytecode
-    askForByteCode(context->job, funcNode);
+    askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
     if (context->result == ByteCodeResult::Pending)
         return true;
 

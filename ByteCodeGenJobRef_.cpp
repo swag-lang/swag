@@ -327,7 +327,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
     // Need to generate bytecode, if not already done or running
-    askForByteCode(context->job, funcNode);
+    askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
     if (context->result == ByteCodeResult::Pending)
         return true;
 

@@ -164,7 +164,7 @@ void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
         module->addByteCodeFunc(node->bc);
 }
 
-void ByteCodeGenJob::askForByteCode(Job* job, AstFuncDecl* funcNode)
+void ByteCodeGenJob::askForByteCode(Job* job, AstFuncDecl* funcNode, uint32_t flags)
 {
     if (!funcNode)
         return;
@@ -181,19 +181,29 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstFuncDecl* funcNode)
             return;
 
         // Need to wait for function full semantic resolve
-        if (!(funcNode->flags & AST_FULL_RESOLVE))
+        if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
         {
-            funcNode->dependentJobs.add(job);
-            job->setPending();
-            return;
+            if (!(funcNode->flags & AST_FULL_RESOLVE))
+            {
+                funcNode->dependentJobs.add(job);
+                job->setPending();
+                return;
+            }
         }
     }
 
     // Need to generate bytecode, if not already done or running
     if (!(funcNode->flags & AST_BYTECODE_GENERATED))
     {
-		if(job)
-			job->dependentNodes.push_back(funcNode);
+        if (job)
+        {
+            if (flags & ASKBC_ADD_DEP_NODE)
+                job->dependentNodes.push_back(funcNode);
+
+            if (flags & ASKBC_WAIT_DONE)
+                job->setPending();
+        }
+
         if (!funcNode->byteCodeJob)
         {
             funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();

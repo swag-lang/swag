@@ -33,6 +33,11 @@ struct ByteCodeGenContext
     SourceFile*     sourceFile = nullptr;
 };
 
+static const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
+static const uint32_t ASKBC_WAIT_DONE              = 0x00000002;
+static const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
+static const uint32_t ASKBC_ADD_DEP_NODE           = 0x00000008;
+
 struct ByteCodeGenJob : public Job
 {
     JobResult execute() override;
@@ -42,7 +47,7 @@ struct ByteCodeGenJob : public Job
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 setupBC(Module* module, AstNode* node);
-    static void                 askForByteCode(Job* job, AstFuncDecl* funcNode);
+    static void                 askForByteCode(Job* job, AstFuncDecl* funcNode, uint32_t flags);
     static void                 collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds);
     static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
 
