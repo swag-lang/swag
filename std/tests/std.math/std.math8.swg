@@ -8,4 +8,10 @@ using std.math
     z := x + y
     @assert(z.x == 2)
     @assert(z.y == 3)
+    
+    z *= 2
+    @assert(z.x == 4)
+    @assert(z.y == 6)
+    
+    z /= 2
 }

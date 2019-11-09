@@ -25,23 +25,47 @@ namespace std.math
 				self.x = value
 				self.y = value
 			}
-            
+
             func opEquals(using self, other: Self)->bool
             {
                 return x == other.x && y == other.y
             }
+
+            func(op: string) opAssign(using self, other: Self)
+            {
+                #if   op == "+="    { x += other.x; y += other.y; }
+                #elif op == "-="    { x -= other.x; y -= other.y; }
+                #elif op == "*="    { x *= other.x; y *= other.y; }
+                #else               #assert(false, "unsupported assign operation")
+            }
+            
+            func(op: string) opAssign(using self, value: Float)
+            {
+                #if   op == "+="    { x += value; y += value; }
+                #elif op == "-="    { x -= value; y -= value; }
+                #elif op == "*="    { x *= value; y *= value; }
+                #else               #assert(false, "unsupported assign operation")
+            }
             
             func(op: string) opBinary(using self, other: Self)->Self
             {
-                #if op == "+" 
-                    return Vector2(x + other.x, y + other.y)
-                #else
-                    #assert(false, "unsupported binary operation")
-            }            
+                #if   op == "+" return Vector2(x + other.x, y + other.y)
+                #elif op == "-" return Vector2(x - other.x, y - other.y)
+                #elif op == "*" return Vector2(x * other.x, y * other.y)
+                #else           #assert(false, "unsupported binary operation")
+            }
+
+            func(op: string) opBinary(using self, value: Float)->Self
+            {
+                #if   op == "+" return Vector2(x + value, y + value)
+                #elif op == "-" return Vector2(x - value, y - value)
+                #elif op == "*" return Vector2(x * value, y * value)                    
+                #else           #assert(false, "unsupported binary operation")
+            }
         }
 
 		public
-		{        
+		{
 			func length(using self) => sqrt((x * x) + (y * y))
 			func lengthSquared(using self) => (x * x) + (y * y)
 			func dot(using self, other: Self) => (x * other.x) + (y * other.y)
@@ -51,12 +75,12 @@ namespace std.math
                 x = 0
                 y = 0
             }
-            
+
             func negate(using self)
             {
                 x = -x
                 y = -y
-            }            
+            }
 
             func isZero(using self)->bool
             {
@@ -108,7 +132,7 @@ namespace std.math
                     y = 0
                     return
                 }
-                
+
                 norm = 1 / norm
                 x *= norm
                 y *= norm
