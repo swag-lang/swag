@@ -67,9 +67,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
         if (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, "invalid #assert message"}));
-            node->name = token.text;
-            SWAG_CHECK(eatToken());
+			SWAG_CHECK(doExpression(node));
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightParen));

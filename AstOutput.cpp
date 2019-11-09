@@ -256,11 +256,10 @@ namespace Ast
         case AstNodeKind::CompilerAssert:
             concat.addString("#assert(");
             SWAG_CHECK(output(concat, node->childs[0]));
-            if (!node->name.empty())
+            if (node->childs.size() > 1)
             {
-                concat.addString(", \"");
-                concat.addString(node->name);
-                concat.addString("\"");
+                concat.addString(", ");
+                SWAG_CHECK(output(concat, node->childs[1]));
             }
 
             concat.addString(")");

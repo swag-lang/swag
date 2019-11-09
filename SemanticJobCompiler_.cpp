@@ -43,6 +43,13 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     auto node = context->node;
     auto expr = node->childs[0];
 
+    if (node->childs.size() > 1)
+    {
+        auto msg = node->childs[1];
+        SWAG_VERIFY(msg->typeInfo->isNative(NativeTypeKind::String), context->errorContext.report({msg, "message expression is not a string"}));
+        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->errorContext.report({msg, "message expression cannot be evaluated at compile time"}));
+    }
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(executeNode(context, expr, true));
     if (context->result == SemanticResult::Pending)
@@ -50,8 +57,11 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 
     if (!expr->computedValue.reg.b)
     {
-        if (!node->name.empty())
-            context->errorContext.report({expr, format("compiler assertion failed: %s", node->name.c_str())});
+		if (node->childs.size() > 1)
+		{
+			auto msg = node->childs[1];
+			context->errorContext.report({ expr, format("compiler assertion failed: %s", msg->computedValue.text.c_str()) });
+		}
         else
             context->errorContext.report({expr, "compiler assertion failed"});
         return false;
