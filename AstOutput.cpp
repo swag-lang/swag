@@ -252,7 +252,7 @@ namespace Ast
             break;
 
         case AstNodeKind::Cast:
-            concat.addString("cast(");
+            concat.addString("cast(");			
             SWAG_CHECK(output(concat, node->childs[0]));
             concat.addString(") ");
             SWAG_CHECK(output(concat, node->childs[1]));

@@ -384,14 +384,15 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     // Return
     if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
-        if (typeFunc->returnType->kind == TypeInfoKind::Slice)
+        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS);
+        if (returnType->kind == TypeInfoKind::Slice)
         {
             bufferC.addString("\t*((void **) result) = rr0.pointer;\n");
             bufferC.addString("\t*((void **) result + 1) = rr1.pointer;\n");
         }
-        else if (typeFunc->returnType->kind == TypeInfoKind::Native)
+        else if (returnType->kind == TypeInfoKind::Native)
         {
-            switch (typeFunc->returnType->nativeType)
+            switch (returnType->nativeType)
             {
             case NativeTypeKind::U8:
                 bufferC.addString("\treturn rr0.u8;\n");

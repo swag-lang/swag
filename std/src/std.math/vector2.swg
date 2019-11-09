@@ -46,6 +46,20 @@ namespace std.math
                 return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
             }
                
+            func distance(using self, to: Self)->Float
+            {
+                xn := (x - to.x)
+                yn := (y - to.y)
+                return sqrt((xn * xn) + (yn * yn))
+            }
+            
+            func distanceSquared(using self, to: Self)->Float
+            {
+                xn := (x - to.x)
+                yn := (y - to.y)
+                return (xn * xn) + (yn * yn)
+            }            
+            
             func makeNormalize(using self)
             {
                 norm := sqrt((x * x) + (y * y))
