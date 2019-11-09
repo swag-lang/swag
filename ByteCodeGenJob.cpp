@@ -279,11 +279,7 @@ JobResult ByteCodeGenJob::execute()
         }
         else
         {
-            if (!context.bc)
-            {
-                setupBC(sourceFile->module, originalNode);
-                context.bc = originalNode->bc;
-            }
+			SWAG_ASSERT(context.bc);
 
             // Register some default swag functions
             if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)
