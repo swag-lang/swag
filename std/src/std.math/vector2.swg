@@ -30,6 +30,14 @@ namespace std.math
             {
                 return x == other.x && y == other.y
             }
+            
+            func(op: string) opBinary(using self, other: Self)->Self
+            {
+                #if op == "+" 
+                    return Vector2(x + other.x, y + other.y)
+                #else
+                    #assert(false, "unsupported binary operation")
+            }            
         }
 
 		public

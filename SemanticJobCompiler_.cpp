@@ -20,9 +20,9 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     }
 
     {
-		ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
-		if (context->result == SemanticResult::Pending)
-			return true;
+        ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+        if (context->result == SemanticResult::Pending)
+            return true;
     }
 
     SWAG_CHECK(sourceFile->module->executeNode(sourceFile, node));
@@ -33,8 +33,8 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
     auto expression = context->node->childs.front();
     SWAG_CHECK(executeNode(context, expression, false));
-	context->node->inheritComputedValue(expression);
-	context->node->typeInfo = expression->typeInfo;
+    context->node->inheritComputedValue(expression);
+    context->node->typeInfo = expression->typeInfo;
     return true;
 }
 
@@ -143,6 +143,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
     SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->errorContext.report({node->boolExpression, "expression cannot be evaluated at compile time"}));
 
+    node->flags |= AST_COMPILER_IF_DONE;
     node->boolExpression->flags |= AST_NO_BYTECODE;
     AstNode* validatedNode = nullptr;
     if (node->boolExpression->computedValue.reg.b)

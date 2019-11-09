@@ -64,28 +64,47 @@ namespace Ast
 
         switch (node->kind)
         {
-        case AstNodeKind::CompilerIf:
-        {
-            auto compilerIf = CastAst<AstIf>(node, AstNodeKind::CompilerIf);
-            if (compilerIf->ifBlock->flags & AST_DISABLED)
-                SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
-            else
-                SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
-            break;
-        }
         case AstNodeKind::CompilerIfBlock:
             SWAG_CHECK(output(concat, node->childs.front(), indent));
             break;
 
+        case AstNodeKind::CompilerIf:
+        {
+            auto compilerIf = CastAst<AstIf>(node, AstNodeKind::CompilerIf);
+            if (compilerIf->flags & AST_COMPILER_IF_DONE)
+            {
+                if (compilerIf->ifBlock->flags & AST_DISABLED)
+                    SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
+                else
+                    SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
+            }
+            else
+            {
+                concat.addString("#if ");
+                SWAG_CHECK(output(concat, compilerIf->boolExpression, indent));
+                concat.addEolIndent(indent);
+                SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
+                if (compilerIf->elseBlock)
+                {
+					concat.addEolIndent(indent);
+                    concat.addString("#else");
+                    concat.addEolIndent(indent);
+                    SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
+                }
+            }
+            break;
+        }
+
         case AstNodeKind::If:
         {
-            auto compilerIf = CastAst<AstIf>(node, AstNodeKind::If);
+            auto compilerIf = CastAst<AstIf>(node, AstNodeKind::If, AstNodeKind::CompilerIf);
             concat.addString("if ");
             SWAG_CHECK(output(concat, compilerIf->boolExpression, indent));
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
             if (compilerIf->elseBlock)
             {
+				concat.addEolIndent(indent);
                 concat.addString("else");
                 concat.addEolIndent(indent);
                 SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
@@ -227,10 +246,10 @@ namespace Ast
             break;
         }
 
-		case AstNodeKind::SingleOp:
-			concat.addString(node->token.text);
-			SWAG_CHECK(output(concat, node->childs[0]));
-			break;
+        case AstNodeKind::SingleOp:
+            concat.addString(node->token.text);
+            SWAG_CHECK(output(concat, node->childs[0]));
+            break;
 
         case AstNodeKind::AffectOp:
             SWAG_CHECK(output(concat, node->childs[0]));
@@ -252,7 +271,7 @@ namespace Ast
             break;
 
         case AstNodeKind::Cast:
-            concat.addString("cast(");			
+            concat.addString("cast(");
             SWAG_CHECK(output(concat, node->childs[0]));
             concat.addString(") ");
             SWAG_CHECK(output(concat, node->childs[1]));
@@ -271,6 +290,19 @@ namespace Ast
                 concat.addString(node->token.literalType->name);
             break;
         }
+
+        case AstNodeKind::CompilerAssert:
+            concat.addString("#assert(");
+            SWAG_CHECK(output(concat, node->childs[0]));
+            if (!node->name.empty())
+            {
+                concat.addString(", \"");
+                concat.addString(node->name);
+                concat.addString("\"");
+            }
+
+            concat.addString(")");
+            break;
 
         case AstNodeKind::Literal:
             SWAG_CHECK(outputLiteral(concat, node, node->token.literalType, node->token.text, node->token.literalValue));
