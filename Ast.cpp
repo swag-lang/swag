@@ -9,13 +9,10 @@
 
 namespace Ast
 {
-    Utf8 literalToString(AstNode* node)
+    Utf8 literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
     {
-        SWAG_ASSERT(node->flags & AST_VALUE_COMPUTED);
-        SWAG_ASSERT(node->typeInfo->kind == TypeInfoKind::Native);
-
-        auto& reg = node->computedValue.reg;
-        switch (node->typeInfo->nativeType)
+        SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Native);
+        switch (typeInfo->nativeType)
         {
         case NativeTypeKind::U8:
             return format("%u", reg.u8);
@@ -47,7 +44,7 @@ namespace Ast
             return reg.b ? "true" : "false";
             break;
         case NativeTypeKind::String:
-            return node->computedValue.text;
+            return text;
         default:
             SWAG_ASSERT(false);
             return "";

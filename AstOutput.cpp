@@ -11,49 +11,11 @@ namespace Ast
 {
     bool outputLiteral(Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg)
     {
-        switch (typeInfo->nativeType)
-        {
-        case NativeTypeKind::U8:
-            concat.addString(format("%u", reg.u8));
-            break;
-        case NativeTypeKind::U16:
-            concat.addString(format("%u", reg.u16));
-            break;
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Char:
-            concat.addString(format("%u", reg.u32));
-            break;
-        case NativeTypeKind::U64:
-            concat.addString(format("%llu", reg.u64));
-            break;
-        case NativeTypeKind::S8:
-            concat.addString(format("%d", reg.s8));
-            break;
-        case NativeTypeKind::S16:
-            concat.addString(format("%d", reg.s16));
-            break;
-        case NativeTypeKind::S32:
-            concat.addString(format("%d", reg.s32));
-            break;
-        case NativeTypeKind::S64:
-            concat.addString(format("%lld", reg.s64));
-            break;
-        case NativeTypeKind::F32:
-            concat.addString(toStringF64(reg.f32));
-            break;
-        case NativeTypeKind::F64:
-            concat.addString(toStringF64(reg.f64));
-            break;
-        case NativeTypeKind::Bool:
-            concat.addString(reg.b ? "true" : "false");
-            break;
-        case NativeTypeKind::String:
-            concat.addString("\"" + text + "\"");
-            break;
-        default:
-            return node->sourceFile->report({node, node->token, "Ast::outputLiteral, unknown type"});
-        }
-
+        auto str = literalToString(typeInfo, text, reg);
+        if (typeInfo->isNative(NativeTypeKind::String))
+            concat.addString("\"" + str + "\"");
+        else
+            concat.addString(str);
         return true;
     }
 
@@ -86,7 +48,7 @@ namespace Ast
                 SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
                 if (compilerIf->elseBlock)
                 {
-					concat.addEolIndent(indent);
+                    concat.addEolIndent(indent);
                     concat.addString("#else");
                     concat.addEolIndent(indent);
                     SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
@@ -104,7 +66,7 @@ namespace Ast
             SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
             if (compilerIf->elseBlock)
             {
-				concat.addEolIndent(indent);
+                concat.addEolIndent(indent);
                 concat.addString("else");
                 concat.addEolIndent(indent);
                 SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
