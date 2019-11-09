@@ -280,7 +280,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::BoundCheck, node->access->resultRegisterRC, r0);
         }
 
-        auto rawType = ((TypeInfoVariadic*)typeArray)->rawType;
+        auto rawType = ((TypeInfoVariadic*) typeArray)->rawType;
 
         // Offset from variadic named parameter to the first parameter on the stack
         emitInstruction(context, ByteCodeOp::CopyRARB, r0, node->array->resultRegisterRC);
@@ -322,37 +322,14 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 {
-    auto node       = context->node;
-    auto sourceFile = context->sourceFile;
-    auto front      = node->childs.front();
-    auto funcNode   = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+    auto node     = context->node;
+    auto front    = node->childs.front();
+    auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
     // Need to generate bytecode, if not already done or running
-    {
-        scoped_lock lk(funcNode->mutex);
-
-        // Need to wait for function full semantic resolve
-        if (!(funcNode->flags & AST_FULL_RESOLVE))
-        {
-            funcNode->dependentJobs.add(context->job);
-            context->job->setPending();
-            return true;
-        }
-
-        if (!(funcNode->flags & AST_BYTECODE_GENERATED))
-        {
-            context->job->dependentNodes.push_back(funcNode);
-            if (!funcNode->byteCodeJob)
-            {
-                funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-                funcNode->byteCodeJob->sourceFile   = sourceFile;
-                funcNode->byteCodeJob->originalNode = funcNode;
-                funcNode->byteCodeJob->nodes.push_back(funcNode);
-                setupBC(sourceFile->module, funcNode);
-                g_ThreadMgr.addJob(funcNode->byteCodeJob);
-            }
-        }
-    }
+    askForByteCode(context->job, funcNode);
+    if (context->result == ByteCodeResult::Pending)
+        return true;
 
     freeRegisterRC(context, front);
     node->resultRegisterRC = reserveRegisterRC(context);
