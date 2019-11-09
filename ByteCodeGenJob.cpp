@@ -164,28 +164,36 @@ void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
         module->addByteCodeFunc(node->bc);
 }
 
-void ByteCodeGenJob::askForByteCode(Job* job, AstFuncDecl* funcNode, uint32_t flags)
+void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
 {
-    if (!funcNode)
-        return;
-    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+    if (!node)
         return;
 
-    auto        sourceFile = funcNode->sourceFile;
-    scoped_lock lk(funcNode->mutex);
+    auto         sourceFile = node->sourceFile;
 
+	// This is a full function
+    AstFuncDecl* funcDecl   = nullptr;
+    if (node->kind == AstNodeKind::FuncDecl)
+    {
+        funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+            return;
+    }
+
+    scoped_lock lk(node->mutex);
     if (job)
     {
         // If true, then this is a simple recursive call
-        if (funcNode->byteCodeJob == job)
+        if (node->byteCodeJob == job)
             return;
 
         // Need to wait for function full semantic resolve
         if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
         {
-            if (!(funcNode->flags & AST_FULL_RESOLVE))
+            if (!(node->flags & AST_FULL_RESOLVE))
             {
-                funcNode->dependentJobs.add(job);
+                SWAG_ASSERT(funcDecl);
+                funcDecl->dependentJobs.add(job);
                 job->setPending();
                 return;
             }
@@ -193,25 +201,25 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstFuncDecl* funcNode, uint32_t fl
     }
 
     // Need to generate bytecode, if not already done or running
-    if (!(funcNode->flags & AST_BYTECODE_GENERATED))
+    if (!(node->flags & AST_BYTECODE_GENERATED))
     {
         if (job)
         {
             if (flags & ASKBC_ADD_DEP_NODE)
-                job->dependentNodes.push_back(funcNode);
+                job->dependentNodes.push_back(node);
 
             if (flags & ASKBC_WAIT_DONE)
                 job->setPending();
         }
 
-        if (!funcNode->byteCodeJob)
+        if (!node->byteCodeJob)
         {
-            funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-            funcNode->byteCodeJob->sourceFile   = sourceFile;
-            funcNode->byteCodeJob->originalNode = funcNode;
-            funcNode->byteCodeJob->nodes.push_back(funcNode);
-            setupBC(sourceFile->module, funcNode);
-            g_ThreadMgr.addJob(funcNode->byteCodeJob);
+            node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+            node->byteCodeJob->sourceFile   = sourceFile;
+            node->byteCodeJob->originalNode = node;
+            node->byteCodeJob->nodes.push_back(node);
+            setupBC(sourceFile->module, node);
+            g_ThreadMgr.addJob(node->byteCodeJob);
         }
     }
 }
