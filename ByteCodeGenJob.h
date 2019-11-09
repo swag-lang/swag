@@ -178,8 +178,6 @@ struct ByteCodeGenJob : public Job
         Job::reset();
         originalNode = nullptr;
         nodes.clear();
-        dependentJobs.clear();
-        dependentNodes.clear();
         collectChilds.clear();
         collectScopes.clear();
         syncToDependentNodes = false;

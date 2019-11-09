@@ -22,8 +22,9 @@ struct Job : public PoolElement
     void reset() override
     {
         flags        = 0;
-        pendingIndex = -1;
         thread       = nullptr;
+        pendingIndex = -1;
+        dependentJobs.clear();
         dependentNodes.clear();
     }
 

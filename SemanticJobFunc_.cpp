@@ -224,22 +224,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     }
 
-    if (genByteCode)
-    {
-        scoped_lock lk(node->mutex);
-        if (!(node->flags & AST_BYTECODE_GENERATED))
-        {
-            if (!node->byteCodeJob)
-            {
-                node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-                node->byteCodeJob->sourceFile   = sourceFile;
-                node->byteCodeJob->originalNode = node;
-                node->byteCodeJob->nodes.push_back(node);
-                ByteCodeGenJob::setupBC(context->sourceFile->module, node);
-                g_ThreadMgr.addJob(node->byteCodeJob);
-            }
-        }
-    }
+	if (genByteCode)
+		ByteCodeGenJob::askForByteCode(nullptr, node);
 
     return true;
 }
