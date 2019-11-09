@@ -13,5 +13,5 @@ using std.math
     @assert(z.x == 4)
     @assert(z.y == 6)
     
-    z /= 2
+    //z /= 2
 }

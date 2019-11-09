@@ -64,7 +64,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstNode** result)
                     Ast::addChildBack(param, paramExpression);
                 }
 
-                if (token.id != TokenId::SymComma)
+                if (token.id == TokenId::SymRightParen)
                     break;
                 SWAG_CHECK(eatToken(TokenId::SymComma));
             }
