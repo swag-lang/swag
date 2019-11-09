@@ -39,7 +39,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opUserDropFct)
     {
         needDrop = true;
-        askForByteCode(context, (AstFuncDecl*) typeInfoStruct->opUserDropFct);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct);
         if (context->result == ByteCodeResult::Pending)
             return true;
     }
@@ -147,7 +147,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostMoveFct)
     {
         needPostMove = true;
-        askForByteCode(context, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct);
         if (context->result == ByteCodeResult::Pending)
             return true;
     }
@@ -253,7 +253,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostCopyFct)
     {
         needPostCopy = true;
-        askForByteCode(context, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct);
         if (context->result == ByteCodeResult::Pending)
             return true;
     }

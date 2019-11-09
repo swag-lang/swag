@@ -36,13 +36,13 @@ struct ByteCodeGenContext
 struct ByteCodeGenJob : public Job
 {
     JobResult execute() override;
-    void      setPending();
+    void      setPending() override;
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 setupBC(Module* module, AstNode* node);
-    static void                 askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode);
+    static void                 askForByteCode(Job* job, AstFuncDecl* funcNode);
     static void                 collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds);
     static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
 
@@ -144,7 +144,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCountOfProperty(ByteCodeGenContext* context);
     static bool emitDataOfProperty(ByteCodeGenContext* context);
     static bool emitKindOfProperty(ByteCodeGenContext* context);
-	static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
+    static bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr);
     static bool emitDeferredStatements(ByteCodeGenContext* context);
     static bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope);
@@ -189,8 +189,6 @@ struct ByteCodeGenJob : public Job
     SourceFile*        sourceFile;
     AstNode*           originalNode;
     vector<AstNode*>   nodes;
-    DependentJobs      dependentJobs;
-    vector<AstNode*>   dependentNodes;
     vector<AstNode*>   collectChilds;
     vector<Scope*>     collectScopes;
     bool               syncToDependentNodes;

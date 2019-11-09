@@ -3,6 +3,7 @@
 #include "SpinLock.h"
 #include "DependentJobs.h"
 struct JobThread;
+struct AstNode;
 
 enum class JobResult
 {
@@ -23,14 +24,20 @@ struct Job : public PoolElement
         flags        = 0;
         pendingIndex = -1;
         thread       = nullptr;
+        dependentNodes.clear();
     }
 
     void addDependentJob(Job* job);
     void doneJob();
 
-    SpinLock      executeMutex;
-    uint32_t      flags;
-    JobThread*    thread;
-    int           pendingIndex;
-    DependentJobs dependentJobs;
+    virtual void setPending()
+    {
+    }
+
+    SpinLock         executeMutex;
+    uint32_t         flags;
+    JobThread*       thread;
+    int              pendingIndex;
+    DependentJobs    dependentJobs;
+    vector<AstNode*> dependentNodes;
 };

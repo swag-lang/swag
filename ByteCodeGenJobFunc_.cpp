@@ -246,42 +246,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
     return emitCall(context, allParams, funcNode, nullptr, false);
 }
 
-void ByteCodeGenJob::askForByteCode(ByteCodeGenContext* context, AstFuncDecl* funcNode)
-{
-    if (!funcNode)
-        return;
-    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-        return;
-
-    auto        sourceFile = context->sourceFile;
-    scoped_lock lk(funcNode->mutex);
-    if (funcNode->byteCodeJob != context->job) // If true, then this is a simple recursive call
-    {
-        // Need to wait for function full semantic resolve
-        if (!(funcNode->flags & AST_FULL_RESOLVE))
-        {
-            funcNode->dependentJobs.add(context->job);
-            context->job->setPending();
-            return;
-        }
-
-        // Need to generate bytecode, if not already done or running
-        if (!(funcNode->flags & AST_BYTECODE_GENERATED))
-        {
-            context->job->dependentNodes.push_back(funcNode);
-            if (!funcNode->byteCodeJob)
-            {
-                funcNode->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-                funcNode->byteCodeJob->sourceFile   = sourceFile;
-                funcNode->byteCodeJob->originalNode = funcNode;
-                funcNode->byteCodeJob->nodes.push_back(funcNode);
-                setupBC(sourceFile->module, funcNode);
-                g_ThreadMgr.addJob(funcNode->byteCodeJob);
-            }
-        }
-    }
-}
-
 bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList)
 {
     auto node         = context->node;
@@ -342,7 +306,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Be sure referenced function has bytecode
-    askForByteCode(context, funcNode);
+    askForByteCode(context->job, funcNode);
     if (context->result == ByteCodeResult::Pending)
         return true;
 

@@ -98,7 +98,7 @@ struct SemanticJob : public Job
     static void disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
 
     void waitForSymbolNoLock(SymbolName* symbol);
-    void setPending();
+    void setPending() override;
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
