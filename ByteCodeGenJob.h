@@ -47,7 +47,7 @@ struct ByteCodeGenJob : public Job
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);
     static void                 inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     static void                 setupBC(Module* module, AstNode* node);
-    static void                 askForByteCode(Job* job, AstNode* funcNode, uint32_t flags);
+    static void                 askForByteCode(Job* job, AstNode* node, uint32_t flags);
     static void                 collectLiteralsChilds(AstNode* node, vector<AstNode*>* orderedChilds);
     static bool                 emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
 

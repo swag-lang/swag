@@ -20,32 +20,9 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     }
 
     {
-        auto job = context->job;
-        // Need to generate bytecode, if not already done or running
-        scoped_lock lk(node->mutex);
-        if (!(node->flags & AST_BYTECODE_GENERATED))
-        {
-            if (!node->byteCodeJob)
-            {
-                node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-                node->byteCodeJob->sourceFile   = sourceFile;
-                node->byteCodeJob->originalNode = node;
-                node->byteCodeJob->nodes.push_back(node);
-                node->byteCodeJob->dependentJobs.add(context->job);
-                ByteCodeGenJob::setupBC(sourceFile->module, node);
-                g_ThreadMgr.addJob(node->byteCodeJob);
-            }
-
-            job->setPending();
-            return true;
-        }
-
-        if (!(node->flags & AST_BYTECODE_RESOLVED))
-        {
-            node->byteCodeJob->dependentJobs.add(job);
-            job->setPending();
-            return true;
-        }
+		ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+		if (context->result == SemanticResult::Pending)
+			return true;
     }
 
     SWAG_CHECK(sourceFile->module->executeNode(sourceFile, node));

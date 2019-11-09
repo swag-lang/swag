@@ -169,10 +169,10 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     if (!node)
         return;
 
-    auto         sourceFile = node->sourceFile;
+    auto sourceFile = node->sourceFile;
 
-	// This is a full function
-    AstFuncDecl* funcDecl   = nullptr;
+    // This is a full function
+    AstFuncDecl* funcDecl = nullptr;
     if (node->kind == AstNodeKind::FuncDecl)
     {
         funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
@@ -203,13 +203,16 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     // Need to generate bytecode, if not already done or running
     if (!(node->flags & AST_BYTECODE_GENERATED))
     {
-        if (job)
+        if (flags & ASKBC_ADD_DEP_NODE)
         {
-            if (flags & ASKBC_ADD_DEP_NODE)
-                job->dependentNodes.push_back(node);
+            SWAG_ASSERT(job);
+            job->dependentNodes.push_back(node);
+        }
 
-            if (flags & ASKBC_WAIT_DONE)
-                job->setPending();
+        if (flags & ASKBC_WAIT_DONE)
+        {
+			SWAG_ASSERT(job);
+            job->setPending();
         }
 
         if (!node->byteCodeJob)
@@ -218,8 +221,27 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             node->byteCodeJob->sourceFile   = sourceFile;
             node->byteCodeJob->originalNode = node;
             node->byteCodeJob->nodes.push_back(node);
+            if (flags & ASKBC_WAIT_DONE)
+            {
+                SWAG_ASSERT(job);
+                node->byteCodeJob->dependentJobs.add(job);
+            }
+
             setupBC(sourceFile->module, node);
             g_ThreadMgr.addJob(node->byteCodeJob);
+        }
+
+		return;
+    }
+
+    if (flags & ASKBC_WAIT_RESOLVED)
+    {
+        SWAG_ASSERT(job);
+        if (!(node->flags & AST_BYTECODE_RESOLVED))
+        {
+            node->byteCodeJob->dependentJobs.add(job);
+            job->setPending();
+            return;
         }
     }
 }
