@@ -9,6 +9,51 @@
 
 namespace Ast
 {
+    Utf8 literalToString(AstNode* node)
+    {
+        SWAG_ASSERT(node->flags & AST_VALUE_COMPUTED);
+        SWAG_ASSERT(node->typeInfo->kind == TypeInfoKind::Native);
+
+        auto& reg = node->computedValue.reg;
+        switch (node->typeInfo->nativeType)
+        {
+        case NativeTypeKind::U8:
+            return format("%u", reg.u8);
+        case NativeTypeKind::U16:
+            return format("%u", reg.u16);
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Char:
+            return format("%u", reg.u32);
+        case NativeTypeKind::U64:
+            return format("%llu", reg.u64);
+        case NativeTypeKind::S8:
+            return format("%d", reg.s8);
+        case NativeTypeKind::S16:
+            return format("%d", reg.s16);
+            break;
+        case NativeTypeKind::S32:
+            return format("%d", reg.s32);
+            break;
+        case NativeTypeKind::S64:
+            return format("%lld", reg.s64);
+            break;
+        case NativeTypeKind::F32:
+            return toStringF64(reg.f32);
+            break;
+        case NativeTypeKind::F64:
+            return toStringF64(reg.f64);
+            break;
+        case NativeTypeKind::Bool:
+            return reg.b ? "true" : "false";
+            break;
+        case NativeTypeKind::String:
+            return node->computedValue.text;
+        default:
+            SWAG_ASSERT(false);
+            return "";
+        }
+    }
+
     int findChildIndex(AstNode* parent, AstNode* child)
     {
         for (int i = 0; i < parent->childs.size(); i++)
@@ -192,8 +237,8 @@ namespace Ast
     {
         AstVarDecl* node = Ast::newNode(syntaxJob, &g_Pool_astVarDecl, kind, sourceFile, parent);
 
-		// We need to evaluate assignment first, then type, in ordre to be able to generate the type depending on the
-		// assignment if necessary
+        // We need to evaluate assignment first, then type, in ordre to be able to generate the type depending on the
+        // assignment if necessary
         node->flags |= AST_REVERSE_SEMANTIC;
 
         node->name        = name;

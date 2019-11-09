@@ -2,6 +2,8 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
+#include "Concat.h"
+#include "Ast.h"
 
 bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
@@ -711,6 +713,19 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     return true;
 }
 
+bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode* right)
+{
+    auto node = context->node;
+    SWAG_VERIFY(left->flags & AST_VALUE_COMPUTED, context->errorContext.report({left, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(right->flags & AST_VALUE_COMPUTED, context->errorContext.report({right, "expression cannot be evaluated at compile time"}));
+    left->computedValue.text  = Ast::literalToString(left);
+    right->computedValue.text = Ast::literalToString(right);
+    node->computedValue.text  = left->computedValue.text + right->computedValue.text;
+    node->typeInfo            = g_TypeMgr.typeInfoString;
+    node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
+    return true;
+}
+
 bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
@@ -863,6 +878,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
         node->typeInfo = isEnumFlags ? left->typeInfo : TypeManager::concreteType(left->typeInfo);
         SWAG_CHECK(resolveXor(context, left, right));
+        break;
+    case TokenId::SymTilde:
+        SWAG_CHECK(resolveTilde(context, left, right));
         break;
     default:
         return internalError(context, "resolveFactorExpression, token not supported");

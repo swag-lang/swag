@@ -242,6 +242,7 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
         (token.id == TokenId::SymGreaterGreater) ||
         (token.id == TokenId::SymLowerLower) ||
         (token.id == TokenId::SymPercent) ||
+		(token.id == TokenId::SymTilde) ||
         (token.id == TokenId::SymCircumflex))
     {
         if (parent && parent->kind == AstNodeKind::FactorOp && parent->token.id != token.id)

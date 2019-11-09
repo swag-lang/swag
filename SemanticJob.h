@@ -161,6 +161,7 @@ struct SemanticJob : public Job
     static bool resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveXor(SemanticContext* context, AstNode* left, AstNode* right);
+	static bool resolveTilde(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
     static bool resolveExplicitCast(SemanticContext* context);
     static bool resolveExplicitAutoCast(SemanticContext* context);
