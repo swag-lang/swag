@@ -25,16 +25,30 @@ namespace std.math
 				self.x = value
 				self.y = value
 			}
+            
+            func opEquals(using self, other: Self)->bool
+            {
+                return x == other.x && y == other.y
+            }
+        }
 
+		public
+		{        
 			func length(using self) => sqrt((x * x) + (y * y))
 			func lengthSquared(using self) => (x * x) + (y * y)
 			func dot(using self, other: Self) => (x * other.x) + (y * other.y)
 
-            func zero(using self)
+            func clear(using self)
             {
                 x = 0
                 y = 0
             }
+            
+            func negate(using self)
+            {
+                x = -x
+                y = -y
+            }            
 
             func isZero(using self)->bool
             {
