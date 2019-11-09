@@ -165,6 +165,11 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             ffiArgsValues[i] = &sp->pointer;
             sp += 2;
         }
+        else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
+        {
+            ffiArgsValues[i] = &sp->pointer;
+			sp++;
+        }
         else
         {
             switch (typeParam->sizeOf)

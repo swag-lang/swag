@@ -60,7 +60,7 @@ namespace std.math
                 return (xn * xn) + (yn * yn)
             }
 
-            func normalizeInPlace(using self)
+            func normalize(using self)
             {
                 norm := sqrt((x * x) + (y * y))
                 diagnostics.debug.assert(!isZeroEpsilon(norm))
@@ -77,7 +77,7 @@ namespace std.math
                 return Vector2(x * norm, y * norm)
             }
 
-            func normalizeInPlaceSafe(using self)
+            func normalizeSafe(using self)
             {
                 norm := sqrt((x * x) + (y * y))
                 if isZeroEpsilon(norm)
