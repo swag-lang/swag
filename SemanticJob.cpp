@@ -2,6 +2,8 @@
 #include "SemanticJob.h"
 #include "SymTable.h"
 #include "ThreadManager.h"
+#include "Ast.h"
+#include "AstNode.h"
 
 Pool<SemanticJob> g_Pool_semanticJob;
 
@@ -84,6 +86,7 @@ JobResult SemanticJob::execute()
     g_diagnosticInfos.sourceFile = sourceFile;
 #endif
 
+    auto firstNode                  = nodes.back();
     context.job                     = this;
     context.sourceFile              = sourceFile;
     context.errorContext.sourceFile = sourceFile;
@@ -100,6 +103,34 @@ JobResult SemanticJob::execute()
         switch (node->semanticState)
         {
         case AstNodeResolveState::Enter:
+            if (firstNode->kind == AstNodeKind::Impl)
+            {
+                switch (node->kind)
+                {
+                case AstNodeKind::VarDecl:
+                case AstNodeKind::LetDecl:
+                case AstNodeKind::ConstDecl:
+                case AstNodeKind::TypeAlias:
+                case AstNodeKind::EnumDecl:
+                case AstNodeKind::StructDecl:
+                case AstNodeKind::FuncDecl:
+                case AstNodeKind::CompilerAssert:
+                case AstNodeKind::CompilerPrint:
+                case AstNodeKind::CompilerRun:
+                case AstNodeKind::AttrDecl:
+                case AstNodeKind::CompilerIf:
+                {
+                    auto job        = g_Pool_semanticJob.alloc();
+                    job->sourceFile = sourceFile;
+                    job->nodes.push_back(node);
+                    nodes.pop_back();
+                    g_ThreadMgr.addJob(job);
+                    continue;
+                }
+                break;
+                }
+            }
+
             node->semanticState = AstNodeResolveState::ProcessingChilds;
             context.result      = SemanticResult::Done;
 
@@ -140,9 +171,8 @@ JobResult SemanticJob::execute()
                         nodes.push_back(child);
                     }
                 }
-
-                break;
             }
+            break;
 
         case AstNodeResolveState::ProcessingChilds:
             if (node->semanticFct)

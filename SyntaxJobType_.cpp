@@ -163,7 +163,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         {
             Scoped       scoped(this, newScope);
             ScopedStruct scopedStruct(this, newScope);
-            structNode->defaultOpInit = generateOpInit(structNode->parent, structNode->name, structNode->genericParameters);
+            structNode->defaultOpInit = generateOpInit(structNode, structNode->name, structNode->genericParameters);
         }
     }
 

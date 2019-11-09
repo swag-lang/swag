@@ -6,8 +6,7 @@ struct SourceFile;
 
 struct FileSemanticJob : public SemanticJob
 {
-    JobResult           execute() override;
-    static SemanticJob* newSemanticJob(SourceFile* sourceFile);
+    JobResult execute() override;
 };
 
 extern Pool<FileSemanticJob> g_Pool_fileSemanticJob;

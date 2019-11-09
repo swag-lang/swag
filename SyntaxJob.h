@@ -31,7 +31,7 @@ struct SyntaxJob : public Job
     void moveAttributes(AstNode* from, AstNode* to);
 
     void     setupSelfType(AstIdentifier* node, const Utf8& strctName, AstNode* genericParameters);
-    AstNode* generateOpInit(AstNode* node, const Utf8& structName, AstNode* genericParameters);
+    AstNode* generateOpInit(AstStruct* structNode, const Utf8& structName, AstNode* genericParameters);
 
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
