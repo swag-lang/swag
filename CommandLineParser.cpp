@@ -44,7 +44,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->testFilter    = "std.math4";
-    //cmdLine->fileFilter = "1231";
+    cmdLine->fileFilter = "1232";
 }
 
 void CommandLineParser::logArguments()

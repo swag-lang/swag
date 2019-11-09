@@ -6,6 +6,6 @@ using std.math
 #test
 {
 	var pt: Vector2(5, 100)
-	pt.makeNormalize()
+	pt.normalizeInPlace()
     @assert(isEqualEpsilon(pt.length(), 1))
 }

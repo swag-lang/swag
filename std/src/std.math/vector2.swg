@@ -4,19 +4,19 @@ namespace std.math
 	{
 		x, y: Float
 	}
-	
+
 	impl Vector2
 	{
-		public 
+		public
 		{
 			const Zero:     Vector2(0, 0)
 			const One:      Vector2(1, 1)
 			const UnitX:    Vector2(1, 0)
 			const UnitY:    Vector2(0, 1)
 			const UnitNX:   Vector2(-1, 0)
-			const UnitNY:   Vector2(0, -1)		
+			const UnitNY:   Vector2(0, -1)
         }
-		
+
 		public
 		{
 			#[swag.complete]
@@ -25,57 +25,81 @@ namespace std.math
 				self.x = value
 				self.y = value
 			}
-			           
+
 			func length(using self) => sqrt((x * x) + (y * y))
-			func lengthSquared(using self) => (x * x) + (y * y)           
+			func lengthSquared(using self) => (x * x) + (y * y)
 			func dot(using self, other: Self) => (x * other.x) + (y * other.y)
-            
-            func clear(using self)
+
+            func zero(using self)
             {
                 x = 0
                 y = 0
             }
-            
+
             func isZero(using self)->bool
             {
                 return x == 0 && y == 0
             }
-                 
+
             func isZeroEpsilon(using self, eps: Float = cast(Float) constF64.Epsilon)->bool
             {
                 return isZeroEpsilon(x, eps) && isZeroEpsilon(y, eps)
             }
-               
+
             func distance(using self, to: Self)->Float
             {
                 xn := (x - to.x)
                 yn := (y - to.y)
                 return sqrt((xn * xn) + (yn * yn))
             }
-            
+
             func distanceSquared(using self, to: Self)->Float
             {
                 xn := (x - to.x)
                 yn := (y - to.y)
                 return (xn * xn) + (yn * yn)
-            }            
-            
-            func makeNormalize(using self)
+            }
+
+            func normalizeInPlace(using self)
             {
                 norm := sqrt((x * x) + (y * y))
-                diagnostics.debug.assert(!isZeroEpsilon(norm))                
+                diagnostics.debug.assert(!isZeroEpsilon(norm))
                 norm = 1 / norm
                 x *= norm
                 y *= norm
             }
-            
-            func normalize(using self)->Vector2
+
+            func normalized(using self)->Vector2
             {
                 norm := sqrt((x * x) + (y * y))
-                diagnostics.debug.assert(!isZeroEpsilon(norm))                
+                diagnostics.debug.assert(!isZeroEpsilon(norm))
                 norm = 1 / norm
                 return Vector2(x * norm, y * norm)
-            }            
+            }
+
+            func normalizeInPlaceSafe(using self)
+            {
+                norm := sqrt((x * x) + (y * y))
+                if isZeroEpsilon(norm)
+                {
+                    x = 0
+                    y = 0
+                    return
+                }
+                
+                norm = 1 / norm
+                x *= norm
+                y *= norm
+            }
+
+            func normalizedSafe(using self)->Vector2
+            {
+                norm := sqrt((x * x) + (y * y))
+                if isZeroEpsilon(norm)
+                    return Zero
+                norm = 1 / norm
+                return Vector2(x * norm, y * norm)
+            }
 		}
 	}
 }
