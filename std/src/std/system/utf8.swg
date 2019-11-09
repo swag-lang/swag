@@ -14,18 +14,6 @@ namespace std
 
     impl Utf8
     {
-        func alloc(using self, newSize: u32)
-        {
-            free(self)
-            
-            if !allocator
-                allocator = @context().allocator
-            var req: AllocatorRequest
-            req.size = newSize
-            allocator(req)
-            buffer = req
-        }
-        
         func free(using self)
         {
             if !allocator
@@ -36,6 +24,20 @@ namespace std
             allocator(req)
             buffer = null
         }
+        
+        func alloc(using self, newSize: u32)
+        {
+            free(self)
+            
+            if !allocator
+                allocator = @context().allocator
+            var req: AllocatorRequest
+            req.size = newSize
+            allocator(req)
+            buffer = acast req.address
+        }
+        
+
 
         func reserve(using self, newSize: u32)
         {
