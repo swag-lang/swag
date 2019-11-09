@@ -40,6 +40,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->rebuild           = true;
     cmdLine->backendOutputTest = true;
     cmdLine->backendOutput     = true;
+    //cmdLine->errorSourceOut    = false;
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;

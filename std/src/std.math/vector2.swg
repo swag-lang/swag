@@ -36,7 +36,7 @@ namespace std.math
                 #if   op == "+="    { x += other.x; y += other.y; }
                 #elif op == "-="    { x -= other.x; y -= other.y; }
                 #elif op == "*="    { x *= other.x; y *= other.y; }
-                #else               #assert(false, "unsupported assign operation")
+                #else               #assert(false, "unsupported assign operation '" ~op~ "'")
             }
             
             func(op: string) opAssign(using self, value: Float)
@@ -44,7 +44,7 @@ namespace std.math
                 #if   op == "+="    { x += value; y += value; }
                 #elif op == "-="    { x -= value; y -= value; }
                 #elif op == "*="    { x *= value; y *= value; }
-                #else               #assert(false, "unsupported assign operation")
+                #else               #assert(false, "unsupported assign operation '" ~op~ "'")
             }
             
             func(op: string) opBinary(using self, other: Self)->Self
@@ -52,7 +52,7 @@ namespace std.math
                 #if   op == "+" return Vector2(x + other.x, y + other.y)
                 #elif op == "-" return Vector2(x - other.x, y - other.y)
                 #elif op == "*" return Vector2(x * other.x, y * other.y)
-                #else           #assert(false, "unsupported binary operation")
+                #else           #assert(false, "unsupported binary operation '" ~op~ "'")
             }
 
             func(op: string) opBinary(using self, value: Float)->Self
@@ -60,7 +60,7 @@ namespace std.math
                 #if   op == "+" return Vector2(x + value, y + value)
                 #elif op == "-" return Vector2(x - value, y - value)
                 #elif op == "*" return Vector2(x * value, y * value)                    
-                #else           #assert(false, "unsupported binary operation")
+                #else           #assert(false, "unsupported binary operation '" ~op~ "'")
             }
         }
 
