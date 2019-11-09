@@ -358,9 +358,6 @@ JobResult ByteCodeGenJob::execute()
         scoped_lock lk(originalNode->mutex);
         originalNode->byteCodeJob = nullptr;
         originalNode->flags |= AST_BYTECODE_RESOLVED;
-        for (auto job : dependentJobs.list)
-            g_ThreadMgr.addJob(job);
-		dependentJobs.clear();
     }
 
     return JobResult::ReleaseJob;
