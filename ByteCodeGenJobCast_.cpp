@@ -45,7 +45,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Lambda)
     {
         emitInstruction(context, ByteCodeOp::CastBool64, exprNode->resultRegisterRC);
         return true;
@@ -606,21 +606,24 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         }
 
         SWAG_CHECK(emitTypeDeRef(context, exprNode->resultRegisterRC, typeInfo));
-        node->resultRegisterRC = exprNode->resultRegisterRC;
-        exprNode->typeInfo     = typeInfo;
+        node->resultRegisterRC   = exprNode->resultRegisterRC;
+        exprNode->typeInfo       = typeInfo;
+        exprNode->castedTypeInfo = nullptr;
         freeRegisterRC(context, r0);
         return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Pointer && fromTypeInfo->kind == TypeInfoKind::Pointer)
     {
-        node->resultRegisterRC = exprNode->resultRegisterRC;
+        node->resultRegisterRC   = exprNode->resultRegisterRC;
+        exprNode->castedTypeInfo = nullptr;
         return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
         SWAG_CHECK(emitCastSlice(context, exprNode, typeInfo, fromTypeInfo));
+        exprNode->castedTypeInfo = nullptr;
         return true;
     }
 
@@ -673,8 +676,9 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         return internalError(context, "emitCast, invalid cast type");
     }
 
-    node->resultRegisterRC = exprNode->resultRegisterRC;
-    exprNode->typeInfo     = typeInfo;
+    node->resultRegisterRC   = exprNode->resultRegisterRC;
+    exprNode->typeInfo       = typeInfo;
+    exprNode->castedTypeInfo = nullptr;
     return true;
 }
 

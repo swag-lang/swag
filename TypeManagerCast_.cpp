@@ -30,7 +30,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
     if (!(castFlags & CASTFLAG_AUTO_BOOL))
         return castError(context, g_TypeMgr.typeInfoBool, fromType, fromNode, castFlags);
 
-    if (fromType->kind == TypeInfoKind::Pointer)
+    if (fromType->kind == TypeInfoKind::Pointer || fromType->kind == TypeInfoKind::Lambda)
     {
         if (!(castFlags & CASTFLAG_JUST_CHECK))
         {

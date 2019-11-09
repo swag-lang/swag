@@ -48,9 +48,16 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
 
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* op)
 {
-    auto typeInfo = TypeManager::concreteType(op->typeInfo);
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, op, CASTFLAG_AUTO_BOOL));
+    auto typeInfo = TypeManager::concreteType(op->typeInfo, CONCRETE_ALIAS);
+    if (typeInfo->kind == TypeInfoKind::Lambda)
+        return true;
 
+    typeInfo = TypeManager::concreteType(typeInfo);
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+        return true;
+
+    SWAG_CHECK(checkTypeIsNative(context, op, typeInfo));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, op, CASTFLAG_AUTO_BOOL));
     if (op->flags & AST_VALUE_COMPUTED)
     {
         switch (typeInfo->nativeType)
@@ -162,16 +169,17 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         return true;
     }
 
-    SWAG_CHECK(checkTypeIsNative(context, node, typeInfo));
     switch (node->token.id)
     {
     case TokenId::SymExclam:
         SWAG_CHECK(resolveUnaryOpExclam(context, op));
         break;
     case TokenId::SymMinus:
+        SWAG_CHECK(checkTypeIsNative(context, node, typeInfo));
         SWAG_CHECK(resolveUnaryOpMinus(context, op));
         break;
     case TokenId::SymTilde:
+        SWAG_CHECK(checkTypeIsNative(context, node, typeInfo));
         SWAG_CHECK(resolveUnaryOpInvert(context, op));
         break;
     }
