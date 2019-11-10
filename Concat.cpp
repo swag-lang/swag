@@ -5,11 +5,12 @@ Pool<ConcatBucket> g_Pool_concatBucket;
 
 Concat::Concat()
 {
+	bucketSize = 32 * 1024;
 }
 
 void Concat::checkCount(int offset)
 {
-    if (lastBucket && lastBucket->count + offset < CONCAT_BUCKET_SIZE)
+    if (lastBucket && lastBucket->count + offset < bucketSize)
     {
         lastBucket->count += offset;
         return;
@@ -25,7 +26,7 @@ void Concat::checkCount(int offset)
         lastBucket->nextBucket = newBucket;
 
     lastBucket        = newBucket;
-    lastBucket->datas = (uint8_t*) malloc(max(offset, CONCAT_BUCKET_SIZE));
+    lastBucket->datas = (uint8_t*) malloc(max(offset, bucketSize));
     currentSP         = newBucket->datas;
     newBucket->count  = offset;
 }

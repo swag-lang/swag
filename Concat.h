@@ -21,8 +21,8 @@ struct Concat
     void addPointer(void* v);
     void addString(const char* v);
     void addString(const string& v);
-	void addEolIndent(int num);
-	void addIndent(int num);
+    void addEolIndent(int num);
+    void addIndent(int num);
 
     virtual void flushBucket(ConcatBucket* bucket){};
 
@@ -31,6 +31,7 @@ struct Concat
     uint8_t*      currentSP   = nullptr;
     ConcatBucket* currentSPB  = nullptr;
     int           currentSPI;
+    int           bucketSize = 32 * 1024;
 
     inline void rewind()
     {
