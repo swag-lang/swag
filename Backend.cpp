@@ -40,7 +40,7 @@ bool Backend::emitAttributes(TypeInfoParam* param)
 {
     ComputedValue v;
     if (param->attributes.getValue("swag.offset.name", v))
-        bufferSwg.addString(format("\t\t#[swag.offset(\"%s\")]\n", v.text.c_str()));
+        bufferSwg.addStringFormat("\t\t#[swag.offset(\"%s\")]\n", v.text.c_str());
 
     return true;
 }
@@ -310,9 +310,9 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
     if (scope->hasExports && !scope->name.empty())
     {
         if (scope->kind == ScopeKind::Namespace)
-            bufferSwg.addString(format("namespace %s {\n", scope->name.c_str()));
+            bufferSwg.addStringFormat("namespace %s {\n", scope->name.c_str());
         else if (scope->kind == ScopeKind::Struct)
-            bufferSwg.addString(format("impl %s {\n", scope->name.c_str()));
+            bufferSwg.addStringFormat("impl %s {\n", scope->name.c_str());
         else
 			CONCAT_FIXED_STR(bufferSwg, "{\n");
     }

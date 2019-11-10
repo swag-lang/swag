@@ -50,7 +50,7 @@ bool BackendC::emitStrings()
     for (const auto& str : module->strBuffer)
     {
 		CONCAT_FIXED_STR(bufferC, "static swag_uint8_t __string");
-        bufferC.addString(format("%d[] = {", index));
+        bufferC.addStringFormat("%d[] = {", index);
 
         const uint8_t* pz = (const uint8_t*) str.c_str();
         while (*pz)
@@ -75,16 +75,16 @@ bool BackendC::emitGlobalInit()
     for (auto& k : module->mutableSegment.initString)
     {
         for (auto& o : k.second)
-            bufferC.addString(format("*(void**) (__mutableseg + %d) = __string%d;\n", o, k.first));
+            bufferC.addStringFormat("*(void**) (__mutableseg + %d) = __string%d;\n", o, k.first);
     }
 
     for (auto& k : module->mutableSegment.initPtr)
     {
         auto kind = k.destSeg;
         if (kind == SegmentKind::Me || kind == SegmentKind::Data)
-            bufferC.addString(format("*(void**) (__mutableseg + %d) = __mutableseg + %d;\n", k.sourceOffset, k.destOffset));
+            bufferC.addStringFormat("*(void**) (__mutableseg + %d) = __mutableseg + %d;\n", k.sourceOffset, k.destOffset);
         else
-            bufferC.addString(format("*(void**) (__mutableseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
+            bufferC.addStringFormat("*(void**) (__mutableseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset);
     }
 
 	CONCAT_FIXED_STR(bufferC, "}\n\n");
@@ -94,19 +94,19 @@ bool BackendC::emitGlobalInit()
     for (auto& k : module->constantSegment.initString)
     {
         for (auto& o : k.second)
-            bufferC.addString(format("*(void**) (__constantseg + %d) = __string%d;\n", o, k.first));
+            bufferC.addStringFormat("*(void**) (__constantseg + %d) = __string%d;\n", o, k.first);
     }
 
     for (auto& k : module->constantSegment.initPtr)
     {
         SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);
-        bufferC.addString(format("*(void**) (__constantseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
+        bufferC.addStringFormat("*(void**) (__constantseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset);
     }
 
 	CONCAT_FIXED_STR(bufferC, "}\n\n");
 
     // Main init fct
-    bufferC.addString(format("void %s_globalInit(swag_process_infos_t *processInfos)\n", module->nameDown.c_str()));
+    bufferC.addStringFormat("void %s_globalInit(swag_process_infos_t *processInfos)\n", module->nameDown.c_str());
 	CONCAT_FIXED_STR(bufferC, "{\n");
 	CONCAT_FIXED_STR(bufferC, "\t__process_infos = *processInfos;\n");
 	bufferC.addEol();
@@ -119,21 +119,21 @@ bool BackendC::emitGlobalInit()
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        bufferC.addString(format("\t%s();\n", bc->callName().c_str()));
+        bufferC.addStringFormat("\t%s();\n", bc->callName().c_str());
     }
 
 	CONCAT_FIXED_STR(bufferC, "}\n");
 	bufferC.addEol();
 
 	bufferH.addEol();
-    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(struct swag_process_infos_t *processInfos);\n", module->nameDown.c_str()));
+    bufferH.addStringFormat("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(struct swag_process_infos_t *processInfos);\n", module->nameDown.c_str());
     return true;
 }
 
 bool BackendC::emitGlobalDrop()
 {
     // Main init fct
-    bufferC.addString(format("void %s_globalDrop()\n", module->nameDown.c_str()));
+    bufferC.addStringFormat("void %s_globalDrop()\n", module->nameDown.c_str());
 	CONCAT_FIXED_STR(bufferC, "{\n");
 
     for (auto bc : module->byteCodeDropFunc)
@@ -141,12 +141,12 @@ bool BackendC::emitGlobalDrop()
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        bufferC.addString(format("\t%s();\n", bc->callName().c_str()));
+        bufferC.addStringFormat("\t%s();\n", bc->callName().c_str());
     }
 
 	CONCAT_FIXED_STR(bufferC, "}\n");
     bufferC.addEol();
 
-    bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalDrop();\n", module->nameDown.c_str()));
+    bufferH.addStringFormat("SWAG_EXTERN SWAG_IMPEXP void %s_globalDrop();\n", module->nameDown.c_str());
     return true;
 }

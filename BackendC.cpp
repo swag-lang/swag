@@ -7,31 +7,31 @@
 
 bool BackendC::emitHeader()
 {
-    bufferH.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    bufferC.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    bufferH.addStringFormat("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    bufferC.addStringFormat("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
     // My include file. Need to export for dlls
     CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_IS_DYNAMICLIB\n");
 	CONCAT_FIXED_STR(bufferC, "#define SWAG_EXPORT\n");
 	CONCAT_FIXED_STR(bufferC, "#endif\n");
-    bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
+    bufferC.addStringFormat("#include \"%s.h\"\n", module->name.c_str());
 
     // My dependencies. Need to import for dlls
 	CONCAT_FIXED_STR(bufferC, "#undef SWAG_EXPORT\n");
 	CONCAT_FIXED_STR(bufferC, "#define SWAG_IMPORT\n");
     for (auto depName : module->moduleDependenciesNames)
     {
-        bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
+        bufferC.addStringFormat("#include \"%s.h\"\n", depName.c_str());
     }
 
-    bufferH.addString(format("#ifndef __SWAG_%s__\n", module->nameUp.c_str()));
-    bufferH.addString(format("#define __SWAG_%s__\n", module->nameUp.c_str()));
+    bufferH.addStringFormat("#ifndef __SWAG_%s__\n", module->nameUp.c_str());
+    bufferH.addStringFormat("#define __SWAG_%s__\n", module->nameUp.c_str());
     return true;
 }
 
 bool BackendC::emitFooter()
 {
-    bufferH.addString(format("#endif /* __SWAG_%s__ */\n", module->nameUp.c_str()));
+    bufferH.addStringFormat("#endif /* __SWAG_%s__ */\n", module->nameUp.c_str());
     return true;
 }
 
