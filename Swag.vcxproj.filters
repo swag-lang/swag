@@ -12,7 +12,7 @@
     </ClCompile>
     <ClCompile Include="DependentJobs.cpp">
       <Filter>Main</Filter>
-    </ClCompile>    
+    </ClCompile>
     <ClCompile Include="Job.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
@@ -178,9 +178,6 @@
     </ClCompile>
     <ClCompile Include="SyntaxJobVar_.cpp">
       <Filter>Lexer</Filter>
-    </ClCompile>
-    <ClCompile Include="FileSemanticJob.cpp">
-      <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="ByteCodeGenJobIdentifier_.cpp">
       <Filter>Backend\ByteCode</Filter>
@@ -463,9 +460,6 @@
     </ClInclude>
     <ClInclude Include="ByteCodeGenJob.h">
       <Filter>Backend\ByteCode</Filter>
-    </ClInclude>
-    <ClInclude Include="FileSemanticJob.h">
-      <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="ByteCodeOp.h">
       <Filter>Backend\ByteCode</Filter>

@@ -1,13 +1,13 @@
-const TOTO = true
+const TOTOXX = true
 
-#if TOTO
+#if TOTOXX
 {
-	func toto()
+	func totoXX()
 	{
-		toto1()
+		totoXY()
 	}
 	
-	func toto1()
+    func totoXY()
 	{
 	}
 }

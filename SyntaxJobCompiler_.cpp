@@ -24,8 +24,6 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         node->ifBlock = block;
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->blocks.push_back(block);
-        if (node->ownerScope->isGlobal())
-            block->flags |= AST_DISABLED;
 
         ScopedCompilerIfBlock scopedIf(this, block);
         SWAG_CHECK(doStatementFor(block, nullptr, kind));
@@ -37,8 +35,6 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
         node->elseBlock = block;
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->blocks.push_back(block);
-        if (node->ownerScope->isGlobal())
-            block->flags |= AST_DISABLED;
 
         ScopedCompilerIfBlock scopedIf(this, block);
         if (token.id == TokenId::CompilerElseIf)

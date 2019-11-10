@@ -170,7 +170,6 @@
     <ClInclude Include="fficonfig.h" />
     <ClInclude Include="ffitarget.h" />
     <ClInclude Include="ffi_common.h" />
-    <ClInclude Include="FileSemanticJob.h" />
     <ClInclude Include="Generic.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Os.h" />
@@ -270,7 +269,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Final|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="FileSemanticJob.cpp" />
     <ClCompile Include="Generic.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="JobThread.cpp" />

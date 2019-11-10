@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SourceFile.h"
 #include "Ast.h"
-#include "FileSemanticJob.h"
+#include "SemanticJob.h"
 #include "TypeManager.h"
 #include "ThreadManager.h"
 #include "Module.h"
@@ -166,16 +166,6 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     {
         validatedNode = node->elseBlock;
         disableCompilerIfBlock(context, (AstCompilerIfBlock*) node->ifBlock);
-    }
-
-    // #if in the global scope : need to spawn a job to parse the content
-    if (validatedNode && node->ownerScope->isGlobal())
-    {
-        auto job        = g_Pool_fileSemanticJob.alloc();
-        job->sourceFile = context->sourceFile;
-        validatedNode->flags &= ~AST_DISABLED;
-        job->nodes.push_back(validatedNode);
-        g_ThreadMgr.addJob(job);
     }
 
     return true;

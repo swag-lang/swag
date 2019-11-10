@@ -86,7 +86,7 @@ JobResult SemanticJob::execute()
     g_diagnosticInfos.sourceFile = sourceFile;
 #endif
 
-    auto firstNode                  = nodes.back();
+    auto firstNode                  = nodes.front();
     context.job                     = this;
     context.sourceFile              = sourceFile;
     context.errorContext.sourceFile = sourceFile;
@@ -105,21 +105,21 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::Enter:
 
             // Some nodes need to spawn a new semantic job
-            if (node != firstNode)
+            if (node != firstNode && !node->isDisabled())
             {
                 if (firstNode->kind == AstNodeKind::Impl ||
                     firstNode->kind == AstNodeKind::File ||
-                    (firstNode->kind == AstNodeKind::CompilerIfBlock && firstNode->ownerScope->isGlobal()))
+                    (firstNode->kind == AstNodeKind::CompilerIf && node->ownerScope->isGlobal()))
                 {
                     switch (node->kind)
                     {
+                    case AstNodeKind::FuncDecl:
                     case AstNodeKind::VarDecl:
                     case AstNodeKind::LetDecl:
                     case AstNodeKind::ConstDecl:
                     case AstNodeKind::TypeAlias:
                     case AstNodeKind::EnumDecl:
                     case AstNodeKind::StructDecl:
-                    case AstNodeKind::FuncDecl:
                     case AstNodeKind::CompilerAssert:
                     case AstNodeKind::CompilerPrint:
                     case AstNodeKind::CompilerRun:
