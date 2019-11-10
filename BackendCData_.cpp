@@ -71,7 +71,7 @@ bool BackendC::emitStrings()
 bool BackendC::emitGlobalInit()
 {
     // Init of data segment
-    bufferC.addString("static void initDataSeg() {\n");
+	CONCAT_FIXED_STR(bufferC, "static void initDataSeg() {\n");
     for (auto& k : module->mutableSegment.initString)
     {
         for (auto& o : k.second)
@@ -87,10 +87,10 @@ bool BackendC::emitGlobalInit()
             bufferC.addString(format("*(void**) (__mutableseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
     }
 
-    bufferC.addString("}\n\n");
+	CONCAT_FIXED_STR(bufferC, "}\n\n");
 
     // Init of constant segment
-    bufferC.addString("static void initConstantSeg() {\n");
+	CONCAT_FIXED_STR(bufferC, "static void initConstantSeg() {\n");
     for (auto& k : module->constantSegment.initString)
     {
         for (auto& o : k.second)
@@ -103,16 +103,16 @@ bool BackendC::emitGlobalInit()
         bufferC.addString(format("*(void**) (__constantseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset));
     }
 
-    bufferC.addString("}\n\n");
+	CONCAT_FIXED_STR(bufferC, "}\n\n");
 
     // Main init fct
     bufferC.addString(format("void %s_globalInit(swag_process_infos_t *processInfos)\n", module->nameDown.c_str()));
-	bufferC.addString("{\n");
-    bufferC.addString("\t__process_infos = *processInfos;\n");
-	bufferC.addString("\n");
+	CONCAT_FIXED_STR(bufferC, "{\n");
+	CONCAT_FIXED_STR(bufferC, "\t__process_infos = *processInfos;\n");
+	bufferC.addEol();
 
-    bufferC.addString("\tinitDataSeg();\n");
-    bufferC.addString("\tinitConstantSeg();\n");
+	CONCAT_FIXED_STR(bufferC, "\tinitDataSeg();\n");
+	CONCAT_FIXED_STR(bufferC, "\tinitConstantSeg();\n");
 
 	for (auto bc : module->byteCodeInitFunc)
     {
@@ -122,10 +122,10 @@ bool BackendC::emitGlobalInit()
         bufferC.addString(format("\t%s();\n", bc->callName().c_str()));
     }
 
-    bufferC.addString("}\n");
-	bufferC.addString("\n");
+	CONCAT_FIXED_STR(bufferC, "}\n");
+	bufferC.addEol();
 
-	bufferH.addString("\n");
+	bufferH.addEol();
     bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(struct swag_process_infos_t *processInfos);\n", module->nameDown.c_str()));
     return true;
 }
@@ -134,7 +134,7 @@ bool BackendC::emitGlobalDrop()
 {
     // Main init fct
     bufferC.addString(format("void %s_globalDrop()\n", module->nameDown.c_str()));
-	bufferC.addString("{\n");
+	CONCAT_FIXED_STR(bufferC, "{\n");
 
     for (auto bc : module->byteCodeDropFunc)
     {
@@ -144,8 +144,8 @@ bool BackendC::emitGlobalDrop()
         bufferC.addString(format("\t%s();\n", bc->callName().c_str()));
     }
 
-	bufferC.addString("}\n");
-    bufferC.addString("\n");
+	CONCAT_FIXED_STR(bufferC, "}\n");
+    bufferC.addEol();
 
     bufferH.addString(format("SWAG_EXTERN SWAG_IMPEXP void %s_globalDrop();\n", module->nameDown.c_str()));
     return true;

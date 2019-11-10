@@ -222,7 +222,7 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node)
         SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, node->assignment->typeInfo, node->assignment->computedValue.text, node->assignment->computedValue.reg));
     }
 
-    bufferSwg.addString("\n");
+    bufferSwg.addEol();
     return true;
 }
 

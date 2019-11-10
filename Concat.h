@@ -20,13 +20,13 @@ struct Concat
     void addF64(double v);
     void addBool(bool v);
     void addPointer(void* v);
-	void addString(const char* v, int len);
+    void addString(const char* v, int len);
     void addString(const char* v);
     void addString(const string& v);
     void addEolIndent(int num);
     void addIndent(int num);
-	void addChar(char c);
-	void addEol();
+    void addChar(char c);
+    void addEol();
 
     virtual void flushBucket(ConcatBucket* bucket){};
 
@@ -62,4 +62,9 @@ struct Concat
     }
 };
 
-#define CONCAT_FIXED_STR(__concat, __str) __concat.addString(__str, length(__str))
+#define CONCAT_FIXED_STR(__concat, __str)                                    \
+    do                                                                       \
+    {                                                                        \
+        static constexpr int __len = (int) char_traits<char>::length(__str); \
+        __concat.addString(__str, __len);                                    \
+    } while (false)

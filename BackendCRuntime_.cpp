@@ -7,7 +7,7 @@
 #include "ByteCode.h"
 #include "stdint.h"
 
-static const char* g_RuntimeH = R"(
+static constexpr const char* g_RuntimeH = R"(
 #ifndef __SWAG_RUNTIME_DEFINED__
 #define __SWAG_RUNTIME_DEFINED__
 
@@ -57,7 +57,7 @@ typedef swag_uint32_t			swag_tls_id_t;
 
 )";
 
-static const char* g_RuntimeC = R"(
+static constexpr const char* g_RuntimeC = R"(
 
 typedef union swag_register_t {
     swag_uint8_t*	pointer;
@@ -95,7 +95,7 @@ swag_process_infos_t __process_infos = {0};
 
 )";
 
-static const char* g_Intrinsics = R"(
+static constexpr const char* g_Intrinsics = R"(
 #include "malloc.h"
 
 static void __print_n(const char* message, int len) 
@@ -148,11 +148,11 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 )";
 
 bool BackendC::emitRuntime()
-{
-    bufferH.addString(g_RuntimeH);
+{	
+	CONCAT_FIXED_STR(bufferH, g_RuntimeH);
     emitSeparator(bufferC, "RUNTIME");
-    bufferC.addString(g_RuntimeC);
+	CONCAT_FIXED_STR(bufferC, g_RuntimeC);
     emitSeparator(bufferC, "INTRINSICS");
-    bufferC.addString(g_Intrinsics);
+	CONCAT_FIXED_STR(bufferC, g_Intrinsics);
     return true;
 }

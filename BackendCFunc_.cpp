@@ -166,7 +166,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         bufferC.addString(it->second.second.text);
     else
         bufferC.addString(nodeFunc->name);
-    bufferC.addString("(");
+    bufferC.addChar('(');
 
     int numCallParams = (int) typeFuncBC->parameters.size();
     for (int idxCall = 0; idxCall < numCallParams; idxCall++)
@@ -246,13 +246,13 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     if (returnType->kind == TypeInfoKind::Slice)
     {
         if (numCallParams)
-			CONCAT_FIXED_STR(bufferC, ", ");
+			bufferC.addChar(',');
 		CONCAT_FIXED_STR(bufferC, "&rt[0]");
     }
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         if (numCallParams)
-			CONCAT_FIXED_STR(bufferC, ", ");
+			bufferC.addChar(',');
 		CONCAT_FIXED_STR(bufferC, "rt[0].pointer");
     }
 
@@ -281,7 +281,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
         for (int i = 0; i < n; i++)
         {
             if (i)
-				CONCAT_FIXED_STR(bufferC, ", ");
+				bufferC.addChar(',');
             bufferC.addString(format("rr%d", i));
         }
 		CONCAT_FIXED_STR(bufferC, ";\n");
@@ -375,7 +375,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     for (int i = 0; i < n; i++)
     {
         if (i)
-			CONCAT_FIXED_STR(bufferC, ", ");
+			bufferC.addChar(',');
         bufferC.addString(format("&rr%d", i));
     }
 
@@ -504,7 +504,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
     for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
     {
         if (i)
-			CONCAT_FIXED_STR(bufferC, ", ");
+			bufferC.addChar(',');
         bufferC.addString(format("swag_register_t* rr%d", i));
     }
 
@@ -516,7 +516,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
         for (int i = 0; i < typeParam->numRegisters(); i++)
         {
             if (index || i || typeFunc->numReturnRegisters())
-				CONCAT_FIXED_STR(bufferC, ", ");
+				bufferC.addChar(',');
             bufferC.addString(format("swag_register_t* rp%u", index++));
         }
     }
@@ -563,7 +563,7 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
 		CONCAT_FIXED_STR(bufferC, ";\n");
     }
 
-	CONCAT_FIXED_STR(bufferC, "\n");
+	bufferC.addEol();
     return true;
 }
 
@@ -1524,7 +1524,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                 for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
                 {
                     if (j)
-						CONCAT_FIXED_STR(bufferC, ",");
+						bufferC.addChar(',');
 					CONCAT_FIXED_STR(bufferC, "swag_register_t*");
                 }
 
@@ -1538,7 +1538,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
             {
                 if (j)
-					CONCAT_FIXED_STR(bufferC, ",");
+					bufferC.addChar(',');
                 bufferC.addString(format("&rt[%u]", j));
             }
 
@@ -1550,7 +1550,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                 for (int j = 0; j < typeParam->numRegisters(); j++)
                 {
                     if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
-						CONCAT_FIXED_STR(bufferC, ", ");
+						bufferC.addChar(',');
                     auto index = pushRAParams.back();
                     pushRAParams.pop_back();
                     bufferC.addString(format("&r[%u]", index));
@@ -1574,7 +1574,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             break;
         }
 
-		CONCAT_FIXED_STR(bufferC, "\n");
+		bufferC.addEol();
     }
 
 	CONCAT_FIXED_STR(bufferC, "}\n");
@@ -1582,7 +1582,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     if (bc->node && bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
 		CONCAT_FIXED_STR(bufferC, "#endif\n");
 
-	CONCAT_FIXED_STR(bufferC, "\n");
+	bufferC.addEol();
     return ok;
 }
 

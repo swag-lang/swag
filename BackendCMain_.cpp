@@ -15,13 +15,13 @@ void BackendC::emitArgcArgv()
 
     bufferC.addString(format("\tstatic swag_uint64_t argumentsStr[%d];\n", module->buildParameters.target.backendC.maxApplicationArguments));
     bufferC.addString(format("\t__assert(argc <= %d, __FILE__, __LINE__, \"too many application arguments\");\n", module->buildParameters.target.backendC.maxApplicationArguments));
-    bufferC.addString("\n");
+    bufferC.addEol();
 
     bufferC.addString("\tfor(int i = 0; i < argc; i++) {\n");
     bufferC.addString("\t\targumentsStr[i * 2] = (swag_int64_t) argv[i];\n");
     bufferC.addString("\t\targumentsStr[(i * 2) + 1] = (swag_int64_t) strlen(argv[i]);\n");
     bufferC.addString("\t}\n");
-    bufferC.addString("\n");
+    bufferC.addEol();
     bufferC.addString("\t__process_infos.argumentsSlice[0] = (swag_uint64_t) &argumentsStr[0];\n");
     bufferC.addString("\t__process_infos.argumentsSlice[1] = (swag_uint64_t) argc;\n");
 
@@ -46,9 +46,9 @@ bool BackendC::emitMain()
     bufferC.addString("\t__tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);\n");
 
     // Arguments
-    bufferC.addString("\n");
+    bufferC.addEol();
     bufferC.addString("\tconvertArgcArgv(argc, argv);\n");
-    bufferC.addString("\n");
+    bufferC.addEol();
 
     // Call to global init of this module, and dependencies
     bufferC.addString(format("\t%s_globalInit(&__process_infos);\n", module->nameDown.c_str()));
@@ -62,7 +62,7 @@ bool BackendC::emitMain()
         bufferC.addString(format("\t%s_globalInit(&__process_infos);\n", nameDown.c_str()));
     }
 
-    bufferC.addString("\n");
+    bufferC.addEol();
 
     // Generate call to test functions
     if (!module->byteCodeTestFunc.empty())
@@ -76,14 +76,14 @@ bool BackendC::emitMain()
             bufferC.addString(format("\t%s();\n", bc->callName().c_str()));
         }
         bufferC.addString("#endif\n");
-        bufferC.addString("\n");
+        bufferC.addEol();
     }
 
     // Call to main
     if (module->byteCodeMainFunc)
     {
         bufferC.addString(format("\t%s();\n", module->byteCodeMainFunc->callName().c_str()));
-        bufferC.addString("\n");
+        bufferC.addEol();
     }
 
     // Call to global drop of this module, and dependencies
@@ -97,7 +97,7 @@ bool BackendC::emitMain()
 
     bufferC.addString("}\n");
     bufferC.addString("#endif /* SWAG_IS_BINARY */\n");
-    bufferC.addString("\n");
+    bufferC.addEol();
 
     return true;
 }
