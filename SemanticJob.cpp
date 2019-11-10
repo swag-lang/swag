@@ -103,31 +103,39 @@ JobResult SemanticJob::execute()
         switch (node->semanticState)
         {
         case AstNodeResolveState::Enter:
-            if (firstNode->kind == AstNodeKind::Impl)
+
+            // Some nodes need to spawn a new semantic job
+            if (node != firstNode)
             {
-                switch (node->kind)
+                if (firstNode->kind == AstNodeKind::Impl ||
+                    firstNode->kind == AstNodeKind::File ||
+                    (firstNode->kind == AstNodeKind::CompilerIfBlock && firstNode->ownerScope->isGlobal()))
                 {
-                case AstNodeKind::VarDecl:
-                case AstNodeKind::LetDecl:
-                case AstNodeKind::ConstDecl:
-                case AstNodeKind::TypeAlias:
-                case AstNodeKind::EnumDecl:
-                case AstNodeKind::StructDecl:
-                case AstNodeKind::FuncDecl:
-                case AstNodeKind::CompilerAssert:
-                case AstNodeKind::CompilerPrint:
-                case AstNodeKind::CompilerRun:
-                case AstNodeKind::AttrDecl:
-                case AstNodeKind::CompilerIf:
-                {
-                    auto job        = g_Pool_semanticJob.alloc();
-                    job->sourceFile = sourceFile;
-                    job->nodes.push_back(node);
-                    nodes.pop_back();
-                    g_ThreadMgr.addJob(job);
-                    continue;
-                }
-                break;
+                    switch (node->kind)
+                    {
+                    case AstNodeKind::VarDecl:
+                    case AstNodeKind::LetDecl:
+                    case AstNodeKind::ConstDecl:
+                    case AstNodeKind::TypeAlias:
+                    case AstNodeKind::EnumDecl:
+                    case AstNodeKind::StructDecl:
+                    case AstNodeKind::FuncDecl:
+                    case AstNodeKind::CompilerAssert:
+                    case AstNodeKind::CompilerPrint:
+                    case AstNodeKind::CompilerRun:
+                    case AstNodeKind::AttrDecl:
+                    case AstNodeKind::CompilerIf:
+                    case AstNodeKind::Impl:
+                    {
+                        auto job        = g_Pool_semanticJob.alloc();
+                        job->sourceFile = sourceFile;
+                        job->nodes.push_back(node);
+                        nodes.pop_back();
+                        g_ThreadMgr.addJob(job);
+                        continue;
+                    }
+                    break;
+                    }
                 }
             }
 
