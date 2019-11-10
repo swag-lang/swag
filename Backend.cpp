@@ -375,9 +375,9 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            bufferSwg.addString(format("\t#[swag.foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameForeign.c_str()));
+            bufferSwg.addStringFormat("\t#[swag.foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameForeign.c_str());
             SWAG_CHECK(emitAttributes(node));
-            bufferSwg.addString("\t");
+            bufferSwg.addChar('\t');
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
         }
     }
@@ -410,11 +410,11 @@ bool Backend::preCompile()
         }
     }
 
-    bufferSwg.addString(format("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
     for (auto depName : module->moduleDependenciesNames)
     {
-        bufferSwg.addString(format("#import \"%s\"\n", depName.c_str()));
+        bufferSwg.addStringFormat("#import \"%s\"\n", depName.c_str());
     }
 
     // Emit everything that's public
