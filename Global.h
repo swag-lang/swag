@@ -20,6 +20,11 @@ extern string toStringF64(double v);
 
 extern struct Global g_Global;
 
+int constexpr length(const char* str)
+{
+    return *str ? 1 + length(str + 1) : 0;
+}
+
 #define SWAG_CHECK(__expr) \
     do                     \
     {                      \

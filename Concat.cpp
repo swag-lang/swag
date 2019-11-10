@@ -5,7 +5,7 @@ Pool<ConcatBucket> g_Pool_concatBucket;
 
 Concat::Concat()
 {
-	bucketSize = 32 * 1024;
+    bucketSize = 32 * 1024;
 }
 
 void Concat::checkCount(int offset)
@@ -16,7 +16,7 @@ void Concat::checkCount(int offset)
         return;
     }
 
-	if (lastBucket)
+    if (lastBucket)
         flushBucket(lastBucket);
 
     auto newBucket = g_Pool_concatBucket.alloc();
@@ -123,6 +123,13 @@ void Concat::addString(const string& v)
     currentSP += len;
 }
 
+void Concat::addString(const char* v, int len)
+{
+    checkCount(len);
+    memcpy(currentSP, v, len);
+    currentSP += len;
+}
+
 void Concat::addString(const char* v)
 {
     auto len = (int) strlen(v);
@@ -133,12 +140,12 @@ void Concat::addString(const char* v)
 
 void Concat::addIndent(int num)
 {
-	while (num--)
-		addString("\t");
+    while (num--)
+        addString("\t");
 }
 
 void Concat::addEolIndent(int num)
 {
     addString("\n");
-	addIndent(num);
+    addIndent(num);
 }

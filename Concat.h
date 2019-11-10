@@ -1,6 +1,7 @@
 #pragma once
 #include "Pool.h"
 #include "ConcatBucket.h"
+#include "Global.h"
 
 struct Concat
 {
@@ -19,6 +20,7 @@ struct Concat
     void addF64(double v);
     void addBool(bool v);
     void addPointer(void* v);
+	void addString(const char* v, int len);
     void addString(const char* v);
     void addString(const string& v);
     void addEolIndent(int num);
@@ -57,3 +59,5 @@ struct Concat
         return currentSP;
     }
 };
+
+#define CONCAT_FIXED_STR(__concat, __str) __concat.addString(__str, length(__str))
