@@ -44,14 +44,25 @@ void SavingThread::addRequest(SaveThreadRequest* request)
     condVar.notify_one();
 }
 
-SaveThreadRequest* SavingThread::getRequest()
+void SavingThread::getRequests(vector<SaveThreadRequest*>& requests)
 {
     lock_guard<mutex> lk(mutexAdd);
+    requests.clear();
     if (queueRequests.empty())
-        return nullptr;
+        return;
+
     auto req = queueRequests.front();
     queueRequests.pop_front();
-    return req;
+    requests.push_back(req);
+
+    while (!queueRequests.empty())
+    {
+        auto frontReq = queueRequests.front();
+		if (frontReq->file != req->file)
+			break;
+        queueRequests.pop_front();
+        requests.push_back(frontReq);
+    }
 }
 
 void SavingThread::waitRequest()
@@ -64,10 +75,11 @@ void SavingThread::waitRequest()
 
 void SavingThread::loop()
 {
+    vector<SaveThreadRequest*> requests;
     while (!requestEnd)
     {
-        auto req = getRequest();
-        if (req == nullptr)
+        getRequests(requests);
+        if (requests.empty())
         {
             if (requestEnd)
                 break;
@@ -75,31 +87,39 @@ void SavingThread::loop()
             continue;
         }
 
-        FILE* file = nullptr;
+        FILE* file     = nullptr;
+        auto  frontReq = requests.front();
         for (int tryOpen = 0; tryOpen < 10; tryOpen++)
         {
             // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
             // Without that, fopen can fail due to compiling processes
-			if(req->firstSave)
-				fopen_s(&file, req->file->fileName.c_str(), "wtN");
-			else
-				fopen_s(&file, req->file->fileName.c_str(), "a+tN");
+            if (frontReq->firstSave)
+                fopen_s(&file, frontReq->file->fileName.c_str(), "wtN");
+            else
+                fopen_s(&file, frontReq->file->fileName.c_str(), "a+tN");
             if (file)
                 break;
             Sleep(10);
         }
 
-        if (file)
+        if (!file)
         {
-            fwrite(req->buffer, 1, req->bufferSize, file);
-            fclose(file);
-        }
-        else
-        {
-            g_Log.error(format("cannot open file '%s' for writing (error %d)", req->file->fileName.c_str(), errno));
-            req->ioError = true;
+            g_Log.error(format("cannot open file '%s' for writing (error %d)", frontReq->file->fileName.c_str(), errno));
+            for (auto req : requests)
+            {
+                req->ioError = true;
+                req->file->notifySave(req);
+            }
+
+            return;
         }
 
-        req->file->notifySave(req);
+        for (auto req : requests)
+        {
+            fwrite(req->buffer, 1, req->bufferSize, file);
+            req->file->notifySave(req);
+        }
+
+        fclose(file);
     }
 }

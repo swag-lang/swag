@@ -18,9 +18,9 @@ struct SavingThread
     void               releaseRequest(SaveThreadRequest* request);
     SaveThreadRequest* newRequest();
 
-    void               loop();
-    SaveThreadRequest* getRequest();
-    void               waitRequest();
+    void loop();
+    void getRequests(vector<SaveThreadRequest*>& requests);
+    void waitRequest();
 
     thread*                   thread     = nullptr;
     bool                      requestEnd = false;
