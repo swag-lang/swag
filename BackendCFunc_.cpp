@@ -181,17 +181,17 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         // Access to the content of the register
         if (typeParam->kind == TypeInfoKind::Pointer || typeParam->kind == TypeInfoKind::Struct)
         {
-            bufferC.addString(format("(void*) r[%u].pointer", index));
+            bufferC.addStringFormat("(void*) r[%u].pointer", index);
             index -= 1;
         }
         else if (typeParam->isNative(NativeTypeKind::String))
         {
-            bufferC.addString(format("(void*)r[%u].pointer", index));
+            bufferC.addStringFormat("(void*)r[%u].pointer", index);
             index -= 2;
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
-            bufferC.addString(format("r[%u]", index));
+            bufferC.addStringFormat("r[%u]", index);
             index -= 1;
 
             switch (typeParam->nativeType)
@@ -282,7 +282,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
         {
             if (i)
 				bufferC.addChar(',');
-            bufferC.addString(format("rr%d", i));
+            bufferC.addStringFormat("rr%d", i);
         }
 		CONCAT_FIXED_STR(bufferC, ";\n");
     }
@@ -302,60 +302,60 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
         auto typeParam = TypeManager::concreteType(param->typeInfo);
         if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str()));
+            bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
         }
         else if (typeParam->kind == TypeInfoKind::Slice)
         {
-            bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[0];\n", idx, param->namedParam.c_str()));
-            bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[1];\n", idx + 1, param->namedParam.c_str()));
+            bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[0];\n", idx, param->namedParam.c_str());
+            bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[1];\n", idx + 1, param->namedParam.c_str());
         }
         else if (typeParam->kind == TypeInfoKind::Struct)
         {
-            bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str()));
+            bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
             switch (typeParam->nativeType)
             {
             case NativeTypeKind::U8:
-                bufferC.addString(format("\trr%d.u8 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.u8 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::U16:
-                bufferC.addString(format("\trr%d.u16 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.u16 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::U32:
-                bufferC.addString(format("\trr%d.u32 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.u32 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::U64:
-                bufferC.addString(format("\trr%d.u64 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.u64 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::S8:
-                bufferC.addString(format("\trr%d.s8 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.s8 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::S16:
-                bufferC.addString(format("\trr%d.s16 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.s16 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::S32:
-                bufferC.addString(format("\trr%d.s32 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.s32 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::S64:
-                bufferC.addString(format("\trr%d.s64 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.s64 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::F32:
-                bufferC.addString(format("\trr%d.f32 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.f32 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::F64:
-                bufferC.addString(format("\trr%d.f64 = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.f64 = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::Bool:
-                bufferC.addString(format("\trr%d.b = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.b = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::Char:
-                bufferC.addString(format("\trr%d.ch = %s;\n", idx, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.ch = %s;\n", idx, param->namedParam.c_str());
                 break;
             case NativeTypeKind::String:
-                bufferC.addString(format("\trr%d.pointer = (swag_uint8_t*) %s; ", idx, param->namedParam.c_str()));
-                bufferC.addString(format("rr%d.u32 = strlen(%s);\n", idx + 1, param->namedParam.c_str()));
+                bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s; ", idx, param->namedParam.c_str());
+                bufferC.addStringFormat("rr%d.u32 = strlen(%s);\n", idx + 1, param->namedParam.c_str());
                 break;
             default:
                 return module->internalError("emitFuncWrapperPublic, invalid param type");
@@ -370,13 +370,13 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     }
 
     // Make the call
-    bufferC.addString(format("\t%s", one->callName().c_str()));
+    bufferC.addStringFormat("\t%s", one->callName().c_str());
 	CONCAT_FIXED_STR(bufferC, "(");
     for (int i = 0; i < n; i++)
     {
         if (i)
 			bufferC.addChar(',');
-        bufferC.addString(format("&rr%d", i));
+        bufferC.addStringFormat("&rr%d", i);
     }
 
 	CONCAT_FIXED_STR(bufferC, ");\n");
@@ -505,7 +505,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
     {
         if (i)
 			bufferC.addChar(',');
-        bufferC.addString(format("swag_register_t* rr%d", i));
+        bufferC.addStringFormat("swag_register_t* rr%d", i);
     }
 
     // Parameters
@@ -517,7 +517,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
         {
             if (index || i || typeFunc->numReturnRegisters())
 				bufferC.addChar(',');
-            bufferC.addString(format("swag_register_t* rp%u", index++));
+            bufferC.addStringFormat("swag_register_t* rp%u", index++);
         }
     }
 
@@ -582,16 +582,16 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
 
     // Generate one local variable per used register
     if (bc->maxReservedRegisterRC)
-        bufferC.addString(format("swag_register_t r[%u];\n", bc->maxReservedRegisterRC));
+        bufferC.addStringFormat("swag_register_t r[%u];\n", bc->maxReservedRegisterRC);
 
     // For function call results
     if (bc->maxCallResults)
-        bufferC.addString(format("swag_register_t rt[%u];\n", bc->maxCallResults));
+        bufferC.addStringFormat("swag_register_t rt[%u];\n", bc->maxCallResults);
 
     // Local stack
     if (typeFunc->stackSize)
     {
-        bufferC.addString(format("swag_uint8_t stack[%u];\n", typeFunc->stackSize));
+        bufferC.addStringFormat("swag_uint8_t stack[%u];\n", typeFunc->stackSize);
     }
 
     // Generate bytecode
@@ -620,7 +620,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             }
         }
 
-        bufferC.addString(format("lbl%08u:; ", i));
+        bufferC.addStringFormat("lbl%08u:; ", i);
 
         if (module->buildParameters.target.backendC.writeByteCodeInstruction)
         {

@@ -140,8 +140,8 @@ void Concat::addString(const char* v)
 
 void Concat::addChar(char c)
 {
-	checkCount(1);
-	*currentSP++ = c;
+    checkCount(1);
+    *currentSP++ = c;
 }
 
 void Concat::addEol()
@@ -164,11 +164,13 @@ void Concat::addEolIndent(int num)
 
 void Concat::addStringFormat(const char* format, ...)
 {
-	static char buf[4096];
-    va_list args;
+    static char     buf[4096];
+    static SpinLock lock;
+    scoped_lock     lk(lock);
+    va_list         args;
     va_start(args, format);
     auto len = vsnprintf(buf, 4096, format, args);
-	SWAG_ASSERT(len < 4095);
+    SWAG_ASSERT(len < 4095);
     va_end(args);
-	addString(buf, len);
+    addString(buf, len);
 }
