@@ -161,3 +161,14 @@ void Concat::addEolIndent(int num)
     addString("\n");
     addIndent(num);
 }
+
+void Concat::addStringFormat(const char* format, ...)
+{
+	static char buf[4096];
+    va_list args;
+    va_start(args, format);
+    auto len = vsnprintf(buf, 4096, format, args);
+	SWAG_ASSERT(len < 4095);
+    va_end(args);
+	addString(buf, len);
+}

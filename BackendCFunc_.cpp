@@ -173,7 +173,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     {
         auto typeParam = TypeManager::concreteType(typeFuncBC->parameters[idxCall]->typeInfo);
         if (idxCall)
-            bufferC.addString(", ");
+            bufferC.addChar(',');
 
         auto index = pushParams.back();
         pushParams.pop_back();

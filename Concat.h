@@ -27,6 +27,7 @@ struct Concat
     void addIndent(int num);
     void addChar(char c);
     void addEol();
+	void addStringFormat(const char* format, ...);
 
     virtual void flushBucket(ConcatBucket* bucket){};
 
