@@ -106,6 +106,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Only one main per module !
     if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
     {
+		scoped_lock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic diag({node, node->token, "#main directive already defined one"});
