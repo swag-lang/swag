@@ -25,6 +25,8 @@ struct Concat
     void addString(const string& v);
     void addEolIndent(int num);
     void addIndent(int num);
+	void addChar(char c);
+	void addEol();
 
     virtual void flushBucket(ConcatBucket* bucket){};
 

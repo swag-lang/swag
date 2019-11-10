@@ -15,9 +15,9 @@ bool BackendC::emitDataSegment(DataSegment* dataSegment)
     if (dataSegment->buckets.size())
     {
         if (dataSegment == &module->mutableSegment)
-            bufferC.addString("static swag_uint8_t __mutableseg[] = {\n");
+			CONCAT_FIXED_STR(bufferC, "static swag_uint8_t __mutableseg[] = {\n");
         else
-            bufferC.addString("static swag_uint8_t __constantseg[] = {\n");
+			CONCAT_FIXED_STR(bufferC, "static swag_uint8_t __constantseg[] = {\n");
 
         for (int bucket = 0; bucket < dataSegment->buckets.size(); bucket++)
         {
@@ -27,44 +27,44 @@ bool BackendC::emitDataSegment(DataSegment* dataSegment)
             while (count--)
             {
                 bufferC.addString(to_string(*pz));
-                bufferC.addString(",");
+                bufferC.addChar(',');
                 pz++;
                 cpt = (cpt + 1) % 20;
                 if (cpt == 0)
-                    bufferC.addString("\n");
+                    bufferC.addEol();
             }
         }
 
-        bufferC.addString("\n};\n");
+		CONCAT_FIXED_STR(bufferC, "\n};\n");
     }
 
-    bufferC.addString("\n");
+    bufferC.addEol();
     return true;
 }
 
 bool BackendC::emitStrings()
 {
-    emitSeparator(bufferC, "STRINGS");
+	CONCAT_FIXED_STR(bufferC, "STRINGS");
 
     int index = 0;
     for (const auto& str : module->strBuffer)
     {
-        bufferC.addString("static swag_uint8_t __string");
+		CONCAT_FIXED_STR(bufferC, "static swag_uint8_t __string");
         bufferC.addString(format("%d[] = {", index));
 
         const uint8_t* pz = (const uint8_t*) str.c_str();
         while (*pz)
         {
             bufferC.addString(to_string(*pz));
-            bufferC.addString(",");
+            bufferC.addChar(',');
             pz++;
         }
 
-        bufferC.addString("0};\n");
+		CONCAT_FIXED_STR(bufferC, "0};\n");
         index++;
     }
 
-    bufferC.addString("\n");
+    bufferC.addEol();
     return true;
 }
 

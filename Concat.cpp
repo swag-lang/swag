@@ -138,6 +138,18 @@ void Concat::addString(const char* v)
     currentSP += len;
 }
 
+void Concat::addChar(char c)
+{
+	checkCount(1);
+	*currentSP++ = c;
+}
+
+void Concat::addEol()
+{
+    checkCount(1);
+    *currentSP++ = '\n';
+}
+
 void Concat::addIndent(int num)
 {
     while (num--)

@@ -11,14 +11,14 @@ bool BackendC::emitHeader()
     bufferC.addString(format("/* GENERATED WITH SWAG VERSION %d.%d.%d */\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 
     // My include file. Need to export for dlls
-    bufferC.addString("#ifdef SWAG_IS_DYNAMICLIB\n");
-    bufferC.addString("#define SWAG_EXPORT\n");
-    bufferC.addString("#endif\n");
+    CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_IS_DYNAMICLIB\n");
+	CONCAT_FIXED_STR(bufferC, "#define SWAG_EXPORT\n");
+	CONCAT_FIXED_STR(bufferC, "#endif\n");
     bufferC.addString(format("#include \"%s.h\"\n", module->name.c_str()));
 
     // My dependencies. Need to import for dlls
-    bufferC.addString("#undef SWAG_EXPORT\n");
-    bufferC.addString("#define SWAG_IMPORT\n");
+	CONCAT_FIXED_STR(bufferC, "#undef SWAG_EXPORT\n");
+	CONCAT_FIXED_STR(bufferC, "#define SWAG_IMPORT\n");
     for (auto depName : module->moduleDependenciesNames)
     {
         bufferC.addString(format("#include \"%s.h\"\n", depName.c_str()));
