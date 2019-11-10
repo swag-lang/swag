@@ -2,6 +2,7 @@
 #define PCH_H
 
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #include "windows.h"
 #include <vector>
 #include <deque>
@@ -15,6 +16,8 @@
 #include <codecvt>
 #include <set>
 #include <fstream>
+#include <functional>
+#include <string>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;
