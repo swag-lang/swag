@@ -42,14 +42,14 @@ namespace Ast
             }
             else
             {
-                concat.addString("#if ");
+				CONCAT_FIXED_STR(concat, "#if ");
                 SWAG_CHECK(output(concat, compilerIf->boolExpression, indent));
                 concat.addEolIndent(indent);
                 SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
                 if (compilerIf->elseBlock)
                 {
                     concat.addEolIndent(indent);
-                    concat.addString("#else");
+					CONCAT_FIXED_STR(concat, "#else");
                     concat.addEolIndent(indent);
                     SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
                 }
@@ -60,14 +60,14 @@ namespace Ast
         case AstNodeKind::If:
         {
             auto compilerIf = CastAst<AstIf>(node, AstNodeKind::If, AstNodeKind::CompilerIf);
-            concat.addString("if ");
+			CONCAT_FIXED_STR(concat, "if ");
             SWAG_CHECK(output(concat, compilerIf->boolExpression, indent));
             concat.addEolIndent(indent);
             SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));
             if (compilerIf->elseBlock)
             {
                 concat.addEolIndent(indent);
-                concat.addString("else");
+				CONCAT_FIXED_STR(concat, "else");
                 concat.addEolIndent(indent);
                 SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
             }
@@ -79,13 +79,13 @@ namespace Ast
             switch (node->token.id)
             {
             case TokenId::CompilerCallerFile:
-                concat.addString("#callerfile");
+				CONCAT_FIXED_STR(concat, "#callerfile");
                 break;
             case TokenId::CompilerCallerLine:
-                concat.addString("#callerline");
+				CONCAT_FIXED_STR(concat, "#callerline");
                 break;
             case TokenId::CompilerCallerFunction:
-                concat.addString("#callerfunction");
+				CONCAT_FIXED_STR(concat, "#callerfunction");
                 break;
             default:
                 return node->sourceFile->report({node, node->token, "Ast::output, unknown compiler function"});
@@ -95,11 +95,11 @@ namespace Ast
 
         case AstNodeKind::QuestionExpression:
             SWAG_CHECK(output(concat, node->childs[0]));
-            concat.addString(" ? (");
+			CONCAT_FIXED_STR(concat, " ? (");
             SWAG_CHECK(output(concat, node->childs[1]));
-            concat.addString(") : (");
+			CONCAT_FIXED_STR(concat, ") : (");
             SWAG_CHECK(output(concat, node->childs[2]));
-            concat.addString(")");
+			CONCAT_FIXED_STR(concat, ")");
             break;
 
         case AstNodeKind::VarDecl:
@@ -107,15 +107,15 @@ namespace Ast
             AstVarDecl* varDecl = static_cast<AstVarDecl*>(node);
             if (varDecl->type)
             {
-                concat.addString("var ");
+				CONCAT_FIXED_STR(concat, "var ");
                 concat.addString(node->name);
-                concat.addString(": ");
+				CONCAT_FIXED_STR(concat, ": ");
                 SWAG_CHECK(output(concat, varDecl->type));
             }
             else
             {
                 concat.addString(node->name);
-                concat.addString(" := ");
+				CONCAT_FIXED_STR(concat, " := ");
             }
 
             if (varDecl->assignment)
@@ -125,7 +125,7 @@ namespace Ast
 
         case AstNodeKind::Return:
         {
-            concat.addString("return ");
+			CONCAT_FIXED_STR(concat, "return ");
             if (!node->childs.empty())
                 SWAG_CHECK(output(concat, node->childs.front()));
             break;
@@ -138,23 +138,23 @@ namespace Ast
             concat.addString(node->name);
             if (identifier->genericParameters)
             {
-                concat.addString("!(");
+				CONCAT_FIXED_STR(concat, "!(");
                 SWAG_CHECK(output(concat, identifier->genericParameters));
-                concat.addString(")");
+				CONCAT_FIXED_STR(concat, ")");
             }
 
             if (identifier->callParameters)
             {
-                concat.addString("(");
+				CONCAT_FIXED_STR(concat, "(");
                 SWAG_CHECK(output(concat, identifier->callParameters));
-                concat.addString(")");
+				CONCAT_FIXED_STR(concat, ")");
             }
 
             break;
         }
 
         case AstNodeKind::Statement:
-            concat.addString("{");
+			CONCAT_FIXED_STR(concat, "{");
             concat.addEolIndent(indent);
             for (auto child : node->childs)
             {
@@ -163,7 +163,7 @@ namespace Ast
                 concat.addEolIndent(indent);
             }
 
-            concat.addString("}");
+			CONCAT_FIXED_STR(concat, "}");
             concat.addEolIndent(indent);
             break;
 
@@ -173,7 +173,7 @@ namespace Ast
             if (!funcParam->namedParam.empty())
             {
                 concat.addString(funcParam->namedParam);
-                concat.addString(": ");
+				CONCAT_FIXED_STR(concat, ": ");
             }
 
             SWAG_CHECK(output(concat, funcParam->childs.front()));
@@ -186,7 +186,7 @@ namespace Ast
             for (auto child : node->childs)
             {
                 if (idx)
-                    concat.addString(", ");
+					CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(concat, child));
                 idx++;
             }
@@ -200,7 +200,7 @@ namespace Ast
             for (auto child : node->childs)
             {
                 if (idx)
-                    concat.addString(".");
+					CONCAT_FIXED_STR(concat, ".");
                 SWAG_CHECK(output(concat, child));
                 idx++;
             }
@@ -215,27 +215,27 @@ namespace Ast
 
         case AstNodeKind::AffectOp:
             SWAG_CHECK(output(concat, node->childs[0]));
-            concat.addString(" ");
+			CONCAT_FIXED_STR(concat, " ");
             concat.addString(node->token.text);
-            concat.addString(" ");
+			CONCAT_FIXED_STR(concat, " ");
             SWAG_CHECK(output(concat, node->childs[1]));
             break;
 
         case AstNodeKind::FactorOp:
         case AstNodeKind::BinaryOp:
-            concat.addString("(");
+			CONCAT_FIXED_STR(concat, "(");
             SWAG_CHECK(output(concat, node->childs[0]));
-            concat.addString(" ");
+			CONCAT_FIXED_STR(concat, " ");
             concat.addString(node->token.text);
-            concat.addString(" ");
+			CONCAT_FIXED_STR(concat, " ");
             SWAG_CHECK(output(concat, node->childs[1]));
-            concat.addString(")");
+			CONCAT_FIXED_STR(concat, ")");
             break;
 
         case AstNodeKind::Cast:
-            concat.addString("cast(");
+			CONCAT_FIXED_STR(concat, "cast(");
             SWAG_CHECK(output(concat, node->childs[0]));
-            concat.addString(") ");
+			CONCAT_FIXED_STR(concat, ") ");
             SWAG_CHECK(output(concat, node->childs[1]));
             break;
 
@@ -243,9 +243,9 @@ namespace Ast
         {
             AstTypeExpression* typeNode = static_cast<AstTypeExpression*>(node);
             if (typeNode->isConst)
-                concat.addString("const ");
+				CONCAT_FIXED_STR(concat, "const ");
             for (int i = 0; i < typeNode->ptrCount; i++)
-                concat.addString("*");
+				CONCAT_FIXED_STR(concat, "*");
             if (typeNode->identifier)
                 SWAG_CHECK(output(concat, typeNode->identifier));
             else
@@ -254,15 +254,15 @@ namespace Ast
         }
 
         case AstNodeKind::CompilerAssert:
-            concat.addString("#assert(");
+			CONCAT_FIXED_STR(concat, "#assert(");
             SWAG_CHECK(output(concat, node->childs[0]));
             if (node->childs.size() > 1)
             {
-                concat.addString(", ");
+				CONCAT_FIXED_STR(concat, ", ");
                 SWAG_CHECK(output(concat, node->childs[1]));
             }
 
-            concat.addString(")");
+			CONCAT_FIXED_STR(concat, ")");
             break;
 
         case AstNodeKind::Literal:
