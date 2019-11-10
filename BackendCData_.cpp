@@ -44,7 +44,7 @@ bool BackendC::emitDataSegment(DataSegment* dataSegment)
 
 bool BackendC::emitStrings()
 {
-	CONCAT_FIXED_STR(bufferC, "STRINGS");
+	emitSeparator(bufferC, "STRINGS");
 
     int index = 0;
     for (const auto& str : module->strBuffer)
