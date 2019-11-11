@@ -4,7 +4,7 @@ using swag
 //#[swag.printbc]
 #test
 {
-	context := @context()
+	context := @getcontext()
 	
 	var req: AllocatorRequest
 	req.size = 16

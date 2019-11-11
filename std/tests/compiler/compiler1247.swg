@@ -1,18 +1,27 @@
 using swag
 
-func toto()
+/*func toto()
 {
-    cxt := @context()
+    cxt := @getcontext()
     
     var req: AllocatorRequest
     req.size = 10
     cxt.allocator(&req)
-}
+}*/
 
 #test
 {
-    toto()
+    //toto()
     
     var cxt: Context
-    cxt = deref @context()
+    cxt = deref @getcontext()
+    
+    var req: AllocatorRequest
+    req.size = 10
+    @assert(req.address == null)    
+    cxt.allocator(&req)
+    @assert(req.address != null)
+
+    req.mode = AllocatorMode.Free
+    cxt.allocator(&req)
 }

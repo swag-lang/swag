@@ -4,7 +4,7 @@ func(T, N: u32) new()->*T
 {
 	var req : swag.AllocatorRequest
 	req.size = @sizeof(T) * N
-	@context().allocator(req)
+	@getcontext().allocator(req)
 	
 	init(cast(*T) req.address, N)
 	
@@ -19,7 +19,7 @@ func(T, N: u32) delete(addr: *T)
 	req.size = @sizeof(T) * N
 	req.address = addr
 	req.mode = swag.AllocatorMode.Free
-	@context().allocator(req)
+	@getcontext().allocator(req)
 }
 
 struct Point

@@ -28,7 +28,7 @@ namespace std
         func realloc(using self, newSize: u32)
         {
             if !allocator
-                allocator = @context().allocator
+                allocator = @getcontext().allocator
 
             var req: AllocatorRequest
             req.mode = AllocatorMode.Realloc
