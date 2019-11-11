@@ -3,6 +3,7 @@ namespace std
     using swag
     private const SmallSize = 28'u32
     private const SmallSizeInternal = SmallSize - (@sizeof(Allocator) + @sizeof(u32))
+    #assert @sizeof(Utf8) == 40
 
     public struct Utf8
     {
@@ -37,7 +38,10 @@ namespace std
             allocator(req)
             buffer = acast req.address
         }
-
+    
+        #[swag.inline]
+        public func opCount(using self) => length
+        
         public func opAffect(using self, value: string)
         {
             if value == null

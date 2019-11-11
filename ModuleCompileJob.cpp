@@ -31,7 +31,7 @@ JobResult ModuleCompileJob::execute()
             path += OS::getOutputFileExtension(buildParameters.type);
             if (fs::exists(path))
             {
-                g_Log.messageHeaderCentered("Testing backend", module->name.c_str());
+                g_Log.messageHeaderCentered("Testing backend", module->name.c_str(), LogColor::DarkMagenta);
                 if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)
                     g_Log.verbose("running " + path.string());
 
