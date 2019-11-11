@@ -576,5 +576,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
+    <None Include="OsWin32.h">
+      <Filter>Main</Filter>
+    </None>
   </ItemGroup>
 </Project>

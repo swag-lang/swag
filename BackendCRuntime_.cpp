@@ -57,6 +57,9 @@ typedef swag_uint32_t			swag_tls_id_t;
 
 )";
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Should match runtime in Context.h
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 static constexpr const char* g_RuntimeC = R"(
 
 typedef union swag_register_t {
@@ -75,9 +78,9 @@ typedef union swag_register_t {
     swag_bool_t		b;
 } swag_register_t;
 
-typedef void(*__allocatorFct)(swag_register_t*);
+typedef void(*swag_allocator_t)(swag_register_t*);
 typedef struct swag_context_t {
-	__allocatorFct allocator;
+	swag_allocator_t allocator;
 } swag_context_t;
 
 typedef struct swag_slice_t {

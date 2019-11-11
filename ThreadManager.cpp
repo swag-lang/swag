@@ -14,8 +14,10 @@ ThreadManager g_ThreadMgr;
 void ThreadManager::init()
 {
     // Allocate a TLS slot, and set default context for this thread
-    g_tlsContextId = TlsAlloc();
-    TlsSetValue(g_tlsContextId, &g_defaultContext);
+    g_tlsContextIdByteCode = OS::tlsAlloc();
+    OS::tlsSetValue(g_tlsContextIdByteCode, &g_defaultContextByteCode);
+    g_tlsContextIdBackend = OS::tlsAlloc();
+    OS::tlsSetValue(g_tlsContextIdBackend, &g_defaultContextBackend);
 
     loadingThread = new LoadingThread();
     savingThread  = new SavingThread();
@@ -42,7 +44,7 @@ void ThreadManager::addJob(Job* job)
 {
     scoped_lock<mutex> lk(mutexAdd);
 
-	SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
+    SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
     job->flags &= ~JOB_IS_DEPENDENT;
 
     // Remove from pending list

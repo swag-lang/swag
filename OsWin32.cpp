@@ -1,5 +1,6 @@
 #include "pch.h"
-#ifdef _WIN32
+#ifdef WIN32
+#include "Os.h"
 #include "Global.h"
 #include "Log.h"
 #include <fcntl.h>
@@ -286,6 +287,21 @@ namespace OS
         //Free the buffer.
         LocalFree(messageBuffer);
         return message;
+    }
+
+    swag_tls_id_t tlsAlloc()
+    {
+        return TlsAlloc();
+    }
+
+    void tlsSetValue(swag_tls_id_t id, void* value)
+    {
+        TlsSetValue(id, value);
+    }
+
+    void* tlsGetValue(swag_tls_id_t id)
+    {
+        return TlsGetValue(id);
     }
 
 }; // namespace OS

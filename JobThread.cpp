@@ -34,11 +34,11 @@ bool JobThread::executeJob(Job* job, bool& exception)
     //__try
     {
         auto result = job->execute();
-		if (result == JobResult::ReleaseJob)
-		{
-			job->doneJob();
-			job->release();
-		}
+        if (result == JobResult::ReleaseJob)
+        {
+            job->doneJob();
+            job->release();
+        }
 
         g_ThreadMgr.jobHasEnded();
     }
@@ -54,7 +54,8 @@ bool JobThread::executeJob(Job* job, bool& exception)
 void JobThread::loop()
 {
     // TLS context
-    TlsSetValue(g_tlsContextId, &g_defaultContext);
+    TlsSetValue(g_tlsContextIdByteCode, &g_defaultContextByteCode);
+    TlsSetValue(g_tlsContextIdBackend, &g_defaultContextBackend);
 
     while (!requestEnd)
     {

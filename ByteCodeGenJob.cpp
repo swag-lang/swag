@@ -284,7 +284,7 @@ JobResult ByteCodeGenJob::execute()
             // Register some default swag functions
             if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)
             {
-                g_defaultContext.allocator = context.bc;
+                g_defaultContextByteCode.allocator = context.bc;
             }
 
             while (!nodes.empty())
