@@ -27,13 +27,6 @@ typedef struct swag_process_infos_t
     swag_context_t* defaultContext;
 } swag_process_infos_t;
 
-typedef struct swag_allocator_request_t
-{
-    uint32_t allocatorMode;
-    uint32_t size;
-    void*    address;
-} swag_allocator_request_t;
-
 extern swag_tls_id_t        g_tlsContextIdByteCode;
 extern swag_tls_id_t        g_tlsContextIdBackend;
 extern Context              g_defaultContextByteCode;

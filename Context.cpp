@@ -15,11 +15,10 @@ swag_process_infos_t g_processInfos = {0};
 static void defaultAllocator(Register* r)
 {
     Context* context = (Context*) OS::tlsGetValue(g_tlsContextIdByteCode);
-    //auto     req     = (swag_allocator_request_t*) r->pointer;
+    SWAG_ASSERT(context->allocator);
 
     ByteCodeRunContext runContext;
-
-    auto node = context->allocator->node;
+    auto               node = context->allocator->node;
     runContext.setup(node->sourceFile, node, g_Workspace.runContext.numRegistersRR, g_Workspace.runContext.stackSize);
     runContext.push(r->pointer);
     runContext.push(nullptr);
