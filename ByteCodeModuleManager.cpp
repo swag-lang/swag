@@ -13,24 +13,6 @@
 
 ByteCodeModuleManager g_ModuleMgr;
 
-static void defaultAllocator(Register* r)
-{
-    Context* context = (Context*) OS::tlsGetValue(g_tlsContextIdByteCode);
-    auto     req     = (swag_allocator_request_t*) r->pointer;
-
-    ByteCodeRunContext runContext;
-
-    auto node = context->allocator->node;
-    runContext.setup(node->sourceFile, node, g_Workspace.runContext.numRegistersRR, g_Workspace.runContext.stackSize);
-    runContext.push(r->pointer);
-    runContext.push(nullptr);
-    runContext.push(nullptr);
-    runContext.push(nullptr);
-	runContext.bp = runContext.sp;
-    context->allocator->enterByteCode(&runContext);
-    g_Run.run(&runContext);
-}
-
 ByteCodeModuleManager::ByteCodeModuleManager()
 {
     loadedModules["kernel32"] = ::GetModuleHandle(L"kernel32.dll");
@@ -79,15 +61,8 @@ bool ByteCodeModuleManager::loadModule(const string& name)
     auto   ptr      = ::GetProcAddress(h, funcName.c_str());
     if (ptr)
     {
-        swag_process_infos_t processInfos = {0};
-        processInfos.arguments.addr       = g_CommandLine.userArgumentsSlice.first;
-        processInfos.arguments.count      = (uint64_t) g_CommandLine.userArgumentsSlice.second;
-        processInfos.contextTlsId         = g_tlsContextIdBackend;
-        processInfos.defaultContext       = &g_defaultContextBackend;
-        g_defaultContextBackend.allocator = defaultAllocator;
-
         typedef void (*funcCall)(void*);
-        ((funcCall) ptr)(&processInfos);
+        ((funcCall) ptr)(&g_processInfos);
     }
 
     return true;

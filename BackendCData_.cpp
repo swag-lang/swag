@@ -110,8 +110,6 @@ bool BackendC::emitGlobalInit()
     bufferC.addStringFormat("void %s_globalInit(swag_process_infos_t *processInfos)\n", module->nameDown.c_str());
     CONCAT_FIXED_STR(bufferC, "{\n");
     CONCAT_FIXED_STR(bufferC, "\t__process_infos = *processInfos;\n");
-    CONCAT_FIXED_STR(bufferC, "\tif(!processInfos->defaultContext->allocator)\n");
-    bufferC.addStringFormat("\t\tprocessInfos->defaultContext->allocator = &%s;\n", g_defaultContextByteCode.allocator->callName().c_str());
 
     bufferC.addEol();
 

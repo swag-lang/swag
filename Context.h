@@ -34,7 +34,10 @@ typedef struct swag_allocator_request_t
     void*    address;
 } swag_allocator_request_t;
 
-extern swag_tls_id_t  g_tlsContextIdByteCode;
-extern swag_tls_id_t  g_tlsContextIdBackend;
-extern Context        g_defaultContextByteCode;
-extern swag_context_t g_defaultContextBackend;
+extern swag_tls_id_t        g_tlsContextIdByteCode;
+extern swag_tls_id_t        g_tlsContextIdBackend;
+extern Context              g_defaultContextByteCode;
+extern swag_context_t       g_defaultContextBackend;
+extern swag_process_infos_t g_processInfos;
+
+extern void initDefaultContext();

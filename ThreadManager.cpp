@@ -13,11 +13,7 @@ ThreadManager g_ThreadMgr;
 
 void ThreadManager::init()
 {
-    // Allocate a TLS slot, and set default context for this thread
-    g_tlsContextIdByteCode = OS::tlsAlloc();
-    OS::tlsSetValue(g_tlsContextIdByteCode, &g_defaultContextByteCode);
-    g_tlsContextIdBackend = OS::tlsAlloc();
-    OS::tlsSetValue(g_tlsContextIdBackend, &g_defaultContextBackend);
+	initDefaultContext();
 
     loadingThread = new LoadingThread();
     savingThread  = new SavingThread();
