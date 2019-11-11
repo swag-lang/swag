@@ -292,6 +292,15 @@ void ByteCode::print()
             break;
         }
 
+        case ByteCodeOp::ForeignCall:
+        {
+            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+            g_Log.print("[");
+            g_Log.print(funcNode->name);
+            g_Log.print("]");
+            break;
+        }
+
         case ByteCodeOp::LocalCall:
         {
             auto bc = (ByteCode*) ip->a.pointer;
