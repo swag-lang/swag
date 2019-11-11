@@ -37,15 +37,15 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->cleanTarget   = false;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->addRuntimeModule = false;
-    cmdLine->rebuild           = true;
+    //cmdLine->rebuild           = true;
     cmdLine->backendOutputTest = true;
     cmdLine->backendOutput     = true;
     //cmdLine->errorSourceOut    = false;
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
-    //cmdLine->testFilter    = "std19";
-    cmdLine->fileFilter = "compiler1247";
+    //cmdLine->testFilter = "std21";
+    //cmdLine->fileFilter = "compiler1247";
 }
 
 void CommandLineParser::logArguments()

@@ -5,7 +5,7 @@
 
 func @print(value: s64);
 func @print(value: f64);
-func @print(value: string);
+func @print(value: [..] u8);
 func @assert(value: bool);
 func @alloc(size: u32)->*void;
 func @realloc(ptr: *void, size: u32)->*void;

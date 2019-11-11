@@ -141,19 +141,31 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     {
     case Intrinsic::IntrinsicPrint:
     {
-        auto child0 = callParams->childs[0];
-        switch (TypeManager::concreteType(child0->typeInfo)->nativeType)
+        auto child0   = callParams->childs[0];
+        auto typeInfo = TypeManager::concreteType(child0->typeInfo);
+        if (typeInfo->kind == TypeInfoKind::Native)
         {
-        case NativeTypeKind::S64:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintS64, child0->resultRegisterRC);
-            break;
-        case NativeTypeKind::F64:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegisterRC);
-            break;
-        case NativeTypeKind::String:
-            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
-            break;
-        default:
+            switch (typeInfo->nativeType)
+            {
+            case NativeTypeKind::S64:
+                emitInstruction(context, ByteCodeOp::IntrinsicPrintS64, child0->resultRegisterRC);
+                break;
+            case NativeTypeKind::F64:
+                emitInstruction(context, ByteCodeOp::IntrinsicPrintF64, child0->resultRegisterRC);
+                break;
+            case NativeTypeKind::String:
+                emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
+                break;
+            default:
+                return internalError(context, "emitIntrinsic, @print invalid type");
+            }
+        }
+        else if (typeInfo->kind == TypeInfoKind::Slice)
+        {
+			emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
+        }
+        else
+        {
             return internalError(context, "emitIntrinsic, @print invalid type");
         }
 

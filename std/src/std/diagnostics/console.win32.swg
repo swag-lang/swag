@@ -72,7 +72,7 @@
 			SetConsoleTextAttribute(g_stdOutputHandle, g_stdOutputInitAttr)
 		}
 		
-		public func write(message: string)
+		public func write(message: [..] u8)
 		{
 			WriteFile(g_stdOutputHandle, @dataof(message), @countof(message), null, null)
 		}	
