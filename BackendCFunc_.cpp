@@ -1331,8 +1331,8 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addStringFormat("r[%u].pointer = (swag_uint8_t*) __tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
             break;
         case ByteCodeOp::IntrinsicArguments:
-            bufferC.addStringFormat("r[%u].pointer = (swag_uint8_t*) __process_infos.argumentsSlice[0]; ", ip->a.u32);
-            bufferC.addStringFormat("r[%u].u64 = (swag_uint64_t) __process_infos.argumentsSlice[1]; ", ip->b.u32);
+            bufferC.addStringFormat("r[%u].pointer = __process_infos.arguments.addr; ", ip->a.u32);
+            bufferC.addStringFormat("r[%u].u64 = __process_infos.arguments.count; ", ip->b.u32);
             break;
 
         case ByteCodeOp::NegBool:
