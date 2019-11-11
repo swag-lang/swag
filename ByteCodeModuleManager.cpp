@@ -6,8 +6,30 @@
 #include "Workspace.h"
 #include "Os.h"
 #include "Context.h"
+#include "AstNode.h"
+#include "Bytecode.h"
+#include "ByteCodeOp.h"
+#include "BytecodeRun.h"
 
 ByteCodeModuleManager g_ModuleMgr;
+
+static void defaultAllocator(Register* r)
+{
+    Context* context = (Context*) OS::tlsGetValue(g_tlsContextIdByteCode);
+    auto     req     = (swag_allocator_request_t*) r->pointer;
+
+    ByteCodeRunContext runContext;
+
+    auto node = context->allocator->node;
+    runContext.setup(node->sourceFile, node, g_Workspace.runContext.numRegistersRR, g_Workspace.runContext.stackSize);
+    runContext.push(r->pointer);
+    runContext.push(nullptr);
+    runContext.push(nullptr);
+    runContext.push(nullptr);
+	runContext.bp = runContext.sp;
+    context->allocator->enterByteCode(&runContext);
+    g_Run.run(&runContext);
+}
 
 ByteCodeModuleManager::ByteCodeModuleManager()
 {
@@ -62,6 +84,7 @@ bool ByteCodeModuleManager::loadModule(const string& name)
         processInfos.arguments.count      = (uint64_t) g_CommandLine.userArgumentsSlice.second;
         processInfos.contextTlsId         = g_tlsContextIdBackend;
         processInfos.defaultContext       = &g_defaultContextBackend;
+        g_defaultContextBackend.allocator = defaultAllocator;
 
         typedef void (*funcCall)(void*);
         ((funcCall) ptr)(&processInfos);

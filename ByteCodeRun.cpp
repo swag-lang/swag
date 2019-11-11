@@ -1582,7 +1582,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
 bool ByteCodeRun::run(ByteCodeRunContext* context)
 {
-    while (true)
+    while (context->ip)
     {
         // Get instruction
         auto ip = context->ip++;
