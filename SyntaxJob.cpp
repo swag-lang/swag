@@ -133,8 +133,11 @@ JobResult SyntaxJob::execute()
     sourceFile->scopeRoot = Ast::newScope(nullptr, sourceFile->fromTests ? scopeName : "", ScopeKind::File, sourceFile->module->scopeRoot);
     currentScope          = sourceFile->scopeRoot;
 
-	// One private scope
-    sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, sourceFile->module->scopeRoot);
+    // One private scope
+    if (sourceFile->fromTests)
+        sourceFile->scopePrivate = sourceFile->scopeRoot;
+    else
+        sourceFile->scopePrivate = Ast::newScope(nullptr, scopeName, ScopeKind::File, sourceFile->module->scopeRoot);
 
     // Setup root ast for file
     sourceFile->astRoot             = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::File, sourceFile, sourceFile->module->astRoot);

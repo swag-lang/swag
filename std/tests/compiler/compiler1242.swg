@@ -2,8 +2,8 @@
 using swag
 namespace std
 {    
-    private const SmallSize = 40'u32
-    private const SmallSizeInternal = SmallSize - @sizeof(Utf8.allocator)
+    const SmallSize = 40'u32
+    const SmallSizeInternal = SmallSize - @sizeof(Utf8.size) - @sizeof(Utf8.allocator)
 
     struct Utf8
     {
@@ -11,11 +11,11 @@ namespace std
         length:     u32
         size:       u32
         allocator:  Allocator
-        padding:    [SmallSize] u8
+        padding:    [SmallSizeInternal] u8
     }
-
+    
     impl Utf8
-    {
+    {   
         func free(using self)
         {
             if !allocator
@@ -27,19 +27,18 @@ namespace std
             buffer = null
         }
         
-        func alloc(using self, newSize: u32)
-        {
-            free(self)
-            
+        func realloc(using self, newSize: u32)
+        {           
             if !allocator
                 allocator = @context().allocator
+                
             var req: AllocatorRequest
+            req.mode = AllocatorMode.Realloc
             req.size = newSize
+            req.address = buffer
             allocator(req)
             buffer = acast req.address
         }
-        
-
 
         func reserve(using self, newSize: u32)
         {
@@ -52,8 +51,11 @@ namespace std
             }
 
             // Actual size is fine, don't change anything
-            if size >= newSize
+            if newSize <= size 
                 return
+                
+            realloc(self, newSize)
+            size = newSize
         }
     }
 }
