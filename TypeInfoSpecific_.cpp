@@ -104,6 +104,12 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
+    if (isSameFlags & ISSAME_CAST)
+    {
+        if (this == g_TypeMgr.typeInfoNull && to->kind == TypeInfoKind::Lambda)
+            return true;
+    }
+
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 
@@ -353,6 +359,13 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+
+	if (isSameFlags & ISSAME_CAST)
+    {
+        if (kind == TypeInfoKind::Lambda && to == g_TypeMgr.typeInfoNull)
+            return true;
+    }
+
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 

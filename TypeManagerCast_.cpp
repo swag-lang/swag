@@ -14,7 +14,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 {
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
-        assert(fromNode);
+        SWAG_ASSERT(fromNode);
         context->errorContext.report({fromNode, fromNode->token, format("cannot cast from '%s' to '%s'", fromType->name.c_str(), toType->name.c_str()).c_str()});
     }
 

@@ -203,8 +203,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         return true;
     }
 
-    if (leftTypeInfo->kind == TypeInfoKind::Lambda &&
-        rightTypeInfo->kind == TypeInfoKind::Lambda &&
+    if ((leftTypeInfo->kind == TypeInfoKind::Lambda || leftTypeInfo == g_TypeMgr.typeInfoNull) &&
+        (rightTypeInfo->kind == TypeInfoKind::Lambda || rightTypeInfo == g_TypeMgr.typeInfoNull) &&
         (node->token.id == TokenId::SymEqualEqual || node->token.id == TokenId::SymExclamEqual))
     {
         // This is fine to compare two lambdas
