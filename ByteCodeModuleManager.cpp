@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "Workspace.h"
 #include "Os.h"
+#include "Context.h"
 
 ByteCodeModuleManager g_ModuleMgr;
 
@@ -48,6 +49,15 @@ bool ByteCodeModuleManager::loadModule(const string& name)
     if (verbose)
         g_Log.verbose("success");
     loadedModules[name] = h;
+
+	/*string funcName = format("%s_globalInit", name.c_str());
+	auto ptr = ::GetProcAddress(h, funcName.c_str());
+	if (ptr)
+	{
+		typedef void (*funcCall)(void*);
+		((funcCall) ptr)((uint8_t*)TlsGetValue(g_tlsContextId));
+	}*/
+
     return true;
 }
 
