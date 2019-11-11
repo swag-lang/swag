@@ -48,7 +48,7 @@ struct CommandLine
 
     // Output
     string config = "debug";
-    string arch      = "win64";
+    string arch   = "win64";
 
     // Backend
     BackendType backendType        = BackendType::C;
