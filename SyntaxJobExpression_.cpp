@@ -242,11 +242,22 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
         (token.id == TokenId::SymGreaterGreater) ||
         (token.id == TokenId::SymLowerLower) ||
         (token.id == TokenId::SymPercent) ||
-		(token.id == TokenId::SymTilde) ||
+        (token.id == TokenId::SymTilde) ||
         (token.id == TokenId::SymCircumflex))
     {
-        if (parent && parent->kind == AstNodeKind::FactorOp && parent->token.id != token.id)
-            return syntaxError(token, "operator order ambiguity, please add parenthesis");
+        if (parent && parent->kind == AstNodeKind::FactorOp)
+        {
+            if (parent->token.id != token.id)
+                return syntaxError(token, "operator order ambiguity, please add parenthesis");
+
+			// Associative operations
+            if (token.id != TokenId::SymPlus && 
+				token.id != TokenId::SymAsterisk && 
+				token.id != TokenId::SymVertical && 
+				token.id != TokenId::SymCircumflex &&
+				token.id != TokenId::SymTilde)
+                return syntaxError(token, "operator order ambiguity, please add parenthesis");
+        }
 
         auto binaryNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FactorOp, sourceFile, parent);
         if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)

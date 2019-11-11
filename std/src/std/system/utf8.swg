@@ -2,7 +2,7 @@ namespace std
 {
     using swag
     private const SmallSize = 28'u32
-    private const SmallSizeInternal = SmallSize - @sizeof(Allocator) - @sizeof(u32)
+    private const SmallSizeInternal = SmallSize - (@sizeof(Allocator) + @sizeof(u32))
 
     public struct Utf8
     {
