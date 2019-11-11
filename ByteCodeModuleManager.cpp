@@ -50,19 +50,18 @@ bool ByteCodeModuleManager::loadModule(const string& name)
         g_Log.verbose("success");
     loadedModules[name] = h;
 
-	// Should initialize the module the first time
-	// Note that the allocator function of the default context is not set, so the module
-	// will initialize it with its internal function
+    // Should initialize the module the first time
+    // Note that the allocator function of the default context is not set, so the module
+    // will initialize it with its internal function
     string funcName = format("%s_globalInit", name.c_str());
     auto   ptr      = ::GetProcAddress(h, funcName.c_str());
     if (ptr)
     {
-        static swag_context_t defaultContext = {0};
-        swag_process_infos_t  processInfos   = {0};
-        processInfos.arguments.addr          = g_CommandLine.userArgumentsSlice.first;
-        processInfos.arguments.count         = (uint64_t) g_CommandLine.userArgumentsSlice.second;
-        processInfos.contextTlsId            = g_tlsContextIdByteCode;
-        processInfos.defaultContext          = &defaultContext;
+        swag_process_infos_t processInfos = {0};
+        processInfos.arguments.addr       = g_CommandLine.userArgumentsSlice.first;
+        processInfos.arguments.count      = (uint64_t) g_CommandLine.userArgumentsSlice.second;
+        processInfos.contextTlsId         = g_tlsContextIdBackend;
+        processInfos.defaultContext       = &g_defaultContextBackend;
 
         typedef void (*funcCall)(void*);
         ((funcCall) ptr)(&processInfos);
