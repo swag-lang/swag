@@ -112,44 +112,44 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         }
         else if (returnType->kind == TypeInfoKind::Pointer)
         {
-			CONCAT_FIXED_STR(bufferC, "rt[0].pointer = (swag_uint8_t*) ");
+            CONCAT_FIXED_STR(bufferC, "rt[0].pointer = (swag_uint8_t*) ");
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
             switch (returnType->nativeType)
             {
             case NativeTypeKind::S8:
-				CONCAT_FIXED_STR(bufferC, "rt[0].s8 = (swag_int8_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].s8 = (swag_int8_t) ");
                 break;
             case NativeTypeKind::U8:
-				CONCAT_FIXED_STR(bufferC, "rt[0].u8 = (swag_int8_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].u8 = (swag_int8_t) ");
                 break;
             case NativeTypeKind::S16:
-				CONCAT_FIXED_STR(bufferC, "rt[0].s16 = (swag_int16_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].s16 = (swag_int16_t) ");
                 break;
             case NativeTypeKind::U16:
-				CONCAT_FIXED_STR(bufferC, "rt[0].u16 = (swag_uint16_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].u16 = (swag_uint16_t) ");
                 break;
             case NativeTypeKind::S32:
-				CONCAT_FIXED_STR(bufferC, "rt[0].s32 = (swag_int32_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].s32 = (swag_int32_t) ");
                 break;
             case NativeTypeKind::U32:
-				CONCAT_FIXED_STR(bufferC, "rt[0].u32 = (swag_uint32_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].u32 = (swag_uint32_t) ");
                 break;
             case NativeTypeKind::S64:
-				CONCAT_FIXED_STR(bufferC, "rt[0].s64 = (swag_int64_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].s64 = (swag_int64_t) ");
                 break;
             case NativeTypeKind::U64:
-				CONCAT_FIXED_STR(bufferC, "rt[0].u64 = (swag_uint64_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].u64 = (swag_uint64_t) ");
                 break;
             case NativeTypeKind::Bool:
-				CONCAT_FIXED_STR(bufferC, "rt[0].b = (swag_bool_t) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].b = (swag_bool_t) ");
                 break;
             case NativeTypeKind::F32:
-				CONCAT_FIXED_STR(bufferC, "rt[0].f32 = (float) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].f32 = (float) ");
                 break;
             case NativeTypeKind::F64:
-				CONCAT_FIXED_STR(bufferC, "rt[0].f64 = (double) ");
+                CONCAT_FIXED_STR(bufferC, "rt[0].f64 = (double) ");
                 break;
             default:
                 return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid return type");
@@ -197,40 +197,40 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
             switch (typeParam->nativeType)
             {
             case NativeTypeKind::Bool:
-				CONCAT_FIXED_STR(bufferC, ".b");
+                CONCAT_FIXED_STR(bufferC, ".b");
                 break;
             case NativeTypeKind::S8:
-				CONCAT_FIXED_STR(bufferC, ".s8");
+                CONCAT_FIXED_STR(bufferC, ".s8");
                 break;
             case NativeTypeKind::U8:
-				CONCAT_FIXED_STR(bufferC, ".u8");
+                CONCAT_FIXED_STR(bufferC, ".u8");
                 break;
             case NativeTypeKind::S16:
-				CONCAT_FIXED_STR(bufferC, ".s16");
+                CONCAT_FIXED_STR(bufferC, ".s16");
                 break;
             case NativeTypeKind::U16:
-				CONCAT_FIXED_STR(bufferC, ".u16");
+                CONCAT_FIXED_STR(bufferC, ".u16");
                 break;
             case NativeTypeKind::S32:
-				CONCAT_FIXED_STR(bufferC, ".s32");
+                CONCAT_FIXED_STR(bufferC, ".s32");
                 break;
             case NativeTypeKind::U32:
-				CONCAT_FIXED_STR(bufferC, ".u32");
+                CONCAT_FIXED_STR(bufferC, ".u32");
                 break;
             case NativeTypeKind::S64:
-				CONCAT_FIXED_STR(bufferC, ".s64");
+                CONCAT_FIXED_STR(bufferC, ".s64");
                 break;
             case NativeTypeKind::U64:
-				CONCAT_FIXED_STR(bufferC, ".u64");
+                CONCAT_FIXED_STR(bufferC, ".u64");
                 break;
             case NativeTypeKind::F32:
-				CONCAT_FIXED_STR(bufferC, ".f32");
+                CONCAT_FIXED_STR(bufferC, ".f32");
                 break;
             case NativeTypeKind::F64:
-				CONCAT_FIXED_STR(bufferC, ".f64");
+                CONCAT_FIXED_STR(bufferC, ".f64");
                 break;
             case NativeTypeKind::Char:
-				CONCAT_FIXED_STR(bufferC, ".ch");
+                CONCAT_FIXED_STR(bufferC, ".ch");
                 break;
             default:
                 return module->internalError(ip->sourceFileIdx, ip->startLocation, ip->endLocation, "emitForeignCall, invalid param native type");
@@ -246,17 +246,17 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
     if (returnType->kind == TypeInfoKind::Slice)
     {
         if (numCallParams)
-			bufferC.addChar(',');
-		CONCAT_FIXED_STR(bufferC, "&rt[0]");
+            bufferC.addChar(',');
+        CONCAT_FIXED_STR(bufferC, "&rt[0]");
     }
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         if (numCallParams)
-			bufferC.addChar(',');
-		CONCAT_FIXED_STR(bufferC, "rt[0].pointer");
+            bufferC.addChar(',');
+        CONCAT_FIXED_STR(bufferC, "rt[0].pointer");
     }
 
-	CONCAT_FIXED_STR(bufferC, ");");
+    CONCAT_FIXED_STR(bufferC, ");");
 
     return true;
 }
@@ -264,7 +264,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
 bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one)
 {
     SWAG_CHECK(emitFuncSignature(moduleToGen, bufferC, typeFunc, node));
-	CONCAT_FIXED_STR(bufferC, " {\n");
+    CONCAT_FIXED_STR(bufferC, " {\n");
 
     // Compute number of registers
     auto n = typeFunc->numReturnRegisters();
@@ -277,14 +277,14 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     // Declare registers
     if (n)
     {
-		CONCAT_FIXED_STR(bufferC, "\tswag_register_t ");
+        CONCAT_FIXED_STR(bufferC, "\tswag_register_t ");
         for (int i = 0; i < n; i++)
         {
             if (i)
-				bufferC.addChar(',');
+                bufferC.addChar(',');
             bufferC.addStringFormat("rr%d", i);
         }
-		CONCAT_FIXED_STR(bufferC, ";\n");
+        CONCAT_FIXED_STR(bufferC, ";\n");
     }
 
     // Affect registers
@@ -294,7 +294,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
     if (returnByCopy)
     {
-		CONCAT_FIXED_STR(bufferC, "\trr0.pointer = result;\n");
+        CONCAT_FIXED_STR(bufferC, "\trr0.pointer = result;\n");
     }
 
     for (auto param : typeFunc->parameters)
@@ -355,7 +355,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
                 break;
             case NativeTypeKind::String:
                 bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s; ", idx, param->namedParam.c_str());
-                bufferC.addStringFormat("rr%d.u32 = strlen(%s);\n", idx + 1, param->namedParam.c_str());
+                bufferC.addStringFormat("rr%d.u32 = %s ? strlen(%s) : 0;\n", idx + 1, param->namedParam.c_str(), param->namedParam.c_str());
                 break;
             default:
                 return module->internalError("emitFuncWrapperPublic, invalid param type");
@@ -371,15 +371,15 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
 
     // Make the call
     bufferC.addStringFormat("\t%s", one->callName().c_str());
-	CONCAT_FIXED_STR(bufferC, "(");
+    CONCAT_FIXED_STR(bufferC, "(");
     for (int i = 0; i < n; i++)
     {
         if (i)
-			bufferC.addChar(',');
+            bufferC.addChar(',');
         bufferC.addStringFormat("&rr%d", i);
     }
 
-	CONCAT_FIXED_STR(bufferC, ");\n");
+    CONCAT_FIXED_STR(bufferC, ");\n");
 
     // Return
     if (typeFunc->numReturnRegisters() && !returnByCopy)
@@ -387,48 +387,48 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
         auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS);
         if (returnType->kind == TypeInfoKind::Slice)
         {
-			CONCAT_FIXED_STR(bufferC, "\t*((void **) result) = rr0.pointer;\n");
-			CONCAT_FIXED_STR(bufferC, "\t*((void **) result + 1) = rr1.pointer;\n");
+            CONCAT_FIXED_STR(bufferC, "\t*((void **) result) = rr0.pointer;\n");
+            CONCAT_FIXED_STR(bufferC, "\t*((void **) result + 1) = rr1.pointer;\n");
         }
         else if (returnType->kind == TypeInfoKind::Native)
         {
             switch (returnType->nativeType)
             {
             case NativeTypeKind::U8:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.u8;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.u8;\n");
                 break;
             case NativeTypeKind::U16:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.u16;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.u16;\n");
                 break;
             case NativeTypeKind::U32:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.u32;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.u32;\n");
                 break;
             case NativeTypeKind::U64:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.u64;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.u64;\n");
                 break;
             case NativeTypeKind::S8:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.s8;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.s8;\n");
                 break;
             case NativeTypeKind::S16:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.s16;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.s16;\n");
                 break;
             case NativeTypeKind::S32:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.s32;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.s32;\n");
                 break;
             case NativeTypeKind::S64:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.s64;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.s64;\n");
                 break;
             case NativeTypeKind::F32:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.f32;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.f32;\n");
                 break;
             case NativeTypeKind::F64:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.f64;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.f64;\n");
                 break;
             case NativeTypeKind::Char:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.ch;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.ch;\n");
                 break;
             case NativeTypeKind::Bool:
-				CONCAT_FIXED_STR(bufferC, "\treturn rr0.b;\n");
+                CONCAT_FIXED_STR(bufferC, "\treturn rr0.b;\n");
                 break;
             default:
                 return module->internalError("emitFuncWrapperPublic, invalid return type");
@@ -440,7 +440,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
         }
     }
 
-	CONCAT_FIXED_STR(bufferC, "}\n\n");
+    CONCAT_FIXED_STR(bufferC, "}\n\n");
     return true;
 }
 
@@ -451,14 +451,14 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
 
     SWAG_CHECK(swagTypeToCType(moduleToGen, typeFunc->returnType, returnType));
     if (returnByCopy)
-		CONCAT_FIXED_STR(buffer, "void");
+        CONCAT_FIXED_STR(buffer, "void");
     else if (typeFunc->numReturnRegisters() <= 1)
         buffer.addString(returnType);
     else
-		CONCAT_FIXED_STR(buffer, "void");
-	CONCAT_FIXED_STR(buffer, " ");
+        CONCAT_FIXED_STR(buffer, "void");
+    CONCAT_FIXED_STR(buffer, " ");
     buffer.addString(node->fullnameForeign.c_str());
-	CONCAT_FIXED_STR(buffer, "(");
+    CONCAT_FIXED_STR(buffer, "(");
 
     bool first = true;
     if (node->parameters)
@@ -467,12 +467,12 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
         for (auto param : node->parameters->childs)
         {
             if (!first)
-				CONCAT_FIXED_STR(buffer, ", ");
+                CONCAT_FIXED_STR(buffer, ", ");
             first = false;
 
             SWAG_CHECK(swagTypeToCType(moduleToGen, param->typeInfo, cType));
             buffer.addString(cType);
-			CONCAT_FIXED_STR(buffer, " ");
+            CONCAT_FIXED_STR(buffer, " ");
             buffer.addString(param->name.c_str());
         }
     }
@@ -481,12 +481,12 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
     if (typeFunc->numReturnRegisters() > 1 || returnByCopy)
     {
         if (!first)
-			CONCAT_FIXED_STR(buffer, ", ");
+            CONCAT_FIXED_STR(buffer, ", ");
         buffer.addString(returnType);
-		CONCAT_FIXED_STR(buffer, " result");
+        CONCAT_FIXED_STR(buffer, " result");
     }
 
-	CONCAT_FIXED_STR(buffer, ")");
+    CONCAT_FIXED_STR(buffer, ")");
     return true;
 }
 
@@ -496,15 +496,15 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
     auto typeFunc = bc->callType();
     auto name     = bc->callName();
 
-	CONCAT_FIXED_STR(bufferC, "void ");
+    CONCAT_FIXED_STR(bufferC, "void ");
     bufferC.addString(name.c_str());
-	CONCAT_FIXED_STR(bufferC, "(");
+    CONCAT_FIXED_STR(bufferC, "(");
 
     // Result
     for (int i = 0; i < typeFunc->numReturnRegisters(); i++)
     {
         if (i)
-			bufferC.addChar(',');
+            bufferC.addChar(',');
         bufferC.addStringFormat("swag_register_t* rr%d", i);
     }
 
@@ -516,12 +516,12 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
         for (int i = 0; i < typeParam->numRegisters(); i++)
         {
             if (index || i || typeFunc->numReturnRegisters())
-				bufferC.addChar(',');
+                bufferC.addChar(',');
             bufferC.addStringFormat("swag_register_t* rp%u", index++);
         }
     }
 
-	CONCAT_FIXED_STR(bufferC, ")");
+    CONCAT_FIXED_STR(bufferC, ")");
 }
 
 bool BackendC::emitFuncSignatures()
@@ -558,12 +558,12 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-		CONCAT_FIXED_STR(bufferC, "static ");
+        CONCAT_FIXED_STR(bufferC, "static ");
         emitFuncSignatureInternalC(one);
-		CONCAT_FIXED_STR(bufferC, ";\n");
+        CONCAT_FIXED_STR(bufferC, ";\n");
     }
 
-	bufferC.addEol();
+    bufferC.addEol();
     return true;
 }
 
@@ -573,12 +573,12 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     auto typeFunc = bc->callType();
 
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-		CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_HAS_TEST\n");
+        CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_HAS_TEST\n");
 
     // Signature
-	CONCAT_FIXED_STR(bufferC, "static ");
+    CONCAT_FIXED_STR(bufferC, "static ");
     emitFuncSignatureInternalC(bc);
-	CONCAT_FIXED_STR(bufferC, " {\n");
+    CONCAT_FIXED_STR(bufferC, " {\n");
 
     // Generate one local variable per used register
     if (bc->maxReservedRegisterRC)
@@ -613,9 +613,9 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                     s.erase(0, s.find_first_not_of("\t\n\v\f\r "));
                     if (!s.empty())
                         s.pop_back();
-					CONCAT_FIXED_STR(bufferC, "/* ");
+                    CONCAT_FIXED_STR(bufferC, "/* ");
                     bufferC.addString(s);
-					CONCAT_FIXED_STR(bufferC, " */\n");
+                    CONCAT_FIXED_STR(bufferC, " */\n");
                 }
             }
         }
@@ -624,11 +624,11 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
 
         if (module->buildParameters.target.backendC.writeByteCodeInstruction)
         {
-			CONCAT_FIXED_STR(bufferC, "/* ");
+            CONCAT_FIXED_STR(bufferC, "/* ");
             for (int dec = g_ByteCodeOpNamesLen[(int) ip->op]; dec < ByteCode::ALIGN_RIGHT_OPCODE; dec++)
-				CONCAT_FIXED_STR(bufferC, " ");
+                CONCAT_FIXED_STR(bufferC, " ");
             bufferC.addString(g_ByteCodeOpNames[(int) ip->op]);
-			CONCAT_FIXED_STR(bufferC, " */ ");
+            CONCAT_FIXED_STR(bufferC, " */ ");
         }
 
         switch (ip->op)
@@ -1299,7 +1299,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             bufferC.addStringFormat("if(r[%u].u32) goto lbl%08u;", ip->a.u32, ip->b.s32 + i + 1);
             break;
         case ByteCodeOp::Ret:
-			CONCAT_FIXED_STR(bufferC, "return;");
+            CONCAT_FIXED_STR(bufferC, "return;");
             break;
 
         case ByteCodeOp::IntrinsicPrintS64:
@@ -1497,7 +1497,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                 idxParam--;
             }
 
-			CONCAT_FIXED_STR(bufferC, "}; ");
+            CONCAT_FIXED_STR(bufferC, "}; ");
             bufferC.addStringFormat("r[%u].pointer = sizeof(swag_register_t) + (swag_uint8_t*) &vaargs%u; ", ip->a.u32, vaargsIdx);
             bufferC.addStringFormat("vaargs%u[0].pointer = r[%u].pointer;", vaargsIdx, ip->a.u32);
             vaargsIdx++;
@@ -1520,25 +1520,25 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             else
             {
                 // Need to output the function prototype too
-				CONCAT_FIXED_STR(bufferC, "{ typedef void(*tfn)(");
+                CONCAT_FIXED_STR(bufferC, "{ typedef void(*tfn)(");
                 for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
                 {
                     if (j)
-						bufferC.addChar(',');
-					CONCAT_FIXED_STR(bufferC, "swag_register_t*");
+                        bufferC.addChar(',');
+                    CONCAT_FIXED_STR(bufferC, "swag_register_t*");
                 }
 
-				CONCAT_FIXED_STR(bufferC, "); ");
+                CONCAT_FIXED_STR(bufferC, "); ");
 
                 // Then the call
                 bufferC.addStringFormat("((tfn)r[%u].pointer)", ip->a.u32);
             }
 
-			CONCAT_FIXED_STR(bufferC, "(");
+            CONCAT_FIXED_STR(bufferC, "(");
             for (int j = 0; j < typeFuncBC->numReturnRegisters(); j++)
             {
                 if (j)
-					bufferC.addChar(',');
+                    bufferC.addChar(',');
                 bufferC.addStringFormat("&rt[%u]", j);
             }
 
@@ -1550,7 +1550,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
                 for (int j = 0; j < typeParam->numRegisters(); j++)
                 {
                     if ((idxCall != (int) numCallParams - 1) || j || typeFuncBC->numReturnRegisters())
-						bufferC.addChar(',');
+                        bufferC.addChar(',');
                     auto index = pushRAParams.back();
                     pushRAParams.pop_back();
                     bufferC.addStringFormat("&r[%u]", index);
@@ -1558,7 +1558,7 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
             }
 
             pushRAParams.clear();
-			CONCAT_FIXED_STR(bufferC, "); }");
+            CONCAT_FIXED_STR(bufferC, "); }");
         }
         break;
 
@@ -1568,21 +1568,21 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
 
         default:
             ok = false;
-			CONCAT_FIXED_STR(bufferC, "// ");
+            CONCAT_FIXED_STR(bufferC, "// ");
             bufferC.addString(g_ByteCodeOpNames[(int) ip->op]);
             moduleToGen->internalError(format("unknown instruction '%s' during backend generation", g_ByteCodeOpNames[(int) ip->op]));
             break;
         }
 
-		bufferC.addEol();
+        bufferC.addEol();
     }
 
-	CONCAT_FIXED_STR(bufferC, "}\n");
+    CONCAT_FIXED_STR(bufferC, "}\n");
 
     if (bc->node && bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
-		CONCAT_FIXED_STR(bufferC, "#endif\n");
+        CONCAT_FIXED_STR(bufferC, "#endif\n");
 
-	bufferC.addEol();
+    bufferC.addEol();
     return ok;
 }
 
@@ -1653,10 +1653,10 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
         if (typeFunc->flags & TYPEINFO_GENERIC)
             continue;
 
-		CONCAT_FIXED_STR(bufferH, "SWAG_EXTERN SWAG_IMPEXP ");
+        CONCAT_FIXED_STR(bufferH, "SWAG_EXTERN SWAG_IMPEXP ");
         node->computeFullName();
         SWAG_CHECK(emitFuncSignature(moduleToGen, bufferH, typeFunc, node));
-		CONCAT_FIXED_STR(bufferH, ";\n");
+        CONCAT_FIXED_STR(bufferH, ";\n");
     }
 
     for (auto child : scope->childScopes)

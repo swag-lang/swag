@@ -56,7 +56,7 @@ namespace std
         {
             // Small size, just be sure with have a valid buffer address
             if newSize <= SmallSize
-            {
+            {           
                 // Free everything
                 if !newSize
                 {

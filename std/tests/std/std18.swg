@@ -1,11 +1,11 @@
 #import "std"
 using std
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
-    var x: Utf8;// = "coucou"
-    //@assert(x.length == 6)
+    var x: Utf8 = "coucou"
+    @assert(x.length == 6)
     x = null
-    //@assert(x.length == 0)
+    @assert(x.length == 0)
 }
