@@ -641,6 +641,11 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = (uint8_t*) OS::tlsGetValue(g_tlsContextIdByteCode);
         break;
     }
+    case ByteCodeOp::IntrinsicSetContext:
+    {
+        OS::tlsSetValue(g_tlsContextIdByteCode, registersRC[ip->a.u32].pointer);
+        break;
+    }
 
     case ByteCodeOp::IntrinsicPrintF64:
     {

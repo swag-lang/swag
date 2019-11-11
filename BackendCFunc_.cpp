@@ -1330,6 +1330,9 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
         case ByteCodeOp::IntrinsicGetContext:
             bufferC.addStringFormat("r[%u].pointer = (swag_uint8_t*) __tlsGetValue(__process_infos.contextTlsId);", ip->a.u32);
             break;
+        case ByteCodeOp::IntrinsicSetContext:
+            bufferC.addStringFormat("__tlsSetValue(__process_infos.contextTlsId, r[%u].pointer);", ip->a.u32);
+            break;
         case ByteCodeOp::IntrinsicArguments:
             bufferC.addStringFormat("r[%u].pointer = __process_infos.arguments.addr; ", ip->a.u32);
             bufferC.addStringFormat("r[%u].u64 = __process_infos.arguments.count; ", ip->b.u32);

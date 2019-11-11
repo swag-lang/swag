@@ -208,6 +208,12 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, node->resultRegisterRC);
         break;
     }
+    case Intrinsic::IntrinsicSetContext:
+    {
+        auto childDest = callParams->childs[0];
+        emitInstruction(context, ByteCodeOp::IntrinsicSetContext, childDest->resultRegisterRC);
+        freeRegisterRC(context, childDest);
+    }
     case Intrinsic::IntrinsicArguments:
     {
         reserveLinearRegisterRC(context, node->resultRegisterRC, 2);

@@ -32,6 +32,7 @@ enum class Intrinsic
     IntrinsicFree,
 	IntrinsicMemCpy,
 	IntrinsicGetContext,
+	IntrinsicSetContext,
 	IntrinsicArguments,
 };
 

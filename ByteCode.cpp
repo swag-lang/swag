@@ -184,6 +184,7 @@ void ByteCode::print()
         case ByteCodeOp::CastBool64:
         case ByteCodeOp::MovRASPVaargs:
         case ByteCodeOp::IntrinsicGetContext:
+		case ByteCodeOp::IntrinsicSetContext:
         case ByteCodeOp::Clear8:
         case ByteCodeOp::Clear16:
         case ByteCodeOp::Clear32:
