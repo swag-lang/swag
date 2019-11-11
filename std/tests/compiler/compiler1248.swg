@@ -5,6 +5,7 @@ var GG = false
 func alloc(req: *AllocatorRequest)
 {
     GG = true
+    @assert(req.size == 10)
 }
 
 func toto()

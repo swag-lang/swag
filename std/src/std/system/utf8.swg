@@ -92,13 +92,3 @@ namespace std
         }
     }
 }
-
-//#[swag.printbc]
-#test
-{
-    using std
-    var x: Utf8 = "coucou"
-    @assert(x.length == 6)
-    x = null
-    @assert(x.length == 0)
-}
