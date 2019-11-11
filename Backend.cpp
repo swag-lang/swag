@@ -28,11 +28,11 @@ void Backend::emitSeparator(Concat& buffer, const char* title)
 bool Backend::emitAttributes(AstNode* node)
 {
     if (node->flags & AST_CONST_EXPR)
-		CONCAT_FIXED_STR(bufferSwg, "\t#[swag.constexpr]\n");
+		CONCAT_FIXED_STR(bufferSwg, "\t#[constexpr]\n");
     if (node->attributeFlags & ATTRIBUTE_INLINE)
-		CONCAT_FIXED_STR(bufferSwg, "\t#[swag.inline]\n");
+		CONCAT_FIXED_STR(bufferSwg, "\t#[inline]\n");
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
-		CONCAT_FIXED_STR(bufferSwg, "\t#[swag.complete]\n");
+		CONCAT_FIXED_STR(bufferSwg, "\t#[complete]\n");
     return true;
 }
 
@@ -40,7 +40,7 @@ bool Backend::emitAttributes(TypeInfoParam* param)
 {
     ComputedValue v;
     if (param->attributes.getValue("swag.offset.name", v))
-        bufferSwg.addStringFormat("\t\t#[swag.offset(\"%s\")]\n", v.text.c_str());
+        bufferSwg.addStringFormat("\t\t#[offset(\"%s\")]\n", v.text.c_str());
 
     return true;
 }
@@ -375,7 +375,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            bufferSwg.addStringFormat("\t#[swag.foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameForeign.c_str());
+            bufferSwg.addStringFormat("\t#[foreign(\"%s\", \"%s\")]\n", module->name.c_str(), node->fullnameForeign.c_str());
             SWAG_CHECK(emitAttributes(node));
             bufferSwg.addChar('\t');
             SWAG_CHECK(emitFuncSignatureSwg(typeFunc, node));
@@ -413,9 +413,8 @@ bool Backend::preCompile()
     bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
     for (auto depName : module->moduleDependenciesNames)
-    {
         bufferSwg.addStringFormat("#import \"%s\"\n", depName.c_str());
-    }
+	CONCAT_FIXED_STR(bufferSwg, "using swag\n");
 
     // Emit everything that's public
     SWAG_CHECK(emitPublicSwg(module, module->scopeRoot));
