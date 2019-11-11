@@ -124,6 +124,7 @@ enum class TokenId
     KwdIs,
     KwdInit,
     KwdDrop,
+    KwdDeRef,
 
     Identifier,
     LiteralNumber,

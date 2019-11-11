@@ -169,7 +169,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     }
 
     // Dereference pointer
-    else if (token.id == TokenId::SymDot)
+    else if (token.id == TokenId::KwdDeRef)
     {
         SWAG_CHECK(eatToken());
 
