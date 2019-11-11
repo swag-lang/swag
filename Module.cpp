@@ -91,18 +91,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         node->bc->enterByteCode(runContext);
     }
 
-    bool exception     = false;
-    int  exceptionCode = 0;
-    if (!g_Run.run(&g_Workspace.runContext, exception, exceptionCode))
-    {
-        if (exception)
-        {
-            auto ip = runContext->ip - 1;
-            sourceFile->report({runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", exceptionCode)});
-        }
-
+    if (!g_Run.run(&g_Workspace.runContext))
         return false;
-    }
 
     if (node->resultRegisterRC.size())
     {

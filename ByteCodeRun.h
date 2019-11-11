@@ -13,8 +13,9 @@ struct ByteCodeRun
     void      ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip);
 
     bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);
-    bool run(ByteCodeRunContext* context);
+    bool runLoop(ByteCodeRunContext* context);
     bool run(ByteCodeRunContext* runContext, bool& exception, int& exceptionCode);
+	bool run(ByteCodeRunContext* runContext);
 
     vector<ffi_type*>  ffiArgs;
     vector<void*>      ffiArgsValues;

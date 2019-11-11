@@ -27,10 +27,7 @@ static void defaultAllocator(Register* r)
     runContext.push(nullptr);
     runContext.bp = runContext.sp;
     context->allocator->enterByteCode(&runContext);
-
-    bool exception     = false;
-    int  exceptionCode = 0;
-    g_Run.run(&runContext, exception, exceptionCode);
+    g_Run.run(&runContext);
 }
 
 void initDefaultContext()

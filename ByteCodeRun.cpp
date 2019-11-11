@@ -1580,7 +1580,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     return true;
 }
 
-bool ByteCodeRun::run(ByteCodeRunContext* context)
+bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 {
     while (context->ip)
     {
@@ -1608,7 +1608,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext, bool& exception, int& exce
 {
     __try
     {
-        if (!g_Run.run(runContext))
+        if (!g_Run.runLoop(runContext))
             return false;
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
@@ -1619,6 +1619,24 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext, bool& exception, int& exce
     }
 
     return true;
+}
+
+bool ByteCodeRun::run(ByteCodeRunContext* runContext)
+{
+    bool exception     = false;
+    int  exceptionCode = 0;
+    if (!g_Run.run(&g_Workspace.runContext, exception, exceptionCode))
+    {
+        if (exception)
+        {
+            auto ip = runContext->ip - 1;
+            runContext->bc->sourceFile->report({runContext->bc->sourceFile, ip->startLocation, ip->endLocation, format("exception '%X' during bytecode execution !", exceptionCode)});
+        }
+
+        return false;
+    }
+
+	return true;
 }
 
 bool ByteCodeRun::internalError(ByteCodeRunContext* context)
