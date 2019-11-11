@@ -75,11 +75,11 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         condVar.wait(lk);
 
         // Last try
-		if (!g_ModuleMgr.loadModule(moduleName.text))
-		{
-			context->error(format("fail to load module '%s' => %s", moduleName.text.c_str(), OS::getLastErrorAsString().c_str()));
-			return nullptr;
-		}
+        if (!g_ModuleMgr.loadModule(moduleName.text))
+        {
+            context->error(format("fail to load module '%s' => %s", moduleName.text.c_str(), OS::getLastErrorAsString().c_str()));
+            return nullptr;
+        }
 
         fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
         if (!externalModule)
@@ -97,6 +97,8 @@ ffi_type* ByteCodeRun::ffiFromTypeinfo(TypeInfo* typeInfo)
     if (typeInfo->kind == TypeInfoKind::Pointer)
         return &ffi_type_pointer;
     if (typeInfo->kind == TypeInfoKind::Struct)
+        return &ffi_type_pointer;
+    if (typeInfo->kind == TypeInfoKind::Slice)
         return &ffi_type_pointer;
     if (typeInfo->isNative(NativeTypeKind::String))
         return &ffi_type_pointer;
@@ -160,15 +162,28 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             return;
         }
 
-        if (typeParam->isNative(NativeTypeKind::String))
+		if (typeParam->isNative(NativeTypeKind::String))
         {
             ffiArgsValues[i] = &sp->pointer;
             sp += 2;
         }
+		else if (typeParam->kind == TypeInfoKind::Slice)
+        {
+            ffiArgsValues[i] = &sp->pointer;
+            sp++;
+
+			i++;
+			numParameters++;
+			ffiArgs.resize(ffiArgs.size() + 1);
+			ffiArgsValues.resize(ffiArgsValues.size() + 1);
+			ffiArgs[i] = &ffi_type_uint32;
+			ffiArgsValues[i] = &sp->u32;
+			sp++;
+        }
         else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
         {
             ffiArgsValues[i] = &sp->pointer;
-			sp++;
+            sp++;
         }
         else
         {

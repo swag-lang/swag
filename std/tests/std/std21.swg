@@ -8,6 +8,6 @@ func XX(v: Utf8)->[..]u8 => [v.buffer, v.length]
 {
     var x: Utf8 = "coucou"
     y := XX(x)
-    //console.write(y)
+    console.write(y)
     //@print("XXXX")
 }

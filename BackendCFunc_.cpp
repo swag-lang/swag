@@ -182,18 +182,21 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
         if (typeParam->kind == TypeInfoKind::Pointer || typeParam->kind == TypeInfoKind::Struct)
         {
             bufferC.addStringFormat("(void*) r[%u].pointer", index);
-            index -= 1;
         }
-        else if (typeParam->isNative(NativeTypeKind::String))
+		else if (typeParam->isNative(NativeTypeKind::String))
+		{
+			bufferC.addStringFormat("(void*) r[%u].pointer", index);
+		}
+        else if (typeParam->kind == TypeInfoKind::Slice)
         {
-            bufferC.addStringFormat("(void*)r[%u].pointer", index);
-            index -= 2;
+            bufferC.addStringFormat("(void*) r[%u].pointer", index);
+			index = pushParams.back();
+			pushParams.pop_back();
+            bufferC.addStringFormat(", r[%u].u32", index);
         }
         else if (typeParam->kind == TypeInfoKind::Native)
         {
             bufferC.addStringFormat("r[%u]", index);
-            index -= 1;
-
             switch (typeParam->nativeType)
             {
             case NativeTypeKind::Bool:
@@ -306,8 +309,8 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
         }
         else if (typeParam->kind == TypeInfoKind::Slice)
         {
-            bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[0];\n", idx, param->namedParam.c_str());
-            bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) ((void**) %s)[1];\n", idx + 1, param->namedParam.c_str());
+            bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s;\n", idx, param->namedParam.c_str());
+			bufferC.addStringFormat("\trr%d.u32 = %s_count;\n", idx + 1, param->namedParam.c_str());
         }
         else if (typeParam->kind == TypeInfoKind::Struct)
         {
@@ -474,6 +477,13 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
             buffer.addString(cType);
             CONCAT_FIXED_STR(buffer, " ");
             buffer.addString(param->name.c_str());
+
+			if (param->typeInfo->kind == TypeInfoKind::Slice)
+			{
+				CONCAT_FIXED_STR(buffer, ", swag_uint32_t ");
+				buffer.addString(param->name.c_str());
+				CONCAT_FIXED_STR(buffer, "_count");
+			}
         }
     }
 
