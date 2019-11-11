@@ -111,6 +111,8 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
         if (node->ownerMainNode && node->ownerMainNode->kind == AstNodeKind::StructDecl)
             return "struct member";
         return "variable";
+	case AstNodeKind::ConstDecl:
+		return "constant";
     case AstNodeKind::FuncDecl:
         return "function";
     case AstNodeKind::EnumDecl:

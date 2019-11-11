@@ -216,6 +216,7 @@ AstNode* SyntaxJob::generateOpInit(AstStruct* structNode, const Utf8& structName
     implNode->structScope            = structNode->scope;
     implNode->ownerScope             = structNode->ownerScope;
     implNode->identifier->ownerScope = structNode->ownerScope;
+	implNode->flags |= AST_GENERATED;
 
     auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile, implNode);
     funcNode->semanticFct = &SemanticJob::resolveFuncDecl;

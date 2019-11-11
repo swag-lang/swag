@@ -189,7 +189,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
     g_ThreadMgr.waitEndJobs();
 
-	// Then load all dependencies
+    // Then load all dependencies
     for (auto module : list)
     {
         for (auto name : module->moduleDependenciesNames)
@@ -249,13 +249,17 @@ bool Workspace::buildModules(const vector<Module*>& list)
         for (auto pendingJob : g_ThreadMgr.pendingJobs)
         {
             auto semanticJob = static_cast<SemanticJob*>(pendingJob);
-            auto node        = semanticJob->nodes.back();
-            auto sourceFile  = semanticJob->sourceFile;
-            if (!sourceFile->numErrors)
+            auto firstNode   = semanticJob->nodes.front();
+            if (!(firstNode->flags & AST_GENERATED))
             {
-                auto& name = semanticJob->waitingSymbolSolved ? semanticJob->waitingSymbolSolved->name : node->name;
-                sourceFile->report({node, node->token, format("cannot resolve identifier '%s'", name.c_str())});
-                sourceFile->numErrors = 0;
+                auto sourceFile = semanticJob->sourceFile;
+                auto node       = semanticJob->nodes.back();
+                if (!sourceFile->numErrors)
+                {
+                    auto& name = semanticJob->waitingSymbolSolved ? semanticJob->waitingSymbolSolved->name : node->name;
+                    sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), name.c_str())});
+                    sourceFile->numErrors = 0;
+                }
             }
         }
 
@@ -332,7 +336,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
-	// During unit testing, be sure we don't have remaining not raised errors
+    // During unit testing, be sure we don't have remaining not raised errors
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         for (auto module : list)

@@ -1,11 +1,10 @@
-/*
 using swag
 namespace std
 {    
     const SmallSize = 40'u32
-    const SmallSizeInternal = SmallSize - @sizeof(Utf8.size) - @sizeof(Utf8.allocator)
+    const SmallSizeInternal = SmallSize - @sizeof(Allocator) - @sizeof(u32)
 
-    struct Utf8
+    public struct Utf8
     {
         buffer:     *u8
         length:     u32
@@ -24,7 +23,6 @@ namespace std
             req.mode = AllocatorMode.Free
             req.address = buffer
             allocator(req)
-            buffer = null
         }
         
         func realloc(using self, newSize: u32)
@@ -40,23 +38,35 @@ namespace std
             buffer = acast req.address
         }
 
-        func reserve(using self, newSize: u32)
+        public func reserve(using self, newSize: u32)
         {
             // Small size, just be sure with have a valid buffer address
             if newSize <= SmallSize
             {
-                if !buffer
+                if !newSize
+                    buffer = null
+                else if !buffer
                     buffer = acast &size
                 return
             }
 
-            // Actual size is fine, don't change anything
+            // Actual size is fine
             if newSize <= size 
+            {
+                if !newSize
+                {
+                    free(self)
+                    buffer = null
+                    length = 0
+                    size = 0
+                    allocator = null                    
+                }
+                
                 return
+            }
                 
             realloc(self, newSize)
             size = newSize
         }
     }
 }
-*/
