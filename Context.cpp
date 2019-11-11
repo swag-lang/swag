@@ -15,7 +15,7 @@ swag_process_infos_t g_processInfos = {0};
 static void defaultAllocator(Register* r)
 {
     Context* context = (Context*) OS::tlsGetValue(g_tlsContextIdByteCode);
-    auto     req     = (swag_allocator_request_t*) r->pointer;
+    //auto     req     = (swag_allocator_request_t*) r->pointer;
 
     ByteCodeRunContext runContext;
 
@@ -28,7 +28,9 @@ static void defaultAllocator(Register* r)
     runContext.bp = runContext.sp;
     context->allocator->enterByteCode(&runContext);
 
-    g_Run.run(&runContext);
+    bool exception     = false;
+    int  exceptionCode = 0;
+    g_Run.run(&runContext, exception, exceptionCode);
 }
 
 void initDefaultContext()

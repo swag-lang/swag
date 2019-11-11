@@ -31,7 +31,7 @@ struct Module : public PoolElement
 
     time_t              moreRecentSourceFile;
     string              name;
-	string              nameDown;
+    string              nameDown;
     string              nameUp;
     atomic<int>         numErrors = 0;
     SpinLock            mutexFile;
@@ -41,12 +41,10 @@ struct Module : public PoolElement
     BuildParameters     buildParameters;
     Backend*            backend = nullptr;
     set<string>         compileVersion;
-    int                 exceptionCode = 0;
-    bool                fromTests     = false;
+    bool                fromTests = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);
-    bool executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exception);
 
     SpinLock mutexRegisterRR;
     uint32_t maxReservedRegisterRR = 0;

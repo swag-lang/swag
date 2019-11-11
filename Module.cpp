@@ -91,8 +91,9 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         node->bc->enterByteCode(runContext);
     }
 
-    bool exception = false;
-    if (!executeNodeNoLock(sourceFile, node, exception))
+    bool exception     = false;
+    int  exceptionCode = 0;
+    if (!g_Run.run(&g_Workspace.runContext, exception, exceptionCode))
     {
         if (exception)
         {
@@ -108,24 +109,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
         node->computedValue.reg = node->bc->registersRC[0][node->resultRegisterRC[0]];
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
         node->typeInfo = TypeManager::concreteType(node->typeInfo);
-    }
-
-    return true;
-}
-
-bool Module::executeNodeNoLock(SourceFile* sourceFile, AstNode* node, bool& exception)
-{
-    __try
-    {
-        auto runContext = &g_Workspace.runContext;
-        if (!g_Run.run(runContext))
-            return false;
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        exceptionCode = GetExceptionCode();
-        exception     = true;
-        return false;
     }
 
     return true;
