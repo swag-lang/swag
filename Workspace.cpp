@@ -544,7 +544,7 @@ bool Workspace::build()
     auto target                               = new Target;
     target->config                            = g_CommandLine.config;
     target->arch                              = g_CommandLine.arch;
-	target->backendDebugInformations = true;// false;
+    target->backendDebugInformations          = false;
     target->backendOptimizeLevel              = 0;
     target->backendC.writeSourceCode          = true;
     target->backendC.writeByteCodeInstruction = true;
