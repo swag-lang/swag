@@ -19,14 +19,14 @@ namespace std.console
 		DarkMagenta
 	}
     
-    var silentMode: u32
+    var g_silentMode: u32
     
     public
     {
         func silent(value: bool)
         {
-            diagnostics.debug.assert(value || silentMode > 0)
-            silentMode += value ? 1 : -1
+            diagnostics.debug.assert(value || g_silentMode > 0)
+            g_silentMode += value ? 1 : -1
         }
     }
 }

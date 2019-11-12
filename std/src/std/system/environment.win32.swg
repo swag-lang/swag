@@ -6,6 +6,8 @@
         
         public
         {
+            const EndLine = "\r\n"
+            
             func getProcessorCount() => g_sysInfo.dwNumberOfProcessors	
         }
         
