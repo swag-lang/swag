@@ -108,7 +108,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         // Name
         typeExpression = (AstTypeExpression*) expression;
         for (int i = 0; i < typeExpression->ptrCount; i++)
-            name += "*";
+            name += "P";
         name += typeExpression->token.text;
         if (typeExpression->identifier)
             name += typeExpression->identifier->childs.back()->name;

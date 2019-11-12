@@ -182,8 +182,16 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
             return true;
         }
     }
+	else
+	{
+		switch (fromType->nativeType)
+		{
+		case NativeTypeKind::U32:
+			return true;
+		}
+	}
 
-    return castError(context, g_TypeMgr.typeInfoU32, fromType, fromNode, castFlags);
+    return castError(context, g_TypeMgr.typeInfoChar, fromType, fromNode, castFlags);
 }
 
 bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)

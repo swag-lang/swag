@@ -84,7 +84,7 @@ bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cT
             cType = "swag_float64_t";
             return true;
         case NativeTypeKind::Char:
-            cType = "swag_char_t";
+            cType = "swag_char32_t";
             return true;
         case NativeTypeKind::String:
             cType = "const char*";

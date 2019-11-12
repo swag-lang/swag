@@ -718,6 +718,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Register symbol with its type
+	node->ownerScope->allocateSymTable();
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
                                                                   node,
                                                                   node->typeInfo,

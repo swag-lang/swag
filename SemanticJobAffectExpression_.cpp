@@ -176,7 +176,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         SWAG_CHECK(forEnumFlags || checkTypeIsNative(context, right, rightTypeInfo));
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right));
         if (leftTypeInfo->nativeType == NativeTypeKind::Bool ||
-            leftTypeInfo->nativeType == NativeTypeKind::Char ||
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
