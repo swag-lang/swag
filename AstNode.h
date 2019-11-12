@@ -94,6 +94,8 @@ enum class AstNodeKind
     BinaryOp,
     FactorOp,
     ExpressionList,
+	MultiIdentifier,
+	MultiIdentifierTuple,
     AffectOp,
     ArrayPointerIndex,
     PointerRef,

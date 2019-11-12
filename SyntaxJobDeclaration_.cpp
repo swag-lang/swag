@@ -240,6 +240,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::Identifier:
     case TokenId::Intrinsic:
+	case TokenId::SymLeftParen:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
     case TokenId::KwdInit:

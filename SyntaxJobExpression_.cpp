@@ -250,12 +250,12 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
             if (parent->token.id != token.id)
                 return syntaxError(token, "operator order ambiguity, please add parenthesis");
 
-			// Associative operations
-            if (token.id != TokenId::SymPlus && 
-				token.id != TokenId::SymAsterisk && 
-				token.id != TokenId::SymVertical && 
-				token.id != TokenId::SymCircumflex &&
-				token.id != TokenId::SymTilde)
+            // Associative operations
+            if (token.id != TokenId::SymPlus &&
+                token.id != TokenId::SymAsterisk &&
+                token.id != TokenId::SymVertical &&
+                token.id != TokenId::SymCircumflex &&
+                token.id != TokenId::SymTilde)
                 return syntaxError(token, "operator order ambiguity, please add parenthesis");
         }
 
@@ -510,29 +510,6 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
     return doExpression(parent, result);
 }
 
-bool SyntaxJob::doLeftExpression(AstNode* parent, AstNode** result)
-{
-    AstNode* exprNode;
-    switch (token.id)
-    {
-    case TokenId::Intrinsic:
-        SWAG_CHECK(doIdentifierRef(parent, result));
-        return true;
-
-    case TokenId::Identifier:
-        SWAG_CHECK(doIdentifierRef(nullptr, &exprNode));
-        break;
-
-    default:
-        return syntaxError(token, format("invalid token '%s' in left expression", token.text.c_str()));
-    }
-
-    Ast::addChildBack(parent, exprNode);
-    if (result)
-        *result = exprNode;
-    return true;
-}
-
 void SyntaxJob::forceTakeAddress(AstNode* node)
 {
     node->flags |= AST_TAKE_ADDRESS;
@@ -563,14 +540,69 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doLeftExpression(AstNode** result)
+{
+    switch (token.id)
+    {
+    case TokenId::Intrinsic:
+        SWAG_CHECK(doIdentifierRef(nullptr, result));
+        return true;
+
+    case TokenId::SymLeftParen:
+    {
+        auto multi = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MultiIdentifierTuple, sourceFile, nullptr);
+        *result    = multi;
+        SWAG_CHECK(eatToken());
+        while (true)
+        {
+            SWAG_CHECK(doIdentifierRef(multi));
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken());
+        }
+
+		SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple affectation"));
+        break;
+    }
+
+    case TokenId::Identifier:
+    {
+        AstNode* exprNode = nullptr;
+        AstNode* multi    = nullptr;
+        while (true)
+        {
+            SWAG_CHECK(doIdentifierRef(multi, &exprNode));
+            if (token.id != TokenId::SymComma)
+                break;
+            SWAG_CHECK(eatToken());
+
+            if (!multi)
+            {
+                multi = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MultiIdentifier, sourceFile, nullptr);
+                Ast::addChildBack(multi, exprNode);
+            }
+        }
+
+        *result = multi ? multi : exprNode;
+        break;
+    }
+
+    default:
+        return syntaxError(token, format("invalid token '%s' in left expression", token.text.c_str()));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doLeftExpression(nullptr, &leftNode));
+    SWAG_CHECK(doLeftExpression(&leftNode));
 
     // Variable declaration and initialization
     if (token.id == TokenId::SymColonEqual)
     {
+        SWAG_VERIFY(leftNode->kind != AstNodeKind::MultiIdentifierTuple, syntaxError(leftNode->token, "not yet supported"));
         SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected"));
 
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, leftNode->childs.back()->name, parent, this);
@@ -600,19 +632,55 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
              token.id == TokenId::SymLowerLowerEqual ||
              token.id == TokenId::SymGreaterGreaterEqual)
     {
-        auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parent);
-        affectNode->semanticFct = &SemanticJob::resolveAffect;
-        affectNode->token       = move(token);
+        // Multiple affectations
+        if (leftNode->kind == AstNodeKind::MultiIdentifier || leftNode->kind == AstNodeKind::MultiIdentifierTuple)
+        {
+            auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+            if (result)
+                *result = parentNode;
 
-        Ast::addChildBack(affectNode, leftNode);
-        SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doExpression(affectNode, &leftNode));
+            // Generate an expression of the form "var __tmp_0 = assignment"
+            auto        savedtoken = token;
+            auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
+            AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+            varNode->token         = savedtoken;
+            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_CHECK(doExpression(varNode, &varNode->assignment));
 
-        if (result)
-            *result = affectNode;
+            // And reference that variable, in the form value = __tmp_0.val0
+            int idx = 0;
+            for (auto child : leftNode->childs)
+            {
+                auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parentNode);
+                affectNode->semanticFct = &SemanticJob::resolveAffect;
+                affectNode->token       = savedtoken;
+                Ast::removeFromParent(child);
+                Ast::addChildBack(affectNode, child);
+                forceTakeAddress(child);
+                if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
+                    Ast::newIdentifierRef(sourceFile, format("%s.val%d", tmpVarName.c_str(), idx++), affectNode)->token = savedtoken;
+                else
+                    Ast::newIdentifierRef(sourceFile, tmpVarName, affectNode)->token = savedtoken;
+            }
 
-        auto left = affectNode->childs.front();
-        forceTakeAddress(left);
+            leftNode->release();
+        }
+
+        // One normal simple affectation
+        else
+        {
+            auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parent);
+            affectNode->semanticFct = &SemanticJob::resolveAffect;
+            affectNode->token       = move(token);
+
+            Ast::addChildBack(affectNode, leftNode);
+            forceTakeAddress(leftNode);
+
+            SWAG_CHECK(tokenizer.getToken(token));
+            SWAG_CHECK(doExpression(affectNode));
+            if (result)
+                *result = affectNode;
+        }
     }
     else
     {
