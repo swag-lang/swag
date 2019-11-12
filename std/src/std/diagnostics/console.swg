@@ -18,4 +18,14 @@ namespace std.console
 		DarkYellow
 		DarkMagenta
 	}
+    
+    private var silentMode: u32
+    
+    public
+    {
+        func silent(value: bool)
+        {
+            silentMode += value ? 1 : -1
+        }
+    }
 }

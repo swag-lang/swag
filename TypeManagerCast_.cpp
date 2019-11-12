@@ -256,10 +256,12 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value < 0)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value < 0)
+                        return false;
+                }
             }
 
         case NativeTypeKind::U16:
@@ -280,10 +282,13 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value > UINT8_MAX)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value > UINT8_MAX)
+                        return false;
+                }
+
                 return true;
             }
 
@@ -364,10 +369,12 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value < 0)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value < 0)
+                        return false;
+                }
             }
 
         case NativeTypeKind::U8:
@@ -388,10 +395,13 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value > UINT16_MAX)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value > UINT16_MAX)
+                        return false;
+                }
+
                 return true;
             }
 
@@ -405,8 +415,8 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
-	if (fromType->nativeType == NativeTypeKind::U32)
-		return true;
+    if (fromType->nativeType == NativeTypeKind::U32)
+        return true;
 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
@@ -472,10 +482,12 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value < 0)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value < 0)
+                        return false;
+                }
             }
 
         case NativeTypeKind::U8:
@@ -496,10 +508,13 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value > UINT32_MAX)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value > UINT32_MAX)
+                        return false;
+                }
+
                 return true;
             }
 
@@ -580,10 +595,12 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value < 0)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value < 0)
+                        return false;
+                }
             }
 
         case NativeTypeKind::U8:
@@ -680,10 +697,13 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value < INT8_MIN || value > INT8_MAX)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value < INT8_MIN || value > INT8_MAX)
+                        return false;
+                }
+
                 return true;
             }
 
@@ -763,10 +783,13 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value < INT16_MIN || value > INT16_MAX)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value < INT16_MIN || value > INT16_MAX)
+                        return false;
+                }
+
                 return true;
             }
 
@@ -842,10 +865,13 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value < INT32_MIN || value > INT32_MAX)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value < INT32_MIN || value > INT32_MAX)
+                        return false;
+                }
+
                 return true;
             }
 
@@ -921,10 +947,13 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
             }
             else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
             {
-                SWAG_ASSERT(!fromNode);
-                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-                if (value < INT64_MIN || value > INT64_MAX)
-                    return false;
+                if (!fromNode)
+                {
+                    auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                    if (value < INT64_MIN || value > INT64_MAX)
+                        return false;
+                }
+
                 return true;
             }
 
@@ -971,12 +1000,15 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
         }
         else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
         {
-            SWAG_ASSERT(!fromNode);
-            auto    value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-            float   tmpF  = static_cast<float>(value);
-            int64_t tmpI  = static_cast<int64_t>(tmpF);
-            if (tmpI != value)
-                return false;
+            if (!fromNode)
+            {
+                auto    value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                float   tmpF  = static_cast<float>(value);
+                int64_t tmpI  = static_cast<int64_t>(tmpF);
+                if (tmpI != value)
+                    return false;
+            }
+
             return true;
         }
         else if (castFlags & CASTFLAG_EXPLICIT)
@@ -1085,12 +1117,15 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
         }
         else if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
         {
-            SWAG_ASSERT(!fromNode);
-            auto    value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
-            double  tmpF  = static_cast<double>(value);
-            int64_t tmpI  = static_cast<int64_t>(tmpF);
-            if (tmpI != value)
-                return false;
+            if (!fromNode)
+            {
+                auto    value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                double  tmpF  = static_cast<double>(value);
+                int64_t tmpI  = static_cast<int64_t>(tmpF);
+                if (tmpI != value)
+                    return false;
+            }
+
             return true;
         }
         else if (castFlags & CASTFLAG_EXPLICIT)
@@ -1179,10 +1214,10 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         return castToNativeF32(context, fromType, fromNode, castFlags);
     case NativeTypeKind::F64:
         return castToNativeF64(context, fromType, fromNode, castFlags);
-	case NativeTypeKind::String:
-		fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
-		if (fromType->nativeType == NativeTypeKind::String)
-			return true;
+    case NativeTypeKind::String:
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
+        if (fromType->nativeType == NativeTypeKind::String)
+            return true;
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);
