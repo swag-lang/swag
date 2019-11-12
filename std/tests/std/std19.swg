@@ -4,7 +4,7 @@ using std
 //#[swag.printbc]
 #test
 {
-    var x: Utf8
+    var x: String
     x.reserve(100)
     x = "toto"
     @assert(x.length == 4)

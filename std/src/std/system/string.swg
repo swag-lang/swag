@@ -3,9 +3,9 @@ namespace std
     using swag
     private const SmallSize = 28'u32
     private const SmallSizeInternal = SmallSize - (@sizeof(Allocator) + @sizeof(u32))
-    #assert @sizeof(Utf8) == 40
+    #assert @sizeof(String) == 40
 
-    public struct Utf8
+    public struct String
     {
         buffer:     *u8
         length:     u32
@@ -14,7 +14,7 @@ namespace std
         padding:    [SmallSizeInternal] u8
     }
 
-    impl Utf8
+    impl String
     {
         func free(using self)
         {
