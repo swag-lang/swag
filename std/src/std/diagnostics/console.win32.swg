@@ -74,6 +74,8 @@
 		
 		public func write(message: [..] u8)
 		{
+            if silentMode
+                return
 			WriteFile(g_stdOutputHandle, @dataof(message), @countof(message), null, null)
 		}	
 	}
