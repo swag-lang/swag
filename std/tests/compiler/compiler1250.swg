@@ -1,4 +1,4 @@
-public func getChar(buffer: *u8)->{*u8, char}
+func getChar(buffer: *u8)->{*u8, char}
 {
 	ptr := buffer
 	c := deref ptr
@@ -21,5 +21,64 @@ public func getChar(buffer: *u8)->{*u8, char}
 		return {ptr, wc}
 	}
 	
+	if ((c & 0xF0) == 0xE0)
+	{
+		wc = (c & 0xF) << 12;
+		wc |= (ptr[0] & 0x3F) << 6;
+		wc |= (ptr[1] & 0x3F);
+		ptr += 2;
+		return {ptr, wc}
+	}
+	
+	if ((c & 0xF8) == 0xF0)
+	{
+		wc = (c & 0x7) << 18;
+		wc |= (ptr[0] & 0x3F) << 12;
+		wc |= (ptr[1] & 0x3F) << 6;
+		wc |= (ptr[2] & 0x3F);
+		ptr += 3;
+		return {ptr, wc}
+	}
+	
+	if ((c & 0xFC) == 0xF8)
+	{
+		wc = (c & 0x3) << 24;
+		wc |= (c & 0x3F) << 18;
+		wc |= (c & 0x3F) << 12;
+		wc |= (c & 0x3F) << 6;
+		wc |= (c & 0x3F);
+		return {ptr, wc}
+	}
+	
+	if ((c & 0xFE) == 0xFC)
+	{
+		wc = (c & 0x1) << 30;
+		wc |= (c & 0x3F) << 24;
+		wc |= (c & 0x3F) << 18;
+		wc |= (c & 0x3F) << 12;
+		wc |= (c & 0x3F) << 6;
+		wc |= (c & 0x3F);
+		return {ptr, wc}
+	}
+	
 	return {ptr, acast 0}
+}
+
+#test
+{
+	const str = "⺁⺆⻇"
+	
+	var c: char
+	var ptr: *u8 = @dataof(str)
+	cpt := 0
+	while true
+	{
+		(ptr, c) = getChar(ptr)
+		if !c
+			break
+		cpt += 1
+	}
+	
+	@assert(@sizeof(str) != 3)
+	@assert(cpt == 3)
 }
