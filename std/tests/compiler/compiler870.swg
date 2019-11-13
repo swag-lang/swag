@@ -5,7 +5,7 @@ var G: s32 = 0
 //#[swag.printbc]
 #test
 {
-	func myFunc(val: s32, x: (s32))
+	func myFunc(val: s32, x: func(s32))
 	{ 
 		x(val); 
 	}

@@ -5,7 +5,7 @@
 #unittest error
 #test
 {
-	var a: () = &F;
+	var a: func() = &F;
 	var b: s32 = a();
 	@assert(b == 666)
 }

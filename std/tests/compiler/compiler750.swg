@@ -12,7 +12,7 @@ func lambda1(x: s32)
 }
 
 //#[swag.printbc]
-func(T) toto(x: (T))
+func(T) toto(x: func(T))
 {
 	x(666)
 }

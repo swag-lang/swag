@@ -173,8 +173,11 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     // This is a function
-    if (token.id == TokenId::SymLeftParen)
-        return doTypeExpressionLambda(parent, result);
+	if (token.id == TokenId::KwdFunc)
+	{
+		SWAG_CHECK(eatToken());
+		return doTypeExpressionLambda(parent, result);
+	}
 
     // Const keyword
     bool isConst = false;

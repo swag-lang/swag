@@ -4,9 +4,9 @@
 //#[swag.printbc]
 #test
 {
-	var a: ()->s32;
-	var b: ();
-	var c: (s32, s32);
-	var c: (s32, s32) -> ()->s32;
-	var c: (()->s32, s32) -> ()->s32;
+	var a: func()->s32
+	var b: func()
+	var c: func(s32, s32)
+	var c: func(s32, s32) -> func()->s32
+	var c: func(func()->s32, s32) -> func()->s32
 }

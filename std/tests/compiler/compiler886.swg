@@ -3,7 +3,7 @@
 //#[swag.printbc]
 #test
 {
-	func chooseStepFunction(backward: bool) -> (s32) -> s32
+	func chooseStepFunction(backward: bool) -> func(s32)->s32
 	{
 		func stepForward(input: s32) => input + 1
 		func stepBackward(input: s32) => input - 1

@@ -14,7 +14,7 @@ func concrete1()->*f32
 }
 
 //#[swag.printbc]
-func(T) toto(x: ()->*T)->T
+func(T) toto(x: func()->*T)->T
 {
 	ptr := x()
 	return ptr[0]

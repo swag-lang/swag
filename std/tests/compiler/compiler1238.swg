@@ -1,4 +1,4 @@
-typealias T: ()->void
+typealias T: func()->void
 
 //#[swag.printbc]
 #test

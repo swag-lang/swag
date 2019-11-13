@@ -68,7 +68,7 @@ namespace swag
 		Realloc
 	}
 
-    typealias Allocator: (*AllocatorRequest)->void
+    typealias Allocator: func(*AllocatorRequest)->void
 
 	struct AllocatorRequest
 	{

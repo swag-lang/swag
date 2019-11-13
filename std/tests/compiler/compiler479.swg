@@ -19,7 +19,7 @@ func T(param: *s32)
 }
 
 //#[swag.printbc]
-func F(param: [..] s32, b: (*s32))
+func F(param: [..] s32, b: func(*s32))
 {
 	var data = @dataof(param)
 	loop(param)

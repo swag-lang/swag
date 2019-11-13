@@ -4,7 +4,7 @@
 //#[swag.printbc]
 #test
 {
-	var a: ()->s32 = &F;
+	var a: func()->s32 = &F;
 	var b: s32 = a();
 	@assert(b == 666)
 }

@@ -8,7 +8,7 @@ func stepBackward(input: s32) -> s32 {
 }
 
 //#[swag.printbc]
-func chooseStepFunction(backward: bool) -> (s32) -> s32 {
+func chooseStepFunction(backward: bool) -> func(s32)->s32 {
 	return backward ? &stepBackward : &stepForward
 }
 

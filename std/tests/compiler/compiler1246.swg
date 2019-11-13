@@ -1,6 +1,6 @@
 #test
 {
-    var x: ()->void
+    var x: func()->void
     if x || x
         @assert(false)
 }
