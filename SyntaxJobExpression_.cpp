@@ -602,7 +602,8 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     // Variable declaration and initialization
     if (token.id == TokenId::SymColonEqual)
     {
-        SWAG_VERIFY(leftNode->kind != AstNodeKind::MultiIdentifierTuple, syntaxError(leftNode->token, "not yet supported"));
+		SWAG_VERIFY(leftNode->kind != AstNodeKind::MultiIdentifier, syntaxError(leftNode->token, "multiple declaration not yet supported"));
+        SWAG_VERIFY(leftNode->kind != AstNodeKind::MultiIdentifierTuple, syntaxError(leftNode->token, "tuple destruct not yet supported"));
         SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected"));
 
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, leftNode->childs.back()->name, parent, this);
