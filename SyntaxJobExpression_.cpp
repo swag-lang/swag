@@ -620,7 +620,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
                 identifier->computeName();
                 AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
-                varNode->token      = savedtoken;
+                varNode->token      = identifier->token;
                 varNode->flags |= AST_R_VALUE;
 
                 if (!firstDone)
@@ -669,7 +669,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
                 identifier->computeName();
                 varNode        = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
-                varNode->token = savedtoken;
+                varNode->token = identifier->token;
                 varNode->flags |= AST_R_VALUE;
                 SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
                 identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode);
