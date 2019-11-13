@@ -50,7 +50,7 @@ struct SyntaxJob : public Job
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     void forceTakeAddress(AstNode* node);
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
-	bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNode** result);
+	bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, bool acceptParameters = true);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);

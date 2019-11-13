@@ -594,7 +594,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNode** result)
+bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
 {
     // Multiple affectation
     if (leftNode->kind == AstNodeKind::MultiIdentifier)
@@ -614,6 +614,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+            varNode->kind       = kind;
             varNode->token      = identifier->token;
             varNode->flags |= AST_R_VALUE;
 
@@ -648,6 +649,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         auto        savedtoken = token;
         auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
         AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+        varNode->kind          = kind;
         varNode->token         = savedtoken;
         Ast::addChildBack(varNode, assign);
         varNode->assignment                   = assign;
@@ -663,6 +665,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             varNode        = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+            varNode->kind  = kind;
             varNode->token = identifier->token;
             varNode->flags |= AST_R_VALUE;
             SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
@@ -678,9 +681,10 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Single declaration/affectation
     else
     {
-        SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected"));
+        SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected in variable declaration"));
 
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, leftNode->childs.back()->name, parent, this);
+        varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode->token);
 
         if (result)
@@ -707,7 +711,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         AstNode* assign;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doInitializationExpression(nullptr, &assign));
-        SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, result));
+        SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, result));
     }
 
     // Affect operator
