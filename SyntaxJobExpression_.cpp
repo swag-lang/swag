@@ -602,8 +602,49 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     // Variable declaration and initialization
     if (token.id == TokenId::SymColonEqual)
     {
+        // Multiple affectation
+        if (leftNode->kind == AstNodeKind::MultiIdentifier)
+        {
+            auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+            if (result)
+                *result = parentNode;
+
+            // Declare first variable, and affect it
+            auto savedtoken = token;
+            auto front      = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+
+            // Then declare all other variables, and assign them to the first one
+            bool firstDone = false;
+            for (auto child : leftNode->childs)
+            {
+                auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+                identifier->computeName();
+                AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+                varNode->token      = savedtoken;
+                varNode->flags |= AST_R_VALUE;
+
+                if (!firstDone)
+                {
+                    firstDone = true;
+                    SWAG_CHECK(tokenizer.getToken(token));
+                    SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
+                }
+                else
+                {
+                    varNode->assignment        = Ast::newIdentifierRef(sourceFile, front->name, varNode);
+                    varNode->assignment->token = savedtoken;
+                }
+
+                varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+                currentScope->allocateSymTable();
+                SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+            }
+
+            leftNode->release();
+        }
+
         // Tuple dereference
-        if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
+        else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
         {
             auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             if (result)
@@ -621,7 +662,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             currentScope->allocateSymTable();
             SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
 
-            // And reference that variable, in the form value = __tmp_0.val0
+            // And reference that variable, in the form value = __tmp_0.item?
             int idx = 0;
             for (auto child : leftNode->childs)
             {
@@ -643,7 +684,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         // Single declaration/affectation
         else
         {
-            SWAG_VERIFY(leftNode->kind != AstNodeKind::MultiIdentifier, syntaxError(leftNode->token, "multiple declaration not yet supported"));
             SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected"));
 
             AstVarDecl* varNode = Ast::newVarDecl(sourceFile, leftNode->childs.back()->name, parent, this);
@@ -725,7 +765,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             SWAG_CHECK(tokenizer.getToken(token));
             SWAG_CHECK(doExpression(varNode, &varNode->assignment));
 
-            // And reference that variable, in the form value = __tmp_0.val0
+            // And reference that variable, in the form value = __tmp_0.item?
             int idx = 0;
             for (auto child : leftNode->childs)
             {
@@ -735,10 +775,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
-                if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
-                    Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode)->token = savedtoken;
-                else
-                    Ast::newIdentifierRef(sourceFile, tmpVarName, affectNode)->token = savedtoken;
+                Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode)->token = savedtoken;
             }
 
             leftNode->release();
