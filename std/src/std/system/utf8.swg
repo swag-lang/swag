@@ -1,4 +1,4 @@
-/*namespace std.utf8
+namespace std.utf8
 {
 	public func getChar(buffer: *u8)->{*u8, char}
 	{
@@ -67,4 +67,4 @@
 		
 		return {ptr, acast 0}
 	}
-}*/
+}

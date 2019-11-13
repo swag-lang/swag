@@ -233,13 +233,26 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         else if (node->packing)
             storageOffset += child->typeInfo->sizeOf;
 
-		// Created a generic alias
+        // Created a generic alias
         if (!(child->flags & AST_AUTO_NAME))
         {
-            auto    overload = child->resolvedSymbolOverload;
-            Utf8Crc name     = format("item%u", storageIndex);
-            auto    symTable = node->scope->symTable;
-            symTable->addSymbolTypeInfo(sourceFile, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
+            bool hasItemName = false;
+            if (child->name.length() > 4 && child->name[0] == 'i' && child->name[1] == 't' && child->name[2] == 'e' && child->name[3] == 'm')
+                hasItemName = true;
+
+            // User cannot name its variables itemX
+            if (!(node->flags & AST_GENERATED) && hasItemName)
+            {
+                return context->errorContext.report({child, format("structure member name '%s' starts with 'item', and this is reserved by the language", child->name.c_str())});
+            }
+
+            if (!hasItemName)
+            {
+                auto    overload = child->resolvedSymbolOverload;
+                Utf8Crc name     = format("item%u", storageIndex);
+                auto    symTable = node->scope->symTable;
+                symTable->addSymbolTypeInfo(sourceFile, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
+            }
         }
 
         storageIndex++;

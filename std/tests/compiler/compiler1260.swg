@@ -1,4 +1,6 @@
-public func getChar()->{bool, f32}
+#module compiler1260
+#unittest error
+struct TOTO
 {
-	return {true, 0}
+	item0: s32
 }
