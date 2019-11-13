@@ -58,7 +58,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     }
 
     // User initialization
-    if (node->assignment)
+    if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         RegisterList r0 = reserveRegisterRC(context);
 

@@ -527,7 +527,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Find type
-    if (node->type && node->assignment)
+    if (node->type && node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         SWAG_ASSERT(node->type->typeInfo);
 
@@ -549,7 +549,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         node->typeInfo = node->type->typeInfo;
     }
-    else if (node->assignment)
+    else if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);

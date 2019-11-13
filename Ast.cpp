@@ -165,6 +165,8 @@ namespace Ast
 
     AstNode* clone(AstNode* source, AstNode* parent)
     {
+        if (!source)
+            return nullptr;
         CloneContext cloneContext;
         cloneContext.parent = parent;
         return source->clone(cloneContext);

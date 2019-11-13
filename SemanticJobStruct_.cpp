@@ -153,7 +153,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         // Var has an initialization
-        else if (varDecl->assignment)
+        else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {
             SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->errorContext.report({varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
 

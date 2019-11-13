@@ -120,6 +120,7 @@ struct SemanticJob : public Job
     static bool resolveContinue(SemanticContext* context);
     static bool resolveExpressionListCurly(SemanticContext* context);
     static bool resolveExpressionListArray(SemanticContext* context);
+	static bool resolveExplicitNoInit(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
     static bool resolveIsExpression(SemanticContext* context);

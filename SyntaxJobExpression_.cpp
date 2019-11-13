@@ -496,7 +496,12 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymQuestion)
     {
-        parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+        auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::ExplicitNoInit, sourceFile, parent);
+        node->semanticFct = &SemanticJob::resolveExplicitNoInit;
+        if (parent)
+            parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+        if (result)
+            *result = node;
         SWAG_CHECK(eatToken(TokenId::SymQuestion));
         return true;
     }
@@ -596,12 +601,20 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
 
 bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
 {
+    bool acceptDeref = true;
+    if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
+        acceptDeref = false;
+
     // Multiple affectation
     if (leftNode->kind == AstNodeKind::MultiIdentifier)
     {
-        auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
-        if (result)
-            *result = parentNode;
+        auto parentNode = parent;
+        if (acceptDeref)
+        {
+            parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+            if (result)
+                *result = parentNode;
+        }
 
         // Declare first variable, and affect it
         auto savedtoken = token;
@@ -621,8 +634,18 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             if (!firstDone)
             {
                 firstDone = true;
+                Ast::addChildBack(varNode, type);
                 Ast::addChildBack(varNode, assign);
+                varNode->type       = type;
                 varNode->assignment = assign;
+            }
+
+            // We are supposed to be constexpr, so we need to duplicate the assignment instead of generating an
+            // affectation to the first variable
+            else if (!acceptDeref)
+            {
+                varNode->type       = Ast::clone(type, varNode);
+                varNode->assignment = Ast::clone(assign, varNode);
             }
             else
             {
@@ -630,7 +653,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
                 varNode->assignment->token = savedtoken;
             }
 
-            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+            if (varNode->assignment)
+                varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
             currentScope->allocateSymTable();
             SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
         }
@@ -641,6 +665,8 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
+        SWAG_VERIFY(acceptDeref, error(leftNode->token, "cannot destructure a tuple in a global scope"));
+
         auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
         if (result)
             *result = parentNode;
@@ -651,9 +677,12 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         varNode->kind          = kind;
         varNode->token         = savedtoken;
+        Ast::addChildBack(varNode, type);
+        varNode->type = type;
         Ast::addChildBack(varNode, assign);
-        varNode->assignment                   = assign;
-        varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->assignment = assign;
+        if (assign)
+            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         varNode->flags |= AST_R_VALUE;
         currentScope->allocateSymTable();
         SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
@@ -689,9 +718,12 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
 
         if (result)
             *result = varNode;
+        Ast::addChildBack(varNode, type);
+        varNode->type = type;
         Ast::addChildBack(varNode, assign);
-        varNode->assignment                   = assign;
-        varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->assignment = assign;
+        if (assign)
+            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         varNode->flags |= AST_R_VALUE;
         currentScope->allocateSymTable();
         SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));

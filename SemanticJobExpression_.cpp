@@ -67,6 +67,15 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
+{
+    auto node = context->node;
+    node->parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
+    node->flags |= AST_CONST_EXPR;
+    node->typeInfo = g_TypeMgr.typeInfoVoid;
+    return true;
+}
+
 bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
