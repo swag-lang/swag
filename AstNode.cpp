@@ -111,8 +111,8 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
         if (node->ownerMainNode && node->ownerMainNode->kind == AstNodeKind::StructDecl)
             return "struct member";
         return "variable";
-	case AstNodeKind::ConstDecl:
-		return "constant";
+    case AstNodeKind::ConstDecl:
+        return "constant";
     case AstNodeKind::FuncDecl:
         return "function";
     case AstNodeKind::EnumDecl:
@@ -236,6 +236,17 @@ AstNode* AstIdentifierRef::clone(CloneContext& context)
     auto newNode = g_Pool_astIdentifierRef.alloc();
     newNode->copyFrom(context, this);
     return newNode;
+}
+
+void AstIdentifierRef::computeName()
+{
+    name.clear();
+    for (auto child : childs)
+    {
+        if (!name.empty())
+            name += ".";
+        name += child->name;
+    }
 }
 
 AstNode* AstIdentifier::clone(CloneContext& context)

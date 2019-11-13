@@ -94,8 +94,8 @@ enum class AstNodeKind
     BinaryOp,
     FactorOp,
     ExpressionList,
-	MultiIdentifier,
-	MultiIdentifierTuple,
+    MultiIdentifier,
+    MultiIdentifierTuple,
     AffectOp,
     ArrayPointerIndex,
     PointerRef,
@@ -377,6 +377,7 @@ struct AstIdentifierRef : public AstNode
     }
 
     AstNode* clone(CloneContext& context) override;
+    void     computeName();
 
     Scope*   startScope;
     AstNode* previousResolvedNode;

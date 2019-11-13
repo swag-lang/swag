@@ -561,7 +561,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
             SWAG_CHECK(eatToken());
         }
 
-		SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple affectation"));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple affectation"));
         break;
     }
 
@@ -632,8 +632,44 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
              token.id == TokenId::SymLowerLowerEqual ||
              token.id == TokenId::SymGreaterGreaterEqual)
     {
-        // Multiple affectations
-        if (leftNode->kind == AstNodeKind::MultiIdentifier || leftNode->kind == AstNodeKind::MultiIdentifierTuple)
+        // Multiple affectation
+        if (leftNode->kind == AstNodeKind::MultiIdentifier)
+        {
+            auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+            if (result)
+                *result = parentNode;
+
+            // Generate an expression of the form "var firstVar = assignment"
+            bool firstDone  = false;
+            auto savedtoken = token;
+            auto front      = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+            front->computeName();
+            for (auto child : leftNode->childs)
+            {
+                auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parentNode);
+                affectNode->semanticFct = &SemanticJob::resolveAffect;
+                affectNode->token       = savedtoken;
+                Ast::removeFromParent(child);
+                Ast::addChildBack(affectNode, child);
+                forceTakeAddress(child);
+
+                if (!firstDone)
+                {
+                    firstDone = true;
+                    SWAG_CHECK(tokenizer.getToken(token));
+                    SWAG_CHECK(doExpression(affectNode));
+                }
+                else
+                {
+                    Ast::newIdentifierRef(sourceFile, front->name, affectNode)->token = savedtoken;
+                }
+            }
+
+            leftNode->release();
+        }
+
+        // Tuple destruct
+        else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
         {
             auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             if (result)
