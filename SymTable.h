@@ -96,9 +96,9 @@ struct SymTable
 {
     SymTable(Scope* scope);
 
-    SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind);
-    SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0);
-    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0);
+    SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
+    SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
+    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
     bool            checkHiddenSymbol(AstNode* node, TypeInfo* typeInfo, SymbolKind kind);
     bool            checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8Crc& name);

@@ -78,6 +78,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
         auto structFieldNode = Ast::newVarDecl(sourceFile, "", contentNode, nullptr);
+        structFieldNode->flags |= AST_GENERATED;
 
         AstTypeExpression* typeExpression = nullptr;
         AstNode*           expression;
@@ -101,6 +102,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             Ast::addChildBack(structFieldNode, expression);
             structFieldNode->type = expression;
             structFieldNode->name = format("item%u", idx);
+			structFieldNode->flags |= AST_AUTO_NAME;
         }
 
         idx++;
@@ -112,7 +114,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         name += typeExpression->token.text;
         if (typeExpression->identifier)
             name += typeExpression->identifier->childs.back()->name;
-		name += "_";
+        name += "_";
 
         SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s'", token.text.c_str())));
         if (token.id == TokenId::SymRightCurly)
@@ -131,7 +133,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         *result = identifier;
 
     // Add struct type and scope
-	auto rootScope = sourceFile->scopeRoot;
+    auto rootScope = sourceFile->scopeRoot;
     rootScope->allocateSymTable();
     scoped_lock lk(rootScope->symTable->mutex);
     auto        symbol = rootScope->symTable->findNoLock(structNode->name);
@@ -173,11 +175,11 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     // This is a function
-	if (token.id == TokenId::KwdFunc)
-	{
-		SWAG_CHECK(eatToken());
-		return doTypeExpressionLambda(parent, result);
-	}
+    if (token.id == TokenId::KwdFunc)
+    {
+        SWAG_CHECK(eatToken());
+        return doTypeExpressionLambda(parent, result);
+    }
 
     // Const keyword
     bool isConst = false;
@@ -243,10 +245,10 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
     if (token.id == TokenId::Identifier)
     {
-		ScopedFlags scopedFlags(this, AST_CAN_INSTANCIATE_TYPE);
+        ScopedFlags scopedFlags(this, AST_CAN_INSTANCIATE_TYPE);
         SWAG_CHECK(doIdentifierRef(node, &node->identifier));
-		if (inTypeVarDecl)
-			node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
+        if (inTypeVarDecl)
+            node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
         return true;
     }
     else if (token.id == TokenId::SymLeftCurly)

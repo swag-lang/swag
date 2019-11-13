@@ -194,12 +194,12 @@ bool SemanticJob::collectLiteralsToSegmentNoLock(SemanticContext* context, uint3
             continue;
         }
 
-		if (child->kind == AstNodeKind::FuncCallParam)
-		{
-			auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-			if (param->resolvedParameter)
-				offset = baseOffset + param->resolvedParameter->offset;
-		}
+        if (child->kind == AstNodeKind::FuncCallParam)
+        {
+            auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+            if (param->resolvedParameter)
+                offset = baseOffset + param->resolvedParameter->offset;
+        }
 
         SWAG_CHECK(storeToSegmentNoLock(context, offset, segment, &child->computedValue, child->typeInfo, child));
         offset += child->typeInfo->sizeOf;
@@ -226,6 +226,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     {
         auto childType = typeList->childs[idx];
 
+        bool autoName = false;
         if (idx < typeList->names.size())
         {
             varName = typeList->names[idx];
@@ -234,13 +235,16 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         }
         else
         {
-            varName = format("item%u", idx);
+            varName  = format("item%u", idx);
+            autoName = true;
         }
 
         structName += childType->name;
         structName += "_";
 
-        auto paramNode      = Ast::newVarDecl(sourceFile, varName, contentNode);
+        auto paramNode = Ast::newVarDecl(sourceFile, varName, contentNode);
+        if (autoName)
+            paramNode->flags |= AST_AUTO_NAME;
         auto typeExpression = Ast::newTypeExpression(sourceFile, paramNode);
         typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
         paramNode->type = typeExpression;
@@ -718,7 +722,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Register symbol with its type
-	node->ownerScope->allocateSymTable();
+    node->ownerScope->allocateSymTable();
     auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
                                                                   node,
                                                                   node->typeInfo,

@@ -32,22 +32,25 @@ SymbolName* SymTable::findNoLock(const Utf8Crc& name)
     return result;
 }
 
-SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind)
+SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind, Utf8Crc* aliasName)
 {
-    SWAG_ASSERT(!node->name.empty());
-    auto symbol = findNoLock(node->name);
+    if (!aliasName)
+        aliasName = &node->name;
+
+    SWAG_ASSERT(!aliasName->empty());
+    auto symbol = findNoLock(*aliasName);
     if (!symbol)
     {
         symbol                       = g_Pool_symName.alloc();
-        symbol->name                 = node->name;
-        symbol->fullName             = Scope::makeFullName(scope->fullname, node->name);
+        symbol->name                 = *aliasName;
+        symbol->fullName             = Scope::makeFullName(scope->fullname, *aliasName);
         symbol->kind                 = kind;
         symbol->defaultOverload.node = node;
         symbol->ownerTable           = this;
-        int indexInTable             = node->name.crc % HASH_SIZE;
+        int indexInTable             = aliasName->crc % HASH_SIZE;
         if (!mapNames[indexInTable])
             mapNames[indexInTable] = new map<Utf8Crc, SymbolName*>();
-        (*mapNames[indexInTable])[node->name] = symbol;
+        (*mapNames[indexInTable])[*aliasName] = symbol;
     }
 
     // Error if overload is not possible
@@ -70,12 +73,13 @@ SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile*    sourceFile,
                                             ComputedValue* computedValue,
                                             uint32_t       flags,
                                             SymbolName**   resultName,
-                                            uint32_t       storageOffset)
+                                            uint32_t       storageOffset,
+                                            Utf8Crc*       aliasName)
 {
     scoped_lock lk(mutex);
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         flags |= OVERLOAD_PUBLIC;
-    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName, storageOffset);
+    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, aliasName);
 }
 
 SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
@@ -85,11 +89,15 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
                                                   ComputedValue* computedValue,
                                                   uint32_t       flags,
                                                   SymbolName**   resultName,
-                                                  uint32_t       storageOffset)
+                                                  uint32_t       storageOffset,
+                                                  Utf8Crc*       aliasName)
 {
-    auto symbol = findNoLock(node->name);
+    if (!aliasName)
+        aliasName = &node->name;
+
+    auto symbol = findNoLock(*aliasName);
     if (!symbol)
-        symbol = registerSymbolNameNoLock(sourceFile, node, kind);
+        symbol = registerSymbolNameNoLock(sourceFile, node, kind, aliasName);
     if (resultName)
         *resultName = symbol;
 

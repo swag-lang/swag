@@ -99,7 +99,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
-
         switch (child->kind)
         {
         case AstNodeKind::AttrUse:
@@ -233,6 +232,15 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             storageOffset = max(storageOffset, realStorageOffset + child->typeInfo->sizeOf);
         else if (node->packing)
             storageOffset += child->typeInfo->sizeOf;
+
+		// Created a generic alias
+        if (!(child->flags & AST_AUTO_NAME))
+        {
+            auto    overload = child->resolvedSymbolOverload;
+            Utf8Crc name     = format("item%u", storageIndex);
+            auto    symTable = node->scope->symTable;
+            symTable->addSymbolTypeInfo(sourceFile, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
+        }
 
         storageIndex++;
     }
