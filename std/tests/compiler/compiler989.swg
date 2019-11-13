@@ -21,6 +21,6 @@ struct Point
 {
 	t := cast(const *TypeinfoStruct) @typeof(Point)
 	@assert(@countof(t.attributes) == 2)
-	@assert(t.attributes[0].val0 == "compiler989.NC")
-	@assert(t.attributes[1].val0 == "compiler989.NC0")
+	@assert(t.attributes[0].item0 == "compiler989.NC")
+	@assert(t.attributes[1].item0 == "compiler989.NC0")
 }

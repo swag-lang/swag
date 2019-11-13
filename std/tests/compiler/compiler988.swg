@@ -6,7 +6,7 @@ typealias pair: {string, any}
 	var arr: [..] pair
 	var pt: pair
 	
-	pt.val0 = "toto"
-	pt.val1 = 6
-	@assert(@kindof(pt.val1) == @typeof(s32))
+	pt.item0 = "toto"
+	pt.item1 = 6
+	@assert(@kindof(pt.item1) == @typeof(s32))
 }

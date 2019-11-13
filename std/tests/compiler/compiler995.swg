@@ -16,9 +16,9 @@ enum A
 	@assert(@countof(ptr.attributes) == 0)
 	ptr1 := cast(const *TypeinfoParam) ptr.values[0]
 	@assert(@countof(ptr1.attributes) == 2)
-	@assert(ptr1.attributes[0].val0 == "compiler995.NC1")
-	@assert(ptr1.attributes[1].val0 == "compiler995.NC1.x")
-	val := ptr1.attributes[1].val1
+	@assert(ptr1.attributes[0].item0 == "compiler995.NC1")
+	@assert(ptr1.attributes[1].item0 == "compiler995.NC1.x")
+	val := ptr1.attributes[1].item1
 	@assert(@kindof(val) == @typeof(string))
 	ptrVal := cast(*string) @dataof(val)
 	@assert(ptrVal[0] == "TOTO")

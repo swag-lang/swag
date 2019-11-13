@@ -658,7 +658,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 Ast::addChildBack(affectNode, child);
                 forceTakeAddress(child);
                 if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
-                    Ast::newIdentifierRef(sourceFile, format("%s.val%d", tmpVarName.c_str(), idx++), affectNode)->token = savedtoken;
+                    Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode)->token = savedtoken;
                 else
                     Ast::newIdentifierRef(sourceFile, tmpVarName, affectNode)->token = savedtoken;
             }

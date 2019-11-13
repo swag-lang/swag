@@ -4,9 +4,9 @@ func new() => {1, 2}
 #test
 {
 	a := new()
-	@assert(a.val0 == 1)
-	@assert(a.val1 == 2)
+	@assert(a.item0 == 1)
+	@assert(a.item1 == 2)
 	
-	@assert(new().val0 == 1)
-	@assert(new().val1 == 2)
+	@assert(new().item0 == 1)
+	@assert(new().item1 == 2)
 }

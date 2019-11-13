@@ -100,7 +100,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         {
             Ast::addChildBack(structFieldNode, expression);
             structFieldNode->type = expression;
-            structFieldNode->name = format("val%u", idx);
+            structFieldNode->name = format("item%u", idx);
         }
 
         idx++;

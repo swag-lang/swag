@@ -5,8 +5,8 @@
 #test
 {
 	var a : {s32, s32}
-	a.val0 = 1
-	a.val1 = 2
-	@assert(a.val0 == 1)
-	@assert(a.val1 == 2)
+	a.item0 = 1
+	a.item1 = 2
+	@assert(a.item0 == 1)
+	@assert(a.item1 == 2)
 }

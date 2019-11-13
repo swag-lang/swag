@@ -7,5 +7,5 @@ struct Point
 #test
 {
 	pair := {"toto", Point(10)}
-	@assert(pair.val1.x == 10)
+	@assert(pair.item1.x == 10)
 }

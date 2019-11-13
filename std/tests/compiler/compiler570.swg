@@ -11,6 +11,6 @@ func toto()->ret
 #test
 {
 	a:= toto()
-	@assert(a.val0 == 1)
-	@assert(a.val1 == 2)
+	@assert(a.item0 == 1)
+	@assert(a.item1 == 2)
 }

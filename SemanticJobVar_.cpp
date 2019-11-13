@@ -234,7 +234,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         }
         else
         {
-            varName = format("val%u", idx);
+            varName = format("item%u", idx);
         }
 
         structName += childType->name;

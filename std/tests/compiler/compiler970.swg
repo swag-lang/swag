@@ -8,6 +8,6 @@ struct pt
 #test
 {
 	var x: {s32, s32} = {666}
-    @assert(x.val0 == 666)
-    @assert(x.val1 == 0)
+    @assert(x.item0 == 666)
+    @assert(x.item1 == 0)
 }

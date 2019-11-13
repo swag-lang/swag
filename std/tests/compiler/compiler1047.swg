@@ -6,5 +6,5 @@ func new() => {1}
 //#[swag.printbc]
 #test
 {
-	new().val0 = 1
+	new().item0 = 1
 }

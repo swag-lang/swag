@@ -7,6 +7,6 @@
 	a := 10
 	c := 20
 	res := {&a, &c}
-	@assert(res.val0[0] == 10)
-	@assert(res.val1[0] == 20)
+	@assert(res.item0[0] == 10)
+	@assert(res.item1[0] == 20)
 }
