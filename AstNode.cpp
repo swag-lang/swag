@@ -247,6 +247,8 @@ void AstIdentifierRef::computeName()
             name += ".";
         name += child->name;
     }
+
+	name.computeCrc();
 }
 
 AstNode* AstIdentifier::clone(CloneContext& context)
