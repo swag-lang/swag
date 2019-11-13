@@ -28,6 +28,14 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
+	// Tuple destructuration
+    bool tupleDeref = false;
+    if (token.id == TokenId::SymLeftParen)
+    {
+        tupleDeref = true;
+        SWAG_CHECK(eatToken());
+    }
+
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid variable name '%s'", token.text.c_str())));
 
     AstVarDecl* varNode = Ast::newVarDecl(sourceFile, token.text, parent, this, kind);
@@ -46,6 +54,10 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         SWAG_CHECK(tokenizer.getToken(token));
         otherVariables.push_back(otherVarNode);
     }
+
+	// End of tuple destructuration
+	if (tupleDeref)
+		SWAG_CHECK(eatToken(TokenId::SymRightParen));
 
     if (token.id == TokenId::SymColon)
     {

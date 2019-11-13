@@ -594,6 +594,108 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNode** result)
+{
+    // Multiple affectation
+    if (leftNode->kind == AstNodeKind::MultiIdentifier)
+    {
+        auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+        if (result)
+            *result = parentNode;
+
+        // Declare first variable, and affect it
+        auto savedtoken = token;
+        auto front      = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+
+        // Then declare all other variables, and assign them to the first one
+        bool firstDone = false;
+        for (auto child : leftNode->childs)
+        {
+            auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+            identifier->computeName();
+            AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+            varNode->token      = identifier->token;
+            varNode->flags |= AST_R_VALUE;
+
+            if (!firstDone)
+            {
+                firstDone = true;
+                Ast::addChildBack(varNode, assign);
+                varNode->assignment = assign;
+            }
+            else
+            {
+                varNode->assignment        = Ast::newIdentifierRef(sourceFile, front->name, varNode);
+                varNode->assignment->token = savedtoken;
+            }
+
+            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+            currentScope->allocateSymTable();
+            SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+        }
+
+        leftNode->release();
+    }
+
+    // Tuple dereference
+    else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
+    {
+        auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
+        if (result)
+            *result = parentNode;
+
+        // Generate an expression of the form "var __tmp_0 = assignment"
+        auto        savedtoken = token;
+        auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
+        AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+        varNode->token         = savedtoken;
+        Ast::addChildBack(varNode, assign);
+        varNode->assignment                   = assign;
+        varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->flags |= AST_R_VALUE;
+        currentScope->allocateSymTable();
+        SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+
+        // And reference that variable, in the form value = __tmp_0.item?
+        int idx = 0;
+        for (auto child : leftNode->childs)
+        {
+            auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+            identifier->computeName();
+            varNode        = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
+            varNode->token = identifier->token;
+            varNode->flags |= AST_R_VALUE;
+            SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+            identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode);
+            identifier->token                     = savedtoken;
+            varNode->assignment                   = identifier;
+            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        }
+
+        leftNode->release();
+    }
+
+    // Single declaration/affectation
+    else
+    {
+        SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected"));
+
+        AstVarDecl* varNode = Ast::newVarDecl(sourceFile, leftNode->childs.back()->name, parent, this);
+        varNode->inheritTokenLocation(leftNode->token);
+
+        if (result)
+            *result = varNode;
+        Ast::addChildBack(varNode, assign);
+        varNode->assignment                   = assign;
+        varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->flags |= AST_R_VALUE;
+        currentScope->allocateSymTable();
+        SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
@@ -602,102 +704,10 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     // Variable declaration and initialization
     if (token.id == TokenId::SymColonEqual)
     {
-        // Multiple affectation
-        if (leftNode->kind == AstNodeKind::MultiIdentifier)
-        {
-            auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
-            if (result)
-                *result = parentNode;
-
-            // Declare first variable, and affect it
-            auto savedtoken = token;
-            auto front      = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
-
-            // Then declare all other variables, and assign them to the first one
-            bool firstDone = false;
-            for (auto child : leftNode->childs)
-            {
-                auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-                identifier->computeName();
-                AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
-                varNode->token      = identifier->token;
-                varNode->flags |= AST_R_VALUE;
-
-                if (!firstDone)
-                {
-                    firstDone = true;
-                    SWAG_CHECK(tokenizer.getToken(token));
-                    SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
-                }
-                else
-                {
-                    varNode->assignment        = Ast::newIdentifierRef(sourceFile, front->name, varNode);
-                    varNode->assignment->token = savedtoken;
-                }
-
-                varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-                currentScope->allocateSymTable();
-                SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
-            }
-
-            leftNode->release();
-        }
-
-        // Tuple dereference
-        else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
-        {
-            auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
-            if (result)
-                *result = parentNode;
-
-            // Generate an expression of the form "var __tmp_0 = assignment"
-            auto        savedtoken = token;
-            auto        tmpVarName = format("__tmp_%d", g_Global.uniqueID.fetch_add(1));
-            AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-            varNode->token         = savedtoken;
-            SWAG_CHECK(tokenizer.getToken(token));
-            SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
-            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-            varNode->flags |= AST_R_VALUE;
-            currentScope->allocateSymTable();
-            SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
-
-            // And reference that variable, in the form value = __tmp_0.item?
-            int idx = 0;
-            for (auto child : leftNode->childs)
-            {
-                auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
-                identifier->computeName();
-                varNode        = Ast::newVarDecl(sourceFile, identifier->name, parentNode, this);
-                varNode->token = identifier->token;
-                varNode->flags |= AST_R_VALUE;
-                SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
-                identifier                            = Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), varNode);
-                identifier->token                     = savedtoken;
-                varNode->assignment                   = identifier;
-                varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-            }
-
-            leftNode->release();
-        }
-
-        // Single declaration/affectation
-        else
-        {
-            SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "identifier expected"));
-
-            AstVarDecl* varNode = Ast::newVarDecl(sourceFile, leftNode->childs.back()->name, parent, this);
-            varNode->inheritTokenLocation(leftNode->token);
-
-            if (result)
-                *result = varNode;
-            SWAG_CHECK(tokenizer.getToken(token));
-            SWAG_CHECK(doInitializationExpression(varNode, &varNode->assignment));
-            varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
-            varNode->flags |= AST_R_VALUE;
-            currentScope->allocateSymTable();
-            SWAG_CHECK(currentScope->symTable->registerSymbolNameNoLock(sourceFile, varNode, SymbolKind::Variable));
-        }
+        AstNode* assign;
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doInitializationExpression(nullptr, &assign));
+        SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, result));
     }
 
     // Affect operator
