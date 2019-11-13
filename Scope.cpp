@@ -13,7 +13,7 @@ void Scope::allocateSymTable()
     symTable = new SymTable(this);
 }
 
-const char* Scope::getNakedName(ScopeKind kind)
+const char* Scope::getNakedKindName(ScopeKind kind)
 {
     switch (kind)
     {
@@ -33,9 +33,33 @@ const char* Scope::getNakedName(ScopeKind kind)
         return "statement";
     case ScopeKind::Inline:
         return "inline";
-
     default:
-        return "???";
+        return "<scope>";
+    }
+}
+
+const char* Scope::getArticleKindName(ScopeKind kind)
+{
+    switch (kind)
+    {
+    case ScopeKind::Namespace:
+        return "a namespace";
+    case ScopeKind::Enum:
+        return "an enum";
+    case ScopeKind::TypeList:
+        return "a tuple";
+    case ScopeKind::Struct:
+        return "a struct";
+    case ScopeKind::File:
+        return "a file";
+    case ScopeKind::Module:
+        return "a module";
+    case ScopeKind::Statement:
+        return "a statement";
+    case ScopeKind::Inline:
+        return "an inline";
+    default:
+        return "<scope>";
     }
 }
 

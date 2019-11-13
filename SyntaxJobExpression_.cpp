@@ -665,7 +665,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode->token, "cannot destructure a tuple in a global scope"));
+        SWAG_VERIFY(acceptDeref, error(leftNode->token, format("cannot destructure a tuple in %s", Scope::getArticleKindName(currentScope->kind))));
 
         auto parentNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
         if (result)

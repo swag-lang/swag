@@ -50,7 +50,8 @@ struct Scope : public PoolElement
     void               addPublicConst(AstNode* node);
 	void               addPublicTypeAlias(AstNode* node);
     static string      makeFullName(const string& parentName, const string& name);
-    static const char* getNakedName(ScopeKind kind);
+    static const char* getNakedKindName(ScopeKind kind);
+	static const char* getArticleKindName(ScopeKind kind);
     static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);
 
     bool isGlobal()

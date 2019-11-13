@@ -1048,7 +1048,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
                     displayName = identifierRef->typeInfo->name;
                 if (!displayName.empty())
-                    return context->errorContext.report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedName(identifierRef->startScope->kind), displayName.c_str())});
+                    return context->errorContext.report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
             }
 
             return context->errorContext.report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
