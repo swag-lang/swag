@@ -4,6 +4,4 @@
 #test
 {
 	x, x := 666
-    @assert(x == 666)
-    @assert(y == 666)    
 }
