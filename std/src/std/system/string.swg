@@ -42,6 +42,14 @@ namespace std
         #[swag.inline]
         public func opCount(using self) => length
         
+        public func(T) opCast(using self)->T
+        {
+            #if @typeof(T) == @typeof([..] u8)
+                return [buffer, length]
+            #else
+                #assert(false,"invalid cast to '" ~ @typeof(T).name ~ "'")
+        }
+        
         public func opAffect(using self, value: string)
         {
             if value == null

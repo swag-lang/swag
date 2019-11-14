@@ -28,7 +28,7 @@
             <Keywords name="Keywords2">#assert #print #run #unittest #file #line #import #version #else #module #test #if #function #swagversion #swagrevision #swagbuildnum #init #drop #main #elif #arch #config</Keywords>
             <Keywords name="Keywords3">@assert @print @sizeof @alloc @free @memcpy @getcontext @setcontext @realloc @countof @dataof @typeof @kindof @args</Keywords>
             <Keywords name="Keywords4">bool s8 s16 s32 s64 u8 u16 u32 u64 f32 f64 string char self Self void any</Keywords>
-            <Keywords name="Keywords5">opInit opEquals opCmp opBinary opUnary opAssign opIndex opIndexAssign opCount opPostCopy opPostMove opAffect opDrop</Keywords>
+            <Keywords name="Keywords5">opInit opEquals opCmp opBinary opUnary opAssign opIndex opIndexAssign opCount opPostCopy opPostMove opAffect opDrop opCast</Keywords>
             <Keywords name="Keywords6"></Keywords>
             <Keywords name="Keywords7">public private</Keywords>
             <Keywords name="Keywords8">Typeinfo TypeinfoNative TypeinfoStruct TypeinfoEnum TypeinfoFunc TypeinfoKind TypeinfoNativeKind TypeinfoParam TypeinfoArray TypeinfoSlice Context AllocatorRequest TypeinfoVariadic TypeinfoPointer AllocatorMode</Keywords>
