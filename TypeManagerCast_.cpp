@@ -182,14 +182,26 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
             return true;
         }
     }
-	else
-	{
-		switch (fromType->nativeType)
-		{
-		case NativeTypeKind::U32:
+    else
+    {
+        switch (fromType->nativeType)
+        {
+        case NativeTypeKind::U32:
+            return true;
+        }
+
+        if (fromType->flags & TYPEINFO_UNTYPED_INTEGER)
+        {
+            if (!fromNode)
+            {
+                auto value = static_cast<TypeInfoNative*>(fromType)->valueInteger;
+                if (value < 0)
+                    return false;
+            }
+
 			return true;
-		}
-	}
+        }
+    }
 
     return castError(context, g_TypeMgr.typeInfoChar, fromType, fromNode, castFlags);
 }
