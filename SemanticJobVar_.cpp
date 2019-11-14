@@ -545,7 +545,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto rightConcreteType = TypeManager::concreteType(node->assignment->typeInfo);
             if (!rightConcreteType->isSame(node->type->typeInfo, 0))
             {
-                SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, node->type, node->assignment));
+                SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, node->type, node->assignment));
                 if (context->result == SemanticResult::Pending)
                     return true;
             }
