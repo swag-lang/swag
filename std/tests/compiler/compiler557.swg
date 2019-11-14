@@ -1,6 +1,3 @@
-
-
-
 /*func T()-> {s32, s32}
 {
 }*/
@@ -8,7 +5,7 @@
 //#[swag.printbc]
 #test
 {
-	var x, y: {s32, s32}
+	var x, y: (s32, s32)
 	x = {1, 2}
 	y = x
 	@assert(y.item0 == 1)

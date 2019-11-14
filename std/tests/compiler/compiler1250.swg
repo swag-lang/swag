@@ -1,4 +1,4 @@
-func getChar(buffer: *u8)->{*u8, char}
+func getChar(buffer: *u8)->(*u8, char)
 {
 	ptr := buffer
 	c := deref ptr

@@ -1,4 +1,4 @@
-typealias pair: {string, any}
+typealias pair: (string, any)
 
 //#[swag.printbc]
 #test

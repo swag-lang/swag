@@ -1,4 +1,4 @@
-func toto() -> {a: f32, b: bool}
+func toto() -> (a: f32, b: bool)
 {
 	return {666, true}
 }

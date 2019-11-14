@@ -71,7 +71,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
 
     auto curly = token;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 
     string name = "__" + sourceFile->scopePrivate->name + "_tuple_";
     int    idx  = 0;
@@ -116,13 +116,13 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             name += typeExpression->identifier->childs.back()->name;
         name += "_";
 
-        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightCurly, syntaxError(token, format("invalid token '%s'", token.text.c_str())));
-        if (token.id == TokenId::SymRightCurly)
+        SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightParen, syntaxError(token, format("invalid token '%s'", token.text.c_str())));
+        if (token.id == TokenId::SymRightParen)
             break;
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
-    SWAG_CHECK(eatToken(TokenId::SymRightCurly, "after tuple type expression"));
+    SWAG_CHECK(eatToken(TokenId::SymRightParen, "after tuple type expression"));
 
     // Compute structure name
     structNode->name = move(name);
@@ -251,7 +251,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             node->identifier->childs.back()->flags |= AST_IN_TYPE_VAR_DECLARATION;
         return true;
     }
-    else if (token.id == TokenId::SymLeftCurly)
+    else if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(convertExpressionListToStruct(node, &node->identifier, isConst));
         return true;

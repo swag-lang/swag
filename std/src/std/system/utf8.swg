@@ -1,6 +1,6 @@
 namespace std.utf8
 {
-	public func getChar(buffer: *u8)->{*u8, char}
+	public func getChar(buffer: *u8)->(*u8, char)
 	{
 		ptr := buffer
 		c := deref ptr

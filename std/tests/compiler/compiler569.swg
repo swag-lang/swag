@@ -1,4 +1,1 @@
-
-
-
-typealias ret: {s32, s32}
+typealias ret: (s32, s32)

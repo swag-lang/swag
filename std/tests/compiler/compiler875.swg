@@ -1,6 +1,4 @@
-
-
-func minMax(array: [..] s32) -> {min: s32, max: s32}
+func minMax(array: [..] s32) -> (min: s32, max: s32)
 {
     var currentMin, currentMax = array[0]
     loop array

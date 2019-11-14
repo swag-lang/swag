@@ -165,7 +165,7 @@ namespace swag
 		namedParam:		string
 		pointedType:	const *Typeinfo
 		value:			*void
-		attributes:		const [..] { string, any }
+		attributes:		const [..] (string, any)
 		offset:			u32
 	}
 
@@ -173,7 +173,7 @@ namespace swag
 	{
 		base: 		Typeinfo
 		fields:		const [..] *TypeinfoParam
-		attributes:	const [..] { string, any }
+		attributes:	const [..] (string, any)
 	}
 
 	struct TypeinfoFunc
@@ -181,7 +181,7 @@ namespace swag
 		base: 			Typeinfo
 		parameters:		const [..] *TypeinfoParam
 		returnType:		const *Typeinfo
-		attributes:		const [..] { string, any }
+		attributes:		const [..] (string, any)
 	}
 
 	struct TypeinfoEnum
@@ -189,7 +189,7 @@ namespace swag
 		base: 		Typeinfo
 		values:		const [..] *TypeinfoParam
 		rawType:	const *Typeinfo
-		attributes:	const [..] { string, any }
+		attributes:	const [..] (string, any)
 	}
 
 	struct TypeinfoVariadic
