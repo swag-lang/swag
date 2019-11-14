@@ -39,7 +39,8 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     if (typeStruct->kind != TypeInfoKind::Struct)
         return true;
 
-    // First type must be struct
+    // First parameter be struct
+    SWAG_VERIFY(node->parameters, context->errorContext.report({node, node->token, format("missing parameters for special function '%s'", name.c_str())}));
     auto firstType = node->parameters->childs.front()->typeInfo;
     SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->errorContext.report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
     auto firstTypePtr = static_cast<TypeInfoPointer*>(firstType);
