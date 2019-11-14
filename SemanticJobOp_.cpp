@@ -39,7 +39,7 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     if (typeStruct->kind != TypeInfoKind::Struct)
         return true;
 
-    // First parameter be struct
+    // First parameter must be be struct
     SWAG_VERIFY(node->parameters, context->errorContext.report({node, node->token, format("missing parameters for special function '%s'", name.c_str())}));
     auto firstType = node->parameters->childs.front()->typeInfo;
     SWAG_VERIFY(firstType->kind == TypeInfoKind::Pointer, context->errorContext.report({node->parameters->childs.front(), format("invalid first parameter type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), firstType->name.c_str())}));
@@ -54,10 +54,17 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
         auto firstGen = node->genericParameters->childs.front();
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr.typeInfoString, 0), context->errorContext.report({firstGen, format("invalid generic parameter for special function '%s' ('string' expected, '%s' provided)", name.c_str(), firstGen->name.c_str())}));
     }
+    else if (name == "opCast")
+    {
+        SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->errorContext.report({node, node->token, format("invalid number of generic parameters for special function '%s'", name.c_str())}));
+    }
 
     auto parameters = node->parameters;
     auto returnType = node->returnType;
-    if (name == "opInit")
+    if (name == "opCast")
+    {
+    }
+    else if (name == "opInit")
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
     }
@@ -124,17 +131,17 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     return true;
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right, bool optionnal)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool optionnal)
 {
     vector<AstNode*> params;
     SWAG_ASSERT(left);
     params.push_back(left);
     if (right)
         params.push_back(right);
-    return resolveUserOp(context, name, op, left, params, optionnal);
+    return resolveUserOp(context, name, opConst, opType, left, params, optionnal);
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, vector<AstNode*>& params, bool optionnal)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, vector<AstNode*>& params, bool optionnal)
 {
     auto leftType   = TypeManager::concreteType(left->typeInfo);
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
@@ -166,12 +173,12 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     AstNode* genericParameters = nullptr;
     AstNode  parameters;
     AstNode  literal;
-    if (op)
+    if (opConst || opType)
     {
         literal.reset();
         literal.kind               = AstNodeKind::Literal;
-        literal.computedValue.text = op;
-        literal.typeInfo           = g_TypeMgr.typeInfoString;
+        literal.computedValue.text = opConst ? opConst : "";
+        literal.typeInfo           = opType ? opType : g_TypeMgr.typeInfoString;
         job->symMatch.genericParameters.push_back(&literal);
 
         parameters.reset();

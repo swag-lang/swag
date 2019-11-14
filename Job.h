@@ -4,6 +4,7 @@
 #include "DependentJobs.h"
 struct JobThread;
 struct AstNode;
+struct SymbolName;
 
 enum class JobResult
 {
@@ -21,9 +22,10 @@ struct Job : public PoolElement
 
     void reset() override
     {
-        flags        = 0;
-        thread       = nullptr;
-        pendingIndex = -1;
+        flags               = 0;
+        thread              = nullptr;
+        waitingSymbolSolved = nullptr;
+        pendingIndex        = -1;
         dependentJobs.clear();
         dependentNodes.clear();
     }
@@ -41,4 +43,5 @@ struct Job : public PoolElement
     int              pendingIndex;
     DependentJobs    dependentJobs;
     vector<AstNode*> dependentNodes;
+    SymbolName*      waitingSymbolSolved;
 };

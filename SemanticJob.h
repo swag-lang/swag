@@ -109,7 +109,7 @@ struct SemanticJob : public Job
     static bool resolveUnaryOp(SemanticContext* context);
     static bool resolveTypeExpression(SemanticContext* context);
     static bool resolveTypeLambda(SemanticContext* context);
-	static bool resolveVarDeclAfterAssign(SemanticContext* context);
+    static bool resolveVarDeclAfterAssign(SemanticContext* context);
     static bool resolveVarDecl(SemanticContext* context);
     static bool resolveTypeAlias(SemanticContext* context);
     static bool resolveCountProperty(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
@@ -120,7 +120,7 @@ struct SemanticJob : public Job
     static bool resolveContinue(SemanticContext* context);
     static bool resolveExpressionListCurly(SemanticContext* context);
     static bool resolveExpressionListArray(SemanticContext* context);
-	static bool resolveExplicitNoInit(SemanticContext* context);
+    static bool resolveExplicitNoInit(SemanticContext* context);
     static bool resolveBoolExpression(SemanticContext* context);
     static bool resolveCompareExpression(SemanticContext* context);
     static bool resolveIsExpression(SemanticContext* context);
@@ -130,8 +130,8 @@ struct SemanticJob : public Job
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
     static bool resolveCompilerSpecialFunction(SemanticContext* context);
-    static bool resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, AstNode* right, bool optionnal = false);
-    static bool resolveUserOp(SemanticContext* context, const char* name, const char* op, AstNode* left, vector<AstNode*>& params, bool optionnal = false);
+    static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool optionnal = false);
+    static bool resolveUserOp(SemanticContext* context, const char* name, const char* opConst, TypeInfo* opType, AstNode* left, vector<AstNode*>& params, bool optionnal = false);
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right);
@@ -162,7 +162,7 @@ struct SemanticJob : public Job
     static bool resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveXor(SemanticContext* context, AstNode* left, AstNode* right);
-	static bool resolveTilde(SemanticContext* context, AstNode* left, AstNode* right);
+    static bool resolveTilde(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveUnaryOpInvert(SemanticContext* context, AstNode* op);
     static bool resolveExplicitCast(SemanticContext* context);
     static bool resolveExplicitAutoCast(SemanticContext* context);
@@ -186,6 +186,7 @@ struct SemanticJob : public Job
     static bool resolveTrinaryOp(SemanticContext* context);
     static bool resolveInit(SemanticContext* context);
     static bool resolveDrop(SemanticContext* context);
+	static bool resolveUserCast(SemanticContext* context);
 
     void reset() override
     {
@@ -218,7 +219,6 @@ struct SemanticJob : public Job
     vector<SymbolOverload*>  cacheBadSignature;
     vector<SymbolOverload*>  cacheBadGenericSignature;
     SymbolMatchContext       symMatch;
-    SymbolName*              waitingSymbolSolved;
     SemanticContext          context;
 };
 

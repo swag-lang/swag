@@ -258,7 +258,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), arrayNode->array);
 
             // Resolve call
-            SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, arrayNode->array, arrayNode->structFlatParams));
+            SWAG_CHECK(resolveUserOp(context, "opIndex", nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams));
         }
         break;
 

@@ -101,7 +101,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (forStruct)
         {
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", nullptr, left, arrayNode->structFlatParams));
             else
             {
                 if (rightTypeInfo->kind == TypeInfoKind::Struct)
@@ -117,7 +117,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else
                 {
-                    SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, left, right));
+                    SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, left, right));
                 }
             }
 
@@ -133,9 +133,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right));
             break;
         }
 
@@ -166,9 +166,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             else if (tokenId == TokenId::SymTildeEqual)
                 op = "~=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right));
             break;
         }
 
@@ -190,9 +190,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right));
             break;
         }
 
@@ -227,9 +227,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (forStruct)
         {
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "/=", left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "/=", nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", "/=", left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", "/=", nullptr, left, right));
             break;
         }
 
@@ -249,9 +249,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, left, arrayNode->structFlatParams));
+                SWAG_CHECK(resolveUserOp(context, "opIndexAssign", op, nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, "opAssign", op, left, right));
+                SWAG_CHECK(resolveUserOp(context, "opAssign", op, nullptr, left, right));
             break;
         }
 

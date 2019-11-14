@@ -41,6 +41,7 @@ static const uint64_t AST_IS_CONST_ASSIGN_INHERIT    = 0x00000040'00000000;
 static const uint64_t AST_IN_FCT_PROTOTYPE           = 0x00000080'00000000;
 static const uint64_t AST_COMPILER_IF_DONE           = 0x00000100'00000000;
 static const uint64_t AST_AUTO_NAME                  = 0x00000200'00000000;
+static const uint64_t AST_USER_CAST                  = 0x00000400'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;
@@ -49,3 +50,4 @@ static const uint32_t AST_DONE_EMIT_DROP                 = 0x00000008;
 static const uint32_t AST_DONE_UFCS                      = 0x00000010;
 static const uint32_t AST_DONE_INLINED                   = 0x00000020;
 static const uint32_t AST_DONE_RESOLVE_INLINED           = 0x00000040;
+static const uint32_t AST_DONE_PRE_CAST                  = 0x00000080;

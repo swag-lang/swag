@@ -15,6 +15,7 @@ struct AstFuncDecl;
 struct AstVarDecl;
 struct TypeInfoStruct;
 struct Scope;
+struct SymbolName;
 enum class ByteCodeOp : uint16_t;
 
 enum class ByteCodeResult
@@ -41,6 +42,7 @@ static const uint32_t ASKBC_ADD_DEP_NODE           = 0x00000008;
 struct ByteCodeGenJob : public Job
 {
     JobResult execute() override;
+    void      waitForSymbolNoLock(SymbolName* symbol);
     void      setPending() override;
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);

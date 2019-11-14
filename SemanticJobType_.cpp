@@ -340,3 +340,17 @@ bool SemanticJob::resolveIsExpression(SemanticContext* context)
 
     return true;
 }
+
+bool SemanticJob::resolveUserCast(SemanticContext* context)
+{
+    auto node = context->node;
+    context->job->resolveUserOp(context, "opCast", nullptr, node->typeInfo, node->parent, nullptr);
+    if (context->result == SemanticResult::Pending)
+        return true;
+
+    node->parent->castedTypeInfo               = node->castedTypeInfo;
+    node->parent->typeInfo                     = node->typeInfo;
+    node->parent->resolvedUserOpSymbolName     = node->resolvedUserOpSymbolName;
+    node->parent->resolvedUserOpSymbolOverload = node->resolvedUserOpSymbolOverload;
+    return true;
+}

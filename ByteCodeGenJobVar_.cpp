@@ -60,13 +60,19 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     // User initialization
     if (node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        RegisterList r0 = reserveRegisterRC(context);
+        if (!(node->doneFlags & AST_DONE_PRE_CAST))
+        {
+            node->additionalRegisterRC = reserveRegisterRC(context);
+            node->doneFlags |= AST_DONE_PRE_CAST;
+            auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, node->additionalRegisterRC);
+            inst->b.s32 = resolved->storageOffset;
+            node->resultRegisterRC = node->assignment->resultRegisterRC;
+        }
 
-        emitInstruction(context, ByteCodeOp::RARefFromStack, r0)->b.s32 = resolved->storageOffset;
-        node->resultRegisterRC                                          = node->assignment->resultRegisterRC;
         SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
-        emitAffectEqual(context, r0, node->resultRegisterRC, node->typeInfo, node->assignment);
-        freeRegisterRC(context, r0);
+        if (context->result == ByteCodeResult::Pending)
+            return true;
+        emitAffectEqual(context, node->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
         freeRegisterRC(context, node);
         return true;
     }

@@ -4,8 +4,9 @@ struct Toto
 
 impl Toto
 {
-	func(T) opCast()->T
+	func(T) opCast(using self)->T
 	{
+		return 666
 	}
 }
 
@@ -13,4 +14,5 @@ impl Toto
 {
 	var x: Toto
 	var y: s32 = x
+	@assert(y == 666)
 }

@@ -154,13 +154,13 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         switch (node->token.id)
         {
         case TokenId::SymExclam:
-            SWAG_CHECK(resolveUserOp(context, "opUnary", "!", op, nullptr));
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "!", nullptr, op, nullptr));
             break;
         case TokenId::SymMinus:
-            SWAG_CHECK(resolveUserOp(context, "opUnary", "-", op, nullptr));
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "-", nullptr, op, nullptr));
             break;
         case TokenId::SymTilde:
-            SWAG_CHECK(resolveUserOp(context, "opUnary", "~", op, nullptr));
+            SWAG_CHECK(resolveUserOp(context, "opUnary", "~", nullptr, op, nullptr));
             break;
         }
 

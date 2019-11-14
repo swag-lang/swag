@@ -211,7 +211,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
 
         if (flags & ASKBC_WAIT_DONE)
         {
-			SWAG_ASSERT(job);
+            SWAG_ASSERT(job);
             job->setPending();
         }
 
@@ -231,7 +231,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             g_ThreadMgr.addJob(node->byteCodeJob);
         }
 
-		return;
+        return;
     }
 
     if (flags & ASKBC_WAIT_RESOLVED)
@@ -244,6 +244,14 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
             return;
         }
     }
+}
+
+void ByteCodeGenJob::waitForSymbolNoLock(SymbolName* symbol)
+{
+    waitingSymbolSolved = symbol;
+    setPending();
+    symbol->dependentJobs.add(this);
+    g_ThreadMgr.addPendingJob(this);
 }
 
 void ByteCodeGenJob::setPending()
@@ -279,7 +287,7 @@ JobResult ByteCodeGenJob::execute()
         }
         else
         {
-			SWAG_ASSERT(context.bc);
+            SWAG_ASSERT(context.bc);
 
             // Register some default swag functions
             if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)

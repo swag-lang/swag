@@ -6,6 +6,7 @@
 #include "ByteCode.h"
 #include "SourceFile.h"
 #include "Module.h"
+#include "Ast.h"
 
 bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
@@ -64,7 +65,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
     case NativeTypeKind::S16:
         emitInstruction(context, ByteCodeOp::CastBool16, exprNode->resultRegisterRC);
         break;
-	case NativeTypeKind::Char:
+    case NativeTypeKind::Char:
     case NativeTypeKind::U32:
     case NativeTypeKind::S32:
         emitInstruction(context, ByteCodeOp::CastBool32, exprNode->resultRegisterRC);
@@ -589,6 +590,17 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (fromTypeInfo == nullptr)
         return true;
     SWAG_ASSERT(typeInfo);
+
+    // opCast
+    if (exprNode->flags & AST_USER_CAST)
+    {
+        SWAG_ASSERT(fromTypeInfo->kind == TypeInfoKind::Struct);
+        SWAG_ASSERT(exprNode->resolvedUserOpSymbolOverload);
+        SWAG_CHECK(emitUserOp(context, nullptr, exprNode));
+        if (context->result == ByteCodeResult::Pending)
+            return true;
+        return true;
+    }
 
     // Cast from any to something real
     auto node = context->node;

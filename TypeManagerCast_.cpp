@@ -7,11 +7,39 @@
 #include "TypeTable.h"
 #include "Module.h"
 #include "Ast.h"
+#include "AstNode.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
+    // Last change : opCast, with a structure
+    if (fromType->kind == TypeInfoKind::Struct)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        auto structNode = CastAst<AstStruct>(typeStruct->structNode, AstNodeKind::StructDecl);
+        auto symbol     = structNode->scope->symTable->find("opCast");
+        if (symbol)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                auto node         = Ast::newNode(context->sourceFile, AstNodeKind::Cast, fromNode);
+                node->semanticFct = SemanticJob::resolveUserCast;
+
+                auto lastNode = context->job->nodes.back();
+                context->job->nodes.pop_back();
+                context->job->nodes.push_back(node);
+                context->job->nodes.push_back(lastNode);
+
+                node->castedTypeInfo = fromType;
+                node->typeInfo       = toType;
+                fromNode->flags |= AST_USER_CAST;
+            }
+
+            return true;
+        }
+    }
+
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
         SWAG_ASSERT(fromNode);
@@ -199,7 +227,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
                     return false;
             }
 
-			return true;
+            return true;
         }
     }
 
