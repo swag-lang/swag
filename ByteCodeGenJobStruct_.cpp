@@ -404,17 +404,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         return true;
 
     ByteCode* opInit;
-    int       p = 0;
 	if (typeInfoStruct->opInitFct->bc)
-	{
-		p = 1;
 		opInit = typeInfoStruct->opInitFct->bc;
-	}
 	else
-	{
-		p = 2;
 		opInit = g_Pool_byteCode.alloc();
-	}
 
     opInit->sourceFile = context->sourceFile;
     opInit->name       = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
