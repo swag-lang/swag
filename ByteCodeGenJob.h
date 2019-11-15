@@ -18,13 +18,10 @@ struct Scope;
 struct SymbolName;
 enum class ByteCodeOp : uint16_t;
 
-struct ByteCodeGenContext
+struct ByteCodeGenContext : public JobContext
 {
     ByteCode*       bc;
     ByteCodeGenJob* job;
-    AstNode*        node;
-    ContextResult   result;
-    SourceFile*     sourceFile = nullptr;
 };
 
 static const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;

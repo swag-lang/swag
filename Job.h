@@ -5,12 +5,20 @@
 struct JobThread;
 struct AstNode;
 struct SymbolName;
+struct SourceFile;
 
 enum class ContextResult
 {
     Done,
     Pending,
     NewChilds,
+};
+
+struct JobContext
+{
+    AstNode*      node;
+    ContextResult result     = ContextResult::Done;
+    SourceFile*   sourceFile = nullptr;
 };
 
 enum class JobResult

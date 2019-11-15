@@ -22,13 +22,10 @@ struct AstFuncDecl;
 struct DataSegmentLocation;
 struct DataSegment;
 
-struct SemanticContext
+struct SemanticContext : public JobContext
 {
-    SourceFile*   sourceFile = nullptr;
-    SemanticJob*  job        = nullptr;
-    AstNode*      node       = nullptr;
-    ContextResult result     = ContextResult::Done;
-    ErrorContext  errorContext;
+    SemanticJob* job = nullptr;
+    ErrorContext errorContext;
 
     void reset()
     {
