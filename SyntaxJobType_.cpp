@@ -102,7 +102,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             Ast::addChildBack(structFieldNode, expression);
             structFieldNode->type = expression;
             structFieldNode->name = format("item%u", idx);
-			structFieldNode->flags |= AST_AUTO_NAME;
+            structFieldNode->flags |= AST_AUTO_NAME;
         }
 
         idx++;
@@ -149,8 +149,9 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         typeInfo->name  = structNode->name;
         typeInfo->scope = newScope;
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
-        structNode->typeInfo = typeInfo;
-        structNode->scope    = newScope;
+        structNode->typeInfo   = typeInfo;
+        structNode->scope      = newScope;
+        structNode->ownerScope = newScope->parentScope;
         rootScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
 
         Ast::addChildBack(sourceFile->astRoot, structNode);

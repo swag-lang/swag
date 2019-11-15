@@ -1,5 +1,21 @@
 namespace std.utf8
 {
+    public func getCharCount(buffer: *u8)->u32
+    {
+        ptr := buffer
+        cpt := 0'u32
+        var c: char = ?
+        while true
+        {
+            (ptr, c) = getChar(ptr)
+            if !c
+                return cpt
+            cpt += 1
+        }
+        
+        return 0
+    }
+    
 	public func getChar(buffer: *u8)->(*u8, char)
 	{
 		ptr := buffer
@@ -65,6 +81,6 @@ namespace std.utf8
 			return {ptr, wc}
 		}
 		
-		return {ptr, acast 0}
+		return {ptr, acast c}
 	}
 }

@@ -153,17 +153,6 @@ void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
     inst->endLocation   = node->token.endLocation;
 }
 
-void ByteCodeGenJob::setupBC(Module* module, AstNode* node)
-{
-    node->bc             = g_Pool_byteCode.alloc();
-    node->bc->node       = node;
-    node->bc->sourceFile = node->sourceFile;
-    node->bc->name       = node->ownerScope->fullname + "_" + node->name;
-    replaceAll(node->bc->name, '.', '_');
-    if (node->kind == AstNodeKind::FuncDecl)
-        module->addByteCodeFunc(node->bc);
-}
-
 void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
 {
     if (!node)
@@ -227,7 +216,14 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
                 node->byteCodeJob->dependentJobs.add(job);
             }
 
-            setupBC(sourceFile->module, node);
+            node->bc             = g_Pool_byteCode.alloc();
+            node->bc->node       = node;
+            node->bc->sourceFile = node->sourceFile;
+            node->bc->name       = node->ownerScope->fullname + "_" + node->name;
+            replaceAll(node->bc->name, '.', '_');
+            if (node->kind == AstNodeKind::FuncDecl)
+                sourceFile->module->addByteCodeFunc(node->bc);
+
             g_ThreadMgr.addJob(node->byteCodeJob);
         }
 

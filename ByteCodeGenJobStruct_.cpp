@@ -404,10 +404,18 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         return true;
 
     ByteCode* opInit;
-    if (typeInfoStruct->opInitFct->bc)
-        opInit = typeInfoStruct->opInitFct->bc;
-    else
-        opInit = g_Pool_byteCode.alloc();
+    int       p = 0;
+	if (typeInfoStruct->opInitFct->bc)
+	{
+		p = 1;
+		opInit = typeInfoStruct->opInitFct->bc;
+	}
+	else
+	{
+		p = 2;
+		opInit = g_Pool_byteCode.alloc();
+	}
+
     opInit->sourceFile = context->sourceFile;
     opInit->name       = structNode->ownerScope->fullname + "_" + structNode->name + "_opInit";
     replaceAll(opInit->name, '.', '_');
@@ -556,17 +564,17 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
 
         if (identifier->callParameters)
         {
-			for (auto child : identifier->callParameters->childs)
-			{
-				auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-				SWAG_ASSERT(param->resolvedParameter);
-				auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
-				emitInstruction(context, ByteCodeOp::CopyRARB, r1, r0);
-				if (typeParam->offset)
-					emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
-				emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
-				freeRegisterRC(context, child);
-			}
+            for (auto child : identifier->callParameters->childs)
+            {
+                auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+                SWAG_ASSERT(param->resolvedParameter);
+                auto typeParam = CastTypeInfo<TypeInfoParam>(param->resolvedParameter, TypeInfoKind::Param);
+                emitInstruction(context, ByteCodeOp::CopyRARB, r1, r0);
+                if (typeParam->offset)
+                    emitInstruction(context, ByteCodeOp::IncRAVB, r1)->b.u32 = typeParam->offset;
+                emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
+                freeRegisterRC(context, child);
+            }
         }
 
         freeRegisterRC(context, r0);

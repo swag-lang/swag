@@ -1037,6 +1037,23 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             if (symbol)
             {
                 dependentSymbols.push_back(symbol);
+
+				// Tentative to have a better error message in the case of local variables pb (a local variable is referencing another one
+				// defined later).
+                if (!scope->isGlobal() && symbol->kind == SymbolKind::Variable)
+                {
+                    scoped_lock lkn(symbol->mutex);
+                    if (symbol->cptOverloads && node->ownerFct)
+                    {
+                        auto testScope = identifierRef->ownerScope;
+                        while (testScope && testScope != node->ownerFct->scope && testScope != scope)
+                            testScope = testScope->parentScope;
+                        if (testScope == scope)
+                        {
+                            return context->errorContext.report({node, node->token, format("unknown identifier '%s' (seems to be defined later)", node->name.c_str())});
+                        }
+                    }
+                }
             }
         }
 
