@@ -87,8 +87,6 @@ struct SemanticJob : public Job
     static bool collectAssignment(SemanticContext* context, uint32_t& storageOffset, AstVarDecl* node, DataSegment* seg);
     static void disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
 
-    void waitForSymbolNoLock(SymbolName* symbol);
-
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right);

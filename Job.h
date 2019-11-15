@@ -48,6 +48,7 @@ struct Job : public PoolElement
 
     void addDependentJob(Job* job);
     void doneJob();
+	void waitForSymbolNoLock(SymbolName* symbol);
     void setPending();
 
     SpinLock         executeMutex;

@@ -242,14 +242,6 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags)
     }
 }
 
-void ByteCodeGenJob::waitForSymbolNoLock(SymbolName* symbol)
-{
-    waitingSymbolSolved = symbol;
-    setPending();
-    symbol->dependentJobs.add(this);
-    g_ThreadMgr.addPendingJob(this);
-}
-
 JobResult ByteCodeGenJob::execute()
 {
     scoped_lock lkExecute(executeMutex);

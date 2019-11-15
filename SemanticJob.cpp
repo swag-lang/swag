@@ -42,14 +42,6 @@ bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
     return false;
 }
 
-void SemanticJob::waitForSymbolNoLock(SymbolName* symbol)
-{
-    waitingSymbolSolved = symbol;
-    setPending();
-    symbol->dependentJobs.add(this);
-    g_ThreadMgr.addPendingJob(this);
-}
-
 void SemanticJob::enterState(AstNode* node)
 {
     if (node->semanticState == AstNodeResolveState::Enter)

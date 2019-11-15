@@ -2,6 +2,7 @@
 #include "Job.h"
 #include "ThreadManager.h"
 #include "Global.h"
+#include "SymTable.h"
 
 void Job::doneJob()
 {
@@ -15,6 +16,14 @@ void Job::addDependentJob(Job* job)
 {
     scoped_lock lk(executeMutex);
     dependentJobs.add(job);
+}
+
+void Job::waitForSymbolNoLock(SymbolName* symbol)
+{
+    waitingSymbolSolved = symbol;
+    setPending();
+    symbol->dependentJobs.add(this);
+    g_ThreadMgr.addPendingJob(this);
 }
 
 void Job::setPending()
