@@ -48,7 +48,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(resolveUserOp(context, "opCount", nullptr, nullptr, node, nullptr));
-        if (context->result == SemanticResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
         node->typeInfo = g_TypeMgr.typeInfoU32;
     }

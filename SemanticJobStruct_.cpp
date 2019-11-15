@@ -11,13 +11,13 @@
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
     SWAG_CHECK(resolveUserOp(context, "opPostCopy", nullptr, nullptr, node, nullptr, true));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
     SWAG_CHECK(resolveUserOp(context, "opPostMove", nullptr, nullptr, node, nullptr, true));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
     SWAG_CHECK(resolveUserOp(context, "opDrop", nullptr, nullptr, node, nullptr, true));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
     return true;
 }

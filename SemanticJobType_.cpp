@@ -345,7 +345,7 @@ bool SemanticJob::resolveUserCast(SemanticContext* context)
 {
     auto node = context->node;
     context->job->resolveUserOp(context, "opCast", nullptr, node->typeInfo, node->parent, nullptr);
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     node->parent->castedTypeInfo               = node->castedTypeInfo;

@@ -76,7 +76,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
         SWAG_CHECK(resolveArrayPointerDeRef(context));
     }
 
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     // If this is not the last child of the IdentifierRef, then this is a reference, and
@@ -304,7 +304,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
             for (auto child : node->parameters->childs)
                 job->symMatch.parameters.push_back(child);
             SWAG_CHECK(matchIdentifierParameters(context, nullptr, node->parameters, node));
-            if (context->result == SemanticResult::Pending)
+            if (context->result == ContextResult::Pending)
                 return true;
         }
         else

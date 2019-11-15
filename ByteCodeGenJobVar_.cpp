@@ -17,7 +17,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(prepareEmitStructDrop(context, typeInfo));
-        if (context->result == ByteCodeResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
 
         // Generate initialization
@@ -50,7 +50,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             }
 
             SWAG_CHECK(emitUserOp(context, nullptr, node));
-            if (context->result == ByteCodeResult::Pending)
+            if (context->result == ContextResult::Pending)
                 return true;
 
             return true;
@@ -70,7 +70,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         }
 
         SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
-        if (context->result == ByteCodeResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
         emitAffectEqual(context, node->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
         freeRegisterRC(context, node);

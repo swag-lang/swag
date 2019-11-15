@@ -391,7 +391,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         varDecl->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
 
         auto job        = context->job;
-        context->result = SemanticResult::Done;
+        context->result = ContextResult::Done;
         job->nodes.pop_back();
         job->nodes.push_back(varDecl->type);
         job->nodes.push_back(context->node);
@@ -493,7 +493,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
             {
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
-                if (context->result == SemanticResult::Pending)
+                if (context->result == ContextResult::Pending)
                     return true;
             }
 
@@ -546,7 +546,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (!rightConcreteType->isSame(node->type->typeInfo, 0))
             {
                 SWAG_CHECK(resolveUserOp(context, "opAffect", nullptr, nullptr, node->type, node->assignment));
-                if (context->result == SemanticResult::Pending)
+                if (context->result == ContextResult::Pending)
                     return true;
             }
         }
@@ -690,14 +690,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (typeInfo->kind == TypeInfoKind::Struct)
         {
             SWAG_CHECK(waitForStructUserOps(context, node));
-            if (context->result == SemanticResult::Pending)
+            if (context->result == ContextResult::Pending)
                 return true;
         }
 
         if (node->typeInfo->flags & TYPEINFO_GENERIC)
         {
             SWAG_CHECK(Generic::instantiateDefaultGeneric(context, node));
-            if (context->result != SemanticResult::Done)
+            if (context->result != ContextResult::Done)
                 return true;
         }
 

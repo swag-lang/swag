@@ -308,7 +308,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             allParams.reset();
             allParams.childs = node->structFlatParams;
             SWAG_CHECK(emitUserOp(context, &allParams));
-            if (context->result == ByteCodeResult::Pending)
+            if (context->result == ContextResult::Pending)
                 return true;
         }
     }
@@ -328,7 +328,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 
     // Need to generate bytecode, if not already done or running
     askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-    if (context->result == ByteCodeResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     freeRegisterRC(context, front);
@@ -490,7 +490,7 @@ bool ByteCodeGenJob::emitDrop(ByteCodeGenContext* context)
 
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
         generateStruct_opDrop(context, typeStruct);
-        if (context->result == ByteCodeResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
 
         if (typeStruct->opDrop)

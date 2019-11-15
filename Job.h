@@ -6,6 +6,13 @@ struct JobThread;
 struct AstNode;
 struct SymbolName;
 
+enum class ContextResult
+{
+    Done,
+    Pending,
+    NewChilds,
+};
+
 enum class JobResult
 {
     Continue,

@@ -76,7 +76,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     bool forStruct = leftTypeInfo->kind == TypeInfoKind::Struct;
 
     SWAG_CHECK(evaluateConstExpression(context, right));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     switch (tokenId)
@@ -108,7 +108,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 {
                     SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
                     SWAG_CHECK(waitForStructUserOps(context, left));
-                    if (context->result == SemanticResult::Pending)
+                    if (context->result == ContextResult::Pending)
                         return true;
                 }
                 else if (rightTypeInfo->kind == TypeInfoKind::TypeList)

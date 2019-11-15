@@ -21,7 +21,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
 
     {
         ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
-        if (context->result == SemanticResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
     }
 
@@ -52,7 +52,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(executeNode(context, expr, true));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     if (!expr->computedValue.reg.b)
@@ -74,7 +74,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 {
     auto expr = context->node->childs[0];
     SWAG_CHECK(executeNode(context, expr, true));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     g_Log.lock();

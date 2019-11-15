@@ -597,7 +597,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         SWAG_ASSERT(fromTypeInfo->kind == TypeInfoKind::Struct);
         SWAG_ASSERT(exprNode->resolvedUserOpSymbolOverload);
         SWAG_CHECK(emitUserOp(context, nullptr, exprNode));
-        if (context->result == ByteCodeResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
         return true;
     }

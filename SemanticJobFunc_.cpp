@@ -396,7 +396,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     }
 
     SWAG_CHECK(evaluateConstExpression(context, node));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     node->resolvedSymbolName     = child->resolvedSymbolName;
@@ -461,7 +461,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                 funcNode->returnType->flags |= AST_FORCE_FUNC_LATE_REGISTER;
                 Ast::setForceConstType(funcNode->returnType);
                 context->job->nodes.push_back(funcNode->returnType);
-                context->result = SemanticResult::NewChilds;
+                context->result = ContextResult::NewChilds;
                 return true;
             }
 
@@ -486,7 +486,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (returnType && returnType->kind == TypeInfoKind::Struct)
     {
         SWAG_CHECK(waitForStructUserOps(context, funcNode->returnType));
-        if (context->result == SemanticResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
     }
 

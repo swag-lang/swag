@@ -53,7 +53,7 @@ void SemanticJob::waitForSymbolNoLock(SymbolName* symbol)
 void SemanticJob::setPending()
 {
     context.node->semanticPass++;
-    context.result = SemanticResult::Pending;
+    context.result = ContextResult::Pending;
 }
 
 void SemanticJob::enterState(AstNode* node)
@@ -90,7 +90,7 @@ JobResult SemanticJob::execute()
     context.job                     = this;
     context.sourceFile              = sourceFile;
     context.errorContext.sourceFile = sourceFile;
-    context.result                  = SemanticResult::Done;
+    context.result                  = ContextResult::Done;
 
     while (!nodes.empty())
     {
@@ -140,7 +140,7 @@ JobResult SemanticJob::execute()
             }
 
             node->semanticState = AstNodeResolveState::ProcessingChilds;
-            context.result      = SemanticResult::Done;
+            context.result      = ContextResult::Done;
 
             if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))
                 return JobResult::ReleaseJob;
@@ -187,9 +187,9 @@ JobResult SemanticJob::execute()
             {
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
-                if (context.result == SemanticResult::Pending)
+                if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
-                if (context.result == SemanticResult::NewChilds)
+                if (context.result == ContextResult::NewChilds)
                     continue;
             }
 
@@ -200,9 +200,9 @@ JobResult SemanticJob::execute()
             {
                 if (!node->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
-                if (context.result == SemanticResult::Pending)
+                if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
-                if (context.result == SemanticResult::NewChilds)
+                if (context.result == ContextResult::NewChilds)
                     continue;
             }
 

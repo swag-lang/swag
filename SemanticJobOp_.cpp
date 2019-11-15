@@ -190,7 +190,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     job->cacheDependentSymbols.clear();
     job->cacheDependentSymbols.push_back(symbol);
     SWAG_CHECK(matchIdentifierParameters(context, genericParameters, left->parent, nullptr));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     // Make the real cast for all the call parameters

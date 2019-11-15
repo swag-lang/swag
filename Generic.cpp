@@ -325,7 +325,7 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                     identifier->flags &= ~AST_IS_GENERIC;
                     node->flags &= ~AST_IS_GENERIC;
                     node->type->flags &= ~AST_IS_GENERIC;
-                    context->result     = SemanticResult::NewChilds;
+                    context->result     = ContextResult::NewChilds;
                     node->semanticState = AstNodeResolveState::Enter;
                     return true;
                 }

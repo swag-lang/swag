@@ -18,19 +18,12 @@ struct Scope;
 struct SymbolName;
 enum class ByteCodeOp : uint16_t;
 
-enum class ByteCodeResult
-{
-    Done,
-    Pending,
-    NewChilds,
-};
-
 struct ByteCodeGenContext
 {
     ByteCode*       bc;
     ByteCodeGenJob* job;
     AstNode*        node;
-    ByteCodeResult  result;
+    ContextResult   result;
     SourceFile*     sourceFile = nullptr;
 };
 

@@ -188,7 +188,7 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
 
-    context->result           = SemanticResult::NewChilds;
+    context->result           = ContextResult::NewChilds;
     identifier->semanticState = AstNodeResolveState::Enter;
     return true;
 }
@@ -243,7 +243,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         Ast::addChildFront(idRef, idNode);
         context->node->semanticState = AstNodeResolveState::Enter;
         context->job->nodes.push_back(idNode);
-        context->result = SemanticResult::NewChilds;
+        context->result = ContextResult::NewChilds;
         return true;
     }
 
@@ -1254,7 +1254,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     }
 
     SWAG_CHECK(matchIdentifierParameters(context, genericParameters, callParameters, node));
-    if (context->result == SemanticResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     auto& match    = job->cacheMatches[0];

@@ -40,7 +40,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     {
         needDrop = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-        if (context->result == ByteCodeResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
     }
 
@@ -53,7 +53,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             generateStruct_opDrop(context, typeStructVar);
-            if (context->result == ByteCodeResult::Pending)
+            if (context->result == ContextResult::Pending)
                 return true;
             if (typeStructVar->opDrop)
                 needDrop = true;
@@ -148,7 +148,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     {
         needPostMove = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-        if (context->result == ByteCodeResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
     }
 
@@ -161,7 +161,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             generateStruct_opPostMove(context, typeStructVar);
-            if (context->result == ByteCodeResult::Pending)
+            if (context->result == ContextResult::Pending)
                 return true;
             if (typeStructVar->opPostMove)
                 needPostMove = true;
@@ -254,7 +254,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     {
         needPostCopy = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-        if (context->result == ByteCodeResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
     }
 
@@ -267,7 +267,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
                 continue;
             auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             generateStruct_opPostCopy(context, typeStructVar);
-            if (context->result == ByteCodeResult::Pending)
+            if (context->result == ContextResult::Pending)
                 return true;
             if (typeStructVar->opPostCopy)
                 needPostCopy = true;
@@ -333,7 +333,7 @@ bool ByteCodeGenJob::prepareEmitStructDrop(ByteCodeGenContext* context, TypeInfo
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(generateStruct_opDrop(context, typeInfoStruct));
-    if (context->result == ByteCodeResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
     return true;
 }
@@ -342,10 +342,10 @@ bool ByteCodeGenJob::prepareEmitStructCopyMove(ByteCodeGenContext* context, Type
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));
-    if (context->result == ByteCodeResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
     SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
-    if (context->result == ByteCodeResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
     return true;
 }

@@ -253,7 +253,7 @@ void ByteCodeGenJob::waitForSymbolNoLock(SymbolName* symbol)
 void ByteCodeGenJob::setPending()
 {
     context.node->byteCodePass++;
-    context.result = ByteCodeResult::Pending;
+    context.result = ContextResult::Pending;
 }
 
 JobResult ByteCodeGenJob::execute()
@@ -300,11 +300,11 @@ JobResult ByteCodeGenJob::execute()
                 {
                 case AstNodeResolveState::Enter:
                     node->bytecodeState = AstNodeResolveState::ProcessingChilds;
-                    context.result      = ByteCodeResult::Done;
+                    context.result      = ContextResult::Done;
 
                     if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
                         return JobResult::ReleaseJob;
-                    SWAG_ASSERT(context.result == ByteCodeResult::Done);
+                    SWAG_ASSERT(context.result == ContextResult::Done);
 
                     if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
                     {
@@ -334,26 +334,26 @@ JobResult ByteCodeGenJob::execute()
                                 return JobResult::ReleaseJob;
                             // To be sure that cast is treated once
                             node->castedTypeInfo = nullptr;
-                            SWAG_ASSERT(context.result == ByteCodeResult::Done);
+                            SWAG_ASSERT(context.result == ContextResult::Done);
                         }
                         else if (node->byteCodeFct)
                         {
                             context.node   = node;
-                            context.result = ByteCodeResult::Done;
+                            context.result = ContextResult::Done;
 
                             if (!node->byteCodeFct(&context))
                                 return JobResult::ReleaseJob;
-                            if (context.result == ByteCodeResult::Pending)
+                            if (context.result == ContextResult::Pending)
                                 return JobResult::KeepJobAlive;
-                            if (context.result == ByteCodeResult::NewChilds)
+                            if (context.result == ContextResult::NewChilds)
                                 continue;
                         }
 
                         if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
                             return JobResult::ReleaseJob;
-                        if (context.result == ByteCodeResult::NewChilds)
+                        if (context.result == ContextResult::NewChilds)
                             continue;
-                        SWAG_ASSERT(context.result != ByteCodeResult::Pending);
+                        SWAG_ASSERT(context.result != ContextResult::Pending);
                     }
 
                     nodes.pop_back();

@@ -15,7 +15,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     auto node = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
 
     SWAG_CHECK(emitLeaveScope(context, node->scope));
-    if (context->result != ByteCodeResult::Done)
+    if (context->result != ContextResult::Done)
         return true;
 
     if (node->stackSize)
@@ -69,7 +69,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
                 {
                     SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo));
-                    if (context->result == ByteCodeResult::Pending)
+                    if (context->result == ContextResult::Pending)
                         return true;
                     RegisterList r0 = reserveRegisterRC(context);
                     emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
@@ -106,7 +106,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             SWAG_CHECK(emitDeferredStatements(context, scope));
         }
 
-        if (context->result != ByteCodeResult::Done)
+        if (context->result != ContextResult::Done)
             return true;
     }
 
@@ -325,7 +325,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     // Be sure referenced function has bytecode
     askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED | ASKBC_ADD_DEP_NODE);
-    if (context->result == ByteCodeResult::Pending)
+    if (context->result == ContextResult::Pending)
         return true;
 
     int precallStack  = 0;

@@ -118,7 +118,7 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
     {
         SWAG_CHECK(checkIsConcrete(context, node));
         SWAG_CHECK(executeNode(context, node, true));
-        if (context->result == SemanticResult::Pending)
+        if (context->result == ContextResult::Pending)
             return true;
     }
 

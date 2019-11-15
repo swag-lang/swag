@@ -22,20 +22,13 @@ struct AstFuncDecl;
 struct DataSegmentLocation;
 struct DataSegment;
 
-enum class SemanticResult
-{
-    Done,
-    Pending,
-    NewChilds,
-};
-
 struct SemanticContext
 {
-    SourceFile*    sourceFile = nullptr;
-    SemanticJob*   job        = nullptr;
-    AstNode*       node       = nullptr;
-    SemanticResult result     = SemanticResult::Done;
-    ErrorContext   errorContext;
+    SourceFile*   sourceFile = nullptr;
+    SemanticJob*  job        = nullptr;
+    AstNode*      node       = nullptr;
+    ContextResult result     = ContextResult::Done;
+    ErrorContext  errorContext;
 
     void reset()
     {
@@ -186,7 +179,7 @@ struct SemanticJob : public Job
     static bool resolveTrinaryOp(SemanticContext* context);
     static bool resolveInit(SemanticContext* context);
     static bool resolveDrop(SemanticContext* context);
-	static bool resolveUserCast(SemanticContext* context);
+    static bool resolveUserCast(SemanticContext* context);
 
     void reset() override
     {
