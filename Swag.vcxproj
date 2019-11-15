@@ -166,6 +166,7 @@
     <ClInclude Include="DataSegment.h" />
     <ClInclude Include="DependentJobs.h" />
     <ClInclude Include="Diagnostic.h" />
+    <ClInclude Include="ErrorContext.h" />
     <ClInclude Include="ffi.h" />
     <ClInclude Include="fficonfig.h" />
     <ClInclude Include="ffitarget.h" />

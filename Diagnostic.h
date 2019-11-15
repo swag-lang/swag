@@ -1,6 +1,7 @@
 #pragma once
 #include "Tokenizer.h"
 #include "AstNode.h"
+#include "ErrorContext.h"
 struct SourceFile;
 
 enum DiagnosticLevel
@@ -101,13 +102,4 @@ struct Diagnostic
     bool            hasRangeLocation = false;
     bool            printSource      = false;
     bool            showRange        = true;
-};
-
-struct ErrorContext
-{
-    SourceFile*             sourceFile;
-    vector<struct AstNode*> genericInstanceTree;
-
-    bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
-    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
 };

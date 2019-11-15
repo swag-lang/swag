@@ -542,6 +542,9 @@
     <ClInclude Include="Scoped.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="ErrorContext.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">
@@ -579,5 +582,6 @@
     <None Include="OsWin32.h">
       <Filter>Main</Filter>
     </None>
+    <None Include="DependentJobs.cpp" />
   </ItemGroup>
 </Project>
