@@ -387,7 +387,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     // Return
     if (typeFunc->numReturnRegisters() && !returnByCopy)
     {
-        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS);
+        auto returnType = TypeManager::concreteType(typeFunc->returnType, CONCRETE_ALIAS | CONCRETE_ENUM);
         if (returnType->kind == TypeInfoKind::Slice)
         {
             CONCAT_FIXED_STR(bufferC, "\t*((void **) result) = rr0.pointer;\n");

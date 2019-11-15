@@ -343,7 +343,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doCompareExpression(binaryNode));
+        SWAG_CHECK(doBoolExpression(binaryNode));
         leftNode = binaryNode;
         isBinary = true;
     }
