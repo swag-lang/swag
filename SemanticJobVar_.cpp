@@ -240,7 +240,6 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         }
 
         structName += childType->name;
-        structName += "_";
 
         auto paramNode = Ast::newVarDecl(sourceFile, varName, contentNode);
         if (autoName)
@@ -292,6 +291,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     }
 
     // Compute structure name
+    Ast::normalizeIdentifierName(structName);
     structNode->name = move(structName);
 
     // Add struct type and scope
@@ -308,8 +308,9 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         auto typeInfo = g_Pool_typeInfoStruct.alloc();
         auto newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         newScope->allocateSymTable();
-        typeInfo->name       = structNode->name;
-        typeInfo->scope      = newScope;
+        typeInfo->name  = structNode->name;
+        typeInfo->scope = newScope;
+        typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo = typeInfo;
         structNode->scope    = newScope;
         symbol               = rootScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);

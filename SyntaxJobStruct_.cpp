@@ -133,13 +133,6 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         SWAG_CHECK(doStructContent(contentNode));
     }
 
-    // Generate an empty init function so that the user can call it
-    {
-        Scoped       scoped(this, newScope);
-        ScopedStruct scopedStruct(this, newScope);
-        structNode->defaultOpInit = generateOpInit(structNode, structNode->name, structNode->genericParameters);
-    }
-
     return true;
 }
 
@@ -188,86 +181,4 @@ bool SyntaxJob::doStructContent(AstNode* parent)
     }
 
     return true;
-}
-
-void SyntaxJob::setupSelfType(AstIdentifier* node, const Utf8& name, AstNode* genericParameters)
-{
-    if (!node->ownerStructScope)
-        return;
-    node->name = name;
-
-    if (genericParameters)
-    {
-        auto allParams          = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile, node);
-        allParams->semanticFct  = &SemanticJob::resolveFuncDeclParams;
-        node->genericParameters = allParams;
-
-        if (genericParameters)
-        {
-            for (auto genParam : genericParameters->childs)
-            {
-                Ast::createIdentifierRef(this, genParam->name, genParam->token, allParams);
-            }
-        }
-    }
-}
-
-AstNode* SyntaxJob::generateOpInit(AstStruct* structNode, const Utf8& structName, AstNode* genericParameters)
-{
-    // Generate impl
-    auto implNode                    = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile, structNode->parent);
-    implNode->semanticFct            = &SemanticJob::resolveImpl;
-    implNode->identifier             = Ast::createIdentifierRef(this, structName, structNode->token, implNode);
-    implNode->structScope            = structNode->scope;
-    implNode->ownerScope             = structNode->ownerScope;
-    implNode->identifier->ownerScope = structNode->ownerScope;
-    implNode->flags |= AST_GENERATED;
-
-    auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile, implNode);
-    funcNode->semanticFct = &SemanticJob::resolveFuncDecl;
-    funcNode->name        = "opInit";
-    funcNode->flags |= AST_GENERATED;
-
-    // Register function name
-    Scope* newScope = nullptr;
-    currentScope->allocateSymTable();
-    {
-        scoped_lock lk(implNode->structScope->symTable->mutex);
-        auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
-        newScope             = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, implNode->structScope);
-        newScope->allocateSymTable();
-        funcNode->typeInfo = typeInfo;
-        implNode->structScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
-    }
-
-    {
-        Scoped       scoped(this, newScope);
-        ScopedFct    scopedFct(this, funcNode);
-        ScopedStruct scopedStruct(this, implNode->structScope);
-
-        // Parameters
-        funcNode->parameters              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclParams, sourceFile, funcNode);
-        funcNode->parameters->semanticFct = &SemanticJob::resolveFuncDeclParams;
-
-        // One parameter
-        auto param            = Ast::newVarDecl(sourceFile, "self", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
-        auto typeNode         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile, param);
-        typeNode->ptrCount    = 1;
-        typeNode->semanticFct = &SemanticJob::resolveTypeExpression;
-        typeNode->identifier  = Ast::createIdentifierRef(this, "Self", token, typeNode);
-        param->type           = typeNode;
-        setupSelfType(CastAst<AstIdentifier>(typeNode->identifier->childs.front(), AstNodeKind::Identifier), structName, genericParameters);
-    }
-
-    funcNode->returnType              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FuncDeclType, sourceFile, funcNode);
-    funcNode->returnType->semanticFct = &SemanticJob::resolveFuncDeclType;
-
-    // Content
-    {
-        Scoped    scoped(this, newScope);
-        ScopedFct scopedFct(this, funcNode);
-        funcNode->content = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, funcNode);
-    }
-
-    return funcNode;
 }

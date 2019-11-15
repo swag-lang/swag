@@ -17,7 +17,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
-	node->parent->resultRegisterRC = node->resultRegisterRC;
+    node->parent->resultRegisterRC = node->resultRegisterRC;
 
     AstNode* allParams     = nullptr;
     int      numCallParams = 0;
@@ -512,15 +512,17 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
 
     scoped_lock lock(table->mutex);
 
-    for (int i = (int) table->allStructs.size() - 1; i >= 0; i--)
+    auto count = (int) table->allStructs.size() - 1;
+    for (int i = count; i >= 0; i--)
     {
-        auto one = table->allStructs[i];
-        SWAG_CHECK(prepareEmitStructDrop(context, one->typeInfo));
+        auto one            = table->allStructs[i];
+        auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
+        waitStructGenerated(context, typeInfoStruct);
         if (context->result == ContextResult::Pending)
             return true;
     }
 
-    for (int i = (int) table->allStructs.size() - 1; i >= 0; i--)
+    for (int i = count; i >= 0; i--)
     {
         auto one            = table->allStructs[i];
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
@@ -531,7 +533,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
             emitInstruction(context, ByteCodeOp::PushRAParam, r0);
             auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
             inst->a.pointer = (uint8_t*) typeInfoStruct->opDrop;
-            inst->b.pointer = (uint8_t*) typeInfoStruct->opInitFct->typeInfo;
+            inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
             emitInstruction(context, ByteCodeOp::IncSP, 8);
             freeRegisterRC(context, r0);
         }

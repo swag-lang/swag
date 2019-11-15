@@ -302,7 +302,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
 
 void TypeInfoFuncAttr::computeName()
 {
-	name = "func";
+    name = "func";
 
     if (genericParameters.size())
     {
@@ -360,7 +360,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
     if (this == to)
         return true;
 
-	if (isSameFlags & ISSAME_CAST)
+    if (isSameFlags & ISSAME_CAST)
     {
         if (kind == TypeInfoKind::Lambda && to == g_TypeMgr.typeInfoNull)
             return true;
@@ -437,7 +437,7 @@ TypeInfo* TypeInfoStruct::clone()
     auto newType               = g_Pool_typeInfoStruct.alloc();
     newType->scope             = scope;
     newType->structNode        = structNode;
-    newType->opInitFct         = opInitFct;
+    newType->opInit            = opInit;
     newType->opUserPostCopyFct = opUserPostCopyFct;
     newType->opPostCopy        = opPostCopy;
     newType->opUserPostMoveFct = opUserPostMoveFct;

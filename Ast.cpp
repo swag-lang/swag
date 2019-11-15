@@ -286,4 +286,17 @@ namespace Ast
 
         return node;
     }
+
+    void normalizeIdentifierName(Utf8& name)
+    {
+        auto len = name.length();
+        for (int i = 0; i < len; i++)
+        {
+            auto& c = name[i];
+            if (c == '*')
+                c = 'P';
+            else if (c == '.')
+                c = '_';
+        }
+    }
 }; // namespace Ast

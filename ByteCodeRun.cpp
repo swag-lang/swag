@@ -1591,6 +1591,8 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     {
         // Get instruction
         auto ip = context->ip++;
+        SWAG_ASSERT(ip->op <= ByteCodeOp::End);
+
         if (ip->op == ByteCodeOp::End)
             break;
 
@@ -1641,7 +1643,7 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         return false;
     }
 
-	return true;
+    return true;
 }
 
 bool ByteCodeRun::internalError(ByteCodeRunContext* context)

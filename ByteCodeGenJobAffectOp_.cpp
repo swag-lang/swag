@@ -15,7 +15,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(prepareEmitStructCopyMove(context, typeInfo));
+		waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct));
         if (context->result == ContextResult::Pending)
             return true;
         SWAG_CHECK(emitStructCopyMoveCall(context, r0, r1, typeInfo, from));

@@ -1,6 +1,3 @@
-
-
-
 struct point1
 {
 	x: s32
@@ -21,7 +18,7 @@ struct point
 #test
 {
 	var pt : point
-	point1.opInit(pt.pt)
+	//point1.opInit(pt.pt)
 	/*@assert(pt.pt.x == 0)
 	pt.pt.x = 10
 	@print(pt.pt.x)

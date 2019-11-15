@@ -50,6 +50,7 @@ namespace Ast
     extern void   visit(AstNode* root, const function<void(AstNode*)>& fctor);
     extern void   setForceConstType(AstNode* node);
     extern Utf8   literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
+    extern void   normalizeIdentifierName(Utf8& name);
 
     extern AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent);
 

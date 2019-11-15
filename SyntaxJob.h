@@ -30,9 +30,6 @@ struct SyntaxJob : public Job
     bool checkIsName(Token& tkn);
     void moveAttributes(AstNode* from, AstNode* to);
 
-    void     setupSelfType(AstIdentifier* node, const Utf8& strctName, AstNode* genericParameters);
-    AstNode* generateOpInit(AstStruct* structNode, const Utf8& structName, AstNode* genericParameters);
-
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
@@ -50,7 +47,7 @@ struct SyntaxJob : public Job
     bool doTypeExpressionLambda(AstNode* parent, AstNode** result = nullptr);
     void forceTakeAddress(AstNode* node);
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
-	bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result);
+    bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result);
     bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
     bool doIdentifier(AstNode* parent, bool acceptParameters = true);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr);

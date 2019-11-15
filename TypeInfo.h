@@ -74,7 +74,7 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
 }
 
 //static const uint32_t TYPEINFO_ATTRIBUTE_FUNC           = 0x00000001;
-//static const uint32_t TYPEINFO_ATTRIBUTE_VAR            = 0x00000002;
+//static const uint32_t TYPEINFO_STRUCT_GENERATED         = 0x00000002;
 static const uint32_t TYPEINFO_INTEGER                  = 0x00000004;
 static const uint32_t TYPEINFO_FLOAT                    = 0x00000008;
 static const uint32_t TYPEINFO_UNSIGNED                 = 0x00000010;
@@ -571,7 +571,6 @@ struct TypeInfoStruct : public TypeInfo
         childs.clear();
         scope             = nullptr;
         structNode        = nullptr;
-        opInitFct         = nullptr;
         opUserPostCopyFct = nullptr;
         opPostCopy        = nullptr;
         opUserPostMoveFct = nullptr;
@@ -595,7 +594,7 @@ struct TypeInfoStruct : public TypeInfo
     vector<TypeInfoParam*> childs;
     Scope*                 scope;
     AstNode*               structNode;
-    AstNode*               opInitFct;
+    ByteCode*              opInit;
     AstNode*               opUserPostCopyFct;
     ByteCode*              opPostCopy;
     AstNode*               opUserPostMoveFct;

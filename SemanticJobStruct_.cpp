@@ -7,6 +7,7 @@
 #include "Workspace.h"
 #include "TypeManager.h"
 #include "ThreadManager.h"
+#include "ByteCodeGenJob.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
@@ -83,8 +84,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     typeInfo->structNode = node;
     typeInfo->name       = format("%s", node->name.c_str());
-    if (!typeInfo->opInitFct)
-        typeInfo->opInitFct = node->defaultOpInit;
     if (node->attributeFlags & ATTRIBUTE_PACK)
         node->packing = 1;
 
@@ -289,5 +288,20 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // We are parsing the swag module
     if (sourceFile->swagFile)
         g_Workspace.swagScope.registerType(node->typeInfo);
+
+    // Generate all functions associated with a struct
+    if (!(typeInfo->flags & TYPEINFO_GENERIC))
+    {
+        node->flags &= ~AST_NO_BYTECODE;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+
+        node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+        node->byteCodeJob->sourceFile   = sourceFile;
+        node->byteCodeJob->originalNode = node;
+        node->byteCodeJob->nodes.push_back(node);
+        node->byteCodeFct = ByteCodeGenJob::emitStruct;
+        g_ThreadMgr.addJob(node->byteCodeJob);
+    }
+
     return true;
 }

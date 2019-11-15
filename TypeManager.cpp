@@ -34,6 +34,18 @@ void TypeManager::setup()
     typeInfoNull->name   = "null";
     typeInfoNull->sizeOf = sizeof(Register);
 
+    typeInfoOpCall             = new TypeInfoFuncAttr();
+    typeInfoOpCall->returnType = typeInfoVoid;
+    typeInfoOpCall->parameters.push_back(new TypeInfoParam());
+    auto typePtr         = new TypeInfoPointer();
+    typePtr->ptrCount    = 1;
+    typePtr->finalType   = typeInfoVoid;
+    typePtr->pointedType = typeInfoVoid;
+    typePtr->sizeOf      = sizeof(void*);
+    typePtr->computeName();
+    typeInfoOpCall->parameters[0]->typeInfo = typePtr;
+    typeInfoOpCall->computeName();
+
     promoteMatrix[(int) NativeTypeKind::U8][(int) NativeTypeKind::U8]  = typeInfoU32;
     promoteMatrix[(int) NativeTypeKind::U8][(int) NativeTypeKind::U16] = typeInfoU32;
     promoteMatrix[(int) NativeTypeKind::U8][(int) NativeTypeKind::U32] = typeInfoU32;

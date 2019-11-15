@@ -260,100 +260,89 @@ JobResult ByteCodeGenJob::execute()
 
     if (!syncToDependentNodes)
     {
-        // Special auto generated functions
-        if (originalNode->name == "opInit")
-        {
-            auto funcNode    = CastAst<AstFuncDecl>(originalNode, AstNodeKind::FuncDecl);
-            auto typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
-            generateStruct_opInit(&context, typeStruct);
-        }
-        else
+        // Register some default swag functions
+        if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)
         {
             SWAG_ASSERT(context.bc);
+            g_defaultContextByteCode.allocator = context.bc;
+        }
 
-            // Register some default swag functions
-            if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)
+        while (!nodes.empty())
+        {
+            auto node    = nodes.back();
+            context.node = node;
+
+            switch (node->bytecodeState)
             {
-                g_defaultContextByteCode.allocator = context.bc;
-            }
+            case AstNodeResolveState::Enter:
+                node->bytecodeState = AstNodeResolveState::ProcessingChilds;
+                context.result      = ContextResult::Done;
 
-            while (!nodes.empty())
-            {
-                auto node    = nodes.back();
-                context.node = node;
+                if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
+                    return JobResult::ReleaseJob;
+                SWAG_ASSERT(context.result == ContextResult::Done);
 
-                switch (node->bytecodeState)
+                if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
                 {
-                case AstNodeResolveState::Enter:
-                    node->bytecodeState = AstNodeResolveState::ProcessingChilds;
-                    context.result      = ContextResult::Done;
-
-                    if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
-                        return JobResult::ReleaseJob;
-                    SWAG_ASSERT(context.result == ContextResult::Done);
-
-                    if (!(node->flags & AST_VALUE_COMPUTED) && !node->childs.empty())
+                    if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
                     {
-                        if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
+                        for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                         {
-                            for (int i = (int) node->childs.size() - 1; i >= 0; i--)
-                            {
-                                auto child           = node->childs[i];
-                                child->bytecodeState = AstNodeResolveState::Enter;
-                                nodes.push_back(child);
-                            }
+                            auto child           = node->childs[i];
+                            child->bytecodeState = AstNodeResolveState::Enter;
+                            nodes.push_back(child);
                         }
-
-                        break;
                     }
 
-                case AstNodeResolveState::ProcessingChilds:
-                    if (!(node->flags & AST_NO_BYTECODE))
-                    {
-                        // Computed constexpr value. Just emit the result
-                        if (node->flags & AST_VALUE_COMPUTED)
-                        {
-                            context.node = node;
-                            if (!emitLiteral(&context))
-                                return JobResult::ReleaseJob;
-                            if (!emitCast(&context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo))
-                                return JobResult::ReleaseJob;
-                            // To be sure that cast is treated once
-                            node->castedTypeInfo = nullptr;
-                            SWAG_ASSERT(context.result == ContextResult::Done);
-                        }
-                        else if (node->byteCodeFct)
-                        {
-                            context.node   = node;
-                            context.result = ContextResult::Done;
-
-                            if (!node->byteCodeFct(&context))
-                                return JobResult::ReleaseJob;
-                            if (context.result == ContextResult::Pending)
-                                return JobResult::KeepJobAlive;
-                            if (context.result == ContextResult::NewChilds)
-                                continue;
-                        }
-
-                        if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
-                            return JobResult::ReleaseJob;
-                        if (context.result == ContextResult::NewChilds)
-                            continue;
-                        SWAG_ASSERT(context.result != ContextResult::Pending);
-                    }
-
-                    nodes.pop_back();
                     break;
                 }
-            }
 
+            case AstNodeResolveState::ProcessingChilds:
+                if (!(node->flags & AST_NO_BYTECODE))
+                {
+                    // Computed constexpr value. Just emit the result
+                    if (node->flags & AST_VALUE_COMPUTED)
+                    {
+                        context.node = node;
+                        if (!emitLiteral(&context))
+                            return JobResult::ReleaseJob;
+                        if (!emitCast(&context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo))
+                            return JobResult::ReleaseJob;
+                        // To be sure that cast is treated once
+                        node->castedTypeInfo = nullptr;
+                        SWAG_ASSERT(context.result == ContextResult::Done);
+                    }
+                    else if (node->byteCodeFct)
+                    {
+                        context.node   = node;
+                        context.result = ContextResult::Done;
+
+                        if (!node->byteCodeFct(&context))
+                            return JobResult::ReleaseJob;
+                        if (context.result == ContextResult::Pending)
+                            return JobResult::KeepJobAlive;
+                        if (context.result == ContextResult::NewChilds)
+                            continue;
+                    }
+
+                    if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
+                        return JobResult::ReleaseJob;
+                    if (context.result == ContextResult::NewChilds)
+                        continue;
+                    SWAG_ASSERT(context.result != ContextResult::Pending);
+                }
+
+                nodes.pop_back();
+                break;
+            }
+        }
+
+        if (context.bc)
             emitInstruction(&context, ByteCodeOp::End);
 
-            // Print resulting bytecode
-            if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-                context.bc->print();
-        }
+        // Print resulting bytecode
+        if (originalNode->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
+            context.bc->print();
     }
 
     // Inform dependencies that this node has bytecode

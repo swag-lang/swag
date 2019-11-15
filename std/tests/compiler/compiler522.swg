@@ -1,12 +1,9 @@
-
-
-
-//#[swag.printbc]
 struct point
 {
-	x, y: s32
+	x, y: s32 = 1
 }
 
+//#[swag.printbc]
 #test
 {
 	var pt: point

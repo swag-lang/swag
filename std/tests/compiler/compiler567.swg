@@ -1,6 +1,3 @@
-
-
-
 struct point1
 {
 	x: s32
@@ -21,5 +18,5 @@ struct point
 #test
 {
 	var pt : point
-	pt.ptx.opInit()
+	//pt.ptx.opInit()
 }

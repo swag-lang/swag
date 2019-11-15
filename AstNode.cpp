@@ -500,7 +500,6 @@ AstNode* AstStruct::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astStruct.alloc();
     newNode->copyFrom(context, this, false);
-    newNode->defaultOpInit = defaultOpInit;
     newNode->packing       = packing;
 
     auto cloneContext        = context;

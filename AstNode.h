@@ -734,18 +734,18 @@ struct AstStruct : public AstNode
         genericParameters = nullptr;
         content           = nullptr;
         scope             = nullptr;
-        defaultOpInit     = nullptr;
         packing           = sizeof(uint64_t);
+        dependentJobs.clear();
         AstNode::reset();
     }
 
     AstNode* clone(CloneContext& context) override;
 
-    uint32_t packing;
-    AstNode* genericParameters;
-    AstNode* content;
-    Scope*   scope;
-    AstNode* defaultOpInit;
+    uint32_t      packing;
+    AstNode*      genericParameters;
+    AstNode*      content;
+    Scope*        scope;
+    DependentJobs dependentJobs;
 };
 
 struct AstImpl : public AstNode

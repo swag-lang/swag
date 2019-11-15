@@ -10,5 +10,5 @@ struct Point
 #test
 {
 	var pt: Point
-	pt.opInit()
+	//pt.opInit()
 }

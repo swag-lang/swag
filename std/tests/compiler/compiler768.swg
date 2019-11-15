@@ -1,5 +1,3 @@
-
-
 var test: s32
 
 struct Point

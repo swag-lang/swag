@@ -1,6 +1,3 @@
-
-
-
 struct point1
 {
 	x: s32
@@ -25,6 +22,6 @@ struct point
 	pt.ptx.x = 10
 	//@print(pt.ptx.x)
 	@assert(pt.ptx.x == 10)
-	pt.ptx.opInit()
-	@assert(pt.ptx.x == 0)
+	/*pt.ptx.opInit()
+	@assert(pt.ptx.x == 0)*/
 }

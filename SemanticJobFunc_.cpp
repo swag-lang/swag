@@ -17,15 +17,15 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
 
     if (forGenerics)
     {
-		typeInfo->genericParameters.clear();
+        typeInfo->genericParameters.clear();
         typeInfo->genericParameters.reserve(parameters->childs.size());
         typeInfo->flags |= TYPEINFO_GENERIC;
     }
-	else
-	{
-		typeInfo->parameters.clear();
-		typeInfo->parameters.reserve(parameters->childs.size());
-	}
+    else
+    {
+        typeInfo->parameters.clear();
+        typeInfo->parameters.reserve(parameters->childs.size());
+    }
 
     auto sourceFile = context->sourceFile;
     for (auto param : parameters->childs)
@@ -106,7 +106,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     // Only one main per module !
     if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
     {
-		scoped_lock lk(sourceFile->module->mutexFile);
+        scoped_lock lk(sourceFile->module->mutexFile);
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic diag({node, node->token, "#main directive already defined one"});
@@ -225,8 +225,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     }
 
-	if (genByteCode)
-		ByteCodeGenJob::askForByteCode(nullptr, node, 0);
+    if (genByteCode)
+        ByteCodeGenJob::askForByteCode(nullptr, node, 0);
 
     return true;
 }
@@ -309,20 +309,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childs.size() == 1)
     {
-        if (funcNode->name == "opInit")
-        {
-            auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
-            auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
-            scoped_lock lk(typeStruct->mutex);
-            typeStruct->opInitFct = funcNode;
-
-            // If an opInit is defined as foreign for this struct, then force init value, and opInit call
-            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-                typeStruct->flags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-
-            funcNode->attributeFlags |= (typeStruct->structNode->attributeFlags & ATTRIBUTE_PUBLIC);
-        }
-        else if (funcNode->name == "opPostCopy")
+        if (funcNode->name == "opPostCopy")
         {
             auto        typePointer = CastTypeInfo<TypeInfoPointer>(funcNode->parameters->childs[0]->typeInfo, TypeInfoKind::Pointer);
             auto        typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);

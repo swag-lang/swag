@@ -23,11 +23,11 @@ void Job::waitForSymbolNoLock(SymbolName* symbol)
     waitingSymbolSolved = symbol;
     setPending();
     symbol->dependentJobs.add(this);
-    g_ThreadMgr.addPendingJob(this);
 }
 
 void Job::setPending()
 {
     SWAG_ASSERT(baseContext);
     baseContext->result = ContextResult::Pending;
+	g_ThreadMgr.addPendingJob(this);
 }

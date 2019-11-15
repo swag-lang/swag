@@ -302,7 +302,7 @@ void ByteCode::print()
             break;
         }
 
-        case ByteCodeOp::LocalCall:
+		case ByteCodeOp::LocalCall:
         {
             auto bc = (ByteCode*) ip->a.pointer;
             SWAG_ASSERT(bc);

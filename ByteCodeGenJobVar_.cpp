@@ -16,7 +16,8 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
     // Initialize the struct, whatever, before the assignment
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_CHECK(prepareEmitStructDrop(context, typeInfo));
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        waitStructGenerated(context, typeStruct);
         if (context->result == ContextResult::Pending)
             return true;
 
@@ -29,11 +30,7 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
             if (!(node->doneFlags & AST_DONE_VARDECL_STRUCT_PARAMETERS))
             {
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
-                {
-                    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
                     emitStructInit(context, typeStruct, UINT32_MAX);
-                }
-
                 emitStructParameters(context, UINT32_MAX);
                 node->doneFlags |= AST_DONE_VARDECL_STRUCT_PARAMETERS;
             }
@@ -64,8 +61,8 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         {
             node->additionalRegisterRC = reserveRegisterRC(context);
             node->doneFlags |= AST_DONE_PRE_CAST;
-            auto inst   = emitInstruction(context, ByteCodeOp::RARefFromStack, node->additionalRegisterRC);
-            inst->b.s32 = resolved->storageOffset;
+            auto inst              = emitInstruction(context, ByteCodeOp::RARefFromStack, node->additionalRegisterRC);
+            inst->b.s32            = resolved->storageOffset;
             node->resultRegisterRC = node->assignment->resultRegisterRC;
         }
 
@@ -82,6 +79,10 @@ bool ByteCodeGenJob::emitVarDecl(ByteCodeGenContext* context)
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         if (typeArray->finalType->kind == TypeInfoKind::Struct)
         {
+            waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct));
+            if (context->result == ContextResult::Pending)
+                return true;
+
             if ((typeArray->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
             {
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->flags & AST_HAS_STRUCT_PARAMETERS))

@@ -12,6 +12,6 @@ struct point
 	@assert(pt.x == 0)
 	pt.x = 10
 	@assert(pt.x == 10)
-	pt.opInit()
-	@assert(pt.x == 0)
+	/*pt.opInit()
+	@assert(pt.x == 0)*/
 }

@@ -248,16 +248,17 @@ bool Workspace::buildModules(const vector<Module*>& list)
     {
         for (auto pendingJob : g_ThreadMgr.pendingJobs)
         {
-            auto semanticJob = static_cast<SemanticJob*>(pendingJob);
-            auto firstNode   = semanticJob->nodes.front();
+            auto firstNode = pendingJob->nodes.front();
             if (!(firstNode->flags & AST_GENERATED))
             {
-                auto sourceFile = semanticJob->sourceFile;
-                auto node       = semanticJob->nodes.back();
+                auto sourceFile = pendingJob->sourceFile;
+                auto node       = pendingJob->nodes.back();
                 if (!sourceFile->numErrors)
                 {
-                    auto& name = semanticJob->waitingSymbolSolved ? semanticJob->waitingSymbolSolved->name : node->name;
-                    sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), name.c_str())});
+                    if (pendingJob->waitingSymbolSolved)
+                        sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
+                    else
+                        sourceFile->report({node, node->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
                     sourceFile->numErrors = 0;
                 }
             }

@@ -73,8 +73,8 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
 
-    string name = "__" + sourceFile->scopePrivate->name + "_tuple_";
-    int    idx  = 0;
+    Utf8 name = "__" + sourceFile->scopePrivate->name + "_tuple_";
+    int  idx  = 0;
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
     {
         auto structFieldNode = Ast::newVarDecl(sourceFile, "", contentNode, nullptr);
@@ -110,11 +110,11 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         // Name
         typeExpression = (AstTypeExpression*) expression;
         for (int i = 0; i < typeExpression->ptrCount; i++)
-            name += "P";
+            name += "*";
         name += typeExpression->token.text;
         if (typeExpression->identifier)
             name += typeExpression->identifier->childs.back()->name;
-        name += "_";
+        Ast::normalizeIdentifierName(name);
 
         SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightParen, syntaxError(token, format("invalid token '%s'", token.text.c_str())));
         if (token.id == TokenId::SymRightParen)
@@ -161,13 +161,6 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
         });
-
-        // Generate an empty init function so that the user can call it
-        {
-            Scoped       scoped(this, newScope);
-            ScopedStruct scopedStruct(this, newScope);
-            structNode->defaultOpInit = generateOpInit(structNode, structNode->name, structNode->genericParameters);
-        }
     }
 
     return true;

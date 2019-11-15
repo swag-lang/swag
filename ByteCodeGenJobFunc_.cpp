@@ -68,7 +68,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             {
                 if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
                 {
-                    SWAG_CHECK(prepareEmitStructCopyMove(context, returnExpression->typeInfo));
+                    waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(returnExpression->typeInfo, TypeInfoKind::Struct));
                     if (context->result == ContextResult::Pending)
                         return true;
                     RegisterList r0 = reserveRegisterRC(context);
@@ -162,7 +162,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         }
         else if (typeInfo->kind == TypeInfoKind::Slice)
         {
-			emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
+            emitInstruction(context, ByteCodeOp::IntrinsicPrintString, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
         }
         else
         {
@@ -543,7 +543,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
     else if (funcNode)
     {
-        auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
+        auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+        SWAG_ASSERT(funcNode->bc);
         inst->a.pointer = (uint8_t*) funcNode->bc;
         inst->b.pointer = (uint8_t*) typeInfoFunc;
     }

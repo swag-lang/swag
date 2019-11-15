@@ -407,15 +407,16 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         SWAG_ASSERT(typeStruct);
         if (!(typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
-            SWAG_ASSERT(typeStruct->opInitFct);
+            SWAG_ASSERT(typeStruct->opInit);
             if (!generateStruct_opInit(context, typeStruct))
                 return false;
 
             auto startLoop = context->bc->numInstructions;
             emitInstruction(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
-            auto inst       = emitInstruction(context, ByteCodeOp::LocalCall);
-            inst->a.pointer = (uint8_t*) typeStruct->opInitFct->bc;
-            inst->b.pointer = (uint8_t*) typeStruct->opInitFct->typeInfo;
+            auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
+            SWAG_ASSERT(typeStruct->opInit);
+            inst->a.pointer = (uint8_t*) typeStruct->opInit;
+            inst->b.pointer = (uint8_t*) g_TypeMgr.typeInfoOpCall;
             emitInstruction(context, ByteCodeOp::IncSP, 8);
 
             if (numToInit != 1)
