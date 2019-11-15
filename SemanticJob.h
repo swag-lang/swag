@@ -181,7 +181,6 @@ struct SemanticJob : public Job
     void reset() override
     {
         Job::reset();
-        nodes.clear();
         cacheDependentSymbols.clear();
         cacheScopeHierarchy.clear();
         cacheScopeHierarchyVars.clear();

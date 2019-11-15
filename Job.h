@@ -43,6 +43,7 @@ struct Job : public PoolElement
         pendingIndex        = -1;
         dependentJobs.clear();
         dependentNodes.clear();
+        nodes.clear();
     }
 
     void addDependentJob(Job* job);
