@@ -59,4 +59,6 @@ struct Job : public PoolElement
     DependentJobs    dependentJobs;
     vector<AstNode*> dependentNodes;
     SymbolName*      waitingSymbolSolved;
+    SourceFile*      sourceFile;
+    vector<AstNode*> nodes;
 };

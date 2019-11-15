@@ -180,9 +180,7 @@ struct ByteCodeGenJob : public Job
     }
 
     ByteCodeGenContext context;
-    SourceFile*        sourceFile;
     AstNode*           originalNode;
-    vector<AstNode*>   nodes;
     vector<AstNode*>   collectChilds;
     vector<Scope*>     collectScopes;
     bool               syncToDependentNodes;

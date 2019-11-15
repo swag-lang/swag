@@ -197,8 +197,6 @@ struct SemanticJob : public Job
         context.reset();
     }
 
-    SourceFile*              sourceFile;
-    vector<AstNode*>         nodes;
     vector<AstNode*>         tmpNodes;
     vector<SymbolName*>      cacheDependentSymbols;
     vector<Scope*>           cacheScopeHierarchy;
