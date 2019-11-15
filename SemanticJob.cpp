@@ -50,11 +50,6 @@ void SemanticJob::waitForSymbolNoLock(SymbolName* symbol)
     g_ThreadMgr.addPendingJob(this);
 }
 
-void SemanticJob::setPending()
-{
-    context.result = ContextResult::Pending;
-}
-
 void SemanticJob::enterState(AstNode* node)
 {
     if (node->semanticState == AstNodeResolveState::Enter)
@@ -85,6 +80,7 @@ JobResult SemanticJob::execute()
 #endif
 
     auto firstNode                  = nodes.front();
+    baseContext                     = &context;
     context.job                     = this;
     context.sourceFile              = sourceFile;
     context.errorContext.sourceFile = sourceFile;

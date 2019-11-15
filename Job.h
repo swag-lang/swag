@@ -48,10 +48,7 @@ struct Job : public PoolElement
 
     void addDependentJob(Job* job);
     void doneJob();
-
-    virtual void setPending()
-    {
-    }
+    void setPending();
 
     SpinLock         executeMutex;
     uint32_t         flags;
@@ -62,4 +59,5 @@ struct Job : public PoolElement
     SymbolName*      waitingSymbolSolved;
     SourceFile*      sourceFile;
     vector<AstNode*> nodes;
+    JobContext*      baseContext = nullptr;
 };

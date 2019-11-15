@@ -33,7 +33,6 @@ struct ByteCodeGenJob : public Job
 {
     JobResult execute() override;
     void      waitForSymbolNoLock(SymbolName* symbol);
-    void      setPending() override;
 
     static bool                 internalError(ByteCodeGenContext* context, const char* msg, AstNode* node = nullptr);
     static ByteCodeInstruction* emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0 = 0, uint32_t r1 = 0, uint32_t r2 = 0);

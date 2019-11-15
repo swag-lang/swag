@@ -250,11 +250,6 @@ void ByteCodeGenJob::waitForSymbolNoLock(SymbolName* symbol)
     g_ThreadMgr.addPendingJob(this);
 }
 
-void ByteCodeGenJob::setPending()
-{
-    context.result = ContextResult::Pending;
-}
-
 JobResult ByteCodeGenJob::execute()
 {
     scoped_lock lkExecute(executeMutex);
@@ -265,13 +260,14 @@ JobResult ByteCodeGenJob::execute()
     g_diagnosticInfos.node       = originalNode;
 #endif
 
+    baseContext        = &context;
+    context.job        = this;
+    context.sourceFile = sourceFile;
+    context.bc         = originalNode->bc;
+    context.node       = originalNode;
+
     if (!syncToDependentNodes)
     {
-        context.job        = this;
-        context.sourceFile = sourceFile;
-        context.bc         = originalNode->bc;
-        context.node       = originalNode;
-
         // Special auto generated functions
         if (originalNode->name == "opInit")
         {
