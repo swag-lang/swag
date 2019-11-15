@@ -252,7 +252,6 @@ void ByteCodeGenJob::waitForSymbolNoLock(SymbolName* symbol)
 
 void ByteCodeGenJob::setPending()
 {
-    context.node->byteCodePass++;
     context.result = ContextResult::Pending;
 }
 

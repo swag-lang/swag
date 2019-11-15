@@ -531,9 +531,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     AstNode* leftNode  = context->node->childs[0];
     AstNode* rightNode = context->node->childs[1];
 
-    if (node->byteCodePass == 0)
+    if (!(node->flags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+		if (context->result == ContextResult::Pending)
+			return true;
+		node->flags |= AST_DONE_CAST1;
     }
 
     if (leftNode->typeInfo->isNative(NativeTypeKind::Any))

@@ -43,58 +43,58 @@ enum class AstNodeResolveState
 
 enum class AstNodeKind
 {
-	Module,
-	File,
-	VarDecl,
-	ConstDecl,
-	LetDecl,
-	TypeAlias,
-	IdentifierRef,
-	Identifier,
-	TypeExpression,
-	TypeLambda,
-	Namespace,
-	If,
-	While,
-	For,
-	Loop,
-	Switch,
-	SwitchCase,
-	Break,
-	Continue,
-	Statement,
-	EnumDecl,
-	StructDecl,
-	Inline,
-	StructContent,
-	TupleContent,
-	Impl,
-	FuncDecl,
-	AttrDecl,
-	AttrUse,
-	FuncDeclParams,
-	FuncDeclParam,
-	FuncDeclType,
-	FuncDeclGenericParams,
-	FuncCallParams,
-	FuncCallParam,
-	FuncCall,
-	FuncContent,
-	Return,
-	EnumType,
-	EnumValue,
-	Literal,
-	SizeOf,
-	IntrinsicProp,
-	Index,
-	Cast,
-	TypeList,
-	SingleOp,
-	MakePointer,
-	BinaryOp,
-	FactorOp,
-	ExpressionList,
-	ExplicitNoInit,
+    Module,
+    File,
+    VarDecl,
+    ConstDecl,
+    LetDecl,
+    TypeAlias,
+    IdentifierRef,
+    Identifier,
+    TypeExpression,
+    TypeLambda,
+    Namespace,
+    If,
+    While,
+    For,
+    Loop,
+    Switch,
+    SwitchCase,
+    Break,
+    Continue,
+    Statement,
+    EnumDecl,
+    StructDecl,
+    Inline,
+    StructContent,
+    TupleContent,
+    Impl,
+    FuncDecl,
+    AttrDecl,
+    AttrUse,
+    FuncDeclParams,
+    FuncDeclParam,
+    FuncDeclType,
+    FuncDeclGenericParams,
+    FuncCallParams,
+    FuncCallParam,
+    FuncCall,
+    FuncContent,
+    Return,
+    EnumType,
+    EnumValue,
+    Literal,
+    SizeOf,
+    IntrinsicProp,
+    Index,
+    Cast,
+    TypeList,
+    SingleOp,
+    MakePointer,
+    BinaryOp,
+    FactorOp,
+    ExpressionList,
+    ExplicitNoInit,
     MultiIdentifier,
     MultiIdentifierTuple,
     AffectOp,
@@ -159,8 +159,6 @@ struct AstNode : public PoolElement
         doneFlags                    = 0;
         fctCallStorageOffset         = 0;
         byteCodeJob                  = nullptr;
-        semanticPass                 = 0;
-        byteCodePass                 = 0;
         concreteTypeInfo             = nullptr;
         concreteTypeInfoStorage      = UINT32_MAX;
         resultRegisterRC.clear();
@@ -324,15 +322,12 @@ struct AstNode : public PoolElement
     AstAttrUse* parentAttributes;
     Token       token;
 
-    SemanticFct       semanticFct;
-    SemanticFct       semanticBeforeFct;
-    SemanticFct       semanticAfterFct;
-    ByteCodeFct       byteCodeFct;
-    ByteCodeNotifyFct byteCodeBeforeFct;
-    ByteCodeNotifyFct byteCodeAfterFct;
-
-    int                 semanticPass = 0;
-    int                 byteCodePass = 0;
+    SemanticFct         semanticFct;
+    SemanticFct         semanticBeforeFct;
+    SemanticFct         semanticAfterFct;
+    ByteCodeFct         byteCodeFct;
+    ByteCodeNotifyFct   byteCodeBeforeFct;
+    ByteCodeNotifyFct   byteCodeAfterFct;
     AstNodeResolveState semanticState;
     AstNodeResolveState bytecodeState;
 

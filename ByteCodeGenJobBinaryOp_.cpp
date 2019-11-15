@@ -314,10 +314,20 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    if (node->byteCodePass == 0)
+    if (!(node->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->doneFlags |= AST_DONE_CAST1;
+    }
+
+    if (!(node->doneFlags & AST_DONE_CAST2))
+    {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
+        if (context->result == ContextResult::Pending)
+            return true;
+        node->doneFlags |= AST_DONE_CAST2;
     }
 
     auto r0 = node->childs[0]->resultRegisterRC;
@@ -436,18 +446,18 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
 
         if (!(node->doneFlags & AST_DONE_INLINED))
         {
-			node->doneFlags |= AST_DONE_INLINED;
+            node->doneFlags |= AST_DONE_INLINED;
             SWAG_CHECK(makeInline(context, funcDecl, node));
-			return true;
+            return true;
         }
 
-		if (!(node->doneFlags & AST_DONE_RESOLVE_INLINED))
-		{
-			node->doneFlags |= AST_DONE_RESOLVE_INLINED;
-			context->job->nodes.pop_back();
-			context->job->nodes.push_back(node->childs.back());
-			context->job->nodes.push_back(node);
-		}
+        if (!(node->doneFlags & AST_DONE_RESOLVE_INLINED))
+        {
+            node->doneFlags |= AST_DONE_RESOLVE_INLINED;
+            context->job->nodes.pop_back();
+            context->job->nodes.push_back(node->childs.back());
+            context->job->nodes.push_back(node);
+        }
 
         return true;
     }

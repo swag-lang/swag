@@ -52,7 +52,6 @@ void SemanticJob::waitForSymbolNoLock(SymbolName* symbol)
 
 void SemanticJob::setPending()
 {
-    context.node->semanticPass++;
     context.result = ContextResult::Pending;
 }
 
@@ -71,7 +70,6 @@ void SemanticJob::enterState(AstNode* node)
         idRef->resolvedSymbolName     = nullptr;
         idRef->resolvedSymbolOverload = nullptr;
         idRef->previousResolvedNode   = nullptr;
-        idRef->semanticPass           = 0;
         break;
     }
     }
