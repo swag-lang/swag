@@ -47,7 +47,7 @@ namespace std
             #if @typeof(T) == @typeof([..] u8)
                 return [buffer, length]
             #else
-                #assert(false,"invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
+                #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
         }
         
         public func opAffect(using self, value: [..] u8)
@@ -63,6 +63,30 @@ namespace std
             reserve(self, newSize)
             @memcpy(buffer, @dataof(value), length)
             buffer[length] = 0
+        }
+        
+        public func clear()
+        {
+            length = 0
+        }
+        
+        public func concat(using self, value: [..] u8)
+        {
+            if @countof(value) == 0
+                return
+            newSize := length + @countof(value) + 1
+            reserve(self, newSize)
+            length = newSize - 1
+            @memcpy(buffer + length, @dataof(value), @countof(value))
+            buffer[length] = 0
+        }
+        
+        public func(op: string) opAssign(using self, value: [..] u8)
+        {
+            #if op == "+="
+                concat(self, value)
+            #else
+                #assert(false, "invalid operator '" ~ op ~ "'")
         }
         
         public func reserve(using self, newSize: u32)
