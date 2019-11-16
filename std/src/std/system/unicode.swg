@@ -34,13 +34,14 @@ namespace std.unicode
         OtherNotAssigned = 29
     }
     
-    #[swag.inline]
+    #[swag.inline, swag.constexpr]
     public
     {
         func isLatin1(c: char) => c <= 0xFF
         func isAscii(c: char) => c <= 0x7F
     } 
 
+    #[swag.constexpr]
     public
     {
         func getCharCategory(c: char)->UnicodeCategory

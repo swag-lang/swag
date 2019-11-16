@@ -37,7 +37,7 @@ namespace std.latin1
         UnicodeCategory.LowercaseLetter, UnicodeCategory.LowercaseLetter, UnicodeCategory.LowercaseLetter, UnicodeCategory.LowercaseLetter, UnicodeCategory.LowercaseLetter, UnicodeCategory.LowercaseLetter, UnicodeCategory.LowercaseLetter, UnicodeCategory.LowercaseLetter,    // 00F8 - 00FF
     ]
 
-	#[swag.inline]        
+	#[swag.inline, swag.constexpr]        
     public
     {
         func isDigit(c: u8) => c >= cast(u8) '0' && c <= cast(u8) '9'
