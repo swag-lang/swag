@@ -96,7 +96,7 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     else if (name == "opCount")
     {
         SWAG_VERIFY(parameters && parameters->childs.size() == 1, context->errorContext.report({node, node->token, format("invalid number of arguments for special function '%s'", name.c_str())}));
-        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoU32, 0), context->errorContext.report({returnType, format("invalid return type for special function '%s' ('%s' expected, '%s' provided)", name.c_str(), typeStruct->name.c_str(), returnType->typeInfo->name.c_str())}));
+        SWAG_VERIFY(returnType && returnType->typeInfo->isSame(g_TypeMgr.typeInfoU32, 0), context->errorContext.report({returnType, format("invalid return type for special function '%s' ('u32' expected, '%s' provided)", name.c_str(), returnType->typeInfo->name.c_str())}));
     }
     else if (name == "opAssign")
     {

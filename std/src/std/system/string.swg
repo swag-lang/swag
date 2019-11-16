@@ -38,10 +38,13 @@ namespace std
             allocator(req)
             buffer = acast req.address
         }
-    
+
         #[swag.inline]
-        public func opCount(using self) => length
-        
+        public func opCount(using self)->u32
+        {
+            return length
+        }
+
         public func(T) opCast(using self)->T
         {
             #if @typeof(T) == @typeof([..] u8)
@@ -49,7 +52,7 @@ namespace std
             #else
                 #assert(false, "invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
         }
-        
+
         public func opAffect(using self, value: [..] u8)
         {
             if @dataof(value) == null
@@ -57,43 +60,57 @@ namespace std
                 reserve(self, 0)
                 return
             }
-            
+
             newSize := @countof(value) + 1
             length = newSize - 1
             reserve(self, newSize)
-            @memcpy(buffer, @dataof(value), length)
+            memory.copy(buffer, @dataof(value), length)
             buffer[length] = 0
         }
+
+        public func opEquals(using self, other: [..] u8)->bool
+        {
+            if buffer == @dataof(other)
+                return true
+            if length != @countof(other)
+                return false
+            return memory.compare(buffer, @dataof(other), length) == 0
+        }
+
+        public func(op: string) opAssign(using self, value: [..] u8)
+        {
+            #if op == "+="
+                concat(self, value)
+            #else
+                #assert(false, "invalid binary operator '" ~ op ~ "'")
+        }
         
-        public func clear()
+        public func clear(using self)
         {
             length = 0
         }
         
+        public func empty(using self)->bool
+        {
+            return length == 0
+        }
+
         public func concat(using self, value: [..] u8)
         {
             if @countof(value) == 0
                 return
             newSize := length + @countof(value) + 1
             reserve(self, newSize)
+            memory.copy(buffer + length, @dataof(value), @countof(value))
             length = newSize - 1
-            @memcpy(buffer + length, @dataof(value), @countof(value))
             buffer[length] = 0
         }
-        
-        public func(op: string) opAssign(using self, value: [..] u8)
-        {
-            #if op == "+="
-                concat(self, value)
-            #else
-                #assert(false, "invalid operator '" ~ op ~ "'")
-        }
-        
+
         public func reserve(using self, newSize: u32)
         {
             // Small size, just be sure with have a valid buffer address
             if newSize <= SmallSize
-            {           
+            {
                 // Free everything
                 if !newSize
                 {
