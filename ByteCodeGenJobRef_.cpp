@@ -215,6 +215,8 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             freeRegisterRC(context, r0);
         }
 
+		truncRegisterRC(context, node->array->resultRegisterRC, 1);
+
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstantInt0())
         {

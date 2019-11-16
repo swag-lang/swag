@@ -34,48 +34,62 @@ namespace std.unicode
         OtherNotAssigned = 29
     }
     
+    #[swag.flags]
+    enum SubCateg
+    {
+        None
+        Letter
+        Digit
+        Punctuation
+    }
+    
+    var g_subCateg: [@countof(UnicodeCategory)] SubCateg = ?
+    
+    #init
+    {
+        g_subCateg[cast(u32) UnicodeCategory.UppercaseLetter]           = SubCateg.Letter
+        g_subCateg[cast(u32) UnicodeCategory.LowercaseLetter]           = SubCateg.Letter
+        g_subCateg[cast(u32) UnicodeCategory.TitlecaseLetter]           = SubCateg.Letter
+        g_subCateg[cast(u32) UnicodeCategory.ModifierLetter]            = SubCateg.Letter
+        g_subCateg[cast(u32) UnicodeCategory.OtherLetter]               = SubCateg.Letter
+        g_subCateg[cast(u32) UnicodeCategory.DecimalDigitNumber]        = SubCateg.Digit
+        g_subCateg[cast(u32) UnicodeCategory.ConnectorPunctuation]      = SubCateg.Punctuation
+        g_subCateg[cast(u32) UnicodeCategory.DashPunctuation]           = SubCateg.Punctuation
+        g_subCateg[cast(u32) UnicodeCategory.OpenPunctuation]           = SubCateg.Punctuation
+        g_subCateg[cast(u32) UnicodeCategory.InitialQuotePunctuation]   = SubCateg.Punctuation
+        g_subCateg[cast(u32) UnicodeCategory.FinalQuotePunctuation]     = SubCateg.Punctuation
+        g_subCateg[cast(u32) UnicodeCategory.OtherPunctuation]          = SubCateg.Punctuation
+    }
+    
     #[swag.inline, swag.constexpr]
     public
     {
-        func isLatin1(c: char) => c <= 0xFF
-        func isAscii(c: char) => c <= 0x7F
+        func isLatin1(c: char)  => c <= 0xFF
+        func isAscii(c: char)   => c <= 0x7F
     } 
-
+    
     #[swag.constexpr]
     public
     {
         func isLetter(uc: UnicodeCategory)->bool
         {
-            return  uc == UnicodeCategory.UppercaseLetter ||
-                    uc == UnicodeCategory.LowercaseLetter ||
-                    uc == UnicodeCategory.TitlecaseLetter ||
-                    uc == UnicodeCategory.ModifierLetter ||
-                    uc == UnicodeCategory.OtherLetter
+            return cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Letter)
         }
         
         func isLetterOrDigit(uc: UnicodeCategory)->bool
         {
-            return  uc == UnicodeCategory.UppercaseLetter ||
-                    uc == UnicodeCategory.LowercaseLetter ||
-                    uc == UnicodeCategory.TitlecaseLetter ||
-                    uc == UnicodeCategory.ModifierLetter ||
-                    uc == UnicodeCategory.OtherLetter ||
-                    uc == UnicodeCategory.DecimalDigitNumber
-        }        
+            return cast(bool) (g_subCateg[cast(u32) uc] & (SubCateg.Letter | SubCateg.Digit))
+        }
         
         func isPunctuation(uc: UnicodeCategory)->bool
         {
-            return  uc == UnicodeCategory.ConnectorPunctuation ||
-                    uc == UnicodeCategory.DashPunctuation ||
-                    uc == UnicodeCategory.OpenPunctuation ||
-                    uc == UnicodeCategory.ClosePunctuation ||
-                    uc == UnicodeCategory.InitialQuotePunctuation ||
-                    uc == UnicodeCategory.FinalQuotePunctuation ||
-                    uc == UnicodeCategory.OtherPunctuation
+            return cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Punctuation)
         }        
 
         func getCategory(c: char)->UnicodeCategory
         {
+            if isLatin1(c)
+                return latin1.charCategory[cast(u8) c]
             return UnicodeCategory.OtherNotAssigned // TODO
         }
         

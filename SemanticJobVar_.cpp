@@ -519,7 +519,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->type->typeInfo, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->errorContext.report({node, "missing initialization expression to deduce size of array"}));
-        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList, context->errorContext.report({node, "invalid initialization expression for an array"}));
+        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->errorContext.report({node, "invalid initialization expression for an array"}));
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)

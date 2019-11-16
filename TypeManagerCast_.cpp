@@ -55,7 +55,7 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
         return true;
 
     // Automatic cast to a bool is done only if requested, on specific nodes (like if or while expressions)
-    if (!(castFlags & CASTFLAG_AUTO_BOOL))
+    if (!(castFlags & CASTFLAG_AUTO_BOOL) && !(castFlags & CASTFLAG_EXPLICIT))
         return castError(context, g_TypeMgr.typeInfoBool, fromType, fromNode, castFlags);
 
     if (fromType->kind == TypeInfoKind::Pointer || fromType->kind == TypeInfoKind::Lambda)

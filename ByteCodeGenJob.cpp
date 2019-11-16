@@ -67,6 +67,21 @@ void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, Regist
         rc += context->bc->maxReservedRegisterRC++;
 }
 
+void ByteCodeGenJob::truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count)
+{
+	if (rc.size() == count)
+		return;
+
+	RegisterList rs;
+
+	for (int i = 0; i < count; i++)
+		rs += rc[i];
+	for (int i = count; i < rc.size(); i++)
+		context->bc->availableRegistersRC.push_back(rc[i]);
+
+	rc = rs;
+}
+
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
 {
     if (!rc.canFree)

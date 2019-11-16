@@ -149,7 +149,7 @@ struct ByteCodeGenJob : public Job
     static bool emitIs(ByteCodeGenContext* context);
     static bool emitInit(ByteCodeGenContext* context);
     static bool emitDrop(ByteCodeGenContext* context);
-	static bool emitStruct(ByteCodeGenContext* context);
+    static bool emitStruct(ByteCodeGenContext* context);
     static bool emitClearRefConstantSize(ByteCodeGenContext* context, uint32_t sizeOf, uint32_t registerIndex);
 
     static bool generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
@@ -157,7 +157,7 @@ struct ByteCodeGenJob : public Job
     static bool generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfo);
     static bool emitStructCopyMoveCall(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from);
-	static void waitStructGenerated(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
+    static void waitStructGenerated(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
 
     static uint32_t reserveRegisterRC(ByteCodeGenContext* context);
     static void     reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num);
@@ -165,6 +165,7 @@ struct ByteCodeGenJob : public Job
     static void     freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, uint32_t rc);
     static void     freeRegisterRC(ByteCodeGenContext* context, AstNode* node);
+    static void     truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count);
 
     void reset() override
     {
