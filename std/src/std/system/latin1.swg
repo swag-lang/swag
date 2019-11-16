@@ -40,9 +40,11 @@ namespace std.latin1
 	#[swag.inline, swag.constexpr]        
     public
     {
-        func isDigit(c: u8) => c >= cast(u8) '0' && c <= cast(u8) '9'
-        func isUpper(c: u8) => charCategory[c] == UnicodeCategory.UppercaseLetter
-        func isLower(c: u8) => charCategory[c] == UnicodeCategory.LowercaseLetter
+        func isDigit(c: u8)         => c >= cast(u8) '0' && c <= cast(u8) '9'
+        func isUpper(c: u8)         => charCategory[c] == UnicodeCategory.UppercaseLetter
+        func isLower(c: u8)         => charCategory[c] == UnicodeCategory.LowercaseLetter
+        func isPunctuation(c: u8)   => unicode.isPunctuation(charCategory[c])
+        func isLetterOrDigit(c: u8) => unicode.isLetterOrDigit(charCategory[c])
         
         func isLetter(c: u8)->bool
         {

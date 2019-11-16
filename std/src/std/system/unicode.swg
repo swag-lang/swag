@@ -52,18 +52,38 @@ namespace std.unicode
                     uc == UnicodeCategory.ModifierLetter ||
                     uc == UnicodeCategory.OtherLetter
         }
-
-        func getCharCategory(c: char)->UnicodeCategory
+        
+        func isLetterOrDigit(uc: UnicodeCategory)->bool
         {
-            // TODO
-            return UnicodeCategory.OtherNotAssigned
+            return  uc == UnicodeCategory.UppercaseLetter ||
+                    uc == UnicodeCategory.LowercaseLetter ||
+                    uc == UnicodeCategory.TitlecaseLetter ||
+                    uc == UnicodeCategory.ModifierLetter ||
+                    uc == UnicodeCategory.OtherLetter ||
+                    uc == UnicodeCategory.DecimalDigitNumber
+        }        
+        
+        func isPunctuation(uc: UnicodeCategory)->bool
+        {
+            return  uc == UnicodeCategory.ConnectorPunctuation ||
+                    uc == UnicodeCategory.DashPunctuation ||
+                    uc == UnicodeCategory.OpenPunctuation ||
+                    uc == UnicodeCategory.ClosePunctuation ||
+                    uc == UnicodeCategory.InitialQuotePunctuation ||
+                    uc == UnicodeCategory.FinalQuotePunctuation ||
+                    uc == UnicodeCategory.OtherPunctuation
+        }        
+
+        func getCategory(c: char)->UnicodeCategory
+        {
+            return UnicodeCategory.OtherNotAssigned // TODO
         }
         
         func isDigit(c: char)->bool
         {
             if isLatin1(c)
                 return latin1.isDigit(c)
-            return getCharCategory(c) == UnicodeCategory.DecimalDigitNumber
+            return getCategory(c) == UnicodeCategory.DecimalDigitNumber
         }
     }
 }
