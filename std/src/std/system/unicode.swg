@@ -41,6 +41,8 @@ namespace std.unicode
         Letter
         Digit
         Punctuation
+        Symbol
+        Separator
     }
     
     var g_subCateg: [@countof(UnicodeCategory)] SubCateg = ?
@@ -59,6 +61,13 @@ namespace std.unicode
         g_subCateg[cast(u32) UnicodeCategory.InitialQuotePunctuation]   = SubCateg.Punctuation
         g_subCateg[cast(u32) UnicodeCategory.FinalQuotePunctuation]     = SubCateg.Punctuation
         g_subCateg[cast(u32) UnicodeCategory.OtherPunctuation]          = SubCateg.Punctuation
+        g_subCateg[cast(u32) UnicodeCategory.MathSymbol]                = SubCateg.Symbol
+        g_subCateg[cast(u32) UnicodeCategory.CurrencySymbol]            = SubCateg.Symbol
+        g_subCateg[cast(u32) UnicodeCategory.ModifierSymbol]            = SubCateg.Symbol
+        g_subCateg[cast(u32) UnicodeCategory.OtherSymbol]               = SubCateg.Symbol
+        g_subCateg[cast(u32) UnicodeCategory.SpaceSeparator]            = SubCateg.Separator
+        g_subCateg[cast(u32) UnicodeCategory.LineSeparator]             = SubCateg.Separator
+        g_subCateg[cast(u32) UnicodeCategory.ParagraphSeparator]        = SubCateg.Separator
     }
     
     #[swag.inline, swag.constexpr]
@@ -71,20 +80,11 @@ namespace std.unicode
     #[swag.constexpr]
     public
     {
-        func isLetter(uc: UnicodeCategory)->bool
-        {
-            return cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Letter)
-        }
-        
-        func isLetterOrDigit(uc: UnicodeCategory)->bool
-        {
-            return cast(bool) (g_subCateg[cast(u32) uc] & (SubCateg.Letter | SubCateg.Digit))
-        }
-        
-        func isPunctuation(uc: UnicodeCategory)->bool
-        {
-            return cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Punctuation)
-        }        
+        func isLetter(uc: UnicodeCategory)          => cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Letter)        
+        func isLetterOrDigit(uc: UnicodeCategory)   => cast(bool) (g_subCateg[cast(u32) uc] & (SubCateg.Letter | SubCateg.Digit))
+        func isPunctuation(uc: UnicodeCategory)     => cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Punctuation)
+        func isSymbol(uc: UnicodeCategory)          => cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Symbol)
+        func isSeparator(uc: UnicodeCategory)       => cast(bool) (g_subCateg[cast(u32) uc] & SubCateg.Separator)
 
         func getCategory(c: char)->UnicodeCategory
         {
