@@ -95,6 +95,13 @@ namespace std.unicode
             return UnicodeCategory.OtherNotAssigned // TODO
         }
         
+        func isWhiteSpace(c: char)->bool
+        {
+            if isLatin1(c)
+                return latin1.isWhiteSpace(c)
+            return isSeparator(getCategory(c))
+        }
+        
         func isLetter(c: char)->bool
         {
             if isLatin1(c)

@@ -90,11 +90,21 @@ namespace std
             length = 0
         }
         
-        public func empty(using self)->bool
+        public func isEmpty(using self)->bool
         {
             return length == 0
         }
-
+        
+        public func isNull(using self)->bool
+        {
+            return buffer == null
+        }        
+        
+        public func isNullOrEmpty(using self)->bool
+        {
+            return buffer == null || length == 0
+        }
+        
         public func concat(using self, value: [..] u8)
         {
             if @countof(value) == 0
