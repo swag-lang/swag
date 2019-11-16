@@ -47,7 +47,7 @@ namespace std
             #if @typeof(T) == @typeof([..] u8)
                 return [buffer, length]
             #else
-                #assert(false,"invalid cast to '" ~ @typeof(T).name ~ "'")
+                #assert(false,"invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
         }
         
         public func opAffect(using self, value: string)
