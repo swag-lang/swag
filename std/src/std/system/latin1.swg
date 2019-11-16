@@ -44,7 +44,6 @@ namespace std.latin1
         func isUpper(c: u8)         => charCategory[c] == UnicodeCategory.UppercaseLetter
         func isLower(c: u8)         => charCategory[c] == UnicodeCategory.LowercaseLetter
         func isPunctuation(c: u8)   => unicode.isPunctuation(charCategory[c])
-        func isLetterOrDigit(c: u8) => unicode.isLetterOrDigit(charCategory[c])
         
         func isLetter(c: u8)->bool
         {
@@ -52,6 +51,14 @@ namespace std.latin1
                     (c >= cast(u8) 'A' && c <= cast(u8) 'Z') || 
                     (c >= 0x80 && unicode.isLetter(charCategory[c]))
         }
+        
+        func isLetterOrDigit(c: u8)->bool
+        {
+            return  (c >= cast(u8) 'a' && c <= cast(u8) 'z') || 
+                    (c >= cast(u8) 'A' && c <= cast(u8) 'Z') || 
+                    (c >= cast(u8) '0' && c <= cast(u8) '9') || 
+                    (c >= 0x80 && unicode.isLetterOrDigit(charCategory[c]))
+        }        
         
 		func isWhiteSpace(c: u8)->bool
         {
