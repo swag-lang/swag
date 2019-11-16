@@ -48,7 +48,7 @@ namespace std.latin1
         {
             return  (c >= cast(u8) 'a' && c <= cast(u8) 'z') || 
                     (c >= cast(u8) 'A' && c <= cast(u8) 'Z') || 
-                    (c >= 0x80 && isLetter(charCategory[c]))
+                    (c >= 0x80 && unicode.isLetter(charCategory[c]))
         }
         
 		func isWhiteSpace(c: u8)->bool
