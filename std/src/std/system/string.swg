@@ -50,9 +50,9 @@ namespace std
                 #assert(false,"invalid cast from 'String' to '" ~ @typeof(T).name ~ "'")
         }
         
-        public func opAffect(using self, value: string)
+        public func opAffect(using self, value: [..] u8)
         {
-            if value == null
+            if @dataof(value) == null
             {
                 reserve(self, 0)
                 return
@@ -61,7 +61,8 @@ namespace std
             newSize := @countof(value) + 1
             length = newSize - 1
             reserve(self, newSize)
-            @memcpy(buffer, @dataof(value), newSize)
+            @memcpy(buffer, @dataof(value), length)
+            buffer[length] = 0
         }
         
         public func reserve(using self, newSize: u32)

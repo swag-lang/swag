@@ -128,8 +128,10 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         typeInfo = node->castedTypeInfo;
     }
 
-    // We have null, and we want a string
-    if (node->typeInfo->nativeType == NativeTypeKind::String && node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr.typeInfoNull)
+    // We have null, and we want a string or a slice
+    if ((node->typeInfo->nativeType == NativeTypeKind::String || node->typeInfo->kind == TypeInfoKind::Slice) &&
+        node->castedTypeInfo &&
+        node->castedTypeInfo == g_TypeMgr.typeInfoNull)
     {
         reserveLinearRegisterRC(context, regList, 2);
         emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
@@ -219,8 +221,8 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        auto inst   = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0]);
-		SWAG_ASSERT(node->resolvedSymbolOverload);
+        auto inst = emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0]);
+        SWAG_ASSERT(node->resolvedSymbolOverload);
         inst->b.u32 = node->resolvedSymbolOverload->storageOffset;
     }
     else

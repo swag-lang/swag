@@ -1392,6 +1392,12 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     }
     else if (fromType == g_TypeMgr.typeInfoNull)
     {
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfo       = toTypeSlice;
+        }
+
         return true;
     }
     else if (fromType->kind == TypeInfoKind::Slice)
@@ -1686,11 +1692,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->kind == TypeInfoKind::Alias)
         fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS);
 
-	if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT))
-	{
-		toType = TypeManager::concreteType(toType, CONCRETE_ENUM);
-		fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
-	}
+    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT))
+    {
+        toType   = TypeManager::concreteType(toType, CONCRETE_ENUM);
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
+    }
 
     if (fromType == toType)
         return true;
