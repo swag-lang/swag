@@ -95,6 +95,20 @@ namespace std.unicode
             return UnicodeCategory.OtherNotAssigned // TODO
         }
         
+        func isLetter(c: char)->bool
+        {
+            if isLatin1(c)
+                return latin1.isLetter(c)
+            return isLetter(getCategory(c))
+        }
+        
+        func isLetterOrDigit(c: char)->bool
+        {
+            if isLatin1(c)
+                return latin1.isLetterOrDigit(c)
+            return isLetterOrDigit(getCategory(c))
+        }        
+        
         func isDigit(c: char)->bool
         {
             if isLatin1(c)
