@@ -1,6 +1,6 @@
 namespace std.unicode
 {      
-    public enum CharCategory : u8
+    public enum UnicodeCategory : u8
     {
         UppercaseLetter = 0
         LowercaseLetter = 1
@@ -43,17 +43,17 @@ namespace std.unicode
 
     public
     {
-        func getCharCategory(c: char)->CharCategory
+        func getCharCategory(c: char)->UnicodeCategory
         {
             // TODO
-            return CharCategory.OtherNotAssigned
+            return UnicodeCategory.OtherNotAssigned
         }
         
         func isDigit(c: char)->bool
         {
             if isLatin1(c)
                 return latin1.isDigit(c)
-            return getCharCategory(c) == CharCategory.DecimalDigitNumber
+            return getCharCategory(c) == UnicodeCategory.DecimalDigitNumber
         }
     }
 }

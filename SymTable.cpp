@@ -77,7 +77,7 @@ SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile*    sourceFile,
                                             Utf8Crc*       aliasName)
 {
     scoped_lock lk(mutex);
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC || sourceFile->generated)
         flags |= OVERLOAD_PUBLIC;
     return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, aliasName);
 }

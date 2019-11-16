@@ -219,7 +219,7 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node)
     if (node->assignment)
     {
 		CONCAT_FIXED_STR(bufferSwg, " = ");
-        SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, node->assignment->typeInfo, node->assignment->computedValue.text, node->assignment->computedValue.reg));
+        SWAG_CHECK(Ast::outputLiteral(bufferSwg, node->assignment, node->assignment->typeInfo, node->assignment->computedValue.text, node->assignment->computedValue.reg));
     }
 
     bufferSwg.addEol();

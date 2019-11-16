@@ -11,6 +11,12 @@ namespace Ast
 {
     bool outputLiteral(Concat& concat, AstNode* node, TypeInfo* typeInfo, const Utf8& text, Register& reg)
     {
+        if (typeInfo->kind == TypeInfoKind::TypeList)
+        {
+            SWAG_CHECK(Ast::output(concat, node));
+            return true;
+        }
+
         auto str = literalToString(typeInfo, text, reg);
         if (typeInfo->isNative(NativeTypeKind::String))
             concat.addString("\"" + str + "\"");
@@ -174,6 +180,31 @@ namespace Ast
             break;
         }
 
+        case AstNodeKind::IdentifierRef:
+        {
+            auto back = node->childs.back();
+            if (back->resolvedSymbolName)
+            {
+                auto symbol = back->resolvedSymbolName;
+                if (symbol && symbol->ownerTable->scope->isGlobal())
+                {
+                    SWAG_CHECK(output(concat, back));
+                    break;
+                }
+            }
+
+            int idx = 0;
+            for (auto child : node->childs)
+            {
+                if (idx)
+                    CONCAT_FIXED_STR(concat, ".");
+                SWAG_CHECK(output(concat, child));
+                idx++;
+            }
+
+            break;
+        }
+
         case AstNodeKind::Identifier:
         case AstNodeKind::FuncCall:
         {
@@ -190,7 +221,11 @@ namespace Ast
                 }
             }
 
-            concat.addString(node->name);
+            if (symbol && symbol->ownerTable->scope->isGlobal())
+                concat.addString(symbol->fullName);
+            else
+                concat.addString(node->name);
+
             if (identifier->genericParameters)
             {
                 concat.addChar('!');
@@ -250,20 +285,6 @@ namespace Ast
             break;
         }
 
-        case AstNodeKind::IdentifierRef:
-        {
-            int idx = 0;
-            for (auto child : node->childs)
-            {
-                if (idx)
-                    CONCAT_FIXED_STR(concat, ".");
-                SWAG_CHECK(output(concat, child));
-                idx++;
-            }
-
-            break;
-        }
-
         case AstNodeKind::SingleOp:
             concat.addString(node->token.text);
             SWAG_CHECK(output(concat, node->childs[0]));
@@ -302,6 +323,11 @@ namespace Ast
                 CONCAT_FIXED_STR(concat, "const ");
             if (typeNode->isSlice)
                 CONCAT_FIXED_STR(concat, "[..] ");
+            if (typeNode->arrayDim == UINT32_MAX)
+                CONCAT_FIXED_STR(concat, "[] ");
+            else if (typeNode->arrayDim)
+                concat.addStringFormat("[%u] ", typeNode->arrayDim);
+
             for (int i = 0; i < typeNode->ptrCount; i++)
                 concat.addChar('*');
             if (typeNode->identifier)
