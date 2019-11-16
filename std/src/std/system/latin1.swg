@@ -41,8 +41,22 @@ namespace std.latin1
     public
     {
         func isDigit(c: u8) => c >= cast(u8) '0' && c <= cast(u8) '9'
-		func isWhiteSpace(c: u8) => c == cast(u8) ' ' || (c >= cast(u8) '\x09' && c <= cast(u8) '\x0d') || c == cast(u8) '\xa0' || c == cast(u8) '\x85'
         func isUpper(c: u8) => charCategory[c] == UnicodeCategory.UppercaseLetter
         func isLower(c: u8) => charCategory[c] == UnicodeCategory.LowercaseLetter
+        
+        func isLetter(c: u8)->bool
+        {
+            return  (c >= cast(u8) 'a' && c <= cast(u8) 'z') || 
+                    (c >= cast(u8) 'A' && c <= cast(u8) 'Z') || 
+                    (c >= 0x80 && isLetter(charCategory[c]))
+        }
+        
+		func isWhiteSpace(c: u8)->bool
+        {
+            return  c == cast(u8) ' ' || 
+                    (c >= cast(u8) '\x09' && c <= cast(u8) '\x0d') || 
+                    c == cast(u8) '\xa0' || 
+                    c == cast(u8) '\x85'
+        }
     }
 }

@@ -124,6 +124,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
         {
             if (!checkHiddenSymbolNoLock(node, typeInfo, kind, symbol))
                 return nullptr;
+
             result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
 
             // Remember all variables of type struct
@@ -226,17 +227,13 @@ bool SymTable::checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, Symbol
     auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
-        // Because of a foreign opInit, this can happen. Not sure this is fine to do that
-        if (symbol->name != "opInit")
-        {
-            auto       firstOverload = overload;
-            Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
-            Diagnostic diag{node, token, msg};
-            Utf8       note = "this is the other definition";
-            Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-            node->sourceFile->report(diag, &diagNote);
-            return false;
-        }
+        auto       firstOverload = overload;
+        Utf8       msg           = format("symbol '%s' already defined with the same signature in an accessible scope", symbol->name.c_str());
+        Diagnostic diag{node, token, msg};
+        Utf8       note = "this is the other definition";
+        Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
+        node->sourceFile->report(diag, &diagNote);
+        return false;
     }
 
     return true;

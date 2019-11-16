@@ -54,3 +54,4 @@ static const uint32_t AST_DONE_PRE_CAST                  = 0x00000080;
 static const uint32_t AST_DONE_CAST1                     = 0x00000100;
 static const uint32_t AST_DONE_CAST2                     = 0x00000200;
 static const uint32_t AST_DONE_FLAT_PARAMS               = 0x00000400;
+static const uint32_t AST_DONE_GHOST_CHECKING            = 0x00000800;

@@ -44,6 +44,15 @@ namespace std.unicode
     #[swag.constexpr]
     public
     {
+        func isLetter(uc: UnicodeCategory)->bool
+        {
+            return  uc == UnicodeCategory.UppercaseLetter ||
+                    uc == UnicodeCategory.LowercaseLetter ||
+                    uc == UnicodeCategory.TitlecaseLetter ||
+                    uc == UnicodeCategory.ModifierLetter ||
+                    uc == UnicodeCategory.OtherLetter
+        }
+
         func getCharCategory(c: char)->UnicodeCategory
         {
             // TODO
