@@ -49,25 +49,27 @@ namespace std.unicode
     
     #init
     {
-        g_subCateg[cast(u32) UnicodeCategory.UppercaseLetter]           = SubCateg.Letter
-        g_subCateg[cast(u32) UnicodeCategory.LowercaseLetter]           = SubCateg.Letter
-        g_subCateg[cast(u32) UnicodeCategory.TitlecaseLetter]           = SubCateg.Letter
-        g_subCateg[cast(u32) UnicodeCategory.ModifierLetter]            = SubCateg.Letter
-        g_subCateg[cast(u32) UnicodeCategory.OtherLetter]               = SubCateg.Letter
-        g_subCateg[cast(u32) UnicodeCategory.DecimalDigitNumber]        = SubCateg.Digit
-        g_subCateg[cast(u32) UnicodeCategory.ConnectorPunctuation]      = SubCateg.Punctuation
-        g_subCateg[cast(u32) UnicodeCategory.DashPunctuation]           = SubCateg.Punctuation
-        g_subCateg[cast(u32) UnicodeCategory.OpenPunctuation]           = SubCateg.Punctuation
-        g_subCateg[cast(u32) UnicodeCategory.InitialQuotePunctuation]   = SubCateg.Punctuation
-        g_subCateg[cast(u32) UnicodeCategory.FinalQuotePunctuation]     = SubCateg.Punctuation
-        g_subCateg[cast(u32) UnicodeCategory.OtherPunctuation]          = SubCateg.Punctuation
-        g_subCateg[cast(u32) UnicodeCategory.MathSymbol]                = SubCateg.Symbol
-        g_subCateg[cast(u32) UnicodeCategory.CurrencySymbol]            = SubCateg.Symbol
-        g_subCateg[cast(u32) UnicodeCategory.ModifierSymbol]            = SubCateg.Symbol
-        g_subCateg[cast(u32) UnicodeCategory.OtherSymbol]               = SubCateg.Symbol
-        g_subCateg[cast(u32) UnicodeCategory.SpaceSeparator]            = SubCateg.Separator
-        g_subCateg[cast(u32) UnicodeCategory.LineSeparator]             = SubCateg.Separator
-        g_subCateg[cast(u32) UnicodeCategory.ParagraphSeparator]        = SubCateg.Separator
+        using UnicodeCategory
+        using SubCateg
+        g_subCateg[cast(u32) UppercaseLetter]           = Letter
+        g_subCateg[cast(u32) LowercaseLetter]           = Letter
+        g_subCateg[cast(u32) TitlecaseLetter]           = Letter
+        g_subCateg[cast(u32) ModifierLetter]            = Letter
+        g_subCateg[cast(u32) OtherLetter]               = Letter
+        g_subCateg[cast(u32) DecimalDigitNumber]        = Digit
+        g_subCateg[cast(u32) ConnectorPunctuation]      = Punctuation
+        g_subCateg[cast(u32) DashPunctuation]           = Punctuation
+        g_subCateg[cast(u32) OpenPunctuation]           = Punctuation
+        g_subCateg[cast(u32) InitialQuotePunctuation]   = Punctuation
+        g_subCateg[cast(u32) FinalQuotePunctuation]     = Punctuation
+        g_subCateg[cast(u32) OtherPunctuation]          = Punctuation
+        g_subCateg[cast(u32) MathSymbol]                = Symbol
+        g_subCateg[cast(u32) CurrencySymbol]            = Symbol
+        g_subCateg[cast(u32) ModifierSymbol]            = Symbol
+        g_subCateg[cast(u32) OtherSymbol]               = Symbol
+        g_subCateg[cast(u32) SpaceSeparator]            = Separator
+        g_subCateg[cast(u32) LineSeparator]             = Separator
+        g_subCateg[cast(u32) ParagraphSeparator]        = Separator
     }
     
     #[swag.inline, swag.constexpr]
