@@ -26,6 +26,16 @@ namespace Ast
 
         switch (node->kind)
         {
+		case AstNodeKind::ArrayPointerIndex:
+		{
+			auto arrayNode = CastAst<AstPointerDeRef>(node, AstNodeKind::ArrayPointerIndex);
+			SWAG_CHECK(output(concat, arrayNode->array, indent));
+			concat.addChar('[');
+			SWAG_CHECK(output(concat, arrayNode->access, indent));
+			concat.addChar(']');
+			break;
+		}
+
         case AstNodeKind::ExpressionList:
         {
             auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
