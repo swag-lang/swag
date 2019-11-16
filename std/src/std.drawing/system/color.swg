@@ -23,9 +23,15 @@ namespace std.drawing
 		{
             #[swag.complete]
 			func opAffect(self, argb: u32)
-			{
-				self.argb = argb
-			}
+            {
+                self.argb = argb
+            }
+            
+            #[swag.complete]
+            func opAffect(self, argb: Argb) 
+            {
+                self.argb = cast(u32) argb
+            }
 
 			func opEquals(self, argb: u32) => self.argb == argb
             func opEquals(self, b: Self) => self.argb == b.argb

@@ -5,6 +5,6 @@ enum E : string
 
 #test
 {
-    var x: string = E.RED
+    var x: string = cast(string) E.RED
     @assert(x == "RED")
 }

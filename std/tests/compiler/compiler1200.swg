@@ -5,5 +5,5 @@ enum E : u32
 
 #test
 {
-    var x: u32 = E.RED
+    var x: u32 = cast(u32) E.RED
 }

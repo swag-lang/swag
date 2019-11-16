@@ -161,7 +161,6 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
 
 bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::Char)
         return true;
 
@@ -236,7 +235,6 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
 
 bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::U8)
         return true;
 
@@ -349,7 +347,6 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
 
 bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::U16)
         return true;
 
@@ -462,7 +459,6 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::U32)
         return true;
 
@@ -575,7 +571,6 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::U64)
         return true;
 
@@ -674,7 +669,6 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::S8)
         return true;
 
@@ -764,7 +758,6 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
 
 bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::S16)
         return true;
 
@@ -850,7 +843,6 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::S32)
         return true;
 
@@ -932,7 +924,6 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::S64)
         return true;
 
@@ -1014,7 +1005,6 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::F32)
         return true;
 
@@ -1131,7 +1121,6 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
 
 bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
     if (fromType->nativeType == NativeTypeKind::F64)
         return true;
 
@@ -1263,7 +1252,6 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     case NativeTypeKind::F64:
         return castToNativeF64(context, fromType, fromNode, castFlags);
     case NativeTypeKind::String:
-        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
         if (fromType->nativeType == NativeTypeKind::String)
             return true;
     }
@@ -1684,12 +1672,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT))
-    {
-        toType   = TypeManager::concreteType(toType, CONCRETE_ENUM);
-        fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
-    }
-
     SWAG_ASSERT(toType && fromType);
 
     if (toType->kind == TypeInfoKind::FuncAttr)
@@ -1703,6 +1685,12 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         toType = TypeManager::concreteType(toType, CONCRETE_ALIAS);
     if (fromType->kind == TypeInfoKind::Alias)
         fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS);
+
+	if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT))
+	{
+		toType = TypeManager::concreteType(toType, CONCRETE_ENUM);
+		fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
+	}
 
     if (fromType == toType)
         return true;
