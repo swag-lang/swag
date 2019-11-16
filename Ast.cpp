@@ -44,7 +44,26 @@ namespace Ast
             return reg.b ? "true" : "false";
             break;
         case NativeTypeKind::String:
-            return text;
+		{
+			Utf8 result;
+			result.reserve(text.capacity());
+			for(auto c: text)
+			{
+				switch (c)
+				{
+				case '\r':
+					result += "\\r";
+					break;
+				case '\n':
+					result += "\\n";
+					break;
+				default:
+					result += c;
+				}
+			}
+
+			return result;
+		}
         default:
             SWAG_ASSERT(false);
             return "";
