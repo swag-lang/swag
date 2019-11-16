@@ -14,9 +14,9 @@ static const uint32_t ATTRIBUTE_RUN_FUNC      = 0x00000100;
 static const uint32_t ATTRIBUTE_MAIN_FUNC     = 0x00000200;
 static const uint32_t ATTRIBUTE_COMPLETE      = 0x00000400;
 static const uint32_t ATTRIBUTE_INLINE        = 0x00000800;
-static const uint32_t ATTRIBUTE_PACK          = 0x00000800;
-static const uint32_t ATTRIBUTE_FLAGS         = 0x00001000;
-static const uint32_t ATTRIBUTE_PRIVATE       = 0x00002000;
+static const uint32_t ATTRIBUTE_PACK          = 0x00001000;
+static const uint32_t ATTRIBUTE_FLAGS         = 0x00002000;
+static const uint32_t ATTRIBUTE_PRIVATE       = 0x00004000;
 
 struct TypeInfoFuncAttr;
 struct SymbolAttributes

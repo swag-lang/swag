@@ -26,15 +26,15 @@ namespace Ast
 
         switch (node->kind)
         {
-		case AstNodeKind::ArrayPointerIndex:
-		{
-			auto arrayNode = CastAst<AstPointerDeRef>(node, AstNodeKind::ArrayPointerIndex);
-			SWAG_CHECK(output(concat, arrayNode->array, indent));
-			concat.addChar('[');
-			SWAG_CHECK(output(concat, arrayNode->access, indent));
-			concat.addChar(']');
-			break;
-		}
+        case AstNodeKind::ArrayPointerIndex:
+        {
+            auto arrayNode = CastAst<AstPointerDeRef>(node, AstNodeKind::ArrayPointerIndex);
+            SWAG_CHECK(output(concat, arrayNode->array, indent));
+            concat.addChar('[');
+            SWAG_CHECK(output(concat, arrayNode->access, indent));
+            concat.addChar(']');
+            break;
+        }
 
         case AstNodeKind::ExpressionList:
         {
@@ -177,7 +177,19 @@ namespace Ast
         case AstNodeKind::Identifier:
         case AstNodeKind::FuncCall:
         {
-            AstIdentifier* identifier = static_cast<AstIdentifier*>(node);
+            auto identifier = static_cast<AstIdentifier*>(node);
+            auto symbol     = identifier->resolvedSymbolName;
+            auto overload   = identifier->resolvedSymbolOverload;
+            if (symbol && overload && symbol->name[0] != '@')
+            {
+                if (((symbol->kind == SymbolKind::Variable) && (overload->flags & OVERLOAD_VAR_GLOBAL)) ||
+                    (symbol->kind == SymbolKind::Function) ||
+                    (symbol->kind == SymbolKind::TypeAlias))
+                {
+                    SWAG_VERIFY(overload->flags & OVERLOAD_PUBLIC, identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public", identifier->name.c_str())}));
+                }
+            }
+
             concat.addString(node->name);
             if (identifier->genericParameters)
             {

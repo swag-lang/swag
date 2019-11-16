@@ -412,8 +412,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     return context->errorContext.report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
                     return context->errorContext.report({identifier, identifier->token, format("cannot reference 'swag.test' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
-                if ((fctAttributes & ATTRIBUTE_PUBLIC) && (fctAttributes & ATTRIBUTE_INLINE) && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
-                    return identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public, because function '%s' is public and inline", overload->node->name.c_str(), ownerFct->name.c_str())});
+                //if ((fctAttributes & ATTRIBUTE_PUBLIC) && (fctAttributes & ATTRIBUTE_INLINE) && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC))
+                //    return identifier->sourceFile->report({identifier, identifier->token, format("identifier '%s' should be public, because function '%s' is public and inline", overload->node->name.c_str(), ownerFct->name.c_str())});
             }
         }
 
@@ -465,8 +465,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->flags |= AST_CONST_EXPR;
         }
 
-        if (identifier->token.id == TokenId::Intrinsic)
-            identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+		if (identifier->token.id == TokenId::Intrinsic)
+			identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
             identifier->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
         else
