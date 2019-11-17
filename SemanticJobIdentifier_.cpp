@@ -1322,10 +1322,9 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)
         {
-            while (scope->parentScope && scope->parentScope->kind != ScopeKind::Function)
+            while (scope && scope->kind != ScopeKind::Function)
                 scope = scope->parentScope;
-            if (scope)
-                scope = scope->parentScope;
+            SWAG_ASSERT(scope)
         }
 
         // Add parent scope
