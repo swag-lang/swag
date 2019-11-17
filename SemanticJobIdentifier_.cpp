@@ -1330,7 +1330,7 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         // For an embedded function, jump right to its parent
         if (scope->kind == ScopeKind::Function)
         {
-            while (scope->parentScope->kind == ScopeKind::Function)
+            while (scope->parentScope->kind == ScopeKind::Function || scope->parentScope->owner->ownerFct)
                 scope = scope->parentScope;
         }
 
