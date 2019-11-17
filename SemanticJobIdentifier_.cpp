@@ -931,6 +931,11 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         if (!node->callParameters && p->kind == SymbolKind::Function)
             continue;
 
+		// Symbol usage is in an inline block, and this symbol is not in that same inline scope, then zap
+		// (priority to locally defined symbols in case of inlines, i.e. no ghosting)
+		if (node->ownerInline && p->ownerTable->scope != node->ownerInline->scope)
+			continue;
+
         // Reference to a variable inside a struct, without a direct explicit reference
         bool isValid = true;
         if (p->ownerTable->scope->kind == ScopeKind::Struct && !identifierRef->startScope)
@@ -1291,7 +1296,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vec
     }
 }
 
-void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode)
+void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;
@@ -1323,11 +1328,14 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         auto scope = scopes[i];
 
         // For an inline scope, jump right to the function
-        if (scope->kind == ScopeKind::Inline && !(scope->flags & SCOPE_FLAG_MACRO))
+        if (scope->kind == ScopeKind::Inline)
         {
-            while (scope && scope->kind != ScopeKind::Function)
-                scope = scope->parentScope;
-            SWAG_ASSERT(scope)
+            if (!(scope->flags & SCOPE_FLAG_MACRO) || (flags & COLLECT_STOP_MACRO))
+            {
+                while (scope && scope->kind != ScopeKind::Function)
+                    scope = scope->parentScope;
+                SWAG_ASSERT(scope)
+            }
         }
 
         // Add parent scope
@@ -1367,7 +1375,12 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
     if (startScope->kind == ScopeKind::Struct)
         return true;
 
-    SemanticJob::collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node);
+    uint32_t collectFlags = COLLECT_ALL;
+    if (node->ownerInline && (node->ownerInline->scope->flags & SCOPE_FLAG_MACRO))
+        collectFlags = COLLECT_STOP_MACRO;
+
+    SemanticJob::collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
+
     for (auto scope : job->cacheScopeHierarchy)
     {
         // No ghosting with struct
