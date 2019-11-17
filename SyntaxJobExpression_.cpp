@@ -379,6 +379,19 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         boolExpression->semanticFct = &SemanticJob::resolveCompilerRun;
         SWAG_CHECK(doBoolExpression(boolExpression));
     }
+    else if (token.id == TokenId::CompilerCode)
+    {
+        SWAG_CHECK(eatToken());
+        boolExpression = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, sourceFile, parent);
+        if (token.id == TokenId::SymLeftCurly)
+        {
+            SWAG_CHECK(doEmbeddedStatement(boolExpression));
+        }
+        else
+        {
+            SWAG_CHECK(doBoolExpression(boolExpression));
+        }
+    }
     else
     {
         SWAG_CHECK(doBoolExpression(nullptr, &boolExpression));

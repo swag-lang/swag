@@ -106,6 +106,7 @@ enum class AstNodeKind
     CompilerAssert,
     CompilerPrint,
     CompilerRun,
+	CompilerCode,
     CompilerImport,
     CompilerSpecialFunction,
     QuestionExpression,
