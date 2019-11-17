@@ -84,10 +84,10 @@ void Scope::collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result)
 void Scope::setHasExports()
 {
     auto pscope = this;
-    while (pscope && !(pscope->hasExports))
+    while (pscope && !(pscope->flags & SCOPE_FLAG_HAS_EXPORTS))
     {
-        pscope->hasExports = true;
-        pscope             = pscope->parentScope;
+        pscope->flags |= SCOPE_FLAG_HAS_EXPORTS;
+        pscope = pscope->parentScope;
     }
 }
 

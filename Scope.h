@@ -30,6 +30,9 @@ struct AlternativeScope
     Scope*   scope;
 };
 
+static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
+static const uint32_t SCOPE_FLAG_MACRO       = 0x00000002;
+
 struct Scope : public PoolElement
 {
     void reset() override
@@ -38,6 +41,7 @@ struct Scope : public PoolElement
         symTable       = nullptr;
         startStackSize = 0;
         owner          = nullptr;
+        flags          = 0;
         indexInParent  = UINT32_MAX;
     }
 
@@ -48,10 +52,10 @@ struct Scope : public PoolElement
     void               addPublicStruct(AstNode* node);
     void               addPublicEnum(AstNode* node);
     void               addPublicConst(AstNode* node);
-	void               addPublicTypeAlias(AstNode* node);
+    void               addPublicTypeAlias(AstNode* node);
     static string      makeFullName(const string& parentName, const string& name);
     static const char* getNakedKindName(ScopeKind kind);
-	static const char* getArticleKindName(ScopeKind kind);
+    static const char* getArticleKindName(ScopeKind kind);
     static void        collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result);
 
     bool isGlobal()
@@ -72,10 +76,11 @@ struct Scope : public PoolElement
     Utf8Crc          name;
     Utf8             fullname;
     vector<Scope*>   childScopes;
-    int              startStackSize;
+    uint32_t         startStackSize;
     SpinLock         lockChilds;
     vector<AstNode*> deferedNodes;
     RegisterList     registersToRelease;
+    uint32_t         flags;
 
     SpinLock      mutexPublic;
     set<AstNode*> publicFunc;
@@ -83,8 +88,7 @@ struct Scope : public PoolElement
     set<AstNode*> publicStruct;
     set<AstNode*> publicEnum;
     set<AstNode*> publicConst;
-	set<AstNode*> publicTypeAlias;
-    bool          hasExports = false;
+    set<AstNode*> publicTypeAlias;
 };
 
 extern Pool<Scope> g_Pool_scope;

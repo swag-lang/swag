@@ -304,10 +304,10 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
 {
     SWAG_ASSERT(moduleToGen);
-    if (!scope->hasExports)
+    if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return true;
 
-    if (scope->hasExports && !scope->name.empty())
+    if (!scope->name.empty())
     {
         if (scope->kind == ScopeKind::Namespace)
             bufferSwg.addStringFormat("namespace %s {\n", scope->name.c_str());
@@ -385,7 +385,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
     for (auto oneScope : scope->childScopes)
         SWAG_CHECK(emitPublicSwg(moduleToGen, oneScope));
 
-    if (scope->hasExports && !scope->name.empty())
+    if (!scope->name.empty())
 		CONCAT_FIXED_STR(bufferSwg, "}\n\n");
 
     return true;

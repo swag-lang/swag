@@ -1651,7 +1651,7 @@ bool BackendC::emitFunctions(Module* moduleToGen)
 
 bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
 {
-    if (!scope->hasExports)
+    if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return true;
 
     // Functions
