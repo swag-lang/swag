@@ -175,9 +175,10 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         if (result)
             *result = node;
         node->flags |= AST_NO_BYTECODE_CHILDS;
-		node->typeInfo = g_TypeMgr.typeInfoCode;
-		SWAG_CHECK(eatToken());
-		return true;
+        node->typeInfo = g_TypeMgr.typeInfoCode;
+        node->isCode   = true;
+        SWAG_CHECK(eatToken());
+        return true;
     }
 
     // This is a function

@@ -31,6 +31,7 @@ void LanguageSpec::setup()
     keywords["#else"]           = TokenId::CompilerElse;
     keywords["#elif"]           = TokenId::CompilerElseIf;
     keywords["#code"]           = TokenId::CompilerCode;
+    keywords["#insert"]         = TokenId::CompilerInsert;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["let"]       = TokenId::KwdLet;

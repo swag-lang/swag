@@ -38,6 +38,30 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
+{
+    auto node = context->node;
+    auto expr = node->childs[0];
+    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, format("expression should be of type 'code' ('%s' provided)", expr->typeInfo->name.c_str())}));
+
+	expr->flags |= AST_NO_BYTECODE;
+
+    auto identifier = CastAst<AstIdentifier>(node->ownerInline->parent, AstNodeKind::Identifier);
+    for (auto child : identifier->callParameters->childs)
+    {
+        auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+		if (param->resolvedParameter->namedParam == expr->name)
+		{
+			auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
+			Ast::addChildBack(node, Ast::clone(typeCode->content, node));
+			return true;
+		}
+    }
+
+	SWAG_ASSERT(false);
+    return true;
+}
+
 bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 {
     auto node = context->node;
@@ -57,11 +81,11 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 
     if (!expr->computedValue.reg.b)
     {
-		if (node->childs.size() > 1)
-		{
-			auto msg = node->childs[1];
-			context->report({ expr, format("compiler assertion failed: %s", msg->computedValue.text.c_str()) });
-		}
+        if (node->childs.size() > 1)
+        {
+            auto msg = node->childs[1];
+            context->report({expr, format("compiler assertion failed: %s", msg->computedValue.text.c_str())});
+        }
         else
             context->report({expr, "compiler assertion failed"});
         return false;

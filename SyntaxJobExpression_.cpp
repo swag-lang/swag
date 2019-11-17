@@ -388,7 +388,10 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
             SWAG_CHECK(doEmbeddedStatement(boolExpression));
         else
             SWAG_CHECK(doBoolExpression(boolExpression));
-        boolExpression->typeInfo = g_TypeMgr.typeInfoCode;
+        auto typeCode            = g_Pool_typeInfoCode.alloc();
+        typeCode->content        = boolExpression->childs.front();
+        boolExpression->typeInfo = typeCode;
+        boolExpression->flags |= AST_NO_BYTECODE;
     }
     else
     {

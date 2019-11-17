@@ -44,6 +44,17 @@ TypeInfo* TypeInfoCode::clone()
     return newType;
 }
 
+bool TypeInfoCode::isSame(TypeInfo* to, uint32_t isSameFlags)
+{
+    if (this == to)
+        return true;
+    if (!TypeInfo::isSame(to, isSameFlags))
+        return false;
+    if (isSameFlags & ISSAME_CAST)
+        return true;
+    return false;
+}
+
 TypeInfo* TypeInfoAlias::clone()
 {
     auto newType     = g_Pool_typeInfoAlias.alloc();

@@ -633,11 +633,14 @@ struct TypeInfoCode : public TypeInfo
     void reset() override
     {
         TypeInfo::reset();
-        name = "code";
-        kind = TypeInfoKind::Code;
+        name    = "code";
+        content = nullptr;
+        kind    = TypeInfoKind::Code;
     }
 
+    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
+    AstNode*  content;
 };
 
 extern Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;

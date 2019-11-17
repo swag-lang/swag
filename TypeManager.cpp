@@ -35,6 +35,7 @@ void TypeManager::setup()
     typeInfoNull->sizeOf = sizeof(Register);
 
     typeInfoCode = new TypeInfoCode();
+    typeInfoCode->reset();
 
     typeInfoOpCall             = new TypeInfoFuncAttr();
     typeInfoOpCall->returnType = typeInfoVoid;

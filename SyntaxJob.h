@@ -39,6 +39,7 @@ struct SyntaxJob : public Job
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
+	bool doCompilerInsert(AstNode* parent);
     bool doCompilerAssert(AstNode* parent);
     bool doCompilerPrint(AstNode* parent);
     bool doCompilerUnitTest();

@@ -87,7 +87,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::VarDecl:
     case AstNodeKind::LetDecl:
     case AstNodeKind::FuncDecl:
-	case AstNodeKind::MacroDecl:
+    case AstNodeKind::MacroDecl:
     case AstNodeKind::Namespace:
     case AstNodeKind::TypeAlias:
     case AstNodeKind::FuncDeclParam:
@@ -251,7 +251,7 @@ void AstIdentifierRef::computeName()
         name += child->name;
     }
 
-	name.computeCrc();
+    name.computeCrc();
 }
 
 AstNode* AstIdentifier::clone(CloneContext& context)
@@ -451,6 +451,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->arrayDim       = arrayDim;
     newNode->isSlice        = isSlice;
     newNode->isConst        = isConst;
+    newNode->isCode         = isCode;
     newNode->forceConstType = forceConstType;
     return newNode;
 }
@@ -503,7 +504,7 @@ AstNode* AstStruct::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astStruct.alloc();
     newNode->copyFrom(context, this, false);
-    newNode->packing       = packing;
+    newNode->packing = packing;
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;

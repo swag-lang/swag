@@ -6,7 +6,7 @@
 
 bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 {
-	return doCompilerIfFor(parent, result, AstNodeKind::Statement);
+    return doCompilerIfFor(parent, result, AstNodeKind::Statement);
 }
 
 bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind)
@@ -49,6 +49,17 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     return true;
 }
 
+bool SyntaxJob::doCompilerInsert(AstNode* parent)
+{
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerInsert, sourceFile, parent);
+    node->semanticFct = &SemanticJob::resolveCompilerInsert;
+    node->token       = move(token);
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatSemiCol("after '#insert' expression"));
+	return true;
+}
+
 bool SyntaxJob::doCompilerAssert(AstNode* parent)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile, parent);
@@ -63,7 +74,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
         if (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
-			SWAG_CHECK(doExpression(node));
+            SWAG_CHECK(doExpression(node));
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightParen));

@@ -104,9 +104,10 @@ enum class AstNodeKind
     CompilerIf,
     CompilerIfBlock,
     CompilerAssert,
+    CompilerInsert,
     CompilerPrint,
     CompilerRun,
-	CompilerCode,
+    CompilerCode,
     CompilerImport,
     CompilerSpecialFunction,
     QuestionExpression,
@@ -649,6 +650,7 @@ struct AstTypeExpression : public AstNode
         arrayDim       = 0;
         isSlice        = false;
         isConst        = false;
+        isCode         = false;
         forceConstType = false;
         AstNode::reset();
     }
@@ -660,6 +662,7 @@ struct AstTypeExpression : public AstNode
     int      arrayDim;
     bool     isSlice;
     bool     isConst;
+    bool     isCode;
     bool     forceConstType;
 };
 
