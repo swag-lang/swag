@@ -74,8 +74,8 @@ struct SymbolName : public PoolElement
     Utf8Crc                 name;
     SymbolOverload          defaultOverload;
     SymbolKind              kind;
-    int                     cptOverloads;
-    int                     cptOverloadsInit;
+    uint32_t                cptOverloads;
+    uint32_t                cptOverloadsInit;
     vector<SymbolOverload*> overloads;
     DependentJobs           dependentJobs;
     SymTable*               ownerTable;

@@ -41,6 +41,11 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
 {
     auto node = context->node;
+
+    if (node->doneFlags & AST_DONE_COMPILER_INSERT)
+        return true;
+    node->doneFlags |= AST_DONE_COMPILER_INSERT;
+
     auto expr = node->childs[0];
     SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, format("expression should be of type 'code' ('%s' provided)", expr->typeInfo->name.c_str())}));
 
@@ -54,8 +59,15 @@ bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
         if (param->resolvedParameter->namedParam == expr->name)
         {
             auto typeCode     = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
-            auto cloneContent = Ast::clone(typeCode->content, node);
-            node->typeInfo    = cloneContent->typeInfo;
+
+			CloneContext cloneContext;
+			cloneContext.parent = node;
+			cloneContext.parentScope = node->ownerScope;
+			auto cloneContent = typeCode->content->clone(cloneContext);
+            cloneContent->flags &= ~AST_DISABLED;
+            node->typeInfo = cloneContent->typeInfo;
+            context->job->nodes.push_back(cloneContent);
+            context->result = ContextResult::NewChilds;
             return true;
         }
     }

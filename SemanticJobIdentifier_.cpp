@@ -1123,30 +1123,61 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     SymbolName* symbol = nullptr;
     SWAG_CHECK(pickSymbol(context, node, &symbol));
 
-    // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
     AstNode* ufcsParam = nullptr;
-    if (!(node->doneFlags & AST_DONE_UFCS))
+    if (!(node->doneFlags & AST_DONE_UFCS) && (symbol->kind == SymbolKind::Function))
     {
-        if (symbol->kind == SymbolKind::Function)
+        // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
+        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
         {
-            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+            if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
             {
-                if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
+                SWAG_ASSERT(identifierRef->previousResolvedNode);
+                ufcsParam = identifierRef->previousResolvedNode;
+            }
+            else
+            {
+                node->doneFlags |= AST_DONE_UFCS;
+                auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+                node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+                fctCallParam->parent      = node->callParameters;
+                fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
+                fctCallParam->token       = identifierRef->previousResolvedNode->token;
+                fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+                Ast::removeFromParent(identifierRef->previousResolvedNode);
+                Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+            }
+        }
+    }
+
+    AstNode* ufcsCode = nullptr;
+    if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
+    {
+        node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
+
+        // If last parameter is of type code, and the call last parameter is not, then take the next statement
+        if (symbol->overloads.size() == 1)
+        {
+            auto overload = symbol->overloads[0];
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+            if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Code)
+            {
+                if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
                 {
-                    SWAG_ASSERT(identifierRef->previousResolvedNode);
-                    ufcsParam = identifierRef->previousResolvedNode;
-                }
-                else
-                {
-                    node->doneFlags |= AST_DONE_UFCS;
-                    auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
-                    node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
-                    fctCallParam->parent      = node->callParameters;
-                    fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
-                    fctCallParam->token       = identifierRef->previousResolvedNode->token;
-                    fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
-                    Ast::removeFromParent(identifierRef->previousResolvedNode);
-                    Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+                    auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+                    if (brother->kind == AstNodeKind::Statement)
+                    {
+                        auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
+                        auto codeNode     = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                        codeNode->flags |= AST_NO_BYTECODE;
+                        Ast::removeFromParent(brother);
+                        Ast::addChildBack(codeNode, brother);
+                        ufcsCode          = fctCallParam;
+                        auto typeCode     = g_Pool_typeInfoCode.alloc();
+                        typeCode->content = brother;
+                        brother->flags |= AST_DISABLED;
+                        fctCallParam->typeInfo = typeCode;
+                        codeNode->typeInfo     = typeCode;
+                    }
                 }
             }
         }
@@ -1156,7 +1187,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  callParameters    = node->callParameters;
     auto& symMatch          = job->symMatch;
 
-    if (callParameters || ufcsParam)
+    if (callParameters || ufcsParam || ufcsCode)
     {
         if (symbol->kind != SymbolKind::Attribute &&
             symbol->kind != SymbolKind::Function &&
@@ -1180,6 +1211,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         if (ufcsParam)
             symMatch.parameters.push_back(ufcsParam);
+        //if (ufcsCode)
+        //    symMatch.parameters.push_back(ufcsCode);
 
         if (callParameters)
         {
