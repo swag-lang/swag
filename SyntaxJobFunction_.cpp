@@ -190,7 +190,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result)
         if (result)
             *result = allParams;
 
-		ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
+        ScopedFlags scopedFlags(this, AST_IN_FCT_PROTOTYPE);
         while (token.id != TokenId::SymRightParen)
         {
             SWAG_CHECK(doFuncDeclParameter(allParams));
@@ -319,6 +319,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
 
     bool funcForCompiler = false;
     bool isIntrinsic     = false;
+
+    if (token.id == TokenId::KwdMacro)
+    {
+        funcNode->kind = AstNodeKind::MacroDecl;
+        funcNode->attributeFlags |= ATTRIBUTE_INLINE;
+    }
 
     auto typeFuncId = token.id;
     if (typeFuncId == TokenId::CompilerFuncTest ||

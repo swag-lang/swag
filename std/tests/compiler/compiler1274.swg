@@ -1,17 +1,10 @@
-struct A
+macro toto()
 {
+    @print("coucou")
 }
 
-impl A
-{
-    func opAffect(using self, x: [..] u8)
-    {
-    }    
-}
-
-
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
-    var x: A = null
+    toto()
 }

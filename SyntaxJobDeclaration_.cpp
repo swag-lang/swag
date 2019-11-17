@@ -265,6 +265,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doAttrUse(parent));
         break;
     case TokenId::KwdFunc:
+	case TokenId::KwdMacro:
         moveAttributes(parent, sourceFile->astRoot);
         SWAG_CHECK(doFuncDecl(sourceFile->astRoot, result));
         break;
@@ -341,6 +342,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::SymAttrStart:
         SWAG_CHECK(doAttrUse(parent));
         break;
+	case TokenId::KwdMacro:
     case TokenId::KwdFunc:
     case TokenId::CompilerFuncTest:
     case TokenId::CompilerFuncInit:

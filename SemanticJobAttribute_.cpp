@@ -9,6 +9,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) && (kind == AstNodeKind::FuncDecl || kind == AstNodeKind::Statement))
         return true;
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_MACRO) && (kind == AstNodeKind::MacroDecl || kind == AstNodeKind::Statement))
+        return true;
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl || kind == AstNodeKind::Statement))
         return true;
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) && (kind == AstNodeKind::StructDecl || kind == AstNodeKind::Statement))

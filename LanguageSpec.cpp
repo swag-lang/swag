@@ -44,6 +44,7 @@ void LanguageSpec::setup()
     keywords["struct"]    = TokenId::KwdStruct;
     keywords["union"]     = TokenId::KwdUnion;
     keywords["func"]      = TokenId::KwdFunc;
+    keywords["macro"]     = TokenId::KwdMacro;
     keywords["true"]      = TokenId::KwdTrue;
     keywords["false"]     = TokenId::KwdFalse;
     keywords["null"]      = TokenId::KwdNull;
@@ -121,7 +122,7 @@ void LanguageSpec::setup()
     intrinsics["@free"]       = Intrinsic::IntrinsicFree;
     intrinsics["@memcpy"]     = Intrinsic::IntrinsicMemCpy;
     intrinsics["@getcontext"] = Intrinsic::IntrinsicGetContext;
-	intrinsics["@setcontext"] = Intrinsic::IntrinsicSetContext;
+    intrinsics["@setcontext"] = Intrinsic::IntrinsicSetContext;
     intrinsics["@args"]       = Intrinsic::IntrinsicArguments;
 }
 

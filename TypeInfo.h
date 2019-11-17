@@ -360,6 +360,7 @@ static const uint32_t TYPEINFO_ATTRIBUTE_STRUCT    = 0x00000004;
 static const uint32_t TYPEINFO_ATTRIBUTE_ENUM      = 0x00000008;
 static const uint32_t TYPEINFO_ATTRIBUTE_ENUMVALUE = 0x00000010;
 static const uint32_t TYPEINFO_ATTRIBUTE_STRUCTVAR = 0x00000020;
+static const uint32_t TYPEINFO_ATTRIBUTE_MACRO     = 0x00000040;
 
 struct TypeInfoFuncAttr : public TypeInfo
 {

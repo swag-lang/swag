@@ -87,6 +87,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::VarDecl:
     case AstNodeKind::LetDecl:
     case AstNodeKind::FuncDecl:
+	case AstNodeKind::MacroDecl:
     case AstNodeKind::Namespace:
     case AstNodeKind::TypeAlias:
     case AstNodeKind::FuncDeclParam:
@@ -115,6 +116,8 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
         return "constant";
     case AstNodeKind::FuncDecl:
         return "function";
+    case AstNodeKind::MacroDecl:
+        return "macro";
     case AstNodeKind::EnumDecl:
         return "enum";
     case AstNodeKind::EnumValue:

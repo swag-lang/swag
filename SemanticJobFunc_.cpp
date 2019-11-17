@@ -100,7 +100,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
-    auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl, AstNodeKind::MacroDecl);
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     // Only one main per module !
@@ -235,7 +235,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 {
     auto typeNode   = context->node;
     auto sourceFile = context->sourceFile;
-    auto funcNode   = CastAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
+    auto funcNode   = CastAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl, AstNodeKind::MacroDecl);
 
     // Return type
     if (!typeNode->childs.empty())
