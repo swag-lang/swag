@@ -366,7 +366,7 @@ AstNode* AstWhile::clone(CloneContext& context)
 
     auto cloneContext           = context;
     cloneContext.ownerBreakable = newNode;
-    newNode->AstBreakable::copyFrom(context, context.ownerBreakable, this);
+    newNode->AstBreakable::copyFrom(cloneContext, context.ownerBreakable, this);
 
     newNode->boolExpression = findChildRef(boolExpression, newNode);
     newNode->block          = findChildRef(block, newNode);

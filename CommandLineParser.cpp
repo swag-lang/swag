@@ -44,8 +44,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
-    //cmdLine->testFilter = "std20";
-    cmdLine->fileFilter = "compiler1281";
+    //cmdLine->testFilter = "std26";
+    //cmdLine->fileFilter = "compiler1281";
 }
 
 void CommandLineParser::logArguments()
