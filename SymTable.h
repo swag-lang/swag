@@ -16,6 +16,7 @@ struct TypeInfoFuncAttr;
 struct ByteCodeGenJob;
 struct AstNode;
 struct SymTable;
+struct JobContext;
 
 static const uint32_t OVERLOAD_BYTECODE_GENERATED = 0x00000001;
 static const uint32_t OVERLOAD_VAR_FUNC_PARAM     = 0x00000002;
@@ -96,11 +97,11 @@ struct SymTable
 {
     SymTable(Scope* scope);
 
-    SymbolName*     registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
-    SymbolOverload* addSymbolTypeInfo(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
-    SymbolOverload* addSymbolTypeInfoNoLock(SourceFile* sourceFile, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
-    bool            checkHiddenSymbol(AstNode* node, TypeInfo* typeInfo, SymbolKind kind);
-    bool            checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
+    SymbolName*     registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
+    SymbolOverload* addSymbolTypeInfo(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
+    SymbolOverload* addSymbolTypeInfoNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
+    bool            checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind);
+    bool            checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8Crc& name);
     SymbolName*     findNoLock(const Utf8Crc& name);
     static void     decreaseOverloadNoLock(SymbolName* symbol);

@@ -230,7 +230,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
         symbolFlags |= OVERLOAD_GENERIC;
 
     SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({node, "type alias cannot be generic"}));
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
 
     // Check public

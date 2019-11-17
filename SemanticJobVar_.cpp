@@ -313,7 +313,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo = typeInfo;
         structNode->scope    = newScope;
-        symbol               = rootScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+        symbol               = rootScope->symTable->registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
 
         Ast::addChildBack(sourceFile->astRoot, structNode);
         structNode->inheritOwners(sourceFile->astRoot);
@@ -724,7 +724,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Register symbol with its type
     node->ownerScope->allocateSymTable();
-    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile,
+    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context,
                                                                   node,
                                                                   node->typeInfo,
                                                                   genericType ? SymbolKind::GenericType : SymbolKind::Variable,

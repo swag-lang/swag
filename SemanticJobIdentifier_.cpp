@@ -1395,7 +1395,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
             }
         }
 
-        SWAG_CHECK(scope->symTable->checkHiddenSymbol(node, node->typeInfo, kind));
+        SWAG_CHECK(scope->symTable->checkHiddenSymbol(context, node, node->typeInfo, kind));
     }
 
     return true;

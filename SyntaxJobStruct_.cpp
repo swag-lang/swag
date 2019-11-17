@@ -89,7 +89,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->scope                = newScope;
             structNode->typeInfo           = typeInfo;
             structNode->scope              = newScope;
-            structNode->resolvedSymbolName = currentScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+            structNode->resolvedSymbolName = currentScope->symTable->registerSymbolNameNoLock(&context, structNode, SymbolKind::Struct);
         }
         else
         {
@@ -112,7 +112,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             if (n->kind == AstNodeKind::FuncDeclParam)
             {
                 auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
-                newScope->symTable->registerSymbolNameNoLock(sourceFile, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
+                newScope->symTable->registerSymbolNameNoLock(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
             }
         });
     }

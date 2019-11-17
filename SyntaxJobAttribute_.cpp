@@ -27,7 +27,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     auto        newScope = Ast::newScope(attrNode, attrNode->name, ScopeKind::Attribute, currentScope);
     newScope->allocateSymTable();
     attrNode->typeInfo = typeInfo;
-    currentScope->symTable->registerSymbolNameNoLock(sourceFile, attrNode, SymbolKind::Attribute);
+    currentScope->symTable->registerSymbolNameNoLock(&context, attrNode, SymbolKind::Attribute);
 
     // Parameters
     {

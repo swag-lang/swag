@@ -257,7 +257,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
     newScope->allocateSymTable();
     funcNode->typeInfo = typeInfo;
     funcNode->scope    = newScope;
-    currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+    currentScope->symTable->registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
 
     {
         Scoped    scoped(this, newScope);
@@ -389,7 +389,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
         newScope->allocateSymTable();
         funcNode->typeInfo = typeInfo;
         funcNode->scope    = newScope;
-        auto symbolName    = currentScope->symTable->registerSymbolNameNoLock(sourceFile, funcNode, SymbolKind::Function);
+        auto symbolName    = currentScope->symTable->registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
         if (funcNode->ownerCompilerIfBlock)
             funcNode->ownerCompilerIfBlock->addSymbol(symbolName);
     }

@@ -27,7 +27,7 @@ bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatSemiCol("after type alias"));
 
     currentScope->allocateSymTable();
-    currentScope->symTable->registerSymbolNameNoLock(sourceFile, node, SymbolKind::TypeAlias);
+    currentScope->symTable->registerSymbolNameNoLock(&context, node, SymbolKind::TypeAlias);
     return true;
 }
 
@@ -152,7 +152,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         structNode->typeInfo   = typeInfo;
         structNode->scope      = newScope;
         structNode->ownerScope = newScope->parentScope;
-        rootScope->symTable->registerSymbolNameNoLock(sourceFile, structNode, SymbolKind::Struct);
+        rootScope->symTable->registerSymbolNameNoLock(&context, structNode, SymbolKind::Struct);
 
         Ast::addChildBack(sourceFile->astRoot, structNode);
         structNode->inheritOwners(sourceFile->astRoot);

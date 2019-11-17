@@ -64,7 +64,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
                 newScope                = Ast::newScope(namespaceNode, namespaceNode->name, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
-                currentScope->symTable->addSymbolTypeInfoNoLock(sourceFile, namespaceNode, typeInfo, SymbolKind::Namespace);
+                currentScope->symTable->addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {

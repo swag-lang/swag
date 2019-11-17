@@ -32,7 +32,7 @@ SymbolName* SymTable::findNoLock(const Utf8Crc& name)
     return result;
 }
 
-SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* node, SymbolKind kind, Utf8Crc* aliasName)
+SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName)
 {
     if (!aliasName)
         aliasName = &node->name;
@@ -66,7 +66,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(SourceFile* sourceFile, AstNode* 
     return symbol;
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile*    sourceFile,
+SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             AstNode*       node,
                                             TypeInfo*      typeInfo,
                                             SymbolKind     kind,
@@ -77,12 +77,12 @@ SymbolOverload* SymTable::addSymbolTypeInfo(SourceFile*    sourceFile,
                                             Utf8Crc*       aliasName)
 {
     scoped_lock lk(mutex);
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC || sourceFile->generated)
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->generated)
         flags |= OVERLOAD_PUBLIC;
-    return addSymbolTypeInfoNoLock(sourceFile, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, aliasName);
+    return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, aliasName);
 }
 
-SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
+SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
                                                   AstNode*       node,
                                                   TypeInfo*      typeInfo,
                                                   SymbolKind     kind,
@@ -97,7 +97,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
 
     auto symbol = findNoLock(*aliasName);
     if (!symbol)
-        symbol = registerSymbolNameNoLock(sourceFile, node, kind, aliasName);
+        symbol = registerSymbolNameNoLock(context, node, kind, aliasName);
     if (resultName)
         *resultName = symbol;
 
@@ -122,7 +122,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
 
         if (!result)
         {
-            if (!checkHiddenSymbolNoLock(node, typeInfo, kind, symbol))
+            if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
                 return nullptr;
 
             result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
@@ -143,7 +143,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(SourceFile*    sourceFile,
         }
 
         // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
-        // because an incomplete function doesn't yet know its return type, but we dont need it in order
+        // because an incomplete function doesn't yet know its return type, but we don't need it in order
         // to make a match
         else if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
         {
@@ -167,13 +167,13 @@ void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
     }
 }
 
-bool SymTable::checkHiddenSymbol(AstNode* node, TypeInfo* typeInfo, SymbolKind type)
+bool SymTable::checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind type)
 {
     scoped_lock lk(mutex);
-    return checkHiddenSymbolNoLock(node, typeInfo, type, nullptr, true);
+    return checkHiddenSymbolNoLock(context, node, typeInfo, type, nullptr, true);
 }
 
-bool SymTable::checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
+bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName)
 {
     auto& token = node->token;
     auto& name  = node->name;
@@ -191,7 +191,7 @@ bool SymTable::checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, Symbol
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        node->sourceFile->report(diag, &diagNote);
+        context->errorContext.report(diag, &diagNote);
         return false;
     }
 
@@ -207,7 +207,7 @@ bool SymTable::checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, Symbol
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        node->sourceFile->report(diag, &diagNote);
+		context->errorContext.report(diag, &diagNote);
         return false;
     }
 
@@ -219,7 +219,7 @@ bool SymTable::checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, Symbol
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        node->sourceFile->report(diag, &diagNote);
+		context->errorContext.report(diag, &diagNote);
         return false;
     }
 
@@ -232,7 +232,7 @@ bool SymTable::checkHiddenSymbolNoLock(AstNode* node, TypeInfo* typeInfo, Symbol
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        node->sourceFile->report(diag, &diagNote);
+		context->errorContext.report(diag, &diagNote);
         return false;
     }
 

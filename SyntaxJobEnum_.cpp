@@ -35,7 +35,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
             typeInfo->name     = enumNode->name;
             typeInfo->scope    = newScope;
             enumNode->typeInfo = typeInfo;
-            currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumNode, SymbolKind::Enum);
+            currentScope->symTable->registerSymbolNameNoLock(&context, enumNode, SymbolKind::Enum);
         }
         else
         {
@@ -109,7 +109,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
             auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile, parent);
             enumValue->inheritTokenName(token);
             enumValue->semanticFct = &SemanticJob::resolveEnumValue;
-            currentScope->symTable->registerSymbolNameNoLock(sourceFile, enumValue, SymbolKind::EnumValue);
+            currentScope->symTable->registerSymbolNameNoLock(&context, enumValue, SymbolKind::EnumValue);
 
             SWAG_CHECK(tokenizer.getToken(token));
             if (token.id == TokenId::SymEqual)

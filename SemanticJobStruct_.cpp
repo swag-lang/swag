@@ -70,7 +70,7 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
         SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, node, AstNodeKind::StructDecl, node->attributeFlags));
 
     // Register symbol with its type
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
 
     return true;
 }
@@ -250,7 +250,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 auto    overload = child->resolvedSymbolOverload;
                 Utf8Crc name     = format("item%u", storageIndex);
                 auto    symTable = node->scope->symTable;
-                symTable->addSymbolTypeInfo(sourceFile, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
+                symTable->addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset, &name);
             }
         }
 
@@ -282,7 +282,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // Register symbol with its type
     node->typeInfo               = typeInfo;
-    node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context->sourceFile, node, node->typeInfo, SymbolKind::Struct);
+    node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Struct);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // We are parsing the swag module

@@ -13,7 +13,13 @@ struct Utf8;
 struct AstFuncDecl;
 struct AstStruct;
 struct AstCompilerIfBlock;
+struct SyntaxJob;
 enum class AstNodeKind;
+
+struct SyntaxContext : public JobContext
+{
+    SyntaxJob* job = nullptr;
+};
 
 struct SyntaxJob : public Job
 {
@@ -118,6 +124,7 @@ struct SyntaxJob : public Job
         currentCompilerIfBlock = nullptr;
     }
 
+    SyntaxContext       context;
     Tokenizer           tokenizer;
     Token               token;
     SourceFile*         sourceFile;
