@@ -42,8 +42,12 @@ bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
 {
     auto node = context->node;
 
-    if (node->doneFlags & AST_DONE_COMPILER_INSERT)
-        return true;
+	if (node->doneFlags & AST_DONE_COMPILER_INSERT)
+	{
+		node->typeInfo = node->childs.back()->typeInfo;
+		return true;
+	}
+
     node->doneFlags |= AST_DONE_COMPILER_INSERT;
 
     auto expr = node->childs[0];

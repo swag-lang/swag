@@ -394,13 +394,15 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     case TokenId::CompilerCode:
     {
         SWAG_CHECK(eatToken());
+        AstNode* block;
         boolExpression = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, sourceFile, parent);
         if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doEmbeddedStatement(boolExpression));
+            SWAG_CHECK(doEmbeddedStatement(boolExpression, &block));
         else
-            SWAG_CHECK(doBoolExpression(boolExpression));
-        auto typeCode            = g_Pool_typeInfoCode.alloc();
-        typeCode->content        = boolExpression->childs.front();
+            SWAG_CHECK(doBoolExpression(boolExpression, &block));
+        auto typeCode     = g_Pool_typeInfoCode.alloc();
+        typeCode->content = boolExpression->childs.front();
+        typeCode->content->flags |= AST_DISABLED;
         boolExpression->typeInfo = typeCode;
         boolExpression->flags |= AST_NO_BYTECODE;
         break;
