@@ -187,6 +187,8 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     cloneContext.parentScope      = newScope;
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
+	newContent->flags &= ~AST_DISABLED;
+	context->errorContext.genericInstanceTree.push_back(context->node);
 
     context->result           = ContextResult::NewChilds;
     identifier->semanticState = AstNodeResolveState::Enter;

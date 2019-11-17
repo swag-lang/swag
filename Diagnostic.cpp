@@ -157,8 +157,10 @@ bool ErrorContext::report(const Diagnostic& diag, const vector<const Diagnostic*
         auto& name  = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->name;
         if (name.empty())
             name = first->token.text;
-        Diagnostic note{first, format("occurred during generic instantiation of '%s'", name.c_str()), DiagnosticLevel::Note};
+		
+        Diagnostic note{first, first->token, format("occurred during expansion of '%s'", name.c_str()), DiagnosticLevel::Note};
         copyNotes.push_back(&note);
+
         return sourceFile->report(diag, copyNotes);
     }
 

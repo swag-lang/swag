@@ -413,6 +413,7 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
     cloneContext.parentScope      = newScope;
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
+	newContent->flags &= ~AST_DISABLED;
 
     context->job->setPending();
     identifier->semanticState = AstNodeResolveState::Enter;

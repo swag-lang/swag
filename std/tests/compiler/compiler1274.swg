@@ -1,10 +1,12 @@
 macro toto()
 {
-    @print("coucou")
+    a += 2
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
+    a := 0
     toto()
+    @print(cast(s64) a)
 }

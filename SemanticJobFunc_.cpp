@@ -117,9 +117,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         sourceFile->module->mainIsDefined = node;
     }
 
-    // No semantic on a generic function
-    if (node->flags & AST_IS_GENERIC)
+    // No semantic on a generic function, or a macro
+    if ((node->flags & AST_IS_GENERIC) || (node->kind == AstNodeKind::MacroDecl))
     {
+		node->flags |= AST_FULL_RESOLVE;
         if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
             node->ownerScope->addPublicGenericFunc(node);
         return true;
@@ -282,6 +283,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // to remove the AST_FROM_GENERIC flag, otherwise, some stuff won't be done (because typeinfo has been set on nodes)
     else if ((funcNode->flags & AST_FROM_GENERIC) && shortLambda)
         Ast::visit(funcNode->content, [](AstNode* x) { x->flags &= ~AST_FROM_GENERIC; });
+
+	// Macro will not evaluate its content before being inlined
+	if ((funcNode->kind == AstNodeKind::MacroDecl) && !shortLambda)
+		funcNode->content->flags |= AST_DISABLED;
 
     // Register symbol
     typeInfo->returnType = typeNode->typeInfo;
