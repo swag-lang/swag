@@ -136,33 +136,3 @@ void Diagnostic::report(bool verboseMode) const
 
     g_Log.setDefaultColor();
 }
-
-bool ErrorContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
-{
-    vector<const Diagnostic*> notes;
-    if (note)
-        notes.push_back(note);
-    if (note1)
-        notes.push_back(note1);
-    return report(diag, notes);
-}
-
-bool ErrorContext::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
-{
-    auto copyNotes = notes;
-
-    if (genericInstanceTree.size())
-    {
-        auto  first = genericInstanceTree[0];
-        auto& name  = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->name;
-        if (name.empty())
-            name = first->token.text;
-		
-        Diagnostic note{first, first->token, format("occurred during expansion of '%s'", name.c_str()), DiagnosticLevel::Note};
-        copyNotes.push_back(&note);
-
-        return sourceFile->report(diag, copyNotes);
-    }
-
-    return sourceFile->report(diag, copyNotes);
-}

@@ -72,7 +72,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
 
     if (assignment && assignment->kind == AstNodeKind::FuncCallParams)
     {
-        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({assignment, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, "expression cannot be evaluated at compile time"}));
         auto offset = storageOffset;
         auto result = collectLiteralsToSegmentNoLock(context, storageOffset, offset, assignment, seg);
         SWAG_CHECK(result);
@@ -81,7 +81,7 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
 
     if (assignment && assignment->kind == AstNodeKind::ExpressionList)
     {
-        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->errorContext.report({assignment, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(assignment->flags & AST_CONST_EXPR, context->report({assignment, "expression cannot be evaluated at compile time"}));
         auto offset = storageOffset;
         auto result = collectLiteralsToSegmentNoLock(context, storageOffset, offset, assignment, seg);
         SWAG_CHECK(result);
@@ -403,7 +403,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-    SWAG_VERIFY(!identifier->callParameters, context->errorContext.report({assign, "structure cannot be initialized twice"}));
+    SWAG_VERIFY(!identifier->callParameters, context->report({assign, "structure cannot be initialized twice"}));
 
     auto sourceFile            = context->sourceFile;
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
@@ -476,9 +476,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (!node->type || node->type->typeInfo->kind != TypeInfoKind::Struct)
     {
         if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
-            return context->errorContext.report({node, "a constant must be initialized"});
+            return context->report({node, "a constant must be initialized"});
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
-            return context->errorContext.report({node, "a non mutable 'let' variable must be initialized"});
+            return context->report({node, "a non mutable 'let' variable must be initialized"});
     }
 
     // Value
@@ -500,7 +500,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
             if (node->type && node->type->typeInfo->kind != TypeInfoKind::Slice)
             {
-                SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->errorContext.report({node->assignment, "affect not allowed from an array"}));
+                SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->report({node->assignment, "affect not allowed from an array"}));
             }
         }
     }
@@ -510,7 +510,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         if (node->assignment && (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL)))
         {
-            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->errorContext.report({node->assignment, "initialization expression cannot be evaluated at compile time"}));
+            SWAG_VERIFY(node->assignment->flags & AST_CONST_EXPR, context->report({node->assignment, "initialization expression cannot be evaluated at compile time"}));
         }
     }
 
@@ -518,8 +518,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (node->type && node->type->typeInfo && node->type->typeInfo->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(node->type->typeInfo, TypeInfoKind::Array);
-        SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->errorContext.report({node, "missing initialization expression to deduce size of array"}));
-        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->errorContext.report({node, "invalid initialization expression for an array"}));
+        SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->report({node, "missing initialization expression to deduce size of array"}));
+        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->report({node, "invalid initialization expression for an array"}));
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
@@ -558,7 +558,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
-        SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->errorContext.report({node->assignment, "type of expression is 'void'"}));
+        SWAG_VERIFY(node->typeInfo != g_TypeMgr.typeInfoVoid, context->report({node->assignment, "type of expression is 'void'"}));
 
         // We need to decide which integer/float type it is
         if (node->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
@@ -618,7 +618,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->errorContext.report({node, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
+    SWAG_VERIFY(node->typeInfo, context->report({node, node->token, format("unable to deduce type of variable '%s'", node->name.c_str())}));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
@@ -668,7 +668,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->kind == TypeInfoKind::Enum ||
             (node->typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) node->typeInfo)->pointedType->kind == TypeInfoKind::Enum))
         {
-            return context->errorContext.report({node, node->token, "an enum variable must be initialized"});
+            return context->report({node, node->token, "an enum variable must be initialized"});
         }
     }
 
@@ -681,7 +681,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
+        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, format("cannot instanciate variable because type '%s' is generic", node->typeInfo->name.c_str())}));
         node->flags |= AST_R_VALUE;
         SWAG_CHECK(collectAssignment(context, storageOffset, node, &module->mutableSegment));
     }

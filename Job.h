@@ -2,11 +2,11 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "DependentJobs.h"
-#include "ErrorContext.h"
 struct JobThread;
 struct AstNode;
 struct SymbolName;
 struct SourceFile;
+struct Diagnostic;
 
 enum class ContextResult
 {
@@ -17,14 +17,17 @@ enum class ContextResult
 
 struct JobContext
 {
-    AstNode*      node;
-    ContextResult result     = ContextResult::Done;
-    SourceFile*   sourceFile = nullptr;
-    ErrorContext  errorContext;
+    AstNode*         node;
+    ContextResult    result     = ContextResult::Done;
+    SourceFile*      sourceFile = nullptr;
+    vector<AstNode*> genericInstanceTree;
+
+    bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
+    bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
 
     void reset()
     {
-        errorContext.genericInstanceTree.clear();
+        genericInstanceTree.clear();
     }
 };
 

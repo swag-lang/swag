@@ -191,7 +191,7 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
     newContent->flags &= ~AST_DISABLED;
-    context->errorContext.genericInstanceTree.push_back(context->node);
+    context->genericInstanceTree.push_back(context->node);
 
     context->result           = ContextResult::NewChilds;
     identifier->semanticState = AstNodeResolveState::Enter;
@@ -415,9 +415,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 auto fctAttributes = ownerFct->attributeFlags;
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER))
-                    return context->errorContext.report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->report({identifier, identifier->token, format("cannot reference 'swag.compiler' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-                    return context->errorContext.report({identifier, identifier->token, format("cannot reference 'swag.test' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
+                    return context->report({identifier, identifier->token, format("cannot reference 'swag.test' function '%s' from '%s'", overload->node->name.c_str(), ownerFct->name.c_str())});
             }
         }
 
@@ -712,7 +712,7 @@ anotherTry:
                 SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{param, format("parameter '%d' must be named", job->symMatch.badSignatureParameterIdx + 1)};
-                return context->errorContext.report(diag);
+                return context->report(diag);
             }
             case MatchResult::InvalidNamedParameter:
             {
@@ -720,26 +720,26 @@ anotherTry:
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{param->namedParamNode ? param->namedParamNode : param, format("unknown named parameter '%s'", param->namedParam.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
             case MatchResult::DuplicatedNamedParameter:
             {
                 SWAG_ASSERT(callParameters);
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{param->namedParamNode, format("named parameter '%s' already used", param->namedParam.c_str())};
-                return context->errorContext.report(diag);
+                return context->report(diag);
             }
             case MatchResult::NotEnoughParameters:
             {
                 Diagnostic diag{callParameters ? callParameters : node, format("not enough parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
             case MatchResult::MissingParameters:
             {
                 Diagnostic diag{callParameters ? callParameters : node, format("missing function call '()' to %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
             case MatchResult::TooManyParameters:
             {
@@ -747,19 +747,19 @@ anotherTry:
                 auto       param = static_cast<AstFuncCallParam*>(callParameters->childs[job->symMatch.badSignatureParameterIdx]);
                 Diagnostic diag{param, format("too many parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
             case MatchResult::NotEnoughGenericParameters:
             {
                 Diagnostic diag{genericParameters ? genericParameters : node ? node : context->node, format("not enough generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
             case MatchResult::TooManyGenericParameters:
             {
                 Diagnostic diag{genericParameters ? genericParameters : node ? node : context->node, format("too many generic parameters for %s '%s'", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
             case MatchResult::BadSignature:
             {
@@ -788,7 +788,7 @@ anotherTry:
                                        job->symMatch.badSignatureRequestedType->name.c_str(),
                                        job->symMatch.badSignatureGivenType->name.c_str())};
                 Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
             case MatchResult::BadGenericSignature:
             {
@@ -801,7 +801,7 @@ anotherTry:
                                            SymTable::getNakedKindName(symbol->kind),
                                            symbol->name.c_str())};
                     Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                    return context->errorContext.report(diag, &note);
+                    return context->report(diag, &note);
                 }
                 else if (job->symMatch.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
                 {
@@ -811,7 +811,7 @@ anotherTry:
                                            SymTable::getNakedKindName(symbol->kind),
                                            symbol->name.c_str())};
                     Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                    return context->errorContext.report(diag, &note);
+                    return context->report(diag, &note);
                 }
                 else
                 {
@@ -823,7 +823,7 @@ anotherTry:
                                            job->symMatch.badSignatureRequestedType->name.c_str(),
                                            job->symMatch.badSignatureGivenType->name.c_str())};
                     Diagnostic note{overload->node, overload->node->token, format("this is the definition of '%s'", symbol->name.c_str()), DiagnosticLevel::Note};
-                    return context->errorContext.report(diag, &note);
+                    return context->report(diag, &note);
                 }
             }
             }
@@ -841,7 +841,7 @@ anotherTry:
                     notes.push_back(note);
                 }
 
-                return context->errorContext.report(diag, notes);
+                return context->report(diag, notes);
             }
             else if (badGenericSignature.size())
             {
@@ -854,21 +854,21 @@ anotherTry:
                     notes.push_back(note);
                 }
 
-                return context->errorContext.report(diag, notes);
+                return context->report(diag, notes);
             }
             else if (hasGenericErrors)
             {
                 int         numParams = genericParameters ? (int) genericParameters->childs.size() : 0;
                 const char* args      = numParams <= 1 ? "generic parameter" : "generic parameters";
                 Diagnostic  diag{genericParameters ? genericParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
-                return context->errorContext.report(diag);
+                return context->report(diag);
             }
             else
             {
                 int         numParams = callParameters ? (int) callParameters->childs.size() : 0;
                 const char* args      = numParams <= 1 ? "parameter" : "parameters";
                 Diagnostic  diag{callParameters ? callParameters : node, format("no overloaded %s '%s' takes %d %s", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str(), numParams, args)};
-                return context->errorContext.report(diag);
+                return context->report(diag);
             }
         }
     }
@@ -887,7 +887,7 @@ anotherTry:
                 notes.push_back(note);
             }
 
-            context->errorContext.report(diag, notes);
+            context->report(diag, notes);
         }
         else
         {
@@ -901,7 +901,7 @@ anotherTry:
                 notes.push_back(note);
             }
 
-            context->errorContext.report(diag, notes);
+            context->report(diag, notes);
         }
 
         return false;
@@ -975,7 +975,7 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
             Diagnostic diag{node, node->token, format("ambiguous resolution of '%s'", symbol->name.c_str())};
             Diagnostic note1{symbol->overloads[0]->node, symbol->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
             Diagnostic note2{p->overloads[0]->node, p->overloads[0]->node->token, "could be", DiagnosticLevel::Note};
-            context->errorContext.report(diag, &note1, &note2);
+            context->report(diag, &note1, &note2);
             return false;
         }
     }
@@ -1004,7 +1004,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
     if (node->name == "Self")
     {
-        SWAG_VERIFY(node->ownerStructScope, context->errorContext.report({node, node->token, "type 'Self' cannot be used outside an 'impl' block"}));
+        SWAG_VERIFY(node->ownerStructScope, context->report({node, node->token, "type 'Self' cannot be used outside an 'impl' block"}));
         node->name = node->ownerStructScope->name;
     }
 
@@ -1054,7 +1054,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                             testScope = testScope->parentScope;
                         if (testScope == scope)
                         {
-                            return context->errorContext.report({node, node->token, format("unknown identifier '%s' (seems to be defined later)", node->name.c_str())});
+                            return context->report({node, node->token, format("unknown identifier '%s' (seems to be defined later)", node->name.c_str())});
                         }
                     }
                 }
@@ -1069,10 +1069,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
                     displayName = identifierRef->typeInfo->name;
                 if (!displayName.empty())
-                    return context->errorContext.report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
+                    return context->report({node, node->token, format("identifier '%s' cannot be found in %s '%s'", node->name.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
             }
 
-            return context->errorContext.report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
+            return context->report({node, node->token, format("unknown identifier '%s'", node->name.c_str())});
         }
     }
 
@@ -1163,13 +1163,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is a variable of type '%s' and not a function", node->name.c_str(), symbol->overloads[0]->typeInfo->name.c_str())};
                 Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
             else
             {
                 Diagnostic diag{node, node->token, format("identifier '%s' has call parameters, but is %s and not a function", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
                 Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
         }
 
@@ -1189,7 +1189,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 {
                     if (oneParam->typeInfo->kind == TypeInfoKind::Variadic || oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
                     {
-                        return context->errorContext.report({oneParam, "variadic argument must be the last one"});
+                        return context->report({oneParam, "variadic argument must be the last one"});
                     }
                 }
             }
@@ -1205,7 +1205,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
             Diagnostic note{symbol->defaultOverload.node->sourceFile, symbol->defaultOverload.node->token.startLocation, symbol->defaultOverload.node->token.endLocation, format("this is the definition of '%s'", node->name.c_str()), DiagnosticLevel::Note};
-            return context->errorContext.report(diag, &note);
+            return context->report(diag, &note);
         }
 
         auto childCount = genericParameters->childs.size();
@@ -1228,7 +1228,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 Diagnostic diag{dep.node, "cannot use 'using' on two variables with the same type"};
                 Diagnostic note{dependentVar, "this is the other definition", DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
 
             dependentVar = dep.node;
@@ -1238,7 +1238,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     // Can happen if a symbol is inside a disabled #if for example
     if (symbol->overloads.empty())
     {
-        return context->errorContext.report({node, format("cannot resolve identifier '%s'", symbol->name.c_str())});
+        return context->report({node, format("cannot resolve identifier '%s'", symbol->name.c_str())});
     }
 
     auto overload = symbol->overloads[0];

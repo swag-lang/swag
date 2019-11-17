@@ -229,7 +229,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         typeStruct = swagScope.regTypeInfoSlice;
         break;
     default:
-        context->errorContext.report({node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
+        context->report({node, format("cannot convert typeinfo '%s' to runtime typeinfo", typeInfo->name.c_str())});
         return false;
     }
 

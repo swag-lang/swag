@@ -16,7 +16,7 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     auto sourceFile = context->sourceFile;
     if (onlyconstExpr)
     {
-        SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->errorContext.report({node, "expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(node->flags & AST_CONST_EXPR, context->report({node, "expression cannot be evaluated at compile time"}));
     }
 
     {
@@ -46,8 +46,8 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     if (node->childs.size() > 1)
     {
         auto msg = node->childs[1];
-        SWAG_VERIFY(msg->typeInfo->isNative(NativeTypeKind::String), context->errorContext.report({msg, "message expression is not a string"}));
-        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->errorContext.report({msg, "message expression cannot be evaluated at compile time"}));
+        SWAG_VERIFY(msg->typeInfo->isNative(NativeTypeKind::String), context->report({msg, "message expression is not a string"}));
+        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, "message expression cannot be evaluated at compile time"}));
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
@@ -60,10 +60,10 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
 		if (node->childs.size() > 1)
 		{
 			auto msg = node->childs[1];
-			context->errorContext.report({ expr, format("compiler assertion failed: %s", msg->computedValue.text.c_str()) });
+			context->report({ expr, format("compiler assertion failed: %s", msg->computedValue.text.c_str()) });
 		}
         else
-            context->errorContext.report({expr, "compiler assertion failed"});
+            context->report({expr, "compiler assertion failed"});
         return false;
     }
 
@@ -151,7 +151,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
 {
     auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
-    SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->errorContext.report({node->boolExpression, "expression cannot be evaluated at compile time"}));
+    SWAG_VERIFY(node->boolExpression->flags & AST_VALUE_COMPUTED, context->report({node->boolExpression, "expression cannot be evaluated at compile time"}));
 
     node->flags |= AST_COMPILER_IF_DONE;
     node->boolExpression->flags |= AST_NO_BYTECODE;
@@ -178,7 +178,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::CompilerFunction:
-        SWAG_VERIFY(node->ownerFct, context->errorContext.report({node, "'#function' can only be called inside a function"}));
+        SWAG_VERIFY(node->ownerFct, context->report({node, "'#function' can only be called inside a function"}));
         node->computedValue.text = node->ownerFct->name;
         node->typeInfo           = g_TypeMgr.typeInfoString;
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
@@ -196,15 +196,15 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerCallerLine:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->errorContext.report({node, "'#callerline' can only be set in a function parameter declaration"}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerline' can only be set in a function parameter declaration"}));
         node->typeInfo = g_TypeMgr.typeInfoU32;
         return true;
     case TokenId::CompilerCallerFile:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->errorContext.report({node, "'#callerfile' can only be set in a function parameter declaration"}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfile' can only be set in a function parameter declaration"}));
         node->typeInfo = g_TypeMgr.typeInfoString;
         return true;
     case TokenId::CompilerCallerFunction:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->errorContext.report({node, "'#callerfile' can only be set in a function parameter declaration"}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, "'#callerfile' can only be set in a function parameter declaration"}));
         node->typeInfo = g_TypeMgr.typeInfoString;
         return true;
 

@@ -41,8 +41,8 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
-            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native, context->errorContext.report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
-            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->errorContext.report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->kind == TypeInfoKind::Native, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
+            SWAG_VERIFY(funcParam->typeInfo->nativeType != NativeTypeKind::Any, context->report({nodeParam, format("invalid type '%s' for attribute parameter", funcParam->typeInfo->name.c_str())}));
         }
 
         parameters->inheritOrFlag(nodeParam->type, AST_IS_GENERIC);
@@ -50,19 +50,19 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Variadic must be the last one
         if (nodeParam->typeInfo->kind == TypeInfoKind::Variadic)
         {
-            SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
+            SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
 
             typeInfo->flags |= TYPEINFO_VARIADIC;
             if (index != parameters->childs.size())
-                return context->errorContext.report({nodeParam, "variadic argument should be the last one"});
+                return context->report({nodeParam, "variadic argument should be the last one"});
         }
         else if (nodeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {
-            SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
+            SWAG_VERIFY(!(funcAttr->attributeFlags & ATTRIBUTE_INLINE), context->report({sourceFile, nodeParam->token, "inline function has variadic arguments, this is not yet supported"}));
 
             typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
             if (index != parameters->childs.size())
-                return context->errorContext.report({nodeParam, "variadic argument should be the last one"});
+                return context->report({nodeParam, "variadic argument should be the last one"});
         }
 
         // Default parameter value
@@ -76,7 +76,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         }
         else
         {
-            SWAG_VERIFY(!defaultValueDone, context->errorContext.report({nodeParam, format("parameter '%d', missing default value", index)}));
+            SWAG_VERIFY(!defaultValueDone, context->report({nodeParam, format("parameter '%d', missing default value", index)}));
         }
 
         if (forGenerics)
@@ -111,7 +111,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         {
             Diagnostic diag({node, node->token, "#main directive already defined one"});
             Diagnostic note{module->mainIsDefined, sourceFile->module->mainIsDefined->token, "this is the other definition", DiagnosticLevel::Note};
-            return context->errorContext.report(diag, &note);
+            return context->report(diag, &note);
         }
 
         sourceFile->module->mainIsDefined = node;
@@ -149,31 +149,31 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
-        return context->errorContext.report({node, node->token, "function with the 'swag.foreign' attribute cannot have a body"});
+        return context->report({node, node->token, "function with the 'swag.foreign' attribute cannot have a body"});
 
     if (node->flags & AST_SPECIAL_COMPILER_FUNC)
     {
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->errorContext.report({node, node->token, "compiler special function cannot have the 'swag.inline' attribute"}));
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->errorContext.report({node, node->token, "compiler special function cannot have the 'swag.public' attribute"}));
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->errorContext.report({node, node->token, "compiler special function cannot have the 'swag.private' attribute"}));
+        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, node->token, "compiler special function cannot have the 'swag.inline' attribute"}));
+        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, node->token, "compiler special function cannot have the 'swag.public' attribute"}));
+        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PRIVATE), context->report({node, node->token, "compiler special function cannot have the 'swag.private' attribute"}));
     }
 
     if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
     {
-        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->errorContext.report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
-        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->errorContext.report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));
+        SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr.typeInfoVoid, context->report({node->returnType, "function with the 'swag.test' attribute cannot have a return value"}));
+        SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, "function with the 'swag.test' attribute cannot have parameters"}));
     }
 
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (!node->ownerScope->isGlobal() && node->ownerScope->kind != ScopeKind::Struct)
-            return context->errorContext.report({node, node->token, format("embedded function '%s' cannot be public", node->name.c_str())});
+            return context->report({node, node->token, format("embedded function '%s' cannot be public", node->name.c_str())});
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
-            return context->errorContext.report({node, node->token, format("test function '%s' cannot be public", node->name.c_str())});
+            return context->report({node, node->token, format("test function '%s' cannot be public", node->name.c_str())});
         if (node->attributeFlags & ATTRIBUTE_COMPILER)
-            return context->errorContext.report({node, node->token, format("compiler function '%s' cannot be public", node->name.c_str())});
+            return context->report({node, node->token, format("compiler function '%s' cannot be public", node->name.c_str())});
         if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-            return context->errorContext.report({node, node->token, format("foreign function '%s' cannot be public", node->name.c_str())});
+            return context->report({node, node->token, format("foreign function '%s' cannot be public", node->name.c_str())});
     }
 
     // Can be null for intrinsics etc...
@@ -186,8 +186,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (!(node->flags & AST_SCOPE_HAS_RETURN))
         {
             if (node->flags & AST_FCT_HAS_RETURN)
-                return context->errorContext.report({node, node->token, format("not all control paths of function '%s' return a value", node->name.c_str())});
-            return context->errorContext.report({node, node->token, format("function '%s' must return a value", node->name.c_str())});
+                return context->report({node, node->token, format("not all control paths of function '%s' return a value", node->name.c_str())});
+            return context->report({node, node->token, format("function '%s' must return a value", node->name.c_str())});
         }
     }
 
@@ -308,7 +308,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Slice &&
         typeInfo->returnType->kind != TypeInfoKind::Enum &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
-        return context->errorContext.report({typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
+        return context->report({typeNode->childs.front(), format("invalid return type '%s'", typeInfo->returnType->name.c_str())});
 
     typeInfo->computeName();
 
@@ -429,7 +429,7 @@ bool SemanticJob::checkUnreachableCode(SemanticContext* context)
         }
 
         auto idx = Ast::findChildIndex(node->parent, node);
-        return context->errorContext.report({node->parent->childs[idx + 1], "unreachable code"});
+        return context->report({node->parent->childs[idx + 1], "unreachable code"});
     }
 
     return true;

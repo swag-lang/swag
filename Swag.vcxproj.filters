@@ -542,9 +542,6 @@
     <ClInclude Include="Scoped.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="ErrorContext.h">
-      <Filter>Main</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

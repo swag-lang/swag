@@ -11,7 +11,7 @@ bool SemanticJob::internalError(SemanticContext* context, const char* msg, AstNo
 {
     if (!node)
         node = context->node;
-    context->errorContext.report({node, node->token, format("internal compiler error during semantic (%s)", msg)});
+    context->report({node, node->token, format("internal compiler error during semantic (%s)", msg)});
     return false;
 }
 
@@ -23,7 +23,7 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, Typ
 
 bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    return context->errorContext.report({node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
+    return context->report({node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
 }
 
 SemanticJob* SemanticJob::newJob(SourceFile* sourceFile, AstNode* rootNode, bool run)
@@ -38,7 +38,7 @@ SemanticJob* SemanticJob::newJob(SourceFile* sourceFile, AstNode* rootNode, bool
 
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {
-    context->errorContext.report({context->node, context->node->token, msg});
+    context->report({context->node, context->node->token, msg});
     return false;
 }
 
@@ -71,12 +71,11 @@ JobResult SemanticJob::execute()
     g_diagnosticInfos.sourceFile = sourceFile;
 #endif
 
-    auto firstNode                  = nodes.front();
-    baseContext                     = &context;
-    context.job                     = this;
-    context.sourceFile              = sourceFile;
-    context.errorContext.sourceFile = sourceFile;
-    context.result                  = ContextResult::Done;
+    auto firstNode     = nodes.front();
+    baseContext        = &context;
+    context.job        = this;
+    context.sourceFile = sourceFile;
+    context.result     = ContextResult::Done;
 
     while (!nodes.empty())
     {

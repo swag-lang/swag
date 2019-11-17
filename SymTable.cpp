@@ -191,7 +191,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-        context->errorContext.report(diag, &diagNote);
+        context->report(diag, &diagNote);
         return false;
     }
 
@@ -207,7 +207,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-		context->errorContext.report(diag, &diagNote);
+		context->report(diag, &diagNote);
         return false;
     }
 
@@ -219,7 +219,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-		context->errorContext.report(diag, &diagNote);
+		context->report(diag, &diagNote);
         return false;
     }
 
@@ -232,7 +232,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-		context->errorContext.report(diag, &diagNote);
+		context->report(diag, &diagNote);
         return false;
     }
 

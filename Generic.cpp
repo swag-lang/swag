@@ -57,10 +57,10 @@ void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
     auto newJob     = SemanticJob::newJob(sourceFile, newNode, false);
 
     // Store stack of instantiation contexts
-    auto& srcCxt  = context->errorContext;
-    auto& destCxt = newJob->context.errorContext;
-    destCxt.genericInstanceTree.insert(destCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.begin(), srcCxt.genericInstanceTree.end());
-    destCxt.genericInstanceTree.push_back(context->node);
+    auto srcCxt  = context;
+    auto destCxt = &newJob->context;
+    destCxt->genericInstanceTree.insert(destCxt->genericInstanceTree.begin(), srcCxt->genericInstanceTree.begin(), srcCxt->genericInstanceTree.end());
+    destCxt->genericInstanceTree.push_back(context->node);
 
     g_ThreadMgr.addJob(newJob);
 }
@@ -307,7 +307,7 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                     {
                         auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
-                            return context->errorContext.report({node, format("cannot instantiate variable because type '%s' is generic", node->typeInfo->name.c_str())});
+                            return context->report({node, format("cannot instantiate variable because type '%s' is generic", node->typeInfo->name.c_str())});
 
                         auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
                         cloneContext.parent = child;
@@ -326,5 +326,5 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
         }
     }
 
-    return context->errorContext.report({node, format("cannot instantiate variable because type '%s' is generic", node->typeInfo->name.c_str())});
+    return context->report({node, format("cannot instantiate variable because type '%s' is generic", node->typeInfo->name.c_str())});
 }

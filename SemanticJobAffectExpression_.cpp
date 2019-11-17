@@ -18,10 +18,10 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
 
-    SWAG_VERIFY(left->resolvedSymbolName, context->errorContext.report({left, "affect operation not allowed"}));
-    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->errorContext.report({left, "affect operation not allowed"}));
-    SWAG_VERIFY(left->flags & AST_L_VALUE, context->errorContext.report({left, "affect operation not allowed, left expression is not a l-value"}));
-    SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->errorContext.report({left, "affect operation not allowed, left expression is immutable"}));
+    SWAG_VERIFY(left->resolvedSymbolName, context->report({left, "affect operation not allowed"}));
+    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, "affect operation not allowed"}));
+    SWAG_VERIFY(left->flags & AST_L_VALUE, context->report({left, "affect operation not allowed, left expression is not a l-value"}));
+    SWAG_VERIFY(!(left->flags & AST_IS_CONST), context->report({left, "affect operation not allowed, left expression is immutable"}));
 
     // Special case for enum : nothing is possible, except for flags
     bool forEnumFlags  = false;
@@ -49,12 +49,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
-    SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->errorContext.report({left, "affect operation not allowed on array"}));
+    SWAG_VERIFY(leftTypeInfo->kind != TypeInfoKind::Array, context->report({left, "affect operation not allowed on array"}));
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
     {
-        return context->errorContext.report({node, format("'%s' operation not allowed on type 'any'", node->token.text.c_str())});
+        return context->report({node, format("'%s' operation not allowed on type 'any'", node->token.text.c_str())});
     }
 
     // Is this an array like affectation ?
@@ -90,7 +90,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::TypeList &&
             leftTypeInfo->kind != TypeInfoKind::Struct &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
-            return context->errorContext.report({left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
+            return context->report({left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Array &&
@@ -98,7 +98,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
             rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
-            return context->errorContext.report({right, format("affect not allowed, '%s' is %s", rightTypeInfo->name.c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
+            return context->report({right, format("affect not allowed, '%s' is %s", rightTypeInfo->name.c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
         if (forStruct)
         {
             if (arrayNode)
@@ -205,11 +205,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 rightTypeInfo->nativeType != NativeTypeKind::U32 &&
                 rightTypeInfo->nativeType != NativeTypeKind::U64)
             {
-                return context->errorContext.report({right, format("pointer arithmetic not allowed with type '%s'", rightTypeInfo->name.c_str())});
+                return context->report({right, format("pointer arithmetic not allowed with type '%s'", rightTypeInfo->name.c_str())});
             }
 
             auto leftPtrType = CastTypeInfo<TypeInfoPointer>(leftTypeInfo, TypeInfoKind::Pointer);
-            SWAG_VERIFY(leftPtrType->finalType->sizeOf > 0, context->errorContext.report({left, format("operation not allowed on %s '%s' because size of pointed type is zero", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
+            SWAG_VERIFY(leftPtrType->finalType->sizeOf > 0, context->report({left, format("operation not allowed on %s '%s' because size of pointed type is zero", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())}));
             break;
         }
 

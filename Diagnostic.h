@@ -1,7 +1,6 @@
 #pragma once
 #include "Tokenizer.h"
 #include "AstNode.h"
-#include "ErrorContext.h"
 struct SourceFile;
 
 enum DiagnosticLevel

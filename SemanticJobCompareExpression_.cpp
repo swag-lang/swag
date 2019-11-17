@@ -52,7 +52,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->errorContext.report({context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+            return context->report({context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -110,7 +110,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->errorContext.report({context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+            return context->report({context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -168,7 +168,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             break;
 
         default:
-            return context->errorContext.report({context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
+            return context->report({context->node, format("compare operation not allowed on type '%s'", leftTypeInfo->name.c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -213,13 +213,13 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              leftTypeInfo->kind != TypeInfoKind::Pointer &&
              leftTypeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->errorContext.report({left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
+        return context->report({left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
     }
     else if (rightTypeInfo->kind != TypeInfoKind::Native &&
              rightTypeInfo->kind != TypeInfoKind::Pointer &&
              rightTypeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->errorContext.report({right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
+        return context->report({right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
     }
 
     SWAG_CHECK(checkIsConcrete(context, left));

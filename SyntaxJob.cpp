@@ -122,10 +122,9 @@ JobResult SyntaxJob::execute()
     g_diagnosticInfos.sourceFile = sourceFile;
 #endif
 
-    baseContext                     = &context;
-    context.job                     = this;
-    context.sourceFile              = sourceFile;
-    context.errorContext.sourceFile = sourceFile;
+    baseContext        = &context;
+    context.job        = this;
+    context.sourceFile = sourceFile;
 
     if (g_CommandLine.stats)
         g_Stats.numFiles++;

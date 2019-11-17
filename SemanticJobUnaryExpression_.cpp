@@ -17,7 +17,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op)
     case NativeTypeKind::F64:
         break;
     default:
-        return context->errorContext.report({op, op->token, format("minus operation not allowed on type '%s'", typeInfo->name.c_str())});
+        return context->report({op, op->token, format("minus operation not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)
@@ -104,7 +104,7 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* op)
     case NativeTypeKind::U64:
         break;
     default:
-        return context->errorContext.report({op, op->token, format("bit inversion operation not allowed on type '%s'", typeInfo->name.c_str())});
+        return context->report({op, op->token, format("bit inversion operation not allowed on type '%s'", typeInfo->name.c_str())});
     }
 
     if (op->flags & AST_VALUE_COMPUTED)

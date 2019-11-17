@@ -17,7 +17,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct, context->errorContext.report({node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedKindName(node->ownerScope->kind))}));
+    SWAG_VERIFY(node->ownerFct, context->report({node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedKindName(node->ownerScope->kind))}));
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
@@ -27,15 +27,15 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
-        SWAG_VERIFY(typePointer->ptrCount == 1, context->errorContext.report({node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
-        SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->errorContext.report({node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
+        SWAG_VERIFY(typePointer->ptrCount == 1, context->report({node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
+        SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->report({node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
         regNode->alternativeScopes.push_back(typeStruct->scope);
         regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
     }
     else
     {
-        return context->errorContext.report({node, format("'using' cannot be used on a variable of type '%s'", node->typeInfo->name.c_str())});
+        return context->report({node, format("'using' cannot be used on a variable of type '%s'", node->typeInfo->name.c_str())});
     }
 
     return true;

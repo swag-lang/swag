@@ -33,7 +33,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     {
         Diagnostic diag{node->identifier, format("'%s' is %s and should be a struct", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
-        return context->errorContext.report(diag, &note);
+        return context->report(diag, &note);
     }
 
     return true;
@@ -153,7 +153,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Var has an initialization
         else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {
-            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->errorContext.report({varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
+            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->report({varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
 
             auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ALIAS);
             typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
@@ -176,7 +176,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
         }
 
         auto realStorageOffset = storageOffset;
@@ -203,7 +203,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 bool          found = typeParam->attributes.getValue("swag.offset", valueNode);
                 SWAG_ASSERT(found);
                 auto attrNode = (AstNode*) valueNode.reg.pointer;
-                return context->errorContext.report({attrNode, format("cannot find structure member '%s' to compute variable relocation", forceOffset.text.c_str())});
+                return context->report({attrNode, format("cannot find structure member '%s' to compute variable relocation", forceOffset.text.c_str())});
             }
         }
 
@@ -242,7 +242,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             // User cannot name its variables itemX
             if (!(node->flags & AST_GENERATED) && hasItemName)
             {
-                return context->errorContext.report({child, format("structure member name '%s' starts with 'item', and this is reserved by the language", child->name.c_str())});
+                return context->report({child, format("structure member name '%s' starts with 'item', and this is reserved by the language", child->name.c_str())});
             }
 
             if (!hasItemName)
@@ -261,11 +261,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (!node->ownerScope->isGlobal())
-            return context->errorContext.report({node, node->token, format("embedded struct '%s' cannot be public", node->name.c_str())});
+            return context->report({node, node->token, format("embedded struct '%s' cannot be public", node->name.c_str())});
 
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            SWAG_VERIFY(!typeInfo->childs.empty(), context->errorContext.report({node, node->token, format("struct '%s' is public and cannot be empty", node->name.c_str())}));
+            SWAG_VERIFY(!typeInfo->childs.empty(), context->report({node, node->token, format("struct '%s' is public and cannot be empty", node->name.c_str())}));
             node->ownerScope->addPublicStruct(node);
         }
     }

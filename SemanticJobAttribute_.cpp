@@ -29,7 +29,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     Diagnostic diag{oneAttribute, oneAttribute->token, format("attribute '%s' cannot be applied to %s", oneAttribute->name.c_str(), AstNode::getKindName(checkNode).c_str())};
     Diagnostic note1{checkNode, format("this is the %s", AstNode::getNakedKindName(checkNode).c_str()), DiagnosticLevel::Note};
     Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, oneAttribute->resolvedSymbolOverload->node->token, format("this is the declaration of attribute '%s'", oneAttribute->name.c_str()), DiagnosticLevel::Note};
-    return context->errorContext.report(diag, &note1, &note2);
+    return context->report(diag, &note1, &note2);
 }
 
 bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags)
@@ -51,7 +51,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
             {
                 Diagnostic diag{forNode, forNode->token, format("attribute '%s' assigned twice to '%s'", child->name.c_str(), forNode->name.c_str())};
                 Diagnostic note{child, child->token, "this is the faulty attribute", DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
 
             result.attributes.insert(typeInfo);
@@ -122,7 +122,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         {
             Diagnostic diag{identifier, format("invalid attribute '%s'", resolvedName->name.c_str())};
             Diagnostic note{resolved->node, resolved->node->token, format("this is the definition of '%s'", resolvedName->name.c_str()), DiagnosticLevel::Note};
-            context->errorContext.report(diag, &note);
+            context->report(diag, &note);
             return false;
         }
 
@@ -136,7 +136,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->errorContext.report({param, "attribute parameter cannot be evaluated at compile time"}));
+                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, "attribute parameter cannot be evaluated at compile time"}));
                 string attrFullName        = Scope::makeFullName(identifierRef->resolvedSymbolName->fullName, param->resolvedParameter->namedParam);
                 node->values[attrFullName] = {param->typeInfo, param->computedValue};
             }

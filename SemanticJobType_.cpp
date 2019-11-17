@@ -15,9 +15,9 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression)
-        return context->errorContext.report({node, "cannot reference a type expression"});
+        return context->report({node, "cannot reference a type expression"});
     if (node->resolvedSymbolName)
-        return context->errorContext.report({node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
+        return context->report({node, format("cannot reference %s", SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
 
     return true;
 }
@@ -109,7 +109,7 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             {
                 Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type (it's %s)", child->name.c_str(), SymTable::getArticleKindName(symName->kind))};
                 Diagnostic note{symOver->node, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};
-                return context->errorContext.report(diag, &note);
+                return context->report(diag, &note);
             }
         }
     }
@@ -172,10 +172,10 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             for (int i = node->arrayDim - 1; i >= 0; i--)
             {
                 auto child = node->childs[i];
-                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->errorContext.report({child, "array dimension cannot be evaluted at compile time"}));
-                SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->errorContext.report({child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
-                SWAG_VERIFY(child->typeInfo->sizeOf <= 4, context->errorContext.report({child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
-                SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.staticArrayMaxSize, context->errorContext.report({child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.staticArrayMaxSize, child->computedValue.reg.u32)}));
+                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, "array dimension cannot be evaluted at compile time"}));
+                SWAG_VERIFY(child->typeInfo->isNativeInteger(), context->report({child, format("array dimension is '%s' and should be integer", child->typeInfo->name.c_str())}));
+                SWAG_VERIFY(child->typeInfo->sizeOf <= 4, context->report({child, format("array dimension overflow, cannot be more than a 32 bits integer, and is '%s'", child->typeInfo->name.c_str())}));
+                SWAG_VERIFY(child->computedValue.reg.u32 <= g_CommandLine.staticArrayMaxSize, context->report({child, format("array dimension overflow, maximum size is %I64u, and requested size is %I64u", g_CommandLine.staticArrayMaxSize, child->computedValue.reg.u32)}));
 
                 auto ptrArray   = g_Pool_typeInfoArray.alloc();
                 ptrArray->count = child->computedValue.reg.u32;
@@ -229,7 +229,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     if (node->typeInfo->flags & TYPEINFO_GENERIC)
         symbolFlags |= OVERLOAD_GENERIC;
 
-    SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->errorContext.report({node, "type alias cannot be generic"}));
+    SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, "type alias cannot be generic"}));
     SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::TypeAlias, nullptr, symbolFlags));
     SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::TypeAlias));
 
