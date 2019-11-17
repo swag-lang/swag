@@ -1580,7 +1580,7 @@ bool TypeManager::convertExpressionListToVarDecl(SemanticContext* context, TypeI
         CloneContext cloneContext;
         cloneContext.parent = oneParam;
         oneChild->clone(cloneContext);
-        oneChild->flags |= AST_NO_BYTECODE | AST_DISABLED;
+        oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
     }
 
     // For a tuple initialization, every parameters must be covered

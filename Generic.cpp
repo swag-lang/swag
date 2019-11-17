@@ -100,7 +100,7 @@ bool Generic::instanciateStruct(SemanticContext* context, AstNode* genericParame
     auto sourceNode = overload->node;
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
     structNode->flags |= AST_FROM_GENERIC;
-    structNode->content->flags &= ~AST_DISABLED;
+    structNode->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(sourceNode->parent, structNode);
 
     // Make a new type
@@ -258,7 +258,7 @@ bool Generic::instanciateFunction(SemanticContext* context, AstNode* genericPara
     auto sourceNode = overload->node;
     auto funcNode   = CastAst<AstFuncDecl>(sourceNode->clone(cloneContext), AstNodeKind::FuncDecl);
     funcNode->flags |= AST_FROM_GENERIC;
-    funcNode->content->flags &= ~AST_DISABLED;
+    funcNode->content->flags &= ~AST_NO_SEMANTIC;
     Ast::addChildBack(sourceNode->parent, funcNode);
 
     // Generate and initialize a new type

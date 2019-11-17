@@ -74,7 +74,7 @@ namespace Ast
             auto compilerIf = CastAst<AstIf>(node, AstNodeKind::CompilerIf);
             if (compilerIf->flags & AST_COMPILER_IF_DONE)
             {
-                if (compilerIf->ifBlock->flags & AST_DISABLED)
+                if (compilerIf->ifBlock->flags & AST_NO_SEMANTIC)
                     SWAG_CHECK(output(concat, compilerIf->elseBlock, indent));
                 else
                     SWAG_CHECK(output(concat, compilerIf->ifBlock, indent));

@@ -182,11 +182,6 @@ struct AstNode : public PoolElement
         mutex.unlock();
     }
 
-    bool isDisabled()
-    {
-        return flags & AST_DISABLED;
-    }
-
     void inheritOrFlag(uint64_t flag)
     {
         for (auto child : childs)

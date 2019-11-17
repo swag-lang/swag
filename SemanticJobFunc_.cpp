@@ -284,7 +284,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // No semantic on content if function is generic, except if this is a short lambda, and we must deduce the return type
     // (because we need to parse the content of the function in order to deduce that type)
     if ((funcNode->flags & AST_IS_GENERIC) && !shortLambda)
-        funcNode->content->flags |= AST_DISABLED;
+        funcNode->content->flags |= AST_NO_SEMANTIC;
 
     // We do want to do a full semantic pass on content for a short lambda with returned type inferred, so we need
     // to remove the AST_FROM_GENERIC flag, otherwise, some stuff won't be done (because typeinfo has been set on nodes)
@@ -293,7 +293,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // Macro will not evaluate its content before being inlined
     if ((funcNode->kind == AstNodeKind::MacroDecl) && !shortLambda)
-        funcNode->content->flags |= AST_DISABLED;
+        funcNode->content->flags |= AST_NO_SEMANTIC;
 
     // Register symbol
     typeInfo->returnType = typeNode->typeInfo;

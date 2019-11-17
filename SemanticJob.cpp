@@ -90,7 +90,7 @@ JobResult SemanticJob::execute()
         case AstNodeResolveState::Enter:
 
             // Some nodes need to spawn a new semantic job
-            if (node != firstNode && !node->isDisabled())
+            if (node != firstNode && !(node->flags & AST_NO_SEMANTIC))
             {
                 if (firstNode->kind == AstNodeKind::Impl ||
                     firstNode->kind == AstNodeKind::File ||
@@ -130,14 +130,14 @@ JobResult SemanticJob::execute()
             if (node->semanticBeforeFct && !node->semanticBeforeFct(&context))
                 return JobResult::ReleaseJob;
 
-            if (!node->childs.empty() && !node->isDisabled())
+            if (!node->childs.empty() && !(node->flags & AST_NO_SEMANTIC))
             {
                 if (node->flags & AST_REVERSE_SEMANTIC)
                 {
                     for (int i = 0; i < (int) node->childs.size(); i++)
                     {
                         auto child = node->childs[i];
-                        if (child->isDisabled())
+                        if (child->flags & AST_NO_SEMANTIC)
                             continue;
 
                         // Top to bottom inheritance
@@ -153,7 +153,7 @@ JobResult SemanticJob::execute()
                     for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                     {
                         auto child = node->childs[i];
-                        if (child->isDisabled())
+                        if (child->flags & AST_NO_SEMANTIC)
                             continue;
 
                         // Top to bottom inheritance

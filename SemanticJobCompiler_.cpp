@@ -68,7 +68,7 @@ bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
 			cloneContext.parent = node;
 			cloneContext.parentScope = node->ownerScope;
 			auto cloneContent = typeCode->content->clone(cloneContext);
-            cloneContent->flags &= ~AST_DISABLED;
+            cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;
             context->job->nodes.push_back(cloneContent);
             context->result = ContextResult::NewChilds;
@@ -175,7 +175,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block)
 {
     block->flags |= AST_NO_BYTECODE;
-    block->flags |= AST_DISABLED;
+    block->flags |= AST_NO_SEMANTIC;
 
     // Unregister one overload
     for (auto symbol : block->symbols)

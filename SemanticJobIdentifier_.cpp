@@ -190,7 +190,7 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     cloneContext.parentScope      = newScope;
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
-    newContent->flags &= ~AST_DISABLED;
+    newContent->flags &= ~AST_NO_SEMANTIC;
     context->genericInstanceTree.push_back(context->node);
 
     context->result           = ContextResult::NewChilds;
@@ -1174,7 +1174,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                         ufcsCode          = fctCallParam;
                         auto typeCode     = g_Pool_typeInfoCode.alloc();
                         typeCode->content = brother;
-                        brother->flags |= AST_DISABLED;
+                        brother->flags |= AST_NO_SEMANTIC;
                         fctCallParam->typeInfo = typeCode;
                         codeNode->typeInfo     = typeCode;
                     }

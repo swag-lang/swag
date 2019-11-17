@@ -402,7 +402,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
             SWAG_CHECK(doBoolExpression(boolExpression, &block));
         auto typeCode     = g_Pool_typeInfoCode.alloc();
         typeCode->content = boolExpression->childs.front();
-        typeCode->content->flags |= AST_DISABLED;
+        typeCode->content->flags |= AST_NO_SEMANTIC;
         boolExpression->typeInfo = typeCode;
         boolExpression->flags |= AST_NO_BYTECODE;
         break;
