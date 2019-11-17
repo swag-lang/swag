@@ -256,10 +256,10 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doContinue(parent, result));
         break;
     case TokenId::CompilerAssert:
-        SWAG_CHECK(doCompilerAssert(parent));
+        SWAG_CHECK(doCompilerAssert(parent, result));
         break;
     case TokenId::CompilerInsert:
-		SWAG_CHECK(doCompilerInsert(parent));
+		SWAG_CHECK(doCompilerInsert(parent, result));
         break;
     case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIf(parent, result));

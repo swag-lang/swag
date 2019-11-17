@@ -49,20 +49,24 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     return true;
 }
 
-bool SyntaxJob::doCompilerInsert(AstNode* parent)
+bool SyntaxJob::doCompilerInsert(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerInsert, sourceFile, parent);
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerInsert, sourceFile, parent);
+    if (result)
+        *result = node;
     node->semanticFct = &SemanticJob::resolveCompilerInsert;
     node->token       = move(token);
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
     SWAG_CHECK(eatSemiCol("after '#insert' expression"));
-	return true;
+    return true;
 }
 
-bool SyntaxJob::doCompilerAssert(AstNode* parent)
+bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile, parent);
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile, parent);
+    if (result)
+        *result = node;
     node->semanticFct = &SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
@@ -87,11 +91,13 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doCompilerPrint(AstNode* parent)
+bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
 
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile, parent);
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile, parent);
+    if (result)
+        *result = node;
     node->semanticFct = &SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
