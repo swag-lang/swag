@@ -931,10 +931,10 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         if (!node->callParameters && p->kind == SymbolKind::Function)
             continue;
 
-		// Symbol usage is in an inline block, and this symbol is not in that same inline scope, then zap
-		// (priority to locally defined symbols in case of inlines, i.e. no ghosting)
-		if (node->ownerInline && p->ownerTable->scope != node->ownerInline->scope)
-			continue;
+        // Symbol usage is in an inline block, and this symbol is not in that same inline scope, then zap
+        // (priority to locally defined symbols in case of inlines, i.e. no ghosting)
+        if (node->ownerInline && p->ownerTable->scope != node->ownerInline->scope)
+            continue;
 
         // Reference to a variable inside a struct, without a direct explicit reference
         bool isValid = true;
@@ -1326,6 +1326,13 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
     for (int i = 0; i < scopes.size(); i++)
     {
         auto scope = scopes[i];
+
+        // For an embedded function, jump right to its parent
+        if (scope->kind == ScopeKind::Function)
+        {
+            while (scope->parentScope->kind == ScopeKind::Function)
+                scope = scope->parentScope;
+        }
 
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)
