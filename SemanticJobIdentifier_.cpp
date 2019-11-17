@@ -1149,7 +1149,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
     }
 
-    AstNode* ufcsCode = nullptr;
     if (!(node->doneFlags & AST_DONE_LAST_PARAM_CODE) && (symbol->kind == SymbolKind::Function))
     {
         node->doneFlags |= AST_DONE_LAST_PARAM_CODE;
@@ -1171,7 +1170,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                         codeNode->flags |= AST_NO_BYTECODE;
                         Ast::removeFromParent(brother);
                         Ast::addChildBack(codeNode, brother);
-                        ufcsCode          = fctCallParam;
                         auto typeCode     = g_Pool_typeInfoCode.alloc();
                         typeCode->content = brother;
                         brother->flags |= AST_NO_SEMANTIC;
@@ -1187,7 +1185,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     auto  callParameters    = node->callParameters;
     auto& symMatch          = job->symMatch;
 
-    if (callParameters || ufcsParam || ufcsCode)
+    if (callParameters)
     {
         if (symbol->kind != SymbolKind::Attribute &&
             symbol->kind != SymbolKind::Function &&
@@ -1211,8 +1209,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
         if (ufcsParam)
             symMatch.parameters.push_back(ufcsParam);
-        //if (ufcsCode)
-        //    symMatch.parameters.push_back(ufcsCode);
 
         if (callParameters)
         {
