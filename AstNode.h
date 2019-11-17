@@ -70,7 +70,7 @@ enum class AstNodeKind
     TupleContent,
     Impl,
     FuncDecl,
-	MacroDecl,
+    MacroDecl,
     AttrDecl,
     AttrUse,
     FuncDeclParams,
@@ -413,7 +413,7 @@ struct AstFuncDecl : public AstNode
 
     AstNode* clone(CloneContext& context) override;
 
-    int              stackSize;
+    uint32_t         stackSize;
     AstNode*         parameters;
     AstNode*         genericParameters;
     AstNode*         returnType;
