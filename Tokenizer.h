@@ -84,7 +84,7 @@ enum class TokenId
     CompilerIf,
     CompilerElse,
     CompilerElseIf,
-	CompilerCode,
+    CompilerCode,
 
     Intrinsic,
 
@@ -101,7 +101,7 @@ enum class TokenId
     KwdStruct,
     KwdUnion,
     KwdFunc,
-	KwdMacro,
+    KwdMacro,
     KwdAttr,
     KwdTrue,
     KwdFalse,
@@ -127,6 +127,7 @@ enum class TokenId
     KwdInit,
     KwdDrop,
     KwdDeRef,
+    KwdCode,
 
     Identifier,
     LiteralNumber,

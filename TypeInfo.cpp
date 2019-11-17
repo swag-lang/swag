@@ -14,6 +14,7 @@ Pool<TypeInfoVariadic>  g_Pool_typeInfoVariadic;
 Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
 Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
 Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;
+Pool<TypeInfoCode>      g_Pool_typeInfoCode;
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
 {

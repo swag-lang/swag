@@ -33,6 +33,7 @@ enum class TypeInfoKind
     Struct,
     Generic,
     Alias,
+    Code,
     Count,
 };
 
@@ -627,6 +628,18 @@ struct TypeInfoAlias : public TypeInfo
     TypeInfo* rawType;
 };
 
+struct TypeInfoCode : public TypeInfo
+{
+    void reset() override
+    {
+        TypeInfo::reset();
+        name = "code";
+        kind = TypeInfoKind::Code;
+    }
+
+    TypeInfo* clone() override;
+};
+
 extern Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
 extern Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
 extern Pool<TypeInfoEnum>      g_Pool_typeInfoEnum;
@@ -640,3 +653,4 @@ extern Pool<TypeInfoVariadic>  g_Pool_typeInfoVariadic;
 extern Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
 extern Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
 extern Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;
+extern Pool<TypeInfoCode>      g_Pool_typeInfoCode;

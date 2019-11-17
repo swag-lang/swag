@@ -119,6 +119,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
+    case TokenId::KwdCode:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
         SWAG_CHECK(doTypeExpression(parent, result));
@@ -384,13 +385,10 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         boolExpression = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, sourceFile, parent);
         if (token.id == TokenId::SymLeftCurly)
-        {
             SWAG_CHECK(doEmbeddedStatement(boolExpression));
-        }
         else
-        {
             SWAG_CHECK(doBoolExpression(boolExpression));
-        }
+        boolExpression->typeInfo = g_TypeMgr.typeInfoCode;
     }
     else
     {

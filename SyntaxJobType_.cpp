@@ -168,6 +168,18 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
 
 bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
+    // Code
+    if (token.id == TokenId::KwdCode)
+    {
+        auto node = Ast::newTypeExpression(sourceFile, parent, this);
+        if (result)
+            *result = node;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
+		node->typeInfo = g_TypeMgr.typeInfoCode;
+		SWAG_CHECK(eatToken());
+		return true;
+    }
+
     // This is a function
     if (token.id == TokenId::KwdFunc)
     {

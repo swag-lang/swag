@@ -62,6 +62,14 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
     if ((node->flags & AST_FROM_GENERIC) && node->typeInfo)
         return true;
 
+    // Code
+    if (node->typeInfo == g_TypeMgr.typeInfoCode)
+    {
+        SWAG_VERIFY(node->ownerFct && node->ownerFct->kind == AstNodeKind::MacroDecl, context->report({node, "'code' type can only be used in macro parameters"}));
+		SWAG_VERIFY(node->parent && node->parent->kind == AstNodeKind::FuncDeclParam, context->report({ node, "'code' type can only be used in macro parameters" }));
+        return true;
+    }
+
     if (node->identifier)
     {
         node->typeInfo = node->identifier->typeInfo;

@@ -37,6 +37,13 @@ TypeInfo* TypeInfoNamespace::clone()
     return newType;
 }
 
+TypeInfo* TypeInfoCode::clone()
+{
+    auto newType = g_Pool_typeInfoCode.alloc();
+    newType->copyFrom(this);
+    return newType;
+}
+
 TypeInfo* TypeInfoAlias::clone()
 {
     auto newType     = g_Pool_typeInfoAlias.alloc();
