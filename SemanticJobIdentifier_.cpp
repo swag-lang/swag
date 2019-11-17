@@ -1323,7 +1323,7 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         auto scope = scopes[i];
 
         // For an inline scope, jump right to the function
-        if (scope->kind == ScopeKind::Inline)
+        if (scope->kind == ScopeKind::Inline && !(scope->flags & SCOPE_FLAG_MACRO))
         {
             while (scope && scope->kind != ScopeKind::Function)
                 scope = scope->parentScope;
