@@ -44,21 +44,23 @@ bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
     auto expr = node->childs[0];
     SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, format("expression should be of type 'code' ('%s' provided)", expr->typeInfo->name.c_str())}));
 
-	expr->flags |= AST_NO_BYTECODE;
+    node->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
+    expr->flags |= AST_NO_BYTECODE;
 
     auto identifier = CastAst<AstIdentifier>(node->ownerInline->parent, AstNodeKind::Identifier);
     for (auto child : identifier->callParameters->childs)
     {
         auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-		if (param->resolvedParameter->namedParam == expr->name)
-		{
-			auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
-			Ast::addChildBack(node, Ast::clone(typeCode->content, node));
-			return true;
-		}
+        if (param->resolvedParameter->namedParam == expr->name)
+        {
+            auto typeCode     = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
+            auto cloneContent = Ast::clone(typeCode->content, node);
+            node->typeInfo    = cloneContent->typeInfo;
+            return true;
+        }
     }
 
-	SWAG_ASSERT(false);
+    SWAG_ASSERT(false);
     return true;
 }
 

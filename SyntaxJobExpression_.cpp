@@ -373,14 +373,25 @@ bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
 {
     AstNode* boolExpression;
-    if (token.id == TokenId::CompilerRun)
+    switch (token.id)
+    {
+    case TokenId::CompilerRun:
     {
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile, parent);
         boolExpression->semanticFct = &SemanticJob::resolveCompilerRun;
         SWAG_CHECK(doBoolExpression(boolExpression));
+        break;
     }
-    else if (token.id == TokenId::CompilerCode)
+    case TokenId::CompilerInsert:
+    {
+        SWAG_CHECK(eatToken());
+        boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerInsert, sourceFile, parent);
+        boolExpression->semanticFct = &SemanticJob::resolveCompilerInsert;
+        SWAG_CHECK(doExpression(boolExpression));
+        break;
+    }
+    case TokenId::CompilerCode:
     {
         SWAG_CHECK(eatToken());
         boolExpression = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, sourceFile, parent);
@@ -392,10 +403,12 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         typeCode->content        = boolExpression->childs.front();
         boolExpression->typeInfo = typeCode;
         boolExpression->flags |= AST_NO_BYTECODE;
+        break;
     }
-    else
-    {
+
+    default:
         SWAG_CHECK(doBoolExpression(nullptr, &boolExpression));
+        break;
     }
 
     if (token.id == TokenId::SymQuestion)

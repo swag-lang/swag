@@ -1669,6 +1669,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // convert {...} expression list to a structure : this will create a variable, with parameters
     auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
     auto realToType   = concreteType(toType, CONCRETE_ALIAS);
+    SWAG_ASSERT(realFromType && realToType);
     if (realFromType->kind == TypeInfoKind::TypeList && realToType->kind == TypeInfoKind::Struct)
     {
         TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(realFromType, TypeInfoKind::TypeList);
