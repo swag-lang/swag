@@ -414,6 +414,7 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
 	newContent->flags &= ~AST_DISABLED;
+	context->errorContext.genericInstanceTree.push_back(context->node);
 
     context->job->setPending();
     identifier->semanticState = AstNodeResolveState::Enter;

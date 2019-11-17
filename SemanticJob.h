@@ -25,12 +25,6 @@ struct DataSegment;
 struct SemanticContext : public JobContext
 {
     SemanticJob* job = nullptr;
-    ErrorContext errorContext;
-
-    void reset()
-    {
-        errorContext.genericInstanceTree.clear();
-    }
 };
 
 struct OneMatch

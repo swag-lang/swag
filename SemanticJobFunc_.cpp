@@ -118,9 +118,16 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // No semantic on a generic function, or a macro
-    if ((node->flags & AST_IS_GENERIC) || (node->kind == AstNodeKind::MacroDecl))
+    if (node->flags & AST_IS_GENERIC)
     {
-		node->flags |= AST_FULL_RESOLVE;
+        if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
+            node->ownerScope->addPublicGenericFunc(node);
+        return true;
+    }
+
+    if (node->kind == AstNodeKind::MacroDecl)
+    {
+        node->flags |= AST_FULL_RESOLVE;
         if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
             node->ownerScope->addPublicGenericFunc(node);
         return true;
@@ -284,9 +291,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else if ((funcNode->flags & AST_FROM_GENERIC) && shortLambda)
         Ast::visit(funcNode->content, [](AstNode* x) { x->flags &= ~AST_FROM_GENERIC; });
 
-	// Macro will not evaluate its content before being inlined
-	if ((funcNode->kind == AstNodeKind::MacroDecl) && !shortLambda)
-		funcNode->content->flags |= AST_DISABLED;
+    // Macro will not evaluate its content before being inlined
+    if ((funcNode->kind == AstNodeKind::MacroDecl) && !shortLambda)
+        funcNode->content->flags |= AST_DISABLED;
 
     // Register symbol
     typeInfo->returnType = typeNode->typeInfo;
@@ -363,7 +370,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
 
     if (!(symbolFlags & OVERLOAD_INCOMPLETE))
     {
-		funcNode->doneFlags |= AST_DONE_GHOST_CHECKING;
+        funcNode->doneFlags |= AST_DONE_GHOST_CHECKING;
         SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode, SymbolKind::Function));
         if (context->result == ContextResult::Pending)
             return true;

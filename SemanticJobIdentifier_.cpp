@@ -187,11 +187,12 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     cloneContext.parentScope      = newScope;
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
-	newContent->flags &= ~AST_DISABLED;
-	context->errorContext.genericInstanceTree.push_back(context->node);
+    newContent->flags &= ~AST_DISABLED;
+    context->errorContext.genericInstanceTree.push_back(context->node);
 
     context->result           = ContextResult::NewChilds;
     identifier->semanticState = AstNodeResolveState::Enter;
+    identifier->bytecodeState = AstNodeResolveState::Enter;
     return true;
 }
 
@@ -465,8 +466,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->flags |= AST_CONST_EXPR;
         }
 
-		if (identifier->token.id == TokenId::Intrinsic)
-			identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+        if (identifier->token.id == TokenId::Intrinsic)
+            identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
             identifier->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
         else
@@ -1038,8 +1039,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 dependentSymbols.push_back(symbol);
 
-				// Tentative to have a better error message in the case of local variables pb (a local variable is referencing another one
-				// defined later).
+                // Tentative to have a better error message in the case of local variables pb (a local variable is referencing another one
+                // defined later).
                 if (!scope->isGlobal() && symbol->kind == SymbolKind::Variable)
                 {
                     scoped_lock lkn(symbol->mutex);

@@ -2,6 +2,7 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "DependentJobs.h"
+#include "ErrorContext.h"
 struct JobThread;
 struct AstNode;
 struct SymbolName;
@@ -19,6 +20,12 @@ struct JobContext
     AstNode*      node;
     ContextResult result     = ContextResult::Done;
     SourceFile*   sourceFile = nullptr;
+    ErrorContext  errorContext;
+
+    void reset()
+    {
+        errorContext.genericInstanceTree.clear();
+    }
 };
 
 enum class JobResult
@@ -48,7 +55,7 @@ struct Job : public PoolElement
 
     void addDependentJob(Job* job);
     void doneJob();
-	void waitForSymbolNoLock(SymbolName* symbol);
+    void waitForSymbolNoLock(SymbolName* symbol);
     void setPending();
 
     SpinLock         executeMutex;

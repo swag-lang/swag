@@ -1,6 +1,6 @@
 macro toto()
 {
-    a += 2
+    //a += 2
 }
 
 //#[swag.printbc]
