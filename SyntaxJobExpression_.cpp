@@ -420,9 +420,9 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);
 
-        SWAG_CHECK(doBoolExpression(triNode));
+        SWAG_CHECK(doExpression(triNode));
         SWAG_CHECK(eatToken(TokenId::SymColon));
-        SWAG_CHECK(doBoolExpression(triNode));
+        SWAG_CHECK(doExpression(triNode));
     }
     else
     {
