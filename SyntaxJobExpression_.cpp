@@ -330,6 +330,19 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
+{
+    // Is this a type ?
+    if (token.id == TokenId::KwdConst || token.id == TokenId::SymLeftSquare || token.id == TokenId::SymAsterisk)
+    {
+        SWAG_CHECK(doTypeExpression(parent, result));
+        return true;
+    }
+
+    SWAG_CHECK(doExpression(parent, result));
+    return true;
+}
+
 bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
 {
     AstNode* leftNode;
@@ -354,19 +367,6 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     if (result)
         *result = leftNode;
 
-    return true;
-}
-
-bool SyntaxJob::doTopExpression(AstNode* parent, AstNode** result)
-{
-    // Is this a type ?
-    if (token.id == TokenId::KwdConst || token.id == TokenId::SymLeftSquare || token.id == TokenId::SymAsterisk)
-    {
-        SWAG_CHECK(doTypeExpression(parent, result));
-        return true;
-    }
-
-    SWAG_CHECK(doExpression(parent, result));
     return true;
 }
 

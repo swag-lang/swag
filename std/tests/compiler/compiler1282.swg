@@ -1,0 +1,15 @@
+macro toto(x: code)
+{
+    if #insert x
+        @assert(true)
+    else
+        @assert(false)
+}
+    
+//#[swag.printbc]
+#test
+{
+    a := 1
+    b := 2
+    toto(#code a < b)
+}

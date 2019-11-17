@@ -17,7 +17,7 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(tokenizer.getToken(token));
 
-    SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
+    SWAG_CHECK(doExpression(node, &node->boolExpression));
     SWAG_CHECK(doEmbeddedStatement(node, &node->ifBlock));
 
     if (token.id == TokenId::KwdElse)
@@ -40,7 +40,7 @@ bool SyntaxJob::doWhile(AstNode* parent, AstNode** result)
 
     {
         ScopedBreakable scoped(this, node);
-        SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
+        SWAG_CHECK(doExpression(node, &node->boolExpression));
         SWAG_CHECK(doEmbeddedStatement(node, &node->block));
     }
 
@@ -162,7 +162,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
             SWAG_CHECK(doEmbeddedInstruction(node, &node->preExpression));
         }
 
-        SWAG_CHECK(doBoolExpression(node, &node->boolExpression));
+        SWAG_CHECK(doExpression(node, &node->boolExpression));
         SWAG_CHECK(eatSemiCol("after 'for' boolean expression"));
         SWAG_CHECK(doEmbeddedStatement(node, &node->postExpression));
 
