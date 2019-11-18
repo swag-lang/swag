@@ -20,14 +20,14 @@ struct JobContext
     AstNode*         node;
     ContextResult    result     = ContextResult::Done;
     SourceFile*      sourceFile = nullptr;
-    vector<AstNode*> genericInstanceTree;
+    vector<AstNode*> expansionNode;
 
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
 
     void reset()
     {
-        genericInstanceTree.clear();
+        expansionNode.clear();
     }
 };
 

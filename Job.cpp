@@ -49,9 +49,9 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 {
     auto copyNotes = notes;
 
-    if (genericInstanceTree.size())
+    if (expansionNode.size())
     {
-        auto  first = genericInstanceTree[0];
+        auto  first = expansionNode[0];
         auto& name  = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->name;
         if (name.empty())
             name = first->token.text;
