@@ -605,6 +605,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     }
 
     case TokenId::Identifier:
+	case TokenId::SymBackTick:
     {
         AstNode* exprNode = nullptr;
         AstNode* multi    = nullptr;

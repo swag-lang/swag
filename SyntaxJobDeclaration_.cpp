@@ -238,6 +238,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdDefer:
         SWAG_CHECK(doDefer(parent, result));
         break;
+	case TokenId::SymBackTick:
     case TokenId::Identifier:
     case TokenId::Intrinsic:
 	case TokenId::SymLeftParen:
