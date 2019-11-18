@@ -10,7 +10,7 @@ func visit(str: string, user: code)
 		(ptr, c) = std.utf8.getChar(ptr)
 		if !c
 			break
-		#mixin user
+		#inline user
 	}    
 }
 
@@ -21,7 +21,7 @@ func visit(str: string, user: code)
 	var str = "あああ"
     visit(str)
     {
-        @assert(c == 12354)
+        //@assert(c == 12354)
         //@print(cast(s64) c)
         cpt += 1
     }

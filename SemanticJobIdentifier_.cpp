@@ -174,6 +174,11 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 
     auto inlineNode = Ast::newInline(context->sourceFile, nullptr);
 
+	// In case of a mixin, we insert the code directly in the caller scope, without creating a specific inline scope
+	// In case of an inline, we create a special inline scope
+	// In case of a macro, we create one statement scope, and one inline scope inside it. That way, the macro can expose
+	// some variables in the statement scope
+
     Scope* newScope = identifier->ownerScope;
     if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
     {

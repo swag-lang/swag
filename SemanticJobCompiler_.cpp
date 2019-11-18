@@ -65,7 +65,15 @@ bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
             auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
 
             auto newScope = node->ownerScope;
-            //newScope      = Ast::newScope(nullptr, format("__inline%d", node->ownerScope->childScopes.size()), ScopeKind::Inline, node->ownerScope);
+
+			// In case of an inline, we generate a new scope to enclose the insertion, and we set the parent of the scope to the enclosing
+			// inline
+            if (node->token.id == TokenId::CompilerInline)
+            {
+				SWAG_ASSERT(node->ownerInline);
+                newScope = Ast::newScope(nullptr, format("__inline%d", node->ownerScope->childScopes.size()), ScopeKind::Inline, node->ownerInline->ownerScope);
+				newScope->flags |= SCOPE_FLAG_MACRO;
+            }
 
             CloneContext cloneContext;
             cloneContext.parent      = node;
