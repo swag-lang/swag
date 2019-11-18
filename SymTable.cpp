@@ -122,8 +122,12 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 
         if (!result)
         {
-            if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
-                return nullptr;
+			// No ghosting check for an inline parameter
+			if (!(flags & OVERLOAD_VAR_INLINE))
+			{
+				if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
+					return nullptr;
+			}
 
             result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
 

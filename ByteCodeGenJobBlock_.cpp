@@ -58,11 +58,17 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 auto callParam = allParams->childs[i];
                 auto symbol    = node->scope->symTable->find(funcParam->name);
                 SWAG_ASSERT(symbol);
-                SWAG_ASSERT(symbol->overloads.size() == 1);
-                auto overload               = symbol->overloads[0];
-                overload->registers         = callParam->resultRegisterRC;
-                overload->registers.canFree = false;
-                node->scope->registersToRelease += overload->registers;
+
+                for (auto overload : symbol->overloads)
+                {
+                    if (overload->flags & OVERLOAD_VAR_INLINE)
+                    {
+                        overload->registers         = callParam->resultRegisterRC;
+                        overload->registers.canFree = false;
+                        node->scope->registersToRelease += overload->registers;
+                        break;
+                    }
+                }
             }
         }
         else
@@ -79,12 +85,18 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     {
                         auto symbol = node->scope->symTable->find(funcParam->name);
                         SWAG_ASSERT(symbol);
-                        SWAG_ASSERT(symbol->overloads.size() == 1);
-                        auto overload               = symbol->overloads[0];
-                        overload->registers         = callParam->resultRegisterRC;
-                        overload->registers.canFree = false;
-                        node->scope->registersToRelease += overload->registers;
-                        covered = true;
+                        for (auto overload : symbol->overloads)
+                        {
+                            if (overload->flags & OVERLOAD_VAR_INLINE)
+                            {
+                                overload->registers         = callParam->resultRegisterRC;
+                                overload->registers.canFree = false;
+                                node->scope->registersToRelease += overload->registers;
+                                covered = true;
+                                break;
+                            }
+                        }
+
                         break;
                     }
                 }
@@ -97,11 +109,16 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 
                     auto symbol = node->scope->symTable->find(defaultParam->name);
                     SWAG_ASSERT(symbol);
-                    SWAG_ASSERT(symbol->overloads.size() == 1);
-                    auto overload = symbol->overloads[0];
-                    SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
-                    overload->registers.canFree = false;
-                    node->scope->registersToRelease += overload->registers;
+                    for (auto overload : symbol->overloads)
+                    {
+                        if (overload->flags & OVERLOAD_VAR_INLINE)
+                        {
+                            SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
+                            overload->registers.canFree = false;
+                            node->scope->registersToRelease += overload->registers;
+                            break;
+                        }
+                    }
                 }
             }
         }
