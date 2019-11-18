@@ -14,6 +14,7 @@ func visit(str: string, user: code)
 	}    
 }
 
+//#[swag.printbc]
 #test
 {
     cpt := 0
@@ -21,6 +22,7 @@ func visit(str: string, user: code)
     visit(str)
     {
         @assert(c == 12354)
+        //@print(cast(s64) c)
         cpt += 1
     }
     

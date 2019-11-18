@@ -172,15 +172,30 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 {
     CloneContext cloneContext;
 
-    auto inlineNode = Ast::newInline(context->sourceFile, identifier);
+    auto inlineNode = Ast::newInline(context->sourceFile, nullptr);
 
     Scope* newScope = identifier->ownerScope;
     if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
     {
-        newScope = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
+        auto parentNode  = identifier;
+        auto parentScope = identifier->ownerScope;
+
+        if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
+        {
+            parentScope                   = Ast::newScope(inlineNode, "", ScopeKind::Statement, parentScope);
+            parentNode                    = Ast::newNode(context->sourceFile, AstNodeKind::Statement, parentNode);
+            parentNode->ownerScope        = parentScope;
+            parentNode->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
+        }
+
+        newScope = Ast::newScope(inlineNode, format("__inline%d", parentScope->childScopes.size()), ScopeKind::Inline, parentScope);
+
         if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
             newScope->flags |= SCOPE_FLAG_MACRO;
     }
+
+    Ast::addChildBack(identifier, inlineNode);
+    inlineNode->inheritOwners(identifier);
 
     inlineNode->func  = funcDecl;
     inlineNode->scope = newScope;

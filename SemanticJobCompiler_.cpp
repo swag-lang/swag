@@ -42,11 +42,11 @@ bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
 {
     auto node = context->node;
 
-	if (node->doneFlags & AST_DONE_COMPILER_INSERT)
-	{
-		node->typeInfo = node->childs.back()->typeInfo;
-		return true;
-	}
+    if (node->doneFlags & AST_DONE_COMPILER_INSERT)
+    {
+        node->typeInfo = node->childs.back()->typeInfo;
+        return true;
+    }
 
     node->doneFlags |= AST_DONE_COMPILER_INSERT;
 
@@ -62,12 +62,15 @@ bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
         auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
         if (param->resolvedParameter->namedParam == expr->name)
         {
-            auto typeCode     = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
+            auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
 
-			CloneContext cloneContext;
-			cloneContext.parent = node;
-			cloneContext.parentScope = node->ownerScope;
-			auto cloneContent = typeCode->content->clone(cloneContext);
+            auto newScope = node->ownerScope;
+            //newScope      = Ast::newScope(nullptr, format("__inline%d", node->ownerScope->childScopes.size()), ScopeKind::Inline, node->ownerScope);
+
+            CloneContext cloneContext;
+            cloneContext.parent      = node;
+            cloneContext.parentScope = newScope;
+            auto cloneContent        = typeCode->content->clone(cloneContext);
             cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;
             context->job->nodes.push_back(cloneContent);
