@@ -1,10 +1,12 @@
 #[swag.mixin]
-func toto(x: s32)
+func toto(y: s32)
 {
+    x = y
 }
 
 #test
 {
     x := 0
-    toto(x)
+    toto(6)
+    @assert(x == 6)
 }
