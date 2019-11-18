@@ -172,39 +172,26 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 {
     CloneContext cloneContext;
 
-    auto inlineNode = Ast::newInline(context->sourceFile, nullptr);
-
-	// In case of a mixin, we insert the code directly in the caller scope, without creating a specific inline scope
-	// In case of an inline, we create a special inline scope
-	// In case of a macro, we create one statement scope, and one inline scope inside it. That way, the macro can expose
-	// some variables in the statement scope
+    auto inlineNode  = Ast::newInline(context->sourceFile, identifier);
+    inlineNode->func = funcDecl;
+    inlineNode->alternativeScopes.push_back(funcDecl->ownerScope);
+    inlineNode->scope = identifier->ownerScope;
 
     Scope* newScope = identifier->ownerScope;
     if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
     {
-        auto parentNode  = identifier;
-        auto parentScope = identifier->ownerScope;
-
+        newScope          = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
+        inlineNode->scope = newScope;
         if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
         {
-            parentScope                   = Ast::newScope(inlineNode, "", ScopeKind::Statement, parentScope);
-            parentNode                    = Ast::newNode(context->sourceFile, AstNodeKind::Statement, parentNode);
-            parentNode->ownerScope        = parentScope;
+            auto parentNode               = Ast::newNode(context->sourceFile, AstNodeKind::Statement, inlineNode);
+            auto stmtScope                = Ast::newScope(parentNode, "YYY", ScopeKind::Statement, newScope);
+            stmtScope->startStackSize     = identifier->ownerScope->startStackSize;
+            parentNode->ownerScope        = newScope;
             parentNode->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
+            newScope                      = stmtScope;
         }
-
-        newScope = Ast::newScope(inlineNode, format("__inline%d", parentScope->childScopes.size()), ScopeKind::Inline, parentScope);
-
-        if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
-            newScope->flags |= SCOPE_FLAG_MACRO;
     }
-
-    Ast::addChildBack(identifier, inlineNode);
-    inlineNode->inheritOwners(identifier);
-
-    inlineNode->func  = funcDecl;
-    inlineNode->scope = newScope;
-    inlineNode->alternativeScopes.push_back(funcDecl->ownerScope);
 
     newScope->allocateSymTable();
     cloneContext.parent           = inlineNode;
@@ -964,11 +951,6 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
         if (!node->callParameters && p->kind == SymbolKind::Function)
             continue;
 
-        // Symbol usage is in an inline block, and this symbol is not in that same inline scope, then zap
-        // (priority to locally defined symbols in case of inlines, i.e. no ghosting)
-        if (node->ownerInline && p->ownerTable->scope != node->ownerInline->scope)
-            continue;
-
         // Reference to a variable inside a struct, without a direct explicit reference
         bool isValid = true;
         if (p->ownerTable->scope->kind == ScopeKind::Struct && !identifierRef->startScope)
@@ -1059,8 +1041,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         auto startScope = identifierRef->startScope;
         if (!startScope)
         {
+            uint32_t collectFlags = COLLECT_ALL;
+
+			// Pass through the first inline if there's a backtick before the name
+            if (node->flags & AST_IDENTIFIER_BACKTICK)
+                collectFlags = COLLECT_PASS_INLINE;
+
             startScope = node->ownerScope;
-            collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node);
+            collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags);
         }
         else
         {
@@ -1399,12 +1387,28 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)
         {
-            if (!(scope->flags & SCOPE_FLAG_MACRO) || (flags & COLLECT_STOP_MACRO))
+            if (!(flags & COLLECT_PASS_INLINE))
             {
                 while (scope && scope->kind != ScopeKind::Function)
                     scope = scope->parentScope;
-                SWAG_ASSERT(scope)
             }
+
+            flags &= ~COLLECT_PASS_INLINE;
+        }
+        else if (scope->kind == ScopeKind::InlineBlock)
+        {
+            if (!(flags & COLLECT_PASS_INLINE))
+            {
+                while (scope && scope->kind != ScopeKind::Inline)
+                    scope = scope->parentScope;
+                scopes.push_back(scope);
+                here.insert(scope);
+                scopes.push_back(scope->parentScope);
+                here.insert(scope->parentScope);
+				continue;
+            }
+
+            flags &= ~COLLECT_PASS_INLINE;
         }
 
         // Add parent scope
@@ -1445,9 +1449,6 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         return true;
 
     uint32_t collectFlags = COLLECT_ALL;
-    if (node->ownerInline && (node->ownerInline->scope->flags & SCOPE_FLAG_MACRO))
-        collectFlags = COLLECT_STOP_MACRO;
-
     SemanticJob::collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
 
     for (auto scope : job->cacheScopeHierarchy)

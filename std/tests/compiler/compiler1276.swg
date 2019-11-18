@@ -5,7 +5,7 @@
     @assert(b == 676)
 }
 
-#[swag.macro]
+#[swag.mixin]
 func toto()
 {
     loop 10

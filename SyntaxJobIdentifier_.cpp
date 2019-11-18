@@ -8,6 +8,13 @@
 
 bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
 {
+    bool backTick = false;
+    if (token.id == TokenId::SymBackTick)
+    {
+        SWAG_CHECK(tokenizer.getToken(token));
+        backTick = true;
+    }
+
     // An identifier that starts with '__' is reserved for internal usage !
     if (!sourceFile->generated)
     {
@@ -19,6 +26,8 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
     identifier->inheritTokenName(token);
     identifier->semanticFct   = &SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+    if (backTick)
+        identifier->flags |= AST_IDENTIFIER_BACKTICK;
     SWAG_CHECK(tokenizer.getToken(token));
 
     if (acceptParameters)

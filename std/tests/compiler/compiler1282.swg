@@ -1,4 +1,4 @@
-#[swag.macro]
+#[swag.mixin]
 func toto(x: code)
 {
     if #mixin x

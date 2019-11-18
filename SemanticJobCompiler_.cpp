@@ -38,7 +38,28 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
+bool SemanticJob::resolveCompilerInline(SemanticContext* context)
+{
+    auto node = context->node;
+
+    auto newScope            = Ast::newScope(node, "XXX", ScopeKind::InlineBlock, node->ownerScope);
+    newScope->startStackSize = node->ownerInline->scope->startStackSize;
+
+    CloneContext cloneContext;
+    auto         stmt = node->childs.front();
+    node->childs.clear();
+    cloneContext.parent      = node;
+    cloneContext.parentScope = newScope;
+    auto cloneContent        = stmt->clone(cloneContext);
+    context->job->nodes.pop_back();
+    context->job->nodes.push_back(cloneContent);
+    context->result = ContextResult::NewChilds;
+    stmt->releaseRec();
+
+    return true;
+}
+
+bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
 {
     auto node = context->node;
 
@@ -64,25 +85,15 @@ bool SemanticJob::resolveCompilerInsert(SemanticContext* context)
         {
             auto typeCode = CastTypeInfo<TypeInfoCode>(param->typeInfo, TypeInfoKind::Code);
 
-            auto newScope = node->ownerScope;
-
-			// In case of an inline, we generate a new scope to enclose the insertion, and we set the parent of the scope to the enclosing
-			// inline
-            if (node->token.id == TokenId::CompilerInline)
-            {
-				SWAG_ASSERT(node->ownerInline);
-                newScope = Ast::newScope(nullptr, format("__inline%d", node->ownerScope->childScopes.size()), ScopeKind::Inline, node->ownerInline->ownerScope);
-				newScope->flags |= SCOPE_FLAG_MACRO;
-            }
-
             CloneContext cloneContext;
             cloneContext.parent      = node;
-            cloneContext.parentScope = newScope;
+            cloneContext.parentScope = node->ownerScope;
             auto cloneContent        = typeCode->content->clone(cloneContext);
             cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;
             context->job->nodes.push_back(cloneContent);
             context->result = ContextResult::NewChilds;
+
             return true;
         }
     }

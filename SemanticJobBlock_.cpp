@@ -58,6 +58,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     node->doneFlags |= AST_DONE_RESOLVE_INLINED;
 
     node->scope->startStackSize = node->ownerScope->startStackSize;
+	node->scope->allocateSymTable();
 
     // Register all function parameters as inline symbols
     auto func = node->func;

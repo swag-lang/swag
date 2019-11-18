@@ -1,4 +1,4 @@
-#[swag.macro]
+#[swag.mixin]
 func toto(x: code)
 {
     cpt := 0

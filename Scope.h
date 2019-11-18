@@ -22,6 +22,7 @@ enum class ScopeKind
     Breakable,
     TypeList,
     Inline,
+	InlineBlock,
 };
 
 struct AlternativeScope
@@ -31,7 +32,6 @@ struct AlternativeScope
 };
 
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
-static const uint32_t SCOPE_FLAG_MACRO       = 0x00000002;
 
 struct Scope : public PoolElement
 {

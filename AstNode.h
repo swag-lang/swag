@@ -103,7 +103,8 @@ enum class AstNodeKind
     CompilerIf,
     CompilerIfBlock,
     CompilerAssert,
-    CompilerInsert,
+    CompilerMixin,
+    CompilerInline,
     CompilerPrint,
     CompilerRun,
     CompilerCode,
@@ -288,6 +289,7 @@ struct AstNode : public PoolElement
     virtual AstNode* clone(CloneContext& context);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
     void             computeFullName();
+    void             releaseRec();
 
     AstNodeKind         kind;
     Scope*              ownerScope;

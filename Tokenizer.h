@@ -59,6 +59,7 @@ enum class TokenId
     SymExclamEqual,
     SymBackSlash,
     SymAttrStart,
+	SymBackTick,
 
     CompilerModule,
     CompilerUnitTest,

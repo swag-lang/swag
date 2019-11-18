@@ -49,16 +49,27 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
     return true;
 }
 
-bool SyntaxJob::doCompilerInsert(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerInsert, sourceFile, parent);
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerInline, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticFct = &SemanticJob::resolveCompilerInsert;
+    node->semanticBeforeFct = &SemanticJob::resolveCompilerInline;
+    SWAG_CHECK(tokenizer.getToken(token));
+    SWAG_CHECK(doCurlyStatement(node));
+    return true;
+}
+
+bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerMixin, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticFct = &SemanticJob::resolveCompilerMixin;
     node->token       = move(token);
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
-    SWAG_CHECK(eatSemiCol("after '#insert' expression"));
+    SWAG_CHECK(eatSemiCol("after '#mixin' expression"));
     return true;
 }
 

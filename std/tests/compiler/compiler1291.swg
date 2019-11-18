@@ -1,15 +1,12 @@
 #import "std"
 
 #[swag.macro]
-func visit(str: string, user: code)
+func visit(user: code)
 {
     var c: char
-    var ptr: *u8 = @dataof(str)
-	while true
+	loop 10
 	{
-		(ptr, c) = std.utf8.getChar(ptr)
-		if !c
-			break
+        c = 100
 		#inline 
         {
             value := `c
@@ -22,13 +19,12 @@ func visit(str: string, user: code)
 #test
 {
     cpt := 0
-	var str = "あああ"
-    visit(str)
+    visit()
     {
-        @assert(value == 12354)
+        @assert(value == 100)
         //@print(cast(s64) value)
         cpt += 1
-    }
+    }    
     
-    @assert(cpt == 3)
+    @assert(cpt == 10)
 }

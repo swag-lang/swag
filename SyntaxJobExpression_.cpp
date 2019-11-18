@@ -107,6 +107,10 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     }
     break;
 
+	case TokenId::SymBackTick:
+        SWAG_CHECK(doIdentifierRef(parent, result));
+        break;
+
     case TokenId::Identifier:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
@@ -387,8 +391,8 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
 	case TokenId::CompilerInline:
     {
         SWAG_CHECK(eatToken());
-        boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerInsert, sourceFile, parent);
-        boolExpression->semanticFct = &SemanticJob::resolveCompilerInsert;
+        boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerMixin, sourceFile, parent);
+        boolExpression->semanticFct = &SemanticJob::resolveCompilerMixin;
         SWAG_CHECK(doExpression(boolExpression));
         break;
     }

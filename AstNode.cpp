@@ -32,6 +32,13 @@ Pool<AstInline>          g_Pool_astInline;
 Pool<AstReturn>          g_Pool_astReturn;
 Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;
 
+void AstNode::releaseRec()
+{
+    for (auto child : childs)
+        child->releaseRec();
+    release();
+}
+
 void AstNode::setPassThrough()
 {
     semanticAfterFct  = nullptr;

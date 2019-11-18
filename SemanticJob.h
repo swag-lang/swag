@@ -42,8 +42,8 @@ struct OneGenericMatch
     vector<TypeInfo*>     genericParametersGenTypes;
 };
 
-static const uint32_t COLLECT_ALL        = 0x00000000;
-static const uint32_t COLLECT_STOP_MACRO = 0x00000001;
+static const uint32_t COLLECT_ALL         = 0x00000000;
+static const uint32_t COLLECT_PASS_INLINE = 0x00000001;
 
 struct SemanticJob : public Job
 {
@@ -62,7 +62,7 @@ struct SemanticJob : public Job
     static void collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
-	static bool makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    static bool makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static bool makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static bool setSymbolMatch(SemanticContext* context, AstIdentifierRef* parent, AstIdentifier* identifier, SymbolName* symbol, SymbolOverload* overload, OneMatch* oneMatch, AstNode* dependentVar);
     static bool checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind);
@@ -111,8 +111,9 @@ struct SemanticJob : public Job
     static bool resolveIsExpression(SemanticContext* context);
     static bool resolveFactorExpression(SemanticContext* context);
     static bool resolveShiftExpression(SemanticContext* context);
-    static bool resolveCompilerInsert(SemanticContext* context);
-	static bool resolveCompilerAssert(SemanticContext* context);
+    static bool resolveCompilerInline(SemanticContext* context);
+    static bool resolveCompilerMixin(SemanticContext* context);
+    static bool resolveCompilerAssert(SemanticContext* context);
     static bool resolveCompilerPrint(SemanticContext* context);
     static bool resolveCompilerRun(SemanticContext* context);
     static bool resolveCompilerSpecialFunction(SemanticContext* context);
@@ -132,7 +133,7 @@ struct SemanticJob : public Job
     static bool resolveEnumValue(SemanticContext* context);
     static bool resolveFuncDeclParams(SemanticContext* context);
     static bool resolveFuncDecl(SemanticContext* context);
-	static bool setFullResolve(SemanticContext* context, AstFuncDecl* funcNode);
+    static bool setFullResolve(SemanticContext* context, AstFuncDecl* funcNode);
     static bool resolveFuncDeclType(SemanticContext* context);
     static bool registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags = 0);
     static bool resolveFuncCallParams(SemanticContext* context);
@@ -158,7 +159,7 @@ struct SemanticJob : public Job
     static bool resolveWhile(SemanticContext* context);
     static bool resolveLoopBefore(SemanticContext* context);
     static bool resolveInlineBefore(SemanticContext* context);
-	static bool resolveInlineAfter(SemanticContext* context);
+    static bool resolveInlineAfter(SemanticContext* context);
     static bool resolveForBefore(SemanticContext* context);
     static bool resolveFor(SemanticContext* context);
     static bool resolveSwitch(SemanticContext* context);
