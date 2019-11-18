@@ -1043,7 +1043,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         {
             uint32_t collectFlags = COLLECT_ALL;
 
-			// Pass through the first inline if there's a backtick before the name
+            // Pass through the first inline if there's a backtick before the name
             if (node->flags & AST_IDENTIFIER_BACKTICK)
                 collectFlags = COLLECT_PASS_INLINE;
 
@@ -1183,23 +1183,23 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
                 {
-					if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
-					{
-						auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
-						if (brother->kind == AstNodeKind::Statement)
-						{
-							auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-							auto codeNode = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
-							codeNode->flags |= AST_NO_BYTECODE;
-							Ast::removeFromParent(brother);
-							Ast::addChildBack(codeNode, brother);
-							auto typeCode = g_Pool_typeInfoCode.alloc();
-							typeCode->content = brother;
-							brother->flags |= AST_NO_SEMANTIC;
-							fctCallParam->typeInfo = typeCode;
-							codeNode->typeInfo = typeCode;
-						}
-					}
+                    if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
+                    {
+                        auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+                        if (brother->kind == AstNodeKind::Statement)
+                        {
+                            auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
+                            auto codeNode     = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                            codeNode->flags |= AST_NO_BYTECODE;
+                            Ast::removeFromParent(brother);
+                            Ast::addChildBack(codeNode, brother);
+                            auto typeCode     = g_Pool_typeInfoCode.alloc();
+                            typeCode->content = brother;
+                            brother->flags |= AST_NO_SEMANTIC;
+                            fctCallParam->typeInfo = typeCode;
+                            codeNode->typeInfo     = typeCode;
+                        }
+                    }
                 }
             }
         }
@@ -1402,13 +1402,16 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         {
             if (!(flags & COLLECT_PASS_INLINE))
             {
-                while (scope && scope->kind != ScopeKind::Inline)
+                while (scope && scope->kind != ScopeKind::Inline && scope->kind != ScopeKind::Function)
                     scope = scope->parentScope;
                 scopes.push_back(scope);
                 here.insert(scope);
-                scopes.push_back(scope->parentScope);
-                here.insert(scope->parentScope);
-				continue;
+                if (scope->kind == ScopeKind::Inline)
+                {
+                    scopes.push_back(scope->parentScope);
+                    here.insert(scope->parentScope);
+                }
+                continue;
             }
 
             flags &= ~COLLECT_PASS_INLINE;
