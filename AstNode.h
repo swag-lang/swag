@@ -70,7 +70,6 @@ enum class AstNodeKind
     TupleContent,
     Impl,
     FuncDecl,
-    MacroDecl,
     AttrDecl,
     AttrUse,
     FuncDeclParams,

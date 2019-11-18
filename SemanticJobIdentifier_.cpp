@@ -175,7 +175,7 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     auto inlineNode = Ast::newInline(context->sourceFile, identifier);
     auto newScope   = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
 
-    if (funcDecl->kind == AstNodeKind::MacroDecl)
+    if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
         newScope->flags |= SCOPE_FLAG_MACRO;
 
     inlineNode->func  = funcDecl;

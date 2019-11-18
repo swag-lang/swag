@@ -102,7 +102,6 @@ enum class TokenId
     KwdStruct,
     KwdUnion,
     KwdFunc,
-    KwdMacro,
     KwdAttr,
     KwdTrue,
     KwdFalse,

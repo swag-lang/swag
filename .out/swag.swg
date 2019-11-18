@@ -25,6 +25,7 @@ namespace swag
 	attr printbc() -> "func"
 	attr compiler() -> "func"
 	attr inline() -> "func"
+    attr macro() -> "func"
 	attr test() -> "func"
 	attr foreign(module: string = "", function: string = "") -> "func"
 	attr waitsem(ms: s32) -> "func"

@@ -1,7 +1,8 @@
 //#[swag.printbc]
 #test
 {
-    macro toto()
+    #[swag.macro]
+    func toto()
     {
         a += 2
     }

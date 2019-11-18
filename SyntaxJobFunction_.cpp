@@ -320,12 +320,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     bool funcForCompiler = false;
     bool isIntrinsic     = false;
 
-    if (token.id == TokenId::KwdMacro)
-    {
-        funcNode->kind = AstNodeKind::MacroDecl;
-        funcNode->attributeFlags |= ATTRIBUTE_INLINE;
-    }
-
     auto typeFuncId = token.id;
     if (typeFuncId == TokenId::CompilerFuncTest ||
         typeFuncId == TokenId::CompilerFuncInit ||

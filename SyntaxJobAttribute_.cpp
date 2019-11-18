@@ -48,11 +48,6 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) == 0, syntaxError(token, "attribute constraint 'func' already defined"));
             typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_FUNC;
         }
-        else if (token.text == "macro")
-        {
-            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_MACRO) == 0, syntaxError(token, "attribute constraint 'macro' already defined"));
-            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_MACRO;
-        }
         else if (token.text == "var")
         {
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) == 0, syntaxError(token, "attribute constraint 'var' already defined"));

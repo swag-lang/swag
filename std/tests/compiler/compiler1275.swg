@@ -1,4 +1,5 @@
-macro toto()
+#[swag.macro]
+func toto()
 {
     b := 0
     @assert(b == 0)

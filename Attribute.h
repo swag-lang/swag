@@ -17,6 +17,7 @@ static const uint32_t ATTRIBUTE_INLINE        = 0x00000800;
 static const uint32_t ATTRIBUTE_PACK          = 0x00001000;
 static const uint32_t ATTRIBUTE_FLAGS         = 0x00002000;
 static const uint32_t ATTRIBUTE_PRIVATE       = 0x00004000;
+static const uint32_t ATTRIBUTE_MACRO         = 0x00008000;
 
 struct TypeInfoFuncAttr;
 struct SymbolAttributes

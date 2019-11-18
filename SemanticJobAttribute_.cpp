@@ -9,8 +9,6 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_FUNC) && (kind == AstNodeKind::FuncDecl || kind == AstNodeKind::Statement))
         return true;
-    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_MACRO) && (kind == AstNodeKind::MacroDecl || kind == AstNodeKind::Statement))
-        return true;
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_VAR) && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::LetDecl || kind == AstNodeKind::Statement))
         return true;
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) && (kind == AstNodeKind::StructDecl || kind == AstNodeKind::Statement))
@@ -74,6 +72,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_FOREIGN;
             else if (child->name == "inline")
                 flags |= ATTRIBUTE_INLINE;
+            else if (child->name == "macro")
+                flags |= ATTRIBUTE_MACRO;
             else if (child->name == "complete")
                 flags |= ATTRIBUTE_COMPLETE;
         }

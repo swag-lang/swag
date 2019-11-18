@@ -1,4 +1,5 @@
-macro toto()
+#[swag.macro]
+func toto()
 {
     loop 10
         b += 1
