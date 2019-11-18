@@ -396,31 +396,12 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
-    CloneContext cloneContext;
-
-    auto inlineNode = Ast::newInline(context->sourceFile, identifier);
-    auto newScope   = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
-
-    inlineNode->func  = funcDecl;
-    inlineNode->scope = newScope;
-    inlineNode->alternativeScopes.push_back(funcDecl->ownerScope);
-
-    newScope->allocateSymTable();
-    cloneContext.parent           = inlineNode;
-    cloneContext.ownerInline      = inlineNode;
-    cloneContext.ownerFct         = identifier->ownerFct;
-    cloneContext.ownerBreakable   = identifier->ownerBreakable;
-    cloneContext.parentScope      = newScope;
-    auto newContent               = funcDecl->content->clone(cloneContext);
-    newContent->byteCodeBeforeFct = nullptr;
-    newContent->flags &= ~AST_NO_SEMANTIC;
-    context->genericInstanceTree.push_back(context->node);
-
-    context->job->setPending();
-    identifier->semanticState = AstNodeResolveState::Enter;
+    SWAG_CHECK(SemanticJob::makeInline((JobContext*) context, funcDecl, identifier));
 
     // Create a semantic job to resolve the inline part, and wait for that to be finished
-    auto job = SemanticJob::newJob(context->sourceFile, inlineNode, false);
+    context->job->setPending();
+    auto inlineNode = identifier->childs.back();
+    auto job        = SemanticJob::newJob(context->sourceFile, inlineNode, false);
     job->addDependentJob(context->job);
     g_ThreadMgr.addJob(job);
     return true;

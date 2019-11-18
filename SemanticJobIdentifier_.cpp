@@ -168,7 +168,7 @@ bool SemanticJob::derefTypeInfo(SemanticContext* context, AstIdentifierRef* pare
     return true;
 }
 
-bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
     CloneContext cloneContext;
 
@@ -193,9 +193,15 @@ bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, As
     newContent->flags &= ~AST_NO_SEMANTIC;
     context->genericInstanceTree.push_back(context->node);
 
-    context->result           = ContextResult::NewChilds;
     identifier->semanticState = AstNodeResolveState::Enter;
-    identifier->bytecodeState = AstNodeResolveState::Enter;
+	identifier->bytecodeState = AstNodeResolveState::Enter;
+    return true;
+}
+
+bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+{
+    SWAG_CHECK(makeInline((JobContext*) context, funcDecl, identifier));
+    context->result = ContextResult::NewChilds;
     return true;
 }
 

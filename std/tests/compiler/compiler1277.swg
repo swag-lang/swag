@@ -6,7 +6,7 @@ func toto(x: code)
     #insert x
 }
     
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     b := 0
