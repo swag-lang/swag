@@ -1183,20 +1183,23 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             {
                 if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
                 {
-                    auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
-                    if (brother->kind == AstNodeKind::Statement)
-                    {
-                        auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-                        auto codeNode     = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
-                        codeNode->flags |= AST_NO_BYTECODE;
-                        Ast::removeFromParent(brother);
-                        Ast::addChildBack(codeNode, brother);
-                        auto typeCode     = g_Pool_typeInfoCode.alloc();
-                        typeCode->content = brother;
-                        brother->flags |= AST_NO_SEMANTIC;
-                        fctCallParam->typeInfo = typeCode;
-                        codeNode->typeInfo     = typeCode;
-                    }
+					if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
+					{
+						auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+						if (brother->kind == AstNodeKind::Statement)
+						{
+							auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
+							auto codeNode = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+							codeNode->flags |= AST_NO_BYTECODE;
+							Ast::removeFromParent(brother);
+							Ast::addChildBack(codeNode, brother);
+							auto typeCode = g_Pool_typeInfoCode.alloc();
+							typeCode->content = brother;
+							brother->flags |= AST_NO_SEMANTIC;
+							fctCallParam->typeInfo = typeCode;
+							codeNode->typeInfo = typeCode;
+						}
+					}
                 }
             }
         }
