@@ -173,10 +173,14 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     CloneContext cloneContext;
 
     auto inlineNode = Ast::newInline(context->sourceFile, identifier);
-    auto newScope   = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
 
-    if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
-        newScope->flags |= SCOPE_FLAG_MACRO;
+    Scope* newScope = identifier->ownerScope;
+    if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
+    {
+        newScope = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
+        if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
+            newScope->flags |= SCOPE_FLAG_MACRO;
+    }
 
     inlineNode->func  = funcDecl;
     inlineNode->scope = newScope;

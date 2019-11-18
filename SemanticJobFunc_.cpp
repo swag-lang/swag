@@ -265,8 +265,21 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
+
     if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+    {
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.inline' attributes at the same time", funcNode->name.c_str())}));
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.macro' and 'swag.mixin' attributes at the same time", funcNode->name.c_str())}));
         funcNode->attributeFlags |= ATTRIBUTE_INLINE;
+    }
+
+    if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
+    {
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.inline' attributes at the same time", funcNode->name.c_str())}));
+        SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, format("function '%s' is marked with 'swag.mixin' and 'swag.macro' attributes at the same time", funcNode->name.c_str())}));
+        funcNode->attributeFlags |= ATTRIBUTE_INLINE;
+        funcNode->attributeFlags |= ATTRIBUTE_MACRO;
+    }
 
     // Register symbol with its type
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
@@ -303,7 +316,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     else if ((funcNode->flags & AST_FROM_GENERIC) && shortLambda)
         Ast::visit(funcNode->content, [](AstNode* x) { x->flags &= ~AST_FROM_GENERIC; });
 
-    // Macro will not evaluate its content before being inlined
+    // Macro will not evaluate its content before being inline
     if ((funcNode->attributeFlags & ATTRIBUTE_MACRO) && !shortLambda)
         funcNode->content->flags |= AST_NO_SEMANTIC;
 

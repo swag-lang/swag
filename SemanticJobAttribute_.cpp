@@ -74,6 +74,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
                 flags |= ATTRIBUTE_INLINE;
             else if (child->name == "macro")
                 flags |= ATTRIBUTE_MACRO;
+            else if (child->name == "mixin")
+                flags |= ATTRIBUTE_MIXIN;
             else if (child->name == "complete")
                 flags |= ATTRIBUTE_COMPLETE;
         }
