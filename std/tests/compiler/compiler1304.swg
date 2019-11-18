@@ -1,0 +1,10 @@
+#[swag.macro]
+func toto(t: s32)
+{
+    @assert(t == 100)
+}
+
+#test
+{
+    toto(100)
+}

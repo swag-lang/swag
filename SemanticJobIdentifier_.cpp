@@ -184,12 +184,11 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         inlineNode->scope = newScope;
         if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
         {
-            auto parentNode               = Ast::newNode(context->sourceFile, AstNodeKind::Statement, inlineNode);
-            auto stmtScope                = Ast::newScope(parentNode, "", ScopeKind::Statement, newScope);
-            stmtScope->startStackSize     = identifier->ownerScope->startStackSize;
-            parentNode->ownerScope        = newScope;
-            parentNode->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
-            newScope                      = stmtScope;
+            auto parentNode           = Ast::newNode(context->sourceFile, AstNodeKind::Statement, inlineNode);
+            auto stmtScope            = Ast::newScope(parentNode, "", ScopeKind::Statement, newScope);
+            stmtScope->startStackSize = identifier->ownerScope->startStackSize;
+            parentNode->ownerScope    = newScope;
+            newScope                  = stmtScope;
         }
     }
 
@@ -1044,11 +1043,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             uint32_t collectFlags = COLLECT_ALL;
 
             // Pass through the first inline if there's a back tick before the name
-			if (node->flags & AST_IDENTIFIER_BACKTICK)
-			{
-				SWAG_VERIFY(node->ownerInline, context->report({ node, node->token, "back ticked identifier can only be used inside a 'swag.macro' or 'swag.mixin' function" }));
-				collectFlags = COLLECT_PASS_INLINE;
-			}
+            if (node->flags & AST_IDENTIFIER_BACKTICK)
+            {
+                SWAG_VERIFY(node->ownerInline, context->report({node, node->token, "back ticked identifier can only be used inside a 'swag.macro' or 'swag.mixin' function"}));
+                collectFlags = COLLECT_PASS_INLINE;
+            }
 
             startScope = node->ownerScope;
             collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags);
