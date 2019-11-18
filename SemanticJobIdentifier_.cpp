@@ -1046,7 +1046,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             // Pass through the first inline if there's a backtick before the name
 			if (node->flags & AST_IDENTIFIER_BACKTICK)
 			{
-				SWAG_VERIFY(node->ownerInline, context->report({ node, node->token, "back ticked identifier can only be used inside a 'swag.macro', 'swag.mixin' or 'swag.inline' function" }));
+				SWAG_VERIFY(node->ownerInline, context->report({ node, node->token, "back ticked identifier can only be used inside a 'swag.macro' or 'swag.mixin' function" }));
 				collectFlags = COLLECT_PASS_INLINE;
 			}
 
