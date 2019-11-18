@@ -185,7 +185,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
         {
             auto parentNode               = Ast::newNode(context->sourceFile, AstNodeKind::Statement, inlineNode);
-            auto stmtScope                = Ast::newScope(parentNode, "YYY", ScopeKind::Statement, newScope);
+            auto stmtScope                = Ast::newScope(parentNode, "", ScopeKind::Statement, newScope);
             stmtScope->startStackSize     = identifier->ownerScope->startStackSize;
             parentNode->ownerScope        = newScope;
             parentNode->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;

@@ -42,7 +42,8 @@ bool SemanticJob::resolveCompilerInline(SemanticContext* context)
 {
     auto node = context->node;
 
-    auto newScope            = Ast::newScope(node, "XXX", ScopeKind::InlineBlock, node->ownerScope);
+    SWAG_VERIFY(node->ownerInline, context->report({node, node->token, "#inline can only be used inside a 'swag.macro' or 'swag.mixin' function"}));
+    auto newScope            = Ast::newScope(node, "", ScopeKind::InlineBlock, node->ownerScope);
     newScope->startStackSize = node->ownerInline->scope->startStackSize;
 
     CloneContext cloneContext;
