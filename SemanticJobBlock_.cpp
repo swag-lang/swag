@@ -52,6 +52,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
+	context->genericInstanceTree.push_back(node->parent);
     if (node->doneFlags & AST_DONE_RESOLVE_INLINED)
         return true;
     node->doneFlags |= AST_DONE_RESOLVE_INLINED;
@@ -69,6 +70,12 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     }
 
     return true;
+}
+
+bool SemanticJob::resolveInlineAfter(SemanticContext* context)
+{
+	context->genericInstanceTree.pop_back();
+	return true;
 }
 
 bool SemanticJob::resolveForBefore(SemanticContext* context)

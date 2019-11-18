@@ -44,26 +44,26 @@ namespace Ast
             return reg.b ? "true" : "false";
             break;
         case NativeTypeKind::String:
-		{
-			Utf8 result;
-			result.reserve(text.capacity());
-			for(auto c: text)
-			{
-				switch (c)
-				{
-				case '\r':
-					result += "\\r";
-					break;
-				case '\n':
-					result += "\\n";
-					break;
-				default:
-					result += c;
-				}
-			}
+        {
+            Utf8 result;
+            result.reserve(text.capacity());
+            for (auto c : text)
+            {
+                switch (c)
+                {
+                case '\r':
+                    result += "\\r";
+                    break;
+                case '\n':
+                    result += "\\n";
+                    break;
+                default:
+                    result += c;
+                }
+            }
 
-			return result;
-		}
+            return result;
+        }
         default:
             SWAG_ASSERT(false);
             return "";
@@ -225,6 +225,7 @@ namespace Ast
     {
         AstInline* node         = Ast::newNode(syntaxJob, &g_Pool_astInline, AstNodeKind::Inline, sourceFile, parent);
         node->semanticBeforeFct = &SemanticJob::resolveInlineBefore;
+        node->semanticAfterFct  = &SemanticJob::resolveInlineAfter;
         node->byteCodeBeforeFct = &ByteCodeGenJob::emitInlineBefore;
         node->byteCodeFct       = &ByteCodeGenJob::emitInline;
         return node;

@@ -195,7 +195,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     auto newContent               = funcDecl->content->clone(cloneContext);
     newContent->byteCodeBeforeFct = nullptr;
     newContent->flags &= ~AST_NO_SEMANTIC;
-    context->genericInstanceTree.push_back(context->node);
 
     identifier->semanticState = AstNodeResolveState::Enter;
     identifier->bytecodeState = AstNodeResolveState::Enter;
