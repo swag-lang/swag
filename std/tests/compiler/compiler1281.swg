@@ -1,7 +1,7 @@
 #[swag.macro]
 func toto(x: code)
 {
-    AAA := #insert x
+    AAA := #mixin x
     @assert(AAA)
 }
     

@@ -1,9 +1,9 @@
 #[swag.macro]
 func toto(x: code)
 {
-    #insert x
-    #insert x
-    #insert x
+    #mixin x
+    #mixin x
+    #mixin x
 }
     
 //#[swag.printbc]

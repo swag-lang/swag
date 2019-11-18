@@ -383,7 +383,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doBoolExpression(boolExpression));
         break;
     }
-    case TokenId::CompilerInsert:
+    case TokenId::CompilerMixin:
     {
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerInsert, sourceFile, parent);

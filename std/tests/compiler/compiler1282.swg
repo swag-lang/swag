@@ -1,7 +1,7 @@
 #[swag.macro]
 func toto(x: code)
 {
-    if #insert x
+    if #mixin x
         @assert(true)
     else
         @assert(false)

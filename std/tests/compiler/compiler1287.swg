@@ -5,7 +5,7 @@ func toto(x: code)
     loop 10
     {
         cpt += 1
-        #insert x
+        #mixin x
     }
 }
 

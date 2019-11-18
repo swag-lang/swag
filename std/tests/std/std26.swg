@@ -10,7 +10,7 @@ func visit(str: string, user: code)
 		(ptr, c) = std.utf8.getChar(ptr)
 		if !c
 			break
-		#insert user
+		#mixin user
 	}    
 }
 

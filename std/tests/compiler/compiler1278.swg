@@ -3,7 +3,7 @@ func toto(x: code)
 {
     loop 10
     {
-        #insert x
+        #mixin x
     }
 }
     
