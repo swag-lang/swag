@@ -248,33 +248,20 @@ bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'break' can only be used inside a breakable scope"}));
-
     auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Break, sourceFile, parent);
     node->semanticFct = &SemanticJob::resolveBreak;
     if (result)
         *result = node;
-
-    auto breakable = static_cast<AstBreakable*>(currentBreakable);
-    breakable->breakList.push_back(node);
-
     SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
 
 bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable loop"}));
-    SWAG_VERIFY(currentBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, sourceFile->report({sourceFile, token, "'continue' can only be used inside a breakable loop"}));
-
     auto node         = Ast::newNode(this, &g_Pool_astBreakContinue, AstNodeKind::Continue, sourceFile, parent);
     node->semanticFct = &SemanticJob::resolveContinue;
     if (result)
         *result = node;
-
-    auto breakable = static_cast<AstBreakable*>(currentBreakable);
-    breakable->continueList.push_back(node);
-
     SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }

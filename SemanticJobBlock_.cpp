@@ -52,13 +52,13 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
-	context->expansionNode.push_back(node->parent);
+    context->expansionNode.push_back(node->parent);
     if (node->doneFlags & AST_DONE_RESOLVE_INLINED)
         return true;
     node->doneFlags |= AST_DONE_RESOLVE_INLINED;
 
     node->scope->startStackSize = node->ownerScope->startStackSize;
-	node->scope->allocateSymTable();
+    node->scope->allocateSymTable();
 
     // Register all function parameters as inline symbols
     auto func = node->func;
@@ -75,8 +75,8 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
 bool SemanticJob::resolveInlineAfter(SemanticContext* context)
 {
-	context->expansionNode.pop_back();
-	return true;
+    context->expansionNode.pop_back();
+    return true;
 }
 
 bool SemanticJob::resolveForBefore(SemanticContext* context)
@@ -190,16 +190,23 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
 
 bool SemanticJob::resolveBreak(SemanticContext* context)
 {
+    auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Break);
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'break' can only be used inside a breakable scope"}));
+    node->ownerBreakable->breakList.push_back(node);
+
     SWAG_CHECK(checkUnreachableCode(context));
-    auto node         = context->node;
     node->byteCodeFct = &ByteCodeGenJob::emitBreak;
     return true;
 }
 
 bool SemanticJob::resolveContinue(SemanticContext* context)
 {
+    auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'continue' can only be used inside a breakable loop"}));
+    SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, context->report({node, node->token, "'continue' can only be used inside a breakable loop"}));
+    node->ownerBreakable->continueList.push_back(node);
+
     SWAG_CHECK(checkUnreachableCode(context));
-    auto node         = context->node;
     node->byteCodeFct = &ByteCodeGenJob::emitContinue;
     return true;
 }
