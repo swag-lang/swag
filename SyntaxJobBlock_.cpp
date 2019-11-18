@@ -234,14 +234,10 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doIndex(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentBreakable, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable loop"}));
-    SWAG_VERIFY(currentBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX, sourceFile->report({sourceFile, token, "'index' can only be used inside a breakable loop"}));
-
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Index, sourceFile, parent);
     node->semanticFct = &SemanticJob::resolveIndex;
     if (result)
         *result = node;
-
     SWAG_CHECK(tokenizer.getToken(token));
     return true;
 }
