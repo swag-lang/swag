@@ -69,17 +69,17 @@ void ByteCodeGenJob::reserveLinearRegisterRC(ByteCodeGenContext* context, Regist
 
 void ByteCodeGenJob::truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count)
 {
-	if (rc.size() == count)
-		return;
+    if (rc.size() == count)
+        return;
 
-	RegisterList rs;
+    RegisterList rs;
 
-	for (int i = 0; i < count; i++)
-		rs += rc[i];
-	for (int i = count; i < rc.size(); i++)
-		context->bc->availableRegistersRC.push_back(rc[i]);
+    for (int i = 0; i < count; i++)
+        rs += rc[i];
+    for (int i = count; i < rc.size(); i++)
+        context->bc->availableRegistersRC.push_back(rc[i]);
 
-	rc = rs;
+    rc = rs;
 }
 
 void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, RegisterList& rc)
@@ -284,14 +284,14 @@ JobResult ByteCodeGenJob::execute()
 
         while (!nodes.empty())
         {
-            auto node    = nodes.back();
-            context.node = node;
+            auto node      = nodes.back();
+            context.node   = node;
+            context.result = ContextResult::Done;
 
             switch (node->bytecodeState)
             {
             case AstNodeResolveState::Enter:
                 node->bytecodeState = AstNodeResolveState::ProcessingChilds;
-                context.result      = ContextResult::Done;
 
                 if (node->byteCodeBeforeFct && !node->byteCodeBeforeFct(&context))
                     return JobResult::ReleaseJob;
@@ -329,9 +329,6 @@ JobResult ByteCodeGenJob::execute()
                     }
                     else if (node->byteCodeFct)
                     {
-                        context.node   = node;
-                        context.result = ContextResult::Done;
-
                         if (!node->byteCodeFct(&context))
                             return JobResult::ReleaseJob;
                         if (context.result == ContextResult::Pending)
@@ -340,11 +337,18 @@ JobResult ByteCodeGenJob::execute()
                             continue;
                     }
 
-                    if (node->byteCodeAfterFct && !node->byteCodeAfterFct(&context))
+                    node->bytecodeState = AstNodeResolveState::PostChilds;
+                }
+
+            case AstNodeResolveState::PostChilds:
+                if (node->byteCodeAfterFct)
+                {
+                    if (!node->byteCodeAfterFct(&context))
                         return JobResult::ReleaseJob;
+                    if (context.result == ContextResult::Pending)
+                        return JobResult::KeepJobAlive;
                     if (context.result == ContextResult::NewChilds)
                         continue;
-                    SWAG_ASSERT(context.result != ContextResult::Pending);
                 }
 
                 nodes.pop_back();
