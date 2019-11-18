@@ -194,7 +194,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     context->genericInstanceTree.push_back(context->node);
 
     identifier->semanticState = AstNodeResolveState::Enter;
-	identifier->bytecodeState = AstNodeResolveState::Enter;
+    identifier->bytecodeState = AstNodeResolveState::Enter;
     return true;
 }
 
@@ -439,6 +439,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // The expansion will be done at the lowest level possible
         if (identifier->ownerFct && !(identifier->ownerFct->attributeFlags & ATTRIBUTE_INLINE))
         {
+            // Check that function has been solved !
+            auto st = ((AstFuncDecl*) overload->node)->returnType->semanticState;
+            SWAG_ASSERT(st == AstNodeResolveState::PostChilds);
+
             if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
             {
                 // Need to wait for function full semantic resolve

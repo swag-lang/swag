@@ -103,6 +103,10 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     auto node       = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     auto typeInfo   = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
+    SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, node, SymbolKind::Function));
+    if (context->result == ContextResult::Pending)
+        return true;
+
     // Only one main per module !
     if (node->attributeFlags & ATTRIBUTE_MAIN_FUNC)
     {
@@ -127,10 +131,9 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     if (node->attributeFlags & ATTRIBUTE_MACRO)
     {
-        node->attributeFlags |= ATTRIBUTE_INLINE;
-        node->flags |= AST_FULL_RESOLVE;
         if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_GENERATED))
             node->ownerScope->addPublicGenericFunc(node);
+        SWAG_CHECK(setFullResolve(context, node));
         return true;
     }
 
@@ -193,12 +196,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     }
 
     // Now the full function has been solved, so we wakeup jobs depending on that
-    {
-        scoped_lock lk(node->mutex);
-        node->flags |= AST_FULL_RESOLVE;
-        for (auto job : node->dependentJobs.list)
-            g_ThreadMgr.addJob(job);
-    }
+    SWAG_CHECK(setFullResolve(context, node));
 
     // Ask for bytecode
     bool genByteCode = false;
@@ -240,6 +238,15 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
+{
+    scoped_lock lk(funcNode->mutex);
+    funcNode->flags |= AST_FULL_RESOLVE;
+    for (auto job : funcNode->dependentJobs.list)
+        g_ThreadMgr.addJob(job);
+    return true;
+}
+
 bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 {
     auto typeNode   = context->node;
@@ -253,9 +260,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeNode->typeInfo = g_TypeMgr.typeInfoVoid;
 
     // Collect function attributes
+    SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
     SWAG_CHECK(collectAttributes(context, funcNode->collectAttributes, funcNode->parentAttributes, funcNode, AstNodeKind::FuncDecl, funcNode->attributeFlags));
+
     if (funcNode->attributeFlags & ATTRIBUTE_CONSTEXPR)
         funcNode->flags |= AST_CONST_EXPR;
+    if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+        funcNode->attributeFlags |= ATTRIBUTE_INLINE;
 
     // Register symbol with its type
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
@@ -353,29 +364,16 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
 bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags)
 {
-    if (!(funcNode->doneFlags & AST_DONE_GHOST_CHECKING))
-    {
-        if (!(symbolFlags & OVERLOAD_INCOMPLETE))
-        {
-            SWAG_CHECK(checkFuncPrototype(context, funcNode));
-        }
-
-        if (funcNode->flags & AST_IS_GENERIC)
-            symbolFlags |= OVERLOAD_GENERIC;
-
-        auto typeFunc                    = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-        typeFunc->attributes             = move(funcNode->collectAttributes);
-        funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable->addSymbolTypeInfo(context, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
-        SWAG_CHECK(funcNode->resolvedSymbolOverload);
-    }
-
     if (!(symbolFlags & OVERLOAD_INCOMPLETE))
-    {
-        funcNode->doneFlags |= AST_DONE_GHOST_CHECKING;
-        SWAG_CHECK(SemanticJob::checkSymbolGhosting(context, funcNode, SymbolKind::Function));
-        if (context->result == ContextResult::Pending)
-            return true;
-    }
+        SWAG_CHECK(checkFuncPrototype(context, funcNode));
+
+    if (funcNode->flags & AST_IS_GENERIC)
+        symbolFlags |= OVERLOAD_GENERIC;
+
+    auto typeFunc                    = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    typeFunc->attributes             = move(funcNode->collectAttributes);
+    funcNode->resolvedSymbolOverload = funcNode->ownerScope->symTable->addSymbolTypeInfo(context, funcNode, funcNode->typeInfo, SymbolKind::Function, nullptr, symbolFlags, &funcNode->resolvedSymbolName);
+    SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
     return true;
 }
