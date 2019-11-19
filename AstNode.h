@@ -493,7 +493,7 @@ struct AstBreakContinue : public AstNode
 {
     void reset() override
     {
-		label.clear();
+        label.clear();
         AstNode::reset();
     }
 
@@ -536,6 +536,19 @@ struct AstBreakable : public AstNode
     AstNode*                  parentBreakable;
     vector<AstBreakContinue*> breakList;
     vector<AstBreakContinue*> continueList;
+};
+
+struct AstLabelBreakable : public AstBreakable
+{
+    void reset() override
+    {
+        block = nullptr;
+        AstBreakable::reset();
+    }
+
+    AstNode* clone(CloneContext& context) override;
+
+    AstNode* block;
 };
 
 struct AstWhile : public AstBreakable
@@ -877,3 +890,4 @@ extern Pool<AstDrop>            g_Pool_astDrop;
 extern Pool<AstInline>          g_Pool_astInline;
 extern Pool<AstReturn>          g_Pool_astReturn;
 extern Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;
+extern Pool<AstLabelBreakable>  g_Pool_astLabelBreakable;

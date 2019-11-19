@@ -4,6 +4,7 @@
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
 #include "TypeManager.h"
+#include "Scoped.h"
 
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
@@ -784,10 +785,10 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     // Labelled statement with identifier:
     else if (token.id == TokenId::SymColon)
     {
-        auto labelNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::LabelBreakable, sourceFile, parent);
+        auto labelNode = Ast::newNode(this, &g_Pool_astLabelBreakable, AstNodeKind::LabelBreakable, sourceFile, parent);
         if (result)
             *result = labelNode;
-		labelNode->semanticFct = SemanticJob::resolveLabel;
+        labelNode->semanticFct = SemanticJob::resolveLabel;
         SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "invalid labelled statement name"));
         SWAG_VERIFY(leftNode->childs.size() == 1, syntaxError(leftNode->token, "invalid labelled statement name"));
         auto childBack   = leftNode->childs.back();
@@ -795,7 +796,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         labelNode->token = childBack->token;
         leftNode->releaseRec();
         SWAG_CHECK(tokenizer.getToken(token));
-        SWAG_CHECK(doEmbeddedInstruction(labelNode));
+
+        ScopedBreakable scoped(this, labelNode);
+        SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
         return true;
     }
 

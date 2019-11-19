@@ -194,6 +194,17 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
 bool SemanticJob::resolveBreak(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Break);
+
+	// Label has been defined : search the corresponding LabelBreakable node
+    if (!node->label.empty())
+    {
+        auto breakable = node->ownerBreakable;
+        while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->name != node->label))
+            breakable = breakable->ownerBreakable;
+        SWAG_VERIFY(breakable, context->report({node, format("unknown label '%s'", node->label.c_str())}));
+		node->ownerBreakable = breakable;
+    }
+
     SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'break' can only be used inside a breakable scope"}));
     node->ownerBreakable->breakList.push_back(node);
 
@@ -217,7 +228,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
 bool SemanticJob::resolveLabel(SemanticContext* context)
 {
     // Be sure we don't have ghosting (the same label in a parent)
-    auto node  = context->node;
+    auto node  = CastAst<AstLabelBreakable>(context->node, AstNodeKind::LabelBreakable);
     auto check = node->parent;
     while (check)
     {
@@ -226,13 +237,14 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
             if (check->name == node->name)
             {
                 Diagnostic diag(node, node->token, format("label name '%s' already defined in the hierarchy", node->name.c_str()));
-				Diagnostic note(check, check->token, "this is the other definition", DiagnosticLevel::Note);
-				context->report(diag, &note);
+                Diagnostic note(check, check->token, "this is the other definition", DiagnosticLevel::Note);
+                context->report(diag, &note);
             }
         }
 
         check = check->parent;
     }
 
+	node->block->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }

@@ -31,6 +31,7 @@ Pool<AstDrop>            g_Pool_astDrop;
 Pool<AstInline>          g_Pool_astInline;
 Pool<AstReturn>          g_Pool_astReturn;
 Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;
+Pool<AstLabelBreakable>  g_Pool_astLabelBreakable;
 
 void AstNode::releaseRec()
 {
@@ -361,6 +362,18 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
             context.ownerBreakable->continueList.push_back(newNode);
     }
 
+    return newNode;
+}
+
+AstNode* AstLabelBreakable::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astLabelBreakable.alloc();
+
+    auto cloneContext           = context;
+    cloneContext.ownerBreakable = newNode;
+    newNode->AstBreakable::copyFrom(cloneContext, context.ownerBreakable, this);
+
+    newNode->block = findChildRef(block, newNode);
     return newNode;
 }
 
