@@ -213,3 +213,26 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
     node->byteCodeFct = ByteCodeGenJob::emitContinue;
     return true;
 }
+
+bool SemanticJob::resolveLabel(SemanticContext* context)
+{
+    // Be sure we don't have ghosting (the same label in a parent)
+    auto node  = context->node;
+    auto check = node->parent;
+    while (check)
+    {
+        if (check->kind == AstNodeKind::LabelBreakable)
+        {
+            if (check->name == node->name)
+            {
+                Diagnostic diag(node, node->token, format("label name '%s' already defined in the hierarchy", node->name.c_str()));
+				Diagnostic note(check, check->token, "this is the other definition", DiagnosticLevel::Note);
+				context->report(diag, &note);
+            }
+        }
+
+        check = check->parent;
+    }
+
+    return true;
+}

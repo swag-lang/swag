@@ -249,6 +249,15 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     SWAG_CHECK(tokenizer.getToken(token));
+    if (tokenizer.lastTokenIsEOL)
+        return true;
+    if (token.id != TokenId::SymSemiColon)
+    {
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name"));
+        node->label = move(token.text);
+		SWAG_CHECK(eatToken());
+    }
+
     return true;
 }
 
@@ -259,5 +268,14 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     SWAG_CHECK(tokenizer.getToken(token));
+    if (tokenizer.lastTokenIsEOL)
+        return true;
+    if (token.id != TokenId::SymSemiColon)
+    {
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name"));
+        node->label = move(token.text);
+		SWAG_CHECK(eatToken());
+    }
+
     return true;
 }

@@ -107,7 +107,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
     }
     break;
 
-	case TokenId::SymBackTick:
+    case TokenId::SymBackTick:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 
@@ -388,7 +388,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
         break;
     }
     case TokenId::CompilerMixin:
-	case TokenId::CompilerInline:
+    case TokenId::CompilerInline:
     {
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerMixin, sourceFile, parent);
@@ -605,7 +605,7 @@ bool SyntaxJob::doLeftExpression(AstNode** result)
     }
 
     case TokenId::Identifier:
-	case TokenId::SymBackTick:
+    case TokenId::SymBackTick:
     {
         AstNode* exprNode = nullptr;
         AstNode* multi    = nullptr;
@@ -772,13 +772,31 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpression(&leftNode));
 
-    // Variable declaration and initialization
+    // Variable declaration and initialization by ':='
     if (token.id == TokenId::SymColonEqual)
     {
         AstNode* assign;
         SWAG_CHECK(tokenizer.getToken(token));
         SWAG_CHECK(doInitializationExpression(nullptr, &assign));
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, result));
+    }
+
+    // Labelled statement with identifier:
+    else if (token.id == TokenId::SymColon)
+    {
+        auto labelNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::LabelBreakable, sourceFile, parent);
+        if (result)
+            *result = labelNode;
+		labelNode->semanticFct = SemanticJob::resolveLabel;
+        SWAG_VERIFY(leftNode->kind == AstNodeKind::IdentifierRef, syntaxError(leftNode->token, "invalid labelled statement name"));
+        SWAG_VERIFY(leftNode->childs.size() == 1, syntaxError(leftNode->token, "invalid labelled statement name"));
+        auto childBack   = leftNode->childs.back();
+        labelNode->name  = childBack->name;
+        labelNode->token = childBack->token;
+        leftNode->releaseRec();
+        SWAG_CHECK(tokenizer.getToken(token));
+        SWAG_CHECK(doEmbeddedInstruction(labelNode));
+        return true;
     }
 
     // Affect operator

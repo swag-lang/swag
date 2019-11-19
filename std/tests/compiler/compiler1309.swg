@@ -1,12 +1,9 @@
-#module compiler1308
-#unittest error
-
 #test
 {
 	error := false
     outer: loop x: 10
     {
-        outer: loop 20
+        loop 20
         {
             break outer
         }

@@ -103,6 +103,7 @@ struct SemanticJob : public Job
     static bool resolveIndex(SemanticContext* context);
     static bool resolveBreak(SemanticContext* context);
     static bool resolveContinue(SemanticContext* context);
+	static bool resolveLabel(SemanticContext* context);
     static bool resolveExpressionListCurly(SemanticContext* context);
     static bool resolveExpressionListArray(SemanticContext* context);
     static bool resolveExplicitNoInit(SemanticContext* context);

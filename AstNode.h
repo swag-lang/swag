@@ -63,6 +63,7 @@ enum class AstNodeKind
     Break,
     Continue,
     Statement,
+    LabelBreakable,
     EnumDecl,
     StructDecl,
     Inline,
@@ -490,9 +491,16 @@ struct AstIf : public AstNode
 
 struct AstBreakContinue : public AstNode
 {
+    void reset() override
+    {
+		label.clear();
+        AstNode::reset();
+    }
+
     AstNode* clone(CloneContext& context) override;
 
-    int jumpInstruction;
+    int  jumpInstruction;
+    Utf8 label;
 };
 
 const uint32_t BREAKABLE_CAN_HAVE_INDEX    = 0x00000001;
