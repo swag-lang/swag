@@ -259,7 +259,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, CASTFLAG_EXPLICIT));
     node->typeInfo = typeNode->typeInfo;
 
-    node->byteCodeFct = &ByteCodeGenJob::emitExplicitCast;
+    node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);
     node->inheritComputedValue(exprNode);
     return true;
@@ -273,7 +273,7 @@ bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
     cloneType->flags |= TYPEINFO_AUTO_CAST;
     node->typeInfo = cloneType;
 
-    node->byteCodeFct = &ByteCodeGenJob::emitExplicitAutoCast;
+    node->byteCodeFct = ByteCodeGenJob::emitExplicitAutoCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED);
     node->inheritComputedValue(exprNode);
     return true;
@@ -317,7 +317,7 @@ bool SemanticJob::resolveIsExpression(SemanticContext* context)
 
     if (leftTypeInfo->isNative(NativeTypeKind::Any))
     {
-        node->byteCodeFct = &ByteCodeGenJob::emitIs;
+        node->byteCodeFct = ByteCodeGenJob::emitIs;
         auto& typeTable   = sourceFile->module->typeTable;
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, right->typeInfo, &right->typeInfo, &right->computedValue.reg.u32));
         right->flags |= AST_VALUE_IS_TYPEINFO;

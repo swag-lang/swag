@@ -15,7 +15,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     auto enumNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumDecl, sourceFile, parent);
     if (result)
         *result = enumNode;
-    enumNode->semanticFct = &SemanticJob::resolveEnum;
+    enumNode->semanticFct = SemanticJob::resolveEnum;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, format("invalid enum name '%s'", token.text.c_str())));
@@ -51,7 +51,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
     // Raw type
     SWAG_CHECK(tokenizer.getToken(token));
     auto typeNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumType, sourceFile, enumNode);
-    typeNode->semanticFct = &SemanticJob::resolveEnumType;
+    typeNode->semanticFct = SemanticJob::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken(TokenId::SymColon));
@@ -108,7 +108,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
             auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile, parent);
             enumValue->inheritTokenName(token);
-            enumValue->semanticFct = &SemanticJob::resolveEnumValue;
+            enumValue->semanticFct = SemanticJob::resolveEnumValue;
             currentScope->symTable->registerSymbolNameNoLock(&context, enumValue, SymbolKind::EnumValue);
 
             SWAG_CHECK(tokenizer.getToken(token));

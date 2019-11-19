@@ -8,7 +8,7 @@
 bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Literal, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveLiteral;
+    node->semanticFct = SemanticJob::resolveLiteral;
     node->token       = move(token);
     if (result)
         *result = node;
@@ -24,7 +24,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
     {
         auto arrayNode         = Ast::newNode(this, &g_Pool_astPointerDeref, AstNodeKind::ArrayPointerIndex, sourceFile);
         arrayNode->token       = token;
-        arrayNode->semanticFct = &SemanticJob::resolveArrayPointerIndex;
+        arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
 
         Ast::addChildBack(arrayNode, *exprNode);
         arrayNode->array = *exprNode;
@@ -44,7 +44,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
 bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astProperty, AstNodeKind::IntrinsicProp, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveIntrinsicProperty;
+    node->semanticFct = SemanticJob::resolveIntrinsicProperty;
     node->inheritTokenName(token);
     node->prop = g_LangSpec.properties[node->name];
     if (result)
@@ -73,7 +73,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
             *result = exprNode;
         exprNode->inheritTokenLocation(token);
         SWAG_CHECK(eatToken());
-        exprNode->semanticFct = &SemanticJob::resolveCompilerSpecialFunction;
+        exprNode->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
         break;
     }
 
@@ -135,7 +135,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(doLambdaFuncDecl(sourceFile->astRoot, &lambda));
         auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MakePointer, sourceFile, parent);
         exprNode->inheritTokenLocation(lambda->token);
-        exprNode->semanticFct  = &SemanticJob::resolveMakePointer;
+        exprNode->semanticFct  = SemanticJob::resolveMakePointer;
         AstNode* identifierRef = Ast::createIdentifierRef(this, lambda->name, token, exprNode);
         identifierRef->inheritTokenLocation(lambda->token);
         forceTakeAddress(identifierRef);
@@ -159,7 +159,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymAmpersand)
     {
         exprNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MakePointer, sourceFile);
-        exprNode->semanticFct = &SemanticJob::resolveMakePointer;
+        exprNode->semanticFct = SemanticJob::resolveMakePointer;
         SWAG_CHECK(eatToken());
 
         AstNode* identifierRef;
@@ -179,14 +179,14 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
 
         auto arrayNode         = Ast::newNode(this, &g_Pool_astPointerDeref, AstNodeKind::ArrayPointerIndex, sourceFile);
-        arrayNode->semanticFct = &SemanticJob::resolveArrayPointerIndex;
+        arrayNode->semanticFct = SemanticJob::resolveArrayPointerIndex;
         SWAG_CHECK(doSinglePrimaryExpression(arrayNode, &arrayNode->array));
 
         auto literal                   = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Literal, sourceFile, arrayNode);
         literal->computedValue.reg.u64 = 0;
         literal->token.literalType     = g_TypeMgr.typeInfoS32;
         literal->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-        literal->semanticFct = &SemanticJob::resolveLiteral;
+        literal->semanticFct = SemanticJob::resolveLiteral;
         arrayNode->access    = literal;
         exprNode             = arrayNode;
     }
@@ -221,7 +221,7 @@ bool SyntaxJob::doUnaryExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymMinus || token.id == TokenId::SymExclam || token.id == TokenId::SymTilde)
     {
         auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::SingleOp, sourceFile, parent);
-        node->semanticFct = &SemanticJob::resolveUnaryOp;
+        node->semanticFct = SemanticJob::resolveUnaryOp;
         node->token       = move(token);
         if (result)
             *result = node;
@@ -266,9 +266,9 @@ bool SyntaxJob::doFactorExpression(AstNode* parent, AstNode** result)
 
         auto binaryNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::FactorOp, sourceFile, parent);
         if (token.id == TokenId::SymGreaterGreater || token.id == TokenId::SymLowerLower)
-            binaryNode->semanticFct = &SemanticJob::resolveShiftExpression;
+            binaryNode->semanticFct = SemanticJob::resolveShiftExpression;
         else
-            binaryNode->semanticFct = &SemanticJob::resolveFactorExpression;
+            binaryNode->semanticFct = SemanticJob::resolveFactorExpression;
         binaryNode->token = move(token);
 
         Ast::addChildBack(binaryNode, leftNode);
@@ -300,7 +300,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
         (token.id == TokenId::SymGreater))
     {
         auto binaryNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile, parent);
-        binaryNode->semanticFct = &SemanticJob::resolveCompareExpression;
+        binaryNode->semanticFct = SemanticJob::resolveCompareExpression;
         binaryNode->token       = move(token);
 
         Ast::addChildBack(binaryNode, leftNode);
@@ -312,7 +312,7 @@ bool SyntaxJob::doCompareExpression(AstNode* parent, AstNode** result)
     else if (token.id == TokenId::KwdIs)
     {
         auto binaryNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile, parent);
-        binaryNode->semanticFct = &SemanticJob::resolveIsExpression;
+        binaryNode->semanticFct = SemanticJob::resolveIsExpression;
         binaryNode->token       = move(token);
 
         Ast::addChildBack(binaryNode, leftNode);
@@ -356,7 +356,7 @@ bool SyntaxJob::doBoolExpression(AstNode* parent, AstNode** result)
     if ((token.id == TokenId::SymVerticalVertical) || (token.id == TokenId::SymAmpersandAmpersand))
     {
         auto binaryNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::BinaryOp, sourceFile, parent);
-        binaryNode->semanticFct = &SemanticJob::resolveBoolExpression;
+        binaryNode->semanticFct = SemanticJob::resolveBoolExpression;
         binaryNode->token       = move(token);
 
         Ast::addChildBack(binaryNode, leftNode);
@@ -383,7 +383,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile, parent);
-        boolExpression->semanticFct = &SemanticJob::resolveCompilerRun;
+        boolExpression->semanticFct = SemanticJob::resolveCompilerRun;
         SWAG_CHECK(doBoolExpression(boolExpression));
         break;
     }
@@ -392,7 +392,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::CompilerMixin, sourceFile, parent);
-        boolExpression->semanticFct = &SemanticJob::resolveCompilerMixin;
+        boolExpression->semanticFct = SemanticJob::resolveCompilerMixin;
         SWAG_CHECK(doExpression(boolExpression));
         break;
     }
@@ -422,7 +422,7 @@ bool SyntaxJob::doExpression(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
         auto triNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::QuestionExpression, sourceFile, parent);
-        triNode->semanticFct = &SemanticJob::resolveTrinaryOp;
+        triNode->semanticFct = SemanticJob::resolveTrinaryOp;
         if (result)
             *result = triNode;
         Ast::addChildBack(triNode, boolExpression);
@@ -449,7 +449,7 @@ bool SyntaxJob::doAssignmentExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
 {
     auto initNode         = Ast::newNode(this, &g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile, parent);
-    initNode->semanticFct = &SemanticJob::resolveExpressionListCurly;
+    initNode->semanticFct = SemanticJob::resolveExpressionListCurly;
     initNode->listKind    = TypeInfoListKind::Curly;
     SWAG_CHECK(tokenizer.getToken(token));
 
@@ -499,7 +499,7 @@ bool SyntaxJob::doExpressionListCurly(AstNode* parent, AstNode** result)
 bool SyntaxJob::doExpressionListArray(AstNode* parent, AstNode** result)
 {
     auto initNode         = Ast::newNode(this, &g_Pool_astExpressionList, AstNodeKind::ExpressionList, sourceFile, parent);
-    initNode->semanticFct = &SemanticJob::resolveExpressionListArray;
+    initNode->semanticFct = SemanticJob::resolveExpressionListArray;
     initNode->listKind    = TypeInfoListKind::Bracket;
     SWAG_CHECK(tokenizer.getToken(token));
 
@@ -531,7 +531,7 @@ bool SyntaxJob::doInitializationExpression(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymQuestion)
     {
         auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::ExplicitNoInit, sourceFile, parent);
-        node->semanticFct = &SemanticJob::resolveExplicitNoInit;
+        node->semanticFct = SemanticJob::resolveExplicitNoInit;
         if (parent)
             parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
         if (result)
@@ -810,7 +810,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             for (auto child : leftNode->childs)
             {
                 auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parentNode);
-                affectNode->semanticFct = &SemanticJob::resolveAffect;
+                affectNode->semanticFct = SemanticJob::resolveAffect;
                 affectNode->token       = savedtoken;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
@@ -851,7 +851,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             for (auto child : leftNode->childs)
             {
                 auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parentNode);
-                affectNode->semanticFct = &SemanticJob::resolveAffect;
+                affectNode->semanticFct = SemanticJob::resolveAffect;
                 affectNode->token       = savedtoken;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
@@ -866,7 +866,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         else
         {
             auto affectNode         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::AffectOp, sourceFile, parent);
-            affectNode->semanticFct = &SemanticJob::resolveAffect;
+            affectNode->semanticFct = SemanticJob::resolveAffect;
             affectNode->token       = move(token);
 
             Ast::addChildBack(affectNode, leftNode);
@@ -892,7 +892,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
 bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
 {
     AstInit* node     = Ast::newNode(this, &g_Pool_astInit, AstNodeKind::Init, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveInit;
+    node->semanticFct = SemanticJob::resolveInit;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
@@ -917,7 +917,7 @@ bool SyntaxJob::doInit(AstNode* parent, AstNode** result)
 bool SyntaxJob::doDrop(AstNode* parent, AstNode** result)
 {
     AstDrop* node     = Ast::newNode(this, &g_Pool_astDrop, AstNodeKind::Drop, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveDrop;
+    node->semanticFct = SemanticJob::resolveDrop;
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));

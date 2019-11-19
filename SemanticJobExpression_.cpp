@@ -7,7 +7,7 @@
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
     auto node         = context->node;
-    node->byteCodeFct = &ByteCodeGenJob::emitLiteral;
+    node->byteCodeFct = ByteCodeGenJob::emitLiteral;
     node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE;
     node->typeInfo           = node->token.literalType;
     node->computedValue.reg  = node->token.literalValue;
@@ -52,8 +52,8 @@ bool SemanticJob::resolveExpressionListCurly(SemanticContext* context)
     }
 
     typeInfo->name += "}";
-    node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
-    node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
+    node->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
+    node->byteCodeFct       = ByteCodeGenJob::emitExpressionList;
     node->typeInfo          = typeInfo;
 
     // Reserve
@@ -97,8 +97,8 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
             node->flags &= ~AST_R_VALUE;
     }
 
-    node->byteCodeBeforeFct = &ByteCodeGenJob::emitExpressionListBefore;
-    node->byteCodeFct       = &ByteCodeGenJob::emitExpressionList;
+    node->byteCodeBeforeFct = ByteCodeGenJob::emitExpressionListBefore;
+    node->byteCodeFct       = ByteCodeGenJob::emitExpressionList;
     node->typeInfo          = typeInfo;
 
     // Reserve
@@ -149,6 +149,6 @@ bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
             node->inheritComputedValue(ifFalse);
     }
 
-    node->byteCodeFct = &ByteCodeGenJob::emitTrinaryOp;
+    node->byteCodeFct = ByteCodeGenJob::emitTrinaryOp;
     return true;
 }

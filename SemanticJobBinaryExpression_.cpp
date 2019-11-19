@@ -819,7 +819,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         return true;
     }
 
-    node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
+    node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);
     node->inheritAndFlag(AST_R_VALUE);
     TypeManager::promote(left, right);
@@ -920,7 +920,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoU32, nullptr, right));
     node->typeInfo = left->typeInfo;
 
-    node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
+    node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);
     node->inheritAndFlag(AST_R_VALUE);
 
@@ -967,7 +967,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, left, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, right, CASTFLAG_AUTO_BOOL));
 
-    node->byteCodeFct = &ByteCodeGenJob::emitBinaryOp;
+    node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag(AST_CONST_EXPR);
     node->inheritAndFlag(AST_R_VALUE);
 

@@ -29,13 +29,13 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         lambdaType->kind   = TypeInfoKind::Lambda;
         lambdaType->sizeOf = sizeof(void*);
         node->typeInfo     = lambdaType;
-        node->byteCodeFct  = &ByteCodeGenJob::emitMakeLambda;
+        node->byteCodeFct  = ByteCodeGenJob::emitMakeLambda;
     }
 
     // Expression
     else
     {
-        node->byteCodeFct = &ByteCodeGenJob::emitMakePointer;
+        node->byteCodeFct = ByteCodeGenJob::emitMakePointer;
 
         auto ptrType      = g_Pool_typeInfoPointer.alloc();
         ptrType->ptrCount = 1;
@@ -116,21 +116,21 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->ptrCount != 1 || typePtr->finalType != g_TypeMgr.typeInfoVoid, context->report({arrayNode, "cannot dereference a 'void' pointer"}));
         arrayNode->typeInfo    = typePtr->finalType;
-        arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerRef;
+        arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerRef;
         break;
     }
     case TypeInfoKind::Array:
     {
         auto typePtr           = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typePtr->pointedType;
-        arrayNode->byteCodeFct = &ByteCodeGenJob::emitArrayRef;
+        arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
         break;
     }
     case TypeInfoKind::Slice:
     {
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
-        arrayNode->byteCodeFct = &ByteCodeGenJob::emitSliceRef;
+        arrayNode->byteCodeFct = ByteCodeGenJob::emitSliceRef;
         break;
     }
     case TypeInfoKind::Struct:
@@ -169,7 +169,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto arrayNode         = CastAst<AstPointerDeRef>(context->node, AstNodeKind::ArrayPointerIndex);
     auto arrayType         = TypeManager::concreteType(arrayNode->array->typeInfo);
-    arrayNode->byteCodeFct = &ByteCodeGenJob::emitPointerDeRef;
+    arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerDeRef;
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
@@ -313,7 +313,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         }
     }
 
-    node->byteCodeFct = &ByteCodeGenJob::emitInit;
+    node->byteCodeFct = ByteCodeGenJob::emitInit;
 
     return true;
 }
@@ -332,7 +332,7 @@ bool SemanticJob::resolveDrop(SemanticContext* context)
         SWAG_VERIFY(countTypeInfo->sizeOf <= 4, context->report({node->count, "'drop' count parameter should be 32 bits"}));
     }
 
-    node->byteCodeFct = &ByteCodeGenJob::emitDrop;
+    node->byteCodeFct = ByteCodeGenJob::emitDrop;
 
     return true;
 }

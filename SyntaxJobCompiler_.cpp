@@ -17,7 +17,7 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node, &node->boolExpression));
-    node->boolExpression->semanticAfterFct = &SemanticJob::resolveCompilerIf;
+    node->boolExpression->semanticAfterFct = SemanticJob::resolveCompilerIf;
 
     {
         auto block    = Ast::newNode(this, &g_Pool_astCompilerIfBlock, AstNodeKind::CompilerIfBlock, sourceFile, node);
@@ -54,7 +54,7 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerInline, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticBeforeFct = &SemanticJob::resolveCompilerInline;
+    node->semanticBeforeFct = SemanticJob::resolveCompilerInline;
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doCurlyStatement(node));
     return true;
@@ -65,7 +65,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerMixin, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticFct = &SemanticJob::resolveCompilerMixin;
+    node->semanticFct = SemanticJob::resolveCompilerMixin;
     node->token       = move(token);
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doExpression(node));
@@ -78,7 +78,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerAssert, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticFct = &SemanticJob::resolveCompilerAssert;
+    node->semanticFct = SemanticJob::resolveCompilerAssert;
     node->token       = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));
@@ -109,7 +109,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerPrint, sourceFile, parent);
     if (result)
         *result = node;
-    node->semanticFct = &SemanticJob::resolveCompilerPrint;
+    node->semanticFct = SemanticJob::resolveCompilerPrint;
     node->token       = move(token);
 
     SWAG_CHECK(tokenizer.getToken(token));

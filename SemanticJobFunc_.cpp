@@ -92,7 +92,7 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
-    node->byteCodeFct = &ByteCodeGenJob::emitFuncDeclParams;
+    node->byteCodeFct = ByteCodeGenJob::emitFuncDeclParams;
     return true;
 }
 
@@ -141,7 +141,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_INLINE))
         node->ownerScope->addPublicGenericFunc(node);
 
-    node->byteCodeFct   = &ByteCodeGenJob::emitLocalFuncDecl;
+    node->byteCodeFct   = ByteCodeGenJob::emitLocalFuncDecl;
     typeInfo->stackSize = node->stackSize;
 
     // Reserve one RR register for each return value
@@ -182,7 +182,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Can be null for intrinsics etc...
     if (node->content)
-        node->content->byteCodeBeforeFct = &ByteCodeGenJob::emitBeforeFuncDeclContent;
+        node->content->byteCodeBeforeFct = ByteCodeGenJob::emitBeforeFuncDeclContent;
 
     // Do we have a return value
     if (node->content && node->returnType && node->returnType->typeInfo != g_TypeMgr.typeInfoVoid)
@@ -407,7 +407,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR);
     node->inheritOrFlag(child, AST_IS_GENERIC);
-    node->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+    node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
     // test for concrete must be done
@@ -454,7 +454,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto node     = context->node;
     auto funcNode = node->ownerFct;
 
-    node->byteCodeFct = &ByteCodeGenJob::emitReturn;
+    node->byteCodeFct = ByteCodeGenJob::emitReturn;
 
     // Nothing to return
     if (funcNode->returnType->typeInfo == g_TypeMgr.typeInfoVoid && node->childs.empty())

@@ -20,7 +20,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
         }
         else
         {
-            node->byteCodeFct = &ByteCodeGenJob::emitCountOfProperty;
+            node->byteCodeFct = ByteCodeGenJob::emitCountOfProperty;
         }
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
@@ -32,7 +32,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        node->byteCodeFct = &ByteCodeGenJob::emitCountOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitCountOfProperty;
     }
     else if (typeInfo->kind == TypeInfoKind::TypeList)
     {
@@ -43,7 +43,7 @@ bool SemanticJob::resolveCountProperty(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        node->byteCodeFct = &ByteCodeGenJob::emitCountOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitCountOfProperty;
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
@@ -89,7 +89,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         SWAG_VERIFY(expr->typeInfo->isNative(NativeTypeKind::Any), context->report({expr, "expression is not of type 'any'"}));
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
-        node->byteCodeFct = &ByteCodeGenJob::emitKindOfProperty;
+        node->byteCodeFct = ByteCodeGenJob::emitKindOfProperty;
         SWAG_CHECK(setupIdentifierRef(context, node, node->typeInfo));
         return true;
 
@@ -121,7 +121,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*u8";
             node->typeInfo       = ptrType;
-            node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
+            node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Slice)
         {
@@ -133,7 +133,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrSlice->pointedType->name;
             node->typeInfo       = ptrType;
-            node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
+            node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->kind == TypeInfoKind::Array)
         {
@@ -145,7 +145,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + ptrArray->pointedType->name;
             node->typeInfo       = ptrType;
-            node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
+            node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
         }
         else if (expr->typeInfo->isNative(NativeTypeKind::Any))
         {
@@ -156,7 +156,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
             ptrType->sizeOf      = sizeof(void*);
             ptrType->name        = "*" + g_TypeMgr.typeInfoVoid->name;
             node->typeInfo       = ptrType;
-            node->byteCodeFct    = &ByteCodeGenJob::emitDataOfProperty;
+            node->byteCodeFct    = ByteCodeGenJob::emitDataOfProperty;
         }
         else
         {

@@ -24,7 +24,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
 
     auto identifier = Ast::newNode(this, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, nullptr);
     identifier->inheritTokenName(token);
-    identifier->semanticFct   = &SemanticJob::resolveIdentifier;
+    identifier->semanticFct   = SemanticJob::resolveIdentifier;
     identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
     if (backTick)
         identifier->flags |= AST_IDENTIFIER_BACKTICK;
@@ -59,7 +59,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, bool acceptParameters)
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result)
 {
     auto identifierRef         = Ast::newNode(this, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
-    identifierRef->semanticFct = &SemanticJob::resolveIdentifierRef;
+    identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
     if (result)
         *result = identifierRef;
 

@@ -12,7 +12,7 @@
 bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 {
     auto implNode         = Ast::newNode(this, &g_Pool_astImpl, AstNodeKind::Impl, sourceFile, parent);
-    implNode->semanticFct = &SemanticJob::resolveImpl;
+    implNode->semanticFct = SemanticJob::resolveImpl;
     if (result)
         *result = implNode;
 
@@ -49,7 +49,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
 bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 {
     auto structNode         = Ast::newNode(this, &g_Pool_astStruct, AstNodeKind::StructDecl, sourceFile, parent);
-    structNode->semanticFct = &SemanticJob::resolveStruct;
+    structNode->semanticFct = SemanticJob::resolveStruct;
     if (result)
         *result = structNode;
 
@@ -128,7 +128,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
         auto contentNode               = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content            = contentNode;
-        contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
+        contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
         SWAG_CHECK(doStructContent(contentNode));
     }

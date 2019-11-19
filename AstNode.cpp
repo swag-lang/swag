@@ -46,7 +46,7 @@ void AstNode::setPassThrough()
     semanticFct       = nullptr;
     byteCodeAfterFct  = nullptr;
     byteCodeBeforeFct = nullptr;
-    byteCodeFct       = &ByteCodeGenJob::emitPassThrough;
+    byteCodeFct       = ByteCodeGenJob::emitPassThrough;
 }
 
 void AstNode::inheritLocationFromChilds()

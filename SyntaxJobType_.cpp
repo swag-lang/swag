@@ -13,7 +13,7 @@
 bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::TypeAlias, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveTypeAlias;
+    node->semanticFct = SemanticJob::resolveTypeAlias;
     if (result)
         *result = node;
 
@@ -34,7 +34,7 @@ bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
 bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astTypeLambda, AstNodeKind::TypeLambda, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveTypeLambda;
+    node->semanticFct = SemanticJob::resolveTypeLambda;
     if (result)
         *result = node;
 
@@ -68,7 +68,7 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
 
     auto contentNode               = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, this);
     structNode->content            = contentNode;
-    contentNode->semanticBeforeFct = &SemanticJob::preResolveStruct;
+    contentNode->semanticBeforeFct = SemanticJob::preResolveStruct;
 
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
@@ -270,7 +270,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Cast, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveExplicitCast;
+    node->semanticFct = SemanticJob::resolveExplicitCast;
     if (result)
         *result = node;
 
@@ -286,7 +286,7 @@ bool SyntaxJob::doCast(AstNode* parent, AstNode** result)
 bool SyntaxJob::doAutoCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Cast, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveExplicitAutoCast;
+    node->semanticFct = SemanticJob::resolveExplicitAutoCast;
     if (result)
         *result = node;
 

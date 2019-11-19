@@ -15,7 +15,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     node->resolvedSymbolOverload = childBack->resolvedSymbolOverload;
     node->typeInfo               = childBack->typeInfo;
     node->name                   = childBack->name;
-    node->byteCodeFct            = &ByteCodeGenJob::emitIdentifierRef;
+    node->byteCodeFct            = ByteCodeGenJob::emitIdentifierRef;
 
     // Flag inheritance
     node->flags |= AST_CONST_EXPR;
@@ -352,7 +352,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto funcType           = typeInfo->clone();
             funcType->kind          = TypeInfoKind::FuncAttr;
             identifier->typeInfo    = funcType;
-            identifier->byteCodeFct = &ByteCodeGenJob::emitLambdaCall;
+            identifier->byteCodeFct = ByteCodeGenJob::emitLambdaCall;
 
             // Need to make all types compatible, in case a cast is necessary
             if (identifier->callParameters && oneMatch)
@@ -472,7 +472,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     SWAG_CHECK(makeInline(context, funcDecl, identifier));
                 }
 
-                identifier->byteCodeFct = &ByteCodeGenJob::emitPassThrough;
+                identifier->byteCodeFct = ByteCodeGenJob::emitPassThrough;
                 return true;
             }
         }
@@ -489,11 +489,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         }
 
         if (identifier->token.id == TokenId::Intrinsic)
-            identifier->byteCodeFct = &ByteCodeGenJob::emitIntrinsic;
+            identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
         else if (overload->node->attributeFlags & ATTRIBUTE_FOREIGN)
-            identifier->byteCodeFct = &ByteCodeGenJob::emitForeignCall;
+            identifier->byteCodeFct = ByteCodeGenJob::emitForeignCall;
         else
-            identifier->byteCodeFct = &ByteCodeGenJob::emitCall;
+            identifier->byteCodeFct = ByteCodeGenJob::emitCall;
 
         // Setup parent if necessary
         auto returnType = TypeManager::concreteType(identifier->typeInfo);
@@ -1006,7 +1006,7 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    node->byteCodeFct = &ByteCodeGenJob::emitIdentifier;
+    node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
@@ -1165,7 +1165,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 fctCallParam->parent      = node->callParameters;
                 fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
                 fctCallParam->token       = identifierRef->previousResolvedNode->token;
-                fctCallParam->byteCodeFct = &ByteCodeGenJob::emitFuncCallParam;
+                fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
                 Ast::removeFromParent(identifierRef->previousResolvedNode);
                 Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
             }

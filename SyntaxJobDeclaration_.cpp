@@ -8,7 +8,7 @@
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile, parent);
-    node->semanticFct = &SemanticJob::resolveUsing;
+    node->semanticFct = SemanticJob::resolveUsing;
     if (result)
         *result = node;
 
@@ -35,7 +35,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
     while (true)
     {
         namespaceNode              = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile, parent);
-        namespaceNode->semanticFct = &SemanticJob::resolveNamespace;
+        namespaceNode->semanticFct = SemanticJob::resolveNamespace;
 
         switch (token.id)
         {
@@ -138,7 +138,7 @@ bool SyntaxJob::doScopedCurlyStatement(AstNode* parent, AstNode** result)
     {
         Scoped scoped(this, newScope);
         SWAG_CHECK(doCurlyStatement(parent, &statement));
-        statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
+        statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     }
 
     if (result)
@@ -156,7 +156,7 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
     AstNode* statement;
     Scoped   scoped(this, newScope);
     SWAG_CHECK(doEmbeddedInstruction(parent, &statement));
-    statement->semanticBeforeFct = &SemanticJob::resolveScopedStmtBefore;
+    statement->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
     if (result)
         *result = statement;
     return true;
