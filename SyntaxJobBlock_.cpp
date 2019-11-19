@@ -253,7 +253,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
         return true;
     if (token.id != TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name"));
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name, identifier expected"));
         node->label = move(token.text);
 		SWAG_CHECK(eatToken());
     }
@@ -272,7 +272,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
         return true;
     if (token.id != TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name"));
+        SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name, identifier expected"));
         node->label = move(token.text);
 		SWAG_CHECK(eatToken());
     }

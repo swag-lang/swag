@@ -195,14 +195,14 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Break);
 
-	// Label has been defined : search the corresponding LabelBreakable node
+    // Label has been defined : search the corresponding LabelBreakable node
     if (!node->label.empty())
     {
         auto breakable = node->ownerBreakable;
         while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->name != node->label))
             breakable = breakable->ownerBreakable;
         SWAG_VERIFY(breakable, context->report({node, format("unknown label '%s'", node->label.c_str())}));
-		node->ownerBreakable = breakable;
+        node->ownerBreakable = breakable;
     }
 
     SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'break' can only be used inside a breakable scope"}));
@@ -216,6 +216,17 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
 bool SemanticJob::resolveContinue(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
+
+    // Label has been defined : search the corresponding LabelBreakable node
+    if (!node->label.empty())
+    {
+        auto breakable = node->ownerBreakable;
+        while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->name != node->label))
+            breakable = breakable->ownerBreakable;
+        SWAG_VERIFY(breakable, context->report({node, format("unknown label '%s'", node->label.c_str())}));
+        node->ownerBreakable = breakable;
+    }
+
     SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'continue' can only be used inside a breakable loop"}));
     SWAG_VERIFY(node->ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE, context->report({node, node->token, "'continue' can only be used inside a breakable loop"}));
     node->ownerBreakable->continueList.push_back(node);
@@ -245,6 +256,6 @@ bool SemanticJob::resolveLabel(SemanticContext* context)
         check = check->parent;
     }
 
-	node->block->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
+    node->block->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
     return true;
 }
