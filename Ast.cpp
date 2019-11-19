@@ -191,28 +191,17 @@ namespace Ast
         return source->clone(cloneContext);
     }
 
-    AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent)
+    void normalizeIdentifierName(Utf8& name)
     {
-        auto sourceFile    = job->sourceFile;
-        auto idRef         = Ast::newNode(job, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
-        idRef->semanticFct = SemanticJob::resolveIdentifierRef;
-        idRef->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
-        idRef->name        = name;
-        idRef->token       = token;
-
-        vector<string> tokens;
-        tokenize(name.c_str(), '.', tokens);
-        for (int i = 0; i < tokens.size(); i++)
+        auto len = name.length();
+        for (int i = 0; i < len; i++)
         {
-            auto id           = Ast::newNode(job, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, idRef);
-            id->semanticFct   = SemanticJob::resolveIdentifier;
-            id->byteCodeFct   = ByteCodeGenJob::emitIdentifier;
-            id->name          = tokens[i];
-            id->token         = token;
-            id->identifierRef = idRef;
+            auto& c = name[i];
+            if (c == '*')
+                c = 'P';
+            else if (c == '.')
+                c = '_';
         }
-
-        return idRef;
     }
 
     AstNode* newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob)
@@ -256,7 +245,7 @@ namespace Ast
     {
         AstVarDecl* node = Ast::newNode(syntaxJob, &g_Pool_astVarDecl, kind, sourceFile, parent);
 
-        // We need to evaluate assignment first, then type, in ordre to be able to generate the type depending on the
+        // We need to evaluate assignment first, then type, in order to be able to generate the type depending on the
         // assignment if necessary
         node->flags |= AST_REVERSE_SEMANTIC;
 
@@ -283,6 +272,28 @@ namespace Ast
         return node;
     }
 
+    AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent)
+    {
+        auto sourceFile    = job->sourceFile;
+        auto idRef         = Ast::newNode(job, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
+        idRef->semanticFct = SemanticJob::resolveIdentifierRef;
+        idRef->name        = name;
+        idRef->token       = token;
+
+        vector<string> tokens;
+        tokenize(name.c_str(), '.', tokens);
+        for (int i = 0; i < tokens.size(); i++)
+        {
+            auto id           = Ast::newNode(job, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, idRef);
+            id->semanticFct   = SemanticJob::resolveIdentifier;
+            id->name          = tokens[i];
+            id->token         = token;
+            id->identifierRef = idRef;
+        }
+
+        return idRef;
+    }
+
     AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstIdentifierRef* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
@@ -305,18 +316,5 @@ namespace Ast
         }
 
         return node;
-    }
-
-    void normalizeIdentifierName(Utf8& name)
-    {
-        auto len = name.length();
-        for (int i = 0; i < len; i++)
-        {
-            auto& c = name[i];
-            if (c == '*')
-                c = 'P';
-            else if (c == '.')
-                c = '_';
-        }
     }
 }; // namespace Ast
