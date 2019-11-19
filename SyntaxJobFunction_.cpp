@@ -97,7 +97,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
         SWAG_VERIFY(currentScope->parentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "'self' can only be used in an 'impl' block"}));
         auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
         typeNode->ptrCount   = 1;
-        typeNode->identifier = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
+        typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentScope->parentScope->name, typeNode, this);
         paramNode->type      = typeNode;
     }
     else

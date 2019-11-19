@@ -42,18 +42,15 @@ namespace Ast
         return node;
     }
 
-    extern Scope* newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
-    extern void   removeFromParent(AstNode* child);
-    extern void   addChildBack(AstNode* parent, AstNode* child);
-    extern void   addChildFront(AstNode* parent, AstNode* child);
-    extern int    findChildIndex(AstNode* parent, AstNode* child);
-    extern void   visit(AstNode* root, const function<void(AstNode*)>& fctor);
-    extern void   setForceConstType(AstNode* node);
-    extern Utf8   literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
-    extern void   normalizeIdentifierName(Utf8& name);
-
-    extern AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent);
-
+    extern Scope*   newScope(AstNode* owner, const string& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
+    extern void     removeFromParent(AstNode* child);
+    extern void     addChildBack(AstNode* parent, AstNode* child);
+    extern void     addChildFront(AstNode* parent, AstNode* child);
+    extern int      findChildIndex(AstNode* parent, AstNode* child);
+    extern void     visit(AstNode* root, const function<void(AstNode*)>& fctor);
+    extern void     setForceConstType(AstNode* node);
+    extern Utf8     literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
+    extern void     normalizeIdentifierName(Utf8& name);
     extern AstNode* clone(AstNode* source, AstNode* parent);
 
     extern AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob = nullptr);

@@ -272,28 +272,6 @@ namespace Ast
         return node;
     }
 
-    AstNode* createIdentifierRef(SyntaxJob* job, const Utf8Crc& name, const Token& token, AstNode* parent)
-    {
-        auto sourceFile    = job->sourceFile;
-        auto idRef         = Ast::newNode(job, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);
-        idRef->semanticFct = SemanticJob::resolveIdentifierRef;
-        idRef->name        = name;
-        idRef->token       = token;
-
-        vector<string> tokens;
-        tokenize(name.c_str(), '.', tokens);
-        for (int i = 0; i < tokens.size(); i++)
-        {
-            auto id           = Ast::newNode(job, &g_Pool_astIdentifier, AstNodeKind::Identifier, sourceFile, idRef);
-            id->semanticFct   = SemanticJob::resolveIdentifier;
-            id->name          = tokens[i];
-            id->token         = token;
-            id->identifierRef = idRef;
-        }
-
-        return idRef;
-    }
-
     AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, const Utf8Crc& name, AstNode* parent, SyntaxJob* syntaxJob)
     {
         AstIdentifierRef* node = Ast::newNode(syntaxJob, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, sourceFile, parent);

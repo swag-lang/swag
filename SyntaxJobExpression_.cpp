@@ -136,7 +136,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, AstNode** result)
         auto exprNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::MakePointer, sourceFile, parent);
         exprNode->inheritTokenLocation(lambda->token);
         exprNode->semanticFct  = SemanticJob::resolveMakePointer;
-        AstNode* identifierRef = Ast::createIdentifierRef(this, lambda->name, token, exprNode);
+        AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->name, exprNode, this);
         identifierRef->inheritTokenLocation(lambda->token);
         forceTakeAddress(identifierRef);
         if (result)
