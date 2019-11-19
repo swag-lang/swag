@@ -253,25 +253,28 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
 
     auto loopNode = static_cast<AstBreakable*>(node->parent);
 
-    auto inst   = emitInstruction(context, ByteCodeOp::Jump);
-    auto diff   = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
-    inst->a.s32 = diff;
+    if (node->parent->kind != AstNodeKind::LabelBreakable)
+    {
+        auto inst   = emitInstruction(context, ByteCodeOp::Jump);
+        auto diff   = loopNode->seekJumpBeforeContinue - context->bc->numInstructions;
+        inst->a.s32 = diff;
+    }
 
     loopNode->seekJumpAfterBlock = context->bc->numInstructions;
 
     // Resolve all continue instructions
     for (auto continueNode : loopNode->continueList)
     {
-        inst        = context->bc->out + continueNode->jumpInstruction;
-        diff        = loopNode->seekJumpBeforeContinue - continueNode->jumpInstruction - 1;
+        auto inst   = context->bc->out + continueNode->jumpInstruction;
+        auto diff   = loopNode->seekJumpBeforeContinue - continueNode->jumpInstruction - 1;
         inst->a.s32 = diff;
     }
 
     // Resolve all break instructions
     for (auto breakNode : loopNode->breakList)
     {
-        inst        = context->bc->out + breakNode->jumpInstruction;
-        diff        = context->bc->numInstructions - breakNode->jumpInstruction - 1;
+        auto inst   = context->bc->out + breakNode->jumpInstruction;
+        auto diff   = context->bc->numInstructions - breakNode->jumpInstruction - 1;
         inst->a.s32 = diff;
     }
 

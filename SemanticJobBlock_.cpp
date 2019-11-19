@@ -218,13 +218,19 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
 
     // Label has been defined : search the corresponding LabelBreakable node
+    AstBreakable* lastBreakable = nullptr;
     if (!node->label.empty())
     {
         auto breakable = node->ownerBreakable;
         while (breakable && (breakable->kind != AstNodeKind::LabelBreakable || breakable->name != node->label))
+        {
+            if (breakable->kind != AstNodeKind::LabelBreakable)
+                lastBreakable = breakable;
             breakable = breakable->ownerBreakable;
+        }
+
         SWAG_VERIFY(breakable, context->report({node, format("unknown label '%s'", node->label.c_str())}));
-        node->ownerBreakable = breakable;
+        node->ownerBreakable = lastBreakable;
     }
 
     SWAG_VERIFY(node->ownerBreakable, context->report({node, node->token, "'continue' can only be used inside a breakable loop"}));
