@@ -95,11 +95,10 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
     {
         SWAG_CHECK(eatToken());
         SWAG_VERIFY(currentScope->parentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "'self' can only be used in an 'impl' block"}));
-        auto typeNode         = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile, paramNode);
-        typeNode->ptrCount    = 1;
-        typeNode->semanticFct = SemanticJob::resolveTypeExpression;
-        typeNode->identifier  = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
-        paramNode->type       = typeNode;
+        auto typeNode        = Ast::newTypeExpression(sourceFile, paramNode);
+        typeNode->ptrCount   = 1;
+        typeNode->identifier = Ast::createIdentifierRef(this, currentScope->parentScope->name, token, typeNode);
+        paramNode->type      = typeNode;
     }
     else
     {
@@ -124,8 +123,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
             // ...
             if (token.id == TokenId::SymDotDotDot)
             {
-                paramNode->type                    = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile, paramNode);
-                paramNode->type->semanticFct       = SemanticJob::resolveTypeExpression;
+                paramNode->type                    = Ast::newTypeExpression(sourceFile, paramNode);
                 paramNode->type->token.literalType = g_TypeMgr.typeInfoVariadic;
                 SWAG_CHECK(tokenizer.getToken(token));
             }
@@ -137,8 +135,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent)
                 // type...
                 if (token.id == TokenId::SymDotDotDot)
                 {
-                    paramNode->type                    = Ast::newNode(this, &g_Pool_astTypeExpression, AstNodeKind::TypeExpression, sourceFile, paramNode);
-                    paramNode->type->semanticFct       = SemanticJob::resolveTypeExpression;
+                    paramNode->type                    = Ast::newTypeExpression(sourceFile, paramNode);
                     paramNode->type->token.literalType = g_TypeMgr.typeInfoVariadic;
                     SWAG_CHECK(tokenizer.getToken(token));
                     Ast::addChildBack(paramNode->type, typeExpression);
