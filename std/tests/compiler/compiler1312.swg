@@ -1,8 +1,14 @@
 //#[swag.printbc]
 #test
 {
-    loop x: 10
+    cpt := 0
+    outer:
     {
-        continue
+        defer cpt = 1
+        loop 10
+            break outer
+        @assert(false)
     }
+    
+    @assert(cpt == 1)
 }
