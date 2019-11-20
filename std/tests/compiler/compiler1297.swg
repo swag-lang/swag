@@ -1,9 +1,9 @@
-#[swag.mixin]
+#[swag.macro]
 func toto(x: code)
 {
     #inline
     {
-        #mixin x
+        #mixin `x
     }
 }
 

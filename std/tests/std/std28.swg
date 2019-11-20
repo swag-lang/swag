@@ -13,7 +13,7 @@ func visit(str: [..] u8, user: code)
 		#inline 
         {
             value := `c
-            #mixin user
+            #mixin `user
         }
 	}    
 }

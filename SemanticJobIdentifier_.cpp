@@ -182,14 +182,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     {
         newScope          = Ast::newScope(inlineNode, format("__inline%d", identifier->ownerScope->childScopes.size()), ScopeKind::Inline, identifier->ownerScope);
         inlineNode->scope = newScope;
-        if (funcDecl->attributeFlags & ATTRIBUTE_MACRO)
-        {
-            auto parentNode           = Ast::newNode(context->sourceFile, AstNodeKind::Statement, inlineNode);
-            auto stmtScope            = Ast::newScope(parentNode, "", ScopeKind::Statement, newScope);
-            stmtScope->startStackSize = identifier->ownerScope->startStackSize;
-            parentNode->ownerScope    = newScope;
-            newScope                  = stmtScope;
-        }
     }
 
     newScope->allocateSymTable();
@@ -1395,26 +1387,10 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         {
             if (!(flags & COLLECT_PASS_INLINE))
             {
-                while (scope && scope->kind != ScopeKind::Function)
+                while (scope && scope->kind != ScopeKind::Function && scope->parentScope->kind != ScopeKind::Inline)
                     scope = scope->parentScope;
-            }
-
-            flags &= ~COLLECT_PASS_INLINE;
-        }
-        else if (scope->kind == ScopeKind::InlineBlock)
-        {
-            if (!(flags & COLLECT_PASS_INLINE))
-            {
-                while (scope && scope->kind != ScopeKind::Inline && scope->kind != ScopeKind::Function)
-                    scope = scope->parentScope;
-                scopes.push_back(scope);
-                here.insert(scope);
-                if (scope->kind == ScopeKind::Inline)
-                {
-                    scopes.push_back(scope->parentScope);
-                    here.insert(scope->parentScope);
-                }
-                continue;
+				if(scope->parentScope->kind == ScopeKind::Inline)
+					scope = scope->parentScope;
             }
 
             flags &= ~COLLECT_PASS_INLINE;

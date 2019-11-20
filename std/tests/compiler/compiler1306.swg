@@ -7,7 +7,7 @@ func toto(t: s32, x: code)
     #inline
     {
         value := `xx
-        #mixin x
+        #mixin `x
     }
 }
 

@@ -40,10 +40,8 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerInline(SemanticContext* context)
 {
-    auto node             = context->node;
-    auto scope            = node->childs.back()->ownerScope;
-	if (!node->ownerInline)
-		scope->kind = ScopeKind::Inline;
+    auto node  = context->node;
+    auto scope = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
     return true;
 }
@@ -78,6 +76,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
             cloneContext.parent         = node;
             cloneContext.parentScope    = node->ownerScope;
             cloneContext.ownerBreakable = node->ownerBreakable;
+            cloneContext.ownerInline    = node->ownerInline;
             auto cloneContent           = typeCode->content->clone(cloneContext);
             cloneContent->flags &= ~AST_NO_SEMANTIC;
             node->typeInfo = cloneContent->typeInfo;

@@ -581,7 +581,7 @@ AstNode* AstCompilerInline::clone(CloneContext& context)
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::InlineBlock, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.parentScope->allocateSymTable();
 	childs.back()->clone(cloneContext);
 
