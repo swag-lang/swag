@@ -1,7 +1,7 @@
 //#[swag.printbc]
-/*#test
+#test
 {
-    cpt := 0
+    cpt := 6
     
     #inline
     {
@@ -11,5 +11,7 @@
     #inline
     {
         cpt := 0
-    }    
-}*/
+    }  
+
+    @assert(cpt == 6)    
+}

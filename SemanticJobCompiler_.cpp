@@ -40,8 +40,11 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerInline(SemanticContext* context)
 {
-    auto node                                       = context->node;
-    node->childs.back()->ownerScope->startStackSize = node->ownerScope->startStackSize;
+    auto node             = context->node;
+    auto scope            = node->childs.back()->ownerScope;
+	if (!node->ownerInline)
+		scope->kind = ScopeKind::Inline;
+    scope->startStackSize = node->ownerScope->startStackSize;
     return true;
 }
 
