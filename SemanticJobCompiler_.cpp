@@ -40,23 +40,8 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 
 bool SemanticJob::resolveCompilerInline(SemanticContext* context)
 {
-    auto node = context->node;
-
-    SWAG_VERIFY(node->ownerInline, context->report({node, node->token, "#inline can only be used inside a 'swag.macro' or 'swag.mixin' function"}));
-    auto newScope            = Ast::newScope(node, "", ScopeKind::InlineBlock, node->ownerScope);
-    newScope->startStackSize = node->ownerInline->scope->startStackSize;
-
-    CloneContext cloneContext;
-    auto         stmt = node->childs.front();
-    node->childs.clear();
-    cloneContext.parent      = node;
-    cloneContext.parentScope = newScope;
-    auto cloneContent        = stmt->clone(cloneContext);
-    context->job->nodes.pop_back();
-    context->job->nodes.push_back(cloneContent);
-    context->result = ContextResult::NewChilds;
-    stmt->releaseRec();
-
+    auto node                                       = context->node;
+    node->childs.back()->ownerScope->startStackSize = node->ownerScope->startStackSize;
     return true;
 }
 

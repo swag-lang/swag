@@ -32,6 +32,7 @@ Pool<AstInline>          g_Pool_astInline;
 Pool<AstReturn>          g_Pool_astReturn;
 Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;
 Pool<AstLabelBreakable>  g_Pool_astLabelBreakable;
+Pool<AstCompilerInline>  g_Pool_astCompilerInline;
 
 void AstNode::releaseRec()
 {
@@ -570,6 +571,20 @@ AstNode* AstReturn::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astReturn.alloc();
     newNode->copyFrom(context, this);
+    return newNode;
+}
+
+AstNode* AstCompilerInline::clone(CloneContext& context)
+{
+    auto newNode = g_Pool_astCompilerInline.alloc();
+    newNode->copyFrom(context, this, false);
+
+    auto cloneContext        = context;
+    cloneContext.parent      = newNode;
+    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::InlineBlock, context.parentScope ? context.parentScope : ownerScope);
+    cloneContext.parentScope->allocateSymTable();
+	childs.back()->clone(cloneContext);
+
     return newNode;
 }
 

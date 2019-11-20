@@ -51,11 +51,14 @@ bool SyntaxJob::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind k
 
 bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerInline, sourceFile, parent);
+    auto node = Ast::newNode(this, &g_Pool_astCompilerInline, AstNodeKind::CompilerInline, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticBeforeFct = SemanticJob::resolveCompilerInline;
     SWAG_CHECK(tokenizer.getToken(token));
+
+    auto   newScope = Ast::newScope(node, "", ScopeKind::InlineBlock, node->ownerScope);
+    Scoped scoped(this, newScope);
     SWAG_CHECK(doCurlyStatement(node));
     return true;
 }

@@ -172,7 +172,7 @@ struct AstNode : public PoolElement
         alternativeScopes.clear();
         alternativeScopesVars.clear();
         doneLeaveScopeDefer.clear();
-		doneLeaveScopeDrop.clear();
+        doneLeaveScopeDrop.clear();
     }
 
     void lock()
@@ -828,6 +828,11 @@ struct AstReturn : public AstNode
     int seekJump;
 };
 
+struct AstCompilerInline : public AstNode
+{
+    AstNode* clone(CloneContext& context) override;
+};
+
 struct AstInline : public AstNode
 {
     void reset() override
@@ -895,3 +900,4 @@ extern Pool<AstInline>          g_Pool_astInline;
 extern Pool<AstReturn>          g_Pool_astReturn;
 extern Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;
 extern Pool<AstLabelBreakable>  g_Pool_astLabelBreakable;
+extern Pool<AstCompilerInline>  g_Pool_astCompilerInline;
