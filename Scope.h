@@ -78,7 +78,7 @@ struct Scope : public PoolElement
     vector<Scope*>   childScopes;
     uint32_t         startStackSize;
     SpinLock         lockChilds;
-    vector<AstNode*> deferedNodes;
+    vector<AstNode*> deferredNodes;
     RegisterList     registersToRelease;
     uint32_t         flags;
 

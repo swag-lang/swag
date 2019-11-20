@@ -574,7 +574,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     SWAG_CHECK(doAffectExpression(node, nullptr));
 
     auto expr = node->childs.front();
-    node->ownerScope->deferedNodes.push_back(expr);
+    node->ownerScope->deferredNodes.push_back(expr);
     expr->flags |= AST_NO_BYTECODE;
 
     return true;

@@ -171,6 +171,8 @@ struct AstNode : public PoolElement
         computedValue.text.clear();
         alternativeScopes.clear();
         alternativeScopesVars.clear();
+        doneLeaveScopeDefer.clear();
+		doneLeaveScopeDrop.clear();
     }
 
     void lock()
@@ -332,6 +334,8 @@ struct AstNode : public PoolElement
     AstNodeResolveState bytecodeState;
 
     vector<AstNode*> childs;
+    set<Scope*>      doneLeaveScopeDefer;
+    set<Scope*>      doneLeaveScopeDrop;
 
     uint64_t      flags;
     uint64_t      doneFlags;
