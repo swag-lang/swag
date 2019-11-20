@@ -1036,14 +1036,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
             // Pass through the first inline if there's a back tick before the name
             if (node->flags & AST_IDENTIFIER_BACKTICK)
-            {
-                if (!node->ownerInline && (!node->ownerMainNode || node->ownerMainNode->kind != AstNodeKind::CompilerInline))
-                    return context->report({node, node->token, "back ticked identifier can only be used inside a 'swag.macro' function, a 'swag.mixin' function or an '#inline' block"});
                 collectFlags = COLLECT_PASS_INLINE;
-            }
 
             startScope = node->ownerScope;
-            collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags);
+            SWAG_CHECK(collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, collectFlags));
         }
         else
         {
@@ -1344,7 +1340,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vec
     }
 }
 
-void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;
@@ -1389,8 +1385,8 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
             {
                 while (scope && scope->kind != ScopeKind::Function && scope->parentScope->kind != ScopeKind::Inline)
                     scope = scope->parentScope;
-				if(scope->parentScope->kind == ScopeKind::Inline)
-					scope = scope->parentScope;
+                if (scope->parentScope->kind == ScopeKind::Inline)
+                    scope = scope->parentScope;
             }
 
             flags &= ~COLLECT_PASS_INLINE;
@@ -1422,6 +1418,9 @@ void SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
             }
         }
     }
+
+    SWAG_VERIFY(!(flags & COLLECT_PASS_INLINE), context->report({startNode, startNode->token, "back ticked identifier can only be used inside a 'swag.macro' function or an '#inline' block"}));
+    return true;
 }
 
 bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, SymbolKind kind)
@@ -1434,7 +1433,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
         return true;
 
     uint32_t collectFlags = COLLECT_ALL;
-    SemanticJob::collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
+    collectScopeHierarchy(context, job->cacheScopeHierarchy, job->cacheScopeHierarchyVars, node, collectFlags);
 
     for (auto scope : job->cacheScopeHierarchy)
     {
