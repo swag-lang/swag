@@ -1046,7 +1046,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             if (node->flags & AST_IDENTIFIER_BACKTICK)
             {
                 if (!node->ownerInline && (!node->ownerMainNode || node->ownerMainNode->kind != AstNodeKind::CompilerInline))
-                    return context->report({node, node->token, "back ticked identifier can only be used inside a 'swag.macro' or 'swag.mixin' function"});
+                    return context->report({node, node->token, "back ticked identifier can only be used inside a 'swag.macro' function, a 'swag.mixin' function or an '#inline' block"});
                 collectFlags = COLLECT_PASS_INLINE;
             }
 
