@@ -172,8 +172,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 {
     CloneContext cloneContext;
 
-    auto inlineNode  = Ast::newInline(context->sourceFile, identifier);
-    inlineNode->func = funcDecl;
+    auto inlineNode            = Ast::newInline(context->sourceFile, identifier);
+    inlineNode->attributeFlags = funcDecl->attributeFlags;
+    inlineNode->func           = funcDecl;
     inlineNode->alternativeScopes.push_back(funcDecl->ownerScope);
     inlineNode->scope = identifier->ownerScope;
 
@@ -1379,13 +1380,14 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         }
 
         // For an inline scope, jump right to the function
-        if (scope->kind == ScopeKind::Inline)
+        if (scope->kind == ScopeKind::Inline || scope->kind == ScopeKind::Macro)
         {
             if (!(flags & COLLECT_PASS_INLINE))
             {
+                bool wasMacro = scope->kind == ScopeKind::Macro;
                 while (scope && scope->kind != ScopeKind::Function && scope->parentScope->kind != ScopeKind::Inline)
                     scope = scope->parentScope;
-                if (scope->parentScope->kind == ScopeKind::Inline)
+                if (wasMacro && scope->parentScope->kind == ScopeKind::Inline)
                     scope = scope->parentScope;
             }
 

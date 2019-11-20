@@ -7,7 +7,7 @@ func toto(t: s32, x: code)
     xx := t
     @assert(t == 100)
     @assert(xx == 100)
-    #inline
+    #macro
     {
         value := xx // error is here
         #mixin x

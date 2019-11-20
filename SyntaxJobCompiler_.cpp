@@ -55,9 +55,10 @@ bool SyntaxJob::doCompilerInline(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     node->semanticBeforeFct = SemanticJob::resolveCompilerInline;
+
+    auto newScope = Ast::newScope(node, "", token.id == TokenId::CompilerInline ? ScopeKind::Inline : ScopeKind::Macro, node->ownerScope);
     SWAG_CHECK(tokenizer.getToken(token));
 
-    auto           newScope = Ast::newScope(node, "", ScopeKind::Inline, node->ownerScope);
     Scoped         scoped(this, newScope);
     ScopedMainNode scopedMainNode(this, node);
     SWAG_CHECK(doCurlyStatement(node));

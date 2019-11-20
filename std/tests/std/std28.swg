@@ -10,7 +10,7 @@ func visit(str: [..] u8, user: code)
 		(ptr, c) = std.utf8.getChar(ptr)
 		if !c
 			break
-		#inline 
+		#macro 
         {
             value := `c
             #mixin `user

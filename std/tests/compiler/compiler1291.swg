@@ -7,7 +7,7 @@ func visit(user: code)
 	loop 10
 	{
         c = 100
-		#inline 
+		#macro
         {
             value := `c
             #mixin `user
