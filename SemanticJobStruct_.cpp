@@ -50,13 +50,16 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (node->flags & AST_STRUCT_COMPOUND)
         job->tmpNodes = node->childs;
 
+    SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::IdentifierRef);
+    SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
+    auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Struct);
+    auto typeStruct    = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
+
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
         switch (child->kind)
         {
-        case AstNodeKind::AttrUse:
-            continue;
         case AstNodeKind::Statement:
         case AstNodeKind::CompilerIfBlock:
             SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
@@ -70,6 +73,40 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             else if (compilerIf->elseBlock)
                 job->tmpNodes.push_back(compilerIf->elseBlock);
             continue;
+        }
+
+        if (child->kind != AstNodeKind::FuncDecl)
+            continue;
+
+        // We need to search the function (as a variable) in the interface
+        auto symbolName = typeInterface->scope->symTable ? typeInterface->scope->symTable->find(child->name) : nullptr;
+        if (!symbolName)
+        {
+            Diagnostic diag{child, child->token, format("function '%s' is not part of interface '%s'", child->name.c_str(), typeInterface->name.c_str())};
+            Diagnostic note{typeInterface->structNode, typeInterface->structNode->token, format("this is the definition of interface '%s'", typeInterface->structNode->name.c_str()), DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
+        // Match function signature
+        SymbolOverload* correctOverload = nullptr;
+        for (auto overload : symbolName->overloads)
+        {
+            auto type1 = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::Lambda);
+            auto type2 = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+            if (type1->isSame(type2, ISSAME_EXACT))
+            {
+                correctOverload = overload;
+                break;
+            }
+        }
+
+        if (!correctOverload)
+        {
+            Diagnostic                diag{child, child->token, format("function '%s' has not a correct signature for interface '%s'", child->name.c_str(), typeInterface->name.c_str())};
+            vector<const Diagnostic*> notes;
+            for (auto overload : symbolName->overloads)
+                notes.push_back(new Diagnostic({overload->node, "should be", DiagnosticLevel::Note}));
+            return context->report(diag, notes);
         }
     }
 
