@@ -316,12 +316,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
     typeInfo->structNode = node;
     typeInfo->name       = format("%s", node->name.c_str());
-    if (node->attributeFlags & ATTRIBUTE_PACK)
-        node->packing = 1;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
-    uint32_t structFlags   = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
 
     vector<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
@@ -394,6 +391,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         storageIndex++;
     }
 
+    SWAG_VERIFY(!typeInfo->childs.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
+
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
@@ -401,20 +400,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             return context->report({node, node->token, format("embedded interface '%s' cannot be public", node->name.c_str())});
 
         if (!(node->flags & AST_FROM_GENERIC))
-        {
-            SWAG_VERIFY(!typeInfo->childs.empty(), context->report({node, node->token, format("struct '%s' is public and cannot be empty", node->name.c_str())}));
             node->ownerScope->addPublicStruct(node);
-        }
-    }
-
-    if (!(node->flags & AST_FROM_GENERIC))
-    {
-        typeInfo->flags |= structFlags;
-    }
-    else
-    {
-        typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
-        typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
     }
 
     // Register symbol with its type
