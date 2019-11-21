@@ -354,8 +354,18 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
     if (parameters.size() != other->parameters.size())
         return false;
-    if (stackSize != other->stackSize)
+    if (genericParameters.size() != other->genericParameters.size())
         return false;
+
+    if (isSameFlags & ISSAME_EXACT)
+    {
+        if (!returnType && other->returnType)
+            return false;
+        if (returnType && !other->returnType)
+            return false;
+        if (returnType && !returnType->isSame(other->returnType, isSameFlags))
+            return false;
+    }
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
@@ -370,6 +380,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
         if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo, isSameFlags))
             return false;
     }
+
     return true;
 }
 
