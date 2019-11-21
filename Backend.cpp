@@ -341,7 +341,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
     {
         for (auto one : scope->publicStruct)
         {
-            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
+            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
             TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
             SWAG_CHECK(emitPublicStructSwg(typeStruct, node));
         }
