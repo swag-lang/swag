@@ -370,42 +370,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
 
-        // Default value
-        if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
-            structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-
-        // Var is a struct
-        if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
-        {
-            if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-            if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
-                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-        }
-
-        // Var has an initialization
-        else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
-        {
-            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->report({varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
-
-            auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ALIAS);
-            typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
-
-            if (typeInfoAssignment->isNative(NativeTypeKind::String))
-            {
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                if (typeParam)
-                    typeParam->value.reg = varDecl->assignment->computedValue.reg;
-            }
-            else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
-            {
-                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
-                if (typeParam)
-                    typeParam->value.reg = varDecl->assignment->computedValue.reg;
-            }
-
-            structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
-        }
+        SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, "cannot initialize an interface member"}));
 
         if (!(node->flags & AST_IS_GENERIC))
         {

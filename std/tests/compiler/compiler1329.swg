@@ -1,4 +1,11 @@
+#module compiler1329
+#unittest error
+
 interface toto
 {
-    print: func()
+    print: func() = &titi
+}
+
+func titi()
+{
 }
