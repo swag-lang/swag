@@ -103,6 +103,7 @@ enum class TokenId
     KwdEnumValue,
     KwdImpl,
     KwdStruct,
+	KwdInterface,
     KwdUnion,
     KwdFunc,
     KwdAttr,

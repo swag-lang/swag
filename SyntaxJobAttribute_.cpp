@@ -123,6 +123,7 @@ bool SyntaxJob::doAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdConst:
     case TokenId::KwdEnum:
     case TokenId::KwdStruct:
+	case TokenId::KwdInterface:
     case TokenId::KwdUnion:
     case TokenId::KwdTypeAlias:
         break;
