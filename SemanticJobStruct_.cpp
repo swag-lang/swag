@@ -78,11 +78,10 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
 
 bool SemanticJob::resolveStruct(SemanticContext* context)
 {
-    auto node         = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-    auto sourceFile   = context->sourceFile;
-    auto typeInfo     = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-    auto job          = context->job;
-    bool forInterface = node->kind == AstNodeKind::InterfaceDecl;
+    auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto job        = context->job;
 
     typeInfo->structNode = node;
     typeInfo->name       = format("%s", node->name.c_str());
@@ -133,7 +132,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             if (child->parentAttributes)
                 SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
             typeInfo->childs.push_back(typeParam);
-            SWAG_VERIFY(!forInterface || typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->name.c_str())}));
         }
 
         typeParam           = typeInfo->childs[storageIndex];
@@ -285,8 +283,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // Register symbol with its type
     node->typeInfo               = typeInfo;
-    auto symbolKind              = node->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
-    node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, symbolKind);
+    node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Struct);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // We are parsing the swag module
@@ -294,21 +291,175 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         g_Workspace.swagScope.registerType(node->typeInfo);
 
     // Generate all functions associated with a struct
-    if (!forInterface)
+    if (!(typeInfo->flags & TYPEINFO_GENERIC))
     {
-        if (!(typeInfo->flags & TYPEINFO_GENERIC))
-        {
-            node->flags &= ~AST_NO_BYTECODE;
-            node->flags |= AST_NO_BYTECODE_CHILDS;
+        node->flags &= ~AST_NO_BYTECODE;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
 
-            node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-            node->byteCodeJob->sourceFile   = sourceFile;
-            node->byteCodeJob->originalNode = node;
-            node->byteCodeJob->nodes.push_back(node);
-            node->byteCodeFct = ByteCodeGenJob::emitStruct;
-            g_ThreadMgr.addJob(node->byteCodeJob);
+        node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+        node->byteCodeJob->sourceFile   = sourceFile;
+        node->byteCodeJob->originalNode = node;
+        node->byteCodeJob->nodes.push_back(node);
+        node->byteCodeFct = ByteCodeGenJob::emitStruct;
+        g_ThreadMgr.addJob(node->byteCodeJob);
+    }
+
+    return true;
+}
+
+bool SemanticJob::resolveInterface(SemanticContext* context)
+{
+    auto node       = CastAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
+    auto sourceFile = context->sourceFile;
+    auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto job        = context->job;
+
+    typeInfo->structNode = node;
+    typeInfo->name       = format("%s", node->name.c_str());
+    if (node->attributeFlags & ATTRIBUTE_PACK)
+        node->packing = 1;
+
+    uint32_t storageOffset = 0;
+    uint32_t storageIndex  = 0;
+    uint32_t structFlags   = TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+
+    vector<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
+    if (node->flags & AST_STRUCT_COMPOUND)
+        job->tmpNodes = node->content->childs;
+
+    for (int i = 0; i < childs.size(); i++)
+    {
+        auto child = childs[i];
+        switch (child->kind)
+        {
+        case AstNodeKind::AttrUse:
+            continue;
+        case AstNodeKind::Statement:
+        case AstNodeKind::CompilerIfBlock:
+            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
+            job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
+            continue;
+        case AstNodeKind::CompilerIf:
+            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
+            AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
+            if (!(compilerIf->ifBlock->flags & AST_NO_SEMANTIC))
+                job->tmpNodes.push_back(compilerIf->ifBlock);
+            else if (compilerIf->elseBlock)
+                job->tmpNodes.push_back(compilerIf->elseBlock);
+            continue;
+        }
+
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+
+        TypeInfoParam* typeParam = nullptr;
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            typeParam             = g_Pool_typeInfoParam.alloc();
+            typeParam->namedParam = child->name;
+            typeParam->name       = child->typeInfo->name;
+            typeParam->typeInfo   = child->typeInfo;
+            typeParam->sizeOf     = child->typeInfo->sizeOf;
+            typeParam->offset     = storageOffset;
+            if (child->parentAttributes)
+                SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
+            typeInfo->childs.push_back(typeParam);
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->name.c_str())}));
+        }
+
+        typeParam           = typeInfo->childs[storageIndex];
+        typeParam->typeInfo = child->typeInfo;
+        typeParam->node     = child;
+
+        // Default value
+        if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+            structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+
+        // Var is a struct
+        if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            if (varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+            if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
+                structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+        }
+
+        // Var has an initialization
+        else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
+        {
+            SWAG_VERIFY(varDecl->assignment->flags & AST_CONST_EXPR, context->report({varDecl->assignment, "cannot evaluate initialization expression at compile time"}));
+
+            auto typeInfoAssignment = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ALIAS);
+            typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);
+
+            if (typeInfoAssignment->isNative(NativeTypeKind::String))
+            {
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                if (typeParam)
+                    typeParam->value.reg = varDecl->assignment->computedValue.reg;
+            }
+            else if (typeInfoAssignment->kind != TypeInfoKind::Native || varDecl->assignment->computedValue.reg.u64)
+            {
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
+                if (typeParam)
+                    typeParam->value.reg = varDecl->assignment->computedValue.reg;
+            }
+
+            structFlags &= ~TYPEINFO_STRUCT_ALL_UNINITIALIZED;
+        }
+
+        if (!(node->flags & AST_IS_GENERIC))
+        {
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, format("cannot instanciate variable because type '%s' is generic", child->typeInfo->name.c_str())}));
+        }
+
+        ComputedValue valueNode;
+        if (typeParam->attributes.getValue("swag.offset", valueNode))
+        {
+            auto attrNode = (AstNode*) valueNode.reg.pointer;
+            return context->report({attrNode, "cannot relocate an interface member"});
+        }
+
+        typeParam->offset                            = storageOffset;
+        child->resolvedSymbolOverload->storageOffset = storageOffset;
+        child->resolvedSymbolOverload->storageIndex  = storageIndex;
+
+        typeInfo->sizeOf += child->typeInfo->sizeOf;
+        storageOffset += child->typeInfo->sizeOf;
+
+        storageIndex++;
+    }
+
+    // Check public
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (!node->ownerScope->isGlobal())
+            return context->report({node, node->token, format("embedded interface '%s' cannot be public", node->name.c_str())});
+
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            SWAG_VERIFY(!typeInfo->childs.empty(), context->report({node, node->token, format("struct '%s' is public and cannot be empty", node->name.c_str())}));
+            node->ownerScope->addPublicStruct(node);
         }
     }
+
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        typeInfo->flags |= structFlags;
+    }
+    else
+    {
+        typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_ALL_UNINITIALIZED);
+        typeInfo->flags |= (structFlags & TYPEINFO_STRUCT_HAS_INIT_VALUES);
+    }
+
+    // Register symbol with its type
+    node->typeInfo               = typeInfo;
+    node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Interface);
+    SWAG_CHECK(node->resolvedSymbolOverload);
+
+    // We are parsing the swag module
+    if (sourceFile->swagFile)
+        g_Workspace.swagScope.registerType(node->typeInfo);
 
     return true;
 }

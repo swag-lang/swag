@@ -54,10 +54,15 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         *result = structNode;
 
     // Special case
-    if (token.id == TokenId::KwdUnion)
-        structNode->packing = 0;
+	if (token.id == TokenId::KwdUnion)
+	{
+		structNode->packing = 0;
+	}
     else if (token.id == TokenId::KwdInterface)
-        structNode->kind = AstNodeKind::InterfaceDecl;
+    {
+        structNode->kind        = AstNodeKind::InterfaceDecl;
+        structNode->semanticFct = SemanticJob::resolveInterface;
+    }
 
     SWAG_CHECK(tokenizer.getToken(token));
 

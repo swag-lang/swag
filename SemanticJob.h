@@ -129,6 +129,7 @@ struct SemanticJob : public Job
     static bool pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result);
     static bool preResolveStruct(SemanticContext* context);
     static bool resolveStruct(SemanticContext* context);
+	static bool resolveInterface(SemanticContext* context);
     static bool resolveEnum(SemanticContext* context);
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);
