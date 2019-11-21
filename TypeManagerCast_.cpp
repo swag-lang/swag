@@ -1424,12 +1424,41 @@ void TypeManager::promote(AstNode* left, AstNode* right)
     promoteOne(right, left);
 }
 
+void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
+{
+    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
+    TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
+
+    SWAG_ASSERT(leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER);
+    auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
+    if (rightTypeInfo->flags & TYPEINFO_INTEGER)
+    {
+        if (rightTypeInfo->flags & TYPEINFO_UNSIGNED)
+        {
+            if (leftNative->valueInteger <= UINT8_MAX)
+                left->typeInfo = g_TypeMgr.typeInfoU8;
+            else if (leftNative->valueInteger <= UINT16_MAX)
+                left->typeInfo = g_TypeMgr.typeInfoU16;
+            else if (leftNative->valueInteger <= UINT32_MAX)
+                left->typeInfo = g_TypeMgr.typeInfoU32;
+			else
+				left->typeInfo = g_TypeMgr.typeInfoU64;
+        }
+    }
+}
+
 void TypeManager::promoteOne(AstNode* left, AstNode* right)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
     if ((leftTypeInfo->kind != TypeInfoKind::Native) || (rightTypeInfo->kind != TypeInfoKind::Native))
         return;
+
+    if ((leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER) && !(rightTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER))
+    {
+        promoteUntypedInteger(left, right);
+        leftTypeInfo = left->typeInfo;
+    }
 
     // This types do not have a promotion
     switch (leftTypeInfo->nativeType)

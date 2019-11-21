@@ -54,6 +54,7 @@ struct TypeManager
 
     static void      promote(AstNode* left, AstNode* right);
     static void      promoteOne(AstNode* left, AstNode* right);
+    static void      promoteUntypedInteger(AstNode* left, AstNode* right);
     static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
 
     TypeInfoNative*   typeInfoS8;

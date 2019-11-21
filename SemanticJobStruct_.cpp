@@ -324,7 +324,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     if (node->flags & AST_STRUCT_COMPOUND)
         job->tmpNodes = node->content->childs;
 
-    // VTABLE
+    // itable
     auto typeVTable  = g_Pool_typeInfoStruct.alloc();
     typeVTable->name = "__" + node->name + "_itable";
 
@@ -397,7 +397,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
     SWAG_VERIFY(!typeVTable->childs.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
 
-    // Struct interface, with one pointer for the data, and one pointer per vtable
+    // Struct interface, with one pointer for the data, and one pointer per itable
     if (!(node->flags & AST_FROM_GENERIC))
     {
         auto typeParam      = g_Pool_typeInfoParam.alloc();
