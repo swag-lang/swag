@@ -21,6 +21,14 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
     implNode->flags |= AST_NO_BYTECODE;
 
+	// impl TITI for TOTO syntax (interface implementation for a given struct)
+    if (token.id == TokenId::KwdFor)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
+		implNode->semanticFct = SemanticJob::resolveImplFor;
+    }
+
     // Content of impl block
     auto curly = token;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
@@ -54,10 +62,10 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         *result = structNode;
 
     // Special case
-	if (token.id == TokenId::KwdUnion)
-	{
-		structNode->packing = 0;
-	}
+    if (token.id == TokenId::KwdUnion)
+    {
+        structNode->packing = 0;
+    }
     else if (token.id == TokenId::KwdInterface)
     {
         structNode->kind        = AstNodeKind::InterfaceDecl;

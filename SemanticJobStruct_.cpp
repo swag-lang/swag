@@ -23,6 +23,31 @@ bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
     return true;
 }
 
+bool SemanticJob::resolveImplFor(SemanticContext* context)
+{
+    auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+
+    // Be sure the first identifier is an interface
+    auto typeInfo = node->identifier->typeInfo;
+    if ((typeInfo->kind != TypeInfoKind::Struct) || !(typeInfo->flags & TYPEINFO_INTERFACE))
+    {
+        Diagnostic diag{node->identifier, format("'%s' is %s and should be an interface", node->identifier->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, node->identifier->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note);
+    }
+
+	// Be sure the second identifier is a struct
+    typeInfo = node->identifierFor->typeInfo;
+    if ((typeInfo->kind != TypeInfoKind::Struct) || (typeInfo->flags & TYPEINFO_INTERFACE))
+    {
+        Diagnostic diag{node->identifierFor, format("'%s' is %s and should be a struct", node->identifierFor->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
+        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note);
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveImpl(SemanticContext* context)
 {
     auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
@@ -316,6 +341,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
     typeInfo->structNode = node;
     typeInfo->name       = format("%s", node->name.c_str());
+    typeInfo->flags |= TYPEINFO_INTERFACE;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;

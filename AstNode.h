@@ -66,7 +66,7 @@ enum class AstNodeKind
     LabelBreakable,
     EnumDecl,
     StructDecl,
-	InterfaceDecl,
+    InterfaceDecl,
     Inline,
     StructContent,
     TupleContent,
@@ -779,8 +779,9 @@ struct AstImpl : public AstNode
 {
     void reset() override
     {
-        structScope = nullptr;
-        identifier  = nullptr;
+        structScope   = nullptr;
+        identifier    = nullptr;
+        identifierFor = nullptr;
         AstNode::reset();
     }
 
@@ -788,6 +789,7 @@ struct AstImpl : public AstNode
 
     Scope*   structScope;
     AstNode* identifier;
+    AstNode* identifierFor;
 };
 
 struct AstInit : public AstNode
