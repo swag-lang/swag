@@ -352,18 +352,31 @@ void TypeInfoFuncAttr::computeName()
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
-    if (parameters.size() != other->parameters.size())
-        return false;
+	// In the case of ISSAME_INTERFACE, the first parameter of "other" does not count, as this is "self" for a function
+	// and nothing for the interface variable (we do not specify "self" in the interface definition)
+	auto offsetParam = 0;
+    if (isSameFlags & ISSAME_INTERFACE)
+    {
+		offsetParam = 1;
+        if (parameters.size() != other->parameters.size() - 1)
+            return false;
+    }
+    else
+    {
+        if (parameters.size() != other->parameters.size())
+            return false;
+    }
+
     if (genericParameters.size() != other->genericParameters.size())
         return false;
 
     if (isSameFlags & ISSAME_EXACT)
     {
-        if (!returnType && other->returnType)
+        if (!returnType && other->returnType && !other->returnType->isNative(NativeTypeKind::Void))
             return false;
-        if (returnType && !other->returnType)
+        if (returnType && !returnType->isNative(NativeTypeKind::Void) && !other->returnType)
             return false;
-        if (returnType && !returnType->isSame(other->returnType, isSameFlags))
+        if (returnType && other->returnType && !returnType->isSame(other->returnType, isSameFlags))
             return false;
     }
 
@@ -377,7 +390,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 
     for (int i = 0; i < parameters.size(); i++)
     {
-        if (!parameters[i]->typeInfo->isSame(other->parameters[i]->typeInfo, isSameFlags))
+        if (!parameters[i]->typeInfo->isSame(other->parameters[i + offsetParam]->typeInfo, isSameFlags))
             return false;
     }
 

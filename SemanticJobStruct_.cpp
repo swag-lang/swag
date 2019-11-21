@@ -78,6 +78,18 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (child->kind != AstNodeKind::FuncDecl)
             continue;
 
+        // We need to be sure function is done
+        {
+            auto symbolName = typeStruct->scope->symTable ? typeStruct->scope->symTable->find(child->name) : nullptr;
+            SWAG_ASSERT(symbolName);
+            scoped_lock lk(symbolName->mutex);
+            if (symbolName->cptOverloads)
+            {
+                job->waitForSymbolNoLock(symbolName);
+                return true;
+            }
+        }
+
         // We need to search the function (as a variable) in the interface
         auto symbolName = typeInterface->scope->symTable ? typeInterface->scope->symTable->find(child->name) : nullptr;
         if (!symbolName)
@@ -93,7 +105,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         {
             auto type1 = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::Lambda);
             auto type2 = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (type1->isSame(type2, ISSAME_EXACT))
+            if (type1->isSame(type2, ISSAME_EXACT | ISSAME_INTERFACE))
             {
                 correctOverload = overload;
                 break;
