@@ -104,6 +104,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::EnumDecl:
     case AstNodeKind::EnumValue:
     case AstNodeKind::InterfaceDecl:
+    case AstNodeKind::Impl:
         return "an " + result;
     }
 
@@ -139,6 +140,8 @@ Utf8 AstNode::getNakedKindName(AstNode* node)
         return "structure";
     case AstNodeKind::InterfaceDecl:
         return "interface";
+    case AstNodeKind::Impl:
+        return "implementation block";
     }
 
     return "<node>";

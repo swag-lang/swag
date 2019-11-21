@@ -1,0 +1,15 @@
+interface TOTO
+{
+	print: func(*TOTO)
+}
+
+struct TITI
+{
+}
+
+impl TOTO for TITI
+{
+	func print(using self)
+	{
+	}
+}

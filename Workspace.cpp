@@ -255,8 +255,10 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 auto node       = pendingJob->nodes.back();
                 if (!sourceFile->numErrors)
                 {
-                    if (pendingJob->waitingSymbolSolved)
+                    if (pendingJob->waitingSymbolSolved && !firstNode->name.empty())
                         sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
+					else if (pendingJob->waitingSymbolSolved)
+                        sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
                     else
                         sourceFile->report({node, node->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
                     sourceFile->numErrors = 0;
