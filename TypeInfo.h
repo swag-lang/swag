@@ -589,9 +589,10 @@ struct TypeInfoStruct : public TypeInfo
         return 1;
     }
 
-    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
-    TypeInfo* clone() override;
-    void      match(SymbolMatchContext& context);
+    bool           isSame(TypeInfo* to, uint32_t isSameFlags) override;
+    TypeInfo*      clone() override;
+    void           match(SymbolMatchContext& context);
+    TypeInfoParam* findChildByNameNoLock(const Utf8& name);
 
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> childs;

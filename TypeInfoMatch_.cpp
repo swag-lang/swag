@@ -499,3 +499,14 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
         return;
     matchGenericParameters(context, this, genericParameters);
 }
+
+TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& name)
+{
+    for (auto child : childs)
+    {
+        if (child->namedParam == name)
+            return child;
+    }
+
+    return nullptr;
+}

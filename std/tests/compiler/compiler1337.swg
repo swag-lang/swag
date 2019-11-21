@@ -1,3 +1,6 @@
+#module compiler1337
+#unittest error
+
 interface TOTO
 {
 	print: func()
@@ -13,8 +16,4 @@ impl TOTO for TITI
 	func print(using self)
 	{
 	}
-    
-	func print1(using self, x: s32)
-	{
-	}    
 }

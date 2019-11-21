@@ -52,9 +52,25 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::IdentifierRef);
     SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
-    auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Struct);
-    auto typeStruct    = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
+    auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Struct);
+    auto typeStruct        = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
 
+    // Be sure interface has been fully solved
+    {
+        scoped_lock lk(node->identifier->mutex);
+        if (node->identifier->resolvedSymbolName->cptOverloads)
+        {
+            job->waitForSymbolNoLock(node->identifier->resolvedSymbolName);
+            return true;
+        }
+    }
+
+    // Interface has a *void pointer as first parameter, and a pointer to the itable as the second parameter
+    // We need now the pointer to the itable
+    auto typeInterface = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->childs[1]->typeInfo, TypeInfoKind::Struct);
+
+    map<TypeInfoParam*, AstNode*> mapItToFunc;
+    map<int, AstNode*>            mapItIdxToFunc;
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
@@ -91,35 +107,48 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // We need to search the function (as a variable) in the interface
-        auto symbolName = typeInterface->scope->symTable ? typeInterface->scope->symTable->find(child->name) : nullptr;
+        auto symbolName = typeInterface->findChildByNameNoLock(child->name); // O(n) !
         if (!symbolName)
         {
-            Diagnostic diag{child, child->token, format("function '%s' is not part of interface '%s'", child->name.c_str(), typeInterface->name.c_str())};
-            Diagnostic note{typeInterface->structNode, typeInterface->structNode->token, format("this is the definition of interface '%s'", typeInterface->structNode->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{child, child->token, format("function '%s' is not part of interface '%s'", child->name.c_str(), typeBaseInterface->name.c_str())};
+            Diagnostic note{typeBaseInterface->structNode, typeBaseInterface->structNode->token, format("this is the definition of interface '%s'", typeBaseInterface->name.c_str()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
         // Match function signature
-        SymbolOverload* correctOverload = nullptr;
-        for (auto overload : symbolName->overloads)
+        auto type1 = CastTypeInfo<TypeInfoFuncAttr>(symbolName->typeInfo, TypeInfoKind::Lambda);
+        auto type2 = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+        if (!type1->isSame(type2, ISSAME_EXACT | ISSAME_INTERFACE))
         {
-            auto type1 = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::Lambda);
-            auto type2 = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-            if (type1->isSame(type2, ISSAME_EXACT | ISSAME_INTERFACE))
-            {
-                correctOverload = overload;
-                break;
-            }
+            Diagnostic diag{child, child->token, format("function '%s' has not a correct signature for interface '%s'", child->name.c_str(), typeBaseInterface->name.c_str())};
+            Diagnostic note{symbolName->node, "should be", DiagnosticLevel::Note};
+            return context->report(diag, &note);
         }
 
-        if (!correctOverload)
+        // use resolvedUserOpSymbolOverload to store the match
+        mapItToFunc[symbolName]           = child;
+        mapItIdxToFunc[symbolName->index] = child;
+    }
+
+    // Be sure every functions of the interface has been covered
+    if (mapItToFunc.size() != typeInterface->childs.size())
+    {
+        Diagnostic                diag{node, node->token, format("missing '%d' function(s) of interface '%s'", typeInterface->childs.size() - mapItToFunc.size(), typeBaseInterface->name.c_str())};
+        vector<const Diagnostic*> notes;
+
+        int idx = 0;
+        for (auto child : typeInterface->childs)
         {
-            Diagnostic                diag{child, child->token, format("function '%s' has not a correct signature for interface '%s'", child->name.c_str(), typeInterface->name.c_str())};
-            vector<const Diagnostic*> notes;
-            for (auto overload : symbolName->overloads)
-                notes.push_back(new Diagnostic({overload->node, "should be", DiagnosticLevel::Note}));
-            return context->report(diag, notes);
+            if (mapItIdxToFunc.find(idx) == mapItIdxToFunc.end())
+            {
+                auto missingNode = typeInterface->childs[idx];
+                notes.push_back(new Diagnostic({missingNode->node, missingNode->node->token, format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
+            }
+
+            idx++;
         }
+
+        return context->report(diag, notes);
     }
 
     return true;
