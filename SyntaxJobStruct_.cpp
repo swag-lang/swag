@@ -53,9 +53,11 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     if (result)
         *result = structNode;
 
-    // Structure layout
+    // Special case
     if (token.id == TokenId::KwdUnion)
         structNode->packing = 0;
+    else if (token.id == TokenId::KwdInterface)
+        structNode->flags |= AST_INTERFACE;
 
     SWAG_CHECK(tokenizer.getToken(token));
 
