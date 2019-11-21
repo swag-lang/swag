@@ -21,12 +21,14 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifier));
     implNode->flags |= AST_NO_BYTECODE;
 
-	// impl TITI for TOTO syntax (interface implementation for a given struct)
+    // impl TITI for TOTO syntax (interface implementation for a given struct)
+    auto identifierStruct = implNode->identifier;
     if (token.id == TokenId::KwdFor)
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
-		implNode->semanticFct = SemanticJob::resolveImplFor;
+        implNode->semanticFct = SemanticJob::resolveImplFor;
+        identifierStruct      = implNode->identifierFor;
     }
 
     // Content of impl block
@@ -34,7 +36,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get existing scope or create a new one
-    auto newScope = Ast::newScope(implNode, implNode->identifier->childs.front()->name, ScopeKind::Struct, currentScope, true);
+    auto newScope = Ast::newScope(implNode, identifierStruct->childs.front()->name, ScopeKind::Struct, currentScope, true);
     newScope->allocateSymTable();
     implNode->structScope = newScope;
 

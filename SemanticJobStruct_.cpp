@@ -26,6 +26,7 @@ bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 bool SemanticJob::resolveImplFor(SemanticContext* context)
 {
     auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+    auto job  = context->job;
 
     // Be sure the first identifier is an interface
     auto typeInfo = node->identifier->typeInfo;
@@ -36,13 +37,40 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         return context->report(diag, &note);
     }
 
-	// Be sure the second identifier is a struct
+    // Be sure the second identifier is a struct
     typeInfo = node->identifierFor->typeInfo;
     if ((typeInfo->kind != TypeInfoKind::Struct) || (typeInfo->flags & TYPEINFO_INTERFACE))
     {
         Diagnostic diag{node->identifierFor, format("'%s' is %s and should be a struct", node->identifierFor->name.c_str(), TypeInfo::getArticleKindName(typeInfo))};
         Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, node->identifierFor->resolvedSymbolOverload->node->token, format("this is the definition of '%s'", node->identifier->name.c_str()), DiagnosticLevel::Note};
         return context->report(diag, &note);
+    }
+
+    vector<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->childs;
+    if (node->flags & AST_STRUCT_COMPOUND)
+        job->tmpNodes = node->childs;
+
+    for (int i = 0; i < childs.size(); i++)
+    {
+        auto child = childs[i];
+        switch (child->kind)
+        {
+        case AstNodeKind::AttrUse:
+            continue;
+        case AstNodeKind::Statement:
+        case AstNodeKind::CompilerIfBlock:
+            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
+            job->tmpNodes.insert(job->tmpNodes.end(), child->childs.begin(), child->childs.end());
+            continue;
+        case AstNodeKind::CompilerIf:
+            SWAG_ASSERT(node->flags & AST_STRUCT_COMPOUND);
+            AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
+            if (!(compilerIf->ifBlock->flags & AST_NO_SEMANTIC))
+                job->tmpNodes.push_back(compilerIf->ifBlock);
+            else if (compilerIf->elseBlock)
+                job->tmpNodes.push_back(compilerIf->elseBlock);
+            continue;
+        }
     }
 
     return true;
