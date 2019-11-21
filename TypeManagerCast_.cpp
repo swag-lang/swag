@@ -1433,7 +1433,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
     auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
     if (rightTypeInfo->flags & TYPEINFO_INTEGER)
     {
-        if (rightTypeInfo->flags & TYPEINFO_UNSIGNED)
+        if ((leftNative->valueInteger > 0) && (rightTypeInfo->flags & TYPEINFO_UNSIGNED))
         {
             if (leftNative->valueInteger <= UINT8_MAX)
                 left->typeInfo = g_TypeMgr.typeInfoU8;
@@ -1443,6 +1443,17 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
                 left->typeInfo = g_TypeMgr.typeInfoU32;
 			else
 				left->typeInfo = g_TypeMgr.typeInfoU64;
+        }
+        else if (leftNative->valueInteger < 0)
+        {
+            if (leftNative->valueInteger >= INT8_MIN && leftNative->valueInteger <= INT8_MAX)
+                left->typeInfo = g_TypeMgr.typeInfoS8;
+            else if (leftNative->valueInteger >= INT16_MIN && leftNative->valueInteger <= INT16_MAX)
+                left->typeInfo = g_TypeMgr.typeInfoS16;
+            else if (leftNative->valueInteger >= INT32_MIN && leftNative->valueInteger <= INT32_MAX)
+                left->typeInfo = g_TypeMgr.typeInfoS32;
+            else
+                left->typeInfo = g_TypeMgr.typeInfoS64;
         }
     }
 }
