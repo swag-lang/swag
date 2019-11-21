@@ -133,6 +133,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             if (child->parentAttributes)
                 SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
             typeInfo->childs.push_back(typeParam);
+            SWAG_VERIFY(!forInterface || typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->name.c_str())}));
         }
 
         typeParam           = typeInfo->childs[storageIndex];
@@ -293,21 +294,21 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         g_Workspace.swagScope.registerType(node->typeInfo);
 
     // Generate all functions associated with a struct
-	if (!forInterface)
-	{
-		if (!(typeInfo->flags & TYPEINFO_GENERIC))
-		{
-			node->flags &= ~AST_NO_BYTECODE;
-			node->flags |= AST_NO_BYTECODE_CHILDS;
+    if (!forInterface)
+    {
+        if (!(typeInfo->flags & TYPEINFO_GENERIC))
+        {
+            node->flags &= ~AST_NO_BYTECODE;
+            node->flags |= AST_NO_BYTECODE_CHILDS;
 
-			node->byteCodeJob = g_Pool_byteCodeGenJob.alloc();
-			node->byteCodeJob->sourceFile = sourceFile;
-			node->byteCodeJob->originalNode = node;
-			node->byteCodeJob->nodes.push_back(node);
-			node->byteCodeFct = ByteCodeGenJob::emitStruct;
-			g_ThreadMgr.addJob(node->byteCodeJob);
-		}
-	}
+            node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+            node->byteCodeJob->sourceFile   = sourceFile;
+            node->byteCodeJob->originalNode = node;
+            node->byteCodeJob->nodes.push_back(node);
+            node->byteCodeFct = ByteCodeGenJob::emitStruct;
+            g_ThreadMgr.addJob(node->byteCodeJob);
+        }
+    }
 
     return true;
 }
