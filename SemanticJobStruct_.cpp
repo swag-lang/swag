@@ -325,8 +325,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         job->tmpNodes = node->content->childs;
 
     // VTABLE
-    auto typeVTable = g_Pool_typeInfoStruct.alloc();
-	typeVTable->name = "__" + node->name + "_itable";
+    auto typeVTable  = g_Pool_typeInfoStruct.alloc();
+    typeVTable->name = "__" + node->name + "_itable";
 
     for (auto child : childs)
     {
@@ -388,14 +388,14 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
 
-        SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void *));
+        SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void*));
         typeVTable->sizeOf += sizeof(void*);
         storageOffset += sizeof(void*);
 
         storageIndex++;
     }
 
-	SWAG_VERIFY(!typeVTable->childs.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
+    SWAG_VERIFY(!typeVTable->childs.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
 
     // Struct interface, with one pointer for the data, and one pointer per vtable
     if (!(node->flags & AST_FROM_GENERIC))
@@ -406,6 +406,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
         typeParam->offset   = 0;
         typeInfo->childs.push_back(typeParam);
+        typeInfo->sizeOf += sizeof(void*);
 
         typeParam           = g_Pool_typeInfoParam.alloc();
         typeParam->typeInfo = typeVTable;
@@ -414,6 +415,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam->offset   = sizeof(void*);
         typeParam->index    = 1;
         typeInfo->childs.push_back(typeParam);
+        typeInfo->sizeOf += sizeof(void*);
     }
 
     // Check public
