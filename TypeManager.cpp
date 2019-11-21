@@ -34,6 +34,14 @@ void TypeManager::setup()
     typeInfoNull->name   = "null";
     typeInfoNull->sizeOf = sizeof(Register);
 
+    typeInfoPVoid = new TypeInfoPointer();
+    typeInfoPVoid->reset();
+    typeInfoPVoid->finalType   = typeInfoVoid;
+    typeInfoPVoid->pointedType = typeInfoVoid;
+    typeInfoPVoid->ptrCount    = 1;
+    typeInfoPVoid->computeName();
+    typeInfoPVoid->sizeOf = sizeof(Register);
+
     typeInfoCode = new TypeInfoCode();
     typeInfoCode->reset();
 

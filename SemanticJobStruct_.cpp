@@ -324,9 +324,12 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     if (node->flags & AST_STRUCT_COMPOUND)
         job->tmpNodes = node->content->childs;
 
-    for (int i = 0; i < childs.size(); i++)
+    // VTABLE
+    auto typeVTable = g_Pool_typeInfoStruct.alloc();
+	typeVTable->name = "__" + node->name + "_itable";
+
+    for (auto child : childs)
     {
-        auto child = childs[i];
         switch (child->kind)
         {
         case AstNodeKind::AttrUse:
@@ -359,11 +362,11 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeParam->offset     = storageOffset;
             if (child->parentAttributes)
                 SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
-            typeInfo->childs.push_back(typeParam);
+            typeVTable->childs.push_back(typeParam);
             SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->name.c_str())}));
         }
 
-        typeParam           = typeInfo->childs[storageIndex];
+        typeParam           = typeVTable->childs[storageIndex];
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
 
@@ -385,13 +388,33 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         child->resolvedSymbolOverload->storageOffset = storageOffset;
         child->resolvedSymbolOverload->storageIndex  = storageIndex;
 
-        typeInfo->sizeOf += child->typeInfo->sizeOf;
-        storageOffset += child->typeInfo->sizeOf;
+        SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void *));
+        typeVTable->sizeOf += sizeof(void*);
+        storageOffset += sizeof(void*);
 
         storageIndex++;
     }
 
-    SWAG_VERIFY(!typeInfo->childs.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
+	SWAG_VERIFY(!typeVTable->childs.empty(), context->report({node, node->token, format("interface '%s' is empty", node->name.c_str())}));
+
+    // Struct interface, with one pointer for the data, and one pointer per vtable
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        auto typeParam      = g_Pool_typeInfoParam.alloc();
+        typeParam->typeInfo = g_TypeMgr.typeInfoPVoid;
+        typeParam->name     = typeParam->typeInfo->name;
+        typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
+        typeParam->offset   = 0;
+        typeInfo->childs.push_back(typeParam);
+
+        typeParam           = g_Pool_typeInfoParam.alloc();
+        typeParam->typeInfo = typeVTable;
+        typeParam->name     = typeParam->typeInfo->name;
+        typeParam->sizeOf   = typeParam->typeInfo->sizeOf;
+        typeParam->offset   = sizeof(void*);
+        typeParam->index    = 1;
+        typeInfo->childs.push_back(typeParam);
+    }
 
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
