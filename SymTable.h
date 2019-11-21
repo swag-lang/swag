@@ -64,6 +64,7 @@ enum class SymbolKind
     Attribute,
     FuncParam,
     Struct,
+	Interface,
     GenericType,
 	Label,
 };

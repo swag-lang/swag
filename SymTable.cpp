@@ -107,7 +107,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         SymbolOverload* result = nullptr;
 
         // A structure is defined the first time as incomplete (so that it can reference itself)
-        if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Function)
+        if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::Function)
         {
             for (auto resolved : symbol->overloads)
             {
@@ -203,7 +203,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         return true;
 
     // Overloads are not allowed on certain types
-    bool canOverload = kind == SymbolKind::Function || kind == SymbolKind::Attribute || kind == SymbolKind::Struct;
+    bool canOverload = kind == SymbolKind::Function || kind == SymbolKind::Attribute || kind == SymbolKind::Struct || kind == SymbolKind::Interface;
     if (!canOverload && !symbol->overloads.empty())
     {
         auto       firstOverload = symbol->overloads[0];
@@ -280,6 +280,8 @@ const char* SymTable::getArticleKindName(SymbolKind kind)
         return "a variable";
     case SymbolKind::Struct:
         return "a struct";
+    case SymbolKind::Interface:
+        return "an interface";
     case SymbolKind::GenericType:
         return "a generic type";
     }
@@ -307,6 +309,8 @@ const char* SymTable::getNakedKindName(SymbolKind kind)
         return "variable";
     case SymbolKind::Struct:
         return "struct";
+    case SymbolKind::Interface:
+        return "interface";
     case SymbolKind::GenericType:
         return "generic type";
     }

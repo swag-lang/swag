@@ -43,7 +43,6 @@ static const uint64_t AST_COMPILER_IF_DONE           = 0x00000100'00000000;
 static const uint64_t AST_AUTO_NAME                  = 0x00000200'00000000;
 static const uint64_t AST_USER_CAST                  = 0x00000400'00000000;
 static const uint64_t AST_IDENTIFIER_BACKTICK        = 0x00000800'00000000;
-static const uint64_t AST_INTERFACE                  = 0x00001000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;

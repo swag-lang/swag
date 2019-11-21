@@ -112,7 +112,8 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
             if (symName->kind != SymbolKind::Enum &&
                 symName->kind != SymbolKind::TypeAlias &&
                 symName->kind != SymbolKind::GenericType &&
-                symName->kind != SymbolKind::Struct)
+                symName->kind != SymbolKind::Struct &&
+                symName->kind != SymbolKind::Interface)
             {
                 Diagnostic diag{child->sourceFile, child->token.startLocation, child->token.endLocation, format("symbol '%s' is not a type (it's %s)", child->name.c_str(), SymTable::getArticleKindName(symName->kind))};
                 Diagnostic note{symOver->node, symOver->node->token, format("this is the definition of '%s'", symName->name.c_str()), DiagnosticLevel::Note};

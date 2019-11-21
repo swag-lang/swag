@@ -105,6 +105,7 @@ JobResult SemanticJob::execute()
                     case AstNodeKind::TypeAlias:
                     case AstNodeKind::EnumDecl:
                     case AstNodeKind::StructDecl:
+					case AstNodeKind::InterfaceDecl:
                     case AstNodeKind::CompilerAssert:
                     case AstNodeKind::CompilerPrint:
                     case AstNodeKind::CompilerRun:

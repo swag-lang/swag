@@ -57,7 +57,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     if (token.id == TokenId::KwdUnion)
         structNode->packing = 0;
     else if (token.id == TokenId::KwdInterface)
-        structNode->flags |= AST_INTERFACE;
+        structNode->kind = AstNodeKind::InterfaceDecl;
 
     SWAG_CHECK(tokenizer.getToken(token));
 
@@ -91,7 +91,8 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->scope                = newScope;
             structNode->typeInfo           = typeInfo;
             structNode->scope              = newScope;
-            structNode->resolvedSymbolName = currentScope->symTable->registerSymbolNameNoLock(&context, structNode, SymbolKind::Struct);
+            auto symbolKind                = structNode->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
+            structNode->resolvedSymbolName = currentScope->symTable->registerSymbolNameNoLock(&context, structNode, symbolKind);
         }
         else
         {

@@ -41,7 +41,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
 bool SemanticJob::preResolveStruct(SemanticContext* context)
 {
-    auto node     = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl);
+    auto node     = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     // Add generic parameters
@@ -67,20 +67,22 @@ bool SemanticJob::preResolveStruct(SemanticContext* context)
 
     // Attributes
     if (node->parentAttributes && !(node->flags & AST_FROM_GENERIC))
-        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, node, AstNodeKind::StructDecl, node->attributeFlags));
+        SWAG_CHECK(collectAttributes(context, typeInfo->attributes, node->parentAttributes, node, node->kind, node->attributeFlags));
 
     // Register symbol with its type
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Struct, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
+    auto symbolKind = node->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
+    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, symbolKind, nullptr, symbolFlags | OVERLOAD_INCOMPLETE, nullptr, 0));
 
     return true;
 }
 
 bool SemanticJob::resolveStruct(SemanticContext* context)
 {
-    auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
-    auto sourceFile = context->sourceFile;
-    auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-    auto job        = context->job;
+    auto node         = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    auto sourceFile   = context->sourceFile;
+    auto typeInfo     = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto job          = context->job;
+    bool forInterface = node->kind == AstNodeKind::InterfaceDecl;
 
     typeInfo->structNode = node;
     typeInfo->name       = format("%s", node->name.c_str());
@@ -282,7 +284,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
 
     // Register symbol with its type
     node->typeInfo               = typeInfo;
-    node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Struct);
+    auto symbolKind              = node->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
+    node->resolvedSymbolOverload = node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, symbolKind);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // We are parsing the swag module
@@ -290,18 +293,21 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         g_Workspace.swagScope.registerType(node->typeInfo);
 
     // Generate all functions associated with a struct
-    if (!(typeInfo->flags & TYPEINFO_GENERIC))
-    {
-        node->flags &= ~AST_NO_BYTECODE;
-        node->flags |= AST_NO_BYTECODE_CHILDS;
+	if (!forInterface)
+	{
+		if (!(typeInfo->flags & TYPEINFO_GENERIC))
+		{
+			node->flags &= ~AST_NO_BYTECODE;
+			node->flags |= AST_NO_BYTECODE_CHILDS;
 
-        node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
-        node->byteCodeJob->sourceFile   = sourceFile;
-        node->byteCodeJob->originalNode = node;
-        node->byteCodeJob->nodes.push_back(node);
-        node->byteCodeFct = ByteCodeGenJob::emitStruct;
-        g_ThreadMgr.addJob(node->byteCodeJob);
-    }
+			node->byteCodeJob = g_Pool_byteCodeGenJob.alloc();
+			node->byteCodeJob->sourceFile = sourceFile;
+			node->byteCodeJob->originalNode = node;
+			node->byteCodeJob->nodes.push_back(node);
+			node->byteCodeFct = ByteCodeGenJob::emitStruct;
+			g_ThreadMgr.addJob(node->byteCodeJob);
+		}
+	}
 
     return true;
 }

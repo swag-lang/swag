@@ -63,6 +63,11 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) == 0, syntaxError(token, "attribute constraint 'struct' already defined"));
             typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_STRUCT;
         }
+        else if (token.text == "interface")
+        {
+            SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_INTERFACE) == 0, syntaxError(token, "attribute constraint 'interface' already defined"));
+            typeInfo->attributeFlags |= TYPEINFO_ATTRIBUTE_INTERFACE;
+        }
         else if (token.text == "enum")
         {
             SWAG_VERIFY((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUM) == 0, syntaxError(token, "attribute constraint 'enum' already defined"));

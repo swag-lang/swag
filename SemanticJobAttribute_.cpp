@@ -13,6 +13,8 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         return true;
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_STRUCT) && (kind == AstNodeKind::StructDecl || kind == AstNodeKind::Statement))
         return true;
+    if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_INTERFACE) && kind == AstNodeKind::InterfaceDecl)
+        return true;
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUM) && (kind == AstNodeKind::EnumDecl || kind == AstNodeKind::Statement))
         return true;
     if ((typeInfo->attributeFlags & TYPEINFO_ATTRIBUTE_ENUMVALUE) && (kind == AstNodeKind::EnumValue || kind == AstNodeKind::Statement))

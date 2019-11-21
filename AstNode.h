@@ -66,6 +66,7 @@ enum class AstNodeKind
     LabelBreakable,
     EnumDecl,
     StructDecl,
+	InterfaceDecl,
     Inline,
     StructContent,
     TupleContent,
