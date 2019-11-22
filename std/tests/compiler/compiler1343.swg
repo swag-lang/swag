@@ -1,6 +1,3 @@
-#module compiler1341
-#unittest error
-
 interface TOTO
 {
 	print: func(string)
@@ -12,7 +9,7 @@ struct TITI
 
 impl TOTO for TITI
 {
-    func print(y: bool, x: string)
+    func print(me: *TITI, x: string)
     {
     }
 }

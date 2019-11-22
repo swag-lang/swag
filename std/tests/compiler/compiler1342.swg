@@ -1,4 +1,4 @@
-#module compiler1341
+#module compiler1342
 #unittest error
 
 interface TOTO
@@ -10,9 +10,13 @@ struct TITI
 {
 }
 
+struct TATA
+{
+}
+
 impl TOTO for TITI
 {
-    func print(y: bool, x: string)
+    func print(me: *TATA, x: string)
     {
     }
 }

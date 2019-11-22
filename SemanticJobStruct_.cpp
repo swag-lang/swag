@@ -124,14 +124,21 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // Match function signature
-        auto type1 = CastTypeInfo<TypeInfoFuncAttr>(symbolName->typeInfo, TypeInfoKind::Lambda);
-        auto type2 = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
-        if (!type1->isSame(type2, ISSAME_EXACT | ISSAME_INTERFACE))
+        auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(symbolName->typeInfo, TypeInfoKind::Lambda);
+        auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+        if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
             Diagnostic diag{child, child->token, format("function '%s' has not a correct signature for interface '%s'", child->name.c_str(), typeBaseInterface->name.c_str())};
             Diagnostic note{symbolName->node, "should be", DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
+
+        // First parameter in the impl block must be a pointer to the struct
+        auto firstParamType = typeFunc->parameters[0]->typeInfo;
+        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->node, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+        auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
+        SWAG_VERIFY(firstParamPtr->ptrCount == 1, context->report({typeFunc->parameters[0]->node, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->node, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
@@ -182,7 +189,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
 void SemanticJob::decreaseInterfaceCountNoLock(TypeInfoStruct* typeInfoStruct)
 {
-	SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
+    SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
     typeInfoStruct->cptRemainingInterfaces--;
     if (!typeInfoStruct->cptRemainingInterfaces)
     {

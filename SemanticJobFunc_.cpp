@@ -37,6 +37,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         funcParam->typeInfo   = param->typeInfo;
         funcParam->sizeOf     = param->typeInfo->sizeOf;
         funcParam->index      = index++;
+        funcParam->node       = nodeParam;
 
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
