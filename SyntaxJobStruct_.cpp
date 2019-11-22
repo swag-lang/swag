@@ -42,15 +42,22 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     newScope->allocateSymTable();
     implNode->structScope = newScope;
 
-	// Count number of interfaces
-	if (implInterface)
-	{
-		SWAG_ASSERT(newScope->owner->resolvedSymbolName);
-		auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
-		typeStruct->cptRemainingInterfaces++;
-		if (implNode->ownerCompilerIfBlock)
-			implNode->ownerCompilerIfBlock->interfacesCount.push_back(typeStruct);
-	}
+    // Be sure we have associated a struct typeinfo
+    {
+        scoped_lock lk1(newScope->owner->mutex);
+        auto        typeInfo = newScope->owner->typeInfo;
+        if (!typeInfo)
+            newScope->owner->typeInfo = g_Pool_typeInfoStruct.alloc();
+    }
+
+    // Count number of interfaces
+    if (implInterface)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
+        typeStruct->cptRemainingInterfaces++;
+        if (implNode->ownerCompilerIfBlock)
+            implNode->ownerCompilerIfBlock->interfacesCount.push_back(typeStruct);
+    }
 
     {
         Scoped       scoped(this, newScope);
@@ -111,12 +118,22 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
         auto        symbol = currentScope->symTable->findNoLock(structNode->name);
         if (!symbol)
         {
-            auto typeInfo = g_Pool_typeInfoStruct.alloc();
-            newScope      = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
+            newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
             newScope->allocateSymTable();
+
+            // If an 'impl' came first, then typeinfo has already been defined
+            scoped_lock     lk1(newScope->owner->mutex);
+            TypeInfoStruct* typeInfo = (TypeInfoStruct*) newScope->owner->typeInfo;
+            if (!typeInfo)
+            {
+                typeInfo                  = g_Pool_typeInfoStruct.alloc();
+                newScope->owner->typeInfo = typeInfo;
+            }
+
+            structNode->typeInfo           = newScope->owner->typeInfo;
+            newScope->owner                = structNode;
             typeInfo->name                 = structNode->name;
             typeInfo->scope                = newScope;
-            structNode->typeInfo           = typeInfo;
             structNode->scope              = newScope;
             auto symbolKind                = structNode->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
             structNode->resolvedSymbolName = currentScope->symTable->registerSymbolNameNoLock(&context, structNode, symbolKind);

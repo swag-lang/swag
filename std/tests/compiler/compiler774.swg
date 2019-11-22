@@ -1,5 +1,3 @@
-
-
 impl Point
 {
 	func opPostCopy(self)
