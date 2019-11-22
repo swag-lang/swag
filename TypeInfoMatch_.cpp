@@ -500,11 +500,11 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
     matchGenericParameters(context, this, genericParameters);
 }
 
-TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& name)
+TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
 {
     for (auto child : childs)
     {
-        if (child->namedParam == name)
+        if (child->namedParam == childName)
             return child;
     }
 

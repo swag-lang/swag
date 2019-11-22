@@ -166,6 +166,14 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         offset += sizeof(void*);
     }
 
+	// Register interface in the structure
+    auto typeParamItf        = g_Pool_typeInfoParam.alloc();
+    typeParamItf->namedParam = typeBaseInterface->name;
+    typeParamItf->offset     = itableOffset;
+    typeParamItf->typeInfo   = typeBaseInterface;
+    typeParamItf->node       = typeBaseInterface->structNode;
+    typeStruct->interfaces.push_back(typeParamItf);
+
     return true;
 }
 

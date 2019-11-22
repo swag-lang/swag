@@ -572,6 +572,7 @@ struct TypeInfoStruct : public TypeInfo
         kind = TypeInfoKind::Struct;
         genericParameters.clear();
         childs.clear();
+        interfaces.clear();
         scope             = nullptr;
         structNode        = nullptr;
         opUserPostCopyFct = nullptr;
@@ -592,10 +593,11 @@ struct TypeInfoStruct : public TypeInfo
     bool           isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo*      clone() override;
     void           match(SymbolMatchContext& context);
-    TypeInfoParam* findChildByNameNoLock(const Utf8& name);
+    TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
 
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> childs;
+    vector<TypeInfoParam*> interfaces;
     Scope*                 scope;
     AstNode*               structNode;
     ByteCode*              opInit;
