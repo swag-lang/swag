@@ -494,6 +494,9 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
 void ByteCodeGenJob::waitStructGenerated(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
+    if (typeInfoStruct->structNode->kind == AstNodeKind::InterfaceDecl)
+        return;
+
     auto        structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
     scoped_lock lk(structNode->mutex);
     if (!(structNode->flags & AST_BYTECODE_GENERATED))
