@@ -104,6 +104,11 @@ bool BackendC::emitGlobalInit()
         bufferC.addStringFormat("*(void**) (__constantseg + %d) = __constantseg + %d;\n", k.sourceOffset, k.destOffset);
     }
 
+    for (auto& k : module->constantSegment.initFuncPtr)
+    {
+		bufferC.addStringFormat("*(void**) (__constantseg + %d) = %s;\n", k.first, k.second->callName().c_str());
+    }
+
     CONCAT_FIXED_STR(bufferC, "}\n\n");
 
     // Main init fct

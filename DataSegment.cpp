@@ -165,3 +165,9 @@ void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind
     scoped_lock lk(mutexPtr);
     initPtr.push_back(ref);
 }
+
+void DataSegment::addInitPtrFunc(uint32_t offset, ByteCode* bc)
+{
+    scoped_lock lk(mutexPtr);
+    initFuncPtr[offset] = bc;
+}

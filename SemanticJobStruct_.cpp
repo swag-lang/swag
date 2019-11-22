@@ -67,10 +67,13 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Interface has a *void pointer as first parameter, and a pointer to the itable as the second parameter
     // We need now the pointer to the itable
-    auto typeInterface = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->childs[1]->typeInfo, TypeInfoKind::Struct);
+    auto     typeInterface   = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->childs[1]->typeInfo, TypeInfoKind::Struct);
+    uint32_t numFctInterface = (uint32_t) typeInterface->childs.size();
 
     map<TypeInfoParam*, AstNode*> mapItToFunc;
-    map<int, AstNode*>            mapItIdxToFunc;
+    vector<AstNode*>              mapItIdxToFunc;
+    mapItIdxToFunc.resize(numFctInterface, nullptr);
+
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
@@ -94,7 +97,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (child->kind != AstNodeKind::FuncDecl)
             continue;
 
-        // We need to be sure function is done
+        // We need to be sure function semantic is done
         {
             auto symbolName = typeStruct->scope->symTable ? typeStruct->scope->symTable->find(child->name) : nullptr;
             SWAG_ASSERT(symbolName);
@@ -105,6 +108,11 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
                 return true;
             }
         }
+
+        // We need to be have a bytecode pointer to be able to reference it in the itable
+        ByteCodeGenJob::askForByteCode(context->job, child, 0);
+        if (context->result == ContextResult::Pending)
+            return true;
 
         // We need to search the function (as a variable) in the interface
         auto symbolName = typeInterface->findChildByNameNoLock(child->name); // O(n) !
@@ -131,24 +139,31 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     }
 
     // Be sure every functions of the interface has been covered
-    if (mapItToFunc.size() != typeInterface->childs.size())
+    Diagnostic                diag{node, node->token, format("missing '%d' function(s) of interface '%s'", typeInterface->childs.size() - mapItToFunc.size(), typeBaseInterface->name.c_str())};
+    vector<const Diagnostic*> notes;
+    for (uint32_t idx = 0; idx < numFctInterface; idx++)
     {
-        Diagnostic                diag{node, node->token, format("missing '%d' function(s) of interface '%s'", typeInterface->childs.size() - mapItToFunc.size(), typeBaseInterface->name.c_str())};
-        vector<const Diagnostic*> notes;
-
-        int idx = 0;
-        for (auto child : typeInterface->childs)
+        if (mapItIdxToFunc[idx] == nullptr)
         {
-            if (mapItIdxToFunc.find(idx) == mapItIdxToFunc.end())
-            {
-                auto missingNode = typeInterface->childs[idx];
-                notes.push_back(new Diagnostic({missingNode->node, missingNode->node->token, format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
-            }
-
-            idx++;
+            auto missingNode = typeInterface->childs[idx];
+            notes.push_back(new Diagnostic({missingNode->node, missingNode->node->token, format("missing '%s'", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
         }
+    }
 
+    if (!notes.empty())
         return context->report(diag, notes);
+
+    // Construct itable in the constant segment
+    auto     module       = context->job->sourceFile->module;
+    uint32_t itableOffset = module->constantSegment.reserve(numFctInterface * sizeof(void*));
+    void**   ptrITable    = (void**) module->constantSegment.address(itableOffset);
+    auto     offset       = itableOffset;
+    for (uint32_t i = 0; i < numFctInterface; i++)
+    {
+        *ptrITable = mapItIdxToFunc[i]->bc;
+        module->constantSegment.addInitPtrFunc(offset, mapItIdxToFunc[i]->bc);
+        ptrITable++;
+        offset += sizeof(void*);
     }
 
     return true;
@@ -268,6 +283,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         typeParam           = typeInfo->childs[storageIndex];
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
+        typeParam->index    = storageIndex;
 
         // Default value
         if (!(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
@@ -501,6 +517,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam           = typeVTable->childs[storageIndex];
         typeParam->typeInfo = child->typeInfo;
         typeParam->node     = child;
+        typeParam->index    = storageIndex;
 
         SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, "cannot initialize an interface member"}));
 
