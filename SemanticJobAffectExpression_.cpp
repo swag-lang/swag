@@ -68,7 +68,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), right);
             arrayNode->structFlatParams.insert(arrayNode->structFlatParams.begin(), left);
-			node->doneFlags |= AST_DONE_FLAT_PARAMS;
+            node->doneFlags |= AST_DONE_FLAT_PARAMS;
         }
     }
 
@@ -105,9 +105,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 SWAG_CHECK(resolveUserOp(context, "opIndexAssign", "=", nullptr, left, arrayNode->structFlatParams));
             else
             {
-                if (rightTypeInfo->kind == TypeInfoKind::Struct)
+                if (rightTypeInfo == leftTypeInfo)
                 {
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
                     SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == ContextResult::Pending)
                         return true;

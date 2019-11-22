@@ -14,10 +14,10 @@ impl TOTO for TITI
 	}
 }
 
-#[swag.printbc]
+//#[swag.printbc]
 #test
 {
     var x: TOTO
     var y: TITI
-    x = y
+    //x = y
 }
