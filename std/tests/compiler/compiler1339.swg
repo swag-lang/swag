@@ -1,3 +1,6 @@
+#module compiler1339
+#unittest error
+
 interface TOTO
 {
 	print: func()
@@ -7,11 +10,15 @@ struct TITI
 {
 }
 
-impl TOTO for TITI
+const COMPILE = false
+#if COMPILE
 {
-	func print(using self)
-	{
-	}
+    impl TOTO for TITI
+    {
+        func print(using self)
+        {
+        }
+    }
 }
 
 //#[swag.printbc]

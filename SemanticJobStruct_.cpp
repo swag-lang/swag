@@ -182,6 +182,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
 void SemanticJob::decreaseInterfaceCountNoLock(TypeInfoStruct* typeInfoStruct)
 {
+	SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
     typeInfoStruct->cptRemainingInterfaces--;
     if (!typeInfoStruct->cptRemainingInterfaces)
     {
