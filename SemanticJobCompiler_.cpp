@@ -44,7 +44,7 @@ bool SemanticJob::resolveCompilerInline(SemanticContext* context)
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
-	// Be sure #macro is used inside a macro
+    // Be sure #macro is used inside a macro
     if (node->token.id == TokenId::CompilerMacro)
     {
         if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
@@ -203,9 +203,12 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
         SymTable::decreaseOverloadNoLock(symbol);
     }
 
-	// Decrease interfaces count to resolve
-	for (auto typeStruct : block->interfacesCount)
-		decreaseInterfaceCountNoLock(typeStruct);
+    // Decrease interfaces count to resolve
+    for (auto typeStruct : block->interfacesCount)
+    {
+        scoped_lock lk(typeStruct->mutex);
+        decreaseInterfaceCountNoLock(typeStruct);
+    }
 
     // Do the same for all embedded blocks
     for (auto p : block->blocks)
