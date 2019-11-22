@@ -573,14 +573,15 @@ struct TypeInfoStruct : public TypeInfo
         genericParameters.clear();
         childs.clear();
         interfaces.clear();
-        scope             = nullptr;
-        structNode        = nullptr;
-        opUserPostCopyFct = nullptr;
-        opPostCopy        = nullptr;
-        opUserPostMoveFct = nullptr;
-        opPostMove        = nullptr;
-        opUserDropFct     = nullptr;
-        opDrop            = nullptr;
+        scope                  = nullptr;
+        structNode             = nullptr;
+        opUserPostCopyFct      = nullptr;
+        opPostCopy             = nullptr;
+        opUserPostMoveFct      = nullptr;
+        opPostMove             = nullptr;
+        opUserDropFct          = nullptr;
+        opDrop                 = nullptr;
+        cptRemainingInterfaces = 0;
         attributes.reset();
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
@@ -594,6 +595,7 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfo*      clone() override;
     void           match(SymbolMatchContext& context);
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
+    bool           hasInterface(TypeInfoStruct* itf);
 
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> childs;
@@ -609,6 +611,7 @@ struct TypeInfoStruct : public TypeInfo
     ByteCode*              opDrop;
     SpinLock               mutex;
     SymbolAttributes       attributes;
+    uint32_t               cptRemainingInterfaces;
 };
 
 struct TypeInfoAlias : public TypeInfo

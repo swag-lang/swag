@@ -27,6 +27,7 @@ struct TypeInfoParam;
 struct AstBreakable;
 struct AstInline;
 struct AstStruct;
+struct TypeInfoStruct;
 enum class Property;
 enum class TypeInfoListKind;
 
@@ -859,6 +860,7 @@ struct AstCompilerIfBlock : public AstNode
     {
         symbols.clear();
         blocks.clear();
+        interfacesCount.clear();
         AstNode::reset();
     }
 
@@ -872,6 +874,7 @@ struct AstCompilerIfBlock : public AstNode
 
     vector<AstCompilerIfBlock*> blocks;
     vector<SymbolName*>         symbols;
+    vector<TypeInfoStruct*>     interfacesCount;
 };
 
 extern Pool<AstNode>            g_Pool_astNode;

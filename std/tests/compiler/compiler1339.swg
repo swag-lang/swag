@@ -19,5 +19,5 @@ impl TOTO for TITI
 {
     var x: TOTO
     var y: TITI
-    //x = y
+    x = y
 }

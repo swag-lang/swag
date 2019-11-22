@@ -22,6 +22,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     implNode->flags |= AST_NO_BYTECODE;
 
     // impl TITI for TOTO syntax (interface implementation for a given struct)
+    bool implInterface    = false;
     auto identifierStruct = implNode->identifier;
     if (token.id == TokenId::KwdFor)
     {
@@ -29,6 +30,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor));
         implNode->semanticFct = SemanticJob::resolveImplFor;
         identifierStruct      = implNode->identifierFor;
+        implInterface         = true;
     }
 
     // Content of impl block
@@ -39,6 +41,16 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     auto newScope = Ast::newScope(implNode, identifierStruct->childs.front()->name, ScopeKind::Struct, currentScope, true);
     newScope->allocateSymTable();
     implNode->structScope = newScope;
+
+	// Count number of interfaces
+	if (implInterface)
+	{
+		SWAG_ASSERT(newScope->owner->resolvedSymbolName);
+		auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
+		typeStruct->cptRemainingInterfaces++;
+		if (implNode->ownerCompilerIfBlock)
+			implNode->ownerCompilerIfBlock->interfacesCount.push_back(typeStruct);
+	}
 
     {
         Scoped       scoped(this, newScope);

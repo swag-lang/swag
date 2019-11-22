@@ -166,15 +166,42 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         offset += sizeof(void*);
     }
 
-	// Register interface in the structure
+    // Register interface in the structure
     auto typeParamItf        = g_Pool_typeInfoParam.alloc();
     typeParamItf->namedParam = typeBaseInterface->name;
     typeParamItf->offset     = itableOffset;
     typeParamItf->typeInfo   = typeBaseInterface;
     typeParamItf->node       = typeBaseInterface->structNode;
+
+    scoped_lock lk(typeStruct->mutex);
     typeStruct->interfaces.push_back(typeParamItf);
+    decreaseInterfaceCountNoLock(typeStruct);
 
     return true;
+}
+
+void SemanticJob::decreaseInterfaceCountNoLock(TypeInfoStruct* typeInfoStruct)
+{
+    typeInfoStruct->cptRemainingInterfaces--;
+    if (!typeInfoStruct->cptRemainingInterfaces)
+    {
+        scoped_lock lk(typeInfoStruct->structNode->mutex);
+        auto        structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+        for (auto job : structNode->dependentJobs.list)
+            g_ThreadMgr.addJob(job);
+        structNode->dependentJobs.clear();
+    }
+}
+
+void SemanticJob::waitForAllStructInterfaces(SemanticContext* context, TypeInfoStruct* typeInfoStruct)
+{
+    scoped_lock lk(typeInfoStruct->mutex);
+    if (typeInfoStruct->cptRemainingInterfaces == 0)
+        return;
+    scoped_lock lk1(typeInfoStruct->structNode->mutex);
+    auto        structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
+    structNode->dependentJobs.add(context->job);
+    context->job->setPending();
 }
 
 bool SemanticJob::resolveImpl(SemanticContext* context)

@@ -99,6 +99,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Struct &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return context->report({right, format("affect not allowed, '%s' is %s", rightTypeInfo->name.c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
+
         if (forStruct)
         {
             if (arrayNode)
@@ -110,6 +111,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == ContextResult::Pending)
                         return true;
+                }
+                else if (leftTypeInfo->flags & TYPEINFO_INTERFACE && rightTypeInfo->kind == TypeInfoKind::Struct)
+                {
+                    waitForAllStructInterfaces(context, CastTypeInfo<TypeInfoStruct>(rightTypeInfo, TypeInfoKind::Struct));
+                    if (context->result == ContextResult::Pending)
+                        return true;
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
                 }
                 else if (rightTypeInfo->kind == TypeInfoKind::TypeList)
                 {

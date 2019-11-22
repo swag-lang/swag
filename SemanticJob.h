@@ -54,6 +54,8 @@ struct SemanticJob : public Job
     static bool         internalError(SemanticContext* context, const char* msg, AstNode* node = nullptr);
     static bool         checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static void         waitForAllStructInterfaces(SemanticContext* context, TypeInfoStruct* typeInfoStruct);
+    static void         decreaseInterfaceCountNoLock(TypeInfoStruct* typeInfoStruct);
 
     static void enterState(AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
@@ -103,7 +105,7 @@ struct SemanticJob : public Job
     static bool resolveIndex(SemanticContext* context);
     static bool resolveBreak(SemanticContext* context);
     static bool resolveContinue(SemanticContext* context);
-	static bool resolveLabel(SemanticContext* context);
+    static bool resolveLabel(SemanticContext* context);
     static bool resolveExpressionListCurly(SemanticContext* context);
     static bool resolveExpressionListArray(SemanticContext* context);
     static bool resolveExplicitNoInit(SemanticContext* context);
@@ -126,11 +128,11 @@ struct SemanticJob : public Job
     static bool resolveIdentifier(SemanticContext* context);
     static bool resolveIdentifierRef(SemanticContext* context);
     static bool resolveImpl(SemanticContext* context);
-	static bool resolveImplFor(SemanticContext* context);
+    static bool resolveImplFor(SemanticContext* context);
     static bool pickSymbol(SemanticContext* context, AstIdentifier* node, SymbolName** result);
     static bool preResolveStruct(SemanticContext* context);
     static bool resolveStruct(SemanticContext* context);
-	static bool resolveInterface(SemanticContext* context);
+    static bool resolveInterface(SemanticContext* context);
     static bool resolveEnum(SemanticContext* context);
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);

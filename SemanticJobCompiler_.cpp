@@ -203,6 +203,10 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
         SymTable::decreaseOverloadNoLock(symbol);
     }
 
+	// Decrease interfaces count to resolve
+	for (auto typeStruct : block->interfacesCount)
+		decreaseInterfaceCountNoLock(typeStruct);
+
     // Do the same for all embedded blocks
     for (auto p : block->blocks)
         disableCompilerIfBlock(context, p);
