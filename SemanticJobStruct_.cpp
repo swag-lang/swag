@@ -190,14 +190,14 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 void SemanticJob::decreaseInterfaceCountNoLock(TypeInfoStruct* typeInfoStruct)
 {
     SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
+
     typeInfoStruct->cptRemainingInterfaces--;
     if (!typeInfoStruct->cptRemainingInterfaces)
     {
-        scoped_lock lk(typeInfoStruct->structNode->mutex);
-        auto        structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
-        for (auto job : structNode->dependentJobs.list)
+        scoped_lock lk(typeInfoStruct->scope->symTable->mutex);
+        for (auto job : typeInfoStruct->scope->dependentJobs.list)
             g_ThreadMgr.addJob(job);
-        structNode->dependentJobs.clear();
+        typeInfoStruct->scope->dependentJobs.clear();
     }
 }
 
@@ -206,9 +206,9 @@ void SemanticJob::waitForAllStructInterfaces(SemanticContext* context, TypeInfoS
     scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingInterfaces == 0)
         return;
-    scoped_lock lk1(typeInfoStruct->structNode->mutex);
-    auto        structNode = CastAst<AstStruct>(typeInfoStruct->structNode, AstNodeKind::StructDecl);
-    structNode->dependentJobs.add(context->job);
+    SWAG_ASSERT(typeInfoStruct->structNode);
+    scoped_lock lk1(typeInfoStruct->scope->symTable->mutex);
+    typeInfoStruct->scope->dependentJobs.add(context->job);
     context->job->setPending();
 }
 

@@ -3,6 +3,7 @@
 #include "Pool.h"
 #include "SpinLock.h"
 #include "RegisterList.h"
+#include "DependentJobs.h"
 struct SyntaxJob;
 struct Scope;
 struct SymTable;
@@ -22,7 +23,7 @@ enum class ScopeKind
     Breakable,
     TypeList,
     Inline,
-	Macro,
+    Macro,
 };
 
 struct AlternativeScope
@@ -81,6 +82,7 @@ struct Scope : public PoolElement
     vector<AstNode*> deferredNodes;
     RegisterList     registersToRelease;
     uint32_t         flags;
+    DependentJobs    dependentJobs;
 
     SpinLock      mutexPublic;
     set<AstNode*> publicFunc;
