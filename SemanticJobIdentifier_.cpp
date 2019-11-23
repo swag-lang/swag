@@ -279,7 +279,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
 
     case SymbolKind::Struct:
-	case SymbolKind::Interface:
+    case SymbolKind::Interface:
         parent->startScope = static_cast<TypeInfoStruct*>(identifier->typeInfo)->scope;
         identifier->flags |= AST_CONST_EXPR;
 
@@ -571,6 +571,12 @@ anotherTry:
             {
                 forStruct     = true;
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
+                typeInfo->match(job->symMatch);
+            }
+            else if (rawTypeInfo->kind == TypeInfoKind::Interface)
+            {
+                forStruct     = true;
+                auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
                 typeInfo->match(job->symMatch);
             }
             else if (rawTypeInfo->kind == TypeInfoKind::FuncAttr)
@@ -1207,7 +1213,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (symbol->kind != SymbolKind::Attribute &&
             symbol->kind != SymbolKind::Function &&
             symbol->kind != SymbolKind::Struct &&
-			symbol->kind != SymbolKind::Interface &&
+            symbol->kind != SymbolKind::Interface &&
             symbol->kind != SymbolKind::TypeAlias &&
             TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
         {
@@ -1253,7 +1259,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
         if (symbol->kind != SymbolKind::Function &&
             symbol->kind != SymbolKind::Struct &&
-			symbol->kind != SymbolKind::Interface &&
+            symbol->kind != SymbolKind::Interface &&
             symbol->kind != SymbolKind::TypeAlias)
         {
             Diagnostic diag{callParameters, callParameters->token, format("invalid generic parameters, identifier '%s' is %s and not a function or a structure", node->name.c_str(), SymTable::getArticleKindName(symbol->kind))};
@@ -1301,7 +1307,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         if (symbol->kind != SymbolKind::Attribute &&
             symbol->kind != SymbolKind::Function &&
             symbol->kind != SymbolKind::Struct &&
-			symbol->kind != SymbolKind::Interface &&
+            symbol->kind != SymbolKind::Interface &&
             overload->typeInfo->kind != TypeInfoKind::Lambda)
         {
             SWAG_ASSERT(symbol->overloads.size() == 1);

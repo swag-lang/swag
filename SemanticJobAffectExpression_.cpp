@@ -80,6 +80,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    // Cast from struct to interface
+    if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        waitForAllStructInterfaces(context, CastTypeInfo<TypeInfoStruct>(rightTypeInfo, TypeInfoKind::Struct));
+        if (context->result == ContextResult::Pending)
+            return true;
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
+    }
+
     switch (tokenId)
     {
     case TokenId::SymEqual:
@@ -111,13 +120,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     SWAG_CHECK(waitForStructUserOps(context, left));
                     if (context->result == ContextResult::Pending)
                         return true;
-                }
-                else if (leftTypeInfo->flags & TYPEINFO_INTERFACE && rightTypeInfo->kind == TypeInfoKind::Struct)
-                {
-                    waitForAllStructInterfaces(context, CastTypeInfo<TypeInfoStruct>(rightTypeInfo, TypeInfoKind::Struct));
-                    if (context->result == ContextResult::Pending)
-                        return true;
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
                 }
                 else if (rightTypeInfo->kind == TypeInfoKind::TypeList)
                 {

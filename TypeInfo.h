@@ -34,6 +34,7 @@ enum class TypeInfoKind
     Generic,
     Alias,
     Code,
+    Interface,
     Count,
 };
 
@@ -75,7 +76,7 @@ inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
 }
 
 //static const uint32_t TYPEINFO_ATTRIBUTE_FUNC           = 0x00000001;
-static const uint32_t TYPEINFO_INTERFACE                = 0x00000002;
+//static const uint32_t TYPEINFO_INTERFACE                = 0x00000002;
 static const uint32_t TYPEINFO_INTEGER                  = 0x00000004;
 static const uint32_t TYPEINFO_FLOAT                    = 0x00000008;
 static const uint32_t TYPEINFO_UNSIGNED                 = 0x00000010;
@@ -581,6 +582,7 @@ struct TypeInfoStruct : public TypeInfo
         opPostMove             = nullptr;
         opUserDropFct          = nullptr;
         opDrop                 = nullptr;
+        itable                 = nullptr;
         cptRemainingInterfaces = 0;
         attributes.reset();
         flags |= TYPEINFO_RETURN_BY_COPY;
@@ -600,6 +602,7 @@ struct TypeInfoStruct : public TypeInfo
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> childs;
     vector<TypeInfoParam*> interfaces;
+    TypeInfoStruct*        itable;
     Scope*                 scope;
     AstNode*               structNode;
     ByteCode*              opInit;

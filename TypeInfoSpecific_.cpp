@@ -487,6 +487,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->opUserDropFct     = opUserDropFct;
     newType->opDrop            = opDrop;
     newType->attributes        = attributes;
+    newType->itable            = itable;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
@@ -552,14 +553,6 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         for (int i = 0; i < childSize; i++)
         {
             if (!childs[i]->isSame(other->childs[i], isSameFlags))
-                return false;
-        }
-    }
-    else
-    {
-        if (other->flags & TYPEINFO_INTERFACE)
-        {
-            if (!hasInterface(other))
                 return false;
         }
     }
