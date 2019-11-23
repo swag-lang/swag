@@ -1152,33 +1152,49 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     SWAG_CHECK(pickSymbol(context, node, &symbol));
 
     AstNode* ufcsParam = nullptr;
-    bool     canDoUfcs = false;
-    if (symbol->kind == SymbolKind::Function)
-        canDoUfcs = true;
-    if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
-        canDoUfcs = true;
 
-    if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
+    if (node->callParameters)
     {
-        // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
-        if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+        bool canDoUfcs = false;
+        if (symbol->kind == SymbolKind::Function)
+            canDoUfcs = true;
+        if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
+            canDoUfcs = true;
+
+        if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
         {
-            if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
+            // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
+            if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                SWAG_ASSERT(identifierRef->previousResolvedNode);
-                ufcsParam = identifierRef->previousResolvedNode;
+                if (node->ownerFct && (node->ownerFct->flags & AST_IS_GENERIC))
+                {
+                    SWAG_ASSERT(identifierRef->previousResolvedNode);
+                    ufcsParam = identifierRef->previousResolvedNode;
+                }
+                else
+                {
+                    node->doneFlags |= AST_DONE_UFCS;
+                    auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+                    node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
+                    fctCallParam->parent      = node->callParameters;
+                    fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
+                    fctCallParam->token       = identifierRef->previousResolvedNode->token;
+                    fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
+                    Ast::removeFromParent(identifierRef->previousResolvedNode);
+                    Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+                }
             }
-            else
+            else if (symbol->kind == SymbolKind::Variable)
             {
-                node->doneFlags |= AST_DONE_UFCS;
-                auto fctCallParam = Ast::newNode(nullptr, &g_Pool_astFuncCallParam, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
-                node->callParameters->childs.insert(node->callParameters->childs.begin(), fctCallParam);
-                fctCallParam->parent      = node->callParameters;
-                fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
-                fctCallParam->token       = identifierRef->previousResolvedNode->token;
-                fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
-                Ast::removeFromParent(identifierRef->previousResolvedNode);
-                Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+                if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Struct)
+                {
+                    return context->report({node, node->token, format("invalid lambda call, cannot reference structure member '%s'", symbol->name.c_str())});
+                }
+
+                if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
+                {
+                    return context->report({node, format("invalid lambda call because '%s' is not a variable", identifierRef->resolvedSymbolName->name.c_str())});
+                }
             }
         }
     }
