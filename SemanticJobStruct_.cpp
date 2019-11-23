@@ -525,8 +525,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     typeITable->scope = Ast::newScope(node, node->name, ScopeKind::Struct, nullptr);
     typeITable->scope->allocateSymTable();
 
-    for (auto child : childs)
+	for (int i = 0; i < childs.size(); i++)
     {
+        auto child = childs[i];
         switch (child->kind)
         {
         case AstNodeKind::AttrUse:
