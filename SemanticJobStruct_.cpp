@@ -517,6 +517,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     // itable
     auto typeITable  = g_Pool_typeInfoStruct.alloc();
     typeITable->name = node->name;
+	typeITable->scope = Ast::newScope(node, node->name, ScopeKind::Struct, nullptr);
+	typeITable->scope->allocateSymTable();
 
     for (auto child : childs)
     {
@@ -581,8 +583,13 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
         SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void*));
         typeITable->sizeOf += sizeof(void*);
-        storageOffset += sizeof(void*);
 
+		// Register lambda variable in the scope of the itable struct
+        auto overload = child->resolvedSymbolOverload;
+        auto symTable = typeITable->scope->symTable;
+        symTable->addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset);
+
+        storageOffset += sizeof(void*);
         storageIndex++;
     }
 
@@ -616,8 +623,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         if (!node->ownerScope->isGlobal())
             return context->report({node, node->token, format("embedded interface '%s' cannot be public", node->name.c_str())});
 
-		if (!(node->flags & AST_FROM_GENERIC))
-			node->ownerScope->addPublicStruct(node);
+        if (!(node->flags & AST_FROM_GENERIC))
+            node->ownerScope->addPublicStruct(node);
     }
 
     // Register symbol with its type

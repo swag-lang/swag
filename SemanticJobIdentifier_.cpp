@@ -90,6 +90,14 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
         node->typeInfo            = typeInfo;
         break;
 
+    case TypeInfoKind::Interface:
+    {
+        auto typeStruct           = static_cast<TypeInfoStruct*>(typeInfo);
+        identifierRef->startScope = typeStruct->itable->scope;
+        node->typeInfo            = typeInfo;
+        break;
+    }
+
     case TypeInfoKind::Struct:
         identifierRef->startScope = static_cast<TypeInfoStruct*>(typeInfo)->scope;
         node->typeInfo            = typeInfo;

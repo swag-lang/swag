@@ -160,6 +160,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
             emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
         }
+        else if (typeInfo->kind == TypeInfoKind::Interface)
+        {
+            reserveLinearRegisterRC(context, node->resultRegisterRC, 2);
+            emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[0])->b.u32 = resolved->storageOffset;
+            emitInstruction(context, ByteCodeOp::RAFromStack64, node->resultRegisterRC[1])->b.u32 = resolved->storageOffset + 8;
+        }
         else
         {
             ByteCodeInstruction* inst;
