@@ -1180,8 +1180,19 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     fctCallParam->typeInfo    = identifierRef->previousResolvedNode->typeInfo;
                     fctCallParam->token       = identifierRef->previousResolvedNode->token;
                     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
-                    Ast::removeFromParent(identifierRef->previousResolvedNode);
-                    Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+                    if (symbol->kind == SymbolKind::Variable)
+                    {
+						// Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
+                        auto idRef            = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
+                        auto copyId           = (AstIdentifier*) Ast::clone(identifierRef->previousResolvedNode, idRef);
+                        idRef->byteCodeFct    = ByteCodeGenJob::emitIdentifierRef;
+                        copyId->identifierRef = idRef;
+                    }
+                    else
+                    {
+                        Ast::removeFromParent(identifierRef->previousResolvedNode);
+                        Ast::addChildBack(fctCallParam, identifierRef->previousResolvedNode);
+                    }
                 }
             }
             else if (symbol->kind == SymbolKind::Variable)
