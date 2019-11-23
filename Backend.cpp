@@ -239,7 +239,10 @@ bool Backend::emitPublicTypeAliasSwg(AstNode* node)
 
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
-    CONCAT_FIXED_STR(bufferSwg, "\tstruct");
+	if(node->kind == AstNodeKind::InterfaceDecl)
+		CONCAT_FIXED_STR(bufferSwg, "\tinterface");
+	else
+		CONCAT_FIXED_STR(bufferSwg, "\tstruct");
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
