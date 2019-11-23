@@ -43,6 +43,8 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a variadic";
     case TypeInfoKind::Struct:
         return "a struct";
+    case TypeInfoKind::Interface:
+        return "an interface";
     case TypeInfoKind::Generic:
         return "a generic type";
     case TypeInfoKind::Alias:
@@ -81,6 +83,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "variadic";
     case TypeInfoKind::Struct:
         return "struct";
+    case TypeInfoKind::Interface:
+        return "interface";
     case TypeInfoKind::Generic:
         return "generic type";
     case TypeInfoKind::Alias:

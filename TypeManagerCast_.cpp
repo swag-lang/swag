@@ -1441,8 +1441,8 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
                 left->typeInfo = g_TypeMgr.typeInfoU16;
             else if (leftNative->valueInteger <= UINT32_MAX)
                 left->typeInfo = g_TypeMgr.typeInfoU32;
-			else
-				left->typeInfo = g_TypeMgr.typeInfoU64;
+            else
+                left->typeInfo = g_TypeMgr.typeInfoU64;
         }
         else if (leftNative->valueInteger < 0)
         {
@@ -1794,6 +1794,22 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         fromType = ((TypeInfoVariadic*) fromType)->rawType;
     if (toType->kind == TypeInfoKind::TypedVariadic)
         toType = ((TypeInfoVariadic*) toType)->rawType;
+
+    // Struct to interface
+    if (toType->kind == TypeInfoKind::Interface && fromType->kind == TypeInfoKind::Struct)
+    {
+        auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
+        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        if (!fromTypeStruct->hasInterface(toTypeItf))
+            return castError(context, toType, fromType, fromNode, castFlags);
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+			fromNode->castedTypeInfo = fromType;
+			fromNode->typeInfo = toTypeItf;
+        }
+
+		return true;
+    }
 
     // Const mismatch
     if (!toType->isConst() && fromType->isConst() && !toType->isNative(NativeTypeKind::String))
