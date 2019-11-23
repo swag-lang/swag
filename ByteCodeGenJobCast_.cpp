@@ -560,6 +560,33 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     return false;
 }
 
+bool ByteCodeGenJob::emitCastInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+{
+    auto node      = context->node;
+    auto toTypeItf = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Interface);
+
+    if (fromTypeInfo->kind == TypeInfoKind::Struct)
+    {
+        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct);
+        auto itf            = fromTypeStruct->hasInterface(toTypeItf);
+        SWAG_ASSERT(itf);
+
+        RegisterList r0;
+        reserveLinearRegisterRC(context, r0, 2);
+
+        emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = itf->offset;
+
+        freeRegisterRC(context, exprNode);
+        node->resultRegisterRC     = r0;
+        exprNode->resultRegisterRC = r0;
+        return true;
+    }
+
+    internalError(context, "emitCastInterface, invalid type");
+    return false;
+}
+
 bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node        = context->node;
@@ -567,8 +594,8 @@ bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, AstNode* exprNod
 
     if (fromTypeInfo == g_TypeMgr.typeInfoNull)
     {
-		node->resultRegisterRC = exprNode->resultRegisterRC;
-	}
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+    }
     else if (fromTypeInfo->kind == TypeInfoKind::Slice)
     {
         auto fromTypeSlice     = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
@@ -652,6 +679,13 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
         SWAG_CHECK(emitCastSlice(context, exprNode, typeInfo, fromTypeInfo));
+        exprNode->castedTypeInfo = nullptr;
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Interface)
+    {
+        SWAG_CHECK(emitCastInterface(context, exprNode, typeInfo, fromTypeInfo));
         exprNode->castedTypeInfo = nullptr;
         return true;
     }

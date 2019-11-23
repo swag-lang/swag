@@ -511,13 +511,13 @@ TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
     return nullptr;
 }
 
-bool TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
+TypeInfoParam* TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
 {
     for (auto child : interfaces)
     {
         if (child->typeInfo == itf)
-            return true;
+            return child;
     }
 
-    return false;
+    return nullptr;
 }
