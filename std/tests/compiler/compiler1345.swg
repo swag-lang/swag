@@ -7,19 +7,22 @@ struct TITI
 {
 }
 
+var G: bool
+
 impl TOTO for TITI
 {
+    //#[swag.printbc]
     func print(using self, x: string)
     {
-        //@print(x)
+        G = true
     }
 }
 
 //#[swag.printbc]
 #test
 {
-    var x: TOTO
+    G = false
     var y: TITI
-    x = y
-    //y.print("toto\n")
+    TITI.print(y, "toto\n")
+    @assert(G == true)
 }
