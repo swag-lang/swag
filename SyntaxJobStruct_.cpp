@@ -224,6 +224,8 @@ bool SyntaxJob::doStructContent(AstNode* parent)
         else
         {
             SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
+			if (!waitCurly)
+				break;
         }
     }
 
