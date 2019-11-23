@@ -516,7 +516,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
     // itable
     auto typeITable  = g_Pool_typeInfoStruct.alloc();
-    typeITable->name = "__" + node->name + "_itable";
+    typeITable->name = node->name;
 
     for (auto child : childs)
     {
@@ -616,8 +616,8 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         if (!node->ownerScope->isGlobal())
             return context->report({node, node->token, format("embedded interface '%s' cannot be public", node->name.c_str())});
 
-        if (!(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicStruct(node);
+		if (!(node->flags & AST_FROM_GENERIC))
+			node->ownerScope->addPublicStruct(node);
     }
 
     // Register symbol with its type

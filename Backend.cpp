@@ -9,30 +9,30 @@
 void Backend::emitSeparator(Concat& buffer, const char* title)
 {
     int len = (int) strlen(title);
-	CONCAT_FIXED_STR(buffer, "/*");
+    CONCAT_FIXED_STR(buffer, "/*");
     int maxLen = 80;
 
     int i = 0;
     for (; i < 4; i++)
-		CONCAT_FIXED_STR(buffer, "#");
-	CONCAT_FIXED_STR(buffer, " ");
+        CONCAT_FIXED_STR(buffer, "#");
+    CONCAT_FIXED_STR(buffer, " ");
     buffer.addString(title);
-	CONCAT_FIXED_STR(buffer, " ");
+    CONCAT_FIXED_STR(buffer, " ");
     i += len + 2;
 
     for (; i < maxLen; i++)
-		CONCAT_FIXED_STR(buffer, "#");
-	CONCAT_FIXED_STR(buffer, "*/\n");
+        CONCAT_FIXED_STR(buffer, "#");
+    CONCAT_FIXED_STR(buffer, "*/\n");
 }
 
 bool Backend::emitAttributes(AstNode* node)
 {
     if (node->flags & AST_CONST_EXPR)
-		CONCAT_FIXED_STR(bufferSwg, "\t#[constexpr]\n");
+        CONCAT_FIXED_STR(bufferSwg, "\t#[constexpr]\n");
     if (node->attributeFlags & ATTRIBUTE_INLINE)
-		CONCAT_FIXED_STR(bufferSwg, "\t#[inline]\n");
+        CONCAT_FIXED_STR(bufferSwg, "\t#[inline]\n");
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
-		CONCAT_FIXED_STR(bufferSwg, "\t#[complete]\n");
+        CONCAT_FIXED_STR(bufferSwg, "\t#[complete]\n");
     return true;
 }
 
@@ -47,39 +47,39 @@ bool Backend::emitAttributes(TypeInfoParam* param)
 
 bool Backend::emitGenericParameters(AstNode* node)
 {
-	CONCAT_FIXED_STR(bufferSwg, "(");
+    CONCAT_FIXED_STR(bufferSwg, "(");
     int idx = 0;
     for (auto p : node->childs)
     {
         if (idx)
-			CONCAT_FIXED_STR(bufferSwg, ", ");
+            CONCAT_FIXED_STR(bufferSwg, ", ");
         bufferSwg.addString(p->name);
 
         AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
         if (varDecl->type)
         {
-			CONCAT_FIXED_STR(bufferSwg, ": ");
+            CONCAT_FIXED_STR(bufferSwg, ": ");
             SWAG_CHECK(Ast::output(bufferSwg, varDecl->type));
         }
 
         if (varDecl->assignment)
         {
-			CONCAT_FIXED_STR(bufferSwg, " = ");
+            CONCAT_FIXED_STR(bufferSwg, " = ");
             SWAG_CHECK(Ast::output(bufferSwg, varDecl->assignment));
         }
 
         idx++;
     }
 
-	CONCAT_FIXED_STR(bufferSwg, ")");
+    CONCAT_FIXED_STR(bufferSwg, ")");
     return true;
 }
 
 bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
-	CONCAT_FIXED_STR(bufferSwg, "func ");
+    CONCAT_FIXED_STR(bufferSwg, "func ");
     bufferSwg.addString(node->name.c_str());
-	CONCAT_FIXED_STR(bufferSwg, "(");
+    CONCAT_FIXED_STR(bufferSwg, "(");
 
     if (node->parameters)
     {
@@ -89,28 +89,28 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             bufferSwg.addString(p->name);
             if (p->name != "self")
             {
-				CONCAT_FIXED_STR(bufferSwg, ": ");
+                CONCAT_FIXED_STR(bufferSwg, ": ");
                 bufferSwg.addString(p->typeInfo->name);
             }
 
             AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
             if (varDecl->assignment)
             {
-				CONCAT_FIXED_STR(bufferSwg, " = ");
+                CONCAT_FIXED_STR(bufferSwg, " = ");
                 Ast::output(bufferSwg, varDecl->assignment);
             }
 
             if (idx != node->parameters->childs.size() - 1)
-				CONCAT_FIXED_STR(bufferSwg, ", ");
+                CONCAT_FIXED_STR(bufferSwg, ", ");
             idx++;
         }
     }
 
-	CONCAT_FIXED_STR(bufferSwg, ")");
+    CONCAT_FIXED_STR(bufferSwg, ")");
 
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-		CONCAT_FIXED_STR(bufferSwg, "->");
+        CONCAT_FIXED_STR(bufferSwg, "->");
         if (typeFunc->returnType->kind == TypeInfoKind::Struct)
         {
             // Just to remove the "const"
@@ -121,21 +121,21 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             bufferSwg.addString(typeFunc->returnType->name);
     }
 
-	CONCAT_FIXED_STR(bufferSwg, ";");
-	CONCAT_FIXED_STR(bufferSwg, "\n");
+    CONCAT_FIXED_STR(bufferSwg, ";");
+    CONCAT_FIXED_STR(bufferSwg, "\n");
     return true;
 }
 
 bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     SWAG_CHECK(emitAttributes(node));
-	CONCAT_FIXED_STR(bufferSwg, "\tfunc");
+    CONCAT_FIXED_STR(bufferSwg, "\tfunc");
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
-	CONCAT_FIXED_STR(bufferSwg, " ");
+    CONCAT_FIXED_STR(bufferSwg, " ");
     bufferSwg.addString(node->name.c_str());
-	CONCAT_FIXED_STR(bufferSwg, "(");
+    CONCAT_FIXED_STR(bufferSwg, "(");
 
     uint32_t idx = 0;
     if (node->parameters)
@@ -143,82 +143,82 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
         for (auto p : node->parameters->childs)
         {
             if (p->flags & AST_DECL_USING)
-				CONCAT_FIXED_STR(bufferSwg, "using ");
+                CONCAT_FIXED_STR(bufferSwg, "using ");
 
             bufferSwg.addString(p->name);
             if (p->name != "self")
             {
-				CONCAT_FIXED_STR(bufferSwg, ": ");
+                CONCAT_FIXED_STR(bufferSwg, ": ");
                 bufferSwg.addString(p->typeInfo->name);
             }
 
             auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
             if (param->assignment)
             {
-				CONCAT_FIXED_STR(bufferSwg, " = ");
+                CONCAT_FIXED_STR(bufferSwg, " = ");
                 SWAG_CHECK(Ast::output(bufferSwg, param->assignment));
             }
 
             if (idx != typeFunc->parameters.size() - 1)
-				CONCAT_FIXED_STR(bufferSwg, ", ");
+                CONCAT_FIXED_STR(bufferSwg, ", ");
             idx++;
         }
     }
 
-	CONCAT_FIXED_STR(bufferSwg, ")");
+    CONCAT_FIXED_STR(bufferSwg, ")");
 
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
-		CONCAT_FIXED_STR(bufferSwg, "->");
+        CONCAT_FIXED_STR(bufferSwg, "->");
         bufferSwg.addString(typeFunc->returnType->name);
     }
 
     bufferSwg.addEolIndent(1);
     if (node->content->kind != AstNodeKind::Statement)
-		CONCAT_FIXED_STR(bufferSwg, "{\n\t\t");
+        CONCAT_FIXED_STR(bufferSwg, "{\n\t\t");
     Ast::output(bufferSwg, node->content, 1);
     if (node->content->kind != AstNodeKind::Statement)
-		CONCAT_FIXED_STR(bufferSwg, "\n\t}\n");
-	CONCAT_FIXED_STR(bufferSwg, "\n");
+        CONCAT_FIXED_STR(bufferSwg, "\n\t}\n");
+    CONCAT_FIXED_STR(bufferSwg, "\n");
     return true;
 }
 
 bool Backend::emitPublicEnumSwg(TypeInfoEnum* typeEnum, AstNode* node)
 {
-	CONCAT_FIXED_STR(bufferSwg, "\tenum ");
+    CONCAT_FIXED_STR(bufferSwg, "\tenum ");
     bufferSwg.addString(node->name.c_str());
-	CONCAT_FIXED_STR(bufferSwg, " : ");
+    CONCAT_FIXED_STR(bufferSwg, " : ");
     bufferSwg.addString(typeEnum->rawType->name);
 
-	CONCAT_FIXED_STR(bufferSwg, "\n\t{\n");
+    CONCAT_FIXED_STR(bufferSwg, "\n\t{\n");
 
     for (auto p : typeEnum->values)
     {
-		CONCAT_FIXED_STR(bufferSwg, "\t\t");
+        CONCAT_FIXED_STR(bufferSwg, "\t\t");
         bufferSwg.addString(p->namedParam);
-		CONCAT_FIXED_STR(bufferSwg, " = ");
+        CONCAT_FIXED_STR(bufferSwg, " = ");
         SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, typeEnum->rawType, p->value.text, p->value.reg));
-		CONCAT_FIXED_STR(bufferSwg, "\n");
+        CONCAT_FIXED_STR(bufferSwg, "\n");
     }
 
-	CONCAT_FIXED_STR(bufferSwg, "\t}\n\n");
+    CONCAT_FIXED_STR(bufferSwg, "\t}\n\n");
     return true;
 }
 
 bool Backend::emitPublicConstSwg(AstVarDecl* node)
 {
-	CONCAT_FIXED_STR(bufferSwg, "\tconst ");
+    CONCAT_FIXED_STR(bufferSwg, "\tconst ");
     bufferSwg.addString(node->name.c_str());
 
     if (node->type)
     {
-		CONCAT_FIXED_STR(bufferSwg, ": ");
+        CONCAT_FIXED_STR(bufferSwg, ": ");
         SWAG_CHECK(Ast::output(bufferSwg, node->type));
     }
 
     if (node->assignment)
     {
-		CONCAT_FIXED_STR(bufferSwg, " = ");
+        CONCAT_FIXED_STR(bufferSwg, " = ");
         SWAG_CHECK(Ast::outputLiteral(bufferSwg, node->assignment, node->assignment->typeInfo, node->computedValue.text, node->computedValue.reg));
     }
 
@@ -228,31 +228,31 @@ bool Backend::emitPublicConstSwg(AstVarDecl* node)
 
 bool Backend::emitPublicTypeAliasSwg(AstNode* node)
 {
-	CONCAT_FIXED_STR(bufferSwg, "\ttypealias ");
+    CONCAT_FIXED_STR(bufferSwg, "\ttypealias ");
     bufferSwg.addString(node->name.c_str());
-	CONCAT_FIXED_STR(bufferSwg, ": ");
+    CONCAT_FIXED_STR(bufferSwg, ": ");
     SWAG_CHECK(Ast::output(bufferSwg, node->childs.front()));
 
-	CONCAT_FIXED_STR(bufferSwg, "\n");
+    CONCAT_FIXED_STR(bufferSwg, "\n");
     return true;
 }
 
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
-	CONCAT_FIXED_STR(bufferSwg, "\tstruct");
+    CONCAT_FIXED_STR(bufferSwg, "\tstruct");
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
-	CONCAT_FIXED_STR(bufferSwg, " ");
+    CONCAT_FIXED_STR(bufferSwg, " ");
     bufferSwg.addString(node->name.c_str());
-	CONCAT_FIXED_STR(bufferSwg, "\n\t{\n");
+    CONCAT_FIXED_STR(bufferSwg, "\n\t{\n");
 
     for (auto p : typeStruct->childs)
     {
         SWAG_CHECK(emitAttributes(p));
-		CONCAT_FIXED_STR(bufferSwg, "\t\t");
+        CONCAT_FIXED_STR(bufferSwg, "\t\t");
         bufferSwg.addString(p->namedParam);
-		CONCAT_FIXED_STR(bufferSwg, ": ");
+        CONCAT_FIXED_STR(bufferSwg, ": ");
         bufferSwg.addString(p->typeInfo->name);
 
         if (p->typeInfo->kind == TypeInfoKind::Native)
@@ -289,15 +289,15 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 
             if (notZero)
             {
-				CONCAT_FIXED_STR(bufferSwg, " = ");
+                CONCAT_FIXED_STR(bufferSwg, " = ");
                 SWAG_CHECK(Ast::outputLiteral(bufferSwg, node, p->typeInfo, p->value.text, p->value.reg));
             }
         }
 
-		CONCAT_FIXED_STR(bufferSwg, "\n");
+        CONCAT_FIXED_STR(bufferSwg, "\n");
     }
 
-	CONCAT_FIXED_STR(bufferSwg, "\t}\n\n");
+    CONCAT_FIXED_STR(bufferSwg, "\t}\n\n");
     return true;
 }
 
@@ -314,7 +314,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         else if (scope->kind == ScopeKind::Struct)
             bufferSwg.addStringFormat("impl %s {\n", scope->name.c_str());
         else
-			CONCAT_FIXED_STR(bufferSwg, "{\n");
+            CONCAT_FIXED_STR(bufferSwg, "{\n");
     }
 
     // Consts
@@ -341,9 +341,17 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
     {
         for (auto one : scope->publicStruct)
         {
-            AstStruct*      node       = CastAst<AstStruct>(one, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            SWAG_CHECK(emitPublicStructSwg(typeStruct, node));
+            AstStruct* node = CastAst<AstStruct>(one, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+            if (node->typeInfo->kind == TypeInfoKind::Interface)
+            {
+				TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+				SWAG_CHECK(emitPublicStructSwg(typeStruct->itable, node));
+            }
+            else
+            {
+                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+                SWAG_CHECK(emitPublicStructSwg(typeStruct, node));
+            }
         }
     }
 
@@ -386,7 +394,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         SWAG_CHECK(emitPublicSwg(moduleToGen, oneScope));
 
     if (!scope->name.empty())
-		CONCAT_FIXED_STR(bufferSwg, "}\n\n");
+        CONCAT_FIXED_STR(bufferSwg, "}\n\n");
 
     return true;
 }
@@ -414,7 +422,7 @@ bool Backend::preCompile()
 
     for (auto depName : module->moduleDependenciesNames)
         bufferSwg.addStringFormat("#import \"%s\"\n", depName.c_str());
-	CONCAT_FIXED_STR(bufferSwg, "using swag\n");
+    CONCAT_FIXED_STR(bufferSwg, "using swag\n");
 
     // Emit everything that's public
     SWAG_CHECK(emitPublicSwg(module, module->scopeRoot));
