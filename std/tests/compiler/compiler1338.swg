@@ -1,8 +1,8 @@
 interface TOTO
 {
-	print: func()
-    print1: func(s32)
-    print2: func(bool)
+	print: func(self)
+    print1: func(self, s32)
+    print2: func(self, bool)
 }
 
 struct TITI

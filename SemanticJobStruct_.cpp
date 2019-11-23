@@ -73,6 +73,18 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     vector<AstNode*>              mapItIdxToFunc;
     mapItIdxToFunc.resize(numFctInterface, nullptr);
 
+    // Register interface in the structure
+    auto typeParamItf = typeStruct->hasInterface(typeBaseInterface);
+    if (!typeParamItf)
+    {
+		typeParamItf = g_Pool_typeInfoParam.alloc();
+        typeParamItf->namedParam = typeBaseInterface->name;
+        typeParamItf->typeInfo   = typeBaseInterface;
+        typeParamItf->node       = typeBaseInterface->structNode;
+        scoped_lock lk(typeStruct->mutex);
+        typeStruct->interfaces.push_back(typeParamItf);
+    }
+
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
@@ -172,15 +184,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         offset += sizeof(void*);
     }
 
-    // Register interface in the structure
-    auto typeParamItf        = g_Pool_typeInfoParam.alloc();
-    typeParamItf->namedParam = typeBaseInterface->name;
-    typeParamItf->offset     = itableOffset;
-    typeParamItf->typeInfo   = typeBaseInterface;
-    typeParamItf->node       = typeBaseInterface->structNode;
-
-    scoped_lock lk(typeStruct->mutex);
-    typeStruct->interfaces.push_back(typeParamItf);
+    // Setup constant segment offset
+    typeParamItf->offset = itableOffset;
     decreaseInterfaceCountNoLock(typeStruct);
 
     return true;
@@ -515,10 +520,10 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         job->tmpNodes = node->content->childs;
 
     // itable
-    auto typeITable  = g_Pool_typeInfoStruct.alloc();
-    typeITable->name = node->name;
-	typeITable->scope = Ast::newScope(node, node->name, ScopeKind::Struct, nullptr);
-	typeITable->scope->allocateSymTable();
+    auto typeITable   = g_Pool_typeInfoStruct.alloc();
+    typeITable->name  = node->name;
+    typeITable->scope = Ast::newScope(node, node->name, ScopeKind::Struct, nullptr);
+    typeITable->scope->allocateSymTable();
 
     for (auto child : childs)
     {
@@ -584,7 +589,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void*));
         typeITable->sizeOf += sizeof(void*);
 
-		// Register lambda variable in the scope of the itable struct
+        // Register lambda variable in the scope of the itable struct
         auto overload = child->resolvedSymbolOverload;
         auto symTable = typeITable->scope->symTable;
         symTable->addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->storageOffset);

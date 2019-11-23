@@ -45,7 +45,19 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
         node->parameters = params;
         while (true)
         {
-            SWAG_CHECK(doTypeExpression(params));
+            if (token.text == "self")
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(currentScope->kind == ScopeKind::Struct, sourceFile->report({sourceFile, "invalid 'self' usage in that context"}));
+                auto typeNode        = Ast::newTypeExpression(sourceFile, params);
+                typeNode->ptrCount   = 1;
+                typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentScope->name, typeNode, this);
+            }
+            else
+            {
+                SWAG_CHECK(doTypeExpression(params));
+            }
+
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
