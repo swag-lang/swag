@@ -139,7 +139,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeLambda->isSame(typeFunc, ISSAME_EXACT | ISSAME_INTERFACE))
         {
-            Diagnostic diag{child, child->token, format("function '%s' has not a correct signature for interface '%s'", child->name.c_str(), typeBaseInterface->name.c_str())};
+            Diagnostic diag{child, child->token, format("function '%s' has an incorrect signature for interface '%s'", child->name.c_str(), typeBaseInterface->name.c_str())};
             Diagnostic note{symbolName->node, "should be", DiagnosticLevel::Note};
             return context->report(diag, &note);
         }

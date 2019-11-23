@@ -102,10 +102,12 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 
     // Leave all scopes
     Scope::collectScopeFrom(node->ownerScope, funcNode->scope, context->job->collectScopes);
-    for (auto scope : context->job->collectScopes)
-        SWAG_CHECK(emitLeaveScope(context, scope));
-    if (context->result != ContextResult::Done)
-        return true;
+	for (auto scope : context->job->collectScopes)
+	{
+		SWAG_CHECK(emitLeaveScope(context, scope));
+		if (context->result != ContextResult::Done)
+			return true;
+	}
 
     // A return inside an inline function is just a jump to the end of the block
     if (node->ownerInline)

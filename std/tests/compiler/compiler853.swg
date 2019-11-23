@@ -19,5 +19,6 @@ func toto()
 {
 	cpt = 0
 	toto()
+    //@print(cast(s64) cpt)
 	@assert(cpt == 1)	
 }

@@ -481,9 +481,11 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
 
     Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
+    {
         SWAG_CHECK(emitLeaveScope(context, scope));
-    if (context->result != ContextResult::Done)
-        return true;
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     breakNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
@@ -496,10 +498,12 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
     Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
-    for (auto scope : context->job->collectScopes)
-        SWAG_CHECK(emitLeaveScope(context, scope));
-    if (context->result != ContextResult::Done)
-        return true;
+	for (auto scope : context->job->collectScopes)
+	{
+		SWAG_CHECK(emitLeaveScope(context, scope));
+		if (context->result != ContextResult::Done)
+			return true;
+	}
 
     breakNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
@@ -524,7 +528,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
 
     scoped_lock lock(table->mutex);
 
-	// Need to wait for the structure to be ok, in order to call the opDrop function
+    // Need to wait for the structure to be ok, in order to call the opDrop function
     auto count = (int) table->allStructs.size() - 1;
     for (int i = count; i >= 0; i--)
     {
@@ -592,12 +596,12 @@ bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context, Scope* scope)
     }
 
     // Emit all drops
-	if (node->doneLeaveScopeDrop.find(scope) == node->doneLeaveScopeDrop.end())
+    if (node->doneLeaveScopeDrop.find(scope) == node->doneLeaveScopeDrop.end())
     {
         SWAG_CHECK(emitLeaveScopeDrop(context, scope));
         if (context->result == ContextResult::Pending)
             return true;
-		node->doneLeaveScopeDrop.insert(scope);
+        node->doneLeaveScopeDrop.insert(scope);
     }
 
     // Release persistent list of registers

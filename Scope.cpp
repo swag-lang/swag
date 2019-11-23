@@ -73,7 +73,7 @@ void Scope::collectScopeFrom(Scope* src, Scope* to, vector<Scope*>& result)
     result.clear();
     while (true)
     {
-        result.insert(result.begin(), src);
+        result.push_back(src);
         if (src == to)
             return;
         src = src->parentScope;
