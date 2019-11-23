@@ -12,15 +12,15 @@ impl TOTO for TITI
     //#[swag.printbc]
     func print(using self, x: bool)
     {
-        @print("x")
+        //@print("x")
     }
 }
 
-//#[swag.printbc]
+#[swag.printbc]
 #test
 {
     var x: TOTO
     var y: TITI
     x = y
-    //x.print(true)
+    x.print(true)
 }

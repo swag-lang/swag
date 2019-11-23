@@ -1152,7 +1152,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     SWAG_CHECK(pickSymbol(context, node, &symbol));
 
     AstNode* ufcsParam = nullptr;
-    if (!(node->doneFlags & AST_DONE_UFCS) && (symbol->kind == SymbolKind::Function))
+    bool     canDoUfcs = false;
+    if (symbol->kind == SymbolKind::Function)
+        canDoUfcs = true;
+    if (symbol->kind == SymbolKind::Variable && symbol->overloads.size() == 1 && symbol->overloads.front()->typeInfo->kind == TypeInfoKind::Lambda)
+        canDoUfcs = true;
+
+    if (!(node->doneFlags & AST_DONE_UFCS) && canDoUfcs)
     {
         // If a variable is defined just before a function call, then this can be an UFCS (unified function call system)
         if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)

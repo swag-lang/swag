@@ -1840,7 +1840,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     // Struct to pointer
-    if (toType->kind == TypeInfoKind::Pointer && fromType->kind == TypeInfoKind::Struct)
+    if (toType->kind == TypeInfoKind::Pointer && (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface))
     {
         auto typePtr = static_cast<TypeInfoPointer*>(toType);
         if (typePtr->ptrCount == 1 && typePtr->finalType->isSame(fromType, ISSAME_CAST))
