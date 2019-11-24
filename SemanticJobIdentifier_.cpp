@@ -1188,12 +1188,27 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     if (symbol->kind == SymbolKind::Variable)
                     {
                         // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
-                        auto idRef            = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
-                        auto copyId           = (AstIdentifier*) Ast::clone(identifierRef->previousResolvedNode, idRef);
-                        idRef->byteCodeFct    = ByteCodeGenJob::emitIdentifierRef;
-                        copyId->identifierRef = idRef;
+                        auto idRef         = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
+                        idRef->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
+
+                        SWAG_ASSERT(identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier);
+                        auto prevIdRef = ((AstIdentifier*) (identifierRef->previousResolvedNode))->identifierRef;
+
+						// Copy all previous references to the one we want to pass as parameter
+						// X.Y.call(...) => X.Y.call(X.Y, ...)
+                        for (auto child : prevIdRef->childs)
+                        {
+                            auto copyChild = Ast::clone(child, idRef);
+                            if (copyChild->kind == AstNodeKind::Identifier)
+                                ((AstIdentifier*) copyChild)->identifierRef = idRef;
+                            if (child == identifierRef->previousResolvedNode)
+                            {
+                                copyChild->flags |= AST_TO_UFCS;
+                                break;
+                            }
+                        }
+
                         identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
-                        copyId->flags |= AST_TO_UFCS;
                     }
                     else
                     {

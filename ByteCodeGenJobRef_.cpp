@@ -88,6 +88,17 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
+    if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
+    {
+		SWAG_ASSERT(node->flags & (AST_FROM_UFCS | AST_TO_UFCS));
+		//emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        if (node->flags & AST_FROM_UFCS)
+            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC)->c.u32 = sizeof(void*);
+        else if (node->flags & AST_TO_UFCS)
+            emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
+        return true;
+    }
+
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
         node->resultRegisterRC += reserveRegisterRC(context);
@@ -215,7 +226,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
             freeRegisterRC(context, r0);
         }
 
-		truncRegisterRC(context, node->array->resultRegisterRC, 1);
+        truncRegisterRC(context, node->array->resultRegisterRC, 1);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstantInt0())
