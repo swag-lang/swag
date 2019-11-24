@@ -78,6 +78,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case Property::TypeOf:
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
+        waitForAllStructInterfaces(context, expr->typeInfo);
+        if (context->result != ContextResult::Done)
+            return true;
         expr->flags |= AST_NO_BYTECODE;
         SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, expr->typeInfo, &node->typeInfo, &node->computedValue.reg.u32));
         node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_VALUE_IS_TYPEINFO;
@@ -94,14 +97,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         return true;
 
     case Property::CountOf:
-		if (expr->typeInfo->kind == TypeInfoKind::Enum)
-		{
-			auto typeEnum = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
-			node->computedValue.reg.u32 = (uint32_t) typeEnum->values.size();
-			node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
-			node->typeInfo = g_TypeMgr.typeInfoU32;
-			break;
-		}
+        if (expr->typeInfo->kind == TypeInfoKind::Enum)
+        {
+            auto typeEnum               = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
+            node->computedValue.reg.u32 = (uint32_t) typeEnum->values.size();
+            node->flags |= AST_CONST_EXPR | AST_VALUE_COMPUTED;
+            node->typeInfo = g_TypeMgr.typeInfoU32;
+            break;
+        }
 
         SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);

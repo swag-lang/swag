@@ -54,7 +54,7 @@ struct SemanticJob : public Job
     static bool         internalError(SemanticContext* context, const char* msg, AstNode* node = nullptr);
     static bool         checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
-    static void         waitForAllStructInterfaces(SemanticContext* context, TypeInfoStruct* typeInfoStruct);
+    static void         waitForAllStructInterfaces(SemanticContext* context, TypeInfo* typeInfo);
     static void         decreaseInterfaceCountNoLock(TypeInfoStruct* typeInfoStruct);
 
     static void enterState(AstNode* node);

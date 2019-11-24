@@ -145,6 +145,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // First parameter in the impl block must be a pointer to the struct
+        SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, child->token, format("missing first parameter 'self' for interface function '%s'", child->name.c_str())}));
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
         SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->node, format("bad type for first parameter of interface function implementation ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
@@ -205,8 +206,12 @@ void SemanticJob::decreaseInterfaceCountNoLock(TypeInfoStruct* typeInfoStruct)
     }
 }
 
-void SemanticJob::waitForAllStructInterfaces(SemanticContext* context, TypeInfoStruct* typeInfoStruct)
+void SemanticJob::waitForAllStructInterfaces(SemanticContext* context, TypeInfo* typeInfo)
 {
+    if (typeInfo->kind != TypeInfoKind::Struct)
+        return;
+
+    auto        typeInfoStruct = (TypeInfoStruct*) typeInfo;
     scoped_lock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingInterfaces == 0)
         return;
@@ -509,7 +514,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     auto job           = context->job;
 
     typeInterface->structNode = node;
-    typeInterface->name       = format("%s", node->name.c_str());
+    typeInterface->name       = node->name;
     typeInterface->kind       = TypeInfoKind::Interface;
     typeInterface->flags &= ~TYPEINFO_RETURN_BY_COPY;
 

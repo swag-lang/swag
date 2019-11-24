@@ -59,6 +59,7 @@ struct ConcreteTypeInfoStruct
     ConcreteTypeInfo    base;
     ConcreteStringSlice fields;
     ConcreteStringSlice attributes;
+    ConcreteStringSlice interfaces;
 };
 
 struct ConcreteTypeInfoFunc
@@ -177,8 +178,8 @@ bool TypeTable::makeConcreteString(SemanticContext* context, ConcreteStringSlice
 
 bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInfo, TypeInfo** ptrTypeInfo, uint32_t* storage, bool lock)
 {
-	if(typeInfo->kind != TypeInfoKind::Param)
-		typeInfo = concreteList.registerType(typeInfo);
+    if (typeInfo->kind != TypeInfoKind::Param)
+        typeInfo = concreteList.registerType(typeInfo);
 
     // Already computed
     if (lock)
@@ -207,6 +208,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         typeStruct = swagScope.regTypeInfoPointer;
         break;
     case TypeInfoKind::Struct:
+    case TypeInfoKind::Interface:
         typeStruct = swagScope.regTypeInfoStruct;
         break;
     case TypeInfoKind::Param:
@@ -243,6 +245,11 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->name, OFFSETOF(concreteTypeInfoValue->name)));
     concreteTypeInfoValue->kind   = typeInfo->kind;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
+
+    // Register type and value
+	// Do it now to break recursive references 
+    auto typePtr            = g_Pool_typeInfoPointer.alloc();
+    concreteTypes[typeInfo] = {typePtr, storageOffset};
 
     switch (typeInfo->kind)
     {
@@ -308,11 +315,13 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         break;
     }
     case TypeInfoKind::Struct:
+    case TypeInfoKind::Interface:
     {
         auto concreteType = (ConcreteTypeInfoStruct*) concreteTypeInfoValue;
         auto realType     = (TypeInfoStruct*) typeInfo;
 
         SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, &concreteType->attributes, OFFSETOF(concreteType->attributes)));
+
         concreteType->fields.buffer = nullptr;
         concreteType->fields.count  = realType->childs.size();
         if (concreteType->fields.count)
@@ -323,6 +332,21 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
             module->constantSegment.addInitPtr(OFFSETOF(concreteType->fields.buffer), storageArray);
             for (int field = 0; field < concreteType->fields.count; field++)
                 SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + field, realType->childs[field]));
+        }
+
+        concreteType->interfaces.buffer = nullptr;
+        concreteType->interfaces.count  = realType->interfaces.size();
+        if (concreteType->interfaces.count)
+        {
+            uint32_t           storageArray = module->constantSegment.reserveNoLock((uint32_t) realType->interfaces.size() * sizeof(void*));
+            ConcreteTypeInfo** addrArray    = (ConcreteTypeInfo**) module->constantSegment.addressNoLock(storageArray);
+            concreteType->interfaces.buffer = addrArray;
+            module->constantSegment.addInitPtr(OFFSETOF(concreteType->interfaces.buffer), storageArray);
+            for (int field = 0; field < concreteType->interfaces.count; field++)
+            {
+                auto typeItf = realType->interfaces[field];
+                SWAG_CHECK(makeConcreteSubTypeInfo(context, addrArray, storageArray, addrArray + field, typeItf));
+            }
         }
 
         break;
@@ -397,7 +421,6 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
         module->constantSegment.mutex.unlock();
 
     // Build pointer type to structure
-    auto typePtr = g_Pool_typeInfoPointer.alloc();
     typePtr->flags |= TYPEINFO_CONST;
     typePtr->ptrCount    = 1;
     typePtr->finalType   = ((TypeInfoParam*) typeStruct->childs[0])->typeInfo; // Always returns the TypeInfo* pointer, not the typed one
@@ -406,9 +429,8 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     typePtr->sizeOf = sizeof(void*);
 
     // Register type and value
-    concreteTypes[typeInfo] = {typePtr, storageOffset};
-    *ptrTypeInfo            = typePtr;
-    *storage                = storageOffset;
+    *ptrTypeInfo = typePtr;
+    *storage     = storageOffset;
 
     if (lock)
         mutexTypes.unlock();
