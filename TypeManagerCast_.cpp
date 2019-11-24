@@ -1330,6 +1330,22 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    if (fromType == g_TypeMgr.typeInfoNull)
+    {
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromNode->castedTypeInfo = fromNode->typeInfo;
+            fromNode->typeInfo       = toType;
+        }
+
+        return true;
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     TypeInfoSlice* toTypeSlice = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
@@ -1804,11 +1820,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             return castError(context, toType, fromType, fromNode, castFlags);
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
-			fromNode->castedTypeInfo = fromType;
-			fromNode->typeInfo = toTypeItf;
+            fromNode->castedTypeInfo = fromType;
+            fromNode->typeInfo       = toTypeItf;
         }
 
-		return true;
+        return true;
     }
 
     // Const mismatch
@@ -1897,6 +1913,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Cast to slice
     if (toType->kind == TypeInfoKind::Slice)
         return castToSlice(context, toType, fromType, fromNode, castFlags);
+
+    // Cast to interface
+    if (toType->kind == TypeInfoKind::Interface)
+        return castToInterface(context, toType, fromType, fromNode, castFlags);
 
     // Cast to lambda
     if (toType->kind == TypeInfoKind::Lambda)

@@ -128,15 +128,27 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         typeInfo = node->castedTypeInfo;
     }
 
-    // We have null, and we want a string or a slice
-    if ((node->typeInfo->nativeType == NativeTypeKind::String || node->typeInfo->kind == TypeInfoKind::Slice) &&
-        node->castedTypeInfo &&
-        node->castedTypeInfo == g_TypeMgr.typeInfoNull)
+    // We have null
+    if (node->castedTypeInfo && node->castedTypeInfo == g_TypeMgr.typeInfoNull)
     {
-        reserveLinearRegisterRC(context, regList, 2);
-        emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
-        emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
-        return true;
+        // We want a string or a slice
+        if (node->typeInfo->nativeType == NativeTypeKind::String || node->typeInfo->kind == TypeInfoKind::Slice)
+        {
+            reserveLinearRegisterRC(context, regList, 2);
+            emitInstruction(context, ByteCodeOp::ClearRA, regList[0]);
+            emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
+            return true;
+        }
+
+        // We want an interface
+        if (node->typeInfo->kind == TypeInfoKind::Interface)
+        {
+			reserveLinearRegisterRC(context, regList, 3);
+            emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
+            emitInstruction(context, ByteCodeOp::ClearRA, regList[2]);
+            emitInstruction(context, ByteCodeOp::CopyRARBAddr, regList[0], regList[1]);
+            return true;
+        }
     }
 
     reserveRegisterRC(context, regList, 1);

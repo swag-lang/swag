@@ -64,6 +64,10 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     {
         emitInstruction(context, ByteCodeOp::CompareOpEqualPointer, r0, r1, r2);
     }
+    else if (typeInfo->kind == TypeInfoKind::Interface)
+    {
+		emitInstruction(context, ByteCodeOp::CompareOpEqualInterface, r0, r1, r2);
+    }
     else
     {
         return internalError(context, "emitCompareOpEqual, invalid type");

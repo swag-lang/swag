@@ -560,12 +560,16 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     return false;
 }
 
-bool ByteCodeGenJob::emitCastInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node      = context->node;
     auto toTypeItf = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Interface);
 
-    if (fromTypeInfo->kind == TypeInfoKind::Struct)
+    if (fromTypeInfo == g_TypeMgr.typeInfoNull)
+    {
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+    }
+    else if (fromTypeInfo->kind == TypeInfoKind::Struct)
     {
         auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct);
         auto itf            = fromTypeStruct->hasInterface(toTypeItf);
@@ -574,20 +578,22 @@ bool ByteCodeGenJob::emitCastInterface(ByteCodeGenContext* context, AstNode* exp
         RegisterList r0;
         reserveLinearRegisterRC(context, r0, 2);
 
-		// We use registers as a storage for the interface, in order to have just one register in the end
+        // We use registers as a storage for the interface, in order to have just one register in the end
         emitInstruction(context, ByteCodeOp::CopyRARB, r0[0], exprNode->resultRegisterRC);
         emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, r0[1])->b.u64 = itf->offset;
         emitInstruction(context, ByteCodeOp::CopyRARBAddr, exprNode->resultRegisterRC, r0[0]);
 
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        return true;
+    }
+    else
+    {
+        return internalError(context, "emitCastToInterface, invalid type");
     }
 
-    internalError(context, "emitCastInterface, invalid type");
-    return false;
+    return true;
 }
 
-bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node        = context->node;
     auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
@@ -622,7 +628,7 @@ bool ByteCodeGenJob::emitCastSlice(ByteCodeGenContext* context, AstNode* exprNod
     }
     else
     {
-        return internalError(context, "emitCastSlice, invalid expression type", exprNode);
+        return internalError(context, "emitCastToSlice, invalid expression type", exprNode);
     }
 
     return true;
@@ -678,14 +684,14 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        SWAG_CHECK(emitCastSlice(context, exprNode, typeInfo, fromTypeInfo));
+        SWAG_CHECK(emitCastToSlice(context, exprNode, typeInfo, fromTypeInfo));
         exprNode->castedTypeInfo = nullptr;
         return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Interface)
     {
-        SWAG_CHECK(emitCastInterface(context, exprNode, typeInfo, fromTypeInfo));
+        SWAG_CHECK(emitCastToInterface(context, exprNode, typeInfo, fromTypeInfo));
         exprNode->castedTypeInfo = nullptr;
         return true;
     }

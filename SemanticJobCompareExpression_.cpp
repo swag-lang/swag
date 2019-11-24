@@ -211,7 +211,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     }
     else if (leftTypeInfo->kind != TypeInfoKind::Native &&
              leftTypeInfo->kind != TypeInfoKind::Pointer &&
-             leftTypeInfo->kind != TypeInfoKind::Struct)
+             leftTypeInfo->kind != TypeInfoKind::Struct &&
+             leftTypeInfo->kind != TypeInfoKind::Interface)
     {
         return context->report({left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
     }
@@ -230,7 +231,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     left->typeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ENUM);
     right->typeInfo = TypeManager::concreteType(right->typeInfo, CONCRETE_ENUM);
 
-    // Must not make types compatible for a struct, as we can compare a struct with whatever
+    // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
+    // a opCmp operator
     if (left->typeInfo->kind != TypeInfoKind::Struct && right->typeInfo->kind != TypeInfoKind::Struct)
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_BIJECTIF));
 

@@ -758,6 +758,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->c.u32].b = registersRC[ip->a.u32].pointer == registersRC[ip->b.u32].pointer;
         break;
     }
+    case ByteCodeOp::CompareOpEqualInterface:
+    {
+        registersRC[ip->c.u32].b = (((void**) registersRC[ip->a.u32].pointer)[0] == ((void**) registersRC[ip->b.u32].pointer)[0]) &&
+                                   (((void**) registersRC[ip->a.u32].pointer)[1] == ((void**) registersRC[ip->b.u32].pointer)[1]);
+        break;
+    }
     case ByteCodeOp::CompareOpEqualString:
     {
         if (!registersRC[ip->a.u32].pointer || !registersRC[ip->b.u32].pointer)
