@@ -157,7 +157,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     }
 
     // Be sure every functions of the interface has been covered
-    Diagnostic                diag{node, node->token, format("missing '%d' function(s) of interface '%s'", typeInterface->childs.size() - mapItToFunc.size(), typeBaseInterface->name.c_str())};
+    Diagnostic                diag{node, node->token, format("some functions of interface '%s' are not implemented", typeBaseInterface->name.c_str())};
     vector<const Diagnostic*> notes;
     for (uint32_t idx = 0; idx < numFctInterface; idx++)
     {
