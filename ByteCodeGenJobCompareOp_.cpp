@@ -68,6 +68,11 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     {
 		emitInstruction(context, ByteCodeOp::CompareOpEqualInterface, r0, r1, r2);
     }
+    else if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+		// Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
+		emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+    }
     else
     {
         return internalError(context, "emitCompareOpEqual, invalid type");

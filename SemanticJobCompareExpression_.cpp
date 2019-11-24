@@ -212,6 +212,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     else if (leftTypeInfo->kind != TypeInfoKind::Native &&
              leftTypeInfo->kind != TypeInfoKind::Pointer &&
              leftTypeInfo->kind != TypeInfoKind::Struct &&
+             leftTypeInfo->kind != TypeInfoKind::Slice &&
              leftTypeInfo->kind != TypeInfoKind::Interface)
     {
         return context->report({left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
@@ -221,6 +222,21 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              rightTypeInfo->kind != TypeInfoKind::Struct)
     {
         return context->report({right, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->name.c_str())});
+    }
+
+    // Slice can only be compared to null
+    if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr.typeInfoNull)
+    {
+        return context->report({left, "a slice can only be compared to 'null'"});
+    }
+
+	// Some types can only be compared for equality
+    if (leftTypeInfo->kind == TypeInfoKind::Slice || leftTypeInfo->kind == TypeInfoKind::Interface)
+    {
+        if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
+        {
+            return context->report({left, format("operation '%s' not allowed on %s '%s'", node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
+        }
     }
 
     SWAG_CHECK(checkIsConcrete(context, left));
