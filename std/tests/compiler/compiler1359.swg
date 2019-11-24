@@ -8,12 +8,16 @@ struct TITI
     val: s64 = 666
 }
 
+var G = 0
+
 impl IPrintable for TITI
 {
     //#[swag.printbc]
     func print(using self)
     {
-        @print("TITI\n")
+        @assert(val == 666)
+        G = 555
+        //@print("TITI\n")
     }
 }
 
@@ -26,8 +30,10 @@ func printWhatever(_itf: *IPrintable)
 //#[swag.printbc]
 #test
 {   
+    G = 0
     var titi: TITI
     var itf: IPrintable
     itf = titi
     printWhatever(itf)
+    @assert(G == 555)
 }
