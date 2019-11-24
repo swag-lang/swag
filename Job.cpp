@@ -25,7 +25,7 @@ void Job::waitForSymbolNoLock(SymbolName* symbol)
 {
     waitingSymbolSolved = symbol;
     setPending();
-    symbol->dependentJobs.add(this);
+    symbol->addDependentJobNoLock(this);
 }
 
 void Job::setPending()

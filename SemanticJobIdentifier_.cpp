@@ -396,7 +396,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             scoped_lock lk(symbol->mutex);
             if (overload->flags & OVERLOAD_INCOMPLETE)
             {
-                symbol->dependentJobs.add(context->job);
+                symbol->addDependentJobNoLock(context->job);
                 context->job->setPending();
                 return true;
             }

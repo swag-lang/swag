@@ -63,9 +63,9 @@ enum class SymbolKind
     Function,
     Attribute,
     Struct,
-	Interface,
+    Interface,
     GenericType,
-	Label,
+    Label,
 };
 
 struct SymbolName : public PoolElement
@@ -92,6 +92,8 @@ struct SymbolName : public PoolElement
 
     SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue);
     SymbolOverload* findOverload(TypeInfo* typeInfo);
+    void            addDependentJob(Job* job);
+	void            addDependentJobNoLock(Job* job);
 };
 
 struct SymTable

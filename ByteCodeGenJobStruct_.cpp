@@ -177,7 +177,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opDrop");
         if (symbol && symbol->cptOverloads)
         {
-            symbol->dependentJobs.add(context->job);
+            symbol->addDependentJob(context->job);
             context->job->setPending();
             return true;
         }
@@ -290,7 +290,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opPostMove");
         if (symbol && symbol->cptOverloads)
         {
-            symbol->dependentJobs.add(context->job);
+            symbol->addDependentJob(context->job);
             context->job->setPending();
             return true;
         }
@@ -401,7 +401,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opPostCopy");
         if (symbol && symbol->cptOverloads)
         {
-            symbol->dependentJobs.add(context->job);
+            symbol->addDependentJob(context->job);
             context->job->setPending();
             return true;
         }

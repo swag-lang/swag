@@ -122,12 +122,12 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
 
         if (!result)
         {
-			// No ghosting check for an inline parameter
-			if (!(flags & OVERLOAD_VAR_INLINE))
-			{
-				if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
-					return nullptr;
-			}
+            // No ghosting check for an inline parameter
+            if (!(flags & OVERLOAD_VAR_INLINE))
+            {
+                if (!checkHiddenSymbolNoLock(context, node, typeInfo, kind, symbol))
+                    return nullptr;
+            }
 
             result = symbol->addOverloadNoLock(node, typeInfo, computedValue);
 
@@ -211,7 +211,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-		context->report(diag, &diagNote);
+        context->report(diag, &diagNote);
         return false;
     }
 
@@ -223,7 +223,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-		context->report(diag, &diagNote);
+        context->report(diag, &diagNote);
         return false;
     }
 
@@ -236,7 +236,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         Diagnostic diag{node, token, msg};
         Utf8       note = "this is the other definition";
         Diagnostic diagNote{firstOverload->node, firstOverload->node->token, note, DiagnosticLevel::Note};
-		context->report(diag, &diagNote);
+        context->report(diag, &diagNote);
         return false;
     }
 
@@ -329,4 +329,15 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
     }
 
     return nullptr;
+}
+
+void SymbolName::addDependentJob(Job* job)
+{
+	scoped_lock lk(mutex);
+	dependentJobs.add(job);
+}
+
+void SymbolName::addDependentJobNoLock(Job* job)
+{
+    dependentJobs.add(job);
 }
