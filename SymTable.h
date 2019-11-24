@@ -62,7 +62,6 @@ enum class SymbolKind
     EnumValue,
     Function,
     Attribute,
-    FuncParam,
     Struct,
 	Interface,
     GenericType,

@@ -125,6 +125,8 @@ struct TypeInfo : public PoolElement
         return true;
     }
 
+    bool isPointerTo(TypeInfoKind pointerKind);
+
     bool isNative(NativeTypeKind native)
     {
         return (kind == TypeInfoKind::Native) && (nativeType == native);

@@ -79,8 +79,14 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node, Ty
     case TypeInfoKind::Pointer:
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        if ((typePointer->ptrCount == 1) && (typePointer->finalType->kind == TypeInfoKind::Struct))
-            identifierRef->startScope = static_cast<TypeInfoStruct*>(typePointer->finalType)->scope;
+        if (typePointer->ptrCount == 1)
+        {
+            if (typePointer->finalType->kind == TypeInfoKind::Struct)
+                identifierRef->startScope = static_cast<TypeInfoStruct*>(typePointer->finalType)->scope;
+            else if (typePointer->finalType->kind == TypeInfoKind::Interface)
+                identifierRef->startScope = static_cast<TypeInfoStruct*>(typePointer->finalType)->itable->scope;
+        }
+
         node->typeInfo = typeInfo;
         break;
     }
@@ -242,7 +248,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             }
         }
     }
-    else if (symbol->kind == SymbolKind::Variable || symbol->kind == SymbolKind::FuncParam)
+    else if (symbol->kind == SymbolKind::Variable)
     {
         identifier->flags |= AST_L_VALUE | AST_R_VALUE;
     }
@@ -341,7 +347,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         break;
 
     case SymbolKind::Variable:
-    case SymbolKind::FuncParam:
     {
         // Setup parent if necessary
         auto typeInfo = TypeManager::concreteType(identifier->typeInfo);
