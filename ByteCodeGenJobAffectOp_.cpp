@@ -49,11 +49,10 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[0]);
-            emitInstruction(context, ByteCodeOp::AffectOp64, r0, r1[1], 8);
+            emitInstruction(context, ByteCodeOp::CopyVC, r0, r1)->c.u32 = 2 * sizeof(void*);
         }
 
-		return true;
+        return true;
     }
 
     if (typeInfo->kind == TypeInfoKind::Slice)

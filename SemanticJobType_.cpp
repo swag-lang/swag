@@ -148,12 +148,9 @@ bool SemanticJob::resolveTypeExpression(SemanticContext* context)
         {
             if (!node->typeInfo->isConst())
             {
-                if (node->typeInfo->kind != TypeInfoKind::Interface)
-                {
-                    auto copyType = node->typeInfo->clone();
-                    copyType->setConst();
-                    node->typeInfo = copyType;
-                }
+                auto copyType = node->typeInfo->clone();
+                copyType->setConst();
+                node->typeInfo = copyType;
             }
         }
     }

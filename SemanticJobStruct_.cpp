@@ -77,7 +77,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     auto typeParamItf = typeStruct->hasInterface(typeBaseInterface);
     if (!typeParamItf)
     {
-		typeParamItf = g_Pool_typeInfoParam.alloc();
+        typeParamItf             = g_Pool_typeInfoParam.alloc();
         typeParamItf->namedParam = typeBaseInterface->name;
         typeParamItf->typeInfo   = typeBaseInterface;
         typeParamItf->node       = typeBaseInterface->structNode;
@@ -511,6 +511,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     typeInterface->structNode = node;
     typeInterface->name       = format("%s", node->name.c_str());
     typeInterface->kind       = TypeInfoKind::Interface;
+    typeInterface->flags &= ~TYPEINFO_RETURN_BY_COPY;
 
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
@@ -525,7 +526,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     typeITable->scope = Ast::newScope(node, node->name, ScopeKind::Struct, nullptr);
     typeITable->scope->allocateSymTable();
 
-	for (int i = 0; i < childs.size(); i++)
+    for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
         switch (child->kind)
