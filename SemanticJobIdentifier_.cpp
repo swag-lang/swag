@@ -1305,6 +1305,15 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
                 symMatch.parameters.push_back(oneParam);
 
+				// Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
+				// a function
+				if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
+				{
+					waitForAllStructInterfaces(context, CastTypeInfo<TypeInfoStruct>(oneParam->typeInfo, TypeInfoKind::Struct));
+					if (context->result == ContextResult::Pending)
+						return true;
+				}
+
                 // Variadic parameter must be the last one
                 if (i != childCount - 1)
                 {

@@ -81,12 +81,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         return true;
 
     // Cast from struct to interface
-    if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo->kind == TypeInfoKind::Struct)
+    if (tokenId == TokenId::SymEqual)
     {
-        waitForAllStructInterfaces(context, CastTypeInfo<TypeInfoStruct>(rightTypeInfo, TypeInfoKind::Struct));
-        if (context->result == ContextResult::Pending)
-            return true;
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
+        if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo->kind == TypeInfoKind::Struct)
+        {
+            waitForAllStructInterfaces(context, CastTypeInfo<TypeInfoStruct>(rightTypeInfo, TypeInfoKind::Struct));
+            if (context->result == ContextResult::Pending)
+                return true;
+            SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
+        }
     }
 
     switch (tokenId)
@@ -98,7 +101,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::Lambda &&
             leftTypeInfo->kind != TypeInfoKind::TypeList &&
             leftTypeInfo->kind != TypeInfoKind::Struct &&
-			leftTypeInfo->kind != TypeInfoKind::Interface &&
+            leftTypeInfo->kind != TypeInfoKind::Interface &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
             return context->report({left, format("affect not allowed on %s '%s'", TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->name.c_str())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
@@ -107,7 +110,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Slice &&
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
             rightTypeInfo->kind != TypeInfoKind::Struct &&
-			rightTypeInfo->kind != TypeInfoKind::Interface &&
+            rightTypeInfo->kind != TypeInfoKind::Interface &&
             rightTypeInfo->kind != TypeInfoKind::TypeList)
             return context->report({right, format("affect not allowed, '%s' is %s", rightTypeInfo->name.c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
 

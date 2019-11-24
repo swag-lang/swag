@@ -31,7 +31,7 @@ impl IIncrementable for TITI
 func Loop(x: IIncrementable)
 {
     //while !x.done()
-    //    x.decr()
+     //   x.decr()
 }
 
 //#[swag.printbc]

@@ -516,7 +516,7 @@ TypeInfoParam* TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
     scoped_lock lk(mutex);
     for (auto child : interfaces)
     {
-        if (child->typeInfo == itf)
+        if (child->typeInfo->isSame(itf, ISSAME_CAST))
             return child;
     }
 
