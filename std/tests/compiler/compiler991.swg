@@ -14,8 +14,8 @@ struct Point
 //#[swag.printbc]
 #test
 {
-	t := cast(const *TypeinfoStruct) @typeof(Point)
-	p := cast(const *TypeinfoParam) t.fields[0]
+	t := cast(const *TypeInfoStruct) @typeof(Point)
+	p := cast(const *TypeInfoParam) t.fields[0]
 	@assert(p.attributes[0].item0 == "compiler991.NC1")
 	@assert(p.attributes[1].item0 == "compiler991.NC1.x")
 	

@@ -9,7 +9,7 @@ struct ByteCodeRun
     bool internalError(ByteCodeRunContext* context);
 
     void*     ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstruction* ip);
-    ffi_type* ffiFromTypeinfo(TypeInfo* typeInfo);
+    ffi_type* ffiFromTypeInfo(TypeInfo* typeInfo);
     void      ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip);
 
     bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);

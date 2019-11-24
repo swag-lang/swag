@@ -10,7 +10,7 @@ enum A
 
 #test
 {
-	ptr := cast(const *TypeinfoEnum) @typeof(A)
+	ptr := cast(const *TypeInfoEnum) @typeof(A)
 	@assert(@countof(ptr.attributes) == 2)
 	@assert(ptr.attributes[0].item0 == "compiler994.NC1")
 	@assert(ptr.attributes[1].item0 == "compiler994.NC1.x")

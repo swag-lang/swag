@@ -92,7 +92,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     return fn;
 }
 
-ffi_type* ByteCodeRun::ffiFromTypeinfo(TypeInfo* typeInfo)
+ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
 {
     if (typeInfo->kind == TypeInfoKind::Pointer)
         return &ffi_type_pointer;
@@ -154,7 +154,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
         typeParam      = TypeManager::concreteType(typeParam);
-        ffiArgs[i]     = ffiFromTypeinfo(typeParam);
+        ffiArgs[i]     = ffiFromTypeInfo(typeParam);
         if (!ffiArgs[i])
         {
             context->hasError = true;
@@ -231,7 +231,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
         }
         else
         {
-            typeResult = ffiFromTypeinfo(returnType);
+            typeResult = ffiFromTypeInfo(returnType);
             if (!typeResult)
             {
                 context->hasError = true;

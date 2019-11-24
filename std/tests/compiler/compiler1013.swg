@@ -11,8 +11,8 @@ enum A
 
 #test
 {
-	ptr := cast(const *TypeinfoEnum) @typeof(A.VAL)
-	ptr1 := cast(const *TypeinfoParam) ptr.values[0]
+	ptr := cast(const *TypeInfoEnum) @typeof(A.VAL)
+	ptr1 := cast(const *TypeInfoParam) ptr.values[0]
 	//@print(ptr1.attributes[0].item0)
 	@assert(ptr1.attributes[0].item0 == "compiler1013.NC1")
 	@assert(ptr1.attributes[1].item0 == "compiler1013.NC1.x")

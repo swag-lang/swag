@@ -4,6 +4,6 @@ using swag
 //#[swag.printbc]
 #test
 {
-	ptr := @typeof(*Typeinfo)
-	@assert(ptr.name == "*Typeinfo")
+	ptr := @typeof(*TypeInfo)
+	@assert(ptr.name == "*TypeInfo")
 }

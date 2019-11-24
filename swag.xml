@@ -31,7 +31,7 @@
             <Keywords name="Keywords5">opInit opEquals opCmp opBinary opUnary opAssign opIndex opIndexAssign opCount opPostCopy opPostMove opAffect opDrop opCast</Keywords>
             <Keywords name="Keywords6"></Keywords>
             <Keywords name="Keywords7">public private</Keywords>
-            <Keywords name="Keywords8">Typeinfo TypeinfoNative TypeinfoStruct TypeinfoEnum TypeinfoFunc TypeinfoKind TypeinfoNativeKind TypeinfoParam TypeinfoArray TypeinfoSlice Context AllocatorRequest TypeinfoVariadic TypeinfoPointer AllocatorMode</Keywords>
+            <Keywords name="Keywords8">TypeInfo TypeInfoNative TypeInfoStruct TypeInfoEnum TypeInfoFunc TypeInfoKind TypeInfoNativeKind TypeInfoParam TypeInfoArray TypeInfoSlice Context AllocatorRequest TypeInfoVariadic TypeInfoPointer AllocatorMode TypeInfoInterface</Keywords>
             <Keywords name="Delimiters">00( 00[ 00{ 01 02) 02] 02} 03&quot; 04 05&quot; 06#[ 07 08] 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>
         </KeywordLists>
         <Styles>

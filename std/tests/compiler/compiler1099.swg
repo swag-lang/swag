@@ -11,5 +11,5 @@ var g1 = @typeof(Days).kind
 #test
 {
 	@assert(g == "Days")
-	@assert(g1 == swag.TypeinfoKind.Enum)
+	@assert(g1 == swag.TypeInfoKind.Enum)
 }

@@ -101,7 +101,7 @@ namespace swag
 	// Type reflection
 	// #########################################################
 
-	enum TypeinfoKind
+	enum TypeInfoKind
 	{
 		Invalid
 		Native
@@ -121,7 +121,7 @@ namespace swag
 		Alias
 	}
 
-	enum TypeinfoNativeKind
+	enum TypeInfoNativeKind
 	{
 		Void
 		S8
@@ -140,77 +140,84 @@ namespace swag
 		Any
 	}
 
-	struct Typeinfo
+	struct TypeInfo
 	{
 		name:	string
-		kind: 	TypeinfoKind = ?
+		kind: 	TypeInfoKind = ?
 		sizeof: u32
 	}
 
-	struct TypeinfoNative
+	struct TypeInfoNative
 	{
-		base: 			Typeinfo
-		nativeKind:		TypeinfoNativeKind = TypeinfoNativeKind.Void
+		base: 			TypeInfo
+		nativeKind:		TypeInfoNativeKind = TypeInfoNativeKind.Void
 	}
 
-	struct TypeinfoPointer
+	struct TypeInfoPointer
 	{
-		base: 			Typeinfo
-		finalType:		const *Typeinfo
-		pointedType:	const *Typeinfo
+		base: 			TypeInfo
+		finalType:		const *TypeInfo
+		pointedType:	const *TypeInfo
 		ptrCount:		u32
 	}
 
-	struct TypeinfoParam
+	struct TypeInfoParam
 	{
-		base: 			Typeinfo
+		base: 			TypeInfo
 		namedParam:		string
-		pointedType:	const *Typeinfo
+		pointedType:	const *TypeInfo
 		value:			*void
 		attributes:		const [..] (string, any)
 		offset:			u32
 	}
 
-	struct TypeinfoStruct
+	struct TypeInfoStruct
 	{
-		base: 		Typeinfo
-		fields:		const [..] *TypeinfoParam
+		base: 		TypeInfo
+		fields:		const [..] *TypeInfoParam
 		attributes:	const [..] (string, any)
 	}
-
-	struct TypeinfoFunc
+    
+	struct TypeInfoInterface
 	{
-		base: 			Typeinfo
-		parameters:		const [..] *TypeinfoParam
-		returnType:		const *Typeinfo
+		base: 		TypeInfo
+		value:		*void
+		itable:	    const *TypeInfoStruct
+	}    
+
+	struct TypeInfoFunc
+	{
+		base: 			TypeInfo
+		parameters:		const [..] *TypeInfoParam
+		returnType:		const *TypeInfo
 		attributes:		const [..] (string, any)
 	}
 
-	struct TypeinfoEnum
+	struct TypeInfoEnum
 	{
-		base: 		Typeinfo
-		values:		const [..] *TypeinfoParam
-		rawType:	const *Typeinfo
+		base: 		TypeInfo
+		values:		const [..] *TypeInfoParam
+		rawType:	const *TypeInfo
 		attributes:	const [..] (string, any)
 	}
 
-	struct TypeinfoVariadic
+	struct TypeInfoVariadic
 	{
-		base:	Typeinfo
+		base:	TypeInfo
 	}
 
-	struct TypeinfoArray
+	struct TypeInfoArray
 	{
-		base: 			Typeinfo
-		pointedType:	const *Typeinfo
-		finalType:		const *Typeinfo
+		base: 			TypeInfo
+		pointedType:	const *TypeInfo
+		finalType:		const *TypeInfo
 		count:			u32
 		totalCount:		u32
 	}
 
-	struct TypeinfoSlice
+	struct TypeInfoSlice
 	{
-		base: 			Typeinfo
-		pointedType:	const *Typeinfo
+		base: 			TypeInfo
+		pointedType:	const *TypeInfo
 	}
 }
