@@ -1182,11 +1182,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                     fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
                     if (symbol->kind == SymbolKind::Variable)
                     {
-						// Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
+                        // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
                         auto idRef            = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
                         auto copyId           = (AstIdentifier*) Ast::clone(identifierRef->previousResolvedNode, idRef);
                         idRef->byteCodeFct    = ByteCodeGenJob::emitIdentifierRef;
                         copyId->identifierRef = idRef;
+                        identifierRef->previousResolvedNode->flags |= AST_FROM_UFCS;
+                        copyId->flags |= AST_TO_UFCS;
                     }
                     else
                     {
