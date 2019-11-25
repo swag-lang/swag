@@ -46,6 +46,9 @@ void Module::addFile(SourceFile* file)
     time_t t     = fs::file_time_type::clock::to_time_t(ftime);
     if (files.size() == 1 || t > moreRecentSourceFile)
         moreRecentSourceFile = t;
+
+	if (file->path.filename().string() == "build.swg")
+		buildFiles.push_back(file);
 }
 
 void Module::removeFile(SourceFile* file)

@@ -227,13 +227,27 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
-    // Semantic pass on all other modules
+    // build all 'build.swg' files
     for (auto module : list)
     {
         if (module == runtimeModule)
             continue;
-        auto job    = g_Pool_moduleSemanticJob.alloc();
-        job->module = module;
+        auto job           = g_Pool_moduleSemanticJob.alloc();
+        job->module        = module;
+        job->buildFileMode = true;
+        g_ThreadMgr.addJob(job);
+    }
+
+    g_ThreadMgr.waitEndJobs();
+
+    // Semantic pass on the rest of the files, for all modules
+    for (auto module : list)
+    {
+        if (module == runtimeModule)
+            continue;
+        auto job           = g_Pool_moduleSemanticJob.alloc();
+        job->module        = module;
+        job->buildFileMode = false;
         g_ThreadMgr.addJob(job);
     }
 

@@ -88,6 +88,15 @@ struct Diagnostic
     {
     }
 
+    Diagnostic(const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
+        : sourceFile{nullptr}
+        , textMsg{msg}
+        , errorLevel{level}
+        , hasFile{false}
+        , hasLocation{false}
+    {
+    }
+
     void report(bool verboseMode = false) const;
     void defaultColor(bool verboseMode) const;
 

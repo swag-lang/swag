@@ -36,6 +36,7 @@ struct Module : public PoolElement
     atomic<int>         numErrors = 0;
     SpinLock            mutexFile;
     vector<SourceFile*> files;
+    vector<SourceFile*> buildFiles;
     AstNode*            astRoot;
     Scope*              scopeRoot;
     BuildParameters     buildParameters;
