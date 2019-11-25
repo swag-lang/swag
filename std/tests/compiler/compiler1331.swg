@@ -1,6 +1,6 @@
 public interface toto
 {
-    print: func()
+    print: func(self)
 }
 
 #assert @sizeof(toto) == @sizeof(*void) * 2

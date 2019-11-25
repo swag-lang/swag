@@ -41,6 +41,7 @@ bool SemanticJob::resolveTypeLambda(SemanticContext* context)
         {
             auto typeParam      = g_Pool_typeInfoParam.alloc();
             typeParam->typeInfo = param->typeInfo;
+            typeParam->node     = param;
             if (typeParam->typeInfo->flags & TYPEINFO_GENERIC)
                 typeInfo->flags |= TYPEINFO_GENERIC;
             typeInfo->parameters.push_back(typeParam);

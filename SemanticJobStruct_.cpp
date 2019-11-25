@@ -549,10 +549,20 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             typeParam->typeInfo   = child->typeInfo;
             typeParam->sizeOf     = child->typeInfo->sizeOf;
             typeParam->offset     = storageOffset;
+            typeParam->node       = child;
             if (child->parentAttributes)
                 SWAG_CHECK(collectAttributes(context, typeParam->attributes, child->parentAttributes, child, AstNodeKind::VarDecl, child->attributeFlags));
             typeITable->childs.push_back(typeParam);
+
+            // Verify signature
             SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, format("an interface can only contain members of type 'lambda' ('%s' provided)", child->typeInfo->name.c_str())}));
+            auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
+            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, format("missing parameters for interface member '%s' ('self' expected as first parameter)", child->name.c_str())}));
+            auto firstParamType = typeLambda->parameters[0]->typeInfo;
+            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->node, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+            auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
+            SWAG_VERIFY(firstParamPtr->ptrCount == 1, context->report({typeLambda->parameters[0]->node, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->node, format("bad type for first parameter of interface member ('self' expected, '%s' provided)", firstParamType->name.c_str())}));
         }
 
         typeParam           = typeITable->childs[storageIndex];
