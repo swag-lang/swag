@@ -195,37 +195,35 @@ bool SyntaxJob::doStructContent(AstNode* parent)
     while (true)
     {
         if (token.id == TokenId::EndOfFile)
-        {
-            SWAG_CHECK(syntaxError(token, "no matching '}' found in struct declaration"));
-            break;
-        }
+            return syntaxError(token, "no matching '}' found in struct declaration");
 
-        if (token.id == TokenId::SymRightCurly)
+        switch (token.id)
         {
+        case TokenId::SymRightCurly:
             SWAG_CHECK(eatToken());
-            break;
-        }
+            return true;
 
-        if (token.id == TokenId::SymAttrStart)
-        {
+        case TokenId::SymAttrStart:
             SWAG_CHECK(doAttrUse(parent));
-        }
-        else if (token.id == TokenId::CompilerIf)
-        {
+            break;
+
+        case TokenId::CompilerIf:
             SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::StructDecl));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
-        }
-        else if (token.id == TokenId::SymLeftCurly)
+            break;
+
+        case TokenId::SymLeftCurly:
         {
             auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doStructContent(stmt));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;
+            break;
         }
-        else
-        {
+
+        default:
             SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
-			if (!waitCurly)
-				break;
+            if (!waitCurly)
+                return true;
         }
     }
 
