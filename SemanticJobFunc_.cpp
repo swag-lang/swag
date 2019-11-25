@@ -200,29 +200,13 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     SWAG_CHECK(setFullResolve(context, node));
 
     // Ask for bytecode
-    bool genByteCode = false;
-    if (g_CommandLine.backendOutput && (sourceFile->buildPass > BuildPass::Semantic) && (sourceFile->module->buildPass > BuildPass::Semantic))
-        genByteCode = true;
-    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && g_CommandLine.test && g_CommandLine.runByteCodeTests)
-        genByteCode = true;
-    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test && !g_CommandLine.test)
+    bool genByteCode = true;
+    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
         genByteCode = false;
-    if (node->attributeFlags & ATTRIBUTE_PRINTBYTECODE)
-        genByteCode = true;
-    if (node->attributeFlags & ATTRIBUTE_INIT_FUNC)
-        genByteCode = true;
-    if (node->attributeFlags & ATTRIBUTE_DROP_FUNC)
-        genByteCode = true;
-    if (node->attributeFlags & ATTRIBUTE_RUN_FUNC)
-        genByteCode = true;
     if (node->token.id == TokenId::Intrinsic)
         genByteCode = false;
     if (node->attributeFlags & ATTRIBUTE_FOREIGN)
         genByteCode = false;
-    if (node->name == "opInit")
-        genByteCode = true;
-    if (node->name == "defaultAllocator" && sourceFile->swagFile)
-        genByteCode = true;
     if (node->flags & AST_IS_GENERIC)
         genByteCode = false;
     if (!node->content)

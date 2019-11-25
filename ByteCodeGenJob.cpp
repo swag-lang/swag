@@ -275,16 +275,17 @@ JobResult ByteCodeGenJob::execute()
 
     if (!syncToDependentNodes)
     {
-        // Register SystemAllocator interface to the default context
-        if (originalNode->name == "SystemAllocator" && sourceFile->swagFile)
+        // Register SystemAllocator interface to the default bytecode context
+        if (sourceFile->swagFile && (originalNode->name == "SystemAllocator"))
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
             context.result  = ContextResult::Done;
             waitForAllStructInterfaces(typeStruct);
             if (context.result == ContextResult::Pending)
                 return JobResult::KeepJobAlive;
-
-            auto itable                               = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+            auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+            SWAG_ASSERT(itable);
+			SWAG_ASSERT(((void**) itable)[0]);
             g_defaultContextByteCode.allocator.data   = nullptr;
             g_defaultContextByteCode.allocator.itable = (void*) itable;
         }

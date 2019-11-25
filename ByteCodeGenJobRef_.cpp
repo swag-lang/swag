@@ -420,6 +420,10 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         SWAG_ASSERT(typeStruct);
         if (!(typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         {
+            waitStructGenerated(context, typeStruct);
+            if (context->result != ContextResult::Done)
+                return true;
+
             SWAG_ASSERT(typeStruct->opInit);
             if (!generateStruct_opInit(context, typeStruct))
                 return false;
