@@ -211,11 +211,10 @@ bool Workspace::buildModules(const vector<Module*>& list)
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("-> semantic pass");
 
-    // Semantic pass on runtime module first
-    ModuleSemanticJob* job = nullptr;
+    // Runtime swag module first
     if (runtimeModule)
     {
-        job         = g_Pool_moduleSemanticJob.alloc();
+        auto job    = g_Pool_moduleSemanticJob.alloc();
         job->module = runtimeModule;
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
@@ -223,7 +222,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
         // Errors in swag.swg !!!
         if (runtimeModule->numErrors)
         {
-            g_Log.error("some semantic errors have been found in 'swag.swg' ! exiting...");
+            g_Log.error("some errors have been found in 'swag.swg' ! exiting...");
             return false;
         }
     }
@@ -233,7 +232,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     {
         if (module == runtimeModule)
             continue;
-        job         = g_Pool_moduleSemanticJob.alloc();
+        auto job    = g_Pool_moduleSemanticJob.alloc();
         job->module = module;
         g_ThreadMgr.addJob(job);
     }
@@ -257,7 +256,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
                 {
                     if (pendingJob->waitingSymbolSolved && !firstNode->name.empty())
                         sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
-					else if (pendingJob->waitingSymbolSolved)
+                    else if (pendingJob->waitingSymbolSolved)
                         sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
                     else
                         sourceFile->report({node, node->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
