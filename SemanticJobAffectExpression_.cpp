@@ -85,7 +85,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo->kind == TypeInfoKind::Struct)
         {
-            waitForAllStructInterfaces(context, CastTypeInfo<TypeInfoStruct>(rightTypeInfo, TypeInfoKind::Struct));
+            context->job->waitForAllStructInterfaces(rightTypeInfo);
             if (context->result == ContextResult::Pending)
                 return true;
             SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));

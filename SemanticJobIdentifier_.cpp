@@ -455,10 +455,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // The expansion will be done at the lowest level possible
         if (identifier->ownerFct && !(identifier->ownerFct->attributeFlags & ATTRIBUTE_INLINE))
         {
-            // Check that function has been solved !
-            auto st = ((AstFuncDecl*) overload->node)->returnType->semanticState;
-            SWAG_ASSERT(st == AstNodeResolveState::PostChilds);
-
             if (overload->node->attributeFlags & ATTRIBUTE_INLINE)
             {
                 // Need to wait for function full semantic resolve
@@ -1309,7 +1305,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 				// a function
 				if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
 				{
-					waitForAllStructInterfaces(context, CastTypeInfo<TypeInfoStruct>(oneParam->typeInfo, TypeInfoKind::Struct));
+					context->job->waitForAllStructInterfaces(oneParam->typeInfo);
 					if (context->result == ContextResult::Pending)
 						return true;
 				}

@@ -78,7 +78,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
     case Property::TypeOf:
         SWAG_VERIFY(expr->typeInfo, context->report({expr, "expression cannot be evaluated at compile time"}));
-        waitForAllStructInterfaces(context, expr->typeInfo);
+		context->job->waitForAllStructInterfaces(expr->typeInfo);
         if (context->result != ContextResult::Done)
             return true;
         expr->flags |= AST_NO_BYTECODE;

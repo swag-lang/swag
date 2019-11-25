@@ -39,8 +39,10 @@ bool BackendC::emitMain()
 
     // Main context
     CONCAT_FIXED_STR(bufferC, "\tstatic swag_context_t mainContext;\n");
-    SWAG_ASSERT(g_defaultContextByteCode.allocator);
-    bufferC.addStringFormat("\tmainContext.allocator = &%s;\n", g_defaultContextByteCode.allocator->callName().c_str());
+	SWAG_ASSERT(g_defaultContextByteCode.allocator.itable);
+	auto bcAlloc = (ByteCode*)((void**)g_defaultContextByteCode.allocator.itable)[0];
+	bufferC.addStringFormat("\tstatic swag_allocator_t defaultAllocTable = &%s;\n", bcAlloc->callName().c_str());
+	CONCAT_FIXED_STR(bufferC, "\tmainContext.allocator.itable = &defaultAllocTable;\n");
     CONCAT_FIXED_STR(bufferC, "\t__process_infos.contextTlsId = __tlsAlloc();\n");
     CONCAT_FIXED_STR(bufferC, "\t__process_infos.defaultContext = &mainContext;\n");
     CONCAT_FIXED_STR(bufferC, "\t__tlsSetValue(__process_infos.contextTlsId, __process_infos.defaultContext);\n");

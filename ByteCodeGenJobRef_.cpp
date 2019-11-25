@@ -79,7 +79,6 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
 
     if (typeInfo->kind == TypeInfoKind::Interface || typeInfo->isPointerTo(TypeInfoKind::Interface))
     {
-        SWAG_ASSERT(node->flags & (AST_FROM_UFCS | AST_TO_UFCS));
         if (typeInfo->isPointerTo(TypeInfoKind::Interface))
             emitInstruction(context, ByteCodeOp::DeRefPointer, node->resultRegisterRC, node->resultRegisterRC);
         if (node->flags & AST_FROM_UFCS)

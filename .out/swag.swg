@@ -70,31 +70,41 @@ namespace swag
 		Realloc
 	}
 
-    typealias Allocator: func(*AllocatorRequest)->void
-
 	struct AllocatorRequest
 	{
 		mode:		AllocatorMode = AllocatorMode.Alloc
 		size:		u32
 		address:	*void
 	}
+    
+    interface IAllocator
+    {
+        alloc: func(self, *AllocatorRequest)
+    }
 
-	func defaultAllocator(request: *AllocatorRequest)
-	{
-		switch request.mode
-		{
-			case AllocatorMode.Alloc:
-				request.address = @alloc(request.size)
-			case AllocatorMode.Free:
-				@free(request.address)
-			case AllocatorMode.Realloc:
-				request.address = @realloc(request.address, request.size)
-		}
-	}
+    struct SystemAllocator
+    {
+    }
+    
+    impl IAllocator for SystemAllocator
+    {
+        func alloc(self, request: *AllocatorRequest)
+        {
+            switch request.mode
+            {
+                case AllocatorMode.Alloc:
+                    request.address = @alloc(request.size)
+                case AllocatorMode.Free:
+                    @free(request.address)
+                case AllocatorMode.Realloc:
+                    request.address = @realloc(request.address, request.size)
+            }
+        }
+    }
 
 	struct Context
 	{
-		allocator: Allocator
+		allocator: IAllocator
 	}
 
 	// #########################################################

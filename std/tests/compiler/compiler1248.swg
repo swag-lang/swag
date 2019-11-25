@@ -2,10 +2,17 @@ using swag
 
 var GG = false
 
-func alloc(req: *AllocatorRequest)
+struct MyAlloc
 {
-    GG = true
-    @assert(req.size == 10)
+}
+
+impl IAllocator for MyAlloc
+{
+    func alloc(self, req: *AllocatorRequest)
+    {
+        GG = true
+        @assert(req.size == 10)
+    }
 }
 
 func toto()
@@ -14,7 +21,7 @@ func toto()
     
     var req: AllocatorRequest
     req.size = 10
-    cxt.allocator(&req)
+    cxt.allocator.alloc(&req)
 }
 
 #test
@@ -23,7 +30,8 @@ func toto()
     
     savedCxt := @getcontext()
     var cxt: Context = deref savedCxt
-    cxt.allocator = &alloc
+    var myAlloc: MyAlloc
+    cxt.allocator = myAlloc
     defer @setcontext(savedCxt)
     @setcontext(cxt)
     

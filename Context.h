@@ -3,15 +3,20 @@
 union Register;
 struct ByteCode;
 
+typedef struct swag_interface_t
+{
+    void* data;
+    void* itable;
+} swag_interface_t;
+
 struct Context
 {
-    ByteCode* allocator;
+    swag_interface_t allocator;
 };
 
-typedef void (*swag_allocator_t)(Register*);
 typedef struct swag_context_t
 {
-    swag_allocator_t allocator;
+    swag_interface_t allocator;
 } swag_context_t;
 
 typedef struct swag_slice_t

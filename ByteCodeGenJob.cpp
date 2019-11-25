@@ -275,11 +275,18 @@ JobResult ByteCodeGenJob::execute()
 
     if (!syncToDependentNodes)
     {
-        // Register some default swag functions
-        if (originalNode->name == "defaultAllocator" && sourceFile->swagFile)
+        // Register SystemAllocator interface to the default context
+        if (originalNode->name == "SystemAllocator" && sourceFile->swagFile)
         {
-            SWAG_ASSERT(context.bc);
-            g_defaultContextByteCode.allocator = context.bc;
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
+            context.result  = ContextResult::Done;
+            waitForAllStructInterfaces(typeStruct);
+            if (context.result == ContextResult::Pending)
+                return JobResult::KeepJobAlive;
+
+            auto itable                               = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+            g_defaultContextByteCode.allocator.data   = nullptr;
+            g_defaultContextByteCode.allocator.itable = (void*) itable;
         }
 
         while (!nodes.empty())
@@ -345,11 +352,11 @@ JobResult ByteCodeGenJob::execute()
                 {
                     if (!node->byteCodeAfterFct(&context))
                         return JobResult::ReleaseJob;
-					if (context.result == ContextResult::Pending)
-					{
-						g_Log.print("XXXX");
-						return JobResult::KeepJobAlive;
-					}
+                    if (context.result == ContextResult::Pending)
+                    {
+                        g_Log.print("XXXX");
+                        return JobResult::KeepJobAlive;
+                    }
                     if (context.result == ContextResult::NewChilds)
                         continue;
                 }

@@ -15,17 +15,18 @@ swag_process_infos_t g_processInfos = {0};
 static void defaultAllocator(Register* r)
 {
     Context* context = (Context*) OS::tlsGetValue(g_tlsContextIdByteCode);
-    SWAG_ASSERT(context->allocator);
+    SWAG_ASSERT(context->allocator.itable);
+    auto bc = (ByteCode*) ((void**) context->allocator.itable)[0];
 
     ByteCodeRunContext runContext;
-    auto               node = context->allocator->node;
+    auto               node = bc->node;
     runContext.setup(node->sourceFile, node, g_Workspace.runContext.numRegistersRR, g_Workspace.runContext.stackSize);
     runContext.push(r->pointer);
     runContext.push(nullptr);
     runContext.push(nullptr);
     runContext.push(nullptr);
     runContext.bp = runContext.sp;
-    context->allocator->enterByteCode(&runContext);
+    bc->enterByteCode(&runContext);
     g_Run.run(&runContext);
 }
 
@@ -36,9 +37,11 @@ void initDefaultContext()
     g_tlsContextIdBackend = OS::tlsAlloc();
     OS::tlsSetValue(g_tlsContextIdBackend, &g_defaultContextBackend);
 
-    g_processInfos.arguments.addr     = g_CommandLine.userArgumentsSlice.first;
-    g_processInfos.arguments.count    = (uint64_t) g_CommandLine.userArgumentsSlice.second;
-    g_processInfos.contextTlsId       = g_tlsContextIdBackend;
-    g_processInfos.defaultContext     = &g_defaultContextBackend;
-    g_defaultContextBackend.allocator = defaultAllocator;
+    g_processInfos.arguments.addr            = g_CommandLine.userArgumentsSlice.first;
+    g_processInfos.arguments.count           = (uint64_t) g_CommandLine.userArgumentsSlice.second;
+    g_processInfos.contextTlsId              = g_tlsContextIdBackend;
+    g_processInfos.defaultContext            = &g_defaultContextBackend;
+    g_defaultContextBackend.allocator.data   = nullptr;
+    static auto itable                       = &defaultAllocator;
+    g_defaultContextBackend.allocator.itable = &itable;
 }

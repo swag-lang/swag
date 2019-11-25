@@ -19,9 +19,9 @@ using swag
     var req: AllocatorRequest
     req.size = 10
     @assert(req.address == null)    
-    cxt.allocator(&req)
+    cxt.allocator.alloc(&req)
     @assert(req.address != null)
 
     req.mode = AllocatorMode.Free
-    cxt.allocator(&req)
+    cxt.allocator.alloc(&req)
 }

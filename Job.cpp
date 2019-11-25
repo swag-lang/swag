@@ -6,6 +6,7 @@
 #include "SourceFile.h"
 #include "AstNode.h"
 #include "Diagnostic.h"
+#include "TypeInfo.h"
 
 void Job::doneJob()
 {
@@ -26,6 +27,21 @@ void Job::waitForSymbolNoLock(SymbolName* symbol)
     waitingSymbolSolved = symbol;
     setPending();
     symbol->addDependentJobNoLock(this);
+}
+
+void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
+{
+    if (typeInfo->kind != TypeInfoKind::Struct)
+        return;
+
+    auto        typeInfoStruct = (TypeInfoStruct*) typeInfo;
+    scoped_lock lk(typeInfoStruct->mutex);
+    if (typeInfoStruct->cptRemainingInterfaces == 0)
+        return;
+    SWAG_ASSERT(typeInfoStruct->structNode);
+    scoped_lock lk1(typeInfoStruct->scope->symTable->mutex);
+    typeInfoStruct->scope->dependentJobs.add(this);
+    setPending();
 }
 
 void Job::setPending()

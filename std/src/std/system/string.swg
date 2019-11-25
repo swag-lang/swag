@@ -2,7 +2,7 @@ namespace std
 {
     using swag
     private const SmallSize = 28'u32
-    private const SmallSizeInternal = SmallSize - (@sizeof(Allocator) + @sizeof(u32))
+    private const SmallSizeInternal = SmallSize - (@sizeof(IAllocator) + @sizeof(u32))
     #assert @sizeof(String) == 40
 
     public struct String
@@ -10,7 +10,7 @@ namespace std
         buffer:     *u8
         length:     u32
         size:       u32
-        allocator:  Allocator
+        allocator:  IAllocator
         padding:    [SmallSizeInternal] u8
     }
 
@@ -23,19 +23,19 @@ namespace std
             var req: AllocatorRequest
             req.mode = AllocatorMode.Free
             req.address = buffer
-            allocator(req)
+            allocator.alloc(req)
         }
 
         func realloc(using self, newSize: u32)
         {
-            if !allocator
+            if allocator == null
                 allocator = @getcontext().allocator
 
             var req: AllocatorRequest
             req.mode = AllocatorMode.Realloc
             req.size = newSize
             req.address = buffer
-            allocator(req)
+            allocator.alloc(req)
             buffer = acast req.address
         }
 

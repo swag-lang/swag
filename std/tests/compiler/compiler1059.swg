@@ -24,7 +24,7 @@ impl Array
 		
 		var request: AllocatorRequest
 		request.size = size * @sizeof(T)
-		context.allocator(request)
+		context.allocator.alloc(request)
 		newBuffer := request.address
 		
 		if buffer
@@ -32,7 +32,7 @@ impl Array
 		
 		request.mode = AllocatorMode.Free
 		request.address = buffer
-		context.allocator(request)
+		context.allocator.alloc(request)
 		
 		buffer = acast newBuffer
 	}

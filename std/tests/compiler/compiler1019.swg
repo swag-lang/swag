@@ -9,7 +9,7 @@ using swag
 	var req: AllocatorRequest
 	req.size = 16
 	
-	context.allocator(&req)
+	context.allocator.alloc(&req)
 	req.mode = AllocatorMode.Free
-	context.allocator(&req)
+	context.allocator.alloc(&req)
 }
