@@ -95,7 +95,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
         }
     }
 
-    return context->report({ expr, format("unknown user code '%s'", expr->name.c_str()) });
+    return context->report({ expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->name.c_str()) });
 }
 
 bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
