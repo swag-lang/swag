@@ -17,7 +17,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct, context->report({node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedKindName(node->ownerScope->kind))}));
+    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, format("'using' on a variable cannot be used in '%s' scope", Scope::getNakedKindName(node->ownerScope->kind))}));
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);

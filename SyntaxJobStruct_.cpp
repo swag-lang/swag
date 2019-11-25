@@ -220,10 +220,22 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             break;
         }
 
+        case TokenId::KwdUsing:
+        {
+            SWAG_CHECK(eatToken());
+            AstNode* varDecl;
+            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
+            varDecl->flags |= AST_DECL_USING;
+            if (!waitCurly)
+                return true;
+            break;
+        }
+
         default:
             SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
             if (!waitCurly)
                 return true;
+            break;
         }
     }
 

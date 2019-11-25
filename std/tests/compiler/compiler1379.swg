@@ -5,11 +5,13 @@ struct TOTO
 
 struct TITI
 {
-    base: TOTO
+    using base: TOTO
 }
 
 #test
 {
     let p: TITI
-    //p.x = 666
+    p.x = 666
+    @assert(p.base.x == 666)
+    @assert(p.x == 666)
 }
