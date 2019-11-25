@@ -239,10 +239,10 @@ bool Backend::emitPublicTypeAliasSwg(AstNode* node)
 
 bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
 {
-	if(node->kind == AstNodeKind::InterfaceDecl)
-		CONCAT_FIXED_STR(bufferSwg, "\tinterface");
-	else
-		CONCAT_FIXED_STR(bufferSwg, "\tstruct");
+    if (node->kind == AstNodeKind::InterfaceDecl)
+        CONCAT_FIXED_STR(bufferSwg, "\tinterface");
+    else
+        CONCAT_FIXED_STR(bufferSwg, "\tstruct");
     if (node->genericParameters)
         SWAG_CHECK(emitGenericParameters(node->genericParameters));
 
@@ -347,8 +347,8 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
             AstStruct* node = CastAst<AstStruct>(one, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
             if (node->typeInfo->kind == TypeInfoKind::Interface)
             {
-				TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-				SWAG_CHECK(emitPublicStructSwg(typeStruct->itable, node));
+                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+                SWAG_CHECK(emitPublicStructSwg(typeStruct->itable, node));
             }
             else
             {
@@ -408,18 +408,20 @@ bool Backend::preCompile()
     bufferSwg.fileName = targetPath + "\\" + module->name + ".swg";
 
     // Do we need to generate the file ?
-    if (!g_CommandLine.rebuild)
+    bool regen = g_CommandLine.rebuild;
+    if (!regen)
     {
         if (fs::exists(bufferSwg.fileName))
         {
             fs::file_time_type mtime = fs::last_write_time(bufferSwg.fileName);
             time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
-            if (t1 > module->moreRecentSourceFile && t1 > g_Workspace.runtimeModule->moreRecentSourceFile)
-            {
-                return true;
-            }
+            if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.runtimeModule->moreRecentSourceFile)
+                regen = true;
         }
     }
+
+	if (!regen)
+		return true;
 
     bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
