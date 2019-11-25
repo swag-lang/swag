@@ -95,8 +95,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
         }
     }
 
-    SWAG_ASSERT(false);
-    return true;
+    return context->report({ expr, format("unknown user code '%s'", expr->name.c_str()) });
 }
 
 bool SemanticJob::resolveCompilerAssert(SemanticContext* context)

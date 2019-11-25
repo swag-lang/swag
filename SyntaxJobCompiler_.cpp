@@ -73,7 +73,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveCompilerMixin;
     node->token       = move(token);
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(doIdentifierRef(node));
     SWAG_CHECK(eatSemiCol("after '#mixin' expression"));
     return true;
 }
