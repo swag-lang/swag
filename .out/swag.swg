@@ -14,6 +14,7 @@ func @memcpy(dst: *void, src: *void, size: u32);
 func @getcontext()->const *swag.Context;
 func @setcontext(context: const *swag.Context);
 func @args()->[..] string;
+func @target()->*swag.CompilerTarget;
 
 namespace swag
 {
