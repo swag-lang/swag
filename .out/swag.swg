@@ -39,25 +39,25 @@ namespace swag
 	// Constants
 	// #########################################################
 
-	const s8_min  = -127's8 - 1
-	const s16_min = -32767's16 - 1
-	const s32_min = -2147483647's32 - 1
-	const s64_min = -9223372036854775807's64 - 1
+	const MinS8  = -127's8 - 1
+	const MinS16 = -32767's16 - 1
+	const MinS32 = -2147483647's32 - 1
+	const MinS64 = -9223372036854775807's64 - 1
 
-	const s8_max  = 127's8
-	const s16_max = 32767's16
-	const s32_max = 2147483647's32
-	const s64_max = 9223372036854775807's64
+	const MaxS8  = 127's8
+	const MaxS16 = 32767's16
+	const MaxS32 = 2147483647's32
+	const MaxS64 = 9223372036854775807's64
 
-	const u8_max  = 0xFF'u8
-	const u16_max = 0xFFFF'u16
-	const u32_max = 0xFFFF_FFFF'u32
-	const u64_max = 0xFFFF_FFFF_FFFF_FFFF'u64
+	const MaxU8  = 0xFF'u8
+	const MaxU16 = 0xFFFF'u16
+	const MaxU32 = 0xFFFF_FFFF'u32
+	const MaxU64 = 0xFFFF_FFFF_FFFF_FFFF'u64
 
-	const f32_min = 1.175494e-38'f32
-	const f32_max = 3.402822e+38'f32
-	const f64_min = 2.22507e-308'f64
-	const f64_max = 1.79769e+308'f64
+	const MinF32 = 1.175494e-38'f32
+	const MaxF32 = 3.402822e+38'f32
+	const MinF64 = 2.22507e-308'f64
+	const MaxF64 = 1.79769e+308'f64
 
 	// #########################################################
 	// Context & allocators
