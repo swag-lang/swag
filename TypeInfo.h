@@ -14,7 +14,7 @@ struct AstNode;
 struct ByteCode;
 struct TypeInfoFuncAttr;
 
-// Do not forget to synchronize runtime.h !
+// Do not forget to synchronize swag.swg !
 enum class TypeInfoKind
 {
     Invalid,
@@ -38,7 +38,7 @@ enum class TypeInfoKind
     Count,
 };
 
-// Do not forget to synchronize runtime.h !
+// Do not forget to synchronize swag.swg !
 enum class NativeTypeKind
 {
     Void,

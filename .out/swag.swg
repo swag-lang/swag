@@ -18,7 +18,7 @@ func @args()->[..] string;
 namespace swag
 {
 	// #########################################################
-	// Compiler attributes
+	// Attributes
 	// #########################################################
 
 	attr constexpr() -> "func"
@@ -129,6 +129,8 @@ namespace swag
 		Struct
 		Generic
 		Alias
+        Code
+        Interface
 	}
 
 	enum TypeInfoNativeKind

@@ -12,7 +12,7 @@ struct Workspace
     bool    build();
     Module* createOrUseModule(const string& moduleName);
 
-    void    enumerateModules(const fs::path &path, bool fromTests);
+    void    enumerateModules(const fs::path& path, bool fromTests);
     void    enumerateFilesInModule(const fs::path& path, Module* module);
     void    addRuntime();
     void    setup();
@@ -21,7 +21,7 @@ struct Workspace
     void    clearPath(const fs::path& path);
     void    setupTarget();
 
-    Target*              currentTarget = nullptr;
+    Target               target;
     fs::path             workspacePath;
     fs::path             targetPath;
     fs::path             targetTestPath;

@@ -442,7 +442,7 @@ void Workspace::setupTarget()
 {
     targetPath = workspacePath;
     targetPath.append("out/");
-    targetPath.append(currentTarget->config + "-" + currentTarget->arch);
+    targetPath.append(g_CommandLine.config + "-" + g_CommandLine.arch);
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> target is '%s'", targetPath.string().c_str()));
@@ -557,22 +557,9 @@ bool Workspace::build()
 {
     setup();
 
-    auto target                               = new Target;
-    target->config                            = g_CommandLine.config;
-    target->arch                              = g_CommandLine.arch;
-    target->backendDebugInformations          = false;
-    target->backendOptimizeLevel              = 0;
-    target->backendC.writeSourceCode          = true;
-    target->backendC.writeByteCodeInstruction = true;
+    g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.config.c_str(), g_CommandLine.arch.c_str()));
 
-    bool ok = true;
-
-    g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), target->config.c_str(), target->arch.c_str()));
-
-    currentTarget = target;
     addRuntime();
     setupTarget();
-    ok &= buildTarget();
-
-    return ok;
+    return buildTarget();
 }

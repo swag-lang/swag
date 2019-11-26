@@ -10,9 +10,6 @@ struct ParametersBackendC
 
 struct Target
 {
-    string config;
-	string arch;
-
     // Bytecode
     bool     bytecodeBoundCheck   = true;
     bool     bytecodeAnyCastCheck = true;

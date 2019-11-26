@@ -25,7 +25,9 @@ void Module::setup(const string& moduleName)
     astRoot                = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, nullptr);
     scopeRoot->owner       = astRoot;
     buildPass              = g_CommandLine.buildPass;
-    buildParameters.target = *g_Workspace.currentTarget;
+    buildParameters.config = g_CommandLine.config;
+    buildParameters.arch   = g_CommandLine.arch;
+    buildParameters.target = g_Workspace.target;
 }
 
 void Module::addFile(SourceFile* file)
@@ -47,8 +49,8 @@ void Module::addFile(SourceFile* file)
     if (files.size() == 1 || t > moreRecentSourceFile)
         moreRecentSourceFile = t;
 
-	if (file->path.filename().string() == "build.swg")
-		buildFiles.push_back(file);
+    if (file->path.filename().string() == "build.swg")
+        buildFiles.push_back(file);
 }
 
 void Module::removeFile(SourceFile* file)
