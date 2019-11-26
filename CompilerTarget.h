@@ -24,8 +24,10 @@ struct CompilerTarget
     uint32_t byteCodeMaxRecurse   = 1024;
     uint32_t byteCodeStackSize    = 16 * 1024;
 
-    // Backend
+    // Backend common
     bool                   backendDebugInformations = false;
     uint32_t               backendOptimizeLevel     = 0;
+
+	// Backend specific
     CompilerParamsBackendC backendC;
 };

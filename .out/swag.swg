@@ -78,11 +78,13 @@ namespace swag
         byteCodeMaxRecurse: u32     = 1024
         byteCodeStackSize: u32      = 16 * 1024
 
-        // Backend
+        // Backend common
         backendDebugInformations: bool  = false
         backendOptimizeLevel: u32       = 0
+        
+        // Backend specific
         backendC: CompilerParamsBackendC
-    };
+    }
     
 	// #########################################################
 	// Context & allocators
