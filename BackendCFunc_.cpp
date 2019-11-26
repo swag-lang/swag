@@ -7,7 +7,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Workspace.h"
-#include "Target.h"
+#include "CompilerTarget.h"
 #include "Scope.h"
 
 bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType)

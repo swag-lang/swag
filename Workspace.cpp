@@ -8,7 +8,7 @@
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "ByteCode.h"
-#include "Target.h"
+#include "CompilerTarget.h"
 #include "ByteCodeModuleManager.h"
 #include "Os.h"
 

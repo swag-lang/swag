@@ -1,5 +1,5 @@
 #pragma once
-#include "Target.h"
+#include "CompilerTarget.h"
 
 enum class BackendOutputType
 {
@@ -15,7 +15,7 @@ struct BuildParameters
     BackendOutputType type = BackendOutputType::Binary;
     string            config;
     string            arch;
-    Target            target;
+    CompilerTarget    target;
     string            postFix;
     string            destFile;
     uint32_t          flags = 0;

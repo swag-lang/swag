@@ -4,7 +4,7 @@
 #include "swagScope.h"
 struct Module;
 struct Scope;
-struct Target;
+struct CompilerTarget;
 
 struct Workspace
 {
@@ -21,7 +21,7 @@ struct Workspace
     void    clearPath(const fs::path& path);
     void    setupTarget();
 
-    Target               target;
+    CompilerTarget               target;
     fs::path             workspacePath;
     fs::path             targetPath;
     fs::path             targetTestPath;

@@ -5,7 +5,7 @@
 #include "ByteCode.h"
 #include "AstNode.h"
 #include "Context.h"
-#include "Target.h"
+#include "CompilerTarget.h"
 #include "Workspace.h"
 
 void BackendC::emitArgcArgv()

@@ -530,9 +530,6 @@
     <ClInclude Include="DependentJobs.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Target.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="BuildParameters.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -540,6 +537,9 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Scoped.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerTarget.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,7 +16,7 @@ struct Scope;
 struct ByteCode;
 struct Job;
 struct Backend;
-struct Target;
+struct CompilerTarget;
 struct SourceLocation;
 
 struct Module : public PoolElement

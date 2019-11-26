@@ -60,6 +60,31 @@ namespace swag
 	const MaxF64 = 1.79769e+308'f64
 
 	// #########################################################
+	// Compiler
+	// #########################################################
+    
+    struct CompilerParamsBackendC
+    {
+        writeSourceCode: bool           = false
+        writeByteCodeInstruction: bool  = false
+        maxApplicationArguments: u32    = 64
+    }
+
+    struct CompilerTarget
+    {
+        // Bytecode
+        bytecodeBoundCheck: bool    = true
+        bytecodeAnyCastCheck: bool  = true
+        byteCodeMaxRecurse: u32     = 1024
+        byteCodeStackSize: u32      = 16 * 1024
+
+        // Backend
+        backendDebugInformations: bool  = false
+        backendOptimizeLevel: u32       = 0
+        backendC: CompilerParamsBackendC
+    };
+    
+	// #########################################################
 	// Context & allocators
 	// #########################################################
 

@@ -14,7 +14,10 @@ struct AstNode;
 struct ByteCode;
 struct TypeInfoFuncAttr;
 
-// Do not forget to synchronize swag.swg !
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 enum class TypeInfoKind
 {
     Invalid,
@@ -38,7 +41,10 @@ enum class TypeInfoKind
     Count,
 };
 
-// Do not forget to synchronize swag.swg !
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 enum class NativeTypeKind
 {
     Void,

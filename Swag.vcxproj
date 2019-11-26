@@ -173,7 +173,7 @@
     <ClInclude Include="Generic.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Os.h" />
-    <ClInclude Include="Target.h" />
+    <ClInclude Include="CompilerTarget.h" />
     <ClInclude Include="ModuleCompileJob.h" />
     <ClInclude Include="ModuleOutputJob.h" />
     <ClInclude Include="OutputFile.h" />
