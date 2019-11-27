@@ -2,7 +2,7 @@ namespace std.drawing
 {
 	public struct Color
 	{
-		#if BIG_ENDIAN
+		#if swag.BIG_ENDIAN
 		{
 			a, r, g, b: u8
 			#[swag.offset("a")]

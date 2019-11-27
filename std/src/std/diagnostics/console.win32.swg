@@ -1,4 +1,4 @@
-#if WINDOWS
+#if swag.WINDOWS
 {
 	namespace std.console
 	{

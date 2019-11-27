@@ -254,4 +254,37 @@ namespace swag
 		base: 			TypeInfo
 		pointedType:	const *TypeInfo
 	}
+    
+	// #########################################################
+	// Default compiler configuration
+	// #########################################################
+    
+    // Platform setup
+    #if #arch == "win64"
+    {
+        const WINDOWS = true
+        const BIG_ENDIAN = false
+    }
+    #else
+    {
+        #assert(false, "invalid platform:" ~ #arch)
+    }
+
+    // Configuration setup
+    #if #config == "debug"
+    {
+        const DEBUG = true
+        const ASSERT = true
+    }
+    #elif #config == "release"
+    {
+        const DEBUG = false
+        const ASSERT = false
+    }
+    #else
+    {
+        #assert(false, "invalid configuration: " ~ #config)
+    }
+    
 }
+
