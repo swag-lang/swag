@@ -34,6 +34,7 @@ enum class Intrinsic
 	IntrinsicGetContext,
 	IntrinsicSetContext,
 	IntrinsicArguments,
+	IntrinsicTarget,
 };
 
 struct LanguageSpec

@@ -475,6 +475,7 @@ TypeInfo* TypeInfoStruct::clone()
     newType->opDrop            = opDrop;
     newType->attributes        = attributes;
     newType->itable            = itable;
+    newType->maxPaddingSize    = maxPaddingSize;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
@@ -509,9 +510,9 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if (kind == TypeInfoKind::Interface && to->kind == TypeInfoKind::Struct)
         {
-			auto other = static_cast<TypeInfoStruct*>(to);
-			if (other->hasInterface(this))
-				return true;
+            auto other = static_cast<TypeInfoStruct*>(to);
+            if (other->hasInterface(this))
+                return true;
         }
     }
 

@@ -393,18 +393,24 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         }
 
         // Compute padding
-        if (!relocated && node->packing > 1 && child->typeInfo->sizeOf)
+        auto paddingSizeof = child->typeInfo->sizeOf;
+        if (child->typeInfo->kind == TypeInfoKind::Struct)
+            paddingSizeof = ((TypeInfoStruct*) child->typeInfo)->maxPaddingSize;
+        if (!relocated && node->packing > 1 && paddingSizeof)
         {
-            auto padding = realStorageOffset & (child->typeInfo->sizeOf - 1);
+            auto padding = realStorageOffset & (paddingSizeof - 1);
             padding %= node->packing;
             if (padding)
             {
-                padding = child->typeInfo->sizeOf - padding;
+                padding = paddingSizeof - padding;
                 padding %= node->packing;
                 realStorageOffset += padding;
                 storageOffset += padding;
             }
         }
+
+        if (child->typeInfo->kind != TypeInfoKind::Struct)
+            typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, child->typeInfo->sizeOf);
 
         typeParam->offset                            = realStorageOffset;
         child->resolvedSymbolOverload->storageOffset = realStorageOffset;

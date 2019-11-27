@@ -186,11 +186,11 @@ struct TypeInfo : public PoolElement
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
-    uint32_t       flags;
+    Utf8           name;
     TypeInfoKind   kind;
     NativeTypeKind nativeType;
-    Utf8           name;
-    int            sizeOf;
+    uint32_t       flags;
+    uint32_t       sizeOf;
 };
 
 struct TypeInfoNative : public TypeInfo
@@ -592,6 +592,7 @@ struct TypeInfoStruct : public TypeInfo
         opDrop                 = nullptr;
         itable                 = nullptr;
         cptRemainingInterfaces = 0;
+        maxPaddingSize         = 0;
         attributes.reset();
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
@@ -623,6 +624,7 @@ struct TypeInfoStruct : public TypeInfo
     SpinLock               mutex;
     SymbolAttributes       attributes;
     uint32_t               cptRemainingInterfaces;
+    uint32_t               maxPaddingSize;
 };
 
 struct TypeInfoAlias : public TypeInfo

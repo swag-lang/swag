@@ -232,6 +232,13 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
+    case Intrinsic::IntrinsicTarget:
+    {
+        node->resultRegisterRC         = reserveRegisterRC(context);
+        node->parent->resultRegisterRC = node->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::IntrinsicTarget, node->resultRegisterRC);
+        break;
+    }
 
     default:
         return internalError(context, "emitIntrinsic, unknown intrinsic");

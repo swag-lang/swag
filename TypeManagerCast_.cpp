@@ -1267,7 +1267,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     SWAG_ASSERT(!fromNode || fromSize == fromNode->childs.size());
 
     // Need to recompute total size, as the size of each element can have been changed by the cast
-    int newSizeof = 0;
+    uint32_t newSizeof = 0;
 
     // Compute if expression is constexpr
     if (fromNode)

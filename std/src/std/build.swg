@@ -13,12 +13,17 @@
 #if #config == "debug"
 {
 	const DEBUG = true
-	const ASSERT = true
+	const ASSERT = true   
 }
 #elif #config == "release"
 {
 	const DEBUG = false
 	const ASSERT = false
+    #run
+    {
+        @target().backendC.writeSourceCode = true
+        @target().backendC.writeByteCodeInstruction = true
+    }    
 }
 #else
 {
