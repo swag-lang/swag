@@ -43,6 +43,7 @@ struct SyntaxJob : public Job
 	bool doCompilerMixin(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAssert(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerPrint(AstNode* parent, AstNode** result = nullptr);
+	bool doCompilerRun(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerUnitTest();
     bool doCompilerModule();
     bool doCompilerImport(AstNode* parent);
@@ -83,7 +84,7 @@ struct SyntaxJob : public Job
     bool doExpression(AstNode* parent, AstNode** result = nullptr);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr);
-    bool doFuncDecl(AstNode* parent, AstNode** result = nullptr);
+    bool doFuncDecl(AstNode* parent, AstNode** result = nullptr, TokenId typeFuncId = TokenId::Invalid);
     bool doFuncDeclParameter(AstNode* parent);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);

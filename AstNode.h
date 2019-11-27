@@ -44,6 +44,7 @@ enum class AstNodeResolveState
 
 enum class AstNodeKind
 {
+	Invalid,
     Module,
     File,
     VarDecl,

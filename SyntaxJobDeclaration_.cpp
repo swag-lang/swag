@@ -238,10 +238,10 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdDefer:
         SWAG_CHECK(doDefer(parent, result));
         break;
-	case TokenId::SymBackTick:
+    case TokenId::SymBackTick:
     case TokenId::Identifier:
     case TokenId::Intrinsic:
-	case TokenId::SymLeftParen:
+    case TokenId::SymLeftParen:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
     case TokenId::KwdInit:
@@ -260,11 +260,11 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerAssert(parent, result));
         break;
     case TokenId::CompilerInline:
-    case TokenId::CompilerMacro:        
+    case TokenId::CompilerMacro:
         SWAG_CHECK(doCompilerInline(parent, result));
         break;
     case TokenId::CompilerMixin:
-		SWAG_CHECK(doCompilerMixin(parent, result));
+        SWAG_CHECK(doCompilerMixin(parent, result));
         break;
     case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIf(parent, result));
@@ -278,7 +278,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
-	case TokenId::KwdInterface:
+    case TokenId::KwdInterface:
         moveAttributes(parent, sourceFile->astRoot);
         SWAG_CHECK(doStruct(sourceFile->astRoot, result));
         break;
@@ -339,7 +339,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
         break;
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
-	case TokenId::KwdInterface:
+    case TokenId::KwdInterface:
         SWAG_CHECK(doStruct(parent));
         break;
     case TokenId::KwdAttr:
@@ -356,8 +356,14 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::CompilerFuncInit:
     case TokenId::CompilerFuncDrop:
     case TokenId::CompilerFuncMain:
-    case TokenId::CompilerRun:
         SWAG_CHECK(doFuncDecl(parent));
+        break;
+    case TokenId::CompilerRun:
+        SWAG_CHECK(eatToken());
+        if (token.id == TokenId::SymLeftCurly)
+            SWAG_CHECK(doFuncDecl(parent, nullptr, TokenId::CompilerRun));
+        else
+            SWAG_CHECK(doCompilerRun(parent));
         break;
     case TokenId::CompilerIf:
         SWAG_CHECK(doCompilerIf(parent));

@@ -307,7 +307,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
+bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
     auto funcNode         = Ast::newNode(this, &g_Pool_astFuncDecl, AstNodeKind::FuncDecl, sourceFile, parent);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
@@ -317,14 +317,18 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result)
     bool funcForCompiler = false;
     bool isIntrinsic     = false;
 
-    auto typeFuncId = token.id;
+    if (typeFuncId == TokenId::Invalid)
+    {
+        typeFuncId = token.id;
+        SWAG_CHECK(tokenizer.getToken(token));
+    }
+
     if (typeFuncId == TokenId::CompilerFuncTest ||
         typeFuncId == TokenId::CompilerFuncInit ||
         typeFuncId == TokenId::CompilerFuncDrop ||
         typeFuncId == TokenId::CompilerFuncMain ||
         typeFuncId == TokenId::CompilerRun)
         funcForCompiler = true;
-    SWAG_CHECK(tokenizer.getToken(token));
 
     // Name
     if (funcForCompiler)

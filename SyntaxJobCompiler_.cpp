@@ -107,6 +107,17 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doCompilerRun(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::CompilerRun, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticFct = SemanticJob::resolveCompilerRun;
+    SWAG_CHECK(doExpression(node));
+    SWAG_CHECK(eatSemiCol("after '#run' expression"));
+    return true;
+}
+
 bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, "#print can only be declared in the top level scope"}));
