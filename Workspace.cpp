@@ -414,7 +414,7 @@ void Workspace::setup()
     testsPath = workspacePath;
     testsPath.append("tests/");
     sourcePath = workspacePath;
-    sourcePath.append("src/");
+    sourcePath.append("modules/");
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
