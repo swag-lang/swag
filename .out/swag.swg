@@ -283,8 +283,8 @@ namespace swag
     }
     #else
     {
-        #assert(false, "invalid configuration: " ~ #config)
-    }
-    
+        const DEBUG = false
+        const ASSERT = false
+    }    
 }
 
