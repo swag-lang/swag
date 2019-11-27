@@ -14,9 +14,21 @@ struct CompilerTarget
     backendC: CompilerParamsBackendC
 }
 
-    struct CompilerParamsBackendC
-    {
-        writeSourceCode: bool           = false
-        writeByteCodeInstruction: bool  = false
-        maxApplicationArguments: u32    = 64
-    }
+struct CompilerParamsBackendC
+{
+    writeSourceCode: bool           = false
+    writeByteCodeInstruction: bool  = false
+    maxApplicationArguments: u32    = 64
+}
+
+#test
+{
+    ptr := cast(const *swag.TypeInfoStruct) @typeof(CompilerTarget)
+    @assert(ptr.fields[0].offset == 0) // bytecodeBoundCheck
+    @assert(ptr.fields[1].offset == 1) // bytecodeAnyCastCheck
+    @assert(ptr.fields[2].offset == 4) // byteCodeMaxRecurse
+    @assert(ptr.fields[3].offset == 8) // byteCodeStackSize
+    @assert(ptr.fields[4].offset == 12) // backendDebugInformations
+    @assert(ptr.fields[5].offset == 16) // backendOptimizeLevel
+    @assert(ptr.fields[6].offset == 20) // CompilerParamsBackendC
+}
