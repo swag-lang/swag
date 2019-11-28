@@ -146,43 +146,38 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     // Function call parameters
     ffi_cif cif;
     int     numParameters = (int) typeInfoFunc->parameters.size();
-    ffiArgs.resize(numParameters);
-    ffiArgsValues.resize(numParameters);
-
+	ffiArgs.clear();
+	ffiArgsValues.clear();
     Register* sp = (Register*) context->sp;
     for (int i = 0; i < numParameters; i++)
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
         typeParam      = TypeManager::concreteType(typeParam);
-        ffiArgs[i]     = ffiFromTypeInfo(typeParam);
-        if (!ffiArgs[i])
+        ffiArgs.push_back(ffiFromTypeInfo(typeParam));
+        if (!ffiArgs.back())
         {
             context->hasError = true;
             context->errorMsg = format("ffi failed to convert argument type '%s'", typeParam->name.c_str());
             return;
         }
 
-		if (typeParam->isNative(NativeTypeKind::String))
+        if (typeParam->isNative(NativeTypeKind::String))
         {
-            ffiArgsValues[i] = &sp->pointer;
+            ffiArgsValues.push_back(&sp->pointer);
             sp += 2;
         }
-		else if (typeParam->kind == TypeInfoKind::Slice)
+        else if (typeParam->kind == TypeInfoKind::Slice)
         {
-            ffiArgsValues[i] = &sp->pointer;
+            ffiArgsValues.push_back(&sp->pointer);
             sp++;
 
-			i++;
-			numParameters++;
-			ffiArgs.resize(ffiArgs.size() + 1);
-			ffiArgsValues.resize(ffiArgsValues.size() + 1);
-			ffiArgs[i] = &ffi_type_uint32;
-			ffiArgsValues[i] = &sp->u32;
-			sp++;
+            ffiArgs.push_back(&ffi_type_uint32);
+            ffiArgsValues.push_back(&sp->u32);
+            sp++;
         }
         else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            ffiArgsValues[i] = &sp->pointer;
+            ffiArgsValues.push_back(&sp->pointer);
             sp++;
         }
         else
@@ -190,16 +185,16 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             switch (typeParam->sizeOf)
             {
             case 1:
-                ffiArgsValues[i] = &sp->u8;
+                ffiArgsValues.push_back(&sp->u8);
                 break;
             case 2:
-                ffiArgsValues[i] = &sp->u16;
+                ffiArgsValues.push_back(&sp->u16);
                 break;
             case 4:
-                ffiArgsValues[i] = &sp->u32;
+                ffiArgsValues.push_back(&sp->u32);
                 break;
             case 8:
-                ffiArgsValues[i] = &sp->u64;
+                ffiArgsValues.push_back(&sp->u64);
                 break;
             default:
                 context->hasError = true;
@@ -210,6 +205,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             sp++;
         }
     }
+
+    numParameters = (int) ffiArgs.size();
 
     // Function return type
     ffi_type* typeResult = &ffi_type_void;

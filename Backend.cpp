@@ -420,8 +420,8 @@ bool Backend::preCompile()
         }
     }
 
-	if (!regen)
-		return true;
+    if (!regen)
+        return true;
 
     bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
