@@ -22,6 +22,7 @@ struct Workspace
     void    enumerateModules(const fs::path& path, ModulesTypes type);
     void    enumerateFilesInModule(const fs::path& path, Module* module);
     void    addRuntime();
+    void    publishModule(Module* module);
     void    setup();
     bool    buildModules(const vector<Module*>& list);
     void    checkPendingJobs();
@@ -34,7 +35,8 @@ struct Workspace
     fs::path             targetPath;
     fs::path             targetTestPath;
     fs::path             testsPath;
-    fs::path             sourcePath;
+    fs::path             modulesPath;
+	fs::path             dependenciesPath;
     SpinLock             mutexModules;
     atomic<int>          numErrors = 0;
     vector<Module*>      modules;

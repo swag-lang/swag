@@ -30,6 +30,7 @@ struct Module : public PoolElement
     void deferReleaseChilds(AstNode* node);
 
     time_t              moreRecentSourceFile;
+    string              path;
     string              name;
     string              nameDown;
     string              nameUp;

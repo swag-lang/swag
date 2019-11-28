@@ -7,6 +7,7 @@
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
+#include "CopyFileJob.h"
 #include "ByteCode.h"
 #include "CompilerTarget.h"
 #include "ByteCodeModuleManager.h"
@@ -143,11 +144,35 @@ void Workspace::enumerateModules(const fs::path& path, ModulesTypes type)
 
             // Parse all files in the "src" sub folder, except for tests where all the source code
             // is at the root folder
-            tmp = path.string() + findfile.cFileName;
+            tmp          = path.string() + findfile.cFileName;
+            module->path = tmp;
             if (type != ModulesTypes::Tests)
                 tmp += "/src";
             enumerateFilesInModule(tmp, module);
 
+        } while (::FindNextFileA(h, &findfile));
+
+        ::FindClose(h);
+    }
+}
+
+void Workspace::publishModule(Module* module)
+{
+    // Scan source folder
+    WIN32_FIND_DATAA findfile;
+    string           publishPath = module->path + "/publish";
+    string           searchPath  = publishPath + "/*";
+    HANDLE           h           = ::FindFirstFileA(searchPath.c_str(), &findfile);
+    if (h != INVALID_HANDLE_VALUE)
+    {
+        do
+        {
+            if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                continue;
+            auto job        = g_Pool_copyPublishJob.alloc();
+            job->sourcePath = publishPath + "/" + findfile.cFileName;
+            job->destPath   = targetPath.string() + "/" + findfile.cFileName;
+            g_ThreadMgr.addJob(job);
         } while (::FindNextFileA(h, &findfile));
 
         ::FindClose(h);
@@ -212,13 +237,15 @@ bool Workspace::buildModules(const vector<Module*>& list)
     auto timeBefore = chrono::high_resolution_clock::now();
 
     // Dependency pass
+    // We add the "?.swg" file corresponding to the
+    // module we want to import
     //////////////////////////////////////////////////
     for (auto module : list)
     {
         module->hasBeenBuilt = true;
         for (auto node : module->moduleDependencies)
         {
-            // Now the .swg export file is in the cache
+            // Now the .swg export file should be in the cache
             auto path = targetPath.string() + "\\" + node->name + ".swg";
             if (!fs::exists(path))
             {
@@ -272,6 +299,16 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
     g_ThreadMgr.waitEndJobs();
     checkPendingJobs();
+
+    // Publish the "/publish" folder of each module
+    // to the cache
+    //////////////////////////////////////////////////
+    for (auto module : list)
+    {
+        if (module == runtimeModule)
+            continue;
+        publishModule(module);
+    }
 
     // Semantic pass on the rest of the files,
     // for all modules
@@ -427,8 +464,10 @@ void Workspace::setup()
 
     testsPath = workspacePath;
     testsPath.append("tests/");
-    sourcePath = workspacePath;
-    sourcePath.append("modules/");
+    modulesPath = workspacePath;
+    modulesPath.append("modules/");
+    dependenciesPath = workspacePath;
+    dependenciesPath.append("dep/");
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
@@ -496,7 +535,8 @@ bool Workspace::buildTarget()
     auto timeBefore = chrono::high_resolution_clock::now();
     if (g_CommandLine.test)
         enumerateModules(testsPath, ModulesTypes::Tests);
-    enumerateModules(sourcePath, ModulesTypes::Workspace);
+    enumerateModules(modulesPath, ModulesTypes::Workspace);
+    enumerateModules(dependenciesPath, ModulesTypes::Dependencies);
     g_ThreadMgr.waitEndJobs();
     auto timeAfter = chrono::high_resolution_clock::now();
     g_Stats.frontendTime += timeAfter - timeBefore;
@@ -504,14 +544,14 @@ bool Workspace::buildTarget()
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("   syntax pass done on %d file(s) in %d module(s)", g_Stats.numFiles.load(), modules.size()));
 
-	// Runtime swag module semantic pass
+    // Runtime swag module semantic pass
     //////////////////////////////////////////////////
     if (runtimeModule)
     {
         // Errors in swag.swg !!!
         if (runtimeModule->numErrors)
         {
-            g_Log.error("some syntax errors have been found in 'swag.swg' ! exiting...");
+            g_Log.error("some errors have been found in 'swag.swg' ! exiting...");
             return false;
         }
 
@@ -529,7 +569,7 @@ bool Workspace::buildTarget()
     }
 
     // Build modules in dependency order
-	//////////////////////////////////////////////////
+    //////////////////////////////////////////////////
     vector<Module*> order;
     vector<Module*> remain = modules;
     vector<Module*> nextRemain;

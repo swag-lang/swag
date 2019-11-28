@@ -210,6 +210,7 @@
     <ClInclude Include="Utf8Crc.h" />
     <ClInclude Include="Version.h" />
     <ClInclude Include="Workspace.h" />
+    <ClInclude Include="OsWin32.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assert.cpp" />
@@ -376,10 +377,10 @@ ml64.exe /c /Cx /Fo $(SolutionDir)/.out/$(Configuration)/win64.obj win64_plain.a
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
-    <None Include="CopyPublishJob.cpp" />
-    <None Include="CopyPublishJob.h" />
-    <None Include="DependentJobs.cpp" />
-    <None Include="OsWin32.h" />
+    <ClCompile Include="CopyFileJob.cpp" />
+    <ClInclude Include="CopyFileJob.h" />
+    <None Include="CopyFileJob.cpp" />
+    <None Include="CopyFileJob.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
