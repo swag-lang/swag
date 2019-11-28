@@ -253,32 +253,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
-    // Errors in swag.swg !!!
-    if (runtimeModule && runtimeModule->numErrors)
-    {
-        g_Log.error("some syntax errors have been found in 'swag.swg' ! exiting...");
-        return false;
-    }
-
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("-> semantic pass");
-
-    // Runtime swag module semantic pass
-    //////////////////////////////////////////////////
-    if (runtimeModule)
-    {
-        auto job    = g_Pool_moduleSemanticJob.alloc();
-        job->module = runtimeModule;
-        g_ThreadMgr.addJob(job);
-        g_ThreadMgr.waitEndJobs();
-
-        // Errors in swag.swg !!!
-        if (runtimeModule->numErrors)
-        {
-            g_Log.error("some errors have been found in 'swag.swg' ! exiting...");
-            return false;
-        }
-    }
 
     // Semantic pass on all 'build.swg' files
     //////////////////////////////////////////////////
@@ -512,11 +488,12 @@ void Workspace::setupTarget()
 bool Workspace::buildTarget()
 {
     // Ask for a syntax pass on all files of all modules
+    //////////////////////////////////////////////////
+
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("## starting syntax pass");
 
     auto timeBefore = chrono::high_resolution_clock::now();
-    // Add ./tests folder
     if (g_CommandLine.test)
         enumerateModules(testsPath, ModulesTypes::Tests);
     enumerateModules(sourcePath, ModulesTypes::Workspace);
@@ -527,7 +504,32 @@ bool Workspace::buildTarget()
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("   syntax pass done on %d file(s) in %d module(s)", g_Stats.numFiles.load(), modules.size()));
 
+	// Runtime swag module semantic pass
+    //////////////////////////////////////////////////
+    if (runtimeModule)
+    {
+        // Errors in swag.swg !!!
+        if (runtimeModule->numErrors)
+        {
+            g_Log.error("some syntax errors have been found in 'swag.swg' ! exiting...");
+            return false;
+        }
+
+        auto job    = g_Pool_moduleSemanticJob.alloc();
+        job->module = runtimeModule;
+        g_ThreadMgr.addJob(job);
+        g_ThreadMgr.waitEndJobs();
+
+        // Errors in swag.swg !!!
+        if (runtimeModule->numErrors)
+        {
+            g_Log.error("some errors have been found in 'swag.swg' ! exiting...");
+            return false;
+        }
+    }
+
     // Build modules in dependency order
+	//////////////////////////////////////////////////
     vector<Module*> order;
     vector<Module*> remain = modules;
     vector<Module*> nextRemain;
