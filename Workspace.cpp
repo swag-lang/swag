@@ -244,8 +244,10 @@ bool Workspace::buildModules(const vector<Module*>& list)
     for (auto module : list)
     {
         module->hasBeenBuilt = true;
-        for (auto node : module->moduleDependencies)
+        for (auto& dep : module->moduleDependencies)
         {
+            auto node = dep.second.node;
+
             // Now the .swg export file should be in the cache
             auto path = targetPath.string() + "\\" + node->name + ".swg";
             if (!fs::exists(path))
@@ -263,6 +265,11 @@ bool Workspace::buildModules(const vector<Module*>& list)
             file->generated = true;
             module->addFile(file);
             g_ThreadMgr.addJob(job);
+
+            // For now, we check if there's a corresponding ".h". If this is the case, then this is a generated module
+            path = targetPath.string() + "\\" + node->name + ".h";
+            if (!fs::exists(path))
+                dep.second.foreign = true;
         }
     }
 
@@ -272,11 +279,11 @@ bool Workspace::buildModules(const vector<Module*>& list)
     //////////////////////////////////////////////////
     for (auto module : list)
     {
-        for (auto name : module->moduleDependenciesNames)
+        for (const auto& dep : module->moduleDependencies)
         {
-            if (!g_ModuleMgr.loadModule(name))
+            if (!g_ModuleMgr.loadModule(dep.first))
             {
-                module->error(format("fail to load module '%s' => %s", name.c_str(), OS::getLastErrorAsString().c_str()));
+                module->error(format("fail to load module '%s' => %s", dep.first.c_str(), OS::getLastErrorAsString().c_str()));
             }
         }
     }
@@ -586,9 +593,9 @@ bool Workspace::buildTarget()
 
             bool canBuild  = true;
             bool hasErrors = false;
-            for (auto depName : module->moduleDependenciesNames)
+            for (const auto& dep : module->moduleDependencies)
             {
-                auto it = mapModulesNames.find(depName);
+                auto it = mapModulesNames.find(dep.first);
                 if (it != mapModulesNames.end() && it->second->numErrors)
                 {
                     hasErrors = true;

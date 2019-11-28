@@ -55,14 +55,15 @@ bool BackendC::emitMain()
 
     // Call to global init of this module, and dependencies
     bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", module->nameDown.c_str());
-    for (auto& k : module->moduleDependenciesNames)
+    for (const auto& dep : module->moduleDependencies)
     {
-        auto nameDown = k;
+        auto nameDown = dep.first;
         replaceAll(nameDown, '.', '_');
-        auto depModule = g_Workspace.getModuleByName(k);
+        auto depModule = g_Workspace.getModuleByName(dep.first);
         if (depModule->buildParameters.type == BackendOutputType::DynamicLib)
             bufferC.addStringFormat("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
-        bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", nameDown.c_str());
+        if (!dep.second.foreign)
+            bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", nameDown.c_str());
     }
 
     bufferC.addEol();
@@ -91,9 +92,11 @@ bool BackendC::emitMain()
 
     // Call to global drop of this module, and dependencies
     bufferC.addStringFormat("\t%s_globalDrop();\n", module->nameDown.c_str());
-    for (auto& k : module->moduleDependenciesNames)
+    for (const auto& dep : module->moduleDependencies)
     {
-        auto nameDown = k;
+        if (dep.second.foreign)
+            continue;
+        auto nameDown = dep.first;
         replaceAll(nameDown, '.', '_');
         bufferC.addStringFormat("\t%s_globalDrop();\n", nameDown.c_str());
     }

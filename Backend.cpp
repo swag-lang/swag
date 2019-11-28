@@ -425,8 +425,8 @@ bool Backend::preCompile()
 
     bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
 
-    for (auto depName : module->moduleDependenciesNames)
-        bufferSwg.addStringFormat("#import \"%s\"\n", depName.c_str());
+    for (const auto& dep : module->moduleDependencies)
+        bufferSwg.addStringFormat("#import \"%s\"\n", dep.first.c_str());
     CONCAT_FIXED_STR(bufferSwg, "using swag\n");
 
     // Emit everything that's public

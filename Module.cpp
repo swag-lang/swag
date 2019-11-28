@@ -147,10 +147,12 @@ void Module::setBuildPass(BuildPass buildP)
 void Module::addDependency(AstNode* importNode)
 {
     scoped_lock lk(mutexDependency);
-    if (moduleDependenciesNames.find(importNode->name) == moduleDependenciesNames.end())
+    if (moduleDependencies.find(importNode->name) == moduleDependencies.end())
     {
-        moduleDependenciesNames.insert(importNode->name);
-        moduleDependencies.push_back(importNode);
+        ModuleDependency dep;
+        dep.node                             = importNode;
+        dep.name                             = importNode->name;
+        moduleDependencies[importNode->name] = dep;
     }
 }
 

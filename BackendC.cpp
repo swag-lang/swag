@@ -12,16 +12,17 @@ bool BackendC::emitHeader()
 
     // My include file. Need to export for dlls
     CONCAT_FIXED_STR(bufferC, "#ifdef SWAG_IS_DYNAMICLIB\n");
-	CONCAT_FIXED_STR(bufferC, "#define SWAG_EXPORT\n");
-	CONCAT_FIXED_STR(bufferC, "#endif\n");
+    CONCAT_FIXED_STR(bufferC, "#define SWAG_EXPORT\n");
+    CONCAT_FIXED_STR(bufferC, "#endif\n");
     bufferC.addStringFormat("#include \"%s.h\"\n", module->name.c_str());
 
     // My dependencies. Need to import for dlls
-	CONCAT_FIXED_STR(bufferC, "#undef SWAG_EXPORT\n");
-	CONCAT_FIXED_STR(bufferC, "#define SWAG_IMPORT\n");
-    for (auto depName : module->moduleDependenciesNames)
+    CONCAT_FIXED_STR(bufferC, "#undef SWAG_EXPORT\n");
+    CONCAT_FIXED_STR(bufferC, "#define SWAG_IMPORT\n");
+    for (const auto& dep : module->moduleDependencies)
     {
-        bufferC.addStringFormat("#include \"%s.h\"\n", depName.c_str());
+        if (!dep.second.foreign)
+            bufferC.addStringFormat("#include \"%s.h\"\n", dep.first.c_str());
     }
 
     bufferH.addStringFormat("#ifndef __SWAG_%s__\n", module->nameUp.c_str());

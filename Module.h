@@ -19,6 +19,13 @@ struct Backend;
 struct CompilerTarget;
 struct SourceLocation;
 
+struct ModuleDependency
+{
+    string   name;
+    AstNode* node    = nullptr;
+    bool     foreign = false;
+};
+
 struct Module : public PoolElement
 {
     void setup(const string& moduleName);
@@ -77,10 +84,9 @@ struct Module : public PoolElement
 
     void addDependency(AstNode* importNode);
 
-    SpinLock         mutexDependency;
-    set<string>      moduleDependenciesNames;
-    vector<AstNode*> moduleDependencies;
-    bool             hasBeenBuilt = false;
+    SpinLock                      mutexDependency;
+    map<string, ModuleDependency> moduleDependencies;
+    bool                          hasBeenBuilt = false;
 
     TypeTable typeTable;
 };
