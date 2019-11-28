@@ -176,6 +176,34 @@ void Workspace::addRuntime()
     g_ThreadMgr.addJob(job);
 }
 
+void Workspace::checkPendingJobs()
+{
+    if (g_ThreadMgr.pendingJobs.empty())
+        return;
+
+    for (auto pendingJob : g_ThreadMgr.pendingJobs)
+    {
+        auto firstNode = pendingJob->nodes.front();
+        if (!(firstNode->flags & AST_GENERATED))
+        {
+            auto sourceFile = pendingJob->sourceFile;
+            auto node       = pendingJob->nodes.back();
+            if (!sourceFile->numErrors)
+            {
+                if (pendingJob->waitingSymbolSolved && !firstNode->name.empty())
+                    sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
+                else if (pendingJob->waitingSymbolSolved)
+                    sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
+                else
+                    sourceFile->report({node, node->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
+                sourceFile->numErrors = 0;
+            }
+        }
+    }
+
+    g_ThreadMgr.pendingJobs.clear();
+}
+
 bool Workspace::buildModules(const vector<Module*>& list)
 {
     if (g_CommandLine.verboseBuildPass)
@@ -184,6 +212,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     auto timeBefore = chrono::high_resolution_clock::now();
 
     // Dependency pass
+    //////////////////////////////////////////////////
     for (auto module : list)
     {
         module->hasBeenBuilt = true;
@@ -211,7 +240,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
 
     g_ThreadMgr.waitEndJobs();
 
-    // Then load all dependencies
+    // Load all dependencies
+    //////////////////////////////////////////////////
     for (auto module : list)
     {
         for (auto name : module->moduleDependenciesNames)
@@ -233,7 +263,8 @@ bool Workspace::buildModules(const vector<Module*>& list)
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose("-> semantic pass");
 
-    // Runtime swag module first
+    // Runtime swag module semantic pass
+    //////////////////////////////////////////////////
     if (runtimeModule)
     {
         auto job    = g_Pool_moduleSemanticJob.alloc();
@@ -249,10 +280,13 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
-    // build all 'build.swg' files
+    // Semantic pass on all 'build.swg' files
+    //////////////////////////////////////////////////
     for (auto module : list)
     {
         if (module == runtimeModule)
+            continue;
+        if (!module->buildFile)
             continue;
         auto job           = g_Pool_moduleSemanticJob.alloc();
         job->module        = module;
@@ -261,8 +295,11 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     g_ThreadMgr.waitEndJobs();
+    checkPendingJobs();
 
-    // Semantic pass on the rest of the files, for all modules
+    // Semantic pass on the rest of the files,
+    // for all modules
+    //////////////////////////////////////////////////
     for (auto module : list)
     {
         if (module == runtimeModule)
@@ -274,37 +311,13 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     g_ThreadMgr.waitEndJobs();
+    checkPendingJobs();
 
     auto timeAfter = chrono::high_resolution_clock::now();
     g_Stats.frontendTime += timeAfter - timeBefore;
 
-    // If we have some pending jobs, that means we don't have succeeded to resolve everything
-    if (g_ThreadMgr.pendingJobs.size() > 0)
-    {
-        for (auto pendingJob : g_ThreadMgr.pendingJobs)
-        {
-            auto firstNode = pendingJob->nodes.front();
-            if (!(firstNode->flags & AST_GENERATED))
-            {
-                auto sourceFile = pendingJob->sourceFile;
-                auto node       = pendingJob->nodes.back();
-                if (!sourceFile->numErrors)
-                {
-                    if (pendingJob->waitingSymbolSolved && !firstNode->name.empty())
-                        sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
-                    else if (pendingJob->waitingSymbolSolved)
-                        sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
-                    else
-                        sourceFile->report({node, node->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
-                    sourceFile->numErrors = 0;
-                }
-            }
-        }
-
-        g_ThreadMgr.pendingJobs.clear();
-    }
-
     // Call bytecode test functions
+    //////////////////////////////////////////////////
     for (auto module : list)
     {
         if ((g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty()) ||
@@ -374,7 +387,9 @@ bool Workspace::buildModules(const vector<Module*>& list)
         }
     }
 
-    // During unit testing, be sure we don't have remaining not raised errors
+    // During unit testing, be sure we don't have
+    // remaining not raised errors
+    //////////////////////////////////////////////////
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
     {
         for (auto module : list)
@@ -392,6 +407,7 @@ bool Workspace::buildModules(const vector<Module*>& list)
     }
 
     // Output pass on all modules
+    //////////////////////////////////////////////////
     if (g_CommandLine.backendOutput)
     {
         if (g_CommandLine.verboseBuildPass)

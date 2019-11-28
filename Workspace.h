@@ -8,9 +8,9 @@ struct CompilerTarget;
 
 enum class ModulesTypes
 {
-	Workspace,
-	Tests,
-	Dependencies,
+    Workspace,
+    Tests,
+    Dependencies,
 };
 
 struct Workspace
@@ -24,11 +24,12 @@ struct Workspace
     void    addRuntime();
     void    setup();
     bool    buildModules(const vector<Module*>& list);
+    void    checkPendingJobs();
     Module* getModuleByName(const string& moduleName);
     void    clearPath(const fs::path& path);
     void    setupTarget();
 
-    CompilerTarget               target;
+    CompilerTarget       target;
     fs::path             workspacePath;
     fs::path             targetPath;
     fs::path             targetTestPath;
