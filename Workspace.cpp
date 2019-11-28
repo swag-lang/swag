@@ -101,7 +101,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
     }
 }
 
-void Workspace::enumerateModules(const fs::path& path, bool fromTests)
+void Workspace::enumerateModules(const fs::path& path, ModulesTypes type)
 {
     // Scan source folder
     WIN32_FIND_DATAA findfile;
@@ -116,14 +116,36 @@ void Workspace::enumerateModules(const fs::path& path, bool fromTests)
             if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
                 continue;
 
+            // Module name if equivalent to the folder name
             string moduleName;
-            if (fromTests)
+            if (type == ModulesTypes::Tests)
                 moduleName = "tests.";
             moduleName += findfile.cFileName;
 
+            // Create module
             auto module       = createOrUseModule(moduleName);
-            module->fromTests = fromTests;
-            string tmp        = path.string() + findfile.cFileName;
+            module->fromTests = type == ModulesTypes::Tests;
+
+            // Add the build.swg file if it exists
+            string tmp;
+            tmp = path.string() + findfile.cFileName + "/build.swg";
+            if (fs::exists(tmp))
+            {
+                auto job          = g_Pool_syntaxJob.alloc();
+                auto file         = g_Pool_sourceFile.alloc();
+                job->sourceFile   = file;
+                file->fromTests   = module->fromTests;
+                file->path        = tmp;
+                module->buildFile = file;
+                module->addFile(file);
+                g_ThreadMgr.addJob(job);
+            }
+
+            // Parse all files in the "src" sub folder, except for tests where all the source code
+            // is at the root folder
+            tmp = path.string() + findfile.cFileName;
+            if (type != ModulesTypes::Tests)
+                tmp += "/src";
             enumerateFilesInModule(tmp, module);
 
         } while (::FindNextFileA(h, &findfile));
@@ -480,8 +502,8 @@ bool Workspace::buildTarget()
     auto timeBefore = chrono::high_resolution_clock::now();
     // Add ./tests folder
     if (g_CommandLine.test)
-        enumerateModules(testsPath, true);
-    enumerateModules(sourcePath, false);
+        enumerateModules(testsPath, ModulesTypes::Tests);
+    enumerateModules(sourcePath, ModulesTypes::Workspace);
     g_ThreadMgr.waitEndJobs();
     auto timeAfter = chrono::high_resolution_clock::now();
     g_Stats.frontendTime += timeAfter - timeBefore;

@@ -9,28 +9,16 @@ Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
 
 JobResult ModuleSemanticJob::execute()
 {
-    SourceFile* buildFile = module->buildFiles.empty() ? nullptr : module->buildFiles[0];
     if (buildFileMode)
     {
-        // Be sure we have maximum one "build.swg" file
-        if (module->buildFiles.size() > 1)
-        {
-            Diagnostic                diag(format("'build.swg' file defined multiple times in module '%s'", module->name.c_str()));
-            vector<const Diagnostic*> notes;
-            for (auto one : module->buildFiles)
-                notes.push_back(new Diagnostic{format("one file is '%s'", one->path.string().c_str()), DiagnosticLevel::Note});
-            module->buildFiles[0]->report(diag, notes);
-            return JobResult::ReleaseJob;
-        }
-
-        if (buildFile)
+        if (module->buildFile)
         {
             if (g_CommandLine.verboseBuildPass)
-                g_Log.verbose(format("   module '%s', first semantic pass on '%s'", module->name.c_str(), buildFile->path.string().c_str()));
+                g_Log.verbose(format("   module '%s', first semantic pass on '%s'", module->name.c_str(), module->buildFile->path.string().c_str()));
 
             auto job        = g_Pool_semanticJob.alloc();
-            job->sourceFile = buildFile;
-            job->nodes.push_back(buildFile->astRoot);
+            job->sourceFile = module->buildFile;
+            job->nodes.push_back(module->buildFile->astRoot);
             g_ThreadMgr.addJob(job);
         }
     }
@@ -40,8 +28,8 @@ JobResult ModuleSemanticJob::execute()
         {
             if (file->buildPass < BuildPass::Semantic)
                 continue;
-            if (file == buildFile)
-				continue;
+            if (file == module->buildFile)
+                continue;
 
             auto job        = g_Pool_semanticJob.alloc();
             job->sourceFile = file;
