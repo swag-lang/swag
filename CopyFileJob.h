@@ -10,4 +10,4 @@ struct CopyFileJob : public Job
     string    destPath;
 };
 
-extern Pool<CopyFileJob> g_Pool_copyPublishJob;
+extern Pool<CopyFileJob> g_Pool_copyFileJob;

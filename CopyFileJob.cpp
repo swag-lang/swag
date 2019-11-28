@@ -5,7 +5,7 @@
 #include "SourceFile.h"
 #include "semanticJob.h"
 
-Pool<CopyFileJob> g_Pool_copyPublishJob;
+Pool<CopyFileJob> g_Pool_copyFileJob;
 
 JobResult CopyFileJob::execute()
 {
@@ -17,7 +17,11 @@ JobResult CopyFileJob::execute()
         auto   timeDest = fs::last_write_time(destPath);
         time_t tdest    = fs::file_time_type::clock::to_time_t(timeDest);
         if (tdest > tsrc)
+        {
+            if (g_CommandLine.verboseBuildPass)
+                g_Log.verbose(format("   module '%s', file '%s' is up to date", module->name.c_str(), sourcePath.c_str()));
             return JobResult::ReleaseJob;
+        }
     }
 
     FILE* fsrc  = nullptr;
@@ -25,6 +29,9 @@ JobResult CopyFileJob::execute()
     fopen_s(&fsrc, sourcePath.c_str(), "rb");
     fopen_s(&fdest, destPath.c_str(), "wb");
     SWAG_ASSERT(fsrc && fdest);
+
+    if (g_CommandLine.verboseBuildPass)
+        g_Log.verbose(format("   module '%s', copy file '%s' to '%s'", module->name.c_str(), sourcePath.c_str(), destPath.c_str()));
 
     static uint8_t buffer[4096];
     while (true)

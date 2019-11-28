@@ -169,7 +169,8 @@ void Workspace::publishModule(Module* module)
         {
             if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
                 continue;
-            auto job        = g_Pool_copyPublishJob.alloc();
+            auto job        = g_Pool_copyFileJob.alloc();
+            job->module     = module;
             job->sourcePath = publishPath + "/" + findfile.cFileName;
             job->destPath   = targetPath.string() + "/" + findfile.cFileName;
             g_ThreadMgr.addJob(job);
