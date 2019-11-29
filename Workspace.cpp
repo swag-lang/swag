@@ -249,7 +249,14 @@ bool Workspace::buildModules(const vector<Module*>& list)
             auto node = dep.second.node;
 
             // Now the .swg export file should be in the cache
-            auto path = targetPath.string() + "\\" + node->name + ".swg";
+            bool generated = true;
+            auto path      = targetPath.string() + "\\" + node->name + ".generated.swg";
+            if (!fs::exists(path))
+            {
+                generated = false;
+                path      = targetPath.string() + "\\" + node->name + ".swg";
+            }
+
             if (!fs::exists(path))
             {
                 auto sourceFile = node->sourceFile;
@@ -258,18 +265,14 @@ bool Workspace::buildModules(const vector<Module*>& list)
             }
 
             // Then do syntax on it
-            auto job        = g_Pool_syntaxJob.alloc();
-            auto file       = g_Pool_sourceFile.alloc();
-            job->sourceFile = file;
-            file->path      = move(path);
-            file->generated = true;
+            auto job             = g_Pool_syntaxJob.alloc();
+            auto file            = g_Pool_sourceFile.alloc();
+            job->sourceFile      = file;
+            file->path           = move(path);
+            file->generated      = true;
+            dep.second.generated = generated;
             module->addFile(file);
             g_ThreadMgr.addJob(job);
-
-            // For now, we check if there's a corresponding ".h". If this is the case, then this is a generated module
-            path = targetPath.string() + "\\" + node->name + ".h";
-            if (!fs::exists(path))
-                dep.second.foreign = true;
         }
     }
 

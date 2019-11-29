@@ -59,10 +59,8 @@ bool BackendC::emitMain()
     {
         auto nameDown = dep.first;
         replaceAll(nameDown, '.', '_');
-        auto depModule = g_Workspace.getModuleByName(dep.first);
-        if (depModule->buildParameters.type == BackendOutputType::DynamicLib)
-            bufferC.addStringFormat("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
-        if (!dep.second.foreign)
+        bufferC.addStringFormat("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
+        if (dep.second.generated)
             bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", nameDown.c_str());
     }
 
@@ -94,7 +92,7 @@ bool BackendC::emitMain()
     bufferC.addStringFormat("\t%s_globalDrop();\n", module->nameDown.c_str());
     for (const auto& dep : module->moduleDependencies)
     {
-        if (dep.second.foreign)
+        if (!dep.second.generated)
             continue;
         auto nameDown = dep.first;
         replaceAll(nameDown, '.', '_');

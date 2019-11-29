@@ -197,11 +197,7 @@ bool BackendCCompilerVS::compile()
         string linkArguments;
         linkArguments += "legacy_stdio_definitions.lib ";
         for (const auto& dep : module->moduleDependencies)
-        {
-            if (!dep.second.foreign)
-                linkArguments += dep.first + ".lib ";
-        }
-
+            linkArguments += dep.first + ".lib ";
         for (const auto& oneLibPath : libPath)
             linkArguments += "/LIBPATH:\"" + oneLibPath + "\" ";
 

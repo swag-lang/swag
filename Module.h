@@ -22,8 +22,8 @@ struct SourceLocation;
 struct ModuleDependency
 {
     string   name;
-    AstNode* node    = nullptr;
-    bool     foreign = false;
+    AstNode* node      = nullptr;
+    bool     generated = false;
 };
 
 struct Module : public PoolElement

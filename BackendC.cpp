@@ -20,10 +20,7 @@ bool BackendC::emitHeader()
     CONCAT_FIXED_STR(bufferC, "#undef SWAG_EXPORT\n");
     CONCAT_FIXED_STR(bufferC, "#define SWAG_IMPORT\n");
     for (const auto& dep : module->moduleDependencies)
-    {
-        if (!dep.second.foreign)
-            bufferC.addStringFormat("#include \"%s.h\"\n", dep.first.c_str());
-    }
+        bufferC.addStringFormat("#include \"%s.h\"\n", dep.first.c_str());
 
     bufferH.addStringFormat("#ifndef __SWAG_%s__\n", module->nameUp.c_str());
     bufferH.addStringFormat("#define __SWAG_%s__\n", module->nameUp.c_str());
