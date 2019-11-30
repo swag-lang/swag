@@ -11,6 +11,10 @@
 
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
+	scoped_lock lk(typeInfoStruct->mutex);
+	if (typeInfoStruct->opInit)
+		return true;
+
     for (auto typeParam : typeInfoStruct->childs)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);

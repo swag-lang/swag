@@ -7,10 +7,10 @@
 #include "ByteCode.h"
 #include "stdint.h"
 
-static constexpr const char* g_RuntimeH = R"(
-#ifndef __SWAG_RUNTIME_DEFINED__
-#define __SWAG_RUNTIME_DEFINED__
-
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// Should match runtime in Context.h
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+static constexpr const char* g_RuntimeC = R"(
 typedef signed char			swag_int8_t;
 typedef short				swag_int16_t;
 typedef int					swag_int32_t;
@@ -24,25 +24,6 @@ typedef unsigned long long	swag_uint64_t;
 typedef float				swag_float32_t;
 typedef double				swag_float64_t;
 
-#ifdef __cplusplus
-#define SWAG_EXTERN extern "C"
-#else
-#define SWAG_EXTERN extern
-#endif
-
-/* Visual studio */
-#ifdef _MSC_VER
-#if defined(SWAG_IMPORT)
-#define SWAG_IMPEXP __declspec(dllimport)
-#elif defined(SWAG_EXPORT)
-#define SWAG_IMPEXP __declspec(dllexport)
-#else
-#define SWAG_IMPEXP
-#endif
-#endif
-
-#include <math.h>
-
 /* Windows */
 #ifdef _WIN32
 #include <windows.h>
@@ -53,14 +34,14 @@ typedef double				swag_float64_t;
 typedef swag_uint32_t			swag_tls_id_t;
 #endif
 
+/* Visual studio */
+#ifdef _MSC_VER
+#define SWAG_IMPORT __declspec(dllimport)
+#define SWAG_EXPORT __declspec(dllexport)
+#else
+#define SWAG_IMPORT 
+#define SWAG_EXPORT
 #endif
-
-)";
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// Should match runtime in Context.h
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-static constexpr const char* g_RuntimeC = R"(
 
 typedef union swag_register_t {
     swag_uint8_t*	pointer;
@@ -102,6 +83,8 @@ typedef struct swag_process_infos_t {
 } swag_process_infos_t;
 
 swag_process_infos_t __process_infos = {0};
+
+#include <math.h> 
 
 )";
 
@@ -159,7 +142,6 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 
 bool BackendC::emitRuntime()
 {	
-	CONCAT_FIXED_STR(bufferH, g_RuntimeH);
     emitSeparator(bufferC, "RUNTIME");
 	CONCAT_FIXED_STR(bufferC, g_RuntimeC);
     emitSeparator(bufferC, "INTRINSICS");

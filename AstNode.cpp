@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "Scope.h"
 #include "ByteCodeGenJob.h"
+#include "TypeInfo.h"
 
 Pool<AstNode>            g_Pool_astNode;
 Pool<AstAttrDecl>        g_Pool_astAttrDecl;
@@ -74,18 +75,39 @@ void AstNode::computeFullName()
     scoped_lock lk(mutex);
     SWAG_ASSERT(ownerScope);
     if (ownerScope->fullname.empty())
-    {
-        fullnameDot     = name;
-        fullnameForeign = name;
-    }
+        fullnameDot = name;
     else
-    {
-        fullnameForeign = ownerScope->fullname + "_" + name;
-        fullnameDot     = ownerScope->fullname + "." + name;
-    }
+        fullnameDot = ownerScope->fullname + "." + name;
+}
 
-    fullnameForeign += format("_%llX", this);
+void AstNode::computeFullNameForeign()
+{
+    scoped_lock lk(mutex);
+    if (!fullnameForeign.empty())
+        return;
+
+	if (name.find("abs") != name.npos)
+		name = name;
+    SWAG_ASSERT(ownerScope);
+    if (ownerScope->fullname.empty())
+        fullnameForeign = name;
+    else
+        fullnameForeign = ownerScope->fullname + "." + name;
+
+    if (typeInfo && typeInfo->kind == TypeInfoKind::FuncAttr)
+		fullnameForeign += typeInfo->name;
+
     replaceAll(fullnameForeign, '.', '_');
+    replaceAll(fullnameForeign, '(', '_');
+    replaceAll(fullnameForeign, ')', '_');
+    replaceAll(fullnameForeign, '-', '_');
+    replaceAll(fullnameForeign, '>', '_');
+    replaceAll(fullnameForeign, '*', 'P');
+    replaceAll(fullnameForeign, ',', '_');
+    replaceAll(fullnameForeign, ' ', '_');
+    replaceAll(fullnameForeign, '[', 'A');
+    replaceAll(fullnameForeign, ']', 'A');
+    replaceAll(fullnameForeign, '!', 'E');
 }
 
 Utf8 AstNode::getKindName(AstNode* node)
@@ -589,7 +611,7 @@ AstNode* AstCompilerInline::clone(CloneContext& context)
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, "", token.id == TokenId::CompilerInline ? ScopeKind::Inline : ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.parentScope->allocateSymTable();
-	childs.back()->clone(cloneContext);
+    childs.back()->clone(cloneContext);
 
     return newNode;
 }

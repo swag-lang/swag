@@ -106,6 +106,12 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
     return true;
 }
 
+void Module::registerForeign(AstFuncDecl* node)
+{
+	scoped_lock lk(mutexByteCode);
+	allForeign.push_back(node);
+}
+
 void Module::addByteCodeFunc(ByteCode* bc)
 {
     SWAG_ASSERT(!bc->node || !(bc->node->attributeFlags & ATTRIBUTE_FOREIGN));

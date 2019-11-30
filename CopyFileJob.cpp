@@ -33,7 +33,7 @@ JobResult CopyFileJob::execute()
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("   module '%s', copy file '%s' to '%s'", module->name.c_str(), sourcePath.c_str(), destPath.c_str()));
 
-    static uint8_t buffer[4096];
+    uint8_t buffer[4096];
     while (true)
     {
         auto numRead = fread(buffer, 1, sizeof(buffer), fsrc);

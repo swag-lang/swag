@@ -266,7 +266,8 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
 
 bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one)
 {
-    SWAG_CHECK(emitFuncSignature(moduleToGen, bufferC, typeFunc, node));
+    CONCAT_FIXED_STR(bufferC, "SWAG_EXPORT ");
+    SWAG_CHECK(emitForeignFuncSignature(moduleToGen, bufferC, typeFunc, node));
     CONCAT_FIXED_STR(bufferC, " {\n");
 
     // Compute number of registers
@@ -447,7 +448,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     return true;
 }
 
-bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
 {
     Utf8 returnType;
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
@@ -460,6 +461,8 @@ bool BackendC::emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFu
     else
         CONCAT_FIXED_STR(buffer, "void");
     CONCAT_FIXED_STR(buffer, " ");
+    node->computeFullNameForeign();
+	CONCAT_FIXED_STR(buffer, "foreign_");
     buffer.addString(node->fullnameForeign.c_str());
     CONCAT_FIXED_STR(buffer, "(");
 
@@ -540,6 +543,16 @@ bool BackendC::emitFuncSignatures()
         return false;
     if (!emitFuncSignatures(module))
         return false;
+
+    // Import functions
+    for (auto node : module->allForeign)
+    {
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+        CONCAT_FIXED_STR(bufferC, "SWAG_IMPORT ");
+        SWAG_CHECK(emitForeignFuncSignature(module, bufferC, typeFunc, node));
+        CONCAT_FIXED_STR(bufferC, ";\n");
+    }
+
     return true;
 }
 
@@ -1625,7 +1638,6 @@ bool BackendC::emitFunctions(Module* moduleToGen)
         if (one->node)
         {
             node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
-            node->computeFullName();
 
             // Do we need to generate that function ?
             if (node->attributeFlags & ATTRIBUTE_COMPILER)
@@ -1656,23 +1668,6 @@ bool BackendC::emitPublic(Module* moduleToGen, Scope* scope)
 {
     if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return true;
-
-    // Functions
-    for (auto func : scope->publicFunc)
-    {
-        auto node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-
-        if (node->flags & AST_IS_GENERIC)
-            continue;
-        if (typeFunc->flags & TYPEINFO_GENERIC)
-            continue;
-
-        CONCAT_FIXED_STR(bufferH, "SWAG_EXTERN SWAG_IMPEXP ");
-        node->computeFullName();
-        SWAG_CHECK(emitFuncSignature(moduleToGen, bufferH, typeFunc, node));
-        CONCAT_FIXED_STR(bufferH, ";\n");
-    }
 
     for (auto child : scope->childScopes)
         SWAG_CHECK(emitPublic(moduleToGen, child));

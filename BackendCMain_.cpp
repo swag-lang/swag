@@ -60,8 +60,11 @@ bool BackendC::emitMain()
         auto nameDown = dep.first;
         replaceAll(nameDown, '.', '_');
         bufferC.addStringFormat("\t__loadDynamicLibrary(\"%s\");\n", nameDown.c_str());
-        if (dep.second.generated)
-            bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", nameDown.c_str());
+		if (dep.second.generated)
+		{
+			bufferC.addStringFormat("\textern SWAG_IMPORT %s_globalInit(struct swag_process_infos_t *);\n", nameDown.c_str());
+			bufferC.addStringFormat("\t%s_globalInit(&__process_infos);\n", nameDown.c_str());
+		}
     }
 
     bufferC.addEol();
@@ -96,6 +99,7 @@ bool BackendC::emitMain()
             continue;
         auto nameDown = dep.first;
         replaceAll(nameDown, '.', '_');
+        bufferC.addStringFormat("\textern SWAG_IMPORT %s_globalDrop();\n", nameDown.c_str());
         bufferC.addStringFormat("\t%s_globalDrop();\n", nameDown.c_str());
     }
 

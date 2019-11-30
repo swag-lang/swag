@@ -23,8 +23,6 @@ struct BackendC : public Backend
     bool mustCompile();
     bool compile(const BuildParameters& backendParameters) override;
 
-    bool emitHeader();
-    bool emitFooter();
     bool emitRuntime();
     bool emitDataSegment(DataSegment* dataSegment);
     bool emitStrings();
@@ -42,10 +40,9 @@ struct BackendC : public Backend
     bool emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
     void emitFuncSignatureSwg(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
-    bool emitFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void emitFuncSignatureInternalC(ByteCode* bc);
     bool emitInternalFunction(Module* moduleToGen, ByteCode* bc);
 
-    OutputFile bufferH;
     OutputFile bufferC;
 };

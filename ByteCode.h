@@ -45,7 +45,7 @@ struct ByteCode : public PoolElement
     void              enterByteCode(ByteCodeRunContext* context);
     void              leaveByteCode();
 
-    string            callName();
+    Utf8              callName();
     TypeInfoFuncAttr* callType();
 };
 

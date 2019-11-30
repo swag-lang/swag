@@ -19,9 +19,9 @@ int g_ByteCodeOpNamesLen[] = {
 
 Pool<ByteCode> g_Pool_byteCode;
 
-string ByteCode::callName()
+Utf8 ByteCode::callName()
 {
-    auto callname = name.empty() ? node->fullnameForeign : name;
+    auto callname = name.empty() ? node->fullnameDot : name;
     callname += format("_%lX", (uint64_t) this);
     return callname;
 }
@@ -184,7 +184,7 @@ void ByteCode::print()
         case ByteCodeOp::CastBool64:
         case ByteCodeOp::MovRASPVaargs:
         case ByteCodeOp::IntrinsicGetContext:
-		case ByteCodeOp::IntrinsicSetContext:
+        case ByteCodeOp::IntrinsicSetContext:
         case ByteCodeOp::Clear8:
         case ByteCodeOp::Clear16:
         case ByteCodeOp::Clear32:
@@ -302,7 +302,7 @@ void ByteCode::print()
             break;
         }
 
-		case ByteCodeOp::LocalCall:
+        case ByteCodeOp::LocalCall:
         {
             auto bc = (ByteCode*) ip->a.pointer;
             SWAG_ASSERT(bc);

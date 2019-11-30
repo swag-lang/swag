@@ -18,6 +18,7 @@ struct Job;
 struct Backend;
 struct CompilerTarget;
 struct SourceLocation;
+struct AstFuncDecl;
 
 struct ModuleDependency
 {
@@ -72,15 +73,17 @@ struct Module : public PoolElement
     BuildPass buildPass = BuildPass::Full;
 
     void addByteCodeFunc(ByteCode* bc);
+    void registerForeign(AstFuncDecl* node);
 
-    SpinLock          mutexByteCode;
-    vector<ByteCode*> byteCodeFunc;
-    vector<ByteCode*> byteCodeTestFunc;
-    vector<ByteCode*> byteCodeInitFunc;
-    vector<ByteCode*> byteCodeDropFunc;
-    vector<ByteCode*> byteCodeRunFunc;
-    ByteCode*         byteCodeMainFunc = nullptr;
-    AstNode*          mainIsDefined    = nullptr;
+    SpinLock             mutexByteCode;
+    vector<ByteCode*>    byteCodeFunc;
+    vector<ByteCode*>    byteCodeTestFunc;
+    vector<ByteCode*>    byteCodeInitFunc;
+    vector<ByteCode*>    byteCodeDropFunc;
+    vector<ByteCode*>    byteCodeRunFunc;
+    vector<AstFuncDecl*> allForeign;
+    ByteCode*            byteCodeMainFunc = nullptr;
+    AstNode*             mainIsDefined    = nullptr;
 
     void addDependency(AstNode* importNode);
 

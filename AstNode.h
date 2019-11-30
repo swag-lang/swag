@@ -44,7 +44,7 @@ enum class AstNodeResolveState
 
 enum class AstNodeKind
 {
-	Invalid,
+    Invalid,
     Module,
     File,
     VarDecl,
@@ -176,6 +176,8 @@ struct AstNode : public PoolElement
         alternativeScopesVars.clear();
         doneLeaveScopeDefer.clear();
         doneLeaveScopeDrop.clear();
+		fullnameDot.clear();
+		fullnameForeign.clear();
     }
 
     void lock()
@@ -295,6 +297,7 @@ struct AstNode : public PoolElement
     virtual AstNode* clone(CloneContext& context);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
     void             computeFullName();
+    void             computeFullNameForeign();
     void             releaseRec();
 
     AstNodeKind         kind;

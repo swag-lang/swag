@@ -41,73 +41,73 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode);
 
     // Copy result to RR0... registers
-	if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED))
-	{
-		if (!node->childs.empty())
-		{
-			auto returnExpression = node->childs.front();
-			if (node->ownerInline)
-			{
-				if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
-					return internalError(context, "emitReturn, invalid inline return");
-				else if (funcNode->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
-					return internalError(context, "emitReturn, invalid inline return");
-				else
-				{
-					for (auto child : node->childs)
-					{
-						auto sizeChilds = child->resultRegisterRC.size();
-						for (int r = 0; r < sizeChilds; r++)
-						{
-							emitInstruction(context, ByteCodeOp::CopyRARB, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
-						}
-					}
-				}
-			}
-			else
-			{
-				if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
-				{
-					waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(returnExpression->typeInfo, TypeInfoKind::Struct));
-					if (context->result == ContextResult::Pending)
-						return true;
-					RegisterList r0 = reserveRegisterRC(context);
-					emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
-					SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
-					freeRegisterRC(context, r0);
-				}
-				else if (funcNode->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
-				{
-					auto r0 = reserveRegisterRC(context);
-					emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
-					emitInstruction(context, ByteCodeOp::CopyVC, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
-					freeRegisterRC(context, r0);
-				}
-				else
-				{
-					for (auto child : node->childs)
-					{
-						auto sizeChilds = child->resultRegisterRC.size();
-						for (int r = 0; r < sizeChilds; r++)
-						{
-							emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
-						}
-					}
-				}
-			}
-		}
+    if (!(node->doneFlags & AST_DONE_EMIT_DEFERRED))
+    {
+        if (!node->childs.empty())
+        {
+            auto returnExpression = node->childs.front();
+            if (node->ownerInline)
+            {
+                if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
+                    return internalError(context, "emitReturn, invalid inline return");
+                else if (funcNode->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+                    return internalError(context, "emitReturn, invalid inline return");
+                else
+                {
+                    for (auto child : node->childs)
+                    {
+                        auto sizeChilds = child->resultRegisterRC.size();
+                        for (int r = 0; r < sizeChilds; r++)
+                        {
+                            emitInstruction(context, ByteCodeOp::CopyRARB, node->ownerInline->resultRegisterRC[r], child->resultRegisterRC[r]);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (funcNode->returnType->typeInfo->kind == TypeInfoKind::Struct)
+                {
+                    waitStructGenerated(context, CastTypeInfo<TypeInfoStruct>(returnExpression->typeInfo, TypeInfoKind::Struct));
+                    if (context->result == ContextResult::Pending)
+                        return true;
+                    RegisterList r0 = reserveRegisterRC(context);
+                    emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+                    SWAG_CHECK(emitStructCopyMoveCall(context, r0, returnExpression->resultRegisterRC, returnExpression->typeInfo, returnExpression));
+                    freeRegisterRC(context, r0);
+                }
+                else if (funcNode->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+                {
+                    auto r0 = reserveRegisterRC(context);
+                    emitInstruction(context, ByteCodeOp::CopyRCxRRx, r0, 0);
+                    emitInstruction(context, ByteCodeOp::CopyVC, r0, returnExpression->resultRegisterRC)->c.u32 = returnExpression->typeInfo->sizeOf;
+                    freeRegisterRC(context, r0);
+                }
+                else
+                {
+                    for (auto child : node->childs)
+                    {
+                        auto sizeChilds = child->resultRegisterRC.size();
+                        for (int r = 0; r < sizeChilds; r++)
+                        {
+                            emitInstruction(context, ByteCodeOp::CopyRRxRCx, r, child->resultRegisterRC[r]);
+                        }
+                    }
+                }
+            }
+        }
 
-		node->doneFlags |= AST_DONE_EMIT_DEFERRED;
-	}
+        node->doneFlags |= AST_DONE_EMIT_DEFERRED;
+    }
 
     // Leave all scopes
     Scope::collectScopeFrom(node->ownerScope, funcNode->scope, context->job->collectScopes);
-	for (auto scope : context->job->collectScopes)
-	{
-		SWAG_CHECK(emitLeaveScope(context, scope));
-		if (context->result != ContextResult::Done)
-			return true;
-	}
+    for (auto scope : context->job->collectScopes)
+    {
+        SWAG_CHECK(emitLeaveScope(context, scope));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     // A return inside an inline function is just a jump to the end of the block
     if (node->ownerInline)

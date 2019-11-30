@@ -1190,8 +1190,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                         SWAG_ASSERT(identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier);
                         auto prevIdRef = ((AstIdentifier*) (identifierRef->previousResolvedNode))->identifierRef;
 
-						// Copy all previous references to the one we want to pass as parameter
-						// X.Y.call(...) => X.Y.call(X.Y, ...)
+                        // Copy all previous references to the one we want to pass as parameter
+                        // X.Y.call(...) => X.Y.call(X.Y, ...)
                         for (auto child : prevIdRef->childs)
                         {
                             auto copyChild = Ast::clone(child, idRef);
@@ -1301,14 +1301,14 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                 auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
                 symMatch.parameters.push_back(oneParam);
 
-				// Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
-				// a function
-				if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
-				{
-					context->job->waitForAllStructInterfaces(oneParam->typeInfo);
-					if (context->result == ContextResult::Pending)
-						return true;
-				}
+                // Be sure all interfaces of the structure has been solved, in case a cast to an interface is necessary to match
+                // a function
+                if (oneParam->typeInfo->kind == TypeInfoKind::Struct)
+                {
+                    context->job->waitForAllStructInterfaces(oneParam->typeInfo);
+                    if (context->result == ContextResult::Pending)
+                        return true;
+                }
 
                 // Variadic parameter must be the last one
                 if (i != childCount - 1)

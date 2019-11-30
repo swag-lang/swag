@@ -112,7 +112,7 @@ bool BackendC::emitGlobalInit()
     CONCAT_FIXED_STR(bufferC, "}\n\n");
 
     // Main init fct
-    bufferC.addStringFormat("void %s_globalInit(swag_process_infos_t *processInfos)\n", module->nameDown.c_str());
+    bufferC.addStringFormat("SWAG_EXPORT void %s_globalInit(swag_process_infos_t *processInfos)\n", module->nameDown.c_str());
     CONCAT_FIXED_STR(bufferC, "{\n");
     CONCAT_FIXED_STR(bufferC, "\t__process_infos = *processInfos;\n");
 
@@ -132,15 +132,13 @@ bool BackendC::emitGlobalInit()
     CONCAT_FIXED_STR(bufferC, "}\n");
     bufferC.addEol();
 
-    bufferH.addEol();
-    bufferH.addStringFormat("SWAG_EXTERN SWAG_IMPEXP void %s_globalInit(struct swag_process_infos_t *processInfos);\n", module->nameDown.c_str());
     return true;
 }
 
 bool BackendC::emitGlobalDrop()
 {
     // Main init fct
-    bufferC.addStringFormat("void %s_globalDrop()\n", module->nameDown.c_str());
+    bufferC.addStringFormat("SWAG_EXPORT void %s_globalDrop()\n", module->nameDown.c_str());
     CONCAT_FIXED_STR(bufferC, "{\n");
 
     for (auto bc : module->byteCodeDropFunc)
@@ -154,6 +152,5 @@ bool BackendC::emitGlobalDrop()
     CONCAT_FIXED_STR(bufferC, "}\n");
     bufferC.addEol();
 
-    bufferH.addStringFormat("SWAG_EXTERN SWAG_IMPEXP void %s_globalDrop();\n", module->nameDown.c_str());
     return true;
 }

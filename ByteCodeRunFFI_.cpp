@@ -32,10 +32,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
     {
         auto it = typeFunc->attributes.values.find("swag.foreign.function");
         if (it != typeFunc->attributes.values.end())
-        {
-            funcName = it->second.second.text;
-            fn       = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", funcName);
-        }
+            fn = g_ModuleMgr.getFnPointer(context, hasModuleName ? moduleName.text : "", it->second.second.text);
     }
 
     if (!fn)
@@ -146,8 +143,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     // Function call parameters
     ffi_cif cif;
     int     numParameters = (int) typeInfoFunc->parameters.size();
-	ffiArgs.clear();
-	ffiArgsValues.clear();
+    ffiArgs.clear();
+    ffiArgsValues.clear();
     Register* sp = (Register*) context->sp;
     for (int i = 0; i < numParameters; i++)
     {
