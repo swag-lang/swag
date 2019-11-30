@@ -354,7 +354,7 @@ namespace OS
         }
     }
 
-    void visitFilesFoldersRec(const char* folder, function<void(const char*, bool)> user)
+    void visitFilesFolders(const char* folder, function<void(const char*, bool)> user)
     {
         WIN32_FIND_DATAA findfile;
         string           searchPath = folder;

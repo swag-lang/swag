@@ -57,7 +57,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
         tmp = move(directories.back());
         directories.pop_back();
 
-        OS::visitFilesFoldersRec(tmp.c_str(), [&](const char* cFileName, bool isFolder) {
+        OS::visitFilesFolders(tmp.c_str(), [&](const char* cFileName, bool isFolder) {
             if (isFolder)
             {
                 tmp1 = tmp + "/" + cFileName;
