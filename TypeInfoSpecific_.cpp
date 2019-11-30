@@ -320,8 +320,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
 
 void TypeInfoFuncAttr::computeName()
 {
-    name = "func";
-
+	name.clear();
     if (genericParameters.size())
     {
         name += "!(";
