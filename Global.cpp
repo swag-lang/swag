@@ -175,7 +175,8 @@ string toStringF64(double v)
 void concatForC(Utf8& dst, Utf8& src)
 {
     dst.reserve(dst.size() + src.size() + 1);
-    const char* pz = src.c_str();
+    const char* pz   = src.c_str();
+    char        last = 0;
     while (*pz)
     {
         switch (*pz)
@@ -186,20 +187,25 @@ void concatForC(Utf8& dst, Utf8& src)
         case '-':
         case ',':
         case ' ':
-            dst += '_';
+            if (last != '_')
+                dst += '_';
+            last = '_';
             break;
 
         case '*':
         case '>':
             dst += 'P';
+            last = 0;
             break;
         case '[':
         case ']':
             dst += 'A';
+            last = 0;
             break;
 
         default:
             dst += *pz;
+            last = 0;
             break;
         }
 
