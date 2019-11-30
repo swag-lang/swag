@@ -18,4 +18,6 @@ namespace OS
     extern swag_tls_id_t tlsAlloc();
     extern void          tlsSetValue(swag_tls_id_t id, void* value);
     extern void*         tlsGetValue(swag_tls_id_t id);
+    extern void*         loadLibrary(const char* name);
+    extern void*         getProcAddress(void* handle, const char* name);
 } // namespace OS

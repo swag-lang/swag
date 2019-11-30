@@ -8,7 +8,7 @@ struct ByteCodeModuleManager
     bool  isModuleLoaded(const string& name);
     void* getFnPointer(ByteCodeRunContext* context, const string& moduleName, const string& funcName);
 
-    map<string, HMODULE> loadedModules;
+    map<string, void*> loadedModules;
 };
 
 extern ByteCodeModuleManager g_ModuleMgr;

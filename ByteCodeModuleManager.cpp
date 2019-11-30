@@ -27,18 +27,18 @@ bool ByteCodeModuleManager::loadModule(const string& name)
     if (verbose)
         g_Log.verbose(format("   request to load module '%s': ", name.c_str()), false);
 
-	// First try in the target folder (local modules)
-	fs::path path = g_Workspace.targetPath;
+    // First try in the target folder (local modules)
+    fs::path path = g_Workspace.targetPath;
     path += "\\";
     path += name;
     path += ".dll";
 
-    auto h = ::LoadLibrary(path.c_str());
+    auto h = OS::loadLibrary(path.string().c_str());
     if (h == NULL)
     {
-		// Try on system folders
+        // Try on system folders
         path = name + ".dll";
-        h    = ::LoadLibrary(path.c_str());
+        h    = OS::loadLibrary(path.string().c_str());
         if (h == NULL)
         {
             if (verbose)
@@ -55,7 +55,7 @@ bool ByteCodeModuleManager::loadModule(const string& name)
     // Note that the allocator function of the default context is not set, so the module
     // will initialize it with its internal function
     string funcName = format("%s_globalInit", name.c_str());
-    auto   ptr      = ::GetProcAddress(h, funcName.c_str());
+    auto   ptr      = OS::getProcAddress(h, funcName.c_str());
     if (ptr)
     {
         typedef void (*funcCall)(void*);

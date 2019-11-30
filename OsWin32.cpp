@@ -304,6 +304,16 @@ namespace OS
         return TlsGetValue(id);
     }
 
+    void* loadLibrary(const char* name)
+    {
+        return (void*) LoadLibraryA(name);
+    }
+
+    void* getProcAddress(void* handle, const char* name)
+    {
+        return ::GetProcAddress((HMODULE) handle, name);
+    }
+
 }; // namespace OS
 
 #endif
