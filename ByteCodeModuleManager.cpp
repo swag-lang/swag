@@ -13,12 +13,6 @@
 
 ByteCodeModuleManager g_ModuleMgr;
 
-ByteCodeModuleManager::ByteCodeModuleManager()
-{
-    loadedModules["kernel32"] = ::GetModuleHandle(L"kernel32.dll");
-    loadedModules["ucrtbase"] = ::GetModuleHandle(L"ucrtbase.dll");
-}
-
 bool ByteCodeModuleManager::isModuleLoaded(const string& name)
 {
     return loadedModules.find(name) != loadedModules.end();
@@ -29,21 +23,28 @@ bool ByteCodeModuleManager::loadModule(const string& name)
     if (loadedModules.find(name) != loadedModules.end())
         return true;
 
-    fs::path path = g_Workspace.targetPath;
+    bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBuildPass;
+    if (verbose)
+        g_Log.verbose(format("   request to load module '%s': ", name.c_str()), false);
+
+	// First try in the target folder (local modules)
+	fs::path path = g_Workspace.targetPath;
     path += "\\";
     path += name;
     path += ".dll";
 
-    bool verbose = g_CommandLine.verbose && g_CommandLine.verboseBuildPass;
-    if (verbose)
-        g_Log.verbose(format("   request to load module '%s': ", path.string().c_str()), false);
-
     auto h = ::LoadLibrary(path.c_str());
     if (h == NULL)
     {
-        if (verbose)
-            g_Log.verbose("FAIL");
-        return false;
+		// Try on system folders
+        path = name + ".dll";
+        h    = ::LoadLibrary(path.c_str());
+        if (h == NULL)
+        {
+            if (verbose)
+                g_Log.verbose("FAIL");
+            return false;
+        }
     }
 
     if (verbose)
