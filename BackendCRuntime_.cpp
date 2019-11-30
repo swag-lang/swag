@@ -34,11 +34,10 @@ typedef double				swag_float64_t;
 #endif
 
 #ifdef _WIN32
-SWAG_IMPORT void *				LoadLibraryA(const char*);
+SWAG_IMPORT void*				LoadLibraryA(const char*);
 SWAG_IMPORT swag_uint32_t		TlsAlloc();
 SWAG_IMPORT swag_int32_t		TlsSetValue(swag_uint32_t, void*);
-SWAG_IMPORT void *				TlsGetValue(swag_uint32_t);
-SWAG_IMPORT void				OutputDebugString(const char*);
+SWAG_IMPORT void*				TlsGetValue(swag_uint32_t);
 
 #define __loadDynamicLibrary	LoadLibraryA
 #define __tlsAlloc				TlsAlloc
