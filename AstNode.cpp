@@ -80,24 +80,6 @@ void AstNode::computeFullName()
         fullnameDot = ownerScope->fullname + "." + name;
 }
 
-void AstNode::computeFullNameForeign()
-{
-    scoped_lock lk(mutex);
-    if (!fullnameForeign.empty())
-        return;
-
-    SWAG_ASSERT(ownerScope);
-    if (!ownerScope->fullname.empty())
-    {
-        concatForC(fullnameForeign, ownerScope->fullname);
-        fullnameForeign += "_";
-    }
-
-    concatForC(fullnameForeign, name);
-    if (typeInfo && typeInfo->kind == TypeInfoKind::FuncAttr)
-		concatForC(fullnameForeign, typeInfo->name);
-}
-
 Utf8 AstNode::getKindName(AstNode* node)
 {
     Utf8 result = getNakedKindName(node);
@@ -227,7 +209,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneChilds)
     computedValue        = from->computedValue;
     name                 = from->name;
     fullnameDot          = from->fullnameDot;
-    fullnameForeign      = from->fullnameForeign;
     sourceFile           = from->sourceFile;
     bc                   = from->bc;
     resultRegisterRC     = from->resultRegisterRC;

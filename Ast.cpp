@@ -295,4 +295,23 @@ namespace Ast
 
         return node;
     }
+
+    Utf8 computeFullNameForeign(AstNode* node)
+    {
+        Utf8 fullnameForeign;
+
+        SWAG_ASSERT(node->ownerScope);
+        if (!node->ownerScope->fullname.empty())
+        {
+            concatForC(fullnameForeign, node->ownerScope->fullname);
+            fullnameForeign += "_";
+        }
+
+        concatForC(fullnameForeign, node->name);
+        if (node->typeInfo && node->typeInfo->kind == TypeInfoKind::FuncAttr)
+            concatForC(fullnameForeign, node->typeInfo->name);
+
+        return fullnameForeign;
+    }
+
 }; // namespace Ast

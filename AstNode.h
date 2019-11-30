@@ -176,8 +176,7 @@ struct AstNode : public PoolElement
         alternativeScopesVars.clear();
         doneLeaveScopeDefer.clear();
         doneLeaveScopeDrop.clear();
-		fullnameDot.clear();
-		fullnameForeign.clear();
+        fullnameDot.clear();
     }
 
     void lock()
@@ -297,7 +296,6 @@ struct AstNode : public PoolElement
     virtual AstNode* clone(CloneContext& context);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
     void             computeFullName();
-    void             computeFullNameForeign();
     void             releaseRec();
 
     AstNodeKind         kind;
@@ -349,7 +347,6 @@ struct AstNode : public PoolElement
     ComputedValue computedValue;
     Utf8Crc       name;
     Utf8          fullnameDot;
-    Utf8          fullnameForeign;
     SourceFile*   sourceFile;
     ByteCode*     bc;
     RegisterList  resultRegisterRC;
