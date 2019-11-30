@@ -86,28 +86,16 @@ void AstNode::computeFullNameForeign()
     if (!fullnameForeign.empty())
         return;
 
-	if (name.find("abs") != name.npos)
-		name = name;
     SWAG_ASSERT(ownerScope);
-    if (ownerScope->fullname.empty())
-        fullnameForeign = name;
-    else
-        fullnameForeign = ownerScope->fullname + "." + name;
+    if (!ownerScope->fullname.empty())
+    {
+        concatForC(fullnameForeign, ownerScope->fullname);
+        fullnameForeign += "_";
+    }
 
+    concatForC(fullnameForeign, name);
     if (typeInfo && typeInfo->kind == TypeInfoKind::FuncAttr)
-		fullnameForeign += typeInfo->name;
-
-    replaceAll(fullnameForeign, '.', '_');
-    replaceAll(fullnameForeign, '(', '_');
-    replaceAll(fullnameForeign, ')', '_');
-    replaceAll(fullnameForeign, '-', '_');
-    replaceAll(fullnameForeign, '>', '_');
-    replaceAll(fullnameForeign, '*', 'P');
-    replaceAll(fullnameForeign, ',', '_');
-    replaceAll(fullnameForeign, ' ', '_');
-    replaceAll(fullnameForeign, '[', 'A');
-    replaceAll(fullnameForeign, ']', 'A');
-    replaceAll(fullnameForeign, '!', 'E');
+		concatForC(fullnameForeign, typeInfo->name);
 }
 
 Utf8 AstNode::getKindName(AstNode* node)

@@ -171,3 +171,38 @@ string toStringF64(double v)
     s += "0";
     return s;
 }
+
+void concatForC(Utf8& dst, Utf8& src)
+{
+    dst.reserve(dst.size() + src.size() + 1);
+    const char* pz = src.c_str();
+    while (*pz)
+    {
+        switch (*pz)
+        {
+        case '.':
+        case '(':
+        case ')':
+        case '-':
+        case ',':
+        case ' ':
+            dst += '_';
+            break;
+
+        case '*':
+        case '>':
+            dst += 'P';
+            break;
+        case '[':
+        case ']':
+            dst += 'A';
+            break;
+
+        default:
+            dst += *pz;
+            break;
+        }
+
+        pz++;
+    }
+}
