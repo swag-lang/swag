@@ -47,10 +47,9 @@ Module* Workspace::createOrUseModule(const string& moduleName)
 void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
 {
     // Scan source folder
-    WIN32_FIND_DATAA findfile;
-    vector<string>   directories;
-
+    vector<string> directories;
     directories.push_back(path.string());
+
     string   tmp, tmp1;
     fs::path modulePath;
     while (directories.size())
@@ -58,44 +57,34 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
         tmp = move(directories.back());
         directories.pop_back();
 
-        tmp1     = tmp + "\\*";
-        HANDLE h = ::FindFirstFileA(tmp1.c_str(), &findfile);
-        if (h == INVALID_HANDLE_VALUE)
-            continue;
-
-        do
-        {
-            if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+        OS::visitFilesFoldersRec(tmp.c_str(), [&](const char* cFileName, bool isFolder) {
+            if (isFolder)
             {
-                if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
-                    continue;
-                tmp1 = tmp + "/" + findfile.cFileName;
+                tmp1 = tmp + "/" + cFileName;
                 directories.emplace_back(move(tmp1));
             }
             else
             {
-                auto pz = strrchr(findfile.cFileName, '.');
+                auto pz = strrchr(cFileName, '.');
                 if (pz && !_strcmpi(pz, ".swg"))
                 {
-                    if (g_CommandLine.fileFilter.empty() || strstr(findfile.cFileName, g_CommandLine.fileFilter.c_str()))
+                    if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
                     {
                         // File filtering by name
-                        if (!module->fromTests || g_CommandLine.testFilter.empty() || strstr(findfile.cFileName, g_CommandLine.testFilter.c_str()))
+                        if (!module->fromTests || g_CommandLine.testFilter.empty() || strstr(cFileName, g_CommandLine.testFilter.c_str()))
                         {
                             auto job        = g_Pool_syntaxJob.alloc();
                             auto file       = g_Pool_sourceFile.alloc();
                             job->sourceFile = file;
                             file->fromTests = module->fromTests;
-                            file->path      = tmp + "\\" + findfile.cFileName;
+                            file->path      = tmp + "\\" + cFileName;
                             module->addFile(file);
                             g_ThreadMgr.addJob(job);
                         }
                     }
                 }
             }
-        } while (::FindNextFileA(h, &findfile));
-
-        ::FindClose(h);
+        });
     }
 }
 

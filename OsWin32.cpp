@@ -354,6 +354,29 @@ namespace OS
         }
     }
 
+    void visitFilesFoldersRec(const char* folder, function<void(const char*, bool)> user)
+    {
+        WIN32_FIND_DATAA findfile;
+        string           searchPath = folder;
+        searchPath += "/*";
+        HANDLE h = ::FindFirstFileA(searchPath.c_str(), &findfile);
+        if (h != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
+                if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                {
+                    if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
+                        continue;
+                }
+
+                user(findfile.cFileName, findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+            } while (::FindNextFileA(h, &findfile));
+
+            ::FindClose(h);
+        }
+    }
+
 }; // namespace OS
 
 #endif
