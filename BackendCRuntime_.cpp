@@ -24,16 +24,6 @@ typedef unsigned long long	swag_uint64_t;
 typedef float				swag_float32_t;
 typedef double				swag_float64_t;
 
-/* Windows */
-#ifdef _WIN32
-#include <windows.h>
-#define __loadDynamicLibrary	LoadLibraryA
-#define __tlsAlloc				TlsAlloc
-#define __tlsSetValue			TlsSetValue
-#define __tlsGetValue			TlsGetValue
-typedef swag_uint32_t			swag_tls_id_t;
-#endif
-
 /* Visual studio */
 #ifdef _MSC_VER
 #define SWAG_IMPORT __declspec(dllimport)
@@ -41,6 +31,20 @@ typedef swag_uint32_t			swag_tls_id_t;
 #else
 #define SWAG_IMPORT 
 #define SWAG_EXPORT
+#endif
+
+#ifdef _WIN32
+SWAG_IMPORT void *				LoadLibraryA(const char*);
+SWAG_IMPORT swag_uint32_t		TlsAlloc();
+SWAG_IMPORT swag_int32_t		TlsSetValue(swag_uint32_t, void*);
+SWAG_IMPORT void *				TlsGetValue(swag_uint32_t);
+SWAG_IMPORT void				OutputDebugString(const char*);
+
+#define __loadDynamicLibrary	LoadLibraryA
+#define __tlsAlloc				TlsAlloc
+#define __tlsSetValue			TlsSetValue
+#define __tlsGetValue			TlsGetValue
+typedef swag_uint32_t			swag_tls_id_t;
 #endif
 
 typedef union swag_register_t {
@@ -83,9 +87,6 @@ typedef struct swag_process_infos_t {
 } swag_process_infos_t;
 
 swag_process_infos_t __process_infos = {0};
-
-#include <math.h> 
-
 )";
 
 static constexpr const char* g_Intrinsics = R"(

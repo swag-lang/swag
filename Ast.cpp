@@ -304,7 +304,7 @@ namespace Ast
 			auto it = typeFunc->attributes.values.find("swag.foreign.function");
 			if (it != typeFunc->attributes.values.end())
 				return it->second.second.text;
-			//return node->name;
+			return node->name;
 		}
 
         Utf8 fullnameForeign;

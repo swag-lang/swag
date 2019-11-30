@@ -4,6 +4,6 @@ namespace std.diagnostics.debugger
 	{
 		func isAttached() => os.IsDebuggerPresent()
 		func break() => os.DebugBreak()
-		func log(msg: string) => os.OutputDebugString(msg)
+		func log(msg: string) => os.OutputDebugStringA(msg)
 	}
 }

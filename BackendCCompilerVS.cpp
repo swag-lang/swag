@@ -196,6 +196,15 @@ bool BackendCCompilerVS::compile()
     {
         string linkArguments;
         linkArguments += "legacy_stdio_definitions.lib ";
+        if (buildParameters->target.backendDebugInformations)
+            linkArguments += "ucrtd.lib vcruntimed.lib ";
+        else
+            linkArguments += "ucrt.lib vcruntime.lib ";
+        linkArguments += "/NODEFAULTLIB:libucrt.lib ";
+        linkArguments += "/NODEFAULTLIB:libucrtd.lib ";
+		linkArguments += "/NODEFAULTLIB:libvcruntime.lib ";
+		linkArguments += "/NODEFAULTLIB:libvcruntimed.lib ";
+
         for (const auto& dep : module->moduleDependencies)
             linkArguments += dep.first + ".lib ";
         for (const auto& oneLibPath : libPath)

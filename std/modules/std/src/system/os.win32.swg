@@ -73,7 +73,7 @@
             func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
             func IsDebuggerPresent()->BOOL;
             func DebugBreak();
-            func OutputDebugString(lpOutputString: LPCSTR);
+            func OutputDebugStringA(lpOutputString: LPCSTR);
             func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
             func ExitProcess(uExitCode: UINT);
         }

@@ -100,7 +100,7 @@ namespace std.math
 		func floor(x: f64)->f64 => os.floor(x)		
 		func round(x: f32)->f32 => os.roundf(x)
 		func round(x: f64)->f64 => os.round(x)		
-		func abs(x: f32)->f32 => os.fabsf(x)
+		func abs(x: f32)->f32 => cast(f32) os.fabs(cast(f64) x)
 		func abs(x: f64)->f64 => os.fabs(x)	
 		func pow(x, exp: f32)->f32 => os.powf(x, exp)
 		func pow(x, exp: f64)->f64 => os.pow(x, exp)		
