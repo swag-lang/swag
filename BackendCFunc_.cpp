@@ -462,7 +462,7 @@ bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, Typ
         CONCAT_FIXED_STR(buffer, "void");
     CONCAT_FIXED_STR(buffer, " ");
     node->computeFullNameForeign();
-	CONCAT_FIXED_STR(buffer, "foreign_");
+    CONCAT_FIXED_STR(buffer, "foreign_");
     buffer.addString(node->fullnameForeign.c_str());
     CONCAT_FIXED_STR(buffer, "(");
 
@@ -547,10 +547,13 @@ bool BackendC::emitFuncSignatures()
     // Import functions
     for (auto node : module->allForeign)
     {
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-        CONCAT_FIXED_STR(bufferC, "SWAG_IMPORT ");
-        SWAG_CHECK(emitForeignFuncSignature(module, bufferC, typeFunc, node));
-        CONCAT_FIXED_STR(bufferC, ";\n");
+        if (node->flags & AST_USED_FOREIGN)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            CONCAT_FIXED_STR(bufferC, "SWAG_IMPORT ");
+            SWAG_CHECK(emitForeignFuncSignature(module, bufferC, typeFunc, node));
+            CONCAT_FIXED_STR(bufferC, ";\n");
+        }
     }
 
     return true;
