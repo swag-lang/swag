@@ -72,14 +72,14 @@ void* ByteCodeModuleManager::getFnPointer(ByteCodeRunContext* context, const str
     {
         auto here = loadedModules.find(moduleName);
         if (here != loadedModules.end())
-            return ::GetProcAddress((HMODULE) here->second, funcName.c_str());
+            return OS::getProcAddress(here->second, funcName.c_str());
         return nullptr;
     }
 
     // Else search in all loaded modules
     for (auto it : loadedModules)
     {
-        auto ptr = ::GetProcAddress((HMODULE) it.second, funcName.c_str());
+        auto ptr = OS::getProcAddress(it.second, funcName.c_str());
         if (ptr)
             return (void*) ptr;
     }
