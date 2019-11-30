@@ -27,7 +27,7 @@ struct Workspace
     bool    buildModules(const vector<Module*>& list);
     void    checkPendingJobs();
     Module* getModuleByName(const string& moduleName);
-    void    clearPath(const fs::path& path);
+    void    deleteFolderContent(const fs::path& path);
     void    setupTarget();
 
     CompilerTarget       target;

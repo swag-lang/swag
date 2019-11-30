@@ -446,20 +446,21 @@ void Workspace::setup()
     g_ThreadMgr.init();
 }
 
-void Workspace::clearPath(const fs::path& path)
+void Workspace::deleteFolderContent(const fs::path& path)
 {
-    for (auto& p : fs::directory_iterator(path))
-    {
+    OS::visitFiles(path.string().c_str(), [&](const char* cFileName) {
+        auto folder = path.string() + "/";
+        folder += cFileName;
         try
         {
-            fs::remove_all(p.path());
+            fs::remove_all(folder);
         }
         catch (...)
         {
-            g_Log.error(format("fatal error: cannot delete file '%s'", p.path().string().c_str()));
+            g_Log.error(format("fatal error: cannot delete file '%s'", folder.c_str()));
             exit(-1);
         }
-    }
+    });
 }
 
 void Workspace::setupTarget()
@@ -475,7 +476,7 @@ void Workspace::setupTarget()
     if (g_CommandLine.cleanTarget)
     {
         if (fs::exists(targetPath))
-            clearPath(targetPath);
+            deleteFolderContent(targetPath);
     }
 
     // Be sure folders exists
