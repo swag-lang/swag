@@ -39,7 +39,6 @@ bool BackendC::emitDataSegment(DataSegment* dataSegment)
         CONCAT_FIXED_STR(bufferC, "\n};\n");
     }
 
-    bufferC.addEol();
     return true;
 }
 
@@ -65,7 +64,6 @@ bool BackendC::emitStrings()
         index++;
     }
 
-    bufferC.addEol();
     return true;
 }
 

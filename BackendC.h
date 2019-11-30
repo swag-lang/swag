@@ -28,10 +28,10 @@ struct BackendC : public Backend
     bool emitStrings();
     void emitArgcArgv();
     bool emitMain();
-    bool emitFunctions();
-    bool emitFunctions(Module* moduleToGen);
-    bool emitFuncSignatures();
-    bool emitFuncSignatures(Module* moduleToGen);
+    bool emitAllFunctionBody();
+    bool emitAllFunctionBody(Module* moduleToGen);
+    bool emitAllFuncSignatureInternalC();
+    bool emitAllFuncSignatureInternalC(Module* moduleToGen);
     bool emitGlobalInit();
     bool emitGlobalDrop();
 
@@ -42,7 +42,7 @@ struct BackendC : public Backend
     bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
     bool emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     void emitFuncSignatureInternalC(ByteCode* bc);
-    bool emitInternalFunction(Module* moduleToGen, ByteCode* bc);
+    bool emitFunctionBody(Module* moduleToGen, ByteCode* bc);
 
     OutputFile bufferC;
 };

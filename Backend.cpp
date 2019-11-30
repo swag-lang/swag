@@ -8,6 +8,8 @@
 
 void Backend::emitSeparator(Concat& buffer, const char* title)
 {
+	buffer.addEol();
+
     int len = (int) strlen(title);
     CONCAT_FIXED_STR(buffer, "/*");
     int maxLen = 80;

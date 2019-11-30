@@ -536,30 +536,7 @@ void BackendC::emitFuncSignatureInternalC(ByteCode* bc)
     CONCAT_FIXED_STR(bufferC, ")");
 }
 
-bool BackendC::emitFuncSignatures()
-{
-    emitSeparator(bufferC, "PROTOTYPES");
-    if (!emitFuncSignatures(g_Workspace.runtimeModule))
-        return false;
-    if (!emitFuncSignatures(module))
-        return false;
-
-    // Import functions
-    for (auto node : module->allForeign)
-    {
-        if (node->flags & AST_USED_FOREIGN)
-        {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            CONCAT_FIXED_STR(bufferC, "SWAG_IMPORT ");
-            SWAG_CHECK(emitForeignFuncSignature(module, bufferC, typeFunc, node));
-            CONCAT_FIXED_STR(bufferC, ";\n");
-        }
-    }
-
-    return true;
-}
-
-bool BackendC::emitFuncSignatures(Module* moduleToGen)
+bool BackendC::emitAllFuncSignatureInternalC(Module* moduleToGen)
 {
     SWAG_ASSERT(moduleToGen);
 
@@ -592,8 +569,33 @@ bool BackendC::emitFuncSignatures(Module* moduleToGen)
     return true;
 }
 
-bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
+bool BackendC::emitAllFuncSignatureInternalC()
 {
+    emitSeparator(bufferC, "PROTOTYPES");
+    if (!emitAllFuncSignatureInternalC(g_Workspace.runtimeModule))
+        return false;
+    if (!emitAllFuncSignatureInternalC(module))
+        return false;
+
+    // Import functions
+    for (auto node : module->allForeign)
+    {
+        if (node->flags & AST_USED_FOREIGN)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            CONCAT_FIXED_STR(bufferC, "SWAG_IMPORT ");
+            SWAG_CHECK(emitForeignFuncSignature(module, bufferC, typeFunc, node));
+            CONCAT_FIXED_STR(bufferC, ";\n");
+        }
+    }
+
+    return true;
+}
+
+bool BackendC::emitFunctionBody(Module* moduleToGen, ByteCode* bc)
+{
+    bufferC.addEol();
+
     bool ok       = true;
     auto typeFunc = bc->callType();
 
@@ -1613,22 +1615,21 @@ bool BackendC::emitInternalFunction(Module* moduleToGen, ByteCode* bc)
     if (bc->node && bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         CONCAT_FIXED_STR(bufferC, "#endif\n");
 
-    bufferC.addEol();
     return ok;
 }
 
-bool BackendC::emitFunctions()
+bool BackendC::emitAllFunctionBody()
 {
     emitSeparator(bufferC, "SWAG FUNCTIONS");
-    if (!emitFunctions(g_Workspace.runtimeModule))
+    if (!emitAllFunctionBody(g_Workspace.runtimeModule))
         return false;
     emitSeparator(bufferC, "INTERNAL FUNCTIONS");
-    if (!emitFunctions(module))
+    if (!emitAllFunctionBody(module))
         return false;
     return true;
 }
 
-bool BackendC::emitFunctions(Module* moduleToGen)
+bool BackendC::emitAllFunctionBody(Module* moduleToGen)
 {
     SWAG_ASSERT(moduleToGen);
 
@@ -1655,7 +1656,7 @@ bool BackendC::emitFunctions(Module* moduleToGen)
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        ok &= emitInternalFunction(moduleToGen, one);
+        ok &= emitFunctionBody(moduleToGen, one);
 
         // Emit public function wrapper, from real C prototype to swag registers
         if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
