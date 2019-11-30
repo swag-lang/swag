@@ -267,7 +267,7 @@ bool BackendC::emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushPa
 bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one)
 {
     CONCAT_FIXED_STR(bufferC, "SWAG_EXPORT ");
-    SWAG_CHECK(emitForeignFuncSignature(moduleToGen, bufferC, typeFunc, node));
+    SWAG_CHECK(emitForeignFuncSignature(moduleToGen, bufferC, typeFunc, node, true));
     CONCAT_FIXED_STR(bufferC, " {\n");
 
     // Compute number of registers
@@ -448,7 +448,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
     return true;
 }
 
-bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
+bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport)
 {
     Utf8 returnType;
     bool returnByCopy = typeFunc->returnType->flags & TYPEINFO_RETURN_BY_COPY;
@@ -461,7 +461,7 @@ bool BackendC::emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, Typ
     else
         CONCAT_FIXED_STR(buffer, "void");
     CONCAT_FIXED_STR(buffer, " ");
-    auto name = Ast::computeFullNameForeign(node);
+    auto name = Ast::computeFullNameForeign(node, forExport);
     buffer.addString(name.c_str());
     CONCAT_FIXED_STR(buffer, "(");
 
@@ -583,7 +583,7 @@ bool BackendC::emitAllFuncSignatureInternalC()
         {
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
             CONCAT_FIXED_STR(bufferC, "SWAG_IMPORT ");
-            SWAG_CHECK(emitForeignFuncSignature(module, bufferC, typeFunc, node));
+            SWAG_CHECK(emitForeignFuncSignature(module, bufferC, typeFunc, node, false));
             CONCAT_FIXED_STR(bufferC, ";\n");
         }
     }

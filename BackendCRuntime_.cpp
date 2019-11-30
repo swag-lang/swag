@@ -141,10 +141,10 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 )";
 
 bool BackendC::emitRuntime()
-{	
+{
     emitSeparator(bufferC, "RUNTIME");
-	CONCAT_FIXED_STR(bufferC, g_RuntimeC);
+    CONCAT_FIXED_STR(bufferC, g_RuntimeC);
     emitSeparator(bufferC, "INTRINSICS");
-	CONCAT_FIXED_STR(bufferC, g_Intrinsics);
+    CONCAT_FIXED_STR(bufferC, g_Intrinsics);
     return true;
 }

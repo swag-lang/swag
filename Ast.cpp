@@ -296,8 +296,17 @@ namespace Ast
         return node;
     }
 
-    Utf8 computeFullNameForeign(AstNode* node)
+    Utf8 computeFullNameForeign(AstNode* node, bool forExport)
     {
+		if (!forExport)
+		{
+			auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+			auto it = typeFunc->attributes.values.find("swag.foreign.function");
+			if (it != typeFunc->attributes.values.end())
+				return it->second.second.text;
+			//return node->name;
+		}
+
         Utf8 fullnameForeign;
 
         SWAG_ASSERT(node->ownerScope);

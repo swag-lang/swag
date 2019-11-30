@@ -388,7 +388,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
         {
             AstFuncDecl*      node     = CastAst<AstFuncDecl>(func, AstNodeKind::FuncDecl);
             TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            auto              name     = Ast::computeFullNameForeign(node);
+            auto              name     = Ast::computeFullNameForeign(node, true);
             bufferSwg.addStringFormat("\t#[foreign(\"%s\", \"%s\")]\n", module->name.c_str(), name.c_str());
             SWAG_CHECK(emitAttributes(node));
             bufferSwg.addChar('\t');

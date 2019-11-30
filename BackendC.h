@@ -40,7 +40,7 @@ struct BackendC : public Backend
     bool emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
     void emitFuncSignatureSwg(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
     bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
-    bool emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
+    bool emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport);
     void emitFuncSignatureInternalC(ByteCode* bc);
     bool emitFunctionBody(Module* moduleToGen, ByteCode* bc);
 

@@ -38,8 +38,8 @@
             func round(x: f64)->f64;		
             func powf(x, exp: f32)->f32;
             func pow(x, exp: f64)->f64;			
-			func fabs(x: f32)->f32;	
-			func abs(x: f64)->f64;	
+			func fabsf(x: f32)->f32;	
+			func fabs(x: f64)->f64;	
         }
     }
 }

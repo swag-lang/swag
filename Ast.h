@@ -52,7 +52,7 @@ namespace Ast
     extern Utf8     literalToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
     extern void     normalizeIdentifierName(Utf8& name);
     extern AstNode* clone(AstNode* source, AstNode* parent);
-    extern Utf8     computeFullNameForeign(AstNode* node);
+    extern Utf8     computeFullNameForeign(AstNode* node, bool forExport);
 
     extern AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     extern AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);

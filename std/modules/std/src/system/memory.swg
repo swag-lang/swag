@@ -14,7 +14,7 @@ namespace std.memory
         
         func clear(dest: *void, size: u32)
         {
-            return os.memset(dest, 0, cast(u64) size)
+            os.memset(dest, 0, cast(u64) size)
         } 
     }
 }

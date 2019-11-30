@@ -5,7 +5,7 @@
         typealias HANDLE: 		*void
         typealias WORD: 		u16
         typealias DWORD: 		u32
-        typealias BOOL: 		bool
+        typealias BOOL: 		s32
         typealias LPVOID:		*void
         typealias LPCVOID:		const *void
         typealias LPCSTR:		string
@@ -68,8 +68,8 @@
         #[swag.foreign("kernel32")]
         {
             func GetStdHandle(nStdHandle: DWORD)->HANDLE;
-            func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->bool;
-            func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED);
+            func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
+            func WriteFile(hFile: HANDLE, lpBuffer: LPCVOID, nNumberOfBytesToWrite: DWORD, lpNumberOfBytesWritten: LPDWORD, lpOverlapped: LPOVERLAPPED)->BOOL;
             func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
             func IsDebuggerPresent()->BOOL;
             func DebugBreak();
