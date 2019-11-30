@@ -25,7 +25,7 @@ struct CompilerTarget
     uint32_t byteCodeStackSize    = 16 * 1024;
 
     // Backend common
-    bool                   backendDebugInformations = true;
+    bool                   backendDebugInformations = false;
     uint32_t               backendOptimizeLevel     = 0;
 
 	// Backend specific
