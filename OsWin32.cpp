@@ -314,6 +314,46 @@ namespace OS
         return ::GetProcAddress((HMODULE) handle, name);
     }
 
+    void visitFiles(const char* folder, function<void(const char*)> user)
+    {
+        WIN32_FIND_DATAA findfile;
+        string           searchPath = folder;
+        searchPath += "/*";
+        HANDLE h = ::FindFirstFileA(searchPath.c_str(), &findfile);
+        if (h != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
+                if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                    continue;
+                user(findfile.cFileName);
+            } while (::FindNextFileA(h, &findfile));
+
+            ::FindClose(h);
+        }
+    }
+
+    void visitFolders(const char* folder, function<void(const char*)> user)
+    {
+        WIN32_FIND_DATAA findfile;
+        string           searchPath = folder;
+        searchPath += "/*";
+        HANDLE h = ::FindFirstFileA(searchPath.c_str(), &findfile);
+        if (h != INVALID_HANDLE_VALUE)
+        {
+            do
+            {
+                if (!(findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+                    continue;
+                if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
+                    continue;
+                user(findfile.cFileName);
+            } while (::FindNextFileA(h, &findfile));
+
+            ::FindClose(h);
+        }
+    }
+
 }; // namespace OS
 
 #endif

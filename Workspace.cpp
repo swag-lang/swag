@@ -1,15 +1,12 @@
 #include "pch.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
-#include "Module.h"
 #include "Stats.h"
-#include "SourceFile.h"
 #include "SemanticJob.h"
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "CopyFileJob.h"
 #include "ByteCode.h"
-#include "CompilerTarget.h"
 #include "ByteCodeModuleManager.h"
 #include "Os.h"
 
@@ -105,79 +102,53 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
 void Workspace::enumerateModules(const fs::path& path, ModulesTypes type)
 {
     // Scan source folder
-    WIN32_FIND_DATAA findfile;
-    string           searchPath = path.string() + "/*";
-    HANDLE           h          = ::FindFirstFileA(searchPath.c_str(), &findfile);
-    if (h != INVALID_HANDLE_VALUE)
-    {
-        do
-        {
-            if (!(findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
-                continue;
-            if ((findfile.cFileName[0] == '.') && (!findfile.cFileName[1] || (findfile.cFileName[1] == '.' && !findfile.cFileName[2])))
-                continue;
+    OS::visitFolders(path.string().c_str(), [&](const char* cFileName) {
+		// Module name if equivalent to the folder name
+		string moduleName;
+		if (type == ModulesTypes::Tests)
+			moduleName = "tests.";
+		moduleName += cFileName;
 
-            // Module name if equivalent to the folder name
-            string moduleName;
-            if (type == ModulesTypes::Tests)
-                moduleName = "tests.";
-            moduleName += findfile.cFileName;
+		// Create module
+		auto module = createOrUseModule(moduleName);
+		module->fromTests = type == ModulesTypes::Tests;
 
-            // Create module
-            auto module       = createOrUseModule(moduleName);
-            module->fromTests = type == ModulesTypes::Tests;
+		// Add the build.swg file if it exists
+		string tmp;
+		tmp = path.string() + cFileName + "/build.swg";
+		if (fs::exists(tmp))
+		{
+			auto job = g_Pool_syntaxJob.alloc();
+			auto file = g_Pool_sourceFile.alloc();
+			job->sourceFile = file;
+			file->fromTests = module->fromTests;
+			file->path = tmp;
+			module->buildFile = file;
+			module->addFile(file);
+			g_ThreadMgr.addJob(job);
+		}
 
-            // Add the build.swg file if it exists
-            string tmp;
-            tmp = path.string() + findfile.cFileName + "/build.swg";
-            if (fs::exists(tmp))
-            {
-                auto job          = g_Pool_syntaxJob.alloc();
-                auto file         = g_Pool_sourceFile.alloc();
-                job->sourceFile   = file;
-                file->fromTests   = module->fromTests;
-                file->path        = tmp;
-                module->buildFile = file;
-                module->addFile(file);
-                g_ThreadMgr.addJob(job);
-            }
-
-            // Parse all files in the "src" sub folder, except for tests where all the source code
-            // is at the root folder
-            tmp          = path.string() + findfile.cFileName;
-            module->path = tmp;
-            if (type != ModulesTypes::Tests)
-                tmp += "/src";
-            enumerateFilesInModule(tmp, module);
-
-        } while (::FindNextFileA(h, &findfile));
-
-        ::FindClose(h);
-    }
+		// Parse all files in the "src" sub folder, except for tests where all the source code
+		// is at the root folder
+		tmp = path.string() + cFileName;
+		module->path = tmp;
+		if (type != ModulesTypes::Tests)
+			tmp += "/src";
+		enumerateFilesInModule(tmp, module); });
 }
 
 void Workspace::publishModule(Module* module)
 {
     // Scan source folder
-    WIN32_FIND_DATAA findfile;
-    string           publishPath = module->path + "/publish";
-    string           searchPath  = publishPath + "/*";
-    HANDLE           h           = ::FindFirstFileA(searchPath.c_str(), &findfile);
-    if (h != INVALID_HANDLE_VALUE)
-    {
-        do
-        {
-            if (findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-                continue;
-            auto job        = g_Pool_copyFileJob.alloc();
-            job->module     = module;
-            job->sourcePath = publishPath + "/" + findfile.cFileName;
-            job->destPath   = targetPath.string() + "/" + findfile.cFileName;
-            g_ThreadMgr.addJob(job);
-        } while (::FindNextFileA(h, &findfile));
-
-        ::FindClose(h);
-    }
+    string publishPath = module->path + "/publish";
+    string searchPath  = publishPath;
+    OS::visitFiles(searchPath.c_str(), [&](const char* cFileName) {
+        auto job        = g_Pool_copyFileJob.alloc();
+        job->module     = module;
+        job->sourcePath = publishPath + "/" + cFileName;
+        job->destPath   = targetPath.string() + "/" + cFileName;
+        g_ThreadMgr.addJob(job);
+    });
 }
 
 void Workspace::addRuntime()

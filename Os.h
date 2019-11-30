@@ -20,4 +20,6 @@ namespace OS
     extern void*         tlsGetValue(swag_tls_id_t id);
     extern void*         loadLibrary(const char* name);
     extern void*         getProcAddress(void* handle, const char* name);
+    extern void          visitFiles(const char* folder, function<void(const char*)> user);
+	extern void          visitFolders(const char* folder, function<void(const char*)> user);
 } // namespace OS
