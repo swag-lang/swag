@@ -38,6 +38,8 @@ SWAG_IMPORT void*				LoadLibraryA(const char*);
 SWAG_IMPORT swag_uint32_t		TlsAlloc();
 SWAG_IMPORT swag_int32_t		TlsSetValue(swag_uint32_t, void*);
 SWAG_IMPORT void*				TlsGetValue(swag_uint32_t);
+SWAG_IMPORT void*				GetStdHandle(swag_uint32_t);
+SWAG_IMPORT swag_int32_t		WriteFile(void*, void*, swag_uint32_t, swag_uint32_t*, swag_uint32_t*);
 
 #define __loadDynamicLibrary	LoadLibraryA
 #define __tlsAlloc				TlsAlloc
@@ -102,13 +104,23 @@ extern void  free(void*);
 static void __print_n(const char* message, int len) 
 { 
 	if(!message) message = "<null>";
-	printf("%.*s", len, message);
+#ifdef _WIN32	
+	WriteFile(GetStdHandle(-11), (void*) message, len, 0, 0);
+#else
+#endif
+}
+
+static swag_int32_t __strlen(const char* message) 
+{
+	swag_int32_t len = 0;
+	while(*message++) len++;
+	return len;
 }
 
 static void __print(const char* message) 
 { 
 	if(!message) message = "<null>";
-	printf(message);
+	__print_n(message, __strlen(message));
 }
 
 static char* __itoa(char* result, swag_int64_t value) 

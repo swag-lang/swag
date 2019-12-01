@@ -5,7 +5,7 @@ namespace Windows
 	#[swag.foreign]
 	{
 		func GetStdHandle(handle: u32)->*void;
-		func WriteFile(hFile: *void, lpBuffer: *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *u32);
+		func WriteFile(hFile: *void, lpBuffer: *void, nNumberOfBytesToWrite: u32, lpNumberOfBytesWritten: *u32, lpOverlapped: *u32)->s32;
 		func SetConsoleTextAttribute(hConsoleOutput: *void, wAttributes: u16)->bool;
 	}
 	
