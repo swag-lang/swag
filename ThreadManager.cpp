@@ -13,7 +13,7 @@ ThreadManager g_ThreadMgr;
 
 void ThreadManager::init()
 {
-	initDefaultContext();
+    initDefaultContext();
 
     loadingThread = new LoadingThread();
     savingThread  = new SavingThread();
@@ -38,7 +38,7 @@ ThreadManager::~ThreadManager()
 
 void ThreadManager::addJob(Job* job)
 {
-    scoped_lock<mutex> lk(mutexAdd);
+    unique_lock lk(mutexAdd);
 
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
     job->flags &= ~JOB_IS_DEPENDENT;
@@ -86,7 +86,7 @@ void ThreadManager::waitEndJobs()
 
 Job* ThreadManager::getJob()
 {
-    scoped_lock<mutex> lk(mutexAdd);
+    unique_lock lk(mutexAdd);
     if (queueJobs.empty())
         return nullptr;
     auto job = queueJobs.back();
@@ -100,11 +100,14 @@ Job* ThreadManager::getJob()
 Job* ThreadManager::getJob(JobThread* thread)
 {
     auto job = getJob();
+
     if (job == nullptr)
     {
-        mutexAdd.lock();
-        availableThreads.push_back(thread);
-        mutexAdd.unlock();
+        {
+            unique_lock lk(mutexAdd);
+            availableThreads.push_back(thread);
+        }
+
         thread->waitJob();
         return nullptr;
     }
@@ -115,7 +118,7 @@ Job* ThreadManager::getJob(JobThread* thread)
 
 void ThreadManager::addPendingJob(Job* job)
 {
-    scoped_lock<mutex> lk(mutexAdd);
+    unique_lock lk(mutexAdd);
     pendingJobs.push_back(job);
     job->pendingIndex = (int) pendingJobs.size() - 1;
     job->thread       = nullptr;

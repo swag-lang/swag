@@ -19,13 +19,13 @@ JobThread::~JobThread()
 
 void JobThread::notifyJob()
 {
-    lock_guard<mutex> lk(mutexNotify);
+    lock_guard lk(mutexNotify);
     condVar.notify_one();
 }
 
 void JobThread::waitJob()
 {
-    unique_lock<mutex> lk(mutexNotify);
+    unique_lock lk(mutexNotify);
     condVar.wait(lk);
 }
 
