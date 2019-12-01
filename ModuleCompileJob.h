@@ -5,18 +5,10 @@ struct Module;
 
 struct ModuleCompileJob : public Job
 {
-    void reset()
-    {
-        Job::reset();
-        condVar   = nullptr;
-        mutexDone = nullptr;
-    }
-
     JobResult execute() override;
 
-    Module*         module = nullptr;
-    BuildParameters buildParameters;
-
+    BuildParameters     buildParameters;
+    Module*             module    = nullptr;
     condition_variable* condVar   = nullptr;
     mutex*              mutexDone = nullptr;
 };

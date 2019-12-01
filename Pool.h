@@ -1,14 +1,10 @@
 #pragma once
-struct PoolElement
-{
-};
-
 template<typename T, int S>
 struct PoolSlot
 {
     T         buffer[S];
-    int       maxUsed  = 1;
     PoolSlot* nextSlot = nullptr;
+    int       maxUsed  = 1;
 };
 
 template<typename T, int S = 32>
@@ -20,23 +16,17 @@ struct Pool
         if (!rootBucket)
         {
             rootBucket = lastBucket = new PoolSlot<T, S>();
-            auto elem               = &lastBucket->buffer[0];
-            elem->reset();
-            return elem;
+            return &lastBucket->buffer[0];
         }
 
         if (lastBucket->maxUsed == S)
         {
             lastBucket->nextSlot = new PoolSlot<T, S>();
             lastBucket           = lastBucket->nextSlot;
-            auto elem            = &lastBucket->buffer[0];
-            elem->reset();
-            return elem;
+            return &lastBucket->buffer[0];
         }
 
-        auto elem = &lastBucket->buffer[lastBucket->maxUsed++];
-        elem->reset();
-        return elem;
+        return &lastBucket->buffer[lastBucket->maxUsed++];
     }
 
     PoolSlot<T, S>* rootBucket = nullptr;

@@ -181,24 +181,6 @@ struct SemanticJob : public Job
     static bool resolveDrop(SemanticContext* context);
     static bool resolveUserCast(SemanticContext* context);
 
-    void reset()
-    {
-        Job::reset();
-        cacheDependentSymbols.clear();
-        cacheScopeHierarchy.clear();
-        cacheScopeHierarchyVars.clear();
-        scopesHere.clear();
-        cacheMatches.clear();
-        cacheBadSignature.clear();
-        cacheGenericMatches.clear();
-        cacheBadSignature.clear();
-        cacheBadGenericSignature.clear();
-        tmpNodes.clear();
-        symMatch.reset();
-        waitingSymbolSolved = nullptr;
-        context.reset();
-    }
-
     vector<AstNode*>         tmpNodes;
     vector<SymbolName*>      cacheDependentSymbols;
     vector<Scope*>           cacheScopeHierarchy;

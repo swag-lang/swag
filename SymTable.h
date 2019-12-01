@@ -29,31 +29,21 @@ static const uint32_t OVERLOAD_INCOMPLETE         = 0x00000100;
 static const uint32_t OVERLOAD_VAR_INLINE         = 0x00000200;
 static const uint32_t OVERLOAD_PUBLIC             = 0x00000400;
 
-struct SymbolOverload : public PoolElement
+struct SymbolOverload
 {
-    void reset()
-    {
-        typeInfo      = nullptr;
-        flags         = 0;
-        node          = nullptr;
-        storageOffset = UINT32_MAX;
-        storageIndex  = 0;
-        overloadIndex = 0;
-        registers.clear();
-    }
-
-    TypeInfo*     typeInfo;
     ComputedValue computedValue;
-    uint32_t      flags;
-    AstNode*      node;
-    uint32_t      storageOffset;
-    uint32_t      storageIndex;
-    uint32_t      overloadIndex;
     RegisterList  registers;
+    TypeInfo*     typeInfo      = nullptr;
+    AstNode*      node          = nullptr;
+    uint32_t      flags         = 0;
+    uint32_t      storageOffset = UINT32_MAX;
+    uint32_t      storageIndex  = 0;
+    uint32_t      overloadIndex = 0;
 };
 
 enum class SymbolKind
 {
+    Invalid,
     Variable,
     TypeAlias,
     Namespace,
@@ -67,27 +57,18 @@ enum class SymbolKind
     Label,
 };
 
-struct SymbolName : public PoolElement
+struct SymbolName
 {
     shared_mutex            mutex;
     Utf8                    fullName;
     Utf8Crc                 name;
     SymbolOverload          defaultOverload;
-    SymbolKind              kind;
-    uint32_t                cptOverloads;
-    uint32_t                cptOverloadsInit;
     vector<SymbolOverload*> overloads;
     DependentJobs           dependentJobs;
-    SymTable*               ownerTable;
-
-    void reset()
-    {
-        name.clear();
-        cptOverloads     = 0;
-        cptOverloadsInit = 0;
-        ownerTable       = nullptr;
-        overloads.clear();
-    }
+    SymbolKind              kind             = SymbolKind::Invalid;
+    uint32_t                cptOverloads     = 0;
+    uint32_t                cptOverloadsInit = 0;
+    SymTable*               ownerTable       = nullptr;
 
     SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue);
     SymbolOverload* findOverload(TypeInfo* typeInfo);

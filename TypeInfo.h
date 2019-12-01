@@ -108,7 +108,7 @@ static const uint32_t ISSAME_EXACT     = 0x00000001;
 static const uint32_t ISSAME_CAST      = 0x00000002;
 static const uint32_t ISSAME_INTERFACE = 0x00000004;
 
-struct TypeInfo : public PoolElement
+struct TypeInfo
 {
     virtual bool isSame(TypeInfo* from, uint32_t isSameFlags)
     {
@@ -147,14 +147,6 @@ struct TypeInfo : public PoolElement
         return flags & TYPEINFO_CONST;
     }
 
-    void reset()
-    {
-        flags      = 0;
-        nativeType = NativeTypeKind::Void;
-        name.clear();
-        sizeOf = 0;
-    }
-
     void setConst()
     {
         flags |= TYPEINFO_CONST;
@@ -186,10 +178,10 @@ struct TypeInfo : public PoolElement
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
     Utf8           name;
-    TypeInfoKind   kind;
-    NativeTypeKind nativeType;
-    uint32_t       flags;
-    uint32_t       sizeOf;
+    TypeInfoKind   kind       = TypeInfoKind::Invalid;
+    NativeTypeKind nativeType = NativeTypeKind::Void;
+    uint32_t       flags      = 0;
+    uint32_t       sizeOf     = 0;
 };
 
 struct TypeInfoNative : public TypeInfo
@@ -221,30 +213,21 @@ struct TypeInfoNative : public TypeInfo
 
 struct TypeInfoNamespace : public TypeInfo
 {
-    void reset()
+    TypeInfoNamespace()
     {
-        TypeInfo::reset();
-        kind  = TypeInfoKind::Namespace;
-        scope = nullptr;
+        kind = TypeInfoKind::Namespace;
     }
 
     TypeInfo* clone() override;
 
-    Scope* scope;
+    Scope* scope = nullptr;
 };
 
 struct TypeInfoParam : public TypeInfo
 {
-    void reset()
+    TypeInfoParam()
     {
-        TypeInfo::reset();
         kind = TypeInfoKind::Param;
-        namedParam.clear();
-        typeInfo = nullptr;
-        index    = 0;
-        offset   = 0;
-        node     = nullptr;
-        attributes.reset();
     }
 
     int numRegisters() override
@@ -256,33 +239,28 @@ struct TypeInfoParam : public TypeInfo
     TypeInfo* clone() override;
 
     Utf8             namedParam;
-    TypeInfo*        typeInfo;
     ComputedValue    value;
-    int              index;
-    int              offset;
     SymbolAttributes attributes;
-    AstNode*         node;
+    TypeInfo*        typeInfo = nullptr;
+    AstNode*         node     = nullptr;
+    int              index    = 0;
+    int              offset   = 0;
 };
 
 struct TypeInfoEnum : public TypeInfo
 {
-    void reset()
+    TypeInfoEnum()
     {
-        TypeInfo::reset();
-        kind    = TypeInfoKind::Enum;
-        scope   = nullptr;
-        rawType = nullptr;
-        values.clear();
-        attributes.reset();
+        kind = TypeInfoKind::Enum;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
     vector<TypeInfoParam*> values;
-    Scope*                 scope;
-    TypeInfo*              rawType;
     SymbolAttributes       attributes;
+    Scope*                 scope   = nullptr;
+    TypeInfo*              rawType = nullptr;
 };
 
 enum MatchResult
@@ -374,17 +352,9 @@ static const uint32_t TYPEINFO_ATTRIBUTE_INTERFACE = 0x00000040;
 
 struct TypeInfoFuncAttr : public TypeInfo
 {
-    void reset()
+    TypeInfoFuncAttr()
     {
-        TypeInfo::reset();
-        kind                 = TypeInfoKind::FuncAttr;
-        firstDefaultValueIdx = -1;
-        genericParameters.clear();
-        parameters.clear();
-        returnType = nullptr;
-        stackSize  = 0;
-        attributes.reset();
-        attributeFlags = 0;
+        kind = TypeInfoKind::FuncAttr;
     }
 
     int numParamsRegisters()
@@ -406,24 +376,20 @@ struct TypeInfoFuncAttr : public TypeInfo
     void      match(SymbolMatchContext& context);
     bool      isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
 
-    int                    firstDefaultValueIdx;
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> parameters;
-    TypeInfo*              returnType;
-    int                    stackSize;
     SymbolAttributes       attributes;
-    uint32_t               attributeFlags;
+    TypeInfo*              returnType           = nullptr;
+    int                    firstDefaultValueIdx = -1;
+    int                    stackSize            = 0;
+    uint32_t               attributeFlags       = 0;
 };
 
 struct TypeInfoPointer : public TypeInfo
 {
-    void reset()
+    TypeInfoPointer()
     {
-        TypeInfo::reset();
-        kind        = TypeInfoKind::Pointer;
-        finalType   = nullptr;
-        pointedType = nullptr;
-        ptrCount    = 0;
+        kind = TypeInfoKind::Pointer;
     }
 
     void computeName() override
@@ -441,21 +407,16 @@ struct TypeInfoPointer : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* finalType;
-    TypeInfo* pointedType;
-    uint32_t  ptrCount;
+    TypeInfo* finalType   = nullptr;
+    TypeInfo* pointedType = nullptr;
+    uint32_t  ptrCount    = 0;
 };
 
 struct TypeInfoArray : public TypeInfo
 {
-    void reset()
+    TypeInfoArray()
     {
-        TypeInfo::reset();
-        kind        = TypeInfoKind::Array;
-        pointedType = nullptr;
-        finalType   = nullptr;
-        count       = 0;
-        totalCount  = 0;
+        kind = TypeInfoKind::Array;
     }
 
     void computeName() override
@@ -478,19 +439,17 @@ struct TypeInfoArray : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* pointedType;
-    TypeInfo* finalType;
-    uint32_t  count;
-    uint32_t  totalCount;
+    TypeInfo* pointedType = nullptr;
+    TypeInfo* finalType   = nullptr;
+    uint32_t  count       = 0;
+    uint32_t  totalCount  = 0;
 };
 
 struct TypeInfoSlice : public TypeInfo
 {
-    void reset()
+    TypeInfoSlice()
     {
-        TypeInfo::reset();
-        kind        = TypeInfoKind::Slice;
-        pointedType = nullptr;
+        kind = TypeInfoKind::Slice;
     }
 
     void computeName() override
@@ -505,25 +464,21 @@ struct TypeInfoSlice : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* pointedType;
+    TypeInfo* pointedType = nullptr;
 };
 
 enum class TypeInfoListKind
 {
+    Invalid,
     Bracket,
     Curly,
 };
 
 struct TypeInfoList : public TypeInfo
 {
-    void reset()
+    TypeInfoList()
     {
-        TypeInfo::reset();
         kind = TypeInfoKind::TypeList;
-        childs.clear();
-        names.clear();
-        scope    = nullptr;
-        listKind = TypeInfoListKind::Bracket;
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -535,64 +490,44 @@ struct TypeInfoList : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfoListKind  listKind;
     vector<TypeInfo*> childs;
     vector<Utf8>      names;
-    Scope*            scope;
+    Scope*            scope    = nullptr;
+    TypeInfoListKind  listKind = TypeInfoListKind::Bracket;
 };
 
 struct TypeInfoVariadic : public TypeInfo
 {
-    void reset()
+    TypeInfoVariadic()
     {
-        TypeInfo::reset();
-        rawType = nullptr;
-        kind    = TypeInfoKind::Variadic;
+        kind = TypeInfoKind::Variadic;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* rawType;
+    TypeInfo* rawType = nullptr;
 };
 
 struct TypeInfoGeneric : public TypeInfo
 {
-    void reset()
+    TypeInfoGeneric()
     {
-        TypeInfo::reset();
-        rawType = nullptr;
-        kind    = TypeInfoKind::Generic;
+        kind = TypeInfoKind::Generic;
         flags |= TYPEINFO_GENERIC;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* rawType;
+    TypeInfo* rawType = nullptr;
 };
 
 struct TypeInfoStruct : public TypeInfo
 {
-    void reset()
+    TypeInfoStruct()
     {
-        TypeInfo::reset();
         kind = TypeInfoKind::Struct;
-        genericParameters.clear();
-        childs.clear();
-        interfaces.clear();
-        scope                  = nullptr;
-        structNode             = nullptr;
-        opUserPostCopyFct      = nullptr;
-        opPostCopy             = nullptr;
-        opUserPostMoveFct      = nullptr;
-        opPostMove             = nullptr;
-        opUserDropFct          = nullptr;
-        opDrop                 = nullptr;
-        itable                 = nullptr;
-        cptRemainingInterfaces = 0;
-        maxPaddingSize         = 0;
-        attributes.reset();
         flags |= TYPEINFO_RETURN_BY_COPY;
     }
 
@@ -610,29 +545,27 @@ struct TypeInfoStruct : public TypeInfo
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> childs;
     vector<TypeInfoParam*> interfaces;
-    TypeInfoStruct*        itable;
-    Scope*                 scope;
-    AstNode*               structNode;
-    ByteCode*              opInit;
-    AstNode*               opUserPostCopyFct;
-    ByteCode*              opPostCopy;
-    AstNode*               opUserPostMoveFct;
-    ByteCode*              opPostMove;
-    AstNode*               opUserDropFct;
-    ByteCode*              opDrop;
-    shared_mutex               mutex;
+    shared_mutex           mutex;
     SymbolAttributes       attributes;
-    uint32_t               cptRemainingInterfaces;
-    uint32_t               maxPaddingSize;
+    TypeInfoStruct*        itable                 = nullptr;
+    Scope*                 scope                  = nullptr;
+    AstNode*               structNode             = nullptr;
+    ByteCode*              opInit                 = nullptr;
+    AstNode*               opUserPostCopyFct      = nullptr;
+    ByteCode*              opPostCopy             = nullptr;
+    AstNode*               opUserPostMoveFct      = nullptr;
+    ByteCode*              opPostMove             = nullptr;
+    AstNode*               opUserDropFct          = nullptr;
+    ByteCode*              opDrop                 = nullptr;
+    uint32_t               cptRemainingInterfaces = 0;
+    uint32_t               maxPaddingSize         = 0;
 };
 
 struct TypeInfoAlias : public TypeInfo
 {
-    void reset()
+    TypeInfoAlias()
     {
-        TypeInfo::reset();
-        kind    = TypeInfoKind::Alias;
-        rawType = nullptr;
+        kind = TypeInfoKind::Alias;
     }
 
     void computeName() override
@@ -644,22 +577,21 @@ struct TypeInfoAlias : public TypeInfo
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
 
-    TypeInfo* rawType;
+    TypeInfo* rawType = nullptr;
 };
 
 struct TypeInfoCode : public TypeInfo
 {
-    void reset()
+    TypeInfoCode()
     {
-        TypeInfo::reset();
-        name    = "code";
-        content = nullptr;
-        kind    = TypeInfoKind::Code;
+        name = "code";
+        kind = TypeInfoKind::Code;
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
-    AstNode*  content;
+
+    AstNode* content = nullptr;
 };
 
 extern Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;

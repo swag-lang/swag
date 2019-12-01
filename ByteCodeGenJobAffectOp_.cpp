@@ -565,7 +565,6 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         {
             auto    arrayNode = CastAst<AstPointerDeRef>(leftNode->childs.front(), AstNodeKind::ArrayPointerIndex);
             AstNode allParams;
-            allParams.reset();
             allParams.childs = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, &allParams));
             if (context->result == ContextResult::Pending)

@@ -21,23 +21,19 @@ struct ByteCodeInstruction
     ByteCodeOp     op;
 };
 
-struct ByteCode : public PoolElement
+struct ByteCode
 {
-    void reset()
-    {
-    }
-
     void print();
 
     static const int     ALIGN_RIGHT_OPCODE = 25;
-    ByteCodeInstruction* out                = nullptr;
-    uint32_t             numInstructions    = 0;
-    uint32_t             maxInstructions    = 0;
-    int                  maxCallResults     = 0;
-    SourceFile*          sourceFile         = nullptr;
-    TypeInfoFuncAttr*    typeInfoFunc       = nullptr;
-    AstNode*             node               = nullptr;
     string               name;
+    ByteCodeInstruction* out               = nullptr;
+    SourceFile*          sourceFile        = nullptr;
+    TypeInfoFuncAttr*    typeInfoFunc      = nullptr;
+    AstNode*             node              = nullptr;
+    uint32_t             numInstructions   = 0;
+    uint32_t             maxInstructions   = 0;
+    int32_t              maxCallResults    = 0;
     bool                 compilerGenerated = false;
     bool                 addedToList       = false;
 
@@ -45,7 +41,7 @@ struct ByteCode : public PoolElement
     vector<uint32_t>  availableRegistersRC;
     vector<uint32_t>  availableRegistersRC2;
     vector<Register*> registersRC;
-    int               curRC = -1;
+    int32_t           curRC = -1;
     void              enterByteCode(ByteCodeRunContext* context);
     void              leaveByteCode();
 

@@ -88,7 +88,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
     static bool emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
-	static bool emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
+    static bool emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     static bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     static bool emitFuncCallParam(ByteCodeGenContext* context);
     static bool emitFuncDeclParams(ByteCodeGenContext* context);
@@ -168,20 +168,11 @@ struct ByteCodeGenJob : public Job
     static void     freeRegisterRC(ByteCodeGenContext* context, AstNode* node);
     static void     truncRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int count);
 
-    void reset()
-    {
-        Job::reset();
-        originalNode = nullptr;
-        collectChilds.clear();
-        collectScopes.clear();
-        syncToDependentNodes = false;
-    }
-
     ByteCodeGenContext context;
-    AstNode*           originalNode;
     vector<AstNode*>   collectChilds;
     vector<Scope*>     collectScopes;
-    bool               syncToDependentNodes;
+    AstNode*           originalNode         = nullptr;
+    bool               syncToDependentNodes = false;
 };
 
 extern Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;

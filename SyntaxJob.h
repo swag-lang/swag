@@ -39,11 +39,11 @@ struct SyntaxJob : public Job
     bool doFuncCallParameters(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result = nullptr);
-	bool doCompilerInline(AstNode* parent, AstNode** result = nullptr);
-	bool doCompilerMixin(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerInline(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerMixin(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerAssert(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerPrint(AstNode* parent, AstNode** result = nullptr);
-	bool doCompilerRun(AstNode* parent, AstNode** result = nullptr);
+    bool doCompilerRun(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerUnitTest();
     bool doCompilerModule();
     bool doCompilerImport(AstNode* parent);
@@ -110,37 +110,21 @@ struct SyntaxJob : public Job
     bool doLeftExpression(AstNode** result);
     bool doInit(AstNode* parent, AstNode** result = nullptr);
     bool doDrop(AstNode* parent, AstNode** result = nullptr);
-
-    void reset()
-    {
-        Job::reset();
-        sourceFile             = nullptr;
-        canChangeModule        = true;
-        moduleSpecified        = false;
-        currentFlags           = 0;
-        currentAttributesFlags = 0;
-        currentScope           = nullptr;
-        currentFct             = nullptr;
-        currentBreakable       = nullptr;
-        currentStructScope     = nullptr;
-        currentMainNode        = nullptr;
-        currentCompilerIfBlock = nullptr;
-    }
-
+	
     SyntaxContext       context;
     Tokenizer           tokenizer;
     Token               token;
-    SourceFile*         sourceFile;
-    bool                canChangeModule;
-    bool                moduleSpecified;
-    uint64_t            currentFlags;
-    uint32_t            currentAttributesFlags;
-    Scope*              currentScope;
-    AstFuncDecl*        currentFct;
-    AstBreakable*       currentBreakable;
-    Scope*              currentStructScope;
-    AstCompilerIfBlock* currentCompilerIfBlock;
-    AstNode*            currentMainNode;
+    SourceFile*         sourceFile             = nullptr;
+    Scope*              currentScope           = nullptr;
+    AstFuncDecl*        currentFct             = nullptr;
+    AstBreakable*       currentBreakable       = nullptr;
+    Scope*              currentStructScope     = nullptr;
+    AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
+    AstNode*            currentMainNode        = nullptr;
+    uint64_t            currentFlags           = 0;
+    uint32_t            currentAttributesFlags = 0;
+    bool                canChangeModule        = true;
+    bool                moduleSpecified        = false;
 };
 
 extern Pool<SyntaxJob> g_Pool_syntaxJob;

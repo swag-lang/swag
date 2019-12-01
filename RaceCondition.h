@@ -5,9 +5,9 @@ struct RaceCondition
 {
     struct Instance
     {
-        std::atomic<int> count;
-        shared_mutex         mutex;
+        shared_mutex     mutex;
         thread::id       lastThreadID;
+        std::atomic<int> count   = 0;
         bool             defined = false;
         bool             read    = false;
 

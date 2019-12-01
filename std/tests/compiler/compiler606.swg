@@ -1,6 +1,5 @@
 #module compiler606
 
-
 struct Point
 {
 	x: s32

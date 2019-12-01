@@ -11,6 +11,7 @@ struct AstNode;
 
 enum class ScopeKind
 {
+    Invalid,
     Module,
     File,
     Namespace,
@@ -33,16 +34,11 @@ struct AlternativeScope
 
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 
-struct Scope : public PoolElement
+struct Scope
 {
-    void reset()
+    Scope()
     {
         symTable.scope = this;
-        parentScope    = nullptr;
-        startStackSize = 0;
-        owner          = nullptr;
-        flags          = 0;
-        indexInParent  = UINT32_MAX;
     }
 
     void               setHasExports();
@@ -67,20 +63,20 @@ struct Scope : public PoolElement
         return kind == ScopeKind::Module || kind == ScopeKind::File;
     }
 
-    AstNode*         owner;
-    ScopeKind        kind;
-    Scope*           parentScope;
     SymTable         symTable;
-    uint32_t         indexInParent;
     Utf8Crc          name;
     Utf8             fullname;
     vector<Scope*>   childScopes;
-    uint32_t         startStackSize;
     shared_mutex     lockChilds;
     vector<AstNode*> deferredNodes;
     RegisterList     registersToRelease;
-    uint32_t         flags;
     DependentJobs    dependentJobs;
+    AstNode*         owner          = nullptr;
+    Scope*           parentScope    = nullptr;
+    ScopeKind        kind           = ScopeKind::Invalid;
+    uint32_t         indexInParent  = UINT32_MAX;
+    uint32_t         flags          = 0;
+    uint32_t         startStackSize = 0;
 
     mutex         mutexPublicFunc;
     mutex         mutexPublicGenericFunc;

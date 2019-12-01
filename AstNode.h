@@ -133,53 +133,8 @@ struct CloneContext
     map<TypeInfo*, TypeInfo*> replaceTypes;
 };
 
-struct AstNode : public PoolElement
+struct AstNode
 {
-    void reset()
-    {
-        semanticState                = AstNodeResolveState::Enter;
-        bytecodeState                = AstNodeResolveState::Enter;
-        ownerScope                   = nullptr;
-        ownerBreakable               = nullptr;
-        ownerInline                  = nullptr;
-        ownerFct                     = nullptr;
-        ownerStructScope             = nullptr;
-        ownerMainNode                = nullptr;
-        ownerCompilerIfBlock         = nullptr;
-        parent                       = nullptr;
-        semanticFct                  = nullptr;
-        semanticBeforeFct            = nullptr;
-        semanticAfterFct             = nullptr;
-        byteCodeFct                  = nullptr;
-        byteCodeBeforeFct            = nullptr;
-        byteCodeAfterFct             = nullptr;
-        typeInfo                     = nullptr;
-        castedTypeInfo               = nullptr;
-        resolvedSymbolName           = nullptr;
-        resolvedSymbolOverload       = nullptr;
-        resolvedUserOpSymbolName     = nullptr;
-        resolvedUserOpSymbolOverload = nullptr;
-        parentAttributes             = nullptr;
-        bc                           = nullptr;
-        sourceFile                   = nullptr;
-        attributeFlags               = 0;
-        flags                        = 0;
-        doneFlags                    = 0;
-        fctCallStorageOffset         = 0;
-        byteCodeJob                  = nullptr;
-        concreteTypeInfo             = nullptr;
-        concreteTypeInfoStorage      = UINT32_MAX;
-        resultRegisterRC.clear();
-        childs.clear();
-        computedValue.reg.u64 = 0;
-        computedValue.text.clear();
-        alternativeScopes.clear();
-        alternativeScopesVars.clear();
-        doneLeaveScopeDefer.clear();
-        doneLeaveScopeDrop.clear();
-        fullnameDot.clear();
-    }
-
     void lock()
     {
         mutex.lock();
@@ -298,159 +253,113 @@ struct AstNode : public PoolElement
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
     void             computeFullName();
 
-    AstNodeKind         kind;
-    Scope*              ownerScope;
-    AstBreakable*       ownerBreakable;
-    AstInline*          ownerInline;
-    AstFuncDecl*        ownerFct;
-    uint64_t            ownerFlags;
-    Scope*              ownerStructScope;
-    AstNode*            ownerMainNode;
-    AstCompilerIfBlock* ownerCompilerIfBlock;
+    AstNodeKind         kind                 = AstNodeKind::Invalid;
+    Scope*              ownerScope           = nullptr;
+    AstBreakable*       ownerBreakable       = nullptr;
+    AstInline*          ownerInline          = nullptr;
+    AstFuncDecl*        ownerFct             = nullptr;
+    uint64_t            ownerFlags           = 0;
+    Scope*              ownerStructScope     = nullptr;
+    AstNode*            ownerMainNode        = nullptr;
+    AstCompilerIfBlock* ownerCompilerIfBlock = nullptr;
 
     vector<Scope*>           alternativeScopes;
     vector<AlternativeScope> alternativeScopesVars;
 
-    TypeInfo*       typeInfo;
-    TypeInfo*       castedTypeInfo;
-    SymbolName*     resolvedSymbolName;
-    SymbolOverload* resolvedSymbolOverload;
-    SymbolName*     resolvedUserOpSymbolName;
-    SymbolOverload* resolvedUserOpSymbolOverload;
-    ByteCodeGenJob* byteCodeJob;
+    TypeInfo*       typeInfo                     = nullptr;
+    TypeInfo*       castedTypeInfo               = nullptr;
+    SymbolName*     resolvedSymbolName           = nullptr;
+    SymbolOverload* resolvedSymbolOverload       = nullptr;
+    SymbolName*     resolvedUserOpSymbolName     = nullptr;
+    SymbolOverload* resolvedUserOpSymbolOverload = nullptr;
+    ByteCodeGenJob* byteCodeJob                  = nullptr;
 
-    TypeInfo* concreteTypeInfo;
-    uint32_t  concreteTypeInfoStorage;
+    TypeInfo* concreteTypeInfo        = nullptr;
+    uint32_t  concreteTypeInfoStorage = UINT32_MAX;
 
-    AstNode*    parent;
-    uint32_t    childParentIdx;
-    uint32_t    attributeFlags;
-    AstAttrUse* parentAttributes;
+    AstNode*    parent           = nullptr;
+    uint32_t    childParentIdx   = 0;
+    uint32_t    attributeFlags   = 0;
+    AstAttrUse* parentAttributes = 0;
     Token       token;
 
-    SemanticFct         semanticFct;
-    SemanticFct         semanticBeforeFct;
-    SemanticFct         semanticAfterFct;
-    ByteCodeFct         byteCodeFct;
-    ByteCodeNotifyFct   byteCodeBeforeFct;
-    ByteCodeNotifyFct   byteCodeAfterFct;
-    AstNodeResolveState semanticState;
-    AstNodeResolveState bytecodeState;
+    SemanticFct         semanticFct       = nullptr;
+    SemanticFct         semanticBeforeFct = nullptr;
+    SemanticFct         semanticAfterFct  = nullptr;
+    ByteCodeFct         byteCodeFct       = nullptr;
+    ByteCodeNotifyFct   byteCodeBeforeFct = nullptr;
+    ByteCodeNotifyFct   byteCodeAfterFct  = nullptr;
+    AstNodeResolveState semanticState     = AstNodeResolveState::Enter;
+    AstNodeResolveState bytecodeState     = AstNodeResolveState::Enter;
 
     vector<AstNode*> childs;
     set<Scope*>      doneLeaveScopeDefer;
     set<Scope*>      doneLeaveScopeDrop;
 
-    uint64_t      flags;
-    uint64_t      doneFlags;
-    shared_mutex      mutex;
+    shared_mutex  mutex;
     ComputedValue computedValue;
-    Utf8Crc       name;
-    Utf8          fullnameDot;
-    SourceFile*   sourceFile;
-    ByteCode*     bc;
     RegisterList  resultRegisterRC;
     RegisterList  additionalRegisterRC;
     RegisterList  contiguousRegisterRC;
-    uint32_t      fctCallStorageOffset;
+    Utf8Crc       name;
+    Utf8          fullnameDot;
+    SourceFile*   sourceFile           = nullptr;
+    ByteCode*     bc                   = nullptr;
+    uint64_t      flags                = 0;
+    uint64_t      doneFlags            = 0;
+    uint32_t      fctCallStorageOffset = 0;
     SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 };
 
 struct AstVarDecl : public AstNode
 {
-    void reset()
-    {
-        type       = nullptr;
-        assignment = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    struct AstNode* type;
-    struct AstNode* assignment;
+    AstNode* type       = nullptr;
+    AstNode* assignment = nullptr;
 };
 
 struct AstIdentifierRef : public AstNode
 {
-    void reset()
-    {
-        startScope           = nullptr;
-        previousResolvedNode = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
     void     computeName();
 
-    Scope*   startScope;
-    AstNode* previousResolvedNode;
+    Scope*   startScope           = nullptr;
+    AstNode* previousResolvedNode = nullptr;
 };
 
 struct AstIdentifier : public AstNode
 {
-    void reset()
-    {
-        identifierRef     = nullptr;
-        callParameters    = nullptr;
-        genericParameters = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstIdentifierRef* identifierRef;
-    AstNode*          genericParameters;
-    AstNode*          callParameters;
+    AstIdentifierRef* identifierRef     = nullptr;
+    AstNode*          genericParameters = nullptr;
+    AstNode*          callParameters    = nullptr;
 };
 
 struct AstFuncDecl : public AstNode
 {
-    void reset()
-    {
-        stackSize         = 0;
-        parameters        = nullptr;
-        genericParameters = nullptr;
-        returnType        = nullptr;
-        content           = nullptr;
-        scope             = nullptr;
-        dependentJobs.clear();
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    uint32_t         stackSize;
-    AstNode*         parameters;
-    AstNode*         genericParameters;
-    AstNode*         returnType;
-    AstNode*         content;
-    DependentJobs    dependentJobs;
-    Scope*           scope;
     SymbolAttributes collectAttributes;
+    DependentJobs    dependentJobs;
+    AstNode*         parameters        = nullptr;
+    AstNode*         genericParameters = nullptr;
+    AstNode*         returnType        = nullptr;
+    AstNode*         content           = nullptr;
+    Scope*           scope             = nullptr;
+    uint32_t         stackSize         = 0;
 };
 
 struct AstAttrDecl : public AstNode
 {
-    void reset()
-    {
-        parameters = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* parameters;
+    AstNode* parameters = nullptr;
 };
 
 struct AstAttrUse : public AstNode
 {
-    void reset()
-    {
-        values.clear();
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
     map<Utf8, pair<TypeInfo*, ComputedValue>> values;
@@ -458,57 +367,32 @@ struct AstAttrUse : public AstNode
 
 struct AstFuncCallParam : public AstNode
 {
-    void reset()
-    {
-        namedParam.clear();
-        namedParamNode     = nullptr;
-        resolvedParameter  = nullptr;
-        index              = 0;
-        mustSortParameters = false;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
     Utf8           namedParam;
-    AstNode*       namedParamNode;
-    TypeInfoParam* resolvedParameter;
-    int            index;
-    bool           mustSortParameters;
+    AstNode*       namedParamNode     = nullptr;
+    TypeInfoParam* resolvedParameter  = nullptr;
+    int            index              = 0;
+    bool           mustSortParameters = false;
 };
 
 struct AstIf : public AstNode
 {
-    void reset()
-    {
-        boolExpression = nullptr;
-        ifBlock        = nullptr;
-        elseBlock      = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* boolExpression;
-    AstNode* ifBlock;
-    AstNode* elseBlock;
-
-    int seekJumpExpression;
-    int seekJumpAfterIf;
+    AstNode* boolExpression     = nullptr;
+    AstNode* ifBlock            = nullptr;
+    AstNode* elseBlock          = nullptr;
+    int      seekJumpExpression = 0;
+    int      seekJumpAfterIf    = 0;
 };
 
 struct AstBreakContinue : public AstNode
 {
-    void reset()
-    {
-        label.clear();
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    int  jumpInstruction;
     Utf8 label;
+    int  jumpInstruction = 0;
 };
 
 const uint32_t BREAKABLE_CAN_HAVE_INDEX    = 0x00000001;
@@ -517,16 +401,6 @@ const uint32_t BREAKABLE_NEED_INDEX        = 0x00000004;
 
 struct AstBreakable : public AstNode
 {
-    void reset()
-    {
-        breakableFlags  = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
-        registerIndex   = 0;
-        parentBreakable = nullptr;
-        breakList.clear();
-        continueList.clear();
-        AstNode::reset();
-    }
-
     bool needIndex()
     {
         return breakableFlags & BREAKABLE_NEED_INDEX;
@@ -534,304 +408,177 @@ struct AstBreakable : public AstNode
 
     void copyFrom(CloneContext& context, AstBreakable* curParentBreakable, AstBreakable* from);
 
-    int seekJumpBeforeContinue;
-    int seekJumpBeforeExpression;
-    int seekJumpExpression;
-    int seekJumpAfterBlock;
-
-    uint32_t                  breakableFlags;
-    uint32_t                  registerIndex;
-    AstNode*                  parentBreakable;
     vector<AstBreakContinue*> breakList;
     vector<AstBreakContinue*> continueList;
+    AstNode*                  parentBreakable          = nullptr;
+    uint32_t                  breakableFlags           = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
+    uint32_t                  registerIndex            = 0;
+    int                       seekJumpBeforeContinue   = 0;
+    int                       seekJumpBeforeExpression = 0;
+    int                       seekJumpExpression       = 0;
+    int                       seekJumpAfterBlock       = 0;
 };
 
 struct AstLabelBreakable : public AstBreakable
 {
-    void reset()
-    {
-        block = nullptr;
-        AstBreakable::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* block;
+    AstNode* block = nullptr;
 };
 
 struct AstWhile : public AstBreakable
 {
-    void reset()
-    {
-        boolExpression = nullptr;
-        block          = nullptr;
-        AstBreakable::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* boolExpression;
-    AstNode* block;
+    AstNode* boolExpression = nullptr;
+    AstNode* block          = nullptr;
 };
 
 struct AstFor : public AstBreakable
 {
-    void reset()
-    {
-        preExpression  = nullptr;
-        boolExpression = nullptr;
-        postExpression = nullptr;
-        block          = nullptr;
-        AstBreakable::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* preExpression;
-    AstNode* boolExpression;
-    AstNode* postExpression;
-    AstNode* block;
-
-    int seekJumpToBlock;
-    int seekJumpBeforePost;
+    AstNode* preExpression      = nullptr;
+    AstNode* boolExpression     = nullptr;
+    AstNode* postExpression     = nullptr;
+    AstNode* block              = nullptr;
+    int      seekJumpToBlock    = 0;
+    int      seekJumpBeforePost = 0;
 };
 
 struct AstLoop : public AstBreakable
 {
-    void reset()
-    {
-        expression = nullptr;
-        block      = nullptr;
-        AstBreakable::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* expression;
-    AstNode* block;
+    AstNode* expression = nullptr;
+    AstNode* block      = nullptr;
 };
 
 struct AstSwitch : public AstBreakable
 {
-    void reset()
+    AstSwitch()
     {
-        expression = nullptr;
-        block      = nullptr;
-        cases.clear();
-        AstBreakable::reset();
         breakableFlags &= ~BREAKABLE_CAN_HAVE_INDEX;
         breakableFlags &= ~BREAKABLE_CAN_HAVE_CONTINUE;
     }
 
     AstNode* clone(CloneContext& context) override;
 
-    AstNode*                      expression;
-    AstNode*                      block;
     vector<struct AstSwitchCase*> cases;
+    AstNode*                      expression = nullptr;
+    AstNode*                      block      = nullptr;
 };
 
 struct AstSwitchCase : public AstNode
 {
-    void reset()
-    {
-        expressions.clear();
-        block       = nullptr;
-        ownerSwitch = nullptr;
-        isDefault   = false;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
     vector<AstNode*> expressions;
-    AstNode*         block;
-    AstSwitch*       ownerSwitch;
-    bool             isDefault;
+    AstNode*         block       = nullptr;
+    AstSwitch*       ownerSwitch = nullptr;
+    bool             isDefault   = false;
 };
 
 struct AstSwitchCaseBlock : public AstNode
 {
-    void reset()
-    {
-        isDefault = false;
-        ownerCase = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    bool           isDefault;
-    AstSwitchCase* ownerCase;
-
-    int seekJumpNextCase;
+    AstSwitchCase* ownerCase        = nullptr;
+    int            seekJumpNextCase = 0;
+    bool           isDefault        = false;
 };
 
 struct AstTypeExpression : public AstNode
 {
-    void reset()
-    {
-        identifier     = nullptr;
-        ptrCount       = 0;
-        arrayDim       = 0;
-        isSlice        = false;
-        isConst        = false;
-        isCode         = false;
-        forceConstType = false;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* identifier;
-    int      ptrCount;
-    int      arrayDim;
-    bool     isSlice;
-    bool     isConst;
-    bool     isCode;
-    bool     forceConstType;
+    AstNode* identifier     = nullptr;
+    int      ptrCount       = 0;
+    int      arrayDim       = 0;
+    bool     isSlice        = false;
+    bool     isConst        = false;
+    bool     isCode         = false;
+    bool     forceConstType = false;
 };
 
 struct AstTypeLambda : public AstNode
 {
-    void reset()
-    {
-        parameters = nullptr;
-        returnType = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* parameters;
-    AstNode* returnType;
+    AstNode* parameters = nullptr;
+    AstNode* returnType = nullptr;
 };
 
 struct AstPointerDeRef : public AstNode
 {
-    void reset()
-    {
-        array  = nullptr;
-        access = nullptr;
-        structFlatParams.clear();
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode*         array;
-    AstNode*         access;
     vector<AstNode*> structFlatParams;
+    AstNode*         array  = nullptr;
+    AstNode*         access = nullptr;
 };
 
 struct AstProperty : public AstNode
 {
-    void reset()
-    {
-        expression = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* expression;
+    AstNode* expression = nullptr;
     Property prop;
 };
 
 struct AstExpressionList : public AstNode
 {
-    void reset()
-    {
-        storageOffset        = 0;
-        storageOffsetSegment = UINT32_MAX;
-        isConst              = false;
-        forceConstType       = false;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    bool             isConst;
-    bool             forceConstType;
-    uint32_t         storageOffset;
-    uint32_t         storageOffsetSegment;
+    uint32_t         storageOffset        = 0;
+    uint32_t         storageOffsetSegment = UINT32_MAX;
     TypeInfoListKind listKind;
+    bool             isConst        = false;
+    bool             forceConstType = false;
 };
 
 struct AstStruct : public AstNode
 {
-    void reset()
-    {
-        genericParameters = nullptr;
-        content           = nullptr;
-        scope             = nullptr;
-        packing           = sizeof(uint64_t);
-        dependentJobs.clear();
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    uint32_t      packing;
-    AstNode*      genericParameters;
-    AstNode*      content;
-    Scope*        scope;
     DependentJobs dependentJobs;
+    uint32_t      packing           = sizeof(uint64_t);
+    AstNode*      genericParameters = nullptr;
+    AstNode*      content           = nullptr;
+    Scope*        scope             = nullptr;
 };
 
 struct AstImpl : public AstNode
 {
-    void reset()
-    {
-        structScope   = nullptr;
-        identifier    = nullptr;
-        identifierFor = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    Scope*   structScope;
-    AstNode* identifier;
-    AstNode* identifierFor;
+    Scope*   structScope   = nullptr;
+    AstNode* identifier    = nullptr;
+    AstNode* identifierFor = nullptr;
 };
 
 struct AstInit : public AstNode
 {
-    void reset()
-    {
-        expression = nullptr;
-        count      = nullptr;
-        parameters = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* expression;
-    AstNode* count;
-    AstNode* parameters;
+    AstNode* expression = nullptr;
+    AstNode* count      = nullptr;
+    AstNode* parameters = nullptr;
 };
 
 struct AstDrop : public AstNode
 {
-    void reset()
-    {
-        expression = nullptr;
-        count      = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstNode* expression;
-    AstNode* count;
+    AstNode* expression = nullptr;
+    AstNode* count      = nullptr;
 };
 
 struct AstReturn : public AstNode
 {
     AstNode* clone(CloneContext& context) override;
 
-    int seekJump;
+    int seekJump = 0;
 };
 
 struct AstCompilerInline : public AstNode
@@ -841,31 +588,15 @@ struct AstCompilerInline : public AstNode
 
 struct AstInline : public AstNode
 {
-    void reset()
-    {
-        returnList.clear();
-        scope = nullptr;
-        func  = nullptr;
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
-    AstFuncDecl*       func;
-    Scope*             scope;
+    AstFuncDecl*       func  = nullptr;
+    Scope*             scope = nullptr;
     vector<AstReturn*> returnList;
 };
 
 struct AstCompilerIfBlock : public AstNode
 {
-    void reset()
-    {
-        symbols.clear();
-        blocks.clear();
-        interfacesCount.clear();
-        AstNode::reset();
-    }
-
     AstNode* clone(CloneContext& context) override;
 
     void addSymbol(SymbolName* symbolName)

@@ -1,12 +1,8 @@
 #pragma once
 #include "Pool.h"
 
-struct ConcatBucket : PoolElement
+struct ConcatBucket
 {
-    void reset()
-    {
-    }
-
     uint8_t*      datas      = nullptr;
     ConcatBucket* nextBucket = nullptr;
     int           count      = 0;

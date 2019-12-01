@@ -175,13 +175,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
     AstNode  literal;
     if (opConst || opType)
     {
-        literal.reset();
         literal.kind               = AstNodeKind::Literal;
         literal.computedValue.text = opConst ? opConst : "";
         literal.typeInfo           = opType ? opType : g_TypeMgr.typeInfoString;
         job->symMatch.genericParameters.push_back(&literal);
-
-        parameters.reset();
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;
         genericParameters = &parameters;
         Ast::addChildBack(&parameters, &literal);

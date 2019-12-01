@@ -5,7 +5,7 @@
 struct Global
 {
     void        setup();
-    atomic<int> uniqueID;
+    atomic<int> uniqueID = 0;
 };
 
 extern Utf8    format(const char* format, ...);
@@ -15,7 +15,7 @@ extern string  normalizePath(const fs::path& path);
 extern void    tokenize(const char* str, char c, vector<string>& tokens);
 extern void    tokenizeBlanks(const char* str, vector<string>& tokens);
 extern wstring utf8ToUnicode(const string& s);
-extern void concatForC(Utf8& dst, Utf8& src);
+extern void    concatForC(Utf8& dst, Utf8& src);
 
 extern string toStringF64(double v);
 

@@ -41,20 +41,9 @@ enum class JobResult
 static const uint32_t JOB_IS_DEPENDENT = 0x00000001;
 static const uint32_t JOB_IS_IN_THREAD = 0x00000002;
 
-struct Job : public PoolElement
+struct Job
 {
     virtual JobResult execute() = 0;
-
-    void reset()
-    {
-        flags               = 0;
-        thread              = nullptr;
-        waitingSymbolSolved = nullptr;
-        pendingIndex        = -1;
-        dependentJobs.clear();
-        dependentNodes.clear();
-        nodes.clear();
-    }
 
     void addDependentJob(Job* job);
     void doneJob();
@@ -62,14 +51,14 @@ struct Job : public PoolElement
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void setPending();
 
-    shared_mutex         executeMutex;
-    uint32_t         flags;
-    JobThread*       thread;
-    int              pendingIndex;
+    shared_mutex     executeMutex;
     DependentJobs    dependentJobs;
     vector<AstNode*> dependentNodes;
-    SymbolName*      waitingSymbolSolved;
-    SourceFile*      sourceFile;
     vector<AstNode*> nodes;
-    JobContext*      baseContext = nullptr;
+    JobThread*       thread              = nullptr;
+    SymbolName*      waitingSymbolSolved = nullptr;
+    SourceFile*      sourceFile          = nullptr;
+    JobContext*      baseContext         = nullptr;
+    uint32_t         flags               = 0;
+    int32_t          pendingIndex        = -1;
 };

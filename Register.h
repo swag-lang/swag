@@ -2,6 +2,7 @@
 #include "Utf8.h"
 
 union Register {
+    uint8_t* pointer = nullptr;
     uint64_t u64;
     int64_t  s64;
     uint32_t u32;
@@ -14,7 +15,6 @@ union Register {
     double   f64;
     char32_t ch;
     bool     b;
-    uint8_t* pointer;
 };
 
 struct ComputedValue
@@ -22,7 +22,7 @@ struct ComputedValue
     Register reg;
     Utf8     text;
 
-    bool operator ==(const ComputedValue& from) const
+    bool operator==(const ComputedValue& from) const
     {
         if (text != from.text)
             return false;

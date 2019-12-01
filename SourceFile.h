@@ -13,13 +13,9 @@ enum class TextFormat
     UTF8,
 };
 
-struct SourceFile : public PoolElement
+struct SourceFile
 {
     SourceFile();
-
-    void reset()
-    {
-    }
 
     char32_t getChar(unsigned& offset);
     Utf8     getLine(long seek);
@@ -40,12 +36,12 @@ struct SourceFile : public PoolElement
     bool checkFormat(int bufferIndex);
 
     fs::path  path;
+    Module*   module        = nullptr;
+    AstNode*  astRoot       = nullptr;
     int       numErrors     = 0;
     int       unittestError = 0;
     int       silent        = 0;
     bool      swagFile      = false;
-    Module*   module        = nullptr;
-    AstNode*  astRoot       = nullptr;
     uint32_t  indexInModule = UINT32_MAX;
     BuildPass buildPass     = BuildPass::Full;
 

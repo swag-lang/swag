@@ -25,17 +25,14 @@ void TypeManager::setup()
     typeInfoUntypedU64->flags |= TYPEINFO_UNTYPED_INTEGER;
 
     typeInfoVariadic = new TypeInfoVariadic();
-    typeInfoVariadic->reset();
     typeInfoVariadic->name   = "...";
     typeInfoVariadic->sizeOf = 2 * sizeof(Register);
 
     typeInfoNull = new TypeInfoPointer();
-    typeInfoNull->reset();
     typeInfoNull->name   = "null";
     typeInfoNull->sizeOf = sizeof(Register);
 
     typeInfoPVoid = new TypeInfoPointer();
-    typeInfoPVoid->reset();
     typeInfoPVoid->finalType   = typeInfoVoid;
     typeInfoPVoid->pointedType = typeInfoVoid;
     typeInfoPVoid->ptrCount    = 1;
@@ -43,7 +40,6 @@ void TypeManager::setup()
     typeInfoPVoid->sizeOf = sizeof(Register);
 
     typeInfoCode = new TypeInfoCode();
-    typeInfoCode->reset();
 
     typeInfoOpCall             = new TypeInfoFuncAttr();
     typeInfoOpCall->returnType = typeInfoVoid;

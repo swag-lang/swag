@@ -318,7 +318,6 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         if (node->resolvedUserOpSymbolName && node->resolvedUserOpSymbolName->kind == SymbolKind::Function)
         {
             AstNode allParams;
-            allParams.reset();
             allParams.childs = node->structFlatParams;
             SWAG_CHECK(emitUserOp(context, &allParams));
             if (context->result == ContextResult::Pending)

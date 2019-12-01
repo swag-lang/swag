@@ -26,12 +26,8 @@ struct ModuleDependency
     bool     generated = false;
 };
 
-struct Module : public PoolElement
+struct Module
 {
-    void reset()
-    {
-    }
-
     void setup(const string& moduleName);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
@@ -48,12 +44,12 @@ struct Module : public PoolElement
     atomic<int>         numErrors = 0;
     shared_mutex        mutexFile;
     vector<SourceFile*> files;
-    SourceFile*         buildFile = nullptr;
-    AstNode*            astRoot;
-    Scope*              scopeRoot;
     BuildParameters     buildParameters;
-    Backend*            backend = nullptr;
     set<string>         compileVersion;
+    AstNode*            astRoot   = nullptr;
+    Scope*              scopeRoot = nullptr;
+    SourceFile*         buildFile = nullptr;
+    Backend*            backend   = nullptr;
     bool                fromTests = false;
 
     void reserveRegisterRR(uint32_t count);
