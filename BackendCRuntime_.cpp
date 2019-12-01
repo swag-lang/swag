@@ -92,6 +92,12 @@ static constexpr const char* g_Intrinsics = R"(
 extern void* malloc(swag_uint64_t);
 extern void* realloc(void*, swag_uint64_t);
 extern void  free(void*);
+#define __malloc	malloc
+#define __realloc	realloc
+#define __free		free
+#define __memset	memset
+#define __memcpy	memcpy
+#define __memcmp	memcmp
 
 static void __print_n(const char* message, int len) 
 { 
@@ -105,17 +111,52 @@ static void __print(const char* message)
 	printf(message);
 }
 
+static char* __itoa(char* result, swag_int64_t value) 
+{
+    char* ptr = result, *ptr1 = result, tmp_char;
+    swag_int64_t tmp_value;
+    do 
+	{
+        tmp_value = value;
+        value /= 10;
+        *ptr++ = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz" [35 + (tmp_value - value * 10)];
+    } while (value);
+
+    if (tmp_value < 0) *ptr++ = '-';
+	char* retVal = ptr;
+    *ptr-- = 0;
+    while(ptr1 < ptr) 
+	{
+        tmp_char = *ptr;
+        *ptr--= *ptr1;
+        *ptr1++ = tmp_char;
+    }
+
+	return retVal;
+}
+
+static void __ftoa(char* result, swag_float64_t value) 
+{
+	swag_int64_t	ipart = (swag_int64_t) value;
+	swag_float64_t	fpart = value - (swag_float64_t) ipart;
+	char* n = __itoa(result, ipart);
+	*n++ = '.';
+	int afterPoint = 5;
+	while(afterPoint--) fpart *= 10;
+	__itoa(n, (swag_int64_t) fpart);
+}
+
 static void __print_i64(swag_int64_t value)   
 { 
 	char buf[100]; 
-	snprintf(buf, 100, "%lld", value); 
+	__itoa(buf, value); 
 	__print(buf);
 }
 
 static void __print_f64(swag_float64_t value)
 { 
 	char buf[100]; 
-	snprintf(buf, 100, "%lf", value); 
+	__ftoa(buf, value); 
 	__print(buf);
 }
 
