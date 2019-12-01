@@ -221,7 +221,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         memcpy(dst, src, size);
         break;
     }
-    case ByteCodeOp::Copy:
+    case ByteCodeOp::MemCpy:
     {
         void*    dst  = registersRC[ip->a.u32].pointer;
         void*    src  = registersRC[ip->b.u32].pointer;
@@ -229,17 +229,53 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
         if (!dst)
         {
-            context->error("destination pointer of copy is null");
+            context->error("destination pointer of @memcpy is null");
             break;
         }
 
         if (!src)
         {
-            context->error("source pointer of copy is null");
+            context->error("source pointer of @memcpy is null");
             break;
         }
 
         memcpy(dst, src, size);
+        break;
+    }
+    case ByteCodeOp::MemSet:
+    {
+        void*    dst   = registersRC[ip->a.u32].pointer;
+        uint32_t value = registersRC[ip->b.u32].u32;
+        uint32_t size  = registersRC[ip->c.u32].u32;
+
+        if (!dst)
+        {
+            context->error("destination pointer of @memset is null");
+            break;
+        }
+
+        memset(dst, value, size);
+        break;
+    }
+    case ByteCodeOp::MemCmp:
+    {
+        void*    dst  = registersRC[ip->b.u32].pointer;
+        void*    src  = registersRC[ip->c.u32].pointer;
+        uint32_t size = registersRC[ip->d.u32].u32;
+
+        if (!dst)
+        {
+            context->error("destination pointer of @memcmp is null");
+            break;
+        }
+
+		if (!dst)
+        {
+            context->error("source pointer of @memcmp is null");
+            break;
+        }
+
+		registersRC[ip->a.u32].s32 = memcmp(dst, src, size);
         break;
     }
 
@@ -377,50 +413,50 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
     case ByteCodeOp::RAFromDataSeg8:
     {
         auto module = context->sourceFile->module;
-        if (!ip->cache.pointer)
-            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u8 = *(uint8_t*) (ip->cache.pointer);
+        if (!ip->d.pointer)
+            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].u8 = *(uint8_t*) (ip->d.pointer);
         break;
     }
     case ByteCodeOp::RAFromDataSeg16:
     {
         auto module = context->sourceFile->module;
-        if (!ip->cache.pointer)
-            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u16 = *(uint16_t*) (ip->cache.pointer);
+        if (!ip->d.pointer)
+            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].u16 = *(uint16_t*) (ip->d.pointer);
         break;
     }
     case ByteCodeOp::RAFromDataSeg32:
     {
         auto module = context->sourceFile->module;
-        if (!ip->cache.pointer)
-            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u32 = *(uint32_t*) (ip->cache.pointer);
+        if (!ip->d.pointer)
+            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].u32 = *(uint32_t*) (ip->d.pointer);
         break;
     }
     case ByteCodeOp::RAFromDataSeg64:
     {
         auto module = context->sourceFile->module;
-        if (!ip->cache.pointer)
-            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->cache.pointer);
+        if (!ip->d.pointer)
+            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (ip->d.pointer);
         break;
     }
     case ByteCodeOp::RARefFromDataSeg:
     {
         auto module = context->sourceFile->module;
-        if (!ip->cache.pointer)
-            ip->cache.pointer = module->mutableSegment.address(ip->b.u32);
-        registersRC[ip->a.u32].pointer = ip->cache.pointer;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->mutableSegment.address(ip->b.u32);
+        registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
     case ByteCodeOp::RAAddrFromConstantSeg:
     {
         auto module = context->sourceFile->module;
         auto offset = ip->b.u32;
-        if (!ip->cache.pointer)
-            ip->cache.pointer = module->constantSegment.address(offset);
-        registersRC[ip->a.u32].pointer = ip->cache.pointer;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->constantSegment.address(offset);
+        registersRC[ip->a.u32].pointer = ip->d.pointer;
         break;
     }
     case ByteCodeOp::RARefFromConstantSeg:
@@ -428,9 +464,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         auto module = context->sourceFile->module;
         auto offset = (uint32_t)(ip->c.u64 >> 32);
         auto count  = (uint32_t)(ip->c.u64 & 0xFFFFFFFF);
-        if (!ip->cache.pointer)
-            ip->cache.pointer = module->constantSegment.address(offset);
-        registersRC[ip->a.u32].pointer = ip->cache.pointer;
+        if (!ip->d.pointer)
+            ip->d.pointer = module->constantSegment.address(offset);
+        registersRC[ip->a.u32].pointer = ip->d.pointer;
         registersRC[ip->b.u32].u64     = count;
         break;
     }
@@ -602,9 +638,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->b.u32].u64     = (uint64_t) g_CommandLine.userArgumentsSlice.second;
         break;
 
-	case ByteCodeOp::IntrinsicTarget:
+    case ByteCodeOp::IntrinsicTarget:
         registersRC[ip->a.u32].pointer = (uint8_t*) &context->sourceFile->module->buildParameters.target;
-		break;
+        break;
 
     case ByteCodeOp::IntrinsicAssert:
     {

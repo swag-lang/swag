@@ -187,8 +187,7 @@ bool BackendCCompilerVS::compile()
         string linkArguments;
         linkArguments += "ucrt.lib ";
         linkArguments += "/NODEFAULTLIB:libucrt.lib ";
-        //linkArguments += "vcruntime.lib ";
-		//linkArguments += "/NODEFAULTLIB:libvcruntime.lib ";
+		linkArguments += "libvcruntime.lib ";
 
         for (const auto& dep : module->moduleDependencies)
             linkArguments += dep.first + ".lib ";

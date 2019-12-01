@@ -9,13 +9,12 @@ namespace std.memory
         
         func compare(dest, src: *void, size: u32)->s32
         {
-            //@memcmp(dest, src, cast(u64) size)
-            return 0
+            return @memcmp(dest, src, size)
         }        
         
         func clear(dest: *void, size: u32)
         {
-            //@memset(dest, 0, cast(u64) size)
+            @memset(dest, 0, size)
         } 
     }
 }

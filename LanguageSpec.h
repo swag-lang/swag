@@ -31,6 +31,8 @@ enum class Intrinsic
 	IntrinsicRealloc,
     IntrinsicFree,
 	IntrinsicMemCpy,
+	IntrinsicMemSet,
+	IntrinsicMemCmp,
 	IntrinsicGetContext,
 	IntrinsicSetContext,
 	IntrinsicArguments,

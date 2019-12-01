@@ -206,9 +206,32 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         auto childDest = callParams->childs[0];
         auto childSrc  = callParams->childs[1];
         auto childSize = callParams->childs[2];
-        emitInstruction(context, ByteCodeOp::Copy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::MemCpy, childDest->resultRegisterRC, childSrc->resultRegisterRC, childSize->resultRegisterRC);
         freeRegisterRC(context, childDest);
         freeRegisterRC(context, childSrc);
+        freeRegisterRC(context, childSize);
+        break;
+    }
+    case Intrinsic::IntrinsicMemSet:
+    {
+        auto childDest  = callParams->childs[0];
+        auto childValue = callParams->childs[1];
+        auto childSize  = callParams->childs[2];
+        emitInstruction(context, ByteCodeOp::MemSet, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
+        freeRegisterRC(context, childDest);
+        freeRegisterRC(context, childValue);
+        freeRegisterRC(context, childSize);
+        break;
+    }
+    case Intrinsic::IntrinsicMemCmp:
+    {
+        auto childDest         = callParams->childs[0];
+        auto childValue        = callParams->childs[1];
+        auto childSize         = callParams->childs[2];
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::MemCmp, node->resultRegisterRC, childDest->resultRegisterRC, childValue->resultRegisterRC, childSize->resultRegisterRC);
+        freeRegisterRC(context, childDest);
+        freeRegisterRC(context, childValue);
         freeRegisterRC(context, childSize);
         break;
     }

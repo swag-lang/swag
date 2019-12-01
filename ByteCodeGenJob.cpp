@@ -130,7 +130,7 @@ bool ByteCodeGenJob::emitPassThrough(ByteCodeGenContext* context)
     return true;
 }
 
-ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2)
+ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3)
 {
     AstNode* node = context->node;
     auto     bc   = context->bc;
@@ -151,7 +151,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     ins.a.u64                = r0;
     ins.b.u64                = r1;
     ins.c.u64                = r2;
-    ins.cache.u64            = 0;
+    ins.d.u64                = r3;
     ins.sourceFileIdx        = node->sourceFile->indexInModule;
     ins.startLocation        = node->token.startLocation;
     ins.endLocation          = node->token.endLocation;
@@ -285,7 +285,7 @@ JobResult ByteCodeGenJob::execute()
                 return JobResult::KeepJobAlive;
             auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
             SWAG_ASSERT(itable);
-			SWAG_ASSERT(((void**) itable)[0]);
+            SWAG_ASSERT(((void**) itable)[0]);
             g_defaultContextByteCode.allocator.data   = nullptr;
             g_defaultContextByteCode.allocator.itable = (void*) itable;
         }

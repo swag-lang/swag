@@ -776,8 +776,14 @@ bool BackendC::emitFunctionBody(Module* moduleToGen, ByteCode* bc)
         case ByteCodeOp::RAFromStack64:
             bufferC.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (stack + %u);", ip->a.u32, ip->b.u32);
             break;
-        case ByteCodeOp::Copy:
+        case ByteCodeOp::MemCpy:
             bufferC.addStringFormat("__memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            break;
+        case ByteCodeOp::MemSet:
+            bufferC.addStringFormat("__memset(r[%u].pointer, r[%u].u32, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            break;
+        case ByteCodeOp::MemCmp:
+            bufferC.addStringFormat("r[%u].s32 = __memcmp(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             break;
         case ByteCodeOp::CopyVC:
             bufferC.addStringFormat("__memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);

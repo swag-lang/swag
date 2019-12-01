@@ -126,6 +126,8 @@ void LanguageSpec::setup()
     intrinsics["@realloc"]    = Intrinsic::IntrinsicRealloc;
     intrinsics["@free"]       = Intrinsic::IntrinsicFree;
     intrinsics["@memcpy"]     = Intrinsic::IntrinsicMemCpy;
+    intrinsics["@memset"]     = Intrinsic::IntrinsicMemSet;
+    intrinsics["@memcmp"]     = Intrinsic::IntrinsicMemCmp;
     intrinsics["@getcontext"] = Intrinsic::IntrinsicGetContext;
     intrinsics["@setcontext"] = Intrinsic::IntrinsicSetContext;
     intrinsics["@args"]       = Intrinsic::IntrinsicArguments;
