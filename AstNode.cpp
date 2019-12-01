@@ -35,13 +35,6 @@ Pool<AstCompilerIfBlock> g_Pool_astCompilerIfBlock;
 Pool<AstLabelBreakable>  g_Pool_astLabelBreakable;
 Pool<AstCompilerInline>  g_Pool_astCompilerInline;
 
-void AstNode::releaseRec()
-{
-    for (auto child : childs)
-        child->releaseRec();
-    release();
-}
-
 void AstNode::setPassThrough()
 {
     semanticAfterFct  = nullptr;

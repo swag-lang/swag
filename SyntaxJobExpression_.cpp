@@ -692,8 +692,6 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
                 varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
             SWAG_CHECK(currentScope->symTable.registerSymbolNameNoLock(&context, varNode, SymbolKind::Variable));
         }
-
-        leftNode->release();
     }
 
     // Tuple dereference
@@ -736,8 +734,6 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             varNode->assignment                   = identifier;
             varNode->assignment->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
         }
-
-        leftNode->release();
     }
 
     // Single declaration/affectation
@@ -790,7 +786,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         auto childBack   = leftNode->childs.back();
         labelNode->name  = childBack->name;
         labelNode->token = childBack->token;
-        leftNode->releaseRec();
         SWAG_CHECK(tokenizer.getToken(token));
 
         ScopedBreakable scoped(this, labelNode);
@@ -844,8 +839,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                     Ast::newIdentifierRef(sourceFile, front->name, affectNode)->token = savedtoken;
                 }
             }
-
-            leftNode->release();
         }
 
         // Tuple destruct
@@ -875,8 +868,6 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 forceTakeAddress(child);
                 Ast::newIdentifierRef(sourceFile, format("%s.item%d", tmpVarName.c_str(), idx++), affectNode)->token = savedtoken;
             }
-
-            leftNode->release();
         }
 
         // One normal simple affectation

@@ -5,9 +5,8 @@
 
 TypeTable::TypeTable()
 {
-    concreteList.hereFlag      = TYPEINFO_IN_CONCRETE_LIST;
-    concreteList.sameFlags     = ISSAME_EXACT;
-    concreteList.releaseIfHere = false;
+    concreteList.hereFlag  = TYPEINFO_IN_CONCRETE_LIST;
+    concreteList.sameFlags = ISSAME_EXACT;
     concreteList.registerInit();
 }
 

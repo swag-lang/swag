@@ -16,6 +16,11 @@ enum class TextFormat
 struct SourceFile : public PoolElement
 {
     SourceFile();
+
+    void reset()
+    {
+    }
+
     char32_t getChar(unsigned& offset);
     Utf8     getLine(long seek);
     bool     report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
@@ -65,7 +70,7 @@ struct SourceFile : public PoolElement
     condition_variable           condVar;
     Scope*                       scopeRoot    = nullptr;
     Scope*                       scopePrivate = nullptr;
-    shared_mutex                     mutexGetLine;
+    shared_mutex                 mutexGetLine;
 };
 
 extern Pool<SourceFile> g_Pool_sourceFile;

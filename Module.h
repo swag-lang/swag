@@ -28,6 +28,10 @@ struct ModuleDependency
 
 struct Module : public PoolElement
 {
+    void reset()
+    {
+    }
+
     void setup(const string& moduleName);
     void addFile(SourceFile* file);
     void removeFile(SourceFile* file);
@@ -42,7 +46,7 @@ struct Module : public PoolElement
     string              nameDown;
     string              nameUp;
     atomic<int>         numErrors = 0;
-    shared_mutex            mutexFile;
+    shared_mutex        mutexFile;
     vector<SourceFile*> files;
     SourceFile*         buildFile = nullptr;
     AstNode*            astRoot;
@@ -56,20 +60,20 @@ struct Module : public PoolElement
     bool executeNode(SourceFile* sourceFile, AstNode* node);
 
     shared_mutex mutexRegisterRR;
-    uint32_t maxReservedRegisterRR = 0;
+    uint32_t     maxReservedRegisterRR = 0;
 
     DataSegment mutableSegment;
     DataSegment constantSegment;
 
     void setBuildPass(BuildPass buildP);
 
-    shared_mutex  mutexBuildPass;
-    BuildPass buildPass = BuildPass::Full;
+    shared_mutex mutexBuildPass;
+    BuildPass    buildPass = BuildPass::Full;
 
     void addByteCodeFunc(ByteCode* bc);
     void registerForeign(AstFuncDecl* node);
 
-    shared_mutex             mutexByteCode;
+    shared_mutex         mutexByteCode;
     vector<ByteCode*>    byteCodeFunc;
     vector<ByteCode*>    byteCodeTestFunc;
     vector<ByteCode*>    byteCodeInitFunc;
@@ -81,7 +85,7 @@ struct Module : public PoolElement
 
     void addDependency(AstNode* importNode);
 
-    shared_mutex                      mutexDependency;
+    shared_mutex                  mutexDependency;
     map<string, ModuleDependency> moduleDependencies;
     bool                          hasBeenBuilt = false;
 

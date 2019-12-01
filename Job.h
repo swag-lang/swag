@@ -45,7 +45,7 @@ struct Job : public PoolElement
 {
     virtual JobResult execute() = 0;
 
-    void reset() override
+    void reset()
     {
         flags               = 0;
         thread              = nullptr;

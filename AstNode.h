@@ -135,7 +135,7 @@ struct CloneContext
 
 struct AstNode : public PoolElement
 {
-    void reset() override
+    void reset()
     {
         semanticState                = AstNodeResolveState::Enter;
         bytecodeState                = AstNodeResolveState::Enter;
@@ -297,7 +297,6 @@ struct AstNode : public PoolElement
     virtual AstNode* clone(CloneContext& context);
     void             copyFrom(CloneContext& context, AstNode* from, bool cloneChilds = true);
     void             computeFullName();
-    void             releaseRec();
 
     AstNodeKind         kind;
     Scope*              ownerScope;
@@ -359,7 +358,7 @@ struct AstNode : public PoolElement
 
 struct AstVarDecl : public AstNode
 {
-    void reset() override
+    void reset()
     {
         type       = nullptr;
         assignment = nullptr;
@@ -374,7 +373,7 @@ struct AstVarDecl : public AstNode
 
 struct AstIdentifierRef : public AstNode
 {
-    void reset() override
+    void reset()
     {
         startScope           = nullptr;
         previousResolvedNode = nullptr;
@@ -390,7 +389,7 @@ struct AstIdentifierRef : public AstNode
 
 struct AstIdentifier : public AstNode
 {
-    void reset() override
+    void reset()
     {
         identifierRef     = nullptr;
         callParameters    = nullptr;
@@ -407,7 +406,7 @@ struct AstIdentifier : public AstNode
 
 struct AstFuncDecl : public AstNode
 {
-    void reset() override
+    void reset()
     {
         stackSize         = 0;
         parameters        = nullptr;
@@ -433,7 +432,7 @@ struct AstFuncDecl : public AstNode
 
 struct AstAttrDecl : public AstNode
 {
-    void reset() override
+    void reset()
     {
         parameters = nullptr;
         AstNode::reset();
@@ -446,7 +445,7 @@ struct AstAttrDecl : public AstNode
 
 struct AstAttrUse : public AstNode
 {
-    void reset() override
+    void reset()
     {
         values.clear();
         AstNode::reset();
@@ -459,7 +458,7 @@ struct AstAttrUse : public AstNode
 
 struct AstFuncCallParam : public AstNode
 {
-    void reset() override
+    void reset()
     {
         namedParam.clear();
         namedParamNode     = nullptr;
@@ -480,7 +479,7 @@ struct AstFuncCallParam : public AstNode
 
 struct AstIf : public AstNode
 {
-    void reset() override
+    void reset()
     {
         boolExpression = nullptr;
         ifBlock        = nullptr;
@@ -500,7 +499,7 @@ struct AstIf : public AstNode
 
 struct AstBreakContinue : public AstNode
 {
-    void reset() override
+    void reset()
     {
         label.clear();
         AstNode::reset();
@@ -518,7 +517,7 @@ const uint32_t BREAKABLE_NEED_INDEX        = 0x00000004;
 
 struct AstBreakable : public AstNode
 {
-    void reset() override
+    void reset()
     {
         breakableFlags  = BREAKABLE_CAN_HAVE_INDEX | BREAKABLE_CAN_HAVE_CONTINUE;
         registerIndex   = 0;
@@ -549,7 +548,7 @@ struct AstBreakable : public AstNode
 
 struct AstLabelBreakable : public AstBreakable
 {
-    void reset() override
+    void reset()
     {
         block = nullptr;
         AstBreakable::reset();
@@ -562,7 +561,7 @@ struct AstLabelBreakable : public AstBreakable
 
 struct AstWhile : public AstBreakable
 {
-    void reset() override
+    void reset()
     {
         boolExpression = nullptr;
         block          = nullptr;
@@ -577,7 +576,7 @@ struct AstWhile : public AstBreakable
 
 struct AstFor : public AstBreakable
 {
-    void reset() override
+    void reset()
     {
         preExpression  = nullptr;
         boolExpression = nullptr;
@@ -599,7 +598,7 @@ struct AstFor : public AstBreakable
 
 struct AstLoop : public AstBreakable
 {
-    void reset() override
+    void reset()
     {
         expression = nullptr;
         block      = nullptr;
@@ -614,7 +613,7 @@ struct AstLoop : public AstBreakable
 
 struct AstSwitch : public AstBreakable
 {
-    void reset() override
+    void reset()
     {
         expression = nullptr;
         block      = nullptr;
@@ -633,7 +632,7 @@ struct AstSwitch : public AstBreakable
 
 struct AstSwitchCase : public AstNode
 {
-    void reset() override
+    void reset()
     {
         expressions.clear();
         block       = nullptr;
@@ -652,7 +651,7 @@ struct AstSwitchCase : public AstNode
 
 struct AstSwitchCaseBlock : public AstNode
 {
-    void reset() override
+    void reset()
     {
         isDefault = false;
         ownerCase = nullptr;
@@ -669,7 +668,7 @@ struct AstSwitchCaseBlock : public AstNode
 
 struct AstTypeExpression : public AstNode
 {
-    void reset() override
+    void reset()
     {
         identifier     = nullptr;
         ptrCount       = 0;
@@ -694,7 +693,7 @@ struct AstTypeExpression : public AstNode
 
 struct AstTypeLambda : public AstNode
 {
-    void reset() override
+    void reset()
     {
         parameters = nullptr;
         returnType = nullptr;
@@ -709,7 +708,7 @@ struct AstTypeLambda : public AstNode
 
 struct AstPointerDeRef : public AstNode
 {
-    void reset() override
+    void reset()
     {
         array  = nullptr;
         access = nullptr;
@@ -726,7 +725,7 @@ struct AstPointerDeRef : public AstNode
 
 struct AstProperty : public AstNode
 {
-    void reset() override
+    void reset()
     {
         expression = nullptr;
         AstNode::reset();
@@ -740,7 +739,7 @@ struct AstProperty : public AstNode
 
 struct AstExpressionList : public AstNode
 {
-    void reset() override
+    void reset()
     {
         storageOffset        = 0;
         storageOffsetSegment = UINT32_MAX;
@@ -760,7 +759,7 @@ struct AstExpressionList : public AstNode
 
 struct AstStruct : public AstNode
 {
-    void reset() override
+    void reset()
     {
         genericParameters = nullptr;
         content           = nullptr;
@@ -781,7 +780,7 @@ struct AstStruct : public AstNode
 
 struct AstImpl : public AstNode
 {
-    void reset() override
+    void reset()
     {
         structScope   = nullptr;
         identifier    = nullptr;
@@ -798,7 +797,7 @@ struct AstImpl : public AstNode
 
 struct AstInit : public AstNode
 {
-    void reset() override
+    void reset()
     {
         expression = nullptr;
         count      = nullptr;
@@ -815,7 +814,7 @@ struct AstInit : public AstNode
 
 struct AstDrop : public AstNode
 {
-    void reset() override
+    void reset()
     {
         expression = nullptr;
         count      = nullptr;
@@ -842,7 +841,7 @@ struct AstCompilerInline : public AstNode
 
 struct AstInline : public AstNode
 {
-    void reset() override
+    void reset()
     {
         returnList.clear();
         scope = nullptr;
@@ -859,7 +858,7 @@ struct AstInline : public AstNode
 
 struct AstCompilerIfBlock : public AstNode
 {
-    void reset() override
+    void reset()
     {
         symbols.clear();
         blocks.clear();

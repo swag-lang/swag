@@ -37,7 +37,6 @@ bool JobThread::executeJob(Job* job, bool& exception)
         if (result == JobResult::ReleaseJob)
         {
             job->doneJob();
-            job->release();
         }
 
         g_ThreadMgr.jobHasEnded();

@@ -3,7 +3,11 @@
 
 struct ConcatBucket : PoolElement
 {
-    uint8_t*      datas;
+    void reset()
+    {
+    }
+
+    uint8_t*      datas      = nullptr;
     ConcatBucket* nextBucket = nullptr;
     int           count      = 0;
 };

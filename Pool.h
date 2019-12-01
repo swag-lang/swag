@@ -1,28 +1,6 @@
 #pragma once
-struct IPool
-{
-    virtual void free(void* addr) = 0;
-};
-
 struct PoolElement
 {
-    void release()
-    {
-        if (ownerPool)
-            ownerPool->free(this);
-    }
-
-    virtual void reset()
-    {
-    }
-
-    virtual void construct()
-    {
-        reset();
-    }
-
-    PoolElement* nextFree  = nullptr;
-    IPool*       ownerPool = nullptr;
 };
 
 template<typename T, int S>
@@ -34,25 +12,16 @@ struct PoolSlot
 };
 
 template<typename T, int S = 32>
-struct Pool : public IPool
+struct Pool
 {
     T* alloc()
     {
-        scoped_lock lk(mutexBucket);
-        if (firstFreeElem)
-        {
-            auto cur      = firstFreeElem;
-            firstFreeElem = firstFreeElem->nextFree;
-            cur->reset();
-            return static_cast<T*>(cur);
-        }
-
+        unique_lock lk(mutexBucket);
         if (!rootBucket)
         {
             rootBucket = lastBucket = new PoolSlot<T, S>();
             auto elem               = &lastBucket->buffer[0];
-            elem->construct();
-            elem->ownerPool = this;
+            elem->reset();
             return elem;
         }
 
@@ -61,26 +30,16 @@ struct Pool : public IPool
             lastBucket->nextSlot = new PoolSlot<T, S>();
             lastBucket           = lastBucket->nextSlot;
             auto elem            = &lastBucket->buffer[0];
-            elem->ownerPool      = this;
-            elem->construct();
+            elem->reset();
             return elem;
         }
 
-        auto elem       = &lastBucket->buffer[lastBucket->maxUsed++];
-        elem->ownerPool = this;
-        elem->construct();
+        auto elem = &lastBucket->buffer[lastBucket->maxUsed++];
+        elem->reset();
         return elem;
     }
 
-    void free(void* addr)
-    {
-        scoped_lock lk(mutexBucket);
-        ((T*) addr)->nextFree = firstFreeElem;
-        firstFreeElem         = ((T*) addr);
-    }
-
-    PoolSlot<T, S>* rootBucket    = nullptr;
-    PoolSlot<T, S>* lastBucket    = nullptr;
-    PoolElement*    firstFreeElem = nullptr;
-    shared_mutex        mutexBucket;
+    PoolSlot<T, S>* rootBucket = nullptr;
+    PoolSlot<T, S>* lastBucket = nullptr;
+    shared_mutex    mutexBucket;
 };

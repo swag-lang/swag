@@ -23,6 +23,10 @@ struct ByteCodeInstruction
 
 struct ByteCode : public PoolElement
 {
+    void reset()
+    {
+    }
+
     void print();
 
     static const int     ALIGN_RIGHT_OPCODE = 25;

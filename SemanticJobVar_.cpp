@@ -433,7 +433,6 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     varDecl->type->flags |= AST_HAS_STRUCT_PARAMETERS;
 
     Ast::removeFromParent(varDecl->assignment);
-    varDecl->assignment->release();
     varDecl->assignment = nullptr;
 
     return true;

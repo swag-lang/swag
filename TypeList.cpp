@@ -33,12 +33,6 @@ TypeInfo* TypeList::registerType(TypeInfo* newTypeInfo)
         {
             if (typeInfo->isSame(newTypeInfo, sameFlags))
             {
-                if ((newTypeInfo != typeInfo) && !(newTypeInfo->flags & hereFlag))
-                {
-                    if (releaseIfHere)
-                        newTypeInfo->release();
-                }
-
                 return typeInfo;
             }
         }

@@ -35,7 +35,7 @@ static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
 
 struct Scope : public PoolElement
 {
-    void reset() override
+    void reset()
     {
         symTable.scope = this;
         parentScope    = nullptr;

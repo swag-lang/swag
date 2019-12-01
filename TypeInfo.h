@@ -147,7 +147,7 @@ struct TypeInfo : public PoolElement
         return flags & TYPEINFO_CONST;
     }
 
-    void reset() override
+    void reset()
     {
         flags      = 0;
         nativeType = NativeTypeKind::Void;
@@ -221,7 +221,7 @@ struct TypeInfoNative : public TypeInfo
 
 struct TypeInfoNamespace : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         kind  = TypeInfoKind::Namespace;
@@ -235,7 +235,7 @@ struct TypeInfoNamespace : public TypeInfo
 
 struct TypeInfoParam : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         kind = TypeInfoKind::Param;
@@ -266,7 +266,7 @@ struct TypeInfoParam : public TypeInfo
 
 struct TypeInfoEnum : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         kind    = TypeInfoKind::Enum;
@@ -374,7 +374,7 @@ static const uint32_t TYPEINFO_ATTRIBUTE_INTERFACE = 0x00000040;
 
 struct TypeInfoFuncAttr : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         kind                 = TypeInfoKind::FuncAttr;
@@ -417,7 +417,7 @@ struct TypeInfoFuncAttr : public TypeInfo
 
 struct TypeInfoPointer : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         kind        = TypeInfoKind::Pointer;
@@ -448,7 +448,7 @@ struct TypeInfoPointer : public TypeInfo
 
 struct TypeInfoArray : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         kind        = TypeInfoKind::Array;
@@ -486,7 +486,7 @@ struct TypeInfoArray : public TypeInfo
 
 struct TypeInfoSlice : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         kind        = TypeInfoKind::Slice;
@@ -628,7 +628,7 @@ struct TypeInfoStruct : public TypeInfo
 
 struct TypeInfoAlias : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         kind    = TypeInfoKind::Alias;
@@ -649,7 +649,7 @@ struct TypeInfoAlias : public TypeInfo
 
 struct TypeInfoCode : public TypeInfo
 {
-    void reset() override
+    void reset()
     {
         TypeInfo::reset();
         name    = "code";

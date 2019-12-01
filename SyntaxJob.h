@@ -111,7 +111,7 @@ struct SyntaxJob : public Job
     bool doInit(AstNode* parent, AstNode** result = nullptr);
     bool doDrop(AstNode* parent, AstNode** result = nullptr);
 
-    void reset() override
+    void reset()
     {
         Job::reset();
         sourceFile             = nullptr;

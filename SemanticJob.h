@@ -181,7 +181,7 @@ struct SemanticJob : public Job
     static bool resolveDrop(SemanticContext* context);
     static bool resolveUserCast(SemanticContext* context);
 
-    void reset() override
+    void reset()
     {
         Job::reset();
         cacheDependentSymbols.clear();

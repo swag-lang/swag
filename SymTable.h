@@ -31,7 +31,7 @@ static const uint32_t OVERLOAD_PUBLIC             = 0x00000400;
 
 struct SymbolOverload : public PoolElement
 {
-    void reset() override
+    void reset()
     {
         typeInfo      = nullptr;
         flags         = 0;
@@ -80,7 +80,7 @@ struct SymbolName : public PoolElement
     DependentJobs           dependentJobs;
     SymTable*               ownerTable;
 
-    void reset() override
+    void reset()
     {
         name.clear();
         cptOverloads     = 0;
