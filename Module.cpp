@@ -19,9 +19,7 @@ void Module::setup(const string& moduleName)
     nameDown = nameUp;
     makeUpper(nameUp);
 
-    scopeRoot = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
-    scopeRoot->allocateSymTable();
-
+    scopeRoot              = Ast::newScope(nullptr, "", ScopeKind::Module, nullptr);
     astRoot                = Ast::newNode(nullptr, &g_Pool_astNode, AstNodeKind::Module, nullptr);
     scopeRoot->owner       = astRoot;
     buildPass              = g_CommandLine.buildPass;
@@ -82,7 +80,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 {
     // Only one run at a time !
     static shared_mutex mutexExecuteNode;
-    scoped_lock     lk(mutexExecuteNode);
+    scoped_lock         lk(mutexExecuteNode);
 
     auto runContext = &g_Workspace.runContext;
 

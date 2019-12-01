@@ -21,13 +21,11 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->inheritTokenName(token);
 
     // Register attribute
-    currentScope->allocateSymTable();
-    scoped_lock lk(currentScope->symTable->mutex);
+    scoped_lock lk(currentScope->symTable.mutex);
     auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
     auto        newScope = Ast::newScope(attrNode, attrNode->name, ScopeKind::Attribute, currentScope);
-    newScope->allocateSymTable();
-    attrNode->typeInfo = typeInfo;
-    currentScope->symTable->registerSymbolNameNoLock(&context, attrNode, SymbolKind::Attribute);
+    attrNode->typeInfo   = typeInfo;
+    currentScope->symTable.registerSymbolNameNoLock(&context, attrNode, SymbolKind::Attribute);
 
     // Parameters
     {
@@ -128,15 +126,15 @@ bool SyntaxJob::doAttributeExpose(AstNode* parent, AstNode** result)
     case TokenId::KwdConst:
     case TokenId::KwdEnum:
     case TokenId::KwdStruct:
-	case TokenId::KwdInterface:
+    case TokenId::KwdInterface:
     case TokenId::KwdUnion:
     case TokenId::KwdTypeAlias:
         break;
 
     default:
-		if(attr == ATTRIBUTE_PRIVATE)
-			return syntaxError(token, format("unexpected token '%s' after 'private' attribute", token.text.c_str()));
-		return syntaxError(token, format("unexpected token '%s' after 'public' attribute", token.text.c_str()));
+        if (attr == ATTRIBUTE_PRIVATE)
+            return syntaxError(token, format("unexpected token '%s' after 'private' attribute", token.text.c_str()));
+        return syntaxError(token, format("unexpected token '%s' after 'public' attribute", token.text.c_str()));
     }
 
     Scoped                scoped(this, newScope);

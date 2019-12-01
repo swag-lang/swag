@@ -283,8 +283,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     cloneContext.ownerFct = newNode;
     cloneContext.parent   = newNode;
     auto parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
-    parentScope->allocateSymTable();
-    newNode->scope = parentScope;
+    newNode->scope        = parentScope;
 
     cloneContext.parentScope   = parentScope;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
@@ -392,9 +391,8 @@ AstNode* AstFor::clone(CloneContext& context)
 {
     auto newNode = g_Pool_astFor.alloc();
 
-    auto cloneContext        = context;
-    cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
-    cloneContext.parentScope->allocateSymTable();
+    auto cloneContext           = context;
+    cloneContext.parentScope    = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.ownerBreakable = newNode;
     newNode->AstBreakable::copyFrom(cloneContext, context.ownerBreakable, this);
 
@@ -521,10 +519,9 @@ AstNode* AstStruct::clone(CloneContext& context)
     newNode->copyFrom(context, this, false);
     newNode->packing = packing;
 
-    auto cloneContext        = context;
-    cloneContext.parent      = newNode;
-    cloneContext.parentScope = Ast::newScope(newNode, newNode->name, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
-    cloneContext.parentScope->allocateSymTable();
+    auto cloneContext             = context;
+    cloneContext.parent           = newNode;
+    cloneContext.parentScope      = Ast::newScope(newNode, newNode->name, ScopeKind::Struct, context.parentScope ? context.parentScope : ownerScope);
     cloneContext.ownerStructScope = cloneContext.parentScope;
     cloneContext.ownerMainNode    = newNode;
 
@@ -579,7 +576,6 @@ AstNode* AstCompilerInline::clone(CloneContext& context)
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, "", token.id == TokenId::CompilerInline ? ScopeKind::Inline : ScopeKind::Macro, context.parentScope ? context.parentScope : ownerScope);
-    cloneContext.parentScope->allocateSymTable();
     childs.back()->clone(cloneContext);
 
     return newNode;
@@ -594,7 +590,6 @@ AstNode* AstInline::clone(CloneContext& context)
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Inline, context.parentScope ? context.parentScope : ownerScope);
-    cloneContext.parentScope->allocateSymTable();
 
     newNode->scope = cloneContext.parentScope;
     func->content->clone(cloneContext);

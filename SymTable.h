@@ -69,7 +69,7 @@ enum class SymbolKind
 
 struct SymbolName : public PoolElement
 {
-    shared_mutex                mutex;
+    shared_mutex            mutex;
     Utf8                    fullName;
     Utf8Crc                 name;
     SymbolOverload          defaultOverload;
@@ -92,13 +92,11 @@ struct SymbolName : public PoolElement
     SymbolOverload* addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue);
     SymbolOverload* findOverload(TypeInfo* typeInfo);
     void            addDependentJob(Job* job);
-	void            addDependentJobNoLock(Job* job);
+    void            addDependentJobNoLock(Job* job);
 };
 
 struct SymTable
 {
-    SymTable(Scope* scope);
-
     SymbolName*     registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8Crc* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfo(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
     SymbolOverload* addSymbolTypeInfoNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, ComputedValue* computedValue = nullptr, uint32_t flags = 0, SymbolName** resultName = nullptr, uint32_t storageOffset = 0, Utf8Crc* aliasName = nullptr);
@@ -112,7 +110,7 @@ struct SymTable
     static const char* getNakedKindName(SymbolKind kind);
 
     static const int           HASH_SIZE = 512;
-    shared_mutex                   mutex;
+    shared_mutex               mutex;
     Scope*                     scope;
     map<Utf8Crc, SymbolName*>* mapNames[HASH_SIZE];
     vector<SymbolOverload*>    allStructs;

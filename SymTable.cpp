@@ -10,12 +10,6 @@
 Pool<SymbolOverload> g_Pool_symOverload;
 Pool<SymbolName>     g_Pool_symName;
 
-SymTable::SymTable(Scope* scope)
-    : scope{scope}
-{
-    memset(mapNames, 0, sizeof(mapNames));
-}
-
 SymbolName* SymTable::find(const Utf8Crc& name)
 {
     scoped_lock<shared_mutex> sl(mutex);
@@ -333,8 +327,8 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
 
 void SymbolName::addDependentJob(Job* job)
 {
-	scoped_lock lk(mutex);
-	dependentJobs.add(job);
+    scoped_lock lk(mutex);
+    dependentJobs.add(job);
 }
 
 void SymbolName::addDependentJobNoLock(Job* job)

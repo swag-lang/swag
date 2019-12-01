@@ -293,25 +293,23 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
     structNode->name = move(structName);
 
     // Add struct type and scope
-    auto rootScope = sourceFile->scopeRoot;
-    rootScope->allocateSymTable();
-    scoped_lock lk(rootScope->symTable->mutex);
-    auto        symbol = rootScope->symTable->findNoLock(structNode->name);
+    auto        rootScope = sourceFile->scopeRoot;
+    scoped_lock lk(rootScope->symTable.mutex);
+    auto        symbol = rootScope->symTable.findNoLock(structNode->name);
     if (symbol)
     {
         // Must release struct node, it's useless
     }
     else
     {
-        auto typeInfo = g_Pool_typeInfoStruct.alloc();
-        auto newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
-        newScope->allocateSymTable();
+        auto typeInfo   = g_Pool_typeInfoStruct.alloc();
+        auto newScope   = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         typeInfo->name  = structNode->name;
         typeInfo->scope = newScope;
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo = typeInfo;
         structNode->scope    = newScope;
-        symbol               = rootScope->symTable->registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
+        symbol               = rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
 
         Ast::addChildBack(sourceFile->astRoot, structNode);
         structNode->inheritOwners(sourceFile->astRoot);
@@ -721,8 +719,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Register symbol with its type
-    node->ownerScope->allocateSymTable();
-    auto overload = node->ownerScope->symTable->addSymbolTypeInfo(context,
+    auto overload = node->ownerScope->symTable.addSymbolTypeInfo(context,
                                                                   node,
                                                                   node->typeInfo,
                                                                   genericType ? SymbolKind::GenericType : SymbolKind::Variable,

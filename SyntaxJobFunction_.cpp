@@ -248,13 +248,12 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result)
     int id         = g_Global.uniqueID.fetch_add(1);
     funcNode->name = "__lambda" + to_string(id);
 
-    scoped_lock lk(currentScope->symTable->mutex);
+    scoped_lock lk(currentScope->symTable.mutex);
     auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
     auto        newScope = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
-    newScope->allocateSymTable();
-    funcNode->typeInfo = typeInfo;
-    funcNode->scope    = newScope;
-    currentScope->symTable->registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
+    funcNode->typeInfo   = typeInfo;
+    funcNode->scope      = newScope;
+    currentScope->symTable.registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
 
     {
         Scoped    scoped(this, newScope);
@@ -376,15 +375,13 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
 
     // Register function name
     Scope* newScope = nullptr;
-    currentScope->allocateSymTable();
     {
-        scoped_lock lk(currentScope->symTable->mutex);
+        scoped_lock lk(currentScope->symTable.mutex);
         auto        typeInfo = g_Pool_typeInfoFuncAttr.alloc();
         newScope             = Ast::newScope(funcNode, funcNode->name, ScopeKind::Function, currentScope);
-        newScope->allocateSymTable();
-        funcNode->typeInfo = typeInfo;
-        funcNode->scope    = newScope;
-        auto symbolName    = currentScope->symTable->registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
+        funcNode->typeInfo   = typeInfo;
+        funcNode->scope      = newScope;
+        auto symbolName      = currentScope->symTable.registerSymbolNameNoLock(&context, funcNode, SymbolKind::Function);
         if (funcNode->ownerCompilerIfBlock)
             funcNode->ownerCompilerIfBlock->addSymbol(symbolName);
     }

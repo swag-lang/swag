@@ -39,7 +39,7 @@ void Job::waitForAllStructInterfaces(TypeInfo* typeInfo)
     if (typeInfoStruct->cptRemainingInterfaces == 0)
         return;
     SWAG_ASSERT(typeInfoStruct->structNode);
-    scoped_lock lk1(typeInfoStruct->scope->symTable->mutex);
+    scoped_lock lk1(typeInfoStruct->scope->symTable.mutex);
     typeInfoStruct->scope->dependentJobs.add(this);
     setPending();
 }

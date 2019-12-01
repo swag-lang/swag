@@ -8,7 +8,7 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
 {
     auto node     = context->node;
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context, node, typeInfo, SymbolKind::Enum));
+    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, typeInfo, SymbolKind::Enum));
 
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
@@ -166,7 +166,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     }
 
     valNode->typeInfo = typeEnum;
-    SWAG_CHECK(typeEnum->scope->symTable->addSymbolTypeInfo(context, valNode, valNode->typeInfo, SymbolKind::EnumValue, &enumNode->computedValue));
+    SWAG_CHECK(typeEnum->scope->symTable.addSymbolTypeInfo(context, valNode, valNode->typeInfo, SymbolKind::EnumValue, &enumNode->computedValue));
 
     // Store each value in the enum type
     auto typeParam = g_Pool_typeInfoParam.alloc();

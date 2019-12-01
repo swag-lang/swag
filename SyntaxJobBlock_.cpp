@@ -177,8 +177,7 @@ bool SyntaxJob::doFor(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
 {
-    auto newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
-    newScope->allocateSymTable();
+    auto   newScope = Ast::newScope(nullptr, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
     auto node               = Ast::newNode(this, &g_Pool_astLoop, AstNodeKind::Loop, sourceFile, parent);
@@ -255,7 +254,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     {
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name, identifier expected"));
         node->label = move(token.text);
-		SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatToken());
     }
 
     return true;
@@ -274,7 +273,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     {
         SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "invalid label name, identifier expected"));
         node->label = move(token.text);
-		SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatToken());
     }
 
     return true;

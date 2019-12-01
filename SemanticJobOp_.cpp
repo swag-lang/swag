@@ -145,7 +145,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const char* name, cons
 {
     auto leftType   = TypeManager::concreteType(left->typeInfo);
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
-    auto symbol     = leftStruct->scope->symTable->find(name);
+    auto symbol     = leftStruct->scope->symTable.find(name);
     if (!symbol && optionnal)
         return true;
 

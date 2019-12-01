@@ -23,19 +23,17 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 
     // Add enum type and scope
     Scope* newScope = nullptr;
-    currentScope->allocateSymTable();
     {
-        scoped_lock lk(currentScope->symTable->mutex);
-        auto        symbol = currentScope->symTable->findNoLock(enumNode->name);
+        scoped_lock lk(currentScope->symTable.mutex);
+        auto        symbol = currentScope->symTable.findNoLock(enumNode->name);
         if (!symbol)
         {
-            auto typeInfo = g_Pool_typeInfoEnum.alloc();
-            newScope      = Ast::newScope(enumNode, enumNode->name, ScopeKind::Enum, currentScope);
-            newScope->allocateSymTable();
+            auto typeInfo      = g_Pool_typeInfoEnum.alloc();
+            newScope           = Ast::newScope(enumNode, enumNode->name, ScopeKind::Enum, currentScope);
             typeInfo->name     = enumNode->name;
             typeInfo->scope    = newScope;
             enumNode->typeInfo = typeInfo;
-            currentScope->symTable->registerSymbolNameNoLock(&context, enumNode, SymbolKind::Enum);
+            currentScope->symTable.registerSymbolNameNoLock(&context, enumNode, SymbolKind::Enum);
         }
         else
         {
@@ -109,7 +107,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
             auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile, parent);
             enumValue->inheritTokenName(token);
             enumValue->semanticFct = SemanticJob::resolveEnumValue;
-            currentScope->symTable->registerSymbolNameNoLock(&context, enumValue, SymbolKind::EnumValue);
+            currentScope->symTable.registerSymbolNameNoLock(&context, enumValue, SymbolKind::EnumValue);
 
             SWAG_CHECK(tokenizer.getToken(token));
             if (token.id == TokenId::SymEqual)

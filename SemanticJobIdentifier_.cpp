@@ -199,7 +199,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         inlineNode->scope = newScope;
     }
 
-    newScope->allocateSymTable();
     cloneContext.parent           = inlineNode;
     cloneContext.ownerInline      = inlineNode;
     cloneContext.ownerFct         = identifier->ownerFct;
@@ -1068,10 +1067,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         // Search symbol in all the scopes of the hierarchy
         for (auto scope : scopeHierarchy)
         {
-            if (!scope->symTable)
-                continue;
-
-            auto symbol = scope->symTable->find(node->name);
+            auto symbol = scope->symTable.find(node->name);
             if (symbol)
             {
                 dependentSymbols.push_back(symbol);
@@ -1526,12 +1522,12 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
             continue;
 
         // Do not check if this is the same scope
-        if (!scope->symTable || scope == startScope)
+        if (scope == startScope)
             continue;
 
         // Be sure that symbol is fully resolved, otherwise we cannot check for a ghosting
         {
-            auto symbol = scope->symTable->find(node->name);
+            auto symbol = scope->symTable.find(node->name);
             if (!symbol)
                 continue;
 
@@ -1546,7 +1542,7 @@ bool SemanticJob::checkSymbolGhosting(SemanticContext* context, AstNode* node, S
             }
         }
 
-        SWAG_CHECK(scope->symTable->checkHiddenSymbol(context, node, node->typeInfo, kind));
+        SWAG_CHECK(scope->symTable.checkHiddenSymbol(context, node, node->typeInfo, kind));
     }
 
     return true;

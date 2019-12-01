@@ -176,8 +176,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
     // Need to be sure that function has been solved
     {
-        scoped_lock lockTable(typeInfoStruct->scope->symTable->mutex);
-        auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opDrop");
+        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opDrop");
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -289,8 +289,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     // Need to be sure that function has been solved
     {
-        scoped_lock lockTable(typeInfoStruct->scope->symTable->mutex);
-        auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opPostMove");
+        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opPostMove");
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);
@@ -400,8 +400,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     // Need to be sure that function has been solved
     {
-        scoped_lock lockTable(typeInfoStruct->scope->symTable->mutex);
-        auto        symbol = typeInfoStruct->scope->symTable->findNoLock("opPostCopy");
+        scoped_lock lockTable(typeInfoStruct->scope->symTable.mutex);
+        auto        symbol = typeInfoStruct->scope->symTable.findNoLock("opPostCopy");
         if (symbol && symbol->cptOverloads)
         {
             symbol->addDependentJob(context->job);

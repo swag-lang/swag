@@ -72,10 +72,9 @@ bool SyntaxJob::doNamespace(AstNode* parent)
 
         // Add/Get namespace
         namespaceNode->inheritTokenName(token);
-        currentScope->allocateSymTable();
         {
-            scoped_lock lk(currentScope->symTable->mutex);
-            auto        symbol = currentScope->symTable->findNoLock(namespaceNode->name);
+            scoped_lock lk(currentScope->symTable.mutex);
+            auto        symbol = currentScope->symTable.findNoLock(namespaceNode->name);
             if (!symbol)
             {
                 auto typeInfo           = g_Pool_typeInfoNamespace.alloc();
@@ -83,7 +82,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
                 newScope                = Ast::newScope(namespaceNode, namespaceNode->name, ScopeKind::Namespace, currentScope);
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
-                currentScope->symTable->addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
+                currentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {

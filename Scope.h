@@ -3,9 +3,9 @@
 #include "Pool.h"
 #include "RegisterList.h"
 #include "DependentJobs.h"
+#include "SymTable.h"
 struct SyntaxJob;
 struct Scope;
-struct SymTable;
 struct SourceFile;
 struct AstNode;
 
@@ -37,8 +37,8 @@ struct Scope : public PoolElement
 {
     void reset() override
     {
+        symTable.scope = this;
         parentScope    = nullptr;
-        symTable       = nullptr;
         startStackSize = 0;
         owner          = nullptr;
         flags          = 0;
@@ -46,7 +46,6 @@ struct Scope : public PoolElement
     }
 
     void               setHasExports();
-    void               allocateSymTable();
     void               addPublicFunc(AstNode* node);
     void               addPublicGenericFunc(AstNode* node);
     void               addPublicStruct(AstNode* node);
@@ -71,7 +70,7 @@ struct Scope : public PoolElement
     AstNode*         owner;
     ScopeKind        kind;
     Scope*           parentScope;
-    SymTable*        symTable;
+    SymTable         symTable;
     uint32_t         indexInParent;
     Utf8Crc          name;
     Utf8             fullname;

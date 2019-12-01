@@ -98,7 +98,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
         return true;
 
     SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
-    SWAG_CHECK(node->ownerScope->symTable->addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Attribute));
+    SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Attribute));
     return true;
 }
 

@@ -18,7 +18,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
         auto structNode = CastAst<AstStruct>(typeStruct->structNode, AstNodeKind::StructDecl);
-        auto symbol     = structNode->scope->symTable->find("opCast");
+        auto symbol     = structNode->scope->symTable.find("opCast");
         if (symbol)
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))

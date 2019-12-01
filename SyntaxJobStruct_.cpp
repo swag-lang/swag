@@ -38,8 +38,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
 
     // Get existing scope or create a new one
-    auto newScope = Ast::newScope(implNode, identifierStruct->childs.front()->name, ScopeKind::Struct, currentScope, true);
-    newScope->allocateSymTable();
+    auto newScope         = Ast::newScope(implNode, identifierStruct->childs.front()->name, ScopeKind::Struct, currentScope, true);
     implNode->structScope = newScope;
 
     // Be sure we have associated a struct typeinfo
@@ -112,14 +111,12 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 
     // Add struct type and scope
     Scope* newScope = nullptr;
-    currentScope->allocateSymTable();
     {
-        scoped_lock lk(currentScope->symTable->mutex);
-        auto        symbol = currentScope->symTable->findNoLock(structNode->name);
+        scoped_lock lk(currentScope->symTable.mutex);
+        auto        symbol = currentScope->symTable.findNoLock(structNode->name);
         if (!symbol)
         {
             newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, currentScope, true);
-            newScope->allocateSymTable();
 
             // If an 'impl' came first, then typeinfo has already been defined
             scoped_lock     lk1(newScope->owner->mutex);
@@ -136,7 +133,7 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
             typeInfo->scope                = newScope;
             structNode->scope              = newScope;
             auto symbolKind                = structNode->kind == AstNodeKind::StructDecl ? SymbolKind::Struct : SymbolKind::Interface;
-            structNode->resolvedSymbolName = currentScope->symTable->registerSymbolNameNoLock(&context, structNode, symbolKind);
+            structNode->resolvedSymbolName = currentScope->symTable.registerSymbolNameNoLock(&context, structNode, symbolKind);
         }
         else
         {
@@ -152,14 +149,14 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
     // Dispatch owners
     if (structNode->genericParameters)
     {
-        scoped_lock lock(newScope->symTable->mutex);
+        scoped_lock lock(newScope->symTable.mutex);
         Ast::visit(structNode->genericParameters, [&](AstNode* n) {
             n->ownerStructScope = newScope;
             n->ownerScope       = newScope;
             if (n->kind == AstNodeKind::FuncDeclParam)
             {
                 auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
-                newScope->symTable->registerSymbolNameNoLock(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
+                newScope->symTable.registerSymbolNameNoLock(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
             }
         });
     }

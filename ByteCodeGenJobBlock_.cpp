@@ -56,7 +56,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
             {
                 auto funcParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                 auto callParam = allParams->childs[i];
-                auto symbol    = node->scope->symTable->find(funcParam->name);
+                auto symbol    = node->scope->symTable.find(funcParam->name);
                 SWAG_ASSERT(symbol);
 
                 for (auto overload : symbol->overloads)
@@ -83,7 +83,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     auto callParam = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->index == i)
                     {
-                        auto symbol = node->scope->symTable->find(funcParam->name);
+                        auto symbol = node->scope->symTable.find(funcParam->name);
                         SWAG_ASSERT(symbol);
                         for (auto overload : symbol->overloads)
                         {
@@ -107,7 +107,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     auto defaultParam = CastAst<AstVarDecl>(func->parameters->childs[i], AstNodeKind::FuncDeclParam);
                     SWAG_ASSERT(defaultParam->assignment);
 
-                    auto symbol = node->scope->symTable->find(defaultParam->name);
+                    auto symbol = node->scope->symTable.find(defaultParam->name);
                     SWAG_ASSERT(symbol);
                     for (auto overload : symbol->overloads)
                     {
@@ -498,12 +498,12 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
     Scope::collectScopeFrom(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
-	for (auto scope : context->job->collectScopes)
-	{
-		SWAG_CHECK(emitLeaveScope(context, scope));
-		if (context->result != ContextResult::Done)
-			return true;
-	}
+    for (auto scope : context->job->collectScopes)
+    {
+        SWAG_CHECK(emitLeaveScope(context, scope));
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     breakNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
@@ -522,17 +522,15 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
 {
     if (!scope)
         return true;
-    auto table = scope->symTable;
-    if (!table)
-        return true;
 
-    scoped_lock lock(table->mutex);
+    auto&       table = scope->symTable;
+    scoped_lock lock(table.mutex);
 
     // Need to wait for the structure to be ok, in order to call the opDrop function
-    auto count = (int) table->allStructs.size() - 1;
+    auto count = (int) table.allStructs.size() - 1;
     for (int i = count; i >= 0; i--)
     {
-        auto one            = table->allStructs[i];
+        auto one            = table.allStructs[i];
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
         waitStructGenerated(context, typeInfoStruct);
         if (context->result == ContextResult::Pending)
@@ -541,7 +539,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
 
     for (int i = count; i >= 0; i--)
     {
-        auto one            = table->allStructs[i];
+        auto one            = table.allStructs[i];
         auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(one->typeInfo, TypeInfoKind::Struct);
         if (typeInfoStruct->opDrop)
         {

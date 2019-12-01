@@ -26,8 +26,7 @@ bool SyntaxJob::doTypeAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(doTypeExpression(node));
     SWAG_CHECK(eatSemiCol("after type alias"));
 
-    currentScope->allocateSymTable();
-    currentScope->symTable->registerSymbolNameNoLock(&context, node, SymbolKind::TypeAlias);
+    currentScope->symTable.registerSymbolNameNoLock(&context, node, SymbolKind::TypeAlias);
     return true;
 }
 
@@ -145,26 +144,24 @@ bool SyntaxJob::convertExpressionListToStruct(AstNode* parent, AstNode** result,
         *result = identifier;
 
     // Add struct type and scope
-    auto rootScope = sourceFile->scopeRoot;
-    rootScope->allocateSymTable();
-    scoped_lock lk(rootScope->symTable->mutex);
-    auto        symbol = rootScope->symTable->findNoLock(structNode->name);
+    auto        rootScope = sourceFile->scopeRoot;
+    scoped_lock lk(rootScope->symTable.mutex);
+    auto        symbol = rootScope->symTable.findNoLock(structNode->name);
     if (symbol)
     {
         // Must release struct node, it's useless
     }
     else
     {
-        auto typeInfo = g_Pool_typeInfoStruct.alloc();
-        auto newScope = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
-        newScope->allocateSymTable();
+        auto typeInfo   = g_Pool_typeInfoStruct.alloc();
+        auto newScope   = Ast::newScope(structNode, structNode->name, ScopeKind::Struct, rootScope, true);
         typeInfo->name  = structNode->name;
         typeInfo->scope = newScope;
         typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
         structNode->typeInfo   = typeInfo;
         structNode->scope      = newScope;
         structNode->ownerScope = newScope->parentScope;
-        rootScope->symTable->registerSymbolNameNoLock(&context, structNode, SymbolKind::Struct);
+        rootScope->symTable.registerSymbolNameNoLock(&context, structNode, SymbolKind::Struct);
 
         Ast::addChildBack(sourceFile->astRoot, structNode);
         structNode->inheritOwners(sourceFile->astRoot);
