@@ -18,4 +18,5 @@
     
     //var tt: [..] u8 = [&DST1, destLen1]
     //@print(tt)
+    c := zlib.compressBound(100)   
 }
