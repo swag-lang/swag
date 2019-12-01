@@ -12,7 +12,7 @@ Pool<SymbolName>     g_Pool_symName;
 
 SymbolName* SymTable::find(const Utf8Crc& name)
 {
-    scoped_lock<shared_mutex> sl(mutex);
+    shared_lock lk(mutex);
     return findNoLock(name);
 }
 
@@ -49,7 +49,7 @@ SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* nod
 
     // Error if overload is not possible
     {
-        scoped_lock lock(symbol->mutex);
+        unique_lock lock(symbol->mutex);
         if (kind == SymbolKind::Function || kind == SymbolKind::Attribute || symbol->cptOverloads == 0)
         {
             symbol->cptOverloads++;
@@ -70,7 +70,7 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             uint32_t       storageOffset,
                                             Utf8Crc*       aliasName)
 {
-    scoped_lock lk(mutex);
+    unique_lock lk(mutex);
     if (node->attributeFlags & ATTRIBUTE_PUBLIC || context->sourceFile->generated)
         flags |= OVERLOAD_PUBLIC;
     return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, aliasName);
@@ -96,7 +96,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         *resultName = symbol;
 
     {
-        scoped_lock lock(symbol->mutex);
+        unique_lock lock(symbol->mutex);
 
         SymbolOverload* result = nullptr;
 
@@ -167,7 +167,7 @@ void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
 
 bool SymTable::checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind type)
 {
-    scoped_lock lk(mutex);
+    shared_lock lk(mutex);
     return checkHiddenSymbolNoLock(context, node, typeInfo, type, nullptr, true);
 }
 
@@ -327,7 +327,7 @@ SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
 
 void SymbolName::addDependentJob(Job* job)
 {
-    scoped_lock lk(mutex);
+    unique_lock lk(mutex);
     dependentJobs.add(job);
 }
 
