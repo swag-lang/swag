@@ -79,6 +79,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         return job->error(context, "invalid 'using' reference");
     }
 
+	//for(int i = 0; i < 100000; i++)
     node->parent->alternativeScopes.push_back(scope);
     return true;
 }

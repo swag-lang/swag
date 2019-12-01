@@ -1,5 +1,3 @@
-
-
 func(T) new()->*T
 {
 	var req : swag.AllocatorRequest

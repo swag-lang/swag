@@ -56,6 +56,7 @@ enum class AstNodeKind
     TypeExpression,
     TypeLambda,
     Namespace,
+	Using,
     If,
     While,
     For,

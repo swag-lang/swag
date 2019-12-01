@@ -7,15 +7,15 @@
 
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Namespace, sourceFile, parent);
+    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Using, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveUsing;
     if (result)
         *result = node;
 
     SWAG_CHECK(tokenizer.getToken(token));
     SWAG_CHECK(doIdentifierRef(node));
-
     SWAG_CHECK(eatSemiCol("after 'using' declaration"));
+
     return true;
 }
 

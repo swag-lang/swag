@@ -1,4 +1,3 @@
-
 func(T) new()->*T
 {
 	var req : swag.AllocatorRequest
@@ -14,6 +13,7 @@ struct Point
 {
 	x, y: string = "coucou"
 }
+
 //#[swag.printbc]
 #test
 {
