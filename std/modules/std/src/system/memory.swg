@@ -4,17 +4,18 @@ namespace std.memory
     {
         func copy(dest, src: *void, size: u32)
         {
-            os.memcpy(dest, src, size)
+            @memcpy(dest, src, size)
         }
         
         func compare(dest, src: *void, size: u32)->s32
         {
-            return os.memcmp(dest, src, cast(u64) size)
+            //@memcmp(dest, src, cast(u64) size)
+            return 0
         }        
         
         func clear(dest: *void, size: u32)
         {
-            os.memset(dest, 0, cast(u64) size)
+            //@memset(dest, 0, cast(u64) size)
         } 
     }
 }

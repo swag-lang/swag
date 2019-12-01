@@ -185,9 +185,10 @@ bool BackendCCompilerVS::compile()
     case BackendOutputType::Binary:
     {
         string linkArguments;
-        linkArguments += "ucrt.lib vcruntime.lib ";
+        linkArguments += "ucrt.lib ";
         linkArguments += "/NODEFAULTLIB:libucrt.lib ";
-		linkArguments += "/NODEFAULTLIB:libvcruntime.lib ";
+        //linkArguments += "vcruntime.lib ";
+		//linkArguments += "/NODEFAULTLIB:libvcruntime.lib ";
 
         for (const auto& dep : module->moduleDependencies)
             linkArguments += dep.first + ".lib ";

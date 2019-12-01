@@ -190,7 +190,7 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 {
 	if(!str1 || !str2)
 		return str1 == str2;
-	return !strncmp(str1, str2, num);
+	return !__memcmp(str1, str2, num);
 }
 
 )";
