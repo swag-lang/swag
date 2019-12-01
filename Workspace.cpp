@@ -128,6 +128,8 @@ void Workspace::enumerateModules(const fs::path& path, ModulesTypes type)
 
 void Workspace::publishModule(Module* module)
 {
+	if (module->path.empty())
+		return;
     // Scan source folder
     string publishPath = module->path + "/publish";
     string searchPath  = publishPath;
