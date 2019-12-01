@@ -359,7 +359,7 @@ bool BackendC::emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* type
                 break;
             case NativeTypeKind::String:
                 bufferC.addStringFormat("\trr%d.pointer = (swag_uint8_t*) %s; ", idx, param->namedParam.c_str());
-                bufferC.addStringFormat("rr%d.u32 = %s ? strlen(%s) : 0;\n", idx + 1, param->namedParam.c_str(), param->namedParam.c_str());
+                bufferC.addStringFormat("rr%d.u32 = %s ? __strlen(%s) : 0;\n", idx + 1, param->namedParam.c_str(), param->namedParam.c_str());
                 break;
             default:
                 return module->internalError("emitFuncWrapperPublic, invalid param type");

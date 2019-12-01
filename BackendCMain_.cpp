@@ -19,7 +19,7 @@ void BackendC::emitArgcArgv()
 
     CONCAT_FIXED_STR(bufferC, "\tfor(int i = 0; i < argc; i++) {\n");
     CONCAT_FIXED_STR(bufferC, "\t\targumentsStr[i * 2] = (swag_int64_t) argv[i];\n");
-    CONCAT_FIXED_STR(bufferC, "\t\targumentsStr[(i * 2) + 1] = (swag_int64_t) strlen(argv[i]);\n");
+    CONCAT_FIXED_STR(bufferC, "\t\targumentsStr[(i * 2) + 1] = (swag_int64_t) __strlen(argv[i]);\n");
     CONCAT_FIXED_STR(bufferC, "\t}\n");
     bufferC.addEol();
     CONCAT_FIXED_STR(bufferC, "\t__process_infos.arguments.addr = &argumentsStr[0];\n");
