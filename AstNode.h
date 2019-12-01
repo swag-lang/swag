@@ -1,6 +1,5 @@
 #pragma once
 #include "DependentJobs.h"
-#include "SpinLock.h"
 #include "Pool.h"
 #include "Utf8Crc.h"
 #include "Tokenizer.h"
@@ -345,7 +344,7 @@ struct AstNode : public PoolElement
 
     uint64_t      flags;
     uint64_t      doneFlags;
-    SpinLock      mutex;
+    shared_mutex      mutex;
     ComputedValue computedValue;
     Utf8Crc       name;
     Utf8          fullnameDot;

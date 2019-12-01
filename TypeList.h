@@ -1,5 +1,4 @@
 #pragma once
-#include "SpinLock.h"
 #include "TypeInfo.h"
 
 struct TypeList
@@ -10,7 +9,7 @@ struct TypeList
     uint32_t hereFlag      = 0;
     uint32_t sameFlags     = 0;
     bool     releaseIfHere = false;
-    SpinLock mutexTypes;
+    shared_mutex mutexTypes;
 
     vector<TypeInfo*> allTypes[(uint32_t) TypeInfoKind::Count];
 };

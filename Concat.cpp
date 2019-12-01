@@ -165,7 +165,7 @@ void Concat::addEolIndent(int num)
 void Concat::addStringFormat(const char* format, ...)
 {
     static char     buf[4096];
-    static SpinLock lock;
+    static shared_mutex lock;
     scoped_lock     lk(lock);
     va_list         args;
     va_start(args, format);

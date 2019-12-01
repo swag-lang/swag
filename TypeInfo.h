@@ -1,7 +1,6 @@
 #pragma once
 #include "Pool.h"
 #include "Utf8.h"
-#include "SpinLock.h"
 #include "Log.h"
 #include "Register.h"
 #include "Attribute.h"
@@ -621,7 +620,7 @@ struct TypeInfoStruct : public TypeInfo
     ByteCode*              opPostMove;
     AstNode*               opUserDropFct;
     ByteCode*              opDrop;
-    SpinLock               mutex;
+    shared_mutex               mutex;
     SymbolAttributes       attributes;
     uint32_t               cptRemainingInterfaces;
     uint32_t               maxPaddingSize;

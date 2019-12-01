@@ -1,6 +1,5 @@
 #pragma once
 #include "Pool.h"
-#include "SpinLock.h"
 #include "DependentJobs.h"
 struct JobThread;
 struct AstNode;
@@ -63,7 +62,7 @@ struct Job : public PoolElement
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void setPending();
 
-    SpinLock         executeMutex;
+    shared_mutex         executeMutex;
     uint32_t         flags;
     JobThread*       thread;
     int              pendingIndex;

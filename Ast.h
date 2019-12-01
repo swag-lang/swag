@@ -1,6 +1,5 @@
 #pragma once
 #include "Pool.h"
-#include "SpinLock.h"
 #include "AstNode.h"
 struct Utf8Crc;
 struct Scope;

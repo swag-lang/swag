@@ -65,7 +65,7 @@ struct SourceFile : public PoolElement
     condition_variable           condVar;
     Scope*                       scopeRoot    = nullptr;
     Scope*                       scopePrivate = nullptr;
-    SpinLock                     mutexGetLine;
+    shared_mutex                     mutexGetLine;
 };
 
 extern Pool<SourceFile> g_Pool_sourceFile;

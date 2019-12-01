@@ -1,5 +1,4 @@
 #pragma once
-#include "SpinLock.h"
 #include "TypeList.h"
 struct TypeInfo;
 struct SemanticContext;
@@ -18,7 +17,7 @@ struct TypeTable
 
     TypeList concreteList;
 
-    SpinLock                                  mutexTypes;
+    shared_mutex                                  mutexTypes;
     vector<TypeInfo*>                         allTypes;
     map<TypeInfo*, pair<TypeInfo*, uint32_t>> concreteTypes;
 };

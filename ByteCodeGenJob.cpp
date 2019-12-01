@@ -354,10 +354,7 @@ JobResult ByteCodeGenJob::execute()
                     if (!node->byteCodeAfterFct(&context))
                         return JobResult::ReleaseJob;
                     if (context.result == ContextResult::Pending)
-                    {
-                        g_Log.print("XXXX");
                         return JobResult::KeepJobAlive;
-                    }
                     if (context.result == ContextResult::NewChilds)
                         continue;
                 }

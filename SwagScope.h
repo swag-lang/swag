@@ -1,5 +1,4 @@
 #pragma once
-#include "SpinLock.h"
 struct TypeInfo;
 struct TypeInfoStruct;
 struct Job;

@@ -1,6 +1,4 @@
 #pragma once
-#include "SpinLock.h"
-
 struct IPool
 {
     virtual void free(void* addr) = 0;
@@ -84,5 +82,5 @@ struct Pool : public IPool
     PoolSlot<T, S>* rootBucket    = nullptr;
     PoolSlot<T, S>* lastBucket    = nullptr;
     PoolElement*    firstFreeElem = nullptr;
-    SpinLock        mutexBucket;
+    shared_mutex        mutexBucket;
 };

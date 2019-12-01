@@ -2,7 +2,6 @@
 #include "Utf8.h"
 #include "CommandLine.h"
 #include "Global.h"
-#include "SpinLock.h"
 
 enum class LogColor
 {

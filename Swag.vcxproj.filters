@@ -332,6 +332,7 @@
     <ClCompile Include="AstOutput.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
+    <ClCompile Include="CopyFileJob.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -396,9 +397,6 @@
     </ClInclude>
     <ClInclude Include="Ast.h">
       <Filter>Lexer</Filter>
-    </ClInclude>
-    <ClInclude Include="SpinLock.h">
-      <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="AstNode.h">
       <Filter>Lexer</Filter>
@@ -542,6 +540,8 @@
     <ClInclude Include="CompilerTarget.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="OsWin32.h" />
+    <ClInclude Include="CopyFileJob.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

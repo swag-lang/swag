@@ -1,6 +1,5 @@
 #pragma once
 #include "Pool.h"
-#include "SpinLock.h"
 #include "BuildPass.h"
 #include "BuildParameters.h"
 #include "TypeTable.h"
@@ -35,7 +34,7 @@ struct DataSegment
     uint8_t*                  address(uint32_t location);
     uint8_t*                  addressNoLock(uint32_t location);
     vector<DataSegmentHeader> buckets;
-    SpinLock                  mutex;
+    shared_mutex                  mutex;
 
     uint32_t                addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* typeInfo, ComputedValue& computedValue);
     map<uint8_t, uint32_t>  storedValues8;
@@ -47,7 +46,7 @@ struct DataSegment
     uint32_t                 addStringNoLock(const Utf8& str);
     void                     addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg = SegmentKind::Me);
     void                     addInitPtrFunc(uint32_t offset, ByteCode* bc);
-    SpinLock                 mutexPtr;
+    shared_mutex                 mutexPtr;
     map<Utf8, uint32_t>      mapString;
     map<uint32_t, ByteCode*> initFuncPtr;
     vector<DataSegmentRef>   initPtr;

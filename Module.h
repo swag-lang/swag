@@ -1,6 +1,5 @@
 #pragma once
 #include "Pool.h"
-#include "SpinLock.h"
 #include "BuildPass.h"
 #include "BuildParameters.h"
 #include "TypeTable.h"
@@ -43,7 +42,7 @@ struct Module : public PoolElement
     string              nameDown;
     string              nameUp;
     atomic<int>         numErrors = 0;
-    SpinLock            mutexFile;
+    shared_mutex            mutexFile;
     vector<SourceFile*> files;
     SourceFile*         buildFile = nullptr;
     AstNode*            astRoot;
@@ -56,7 +55,7 @@ struct Module : public PoolElement
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);
 
-    SpinLock mutexRegisterRR;
+    shared_mutex mutexRegisterRR;
     uint32_t maxReservedRegisterRR = 0;
 
     DataSegment mutableSegment;
@@ -64,13 +63,13 @@ struct Module : public PoolElement
 
     void setBuildPass(BuildPass buildP);
 
-    SpinLock  mutexBuildPass;
+    shared_mutex  mutexBuildPass;
     BuildPass buildPass = BuildPass::Full;
 
     void addByteCodeFunc(ByteCode* bc);
     void registerForeign(AstFuncDecl* node);
 
-    SpinLock             mutexByteCode;
+    shared_mutex             mutexByteCode;
     vector<ByteCode*>    byteCodeFunc;
     vector<ByteCode*>    byteCodeTestFunc;
     vector<ByteCode*>    byteCodeInitFunc;
@@ -82,7 +81,7 @@ struct Module : public PoolElement
 
     void addDependency(AstNode* importNode);
 
-    SpinLock                      mutexDependency;
+    shared_mutex                      mutexDependency;
     map<string, ModuleDependency> moduleDependencies;
     bool                          hasBeenBuilt = false;
 

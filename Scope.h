@@ -1,7 +1,6 @@
 #pragma once
 #include "Utf8Crc.h"
 #include "Pool.h"
-#include "SpinLock.h"
 #include "RegisterList.h"
 #include "DependentJobs.h"
 struct SyntaxJob;
@@ -78,13 +77,13 @@ struct Scope : public PoolElement
     Utf8             fullname;
     vector<Scope*>   childScopes;
     uint32_t         startStackSize;
-    SpinLock         lockChilds;
+    shared_mutex         lockChilds;
     vector<AstNode*> deferredNodes;
     RegisterList     registersToRelease;
     uint32_t         flags;
     DependentJobs    dependentJobs;
 
-    SpinLock      mutexPublic;
+    shared_mutex      mutexPublic;
     set<AstNode*> publicFunc;
     set<AstNode*> publicGenericFunc;
     set<AstNode*> publicStruct;

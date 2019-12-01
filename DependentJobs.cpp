@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "DependentJobs.h"
 #include "Job.h"
-#include "SpinLock.h"
 #include "Assert.h"
 
 void DependentJobs::add(Job* job)

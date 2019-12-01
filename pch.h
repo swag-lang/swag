@@ -18,6 +18,7 @@
 #include <fstream>
 #include <functional>
 #include <string>
+#include <shared_mutex>
 
 using namespace std;
 namespace fs = std::experimental::filesystem;

@@ -81,7 +81,7 @@ void Module::reserveRegisterRR(uint32_t count)
 bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 {
     // Only one run at a time !
-    static SpinLock mutexExecuteNode;
+    static shared_mutex mutexExecuteNode;
     scoped_lock     lk(mutexExecuteNode);
 
     auto runContext = &g_Workspace.runContext;

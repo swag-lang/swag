@@ -1,5 +1,4 @@
 #pragma once
-#include "SpinLock.h"
 #include "ByteCodeRunContext.h"
 #include "swagScope.h"
 struct Module;
@@ -37,7 +36,7 @@ struct Workspace
     fs::path             testsPath;
     fs::path             modulesPath;
 	fs::path             dependenciesPath;
-    SpinLock             mutexModules;
+    shared_mutex             mutexModules;
     atomic<int>          numErrors = 0;
     vector<Module*>      modules;
     map<string, Module*> mapModulesNames;

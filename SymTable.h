@@ -1,7 +1,6 @@
 #pragma once
 #include "DependentJobs.h"
 #include "Pool.h"
-#include "SpinLock.h"
 #include "Utf8crc.h"
 #include "Register.h"
 #include "RegisterList.h"
@@ -70,7 +69,7 @@ enum class SymbolKind
 
 struct SymbolName : public PoolElement
 {
-    SpinLock                mutex;
+    shared_mutex                mutex;
     Utf8                    fullName;
     Utf8Crc                 name;
     SymbolOverload          defaultOverload;
@@ -113,7 +112,7 @@ struct SymTable
     static const char* getNakedKindName(SymbolKind kind);
 
     static const int           HASH_SIZE = 512;
-    SpinLock                   mutex;
+    shared_mutex                   mutex;
     Scope*                     scope;
     map<Utf8Crc, SymbolName*>* mapNames[HASH_SIZE];
     vector<SymbolOverload*>    allStructs;

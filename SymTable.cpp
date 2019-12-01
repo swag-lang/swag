@@ -18,7 +18,7 @@ SymTable::SymTable(Scope* scope)
 
 SymbolName* SymTable::find(const Utf8Crc& name)
 {
-    scoped_lock<SpinLock> sl(mutex);
+    scoped_lock<shared_mutex> sl(mutex);
     return findNoLock(name);
 }
 
