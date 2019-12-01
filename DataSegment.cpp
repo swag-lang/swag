@@ -77,16 +77,12 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
 
     if (typeInfo->nativeType == NativeTypeKind::String)
     {
-        auto stringIndex = sourceFile->module->reserveString(computedValue.text);
-        auto it          = storedValuesStr.find(stringIndex);
-        if (it != storedValuesStr.end())
-            return it->second;
+        auto stringOffset     = addStringNoLock(computedValue.text);
         auto storageOffset    = reserveNoLock(2 * sizeof(uint64_t));
         auto addr             = addressNoLock(storageOffset);
         ((uint64_t*) addr)[0] = (uint64_t) computedValue.text.c_str();
         ((uint64_t*) addr)[1] = (uint32_t) computedValue.text.size();
-        addInitString(storageOffset, stringIndex);
-        storedValuesStr[stringIndex] = storageOffset;
+        addInitPtr(storageOffset, stringOffset);
         return storageOffset;
     }
 
@@ -149,10 +145,26 @@ uint32_t DataSegment::addComputedValueNoLock(SourceFile* sourceFile, TypeInfo* t
     return storageOffset;
 }
 
-void DataSegment::addInitString(uint32_t segOffset, uint32_t strIndex)
+uint32_t DataSegment::addStringNoLock(const Utf8& str)
 {
-    scoped_lock lk(mutexPtr);
-    initString[strIndex].push_back(segOffset);
+    // Same string already there ?
+    auto it = mapString.find(str);
+    if (it != mapString.end())
+        return it->second;
+
+    auto strLen = (uint32_t) str.length() + 1;
+    auto offset = reserveNoLock(strLen);
+    auto addr   = addressNoLock(offset);
+    memcpy(addr, str.c_str(), strLen);
+    mapString[str] = offset;
+
+    return offset;
+}
+
+uint32_t DataSegment::addString(const Utf8& str)
+{
+	scoped_lock lk(mutex);
+    return addStringNoLock(str);
 }
 
 void DataSegment::addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg)

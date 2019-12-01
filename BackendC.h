@@ -25,7 +25,6 @@ struct BackendC : public Backend
 
     bool emitRuntime();
     bool emitDataSegment(DataSegment* dataSegment);
-    bool emitStrings();
     void emitArgcArgv();
     bool emitMain();
     bool emitAllFunctionBody();

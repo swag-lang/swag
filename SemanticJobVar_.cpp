@@ -45,8 +45,8 @@ bool SemanticJob::storeToSegmentNoLock(SemanticContext* context, uint32_t storag
     {
         *(const char**) ptrDest                = value->text.c_str();
         *(uint64_t*) (ptrDest + sizeof(void*)) = value->text.length();
-        auto stringIndex                       = module->reserveString(value->text);
-        seg->addInitString(storageOffset, stringIndex);
+        auto offset                            = module->constantSegment.addStringNoLock(value->text);
+        seg->addInitPtr(storageOffset, offset, SegmentKind::Constant);
         return true;
     }
 
@@ -135,10 +135,8 @@ bool SemanticJob::collectStructLiteralsNoLock(SemanticContext* context, SourceFi
                 Register* storedV  = (Register*) ptrDest;
                 storedV[0].pointer = (uint8_t*) value.text.c_str();
                 storedV[1].u64     = value.text.length();
-
-                auto stringIndex = module->reserveString(value.text);
-                segment->addInitString(offset, stringIndex);
-
+                auto strOffset     = module->constantSegment.addStringNoLock(value.text);
+                segment->addInitPtr(offset, strOffset, SegmentKind::Constant);
                 ptrDest += 2 * sizeof(Register);
                 offset += 2 * sizeof(Register);
             }

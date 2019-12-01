@@ -42,41 +42,10 @@ bool BackendC::emitDataSegment(DataSegment* dataSegment)
     return true;
 }
 
-bool BackendC::emitStrings()
-{
-    emitSeparator(bufferC, "STRINGS");
-
-    int index = 0;
-    for (const auto& str : module->strBuffer)
-    {
-        CONCAT_FIXED_STR(bufferC, "static swag_uint8_t __string");
-        bufferC.addStringFormat("%d[] = {", index);
-
-        const uint8_t* pz = (const uint8_t*) str.c_str();
-        while (*pz)
-        {
-            bufferC.addString(to_string(*pz));
-            bufferC.addChar(',');
-            pz++;
-        }
-
-        CONCAT_FIXED_STR(bufferC, "0};\n");
-        index++;
-    }
-
-    return true;
-}
-
 bool BackendC::emitGlobalInit()
 {
     // Init of data segment
     CONCAT_FIXED_STR(bufferC, "static void initDataSeg() {\n");
-    for (auto& k : module->mutableSegment.initString)
-    {
-        for (auto& o : k.second)
-            bufferC.addStringFormat("*(void**) (__mutableseg + %d) = __string%d;\n", o, k.first);
-    }
-
     for (auto& k : module->mutableSegment.initPtr)
     {
         auto kind = k.destSeg;
@@ -90,12 +59,6 @@ bool BackendC::emitGlobalInit()
 
     // Init of constant segment
     CONCAT_FIXED_STR(bufferC, "static void initConstantSeg() {\n");
-    for (auto& k : module->constantSegment.initString)
-    {
-        for (auto& o : k.second)
-            bufferC.addStringFormat("*(void**) (__constantseg + %d) = __string%d;\n", o, k.first);
-    }
-
     for (auto& k : module->constantSegment.initPtr)
     {
         SWAG_ASSERT(k.destSeg == SegmentKind::Me || k.destSeg == SegmentKind::Constant);

@@ -215,7 +215,6 @@ void ByteCode::print()
 
         case ByteCodeOp::AffectOp32:
         case ByteCodeOp::AffectOp64:
-        case ByteCodeOp::CopyRARBStr:
         case ByteCodeOp::DeRefPointer:
         case ByteCodeOp::CopyVC:
         case ByteCodeOp::ClearXVar:

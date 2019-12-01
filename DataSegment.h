@@ -42,15 +42,15 @@ struct DataSegment
     map<uint16_t, uint32_t> storedValues16;
     map<uint32_t, uint32_t> storedValues32;
     map<uint64_t, uint32_t> storedValues64;
-    map<uint32_t, uint32_t> storedValuesStr;
 
-    void                            addInitString(uint32_t segOffset, uint32_t strIndex);
-    void                            addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg = SegmentKind::Me);
-    void                            addInitPtrFunc(uint32_t offset, ByteCode* bc);
-    SpinLock                        mutexPtr;
-    map<uint32_t, vector<uint32_t>> initString;
-    map<uint32_t, ByteCode*>        initFuncPtr;
-    vector<DataSegmentRef>          initPtr;
+    uint32_t                 addString(const Utf8& str);
+    uint32_t                 addStringNoLock(const Utf8& str);
+    void                     addInitPtr(uint32_t fromOffset, uint32_t toOffset, SegmentKind seg = SegmentKind::Me);
+    void                     addInitPtrFunc(uint32_t offset, ByteCode* bc);
+    SpinLock                 mutexPtr;
+    map<Utf8, uint32_t>      mapString;
+    map<uint32_t, ByteCode*> initFuncPtr;
+    vector<DataSegmentRef>   initPtr;
 #ifdef SWAG_HAS_ASSERT
     RaceCondition::Instance raceCondition;
 #endif

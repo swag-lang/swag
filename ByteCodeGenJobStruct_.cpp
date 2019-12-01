@@ -11,9 +11,9 @@
 
 bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
-	scoped_lock lk(typeInfoStruct->mutex);
-	if (typeInfoStruct->opInit)
-		return true;
+    scoped_lock lk(typeInfoStruct->mutex);
+    if (typeInfoStruct->opInit)
+        return true;
 
     for (auto typeParam : typeInfoStruct->childs)
     {
@@ -88,10 +88,9 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             }
             else if (typeVar->isNative(NativeTypeKind::String))
             {
-                auto module      = sourceFile->module;
-                auto stringIndex = module->reserveString(varDecl->assignment->computedValue.text);
-
-                emitInstruction(&cxt, ByteCodeOp::CopyRARBStr, 1, 2)->c.u32 = stringIndex;
+                auto offset = sourceFile->module->constantSegment.addString(varDecl->assignment->computedValue.text);
+                emitInstruction(&cxt, ByteCodeOp::RAAddrFromConstantSeg, 1, offset);
+                emitInstruction(&cxt, ByteCodeOp::CopyRAVB32, 2, (uint32_t) varDecl->assignment->computedValue.text.size());
                 emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 1, 0);
                 emitInstruction(&cxt, ByteCodeOp::AffectOp64, 0, 2, 8);
             }

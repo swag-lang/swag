@@ -143,7 +143,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         // We want an interface
         if (node->typeInfo->kind == TypeInfoKind::Interface)
         {
-			reserveLinearRegisterRC(context, regList, 3);
+            reserveLinearRegisterRC(context, regList, 3);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[1]);
             emitInstruction(context, ByteCodeOp::ClearRA, regList[2]);
             emitInstruction(context, ByteCodeOp::CopyRARBAddr, regList[0], regList[1]);
@@ -201,9 +201,9 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         case NativeTypeKind::String:
         {
             reserveLinearRegisterRC(context, regList, 2);
-            auto index  = context->sourceFile->module->reserveString(node->computedValue.text);
-            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, regList[0], regList[1]);
-            inst->c.u32 = index;
+            auto offset = context->sourceFile->module->constantSegment.addString(node->computedValue.text);
+            emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) node->computedValue.text.size());
             return true;
         }
         default:

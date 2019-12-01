@@ -40,13 +40,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->rebuild           = true;
     cmdLine->backendOutputTest = true;
     cmdLine->backendOutput     = true;
-    cmdLine->cleanTarget       = true;
+    //cmdLine->cleanTarget       = true;
     //cmdLine->errorSourceOut    = false;
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->testFilter = "std15";
-    //cmdLine->fileFilter = "compiler1383";
+    cmdLine->fileFilter = "compiler";
 }
 
 void CommandLineParser::logArguments()

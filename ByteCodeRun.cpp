@@ -242,15 +242,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         memcpy(dst, src, size);
         break;
     }
-    case ByteCodeOp::CopyRARBStr:
-    {
-        auto module = context->sourceFile->module;
-        SWAG_ASSERT(ip->c.u32 < module->strBuffer.size());
-        const auto& str                = module->strBuffer[ip->c.u32];
-        registersRC[ip->a.u32].pointer = (uint8_t*) str.c_str();
-        registersRC[ip->b.u32].u32     = (uint32_t) str.length();
-        break;
-    }
+
     case ByteCodeOp::CopyRARB:
     {
         registersRC[ip->a.u32] = registersRC[ip->b.u32];

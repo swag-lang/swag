@@ -167,10 +167,10 @@ bool TypeTable::makeConcreteString(SemanticContext* context, ConcreteStringSlice
         return true;
     }
 
-    auto sourceFile  = context->sourceFile;
-    auto module      = sourceFile->module;
-    auto stringIndex = module->reserveString(str);
-    module->constantSegment.addInitString(offsetInBuffer, stringIndex);
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto offset     = module->constantSegment.addStringNoLock(str);
+    module->constantSegment.addInitPtr(offsetInBuffer, offset);
     result->buffer = (void*) str.c_str();
     result->count  = str.size();
     return true;
@@ -247,7 +247,7 @@ bool TypeTable::makeConcreteTypeInfo(SemanticContext* context, TypeInfo* typeInf
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
 
     // Register type and value
-	// Do it now to break recursive references 
+    // Do it now to break recursive references
     auto typePtr            = g_Pool_typeInfoPointer.alloc();
     concreteTypes[typeInfo] = {typePtr, storageOffset};
 

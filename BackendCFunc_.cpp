@@ -788,10 +788,6 @@ bool BackendC::emitFunctionBody(Module* moduleToGen, ByteCode* bc)
         case ByteCodeOp::CopyRAVB64:
             bufferC.addStringFormat("r[%u].u64 = 0x%I64x;", ip->a.u32, ip->b.u64);
             break;
-        case ByteCodeOp::CopyRARBStr:
-            bufferC.addStringFormat("r[%u].pointer = __string%u; ", ip->a.u32, ip->c.u32);
-            bufferC.addStringFormat("r[%u].u32 = %u;", ip->b.u32, moduleToGen->strBuffer[ip->c.u32].size());
-            break;
         case ByteCodeOp::CopyRARB:
             bufferC.addStringFormat("r[%u] = r[%u]; ", ip->a.u32, ip->b.u32);
             break;

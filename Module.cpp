@@ -108,8 +108,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node)
 
 void Module::registerForeign(AstFuncDecl* node)
 {
-	scoped_lock lk(mutexByteCode);
-	allForeign.push_back(node);
+    scoped_lock lk(mutexByteCode);
+    allForeign.push_back(node);
 }
 
 void Module::addByteCodeFunc(ByteCode* bc)
@@ -160,19 +160,6 @@ void Module::addDependency(AstNode* importNode)
         dep.name                             = importNode->name;
         moduleDependencies[importNode->name] = dep;
     }
-}
-
-uint32_t Module::reserveString(const Utf8& str)
-{
-    scoped_lock lk(mutexString);
-    auto        it = mapStrBuffer.find(str);
-    if (it != mapStrBuffer.end())
-        return it->second;
-
-    strBuffer.push_back(str);
-    uint32_t result   = (uint32_t)(strBuffer.size() - 1);
-    mapStrBuffer[str] = result;
-    return result;
 }
 
 void Module::error(const Utf8& msg)

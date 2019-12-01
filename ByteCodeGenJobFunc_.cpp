@@ -289,17 +289,19 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerCallerFile:
         {
             reserveLinearRegisterRC(context, regList, 2);
-            auto index  = context->sourceFile->module->reserveString(node->sourceFile->path.string());
-            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, regList[0], regList[1]);
-            inst->c.u32 = index;
+            auto str    = Utf8(node->sourceFile->path.string());
+            auto offset = context->sourceFile->module->constantSegment.addString(str);
+            emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.size());
             break;
         }
         case TokenId::CompilerCallerFunction:
         {
             reserveLinearRegisterRC(context, regList, 2);
-            auto index  = context->sourceFile->module->reserveString(node->ownerFct->fullnameDot);
-            auto inst   = emitInstruction(context, ByteCodeOp::CopyRARBStr, regList[0], regList[1]);
-            inst->c.u32 = index;
+            const auto& str    = node->ownerFct->fullnameDot;
+            auto        offset = context->sourceFile->module->constantSegment.addString(str);
+            emitInstruction(context, ByteCodeOp::RAAddrFromConstantSeg, regList[0], offset);
+            emitInstruction(context, ByteCodeOp::CopyRAVB32, regList[1], (uint32_t) str.size());
             break;
         }
         default:
