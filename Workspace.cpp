@@ -14,7 +14,7 @@ Workspace g_Workspace;
 
 Module* Workspace::getModuleByName(const string& moduleName)
 {
-    scoped_lock lk(mutexModules);
+    shared_lock lk(mutexModules);
     auto        it = mapModulesNames.find(moduleName);
     if (it == mapModulesNames.end())
         return nullptr;
@@ -26,7 +26,7 @@ Module* Workspace::createOrUseModule(const string& moduleName)
     Module* module;
 
     {
-        scoped_lock lk(mutexModules);
+        unique_lock lk(mutexModules);
 
         auto it = mapModulesNames.find(moduleName);
         if (it != mapModulesNames.end())
