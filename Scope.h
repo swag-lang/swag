@@ -77,13 +77,18 @@ struct Scope : public PoolElement
     Utf8             fullname;
     vector<Scope*>   childScopes;
     uint32_t         startStackSize;
-    shared_mutex         lockChilds;
+    shared_mutex     lockChilds;
     vector<AstNode*> deferredNodes;
     RegisterList     registersToRelease;
     uint32_t         flags;
     DependentJobs    dependentJobs;
 
-    shared_mutex      mutexPublic;
+    mutex         mutexPublicFunc;
+    mutex         mutexPublicGenericFunc;
+    mutex         mutexPublicStruct;
+    mutex         mutexPublicEnum;
+    mutex         mutexPublicConst;
+    mutex         mutexPublicTypeAlias;
     set<AstNode*> publicFunc;
     set<AstNode*> publicGenericFunc;
     set<AstNode*> publicStruct;

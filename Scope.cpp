@@ -93,42 +93,42 @@ void Scope::setHasExports()
 
 void Scope::addPublicFunc(AstNode* node)
 {
-    scoped_lock lk(mutexPublic);
+    unique_lock lk(mutexPublicFunc);
     publicFunc.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicGenericFunc(AstNode* node)
 {
-    scoped_lock lk(mutexPublic);
+    unique_lock lk(mutexPublicGenericFunc);
     publicGenericFunc.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicStruct(AstNode* node)
 {
-    scoped_lock lk(mutexPublic);
+    unique_lock lk(mutexPublicStruct);
     publicStruct.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicEnum(AstNode* node)
 {
-    scoped_lock lk(mutexPublic);
+    unique_lock lk(mutexPublicEnum);
     publicEnum.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicConst(AstNode* node)
 {
-    scoped_lock lk(mutexPublic);
+    unique_lock lk(mutexPublicConst);
     publicConst.insert(node);
     setHasExports();
 }
 
 void Scope::addPublicTypeAlias(AstNode* node)
 {
-    scoped_lock lk(mutexPublic);
+    unique_lock lk(mutexPublicTypeAlias);
     publicTypeAlias.insert(node);
     setHasExports();
 }
