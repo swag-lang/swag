@@ -1541,14 +1541,14 @@ bool BackendC::emitFunctionBody(Module* moduleToGen, ByteCode* bc)
             // Normal function call
             if (ip->op == ByteCodeOp::LocalCall)
             {
-                bufferC.addStringFormat("{ %s", funcBC->callName().c_str());
+                bufferC.addStringFormat("%s", funcBC->callName().c_str());
             }
 
             // Lambda call
             else
             {
                 // Need to output the function prototype too
-                CONCAT_FIXED_STR(bufferC, "{ typedef void(*tfn)(");
+                CONCAT_FIXED_STR(bufferC, "((void(*)(");
                 for (int j = 0; j < typeFuncBC->numReturnRegisters() + typeFuncBC->numParamsRegisters(); j++)
                 {
                     if (j)
@@ -1556,10 +1556,10 @@ bool BackendC::emitFunctionBody(Module* moduleToGen, ByteCode* bc)
                     CONCAT_FIXED_STR(bufferC, "swag_register_t*");
                 }
 
-                CONCAT_FIXED_STR(bufferC, "); ");
+                CONCAT_FIXED_STR(bufferC, "))");
 
                 // Then the call
-                bufferC.addStringFormat("((tfn)r[%u].pointer)", ip->a.u32);
+                bufferC.addStringFormat(" r[%u].pointer)", ip->a.u32);
             }
 
             CONCAT_FIXED_STR(bufferC, "(");
@@ -1586,7 +1586,7 @@ bool BackendC::emitFunctionBody(Module* moduleToGen, ByteCode* bc)
             }
 
             pushRAParams.clear();
-            CONCAT_FIXED_STR(bufferC, "); }");
+            CONCAT_FIXED_STR(bufferC, ");");
         }
         break;
 
