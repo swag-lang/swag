@@ -5,7 +5,6 @@
 #include "SourceFile.h"
 #include "TypeInfo.h"
 #include "SymTable.h"
-#include "Scope.h"
 
 Pool<SymbolOverload> g_Pool_symOverload;
 Pool<SymbolName>     g_Pool_symName;
