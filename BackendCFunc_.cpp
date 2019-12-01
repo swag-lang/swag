@@ -777,13 +777,13 @@ bool BackendC::emitFunctionBody(Module* moduleToGen, ByteCode* bc)
             bufferC.addStringFormat("r[%u].u64 = *(swag_uint64_t*) (stack + %u);", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::MemCpy:
-            bufferC.addStringFormat("__memcpy(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            bufferC.addStringFormat("__memcpy((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::MemSet:
-            bufferC.addStringFormat("__memset(r[%u].pointer, r[%u].u32, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
+            bufferC.addStringFormat("__memset((void*) r[%u].pointer, r[%u].u32, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32);
             break;
         case ByteCodeOp::MemCmp:
-            bufferC.addStringFormat("r[%u].s32 = __memcmp(r[%u].pointer, r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
+            bufferC.addStringFormat("r[%u].s32 = __memcmp((void*) r[%u].pointer, (void*) r[%u].pointer, r[%u].u32);", ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32);
             break;
         case ByteCodeOp::CopyVC:
             bufferC.addStringFormat("__memcpy(r[%u].pointer, r[%u].pointer, %u);", ip->a.u32, ip->b.u32, ip->c.u32);

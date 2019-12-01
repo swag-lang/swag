@@ -94,6 +94,9 @@ static constexpr const char* g_Intrinsics = R"(
 extern void* malloc(swag_uint64_t);
 extern void* realloc(void*, swag_uint64_t);
 extern void  free(void*);
+extern void* memcpy(void*,void*,swag_uint64_t);
+extern void* memset(void*,swag_uint32_t,swag_uint64_t);
+extern swag_int32_t memcmp(void*,void*,swag_uint64_t);
 #define __malloc	malloc
 #define __realloc	realloc
 #define __free		free
@@ -190,7 +193,7 @@ static swag_bool_t __strcmp(const char* str1, const char* str2, swag_uint32_t nu
 {
 	if(!str1 || !str2)
 		return str1 == str2;
-	return !__memcmp(str1, str2, num);
+	return !__memcmp((void*) str1, (void*) str2, num);
 }
 
 )";
