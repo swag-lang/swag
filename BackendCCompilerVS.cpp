@@ -110,14 +110,6 @@ bool BackendCCompilerVS::compile()
     libPath.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\lib\%s\ucrt\x64)", winSdk.c_str()));
     libPath.push_back(g_Workspace.targetPath.string());
 
-    // Include paths
-    vector<string> includePaths;
-    includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\um)", winSdk.c_str()));
-    includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\shared)", winSdk.c_str()));
-    includePaths.push_back(format(R"(C:\Program Files (x86)\Windows Kits\10\include\%s\ucrt)", winSdk.c_str()));
-    includePaths.push_back(format(R"(%s\include)", vsTarget.c_str()));
-    includePaths.push_back(g_Workspace.targetPath.string());
-
     // CL arguments
     string clArguments = "";
     if (buildParameters->target.backendDebugInformations)
@@ -156,8 +148,6 @@ bool BackendCCompilerVS::compile()
         break;
     }
 
-    for (const auto& oneIncludePath : includePaths)
-        clArguments += "/I\"" + oneIncludePath + "\" ";
     if (buildParameters->flags & BUILDPARAM_FOR_TEST)
         clArguments += "/DSWAG_HAS_TEST ";
 

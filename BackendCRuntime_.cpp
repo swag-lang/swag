@@ -89,7 +89,9 @@ swag_process_infos_t __process_infos = {0};
 )";
 
 static constexpr const char* g_Intrinsics = R"(
-#include "malloc.h"
+extern void* malloc(swag_uint64_t);
+extern void* realloc(void*, swag_uint64_t);
+extern void  free(void*);
 
 static void __print_n(const char* message, int len) 
 { 
