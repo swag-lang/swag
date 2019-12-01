@@ -1,5 +1,4 @@
-#module compiler1228
-#unittest error
+using A
 
 namespace A
 {
@@ -11,8 +10,6 @@ func isZeroEpsilo1(x: f32) => false
 func isZeroEpsilo2(x: f32) => false
 func isZeroEpsilo3(x: f32) => false
 func isZeroEpsilo4(x: f32) => false
-
-using A
 
 #test
 {

@@ -21,8 +21,11 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
-        regNode->alternativeScopes.push_back(typeStruct->scope);
-        regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+        {
+            SWAG_RACE_CONDITION_WRITE(regNode->raceConditionAlternativeScopes);
+            regNode->alternativeScopes.push_back(typeStruct->scope);
+            regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+        }
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
@@ -30,8 +33,11 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->ptrCount == 1, context->report({node, format("'using' cannot be used on a variable of type '%s'", typePointer->name.c_str())}));
         SWAG_VERIFY(typePointer->finalType->kind == TypeInfoKind::Struct, context->report({node, format("'using' cannot be used on a variable of type '%s'", typeInfoVar->name.c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->finalType, TypeInfoKind::Struct);
-        regNode->alternativeScopes.push_back(typeStruct->scope);
-        regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+        {
+			SWAG_RACE_CONDITION_WRITE(regNode->raceConditionAlternativeScopes);
+            regNode->alternativeScopes.push_back(typeStruct->scope);
+            regNode->alternativeScopesVars.push_back({varNode, typeStruct->scope});
+        }
     }
     else
     {
@@ -79,8 +85,11 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         return job->error(context, "invalid 'using' reference");
     }
 
-	//for(int i = 0; i < 100000; i++)
-    node->parent->alternativeScopes.push_back(scope);
+    {
+		SWAG_RACE_CONDITION_WRITE(node->parent->raceConditionAlternativeScopes);
+        node->parent->alternativeScopes.push_back(scope);
+    }
+
     return true;
 }
 

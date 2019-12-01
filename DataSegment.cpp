@@ -16,10 +16,7 @@ uint32_t DataSegment::reserve(uint32_t size)
 
 uint32_t DataSegment::reserveNoLock(uint32_t size)
 {
-#ifdef SWAG_HAS_ASSERT
-    RaceCondition rc(&raceCondition);
-#endif
-
+    SWAG_RACE_CONDITION_WRITE(raceCondition);
     DataSegmentHeader* last = nullptr;
     if (buckets.size())
         last = &buckets.back();
@@ -51,10 +48,7 @@ uint8_t* DataSegment::address(uint32_t location)
 
 uint8_t* DataSegment::addressNoLock(uint32_t location)
 {
-#ifdef SWAG_HAS_ASSERT
-    RaceCondition rc(&raceCondition);
-#endif
-
+    SWAG_RACE_CONDITION_READ(raceCondition);
     SWAG_ASSERT(buckets.size());
     for (int i = 0; i < buckets.size(); i++)
     {
@@ -163,7 +157,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str)
 
 uint32_t DataSegment::addString(const Utf8& str)
 {
-	scoped_lock lk(mutex);
+    scoped_lock lk(mutex);
     return addStringNoLock(str);
 }
 

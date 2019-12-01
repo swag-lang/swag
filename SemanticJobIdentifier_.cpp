@@ -1401,16 +1401,20 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vec
     {
         auto  job  = context->job;
         auto& here = job->scopesHere;
-        for (auto p : startNode->alternativeScopes)
-        {
-            if (here.find(p) == here.end())
-            {
-                here.insert(p);
-                scopes.push_back(p);
-            }
-        }
 
-        scopesVars.insert(scopesVars.end(), startNode->alternativeScopesVars.begin(), startNode->alternativeScopesVars.end());
+        {
+            SWAG_RACE_CONDITION_READ(startNode->raceConditionAlternativeScopes);
+            for (auto p : startNode->alternativeScopes)
+            {
+                if (here.find(p) == here.end())
+                {
+                    here.insert(p);
+                    scopes.push_back(p);
+                }
+            }
+
+            scopesVars.insert(scopesVars.end(), startNode->alternativeScopesVars.begin(), startNode->alternativeScopesVars.end());
+        }
     }
 
     if (startNode->parent)

@@ -1,6 +1,5 @@
 #module compiler232
-;
-using swag;
+using swag
 
 #unittest error;
 func main ()

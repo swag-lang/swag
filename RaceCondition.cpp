@@ -3,16 +3,17 @@
 #include "RaceCondition.h"
 #include "Assert.h"
 
-RaceCondition::RaceCondition(Instance* instance)
+RaceCondition::RaceCondition(Instance* instance, bool read)
 {
     scoped_lock lk(instance->mutex);
     myInstance = instance;
 
     auto currentThreadId = this_thread::get_id();
-    SWAG_ASSERT(!myInstance->defined || myInstance->lastThreadID == currentThreadId);
+    SWAG_ASSERT(!myInstance->defined || myInstance->lastThreadID == currentThreadId || myInstance->read == read);
     myInstance->count++;
     myInstance->lastThreadID = currentThreadId;
     myInstance->defined      = true;
+    myInstance->read         = read;
 }
 
 RaceCondition::~RaceCondition()

@@ -16,6 +16,25 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
     SWAG_CHECK(doIdentifierRef(node));
     SWAG_CHECK(eatSemiCol("after 'using' declaration"));
 
+    // We must ensure that no job can be run before the using
+    if (!node->ownerFct)
+    {
+        for (auto child : parent->childs)
+        {
+            switch (child->kind)
+            {
+            case AstNodeKind::CompilerImport:
+            case AstNodeKind::CompilerAssert:
+            case AstNodeKind::Using:
+            case AstNodeKind::IdentifierRef:
+                break;
+
+            default:
+                return error(node->token, "global 'using' must be defined at the top of the file");
+            }
+        }
+    }
+
     return true;
 }
 

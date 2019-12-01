@@ -11,6 +11,7 @@
 #include "SymTable.h"
 #include "Attribute.h"
 #include "Scope.h"
+#include "RaceCondition.h"
 
 struct SemanticContext;
 struct ByteCodeGenContext;
@@ -56,7 +57,7 @@ enum class AstNodeKind
     TypeExpression,
     TypeLambda,
     Namespace,
-	Using,
+    Using,
     If,
     While,
     For,
@@ -354,6 +355,7 @@ struct AstNode : public PoolElement
     RegisterList  additionalRegisterRC;
     RegisterList  contiguousRegisterRC;
     uint32_t      fctCallStorageOffset;
+    SWAG_RACE_CONDITION_INSTANCE(raceConditionAlternativeScopes);
 };
 
 struct AstVarDecl : public AstNode
