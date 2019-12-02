@@ -38,7 +38,7 @@ JobResult ModuleOutputJob::execute()
             auto compileJob                      = g_Pool_moduleCompileJob.alloc();
             compileJob->module                   = module;
             compileJob->buildParameters          = module->buildParameters;
-            compileJob->buildParameters.destFile = g_Workspace.targetTestPath.string() + module->name;
+            compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + "/" + module->name;
             compileJob->buildParameters.type     = BackendOutputType::Binary;
             compileJob->buildParameters.postFix  = ".test";
             compileJob->buildParameters.flags |= BUILDPARAM_FOR_TEST;

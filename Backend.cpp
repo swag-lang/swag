@@ -407,7 +407,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
 
 bool Backend::preCompile()
 {
-    auto targetPath    = module->fromTests ? g_Workspace.targetTestPath.string() : g_Workspace.targetPath.string();
+    auto targetPath    = g_Workspace.targetPath.string();
     bufferSwg.fileName = targetPath + "\\" + module->name + ".generated.swg";
 
     // Do we need to generate the file ?

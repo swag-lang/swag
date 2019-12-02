@@ -27,7 +27,6 @@ struct Workspace
     CompilerTarget       target;
     fs::path             workspacePath;
     fs::path             targetPath;
-    fs::path             targetTestPath;
     fs::path             testsPath;
     fs::path             modulesPath;
     fs::path             dependenciesPath;

@@ -138,17 +138,17 @@ void Workspace::enumerateModules(const fs::path& path)
 
 void Workspace::enumerateModules()
 {
-	// If no module is specified, just compiled all modules in the workspace
+    // If no module is specified, just compiled all modules in the workspace
     if (g_CommandLine.modulePath.empty())
     {
+        enumerateModules(dependenciesPath);
+        enumerateModules(modulesPath);
         if (g_CommandLine.test)
             enumerateModules(testsPath);
-        enumerateModules(modulesPath);
-        enumerateModules(dependenciesPath);
         g_ThreadMgr.waitEndJobs();
     }
 
-	// Else compile the module and its dependencies
+    // Else compile the module and its dependencies
     else
     {
         vector<fs::path> modulesToGo;
@@ -169,14 +169,14 @@ void Workspace::enumerateModules()
                     depPath.append(depName);
                     if (!fs::exists(depPath))
                     {
-						depPath = modulesPath;
-						depPath.append(depName);
-						if (!fs::exists(depPath))
-						{
-							continue;
-						}
+                        depPath = modulesPath;
+                        depPath.append(depName);
+                        if (!fs::exists(depPath))
+                        {
+                            continue;
+                        }
                     }
-					
+
                     modulesToGo.push_back(depPath);
                 }
             }
@@ -546,14 +546,6 @@ void Workspace::setupTarget()
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
         g_Log.error(format("fatal error: cannot create target directory '%s'", targetPath.string().c_str()));
-        exit(-1);
-    }
-
-    targetTestPath = targetPath;
-    targetTestPath.append("/");
-    if (!fs::exists(targetTestPath) && !fs::create_directories(targetTestPath, errorCode))
-    {
-        g_Log.error(format("fatal error: cannot create target directory '%s'", targetTestPath.string().c_str()));
         exit(-1);
     }
 }
