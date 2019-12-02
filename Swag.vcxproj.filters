@@ -336,6 +336,9 @@
     <ClCompile Include="ModuleBuildJob.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleTestJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -547,6 +550,9 @@
     <ClInclude Include="CopyFileJob.h" />
     <ClInclude Include="ModuleBuildJob.h">
       <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTestJob.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

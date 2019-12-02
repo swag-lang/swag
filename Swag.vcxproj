@@ -173,6 +173,7 @@
     <ClInclude Include="Generic.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="ModuleBuildJob.h" />
+    <ClInclude Include="ModuleTestJob.h" />
     <ClInclude Include="Os.h" />
     <ClInclude Include="CompilerTarget.h" />
     <ClInclude Include="ModuleCompileJob.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="ModuleCompileJob.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
+    <ClCompile Include="ModuleTestJob.cpp" />
     <ClCompile Include="OsWin32.cpp" />
     <ClCompile Include="OutputFile.cpp" />
     <ClCompile Include="RaceCondition.cpp" />

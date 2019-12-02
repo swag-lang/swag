@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ModuleCompileJob.h"
+#include "ModuleTestJob.h"
 #include "BackendC.h"
 #include "Stats.h"
 #include "Workspace.h"
@@ -21,27 +22,20 @@ JobResult ModuleCompileJob::execute()
         condVar->notify_all();
     }
 
-	// The module is built, so notify (we notify before the test)
-	module->setHasBeenBuilt();
+    // The module is built, so notify (we notify before the test)
+    module->setHasBeenBuilt();
 
-    // Test
+    // Test job
+	// Do not set job->dependentModule, because nobody is dependent on that execution
+	// Test can be run "on the void"
     if (g_CommandLine.runBackendTests)
     {
         if (buildParameters.flags & BUILDPARAM_FOR_TEST)
         {
-            fs::path path = buildParameters.destFile + buildParameters.postFix;
-            path += OS::getOutputFileExtension(buildParameters.type);
-            if (fs::exists(path))
-            {
-                g_Log.messageHeaderCentered("Testing backend", module->name.c_str(), LogColor::DarkMagenta);
-                if (g_CommandLine.verbose && g_CommandLine.verboseBackendCommand)
-                    g_Log.verbose("running " + path.string());
-
-                uint32_t numErrors = 0;
-                OS::doProcess(path.string(), path.parent_path().parent_path().string(), true, numErrors, LogColor::Default);
-                g_Workspace.numErrors += numErrors;
-                module->numErrors += numErrors;
-            }
+            auto job             = g_Pool_moduleTestJob.alloc();
+            job->module          = module;
+            job->buildParameters = buildParameters;
+            g_ThreadMgr.addJob(job);
         }
     }
 
