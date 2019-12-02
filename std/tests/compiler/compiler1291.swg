@@ -1,5 +1,3 @@
-#import "std"
-
 #[swag.macro]
 func visit(user: code)
 {

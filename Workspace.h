@@ -5,20 +5,15 @@ struct Module;
 struct Scope;
 struct CompilerTarget;
 
-enum class ModulesTypes
-{
-    Workspace,
-    Tests,
-    Dependencies,
-};
-
 struct Workspace
 {
     bool    buildTarget();
     bool    build();
     Module* createOrUseModule(const string& moduleName);
 
-    void    enumerateModules(const fs::path& path, ModulesTypes type);
+    Module* addModule(const fs::path& path);
+    void    enumerateModules();
+    void    enumerateModules(const fs::path& path);
     void    enumerateFilesInModule(const fs::path& path, Module* module);
     void    addRuntime();
     void    publishModule(Module* module);
@@ -35,8 +30,8 @@ struct Workspace
     fs::path             targetTestPath;
     fs::path             testsPath;
     fs::path             modulesPath;
-	fs::path             dependenciesPath;
-    shared_mutex             mutexModules;
+    fs::path             dependenciesPath;
+    shared_mutex         mutexModules;
     atomic<int>          numErrors = 0;
     vector<Module*>      modules;
     map<string, Module*> mapModulesNames;
