@@ -39,14 +39,14 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->addRuntimeModule = false;
     cmdLine->rebuild           = true;
     cmdLine->backendOutputTest = true;
-    cmdLine->backendOutput     = true;
+    cmdLine->backendOutput     = false;
     //cmdLine->cleanTarget       = true;
     //cmdLine->errorSourceOut    = false;
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
     //cmdLine->testFilter = "std15";
-    //cmdLine->fileFilter = "compiler";
+    cmdLine->fileFilter = "compiler1227";
 }
 
 void CommandLineParser::logArguments()
