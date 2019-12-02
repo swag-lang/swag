@@ -85,7 +85,7 @@ struct SymTable
     bool            checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind kind, SymbolName* symbol, bool checkSameName = false);
     SymbolName*     find(const Utf8Crc& name);
     SymbolName*     findNoLock(const Utf8Crc& name);
-    static void     decreaseOverloadNoLock(SymbolName* symbol, bool forceWakeup = false);
+    static void     decreaseOverloadNoLock(SymbolName* symbol);
 
     static const char* getArticleKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolKind kind);

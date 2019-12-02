@@ -97,8 +97,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     {
         unique_lock lock(symbol->mutex);
 
-        SymbolOverload* result      = nullptr;
-        bool            forceWakeup = false;
+        SymbolOverload* result = nullptr;
 
         // A structure is defined the first time as incomplete (so that it can reference itself)
         if (symbol->kind == SymbolKind::Struct || symbol->kind == SymbolKind::Interface || symbol->kind == SymbolKind::Function)
@@ -109,10 +108,6 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
                 {
                     result = resolved;
                     result->flags &= ~OVERLOAD_INCOMPLETE;
-
-                    // Need to wakeup dependent jobs, because they can rely on the fact that OVERLOAD_INCOMPLETE has been removed,
-                    // even if cptOverloads won't be null
-                    forceWakeup = true;
                     break;
                 }
             }
@@ -141,13 +136,13 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         // and so we can wakeup all jobs waiting for that symbol to be solved
         if (!(flags & OVERLOAD_INCOMPLETE))
         {
-            decreaseOverloadNoLock(symbol, forceWakeup);
+            decreaseOverloadNoLock(symbol);
         }
 
         // In case of an incomplete function, we can wakeup jobs too when every overloads have been covered,
         // because an incomplete function doesn't yet know its return type, but we don't need it in order
         // to make a match
-        else if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
+        if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
         {
             for (auto job : symbol->dependentJobs.list)
                 g_ThreadMgr.addJob(job);
@@ -158,10 +153,10 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     }
 }
 
-void SymTable::decreaseOverloadNoLock(SymbolName* symbol, bool forceWakeup)
+void SymTable::decreaseOverloadNoLock(SymbolName* symbol)
 {
     symbol->cptOverloads--;
-    if (symbol->cptOverloads == 0 || forceWakeup)
+    if (symbol->cptOverloads == 0)
     {
         for (auto job : symbol->dependentJobs.list)
             g_ThreadMgr.addJob(job);
