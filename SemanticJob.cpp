@@ -4,6 +4,7 @@
 #include "ThreadManager.h"
 #include "Ast.h"
 #include "AstNode.h"
+#include "SourceFile.h"
 
 Pool<SemanticJob> g_Pool_semanticJob;
 
@@ -26,10 +27,12 @@ bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* 
     return context->report({node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
 }
 
-SemanticJob* SemanticJob::newJob(SourceFile* sourceFile, AstNode* rootNode, bool run)
+SemanticJob* SemanticJob::newJob(Module* dependentModule, SourceFile* sourceFile, AstNode* rootNode, bool run)
 {
-    auto job        = g_Pool_semanticJob.alloc();
-    job->sourceFile = sourceFile;
+    auto job             = g_Pool_semanticJob.alloc();
+    job->sourceFile      = sourceFile;
+    job->module          = sourceFile->module;
+    job->dependentModule = dependentModule;
     job->nodes.push_back(rootNode);
     if (run)
         g_ThreadMgr.addJob(job);
@@ -105,7 +108,7 @@ JobResult SemanticJob::execute()
                     case AstNodeKind::TypeAlias:
                     case AstNodeKind::EnumDecl:
                     case AstNodeKind::StructDecl:
-					case AstNodeKind::InterfaceDecl:
+                    case AstNodeKind::InterfaceDecl:
                     case AstNodeKind::CompilerAssert:
                     case AstNodeKind::CompilerPrint:
                     case AstNodeKind::CompilerRun:
@@ -113,8 +116,10 @@ JobResult SemanticJob::execute()
                     case AstNodeKind::CompilerIf:
                     case AstNodeKind::Impl:
                     {
-                        auto job        = g_Pool_semanticJob.alloc();
-                        job->sourceFile = sourceFile;
+                        auto job             = g_Pool_semanticJob.alloc();
+                        job->sourceFile      = sourceFile;
+                        job->module          = module;
+                        job->dependentModule = dependentModule;
                         job->nodes.push_back(node);
                         nodes.pop_back();
                         g_ThreadMgr.addJob(job);

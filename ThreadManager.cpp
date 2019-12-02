@@ -8,6 +8,7 @@
 #include "Stats.h"
 #include "Job.h"
 #include "Context.h"
+#include "Module.h"
 
 ThreadManager g_ThreadMgr;
 
@@ -40,7 +41,22 @@ void ThreadManager::addJob(Job* job)
 {
     unique_lock lk(mutexAdd);
 
-    SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
+    // Be sure Job::hasEnded has been called before
+    // This shouldn't take a long time
+    while (true)
+    {
+        unique_lock lk1(job->executeMutex);
+        if (!(job->flags & JOB_IS_IN_THREAD))
+            break;
+    }
+
+    // We have a new dependency job
+    if (job->dependentModule)
+    {
+        unique_lock lk1(job->dependentModule->mutexDependency);
+        job->dependentModule->waitOnJobs++;
+    }
+
     job->flags &= ~JOB_IS_DEPENDENT;
 
     // Remove from pending list
@@ -65,8 +81,20 @@ bool ThreadManager::doneWithJobs()
     return queueJobs.empty() && processingJobs == 0;
 }
 
-void ThreadManager::jobHasEnded()
+void ThreadManager::jobHasEnded(Job* job)
 {
+    unique_lock lk(job->executeMutex);
+	job->flags &= ~JOB_IS_IN_THREAD;
+
+    // Wakeup build job for module if necessary
+    if (job->dependentModule)
+    {
+        unique_lock lk1(job->dependentModule->mutexDependency);
+		job->dependentModule->waitOnJobs--;
+        if (job->dependentModule->waitOnJobs == 0)
+            g_ThreadMgr.addJob(job->dependentModule->buildJob);
+    }
+
     processingJobs--;
     unique_lock<mutex> lk1(mutexDone);
     if (doneWithJobs())
@@ -83,7 +111,7 @@ void ThreadManager::waitEndJobs()
             auto result = job->execute();
             if (result == JobResult::ReleaseJob)
                 job->doneJob();
-            g_ThreadMgr.jobHasEnded();
+            g_ThreadMgr.jobHasEnded(job);
             continue;
         }
 

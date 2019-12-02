@@ -2,10 +2,9 @@
 #include "ModuleCompileJob.h"
 #include "BackendC.h"
 #include "Stats.h"
-#include "Module.h"
 #include "Workspace.h"
-#include "Global.h"
 #include "Os.h"
+#include "ThreadManager.h"
 
 Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
@@ -18,9 +17,12 @@ JobResult ModuleCompileJob::execute()
     // Notify we are done
     if (mutexDone)
     {
-        std::unique_lock<std::mutex> lk(*mutexDone);
+        unique_lock lk(*mutexDone);
         condVar->notify_all();
     }
+
+	// The module is built, so notify (we notify before the test)
+	module->setHasBeenBuilt();
 
     // Test
     if (g_CommandLine.runBackendTests)

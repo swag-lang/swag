@@ -12,7 +12,7 @@ struct ThreadManager
     void addJob(Job* job);
     Job* getJob(JobThread* thread);
     bool doneWithJobs();
-    void jobHasEnded();
+    void jobHasEnded(Job* job);
     void waitEndJobs();
     void addPendingJob(Job* job);
 

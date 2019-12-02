@@ -7,11 +7,14 @@ ByteCodeModuleManager g_ModuleMgr;
 
 bool ByteCodeModuleManager::isModuleLoaded(const string& name)
 {
+    shared_lock lk(mutex);
     return loadedModules.find(name) != loadedModules.end();
 }
 
 bool ByteCodeModuleManager::loadModule(const string& name)
 {
+    unique_lock lk(mutex);
+
     if (loadedModules.find(name) != loadedModules.end())
         return true;
 

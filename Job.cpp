@@ -1,19 +1,19 @@
 #include "pch.h"
 #include "Job.h"
 #include "ThreadManager.h"
-#include "Global.h"
-#include "SymTable.h"
 #include "SourceFile.h"
-#include "AstNode.h"
 #include "Diagnostic.h"
-#include "TypeInfo.h"
+#include "Module.h"
 
 void Job::doneJob()
 {
-    scoped_lock lk(executeMutex);
-    for (auto p : dependentJobs.list)
-        g_ThreadMgr.addJob(p);
-    dependentJobs.clear();
+    // Push back dependent jobs
+    {
+        unique_lock lk(executeMutex);
+        for (auto p : dependentJobs.list)
+            g_ThreadMgr.addJob(p);
+        dependentJobs.clear();
+    }
 }
 
 void Job::addDependentJob(Job* job)

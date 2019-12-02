@@ -49,7 +49,7 @@ struct SemanticJob : public Job
 {
     JobResult execute() override;
 
-    static SemanticJob* newJob(SourceFile* sourceFile, AstNode* rootNode, bool run);
+    static SemanticJob* newJob(Module* dependentModule, SourceFile* sourceFile, AstNode* rootNode, bool run);
     static bool         error(SemanticContext* context, const Utf8& msg);
     static bool         internalError(SemanticContext* context, const char* msg, AstNode* node = nullptr);
     static bool         checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);

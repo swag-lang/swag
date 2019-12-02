@@ -1,6 +1,5 @@
 #module compiler109
 
-
 #unittest error
 #unittest error
 enum A : u8

@@ -18,8 +18,6 @@ struct Workspace
     void    addRuntime();
     void    publishModule(Module* module);
     void    setup();
-    bool    buildModules(const vector<Module*>& list);
-    void    checkPendingJobs();
     Module* getModuleByName(const string& moduleName);
     void    deleteFolderContent(const fs::path& path);
     void    setupTarget();

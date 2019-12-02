@@ -10,6 +10,6 @@ func main ()
 
 attr toto: () -> "func"
 
-#unittest error;
+/*#unittest error;
 #[toto1]
-var a: bool;
+var a: bool;*/

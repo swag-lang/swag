@@ -8,6 +8,7 @@ struct ByteCodeModuleManager
     bool  isModuleLoaded(const string& name);
     void* getFnPointer(ByteCodeRunContext* context, const string& moduleName, const string& funcName);
 
+    shared_mutex       mutex;
     map<string, void*> loadedModules;
 };
 

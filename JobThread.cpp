@@ -50,7 +50,7 @@ void JobThread::loop()
         auto result = job->execute();
         if (result == JobResult::ReleaseJob)
             job->doneJob();
-        g_ThreadMgr.jobHasEnded();
+        g_ThreadMgr.jobHasEnded(job);
 
 #ifdef SWAG_HAS_ASSERT
         g_diagnosticInfos.clear();

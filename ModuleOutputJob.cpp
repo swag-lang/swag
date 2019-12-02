@@ -15,6 +15,9 @@ JobResult ModuleOutputJob::execute()
     if (module->fromTests && !g_CommandLine.backendOutputTest)
         return JobResult::ReleaseJob;
 
+    if (g_CommandLine.verboseBuildPass)
+        g_Log.verbose("-> backend pass");
+
     switch (g_CommandLine.backendType)
     {
     case BackendType::C:
@@ -46,19 +49,21 @@ JobResult ModuleOutputJob::execute()
         }
     }
 
-    // Compile the official normal version, except if it comes from the test folder
+    // Compile the official normal version, except if it comes from the test folder (because
+	// there's no official version for the test folder, only a test executable)
     if (!module->fromTests && g_CommandLine.backendOutputLegit)
     {
-        auto compileJob                      = g_Pool_moduleCompileJob.alloc();
-        compileJob->module                   = module;
-        compileJob->buildParameters          = module->buildParameters;
+        auto compileJob             = g_Pool_moduleCompileJob.alloc();
+        compileJob->module          = module;
+        compileJob->dependentModule = dependentModule;
+        compileJob->buildParameters = module->buildParameters;
 
-		// Temp output type
-		if(module->byteCodeMainFunc)
-			compileJob->buildParameters.type = BackendOutputType::Binary;
-		else
-			compileJob->buildParameters.type = BackendOutputType::DynamicLib;
-		module->buildParameters.type = compileJob->buildParameters.type;
+        // Temp output type
+        if (module->byteCodeMainFunc)
+            compileJob->buildParameters.type = BackendOutputType::Binary;
+        else
+            compileJob->buildParameters.type = BackendOutputType::DynamicLib;
+        module->buildParameters.type = compileJob->buildParameters.type;
 
         compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + "\\" + module->name;
         g_ThreadMgr.addJob(compileJob);

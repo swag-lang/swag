@@ -172,6 +172,7 @@
     <ClInclude Include="ffi_common.h" />
     <ClInclude Include="Generic.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="ModuleBuildJob.h" />
     <ClInclude Include="Os.h" />
     <ClInclude Include="CompilerTarget.h" />
     <ClInclude Include="ModuleCompileJob.h" />
@@ -274,6 +275,7 @@
     <ClCompile Include="JobThread.cpp" />
     <ClCompile Include="LanguageSpec.cpp" />
     <ClCompile Include="Module.cpp" />
+    <ClCompile Include="ModuleBuildJob.cpp" />
     <ClCompile Include="ModuleCompileJob.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />

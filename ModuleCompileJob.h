@@ -8,7 +8,6 @@ struct ModuleCompileJob : public Job
     JobResult execute() override;
 
     BuildParameters     buildParameters;
-    Module*             module    = nullptr;
     condition_variable* condVar   = nullptr;
     mutex*              mutexDone = nullptr;
 };

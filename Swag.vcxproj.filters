@@ -333,6 +333,9 @@
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="CopyFileJob.cpp" />
+    <ClCompile Include="ModuleBuildJob.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -542,6 +545,9 @@
     </ClInclude>
     <ClInclude Include="OsWin32.h" />
     <ClInclude Include="CopyFileJob.h" />
+    <ClInclude Include="ModuleBuildJob.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Threading">

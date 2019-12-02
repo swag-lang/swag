@@ -8,6 +8,7 @@
 #include "CopyFileJob.h"
 #include "ByteCode.h"
 #include "ByteCodeModuleManager.h"
+#include "ModuleBuildJob.h"
 #include "Os.h"
 
 Workspace g_Workspace;
@@ -221,268 +222,6 @@ void Workspace::addRuntime()
     g_ThreadMgr.addJob(job);
 }
 
-void Workspace::checkPendingJobs()
-{
-    if (g_ThreadMgr.pendingJobs.empty())
-        return;
-
-    for (auto pendingJob : g_ThreadMgr.pendingJobs)
-    {
-        auto firstNode = pendingJob->nodes.front();
-        if (!(firstNode->flags & AST_GENERATED))
-        {
-            auto sourceFile = pendingJob->sourceFile;
-            auto node       = pendingJob->nodes.back();
-            if (!sourceFile->numErrors)
-            {
-                if (pendingJob->waitingSymbolSolved && !firstNode->name.empty())
-                    sourceFile->report({node, node->token, format("cannot resolve %s '%s' because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
-                else if (pendingJob->waitingSymbolSolved)
-                    sourceFile->report({node, node->token, format("cannot resolve %s because identifier '%s' has not been solved (do you have a cycle ?)", AstNode::getNakedKindName(firstNode).c_str(), pendingJob->waitingSymbolSolved->name.c_str())});
-                else
-                    sourceFile->report({node, node->token, format("cannot resolve %s '%s'", AstNode::getNakedKindName(firstNode).c_str(), firstNode->name.c_str())});
-                sourceFile->numErrors = 0;
-            }
-        }
-    }
-
-    g_ThreadMgr.pendingJobs.clear();
-}
-
-bool Workspace::buildModules(const vector<Module*>& list)
-{
-    if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose("-> dependency pass");
-
-    auto timeBefore = chrono::high_resolution_clock::now();
-
-    // Dependency pass
-    // We add the "?.swg" file corresponding to the
-    // module we want to import
-    //////////////////////////////////////////////////
-    for (auto module : list)
-    {
-        module->hasBeenBuilt = true;
-        for (auto& dep : module->moduleDependencies)
-        {
-            auto node = dep.second.node;
-
-            // Now the .swg export file should be in the cache
-            bool generated = true;
-            auto path      = targetPath.string() + "\\" + node->name + ".generated.swg";
-            if (!fs::exists(path))
-            {
-                generated = false;
-                path      = targetPath.string() + "\\" + node->name + ".swg";
-            }
-
-            if (!fs::exists(path))
-            {
-                auto sourceFile = node->sourceFile;
-                sourceFile->report({node, format("cannot find module export file '%s'", path.c_str())});
-                continue;
-            }
-
-            // Then do syntax on it
-            auto job             = g_Pool_syntaxJob.alloc();
-            auto file            = g_Pool_sourceFile.alloc();
-            job->sourceFile      = file;
-            file->path           = move(path);
-            file->generated      = true;
-            dep.second.generated = generated;
-            module->addFile(file);
-            g_ThreadMgr.addJob(job);
-        }
-    }
-
-    g_ThreadMgr.waitEndJobs();
-
-    // Load all dependencies
-    //////////////////////////////////////////////////
-    for (auto module : list)
-    {
-        for (const auto& dep : module->moduleDependencies)
-        {
-            if (!g_ModuleMgr.loadModule(dep.first))
-            {
-                module->error(format("fail to load module '%s' => %s", dep.first.c_str(), OS::getLastErrorAsString().c_str()));
-            }
-        }
-    }
-
-    if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose("-> semantic pass");
-
-    // Semantic pass on all 'build.swg' files
-    //////////////////////////////////////////////////
-    for (auto module : list)
-    {
-        if (module == runtimeModule)
-            continue;
-        if (!module->buildFile)
-            continue;
-        auto job           = g_Pool_moduleSemanticJob.alloc();
-        job->module        = module;
-        job->buildFileMode = true;
-        g_ThreadMgr.addJob(job);
-    }
-
-    g_ThreadMgr.waitEndJobs();
-    checkPendingJobs();
-
-    // Publish the "/publish" folder of each module
-    // to the cache
-    //////////////////////////////////////////////////
-    for (auto module : list)
-    {
-        if (module == runtimeModule)
-            continue;
-        publishModule(module);
-    }
-
-    // Semantic pass on the rest of the files,
-    // for all modules
-    //////////////////////////////////////////////////
-    for (auto module : list)
-    {
-        if (module == runtimeModule)
-            continue;
-        auto job           = g_Pool_moduleSemanticJob.alloc();
-        job->module        = module;
-        job->buildFileMode = false;
-        g_ThreadMgr.addJob(job);
-    }
-
-    g_ThreadMgr.waitEndJobs();
-    checkPendingJobs();
-
-    auto timeAfter = chrono::high_resolution_clock::now();
-    g_Stats.frontendTime += timeAfter - timeBefore;
-
-    // Call bytecode test functions
-    //////////////////////////////////////////////////
-    for (auto module : list)
-    {
-        if ((g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty()) ||
-            !module->byteCodeRunFunc.empty())
-        {
-            // INIT
-            if (!module->byteCodeInitFunc.empty())
-            {
-                if (!module->numErrors)
-                {
-                    if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #init function(s)", module->name.c_str(), module->byteCodeInitFunc.size()));
-
-                    for (auto func : module->byteCodeInitFunc)
-                    {
-                        module->executeNode(func->node->sourceFile, func->node);
-                    }
-                }
-            }
-
-            // #TEST
-            if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !module->byteCodeTestFunc.empty())
-            {
-                if (!module->numErrors)
-                {
-                    if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #test function(s)", module->name.c_str(), module->byteCodeTestFunc.size()));
-
-                    for (auto func : module->byteCodeTestFunc)
-                    {
-                        g_Stats.testFunctions++;
-                        module->executeNode(func->node->sourceFile, func->node);
-                    }
-                }
-            }
-
-            // #RUN
-            if (!module->byteCodeRunFunc.empty())
-            {
-                if (!module->numErrors)
-                {
-                    if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #run function(s)", module->name.c_str(), module->byteCodeRunFunc.size()));
-
-                    for (auto func : module->byteCodeRunFunc)
-                    {
-                        g_Stats.testFunctions++;
-                        module->executeNode(func->node->sourceFile, func->node);
-                    }
-                }
-            }
-
-            // DROP
-            if (!module->byteCodeDropFunc.empty())
-            {
-                if (!module->numErrors)
-                {
-                    if (g_CommandLine.verboseBuildPass)
-                        g_Log.verbose(format("   module '%s', bytecode execution of %d #drop function(s)", module->name.c_str(), module->byteCodeDropFunc.size()));
-
-                    for (auto func : module->byteCodeDropFunc)
-                    {
-                        module->executeNode(func->node->sourceFile, func->node);
-                    }
-                }
-            }
-        }
-    }
-
-    // During unit testing, be sure we don't have
-    // remaining not raised errors
-    //////////////////////////////////////////////////
-    if (g_CommandLine.test && g_CommandLine.runByteCodeTests)
-    {
-        for (auto module : list)
-        {
-            for (auto file : module->files)
-            {
-                if (file->unittestError)
-                {
-                    auto nb             = file->unittestError;
-                    file->unittestError = 0;
-                    file->report({file, format("missing unittest errors: %d (%d raised)", nb, file->numErrors)});
-                }
-            }
-        }
-    }
-
-    // Output pass on all modules
-    //////////////////////////////////////////////////
-    if (g_CommandLine.backendOutput)
-    {
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose("-> backend pass");
-
-        timeBefore = chrono::high_resolution_clock::now();
-
-        for (auto module : list)
-        {
-            if (module->numErrors > 0)
-                continue;
-            if (module->name.empty())
-                continue;
-            if (module->buildPass < BuildPass::Backend)
-                continue;
-            if (module->files.size() == 0)
-                continue;
-
-            auto outputJob    = g_Pool_moduleOutputJob.alloc();
-            outputJob->module = module;
-            g_ThreadMgr.addJob(outputJob);
-        }
-
-        g_ThreadMgr.waitEndJobs();
-
-        timeAfter = chrono::high_resolution_clock::now();
-        g_Stats.backendTime += timeAfter - timeBefore;
-    }
-
-    return true;
-}
-
 void Workspace::setup()
 {
     workspacePath = g_CommandLine.workspacePath;
@@ -587,68 +326,18 @@ bool Workspace::buildTarget()
         }
     }
 
-    // Build modules in dependency order
+    // Build modules
     //////////////////////////////////////////////////
-    vector<Module*> order;
-    vector<Module*> remain = modules;
-    vector<Module*> nextRemain;
-    int             pass = 1;
-    while (!remain.empty())
+    for (auto module : modules)
     {
-        for (auto module : remain)
-        {
-            if (module->numErrors > 0)
-                continue;
-            if (module->buildPass < BuildPass::Semantic)
-                continue;
-
-            bool canBuild  = true;
-            bool hasErrors = false;
-            for (const auto& dep : module->moduleDependencies)
-            {
-                auto it = mapModulesNames.find(dep.first);
-                if (it != mapModulesNames.end() && it->second->numErrors)
-                {
-                    hasErrors = true;
-                }
-                if (it != mapModulesNames.end() && !it->second->hasBeenBuilt)
-                {
-                    canBuild = false;
-                    break;
-                }
-            }
-
-            if (hasErrors)
-                module->numErrors++;
-            else if (canBuild)
-                order.push_back(module);
-            else
-                nextRemain.push_back(module);
-        }
-
-        // Nothing to build !
-        if (order.empty())
-        {
-            for (auto module : remain)
-            {
-                if (!module->numErrors)
-                    module->error("cannot compute the build order. do you have a dependency cycle ?");
-            }
-
-            return false;
-        }
-
-        if (g_CommandLine.verboseBuildPass)
-            g_Log.verbose(format("## starting build pass #%d on %d module(s)", pass, (int) order.size()));
-
-        buildModules(order);
-
-        pass++;
-        remain = nextRemain;
-        order.clear();
-        nextRemain.clear();
+		if (module == runtimeModule)
+			continue;
+        auto job    = g_Pool_moduleBuildJob.alloc();
+        job->module = module;
+        g_ThreadMgr.addJob(job);
     }
 
+    g_ThreadMgr.waitEndJobs();
     return true;
 }
 
@@ -657,8 +346,9 @@ bool Workspace::build()
     setup();
 
     g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.config.c_str(), g_CommandLine.arch.c_str()));
-
     addRuntime();
     setupTarget();
-    return buildTarget();
+    SWAG_CHECK(buildTarget());
+
+	return true;
 }

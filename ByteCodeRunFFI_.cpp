@@ -68,7 +68,7 @@ void* ByteCodeRun::ffiGetFuncAddress(ByteCodeRunContext* context, ByteCodeInstru
         g_ThreadMgr.addJob(compileJob);
 
         // Sync wait for the dll to be generated
-        std::unique_lock<std::mutex> lk(mutexDone);
+        unique_lock lk(mutexDone);
         condVar.wait(lk);
 
         // Last try

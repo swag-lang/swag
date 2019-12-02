@@ -1,13 +1,12 @@
 #include "pch.h"
 #include "Module.h"
-#include "SourceFile.h"
 #include "ByteCodeRun.h"
 #include "Workspace.h"
-#include "Scope.h"
 #include "Ast.h"
 #include "ByteCode.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
+#include "ThreadManager.h"
 
 Pool<Module> g_Pool_module;
 
@@ -155,6 +154,17 @@ void Module::addDependency(AstNode* importNode)
         dep.name                             = importNode->name;
         moduleDependencies[importNode->name] = dep;
     }
+}
+
+void Module::setHasBeenBuilt()
+{
+    unique_lock lk(mutexDependency);
+    if (hasBeenBuilt)
+        return;
+    hasBeenBuilt = true;
+    for (auto job : dependentJobs.list)
+        g_ThreadMgr.addJob(job);
+    dependentJobs.clear();
 }
 
 void Module::error(const Utf8& msg)

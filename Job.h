@@ -5,6 +5,7 @@ struct JobThread;
 struct AstNode;
 struct SymbolName;
 struct SourceFile;
+struct Module;
 struct Diagnostic;
 struct TypeInfo;
 
@@ -46,7 +47,7 @@ struct Job
     virtual JobResult execute() = 0;
 
     void addDependentJob(Job* job);
-    void doneJob();
+	void doneJob();
     void waitForSymbolNoLock(SymbolName* symbol);
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void setPending();
@@ -58,6 +59,8 @@ struct Job
     JobThread*       thread              = nullptr;
     SymbolName*      waitingSymbolSolved = nullptr;
     SourceFile*      sourceFile          = nullptr;
+    Module*          module              = nullptr;
+    Module*          dependentModule     = nullptr;
     JobContext*      baseContext         = nullptr;
     uint32_t         flags               = 0;
     int32_t          pendingIndex        = -1;
