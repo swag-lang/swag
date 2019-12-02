@@ -53,8 +53,8 @@ bool JobThread::executeJob(Job* job, bool& exception)
 void JobThread::loop()
 {
     // TLS context
-    TlsSetValue(g_tlsContextIdByteCode, &g_defaultContextByteCode);
-    TlsSetValue(g_tlsContextIdBackend, &g_defaultContextBackend);
+    OS::tlsSetValue(g_tlsContextIdByteCode, &g_defaultContextByteCode);
+    OS::tlsSetValue(g_tlsContextIdBackend, &g_defaultContextBackend);
 
     while (!requestEnd)
     {
