@@ -79,12 +79,11 @@ JobResult ModuleBuildJob::execute()
             file->generated            = true;
             dep.second.generated       = generated;
             module->addFile(file);
-            g_ThreadMgr.addJob(syntaxJob);
+            jobsToAdd.push_back(syntaxJob);
         }
 
         // Sync with all jobs
-        unique_lock lk(module->mutexDependency);
-        if (module->waitOnJobs)
+        if (!jobsToAdd.empty())
             return JobResult::KeepJobAlive;
     }
 
@@ -112,11 +111,8 @@ JobResult ModuleBuildJob::execute()
         semanticJob->module          = module;
         semanticJob->dependentModule = module;
         semanticJob->buildFileMode   = true;
-        g_ThreadMgr.addJob(semanticJob);
-
-        unique_lock lk(module->mutexDependency);
-        if (module->waitOnJobs)
-            return JobResult::KeepJobAlive;
+        jobsToAdd.push_back(semanticJob);
+        return JobResult::KeepJobAlive;
     }
 
     //////////////////////////////////////////////////
@@ -136,11 +132,8 @@ JobResult ModuleBuildJob::execute()
         semanticJob->module          = module;
         semanticJob->dependentModule = module;
         semanticJob->buildFileMode   = false;
-        g_ThreadMgr.addJob(semanticJob);
-
-        unique_lock lk(module->mutexDependency);
-        if (module->waitOnJobs)
-            return JobResult::KeepJobAlive;
+        jobsToAdd.push_back(semanticJob);
+        return JobResult::KeepJobAlive;
     }
 
     //////////////////////////////////////////////////
@@ -248,18 +241,15 @@ JobResult ModuleBuildJob::execute()
                 auto outputJob             = g_Pool_moduleOutputJob.alloc();
                 outputJob->module          = module;
                 outputJob->dependentModule = module;
-                g_ThreadMgr.addJob(outputJob);
-
-                unique_lock lk(module->mutexDependency);
-                if (module->waitOnJobs)
-                    return JobResult::KeepJobAlive;
+                jobsToAdd.push_back(outputJob);
+                return JobResult::KeepJobAlive;
             }
         }
     }
 
     timeAfter = chrono::high_resolution_clock::now();
     g_Stats.backendTime += timeAfter - timeBefore;
-	module->setHasBeenBuilt();
+    module->setHasBeenBuilt();
 
     return JobResult::ReleaseJob;
 }

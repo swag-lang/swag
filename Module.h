@@ -82,13 +82,13 @@ struct Module
     AstNode*             mainIsDefined    = nullptr;
 
     void addDependency(AstNode* importNode);
-	void setHasBeenBuilt();
+    void setHasBeenBuilt();
 
     shared_mutex                  mutexDependency;
     map<string, ModuleDependency> moduleDependencies;
     bool                          hasBeenBuilt = false;
     Job*                          buildJob     = nullptr;
-    uint32_t                      waitOnJobs   = 0;
+    atomic<int>                   waitOnJobs   = 0;
 
     TypeTable typeTable;
 };

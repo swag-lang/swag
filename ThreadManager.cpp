@@ -37,28 +37,42 @@ ThreadManager::~ThreadManager()
     delete savingThread;
 }
 
+void ThreadManager::addJobs(const vector<Job*>& jobs)
+{
+    unique_lock lk(mutexAdd);
+
+    for (auto job : jobs)
+    {
+        SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
+        job->flags &= ~JOB_IS_DEPENDENT;
+
+        // We have a new dependency job
+        if (job->dependentModule)
+            job->dependentModule->waitOnJobs++;
+    }
+
+    for (auto job : jobs)
+    {
+        addJobNoLock(job);
+    }
+}
+
 void ThreadManager::addJob(Job* job)
 {
     unique_lock lk(mutexAdd);
 
-    // Be sure Job::hasEnded has been called before
-    // This shouldn't take a long time
-    while (true)
-    {
-        unique_lock lk1(job->executeMutex);
-        if (!(job->flags & JOB_IS_IN_THREAD))
-            break;
-    }
+    SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
+    job->flags &= ~JOB_IS_DEPENDENT;
 
     // We have a new dependency job
     if (job->dependentModule)
-    {
-        unique_lock lk1(job->dependentModule->mutexDependency);
         job->dependentModule->waitOnJobs++;
-    }
 
-    job->flags &= ~JOB_IS_DEPENDENT;
+    addJobNoLock(job);
+}
 
+void ThreadManager::addJobNoLock(Job* job)
+{
     // Remove from pending list
     if (job->pendingIndex != -1)
     {
@@ -76,29 +90,46 @@ void ThreadManager::addJob(Job* job)
     thread->notifyJob();
 }
 
-bool ThreadManager::doneWithJobs()
+void ThreadManager::executeOneJob(Job* job)
 {
-    return queueJobs.empty() && processingJobs == 0;
+    auto result = job->execute();
+    if (result == JobResult::ReleaseJob)
+    {
+        job->doneJob();
+    }
+
+    jobHasEnded(job);
+    if (result == JobResult::KeepJobAlive)
+    {
+        addJobs(job->jobsToAdd);
+        job->jobsToAdd.clear();
+    }
 }
 
 void ThreadManager::jobHasEnded(Job* job)
 {
-    unique_lock lk(job->executeMutex);
-	job->flags &= ~JOB_IS_IN_THREAD;
+    unique_lock lk(mutexAdd);
+
+    job->flags &= ~JOB_IS_IN_THREAD;
 
     // Wakeup build job for module if necessary
     if (job->dependentModule)
     {
-        unique_lock lk1(job->dependentModule->mutexDependency);
-		job->dependentModule->waitOnJobs--;
-        if (job->dependentModule->waitOnJobs == 0)
-            g_ThreadMgr.addJob(job->dependentModule->buildJob);
+        job->dependentModule->waitOnJobs--;
+        if (!job->dependentModule->waitOnJobs)
+            g_ThreadMgr.addJobNoLock(job->dependentModule->buildJob);
     }
 
     processingJobs--;
-    unique_lock<mutex> lk1(mutexDone);
+
+    unique_lock lk1(mutexDone);
     if (doneWithJobs())
         condVarDone.notify_all();
+}
+
+bool ThreadManager::doneWithJobs()
+{
+    return queueJobs.empty() && processingJobs == 0;
 }
 
 void ThreadManager::waitEndJobs()
@@ -108,17 +139,14 @@ void ThreadManager::waitEndJobs()
         auto job = getJob();
         if (job)
         {
-            auto result = job->execute();
-            if (result == JobResult::ReleaseJob)
-                job->doneJob();
-            g_ThreadMgr.jobHasEnded(job);
+            executeOneJob(job);
             continue;
         }
 
-        unique_lock<mutex> lk1(mutexDone);
+        unique_lock lk(mutexDone);
         if (doneWithJobs())
             break;
-        condVarDone.wait(lk1);
+        condVarDone.wait(lk);
     }
 }
 

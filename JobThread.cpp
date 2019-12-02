@@ -47,10 +47,7 @@ void JobThread::loop()
             continue;
         }
 
-        auto result = job->execute();
-        if (result == JobResult::ReleaseJob)
-            job->doneJob();
-        g_ThreadMgr.jobHasEnded(job);
+        g_ThreadMgr.executeOneJob(job);
 
 #ifdef SWAG_HAS_ASSERT
         g_diagnosticInfos.clear();

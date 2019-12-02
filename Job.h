@@ -47,7 +47,7 @@ struct Job
     virtual JobResult execute() = 0;
 
     void addDependentJob(Job* job);
-	void doneJob();
+    void doneJob();
     void waitForSymbolNoLock(SymbolName* symbol);
     void waitForAllStructInterfaces(TypeInfo* typeInfo);
     void setPending();
@@ -56,6 +56,7 @@ struct Job
     DependentJobs    dependentJobs;
     vector<AstNode*> dependentNodes;
     vector<AstNode*> nodes;
+    vector<Job*>     jobsToAdd;
     JobThread*       thread              = nullptr;
     SymbolName*      waitingSymbolSolved = nullptr;
     SourceFile*      sourceFile          = nullptr;
