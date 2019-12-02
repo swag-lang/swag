@@ -23,7 +23,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("--clean-target", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
     addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild);
 
-	addArg("--module", "-m", CommandLineType::String, &cmdLine->modulePath);
+    addArg("--module", "-m", CommandLineType::String, &cmdLine->modulePath);
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
@@ -37,6 +37,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->cleanTarget   = false;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->modulePath    = "tests/compiler";
+    //cmdLine->fileFilter    = "1048";
     //cmdLine->addRuntimeModule = false;
     cmdLine->rebuild           = true;
     cmdLine->backendOutputTest = true;
@@ -46,8 +47,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     //cmdLine->runBackendTests   = false;
     //cmdLine->verboseBuildPass = false;
     //cmdLine->verboseUnittestErrors = true;
-    //cmdLine->testFilter = "std15";
-    //cmdLine->fileFilter = "compiler1227";
 }
 
 void CommandLineParser::logArguments()

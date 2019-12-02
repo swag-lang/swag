@@ -205,8 +205,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
     // Decrease interfaces count to resolve
     for (auto typeStruct : block->interfacesCount)
     {
-        scoped_lock lk(typeStruct->mutex);
-        decreaseInterfaceCountNoLock(typeStruct);
+        decreaseInterfaceCount(typeStruct);
     }
 
     // Do the same for all embedded blocks

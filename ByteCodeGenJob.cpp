@@ -283,6 +283,7 @@ JobResult ByteCodeGenJob::execute()
             waitForAllStructInterfaces(typeStruct);
             if (context.result == ContextResult::Pending)
                 return JobResult::KeepJobAlive;
+            SWAG_ASSERT(typeStruct->interfaces.size() == 1);
             auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
             SWAG_ASSERT(itable);
             SWAG_ASSERT(((void**) itable)[0]);

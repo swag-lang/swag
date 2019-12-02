@@ -72,14 +72,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(context->bp);
         context->push(context->bc);
         context->push(context->ip);
-        context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
 
+        context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
         if (!context->bc)
         {
-            context->error("dereferencing a null pointer");
+            context->error("lambda call, dereferencing a null pointer");
             break;
         }
 
+        context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
         context->ip = context->bc->out;
         SWAG_ASSERT(context->ip);
         context->bp = context->sp;
@@ -269,13 +270,13 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         }
 
-		if (!dst)
+        if (!dst)
         {
             context->error("source pointer of @memcmp is null");
             break;
         }
 
-		registersRC[ip->a.u32].s32 = memcmp(dst, src, size);
+        registersRC[ip->a.u32].s32 = memcmp(dst, src, size);
         break;
     }
 

@@ -541,6 +541,7 @@ struct TypeInfoStruct : public TypeInfo
     void           match(SymbolMatchContext& context);
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
+	TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
 
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> childs;

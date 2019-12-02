@@ -514,6 +514,11 @@ TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
 TypeInfoParam* TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
 {
     shared_lock lk(mutex);
+    return hasInterfaceNoLock(itf);
+}
+
+TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(TypeInfoStruct* itf)
+{
     for (auto child : interfaces)
     {
         if (child->typeInfo->isSame(itf, ISSAME_CAST))

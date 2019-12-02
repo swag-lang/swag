@@ -74,15 +74,18 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     mapItIdxToFunc.resize(numFctInterface, nullptr);
 
     // Register interface in the structure
-    auto typeParamItf = typeStruct->hasInterface(typeBaseInterface);
-    if (!typeParamItf)
+    TypeInfoParam* typeParamItf = nullptr;
     {
-        typeParamItf             = g_Pool_typeInfoParam.alloc();
-        typeParamItf->namedParam = typeBaseInterface->name;
-        typeParamItf->typeInfo   = typeBaseInterface;
-        typeParamItf->node       = typeBaseInterface->structNode;
-        scoped_lock lk(typeStruct->mutex);
-        typeStruct->interfaces.push_back(typeParamItf);
+        unique_lock lk(typeStruct->mutex);
+        typeParamItf = typeStruct->hasInterfaceNoLock(typeBaseInterface);
+        if (!typeParamItf)
+        {
+            typeParamItf             = g_Pool_typeInfoParam.alloc();
+            typeParamItf->namedParam = typeBaseInterface->name;
+            typeParamItf->typeInfo   = typeBaseInterface;
+            typeParamItf->node       = typeBaseInterface->structNode;
+            typeStruct->interfaces.push_back(typeParamItf);
+        }
     }
 
     for (int i = 0; i < childs.size(); i++)
@@ -187,19 +190,20 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Setup constant segment offset
     typeParamItf->offset = itableOffset;
-    decreaseInterfaceCountNoLock(typeStruct);
+    decreaseInterfaceCount(typeStruct);
 
     return true;
 }
 
-void SemanticJob::decreaseInterfaceCountNoLock(TypeInfoStruct* typeInfoStruct)
+void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
 {
-    SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
+    unique_lock lk(typeInfoStruct->mutex);
+    unique_lock lk1(typeInfoStruct->scope->symTable.mutex);
 
+    SWAG_ASSERT(typeInfoStruct->cptRemainingInterfaces);
     typeInfoStruct->cptRemainingInterfaces--;
     if (!typeInfoStruct->cptRemainingInterfaces)
     {
-        scoped_lock lk(typeInfoStruct->scope->symTable.mutex);
         for (auto job : typeInfoStruct->scope->dependentJobs.list)
             g_ThreadMgr.addJob(job);
         typeInfoStruct->scope->dependentJobs.clear();
