@@ -7,6 +7,7 @@ struct OutputFile : public Concat
     string                     fileName;
     ConcatBucket*              lastFlushedBucket = nullptr;
     SaveThreadRequest*         lastRequest       = nullptr;
+    FILE*                      openFile          = nullptr;
     mutex                      mutexNotify;
     condition_variable         condVar;
     vector<SaveThreadRequest*> reqToRelease;

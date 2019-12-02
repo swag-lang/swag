@@ -60,8 +60,8 @@ void SavingThread::getRequests(vector<SaveThreadRequest*>& requests)
     while (!queueRequests.empty())
     {
         auto frontReq = queueRequests.front();
-		if (frontReq->file != req->file)
-			break;
+        if (frontReq->file != req->file)
+            break;
         queueRequests.pop_front();
         requests.push_back(frontReq);
     }
@@ -89,19 +89,24 @@ void SavingThread::loop()
             continue;
         }
 
-        FILE* file     = nullptr;
         auto  frontReq = requests.front();
-        for (int tryOpen = 0; tryOpen < 10; tryOpen++)
+        FILE* file     = frontReq->file->openFile;
+        if (!file)
         {
-            // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
-            // Without that, fopen can fail due to compiling processes
-            if (frontReq->firstSave)
-                fopen_s(&file, frontReq->file->fileName.c_str(), "wtN");
-            else
-                fopen_s(&file, frontReq->file->fileName.c_str(), "a+tN");
-            if (file)
-                break;
-            Sleep(10);
+            for (int tryOpen = 0; tryOpen < 10; tryOpen++)
+            {
+                // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
+                // Without that, fopen can fail due to compiling processes
+                if (frontReq->firstSave)
+                    fopen_s(&file, frontReq->file->fileName.c_str(), "wtN");
+                else
+                    fopen_s(&file, frontReq->file->fileName.c_str(), "a+tN");
+                if (file)
+                    break;
+                Sleep(10);
+            }
+
+			frontReq->file->openFile = file;
         }
 
         if (!file)
@@ -121,7 +126,5 @@ void SavingThread::loop()
             fwrite(req->buffer, 1, req->bufferSize, file);
             req->file->notifySave(req);
         }
-
-        fclose(file);
     }
 }
