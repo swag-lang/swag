@@ -128,18 +128,20 @@ void Workspace::enumerateModules(const fs::path& path, ModulesTypes type)
 
 void Workspace::publishModule(Module* module)
 {
-	if (module->path.empty())
-		return;
+    if (module->path.empty())
+        return;
     // Scan source folder
     string publishPath = module->path + "/publish";
-    string searchPath  = publishPath;
-    OS::visitFiles(searchPath.c_str(), [&](const char* cFileName) {
-        auto job        = g_Pool_copyFileJob.alloc();
-        job->module     = module;
-        job->sourcePath = publishPath + "/" + cFileName;
-        job->destPath   = targetPath.string() + "/" + cFileName;
-        g_ThreadMgr.addJob(job);
-    });
+    if (fs::exists(publishPath))
+    {
+        OS::visitFiles(publishPath.c_str(), [&](const char* cFileName) {
+            auto job        = g_Pool_copyFileJob.alloc();
+            job->module     = module;
+            job->sourcePath = publishPath + "/" + cFileName;
+            job->destPath   = targetPath.string() + "/" + cFileName;
+            g_ThreadMgr.addJob(job);
+        });
+    }
 }
 
 void Workspace::addRuntime()
