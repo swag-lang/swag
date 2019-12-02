@@ -77,6 +77,16 @@ void ThreadManager::waitEndJobs()
 {
     while (true)
     {
+        auto job = getJob();
+        if (job)
+        {
+            auto result = job->execute();
+            if (result == JobResult::ReleaseJob)
+                job->doneJob();
+            g_ThreadMgr.jobHasEnded();
+            continue;
+        }
+
         unique_lock<mutex> lk1(mutexDone);
         if (doneWithJobs())
             break;

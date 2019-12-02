@@ -11,7 +11,7 @@
 JobThread::JobThread()
 {
     thread = new std::thread(&JobThread::loop, this);
-	OS::setThreadName(thread, "JobThread");
+    OS::setThreadName(thread, "JobThread");
 }
 
 JobThread::~JobThread()
@@ -31,27 +31,6 @@ void JobThread::waitJob()
     condVar.wait(lk);
 }
 
-bool JobThread::executeJob(Job* job, bool& exception)
-{
-    //__try
-    {
-        auto result = job->execute();
-        if (result == JobResult::ReleaseJob)
-        {
-            job->doneJob();
-        }
-
-        g_ThreadMgr.jobHasEnded();
-    }
-    /*__except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        exception = true;
-        return false;
-    }*/
-
-    return true;
-}
-
 void JobThread::loop()
 {
     // TLS context
@@ -68,11 +47,10 @@ void JobThread::loop()
             continue;
         }
 
-        bool exception = false;
-        if (!executeJob(job, exception))
-        {
-            g_Log.error("executeJob, unhandled exception");
-        }
+        auto result = job->execute();
+        if (result == JobResult::ReleaseJob)
+            job->doneJob();
+        g_ThreadMgr.jobHasEnded();
 
 #ifdef SWAG_HAS_ASSERT
         g_diagnosticInfos.clear();
