@@ -2,12 +2,14 @@
 #include "LoadingThread.h"
 #include "SourceFile.h"
 #include "Assert.h"
+#include "ThreadManager.h"
 #include "Os.h"
+#include "Job.h"
 
 LoadingThread::LoadingThread()
 {
     thread = new std::thread(&LoadingThread::loop, this);
-	OS::setThreadName(thread, "LoadingThread");
+    OS::setThreadName(thread, "LoadingThread");
 }
 
 LoadingThread::~LoadingThread()
@@ -40,14 +42,14 @@ LoadingThreadRequest* LoadingThread::newRequest()
 
 void LoadingThread::addRequest(LoadingThreadRequest* request)
 {
-    lock_guard<mutex> lk(mutexAdd);
+    unique_lock lk(mutexAdd);
     queueRequests.push_back(request);
     condVar.notify_one();
 }
 
 LoadingThreadRequest* LoadingThread::getRequest()
 {
-    lock_guard<mutex> lk(mutexAdd);
+    unique_lock lk(mutexAdd);
     if (queueRequests.empty())
         return nullptr;
     auto req = queueRequests.back();
@@ -57,9 +59,9 @@ LoadingThreadRequest* LoadingThread::getRequest()
 
 void LoadingThread::waitRequest()
 {
-    unique_lock<mutex> lk(mutexAdd);
-	if (queueRequests.size())
-		return;
+    unique_lock lk(mutexAdd);
+    if (queueRequests.size())
+        return;
     condVar.wait(lk);
 }
 
@@ -76,7 +78,7 @@ void LoadingThread::loop()
             continue;
         }
 
-		req->loadedSize = 0;
+        req->loadedSize = 0;
         if (req->file->open())
         {
             req->file->seekTo(req->seek);

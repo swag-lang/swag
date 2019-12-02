@@ -32,7 +32,7 @@ bool SourceFile::open()
 {
     if (fileHandle != nullptr)
         return true;
-	
+
     openedOnce = true;
 
     // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
@@ -108,14 +108,14 @@ long SourceFile::readTo(char* buffer)
 
 void SourceFile::waitRequest(int reqNum)
 {
-    std::unique_lock<std::mutex> lk(mutexNotify);
+    unique_lock lk(mutexNotify);
     if (!requests[reqNum]->done)
         condVar.wait(lk);
 }
 
 void SourceFile::notifyLoad()
 {
-    std::unique_lock<std::mutex> lk(mutexNotify);
+    unique_lock lk(mutexNotify);
     condVar.notify_one();
 }
 
@@ -199,9 +199,9 @@ char SourceFile::getPrivateChar()
             buildRequest(nextBufIndex);
         }
 
-		// Be sure there's something in the current buffer
-		if (bufferCurSeek >= buffersSize[bufferCurIndex])
-			return 0;
+        // Be sure there's something in the current buffer
+        if (bufferCurSeek >= buffersSize[bufferCurIndex])
+            return 0;
     }
 
     char c = buffers[bufferCurIndex][bufferCurSeek++];
