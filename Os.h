@@ -22,6 +22,7 @@ namespace OS
     extern void*         getProcAddress(void* handle, const char* name);
     extern void          visitFiles(const char* folder, function<void(const char*)> user);
     extern void          visitFolders(const char* folder, function<void(const char*)> user);
-    extern void          visitFilesFolders(const char* folder, function<void(const char*, bool)> user);
+    extern void          visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user);
     extern void          setThreadName(thread* thread, const char* threadName);
+    extern uint64_t      getFileWriteTime(string& fileName);
 } // namespace OS

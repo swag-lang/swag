@@ -314,6 +314,24 @@ namespace OS
         return ::GetProcAddress((HMODULE) handle, name);
     }
 
+    uint64_t getFileWriteTime(string& fileName)
+    {
+        auto hFile = CreateFileA(fileName.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+        if (hFile == INVALID_HANDLE_VALUE)
+            return 0;
+
+        uint64_t result = 0;
+        FILETIME ftCreate, ftAccess, ftWrite;
+        if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
+        {
+            result = ((uint64_t) ftWrite.dwHighDateTime) << 32;
+            result |= ftWrite.dwLowDateTime;
+        }
+
+        CloseHandle(hFile);
+        return result;
+    }
+
     void visitFiles(const char* folder, function<void(const char*)> user)
     {
         WIN32_FIND_DATAA findfile;
@@ -354,7 +372,7 @@ namespace OS
         }
     }
 
-    void visitFilesFolders(const char* folder, function<void(const char*, bool)> user)
+    void visitFilesFolders(const char* folder, function<void(uint64_t, const char*, bool)> user)
     {
         WIN32_FIND_DATAA findfile;
         string           searchPath = folder;
@@ -370,7 +388,9 @@ namespace OS
                         continue;
                 }
 
-                user(findfile.cFileName, findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+                uint64_t writeTime = ((uint64_t) findfile.ftLastWriteTime.dwHighDateTime) << 32;
+                writeTime |= findfile.ftLastWriteTime.dwLowDateTime;
+                user(writeTime, findfile.cFileName, findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
             } while (::FindNextFileA(h, &findfile));
 
             ::FindClose(h);

@@ -4,6 +4,7 @@
 #include "ThreadManager.h"
 #include "SourceFile.h"
 #include "semanticJob.h"
+#include "OS.h"
 
 Pool<CopyFileJob> g_Pool_copyFileJob;
 
@@ -12,10 +13,8 @@ JobResult CopyFileJob::execute()
     // Copy only if source is more recent than destination
     if (fs::exists(destPath))
     {
-        auto   timeSrc  = fs::last_write_time(sourcePath);
-        time_t tsrc     = fs::file_time_type::clock::to_time_t(timeSrc);
-        auto   timeDest = fs::last_write_time(destPath);
-        time_t tdest    = fs::file_time_type::clock::to_time_t(timeDest);
+        auto tsrc  = OS::getFileWriteTime(sourcePath);
+        auto tdest = OS::getFileWriteTime(destPath);
         if (tdest > tsrc)
         {
             if (g_CommandLine.verboseBuildPass)

@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "Scope.h"
 #include "TypeManager.h"
+#include "Os.h"
 
 void Backend::emitSeparator(Concat& buffer, const char* title)
 {
@@ -416,8 +417,7 @@ bool Backend::preCompile()
     {
         if (fs::exists(bufferSwg.fileName))
         {
-            fs::file_time_type mtime = fs::last_write_time(bufferSwg.fileName);
-            time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
+            auto t1 = OS::getFileWriteTime(bufferSwg.fileName);
             if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.runtimeModule->moreRecentSourceFile)
                 regen = true;
         }

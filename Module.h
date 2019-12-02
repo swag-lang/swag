@@ -36,7 +36,6 @@ struct Module
     bool internalError(uint32_t sourceFileIdx, SourceLocation& startLocation, SourceLocation& endLocation, const Utf8& msg);
     void deferReleaseChilds(AstNode* node);
 
-    time_t              moreRecentSourceFile;
     string              path;
     string              name;
     string              nameDown;
@@ -46,11 +45,12 @@ struct Module
     vector<SourceFile*> files;
     BuildParameters     buildParameters;
     set<string>         compileVersion;
-    AstNode*            astRoot   = nullptr;
-    Scope*              scopeRoot = nullptr;
-    SourceFile*         buildFile = nullptr;
-    Backend*            backend   = nullptr;
-    bool                fromTests = false;
+    AstNode*            astRoot              = nullptr;
+    Scope*              scopeRoot            = nullptr;
+    SourceFile*         buildFile            = nullptr;
+    Backend*            backend              = nullptr;
+    uint64_t            moreRecentSourceFile = 0;
+    bool                fromTests            = false;
 
     void reserveRegisterRR(uint32_t count);
     bool executeNode(SourceFile* sourceFile, AstNode* node);

@@ -82,10 +82,8 @@ bool BackendCCompilerVS::mustCompile()
     if (!fs::exists(resultFile))
         return true;
 
-    fs::file_time_type mtime1 = fs::last_write_time(resultFile);
-    time_t             t1     = fs::file_time_type::clock::to_time_t(mtime1);
-    fs::file_time_type mtime2 = fs::last_write_time(backend->bufferC.fileName);
-    time_t             t2     = fs::file_time_type::clock::to_time_t(mtime2);
+    auto t1 = OS::getFileWriteTime(resultFile);
+    auto t2 = OS::getFileWriteTime(backend->bufferC.fileName);
     if (t1 >= t2)
         return false;
 
@@ -187,7 +185,7 @@ bool BackendCCompilerVS::compile()
         string linkArguments;
         linkArguments += "ucrt.lib ";
         linkArguments += "/NODEFAULTLIB:libucrt.lib ";
-		linkArguments += "libvcruntime.lib ";
+        linkArguments += "libvcruntime.lib ";
 
         for (const auto& dep : module->moduleDependencies)
             linkArguments += dep.first + ".lib ";

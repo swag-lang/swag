@@ -57,7 +57,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
         tmp = move(directories.back());
         directories.pop_back();
 
-        OS::visitFilesFolders(tmp.c_str(), [&](const char* cFileName, bool isFolder) {
+        OS::visitFilesFolders(tmp.c_str(), [&](uint64_t writeTime, const char* cFileName, bool isFolder) {
             if (isFolder)
             {
                 tmp1 = tmp + "/" + cFileName;
@@ -75,6 +75,7 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
                         job->sourceFile = file;
                         file->fromTests = module->fromTests;
                         file->path      = tmp + "\\" + cFileName;
+                        file->writeTime = writeTime;
                         module->addFile(file);
                         g_ThreadMgr.addJob(job);
                     }

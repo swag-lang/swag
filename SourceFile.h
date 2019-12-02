@@ -38,6 +38,7 @@ struct SourceFile
     fs::path  path;
     Module*   module        = nullptr;
     AstNode*  astRoot       = nullptr;
+    uint64_t  writeTime     = 0;
     int       numErrors     = 0;
     int       unittestError = 0;
     int       silent        = 0;

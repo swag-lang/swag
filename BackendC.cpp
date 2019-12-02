@@ -4,6 +4,7 @@
 #include "BackendCCompilerVS.h"
 #include "Version.h"
 #include "Workspace.h"
+#include "Os.h"
 
 bool BackendC::preCompile()
 {
@@ -21,8 +22,7 @@ bool BackendC::preCompile()
             regen = true;
         else
         {
-            fs::file_time_type mtime = fs::last_write_time(bufferC.fileName);
-            time_t             t1    = fs::file_time_type::clock::to_time_t(mtime);
+            auto t1 = OS::getFileWriteTime(bufferC.fileName);
             if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.runtimeModule->moreRecentSourceFile)
                 regen = true;
         }
