@@ -2,10 +2,12 @@
 #include "LoadingThread.h"
 #include "SourceFile.h"
 #include "Assert.h"
+#include "Os.h"
 
 LoadingThread::LoadingThread()
 {
     thread = new std::thread(&LoadingThread::loop, this);
+	OS::setThreadName(thread, "LoadingThread");
 }
 
 LoadingThread::~LoadingThread()

@@ -2,10 +2,12 @@
 #include "SavingThread.h"
 #include "OutputFile.h"
 #include "Log.h"
+#include "Os.h"
 
 SavingThread::SavingThread()
 {
     thread = new std::thread(&SavingThread::loop, this);
+    OS::setThreadName(thread, "SavingThread");
 }
 
 SavingThread::~SavingThread()

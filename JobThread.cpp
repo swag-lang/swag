@@ -6,10 +6,12 @@
 #include "Job.h"
 #include "Log.h"
 #include "Context.h"
+#include "Os.h"
 
 JobThread::JobThread()
 {
     thread = new std::thread(&JobThread::loop, this);
+	OS::setThreadName(thread, "JobThread");
 }
 
 JobThread::~JobThread()
