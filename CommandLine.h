@@ -19,7 +19,6 @@ struct CommandLine
     string workspacePath;
 	string modulePath;
     string fileFilter;
-    string testFilter;
     int    tabSize = 4;
 
     // Test

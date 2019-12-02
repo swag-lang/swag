@@ -70,17 +70,13 @@ void Workspace::enumerateFilesInModule(const fs::path& path, Module* module)
                 {
                     if (g_CommandLine.fileFilter.empty() || strstr(cFileName, g_CommandLine.fileFilter.c_str()))
                     {
-                        // File filtering by name
-                        if (!module->fromTests || g_CommandLine.testFilter.empty() || strstr(cFileName, g_CommandLine.testFilter.c_str()))
-                        {
-                            auto job        = g_Pool_syntaxJob.alloc();
-                            auto file       = g_Pool_sourceFile.alloc();
-                            job->sourceFile = file;
-                            file->fromTests = module->fromTests;
-                            file->path      = tmp + "\\" + cFileName;
-                            module->addFile(file);
-                            g_ThreadMgr.addJob(job);
-                        }
+                        auto job        = g_Pool_syntaxJob.alloc();
+                        auto file       = g_Pool_sourceFile.alloc();
+                        job->sourceFile = file;
+                        file->fromTests = module->fromTests;
+                        file->path      = tmp + "\\" + cFileName;
+                        module->addFile(file);
+                        g_ThreadMgr.addJob(job);
                     }
                 }
             }

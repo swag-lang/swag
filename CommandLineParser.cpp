@@ -25,7 +25,6 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
 	addArg("--module", "-m", CommandLineType::String, &cmdLine->modulePath);
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
-    addArg("--test-filter", nullptr, CommandLineType::String, &cmdLine->testFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);
     addArg("--num-cores", nullptr, CommandLineType::Int, &cmdLine->numCores);
     addArg("--pass", nullptr, CommandLineType::Enum, &cmdLine->buildPass, "lexer|syntax|semantic|backend|full");
