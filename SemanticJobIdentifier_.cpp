@@ -1183,16 +1183,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
                         auto idRef         = Ast::newNode(nullptr, &g_Pool_astIdentifierRef, AstNodeKind::IdentifierRef, node->sourceFile, fctCallParam);
                         idRef->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
 
-                        SWAG_ASSERT(identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier);
-                        auto prevIdRef = ((AstIdentifier*) (identifierRef->previousResolvedNode))->identifierRef;
+                        auto prevId    = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
+                        auto prevIdRef = prevId->identifierRef;
 
                         // Copy all previous references to the one we want to pass as parameter
                         // X.Y.call(...) => X.Y.call(X.Y, ...)
                         for (auto child : prevIdRef->childs)
                         {
                             auto copyChild = Ast::clone(child, idRef);
-                            if (copyChild->kind == AstNodeKind::Identifier)
-                                ((AstIdentifier*) copyChild)->identifierRef = idRef;
+                            if (copyChild->kind == AstNodeKind::Identifier || copyChild->kind == AstNodeKind::FuncCall)
+                                SWAG_ASSERT(((AstIdentifier*) copyChild)->identifierRef == idRef);
                             if (child == identifierRef->previousResolvedNode)
                             {
                                 copyChild->flags |= AST_TO_UFCS;

@@ -258,8 +258,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     auto idRef = context.parent;
     while (idRef->kind != AstNodeKind::IdentifierRef)
         idRef = idRef->parent;
-    newNode->identifierRef = CastAst<AstIdentifierRef>(idRef, AstNodeKind::IdentifierRef);
-
+    newNode->identifierRef     = CastAst<AstIdentifierRef>(idRef, AstNodeKind::IdentifierRef);
     newNode->callParameters    = findChildRef(callParameters, newNode);
     newNode->genericParameters = findChildRef(genericParameters, newNode);
     return newNode;

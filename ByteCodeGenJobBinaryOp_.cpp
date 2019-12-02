@@ -446,5 +446,5 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
     }
 
     bool foreign = symbolOverload->node->attributeFlags & ATTRIBUTE_FOREIGN;
-    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, foreign);
+    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, funcDecl->resultRegisterRC, foreign);
 }

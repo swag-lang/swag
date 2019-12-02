@@ -80,7 +80,6 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         }
 
-        context->bc = (ByteCode*) registersRC[ip->a.u32].pointer;
         context->ip = context->bc->out;
         SWAG_ASSERT(context->ip);
         context->bp = context->sp;
