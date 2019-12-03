@@ -54,7 +54,7 @@ void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
 
     // Run semantic on that struct
     auto sourceFile = context->sourceFile;
-    auto newJob     = SemanticJob::newJob(job->dependentModule, sourceFile, newNode, false);
+    auto newJob     = SemanticJob::newJob(job->dependentJob, sourceFile, newNode, false);
 
     // Store stack of instantiation contexts
     auto srcCxt  = context;

@@ -87,8 +87,6 @@ struct Module
     shared_mutex                  mutexDependency;
     map<string, ModuleDependency> moduleDependencies;
     bool                          hasBeenBuilt = false;
-    Job*                          buildJob     = nullptr;
-    atomic<int>                   waitOnJobs   = 0;
 
     TypeTable typeTable;
 };

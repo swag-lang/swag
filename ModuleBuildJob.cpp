@@ -17,8 +17,6 @@ Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
 JobResult ModuleBuildJob::execute()
 {
-    module->buildJob = this;
-
     // Wait for dependencies to be build
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Dependencies)
@@ -70,14 +68,14 @@ JobResult ModuleBuildJob::execute()
             }
 
             // Then do syntax on it
-            auto syntaxJob             = g_Pool_syntaxJob.alloc();
-            auto file                  = g_Pool_sourceFile.alloc();
-            syntaxJob->sourceFile      = file;
-            syntaxJob->module          = module;
-            syntaxJob->dependentModule = module;
-            file->path                 = move(path);
-            file->generated            = true;
-            dep.second.generated       = generated;
+            auto syntaxJob          = g_Pool_syntaxJob.alloc();
+            auto file               = g_Pool_sourceFile.alloc();
+            syntaxJob->sourceFile   = file;
+            syntaxJob->module       = module;
+            syntaxJob->dependentJob = this;
+            file->path              = move(path);
+            file->generated         = true;
+            dep.second.generated    = generated;
             module->addFile(file);
             jobsToAdd.push_back(syntaxJob);
         }
@@ -107,10 +105,10 @@ JobResult ModuleBuildJob::execute()
     {
         pass = ModuleBuildPass::Publish;
 
-        auto semanticJob             = g_Pool_moduleSemanticJob.alloc();
-        semanticJob->module          = module;
-        semanticJob->dependentModule = module;
-        semanticJob->buildFileMode   = true;
+        auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
+        semanticJob->module        = module;
+        semanticJob->dependentJob  = this;
+        semanticJob->buildFileMode = true;
         jobsToAdd.push_back(semanticJob);
         return JobResult::KeepJobAlive;
     }
@@ -128,10 +126,10 @@ JobResult ModuleBuildJob::execute()
         timeBefore = chrono::high_resolution_clock::now();
         pass       = ModuleBuildPass::Run;
 
-        auto semanticJob             = g_Pool_moduleSemanticJob.alloc();
-        semanticJob->module          = module;
-        semanticJob->dependentModule = module;
-        semanticJob->buildFileMode   = false;
+        auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
+        semanticJob->module        = module;
+        semanticJob->dependentJob  = this;
+        semanticJob->buildFileMode = false;
         jobsToAdd.push_back(semanticJob);
         return JobResult::KeepJobAlive;
     }
@@ -238,9 +236,9 @@ JobResult ModuleBuildJob::execute()
         {
             if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size())
             {
-                auto outputJob             = g_Pool_moduleOutputJob.alloc();
-                outputJob->module          = module;
-                outputJob->dependentModule = module;
+                auto outputJob          = g_Pool_moduleOutputJob.alloc();
+                outputJob->module       = module;
+                outputJob->dependentJob = this;
                 jobsToAdd.push_back(outputJob);
                 return JobResult::KeepJobAlive;
             }
@@ -263,7 +261,7 @@ void ModuleBuildJob::checkPendingJobs()
 
     for (auto pendingJob : g_ThreadMgr.pendingJobs)
     {
-        if (pendingJob->dependentModule != module)
+        if (pendingJob->dependentJob != this)
             continue;
 
         auto firstNode = pendingJob->nodes.front();

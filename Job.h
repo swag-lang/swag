@@ -61,8 +61,9 @@ struct Job
     SymbolName*      waitingSymbolSolved = nullptr;
     SourceFile*      sourceFile          = nullptr;
     Module*          module              = nullptr;
-    Module*          dependentModule     = nullptr;
+    Job*             dependentJob        = nullptr;
     JobContext*      baseContext         = nullptr;
     uint32_t         flags               = 0;
     int32_t          pendingIndex        = -1;
+    atomic<int>      waitOnJobs          = 0;
 };

@@ -124,7 +124,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
 
         // We need to be have a bytecode pointer to be able to reference it in the itable
-        ByteCodeGenJob::askForByteCode(context->job->dependentModule, context->job, child, ASKBC_WAIT_SEMANTIC_RESOLVED);
+        ByteCodeGenJob::askForByteCode(context->job->dependentJob, context->job, child, ASKBC_WAIT_SEMANTIC_RESOLVED);
         if (context->result == ContextResult::Pending)
             return true;
 
@@ -493,7 +493,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->byteCodeJob                  = g_Pool_byteCodeGenJob.alloc();
         node->byteCodeJob->sourceFile      = sourceFile;
         node->byteCodeJob->module          = sourceFile->module;
-        node->byteCodeJob->dependentModule = context->job->dependentModule;
+        node->byteCodeJob->dependentJob = context->job->dependentJob;
         node->byteCodeJob->originalNode    = node;
         node->byteCodeJob->nodes.push_back(node);
         node->byteCodeFct = ByteCodeGenJob::emitStruct;

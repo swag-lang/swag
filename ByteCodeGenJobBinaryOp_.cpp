@@ -401,7 +401,7 @@ bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDe
     // Create a semantic job to resolve the inline part, and wait for that to be finished
     context->job->setPending();
     auto inlineNode = identifier->childs.back();
-    auto job        = SemanticJob::newJob(context->job->dependentModule, context->sourceFile, inlineNode, false);
+    auto job        = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, inlineNode, false);
     job->addDependentJob(context->job);
     g_ThreadMgr.addJob(job);
     return true;

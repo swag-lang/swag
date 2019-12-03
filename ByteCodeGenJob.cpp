@@ -168,7 +168,7 @@ void ByteCodeGenJob::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
     inst->endLocation   = node->token.endLocation;
 }
 
-void ByteCodeGenJob::askForByteCode(Module* dependentModule, Job* job, AstNode* node, uint32_t flags)
+void ByteCodeGenJob::askForByteCode(Job* dependentJob, Job* job, AstNode* node, uint32_t flags)
 {
     if (!node)
         return;
@@ -221,11 +221,11 @@ void ByteCodeGenJob::askForByteCode(Module* dependentModule, Job* job, AstNode* 
 
         if (!node->byteCodeJob)
         {
-            node->byteCodeJob                  = g_Pool_byteCodeGenJob.alloc();
-            node->byteCodeJob->sourceFile      = sourceFile;
-            node->byteCodeJob->module          = sourceFile->module;
-            node->byteCodeJob->dependentModule = dependentModule;
-            node->byteCodeJob->originalNode    = node;
+            node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+            node->byteCodeJob->sourceFile   = sourceFile;
+            node->byteCodeJob->module       = sourceFile->module;
+            node->byteCodeJob->dependentJob = dependentJob;
+            node->byteCodeJob->originalNode = node;
             node->byteCodeJob->nodes.push_back(node);
             if (flags & ASKBC_WAIT_DONE)
             {

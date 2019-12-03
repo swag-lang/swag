@@ -19,7 +19,7 @@ JobResult ModuleSemanticJob::execute()
             auto job             = g_Pool_semanticJob.alloc();
             job->sourceFile      = module->buildFile;
             job->module          = module;
-            job->dependentModule = dependentModule;
+            job->dependentJob = dependentJob;
             job->nodes.push_back(module->buildFile->astRoot);
             g_ThreadMgr.addJob(job);
         }
@@ -36,7 +36,7 @@ JobResult ModuleSemanticJob::execute()
             auto job             = g_Pool_semanticJob.alloc();
             job->sourceFile      = file;
             job->module          = module;
-            job->dependentModule = dependentModule;
+            job->dependentJob = dependentJob;
             job->nodes.push_back(file->astRoot);
             g_ThreadMgr.addJob(job);
         }

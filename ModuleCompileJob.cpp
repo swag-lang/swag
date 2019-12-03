@@ -26,7 +26,7 @@ JobResult ModuleCompileJob::execute()
     module->setHasBeenBuilt();
 
     // Test job
-	// Do not set job->dependentModule, because nobody is dependent on that execution
+	// Do not set job->dependentJob, because nobody is dependent on that execution
 	// Test can be run "on the void"
     if (g_CommandLine.runBackendTests)
     {

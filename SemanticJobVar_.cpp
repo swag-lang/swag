@@ -319,7 +319,7 @@ bool SemanticJob::convertAssignementToStruct(SemanticContext* context, AstNode* 
             n->ownerScope       = newScope;
         });
 
-        SemanticJob::newJob(context->job->dependentModule, sourceFile, structNode, true);
+        SemanticJob::newJob(context->job->dependentJob, sourceFile, structNode, true);
     }
 
     return true;

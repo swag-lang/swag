@@ -47,8 +47,8 @@ void ThreadManager::addJobs(const vector<Job*>& jobs)
         job->flags &= ~JOB_IS_DEPENDENT;
 
         // We have a new dependency job
-        if (job->dependentModule)
-            job->dependentModule->waitOnJobs++;
+        if (job->dependentJob)
+            job->dependentJob->waitOnJobs++;
     }
 
     for (auto job : jobs)
@@ -65,8 +65,8 @@ void ThreadManager::addJob(Job* job)
     job->flags &= ~JOB_IS_DEPENDENT;
 
     // We have a new dependency job
-    if (job->dependentModule)
-        job->dependentModule->waitOnJobs++;
+    if (job->dependentJob)
+        job->dependentJob->waitOnJobs++;
 
     addJobNoLock(job);
 }
@@ -113,11 +113,11 @@ void ThreadManager::jobHasEnded(Job* job)
     job->flags &= ~JOB_IS_IN_THREAD;
 
     // Wakeup build job for module if necessary
-    if (job->dependentModule)
+    if (job->dependentJob)
     {
-        job->dependentModule->waitOnJobs--;
-        if (!job->dependentModule->waitOnJobs)
-            g_ThreadMgr.addJobNoLock(job->dependentModule->buildJob);
+        job->dependentJob->waitOnJobs--;
+        if (!job->dependentJob->waitOnJobs)
+            g_ThreadMgr.addJobNoLock(job->dependentJob);
     }
 
     processingJobs--;

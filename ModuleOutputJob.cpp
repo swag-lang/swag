@@ -55,7 +55,7 @@ JobResult ModuleOutputJob::execute()
     {
         auto compileJob             = g_Pool_moduleCompileJob.alloc();
         compileJob->module          = module;
-        compileJob->dependentModule = dependentModule;
+        compileJob->dependentJob = dependentJob;
         compileJob->buildParameters = module->buildParameters;
 
         // Temp output type

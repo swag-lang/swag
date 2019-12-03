@@ -27,12 +27,12 @@ bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* 
     return context->report({node, format("operation not allowed on %s '%s'", TypeInfo::getNakedKindName(typeInfo), typeInfo->name.c_str())});
 }
 
-SemanticJob* SemanticJob::newJob(Module* dependentModule, SourceFile* sourceFile, AstNode* rootNode, bool run)
+SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
 {
-    auto job             = g_Pool_semanticJob.alloc();
-    job->sourceFile      = sourceFile;
-    job->module          = sourceFile->module;
-    job->dependentModule = dependentModule;
+    auto job          = g_Pool_semanticJob.alloc();
+    job->sourceFile   = sourceFile;
+    job->module       = sourceFile->module;
+    job->dependentJob = dependentJob;
     job->nodes.push_back(rootNode);
     if (run)
         g_ThreadMgr.addJob(job);
@@ -116,10 +116,10 @@ JobResult SemanticJob::execute()
                     case AstNodeKind::CompilerIf:
                     case AstNodeKind::Impl:
                     {
-                        auto job             = g_Pool_semanticJob.alloc();
-                        job->sourceFile      = sourceFile;
-                        job->module          = module;
-                        job->dependentModule = dependentModule;
+                        auto job          = g_Pool_semanticJob.alloc();
+                        job->sourceFile   = sourceFile;
+                        job->module       = module;
+                        job->dependentJob = dependentJob;
                         job->nodes.push_back(node);
                         nodes.pop_back();
                         g_ThreadMgr.addJob(job);
