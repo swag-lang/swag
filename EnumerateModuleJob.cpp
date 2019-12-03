@@ -100,49 +100,10 @@ JobResult EnumerateModuleJob::execute()
 {
     auto timeBefore = chrono::high_resolution_clock::now();
 
-    // If no theModule is specified, just compiled all modules in the workspace
-    if (g_CommandLine.modulePath.empty())
-    {
-        enumerateModules(g_Workspace.dependenciesPath);
-        enumerateModules(g_Workspace.modulesPath);
-        if (g_CommandLine.test)
-            enumerateModules(g_Workspace.testsPath);
-    }
-
-    // Else compile the theModule and its dependencies
-    else
-    {
-        vector<fs::path> modulesToGo;
-        fs::path         modulePath = g_CommandLine.workspacePath;
-        modulePath.append(g_CommandLine.modulePath);
-        modulesToGo.push_back(modulePath);
-        for (int i = 0; i < modulesToGo.size(); i++)
-        {
-            auto theModule = addModule(modulesToGo[i]);
-            g_ThreadMgr.waitEndJobs();
-            for (auto& dep : theModule->moduleDependencies)
-            {
-                auto it = g_Workspace.mapModulesNames.find(dep.first);
-                if (it == g_Workspace.mapModulesNames.end())
-                {
-                    auto depName = dep.second.name;
-                    auto depPath = g_Workspace.dependenciesPath;
-                    depPath.append(depName);
-                    if (!fs::exists(depPath))
-                    {
-                        depPath = g_Workspace.modulesPath;
-                        depPath.append(depName);
-                        if (!fs::exists(depPath))
-                        {
-                            continue;
-                        }
-                    }
-
-                    modulesToGo.push_back(depPath);
-                }
-            }
-        }
-    }
+    enumerateModules(g_Workspace.dependenciesPath);
+    enumerateModules(g_Workspace.modulesPath);
+    if (g_CommandLine.test)
+        enumerateModules(g_Workspace.testsPath);
 
     auto timeAfter = chrono::high_resolution_clock::now();
     g_Stats.frontendTime += timeAfter - timeBefore;
