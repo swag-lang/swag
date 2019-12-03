@@ -13,7 +13,7 @@
 #include "ByteCode.h"
 #include "Stats.h"
 
-Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
+thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
 
 JobResult ModuleBuildJob::execute()
 {

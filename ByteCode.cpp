@@ -17,7 +17,7 @@ int g_ByteCodeOpNamesLen[] = {
 #include "ByteCodeOpList.h"
 };
 
-Pool<ByteCode> g_Pool_byteCode;
+thread_local Pool<ByteCode> g_Pool_byteCode;
 
 Utf8 ByteCode::callName()
 {

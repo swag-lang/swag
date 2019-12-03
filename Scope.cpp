@@ -3,7 +3,7 @@
 #include "SymTable.h"
 #include "Diagnostic.h"
 
-Pool<Scope> g_Pool_scope;
+thread_local Pool<Scope> g_Pool_scope;
 
 const char* Scope::getNakedKindName(ScopeKind kind)
 {

@@ -541,7 +541,7 @@ struct TypeInfoStruct : public TypeInfo
     void           match(SymbolMatchContext& context);
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
-	TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
+    TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
 
     vector<TypeInfoParam*> genericParameters;
     vector<TypeInfoParam*> childs;
@@ -595,17 +595,17 @@ struct TypeInfoCode : public TypeInfo
     AstNode* content = nullptr;
 };
 
-extern Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
-extern Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
-extern Pool<TypeInfoEnum>      g_Pool_typeInfoEnum;
-extern Pool<TypeInfoParam>     g_Pool_typeInfoParam;
-extern Pool<TypeInfoPointer>   g_Pool_typeInfoPointer;
-extern Pool<TypeInfoArray>     g_Pool_typeInfoArray;
-extern Pool<TypeInfoSlice>     g_Pool_typeInfoSlice;
-extern Pool<TypeInfoList>      g_Pool_typeInfoList;
-extern Pool<TypeInfoNative>    g_Pool_typeInfoNative;
-extern Pool<TypeInfoVariadic>  g_Pool_typeInfoVariadic;
-extern Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
-extern Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
-extern Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;
-extern Pool<TypeInfoCode>      g_Pool_typeInfoCode;
+extern thread_local Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
+extern thread_local Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
+extern thread_local Pool<TypeInfoEnum>      g_Pool_typeInfoEnum;
+extern thread_local Pool<TypeInfoParam>     g_Pool_typeInfoParam;
+extern thread_local Pool<TypeInfoPointer>   g_Pool_typeInfoPointer;
+extern thread_local Pool<TypeInfoArray>     g_Pool_typeInfoArray;
+extern thread_local Pool<TypeInfoSlice>     g_Pool_typeInfoSlice;
+extern thread_local Pool<TypeInfoList>      g_Pool_typeInfoList;
+extern thread_local Pool<TypeInfoNative>    g_Pool_typeInfoNative;
+extern thread_local Pool<TypeInfoVariadic>  g_Pool_typeInfoVariadic;
+extern thread_local Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
+extern thread_local Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
+extern thread_local Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;
+extern thread_local Pool<TypeInfoCode>      g_Pool_typeInfoCode;

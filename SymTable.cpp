@@ -6,8 +6,8 @@
 #include "TypeInfo.h"
 #include "SymTable.h"
 
-Pool<SymbolOverload> g_Pool_symOverload;
-Pool<SymbolName>     g_Pool_symName;
+thread_local Pool<SymbolOverload> g_Pool_symOverload;
+thread_local Pool<SymbolName>     g_Pool_symName;
 
 SymbolName* SymTable::find(const Utf8Crc& name)
 {

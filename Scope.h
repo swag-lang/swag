@@ -92,4 +92,4 @@ struct Scope
     set<AstNode*> publicTypeAlias;
 };
 
-extern Pool<Scope> g_Pool_scope;
+extern thread_local Pool<Scope> g_Pool_scope;

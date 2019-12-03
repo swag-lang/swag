@@ -175,4 +175,4 @@ struct ByteCodeGenJob : public Job
     bool               syncToDependentNodes = false;
 };
 
-extern Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
+extern thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;

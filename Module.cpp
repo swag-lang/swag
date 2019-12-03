@@ -8,7 +8,7 @@
 #include "TypeManager.h"
 #include "ThreadManager.h"
 
-Pool<Module> g_Pool_module;
+thread_local Pool<Module> g_Pool_module;
 
 void Module::setup(const string& moduleName)
 {

@@ -7,7 +7,7 @@
 #include "Os.h"
 #include "ThreadManager.h"
 
-Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
+thread_local Pool<ModuleCompileJob> g_Pool_moduleCompileJob;
 
 JobResult ModuleCompileJob::execute()
 {

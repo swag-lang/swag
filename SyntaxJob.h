@@ -127,4 +127,4 @@ struct SyntaxJob : public Job
     bool                moduleSpecified        = false;
 };
 
-extern Pool<SyntaxJob> g_Pool_syntaxJob;
+extern thread_local Pool<SyntaxJob> g_Pool_syntaxJob;

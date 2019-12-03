@@ -12,7 +12,6 @@ struct Pool
 {
     T* alloc()
     {
-        unique_lock lk(mutexBucket);
         if (!rootBucket)
         {
             rootBucket = lastBucket = new PoolSlot<T, S>();
@@ -31,5 +30,4 @@ struct Pool
 
     PoolSlot<T, S>* rootBucket = nullptr;
     PoolSlot<T, S>* lastBucket = nullptr;
-    shared_mutex    mutexBucket;
 };

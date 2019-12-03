@@ -91,4 +91,4 @@ struct Module
     TypeTable typeTable;
 };
 
-extern Pool<Module> g_Pool_module;
+extern thread_local Pool<Module> g_Pool_module;

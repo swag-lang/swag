@@ -10,4 +10,4 @@ struct ModuleTestJob : public Job
     BuildParameters buildParameters;
 };
 
-extern Pool<ModuleTestJob> g_Pool_moduleTestJob;
+extern thread_local Pool<ModuleTestJob> g_Pool_moduleTestJob;

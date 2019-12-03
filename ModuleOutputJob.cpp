@@ -5,7 +5,7 @@
 #include "ThreadManager.h"
 #include "Workspace.h"
 
-Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
+thread_local Pool<ModuleOutputJob> g_Pool_moduleOutputJob;
 
 JobResult ModuleOutputJob::execute()
 {

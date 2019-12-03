@@ -97,5 +97,5 @@ struct SymTable
     vector<SymbolOverload*>    allStructs;
 };
 
-extern Pool<SymbolOverload> g_Pool_symOverload;
-extern Pool<SymbolName>     g_Pool_symName;
+extern thread_local Pool<SymbolOverload> g_Pool_symOverload;
+extern thread_local Pool<SymbolName>     g_Pool_symName;

@@ -49,4 +49,4 @@ struct ByteCode
     TypeInfoFuncAttr* callType();
 };
 
-extern Pool<ByteCode> g_Pool_byteCode;
+extern thread_local Pool<ByteCode> g_Pool_byteCode;

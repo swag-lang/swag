@@ -6,7 +6,7 @@
 #include "semanticJob.h"
 #include "OS.h"
 
-Pool<CopyFileJob> g_Pool_copyFileJob;
+thread_local Pool<CopyFileJob> g_Pool_copyFileJob;
 
 JobResult CopyFileJob::execute()
 {

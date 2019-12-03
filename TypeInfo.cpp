@@ -1,20 +1,20 @@
 #include "pch.h"
 #include "TypeInfo.h"
 
-Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
-Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
-Pool<TypeInfoEnum>      g_Pool_typeInfoEnum;
-Pool<TypeInfoParam>     g_Pool_typeInfoParam;
-Pool<TypeInfoPointer>   g_Pool_typeInfoPointer;
-Pool<TypeInfoArray>     g_Pool_typeInfoArray;
-Pool<TypeInfoSlice>     g_Pool_typeInfoSlice;
-Pool<TypeInfoList>      g_Pool_typeInfoList;
-Pool<TypeInfoNative>    g_Pool_typeInfoNative;
-Pool<TypeInfoVariadic>  g_Pool_typeInfoVariadic;
-Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
-Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
-Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;
-Pool<TypeInfoCode>      g_Pool_typeInfoCode;
+thread_local Pool<TypeInfoFuncAttr>  g_Pool_typeInfoFuncAttr;
+thread_local Pool<TypeInfoNamespace> g_Pool_typeInfoNamespace;
+thread_local Pool<TypeInfoEnum>      g_Pool_typeInfoEnum;
+thread_local Pool<TypeInfoParam>     g_Pool_typeInfoParam;
+thread_local Pool<TypeInfoPointer>   g_Pool_typeInfoPointer;
+thread_local Pool<TypeInfoArray>     g_Pool_typeInfoArray;
+thread_local Pool<TypeInfoSlice>     g_Pool_typeInfoSlice;
+thread_local Pool<TypeInfoList>      g_Pool_typeInfoList;
+thread_local Pool<TypeInfoNative>    g_Pool_typeInfoNative;
+thread_local Pool<TypeInfoVariadic>  g_Pool_typeInfoVariadic;
+thread_local Pool<TypeInfoGeneric>   g_Pool_typeInfoGeneric;
+thread_local Pool<TypeInfoStruct>    g_Pool_typeInfoStruct;
+thread_local Pool<TypeInfoAlias>     g_Pool_typeInfoAlias;
+thread_local Pool<TypeInfoCode>      g_Pool_typeInfoCode;
 
 const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
 {

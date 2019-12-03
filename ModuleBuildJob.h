@@ -25,4 +25,4 @@ struct ModuleBuildJob : public Job
 	chrono::high_resolution_clock::time_point timeAfter;
 };
 
-extern Pool<ModuleBuildJob> g_Pool_moduleBuildJob;
+extern thread_local Pool<ModuleBuildJob> g_Pool_moduleBuildJob;

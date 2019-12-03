@@ -5,7 +5,7 @@
 #include "SourceFile.h"
 #include "semanticJob.h"
 
-Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
+thread_local Pool<ModuleSemanticJob> g_Pool_moduleSemanticJob;
 
 JobResult ModuleSemanticJob::execute()
 {

@@ -70,4 +70,4 @@ struct SourceFile
     shared_mutex                 mutexGetLine;
 };
 
-extern Pool<SourceFile> g_Pool_sourceFile;
+extern thread_local Pool<SourceFile> g_Pool_sourceFile;

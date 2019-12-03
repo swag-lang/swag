@@ -14,7 +14,7 @@
 #include "Workspace.h"
 #include "Context.h"
 
-Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
+thread_local Pool<ByteCodeGenJob> g_Pool_byteCodeGenJob;
 
 bool ByteCodeGenJob::internalError(ByteCodeGenContext* context, const char* msg, AstNode* node)
 {
