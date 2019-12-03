@@ -339,6 +339,9 @@
     <ClCompile Include="ModuleTestJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="EnumerateModuleJob.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -553,6 +556,9 @@
     </ClInclude>
     <ClInclude Include="ModuleTestJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumerateModuleJob.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

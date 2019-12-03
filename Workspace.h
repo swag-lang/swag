@@ -11,10 +11,6 @@ struct Workspace
     bool    build();
     Module* createOrUseModule(const string& moduleName);
 
-    Module* addModule(const fs::path& path);
-    void    enumerateModules();
-    void    enumerateModules(const fs::path& path);
-    void    enumerateFilesInModule(const fs::path& path, Module* module);
     void    addRuntime();
     void    publishModule(Module* module);
     void    setup();

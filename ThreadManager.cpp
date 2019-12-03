@@ -21,7 +21,7 @@ void ThreadManager::init()
 
     int numCores = std::thread::hardware_concurrency();
     if (g_CommandLine.numCores == 0)
-        g_CommandLine.numCores = numCores - 2;
+        g_CommandLine.numCores = numCores - 1;
     int numWorkers     = g_CommandLine.numCores;
     numWorkers         = max(1, numWorkers);
     numWorkers         = min(numWorkers, numCores);
@@ -136,13 +136,6 @@ void ThreadManager::waitEndJobs()
 {
     while (true)
     {
-        auto job = getJob();
-        if (job)
-        {
-            executeOneJob(job);
-            continue;
-        }
-
         unique_lock lk(mutexDone);
         if (doneWithJobs())
             break;
