@@ -333,13 +333,13 @@
       <Filter>Lexer</Filter>
     </ClCompile>
     <ClCompile Include="CopyFileJob.cpp" />
-    <ClCompile Include="ModuleBuildJob.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleTestJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="EnumerateModuleJob.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleBuildJob.cpp">
       <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
@@ -551,13 +551,13 @@
     </ClInclude>
     <ClInclude Include="OsWin32.h" />
     <ClInclude Include="CopyFileJob.h" />
-    <ClInclude Include="ModuleBuildJob.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleTestJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="EnumerateModuleJob.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleBuildJob.h">
       <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>

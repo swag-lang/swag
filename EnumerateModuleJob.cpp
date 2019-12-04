@@ -98,15 +98,9 @@ void EnumerateModuleJob::enumerateModules(const fs::path& path)
 
 JobResult EnumerateModuleJob::execute()
 {
-    auto timeBefore = chrono::high_resolution_clock::now();
-
     enumerateModules(g_Workspace.dependenciesPath);
     enumerateModules(g_Workspace.modulesPath);
     if (g_CommandLine.test)
         enumerateModules(g_Workspace.testsPath);
-
-    auto timeAfter = chrono::high_resolution_clock::now();
-    g_Stats.frontendTime += timeAfter - timeBefore;
-
     return JobResult::ReleaseJob;
 }

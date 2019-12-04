@@ -123,8 +123,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Semantic)
     {
-        timeBefore = chrono::high_resolution_clock::now();
-        pass       = ModuleBuildPass::Run;
+        pass = ModuleBuildPass::Run;
 
         auto semanticJob           = g_Pool_moduleSemanticJob.alloc();
         semanticJob->module        = module;
@@ -137,9 +136,6 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Run)
     {
-        timeAfter = chrono::high_resolution_clock::now();
-        g_Stats.frontendTime += timeAfter - timeBefore;
-
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
@@ -230,8 +226,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Output)
     {
-        timeBefore = chrono::high_resolution_clock::now();
-        pass       = ModuleBuildPass::End;
+        pass = ModuleBuildPass::End;
         if (g_CommandLine.backendOutput)
         {
             if (!module->numErrors && !module->name.empty() && (module->buildPass >= BuildPass::Backend) && module->files.size())
@@ -245,8 +240,6 @@ JobResult ModuleBuildJob::execute()
         }
     }
 
-    timeAfter = chrono::high_resolution_clock::now();
-    g_Stats.backendTime += timeAfter - timeBefore;
     module->setHasBeenBuilt();
 
     return JobResult::ReleaseJob;

@@ -14,9 +14,6 @@ void printStats()
 
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.messageHeaderDot("swag version", format("%d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
-    g_Log.messageHeaderDot("frontend time", format("%.3fs", g_Stats.frontendTime.count()));
-    if (g_CommandLine.backendOutput)
-        g_Log.messageHeaderDot("backend time", format("%.3fs", g_Stats.backendTime.count()));
     g_Log.messageHeaderDot("total time", format("%.3fs", g_Stats.totalTime.count()));
     g_Log.messageHeaderDot("workers", format("%d", g_Stats.numWorkers));
     g_Log.messageHeaderDot("modules", format("%d", g_Stats.numModules.load()));
@@ -50,7 +47,7 @@ int main(int argc, const char* argv[])
     // Log all arguments
     if (g_CommandLine.help)
     {
-		g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+        g_Log.message(format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
         cmdParser.logArguments();
         exit(0);
     }
