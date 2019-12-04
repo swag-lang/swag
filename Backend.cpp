@@ -406,7 +406,7 @@ bool Backend::emitPublicSwg(Module* moduleToGen, Scope* scope)
     return true;
 }
 
-bool Backend::preCompile()
+bool Backend::generateExportFile()
 {
     auto targetPath    = g_Workspace.targetPath.string();
     bufferSwg.fileName = targetPath + "\\" + module->name + ".generated.swg";

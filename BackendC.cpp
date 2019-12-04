@@ -46,8 +46,6 @@ bool BackendC::preCompile()
         ok &= bufferC.flush();
     }
 
-    ok &= Backend::preCompile();
-
     return ok;
 }
 

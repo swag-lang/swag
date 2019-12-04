@@ -342,6 +342,9 @@
     <ClCompile Include="ModuleBuildJob.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleOutputExportJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -559,6 +562,9 @@
     </ClInclude>
     <ClInclude Include="ModuleBuildJob.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleOutputExportJob.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

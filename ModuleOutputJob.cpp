@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ModuleOutputJob.h"
+#include "ModuleOutputExportJob.h"
 #include "ModuleCompileJob.h"
 #include "BackendC.h"
 #include "ThreadManager.h"
@@ -28,6 +29,12 @@ JobResult ModuleOutputJob::execute()
         break;
     }
 
+    // Generate .swg file with public definitions
+    auto exportJob          = g_Pool_moduleOutputExportJob.alloc();
+    exportJob->backend      = module->backend;
+    exportJob->dependentJob = dependentJob;
+    g_ThreadMgr.addJob(exportJob);
+
     if (!module->backend->preCompile())
         return JobResult::ReleaseJob;
     if (module->buildPass < BuildPass::Full)
@@ -50,12 +57,12 @@ JobResult ModuleOutputJob::execute()
     }
 
     // Compile the official normal version, except if it comes from the test folder (because
-	// there's no official version for the test folder, only a test executable)
+    // there's no official version for the test folder, only a test executable)
     if (!module->fromTests && g_CommandLine.backendOutputLegit)
     {
         auto compileJob             = g_Pool_moduleCompileJob.alloc();
         compileJob->module          = module;
-        compileJob->dependentJob = dependentJob;
+        compileJob->dependentJob    = dependentJob;
         compileJob->buildParameters = module->buildParameters;
 
         // Temp output type
