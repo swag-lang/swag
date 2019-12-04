@@ -29,7 +29,7 @@ struct Concat
     void addEol();
 	void addStringFormat(const char* format, ...);
 
-    virtual void flushBucket(ConcatBucket* bucket){};
+    virtual void flushBucket(ConcatBucket* bucket, bool lastOne = false){};
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;

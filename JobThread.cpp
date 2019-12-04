@@ -22,7 +22,7 @@ JobThread::~JobThread()
 void JobThread::notifyJob()
 {
     lock_guard lk(mutexNotify);
-    condVar.notify_one();
+    condVar.notify_all();
 }
 
 void JobThread::waitJob()

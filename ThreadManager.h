@@ -1,28 +1,24 @@
 #pragma once
 struct Job;
 struct JobThread;
-struct LoadingThread;
-struct SavingThread;
+struct IoThread;
 
 struct ThreadManager
 {
-    ~ThreadManager();
-
     void init();
-	void addJobs(const vector<Job*>& jobs);
+    void addJobs(const vector<Job*>& jobs);
     void addJob(Job* job);
-	void addJobNoLock(Job* job);
+    void addJobNoLock(Job* job);
     Job* getJob(JobThread* thread);
     bool doneWithJobs();
-	void executeOneJob(Job* job);
+    void executeOneJob(Job* job);
     void jobHasEnded(Job* job);
     void waitEndJobs();
     void addPendingJob(Job* job);
 
     Job* getJob();
 
-    LoadingThread*     loadingThread = nullptr;
-    SavingThread*      savingThread  = nullptr;
+    IoThread*     ioThread = nullptr;
     vector<Job*>       queueJobs;
     vector<JobThread*> availableThreads;
     vector<JobThread*> workerThreads;

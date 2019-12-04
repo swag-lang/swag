@@ -183,7 +183,6 @@
     <ClInclude Include="OutputFile.h" />
     <ClInclude Include="RaceCondition.h" />
     <ClInclude Include="RegisterList.h" />
-    <ClInclude Include="SavingThread.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="Scoped.h" />
     <ClInclude Include="SourceLocation.h" />
@@ -195,7 +194,7 @@
     <ClInclude Include="Job.h" />
     <ClInclude Include="JobThread.h" />
     <ClInclude Include="LanguageSpec.h" />
-    <ClInclude Include="LoadingThread.h" />
+    <ClInclude Include="IoThread.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Pool.h" />
@@ -288,7 +287,6 @@
     <ClCompile Include="OsWin32.cpp" />
     <ClCompile Include="OutputFile.cpp" />
     <ClCompile Include="RaceCondition.cpp" />
-    <ClCompile Include="SavingThread.cpp" />
     <ClCompile Include="Scope.cpp" />
     <ClCompile Include="SemanticJobAffectExpression_.cpp" />
     <ClCompile Include="SemanticJobAttribute_.cpp" />
@@ -325,7 +323,7 @@
     <ClCompile Include="SyntaxJobVar_.cpp" />
     <ClCompile Include="TokenizerIdentifier_.cpp" />
     <ClCompile Include="TokenizerNumberLiteral_.cpp" />
-    <ClCompile Include="LoadingThread.cpp" />
+    <ClCompile Include="IoThread.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

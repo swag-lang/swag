@@ -1,20 +1,37 @@
 #include "pch.h"
 #include "OutputFile.h"
 #include "ThreadManager.h"
-#include "SavingThread.h"
+#include "IoThread.h"
+#include "Log.h"
 
-void OutputFile::flushBucket(ConcatBucket* bucket)
+void OutputFile::flushBucket(ConcatBucket* bucket, bool lastOne)
 {
+    SWAG_ASSERT(lastFlushedBucket != bucket);
+    SWAG_ASSERT(!done);
     lastFlushedBucket = bucket;
-    auto req          = g_ThreadMgr.savingThread->newRequest();
+    auto req          = g_ThreadMgr.ioThread->newSavingRequest();
     req->file         = this;
     req->buffer       = (char*) bucket->datas;
     req->bufferSize   = bucket->count;
     req->firstSave    = firstSave;
+    req->lastOne      = lastOne;
     firstSave         = false;
-    lastRequest       = req;
-    pendingRequests++;
-    g_ThreadMgr.savingThread->addRequest(req);
+    g_ThreadMgr.ioThread->addSavingRequest(req);
+}
+
+void OutputFile::flushBucket1(ConcatBucket* bucket, bool lastOne)
+{
+    SWAG_ASSERT(lastFlushedBucket != bucket);
+    SWAG_ASSERT(!done);
+    lastFlushedBucket = bucket;
+    auto req          = g_ThreadMgr.ioThread->newSavingRequest();
+    req->file         = this;
+    req->buffer       = (char*) bucket->datas;
+    req->bufferSize   = bucket->count;
+    req->firstSave    = firstSave;
+    req->lastOne      = lastOne;
+    firstSave         = false;
+    g_ThreadMgr.ioThread->addSavingRequest(req);
 }
 
 bool OutputFile::flush()
@@ -22,42 +39,26 @@ bool OutputFile::flush()
     bool result = true;
     auto bucket = lastFlushedBucket ? lastFlushedBucket->nextBucket : firstBucket;
 
-    while (bucket)
+    if (bucket)
     {
-        flushBucket(bucket);
-        bucket = bucket->nextBucket;
-    }
+        while (bucket)
+        {
+            flushBucket1(bucket, bucket->nextBucket ? false : true);
+            bucket = bucket->nextBucket;
+        }
 
-    while (true)
-    {
         unique_lock lk(mutexNotify);
-        if (!pendingRequests)
-        {
-            SWAG_ASSERT(reqToRelease.empty());
-            break;
-        }
-
         condVar.wait(lk);
-        for (auto req : reqToRelease)
-        {
-            if (req->ioError)
-                result = false;
-            g_ThreadMgr.savingThread->releaseRequest(req);
-        }
-
-        reqToRelease.clear();
     }
 
-    SWAG_ASSERT(!pendingRequests);
-    if (openFile)
-        fclose(openFile);
+    SWAG_ASSERT(done);
     return result;
 }
 
-void OutputFile::notifySave(SaveThreadRequest* req)
+void OutputFile::notifySave()
 {
     unique_lock lk(mutexNotify);
-    reqToRelease.push_back(req);
-    pendingRequests--;
+    SWAG_ASSERT(!done);
+    done = true;
     condVar.notify_one();
 }

@@ -4,9 +4,6 @@
     <ClCompile Include="JobThread.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingThread.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadManager.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
@@ -251,9 +248,6 @@
     <ClCompile Include="ModuleCompileJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="SavingThread.cpp">
-      <Filter>Threading</Filter>
-    </ClCompile>
     <ClCompile Include="OutputFile.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -345,12 +339,12 @@
     <ClCompile Include="ModuleOutputExportJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="IoThread.cpp">
+      <Filter>Threading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadingThread.h">
       <Filter>Threading</Filter>
     </ClInclude>
     <ClInclude Include="ThreadManager.h">
@@ -507,9 +501,6 @@
     <ClInclude Include="RegisterList.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="SavingThread.h">
-      <Filter>Threading</Filter>
-    </ClInclude>
     <ClInclude Include="OutputFile.h">
       <Filter>Backend</Filter>
     </ClInclude>
@@ -565,6 +556,9 @@
     </ClInclude>
     <ClInclude Include="ModuleOutputExportJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="IoThread.h">
+      <Filter>Threading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

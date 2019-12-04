@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SourceFile.h"
 #include "ThreadManager.h"
-#include "LoadingThread.h"
+#include "IoThread.h"
 #include "Diagnostic.h"
 #include "Workspace.h"
 
@@ -116,19 +116,19 @@ void SourceFile::waitRequest(int reqNum)
 void SourceFile::notifyLoad()
 {
     unique_lock lk(mutexNotify);
-    condVar.notify_one();
+    condVar.notify_all();
 }
 
 void SourceFile::validateRequest(int reqNum)
 {
-    auto loadingTh = g_ThreadMgr.loadingThread;
-    auto req       = requests[reqNum];
+    auto ioTh = g_ThreadMgr.ioThread;
+    auto req  = requests[reqNum];
 
     buffersSize[reqNum] = req->loadedSize;
     doneLoading         = req->loadedSize != bufferSize ? true : false;
     totalRead += req->loadedSize;
 
-    loadingTh->releaseRequest(req);
+    ioTh->releaseLoadingRequest(req);
     requests[reqNum] = nullptr;
     if (doneLoading)
         close();
@@ -136,8 +136,8 @@ void SourceFile::validateRequest(int reqNum)
 
 void SourceFile::buildRequest(int reqNum)
 {
-    auto loadingTh = g_ThreadMgr.loadingThread;
-    auto req       = loadingTh->newRequest();
+    auto loadingTh = g_ThreadMgr.ioThread;
+    auto req       = loadingTh->newLoadingRequest();
 
     req->file        = this;
     req->seek        = fileSeek;
@@ -145,7 +145,7 @@ void SourceFile::buildRequest(int reqNum)
     req->buffer[0]   = 0;
     requests[reqNum] = req;
 
-    loadingTh->addRequest(req);
+    loadingTh->addLoadingRequest(req);
     fileSeek += bufferSize;
 }
 

@@ -1,20 +1,19 @@
 #pragma once
 #include "Concat.h"
-struct SaveThreadRequest;
+struct SavingThreadRequest;
 
 struct OutputFile : public Concat
 {
-    string                     fileName;
-    ConcatBucket*              lastFlushedBucket = nullptr;
-    SaveThreadRequest*         lastRequest       = nullptr;
-    FILE*                      openFile          = nullptr;
-    mutex                      mutexNotify;
-    condition_variable         condVar;
-    vector<SaveThreadRequest*> reqToRelease;
-    int                        pendingRequests = 0;
-    bool                       firstSave       = true;
-
-    void flushBucket(ConcatBucket* bucket) override;
+    void flushBucket(ConcatBucket* bucket, bool lastOne = false) override;
+	void flushBucket1(ConcatBucket* bucket, bool lastOne = false);
     bool flush();
-    void notifySave(SaveThreadRequest* req);
+    void notifySave();
+
+    string             fileName;
+    mutex              mutexNotify;
+    condition_variable condVar;
+    ConcatBucket*      lastFlushedBucket = nullptr;
+    FILE*              openFile          = nullptr;
+    bool               firstSave         = true;
+    bool               done              = false;
 };

@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ThreadManager.h"
-#include "LoadingThread.h"
-#include "SavingThread.h"
+#include "IoThread.h"
 #include "JobThread.h"
 #include "Global.h"
 #include "CommandLine.h"
@@ -16,8 +15,7 @@ void ThreadManager::init()
 {
     initDefaultContext();
 
-    loadingThread = new LoadingThread();
-    savingThread  = new SavingThread();
+    ioThread = new IoThread();
 
     int numCores = std::thread::hardware_concurrency();
     if (g_CommandLine.numCores == 0)
@@ -29,12 +27,6 @@ void ThreadManager::init()
 
     for (int i = 0; i < numWorkers; i++)
         workerThreads.push_back(new JobThread());
-}
-
-ThreadManager::~ThreadManager()
-{
-    delete loadingThread;
-    delete savingThread;
 }
 
 void ThreadManager::addJobs(const vector<Job*>& jobs)
