@@ -13,11 +13,6 @@ IoThread::IoThread()
     OS::setThreadName(thread, "IOThread");
 }
 
-IoThread::~IoThread()
-{
-    //delete m_thread;
-}
-
 void IoThread::releaseLoadingRequest(LoadingThreadRequest* request)
 {
     unique_lock lk(mutexNew);
@@ -146,7 +141,7 @@ void IoThread::save(SavingThreadRequest* request)
         request->file->notifySave();
     }
 
-    //releaseSavingRequest(request);
+    releaseSavingRequest(request);
 }
 
 void IoThread::load(LoadingThreadRequest* request)
@@ -164,7 +159,7 @@ void IoThread::load(LoadingThreadRequest* request)
 
 void IoThread::loop()
 {
-    while (!requestEnd)
+    while (true)
     {
         auto loadingReq = getLoadingRequest();
         if (loadingReq)
@@ -180,8 +175,6 @@ void IoThread::loop()
             continue;
         }
 
-        if (requestEnd)
-            break;
         waitRequest();
     }
 }

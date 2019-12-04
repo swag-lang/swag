@@ -24,7 +24,6 @@ struct SavingThreadRequest
 struct IoThread
 {
     IoThread();
-    ~IoThread();
     void                  addLoadingRequest(LoadingThreadRequest* request);
     void                  releaseLoadingRequest(LoadingThreadRequest* request);
     LoadingThreadRequest* newLoadingRequest();
@@ -41,14 +40,12 @@ struct IoThread
     void load(LoadingThreadRequest* request);
     void save(SavingThreadRequest* request);
 
-    thread* thread     = nullptr;
-    bool    requestEnd = false;
-
     vector<LoadingThreadRequest*> queueLoadingRequests;
     vector<LoadingThreadRequest*> freeLoadingRequests;
     deque<SavingThreadRequest*>   queueSavingRequests;
     deque<SavingThreadRequest*>   freeSavingRequests;
 
+    thread*            thread = nullptr;
     mutex              mutexAdd;
     mutex              mutexNew;
     condition_variable condVar;
