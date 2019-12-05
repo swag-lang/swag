@@ -19,9 +19,8 @@ struct BackendC : public Backend
     {
     }
 
-    bool preCompile() override;
-    bool mustCompile();
-    bool compile(const BuildParameters& backendParameters) override;
+    JobResult preCompile() override;
+    bool      compile(const BuildParameters& backendParameters) override;
 
     bool emitRuntime();
     bool emitDataSegment(DataSegment* dataSegment);

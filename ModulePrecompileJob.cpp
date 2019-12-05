@@ -11,7 +11,5 @@ thread_local Pool<ModulePreCompileJob> g_Pool_modulePreCompileJob;
 
 JobResult ModulePreCompileJob::execute()
 {
-    if (!module->backend->preCompile())
-        return JobResult::ReleaseJob;
-    return JobResult::ReleaseJob;
+	return module->backend->preCompile();
 }

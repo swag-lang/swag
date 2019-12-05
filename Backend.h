@@ -11,6 +11,7 @@ struct AstNode;
 struct Scope;
 struct TypeInfoParam;
 struct AstVarDecl;
+enum class JobResult;
 
 struct Backend
 {
@@ -19,12 +20,10 @@ struct Backend
     {
     }
 
-    void generateSwg();
-    void emitSeparator(Concat& buffer, const char* title);
-
-    bool         generateExportFile();
-    virtual bool preCompile()                                      = 0;
-    virtual bool compile(const BuildParameters& backendParameters) = 0;
+    void              emitSeparator(Concat& buffer, const char* title);
+    bool              generateExportFile();
+    virtual JobResult preCompile()                                      = 0;
+    virtual bool      compile(const BuildParameters& backendParameters) = 0;
 
     Module*    module;
     OutputFile bufferSwg;

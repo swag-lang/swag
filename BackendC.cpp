@@ -5,8 +5,9 @@
 #include "Version.h"
 #include "Workspace.h"
 #include "Os.h"
+#include "Job.h"
 
-bool BackendC::preCompile()
+JobResult BackendC::preCompile()
 {
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
@@ -29,22 +30,21 @@ bool BackendC::preCompile()
     }
 
     if (!regen)
-        return true;
+        return JobResult::ReleaseJob;
 
-    bool ok = true;
-    ok &= emitRuntime();
-    ok &= emitDataSegment(&module->mutableSegment);
-    ok &= emitDataSegment(&module->constantSegment);
-    ok &= emitAllFuncSignatureInternalC();
-    ok &= emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
-    ok &= emitPublic(module, module->scopeRoot);
-    ok &= emitAllFunctionBody();
-    ok &= emitGlobalInit();
-    ok &= emitGlobalDrop();
-    ok &= emitMain();
-    ok &= bufferC.flush();
+    emitRuntime();
+    emitDataSegment(&module->mutableSegment);
+    emitDataSegment(&module->constantSegment);
+    emitAllFuncSignatureInternalC();
+    emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
+    emitPublic(module, module->scopeRoot);
+    emitAllFunctionBody();
+    emitGlobalInit();
+    emitGlobalDrop();
+    emitMain();
+    bufferC.flush();
 
-    return ok;
+    return JobResult::ReleaseJob;
 }
 
 bool BackendC::compile(const BuildParameters& buildParameters)
