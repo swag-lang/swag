@@ -134,6 +134,8 @@ void IoThread::save(SavingThreadRequest* request)
     }
 
     fwrite(request->buffer, 1, request->bufferSize, file);
+	fflush(file);
+
     if (request->lastOne)
     {
         fclose(file);
