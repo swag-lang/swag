@@ -175,6 +175,7 @@
     <ClInclude Include="Global.h" />
     <ClInclude Include="ModuleBuildJob.h" />
     <ClInclude Include="ModuleOutputExportJob.h" />
+    <ClInclude Include="ModulePrecompileJob.h" />
     <ClInclude Include="ModuleTestJob.h" />
     <ClInclude Include="Os.h" />
     <ClInclude Include="CompilerTarget.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="ModuleCompileJob.cpp" />
     <ClCompile Include="ModuleOutputExportJob.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
+    <ClCompile Include="ModulePrecompileJob.cpp" />
     <ClCompile Include="ModuleSemanticJob.cpp" />
     <ClCompile Include="ModuleTestJob.cpp" />
     <ClCompile Include="OsWin32.cpp" />

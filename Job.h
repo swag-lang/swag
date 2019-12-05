@@ -37,10 +37,12 @@ enum class JobResult
     Continue,
     ReleaseJob,
     KeepJobAlive,
+    KeepJobAlivePending,
 };
 
 static const uint32_t JOB_IS_DEPENDENT = 0x00000001;
 static const uint32_t JOB_IS_IN_THREAD = 0x00000002;
+static const uint32_t JOB_IS_PENDING   = 0x00000004;
 
 struct Job
 {

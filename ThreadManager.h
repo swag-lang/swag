@@ -2,6 +2,7 @@
 struct Job;
 struct JobThread;
 struct IoThread;
+enum class JobResult;
 
 struct ThreadManager
 {
@@ -12,13 +13,13 @@ struct ThreadManager
     Job* getJob(JobThread* thread);
     bool doneWithJobs();
     void executeOneJob(Job* job);
-    void jobHasEnded(Job* job);
+    void jobHasEnded(Job* job, JobResult result);
     void waitEndJobs();
     void addPendingJob(Job* job);
 
     Job* getJob();
 
-    IoThread*     ioThread = nullptr;
+    IoThread*          ioThread = nullptr;
     vector<Job*>       queueJobs;
     vector<JobThread*> availableThreads;
     vector<JobThread*> workerThreads;

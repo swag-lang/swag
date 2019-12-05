@@ -39,8 +39,11 @@ void ThreadManager::addJobs(const vector<Job*>& jobs)
         job->flags &= ~JOB_IS_DEPENDENT;
 
         // We have a new dependency job
-        if (job->dependentJob)
-            job->dependentJob->waitOnJobs++;
+        if (!(job->flags & JOB_IS_PENDING))
+        {
+            if (job->dependentJob)
+                job->dependentJob->waitOnJobs++;
+        }
     }
 
     for (auto job : jobs)
@@ -57,8 +60,11 @@ void ThreadManager::addJob(Job* job)
     job->flags &= ~JOB_IS_DEPENDENT;
 
     // We have a new dependency job
-    if (job->dependentJob)
-        job->dependentJob->waitOnJobs++;
+    if (!(job->flags & JOB_IS_PENDING))
+    {
+        if (job->dependentJob)
+            job->dependentJob->waitOnJobs++;
+    }
 
     addJobNoLock(job);
 }
@@ -82,6 +88,32 @@ void ThreadManager::addJobNoLock(Job* job)
     thread->notifyJob();
 }
 
+void ThreadManager::jobHasEnded(Job* job, JobResult result)
+{
+    unique_lock lk(mutexAdd);
+
+    job->flags &= ~JOB_IS_IN_THREAD;
+    job->flags &= ~JOB_IS_PENDING;
+
+    // Wakeup build job for module if necessary
+    if (result == JobResult::KeepJobAlivePending)
+        job->flags |= JOB_IS_PENDING;
+    else
+    {
+        processingJobs--;
+        if (job->dependentJob)
+        {
+            job->dependentJob->waitOnJobs--;
+            if (!job->dependentJob->waitOnJobs)
+                g_ThreadMgr.addJobNoLock(job->dependentJob);
+        }
+    }
+
+    unique_lock lk1(mutexDone);
+    if (doneWithJobs())
+        condVarDone.notify_all();
+}
+
 void ThreadManager::executeOneJob(Job* job)
 {
     auto result = job->execute();
@@ -90,33 +122,12 @@ void ThreadManager::executeOneJob(Job* job)
         job->doneJob();
     }
 
-    jobHasEnded(job);
-    if (result == JobResult::KeepJobAlive)
+    jobHasEnded(job, result);
+    if (result == JobResult::KeepJobAlive || result == JobResult::KeepJobAlivePending)
     {
         addJobs(job->jobsToAdd);
         job->jobsToAdd.clear();
     }
-}
-
-void ThreadManager::jobHasEnded(Job* job)
-{
-    unique_lock lk(mutexAdd);
-
-    job->flags &= ~JOB_IS_IN_THREAD;
-
-    // Wakeup build job for module if necessary
-    if (job->dependentJob)
-    {
-        job->dependentJob->waitOnJobs--;
-        if (!job->dependentJob->waitOnJobs)
-            g_ThreadMgr.addJobNoLock(job->dependentJob);
-    }
-
-    processingJobs--;
-
-    unique_lock lk1(mutexDone);
-    if (doneWithJobs())
-        condVarDone.notify_all();
 }
 
 bool ThreadManager::doneWithJobs()
@@ -142,9 +153,12 @@ Job* ThreadManager::getJob()
         return nullptr;
     auto job = queueJobs.back();
     queueJobs.pop_back();
-    processingJobs++;
+
+	if(!(job->flags & JOB_IS_PENDING))
+		processingJobs++;
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
     job->flags |= JOB_IS_IN_THREAD;
+
     return job;
 }
 

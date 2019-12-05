@@ -342,6 +342,9 @@
     <ClCompile Include="IoThread.cpp">
       <Filter>Threading</Filter>
     </ClCompile>
+    <ClCompile Include="ModulePrecompileJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -559,6 +562,9 @@
     </ClInclude>
     <ClInclude Include="IoThread.h">
       <Filter>Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="ModulePrecompileJob.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
