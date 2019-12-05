@@ -11,6 +11,7 @@ struct AstNode;
 struct Scope;
 struct TypeInfoParam;
 struct AstVarDecl;
+struct Job;
 enum class JobResult;
 
 struct Backend
@@ -22,7 +23,7 @@ struct Backend
 
     void              emitSeparator(Concat& buffer, const char* title);
     bool              generateExportFile();
-    virtual JobResult preCompile()                                      = 0;
+    virtual JobResult preCompile(Job* ownerJob)                         = 0;
     virtual bool      compile(const BuildParameters& backendParameters) = 0;
 
     Module*    module;

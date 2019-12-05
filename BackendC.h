@@ -11,6 +11,14 @@ struct ByteCode;
 struct ByteCodeInstruction;
 struct DataSegment;
 struct Utf8;
+struct Job;
+
+enum class BackendCPreCompilePass
+{
+    Init,
+    FunctionBodies,
+    End,
+};
 
 struct BackendC : public Backend
 {
@@ -19,28 +27,28 @@ struct BackendC : public Backend
     {
     }
 
-    JobResult preCompile() override;
+    JobResult preCompile(Job* ownerJob) override;
     bool      compile(const BuildParameters& backendParameters) override;
 
     bool emitRuntime();
     bool emitDataSegment(DataSegment* dataSegment);
     void emitArgcArgv();
     bool emitMain();
-    bool emitAllFunctionBody();
-    bool emitAllFunctionBody(Module* moduleToGen);
+    bool emitAllFunctionBody(Job* ownerJob);
+    bool emitAllFunctionBody(Module* moduleToGen, Job* ownerJob);
     bool emitAllFuncSignatureInternalC();
     bool emitAllFuncSignatureInternalC(Module* moduleToGen);
     bool emitGlobalInit();
     bool emitGlobalDrop();
 
-    bool emitPublic(Module* moduleToGen, Scope* scope);
-    bool swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType);
-    bool emitForeignCall(ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
-    void emitFuncSignatureSwg(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node);
-    bool emitFuncWrapperPublic(Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
-    bool emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport);
-    void emitFuncSignatureInternalC(ByteCode* bc);
-    bool emitFunctionBody(Module* moduleToGen, ByteCode* bc);
+    bool        emitPublic(Module* moduleToGen, Scope* scope);
+    static bool swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType);
+    static bool emitForeignCall(Concat& concat, Module* moduleToGen, ByteCodeInstruction* ip, vector<uint32_t>& pushParams);
+    static bool emitForeignFuncSignature(Module* moduleToGen, Concat& buffer, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, bool forExport);
+    static void emitFuncSignatureInternalC(Concat& concat, ByteCode* bc);
+    static bool emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* bc);
+    static bool emitFuncWrapperPublic(Concat& concat, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* one);
 
-    OutputFile bufferC;
+    OutputFile             bufferC;
+    BackendCPreCompilePass pass = BackendCPreCompilePass::Init;
 };

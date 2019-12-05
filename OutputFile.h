@@ -4,8 +4,7 @@ struct SavingThreadRequest;
 
 struct OutputFile : public Concat
 {
-    void flushBucket(ConcatBucket* bucket, bool lastOne = false) override;
-	void flushBucket1(ConcatBucket* bucket, bool lastOne = false);
+    void flushBucket(ConcatBucket* bucket, bool lastOne) override;
     bool flush();
     void notifySave();
 
@@ -15,5 +14,4 @@ struct OutputFile : public Concat
     ConcatBucket*      lastFlushedBucket = nullptr;
     FILE*              openFile          = nullptr;
     bool               firstSave         = true;
-    bool               done              = false;
 };

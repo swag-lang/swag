@@ -345,6 +345,9 @@
     <ClCompile Include="ModulePrecompileJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="BackendCFunctionBodyJob.cpp">
+      <Filter>Backend\C</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -565,6 +568,9 @@
     </ClInclude>
     <ClInclude Include="ModulePrecompileJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="BackendCFunctionBodyJob.h">
+      <Filter>Backend\C</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

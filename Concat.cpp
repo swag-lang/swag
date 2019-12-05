@@ -8,6 +8,12 @@ Concat::Concat()
     bucketSize = 32 * 1024;
 }
 
+void Concat::clear()
+{
+    firstBucket = nullptr;
+    lastBucket  = nullptr;
+}
+
 void Concat::checkCount(int offset)
 {
     if (lastBucket && lastBucket->count + offset < bucketSize)
@@ -17,7 +23,7 @@ void Concat::checkCount(int offset)
     }
 
     if (lastBucket)
-        flushBucket(lastBucket);
+        flushBucket(lastBucket, false);
 
     auto newBucket = g_Pool_concatBucket.alloc();
     if (!firstBucket)

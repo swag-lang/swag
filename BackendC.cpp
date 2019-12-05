@@ -7,42 +7,59 @@
 #include "Os.h"
 #include "Job.h"
 
-JobResult BackendC::preCompile()
+JobResult BackendC::preCompile(Job* ownerJob)
 {
-    if (g_CommandLine.verboseBuildPass)
-        g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
-
-    auto targetPath  = g_Workspace.targetPath.string();
-    bufferC.fileName = targetPath + "/" + module->name + ".c";
-
-    // Do we need to generate the file ?
-    bool regen = g_CommandLine.rebuild;
-    if (!regen)
+    if (pass == BackendCPreCompilePass::Init)
     {
-        if (!fs::exists(bufferC.fileName))
-            regen = true;
-        else
+        pass = BackendCPreCompilePass::FunctionBodies;
+        if (g_CommandLine.verboseBuildPass)
+            g_Log.verbose(format("   module '%s', C backend, generating files", module->name.c_str(), module->byteCodeTestFunc.size()));
+
+        auto targetPath  = g_Workspace.targetPath.string();
+        bufferC.fileName = targetPath + "/" + module->name + ".c";
+
+        // Do we need to generate the file ?
+        bool regen = g_CommandLine.rebuild;
+        if (!regen)
         {
-            auto t1 = OS::getFileWriteTime(bufferC.fileName);
-            if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.runtimeModule->moreRecentSourceFile)
+            if (!fs::exists(bufferC.fileName))
                 regen = true;
+            else
+            {
+                auto t1 = OS::getFileWriteTime(bufferC.fileName);
+                if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.runtimeModule->moreRecentSourceFile)
+                    regen = true;
+            }
         }
+
+        if (!regen)
+            return JobResult::ReleaseJob;
+
+        emitRuntime();
+        emitDataSegment(&module->mutableSegment);
+        emitDataSegment(&module->constantSegment);
+        emitAllFuncSignatureInternalC();
+        emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
+        emitPublic(module, module->scopeRoot);
+        emitSeparator(bufferC, "FUNCTIONS");
+		bufferC.flush();
     }
 
-    if (!regen)
-        return JobResult::ReleaseJob;
+    if (pass == BackendCPreCompilePass::FunctionBodies)
+    {
+        pass = BackendCPreCompilePass::End;
+        emitAllFunctionBody(ownerJob);
+        return JobResult::KeepJobAlivePending;
+    }
 
-    emitRuntime();
-    emitDataSegment(&module->mutableSegment);
-    emitDataSegment(&module->constantSegment);
-    emitAllFuncSignatureInternalC();
-    emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
-    emitPublic(module, module->scopeRoot);
-    emitAllFunctionBody();
-    emitGlobalInit();
-    emitGlobalDrop();
-    emitMain();
-    bufferC.flush();
+    if (pass == BackendCPreCompilePass::End)
+    {
+		emitSeparator(bufferC, "INIT");
+        emitGlobalInit();
+        emitGlobalDrop();
+        emitMain();
+        bufferC.flush();
+    }
 
     return JobResult::ReleaseJob;
 }

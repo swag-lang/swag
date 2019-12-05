@@ -6,23 +6,6 @@
 
 void OutputFile::flushBucket(ConcatBucket* bucket, bool lastOne)
 {
-    SWAG_ASSERT(lastFlushedBucket != bucket);
-    SWAG_ASSERT(!done);
-    lastFlushedBucket = bucket;
-    auto req          = g_ThreadMgr.ioThread->newSavingRequest();
-    req->file         = this;
-    req->buffer       = (char*) bucket->datas;
-    req->bufferSize   = bucket->count;
-    req->firstSave    = firstSave;
-    req->lastOne      = lastOne;
-    firstSave         = false;
-    g_ThreadMgr.ioThread->addSavingRequest(req);
-}
-
-void OutputFile::flushBucket1(ConcatBucket* bucket, bool lastOne)
-{
-    SWAG_ASSERT(lastFlushedBucket != bucket);
-    SWAG_ASSERT(!done);
     lastFlushedBucket = bucket;
     auto req          = g_ThreadMgr.ioThread->newSavingRequest();
     req->file         = this;
@@ -43,7 +26,7 @@ bool OutputFile::flush()
     {
         while (bucket)
         {
-            flushBucket1(bucket, bucket->nextBucket ? false : true);
+            flushBucket(bucket, bucket->nextBucket ? false : true);
             bucket = bucket->nextBucket;
         }
 
@@ -51,14 +34,13 @@ bool OutputFile::flush()
         condVar.wait(lk);
     }
 
-    SWAG_ASSERT(done);
+    lastFlushedBucket = nullptr;
+	clear();
     return result;
 }
 
 void OutputFile::notifySave()
 {
     unique_lock lk(mutexNotify);
-    SWAG_ASSERT(!done);
-    done = true;
     condVar.notify_one();
 }

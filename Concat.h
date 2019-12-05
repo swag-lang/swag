@@ -6,6 +6,7 @@
 struct Concat
 {
     Concat();
+	void clear();
     void checkCount(int offset);
 
     void addU8(uint8_t v);
@@ -27,9 +28,9 @@ struct Concat
     void addIndent(int num);
     void addChar(char c);
     void addEol();
-	void addStringFormat(const char* format, ...);
+    void addStringFormat(const char* format, ...);
 
-    virtual void flushBucket(ConcatBucket* bucket, bool lastOne = false){};
+    virtual void flushBucket(ConcatBucket* bucket, bool lastOne){};
 
     ConcatBucket* firstBucket = nullptr;
     ConcatBucket* lastBucket  = nullptr;
