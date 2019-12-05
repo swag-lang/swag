@@ -108,9 +108,26 @@ long SourceFile::readTo(char* buffer)
 
 void SourceFile::waitRequest(int reqNum)
 {
-    unique_lock lk(mutexNotify);
-    if (!requests[reqNum]->done)
-        condVar.wait(lk);
+    while (true)
+    {
+        {
+            unique_lock lk(mutexNotify);
+            if (requests[reqNum]->done)
+                return;
+        }
+
+        auto job = g_ThreadMgr.getJob();
+        if (!job)
+        {
+            unique_lock lk(mutexNotify);
+            if (requests[reqNum]->done)
+                return;
+            condVar.wait(lk);
+            break;
+        }
+
+        g_ThreadMgr.executeOneJob(job);
+    }
 }
 
 void SourceFile::notifyLoad()

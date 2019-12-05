@@ -14,4 +14,5 @@ struct OutputFile : public Concat
     ConcatBucket*      lastFlushedBucket = nullptr;
     FILE*              openFile          = nullptr;
     bool               firstSave         = true;
+    bool               done              = false;
 };
