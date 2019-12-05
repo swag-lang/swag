@@ -28,23 +28,21 @@ bool BackendC::preCompile()
         }
     }
 
+    if (!regen)
+        return true;
+
     bool ok = true;
-
-    if (regen)
-    {
-        ok &= emitRuntime();
-        ok &= emitDataSegment(&module->mutableSegment);
-        ok &= emitDataSegment(&module->constantSegment);
-        ok &= emitAllFuncSignatureInternalC();
-        ok &= emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
-        ok &= emitPublic(module, module->scopeRoot);
-        ok &= emitAllFunctionBody();
-        ok &= emitGlobalInit();
-        ok &= emitGlobalDrop();
-        ok &= emitMain();
-
-        ok &= bufferC.flush();
-    }
+    ok &= emitRuntime();
+    ok &= emitDataSegment(&module->mutableSegment);
+    ok &= emitDataSegment(&module->constantSegment);
+    ok &= emitAllFuncSignatureInternalC();
+    ok &= emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
+    ok &= emitPublic(module, module->scopeRoot);
+    ok &= emitAllFunctionBody();
+    ok &= emitGlobalInit();
+    ok &= emitGlobalDrop();
+    ok &= emitMain();
+    ok &= bufferC.flush();
 
     return ok;
 }
