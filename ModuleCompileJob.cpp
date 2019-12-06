@@ -23,7 +23,7 @@ JobResult ModuleCompileJob::execute()
     }
 
     // The module is built, so notify (we notify before the test)
-    module->setHasBeenBuilt();
+    module->setHasBeenBuilt(ModuleBuildResult::Full);
 
     // Test job
 	// Do not set job->dependentJob, because nobody is dependent on that execution

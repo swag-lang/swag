@@ -14,6 +14,12 @@ struct AstVarDecl;
 struct Job;
 enum class JobResult;
 
+enum class BackendPass
+{
+    Init,
+    Flush,
+};
+
 struct Backend
 {
     Backend(Module* mdl)
@@ -26,8 +32,9 @@ struct Backend
     virtual JobResult preCompile(Job* ownerJob)                         = 0;
     virtual bool      compile(const BuildParameters& backendParameters) = 0;
 
-    Module*    module;
-    OutputFile bufferSwg;
+    Module*     module;
+    OutputFile  bufferSwg;
+    BackendPass pass = BackendPass::Init;
 
     bool emitAttributes(AstNode* node);
     bool emitAttributes(TypeInfoParam* param);

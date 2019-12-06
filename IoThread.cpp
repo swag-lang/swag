@@ -121,7 +121,7 @@ void IoThread::save(SavingThreadRequest* request)
                 fopen_s(&file, request->file->fileName.c_str(), "a+tN");
 			if (file)
 			{
-				setvbuf(file, nullptr, _IONBF, 0);
+				//setvbuf(file, nullptr, _IONBF, 0);
 				break;
 			}
 

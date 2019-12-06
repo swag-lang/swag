@@ -37,7 +37,7 @@ JobResult ModuleOutputJob::execute()
         auto exportJob          = g_Pool_moduleOutputExportJob.alloc();
         exportJob->backend      = module->backend;
         exportJob->dependentJob = dependentJob;
-        g_ThreadMgr.addJob(exportJob);
+        jobsToAdd.push_back(exportJob);
     }
 
     if (pass == ModuleOutputJobPass::PreCompile)
@@ -46,7 +46,7 @@ JobResult ModuleOutputJob::execute()
         auto preCompileJob          = g_Pool_modulePreCompileJob.alloc();
         preCompileJob->module       = module;
         preCompileJob->dependentJob = this;
-		g_ThreadMgr.addJob(preCompileJob);
+        jobsToAdd.push_back(preCompileJob);
         return JobResult::KeepJobAlivePending;
     }
 
@@ -62,6 +62,7 @@ JobResult ModuleOutputJob::execute()
             {
                 auto compileJob                      = g_Pool_moduleCompileJob.alloc();
                 compileJob->module                   = module;
+                compileJob->dependentJob             = dependentJob;
                 compileJob->buildParameters          = module->buildParameters;
                 compileJob->buildParameters.destFile = g_Workspace.targetPath.string() + "/" + module->name;
                 compileJob->buildParameters.type     = BackendOutputType::Binary;

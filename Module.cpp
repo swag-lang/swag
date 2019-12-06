@@ -156,12 +156,12 @@ void Module::addDependency(AstNode* importNode)
     }
 }
 
-void Module::setHasBeenBuilt()
+void Module::setHasBeenBuilt(ModuleBuildResult buildResult)
 {
     unique_lock lk(mutexDependency);
-    if (hasBeenBuilt)
+    if (hasBeenBuilt == buildResult)
         return;
-    hasBeenBuilt = true;
+    hasBeenBuilt = buildResult;
     for (auto job : dependentJobs.list)
         g_ThreadMgr.addJob(job);
     dependentJobs.clear();

@@ -31,7 +31,7 @@ JobResult ModuleBuildJob::execute()
 
             auto        depModule = it->second;
             shared_lock lk(depModule->mutexDependency);
-            if (!depModule->hasBeenBuilt)
+            if (depModule->hasBeenBuilt == ModuleBuildResult::None)
             {
                 depModule->dependentJobs.add(this);
                 return JobResult::KeepJobAlive;
@@ -88,6 +88,23 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::LoadDependencies)
     {
+        for (auto dep : module->moduleDependencies)
+        {
+            auto it = g_Workspace.mapModulesNames.find(dep.first);
+            SWAG_ASSERT(it != g_Workspace.mapModulesNames.end());
+
+            if (it->second->numErrors)
+                return JobResult::ReleaseJob;
+
+            auto        depModule = it->second;
+            shared_lock lk(depModule->mutexDependency);
+            if (depModule->hasBeenBuilt != ModuleBuildResult::Full)
+            {
+                depModule->dependentJobs.add(this);
+                return JobResult::KeepJobAlive;
+            }
+        }
+
         pass = ModuleBuildPass::BuildBuildSwg;
         for (const auto& dep : module->moduleDependencies)
         {
@@ -240,7 +257,7 @@ JobResult ModuleBuildJob::execute()
         }
     }
 
-    module->setHasBeenBuilt();
+    module->setHasBeenBuilt(ModuleBuildResult::Full);
 
     return JobResult::ReleaseJob;
 }

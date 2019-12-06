@@ -27,6 +27,13 @@ struct ModuleDependency
     bool     generated = false;
 };
 
+enum class ModuleBuildResult
+{
+    None,
+    ExportFile,
+    Full,
+};
+
 struct Module
 {
     void setup(const string& moduleName);
@@ -82,11 +89,11 @@ struct Module
     AstNode*             mainIsDefined    = nullptr;
 
     void addDependency(AstNode* importNode);
-    void setHasBeenBuilt();
+    void setHasBeenBuilt(ModuleBuildResult buildResult);
 
     shared_mutex                  mutexDependency;
     map<string, ModuleDependency> moduleDependencies;
-    bool                          hasBeenBuilt = false;
+    ModuleBuildResult             hasBeenBuilt = ModuleBuildResult::None;
 
     TypeTable typeTable;
 };
