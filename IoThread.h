@@ -19,6 +19,7 @@ struct SavingThreadRequest
     bool        firstSave  = false;
     bool        ioError    = false;
     bool        lastOne    = false;
+    bool        flush      = false;
 };
 
 struct IoThread

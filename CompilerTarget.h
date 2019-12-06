@@ -7,7 +7,7 @@
 
 struct CompilerParamsBackendC
 {
-    bool     writeSourceCode          = true;
+    bool     writeSourceCode          = false;
     bool     writeByteCodeInstruction = true;
     uint32_t maxApplicationArguments  = 64;
 };

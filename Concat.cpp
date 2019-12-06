@@ -23,7 +23,7 @@ void Concat::checkCount(int offset)
     }
 
     if (lastBucket)
-        flushBucket(lastBucket, false);
+        flushBucket(lastBucket, false, false);
 
     auto newBucket = g_Pool_concatBucket.alloc();
     if (!firstBucket)

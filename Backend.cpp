@@ -439,7 +439,7 @@ bool Backend::generateExportFile()
         if (!emitPublicSwg(module, module->scopeRoot))
             return true;
 
-        SWAG_CHECK(bufferSwg.flush());
+        SWAG_CHECK(bufferSwg.flush(true));
     }
 
     module->setHasBeenBuilt(ModuleBuildResult::ExportFile);

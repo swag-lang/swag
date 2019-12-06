@@ -42,7 +42,7 @@ JobResult BackendC::preCompile(Job* ownerJob)
         emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
         emitPublic(module, module->scopeRoot);
         emitSeparator(bufferC, "FUNCTIONS");
-		bufferC.flush();
+		bufferC.flush(false);
     }
 
     if (pass == BackendCPreCompilePass::FunctionBodies)
@@ -58,7 +58,7 @@ JobResult BackendC::preCompile(Job* ownerJob)
         emitGlobalInit();
         emitGlobalDrop();
         emitMain();
-        bufferC.flush();
+        bufferC.flush(true);
     }
 
     return JobResult::ReleaseJob;
@@ -79,6 +79,7 @@ bool BackendC::compile(const BuildParameters& buildParameters)
         return true;
     }
 
+	SWAG_ASSERT(bufferC.lastOne);
     const char* header = (buildParameters.flags & BUILDPARAM_FOR_TEST) ? "Building test" : "Building";
     g_Log.messageHeaderCentered(header, module->name.c_str());
 

@@ -81,6 +81,7 @@ SavingThreadRequest* IoThread::newSavingRequest()
         req->bufferSize = 0;
         req->ioError    = false;
         req->lastOne    = false;
+        req->flush      = false;
         return req;
     }
 
@@ -111,6 +112,7 @@ void IoThread::save(SavingThreadRequest* request)
     FILE* file = request->file->openFile;
     if (!file)
     {
+        SWAG_ASSERT(!request->file->done);
         for (int tryOpen = 0; tryOpen < 10; tryOpen++)
         {
             // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
@@ -119,11 +121,11 @@ void IoThread::save(SavingThreadRequest* request)
                 fopen_s(&file, request->file->fileName.c_str(), "wtN");
             else
                 fopen_s(&file, request->file->fileName.c_str(), "a+tN");
-			if (file)
-			{
-				//setvbuf(file, nullptr, _IONBF, 0);
-				break;
-			}
+            if (file)
+            {
+                //setvbuf(file, nullptr, _IONBF, 0);
+                break;
+            }
 
             Sleep(10);
         }
@@ -143,7 +145,11 @@ void IoThread::save(SavingThreadRequest* request)
     {
         fclose(file);
         request->file->openFile = nullptr;
-        request->file->notifySave();
+        request->file->notifySave(true);
+    }
+    else if (request->flush)
+    {
+        request->file->notifySave(request->lastOne);
     }
 
     releaseSavingRequest(request);
