@@ -119,8 +119,12 @@ void IoThread::save(SavingThreadRequest* request)
                 fopen_s(&file, request->file->fileName.c_str(), "wtN");
             else
                 fopen_s(&file, request->file->fileName.c_str(), "a+tN");
-            if (file)
-                break;
+			if (file)
+			{
+				setvbuf(file, nullptr, _IONBF, 0);
+				break;
+			}
+
             Sleep(10);
         }
 
@@ -134,7 +138,6 @@ void IoThread::save(SavingThreadRequest* request)
     }
 
     fwrite(request->buffer, 1, request->bufferSize, file);
-	fflush(file);
 
     if (request->lastOne)
     {
