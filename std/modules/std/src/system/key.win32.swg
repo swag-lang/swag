@@ -16,8 +16,7 @@
 
 	#run
 	{
-		using std.keyboard.Key
-        using os
+		using std.keyboard.Key, os
         setupArray(A,                   cast(u8) 'A')
         setupArray(Add,                 cast(u8) VK_ADD)
         setupArray(Apps,                cast(u8) VK_APPS)
