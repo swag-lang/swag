@@ -1,5 +1,5 @@
 //#[swag.printbc]
-#run
+#test
 {
     b := true
     var x0: s8 = acast b

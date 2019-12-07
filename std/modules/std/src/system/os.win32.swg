@@ -2,19 +2,20 @@
 {
     namespace std.os
     {
-        typealias HANDLE: 		*void
-        typealias WORD: 		u16
-        typealias DWORD: 		u32
-        typealias BOOL: 		s32
-		typealias LONG: 		s32
-        typealias LPVOID:		*void
-        typealias LPCVOID:		const *void
-        typealias LPCSTR:		string
-        typealias LPDWORD:		*DWORD
-        typealias LPOVERLAPPED:	*DWORD
-        typealias DWORD_PTR:	u64
-        typealias UINT:			u32
-		typealias SHORT:		s16
+        typealias HANDLE: 			*void
+        typealias WORD: 			u16
+        typealias DWORD: 			u32
+        typealias BOOL: 			s32
+		typealias LONG: 			s32
+        typealias LPVOID:			*void
+        typealias LPCVOID:			const *void
+        typealias LPCSTR:			string
+        typealias LPDWORD:			*DWORD
+        typealias LPOVERLAPPED:		*DWORD
+        typealias DWORD_PTR:		u64
+        typealias UINT:				u32
+		typealias SHORT:			s16
+		typealias LARGE_INTEGER:	s64
         
         const STD_INPUT_HANDLE 	= cast(DWORD) -10
         const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -277,6 +278,8 @@
             func OutputDebugStringA(lpOutputString: LPCSTR);
             func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
             func ExitProcess(uExitCode: UINT);
+			func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER);
+			func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);	
         }
 
         #[swag.foreign("user32")]

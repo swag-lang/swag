@@ -19,6 +19,9 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
             return true;
     }
 
+	if (to->kind == TypeInfoKind::Alias)
+		to = TypeManager::concreteType(to, CONCRETE_ALIAS);
+
     if (to->kind != TypeInfoKind::Native)
         return false;
 
