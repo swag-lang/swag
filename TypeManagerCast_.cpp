@@ -1,15 +1,9 @@
 #include "pch.h"
 #include "TypeManager.h"
-#include "Diagnostic.h"
-#include "Global.h"
-#include "TypeInfo.h"
 #include "SourceFile.h"
-#include "TypeTable.h"
 #include "Module.h"
 #include "Ast.h"
-#include "AstNode.h"
 #include "SemanticJob.h"
-#include "ByteCodeGenJob.h"
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
@@ -1892,16 +1886,19 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (toType->kind == TypeInfoKind::Pointer && (fromType->kind == TypeInfoKind::Struct || fromType->kind == TypeInfoKind::Interface))
     {
         auto typePtr = static_cast<TypeInfoPointer*>(toType);
-        if (typePtr->ptrCount == 1 && typePtr->finalType->isSame(fromType, ISSAME_CAST))
-        {
-            if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
-            {
-                fromNode->castedTypeInfo = fromNode->typeInfo;
-                fromNode->typeInfo       = toType;
-            }
+		if (typePtr->ptrCount == 1)
+		{
+			if (typePtr->finalType->isNative(NativeTypeKind::Void) || typePtr->finalType->isSame(fromType, ISSAME_CAST))
+			{
+				if (fromNode && (castFlags & CASTFLAG_JUST_CHECK))
+				{
+					fromNode->castedTypeInfo = fromNode->typeInfo;
+					fromNode->typeInfo = toType;
+				}
 
-            return true;
-        }
+				return true;
+			}
+		}
     }
 
     // String <=> null
