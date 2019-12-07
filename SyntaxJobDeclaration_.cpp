@@ -365,7 +365,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdPublic:
     case TokenId::KwdPrivate:
-        SWAG_CHECK(doAttributeExpose(parent));
+        SWAG_CHECK(doGlobalAttributeExpose(parent));
         break;
     case TokenId::KwdNamespace:
         SWAG_CHECK(doNamespace(parent));

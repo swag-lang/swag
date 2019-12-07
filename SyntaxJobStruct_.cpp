@@ -228,6 +228,15 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             break;
         }
 
+        case TokenId::KwdPrivate:
+            SWAG_CHECK(eatToken());
+            AstNode* varDecl;
+            SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
+            varDecl->attributeFlags |= ATTRIBUTE_PRIVATE;
+            if (!waitCurly)
+                return true;
+            break;
+
         default:
             SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));
             if (!waitCurly)

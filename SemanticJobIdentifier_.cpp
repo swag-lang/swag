@@ -231,6 +231,15 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         return true;
     }
 
+    // Can access a private member of a struct only from the same scope (impl or struct)
+    if ((overload->flags & OVERLOAD_VAR_STRUCT) && (overload->attributeFlags & ATTRIBUTE_PRIVATE))
+    {
+        if (overload->node->ownerScope != identifier->ownerStructScope)
+        {
+            return context->report({identifier, identifier->token, format("member '%s' of structure '%s' is private", overload->node->name.c_str(), overload->node->ownerScope->owner->name.c_str())});
+        }
+    }
+
     // If this a L or R value
     if (!dependentVar && (overload->flags & OVERLOAD_VAR_STRUCT))
     {

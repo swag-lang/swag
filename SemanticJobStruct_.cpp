@@ -416,9 +416,10 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         if (child->typeInfo->kind != TypeInfoKind::Struct)
             typeInfo->maxPaddingSize = max(typeInfo->maxPaddingSize, child->typeInfo->sizeOf);
 
-        typeParam->offset                            = realStorageOffset;
-        child->resolvedSymbolOverload->storageOffset = realStorageOffset;
-        child->resolvedSymbolOverload->storageIndex  = storageIndex;
+        typeParam->offset                             = realStorageOffset;
+        child->resolvedSymbolOverload->storageOffset  = realStorageOffset;
+        child->resolvedSymbolOverload->storageIndex   = storageIndex;
+        child->resolvedSymbolOverload->attributeFlags = child->attributeFlags;
 
         typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + child->typeInfo->sizeOf);
 
@@ -490,11 +491,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_NO_BYTECODE_CHILDS;
 
-        node->byteCodeJob                  = g_Pool_byteCodeGenJob.alloc();
-        node->byteCodeJob->sourceFile      = sourceFile;
-        node->byteCodeJob->module          = sourceFile->module;
+        node->byteCodeJob               = g_Pool_byteCodeGenJob.alloc();
+        node->byteCodeJob->sourceFile   = sourceFile;
+        node->byteCodeJob->module       = sourceFile->module;
         node->byteCodeJob->dependentJob = context->job->dependentJob;
-        node->byteCodeJob->originalNode    = node;
+        node->byteCodeJob->originalNode = node;
         node->byteCodeJob->nodes.push_back(node);
         node->byteCodeFct = ByteCodeGenJob::emitStruct;
         g_ThreadMgr.addJob(node->byteCodeJob);

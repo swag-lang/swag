@@ -33,12 +33,13 @@ struct SymbolOverload
 {
     ComputedValue computedValue;
     RegisterList  registers;
-    TypeInfo*     typeInfo      = nullptr;
-    AstNode*      node          = nullptr;
-    uint32_t      flags         = 0;
-    uint32_t      storageOffset = UINT32_MAX;
-    uint32_t      storageIndex  = 0;
-    uint32_t      overloadIndex = 0;
+    TypeInfo*     typeInfo       = nullptr;
+    AstNode*      node           = nullptr;
+    uint32_t      flags          = 0;
+    uint32_t      storageOffset  = UINT32_MAX;
+    uint32_t      storageIndex   = 0;
+    uint32_t      overloadIndex  = 0;
+    uint32_t      attributeFlags = 0;
 };
 
 enum class SymbolKind
