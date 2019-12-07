@@ -10,6 +10,7 @@
 	namespace std.time
 	{
 		using os
+
 		public
 		{
 			func nowTicks()->u64

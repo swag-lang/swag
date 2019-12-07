@@ -267,6 +267,18 @@
             wProcessorRevision:			WORD
         }
         
+		struct SYSTEMTIME 
+		{
+			wYear:			WORD
+			wMonth:			WORD
+			wDayOfWeek:		WORD
+			wDay:			WORD
+			wHour:			WORD
+			wMinute:		WORD
+			wSecond:		WORD
+			wMilliseconds:	WORD
+		}
+
         #[swag.foreign("kernel32")]
         {
             func GetStdHandle(nStdHandle: DWORD)->HANDLE;
@@ -279,7 +291,8 @@
             func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
             func ExitProcess(uExitCode: UINT);
 			func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER);
-			func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);	
+			func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);
+			func GetLocalTime(lpSystemTime: *SYSTEMTIME);
         }
 
         #[swag.foreign("user32")]
