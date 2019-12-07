@@ -137,9 +137,23 @@ bool SyntaxJob::doAttributeExpose(AstNode* parent, AstNode** result)
         return syntaxError(token, format("unexpected token '%s' after 'public' attribute", token.text.c_str()));
     }
 
-    Scoped                scoped(this, newScope);
-    ScopedAttributesFlags scopedAttributes(this, attr);
-    SWAG_CHECK(doTopLevelInstruction(parent));
+    AstNode* topStmt = nullptr;
+
+    {
+        Scoped                scoped(this, newScope);
+        ScopedAttributesFlags scopedAttributes(this, attr);
+        SWAG_CHECK(doTopLevelInstruction(parent, &topStmt));
+        if (result)
+            *result = topStmt;
+    }
+
+    // Add original scope
+    if (topStmt)
+    {
+        SWAG_RACE_CONDITION_WRITE(topStmt->raceConditionAlternativeScopes);
+        topStmt->alternativeScopes.push_back(currentScope);
+    }
+
     return true;
 }
 

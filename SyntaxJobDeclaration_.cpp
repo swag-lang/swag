@@ -8,43 +8,43 @@
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(tokenizer.getToken(token));
-	while (true)
-	{
-		auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Using, sourceFile, parent);
-		node->semanticFct = SemanticJob::resolveUsing;
-		if (result)
-			*result = node;
+    while (true)
+    {
+        auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Using, sourceFile, parent);
+        node->semanticFct = SemanticJob::resolveUsing;
+        if (result)
+            *result = node;
 
-		SWAG_CHECK(doIdentifierRef(node));
+        SWAG_CHECK(doIdentifierRef(node));
 
-		// We must ensure that no job can be run before the using
-		if (!node->ownerFct)
-		{
-			for (auto child : parent->childs)
-			{
-				switch (child->kind)
-				{
-				case AstNodeKind::CompilerImport:
-				case AstNodeKind::CompilerAssert:
-				case AstNodeKind::Using:
-				case AstNodeKind::IdentifierRef:
-					break;
+        // We must ensure that no job can be run before the using
+        if (!node->ownerFct)
+        {
+            for (auto child : parent->childs)
+            {
+                switch (child->kind)
+                {
+                case AstNodeKind::CompilerImport:
+                case AstNodeKind::CompilerAssert:
+                case AstNodeKind::Using:
+                case AstNodeKind::IdentifierRef:
+                    break;
 
-				default:
-					return error(node->token, "global 'using' must be defined at the top of the file");
-				}
-			}
-		}
+                default:
+                    return error(node->token, "global 'using' must be defined at the top of the file");
+                }
+            }
+        }
 
-		if (token.id == TokenId::SymComma)
-		{
-			SWAG_CHECK(eatToken());
-			continue;
-		}
+        if (token.id == TokenId::SymComma)
+        {
+            SWAG_CHECK(eatToken());
+            continue;
+        }
 
-		SWAG_CHECK(eatSemiCol("after 'using' declaration"));
-		break;
-	}
+        SWAG_CHECK(eatSemiCol("after 'using' declaration"));
+        break;
+    }
 
     return true;
 }
@@ -180,15 +180,15 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
         return doScopedCurlyStatement(parent, result);
 
-	// Empty statement
-	if (token.id == TokenId::SymSemiColon)
-	{
-		auto node = Ast::newNode(sourceFile, AstNodeKind::Statement, parent, this);
-		if (result)
-			*result = node;
-		SWAG_CHECK(eatToken());
-		return true;
-	}
+    // Empty statement
+    if (token.id == TokenId::SymSemiColon)
+    {
+        auto node = Ast::newNode(sourceFile, AstNodeKind::Statement, parent, this);
+        if (result)
+            *result = node;
+        SWAG_CHECK(eatToken());
+        return true;
+    }
 
     // One single line, but we need a scope too
     auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
@@ -345,7 +345,7 @@ void SyntaxJob::moveAttributes(AstNode* from, AstNode* to)
     }
 }
 
-bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
+bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
@@ -395,7 +395,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent)
     case TokenId::CompilerFuncInit:
     case TokenId::CompilerFuncDrop:
     case TokenId::CompilerFuncMain:
-        SWAG_CHECK(doFuncDecl(parent));
+        SWAG_CHECK(doFuncDecl(parent, result));
         break;
     case TokenId::CompilerRun:
         SWAG_CHECK(eatToken());

@@ -47,7 +47,7 @@ struct SyntaxJob : public Job
     bool doCompilerUnitTest();
     bool doCompilerModule();
     bool doCompilerImport(AstNode* parent);
-    bool doTopLevelInstruction(AstNode* parent);
+    bool doTopLevelInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doVarDecl(AstNode* parent, AstNode** result = nullptr);
     bool doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doTypeAlias(AstNode* parent, AstNode** result = nullptr);
