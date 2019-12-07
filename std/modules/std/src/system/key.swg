@@ -1,5 +1,7 @@
 namespace std.keyboard
 {
+    public typealias VirtualKey: u32
+    
     public enum Key
     {
 		None       

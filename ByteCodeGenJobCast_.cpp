@@ -639,6 +639,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (fromTypeInfo == nullptr)
         return true;
     SWAG_ASSERT(typeInfo);
+	typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_ALIAS);
 
     // opCast
     if (exprNode->flags & AST_USER_CAST)

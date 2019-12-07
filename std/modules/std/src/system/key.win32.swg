@@ -212,6 +212,17 @@
 	{        
         public 
         {
+            func KeyToVKey(key: Key)-> VirtualKey
+            {
+                return acast g_mapKeyToVKey[cast(u8) key]
+            }
+            
+            func VKeyToKey(vkey: VirtualKey)-> Key
+            {
+                if(vkey > 255) return Key.None
+                return cast(Key) g_mapVKeyToKey[cast(u8) vkey]
+            }            
+            
             func isKeyPressed(key: Key)-> bool
             {
                 vkey := g_mapKeyToVKey[cast(u8) key]
