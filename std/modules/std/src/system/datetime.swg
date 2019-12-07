@@ -11,4 +11,12 @@ namespace std.time
 		second:			u16
 		millisecond:	u16
 	}
+
+	impl DateTime
+	{
+		public func opEquals(self, other: Self)->bool
+		{
+			return false//@memcmp(self, other, @sizeof(Self)) == 0
+		}
+	}
 }
