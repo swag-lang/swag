@@ -7,33 +7,44 @@
 
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Using, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveUsing;
-    if (result)
-        *result = node;
-
     SWAG_CHECK(tokenizer.getToken(token));
-    SWAG_CHECK(doIdentifierRef(node));
-    SWAG_CHECK(eatSemiCol("after 'using' declaration"));
+	while (true)
+	{
+		auto node = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Using, sourceFile, parent);
+		node->semanticFct = SemanticJob::resolveUsing;
+		if (result)
+			*result = node;
 
-    // We must ensure that no job can be run before the using
-    if (!node->ownerFct)
-    {
-        for (auto child : parent->childs)
-        {
-            switch (child->kind)
-            {
-            case AstNodeKind::CompilerImport:
-            case AstNodeKind::CompilerAssert:
-            case AstNodeKind::Using:
-            case AstNodeKind::IdentifierRef:
-                break;
+		SWAG_CHECK(doIdentifierRef(node));
 
-            default:
-                return error(node->token, "global 'using' must be defined at the top of the file");
-            }
-        }
-    }
+		// We must ensure that no job can be run before the using
+		if (!node->ownerFct)
+		{
+			for (auto child : parent->childs)
+			{
+				switch (child->kind)
+				{
+				case AstNodeKind::CompilerImport:
+				case AstNodeKind::CompilerAssert:
+				case AstNodeKind::Using:
+				case AstNodeKind::IdentifierRef:
+					break;
+
+				default:
+					return error(node->token, "global 'using' must be defined at the top of the file");
+				}
+			}
+		}
+
+		if (token.id == TokenId::SymComma)
+		{
+			SWAG_CHECK(eatToken());
+			continue;
+		}
+
+		SWAG_CHECK(eatSemiCol("after 'using' declaration"));
+		break;
+	}
 
     return true;
 }
