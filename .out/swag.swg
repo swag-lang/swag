@@ -62,33 +62,7 @@ namespace swag
 	const MinF64 = 2.22507e-308'f64
 	const MaxF64 = 1.79769e+308'f64
 
-	// #########################################################
-	// Compiler
-	// #########################################################
-    
-    struct CompilerParamsBackendC
-    {
-        writeSourceCode: bool           = false
-        writeByteCodeInstruction: bool  = false
-        maxApplicationArguments: u32    = 64
-    }
 
-    struct CompilerTarget
-    {
-        // Bytecode
-        bytecodeBoundCheck: bool    = true
-        bytecodeAnyCastCheck: bool  = true
-        byteCodeMaxRecurse: u32     = 1024
-        byteCodeStackSize: u32      = 16 * 1024
-
-        // Backend common
-        backendDebugInformations: bool  = false
-        backendOptimizeLevel: u32       = 0
-        
-        // Backend specific
-        backendC: CompilerParamsBackendC
-    }
-    
 	// #########################################################
 	// Context & allocators
 	// #########################################################
@@ -257,6 +231,36 @@ namespace swag
 		pointedType:	const *TypeInfo
 	}
     
+	// #########################################################
+	// Compiler
+	// #########################################################
+    
+    struct CompilerParamsBackendC
+    {
+        writeSourceCode: bool           = false
+        writeByteCodeInstruction: bool  = false
+        maxApplicationArguments: u32    = 64
+    }
+
+    struct CompilerTarget
+    {
+        // Debug
+        debugBoundCheck: bool    = true
+        debugAnyCastCheck: bool  = true
+        debugDivZeroCheck: bool  = true
+        
+        // Bytecode
+        byteCodeMaxRecurse: u32     = 1024
+        byteCodeStackSize: u32      = 16 * 1024
+
+        // Backend common
+        backendDebugInformations: bool  = false
+        backendOptimizeLevel: u32       = 0
+        
+        // Backend specific
+        backendC: CompilerParamsBackendC
+    }
+        
 	// #########################################################
 	// Default compiler configuration
 	// #########################################################

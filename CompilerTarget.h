@@ -18,16 +18,19 @@ struct CompilerParamsBackendC
 
 struct CompilerTarget
 {
+    // Debug
+    bool debugBoundCheck   = true;
+    bool debugAnyCastCheck = true;
+    bool debugDivZeroCheck = true;
+
     // Bytecode
-    bool     bytecodeBoundCheck   = true;
-    bool     bytecodeAnyCastCheck = true;
-    uint32_t byteCodeMaxRecurse   = 1024;
-    uint32_t byteCodeStackSize    = 16 * 1024;
+    uint32_t byteCodeMaxRecurse = 1024;
+    uint32_t byteCodeStackSize  = 16 * 1024;
 
     // Backend common
-    bool                   backendDebugInformations = false;
-    uint32_t               backendOptimizeLevel     = 0;
+    bool     backendDebugInformations = false;
+    uint32_t backendOptimizeLevel     = 0;
 
-	// Backend specific
+    // Backend specific
     CompilerParamsBackendC backendC;
 };
