@@ -1,15 +1,8 @@
 #include "pch.h"
-#include "Global.h"
-#include "AstNode.h"
 #include "ByteCodeGenJob.h"
-#include "TypeInfo.h"
-#include "SourceFile.h"
-#include "Module.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "ByteCode.h"
-#include "CommandLine.h"
-#include "SymTable.h"
 #include "SemanticJob.h"
 #include "ThreadManager.h"
 #include "Ast.h"
@@ -143,6 +136,18 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, uint32_t r0, u
 
     switch (typeInfo->nativeType)
     {
+    case NativeTypeKind::S32:
+        emitInstruction(context, ByteCodeOp::BinOpDivS32, r0, r1, r2);
+        return true;
+    case NativeTypeKind::S64:
+        emitInstruction(context, ByteCodeOp::BinOpDivS64, r0, r1, r2);
+        return true;
+    case NativeTypeKind::U32:
+        emitInstruction(context, ByteCodeOp::BinOpDivU32, r0, r1, r2);
+        return true;
+    case NativeTypeKind::U64:
+        emitInstruction(context, ByteCodeOp::BinOpDivU64, r0, r1, r2);
+        return true;
     case NativeTypeKind::F32:
         emitInstruction(context, ByteCodeOp::BinOpDivF32, r0, r1, r2);
         return true;

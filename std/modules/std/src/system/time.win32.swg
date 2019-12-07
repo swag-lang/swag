@@ -24,7 +24,7 @@
 				return counter
 			}
 
-			func nowTicksFreq()->u64
+			func ticksFrequency()->u64
 			{
 				return g_perfCounterFreq
 			}

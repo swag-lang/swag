@@ -356,13 +356,13 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::S16:
-    case NativeTypeKind::S32:
-    case NativeTypeKind::S64:
     case NativeTypeKind::U8:
     case NativeTypeKind::U16:
+        return context->report({node, "operator '/' not allowed on integers"});
+    case NativeTypeKind::S32:
+    case NativeTypeKind::S64:
     case NativeTypeKind::U32:
     case NativeTypeKind::U64:
-        return context->report({node, "operator '/' not allowed on integers"});
     case NativeTypeKind::F32:
     case NativeTypeKind::F64:
         break;
@@ -376,6 +376,26 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
 
         switch (leftTypeInfo->nativeType)
         {
+        case NativeTypeKind::S32:
+            if (right->computedValue.reg.s32 == 0)
+                return context->report({right, right->token, "division by zero"});
+            node->computedValue.reg.s32 = left->computedValue.reg.s32 / right->computedValue.reg.s32;
+            break;
+        case NativeTypeKind::S64:
+            if (right->computedValue.reg.s64 == 0)
+                return context->report({right, right->token, "division by zero"});
+            node->computedValue.reg.s64 = left->computedValue.reg.s64 / right->computedValue.reg.s64;
+            break;
+        case NativeTypeKind::U32:
+            if (right->computedValue.reg.u32 == 0)
+                return context->report({right, right->token, "division by zero"});
+            node->computedValue.reg.u32 = left->computedValue.reg.u32 / right->computedValue.reg.u32;
+            break;
+        case NativeTypeKind::U64:
+            if (right->computedValue.reg.u64 == 0)
+                return context->report({right, right->token, "division by zero"});
+            node->computedValue.reg.u64 = left->computedValue.reg.u64 / right->computedValue.reg.u64;
+            break;
         case NativeTypeKind::F32:
             if (right->computedValue.reg.f32 == 0)
                 return context->report({right, right->token, "division by zero"});
