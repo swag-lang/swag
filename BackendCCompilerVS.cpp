@@ -183,7 +183,7 @@ bool BackendCCompilerVS::compile()
     case BackendOutputType::Binary:
     {
         string linkArguments;
-        linkArguments += "ucrt.lib ";
+        linkArguments += "ucrt.lib user32.lib ";
         linkArguments += "/NODEFAULTLIB:libucrt.lib ";
         linkArguments += "libvcruntime.lib ";
 

@@ -1,4 +1,4 @@
-namespace std
+namespace std.keyboard
 {
     public enum Key
     {

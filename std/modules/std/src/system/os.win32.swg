@@ -270,5 +270,10 @@
             func GetSystemInfo(lpSystemInfo: *SYSTEM_INFO);
             func ExitProcess(uExitCode: UINT);
         }
+
+        #[swag.foreign("user32")]
+        {
+			func GetAsyncKeyState(vKey: s32)->s16;
+		}
     }
 }
