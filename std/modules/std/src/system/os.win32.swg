@@ -13,6 +13,7 @@
         typealias LPOVERLAPPED:	*DWORD
         typealias DWORD_PTR:	u64
         typealias UINT:			u32
+		typealias SHORT:		s16
         
         const STD_INPUT_HANDLE 	= cast(DWORD) -10
         const STD_OUTPUT_HANDLE = cast(DWORD) -11
@@ -273,7 +274,7 @@
 
         #[swag.foreign("user32")]
         {
-			func GetAsyncKeyState(vKey: s32)->s16;
+			func GetAsyncKeyState(vKey: s32)->SHORT;
 		}
     }
 }
