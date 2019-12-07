@@ -173,6 +173,7 @@ bool TypeManager::castToNativeChar(SemanticContext* context, TypeInfo* fromType,
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -247,6 +248,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -359,6 +361,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -471,6 +474,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -583,6 +587,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -681,6 +686,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -770,6 +776,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -855,6 +862,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -936,6 +944,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
         case NativeTypeKind::S64:
+        case NativeTypeKind::Bool:
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
@@ -1054,6 +1063,18 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
         break;
     }
 
+    case NativeTypeKind::Bool:
+        if (castFlags & CASTFLAG_EXPLICIT)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->computedValue.reg.f32 = fromNode->computedValue.reg.b ? 1.0f : 0.0f;
+                fromNode->typeInfo              = g_TypeMgr.typeInfoF32;
+            }
+            return true;
+        }
+        break;
+
     case NativeTypeKind::U8:
     case NativeTypeKind::U16:
     case NativeTypeKind::U32:
@@ -1169,6 +1190,18 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
             return true;
         break;
     }
+
+    case NativeTypeKind::Bool:
+        if (castFlags & CASTFLAG_EXPLICIT)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->computedValue.reg.f64 = fromNode->computedValue.reg.b ? 1.0f : 0.0f;
+                fromNode->typeInfo              = g_TypeMgr.typeInfoF64;
+            }
+            return true;
+        }
+        break;
 
     case NativeTypeKind::U8:
     case NativeTypeKind::U16:

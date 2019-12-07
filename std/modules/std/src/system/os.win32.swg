@@ -6,6 +6,7 @@
         typealias WORD: 		u16
         typealias DWORD: 		u32
         typealias BOOL: 		s32
+		typealias LONG: 		s32
         typealias LPVOID:		*void
         typealias LPCVOID:		const *void
         typealias LPCSTR:		string
@@ -227,6 +228,12 @@
             x: WORD
             y: WORD
         }
+
+		struct POINT
+        {
+            x: LONG
+            y: LONG
+        }
         
         struct SMALL_RECT
         {
@@ -275,6 +282,9 @@
         #[swag.foreign("user32")]
         {
 			func GetAsyncKeyState(vKey: s32)->SHORT;
+			func GetCursorPos(lpPoint: *POINT);
+			func SetCursorPos(x, y: s32);
+			func ShowCursor(show: BOOL);
 		}
     }
 }

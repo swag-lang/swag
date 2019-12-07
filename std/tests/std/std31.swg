@@ -3,7 +3,13 @@
 #test
 {
 	using std.keyboard
-	while !isKeyPressed(Key.Space) break
+	while !isKeyPressed(Key.Space) 
+    {
+        pt := std.mouse.getPos()
+        //@print(cast(s64) pt.item0)
+        //@print("\n")
+        break
+    }
 	
 	//@print("pressed")
 	while isKeyPressed(Key.Space) break

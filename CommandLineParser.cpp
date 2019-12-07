@@ -36,7 +36,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     cmdLine->cleanTarget   = false;
     cmdLine->workspacePath = "f:/swag/std";
     //cmdLine->modulePath    = "tests/std.math";
-    cmdLine->fileFilter    = "compiler1387.swg";
+    cmdLine->fileFilter    = "compiler1388.swg";
     //cmdLine->addRuntimeModule = false;
     cmdLine->rebuild           = true;
     cmdLine->backendOutputTest = true;
