@@ -2,16 +2,11 @@
 
 #test
 {
-	/*using std.keyboard
-	while !isKeyPressed(Key.Space)
-	{
+	using std.keyboard
+	while !isKeyPressed(Key.Space) break
 	
-	}
+	//@print("pressed")
+	while isKeyPressed(Key.Space) break
 
-	@print("pressed")
-	while isKeyPressed(Key.Space)
-	{
-	
-	}
-	@print("unpressed")*/
+	//@print("unpressed")
 }

@@ -180,6 +180,16 @@ bool SyntaxJob::doEmbeddedStatement(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftCurly)
         return doScopedCurlyStatement(parent, result);
 
+	// Empty statement
+	if (token.id == TokenId::SymSemiColon)
+	{
+		auto node = Ast::newNode(sourceFile, AstNodeKind::Statement, parent, this);
+		if (result)
+			*result = node;
+		SWAG_CHECK(eatToken());
+		return true;
+	}
+
     // One single line, but we need a scope too
     auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     AstNode* statement;
