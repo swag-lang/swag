@@ -1,14 +1,10 @@
 #include "pch.h"
-#include "SourceFile.h"
 #include "BackendC.h"
-#include "Module.h"
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Workspace.h"
-#include "CompilerTarget.h"
-#include "Scope.h"
 #include "BackendCFunctionBodyJob.h"
 
 bool BackendC::swagTypeToCType(Module* moduleToGen, TypeInfo* typeInfo, Utf8& cType)
@@ -970,12 +966,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         case ByteCodeOp::BinOpDivF32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck)
-                concat.addStringFormat("__assert(r[%u].f32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
             concat.addStringFormat("r[%u].f32 = r[%u].f32 / r[%u].f32;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::BinOpDivF64:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck)
-                concat.addStringFormat("__assert(r[%u].f64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
             concat.addStringFormat("r[%u].f64 = r[%u].f64 / r[%u].f64;", ip->c.u32, ip->a.u32, ip->b.u32);
             break;
 
@@ -1120,12 +1116,12 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
             break;
         case ByteCodeOp::AffectOpDivEqF32:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck)
-                concat.addStringFormat("__assert(r[%u].f32, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].f32 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
             concat.addStringFormat("*(swag_float32_t*)(r[%u].pointer) /= r[%u].f32;", ip->a.u32, ip->b.u32);
             break;
         case ByteCodeOp::AffectOpDivEqF64:
             if (moduleToGen->buildParameters.target.debugDivZeroCheck)
-                concat.addStringFormat("__assert(r[%u].f64, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
+                concat.addStringFormat("__assert(r[%u].f64 != 0, \"%s\", %d, \": error: division by zero\");", ip->b.u32, normalizePath(moduleToGen->files[ip->sourceFileIdx]->path).c_str(), ip->startLocation.line + 1);
             concat.addStringFormat("*(swag_float64_t*)(r[%u].pointer) /= r[%u].f64;", ip->a.u32, ip->b.u32);
             break;
 
