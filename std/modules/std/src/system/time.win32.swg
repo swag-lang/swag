@@ -12,11 +12,6 @@
 		using os
 		public
 		{
-			func nowMs()->u32
-			{
-				return 0
-			}
-
 			func nowTicks()->u64
 			{
 				var counter: u64 = ?

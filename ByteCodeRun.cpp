@@ -611,7 +611,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
-	case ByteCodeOp::BinOpDivS32:
+    case ByteCodeOp::BinOpDivS32:
     {
         auto val1 = registersRC[ip->a.u32].s32;
         auto val2 = registersRC[ip->b.u32].s32;
@@ -1376,6 +1376,78 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::AffectOpDivEqS8:
+    {
+        auto val = registersRC[ip->b.u32].s8;
+        if (val == 0)
+            context->error("division by zero");
+        else
+            *(int8_t*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
+    case ByteCodeOp::AffectOpDivEqS16:
+    {
+        auto val = registersRC[ip->b.u32].s16;
+        if (val == 0)
+            context->error("division by zero");
+        else
+            *(int16_t*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
+    case ByteCodeOp::AffectOpDivEqS32:
+    {
+        auto val = registersRC[ip->b.u32].s32;
+        if (val == 0)
+            context->error("division by zero");
+        else
+            *(int32_t*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
+    case ByteCodeOp::AffectOpDivEqS64:
+    {
+        auto val = registersRC[ip->b.u32].s64;
+        if (val == 0)
+            context->error("division by zero");
+        else
+            *(int64_t*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
+    case ByteCodeOp::AffectOpDivEqU8:
+    {
+        auto val = registersRC[ip->b.u32].u8;
+        if (val == 0)
+            context->error("division by zero");
+        else
+            *(uint8_t*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
+    case ByteCodeOp::AffectOpDivEqU16:
+    {
+        auto val = registersRC[ip->b.u32].u16;
+        if (val == 0)
+            context->error("division by zero");
+        else
+            *(uint16_t*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
+    case ByteCodeOp::AffectOpDivEqU32:
+    {
+        auto val = registersRC[ip->b.u32].u32;
+        if (val == 0)
+            context->error("division by zero");
+        else
+            *(uint32_t*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
+    case ByteCodeOp::AffectOpDivEqU64:
+    {
+        auto val = registersRC[ip->b.u32].u64;
+        if (val == 0)
+            context->error("division by zero");
+        else
+            *(uint64_t*) registersRC[ip->a.u32].pointer /= val;
+        break;
+    }
     case ByteCodeOp::AffectOpDivEqF32:
     {
         auto val = registersRC[ip->b.u32].f32;
