@@ -97,6 +97,7 @@ enum class TokenId
     KwdConst,
     KwdPublic,
     KwdPrivate,
+	KwdReadOnly,
     KwdNamespace,
     KwdTypeAlias,
     KwdEnum,

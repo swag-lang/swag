@@ -30,7 +30,7 @@
             <Keywords name="Keywords4">bool s8 s16 s32 s64 u8 u16 u32 u64 f32 f64 string char self Self void any code</Keywords>
             <Keywords name="Keywords5">opInit opEquals opCmp opBinary opUnary opAssign opIndex opIndexAssign opCount opPostCopy opPostMove opAffect opDrop opCast</Keywords>
             <Keywords name="Keywords6"></Keywords>
-            <Keywords name="Keywords7">public private</Keywords>
+            <Keywords name="Keywords7">public private readonly</Keywords>
             <Keywords name="Keywords8">TypeInfo TypeInfoNative TypeInfoStruct TypeInfoEnum TypeInfoFunc TypeInfoKind TypeInfoNativeKind TypeInfoParam TypeInfoArray TypeInfoSlice Context CompilerTarget AllocatorRequest TypeInfoVariadic TypeInfoPointer AllocatorMode TypeInfoInterface</Keywords>
             <Keywords name="Delimiters">00( 00[ 00{ 01 02) 02] 02} 03&quot; 04 05&quot; 06#[ 07 08] 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23</Keywords>
         </KeywordLists>
