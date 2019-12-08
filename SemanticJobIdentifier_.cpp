@@ -237,7 +237,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (overload->attributeFlags & ATTRIBUTE_PRIVATE)
             return context->report({identifier, identifier->token, format("member '%s' of structure '%s' is private", overload->node->name.c_str(), overload->node->ownerScope->owner->name.c_str())});
         if ((overload->attributeFlags & ATTRIBUTE_READONLY) && (identifier->flags & AST_TAKE_ADDRESS))
-			return context->report({ identifier, identifier->token, format("member '%s' of structure '%s' is readonly", overload->node->name.c_str(), overload->node->ownerScope->owner->name.c_str()) });
+            return context->report({identifier, identifier->token, format("member '%s' of structure '%s' is readonly", overload->node->name.c_str(), overload->node->ownerScope->owner->name.c_str())});
     }
 
     // If this a L or R value

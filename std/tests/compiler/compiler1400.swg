@@ -3,7 +3,10 @@
 
 public struct A
 {
-    readonly x: s32
+    readonly 
+    {
+        x: s32
+    }
 }
  
 func titi()

@@ -229,26 +229,22 @@ bool SyntaxJob::doStructContent(AstNode* parent)
         }
 
         case TokenId::KwdPrivate:
-		{
-			SWAG_CHECK(eatToken());
-			AstNode* varDecl;
-			SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
-			varDecl->attributeFlags |= ATTRIBUTE_PRIVATE;
-			if (!waitCurly)
-				return true;
-			break;
-		}
+        {
+            auto attrBlockNode         = Ast::newNode(this, &g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile, parent);
+            attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
+            attrBlockNode->attributeFlags |= ATTRIBUTE_PRIVATE;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
 
         case TokenId::KwdReadOnly:
-		{
-			SWAG_CHECK(eatToken());
-			AstNode* varDecl;
-			SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl));
-			varDecl->attributeFlags |= ATTRIBUTE_READONLY;
-			if (!waitCurly)
-				return true;
-			break;
-		}
+        {
+            auto attrBlockNode         = Ast::newNode(this, &g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile, parent);
+            attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
+            attrBlockNode->attributeFlags |= ATTRIBUTE_READONLY;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
 
         default:
             SWAG_CHECK(doVarDecl(parent, nullptr, AstNodeKind::VarDecl));

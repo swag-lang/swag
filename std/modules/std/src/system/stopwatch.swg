@@ -1,7 +1,7 @@
 namespace std.time
 {
 	public struct Stopwatch
-	{    
+	{    		
 		isRunning:		bool
 		startTimeStamp: u64
 		elapsedTicks:	u64

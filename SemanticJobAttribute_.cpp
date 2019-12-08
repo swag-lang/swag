@@ -41,6 +41,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, SymbolAttributes& 
     ComputedValue value;
     while (curAttr)
     {
+        flags |= curAttr->attributeFlags;
         for (auto child : curAttr->childs)
         {
             // Check that the attribute matches the following declaration
