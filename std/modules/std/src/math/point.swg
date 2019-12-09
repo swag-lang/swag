@@ -13,6 +13,14 @@ namespace std.math
 			{
 				x, y = 0
 			}
+
+			func(op: string) opBinary(using self, other: Self)->Self
+			{
+				#if op == "-"
+					return Point(x - other.x, y - other.y)
+				#else
+					#assert(false, "unsupported operator " ~op)
+			}
 		}
 	}
 }

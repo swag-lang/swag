@@ -228,8 +228,8 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
 bool SemanticJob::preResolveStruct(SemanticContext* context)
 {
-    auto node          = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-    auto typeInfo      = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto node     = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     node->computeFullName();
     typeInfo->fullname = node->fullnameDot;
@@ -461,12 +461,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     {
         if (!node->ownerScope->isGlobal())
             return context->report({node, node->token, format("embedded struct '%s' cannot be public", node->name.c_str())});
-
         if (!(node->flags & AST_FROM_GENERIC))
-        {
-            SWAG_VERIFY(!typeInfo->childs.empty(), context->report({node, node->token, format("struct '%s' is public and cannot be empty", node->name.c_str())}));
             node->ownerScope->addPublicStruct(node);
-        }
     }
 
     if (!(node->flags & AST_FROM_GENERIC))
