@@ -228,8 +228,11 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
 
 bool SemanticJob::preResolveStruct(SemanticContext* context)
 {
-    auto node     = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
-    auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    auto node          = CastAst<AstStruct>(context->node->parent, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    auto typeInfo      = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+
+    node->computeFullName();
+    typeInfo->fullname = node->fullnameDot;
 
     // Add generic parameters
     uint32_t symbolFlags = 0;

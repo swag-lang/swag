@@ -170,7 +170,15 @@ struct TypeInfo
         kind       = from->kind;
         nativeType = from->nativeType;
         name       = from->name;
+        fullname   = from->fullname;
         sizeOf     = from->sizeOf;
+    }
+
+    const char* getFullName()
+    {
+        if (!fullname.empty())
+            return fullname.c_str();
+        return name.c_str();
     }
 
     virtual TypeInfo*  clone() = 0;
@@ -178,6 +186,7 @@ struct TypeInfo
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
     Utf8           name;
+    Utf8           fullname;
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
     uint32_t       flags      = 0;

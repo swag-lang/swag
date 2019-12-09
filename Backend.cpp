@@ -93,7 +93,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                bufferSwg.addString(p->typeInfo->name);
+                bufferSwg.addString(p->typeInfo->getFullName());
             }
 
             AstVarDecl* varDecl = CastAst<AstVarDecl>(p, AstNodeKind::VarDecl, AstNodeKind::FuncDeclParam);
@@ -114,14 +114,7 @@ bool Backend::emitFuncSignatureSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        if (typeFunc->returnType->kind == TypeInfoKind::Struct)
-        {
-            // Just to remove the "const"
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeFunc->returnType, TypeInfoKind::Struct);
-            bufferSwg.addString(typeStruct->structNode->name);
-        }
-        else
-            bufferSwg.addString(typeFunc->returnType->name);
+        bufferSwg.addString(typeFunc->returnType->getFullName());
     }
 
     CONCAT_FIXED_STR(bufferSwg, ";");
@@ -152,7 +145,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
             if (p->name != "self")
             {
                 CONCAT_FIXED_STR(bufferSwg, ": ");
-                bufferSwg.addString(p->typeInfo->name);
+                bufferSwg.addString(p->typeInfo->getFullName());
             }
 
             auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
@@ -173,7 +166,7 @@ bool Backend::emitPublicFuncSwg(TypeInfoFuncAttr* typeFunc, AstFuncDecl* node)
     if (typeFunc->returnType && typeFunc->returnType != g_TypeMgr.typeInfoVoid)
     {
         CONCAT_FIXED_STR(bufferSwg, "->");
-        bufferSwg.addString(typeFunc->returnType->name);
+        bufferSwg.addString(typeFunc->returnType->getFullName());
     }
 
     bufferSwg.addEolIndent(1);
@@ -261,7 +254,7 @@ bool Backend::emitPublicStructSwg(TypeInfoStruct* typeStruct, AstStruct* node)
             CONCAT_FIXED_STR(bufferSwg, "private ");
         bufferSwg.addString(p->namedParam);
         CONCAT_FIXED_STR(bufferSwg, ": ");
-        bufferSwg.addString(p->typeInfo->name);
+        bufferSwg.addString(p->typeInfo->getFullName());
 
         if (p->typeInfo->kind == TypeInfoKind::Native)
         {

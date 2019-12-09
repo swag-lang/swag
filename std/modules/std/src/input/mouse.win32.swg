@@ -2,15 +2,15 @@
 {
 	namespace std.input
 	{
-		using os
+		using os, std.math
 
 		public 
 		{
-			func getMousePos()->(s32, s32)
+			func getMousePos()->Point
 			{
 				var pt: POINT = ?
 				GetCursorPos(&pt)
-				return {pt.x, pt.y}
+				return Point(pt.x, pt.y)
 			}
 
 			func setMousePos(x, y: s32)
