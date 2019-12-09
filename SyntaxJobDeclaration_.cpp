@@ -26,6 +26,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                 {
                 case AstNodeKind::CompilerImport:
                 case AstNodeKind::CompilerAssert:
+                case AstNodeKind::CompilerForeignLib:
                 case AstNodeKind::Using:
                 case AstNodeKind::IdentifierRef:
                     break;

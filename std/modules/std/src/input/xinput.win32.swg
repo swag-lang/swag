@@ -1,7 +1,7 @@
 #if swag.WINDOWS
 {
-	using std.os
     #foreignlib "xinput"
+	using std.os
     
 	namespace std.input.os
 	{
