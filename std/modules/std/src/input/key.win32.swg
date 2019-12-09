@@ -7,7 +7,7 @@
 		var g_mapVKeyToKey: [256] u8
 
 		#[compiler]
-		func setupArray(key: std.keyboard.Key, vkey: u8)
+		func setupArray(key: std.input.Key, vkey: u8)
 		{
 			g_mapKeyToVKey[cast(u8) key] = vkey
 			g_mapVKeyToKey[vkey] = cast(u8) key
@@ -16,7 +16,7 @@
 
 	#run
 	{
-		using std.keyboard.Key, os
+		using std.input.Key, os
         setupArray(A,                   cast(u8) 'A')
         setupArray(Add,                 cast(u8) VK_ADD)
         setupArray(Apps,                cast(u8) VK_APPS)
@@ -207,7 +207,7 @@
         setupArray(Zoom,                cast(u8) VK_ZOOM)
 	}
 
-	namespace std.keyboard
+	namespace std.input
 	{        
         public 
         {

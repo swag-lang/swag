@@ -2,10 +2,10 @@
 
 #test
 {
-	using std.keyboard
+	using std.input
 	while !isKeyPressed(Key.Space) 
     {
-        pt := std.mouse.getPos()
+        pt := getMousePos()
         //@print(cast(s64) pt.item0)
         //@print("\n")
         break

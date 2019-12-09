@@ -2,9 +2,9 @@ namespace std.time
 {
 	public struct Stopwatch
 	{    		
-		isRunning:		bool
-		startTimeStamp: u64
-		elapsedTicks:	u64
+		readonly isRunning:			bool
+		readonly startTimeStamp:	u64
+		readonly elapsedTicks:		u64
 	}
 
 	impl Stopwatch

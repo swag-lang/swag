@@ -1,4 +1,4 @@
-namespace std.keyboard
+namespace std.input
 {
     public typealias VirtualKey: u32
     

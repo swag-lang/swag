@@ -298,6 +298,7 @@
         #[swag.foreign("user32")]
         {
 			func GetAsyncKeyState(vKey: s32)->SHORT;
+			func GetKeyboardState(lpKeystate: *u8)->BOOL;
 			func GetCursorPos(lpPoint: *POINT);
 			func SetCursorPos(x, y: s32);
 			func ShowCursor(show: BOOL);

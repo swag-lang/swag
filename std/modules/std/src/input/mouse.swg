@@ -1,6 +1,6 @@
-namespace std.mouse
+namespace std.input
 {
-    public enum Button
+    public enum MouseButton
     {
 		Left
 		Middle
@@ -9,9 +9,9 @@ namespace std.mouse
 		XButton2
     }
 
-	public func isButtonPressed(button: Button)->bool
+	public func isMouseButtonPressed(button: MouseButton)->bool
 	{
-		using keyboard, Button
+		using input, MouseButton
 		switch button
 		{
 		case Left:		return isKeyPressed(Key.LButton)
