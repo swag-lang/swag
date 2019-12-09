@@ -89,6 +89,7 @@ enum class TokenId
 	CompilerMixin,
 	CompilerInline,
 	CompilerMacro,
+    CompilerForeignLib,
 
     Intrinsic,
 

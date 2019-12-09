@@ -1,5 +1,8 @@
 #if swag.WINDOWS
 {
+    #foreignlib "kernel32"
+    #foreignlib "user32"
+    
     namespace std.os
     {
         typealias HANDLE: 			*void

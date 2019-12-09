@@ -29,6 +29,14 @@ bool SemanticJob::executeNode(SemanticContext* context, AstNode* node, bool only
     return true;
 }
 
+bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
+{
+    auto node   = context->node;
+    auto module = context->sourceFile->module;
+    module->buildParameters.foreignLibs.insert(node->childs.front()->token.text);
+    return true;
+}
+
 bool SemanticJob::resolveCompilerRun(SemanticContext* context)
 {
     auto expression = context->node->childs.front();
@@ -95,7 +103,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
         }
     }
 
-    return context->report({ expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->name.c_str()) });
+    return context->report({expr, format("unknown user code identifier '%s' (did you forget a back tick ?)", expr->name.c_str())});
 }
 
 bool SemanticJob::resolveCompilerAssert(SemanticContext* context)

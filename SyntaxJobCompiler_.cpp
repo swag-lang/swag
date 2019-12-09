@@ -4,6 +4,20 @@
 #include "Ast.h"
 #include "Scoped.h"
 
+bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
+{
+    auto node = Ast::newNode(this, &g_Pool_astIf, AstNodeKind::CompilerForeignLib, sourceFile, parent);
+    if (result)
+        *result = node;
+    node->semanticFct = SemanticJob::resolveCompilerForeignLib;
+
+    SWAG_CHECK(tokenizer.getToken(token));
+    AstNode* literal;
+    SWAG_CHECK(doLiteral(node, &literal));
+    SWAG_VERIFY(literal->token.literalType->isNative(NativeTypeKind::String), syntaxError(literal->token, "#foreignlib invalid string"));
+    return true;
+}
+
 bool SyntaxJob::doCompilerIf(AstNode* parent, AstNode** result)
 {
     return doCompilerIfFor(parent, result, AstNodeKind::Statement);

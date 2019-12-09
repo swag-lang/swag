@@ -34,6 +34,7 @@ void LanguageSpec::setup()
     keywords["#mixin"]          = TokenId::CompilerMixin;
     keywords["#inline"]         = TokenId::CompilerInline;
     keywords["#macro"]          = TokenId::CompilerMacro;
+    keywords["#foreignlib"]     = TokenId::CompilerForeignLib;
 
     keywords["var"]       = TokenId::KwdVar;
     keywords["let"]       = TokenId::KwdLet;

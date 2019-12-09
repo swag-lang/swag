@@ -115,6 +115,7 @@ enum class AstNodeKind
     CompilerCode,
     CompilerImport,
     CompilerSpecialFunction,
+    CompilerForeignLib,
     QuestionExpression,
     Defer,
     Init,
