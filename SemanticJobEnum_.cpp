@@ -10,6 +10,9 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, typeInfo, SymbolKind::Enum));
 
+    node->computeFullName();
+    typeInfo->fullname = node->fullnameDot;
+
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
