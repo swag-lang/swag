@@ -137,7 +137,7 @@ bool SemanticJob::resolveTrinaryOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, ifTrue));
     SWAG_CHECK(checkIsConcrete(context, ifFalse));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expression));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr.typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
     SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_BIJECTIF));
     node->typeInfo = ifTrue->typeInfo;
 

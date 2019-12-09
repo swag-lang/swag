@@ -1,8 +1,8 @@
 #if swag.WINDOWS
 {
     #foreignlib "xinput"
-	using std.os
-    
+	using std.os, std.input
+
 	namespace std.input.os
 	{
 		const XINPUT_GAMEPAD_DPAD_UP          = 0x0001
@@ -37,9 +37,45 @@
 			Gamepad:		XINPUT_GAMEPAD
 		}
 
+		private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
+
+		#run
+		{
+			g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_A)] = GamePadButton.A
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_B)] = GamePadButton.B
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_X)] = GamePadButton.X
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_Y)] = GamePadButton.Y
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_THUMB)] = GamePadButton.LeftStick
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_THUMB)] = GamePadButton.RightStick
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_START)] = GamePadButton.Start
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_BACK)] = GamePadButton.Back
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_LEFT_SHOULDER)] = GamePadButton.LeftShoulder
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = GamePadButton.RightShoulder
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_UP)] = GamePadButton.DPadUp
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_DOWN)] = GamePadButton.DPadDown
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_LEFT)] = GamePadButton.DPadLeft
+            g_mapButtons[math.bitIndex(XINPUT_GAMEPAD_DPAD_RIGHT)] = GamePadButton.DPadRight
+		}
+
 		#[swag.foreign("xinput")]
 		{
 			func XInputGetState(dwUserIndex: DWORD,  pState: *XINPUT_STATE)->DWORD;
+		}
+
+		public
+		{
+            func getGamePadState(padIndex: u32, gamePadState: *GamePadState)->bool
+            {
+                var state: XINPUT_STATE = ?
+                if XInputGetState(padIndex, &state) != std.os.ERROR_SUCCESS
+                    return false
+
+                // Button pressed state
+                loop i: 16
+                    gamePadState.pressed[cast(u32) g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
+
+                return true
+            }
 		}
 	}
 }

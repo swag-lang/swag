@@ -139,7 +139,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_AUTO_BOOL));
         break;
 
     case TokenId::SymLowerLowerEqual:

@@ -407,9 +407,14 @@ struct TypeInfoPointer : public TypeInfo
         if (flags & TYPEINFO_CONST)
             name = "const ";
         for (uint32_t i = 0; i < ptrCount; i++)
+        {
             name += "*";
+            fullname += "*";
+        }
+
         finalType->computeName();
         name += finalType->name;
+        fullname += finalType->getFullName();
     }
 
     TypeInfo* computePointedType();
@@ -432,12 +437,19 @@ struct TypeInfoArray : public TypeInfo
     {
         pointedType->computeName();
         name.clear();
+        fullname.clear();
         if (flags & TYPEINFO_CONST)
             name = "const ";
         if (count == UINT32_MAX)
+        {
             name += format("[] %s", pointedType->name.c_str());
+            fullname += format("[] %s", pointedType->getFullName());
+        }
         else
+        {
             name += format("[%d] %s", count, pointedType->name.c_str());
+            fullname += format("[%d] %s", count, pointedType->getFullName());
+        }
     }
 
     int numRegisters() override
@@ -468,6 +480,7 @@ struct TypeInfoSlice : public TypeInfo
         if (flags & TYPEINFO_CONST)
             name = "const ";
         name += format("[..] %s", pointedType->name.c_str());
+        fullname += format("[..] %s", pointedType->getFullName());
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
@@ -582,6 +595,7 @@ struct TypeInfoAlias : public TypeInfo
     {
         rawType->computeName();
         name = rawType->name;
+        fullname = rawType->getFullName();
     }
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;

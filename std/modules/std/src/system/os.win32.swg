@@ -2,7 +2,7 @@
 {
     #foreignlib "kernel32"
     #foreignlib "user32"
-    
+
     namespace std.os
     {
         typealias HANDLE: 			*void
@@ -20,12 +20,14 @@
         typealias UINT:				u32
 		typealias SHORT:			s16
 		typealias LARGE_INTEGER:	s64
-        
+
         const STD_INPUT_HANDLE 	= cast(DWORD) -10
         const STD_OUTPUT_HANDLE = cast(DWORD) -11
+
+        const ERROR_SUCCESS = 0
         
         const FOREGROUND_BLUE      = 0x0001
-        const FOREGROUND_GREEN     = 0x0002 
+        const FOREGROUND_GREEN     = 0x0002
         const FOREGROUND_RED       = 0x0004
         const FOREGROUND_INTENSITY = 0x0008
         const FOREGROUND_MASK	   = 0x000F
@@ -34,13 +36,13 @@
         const BACKGROUND_RED       = 0x0040
         const BACKGROUND_INTENSITY = 0x0080
         const BACKGROUND_MASK	   = 0x00F0
-            
+
 		const VK_LBUTTON        = 0x01
 		const VK_RBUTTON        = 0x02
 		const VK_CANCEL         = 0x03
-		const VK_MBUTTON        = 0x04   
-		const VK_XBUTTON1       = 0x05   
-		const VK_XBUTTON2       = 0x06   
+		const VK_MBUTTON        = 0x04
+		const VK_XBUTTON1       = 0x05
+		const VK_XBUTTON2       = 0x06
 		const VK_BACK           = 0x08
 		const VK_TAB            = 0x09
 		const VK_CLEAR          = 0x0C
@@ -51,7 +53,7 @@
 		const VK_PAUSE          = 0x13
 		const VK_CAPITAL        = 0x14
 		const VK_KANA           = 0x15
-		const VK_HANGEUL        = 0x15  
+		const VK_HANGEUL        = 0x15
 		const VK_HANGUL         = 0x15
 		const VK_JUNJA          = 0x17
 		const VK_FINAL          = 0x18
@@ -122,22 +124,22 @@
 		const VK_F22            = 0x85
 		const VK_F23            = 0x86
 		const VK_F24            = 0x87
-		const VK_NAVIGATION_VIEW     = 0x88 
-		const VK_NAVIGATION_MENU     = 0x89 
-		const VK_NAVIGATION_UP       = 0x8A 
-		const VK_NAVIGATION_DOWN     = 0x8B 
-		const VK_NAVIGATION_LEFT     = 0x8C 
-		const VK_NAVIGATION_RIGHT    = 0x8D 
-		const VK_NAVIGATION_ACCEPT   = 0x8E 
-		const VK_NAVIGATION_CANCEL   = 0x8F 
+		const VK_NAVIGATION_VIEW     = 0x88
+		const VK_NAVIGATION_MENU     = 0x89
+		const VK_NAVIGATION_UP       = 0x8A
+		const VK_NAVIGATION_DOWN     = 0x8B
+		const VK_NAVIGATION_LEFT     = 0x8C
+		const VK_NAVIGATION_RIGHT    = 0x8D
+		const VK_NAVIGATION_ACCEPT   = 0x8E
+		const VK_NAVIGATION_CANCEL   = 0x8F
 		const VK_NUMLOCK        = 0x90
 		const VK_SCROLL         = 0x91
-		const VK_OEM_NEC_EQUAL  = 0x92  
-		const VK_OEM_FJ_JISHO   = 0x92  
-		const VK_OEM_FJ_MASSHOU = 0x93  
-		const VK_OEM_FJ_TOUROKU = 0x94  
-		const VK_OEM_FJ_LOYA    = 0x95  
-		const VK_OEM_FJ_ROYA    = 0x96  
+		const VK_OEM_NEC_EQUAL  = 0x92
+		const VK_OEM_FJ_JISHO   = 0x92
+		const VK_OEM_FJ_MASSHOU = 0x93
+		const VK_OEM_FJ_TOUROKU = 0x94
+		const VK_OEM_FJ_LOYA    = 0x95
+		const VK_OEM_FJ_ROYA    = 0x96
 		const VK_LSHIFT         = 0xA0
 		const VK_RSHIFT         = 0xA1
 		const VK_LCONTROL       = 0xA2
@@ -162,45 +164,45 @@
 		const VK_LAUNCH_MEDIA_SELECT = 0xB5
 		const VK_LAUNCH_APP1         = 0xB6
 		const VK_LAUNCH_APP2         = 0xB7
-		const VK_OEM_1				 = 0xBA  
-		const VK_OEM_PLUS			 = 0xBB  
-		const VK_OEM_COMMA			 = 0xBC  
-		const VK_OEM_MINUS			 = 0xBD  
-		const VK_OEM_PERIOD			 = 0xBE  
-		const VK_OEM_2				 = 0xBF  
-		const VK_OEM_3				 = 0xC0  
-		const VK_GAMEPAD_A                         = 0xC3 
-		const VK_GAMEPAD_B                         = 0xC4 
-		const VK_GAMEPAD_X                         = 0xC5 
-		const VK_GAMEPAD_Y                         = 0xC6 
-		const VK_GAMEPAD_RIGHT_SHOULDER            = 0xC7 
-		const VK_GAMEPAD_LEFT_SHOULDER             = 0xC8 
-		const VK_GAMEPAD_LEFT_TRIGGER              = 0xC9 
-		const VK_GAMEPAD_RIGHT_TRIGGER             = 0xCA 
-		const VK_GAMEPAD_DPAD_UP                   = 0xCB 
-		const VK_GAMEPAD_DPAD_DOWN                 = 0xCC 
-		const VK_GAMEPAD_DPAD_LEFT                 = 0xCD 
-		const VK_GAMEPAD_DPAD_RIGHT                = 0xCE 
-		const VK_GAMEPAD_MENU                      = 0xCF 
-		const VK_GAMEPAD_VIEW                      = 0xD0 
-		const VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON    = 0xD1 
-		const VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON   = 0xD2 
-		const VK_GAMEPAD_LEFT_THUMBSTICK_UP        = 0xD3 
-		const VK_GAMEPAD_LEFT_THUMBSTICK_DOWN      = 0xD4 
-		const VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT     = 0xD5 
-		const VK_GAMEPAD_LEFT_THUMBSTICK_LEFT      = 0xD6 
-		const VK_GAMEPAD_RIGHT_THUMBSTICK_UP       = 0xD7 
-		const VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN     = 0xD8 
-		const VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT    = 0xD9 
-		const VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT     = 0xDA 
-		const VK_OEM_4          = 0xDB 
-		const VK_OEM_5          = 0xDC 
-		const VK_OEM_6          = 0xDD 
-		const VK_OEM_7          = 0xDE 
+		const VK_OEM_1				 = 0xBA
+		const VK_OEM_PLUS			 = 0xBB
+		const VK_OEM_COMMA			 = 0xBC
+		const VK_OEM_MINUS			 = 0xBD
+		const VK_OEM_PERIOD			 = 0xBE
+		const VK_OEM_2				 = 0xBF
+		const VK_OEM_3				 = 0xC0
+		const VK_GAMEPAD_A                         = 0xC3
+		const VK_GAMEPAD_B                         = 0xC4
+		const VK_GAMEPAD_X                         = 0xC5
+		const VK_GAMEPAD_Y                         = 0xC6
+		const VK_GAMEPAD_RIGHT_SHOULDER            = 0xC7
+		const VK_GAMEPAD_LEFT_SHOULDER             = 0xC8
+		const VK_GAMEPAD_LEFT_TRIGGER              = 0xC9
+		const VK_GAMEPAD_RIGHT_TRIGGER             = 0xCA
+		const VK_GAMEPAD_DPAD_UP                   = 0xCB
+		const VK_GAMEPAD_DPAD_DOWN                 = 0xCC
+		const VK_GAMEPAD_DPAD_LEFT                 = 0xCD
+		const VK_GAMEPAD_DPAD_RIGHT                = 0xCE
+		const VK_GAMEPAD_MENU                      = 0xCF
+		const VK_GAMEPAD_VIEW                      = 0xD0
+		const VK_GAMEPAD_LEFT_THUMBSTICK_BUTTON    = 0xD1
+		const VK_GAMEPAD_RIGHT_THUMBSTICK_BUTTON   = 0xD2
+		const VK_GAMEPAD_LEFT_THUMBSTICK_UP        = 0xD3
+		const VK_GAMEPAD_LEFT_THUMBSTICK_DOWN      = 0xD4
+		const VK_GAMEPAD_LEFT_THUMBSTICK_RIGHT     = 0xD5
+		const VK_GAMEPAD_LEFT_THUMBSTICK_LEFT      = 0xD6
+		const VK_GAMEPAD_RIGHT_THUMBSTICK_UP       = 0xD7
+		const VK_GAMEPAD_RIGHT_THUMBSTICK_DOWN     = 0xD8
+		const VK_GAMEPAD_RIGHT_THUMBSTICK_RIGHT    = 0xD9
+		const VK_GAMEPAD_RIGHT_THUMBSTICK_LEFT     = 0xDA
+		const VK_OEM_4          = 0xDB
+		const VK_OEM_5          = 0xDC
+		const VK_OEM_6          = 0xDD
+		const VK_OEM_7          = 0xDE
 		const VK_OEM_8          = 0xDF
-		const VK_OEM_AX         = 0xE1 
-		const VK_OEM_102        = 0xE2 
-		const VK_ICO_HELP       = 0xE3 
+		const VK_OEM_AX         = 0xE1
+		const VK_OEM_102        = 0xE2
+		const VK_ICO_HELP       = 0xE3
 		const VK_ICO_00         = 0xE4
 		const VK_PROCESSKEY     = 0xE5
 		const VK_ICO_CLEAR      = 0xE6
@@ -239,25 +241,25 @@
             x: LONG
             y: LONG
         }
-        
+
         struct SMALL_RECT
         {
             left: 	WORD
             top:  	WORD
             right: 	WORD
             bottom: WORD
-        }	
-        
-        struct CONSOLE_SCREEN_BUFFER_INFO 
+        }
+
+        struct CONSOLE_SCREEN_BUFFER_INFO
         {
-            dwSize: 				COORD 
+            dwSize: 				COORD
             dwCursorPosition: 		COORD
             wAttributes: 			WORD
             srWindow: 				SMALL_RECT
             dwMaximumWindowSize: 	COORD
-        }	
-        
-        struct SYSTEM_INFO 
+        }
+
+        struct SYSTEM_INFO
         {
             dwOemId:	DWORD // Must be updated to an union
             dwPageSize:	DWORD
@@ -270,8 +272,8 @@
             wProcessorLevel:			WORD
             wProcessorRevision:			WORD
         }
-        
-		struct SYSTEMTIME 
+
+		struct SYSTEMTIME
 		{
 			wYear:			WORD
 			wMonth:			WORD

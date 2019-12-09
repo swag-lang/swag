@@ -4,13 +4,13 @@
 	{
 		using std.os, std.math
 
-		public 
+		public
 		{
 			func getMousePos()->Point
 			{
 				var pt: POINT = ?
 				GetCursorPos(&pt)
-				return Point(pt.x, pt.y)
+				return Point(cast(f32) pt.x, cast(f32) pt.y)
 			}
 
 			func setMousePos(x, y: s32)

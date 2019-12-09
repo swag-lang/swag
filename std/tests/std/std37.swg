@@ -13,7 +13,7 @@ using std.input
     {
         k.update()
         mv := k.getMove()
-        if mv.x
+        if mv.x > 0
         {
             //@print(cast(s64) mv.x)
             //@print("\n")
