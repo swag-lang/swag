@@ -11,8 +11,15 @@ namespace std.input
         {
             func update(using self)
             {
-                loop @countof(Key)
-                    pressed[index] = isKeyPressed(cast(Key) index)
+                loop i: @countof(Key)
+                {
+                    pressed[i] = isKeyPressed(cast(Key) i)
+                }
+            }
+            
+            func clear(using self)
+            {
+                memory.clear(&pressed, @sizeof(pressed))
             }
             
             func isKeyPressed(using self, key: Key)->bool
@@ -24,11 +31,6 @@ namespace std.input
             {
                 return !pressed[cast(u32) key]
             }   
-
-            func clear(using self)
-            {
-                @memset(&pressed, 0, @sizeof(pressed))
-            }
         }        
     }
 }

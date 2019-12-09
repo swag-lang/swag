@@ -59,8 +59,8 @@ namespace std.input
             {
                 previousState.clear()
                 currentState.clear()
-                @memset(&pressedRepeat, 0, @sizeof(pressedRepeat))
-                @memset(&pressedTime, 0, @sizeof(pressedTime))
+                memory.clear(&pressedRepeat, @sizeof(pressedRepeat))
+                memory.clear(&pressedTime, @sizeof(pressedTime))
             }
             
             func isKeyPressed(using self, key: Key)->bool
