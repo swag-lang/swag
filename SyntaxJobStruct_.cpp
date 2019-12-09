@@ -228,11 +228,11 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             break;
         }
 
-        case TokenId::KwdPrivate:
+        case TokenId::KwdInternal:
         {
             auto attrBlockNode         = Ast::newNode(this, &g_Pool_astAttrUse, AstNodeKind::AttrUse, sourceFile, parent);
             attrBlockNode->semanticFct = SemanticJob::resolveAttrUse;
-            attrBlockNode->attributeFlags |= ATTRIBUTE_PRIVATE;
+            attrBlockNode->attributeFlags |= ATTRIBUTE_INTERNAL;
             SWAG_CHECK(eatToken());
             continue;
         }

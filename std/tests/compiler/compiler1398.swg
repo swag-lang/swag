@@ -1,6 +1,6 @@
 public struct A
 {
-    private x: s32
+    internal x: s32
 }
 
 impl A
