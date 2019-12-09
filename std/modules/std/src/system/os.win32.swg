@@ -9,6 +9,7 @@
         typealias WORD: 			u16
         typealias DWORD: 			u32
         typealias BOOL: 			s32
+		typealias BYTE: 			u8
 		typealias LONG: 			s32
         typealias LPVOID:			*void
         typealias LPCVOID:			const *void

@@ -2,7 +2,7 @@
 {
 	namespace std.input
 	{
-		using os, std.math
+		using std.os, std.math
 
 		public 
 		{

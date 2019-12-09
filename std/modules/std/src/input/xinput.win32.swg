@@ -1,6 +1,9 @@
 #if swag.WINDOWS
 {
-	namespace std.input
+	using std.os
+    #foreignlib "xinput"
+    
+	namespace std.input.os
 	{
 		const XINPUT_GAMEPAD_DPAD_UP          = 0x0001
 		const XINPUT_GAMEPAD_DPAD_DOWN        = 0x0002
@@ -17,9 +20,26 @@
 		const XINPUT_GAMEPAD_X                = 0x4000
 		const XINPUT_GAMEPAD_Y                = 0x8000
 
+		struct XINPUT_GAMEPAD
+		{
+			wButtons:		WORD
+			bLeftTrigger:	BYTE
+			bRightTrigger:	BYTE
+			sThumbLX:		SHORT
+			sThumbLY:		SHORT
+			sThumbRX:		SHORT
+			sThumbRY:		SHORT
+		}
+
+		struct XINPUT_STATE
+		{
+			dwPacketNumber:	DWORD
+			Gamepad:		XINPUT_GAMEPAD
+		}
+
 		#[swag.foreign("xinput")]
 		{
-		
+			func XInputGetState(dwUserIndex: DWORD,  pState: *XINPUT_STATE)->DWORD;
 		}
 	}
 }

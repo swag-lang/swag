@@ -16,7 +16,7 @@
 
 	#run
 	{
-		using std.input.Key, os
+		using std.input.Key, std.os
         setupArray(A,                   cast(u8) 'A')
         setupArray(Add,                 cast(u8) VK_ADD)
         setupArray(Apps,                cast(u8) VK_APPS)
@@ -226,7 +226,7 @@
             {
                 vkey := g_mapKeyToVKey[cast(u8) key]
                 if vkey == 0 return false
-                return os.GetAsyncKeyState(cast(s32) vkey) < 0
+                return std.os.GetAsyncKeyState(cast(s32) vkey) < 0
             }
         }
 	}
