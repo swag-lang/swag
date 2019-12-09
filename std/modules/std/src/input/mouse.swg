@@ -58,6 +58,6 @@ namespace std.input
 			{
 				return currentState.position - previousState.position
 			}
-		}	
+		}
 	}
 }

@@ -1,3 +1,0 @@
-#if swag.WINDOWS
-{
-}
