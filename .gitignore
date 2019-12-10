@@ -264,4 +264,4 @@ __pycache__/
 .out/*.pdb
 .out/*.ipdb
 .out/*.iobj
-std/out/
+std/output/

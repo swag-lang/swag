@@ -100,7 +100,7 @@ void Workspace::setup()
     modulesPath = workspacePath;
     modulesPath.append("modules/");
     dependenciesPath = workspacePath;
-    dependenciesPath.append("dep/");
+    dependenciesPath.append("dependencies/");
 
     if (g_CommandLine.verboseBuildPass)
         g_Log.verbose(format("=> building workspace '%s'", workspacePath.string().c_str()));
@@ -128,7 +128,7 @@ void Workspace::deleteFolderContent(const fs::path& path)
 void Workspace::setupTarget()
 {
     targetPath = workspacePath;
-    targetPath.append("out/");
+    targetPath.append("output/");
     targetPath.append(g_CommandLine.config + "-" + g_CommandLine.arch);
 
     if (g_CommandLine.verboseBuildPass)
