@@ -2,7 +2,8 @@ namespace std.math
 {
 	public struct Point
 	{
-		x, y: f32
+		x: f32
+        y: f32
 	}
 
 	impl Point

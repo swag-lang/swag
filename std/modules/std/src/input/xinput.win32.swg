@@ -72,7 +72,7 @@
 
     namespace std.input
 	{
-        public func setVibration(padIndex: u32, left, right: f32)->bool
+        public func setGamePadVibration(padIndex: u32, left, right: f32)->bool
         {
             using std.input.os
             var vibration: XINPUT_VIBRATION = ?
