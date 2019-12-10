@@ -106,6 +106,8 @@ namespace DocHtmlHelper
 
     void summary(Concat& outFile, const Utf8& msg)
     {
+        if (msg.empty())
+            return;
         CONCAT_FIXED_STR(outFile, "<div class=\"summary\">");
         outFile.addString(msg);
         CONCAT_FIXED_STR(outFile, "</div>\n");

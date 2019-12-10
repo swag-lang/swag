@@ -39,7 +39,7 @@ JobResult DocScopeJob::execute()
     outFile.fileName = module->documentPath.string() + "/" + scope->fullname + ".html";
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s %s", scope->name.c_str(), Scope::getNakedKindName(scope->kind)));
-    DocHtmlHelper::summary(outFile, "Summary");
+    DocHtmlHelper::summary(outFile, scope->owner->docSummary);
     DocHtmlHelper::origin(outFile, scope->parentScope);
 
     CONCAT_FIXED_STR(outFile, "<div class=\"members\">\n");
