@@ -300,7 +300,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
             auto job        = context->job;
             job->cacheDependentSymbols.clear();
-            job->cacheDependentSymbols.push_back(typeStruct->structNode->resolvedSymbolName);
+            job->cacheDependentSymbols.insert(typeStruct->structNode->resolvedSymbolName);
             job->symMatch.reset();
             for (auto child : node->parameters->childs)
                 job->symMatch.parameters.push_back(child);

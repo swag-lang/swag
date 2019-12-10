@@ -59,8 +59,8 @@ struct SemanticJob : public Job
     static void enterState(AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode, AstNodeKind kind);
     static bool collectAttributes(SemanticContext* context, SymbolAttributes& result, AstAttrUse* attrUse, AstNode* forNode, AstNodeKind kind, uint32_t& flags);
-    static void collectAlternativeScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode);
-    static bool collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
+    static void collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode);
+    static bool collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool derefTypeInfo(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
@@ -183,10 +183,10 @@ struct SemanticJob : public Job
     static bool resolveUserCast(SemanticContext* context);
 
     vector<AstNode*>         tmpNodes;
-    vector<SymbolName*>      cacheDependentSymbols;
-    vector<Scope*>           cacheScopeHierarchy;
+    set<SymbolName*>         cacheDependentSymbols;
+    set<Scope*>              cacheScopeHierarchy;
     vector<AlternativeScope> cacheScopeHierarchyVars;
-    set<Scope*>              scopesHere;
+    vector<Scope*>           scopesHere;
     vector<OneMatch>         cacheMatches;
     vector<OneGenericMatch>  cacheGenericMatches;
     vector<SymbolOverload*>  cacheBadSignature;

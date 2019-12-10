@@ -44,7 +44,7 @@ void Generic::end(SemanticContext* context, AstNode* newNode, bool waitSymbol)
 {
     auto  job              = context->job;
     auto& dependentSymbols = job->cacheDependentSymbols;
-    auto  symbol           = dependentSymbols[0];
+    auto  symbol           = *dependentSymbols.begin();
 
     // Need to wait for the struct to be semantic resolved
     symbol->cptOverloads++;

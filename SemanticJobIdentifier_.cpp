@@ -684,7 +684,7 @@ anotherTry:
     // This is a generic
     if (genericMatches.size() == 1 && matches.size() == 0)
     {
-        auto symbol = dependentSymbols[0];
+        auto symbol = *dependentSymbols.begin();
         symbol->mutex.lock();
 
         // Be sure we don't have more overloads waiting to be solved
@@ -728,7 +728,7 @@ anotherTry:
         return true;
     }
 
-    auto symbol = dependentSymbols[0];
+    auto symbol = *dependentSymbols.begin();
     if (matches.size() == 0)
     {
         if (numOverloads == 1)
@@ -955,7 +955,7 @@ bool SemanticJob::pickSymbol(SemanticContext* context, AstIdentifier* node, Symb
 
     if (dependentSymbols.size() == 1)
     {
-        *result = dependentSymbols[0];
+        *result = *dependentSymbols.begin();
         return true;
     }
 
@@ -1068,8 +1068,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
         }
         else
         {
-            scopeHierarchy.push_back(startScope);
-            scopeHierarchy.insert(scopeHierarchy.end(), startScope->owner->alternativeScopes.begin(), startScope->owner->alternativeScopes.end());
+            scopeHierarchy.insert(startScope);
+            for(auto s: startScope->owner->alternativeScopes)
+                scopeHierarchy.insert(s);
             scopeHierarchyVars.insert(scopeHierarchyVars.end(), startScope->owner->alternativeScopesVars.begin(), startScope->owner->alternativeScopesVars.end());
         }
 
@@ -1079,7 +1080,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
             auto symbol = scope->symTable.find(node->name);
             if (symbol)
             {
-                dependentSymbols.push_back(symbol);
+                dependentSymbols.insert(symbol);
 
                 // Tentative to have a better error message in the case of local variables pb (a local variable is referencing another one
                 // defined later).
@@ -1400,7 +1401,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode)
 {
     if (!startNode->alternativeScopes.empty())
     {
@@ -1411,10 +1412,10 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vec
             SWAG_RACE_CONDITION_READ(startNode->raceConditionAlternativeScopes);
             for (auto p : startNode->alternativeScopes)
             {
-                if (here.find(p) == here.end())
+                if (scopes.find(p) == scopes.end())
                 {
-                    here.insert(p);
-                    scopes.push_back(p);
+                    scopes.insert(p);
+                    here.push_back(p);
                 }
             }
 
@@ -1428,7 +1429,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, vec
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, set<Scope*>& scopes, vector<AlternativeScope>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& here       = job->scopesHere;
@@ -1443,21 +1444,21 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
     auto startScope = startNode->ownerScope;
     if (startScope)
     {
-        scopes.push_back(startScope);
-        here.insert(startScope);
+        scopes.insert(startScope);
+        here.push_back(startScope);
     }
 
     // Can be null because of g_CommandLine.addRuntimeModule to false
     if (g_Workspace.runtimeModule)
     {
         auto runTime = g_Workspace.runtimeModule->scopeRoot;
-        scopes.push_back(runTime);
-        here.insert(runTime);
+        scopes.insert(runTime);
+        here.push_back(runTime);
     }
 
-    for (int i = 0; i < scopes.size(); i++)
+    for (int i = 0; i < here.size(); i++)
     {
-        auto scope = scopes[i];
+        auto scope = here[i];
 
         // For an embedded function, jump right to its parent
         if (scope->kind == ScopeKind::Function)
@@ -1484,10 +1485,10 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
         // Add parent scope
         if (scope->parentScope)
         {
-            if (here.find(scope->parentScope) == here.end())
+            if (scopes.find(scope->parentScope) == scopes.end())
             {
-                scopes.push_back(scope->parentScope);
-                here.insert(scope->parentScope);
+                scopes.insert(scope->parentScope);
+                here.push_back(scope->parentScope);
             }
         }
 
@@ -1498,10 +1499,10 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, vector<Scope*>
             {
                 if (child->name.empty() || child == sourceFile->scopePrivate)
                 {
-                    if (here.find(child) == here.end())
+                    if (scopes.find(child) == scopes.end())
                     {
-                        scopes.push_back(child);
-                        here.insert(child);
+                        scopes.insert(child);
+                        here.push_back(child);
                     }
                 }
             }
