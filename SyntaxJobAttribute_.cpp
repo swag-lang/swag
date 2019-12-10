@@ -7,6 +7,7 @@
 #include "SemanticJob.h"
 #include "Ast.h"
 #include "Scoped.h"
+#include "DocHtmlHelper.h"
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
@@ -241,5 +242,8 @@ bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
         SWAG_CHECK(tokenizer.getToken(token));
     }
 
+    attrBlockNode->docSummary     = DocHtmlHelper::markdown(attrBlockNode->docSummary);
+    attrBlockNode->docDescription = DocHtmlHelper::markdown(attrBlockNode->docDescription);
+    attrBlockNode->docContent     = DocHtmlHelper::markdown(attrBlockNode->docContent);
     return true;
 }

@@ -265,6 +265,7 @@
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Final|x64'">false</ShowIncludes>
     </ClCompile>
+    <ClCompile Include="DocHtmlHelper.cpp" />
     <ClCompile Include="DocNodeJob.cpp" />
     <ClCompile Include="DocScopeJob.cpp" />
     <ClCompile Include="EnumerateModuleJob.cpp" />

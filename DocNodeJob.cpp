@@ -60,7 +60,7 @@ void DocNodeJob::emitFunction(OutputFile& outFile)
     else
         DocHtmlHelper::title(outFile, format("%s %s", node->name.c_str(), "function"));
 
-    DocHtmlHelper::summary(outFile, "Summary");
+    DocHtmlHelper::summary(outFile, node->docSummary);
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
     DocHtmlHelper::startSection(outFile, "Syntax");

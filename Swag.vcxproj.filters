@@ -357,6 +357,9 @@
     <ClCompile Include="DocNodeJob.cpp">
       <Filter>Doc</Filter>
     </ClCompile>
+    <ClCompile Include="DocHtmlHelper.cpp">
+      <Filter>Doc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
