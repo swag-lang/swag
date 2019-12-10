@@ -95,6 +95,7 @@ bool SyntaxJob::doNamespace(AstNode* parent)
                 typeInfo->scope         = newScope;
                 namespaceNode->typeInfo = typeInfo;
                 currentScope->symTable.addSymbolTypeInfoNoLock(&context, namespaceNode, typeInfo, SymbolKind::Namespace);
+                currentScope->addPublicNamespace(namespaceNode);
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {

@@ -16,7 +16,7 @@ const char* Scope::getNakedKindName(ScopeKind kind)
     case ScopeKind::TypeList:
         return "tuple";
     case ScopeKind::Struct:
-        return "struct";
+        return "structure";
     case ScopeKind::File:
         return "file";
     case ScopeKind::Module:
@@ -41,7 +41,7 @@ const char* Scope::getArticleKindName(ScopeKind kind)
     case ScopeKind::TypeList:
         return "a tuple";
     case ScopeKind::Struct:
-        return "a struct";
+        return "a structure";
     case ScopeKind::File:
         return "a file";
     case ScopeKind::Module:
@@ -123,4 +123,10 @@ void Scope::addPublicTypeAlias(AstNode* node)
     unique_lock lk(mutexPublicTypeAlias);
     publicTypeAlias.insert(node);
     setHasExports();
+}
+
+void Scope::addPublicNamespace(AstNode* node)
+{
+    unique_lock lk(mutexPublicNamespace);
+    publicNamespace.insert(node);
 }

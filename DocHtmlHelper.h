@@ -34,8 +34,8 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "<div class=\"content-title\">\n");
         CONCAT_FIXED_STR(outFile, "<h1 id=\"#top\" class=\"content-title\">");
         outFile.addString(msg);
-        CONCAT_FIXED_STR(outFile, "</h1></div>");
-        CONCAT_FIXED_STR(outFile, "<div style = \"clear: both;\"></div>");
+        CONCAT_FIXED_STR(outFile, "</h1></div>\n");
+        CONCAT_FIXED_STR(outFile, "<div style = \"clear: both;\"></div>\n");
     }
 
     void summary(Concat& outFile, Utf8 msg)
@@ -96,9 +96,9 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "</td>\n");
     }
 
-    void table(Concat& outFile, Scope* scope, set<AstNode*>& node)
+    void table(Concat& outFile, Scope* scope, set<AstNode*>& nodes)
     {
-        vector<AstNode*> sorted(node.begin(), node.end());
+        vector<AstNode*> sorted(nodes.begin(), nodes.end());
         sort(sorted.begin(), sorted.end(), [](const auto* p1, const auto* p2) {
             return p1->name < p2->name;
         });
@@ -109,11 +109,11 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "<th class=\"desc-col\">Description</th>\n");
         DocHtmlHelper::endTableRow(outFile);
 
-        for (auto func : sorted)
+        for (auto node : sorted)
         {
             DocHtmlHelper::startTableRow(outFile);
-            auto refName = scope->fullname + "." + func->name + ".html";
-            DocHtmlHelper::tableNameCell(outFile, refName, func->name);
+            auto refName = scope->fullname + "." + node->name + ".html";
+            DocHtmlHelper::tableNameCell(outFile, refName, node->name);
             DocHtmlHelper::tableDescCell(outFile, "description");
             DocHtmlHelper::endTableRow(outFile);
         }
