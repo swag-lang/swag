@@ -20,22 +20,22 @@ namespace std.input
                 pressed[cast(u32) MouseButton.XButton2] = isMouseButtonPressed(MouseButton.XButton2)
                 position = getMousePos()
             }
-            
+
             func clear(using self)
             {
                 memory.clear(&pressed, @sizeof(pressed))
                 position = getMousePos()
             }
-            
+
             func isButtonPressed(using self, button: MouseButton)->bool
             {
                 return pressed[cast(u32) button]
             }
-            
+
             func isButtonReleased(using self, button: MouseButton)->bool
             {
                 return !pressed[cast(u32) button]
-            }            
+            }
         }
     }
 

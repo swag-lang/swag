@@ -11,11 +11,6 @@ namespace std.input
     {
         public
         {
-            func update(using self, padIndex: u32)
-            {
-                std.input.os.getGamePadState(padIndex, self)
-            }
-
             func clear(using self)
             {
                 memory.clear(&pressed, @sizeof(pressed))

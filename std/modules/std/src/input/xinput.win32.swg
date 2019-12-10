@@ -1,7 +1,7 @@
 #if swag.WINDOWS
 {
     #foreignlib "xinput"
-	using std.os, std.input
+	using std.os, std.input, std.math
 
 	namespace std.input.os
 	{
@@ -37,6 +37,12 @@
 			Gamepad:		XINPUT_GAMEPAD
 		}
 
+        struct XINPUT_VIBRATION
+        {
+            wLeftMotorSpeed:    WORD
+            wRightMotorSpeed:   WORD
+        }
+
 		private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
 
 		#run
@@ -60,29 +66,43 @@
 		#[swag.foreign("xinput")]
 		{
 			func XInputGetState(dwUserIndex: DWORD,  pState: *XINPUT_STATE)->DWORD;
+            func XInputSetState(dwUserIndex: DWORD,  pVibration: *XINPUT_VIBRATION)->DWORD;
 		}
+    }
 
-		public
-		{
-            func getGamePadState(padIndex: u32, gamePadState: *GamePadState)->bool
+    namespace std.input
+	{
+        public func setVibration(padIndex: u32, left, right: f32)->bool
+        {
+            using std.input.os
+            var vibration: XINPUT_VIBRATION = ?
+            vibration.wLeftMotorSpeed = cast(WORD) (0xFFFF * saturate(left))
+            vibration.wRightMotorSpeed = cast(WORD) (0xFFFF * saturate(right))
+            return XInputSetState(padIndex, &vibration) == std.os.ERROR_SUCCESS
+        }
+
+        impl GamePadState
+        {
+            public func update(using self, padIndex: u32)->bool
             {
+                using std.input.os
                 var state: XINPUT_STATE = ?
                 if XInputGetState(padIndex, &state) != std.os.ERROR_SUCCESS
                     return false
 
                 // Button pressed state
                 loop i: 16
-                    gamePadState.pressed[cast(u32) g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
+                    pressed[cast(u32) g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
 
-                gamePadState.movement[cast(u32) GamePadButton.LeftStick].x = state.Gamepad.sThumbLX / 32767.0'f32
-                gamePadState.movement[cast(u32) GamePadButton.LeftStick].y = state.Gamepad.sThumbLY / 32767.0'f32
-                gamePadState.movement[cast(u32) GamePadButton.RightStick].x = state.Gamepad.sThumbRX / 32767.0'f32
-                gamePadState.movement[cast(u32) GamePadButton.RightStick].y = state.Gamepad.sThumbRY / 32767.0'f32
-                gamePadState.movement[cast(u32) GamePadButton.LeftTrigger].y = state.Gamepad.bLeftTrigger / 255.0'f32
-                gamePadState.movement[cast(u32) GamePadButton.RightTrigger].y = state.Gamepad.bRightTrigger / 255.0'f32
+                movement[cast(u32) GamePadButton.LeftStick].x = state.Gamepad.sThumbLX / 32767.0'f32
+                movement[cast(u32) GamePadButton.LeftStick].y = state.Gamepad.sThumbLY / 32767.0'f32
+                movement[cast(u32) GamePadButton.RightStick].x = state.Gamepad.sThumbRX / 32767.0'f32
+                movement[cast(u32) GamePadButton.RightStick].y = state.Gamepad.sThumbRY / 32767.0'f32
+                movement[cast(u32) GamePadButton.LeftTrigger].y = state.Gamepad.bLeftTrigger / 255.0'f32
+                movement[cast(u32) GamePadButton.RightTrigger].y = state.Gamepad.bRightTrigger / 255.0'f32
 
                 return true
             }
-		}
+        }
 	}
 }
