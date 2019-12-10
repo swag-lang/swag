@@ -153,6 +153,21 @@ bool Tokenizer::error(Token& token, const Utf8& msg)
     return false;
 }
 
+void Tokenizer::doDocComment(Token& token)
+{
+    token.id = TokenId::DocComment;
+
+    while (true)
+    {
+        auto nc = getChar();
+        if (!nc || nc == '\n')
+            break;
+        token.text += nc;
+    }
+
+    lastTokenIsEOL = true;
+}
+
 bool Tokenizer::getToken(Token& token, bool skipEOL)
 {
     unsigned offset;
@@ -197,6 +212,15 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
             {
                 treatChar(c, offset);
                 nc = getChar();
+
+                // This is a '///' doc comment
+                if (nc == '/' && g_CommandLine.generateDoc)
+                {
+                    getChar();
+                    doDocComment(token);
+                    return true;
+                }
+
                 while (nc && nc != '\n')
                     nc = getChar();
                 lastTokenIsEOL = true;
@@ -226,7 +250,7 @@ bool Tokenizer::getToken(Token& token, bool skipEOL)
                 return true;
             }
 
-			// Raw string literal
+            // Raw string literal
             if (c == '#' && nc == '"')
             {
                 treatChar(nc, offset);

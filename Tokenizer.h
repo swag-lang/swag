@@ -59,7 +59,7 @@ enum class TokenId
     SymExclamEqual,
     SymBackSlash,
     SymAttrStart,
-	SymBackTick,
+    SymBackTick,
 
     CompilerModule,
     CompilerUnitTest,
@@ -86,12 +86,13 @@ enum class TokenId
     CompilerElse,
     CompilerElseIf,
     CompilerCode,
-	CompilerMixin,
-	CompilerInline,
-	CompilerMacro,
+    CompilerMixin,
+    CompilerInline,
+    CompilerMacro,
     CompilerForeignLib,
 
     Intrinsic,
+    DocComment,
 
     KwdVar,
     KwdLet,
@@ -99,14 +100,14 @@ enum class TokenId
     KwdPublic,
     KwdPrivate,
     KwdInternal,
-	KwdReadOnly,
+    KwdReadOnly,
     KwdNamespace,
     KwdTypeAlias,
     KwdEnum,
     KwdEnumValue,
     KwdImpl,
     KwdStruct,
-	KwdInterface,
+    KwdInterface,
     KwdUnion,
     KwdFunc,
     KwdAttr,
@@ -182,6 +183,7 @@ struct Tokenizer
     bool     isEscape(char32_t& c, Token& token);
     bool     getDigitHexa(Token& token, int& result);
     bool     doCharLiteral(Token& token);
+    void     doDocComment(Token& token);
 
     SourceFile*    sourceFile      = nullptr;
     char32_t       cacheChar       = 0;

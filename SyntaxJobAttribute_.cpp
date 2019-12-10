@@ -184,3 +184,62 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result)
 
     return true;
 }
+
+bool SyntaxJob::doDocComment(AstNode* parent, AstNode** result)
+{
+    auto attrBlockNode = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::DocComment, sourceFile, parent);
+    if (result)
+        *result = attrBlockNode;
+
+    int pass = 0;
+    while (token.id == TokenId::DocComment)
+    {
+        token.text.erase(token.text.find_last_not_of(" \n\r\t") + 1);
+        auto trimLeft = token.text;
+        trimLeft.erase(0, token.text.find_first_not_of(" \t"));
+
+        // Start of a category with '#' : directly fill the doc content
+        if (trimLeft.size() && trimLeft[0] == '#')
+            pass = 3;
+
+        switch (pass)
+        {
+        // Summary
+        case 0:
+            if (token.text.empty())
+            {
+                pass = 1;
+            }
+            else
+            {
+                if (!attrBlockNode->docSummary.empty())
+                    attrBlockNode->docSummary += " ";
+                attrBlockNode->docSummary += token.text;
+            }
+            break;
+
+        // Between summary and description
+        case 1:
+            if (token.text.empty())
+                break;
+            pass = 2;
+
+        // Description
+        case 2:
+            if (token.text.empty())
+                pass = 3;
+            else
+                attrBlockNode->docDescription += token.text + "\n";
+            break;
+
+        // Content
+        case 3:
+            attrBlockNode->docContent += token.text + "\n";
+            break;
+        }
+
+        SWAG_CHECK(tokenizer.getToken(token));
+    }
+
+    return true;
+}

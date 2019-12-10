@@ -90,6 +90,7 @@ struct SyntaxJob : public Job
     bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr);
+    bool doDocComment(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);
     bool doEmbeddedStatement(AstNode* parent, AstNode** result = nullptr);
     bool doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind);

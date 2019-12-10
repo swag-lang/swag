@@ -72,12 +72,12 @@ void DocNodeJob::emitFunction(OutputFile& outFile)
 
 void DocNodeJob::emitEnum(OutputFile& outFile)
 {
-    DocHtmlHelper::title(outFile, format("%s %s", node->name.c_str(), "enum"));
+    DocHtmlHelper::title(outFile, format("%s %s", node->name.c_str(), "enumeration"));
 
     DocHtmlHelper::summary(outFile, "Summary");
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
-    DocHtmlHelper::startSection(outFile, "Values");
+    DocHtmlHelper::startSection(outFile, "Fields");
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
     DocHtmlHelper::table(outFile, typeInfo->scope, typeInfo->values);
 }

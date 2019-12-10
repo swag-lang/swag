@@ -116,7 +116,7 @@ namespace DocHtmlHelper
             DocHtmlHelper::startTableRow(outFile);
             auto refName = scope->fullname + "." + node->name + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, node->name);
-            DocHtmlHelper::tableDescCell(outFile, "description");
+            DocHtmlHelper::tableDescCell(outFile, node->docSummary);
             DocHtmlHelper::endTableRow(outFile);
         }
 

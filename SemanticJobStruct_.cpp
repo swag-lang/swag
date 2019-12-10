@@ -292,6 +292,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         switch (child->kind)
         {
         case AstNodeKind::AttrUse:
+        case AstNodeKind::DocComment:
             continue;
         case AstNodeKind::Statement:
         case AstNodeKind::CompilerIfBlock:
@@ -533,6 +534,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         switch (child->kind)
         {
         case AstNodeKind::AttrUse:
+        case AstNodeKind::DocComment:
             continue;
         case AstNodeKind::Statement:
         case AstNodeKind::CompilerIfBlock:

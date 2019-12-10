@@ -77,6 +77,7 @@ enum class AstNodeKind
     FuncDecl,
     AttrDecl,
     AttrUse,
+    DocComment,
     FuncDeclParams,
     FuncDeclParam,
     FuncDeclType,
@@ -283,6 +284,9 @@ struct AstNode
     uint32_t    attributeFlags   = 0;
     AstAttrUse* parentAttributes = 0;
     Token       token;
+    Utf8        docSummary;
+    Utf8        docDescription;
+    Utf8        docContent;
 
     SemanticFct         semanticFct       = nullptr;
     SemanticFct         semanticBeforeFct = nullptr;
