@@ -52,7 +52,7 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "<div class=\"title\">\n");
         outFile.addStringFormat("<span class=\"title\">%s</span>\n", title.c_str());
         CONCAT_FIXED_STR(outFile, "</div>\n");
-        CONCAT_FIXED_STR(outFile, "<div class=\"hr\"><hr/>\n");
+        //CONCAT_FIXED_STR(outFile, "<div class=\"hr\"><hr/>\n");
     }
 
     void endSection(Concat& outFile)
@@ -94,6 +94,31 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "<td class=\"desc-col\">\n");
         outFile.addString(msg);
         CONCAT_FIXED_STR(outFile, "</td>\n");
+    }
+
+    void table(Concat& outFile, Scope* scope, set<AstNode*>& node)
+    {
+        vector<AstNode*> sorted(node.begin(), node.end());
+        sort(sorted.begin(), sorted.end(), [](const auto* p1, const auto* p2) {
+            return p1->name < p2->name;
+        });
+
+        DocHtmlHelper::startTable(outFile);
+        DocHtmlHelper::startTableRow(outFile);
+        CONCAT_FIXED_STR(outFile, "<th class=\"name-col\">Name</th>\n");
+        CONCAT_FIXED_STR(outFile, "<th class=\"desc-col\">Description</th>\n");
+        DocHtmlHelper::endTableRow(outFile);
+
+        for (auto func : sorted)
+        {
+            DocHtmlHelper::startTableRow(outFile);
+            auto refName = scope->fullname + "." + func->name + ".html";
+            DocHtmlHelper::tableNameCell(outFile, refName, func->name);
+            DocHtmlHelper::tableDescCell(outFile, "description");
+            DocHtmlHelper::endTableRow(outFile);
+        }
+
+        DocHtmlHelper::endTable(outFile);
     }
 
 }; // namespace DocHtmlHelper
