@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "DocScopeJob.h"
+#include "DocNodeJob.h"
 #include "Scope.h"
 #include "ThreadManager.h"
 #include "OutputFile.h"
@@ -19,6 +20,7 @@ JobResult DocScopeJob::execute()
         case ScopeKind::File:
         case ScopeKind::Module:
         case ScopeKind::Struct:
+        case ScopeKind::Enum:
             auto scopeJob    = g_Pool_docScopeJob.alloc();
             scopeJob->module = module;
             scopeJob->scope  = child;
@@ -38,14 +40,7 @@ JobResult DocScopeJob::execute()
     DocHtmlHelper::htmlStart(outFile);
     DocHtmlHelper::title(outFile, format("%s %s", scope->name.c_str(), Scope::getNakedKindName(scope->kind)));
     DocHtmlHelper::summary(outFile, "Summary");
-
-    if (!scope->parentScope->fullname.empty())
-    {
-        CONCAT_FIXED_STR(outFile, "<br/><div class=\"origin\">\n");
-        auto parentRef = scope->parentScope->fullname + ".html";
-        outFile.addStringFormat("<strong>Namespace: </strong><a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), scope->parentScope->fullname.c_str());
-        CONCAT_FIXED_STR(outFile, "</div>\n");
-    }
+    DocHtmlHelper::origin(outFile, scope->parentScope);
 
     CONCAT_FIXED_STR(outFile, "<div class=\"members\">\n");
     if (!scope->publicNamespace.empty())
@@ -60,6 +55,14 @@ JobResult DocScopeJob::execute()
         DocHtmlHelper::startSection(outFile, "Functions");
         DocHtmlHelper::table(outFile, scope, scope->publicFunc);
         DocHtmlHelper::endSection(outFile);
+
+        for (auto child : scope->publicFunc)
+        {
+            auto nodeJob    = g_Pool_docNodeJob.alloc();
+            nodeJob->module = module;
+            nodeJob->node   = child;
+            g_ThreadMgr.addJob(nodeJob);
+        }
     }
 
     if (!scope->publicGenericFunc.empty())
@@ -67,6 +70,14 @@ JobResult DocScopeJob::execute()
         DocHtmlHelper::startSection(outFile, "Generic Functions");
         DocHtmlHelper::table(outFile, scope, scope->publicGenericFunc);
         DocHtmlHelper::endSection(outFile);
+
+        for (auto child : scope->publicGenericFunc)
+        {
+            auto nodeJob    = g_Pool_docNodeJob.alloc();
+            nodeJob->module = module;
+            nodeJob->node   = child;
+            g_ThreadMgr.addJob(nodeJob);
+        }
     }
 
     if (!scope->publicStruct.empty())
@@ -74,6 +85,21 @@ JobResult DocScopeJob::execute()
         DocHtmlHelper::startSection(outFile, "Structures");
         DocHtmlHelper::table(outFile, scope, scope->publicStruct);
         DocHtmlHelper::endSection(outFile);
+    }
+
+    if (!scope->publicEnum.empty())
+    {
+        DocHtmlHelper::startSection(outFile, "Enumerations");
+        DocHtmlHelper::table(outFile, scope, scope->publicEnum);
+        DocHtmlHelper::endSection(outFile);
+
+        for (auto child : scope->publicEnum)
+        {
+            auto nodeJob    = g_Pool_docNodeJob.alloc();
+            nodeJob->module = module;
+            nodeJob->node   = child;
+            g_ThreadMgr.addJob(nodeJob);
+        }
     }
 
     if (!scope->publicConst.empty())

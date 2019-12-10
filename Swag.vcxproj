@@ -168,6 +168,7 @@
     <ClInclude Include="DependentJobs.h" />
     <ClInclude Include="Diagnostic.h" />
     <ClInclude Include="DocHtmlHelper.h" />
+    <ClInclude Include="DocNodeJob.h" />
     <ClInclude Include="DocScopeJob.h" />
     <ClInclude Include="EnumerateModuleJob.h" />
     <ClInclude Include="ffi.h" />
@@ -264,6 +265,7 @@
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Final|x64'">false</ShowIncludes>
     </ClCompile>
+    <ClCompile Include="DocNodeJob.cpp" />
     <ClCompile Include="DocScopeJob.cpp" />
     <ClCompile Include="EnumerateModuleJob.cpp" />
     <ClCompile Include="Job.cpp" />

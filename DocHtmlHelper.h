@@ -1,9 +1,11 @@
 #pragma once
 #include "Concat.h"
+#include "Scope.h"
+#include "AstNode.h"
 
 namespace DocHtmlHelper
 {
-    void htmlStart(Concat& outFile)
+    inline void htmlStart(Concat& outFile)
     {
         CONCAT_FIXED_STR(outFile, "<html>\n");
         CONCAT_FIXED_STR(outFile, "<head>\n");
@@ -20,7 +22,7 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "<div class=\"content\">\n");
     }
 
-    void htmlEnd(Concat& outFile)
+    inline void htmlEnd(Concat& outFile)
     {
         CONCAT_FIXED_STR(outFile, "</div>\n");
         CONCAT_FIXED_STR(outFile, "</div>\n");
@@ -29,7 +31,7 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "</html>\n");
     }
 
-    void title(Concat& outFile, Utf8 msg)
+    inline void title(Concat& outFile, Utf8 msg)
     {
         CONCAT_FIXED_STR(outFile, "<div class=\"content-title\">\n");
         CONCAT_FIXED_STR(outFile, "<h1 id=\"#top\" class=\"content-title\">");
@@ -38,14 +40,14 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "<div style = \"clear: both;\"></div>\n");
     }
 
-    void summary(Concat& outFile, Utf8 msg)
+    inline void summary(Concat& outFile, Utf8 msg)
     {
         CONCAT_FIXED_STR(outFile, "<div class=\"summary\">");
         outFile.addString(msg);
         CONCAT_FIXED_STR(outFile, "</div>\n");
     }
 
-    void startSection(Concat& outFile, Utf8 title)
+    inline void startSection(Concat& outFile, Utf8 title)
     {
         CONCAT_FIXED_STR(outFile, "<div class=\"section\">\n");
         CONCAT_FIXED_STR(outFile, "<div class=\"block\">\n");
@@ -55,33 +57,33 @@ namespace DocHtmlHelper
         //CONCAT_FIXED_STR(outFile, "<div class=\"hr\"><hr/>\n");
     }
 
-    void endSection(Concat& outFile)
+    inline void endSection(Concat& outFile)
     {
         CONCAT_FIXED_STR(outFile, "</div>\n");
         CONCAT_FIXED_STR(outFile, "</div>\n");
     }
 
-    void startTable(Concat& outFile)
+    inline void startTable(Concat& outFile)
     {
         CONCAT_FIXED_STR(outFile, "<table class=\"members\">\n");
     }
 
-    void endTable(Concat& outFile)
+    inline void endTable(Concat& outFile)
     {
         CONCAT_FIXED_STR(outFile, "</table>\n");
     }
 
-    void startTableRow(Concat& outFile)
+    inline void startTableRow(Concat& outFile)
     {
         CONCAT_FIXED_STR(outFile, "<tr>");
     }
 
-    void endTableRow(Concat& outFile)
+    inline void endTableRow(Concat& outFile)
     {
         CONCAT_FIXED_STR(outFile, "</tr>");
     }
 
-    void tableNameCell(Concat& outFile, Utf8 href, Utf8 msg)
+    inline void tableNameCell(Concat& outFile, Utf8 href, Utf8 msg)
     {
         CONCAT_FIXED_STR(outFile, "<td class=\"name-col\">\n");
         outFile.addStringFormat("<a href=\"%s\">", href.c_str());
@@ -89,14 +91,14 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "</a></td>\n");
     }
 
-    void tableDescCell(Concat& outFile, Utf8 msg)
+    inline void tableDescCell(Concat& outFile, Utf8 msg)
     {
         CONCAT_FIXED_STR(outFile, "<td class=\"desc-col\">\n");
         outFile.addString(msg);
         CONCAT_FIXED_STR(outFile, "</td>\n");
     }
 
-    void table(Concat& outFile, Scope* scope, set<AstNode*>& nodes)
+    inline void table(Concat& outFile, Scope* scope, set<AstNode*>& nodes)
     {
         vector<AstNode*> sorted(nodes.begin(), nodes.end());
         sort(sorted.begin(), sorted.end(), [](const auto* p1, const auto* p2) {
@@ -119,6 +121,17 @@ namespace DocHtmlHelper
         }
 
         DocHtmlHelper::endTable(outFile);
+    }
+
+    inline void origin(Concat& outFile, Scope* scope)
+    {
+        if (!scope->fullname.empty())
+        {
+            CONCAT_FIXED_STR(outFile, "<br/><div class=\"origin\">\n");
+            auto parentRef = scope->fullname + ".html";
+            outFile.addStringFormat("<strong>Namespace: </strong><a href=\"%s\">%s</a><br/>\n", parentRef.c_str(), scope->fullname.c_str());
+            CONCAT_FIXED_STR(outFile, "</div>\n");
+        }
     }
 
 }; // namespace DocHtmlHelper

@@ -354,6 +354,9 @@
     <ClCompile Include="DocScopeJob.cpp">
       <Filter>Doc</Filter>
     </ClCompile>
+    <ClCompile Include="DocNodeJob.cpp">
+      <Filter>Doc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JobThread.h">
@@ -585,6 +588,9 @@
       <Filter>Doc</Filter>
     </ClInclude>
     <ClInclude Include="DocHtmlHelper.h">
+      <Filter>Doc</Filter>
+    </ClInclude>
+    <ClInclude Include="DocNodeJob.h">
       <Filter>Doc</Filter>
     </ClInclude>
   </ItemGroup>
