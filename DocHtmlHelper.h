@@ -123,6 +123,31 @@ namespace DocHtmlHelper
         DocHtmlHelper::endTable(outFile);
     }
 
+    inline void table(Concat& outFile, Scope* scope, vector<TypeInfoParam*>& params)
+    {
+        vector<TypeInfoParam*> sorted(params.begin(), params.end());
+        sort(sorted.begin(), sorted.end(), [](const auto* p1, const auto* p2) {
+            return p1->namedParam < p2->namedParam;
+        });
+
+        DocHtmlHelper::startTable(outFile);
+        DocHtmlHelper::startTableRow(outFile);
+        CONCAT_FIXED_STR(outFile, "<th class=\"name-col\">Name</th>\n");
+        CONCAT_FIXED_STR(outFile, "<th class=\"desc-col\">Description</th>\n");
+        DocHtmlHelper::endTableRow(outFile);
+
+        for (auto node : sorted)
+        {
+            DocHtmlHelper::startTableRow(outFile);
+            auto refName = scope->fullname + "." + node->namedParam + ".html";
+            DocHtmlHelper::tableNameCell(outFile, refName, node->namedParam);
+            DocHtmlHelper::tableDescCell(outFile, "description");
+            DocHtmlHelper::endTableRow(outFile);
+        }
+
+        DocHtmlHelper::endTable(outFile);
+    }
+
     inline void origin(Concat& outFile, Scope* scope)
     {
         if (!scope->fullname.empty())

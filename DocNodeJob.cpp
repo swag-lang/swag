@@ -76,6 +76,10 @@ void DocNodeJob::emitEnum(OutputFile& outFile)
 
     DocHtmlHelper::summary(outFile, "Summary");
     DocHtmlHelper::origin(outFile, node->ownerScope);
+
+    DocHtmlHelper::startSection(outFile, "Values");
+    auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+    DocHtmlHelper::table(outFile, typeInfo->scope, typeInfo->values);
 }
 
 JobResult DocNodeJob::execute()
