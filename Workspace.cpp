@@ -64,24 +64,24 @@ void Workspace::publishModule(Module* module)
     }
 }
 
-void Workspace::addRuntime()
+void Workspace::addBootstrap()
 {
-    if (!g_CommandLine.addRuntimeModule)
+    if (!g_CommandLine.addBootstrap)
         return;
 
     // Runtime will be compiled in the workspace scope, in order to be defined once
     // for all modules
-    runtimeModule = g_Pool_module.alloc();
-    runtimeModule->setup("");
-    modules.push_back(runtimeModule);
+    bootstrapModule = g_Pool_module.alloc();
+    bootstrapModule->setup("");
+    modules.push_back(bootstrapModule);
 
     auto     file  = g_Pool_sourceFile.alloc();
     auto     job   = g_Pool_syntaxJob.alloc();
     fs::path p     = g_CommandLine.exePath;
-    file->path     = p.parent_path().string() + "/swag.swg";
-    file->module   = runtimeModule;
+    file->path     = p.parent_path().string() + "/swag.bootstrap.swg";
+    file->module   = bootstrapModule;
     file->swagFile = true;
-    runtimeModule->addFile(file);
+    bootstrapModule->addFile(file);
     job->sourceFile = file;
     g_ThreadMgr.addJob(job);
 }
@@ -167,24 +167,24 @@ bool Workspace::buildTarget()
 
     // Runtime swag module semantic pass
     //////////////////////////////////////////////////
-    if (runtimeModule)
+    if (bootstrapModule)
     {
         // Errors in swag.swg !!!
-        if (runtimeModule->numErrors)
+        if (bootstrapModule->numErrors)
         {
-            g_Log.error("some errors have been found in 'swag.swg' ! exiting...");
+            g_Log.error("some errors have been found in 'swag.bootstrap.swg' ! exiting...");
             return false;
         }
 
         auto job    = g_Pool_moduleSemanticJob.alloc();
-        job->module = runtimeModule;
+        job->module = bootstrapModule;
         g_ThreadMgr.addJob(job);
         g_ThreadMgr.waitEndJobs();
 
         // Errors in swag.swg !!!
-        if (runtimeModule->numErrors)
+        if (bootstrapModule->numErrors)
         {
-            g_Log.error("some errors have been found in 'swag.swg' ! exiting...");
+            g_Log.error("some errors have been found in 'swag.bootstrap.swg' ! exiting...");
             return false;
         }
     }
@@ -193,7 +193,7 @@ bool Workspace::buildTarget()
     //////////////////////////////////////////////////
     for (auto module : modules)
     {
-        if (module == runtimeModule)
+        if (module == bootstrapModule)
             continue;
         auto job    = g_Pool_moduleBuildJob.alloc();
         job->module = module;
@@ -209,7 +209,7 @@ bool Workspace::build()
     setup();
 
     g_Log.messageHeaderCentered("Workspace", format("%s [%s-%s]", workspacePath.filename().string().c_str(), g_CommandLine.config.c_str(), g_CommandLine.arch.c_str()));
-    addRuntime();
+    addBootstrap();
     setupTarget();
     SWAG_CHECK(buildTarget());
 

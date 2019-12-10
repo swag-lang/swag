@@ -27,7 +27,7 @@ JobResult BackendC::preCompile(Job* ownerJob)
             else
             {
                 auto t1 = OS::getFileWriteTime(bufferC.fileName);
-                if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.runtimeModule->moreRecentSourceFile)
+                if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
                     regen = true;
             }
         }
@@ -39,7 +39,7 @@ JobResult BackendC::preCompile(Job* ownerJob)
         emitDataSegment(&module->mutableSegment);
         emitDataSegment(&module->constantSegment);
         emitAllFuncSignatureInternalC();
-        emitPublic(g_Workspace.runtimeModule, g_Workspace.runtimeModule->scopeRoot);
+        emitPublic(g_Workspace.bootstrapModule, g_Workspace.bootstrapModule->scopeRoot);
         emitPublic(module, module->scopeRoot);
         emitSeparator(bufferC, "FUNCTIONS");
 		bufferC.flush(false);

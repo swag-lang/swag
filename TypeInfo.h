@@ -13,9 +13,9 @@ struct AstNode;
 struct ByteCode;
 struct TypeInfoFuncAttr;
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 enum class TypeInfoKind
 {
@@ -40,9 +40,9 @@ enum class TypeInfoKind
     Count,
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 enum class NativeTypeKind
 {

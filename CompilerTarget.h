@@ -1,9 +1,9 @@
 #pragma once
 #include "CommandLine.h"
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 struct CompilerParamsBackendC
 {
@@ -12,9 +12,9 @@ struct CompilerParamsBackendC
     uint32_t maxApplicationArguments  = 64;
 };
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MUST BE IN SYNC IN SWAG.SWG
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// MUST BE IN SYNC IN SWAG.BOOTSTRAP.SWG
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 struct CompilerTarget
 {

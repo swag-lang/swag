@@ -15,7 +15,7 @@ struct CommandLine
 
     // Input
     bool   cleanTarget      = true;
-    bool   addRuntimeModule = true;
+    bool   addBootstrap = true;
     string workspacePath;
     string fileFilter;
     int    tabSize = 4;

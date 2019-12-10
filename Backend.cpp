@@ -416,7 +416,7 @@ bool Backend::generateExportFile()
             if (fs::exists(bufferSwg.fileName))
             {
                 auto t1 = OS::getFileWriteTime(bufferSwg.fileName);
-                if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.runtimeModule->moreRecentSourceFile)
+                if (t1 < module->moreRecentSourceFile || t1 < g_Workspace.bootstrapModule->moreRecentSourceFile)
                     regen = true;
             }
         }

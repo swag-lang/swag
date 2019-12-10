@@ -11,7 +11,7 @@ struct Workspace
     bool    build();
     Module* createOrUseModule(const string& moduleName);
 
-    void    addRuntime();
+    void    addBootstrap();
     void    publishModule(Module* module);
     void    setup();
     Module* getModuleByName(const string& moduleName);
@@ -29,7 +29,7 @@ struct Workspace
     vector<Module*>      modules;
     map<string, Module*> mapModulesNames;
     ByteCodeRunContext   runContext;
-    Module*              runtimeModule;
+    Module*              bootstrapModule;
     SwagScope            swagScope;
 };
 

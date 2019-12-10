@@ -568,7 +568,7 @@ bool BackendC::emitAllFuncSignatureInternalC(Module* moduleToGen)
 bool BackendC::emitAllFuncSignatureInternalC()
 {
     emitSeparator(bufferC, "PROTOTYPES");
-    if (!emitAllFuncSignatureInternalC(g_Workspace.runtimeModule))
+    if (!emitAllFuncSignatureInternalC(g_Workspace.bootstrapModule))
         return false;
     if (!emitAllFuncSignatureInternalC(module))
         return false;
@@ -1686,7 +1686,7 @@ bool BackendC::emitFunctionBody(Concat& concat, Module* moduleToGen, ByteCode* b
 
 bool BackendC::emitAllFunctionBody(Job* ownerJob)
 {
-    if (!emitAllFunctionBody(g_Workspace.runtimeModule, ownerJob))
+    if (!emitAllFunctionBody(g_Workspace.bootstrapModule, ownerJob))
         return false;
     if (!emitAllFunctionBody(module, ownerJob))
         return false;
