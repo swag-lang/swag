@@ -167,6 +167,8 @@
     <ClInclude Include="DataSegment.h" />
     <ClInclude Include="DependentJobs.h" />
     <ClInclude Include="Diagnostic.h" />
+    <ClInclude Include="DocHtmlHelper.h" />
+    <ClInclude Include="DocScopeJob.h" />
     <ClInclude Include="EnumerateModuleJob.h" />
     <ClInclude Include="ffi.h" />
     <ClInclude Include="fficonfig.h" />
@@ -175,6 +177,7 @@
     <ClInclude Include="Generic.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="ModuleBuildJob.h" />
+    <ClInclude Include="DocModuleJob.h" />
     <ClInclude Include="ModuleOutputExportJob.h" />
     <ClInclude Include="ModulePrecompileJob.h" />
     <ClInclude Include="ModuleTestJob.h" />
@@ -261,6 +264,7 @@
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Final|x64'">false</ShowIncludes>
     </ClCompile>
+    <ClCompile Include="DocScopeJob.cpp" />
     <ClCompile Include="EnumerateModuleJob.cpp" />
     <ClCompile Include="Job.cpp" />
     <ClCompile Include="Context.cpp" />
@@ -283,6 +287,7 @@
     <ClCompile Include="Module.cpp" />
     <ClCompile Include="ModuleBuildJob.cpp" />
     <ClCompile Include="ModuleCompileJob.cpp" />
+    <ClCompile Include="DocModuleJob.cpp" />
     <ClCompile Include="ModuleOutputExportJob.cpp" />
     <ClCompile Include="ModuleOutputJob.cpp" />
     <ClCompile Include="ModulePrecompileJob.cpp" />

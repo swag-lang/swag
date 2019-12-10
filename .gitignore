@@ -265,3 +265,4 @@ __pycache__/
 .out/*.ipdb
 .out/*.iobj
 std/output/
+std/documentation/

@@ -45,6 +45,7 @@ struct Module
     void deferReleaseChilds(AstNode* node);
 
     string              path;
+    fs::path            documentPath;
     string              name;
     string              nameDown;
     string              nameUp;

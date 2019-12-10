@@ -3,6 +3,7 @@
 #include "ModuleOutputExportJob.h"
 #include "ModulePreCompileJob.h"
 #include "ModuleCompileJob.h"
+#include "DocModuleJob.h"
 #include "BackendC.h"
 #include "ThreadManager.h"
 #include "Workspace.h"
@@ -38,6 +39,14 @@ JobResult ModuleOutputJob::execute()
         exportJob->backend      = module->backend;
         exportJob->dependentJob = dependentJob;
         jobsToAdd.push_back(exportJob);
+
+        // Generate documentation for module
+        if (g_CommandLine.generateDoc && !module->fromTests)
+        {
+            auto docJob = g_Pool_docModuleJob.alloc();
+            docJob->module = module;
+            jobsToAdd.push_back(docJob);
+        }
     }
 
     if (pass == ModuleOutputJobPass::PreCompile)

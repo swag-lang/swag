@@ -45,6 +45,9 @@ struct CommandLine
     bool errorSourceOut        = true;
     bool errorNoteOut          = true;
 
+    // Documentation
+    bool generateDoc = true;
+
     // Output
     string config = "debug";
     string arch   = "win64";
