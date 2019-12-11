@@ -1,7 +1,13 @@
-#[swag.inline]
-func toto()
+struct A
 {
-	func titi()
-	{
-	}
+}
+
+impl A
+{
+    func toto()
+    {
+        func titi(self)
+        {
+        }
+    }
 }
