@@ -94,12 +94,13 @@
                 loop i: 16
                     pressed[cast(u32) g_mapButtons[i]] = state.Gamepad.wButtons & (1 << i)
 
-                movement[cast(u32) GamePadButton.LeftStick].x = state.Gamepad.sThumbLX / 32767.0'f32
-                movement[cast(u32) GamePadButton.LeftStick].y = state.Gamepad.sThumbLY / 32767.0'f32
-                movement[cast(u32) GamePadButton.RightStick].x = state.Gamepad.sThumbRX / 32767.0'f32
-                movement[cast(u32) GamePadButton.RightStick].y = state.Gamepad.sThumbRY / 32767.0'f32
-                movement[cast(u32) GamePadButton.LeftTrigger].y = state.Gamepad.bLeftTrigger / 255.0'f32
-                movement[cast(u32) GamePadButton.RightTrigger].y = state.Gamepad.bRightTrigger / 255.0'f32
+                using GamePadButton, state.Gamepad
+                movement[cast(u32) LeftStick].x = sThumbLX / 32767.0'f32
+                movement[cast(u32) LeftStick].y = sThumbLY / 32767.0'f32
+                movement[cast(u32) RightStick].x = sThumbRX / 32767.0'f32
+                movement[cast(u32) RightStick].y = sThumbRY / 32767.0'f32
+                movement[cast(u32) LeftTrigger].y = bLeftTrigger / 255.0'f32
+                movement[cast(u32) RightTrigger].y = bRightTrigger / 255.0'f32
 
                 return true
             }
