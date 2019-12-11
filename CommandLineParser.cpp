@@ -22,6 +22,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
 
     addArg("--clean-target", nullptr, CommandLineType::Bool, &cmdLine->cleanTarget);
     addArg("--rebuild", nullptr, CommandLineType::Bool, &cmdLine->rebuild);
+    addArg("--doc", nullptr, CommandLineType::Bool, &cmdLine->generateDoc);
 
     addArg("--file-filter", nullptr, CommandLineType::String, &cmdLine->fileFilter);
     addArg("--tab-size", nullptr, CommandLineType::Int, &cmdLine->tabSize);

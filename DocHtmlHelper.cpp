@@ -175,6 +175,13 @@ namespace DocHtmlHelper
 
         for (auto node : sorted)
         {
+            if (node->kind == AstNodeKind::Namespace)
+            {
+                auto typeNamespace = CastTypeInfo<TypeInfoNamespace>(node->typeInfo, TypeInfoKind::Namespace);
+                if (!(typeNamespace->scope->flags & SCOPE_FLAG_HAS_EXPORTS))
+                    continue;
+            }
+
             DocHtmlHelper::startTableRow(outFile);
             auto refName = scope->fullname + "." + node->name + ".html";
             DocHtmlHelper::tableNameCell(outFile, refName, node->name);

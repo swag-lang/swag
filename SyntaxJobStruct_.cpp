@@ -204,6 +204,10 @@ bool SyntaxJob::doStructContent(AstNode* parent)
             SWAG_CHECK(doAttrUse(parent));
             break;
 
+        case TokenId::DocComment:
+            SWAG_CHECK(doDocComment(parent));
+            break;
+
         case TokenId::CompilerIf:
             SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::StructDecl));
             parent->ownerMainNode->flags |= AST_STRUCT_COMPOUND;

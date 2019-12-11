@@ -46,7 +46,7 @@ struct CommandLine
     bool errorNoteOut          = true;
 
     // Documentation
-    bool generateDoc = true;
+    bool generateDoc = false;
 
     // Output
     string config = "debug";

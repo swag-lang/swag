@@ -31,7 +31,7 @@ JobResult DocScopeJob::execute()
 
     if (scope->name.empty())
         return JobResult::ReleaseJob;
-    if (scope->publicFunc.empty() && scope->publicStruct.empty())
+    if (!(scope->flags & SCOPE_FLAG_HAS_EXPORTS))
         return JobResult::ReleaseJob;
 
     OutputFile outFile;
@@ -42,7 +42,14 @@ JobResult DocScopeJob::execute()
     DocHtmlHelper::summary(outFile, scope->owner->docSummary);
     DocHtmlHelper::origin(outFile, scope->parentScope);
 
-    CONCAT_FIXED_STR(outFile, "<div class=\"members\">\n");
+    if (scope->kind == ScopeKind::Struct)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(scope->owner->typeInfo, TypeInfoKind::Struct);
+        DocHtmlHelper::startSection(outFile, "Members");
+        DocHtmlHelper::table(outFile, scope, typeStruct->childs);
+        DocHtmlHelper::endSection(outFile);
+    }
+
     if (!scope->publicNamespace.empty())
     {
         DocHtmlHelper::startSection(outFile, "Namespaces");
@@ -115,8 +122,6 @@ JobResult DocScopeJob::execute()
         DocHtmlHelper::table(outFile, scope, scope->publicTypeAlias);
         DocHtmlHelper::endSection(outFile);
     }
-
-    CONCAT_FIXED_STR(outFile, "</div>\n");
 
     DocHtmlHelper::htmlEnd(outFile);
     outFile.flush(true);
