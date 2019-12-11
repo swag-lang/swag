@@ -3,6 +3,8 @@ namespace std.memory
     public
     {
         /// Copy one block of memory to a given address
+        ///
+        /// This is a description
         func copy(dest, src: *void, size: u32)
         {
             @memcpy(dest, src, size)

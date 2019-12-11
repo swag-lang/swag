@@ -11,7 +11,7 @@
 
 thread_local Pool<DocNodeJob> g_Pool_docNodeJob;
 
-bool DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* funcNode)
+void DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFunc, AstFuncDecl* funcNode)
 {
     CONCAT_FIXED_STR(concat, "func ");
     concat.addString(funcNode->name.c_str());
@@ -49,8 +49,14 @@ bool DocNodeJob::emitFuncSignature(OutputFile& concat, TypeInfoFuncAttr* typeFun
         CONCAT_FIXED_STR(concat, "->");
         concat.addString(typeFunc->returnType->getFullName());
     }
+}
 
-    return true;
+void DocNodeJob::emitEnumSignature(OutputFile& concat, TypeInfoEnum* typeEnum, AstNode* enumNode)
+{
+    CONCAT_FIXED_STR(concat, "enum ");
+    concat.addString(enumNode->name.c_str());
+    CONCAT_FIXED_STR(concat, ": ");
+    concat.addString(typeEnum->rawType->getFullName());
 }
 
 void DocNodeJob::emitFunction(OutputFile& outFile)
@@ -68,18 +74,32 @@ void DocNodeJob::emitFunction(OutputFile& outFile)
     emitFuncSignature(outFile, (TypeInfoFuncAttr*) node->typeInfo, (AstFuncDecl*) node);
     CONCAT_FIXED_STR(outFile, "</pre>");
     DocHtmlHelper::endSection(outFile);
+
+    if (!node->docDescription.empty())
+    {
+        DocHtmlHelper::startSection(outFile, "Description");
+        outFile.addString(node->docDescription);
+        DocHtmlHelper::endSection(outFile);
+    }
 }
 
 void DocNodeJob::emitEnum(OutputFile& outFile)
 {
     DocHtmlHelper::title(outFile, format("%s %s", node->name.c_str(), "enumeration"));
 
-    DocHtmlHelper::summary(outFile, "Summary");
+    DocHtmlHelper::summary(outFile, node->docSummary);
     DocHtmlHelper::origin(outFile, node->ownerScope);
 
-    DocHtmlHelper::startSection(outFile, "Fields");
+    DocHtmlHelper::startSection(outFile, "Syntax");
+    CONCAT_FIXED_STR(outFile, "<pre class='brush: csharp;'>");
+    emitEnumSignature(outFile, (TypeInfoEnum*) node->typeInfo, (AstNode*) node);
+    CONCAT_FIXED_STR(outFile, "</pre>");
+    DocHtmlHelper::endSection(outFile);
+
+    DocHtmlHelper::startSection(outFile, "Members");
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
     DocHtmlHelper::table(outFile, typeInfo->scope, typeInfo->values);
+    DocHtmlHelper::endSection(outFile);
 }
 
 JobResult DocNodeJob::execute()

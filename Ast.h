@@ -35,12 +35,15 @@ namespace Ast
             parent->lock();
 
             // If previous node is a doc comment, then move the text to this node
-            auto childBack = parent->childs.empty() ? nullptr : parent->childs.back();
-            if (childBack && childBack->kind == AstNodeKind::DocComment)
+            if (g_CommandLine.generateDoc)
             {
-                node->docSummary     = move(childBack->docSummary);
-                node->docDescription = move(childBack->docDescription);
-                node->docContent     = move(childBack->docContent);
+                auto childBack = parent->childs.empty() ? nullptr : parent->childs.back();
+                if (childBack && childBack->kind == AstNodeKind::DocComment)
+                {
+                    node->docSummary     = move(childBack->docSummary);
+                    node->docDescription = move(childBack->docDescription);
+                    node->docContent     = move(childBack->docContent);
+                }
             }
 
             node->childParentIdx = (uint32_t) parent->childs.size();

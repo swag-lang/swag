@@ -88,20 +88,28 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
             break;
         }
 
-        if (token.id == TokenId::SymAttrStart)
+        switch (token.id)
         {
+        case TokenId::SymAttrStart:
             SWAG_CHECK(doAttrUse(parent));
-        }
-        else if (token.id == TokenId::SymLeftCurly)
+            break;
+
+        case TokenId::DocComment:
+            SWAG_CHECK(doDocComment(parent));
+            break;
+
+        case TokenId::SymLeftCurly:
         {
             auto stmt = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::Statement, sourceFile, parent);
             SWAG_CHECK(doEnumContent(stmt));
+            break;
         }
-        else if (token.id == TokenId::CompilerIf)
-        {
+
+        case TokenId::CompilerIf:
             SWAG_CHECK(doCompilerIfFor(parent, nullptr, AstNodeKind::EnumDecl));
-        }
-        else
+            break;
+
+        default:
         {
             SWAG_VERIFY(token.id == TokenId::Identifier, syntaxError(token, "enum value identifier expected"));
             auto enumValue = Ast::newNode(this, &g_Pool_astNode, AstNodeKind::EnumValue, sourceFile, parent);
@@ -117,6 +125,8 @@ bool SyntaxJob::doEnumContent(AstNode* parent)
             }
 
             SWAG_CHECK(eatSemiCol("after enum value"));
+            break;
+        }
         }
 
         if (!waitCurly)

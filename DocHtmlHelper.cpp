@@ -21,7 +21,7 @@ namespace DocHtmlHelper
         const char* pz = msg.c_str();
         while (*pz)
         {
-            // Escape 
+            // Escape
             if (pz[0] == '\\' && (pz[1] == '*' || pz[1] == '_'))
             {
                 result += *pz++;
@@ -77,9 +77,6 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "</head>\n");
         CONCAT_FIXED_STR(outFile, "<body>\n");
 
-        CONCAT_FIXED_STR(outFile, "<a name=\"top\"></a>\n");
-        CONCAT_FIXED_STR(outFile, "<a id=\"back-to-top\" href=\"#top\">Top!</a>\n");
-
         CONCAT_FIXED_STR(outFile, "<section class=\"page-description\"><div class=\"container\"><h1>Documentation</h1></div></section>\n");
 
         CONCAT_FIXED_STR(outFile, "<div class=\"sharpdoc\">\n");
@@ -97,10 +94,9 @@ namespace DocHtmlHelper
 
     void title(Concat& outFile, const Utf8& msg)
     {
-        CONCAT_FIXED_STR(outFile, "<div class=\"content-title\">\n");
-        CONCAT_FIXED_STR(outFile, "<h1 id=\"#top\" class=\"content-title\">");
+        CONCAT_FIXED_STR(outFile, "<h1 class=\"content-title\">");
         outFile.addString(msg);
-        CONCAT_FIXED_STR(outFile, "</h1></div>\n");
+        CONCAT_FIXED_STR(outFile, "</h1>\n");
         CONCAT_FIXED_STR(outFile, "<div style = \"clear: both;\"></div>\n");
     }
 
@@ -117,9 +113,9 @@ namespace DocHtmlHelper
     {
         CONCAT_FIXED_STR(outFile, "<div class=\"section\">\n");
         CONCAT_FIXED_STR(outFile, "<div class=\"block\">\n");
-        CONCAT_FIXED_STR(outFile, "<div class=\"title\">\n");
-        outFile.addStringFormat("<span class=\"title\">%s</span>\n", title.c_str());
-        CONCAT_FIXED_STR(outFile, "</div>\n");
+        //CONCAT_FIXED_STR(outFile, "<div class=\"title\">\n");
+        outFile.addStringFormat("<h2 class=\"title\">%s</h2>\n", title.c_str());
+        //CONCAT_FIXED_STR(outFile, "</div>\n");
         //CONCAT_FIXED_STR(outFile, "<div class=\"hr\"><hr/>\n");
     }
 
@@ -202,12 +198,12 @@ namespace DocHtmlHelper
         CONCAT_FIXED_STR(outFile, "<th class=\"desc-col\">Description</th>\n");
         DocHtmlHelper::endTableRow(outFile);
 
-        for (auto node : sorted)
+        for (auto param : sorted)
         {
             DocHtmlHelper::startTableRow(outFile);
-            auto refName = scope->fullname + "." + node->namedParam + ".html";
-            DocHtmlHelper::tableNameCell(outFile, refName, node->namedParam);
-            DocHtmlHelper::tableDescCell(outFile, "description");
+            auto refName = scope->fullname + "." + param->namedParam + ".html";
+            DocHtmlHelper::tableNameCell(outFile, refName, param->namedParam);
+            DocHtmlHelper::tableDescCell(outFile, param->node->docSummary);
             DocHtmlHelper::endTableRow(outFile);
         }
 
